@@ -201,8 +201,7 @@ function dmm_crm_library_shared () {
 
 function dmm_crm_library_tools () {
 	$html_content = '
-					<p>tools content section</p>
-			        <table class="form-table"><tbody>
+					<table class="form-table"><tbody>
 					<tr>
 						<th scope="row">Vision</th>
 						<td>The purpose of the content library is to facilitate sharing of resources between DMM and media teams. Because God is leading people 
@@ -240,7 +239,62 @@ function dmm_crm_library_tools () {
 
 function dmm_crm_help_dmmcrm () {
 	$html_content = '
-	<p> content section</p>
+	<div id="dashboard-widgets-wrap">
+		<div id="dashboard-widgets" class="metabox-holder">
+			<div id="postbox-container-1" class="postbox-container">
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>1 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>1 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="postbox-container-2" class="postbox-container">
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>2 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>2 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="postbox-container-3" class="postbox-container">
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>3 Content of some kind.</p>
+						</div>
+					</div>
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>3 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	';
 	
 	return $html_content;
@@ -248,7 +302,63 @@ function dmm_crm_help_dmmcrm () {
 
 function dmm_crm_help_media () {
 	$html_content = '
-	<p> content section</p>
+	<div id="dashboard-widgets-wrap">
+		<div id="dashboard-widgets" class="metabox-holder">
+			<div id="postbox-container-1" class="postbox-container">
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>1 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>1 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="postbox-container-2" class="postbox-container">
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>2 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>2 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="postbox-container-3" class="postbox-container">
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>3 Content of some kind.</p>
+						</div>
+					</div>
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>3 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	';
 	
 	return $html_content;
@@ -256,7 +366,63 @@ function dmm_crm_help_media () {
 
 function dmm_crm_help_dmm () {
 	$html_content = '
-	<p> content section</p>
+	<div id="dashboard-widgets-wrap">
+		<div id="dashboard-widgets" class="metabox-holder">
+			<div id="postbox-container-1" class="postbox-container">
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>1 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>1 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="postbox-container-2" class="postbox-container">
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>2 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>2 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="postbox-container-3" class="postbox-container">
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>3 Content of some kind.</p>
+						</div>
+					</div>
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>3 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	';
 	
 	return $html_content;
@@ -264,7 +430,63 @@ function dmm_crm_help_dmm () {
 
 function dmm_crm_settings_general () {
 	$html_content = '
-	<p> content section</p>
+	<div id="dashboard-widgets-wrap">
+		<div id="dashboard-widgets" class="metabox-holder">
+			<div id="postbox-container-1" class="postbox-container">
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>1 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>1 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="postbox-container-2" class="postbox-container">
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>2 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>2 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="postbox-container-3" class="postbox-container">
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>3 Content of some kind.</p>
+						</div>
+					</div>
+					<div class="postbox">
+						<div class="inside">
+							<h2>Header</h2>
+							<p>3 Content of some kind.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	';
 	
 	return $html_content;
@@ -296,7 +518,24 @@ function dmm_crm_settings_maps () {
 
 function dmm_crm_settings_library () {
 	$html_content = '
-	<p> content section</p>
+	<div id="dashboard-widgets-wrap">
+		<div id="dashboard-widgets" class="metabox-holder">
+			<div class="postbox-container">
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">Box 1</div>
+					</div>
+				</div>
+			</div>
+			<div class="postbox-container">
+				<div class="meta-box-sortables ">
+					<div class="postbox">
+						<div class="inside">Box 2</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	';
 	
 	return $html_content;
@@ -304,13 +543,39 @@ function dmm_crm_settings_library () {
 
 function dmm_crm_settings_help () {
 	$html_content = '
-	<p> content section</p>
+		
+		<table class="form-table">
+			<tbody>
+				<tr>
+					<th scope="row">Vision</th>
+					<td>The purpose of the content library is to facilitate sharing of resources between DMM and media teams. Because God is leading people 
+					</td>
+				</tr>
+				
+			</tbody>
+		</table>
 	';
 	
 	return $html_content;
 }
 
-
+function dmm_crm_settings_users () {
+	$html_content = '
+		
+		<table class="form-table">
+			<tbody>
+				<tr>
+					<th scope="row">Vision</th>
+					<td>The purpose of the content library is to facilitate sharing of resources between DMM and media teams. Because God is leading people 
+					</td>
+				</tr>
+				
+			</tbody>
+		</table>
+	';
+	
+	return $html_content;
+}
 
 
 	

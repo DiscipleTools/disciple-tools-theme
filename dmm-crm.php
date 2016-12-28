@@ -377,6 +377,10 @@ function dmm_settings_options() {
 		if ($tab == 'help') {$html .= 'nav-tab-active';}  
 		$html .= '">Help</a>';
 		
+		$html .= $tab_link_pre . 'users' . $tab_link_post;
+		if ($tab == 'users') {$html .= 'nav-tab-active';}  
+		$html .= '">Users</a>';
+		
 		$html .= '</h2>'; 
 	// End Tab Bar
 	
@@ -386,22 +390,25 @@ function dmm_settings_options() {
 	*/
 		switch ($tab) {
 		    case "contacts":
-		        $html .= dmm_crm_settings_general ();
-		        break;
-		    case "reports":
 		        $html .= dmm_crm_settings_contacts ();
 		        break;
-		    case "maps":
+		    case "reports":
 		        $html .= dmm_crm_settings_reports ();
 		        break;
-		    case "library":
+		    case "maps":
 		        $html .= dmm_crm_settings_maps ();
 		        break;
-		    case "help":
+		    case "library":
 		        $html .= dmm_crm_settings_library ();
 		        break;
-		    default:
+		    case "help":
 		        $html .= dmm_crm_settings_help ();
+		        break;
+		    case "users":
+		        $html .= dmm_crm_settings_users ();
+		        break;
+		    default:
+		        $html .= dmm_crm_settings_general ();
 		}
 		
 		$html .= '</div>'; // end div class wrap
