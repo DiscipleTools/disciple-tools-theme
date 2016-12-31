@@ -3150,7 +3150,7 @@ function dmm_crm_settings_integrations () {
 	$field1 = '
 	       <div class="postbox">
 
-				<h2 class="hndle"><span>Chat Integrations</span></h2>
+				<h2 class="hndle"><span>Chat Integrations</span><span style="float:right;"><input type="submit" value="Add" class="button button-small" /></span></h2>
 
 				<div class="inside">
 					<table class="form-table">
@@ -3179,6 +3179,59 @@ function dmm_crm_settings_integrations () {
 
 			</div>
 			<!-- .postbox --> 
+			
+			<div class="postbox">
+
+				<h2 class="hndle"><span>DMM Network Integration</span></h2>
+
+				<div class="inside">
+					<table class="form-table">
+						<tbody>
+							<tr>
+								<th scope="row">Your DMM Site Key</th>
+								<td>0198237401928374001928347</td>
+							</tr>
+							<tr>
+								<th scope="row">Connected Sites</th>
+								<td><table class="widefat striped ">
+									<tbody>
+										<tr>
+											<td>Phoenix Team</td>
+											<td>1720938471209348799784</td>
+											<td><input type="submit" class="button button-small" value="Delete" /></td>
+										</tr>
+										<tr>
+											<td>Denver Team</td>
+											<td>0918230987239847</td>
+											<td><input type="submit" class="button button-small" value="Delete" /></td>
+										</tr>
+										<tr>
+											<td>Tampa Team</td>
+											<td>0918723048971897234</td>
+											<td><input type="submit" class="button button-small" value="Delete" /></td>
+										</tr>
+										<tr>
+											<td>Tunis Team</td>
+											<td>982734987238478374</td>
+											<td><input type="submit" class="button button-small" value="Delete" /></td>
+										</tr>
+										<tr>
+											<td><input type="submit" value="Add" class="button button-small" /></td>
+											<td></td>
+											<td></td>
+										</tr>
+										
+									</tbody>
+								</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- .inside -->
+
+			</div>
+			<!-- .postbox -->
 	';
 	$field2 = '
 	        <div class="postbox">
