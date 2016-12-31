@@ -2558,9 +2558,30 @@ function dmm_crm_settings_general () {
 								<table class="form-table">
 									<tbody>
 										<tr>
-											<th scope="row">Private Site</th>
-											<td><input type="checkbox" value="1" name="checkbox" checked /></td>
+											<th scope="row">Make Site Private</th>
+											<td><input type="checkbox" value="1" name="checkbox" checked /> <em>Requires login for entire site (Recommended).</em></td>
 										</tr>
+										<tr>
+											<th scope="row">Discourage Search Engines</th>
+											<td><input type="checkbox" value="1" name="checkbox" checked /> <em>Sets robotstxt to No Index/No Follow (Recommended).</em></td>
+										</tr>
+										<tr>
+											<th scope="row">Require approval for new users</th>
+											<td><input type="checkbox" value="1" name="checkbox" checked /> <em>Controls signup access (Recommended).</em></td>
+										</tr>
+										<tr>
+											<th scope="row">Field 2</th>
+											<td><input type="text" value="" class="regular-text" /> <em>Configures something.</em></td>
+										</tr>
+										<tr>
+											<th scope="row">Field 3</th>
+											<td><input type="text" value=""  class="regular-text" /> </td>
+										</tr>
+										<tr>
+											<th scope="row">Field 4</th>
+											<td><input type="text" value=""  class="regular-text" /> <em></em></td>
+										</tr>
+										
 										<tr>
 											<th scope="row"></th>
 											<td><button type="submit" name="Save" class="button-primary" >Save</button></td>
@@ -2575,6 +2596,90 @@ function dmm_crm_settings_general () {
 						<!-- .postbox -->
 	
 					</div>
+					<!-- .meta-box-sortables .ui-sortable -->
+					<div class="meta-box-sortables ui-sortable">
+	
+						<div class="postbox">
+	
+							<h2 class="hndle"><span>Prayer Settings</span></h2>
+	
+							<div class="inside">
+								<table class="form-table">
+									<tbody>
+										<tr>
+											<th scope="row">Field 1</th>
+											<td><input type="checkbox" value="1" name="checkbox" checked /> <em>Configures something.</em></td>
+										</tr>
+										<tr>
+											<th scope="row">Field 2</th>
+											<td><input type="text" value="" class="regular-text" /> <em>Configures something.</em></td>
+										</tr>
+										<tr>
+											<th scope="row">Field 3</th>
+											<td><input type="text" value=""  class="regular-text" /> </td>
+										</tr>
+										<tr>
+											<th scope="row">Field 4</th>
+											<td><input type="text" value=""  class="regular-text" /> <em></em></td>
+										</tr>
+										
+										<tr>
+											<th scope="row"></th>
+											<td><button type="submit" name="Save" class="button-primary" >Save</button></td>
+										</tr>
+										
+									</tbody>
+								</table>
+							</div>
+							<!-- .inside -->
+	
+						</div>
+						<!-- .postbox -->
+	
+					</div>
+					<!-- .meta-box-sortables .ui-sortable -->
+					<div class="meta-box-sortables ui-sortable">
+	
+						<div class="postbox">
+	
+							<h2 class="hndle"><span>Outreach Settings</span></h2>
+	
+							<div class="inside">
+								<table class="form-table">
+									<tbody>
+										<tr>
+											<th scope="row">Field 1</th>
+											<td><input type="checkbox" value="1" name="checkbox" checked /> <em>Configures something.</em></td>
+										</tr>
+										<tr>
+											<th scope="row">Field 2</th>
+											<td><input type="text" value="" class="regular-text" /> <em>Configures something.</em></td>
+										</tr>
+										<tr>
+											<th scope="row">Field 3</th>
+											<td><input type="text" value=""  class="regular-text" /> </td>
+										</tr>
+										<tr>
+											<th scope="row">Field 4</th>
+											<td><input type="text" value=""  class="regular-text" /> <em></em></td>
+										</tr>
+										
+										<tr>
+											<th scope="row"></th>
+											<td><button type="submit" name="Save" class="button-primary" >Save</button></td>
+										</tr>
+										
+									</tbody>
+								</table>
+							</div>
+							<!-- .inside -->
+	
+						</div>
+						<!-- .postbox -->
+	
+					</div>
+					<!-- .meta-box-sortables .ui-sortable -->
+
 					<!-- .meta-box-sortables .ui-sortable -->
 					<div class="meta-box-sortables ui-sortable">
 	
@@ -2586,9 +2691,22 @@ function dmm_crm_settings_general () {
 								<table class="form-table">
 									<tbody>
 										<tr>
-											<th scope="row">Vision</th>
-											<td>The purpose of the content library is to facilitate sharing of resources between DMM and media teams.</td>
+											<th scope="row">Field 1</th>
+											<td><input type="checkbox" value="1" name="checkbox" checked /> <em>Configures something.</em></td>
 										</tr>
+										<tr>
+											<th scope="row">Field 2</th>
+											<td><input type="text" value="" class="regular-text" /> <em>Configures something.</em></td>
+										</tr>
+										<tr>
+											<th scope="row">Field 3</th>
+											<td><input type="text" value=""  class="regular-text" /> </td>
+										</tr>
+										<tr>
+											<th scope="row">Field 4</th>
+											<td><input type="text" value=""  class="regular-text" /> <em></em></td>
+										</tr>
+										
 										<tr>
 											<th scope="row"></th>
 											<td><button type="submit" name="Save" class="button-primary" >Save</button></td>
@@ -2608,15 +2726,28 @@ function dmm_crm_settings_general () {
 	
 						<div class="postbox">
 	
-							<h2 class="hndle"><span>Reports Settings</span></h2>
+							<h2 class="hndle"><span>Coaching Settings</span></h2>
 	
 							<div class="inside">
 								<table class="form-table">
 									<tbody>
 										<tr>
-											<th scope="row">Vision</th>
-											<td>The purpose of the content library is to facilitate sharing of resources between DMM and media teams.</td>
+											<th scope="row">Field 1</th>
+											<td><input type="checkbox" value="1" name="checkbox" checked /> <em>Configures something.</em></td>
 										</tr>
+										<tr>
+											<th scope="row">Field 2</th>
+											<td><input type="text" value="" class="regular-text" /> <em>Configures something.</em></td>
+										</tr>
+										<tr>
+											<th scope="row">Field 3</th>
+											<td><input type="text" value=""  class="regular-text" /> </td>
+										</tr>
+										<tr>
+											<th scope="row">Field 4</th>
+											<td><input type="text" value=""  class="regular-text" /> <em></em></td>
+										</tr>
+										
 										<tr>
 											<th scope="row"></th>
 											<td><button type="submit" name="Save" class="button-primary" >Save</button></td>
@@ -2632,35 +2763,9 @@ function dmm_crm_settings_general () {
 	
 					</div>
 					
-					<!-- .meta-box-sortables .ui-sortable -->
-					<div class="meta-box-sortables ui-sortable">
-	
-						<div class="postbox">
-	
-							<h2 class="hndle"><span>Library Settings</span></h2>
-	
-							<div class="inside">
-								<table class="form-table">
-									<tbody>
-										<tr>
-											<th scope="row">Vision</th>
-											<td>The purpose of the content library is to facilitate sharing of resources between DMM and media teams.</td>
-										</tr>
-										<tr>
-											<th scope="row"></th>
-											<td><button type="submit" name="Save" class="button-primary" >Save</button></td>
-										</tr>
+					
 										
-									</tbody>
-								</table>
-							</div>
-							<!-- .inside -->
-	
-						</div>
-						<!-- .postbox -->
-	
-					</div>
-					<!-- .meta-box-sortables .ui-sortable -->
+					
 	
 				</div>
 				<!-- post-body-content -->
@@ -2672,10 +2777,20 @@ function dmm_crm_settings_general () {
 	
 						<div class="postbox">
 	
-							<h2 class="hndle"><span>Configuration Notes</span></h2>
+							<h2 class="hndle"><span>Recommendations</span></h2>
 	
 							<div class="inside">
-								<p> content</p>
+								<p>&#9989; Plugin Installed<br>
+								&#9989; Site Private<br>
+								&#9989; Signup Controlled<br>
+								&#9989; Security Installed<br>
+								&#9989; Server OS: CentOS<br>
+								&#9989; Apache Installed<br>
+								&#9989; PHP version: 5.6<br>
+								&#9989; MySQL Running<br>
+								&#10071; Admin password strength<br>
+								&#10071; RSS disabled<br>
+								&#9989; Mobile API Running</p>
 							</div>
 							<!-- .inside -->
 	
@@ -3032,25 +3147,78 @@ function dmm_crm_settings_maps () {
 }
 
 function dmm_crm_settings_integrations () {
-	$html_content = '
-	<p> content section</p>
+	$field1 = '
+	       <div class="postbox">
+
+				<h2 class="hndle"><span>Chat Integrations</span></h2>
+
+				<div class="inside">
+					<table class="form-table">
+						<tbody>
+							<tr>
+								<th scope="row">Slack</th>
+								<td><input type="text" class="regular-text" /></td>
+							</tr>
+							<tr>
+								<th scope="row">WhatsApp</th>
+								<td><input type="text" class="regular-text" /></td>
+							</tr>
+							<tr>
+								<th scope="row">Office Team</th>
+								<td><input type="text" class="regular-text" /></td>
+							</tr>
+							<tr>
+								<th scope="row"></th>
+								<td><input class="button-primary" type="submit" name="Submit" value="Save" /></td>
+							</tr>
+							
+						</tbody>
+					</table>
+				</div>
+				<!-- .inside -->
+
+			</div>
+			<!-- .postbox --> 
 	';
+	$field2 = '
+	        <div class="postbox">
+
+				<h2 class="hndle"><span>Side Header</span></h2>
+
+				<div class="inside">
+					<p>Content</p>
+				</div>
+				<!-- .inside -->
+
+			</div>
+			<!-- .postbox -->
+	';
+	
+	$html_content = dmm_crm_2_column_open ($field1, $field2);
 	
 	return $html_content;
 }
 
 function dmm_crm_settings_shortcodes () {
-	$html_content = '
-	<p> content section</p>
-	';
+	
+	$field1 = 'Main Header';
+	$field2 = 'Main content';
+	$field3 = 'Side Header';
+	$field4 = 'Side content';
+	
+	$html_content = dmm_crm_2_column ($field1, $field2, $field3, $field4);
 	
 	return $html_content;
 }
 
 function dmm_crm_settings_api () {
-	$html_content = '
-	<p> content section</p>
-	';
+	
+	$field1 = 'Main Header';
+	$field2 = 'Main content';
+	$field3 = 'Side Header';
+	$field4 = 'Side content';
+	
+	$html_content = dmm_crm_2_column ($field1, $field2, $field3, $field4);
 	
 	return $html_content;
 }
