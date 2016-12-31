@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+</style>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <div id="chart_div"></div>
+<script>
+
+google.charts.load('current', {packages: ['corechart', 'bar']});
+google.charts.setOnLoadCallback(drawBasic);
+
+function drawBasic() {
+
+      var data = google.visualization.arrayToDataTable([
+        ['City', 'Training',],
+        ['Baptisms', 72],
+        ['Baptizers', 37]
+        
+        
+      ]);
+
+      var options = {
+        title: 'Training',
+        chartArea: {width: '50%'},
+        hAxis: {
+          title: 'Count',
+          minValue: 0
+        },
+        vAxis: {
+          title: 'Training'
+        }
+      };
+
+      var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+
+      chart.draw(data, options);
+    }
+
+</script>

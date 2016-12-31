@@ -22,13 +22,11 @@ function dmm_menu() {
 	add_menu_page( 'Dashboard', 'DMM CRM', 'manage_options', 'dmm', 'dmm_dash_options', '' , '2' );
 	
 	//add_submenu_page( string $parent_slug, string $page_title, string $menu_title, string $capability, string $menu_slug, callable $function = '' );
+	add_submenu_page( 'dmm', 'Prayer', 'Prayer', 'manage_options', 'dmm_prayer', 'dmm_prayer_options' );
+	add_submenu_page( 'dmm', 'Outreach', 'Outreach', 'manage_options', 'dmm_outreach', 'dmm_outreach_options' );
 	add_submenu_page( 'dmm', 'Contacts', 'Contacts', 'manage_options', 'dmm_contacts', 'dmm_contacts_options' );
-	add_submenu_page( 'dmm', 'Reports', 'Reports', 'manage_options', 'dmm_reports', 'dmm_reports_options' );
-	add_submenu_page( 'dmm', 'Maps', 'Maps', 'manage_options', 'dmm_maps', 'dmm_maps_options' );
-	add_submenu_page( 'dmm', 'Library', 'Library', 'manage_options', 'dmm_library', 'dmm_library_options' );
-	add_submenu_page( 'dmm', 'Help', 'Help', 'manage_options', 'dmm_help', 'dmm_help_options' );
+	add_submenu_page( 'dmm', 'Coaching', 'Coaching', 'manage_options', 'dmm_coaching', 'dmm_coaching_options' );
 	add_submenu_page( 'dmm', 'Settings', 'Settings', 'manage_options', 'dmm_settings', 'dmm_settings_options' );
-	
 	
 }
 
@@ -37,9 +35,152 @@ function dmm_dash_options() {
 	if ( !current_user_can( 'manage_options' ) )  {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
-	echo '<div class="wrap">';
-	echo '<h1>DMM CRM DASHBOARD</h1><p>Here is where shortcuts, training, rollup statistics, quick forms could be placed.</p>';
-	echo '</div>';
+	$html = '<div class="wrap">
+			 	<h2>DMM CRM DASHBOARD</h2>';
+	
+	$html .= dmm_crm_dashboard ();
+	
+	$html .= '</div>'; // end div class wrap
+	
+	echo $html;
+	
+}
+
+function dmm_prayer_options() {
+	if ( !current_user_can( 'manage_options' ) )  {
+		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+	}
+	
+	/**
+	*
+	* Begin Header & Tab Bar
+	*/
+		$tab = $_GET["tab"];
+		$tab_link_pre = '<a href="admin.php?page=dmm_prayer&tab=';
+		$tab_link_post = '" class="nav-tab ';
+		
+		$html = '<div class="wrap">
+			 	<h2>DMM CRM PRAYER</h2>
+			 	<p>"Launch a world changing prayer campaign"</p>
+			 	<h2 class="nav-tab-wrapper">';
+		
+		$html .= $tab_link_pre . 'dashboard' . $tab_link_post;
+		if ($tab == 'dashboard' || !isset($tab)) {$html .= 'nav-tab-active';}  
+		$html .= '">Dashboard</a>';
+		/*
+		$html .= $tab_link_pre . 'apps' . $tab_link_post;
+		if ($tab == 'apps') {$html .= 'nav-tab-active';}  
+		$html .= '">Apps</a>';
+		*/
+		$html .= $tab_link_pre . 'blog' . $tab_link_post;
+		if ($tab == 'blog') {$html .= 'nav-tab-active';}  
+		$html .= '">Partner Blog</a>';
+		
+		$html .= $tab_link_pre . 'map' . $tab_link_post;
+		if ($tab == 'map') {$html .= 'nav-tab-active';}  
+		$html .= '">Map</a>';
+		
+		$html .= $tab_link_pre . 'tools' . $tab_link_post;
+		if ($tab == 'tools') {$html .= 'nav-tab-active';}  
+		$html .= '">Tools</a>';
+		
+		$html .= '</h2>'; 
+	// End Tab Bar
+	
+	/**
+	*
+	* Begin Page Content
+	*/
+		switch ($tab) {
+		    case "apps":
+		        $html .= dmm_crm_prayer_apps ();
+		        break;
+		    case "blog":
+		        $html .= dmm_crm_prayer_blog ();
+		        break;
+		    case "map":
+		        $html .= dmm_crm_prayer_map ();
+		        break;
+		    case "tools":
+		        $html .= dmm_crm_prayer_tools ();
+		        break;
+		    default:
+		        $html .= dmm_crm_prayer_dashboard ();
+		        
+		}
+	
+		$html .= '</div>'; // end div class wrap
+		
+	echo $html;
+	
+}
+
+function dmm_outreach_options() {
+	if ( !current_user_can( 'manage_options' ) )  {
+		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+	}
+	
+	/**
+	*
+	* Begin Header & Tab Bar
+	*/
+		$tab = $_GET["tab"];
+		$tab_link_pre = '<a href="admin.php?page=dmm_outreach&tab=';
+		$tab_link_post = '" class="nav-tab ';
+		
+		$html = '<div class="wrap">
+			 	<h2>DMM CRM OUTREACH</h2>
+			 	<p>"Sow the seeds of the gospel generously"</p>
+			 	<h2 class="nav-tab-wrapper">';
+		
+		$html .= $tab_link_pre . 'dashboard' . $tab_link_post;
+		if ($tab == 'dashboard' || !isset($tab)) {$html .= 'nav-tab-active';}  
+		$html .= '">Dashboard</a>';
+		
+		$html .= $tab_link_pre . 'apps' . $tab_link_post;
+		if ($tab == 'apps') {$html .= 'nav-tab-active';}  
+		$html .= '">Apps</a>';
+		
+		$html .= $tab_link_pre . 'analytics' . $tab_link_post;
+		if ($tab == 'analytics') {$html .= 'nav-tab-active';}  
+		$html .= '">Analytics</a>';
+		
+		$html .= $tab_link_pre . 'library' . $tab_link_post;
+		if ($tab == 'library') {$html .= 'nav-tab-active';}  
+		$html .= '">DMM Library</a>';
+		
+		$html .= $tab_link_pre . 'tools' . $tab_link_post;
+		if ($tab == 'tools') {$html .= 'nav-tab-active';}  
+		$html .= '">Tools</a>';
+		
+		$html .= '</h2>'; 
+	// End Tab Bar
+	
+	/**
+	*
+	* Begin Page Content
+	*/
+		switch ($tab) {
+		    case "apps":
+		        $html .= dmm_crm_2_column_placeholder ();
+		        break;
+		    case "analytics":
+		        $html .= dmm_crm_2_column_placeholder ();
+		        break;
+		    case "library":
+		        $html .= dmm_crm_2_column_placeholder ();
+		        break;
+		    case "tools":
+		        $html .= dmm_crm_outreach_tools ();
+		        break;
+		    default:
+		        $html .= dmm_crm_outreach_dashboard ();
+		        
+		}
+	
+		$html .= '</div>'; // end div class wrap
+		
+	echo $html;
 	
 }
 
@@ -57,25 +198,25 @@ function dmm_contacts_options() {
 		$tab_link_post = '" class="nav-tab ';
 		
 		$html = '<div class="wrap">
-			 	<h2>DMM CRM CONTACTS</h2>
-			 	<p>List of recent leads.</p>
-				<h2 class="nav-tab-wrapper">';
-		
-		$html .= $tab_link_pre . 'contacts' . $tab_link_post;
-		if ($tab == 'contacts' || !isset($tab)) {$html .= 'nav-tab-active';}  
-		$html .= '">Contacts</a>';
-		
-		$html .= $tab_link_pre . 'add' . $tab_link_post;
-		if ($tab == 'add') {$html .= 'nav-tab-active';}  
-		$html .= '">Add</a>';
+			 	<h2>DMM CRM CONTACTS <a href="/wp-admin/admin.php?page=dmm_contacts&tab=add" class="page-title-action">Add New</a></h2>
+			 	<p>"Steward the relationships the Spirit brings"</p>
+			 	<h2 class="nav-tab-wrapper">';
 		
 		$html .= $tab_link_pre . 'activity' . $tab_link_post;
-		if ($tab == 'activity') {$html .= 'nav-tab-active';}  
-		$html .= '">Activity</a>';
+		if ($tab == 'activity' || !isset($tab)) {$html .= 'nav-tab-active';}  
+		$html .= '">Activity </a>';
+		
+		$html .= $tab_link_pre . 'contacts' . $tab_link_post;
+		if ($tab == 'contacts') {$html .= 'nav-tab-active';}  
+		$html .= '">Contacts</a>';
 		
 		$html .= $tab_link_pre . 'tools' . $tab_link_post;
 		if ($tab == 'tools') {$html .= 'nav-tab-active';}  
 		$html .= '">Tools</a>';
+		
+		if ($tab == 'add') {$html .= $tab_link_pre . 'add' . $tab_link_post; $html .= 'nav-tab-active'; $html .= '">Add</a>';}  // tab appears if a selected
+		
+		if ($tab == 'single') {$html .= $tab_link_pre . 'single' . $tab_link_post; $html .= 'nav-tab-active'; $html .= '">Single Contact</a>';}  // tab appears if a selected
 		
 		$html .= '</h2>'; 
 	// End Tab Bar
@@ -85,17 +226,20 @@ function dmm_contacts_options() {
 	* Begin Page Content
 	*/
 		switch ($tab) {
+		    case "contacts":
+		        $html .= dmm_crm_contacts_contacts();
+		        break;
+		    case "tools":
+		        $html .= dmm_crm_post_box_placeholder ();
+		        break;
 		    case "add":
 		        $html .= dmm_crm_contacts_add ();
 		        break;
-		    case "activity":
-		        $html .= dmm_crm_contacts_activity();
-		        break;
-		    case "tools":
-		        $html .= dmm_crm_contacts_tools ();
+		    case "single":
+		        $html .= dmm_crm_contacts_single ();
 		        break;
 		    default:
-		        $html .= dmm_crm_contacts_contacts();
+		        $html .= dmm_crm_contacts_activity();
 		        
 		}
 	
@@ -106,7 +250,7 @@ function dmm_contacts_options() {
 }
 
 
-function dmm_reports_options() {
+function dmm_coaching_options() {
 	if ( !current_user_can( 'manage_options' ) )  {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
@@ -116,26 +260,40 @@ function dmm_reports_options() {
 	* Begin Header & Tab Bar
 	*/
 		$tab = $_GET["tab"];
-		$tab_link_pre = '<a href="admin.php?page=dmm_reports&tab=';
+		$tab_link_pre = '<a href="admin.php?page=dmm_coaching&tab=';
 		$tab_link_post = '" class="nav-tab ';
 		
 		$html = '<div class="wrap">
-			 	<h2>DMM CRM REPORTS</h2>
-			 	<p>List of visuals and statistics from the DMM effort.</p>
-				<h2 class="nav-tab-wrapper">';
+			 	<h2>DMM CRM COACHING</h2>
+			 	<p>"Train obedience and see where the kingdom is not"</p>
+			 	<h2 class="nav-tab-wrapper">';
 		
-		$html .= $tab_link_pre . 'overview' . $tab_link_post;
-		if ($tab == 'overview' || !isset($tab)) {$html .= 'nav-tab-active';}  
-		$html .= '">Overview</a>';
+		$html .= $tab_link_pre . 'dash' . $tab_link_post;
+		if ($tab == 'dash' || !isset($tab)) {$html .= 'nav-tab-active';}  
+		$html .= '">Dashboard</a>';
 		
-		$html .= $tab_link_pre . 'charts' . $tab_link_post;
-		if ($tab == 'charts') {$html .= 'nav-tab-active';}  
-		$html .= '">Charts</a>';
+		$html .= $tab_link_pre . 'maps' . $tab_link_post;
+		if ($tab == 'maps') {$html .= 'nav-tab-active';}  
+		$html .= '">Maps</a>';
 		
 		$html .= $tab_link_pre . 'generations' . $tab_link_post;
 		if ($tab == 'generations') {$html .= 'nav-tab-active';}  
 		$html .= '">Generations</a>';
 		
+		$html .= $tab_link_pre . 'charts' . $tab_link_post;
+		if ($tab == 'charts') {$html .= 'nav-tab-active';}  
+		$html .= '">Charts</a>';
+		
+		$html .= $tab_link_pre . 'stats' . $tab_link_post;
+		if ($tab == 'stats') {$html .= 'nav-tab-active';}  
+		$html .= '">Statistics</a>';
+		
+		$html .= $tab_link_pre . 'tools' . $tab_link_post;
+		if ($tab == 'tools') {$html .= 'nav-tab-active';}  
+		$html .= '">Tools</a>';
+		
+		
+		
 		$html .= '</h2>'; 
 	// End Tab Bar
 	
@@ -144,195 +302,28 @@ function dmm_reports_options() {
 	* Begin Page Content
 	*/
 		switch ($tab) {
-		    case "charts":
-		        $html .= dmm_crm_reports_charts() ;
+		    case "maps":
+		        $html .= dmm_crm_coaching_map () ;
 		        break;
 		    case "generations":
-		        $html .= dmm_crm_reports_generations ();
+		        $html .= dmm_crm_coaching_generations ();
+		        break;
+		    case "charts":
+		        $html .= dmm_crm_coaching_charts ();
+		        break;
+		    case "stats":
+		        $html .= dmm_crm_coaching_statistics ();
+		        break;
+			case "tools":
+		        $html .= dmm_crm_2_column_placeholder ();
 		        break;
 		    default:
-		        $html .= dmm_crm_reports_overview ();
+		        $html .= dmm_crm_post_box_placeholder ();
 		}
 		
 		$html .= '</div>'; // end div class wrap
 		
 	echo $html;	
-}
-
-function dmm_maps_options() {
-	if ( !current_user_can( 'manage_options' ) )  {
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	}
-	
-	/**
-	*
-	* Begin Header & Tab Bar
-	*/
-		$tab = $_GET["tab"];
-		$tab_link_pre = '<a href="admin.php?page=dmm_maps&tab=';
-		$tab_link_post = '" class="nav-tab ';
-		
-		$html = '<div class="wrap">
-			 	<h2>DMM CRM MAPS</h2>
-			 	<p>Geo location maps.</p>
-				<h2 class="nav-tab-wrapper">';
-		
-		$html .= $tab_link_pre . 'tracts' . $tab_link_post;
-		if ($tab == 'tracts' || !isset($tab)) {$html .= 'nav-tab-active';}  
-		$html .= '">Tracts</a>';
-		
-		$html .= $tab_link_pre . 'charts' . $tab_link_post;
-		if ($tab == 'charts') {$html .= 'nav-tab-active';}  
-		$html .= '">Charts</a>';
-		
-		$html .= $tab_link_pre . 'tools' . $tab_link_post;
-		if ($tab == 'tools') {$html .= 'nav-tab-active';}  
-		$html .= '">Tools</a>';
-		
-		$html .= '</h2>'; 
-	// End Tab Bar
-	
-	/**
-	*
-	* Begin Page Content
-	*/
-		switch ($tab) {
-		    case "charts":
-		        $html .= dmm_crm_maps_charts ();
-		        break;
-		    case "tools":
-		        $html .= dmm_crm_maps_tools ();
-		        break;
-		    default:
-		        $html .= dmm_crm_maps_tracts ();
-		}
-		
-		$html .= '</div>'; // end div class wrap
-		
-	echo $html;
-		
-}
-
-function dmm_library_options() {
-	if ( !current_user_can( 'manage_options' ) )  {
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	}
-	
-	/**
-	*
-	* Begin Header & Tab Bar
-	*/
-		$tab = $_GET["tab"];
-		$tab_link_pre = '<a href="admin.php?page=dmm_library&tab=';
-		$tab_link_post = '" class="nav-tab ';
-		
-		$html = '<div class="wrap">
-			 	<h2>DMM CRM LIBRARY</h2>
-			 	<p>Shared media and campaign resources.</p>
-				<h2 class="nav-tab-wrapper">';
-		
-		$html .= $tab_link_pre . 'find' . $tab_link_post;
-		if ($tab == 'find' || !isset($tab)) {$html .= 'nav-tab-active';}  
-		$html .= '">Find</a>';
-		
-		$html .= $tab_link_pre . 'saved' . $tab_link_post;
-		if ($tab == 'saved') {$html .= 'nav-tab-active';}  
-		$html .= '">Saved</a>';
-		
-		$html .= $tab_link_pre . 'used' . $tab_link_post;
-		if ($tab == 'used') {$html .= 'nav-tab-active';}  
-		$html .= '">Used</a>';
-		
-		$html .= $tab_link_pre . 'shared' . $tab_link_post;
-		if ($tab == 'shared') {$html .= 'nav-tab-active';}  
-		$html .= '">Shared</a>';
-		
-		$html .= $tab_link_pre . 'tools' . $tab_link_post;
-		if ($tab == 'tools') {$html .= 'nav-tab-active';}  
-		$html .= '">Tools</a>';
-		
-		$html .= '</h2>'; 
-	// End Tab Bar
-	
-	/**
-	*
-	* Begin Page Content
-	*/
-		switch ($tab) {
-		    case "saved":
-		        $html .= dmm_crm_library_saved ();
-		        break;
-		    case "used":
-		        $html .= dmm_crm_library_used ();
-		        break;
-		    case "shared":
-		        $html .= dmm_crm_library_shared ();
-		        break;
-		    case "tools":
-		        $html .= dmm_crm_library_tools ();
-		        break;
-		    default:
-		        $html .= dmm_crm_library_find ();
-		}
-		
-		$html .= '</div>'; // end div class wrap
-	
-	echo $html;
-		
-}
-
-function dmm_help_options() {
-	if ( !current_user_can( 'manage_options' ) )  {
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	}
-	
-	/**
-	*
-	* Begin Header & Tab Bar
-	*/
-		$tab = $_GET["tab"];
-		$tab_link_pre = '<a href="admin.php?page=dmm_help&tab=';
-		$tab_link_post = '" class="nav-tab ';
-		
-		$html = '<div class="wrap">
-			 	<h2>DMM CRM HELP</h2>
-			 	<p>A shared training library for media to disciple making movements.</p>
-				<h2 class="nav-tab-wrapper">';
-		
-		$html .= $tab_link_pre . 'help' . $tab_link_post;
-		if ($tab == 'help' || !isset($tab)) {$html .= 'nav-tab-active';}  
-		$html .= '">DMM CRM</a>';
-		
-		$html .= $tab_link_pre . 'media' . $tab_link_post;
-		if ($tab == 'media') {$html .= 'nav-tab-active';}  
-		$html .= '">Media Training</a>';
-		
-		$html .= $tab_link_pre . 'dmm' . $tab_link_post;
-		if ($tab == 'dmm') {$html .= 'nav-tab-active';}  
-		$html .= '">DMM Training</a>';
-		
-		$html .= '</h2>'; 
-	// End Tab Bar
-	
-	/**
-	*
-	* Begin Page Content
-	*/
-		switch ($tab) {
-		    case "media":
-		        $html .= dmm_crm_help_media ();
-		        break;
-		    case "dmm":
-		        $html .= dmm_crm_help_dmm ();
-		        break;
-		    default:
-		        $html .= dmm_crm_help_dmmcrm ();
-		}
-		
-		$html .= '</div>'; // end div class wrap
-		
-	echo $html;
-		
 }
 
 function dmm_settings_options() {
@@ -357,29 +348,25 @@ function dmm_settings_options() {
 		if ($tab == 'general' || !isset($tab)) {$html .= 'nav-tab-active';}  
 		$html .= '">General</a>';
 		
-		$html .= $tab_link_pre . 'contacts' . $tab_link_post;
-		if ($tab == 'contacts') {$html .= 'nav-tab-active';}  
-		$html .= '">Contacts</a>';
-		
-		$html .= $tab_link_pre . 'reports' . $tab_link_post;
-		if ($tab == 'reports') {$html .= 'nav-tab-active';}  
-		$html .= '">Reports</a>';
-		
 		$html .= $tab_link_pre . 'maps' . $tab_link_post;
 		if ($tab == 'maps') {$html .= 'nav-tab-active';}  
 		$html .= '">Maps</a>';
 		
-		$html .= $tab_link_pre . 'library' . $tab_link_post;
-		if ($tab == 'library') {$html .= 'nav-tab-active';}  
-		$html .= '">Library</a>';
-		
-		$html .= $tab_link_pre . 'help' . $tab_link_post;
-		if ($tab == 'help') {$html .= 'nav-tab-active';}  
-		$html .= '">Help</a>';
-		
 		$html .= $tab_link_pre . 'users' . $tab_link_post;
 		if ($tab == 'users') {$html .= 'nav-tab-active';}  
 		$html .= '">Users</a>';
+		
+		$html .= $tab_link_pre . 'integrations' . $tab_link_post;
+		if ($tab == 'integrations') {$html .= 'nav-tab-active';}  
+		$html .= '">Integrations</a>';
+		
+		$html .= $tab_link_pre . 'shortcodes' . $tab_link_post;
+		if ($tab == 'shortcodes') {$html .= 'nav-tab-active';}  
+		$html .= '">Short Codes</a>';
+		
+		$html .= $tab_link_pre . 'api' . $tab_link_post;
+		if ($tab == 'api') {$html .= 'nav-tab-active';}  
+		$html .= '">API</a>';
 		
 		$html .= '</h2>'; 
 	// End Tab Bar
@@ -389,23 +376,20 @@ function dmm_settings_options() {
 	* Begin Page Content
 	*/
 		switch ($tab) {
-		    case "contacts":
-		        $html .= dmm_crm_settings_contacts ();
-		        break;
-		    case "reports":
-		        $html .= dmm_crm_settings_reports ();
-		        break;
 		    case "maps":
 		        $html .= dmm_crm_settings_maps ();
 		        break;
-		    case "library":
-		        $html .= dmm_crm_settings_library ();
-		        break;
-		    case "help":
-		        $html .= dmm_crm_settings_help ();
-		        break;
 		    case "users":
 		        $html .= dmm_crm_settings_users ();
+		        break;
+		    case "integrations":
+		        $html .= dmm_crm_settings_integrations ();
+		        break;
+		    case "shortcodes":
+		        $html .= dmm_crm_settings_shortcodes ();
+		        break;
+		    case "api":
+		        $html .= dmm_crm_settings_api ();
 		        break;
 		    default:
 		        $html .= dmm_crm_settings_general ();

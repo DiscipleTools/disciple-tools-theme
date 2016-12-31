@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>GenMapper</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div id="content">
+  <aside id="left-menu">
+    <h1>GenMapper</h1>
+    <h2 id='project-name'>&nbsp;</h2>
+    <p>Help</p>
+    <button onclick="introSwitchVisibility()">Help / About</button>
+    <p>Zooming</p>
+    <button onclick='origPosition();'>Original Zoom &amp; Position</button>
+    <button onclick='zoomIn();'>Zoom In</button>
+    <button onclick='zoomOut();'>Zoom Out</button>
+    <p>Import / Export</p>
+    <button onclick="onLoad()">Import XLXS / CSV</button>
+    <input type="file" id="file-input" onchange="importFile()" style="display:none;">
+    <button onclick="outputCsv()">Export CSV</button>
+    <p>Printing</p>
+    <button onclick='printMap("vertical");'>Print Vertical Multipage</button>
+    <button onclick='printMap("horizontal");'>Print Horizontal One-page</button>
+  </aside>
+
+  <section id="intro">
+    <div id="intro-content">
+      <h2>GenMapper 0.1.0 Help</h2>
+      <p>Hello, this app should serve for mapping generations of simple churches. I pray it serves you to advance Jesus' kingdom.</p>
+      
+      <img src="genmapper-node-example.png" style="float:right;margin:10px; margin-left:0px;" alt="legend">
+      <h3>Legend</h3>
+      <p>There are 5 squares in the diagram. they stand for:<br>
+        1 - # of unbelievers<br>
+        2 - # of believers<br>
+        3 - # of people in accountability group<br>
+        4 - is the group a church?<br>
+        5 - # of people helping start other groups<br>
+      </p>
+      <p>Click on the group to edit it.<br>
+      Click on red button to remove group. (Works only for groups without descendants.)<br>
+      Click on green button to add child group.
+      </p>
+      <h3>Import / Export</h3>
+      <p>
+      Note: If you don't export, all changes will be lost when refreshing or closing page.<br>
+      You can import a .xlsx or .xls (MS Excel) or .csv (Comma separated values) files. Please use this <a href="example-map.xlsx" download>XLSX example spreadsheet</a>.<br>
+      Export is currently available only to .csv format.<br>
+      For Export to PDF, use the Print buttons and then save as PDF in Chrome or Safari.
+      </p>
+      <h3>Panning / Zooming</h3>
+      <p>You can pan by draging the map and zoom by mouse wheel or using buttons on the left.</p>
+      <h3>Credits</h3>
+      <p>
+        Thanks to Curtis Sergeant for the idea of generational mapping and for providing useful feedback.<br>
+        JavaScript libraries used: <a href="https://d3js.org">d3.js</a>, <a href="https://github.com/eligrey/FileSaver.js/">FileSaver.js</a>, <a href="https://github.com/SheetJS/js-xlsx">js-xlsx</a> and <a href="http://underscorejs.org/">Underscore.js</a><br><br>
+        Copyright (c) 2016 Daniel Vopalecky<br>
+        Licensed with MIT Licence<br>
+        <a href="https://github.com/dvopalecky/gen-mapper">Github repository</a><br>
+        Please send suggestions and bugs to daniel.vopalecky@seznam.cz
+      </p>
+      <button onclick="introSwitchVisibility()">OK, let's start!</button>
+    </div>
+  </section>
+
+  <section id="alert-message">
+    <div id="alert-message-content">
+      <p id="alert-message-text"></p>
+      <button onclick="closeAlert()">OK</button>
+    </div>
+  </section>
+
+  <section id="edit-group">
+    <div id="edit-group-content">
+      <h1>Edit group</h1>
+      <form>
+        <table>
+          <tr>
+            <td>Name:</td>
+            <td><input type="text" name="name" id="edit-name"></td>
+          </tr>
+          <tr>
+            <td>Parent:</td>
+            <td><p id="edit-parent"></p></td>
+          </tr>
+          <tr>
+            <td>Coach:</td>
+            <td><input type="text" name="coach" id="edit-coach"></td>
+          </tr>
+          <tr>
+            <td>Field 1: (# unbelievers)</td>
+            <td><input type="text" name="field1" id="edit-field1"></td>
+          </tr>
+          <tr>
+            <td>Field 2: (# believers)</td>
+            <td><input type="text" name="field2" id="edit-field2"></td>
+          </tr>
+          <tr>
+            <td>Field 3: (# accountable)</td>
+            <td><input type="text" name="field3" id="edit-field3"></td>
+          </tr>
+          <tr>
+            <td>Field 4: (church?)</td>
+            <td><input type="text" name="field4" id="edit-field4"></td>
+          </tr>
+          <tr>
+            <td>Field 5: (# reproducing)</td>
+            <td><input type="text" name="field5" id="edit-field5"></td>
+          </tr>
+          <tr>
+            <td>Place &amp; Date:</td>
+            <td><input type="text" name="placeAndDate" id="edit-place-and-date"></td>
+          </tr>
+          <tr>
+            <td>Active:</td>
+            <td> <input type="checkbox" name="active" id="edit-active"></td>
+          </tr>
+        </table>
+      </form>    
+      <div id="edit-buttons">
+        <button id="edit-submit">Submit changes</button>
+        <button id="edit-cancel">Cancel</button>
+        <button id="edit-delete">Delete group</button>      
+      </div>
+    </div>
+  </section>
+
+  <section id="main">
+    <svg id="main-svg" width="100%"></svg>
+  </section>
+</div>
+<script src="d3.min.js"></script>
+<script src="underscore-min.js"></script>
+<script src="genmapper.js"></script>
+<script src="FileSaver.min.js"></script>
+<script src="xlsx.core.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+/* Genmapper CSS */
+
+/**** Basic elements ****/
+body{
+  font: 15px sans-serif; 
+}
+
+button {
+    background-color: steelblue;
+    border: none;
+    color: white;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+
+rect{
+  stroke-width:1px;
+  fill:white;
+}
+
+svg{
+  background: whitesmoke;
+}
+
+h2{
+  font-size:18px;
+}
+
+h2:hover{
+  color:#aaa;
+}
+
+h3{
+  font-size:16px;
+  margin:0;
+  padding:0;
+  border: 0;
+}
+
+p {
+  margin-top:0.3eM;
+}
+
+/**** Left menu ****/
+aside{
+  width:200px;
+  float:left;
+}
+
+aside button{
+  width:200px;
+  border: 3px solid #ddd;
+  padding: 10px 10px;
+}
+
+aside button:hover{
+  background-color: lightskyblue;
+}
+
+aside p{
+  width:200px;
+  color: steelblue;
+  margin: 5px;
+  margin-top: 15px;
+  border: 0px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/**** Modal windows ****/
+#intro, #edit-group, #alert-message {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.7);
+}
+
+#intro {
+  display: none;
+}
+
+#edit-group {
+  display: none;
+}
+
+#alert-message {
+  display: none;
+  z-index: 2;
+}
+
+#intro-content, #edit-group-content, #alert-message-content {
+  border: double black 5px;
+  padding: 25px;
+  background: whitesmoke;
+  position: relative;
+  background-color: #fefefe;
+  margin: 30px auto;
+}
+
+#intro-content {
+  width: 80%;
+  max-width: 800px;
+}
+
+#edit-group-content {
+  max-width: 350px;
+}
+
+#alert-message-content {
+  max-width: 350px;
+}
+
+#edit-buttons {
+  height: 60px;
+  padding-top: 10px;
+}
+
+#edit-group-content button{
+  width: 33%;
+  height: 50px;
+  border: 3px solid #ddd;
+  padding: 5px 5px;
+  float: left;
+}
+
+#edit-group-content input[type=text] {
+    font-size: 14px;
+    width: 100%;
+    padding: 5px 5px;
+    margin-left: 20px;
+    box-sizing: border-box;
+}
+
+#edit-group-content input[type=checkbox] {
+  transform: scale(1.5);
+  margin-left: 25px;
+}
+
+#edit-group-content p {
+  font-size: 14px;
+  width: 100%;
+  padding: 5px 5px;
+  margin: 0;
+  margin-left: 20px;
+  color: #888;
+}
+
+#edit-submit{
+  background-color: steelblue;
+}
+
+#edit-cancel{
+  background-color: #aaa;
+}
+
+#edit-delete{
+  background-color: red;
+}
+
+#intro-content button{
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  font-size: 16px;
+}
+
+/**** SVG ****/
+#main {
+  float: right;
+  width: calc(100% - 201px);
+  height: 100%;
+}
+
+.addNode rect{
+  fill: #b3ffb3;  
+}
+
+.addNode {
+  display: none;
+}
+
+.addNode:hover rect {
+  fill:lime;
+}
+
+.removeNode rect{
+  fill: lightsalmon;
+}
+
+.removeNode {
+  display: none;  
+}
+
+.removeNode:hover rect {
+  fill:red;
+}
+
+.node text { 
+  font: 15px sans-serif; 
+  text-anchor: middle;
+}
+
+.node:hover > rect, .node:hover > line {
+  stroke-width:2px;
+  fill: lightskyblue;
+}
+
+.node:hover g.addNode, .node:hover g.removeNode {
+  display: block;
+} 
+
+.node--active text, .link-text--active {
+  stroke: black;
+  fill: black;
+}
+
+.node--active > rect, .node--active > line {
+  stroke: black;  
+}
+
+.node--inactive text, .link-text--inactive {
+  stroke: #ddd;
+  fill: #ddd;
+}
+
+.node--inactive > rect, .node--inactive > line {
+  stroke: #ddd;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2px;
+}
+
+.link-text {
+  text-anchor: middle;
+}
+
+.invisible-rect {
+  fill-opacity:0;
+  stroke-opacity:0;
+} 
