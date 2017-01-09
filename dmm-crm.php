@@ -21,11 +21,11 @@ function dmm_menu() {
 	// Main Menus
 	//add_menu_page( string $page_title, string $menu_title, string $capability, string $menu_slug, callable $function = '', string $icon_url = '', int $position = null );
 	add_menu_page(  'Dashboard', 'Dashboard', 'dmm_team', 'dmm_dash', 'dmm_dash_options', 'dashicons-welcome-widgets-menus' , '1' );
-	add_menu_page(       'Prayer', 'Prayer', 'dmm_team', 'dmm_prayer', 'dmm_prayer_options', 'dashicons-smiley' , '2' );
-	add_menu_page(  'Outreach', 'Outreach', 'dmm_team', 'dmm_outreach', 'dmm_outreach_options', 'dashicons-admin-links' , '3' );
-	add_menu_page(  'Contacts', 'Contacts', 'dmm_team', 'dmm_contacts', 'dmm_contacts_options', 'dashicons-admin-users' , '4' );
-	add_menu_page(  'Coaching', 'Coaching', 'dmm_team', 'dmm_coaching', 'dmm_coaching_options', 'dashicons-admin-multisite' , '5' );
-	add_menu_page(  'Settings', 'Settings', 'dmm_team', 'dmm_settings', 'dmm_settings_options', 'dashicons-forms' , '6' );
+	add_menu_page(       'Prayer', 'Prayer', 'dmm_team', 'dmm_prayer', 'dmm_prayer_options', 'dashicons-heart' , '3' );
+	add_menu_page(  'Outreach', 'Outreach', 'dmm_team', 'dmm_outreach', 'dmm_outreach_options', 'dashicons-admin-links' , '4' );
+	add_menu_page(  'Contacts', 'Contacts', 'dmm_team', 'dmm_contacts', 'dmm_contacts_options', 'dashicons-admin-users' , '5' );
+	add_menu_page(  'Coaching', 'Coaching', 'dmm_team', 'dmm_coaching', 'dmm_coaching_options', 'dashicons-groups' , '6' );
+	add_menu_page(  'Settings', 'Settings', 'dmm_team', 'dmm_settings', 'dmm_settings_options', 'dashicons-admin-multisite' , '7' );
 	
 	//add_submenu_page( string $parent_slug, string $page_title, string $menu_title, string $capability, string $menu_slug, callable $function = '' );
 	// Dashboard Submenu
