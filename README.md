@@ -1,8 +1,6 @@
 # DMM-CRM
 A contact relationship management system for discipleship making movements.
 
----
-
 ##Description
 DMM CRM is a contact relationship management system (CRM) specially designed to support outreach projects using digital marketing to accelerate disciple making movements (DMM).
 
