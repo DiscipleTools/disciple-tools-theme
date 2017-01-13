@@ -1,7 +1,7 @@
 <?php 
 
 /**
- * Template Name: Full Width Page
+ * Template Name: Sidebar Page
  *
  * @package kikirt
  */
@@ -46,5 +46,6 @@ get_header(); ?>
 	</div><!-- #primary -->
 
 <?php
-
-get_footer();
+get_sidebar();
+get_footer(); 
+?>
