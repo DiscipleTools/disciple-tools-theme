@@ -5,6 +5,10 @@
  * @package DmmCrm
  */
 
+/**
+ * Implement the Custom Header feature.
+ */
+require get_template_directory() . '/inc/dmmcrm-theme-setup.php';
 
 /**
  * Implement the Custom Header feature.
