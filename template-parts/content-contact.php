@@ -9,7 +9,7 @@
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<header class="entry-header">
-        <span style="float:right;"><?php dmmcrm_entry_footer(); ?></span>
+        <span style="float:right;"><?php drm_entry_footer(); ?></span>
         <h1 class="entry-title">
 		    <?php the_title( ); ?>
 
@@ -22,14 +22,14 @@
 	</header><!-- .entry-header -->
 	<?php if ( has_post_thumbnail() ) : ?>
 		<div class="entry-thumbnail">
-			<?php the_post_thumbnail( 'dmmcrm-featured' ); ?>
+			<?php the_post_thumbnail( 'drm-featured' ); ?>
 		</div>
 	<?php endif; ?>
 	<div class="entry-content">
 		<?php the_content(); ?>
 		<?php
 			wp_link_pages( array(
-				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'dmmcrm' ),
+				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'drm' ),
 				'after'  => '</div>',
 			) );
 		?>

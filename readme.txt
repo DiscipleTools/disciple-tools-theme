@@ -1,4 +1,4 @@
-=== DmmCrm ===
+=== DRM ===
 
 Contributors: chasm.solutions
 Tags: dmm
@@ -9,7 +9,7 @@ Stable tag: 1.2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-DmmCrm is based on SoSimple, based on Underscores http://underscores.me/, (C) 2012-2016 Automattic, Inc.
+DRM is based on SoSimple, based on Underscores http://underscores.me/, (C) 2012-2016 Automattic, Inc.
 
 == Description ==
 
@@ -31,13 +31,13 @@ A contact relationship management system for disciple making movements.
 
 = Does this theme support any plugins? =
 
-DmmCrm includes support for Infinite Scroll in Jetpack.
+DRM includes support for Infinite Scroll in Jetpack.
 
 == Where can I add widgets? ==
 
-DmmCrm includes a widget area in the site's sidebar, configured by going to Appearance -> Widgets in your Dashboard. If no widgets are active, the theme automatically uses a narrower content column.
+DRM includes a widget area in the site's sidebar, configured by going to Appearance -> Widgets in your Dashboard. If no widgets are active, the theme automatically uses a narrower content column.
 
-== Does DmmCrm use Featured Images? ==
+== Does DRM use Featured Images? ==
 
 If a Featured Image at least 656px wide is set for a post, it will display below the post title on the blog and archives.
 

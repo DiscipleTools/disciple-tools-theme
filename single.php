@@ -2,7 +2,7 @@
 /**
  * The template for displaying all single posts.
  *
- * @package dmmcrm
+ * @package drm
  */
 
 get_header(); ?>

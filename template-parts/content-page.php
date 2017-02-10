@@ -13,21 +13,21 @@
 	</header><!-- .entry-header -->
 	<?php if ( has_post_thumbnail() ) : ?>
 		<div class="entry-thumbnail">
-			<?php the_post_thumbnail( 'dmmcrm-featured' ); ?>
+			<?php the_post_thumbnail( 'drm-featured' ); ?>
 		</div>
 	<?php endif; ?>
 	<div class="entry-content">
 		<?php the_content(); ?>
 		<?php
 			wp_link_pages( array(
-				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'dmmcrm' ),
+				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'drm' ),
 				'after'  => '</div>',
 			) );
 		?>
 	</div><!-- .entry-content -->
 
 	<footer class="entry-footer">
-		<?php edit_post_link( esc_html__( 'Edit', 'dmmcrm' ), '<span class="edit-link">', '</span>' ); ?>
+		<?php edit_post_link( esc_html__( 'Edit', 'drm' ), '<span class="edit-link">', '</span>' ); ?>
 	</footer><!-- .entry-footer -->
 </article><!-- #post-## -->
 

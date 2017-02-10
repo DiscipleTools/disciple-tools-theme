@@ -1,15 +1,15 @@
 <?php
 	
 /**
- * Site configuration for DMM CRM usage
+ * Site configuration for DRM usage
  * 
  * 
  *
- * @package dmmcrm
+ * @package drm
  */
  
  
-if ( ! function_exists( 'dmmcrm_theme_setup' ) ) :
+if ( ! function_exists( 'drm_theme_setup' ) ) :
 /**
  * Sets up theme defaults and registers support for various WordPress features.
  *
@@ -17,14 +17,14 @@ if ( ! function_exists( 'dmmcrm_theme_setup' ) ) :
  * runs before the init hook. The init hook is too late for some features, such
  * as indicating support for post thumbnails.
  */
-function dmmcrm_theme_setup() {
+function drm_theme_setup() {
 	/*
 	 * Make theme available for translation.
 	 * Translations can be filed in the /languages/ directory.
-	 * If you're building a theme based on dmmcrm, use a find and replace
-	 * to change 'dmmcrm' to the name of your theme in all the template files
+	 * If you're building a theme based on drm, use a find and replace
+	 * to change 'drm' to the name of your theme in all the template files
 	 */
-	load_theme_textdomain( 'dmmcrm', get_template_directory() . '/languages' );
+	load_theme_textdomain( 'drm', get_template_directory() . '/languages' );
 
 	// Add default posts and comments RSS feed links to head.
 	add_theme_support( 'automatic-feed-links' );
@@ -44,15 +44,15 @@ function dmmcrm_theme_setup() {
 	 */
 	add_theme_support( 'post-thumbnails' );
 
-	add_image_size( 'dmmcrm-featured', '656', '300', true );
-	add_image_size( 'dmmcrm-site-logo', '300', '300' );
+	add_image_size( 'drm-featured', '656', '300', true );
+	add_image_size( 'drm-site-logo', '300', '300' );
 
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menus( array(
-		'primary' => esc_html__( 'Primary Menu', 'dmmcrm' ),
+		'primary' => esc_html__( 'Primary Menu', 'drm' ),
 	) );
 
-	add_editor_style( array( 'editor-style.css', dmmcrm_fonts_url(), get_template_directory_uri() . '/genericons/genericons.css' ) );
+	add_editor_style( array( 'editor-style.css', drm_fonts_url(), get_template_directory_uri() . '/genericons/genericons.css' ) );
 
 	/*
 	 * Switch default core markup for search form, comment form, and comments
@@ -79,7 +79,7 @@ function dmmcrm_theme_setup() {
 	) );
 
 	// Set up the WordPress core custom background feature.
-	add_theme_support( 'custom-background', apply_filters( 'dmmcrm_custom_background_args', array(
+	add_theme_support( 'custom-background', apply_filters( 'drm_custom_background_args', array(
 		'default-color' => 'ffffff',
 		'default-image' => '',
 	) ) );
@@ -106,9 +106,9 @@ function dmmcrm_theme_setup() {
 	
 	
 	
-// End of the dmmcrm_secup function
+// End of the drm_secup function
 } endif;
-add_action( 'after_setup_theme', 'dmmcrm_theme_setup' );
+add_action( 'after_setup_theme', 'drm_theme_setup' );
 
 
 
@@ -119,10 +119,10 @@ add_action( 'after_setup_theme', 'dmmcrm_theme_setup' );
  *
  * @global int $content_width
  */
-function dmmcrm_content_width() {
-	$GLOBALS['content_width'] = apply_filters( 'dmmcrm_content_width', 640 );
+function drm_content_width() {
+	$GLOBALS['content_width'] = apply_filters( 'drm_content_width', 640 );
 }
-add_action( 'after_setup_theme', 'dmmcrm_content_width', 0 );
+add_action( 'after_setup_theme', 'drm_content_width', 0 );
 
 
 /**
@@ -130,9 +130,9 @@ add_action( 'after_setup_theme', 'dmmcrm_content_width', 0 );
  *
  * @link http://codex.wordpress.org/Function_Reference/register_sidebar
  */
-function dmmcrm_widgets_init() {
+function drm_widgets_init() {
 	register_sidebar( array(
-		'name'          => esc_html__( 'Sidebar', 'dmmcrm' ),
+		'name'          => esc_html__( 'Sidebar', 'drm' ),
 		'id'            => 'sidebar-1',
 		'description'   => '',
 		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
@@ -141,35 +141,35 @@ function dmmcrm_widgets_init() {
 		'after_title'   => '</h1>',
 	) );
 }
-add_action( 'widgets_init', 'dmmcrm_widgets_init' );
+add_action( 'widgets_init', 'drm_widgets_init' );
 
 
 
 /**
  * Enqueue scripts and styles.
  */
-function dmmcrm_scripts() {
-	wp_enqueue_style( 'dmmcrm-style', get_stylesheet_uri() );
+function drm_scripts() {
+	wp_enqueue_style( 'drm-style', get_stylesheet_uri() );
 
-	wp_enqueue_style( 'dmmcrm-fonts', dmmcrm_fonts_url(), array(), null );
+	wp_enqueue_style( 'drm-fonts', drm_fonts_url(), array(), null );
 
 	wp_enqueue_style( 'genericons', get_template_directory_uri() . '/genericons/genericons.css', array(), '3.0.3' );
 
-	wp_enqueue_script( 'dmmcrm-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20120206', true );
+	wp_enqueue_script( 'drm-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20120206', true );
 
-	wp_enqueue_script( 'dmmcrm-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array( 'jquery' ), '1.0', true  );
+	wp_enqueue_script( 'drm-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array( 'jquery' ), '1.0', true  );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
-add_action( 'wp_enqueue_scripts', 'dmmcrm_scripts' );
+add_action( 'wp_enqueue_scripts', 'drm_scripts' );
 
 
 /**
  * Register Google Fonts
  */
-function dmmcrm_fonts_url() {
+function drm_fonts_url() {
     $fonts_url = '';
 
 	/* Translators: If there are characters in your language that are not
@@ -178,18 +178,18 @@ function dmmcrm_fonts_url() {
 	 */
 	$font_families = array();
 	
-	$heading_font_family = get_theme_mod( 'dmmcrm_google_fonts_heading_font', null );
-	$body_font_family = get_theme_mod( 'dmmcrm_google_fonts_body_font', null );
+	$heading_font_family = get_theme_mod( 'drm_google_fonts_heading_font', null );
+	$body_font_family = get_theme_mod( 'drm_google_fonts_body_font', null );
 
 	if ( !empty( $heading_font_family ) && $heading_font_family !== 'none' ) {
-		$heading_font = _x( 'on', $heading_font_family . ' font: on or off', 'dmmcrm' );
+		$heading_font = _x( 'on', $heading_font_family . ' font: on or off', 'drm' );
 		if ( 'off' !== $heading_font ) {
 			$font_families[] = $heading_font_family;
 		}
 	}
 
 	if ( !empty( $body_font_family ) && $body_font_family !== 'none' && $body_font_family !== $heading_font_family ) {
-		$body_font = _x( 'on', $body_font_family . ' font: on or off', 'dmmcrm' );
+		$body_font = _x( 'on', $body_font_family . ' font: on or off', 'drm' );
 		if ( 'off' !== $body_font ) {
 			$font_families[] = $body_font_family;
 		}
@@ -213,10 +213,10 @@ function dmmcrm_fonts_url() {
 
 }
 
-function dmmcrm_load_theme_fonts()
+function drm_load_theme_fonts()
 {
-	$heading = get_theme_mod( 'dmmcrm_google_fonts_heading_font' );
-	$body = get_theme_mod( 'dmmcrm_google_fonts_body_font' );
+	$heading = get_theme_mod( 'drm_google_fonts_heading_font' );
+	$body = get_theme_mod( 'drm_google_fonts_body_font' );
 	if ( ( !empty( $heading ) && $heading != 'none' ) || ( !empty( $body ) && $body != 'none' ) ) {
 		echo '<style type="text/css">';
 		$imports = array();
@@ -236,17 +236,17 @@ function dmmcrm_load_theme_fonts()
 
 	}
 }
-add_action( 'wp_head', 'dmmcrm_load_theme_fonts' );
+add_action( 'wp_head', 'drm_load_theme_fonts' );
 
 /**
  * Enqueue Google Fonts for custom headers
  */
-function dmmcrm_admin_styles() {
+function drm_admin_styles() {
 
-	wp_enqueue_style( 'dmmcrm-fonts', dmmcrm_fonts_url(), array(), null );
+	wp_enqueue_style( 'drm-fonts', drm_fonts_url(), array(), null );
 
 }
-add_action( 'admin_print_styles-appearance_page_custom-header', 'dmmcrm_admin_styles' );
+add_action( 'admin_print_styles-appearance_page_custom-header', 'drm_admin_styles' );
 
 
  

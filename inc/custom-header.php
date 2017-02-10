@@ -11,37 +11,37 @@
 	</a>
 	<?php endif; // End header image check. ?>
  *
- * @package dmmcrm
+ * @package drm
  */
 
 /**
  * Set up the WordPress core custom header feature.
  *
- * @uses dmmcrm_header_style()
- * @uses dmmcrm_admin_header_style()
- * @uses dmmcrm_admin_header_image()
+ * @uses drm_header_style()
+ * @uses drm_admin_header_style()
+ * @uses drm_admin_header_image()
  */
-function dmmcrm_custom_header_setup() {
-	add_theme_support( 'custom-header', apply_filters( 'dmmcrm_custom_header_args', array(
+function drm_custom_header_setup() {
+	add_theme_support( 'custom-header', apply_filters( 'drm_custom_header_args', array(
 		'default-image'          => '',
 		'default-text-color'     => '000000',
 		'width'                  => 1000,
 		'height'                 => 250,
 		'flex-height'            => true,
-		'wp-head-callback'       => 'dmmcrm_header_style',
-		'admin-head-callback'    => 'dmmcrm_admin_header_style',
-		'admin-preview-callback' => 'dmmcrm_admin_header_image',
+		'wp-head-callback'       => 'drm_header_style',
+		'admin-head-callback'    => 'drm_admin_header_style',
+		'admin-preview-callback' => 'drm_admin_header_image',
 	) ) );
 }
-add_action( 'after_setup_theme', 'dmmcrm_custom_header_setup' );
+add_action( 'after_setup_theme', 'drm_custom_header_setup' );
 
-if ( ! function_exists( 'dmmcrm_header_style' ) ) :
+if ( ! function_exists( 'drm_header_style' ) ) :
 /**
  * Styles the header image and text displayed on the blog
  *
- * @see dmmcrm_custom_header_setup().
+ * @see drm_custom_header_setup().
  */
-function dmmcrm_header_style() {
+function drm_header_style() {
 	$header_text_color = get_header_textcolor();
 
 	// If no custom options for text are set, let's bail
@@ -74,15 +74,15 @@ function dmmcrm_header_style() {
 	</style>
 	<?php
 }
-endif; // dmmcrm_header_style
+endif; // drm_header_style
 
-if ( ! function_exists( 'dmmcrm_admin_header_style' ) ) :
+if ( ! function_exists( 'drm_admin_header_style' ) ) :
 /**
  * Styles the header image displayed on the Appearance > Header admin panel.
  *
- * @see dmmcrm_custom_header_setup().
+ * @see drm_custom_header_setup().
  */
-function dmmcrm_admin_header_style() {
+function drm_admin_header_style() {
 ?>
 	<style type="text/css">
 		.appearance_page_custom-header #headimg {
@@ -102,15 +102,15 @@ function dmmcrm_admin_header_style() {
 	</style>
 <?php
 }
-endif; // dmmcrm_admin_header_style
+endif; // drm_admin_header_style
 
-if ( ! function_exists( 'dmmcrm_admin_header_image' ) ) :
+if ( ! function_exists( 'drm_admin_header_image' ) ) :
 /**
  * Custom header image markup displayed on the Appearance > Header admin panel.
  *
- * @see dmmcrm_custom_header_setup().
+ * @see drm_custom_header_setup().
  */
-function dmmcrm_admin_header_image() {
+function drm_admin_header_image() {
 ?>
 	<div id="headimg">
 		<h1 class="displaying-header-text">
@@ -123,4 +123,4 @@ function dmmcrm_admin_header_image() {
 	</div>
 <?php
 }
-endif; // dmmcrm_admin_header_image
+endif; // drm_admin_header_image
