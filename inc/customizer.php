@@ -1,8 +1,8 @@
 <?php
 /**
- * dmmcrm Theme Customizer
+ * drm Theme Customizer
  *
- * @package dmmcrm
+ * @package drm
  */
 
 /**
@@ -10,24 +10,24 @@
  *
  * @param WP_Customize_Manager $wp_customize Theme Customizer object.
  */
-function dmmcrm_customize_register( $wp_customize ) {
+function drm_customize_register( $wp_customize ) {
     $wp_customize->remove_control( 'header_image' );
 	$wp_customize->get_setting( 'blogname' )->transport         = 'postMessage';
 	$wp_customize->get_setting( 'blogdescription' )->transport  = 'postMessage';
-	$wp_customize->add_section( 'dmmcrm_logo_section' , array(
-    'title'       => esc_attr( 'Logo', 'dmmcrm' ),
+	$wp_customize->add_section( 'drm_logo_section' , array(
+    'title'       => esc_attr( 'Logo', 'drm' ),
     'priority'    => 30,
-    'description' => esc_attr('Upload a logo to replace the default site name and description in the more', 'dmmcrm' ),
+    'description' => esc_attr('Upload a logo to replace the default site name and description in the more', 'drm' ),
     ) );
     
-    $wp_customize->add_setting( 'dmmcrm_logo',
+    $wp_customize->add_setting( 'drm_logo',
         'sanitize_callback' == 'esc_url_raw'
     );
 
-    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'dmmcrm_logo', array(
-        'label'    => esc_attr( 'Logo', 'dmmcrm' ),
-        'section'  => 'dmmcrm_logo_section',
-        'settings' => 'dmmcrm_logo',
+    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'drm_logo', array(
+        'label'    => esc_attr( 'Logo', 'drm' ),
+        'section'  => 'drm_logo_section',
+        'settings' => 'drm_logo',
         'sanitize_callback' => 'esc_url_raw',
     ) ) );
 
@@ -35,8 +35,8 @@ function dmmcrm_customize_register( $wp_customize ) {
     $wp_customize->add_section(
     'more_options',
     array(
-        'title' => esc_attr('More Link Options', 'dmmcrm'),
-        'description' => esc_attr('Customize your read more link', 'dmmcrm' ),
+        'title' => esc_attr('More Link Options', 'drm'),
+        'description' => esc_attr('Customize your read more link', 'drm' ),
         'priority' => 1,
     )
     );
@@ -45,7 +45,7 @@ function dmmcrm_customize_register( $wp_customize ) {
         'ss_excerpt_type',
         array(
             'default' => 'option2',
-            'sanitize_callback' => 'dmmcrm_sanitize_choices',
+            'sanitize_callback' => 'drm_sanitize_choices',
         )
     );
 
@@ -53,7 +53,7 @@ function dmmcrm_customize_register( $wp_customize ) {
         'ss_excerpt_type',
         array(
             'type' => 'select',
-            'label' => esc_attr('Excerpt type', 'dmmcrm' ),
+            'label' => esc_attr('Excerpt type', 'drm' ),
             'section' => 'more_options',
             'choices' => array(
                 'option1' => 'More Tag',
@@ -67,7 +67,7 @@ function dmmcrm_customize_register( $wp_customize ) {
         'ss_more_type',
         array(
             'default' => 'option1',
-            'sanitize_callback' => 'dmmcrm_sanitize_choices',
+            'sanitize_callback' => 'drm_sanitize_choices',
         )
     );
 
@@ -75,7 +75,7 @@ function dmmcrm_customize_register( $wp_customize ) {
         'ss_more_type',
         array(
             'type' => 'select',
-            'label' => esc_attr('Read More Type', 'dmmcrm' ),
+            'label' => esc_attr('Read More Type', 'drm' ),
             'section' => 'more_options',
             'choices' => array(
                 'option1' => 'None',
@@ -97,7 +97,7 @@ function dmmcrm_customize_register( $wp_customize ) {
     $wp_customize->add_control(
         'ss_more_text',
         array(
-            'label' => esc_attr('Read More Text', 'dmmcrm' ),
+            'label' => esc_attr('Read More Text', 'drm' ),
             'section' => 'more_options',
         )
     );
@@ -108,7 +108,7 @@ function dmmcrm_customize_register( $wp_customize ) {
         'ss_more_position',
         array(
             'default' => 'option1',
-            'sanitize_callback' => 'dmmcrm_sanitize_choices',
+            'sanitize_callback' => 'drm_sanitize_choices',
 
         )
     );
@@ -117,8 +117,8 @@ function dmmcrm_customize_register( $wp_customize ) {
         'ss_more_position',
         array(
             'type' => 'select',
-            'label' => esc_attr('Read More Position', 'dmmcrm' ),
-            'description' => esc_attr('Only works if read more type is button', 'dmmcrm' ),
+            'label' => esc_attr('Read More Position', 'drm' ),
+            'description' => esc_attr('Only works if read more type is button', 'drm' ),
             'section' => 'more_options',
             'choices' => array(
                 'left' => 'Left',
@@ -133,7 +133,7 @@ function dmmcrm_customize_register( $wp_customize ) {
         'ss_more_button',
         array(
             'default' => 'option1',
-            'sanitize_callback' => 'dmmcrm_sanitize_choices',
+            'sanitize_callback' => 'drm_sanitize_choices',
         )
     );
 
@@ -141,7 +141,7 @@ function dmmcrm_customize_register( $wp_customize ) {
         'ss_more_button',
         array(
             'type' => 'select',
-            'label' => esc_attr('Read More Button Style', 'dmmcrm' ),
+            'label' => esc_attr('Read More Button Style', 'drm' ),
             'section' => 'more_options',
             'choices' => array(
                 'option1' => 'Sharp Edges',
@@ -163,7 +163,7 @@ function dmmcrm_customize_register( $wp_customize ) {
     $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 
         'ss_button_bg', 
         array(
-            'label' => esc_attr( 'Button Background Color', 'dmmcrm' ),
+            'label' => esc_attr( 'Button Background Color', 'drm' ),
             'section' => 'more_options',
     ) ) );
 
@@ -181,7 +181,7 @@ function dmmcrm_customize_register( $wp_customize ) {
     $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 
         'ss_text_color', 
         array(
-            'label' => esc_attr( 'Button Text Color', 'dmmcrm' ),
+            'label' => esc_attr( 'Button Text Color', 'drm' ),
             'section' => 'more_options',
     ) ) );
 
@@ -189,12 +189,12 @@ function dmmcrm_customize_register( $wp_customize ) {
     require_once( dirname( __FILE__ ) . '/google-fonts/fonts.php' );
 
 
-    $wp_customize->add_section( 'dmmcrm_google_fonts', array(
-        'title'    => __( 'Fonts', 'dmmcrm' ),
+    $wp_customize->add_section( 'drm_google_fonts', array(
+        'title'    => __( 'Fonts', 'drm' ),
         'priority' => 50,
     ) );
 
-    $wp_customize->add_setting( 'dmmcrm_google_fonts_heading_font', array(
+    $wp_customize->add_setting( 'drm_google_fonts_heading_font', array(
         'default'           => 'none',
         'type'              => 'theme_mod',
         'capability'        => 'edit_theme_options',
@@ -202,15 +202,15 @@ function dmmcrm_customize_register( $wp_customize ) {
         'sanitize_callback' => 'sanitize_text_field',
     ) );
 
-    $wp_customize->add_control( 'dmmcrm_google_fonts_heading_font', array(
-        'label'    => __( 'Header Font', 'dmmcrm' ),
-        'section'  => 'dmmcrm_google_fonts',
-        'settings' => 'dmmcrm_google_fonts_heading_font',
+    $wp_customize->add_control( 'drm_google_fonts_heading_font', array(
+        'label'    => __( 'Header Font', 'drm' ),
+        'section'  => 'drm_google_fonts',
+        'settings' => 'drm_google_fonts_heading_font',
         'type'     => 'select',
         'choices'  => $font_choices,
     ) );
 
-    $wp_customize->add_setting( 'dmmcrm_google_fonts_body_font', array(
+    $wp_customize->add_setting( 'drm_google_fonts_body_font', array(
         'default'           => 'none',
         'type'              => 'theme_mod',
         'capability'        => 'edit_theme_options',
@@ -218,10 +218,10 @@ function dmmcrm_customize_register( $wp_customize ) {
         'sanitize_callback' => 'sanitize_text_field',
     ) );
 
-    $wp_customize->add_control( 'dmmcrm_google_fonts_body_font', array(
-        'label'    => __( 'Body Font', 'dmmcrm' ),
-        'section'  => 'dmmcrm_google_fonts',
-        'settings' => 'dmmcrm_google_fonts_body_font',
+    $wp_customize->add_control( 'drm_google_fonts_body_font', array(
+        'label'    => __( 'Body Font', 'drm' ),
+        'section'  => 'drm_google_fonts',
+        'settings' => 'drm_google_fonts_body_font',
         'type'     => 'select',
         'choices'  => $font_choices,
     ) );
@@ -230,18 +230,18 @@ function dmmcrm_customize_register( $wp_customize ) {
 
 
 }
-add_action( 'customize_register', 'dmmcrm_customize_register' );
+add_action( 'customize_register', 'drm_customize_register' );
 
 /**
  * Binds JS handlers to make Theme Customizer preview reload changes asynchronously.
  */
-function dmmcrm_customize_preview_js() {
-	wp_enqueue_script( 'dmmcrm_customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-preview' ), '20130508', true );
+function drm_customize_preview_js() {
+	wp_enqueue_script( 'drm_customizer', get_template_directory_uri() . '/js/customizer.js', array( 'customize-preview' ), '20130508', true );
 }
-add_action( 'customize_preview_init', 'dmmcrm_customize_preview_js' );
+add_action( 'customize_preview_init', 'drm_customize_preview_js' );
 
 
-function dmmcrm_sanitize_choices( $input, $setting ) {
+function drm_sanitize_choices( $input, $setting ) {
     global $wp_customize;
  
     $control = $wp_customize->get_control( $setting->id );

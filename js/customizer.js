@@ -35,7 +35,7 @@
 	} );
 
 	// google fonts
-	wp.customize('dmmcrm_google_fonts_body_font', function(value) {
+	wp.customize('drm_google_fonts_body_font', function(value) {
 			value.bind(function(to) {
 					var font = to.replace(' ', '+');
 					WebFontConfig = {
@@ -70,7 +70,7 @@
 					}
 			});
 	});
-	wp.customize('dmmcrm_google_fonts_heading_font', function(value) {
+	wp.customize('drm_google_fonts_heading_font', function(value) {
 			value.bind(function(to) {
 					var font = to.replace(' ', '+');
 					WebFontConfig = {

@@ -4,7 +4,7 @@
  *
  * Eventually, some of the functionality here could be replaced by core features.
  *
- * @package dmmcrm
+ * @package drm
  */
 
 if ( ! function_exists( 'the_posts_navigation' ) ) :
@@ -20,15 +20,15 @@ function the_posts_navigation() {
 	}
 	?>
 	<nav class="navigation posts-navigation" role="navigation">
-		<h2 class="screen-reader-text"><?php esc_html_e( 'Posts navigation', 'dmmcrm' ); ?></h2>
+		<h2 class="screen-reader-text"><?php esc_html_e( 'Posts navigation', 'drm' ); ?></h2>
 		<div class="nav-links">
 
 			<?php if ( get_next_posts_link() ) : ?>
-			<div class="nav-previous"><?php next_posts_link( esc_html__( 'Older posts', 'dmmcrm' ) ); ?></div>
+			<div class="nav-previous"><?php next_posts_link( esc_html__( 'Older posts', 'drm' ) ); ?></div>
 			<?php endif; ?>
 
 			<?php if ( get_previous_posts_link() ) : ?>
-			<div class="nav-next"><?php previous_posts_link( esc_html__( 'Newer posts', 'dmmcrm' ) ); ?></div>
+			<div class="nav-next"><?php previous_posts_link( esc_html__( 'Newer posts', 'drm' ) ); ?></div>
 			<?php endif; ?>
 
 		</div><!-- .nav-links -->
@@ -53,7 +53,7 @@ function the_post_navigation() {
 	}
 	?>
 	<nav class="navigation post-navigation" role="navigation">
-		<h2 class="screen-reader-text"><?php esc_html_e( 'Post navigation', 'dmmcrm' ); ?></h2>
+		<h2 class="screen-reader-text"><?php esc_html_e( 'Post navigation', 'drm' ); ?></h2>
 		<div class="nav-links">
 			<?php
 				previous_post_link( '<div class="nav-previous">%link</div>', '%title' );
@@ -65,11 +65,11 @@ function the_post_navigation() {
 }
 endif;
 
-if ( ! function_exists( 'dmmcrm_posted_on' ) ) :
+if ( ! function_exists( 'drm_posted_on' ) ) :
 /**
  * Prints HTML with meta information for the current post-date/time and author.
  */
-function dmmcrm_posted_on() {
+function drm_posted_on() {
 	$time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
 	if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
 		$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
@@ -83,12 +83,12 @@ function dmmcrm_posted_on() {
 	);
 
 	$posted_on = sprintf(
-		esc_html_x( 'Posted on %s', 'post date', 'dmmcrm' ),
+		esc_html_x( 'Posted on %s', 'post date', 'drm' ),
 		'<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . $time_string . '</a>'
 	);
 
 	$byline = sprintf(
-		esc_html_x( 'by %s', 'post author', 'dmmcrm' ),
+		esc_html_x( 'by %s', 'post author', 'drm' ),
 		'<span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author() ) . '</a></span>'
 	);
 
@@ -97,33 +97,33 @@ function dmmcrm_posted_on() {
 }
 endif;
 
-if ( ! function_exists( 'dmmcrm_entry_footer' ) ) :
+if ( ! function_exists( 'drm_entry_footer' ) ) :
 /**
  * Prints HTML with meta information for the categories, tags and comments.
  */
-function dmmcrm_entry_footer() {
+function drm_entry_footer() {
 	// Hide category and tag text for pages.
 	if ( 'post' == get_post_type() ) {
 		/* translators: used between list items, there is a space after the comma */
-		$categories_list = get_the_category_list( esc_html__( ', ', 'dmmcrm' ) );
-		if ( $categories_list && dmmcrm_categorized_blog() ) {
-			printf( '<span class="cat-links">' . esc_html__( 'Posted in %1$s', 'dmmcrm' ) . '</span>', $categories_list ); // WPCS: XSS OK.
+		$categories_list = get_the_category_list( esc_html__( ', ', 'drm' ) );
+		if ( $categories_list && drm_categorized_blog() ) {
+			printf( '<span class="cat-links">' . esc_html__( 'Posted in %1$s', 'drm' ) . '</span>', $categories_list ); // WPCS: XSS OK.
 		}
 
 		/* translators: used between list items, there is a space after the comma */
-		$tags_list = get_the_tag_list( '', esc_html__( ', ', 'dmmcrm' ) );
+		$tags_list = get_the_tag_list( '', esc_html__( ', ', 'drm' ) );
 		if ( $tags_list ) {
-			printf( '<span class="tags-links">' . esc_html__( 'Tagged %1$s', 'dmmcrm' ) . '</span>', $tags_list ); // WPCS: XSS OK.
+			printf( '<span class="tags-links">' . esc_html__( 'Tagged %1$s', 'drm' ) . '</span>', $tags_list ); // WPCS: XSS OK.
 		}
 	}
 
 	if ( ! is_single() && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
 		echo '<span class="comments-link">';
-		comments_popup_link( esc_html__( 'Leave a comment', 'dmmcrm' ), esc_html__( ' 1 Comment', 'dmmcrm' ), esc_html__( ' % Comments', 'dmmcrm' ) );
+		comments_popup_link( esc_html__( 'Leave a comment', 'drm' ), esc_html__( ' 1 Comment', 'drm' ), esc_html__( ' % Comments', 'drm' ) );
 		echo '</span>';
 	}
 
-	edit_post_link( esc_html__( 'Edit', 'dmmcrm' ), '<span class="edit-link">', '</span>' );
+	edit_post_link( esc_html__( 'Edit', 'drm' ), '<span class="edit-link">', '</span>' );
 }
 endif;
 
@@ -140,45 +140,45 @@ if ( ! function_exists( 'the_archive_title' ) ) :
  */
 function the_archive_title( $before = '', $after = '' ) {
 	if ( is_category() ) {
-		$title = sprintf( esc_html__( 'Category: %s', 'dmmcrm' ), single_cat_title( '', false ) );
+		$title = sprintf( esc_html__( 'Category: %s', 'drm' ), single_cat_title( '', false ) );
 	} elseif ( is_tag() ) {
-		$title = sprintf( esc_html__( 'Tag: %s', 'dmmcrm' ), single_tag_title( '', false ) );
+		$title = sprintf( esc_html__( 'Tag: %s', 'drm' ), single_tag_title( '', false ) );
 	} elseif ( is_author() ) {
-		$title = sprintf( esc_html__( 'Author: %s', 'dmmcrm' ), '<span class="vcard">' . get_the_author() . '</span>' );
+		$title = sprintf( esc_html__( 'Author: %s', 'drm' ), '<span class="vcard">' . get_the_author() . '</span>' );
 	} elseif ( is_year() ) {
-		$title = sprintf( esc_html__( 'Year: %s', 'dmmcrm' ), get_the_date( esc_html_x( 'Y', 'yearly archives date format', 'dmmcrm' ) ) );
+		$title = sprintf( esc_html__( 'Year: %s', 'drm' ), get_the_date( esc_html_x( 'Y', 'yearly archives date format', 'drm' ) ) );
 	} elseif ( is_month() ) {
-		$title = sprintf( esc_html__( 'Month: %s', 'dmmcrm' ), get_the_date( esc_html_x( 'F Y', 'monthly archives date format', 'dmmcrm' ) ) );
+		$title = sprintf( esc_html__( 'Month: %s', 'drm' ), get_the_date( esc_html_x( 'F Y', 'monthly archives date format', 'drm' ) ) );
 	} elseif ( is_day() ) {
-		$title = sprintf( esc_html__( 'Day: %s', 'dmmcrm' ), get_the_date( esc_html_x( 'F j, Y', 'daily archives date format', 'dmmcrm' ) ) );
+		$title = sprintf( esc_html__( 'Day: %s', 'drm' ), get_the_date( esc_html_x( 'F j, Y', 'daily archives date format', 'drm' ) ) );
 	} elseif ( is_tax( 'post_format' ) ) {
 		if ( is_tax( 'post_format', 'post-format-aside' ) ) {
-			$title = esc_html_x( 'Asides', 'post format archive title', 'dmmcrm' );
+			$title = esc_html_x( 'Asides', 'post format archive title', 'drm' );
 		} elseif ( is_tax( 'post_format', 'post-format-gallery' ) ) {
-			$title = esc_html_x( 'Galleries', 'post format archive title', 'dmmcrm' );
+			$title = esc_html_x( 'Galleries', 'post format archive title', 'drm' );
 		} elseif ( is_tax( 'post_format', 'post-format-image' ) ) {
-			$title = esc_html_x( 'Images', 'post format archive title', 'dmmcrm' );
+			$title = esc_html_x( 'Images', 'post format archive title', 'drm' );
 		} elseif ( is_tax( 'post_format', 'post-format-video' ) ) {
-			$title = esc_html_x( 'Videos', 'post format archive title', 'dmmcrm' );
+			$title = esc_html_x( 'Videos', 'post format archive title', 'drm' );
 		} elseif ( is_tax( 'post_format', 'post-format-quote' ) ) {
-			$title = esc_html_x( 'Quotes', 'post format archive title', 'dmmcrm' );
+			$title = esc_html_x( 'Quotes', 'post format archive title', 'drm' );
 		} elseif ( is_tax( 'post_format', 'post-format-link' ) ) {
-			$title = esc_html_x( 'Links', 'post format archive title', 'dmmcrm' );
+			$title = esc_html_x( 'Links', 'post format archive title', 'drm' );
 		} elseif ( is_tax( 'post_format', 'post-format-status' ) ) {
-			$title = esc_html_x( 'Statuses', 'post format archive title', 'dmmcrm' );
+			$title = esc_html_x( 'Statuses', 'post format archive title', 'drm' );
 		} elseif ( is_tax( 'post_format', 'post-format-audio' ) ) {
-			$title = esc_html_x( 'Audio', 'post format archive title', 'dmmcrm' );
+			$title = esc_html_x( 'Audio', 'post format archive title', 'drm' );
 		} elseif ( is_tax( 'post_format', 'post-format-chat' ) ) {
-			$title = esc_html_x( 'Chats', 'post format archive title', 'dmmcrm' );
+			$title = esc_html_x( 'Chats', 'post format archive title', 'drm' );
 		}
 	} elseif ( is_post_type_archive() ) {
-		$title = sprintf( esc_html__( 'Archives: %s', 'dmmcrm' ), post_type_archive_title( '', false ) );
+		$title = sprintf( esc_html__( 'Archives: %s', 'drm' ), post_type_archive_title( '', false ) );
 	} elseif ( is_tax() ) {
 		$tax = get_taxonomy( get_queried_object()->taxonomy );
 		/* translators: 1: Taxonomy singular name, 2: Current taxonomy term */
-		$title = sprintf( esc_html__( '%1$s: %2$s', 'dmmcrm' ), $tax->labels->singular_name, single_term_title( '', false ) );
+		$title = sprintf( esc_html__( '%1$s: %2$s', 'drm' ), $tax->labels->singular_name, single_term_title( '', false ) );
 	} else {
-		$title = esc_html__( 'Archives', 'dmmcrm' );
+		$title = esc_html__( 'Archives', 'drm' );
 	}
 
 	/**
@@ -226,8 +226,8 @@ endif;
  *
  * @return bool
  */
-function dmmcrm_categorized_blog() {
-	if ( false === ( $all_the_cool_cats = get_transient( 'dmmcrm_categories' ) ) ) {
+function drm_categorized_blog() {
+	if ( false === ( $all_the_cool_cats = get_transient( 'drm_categories' ) ) ) {
 		// Create an array of all the categories that are attached to posts.
 		$all_the_cool_cats = get_categories( array(
 			'fields'     => 'ids',
@@ -240,27 +240,27 @@ function dmmcrm_categorized_blog() {
 		// Count the number of categories that are attached to the posts.
 		$all_the_cool_cats = count( $all_the_cool_cats );
 
-		set_transient( 'dmmcrm_categories', $all_the_cool_cats );
+		set_transient( 'drm_categories', $all_the_cool_cats );
 	}
 
 	if ( $all_the_cool_cats > 1 ) {
-		// This blog has more than 1 category so dmmcrm_categorized_blog should return true.
+		// This blog has more than 1 category so drm_categorized_blog should return true.
 		return true;
 	} else {
-		// This blog has only 1 category so dmmcrm_categorized_blog should return false.
+		// This blog has only 1 category so drm_categorized_blog should return false.
 		return false;
 	}
 }
 
 /**
- * Flush out the transients used in dmmcrm_categorized_blog.
+ * Flush out the transients used in drm_categorized_blog.
  */
-function dmmcrm_category_transient_flusher() {
+function drm_category_transient_flusher() {
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 		return;
 	}
 	// Like, beat it. Dig?
-	delete_transient( 'dmmcrm_categories' );
+	delete_transient( 'drm_categories' );
 }
-add_action( 'edit_category', 'dmmcrm_category_transient_flusher' );
-add_action( 'save_post',     'dmmcrm_category_transient_flusher' );
+add_action( 'edit_category', 'drm_category_transient_flusher' );
+add_action( 'save_post',     'drm_category_transient_flusher' );

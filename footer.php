@@ -4,7 +4,7 @@
  *
  * Contains the closing of the #content div and all content after
  *
- * @package dmmcrm
+ * @package drm
  */
 ?>
 
@@ -13,7 +13,7 @@
 
 	<footer id="colophon" class="site-footer" role="contentinfo">
 		<div class="site-info">
-			<a href="<?php echo esc_url( __( 'http://chasm.solutions/dmm-crm', 'dmmcrm' ) ); ?>"><?php printf( esc_html__( 'Proudly powered by %s', 'dmmcrm' ), 'WordPress & DMM-CRM team' ); ?></a>
+			<a href="<?php echo esc_url( __( 'http://chasm.solutions/dmm-crm', 'drm' ) ); ?>"><?php printf( esc_html__( 'Proudly powered by %s', 'drm' ), 'WordPress & DMM-CRM team' ); ?></a>
 			<span class="sep"> | </span>
 			
 		</div><!-- .site-info -->

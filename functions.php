@@ -1,14 +1,14 @@
 <?php
 /**
- * DmmCrm functions and definitions
+ * DRM functions and definitions
  *
- * @package DmmCrm
+ * @package DRM
  */
 
 /**
  * Implement the Custom Header feature.
  */
-require get_template_directory() . '/inc/dmmcrm-theme-setup.php';
+require get_template_directory() . '/inc/drm-theme-setup.php';
 
 /**
  * Implement the Custom Header feature.

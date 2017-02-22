@@ -1,7 +1,7 @@
 /**
  * Iris color picker custom settings
  *
- * Contains color picker for dmmcrm theme options
+ * Contains color picker for drm theme options
  */
 
 jQuery(document).ready(function($){
