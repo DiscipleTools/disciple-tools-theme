@@ -42,16 +42,16 @@
 		<nav id="site-navigation" class="main-navigation" role="navigation">
 
             <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'drm' ); ?></button>
-            <!-- Put on hold for development
+
 			<?php wp_nav_menu( array( 'theme_location' => 'primary', 'menu_id' => 'primary-menu' ) ); ?>
-			-->
-            <ul aria-expanded="true" class=" nav-menu">
+
+            <!--<ul aria-expanded="true" class=" nav-menu">
                 <li class="page_item page-item-2"><a href="http://dmm-crm:8888/sample-page/">Prayer</a></li>
                 <li class="page_item page-item-2"><a href="http://dmm-crm:8888/sample-page/">Project Updates</a></li>
                 <li class="page_item page-item-2"><a href="http://dmm-crm:8888/sample-page/">Charts</a></li>
                 <li class="page_item page-item-2"><a href="http://dmm-crm:8888/sample-page/">Maps</a></li>
                 <li class="page_item page-item-2"><a href="http://dmm-crm:8888/sample-page/">Downloads</a></li>
-            </ul>
+            </ul>-->
 
 		</nav><!-- #site-navigation -->
 	</header><!-- #masthead -->

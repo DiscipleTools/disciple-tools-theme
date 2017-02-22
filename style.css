@@ -1926,6 +1926,7 @@ div.sharedaddy div.sd-block {
         margin: 54px auto;
         padding: 54px 108px;
     }
+
 }
 @media screen and (min-width: 55em) {
     .no-sidebar .site {
@@ -1975,6 +1976,8 @@ div.sharedaddy div.sd-block {
         padding-top: 0;
         border-top: 0;
     }
+
+
 
     .no-sidebar .content-area,
     .no-sidebar .site-main,
