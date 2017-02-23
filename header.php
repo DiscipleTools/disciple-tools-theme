@@ -1,73 +1,53 @@
-<?php
-/**
- * The header for our theme.
- *
- * Displays all of the <head> section and everything up till <div id="content">
- *
- * @package drm
- */
+<!doctype html>
 
-?><!DOCTYPE html>
-<html <?php language_attributes(); ?>>
-<head>
-<meta charset="<?php bloginfo( 'charset' ); ?>">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="profile" href="http://gmpg.org/xfn/11">
-<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
+  <html class="no-js"  <?php language_attributes(); ?>>
 
-<?php wp_head(); ?>
-</head>
+	<head>
+		<meta charset="utf-8">
+		
+		<!-- Force IE to use the latest rendering engine available -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<body <?php body_class(); ?>>
-<div id="page" class="hfeed site">
-	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'drm' ); ?></a>
+		<!-- Mobile Meta -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta class="foundation-mq">
+		
+		<!-- If Site Icon isn't set in customizer -->
+		<?php if ( ! function_exists( 'has_site_icon' ) || ! has_site_icon() ) { ?>
+			<!-- Icons & Favicons -->
+			<link rel="icon" href="<?php echo get_template_directory_uri(); ?>/favicon.png">
+			<link href="<?php echo get_template_directory_uri(); ?>/assets/images/apple-icon-touch.png" rel="apple-touch-icon" />
+			<!--[if IE]>
+				<link rel="shortcut icon" href="<?php echo get_template_directory_uri(); ?>/favicon.ico">
+			<![endif]-->
+			<meta name="msapplication-TileColor" content="#f01d4f">
+			<meta name="msapplication-TileImage" content="<?php echo get_template_directory_uri(); ?>/assets/images/win8-tile-icon.png">
+	    	<meta name="theme-color" content="#121212">
+	    <?php } ?>
 
-	<header id="masthead" class="site-header" role="banner">
-		<div class="site-branding">
-			<?php if ( function_exists( 'jetpack_the_site_logo' ) ) jetpack_the_site_logo(); ?>
-			
-			<?php if ( get_theme_mod( 'drm_logo' ) ) : ?>
-		    
-		    <div class='site-logo'>
-		        <a href='<?php echo esc_url( home_url( '/' ) ); ?>' title='<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>' rel='home'><img src='<?php echo esc_url( get_theme_mod( 'drm_logo' ) ); ?>' alt='<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>'></a>
-		    </div>
-			<?php else : ?>
-			    <hgroup>
-			        <h1 class='site-title'><a href='<?php echo esc_url( home_url( '/' ) ); ?>' title='<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>' rel='home'><?php bloginfo( 'name' ); ?></a></h1>
-			        <h2 class='site-description'><?php bloginfo( 'description' ); ?></h2>
-			    </hgroup>
-			<?php endif; ?>
-		</div><!-- .site-branding -->
+		<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>">
 
-		<nav id="site-navigation" class="main-navigation" role="navigation">
+		<?php wp_head(); ?>
 
-            <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'drm' ); ?></button>
+		<!-- Drop Google Analytics here -->
+		<!-- end analytics -->
 
-			<?php wp_nav_menu( array( 'theme_location' => 'primary', 'menu_id' => 'primary-menu' ) ); ?>
-
-            <!--<ul aria-expanded="true" class=" nav-menu">
-                <li class="page_item page-item-2"><a href="http://dmm-crm:8888/sample-page/">Prayer</a></li>
-                <li class="page_item page-item-2"><a href="http://dmm-crm:8888/sample-page/">Project Updates</a></li>
-                <li class="page_item page-item-2"><a href="http://dmm-crm:8888/sample-page/">Charts</a></li>
-                <li class="page_item page-item-2"><a href="http://dmm-crm:8888/sample-page/">Maps</a></li>
-                <li class="page_item page-item-2"><a href="http://dmm-crm:8888/sample-page/">Downloads</a></li>
-            </ul>-->
-
-		</nav><!-- #site-navigation -->
-	</header><!-- #masthead -->
-
-	<div class="drm-breadcrumbs">
-		<?php
-			if ( !(is_home()) || !(is_front_page())) {
-				if ( function_exists('yoast_breadcrumb') ) {
-					yoast_breadcrumb('
-					<p id="breadcrumbs">','</p>
-					');
-				}
-			}
-		?>
-	</div><!-- .drm-breadcrumbs -->
-
+	</head>
 	
+	<!-- Uncomment this line if using the Off-Canvas Menu --> 
+		
+	<body <?php body_class(); ?>>
 
-	<div id="content" class="site-content">
+		<div class="off-canvas-wrapper">
+							
+			<?php get_template_part( 'parts/content', 'offcanvas' ); ?>
+			
+			<div class="off-canvas-content" data-off-canvas-content>
+				
+				<header class="header" role="banner">
+						
+					 <!-- This navs will be applied to the topbar, above all content 
+						  To see additional nav styles, visit the /parts directory -->
+					 <?php get_template_part( 'parts/nav', 'offcanvas-topbar' ); ?>
+	 	
+				</header> <!-- end .header -->

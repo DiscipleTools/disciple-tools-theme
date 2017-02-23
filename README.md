@@ -1,34 +1,30 @@
-# DMM-CRM
-A contact relationship management system for discipleship making movements.
+Find out more here: www.jointswp.com  
+Demo: www.jointswp.com/demo
 
-##Description
-DRM is a contact relationship management system (CRM) specially designed to support outreach projects using digital marketing to accelerate disciple making movements (DMM).
+Currently using Foundation 6.3.
 
-##Purpose
-There needs to exist a simple, low-cost, highly distributable CRM that is tailored to the process of using digital marketing to accelerate disciple making movements (M2DMM). Most CRM solutions are too expensive to be used by small volunteer teams, and they often require significant configuration and development to implement. This project is attempting to make a rapid launch, low cost system that is tailored for movements.
+### What is JointsWP?
+JointsWP is a blank WordPress theme built with Foundation 6, giving you all the power and flexibility you need to build complex, mobile friendly websites without having to start from scratch.
 
-##Platform
-We are building on the Wordpress platform because of its open-source availability, simplicity of installation, numerous low cost hosting options, multi-lingual support, substantial configurability and customization, giant development community and resources, (soon to be) native REST API, mobile readiness, and healthy market place for distributing themes and plugins. 
+Starting its humble life as a fork of the popular theme Bones, JointsWP is now the foundation of thousands of websites across the globe.
 
----
+### What comes with JointsWP?
+JointsWP comes pre-baked with all of the great features that are found in the Foundation framework – simply put, if it works in Foundation, it will work in JointsWP. The theme also includes:
 
-##How to Install
-The goal of the project in incredibly simple and fast launch of the DRM system. Below are the simple steps to do that. The files here are the complete theme folder.
->Warning: The DMM-CRM is best installed on a fresh Wordpress installation. The DMM-CRM system will make a complete transformation of the Wordpress site, so it is not recommended to be used on an existing site or one that has any mission critical information.
+- Foundation Navigation Options
+- Motion-UI
+- Grid archive templates
+- Translation Support
+- Bower and Gulp Support
+- And much, much more!
 
-###Step 1
-- Download theme .zip file from the DMM-CRM project page (https://github.com/ChrisChasm/DMM-CRM). 
+### What tools do I need to use JointsWP?
+You can use whatever you want – seriously. While the Sass version comes with Bower and Gulp support out of the box, you aren’t required to use those by any means. You can use CodeKit, Grunt, Compass or nothing at all. It’s completely up to you how you decide to build you theme – JointsWP won’t get in the way of your workflow.
 
-###Step 2
-- Login to your Wordpress site. (Note: New installations are highly recommended) 
-- Open "Appearance > Themes" from the Admin menu. 
+### Getting Started With Gulp
+- Install [node.js](https://nodejs.org).
+- Using the command line, navigate to your theme directory
+- Run npm install
+- Run gulp to confirm everything is working
 
-###Step 3
-- At the top of the Themes page, select the "Add New" button.
-- At the top of the "Add New" screen, select the "Upload Theme" button. 
-- Upload the .zip file you just downloaded in Step 1.
-
-###Step 4
-- Once the .zip folder is uploaded, "Activate" the DMM-CRM theme.
-
-You now have a complete digital marketing to disciple making movement system. Enjoy!
+[Read more about how Gulp is used with JointsWP.](http://jointswp.com/docs/gulp/)

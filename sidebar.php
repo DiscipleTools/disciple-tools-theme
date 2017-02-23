@@ -1,15 +1,17 @@
-<?php
-/**
- * The sidebar containing the main widget area.
- *
- * @package drm
- */
+<div id="sidebar1" class="sidebar large-4 medium-4 columns" role="complementary">
 
-if ( ! is_active_sidebar( 'sidebar-1' ) ) {
-	return;
-}
-?>
+	<?php if ( is_active_sidebar( 'sidebar1' ) ) : ?>
 
-<div id="secondary" class="widget-area" role="complementary">
-	<?php dynamic_sidebar( 'sidebar-1' ); ?>
-</div><!-- #secondary -->
+		<?php dynamic_sidebar( 'sidebar1' ); ?>
+
+	<?php else : ?>
+
+	<!-- This content shows up if there are no widgets defined in the backend. -->
+						
+	<div class="alert help">
+		<p><?php _e( 'Please activate some Widgets.', 'jointswp' );  ?></p>
+	</div>
+
+	<?php endif; ?>
+
+</div>
