@@ -90,11 +90,51 @@ POSTS & CONTENT STYLES
 #content {
 	#inner-content {
 		padding: 1rem 0rem;
+
 	}
     article {
       border: 1px solid $light-gray;
-      padding: 5px;
       margin-bottom: 10px;
+
+      header {
+        padding: 10px;
+        border-bottom: 1px solid $light-gray;
+      }
+
+      section {
+          padding: 10px;
+
+        }
+
+      footer {
+        padding: 10px;
+        border-top: 1px solid $light-gray;
+        text-align: center;
+
+        }
+
+      a.button {
+        float: left;
+
+      }
+      .article-header {
+
+			.title {
+				text-transform: uppercase;
+			}
+		}
+
+      .featured-image {
+
+		}
+
+      .entry-content {
+
+		}
+
+      .article-footer {
+
+		}
     }
 }
 
