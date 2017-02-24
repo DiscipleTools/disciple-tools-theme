@@ -617,9 +617,9 @@ if($el[0].type=='radio'){return this.removeRadioErrorClasses($el.attr('name'));}
    * @fires Abide#valid
    * @param {Object} element - jQuery object to validate, should be an HTML input
    * @returns {Boolean} goodToGo - If the input is valid or not.
-   */},{key:'validateInput',value:function validateInput($el){var _this4=this;var clearRequire=this.requiredCheck($el),validated=false,customValidator=true,validator=$el.attr('data-validator'),equalTo=true;// don't validate ignored inputs or hidden inputs
+   */},{key:'validateInput',value:function validateInput($el){var clearRequire=this.requiredCheck($el),validated=false,customValidator=true,validator=$el.attr('data-validator'),equalTo=true;// don't validate ignored inputs or hidden inputs
 if($el.is('[data-abide-ignore]')||$el.is('[type="hidden"]')){return true;}switch($el[0].type){case'radio':validated=this.validateRadio($el.attr('name'));break;case'checkbox':validated=clearRequire;break;case'select':case'select-one':case'select-multiple':validated=clearRequire;break;default:validated=this.validateText($el);}if(validator){customValidator=this.matchValidation($el,validator,$el.attr('required'));}if($el.attr('data-equalto')){equalTo=this.options.validators.equalTo($el);}var goodToGo=[clearRequire,validated,customValidator,equalTo].indexOf(false)===-1;var message=(goodToGo?'valid':'invalid')+'.zf.abide';if(goodToGo){// Re-validate inputs that depend on this one with equalto
-var dependentElements=this.$element.find('[data-equalto="'+$el.attr('id')+'"]');if(dependentElements.length){(function(){var _this=_this4;dependentElements.each(function(){if($(this).val()){_this.validateInput($(this));}});})();}}this[goodToGo?'removeErrorClasses':'addErrorClasses']($el);/**
+var dependentElements=this.$element.find('[data-equalto="'+$el.attr('id')+'"]');if(dependentElements.length){var _this=this;dependentElements.each(function(){if($(this).val()){_this.validateInput($(this));}});}}this[goodToGo?'removeErrorClasses':'addErrorClasses']($el);/**
      * Fires when the input is done checking for validation. Event trigger is either `valid.zf.abide` or `invalid.zf.abide`
      * Trigger includes the DOM element of the input.
      * @event Abide#valid
@@ -657,7 +657,7 @@ $group.each(function(i,e){if($(e).prop('checked')){valid=true;}});};return valid
    * @param {String} validators - a string of function names matching functions in the Abide.options.validators object.
    * @param {Boolean} required - self explanatory?
    * @returns {Boolean} - true if validations passed.
-   */},{key:'matchValidation',value:function matchValidation($el,validators,required){var _this5=this;required=required?true:false;var clear=validators.split(' ').map(function(v){return _this5.options.validators[v]($el,required,$el.parent());});return clear.indexOf(false)===-1;}/**
+   */},{key:'matchValidation',value:function matchValidation($el,validators,required){var _this4=this;required=required?true:false;var clear=validators.split(' ').map(function(v){return _this4.options.validators[v]($el,required,$el.parent());});return clear.indexOf(false)===-1;}/**
    * Resets form inputs and styles
    * @fires Abide#formreset
    */},{key:'resetForm',value:function resetForm(){var $form=this.$element,opts=this.options;$('.'+opts.labelErrorClass,$form).not('small').removeClass(opts.labelErrorClass);$('.'+opts.inputErrorClass,$form).not('small').removeClass(opts.inputErrorClass);$(opts.formErrorSelector+'.'+opts.formErrorClass).removeClass(opts.formErrorClass);$form.find('[data-abide-error]').css('display','none');$(':input',$form).not(':button, :submit, :reset, :hidden, :radio, :checkbox, [data-abide-ignore]').val('').removeAttr('data-invalid');$(':input:radio',$form).not('[data-abide-ignore]').prop('checked',false).removeAttr('data-invalid');$(':input:checkbox',$form).not('[data-abide-ignore]').prop('checked',false).removeAttr('data-invalid');/**
@@ -1829,8 +1829,8 @@ this.$element.css({'visibility':'hidden'}).show().scrollTop(0);if(this.options.o
        * Closes any other modals that are currently open
        * @event Reveal#closeme
        */this.$element.trigger('closeme.zf.reveal',this.id);}var _this=this;function addRevealOpenClasses(){if(_this.isMobile){if(!_this.originalScrollPos){_this.originalScrollPos=window.pageYOffset;}$('html, body').addClass('is-reveal-open');}else{$('body').addClass('is-reveal-open');}}// Motion UI method of reveal
-if(this.options.animationIn){(function(){var afterAnimation=function afterAnimation(){_this.$element.attr({'aria-hidden':false,'tabindex':-1}).focus();addRevealOpenClasses();Foundation.Keyboard.trapFocus(_this.$element);};if(_this3.options.overlay){Foundation.Motion.animateIn(_this3.$overlay,'fade-in');}Foundation.Motion.animateIn(_this3.$element,_this3.options.animationIn,function(){if(_this3.$element){// protect against object having been removed
-_this3.focusableElements=Foundation.Keyboard.findFocusable(_this3.$element);afterAnimation();}});})();}// jQuery method of reveal
+if(this.options.animationIn){var afterAnimation=function afterAnimation(){_this.$element.attr({'aria-hidden':false,'tabindex':-1}).focus();addRevealOpenClasses();Foundation.Keyboard.trapFocus(_this.$element);};if(this.options.overlay){Foundation.Motion.animateIn(this.$overlay,'fade-in');}Foundation.Motion.animateIn(this.$element,this.options.animationIn,function(){if(_this3.$element){// protect against object having been removed
+_this3.focusableElements=Foundation.Keyboard.findFocusable(_this3.$element);afterAnimation();}});}// jQuery method of reveal
 else{if(this.options.overlay){this.$overlay.show(0);}this.$element.show(this.options.showDelay);}// handle accessibility
 this.$element.attr({'aria-hidden':false,'tabindex':-1}).focus();Foundation.Keyboard.trapFocus(this.$element);/**
      * Fires when the modal has successfully opened.

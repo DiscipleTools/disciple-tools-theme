@@ -34,7 +34,7 @@ gulp.task('styles', function() {
         .pipe(sourcemaps.write('.')) // Creates sourcemaps for minified styles
         .pipe(gulp.dest('./assets/css/'))
 });
-    
+
 // JSHint, concat, and minify JavaScript
 gulp.task('site-js', function() {
   return gulp.src([	
