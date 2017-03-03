@@ -329,17 +329,17 @@ msgid "Search for:"
 msgstr "Procurar por:"
 
 #: searchform.php:4
-msgctxt "jointswp"
+msgctxt "disciple_tools"
 msgid "Search..."
 msgstr "Procurar…"
 
 #: searchform.php:4
-msgctxt "jointswp"
+msgctxt "disciple_tools"
 msgid "Search for:"
 msgstr "Procurar por:"
 
 #: searchform.php:6
-msgctxt "jointswp"
+msgctxt "disciple_tools"
 msgid "Search"
 msgstr "Procurar"
 

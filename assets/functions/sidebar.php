@@ -3,8 +3,8 @@
 function joints_register_sidebars() {
 	register_sidebar(array(
 		'id' => 'sidebar1',
-		'name' => __('Sidebar 1', 'jointswp'),
-		'description' => __('The first (primary) sidebar.', 'jointswp'),
+		'name' => __('Sidebar 1', 'disciple_tools'),
+		'description' => __('The first (primary) sidebar.', 'disciple_tools'),
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
 		'after_widget' => '</div>',
 		'before_title' => '<h4 class="widgettitle">',
@@ -13,8 +13,8 @@ function joints_register_sidebars() {
 
 	register_sidebar(array(
 		'id' => 'offcanvas',
-		'name' => __('Offcanvas', 'jointswp'),
-		'description' => __('The offcanvas sidebar.', 'jointswp'),
+		'name' => __('Offcanvas', 'disciple_tools'),
+		'description' => __('The offcanvas sidebar.', 'disciple_tools'),
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
 		'after_widget' => '</div>',
 		'before_title' => '<h4 class="widgettitle">',
@@ -31,8 +31,8 @@ function joints_register_sidebars() {
 
 	register_sidebar(array(
 		'id' => 'sidebar2',
-		'name' => __('Sidebar 2', 'jointswp'),
-		'description' => __('The second (secondary) sidebar.', 'jointswp'),
+		'name' => __('Sidebar 2', 'disciple_tools'),
+		'description' => __('The second (secondary) sidebar.', 'disciple_tools'),
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
 		'after_widget' => '</div>',
 		'before_title' => '<h4 class="widgettitle">',

@@ -5,10 +5,10 @@
 					
 	<section class="entry-content" itemprop="articleBody">
 		<?php the_post_thumbnail('full'); ?>
-		<?php the_content('<button class="tiny">' . __( 'Read more...', 'jointswp' ) . '</button>'); ?>
+		<?php the_content('<button class="tiny">' . __( 'Read more...', 'disciple_tools' ) . '</button>'); ?>
 	</section> <!-- end article section -->
 						
 	<footer class="article-footer">
-        <?php get_template_part( 'parts/content', 'pray' ); ?>
+        <?php get_template_part( 'parts/content', 'byline' ); ?>
 	</footer> <!-- end article footer -->				    						
 </article> <!-- end article -->

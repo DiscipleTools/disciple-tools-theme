@@ -23,7 +23,7 @@ $grid_columns = 4; ?>
 				</section> <!-- end article section -->
 			
 				<section class="entry-content" itemprop="articleBody">
-					<?php the_content('<button class="tiny">' . __( 'Read more...', 'jointswp' ) . '</button>'); ?> 
+					<?php the_content('<button class="tiny">' . __( 'Read more...', 'disciple_tools' ) . '</button>'); ?>
 				</section> <!-- end article section -->
 
                 <footer class="article-footer">
