@@ -34,7 +34,7 @@ function custom_post_example() {
 			'parent_item_colon' => ''
 			), /* end of arrays */
 			'description' => __( 'This is the example custom post type', 'jointswp' ), /* Custom Type Description */
-			'public' => true,
+			'portal' => true,
 			'publicly_queryable' => true,
 			'exclude_from_search' => false,
 			'show_ui' => true,
