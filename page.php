@@ -1,34 +1,21 @@
-<?php
-/**
- * The template for displaying all pages.
- *
- * This is the template that displays all pages by default.
- * Please note that this is the WordPress construct of pages
- * and that other 'pages' on your WordPress site will use a
- * different template.
- *
- * @package drm
- */
+<?php get_header(); ?>
 
-get_header(); ?>
+    <div id="content">
 
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main" role="main">
+        <div id="inner-content" class="row">
 
-			<?php while ( have_posts() ) : the_post(); ?>
+            <main id="main" class="large-12 medium-12 columns" role="main">
 
-				<?php get_template_part( 'template-parts/content', 'page' ); ?>
+                <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
-				<?php
-					// If comments are open or we have at least one comment, load up the comment template.
-					if ( comments_open() || get_comments_number() ) :
-						comments_template();
-					endif;
-				?>
+                    <?php get_template_part( 'parts/loop', 'page' ); ?>
 
-			<?php endwhile; // End of the loop. ?>
+                <?php endwhile; endif; ?>
 
-		</main><!-- #main -->
-	</div><!-- #primary -->
+            </main> <!-- end #main -->
+
+        </div> <!-- end #inner-content -->
+
+    </div> <!-- end #content -->
 
 <?php get_footer(); ?>

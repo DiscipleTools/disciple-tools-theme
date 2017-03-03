@@ -1,32 +1,27 @@
-<?php
-/**
- * The template for displaying all single posts.
- *
- * @package drm
- */
+<?php get_header(); ?>
+			
+<div id="content">
 
-get_header(); ?>
+	<div id="inner-content" class="row">
 
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main" role="main">
+		<main id="main" class="large-8 medium-8 columns" role="main">
+		
+		    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+		
+		    	<?php get_template_part( 'parts/loop', 'single' ); ?>
+		    	
+		    <?php endwhile; else : ?>
+		
+		   		<?php get_template_part( 'parts/content', 'missing' ); ?>
 
-		<?php while ( have_posts() ) : the_post(); ?>
+		    <?php endif; ?>
 
-			<?php get_template_part( 'template-parts/content', 'single' ); ?>
+		</main> <!-- end #main -->
 
-			<?php the_post_navigation(); ?>
+		<?php get_sidebar(); ?>
 
-			<?php
-				// If comments are open or we have at least one comment, load up the comment template.
-				if ( comments_open() || get_comments_number() ) :
-					comments_template();
-				endif;
-			?>
+	</div> <!-- end #inner-content -->
 
-		<?php endwhile; // End of the loop. ?>
+</div> <!-- end #content -->
 
-		</main><!-- #main -->
-	</div><!-- #primary -->
-
-<?php get_sidebar(); ?>
 <?php get_footer(); ?>
