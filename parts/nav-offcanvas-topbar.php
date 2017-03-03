@@ -8,7 +8,7 @@
 		</ul>
 	</div>
 	<div class="top-bar-right show-for-medium">
-		<?php joints_top_nav(); ?>	
+		<?php disciple_tools_top_nav(); ?>
 	</div>
 	<div class="top-bar-right float-right show-for-small-only">
 		<ul class="menu">

@@ -32,7 +32,7 @@ taxonomy-shoes.php
 			    
 			<?php endwhile; ?>	
 
-				<?php joints_page_navi(); ?>
+				<?php disciple_tools_page_navi(); ?>
 				
 			<?php else : ?>
 										

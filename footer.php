@@ -2,7 +2,7 @@
 					<div id="inner-footer" class="row">
 						<div class="large-12 medium-12 columns">
 							<nav role="navigation">
-	    						<?php joints_footer_links(); ?>
+	    						<?php disciple_tools_footer_links(); ?>
 	    					</nav>
 	    				</div>
 						<div class="large-12 medium-12 columns">

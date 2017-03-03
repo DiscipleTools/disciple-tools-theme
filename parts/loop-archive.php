@@ -9,6 +9,7 @@
 	</section> <!-- end article section -->
 						
 	<footer class="article-footer">
-        <?php get_template_part( 'parts/content', 'byline' ); ?>
+        <?php get_template_part( 'parts/content', 'pray' ); ?>
+        <?php print Disciple_Tools()->test ?>
 	</footer> <!-- end article footer -->				    						
 </article> <!-- end article -->

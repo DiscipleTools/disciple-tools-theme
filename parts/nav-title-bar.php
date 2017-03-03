@@ -14,6 +14,6 @@ $breakpoint = "medium"; ?>
 		</ul>
 	</div>
 	<div class="top-bar-right">
-		<?php joints_top_nav(); ?>
+		<?php disciple_tools_top_nav(); ?>
 	</div>
 </div>

@@ -1,6 +1,6 @@
 <?php
 // Comment Layout
-function joints_comments($comment, $args, $depth) {
+function disciple_tools_comments($comment, $args, $depth) {
    $GLOBALS['comment'] = $comment; ?>
 	<li <?php comment_class('panel'); ?>>
 		<div class="media-object">
