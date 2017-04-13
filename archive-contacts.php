@@ -7,18 +7,19 @@
             <main id="main" class="large-8 medium-8 columns" role="main">
 
                 <header>
-                    <h1 class="page-title"><?php the_archive_title();?></h1>
-                    <?php the_archive_description('<div class="taxonomy-description">', '</div>');?>
+                    Contacts
+
                 </header>
 
+                <ul>
                 <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
                     <!-- To see additional archive styles, visit the /parts directory -->
-                    <?php get_template_part( 'parts/loop', 'archive-original' ); ?>
+                <?php get_template_part( 'parts/loop', 'contacts' ); ?>
 
 
                 <?php endwhile; ?>
-
+                </ul>
                     <?php disciple_tools_page_navi(); ?>
 
                 <?php else : ?>

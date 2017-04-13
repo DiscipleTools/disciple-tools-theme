@@ -4342,16 +4342,13 @@ POSTS & CONTENT STYLES
   padding: 1rem 0rem; }
 
 #content article {
-  border: 1px solid #e6e6e6;
   margin-bottom: 10px; }
   #content article header {
-    padding: 10px;
-    border-bottom: 1px solid #e6e6e6; }
+    padding: 10px; }
   #content article section {
     padding: 10px; }
   #content article footer {
     padding: 10px;
-    border-top: 1px solid #e6e6e6;
     text-align: center; }
   #content article a.button {
     float: left; }
