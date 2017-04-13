@@ -56,6 +56,6 @@
 		<p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'disciple_tools' ); ?></p>
 	<?php endif; ?>
 
-	<?php comment_form(array('class_submit'=>'button')); ?>
+	<?php comment_form(array('class_submit'=>'button', 'logged_in_as' => '')); ?>
 
 </div><!-- #comments -->

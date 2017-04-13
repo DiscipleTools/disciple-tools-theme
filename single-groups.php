@@ -18,6 +18,7 @@
 
             </main> <!-- end #main -->
 
+            <?php get_sidebar('groups'); ?>
 
         </div> <!-- end #inner-content -->
 

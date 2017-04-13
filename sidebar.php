@@ -1,8 +1,8 @@
-<div id="sidebar1" class="sidebar large-4 medium-4 columns" role="complementary">
+<div id="sidebar-general" class="sidebar large-4 medium-4 columns" role="complementary">
 
-	<?php if ( is_active_sidebar( 'sidebar1' ) ) : ?>
+	<?php if ( is_active_sidebar( 'general' ) ) : ?>
 
-		<?php dynamic_sidebar( 'sidebar1' ); ?>
+		<?php dynamic_sidebar( 'general' ); ?>
 
 	<?php else : ?>
 

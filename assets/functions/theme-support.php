@@ -10,7 +10,7 @@ function disciple_tools_theme_support() {
 	set_post_thumbnail_size(125, 125, true);
 
 	// Add RSS Support
-	add_theme_support( 'automatic-feed-links' );
+//	add_theme_support( 'automatic-feed-links' );
 	
 	// Add Support for WP Controlled Title Tag
 	add_theme_support( 'title-tag' );

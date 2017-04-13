@@ -21,8 +21,10 @@ require_once(get_template_directory().'/assets/functions/comments.php');
 require_once(get_template_directory().'/assets/functions/page-navi.php'); 
 
 // Adds support for multiple languages
-require_once(get_template_directory().'/assets/translation/translation.php'); 
+require_once(get_template_directory().'/assets/translation/translation.php');
 
+// Adds support for multiple languages
+require_once(get_template_directory().'/assets/functions/disciple-tools-user.php');
 
 // Remove 4.2 Emoji Support
 // require_once(get_template_directory().'/assets/functions/disable-emoji.php'); 
@@ -32,9 +34,6 @@ require_once(get_template_directory().'/assets/translation/translation.php');
 
 // Related post function - no need to rely on plugins
 // require_once(get_template_directory().'/assets/functions/related-posts.php'); 
-
-// Use this as a template for custom post types
-// require_once(get_template_directory().'/assets/functions/custom-post-type.php');
 
 // Customize the WordPress login menu
 // require_once(get_template_directory().'/assets/functions/login.php'); 

@@ -28,9 +28,9 @@ function disciple_tools_start() {
 //The default wordpress head is a mess. Let's clean it up by removing all the junk we don't need.
 function disciple_tools_head_cleanup() {
 	// Remove category feeds
-	// remove_action( 'wp_head', 'feed_links_extra', 3 );
+	 remove_action( 'wp_head', 'feed_links_extra', 3 );
 	// Remove post and comment feeds
-	// remove_action( 'wp_head', 'feed_links', 2 );
+	 remove_action( 'wp_head', 'feed_links', 2 );
 	// Remove EditURI link
 	remove_action( 'wp_head', 'rsd_link' );
 	// Remove Windows live writer

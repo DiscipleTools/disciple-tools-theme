@@ -7,20 +7,28 @@
             <main id="main" class="large-8 medium-8 columns" role="main">
 
                 <header>
-                    Contacts
+                    <?php the_archive_title();?>
 
                 </header>
 
-                <ul>
-                <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+                <?php
+
+                $args = array(
+                    'post_type' => 'contacts',
+                    'nopaging' => true,
+                    'meta_query' => dt_get_user_scope(),
+                );
+                $query = new WP_Query( $args );
+                ?>
+                <?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post(); ?>
 
                     <!-- To see additional archive styles, visit the /parts directory -->
                 <?php get_template_part( 'parts/loop', 'contacts' ); ?>
 
 
                 <?php endwhile; ?>
-                </ul>
-                    <?php disciple_tools_page_navi(); ?>
+
+                    <?php //disciple_tools_page_navi(); ?>
 
                 <?php else : ?>
 
