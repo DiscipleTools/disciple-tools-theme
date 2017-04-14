@@ -11,15 +11,22 @@
 
             </header>
 
-            <ul>
-                <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+            <?php
+            $args = array(
+                'post_type' => 'groups',
+                'nopaging' => true,
+
+            );
+            $query = new WP_Query( $args );
+            ?>
+            <?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post(); ?>
 
                     <!-- To see additional archive styles, visit the /parts directory -->
                     <?php get_template_part( 'parts/loop', 'groups' ); ?>
 
 
                 <?php endwhile; ?>
-            </ul>
+
             <?php disciple_tools_page_navi(); ?>
 
             <?php else : ?>

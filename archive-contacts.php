@@ -12,11 +12,10 @@
                 </header>
 
                 <?php
-
                 $args = array(
                     'post_type' => 'contacts',
                     'nopaging' => true,
-                    'meta_query' => dt_get_user_scope(),
+                    'meta_query' => dt_get_user_associations(),
                 );
                 $query = new WP_Query( $args );
                 ?>
