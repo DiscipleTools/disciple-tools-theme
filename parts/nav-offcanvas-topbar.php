@@ -9,6 +9,7 @@
 	</div>
 	<div class="top-bar-right show-for-medium">
 		<?php disciple_tools_top_nav(); ?>
+        <?php include ( get_stylesheet_directory() . '/searchform-top.php'); ?>
 	</div>
 	<div class="top-bar-right float-right show-for-small-only">
 		<ul class="menu">

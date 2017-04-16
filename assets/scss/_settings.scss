@@ -61,7 +61,8 @@ $medium-gray: #cacaca;
 $dark-gray: #8a8a8a;
 $black: #0a0a0a;
 $white: #fefefe;
-$body-background: $white;
+$off-white: #fafafa;
+$body-background: $off-white;
 $body-font-color: $black;
 $body-font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
 $body-antialiased: true;
@@ -97,6 +98,9 @@ $grid-column-count: 12;
 $grid-column-gutter: (
   small: 20px,
   medium: 30px,
+  large: 30px,
+  xlarge: 30px,
+  xxlarge: 30px,
 );
 $grid-column-align-edge: true;
 $block-grid-max: 8;

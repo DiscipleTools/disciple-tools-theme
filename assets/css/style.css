@@ -936,7 +936,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background: #fefefe;
+  background: #fafafa;
   font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
   font-weight: normal;
   line-height: 1.5;
@@ -1021,6 +1021,15 @@ button {
   .row.gutter-medium > .column, .row.gutter-medium > .columns {
     padding-right: 0.9375rem;
     padding-left: 0.9375rem; }
+  .row.gutter-large > .column, .row.gutter-large > .columns {
+    padding-right: 0.9375rem;
+    padding-left: 0.9375rem; }
+  .row.gutter-xlarge > .column, .row.gutter-xlarge > .columns {
+    padding-right: 0.9375rem;
+    padding-left: 0.9375rem; }
+  .row.gutter-xxlarge > .column, .row.gutter-xxlarge > .columns {
+    padding-right: 0.9375rem;
+    padding-left: 0.9375rem; }
 
 .column, .columns {
   width: 100%;
@@ -1028,6 +1037,18 @@ button {
   padding-right: 0.625rem;
   padding-left: 0.625rem; }
   @media print, screen and (min-width: 40em) {
+    .column, .columns {
+      padding-right: 0.9375rem;
+      padding-left: 0.9375rem; } }
+  @media print, screen and (min-width: 64em) {
+    .column, .columns {
+      padding-right: 0.9375rem;
+      padding-left: 0.9375rem; } }
+  @media screen and (min-width: 75em) {
+    .column, .columns {
+      padding-right: 0.9375rem;
+      padding-left: 0.9375rem; } }
+  @media screen and (min-width: 90em) {
     .column, .columns {
       padding-right: 0.9375rem;
       padding-left: 0.9375rem; } }
@@ -1751,6 +1772,21 @@ button {
       margin-bottom: 1.875rem; }
       .column-block > :last-child {
         margin-bottom: 0; } }
+  @media print, screen and (min-width: 64em) {
+    .column-block {
+      margin-bottom: 1.875rem; }
+      .column-block > :last-child {
+        margin-bottom: 0; } }
+  @media screen and (min-width: 75em) {
+    .column-block {
+      margin-bottom: 1.875rem; }
+      .column-block > :last-child {
+        margin-bottom: 0; } }
+  @media screen and (min-width: 90em) {
+    .column-block {
+      margin-bottom: 1.875rem; }
+      .column-block > :last-child {
+        margin-bottom: 0; } }
 
 div,
 dl,
@@ -2221,7 +2257,7 @@ legend {
     margin: 0;
     margin-left: -0.1875rem;
     padding: 0 0.1875rem;
-    background: #fefefe; }
+    background: #fafafa; }
 
 select {
   height: 2.4375rem;
@@ -2954,7 +2990,7 @@ select {
   visibility: hidden;
   border: 1px solid #cacaca;
   border-radius: 10px;
-  background-color: #fefefe;
+  background-color: #fafafa;
   font-size: 1rem; }
   .dropdown-pane.is-open {
     visibility: visible; }
@@ -4325,8 +4361,13 @@ HEADER STYLES
 /*********************
 NAVIGATION STYLES
 *********************/
-.top-bar .title-area {
-  z-index: 1; }
+.top-bar {
+  border-bottom: 1px solid #e6e6e6; }
+  .top-bar .title-area {
+    z-index: 1; }
+  .top-bar input {
+    margin: 1rem 0;
+    max-width: none; }
 
 .off-canvas-list ul {
   margin-left: 0; }
@@ -4354,6 +4395,16 @@ POSTS & CONTENT STYLES
     float: left; }
   #content article .article-header .title {
     text-transform: uppercase; }
+
+main {
+  border: 1px solid #e6e6e6;
+  background-color: #fefefe;
+  padding: 1rem 0; }
+
+aside {
+  border: 1px solid #e6e6e6;
+  background-color: #fefefe;
+  padding: 1rem 0; }
 
 .page-title .vcard {
   border: 0px;

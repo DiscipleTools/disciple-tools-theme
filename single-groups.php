@@ -1,3 +1,5 @@
+<?php if ((isset($_POST['dt_groups_noonce']) && wp_verify_nonce( $_POST['dt_groups_noonce'], 'update_dt_groups' ))) { dt_save_group($_POST); } // Catch and save update info ?>
+
 <?php get_header(); ?>
 
     <div id="content">
@@ -8,7 +10,16 @@
 
                 <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
-                    <?php get_template_part( 'parts/loop', 'single-group' ); ?>
+                    <?php
+                        if(isset($_GET['action']) && $_GET['action'] == 'edit') { // check if edit screen
+
+                            get_template_part( 'parts/edit', 'group' );
+
+                        } else {
+
+                            get_template_part( 'parts/loop', 'single-group' );
+                        }
+                    ?>
 
                 <?php endwhile; else : ?>
 

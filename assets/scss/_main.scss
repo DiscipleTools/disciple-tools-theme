@@ -65,10 +65,18 @@ NAVIGATION STYLES
 *********************/
 .top-bar {
 
+  border-bottom: 1px solid $light-gray;
+
 	.title-area {
 		z-index: 1;
 	}
-} 
+
+  input {
+    margin: 1rem 0;
+    max-width: none;
+  }
+
+}
 
 .off-canvas-list {
 	ul {
@@ -88,8 +96,12 @@ NAVIGATION STYLES
 POSTS & CONTENT STYLES
 *********************/
 #content {
+
+
+
 	#inner-content {
 		padding: 1rem 0rem;
+
 
 	}
     article {
@@ -138,10 +150,24 @@ POSTS & CONTENT STYLES
     }
 }
 
+main {
+  border: 1px solid $light-gray;
+  background-color: $white;
+  padding: 1rem 0;
+}
+
+aside {
+  border: 1px solid $light-gray;
+  background-color: $white;
+  padding: 1rem 0;
+}
+
 .single-title,
 .page-title {
 	
 }
+
+
 
 .single-title {
 	
