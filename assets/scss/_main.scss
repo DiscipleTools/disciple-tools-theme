@@ -102,6 +102,10 @@ POSTS & CONTENT STYLES
 	#inner-content {
 		padding: 1rem 0rem;
 
+      nav {
+        padding-left: 1rem;
+      }
+
 
 	}
     article {
@@ -148,18 +152,25 @@ POSTS & CONTENT STYLES
 
 		}
     }
+
+    section.block {
+      border: 1px solid $light-gray;
+      background-color: $white;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
 }
 
 main {
-  border: 1px solid $light-gray;
-  background-color: $white;
-  padding: 1rem 0;
+
 }
 
 aside {
-  border: 1px solid $light-gray;
-  background-color: $white;
-  padding: 1rem 0;
+
+}
+
+.column .columns {
+
 }
 
 .single-title,

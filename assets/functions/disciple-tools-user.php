@@ -59,33 +59,115 @@ function dt_get_user_associations () {
     return $user_connections;
 }
 
+
+/**
+ * Get team contacts for a specified user_id
+ *
+ * Example return:
+ * Array
+    (
+        [relation] => OR
+        [0] => Array
+            (
+            [key] => assigned_to
+            [value] => user-1
+        )
+
+        [1] => Array
+        (
+            [key] => assigned_to
+            [value] => group-1
+        )
+    )
+ *
+ *
+ *
+ */
+function dt_get_team_contacts($user_id) {
+    // get variables
+    global $wpdb;
+    $user_connections = array();
+    $user_connections['relation'] = 'OR';
+    $members = array();
+
+    // First Query
+    // Build arrays for current groups connected to user
+    $sql = $wpdb->prepare(
+        'SELECT DISTINCT %1$s.%3$s
+          FROM %1$s
+          INNER JOIN %2$s ON %1$s.%3$s=%2$s.%3$s
+            WHERE object_id  = \'%4$d\'
+            AND taxonomy = \'%5$s\'
+            ',
+        $wpdb->term_relationships,
+        $wpdb->term_taxonomy,
+        'term_taxonomy_id',
+        $user_id,
+        'user-group'
+    );
+    $results = $wpdb->get_results( $sql, ARRAY_A );
+
+
+    // Loop
+    foreach ($results as $result) {
+        // create the meta query for the group
+        $user_connections[] = array('key' => 'assigned_to', 'value' => 'group-' . $result['term_taxonomy_id']  );
+
+        // Second Query
+        // query a member list for this group
+        $sql = $wpdb->prepare(
+            'SELECT %1$s.object_id 
+          FROM %1$s
+            WHERE term_taxonomy_id  = \'%2$d\'
+            ',
+            $wpdb->term_relationships,
+            $result['term_taxonomy_id']
+        );
+
+        // build list of member ids who are part of the team
+        $results2 = $wpdb->get_results( $sql, ARRAY_A );
+
+        // Inner Loop
+        foreach ($results2 as $result2) {
+
+            if($result2['object_id'] != $user_id) {
+                $members[] = $result2['object_id'];
+            }
+        }
+
+    }
+
+    $members = array_unique($members);
+
+    foreach($members as $member) {
+        $user_connections[] = array('key' => 'assigned_to', 'value' => 'user-' . $member  );
+    }
+
+    // return
+    return $user_connections;
+
+}
+
 /**
  * Gets the name of the Group or User
  * Used in the loop to get a friendly name of the 'assigned_to' field of the contact
  *
  * @return void
  */
-function dt_get_assigned_name () {
+function dt_get_assigned_name ($contact_id) {
 
-    $metadata = get_post_meta( get_the_ID(), $key = 'assigned_to', true );
+    $metadata = get_post_meta( $contact_id, $key = 'assigned_to', true );
 
     $meta_array = explode('-', $metadata); // Separate the type and id
-    $type = $meta_array[0]; // Build variables
+    $type = $meta_array[0];
     $id = $meta_array[1];
 
-    // Build option for current value
-    if ( $type == 'user') {
-
-        if ($id == get_current_user_id()) {
-            echo 'You';
-        } else {
-            echo 'Not you. Hey, wait a minute. Should you be seeing this?';
-        }
+    if($type == 'user') {
+        $value = get_user_by('id', $id);
+        echo $value->display_name;
     } else {
-
         $value = get_term( $id);
         echo $value->name;
-
     }
 }
 

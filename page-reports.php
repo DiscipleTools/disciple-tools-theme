@@ -13,18 +13,81 @@ function dt_chart_enqueue () {
 
     <div id="content">
 
-        <div id="inner-content" class="row">
+        <div id="inner-content">
 
-            <main id="main" class="large-12 medium-12 columns" role="main">
+            <div class="row">
 
-                <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+                <!-- Breadcrumb Navigation-->
+                <nav aria-label="You are here:" role="navigation">
+                    <ul class="breadcrumbs">
+                        <li><a href="/">Dashboard</a></li>
+                        <li>
+                            <span class="show-for-sr">Current: </span> Reports
+                        </li>
+                    </ul>
+                </nav>
 
-                    <?php dt_chart_wordtree (); ?>
-                    <?php dt_chart_bargraph (); ?>
+            </div>
 
-                <?php endwhile; endif; ?>
 
-            </main> <!-- end #main -->
+
+            <div class="row medium-up-2 xlarge-up-4">
+
+                <div class="column column-block">
+                    <img src="//placehold.it/600x600" class="thumbnail" alt="">
+                </div>
+
+                <div class="column column-block">
+                    <img src="//placehold.it/600x600" class="thumbnail" alt="">
+                </div>
+
+                <div class="column column-block">
+                    <img src="//placehold.it/600x600" class="thumbnail" alt="">
+                </div>
+
+                <div class="column column-block">
+                    <img src="//placehold.it/600x600" class="thumbnail" alt="">
+                </div>
+
+
+            </div>
+
+            <div class="row medium-up-2 xlarge-up-4">
+
+                <div class="column column-block">
+                    <img src="//placehold.it/600x600" class="thumbnail" alt="">
+                </div>
+
+                <div class="column column-block">
+                    <img src="//placehold.it/600x600" class="thumbnail" alt="">
+                </div>
+
+                <div class="column column-block">
+                    <img src="//placehold.it/600x600" class="thumbnail" alt="">
+                </div>
+
+                <div class="column column-block">
+                    <img src="//placehold.it/600x600" class="thumbnail" alt="">
+                </div>
+
+
+            </div>
+
+            <div class="row medium-up-3 large-up-3">
+
+                <div class="column column-block">
+                    <img src="//placehold.it/600x600" class="thumbnail" alt="">
+                </div>
+
+                <div class="column column-block">
+                    <img src="//placehold.it/600x600" class="thumbnail" alt="">
+                </div>
+
+                <div class="column column-block">
+                    <img src="//placehold.it/600x600" class="thumbnail" alt="">
+                </div>
+
+            </div>
 
         </div> <!-- end #inner-content -->
 

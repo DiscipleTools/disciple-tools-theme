@@ -4381,6 +4381,8 @@ POSTS & CONTENT STYLES
 *********************/
 #content #inner-content {
   padding: 1rem 0rem; }
+  #content #inner-content nav {
+    padding-left: 1rem; }
 
 #content article {
   margin-bottom: 10px; }
@@ -4396,15 +4398,11 @@ POSTS & CONTENT STYLES
   #content article .article-header .title {
     text-transform: uppercase; }
 
-main {
+#content section.block {
   border: 1px solid #e6e6e6;
   background-color: #fefefe;
-  padding: 1rem 0; }
-
-aside {
-  border: 1px solid #e6e6e6;
-  background-color: #fefefe;
-  padding: 1rem 0; }
+  padding: 1rem;
+  margin-bottom: 1rem; }
 
 .page-title .vcard {
   border: 0px;

@@ -5,31 +5,43 @@
 		<div id="inner-content" class="row">
 		
 		    <main id="main" class="large-8 medium-8 columns" role="main">
+
+                <section class="block">
 			    
-		    	<header>
-		    		<h1 class="page-title"><?php the_archive_title();?></h1>
-					<?php the_archive_description('<div class="taxonomy-description">', '</div>');?>
-		    	</header>
-		
-		    	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-			 
-					<!-- To see additional archive styles, visit the /parts directory -->
-					<?php get_template_part( 'parts/loop', 'archive' ); ?>
+                    <header>
+                        <h1 class="page-title"><?php the_archive_title();?></h1>
+                        <?php the_archive_description('<div class="taxonomy-description">', '</div>');?>
+                    </header>
 
-				    
-				<?php endwhile; ?>	
+                    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
-					<?php disciple_tools_page_navi(); ?>
-					
-				<?php else : ?>
-											
-					<?php get_template_part( 'parts/content', 'missing' ); ?>
-						
-				<?php endif; ?>
+                        <!-- To see additional archive styles, visit the /parts directory -->
+                        <?php get_template_part( 'parts/loop', 'archive' ); ?>
+
+
+                    <?php endwhile; ?>
+
+                        <?php disciple_tools_page_navi(); ?>
+
+                    <?php else : ?>
+
+                        <?php get_template_part( 'parts/content', 'missing' ); ?>
+
+                    <?php endif; ?>
+
+                </section>
 		
 			</main> <!-- end #main -->
 	
-			<?php //get_sidebar(); ?>
+            <aside class="large-4 medium-4 columns ">
+
+                <section class="block">
+
+                    <p>Sidebar</p>
+
+                </section>
+
+            </aside> <!-- end #aside -->
 	    
 	    </div> <!-- end #inner-content -->
 	    

@@ -6,32 +6,53 @@
 
         <div id="inner-content" class="row">
 
+            <!-- Breadcrumb Navigation-->
+            <nav aria-label="You are here:" role="navigation">
+                <ul class="breadcrumbs">
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="/contacts/">Contacts</a></li>
+                    <li>
+                        <span class="show-for-sr">Current: </span> Name <!-- TODO: Query the contact name and replace this with the contact title.-->
+                    </li>
+                </ul>
+            </nav>
+
             <main id="main" class="large-8 medium-8 columns" role="main">
 
-                <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
-                    <?php
 
-                        if(isset($_GET['action']) && $_GET['action'] == 'edit') { // check if edit screen
+                    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
-                            get_template_part( 'parts/edit', 'contact' );
+                        <?php
 
-                        } else {
+                            if(isset($_GET['action']) && $_GET['action'] == 'edit') { // check if edit screen
 
-                            get_template_part( 'parts/loop', 'single-contact' );
-                        }
+                               get_template_part( 'parts/edit', 'contact' );
 
-                    ?>
+                            } else {
 
-                <?php endwhile; else : ?>
+                                get_template_part( 'parts/loop', 'single-contact' );
+                            }
 
-                    <?php get_template_part( 'parts/content', 'missing' ); ?>
+                        ?>
 
-                <?php endif; ?>
+                    <?php endwhile; else : ?>
+
+                        <?php get_template_part( 'parts/content', 'missing' ); ?>
+
+                    <?php endif; ?>
 
             </main> <!-- end #main -->
 
-            <?php get_sidebar('contacts'); ?>
+            <aside class="large-4 medium-4 columns ">
+
+                <section class="block">
+
+                    <p>Sidebar</p>
+
+                </section>
+
+            </aside> <!-- end #aside -->
 
         </div> <!-- end #inner-content -->
 

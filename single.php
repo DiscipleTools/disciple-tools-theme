@@ -5,20 +5,32 @@
 	<div id="inner-content" class="row">
 
 		<main id="main" class="large-8 medium-8 columns" role="main">
-		
-		    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-		
-		    	<?php get_template_part( 'parts/loop', 'single' ); ?>
-		    	
-		    <?php endwhile; else : ?>
-		
-		   		<?php get_template_part( 'parts/content', 'missing' ); ?>
 
-		    <?php endif; ?>
+            <section class="block">
+		
+                <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+
+                    <?php get_template_part( 'parts/loop', 'single' ); ?>
+
+                <?php endwhile; else : ?>
+
+                    <?php get_template_part( 'parts/content', 'missing' ); ?>
+
+                <?php endif; ?>
+
+            </section>
 
 		</main> <!-- end #main -->
 
-		<?php get_sidebar('general'); ?>
+        <aside class="large-4 medium-4 columns ">
+
+            <section class="block">
+
+                <p>Sidebar</p>
+
+            </section>
+
+        </aside> <!-- end #aside -->
 
 	</div> <!-- end #inner-content -->
 

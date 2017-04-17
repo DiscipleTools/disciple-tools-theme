@@ -37,47 +37,59 @@
 	<div id="content">
 
 		<div id="inner-content" class="row">
+
+            <!-- Breadcrumb Navigation-->
+            <nav aria-label="You are here:" role="navigation">
+                <ul class="breadcrumbs">
+                    <li><a href="/">Dashboard</a></li>
+                    <li>
+                        <span class="show-for-sr">Current: </span> Search
+                    </li>
+                </ul>
+            </nav>
 	
 			<main id="main" class="large-8 medium-8 columns first" role="main">
 
-                <header>
-					<p>Results for: <?php echo esc_attr(get_search_query()); ?></p><hr>
-				</header>
+                <section class="block">
 
-                <h3>Contacts</h3>
-				<?php if ( $search1->have_posts() ) : while ( $search1->have_posts() ) : $search1->the_post(); ?>
-			 
-					<!-- To see additional archive styles, visit the /parts directory -->
-					<?php get_template_part( 'parts/loop', 'list' ); ?>
-				    
-				<?php endwhile; ?>	
+                    <header>
+                        <p>Results for: <?php echo esc_attr(get_search_query()); ?></p><hr>
+                    </header>
 
-					<?php //disciple_tools_page_navi(); ?>
-					
-				<?php else : ?>
-				
-					<?php get_template_part( 'parts/content', 'missing' ); ?>
-						
-			    <?php endif; ?>
+                    <h3>Contacts</h3>
+                    <?php if ( $search1->have_posts() ) : while ( $search1->have_posts() ) : $search1->the_post(); ?>
 
-                <h3>Groups</h3>
+                        <!-- To see additional archive styles, visit the /parts directory -->
+                        <?php get_template_part( 'parts/loop', 'list' ); ?>
 
-                <?php if ( $search2->have_posts() ) : while ( $search2->have_posts() ) : $search2->the_post(); ?>
+                    <?php endwhile; ?>
 
-                    <!-- To see additional archive styles, visit the /parts directory -->
-                    <?php get_template_part( 'parts/loop', 'list' ); ?>
+                        <?php //disciple_tools_page_navi(); ?>
 
-                <?php endwhile; ?>
+                    <?php else : ?>
 
-                    <?php //disciple_tools_page_navi(); ?>
+                        <?php get_template_part( 'parts/content', 'missing' ); ?>
 
-                <?php else : ?>
+                    <?php endif; ?>
 
-                    <?php get_template_part( 'parts/content', 'missing' ); ?>
+                    <h3>Groups</h3>
 
-                <?php endif; ?>
+                    <?php if ( $search2->have_posts() ) : while ( $search2->have_posts() ) : $search2->the_post(); ?>
 
+                        <!-- To see additional archive styles, visit the /parts directory -->
+                        <?php get_template_part( 'parts/loop', 'list' ); ?>
 
+                    <?php endwhile; ?>
+
+                        <?php //disciple_tools_page_navi(); ?>
+
+                    <?php else : ?>
+
+                        <?php get_template_part( 'parts/content', 'missing' ); ?>
+
+                    <?php endif; ?>
+
+                </section class="block">
 	
 		    </main> <!-- end #main -->
 
