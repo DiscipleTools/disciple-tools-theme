@@ -26,6 +26,9 @@ require_once(get_template_directory().'/assets/translation/translation.php');
 // Adds Disciple Tools functions
 require_once(get_template_directory().'/assets/functions/disciple-tools-user.php');
 
+// Adds Disciple Tools functions
+require_once(get_template_directory().'/assets/functions/disciple-tools-charts.php');
+
 // Adds Disciple Tools Page Reports
 require_once(get_template_directory().'/assets/functions/page-reports.php');
 
