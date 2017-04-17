@@ -136,26 +136,41 @@
 
             <aside class="large-4 medium-4 columns ">
 
+
+
+
+
                 <section class="block">
                     <!-- Project Stats -->
                     <h4>Quick Note</h4>
-                    <form>
-                        <select>
-                            <option>Buthay</option>
-                            <option>Mohammed</option>
-                            <option>Takir</option>
-                            <option>Mohammed</option>
-                            <option>Buthay</option>
-                            <option>Mohammed</option>
-                            <option>Takir</option>
-                            <option>Mohammed</option>
-                        </select>
-                        <br/>
-                        <textarea></textarea>
-                        <?php comment_form( $args, $post_id ); ?>
-                        <input type="submit" value="submit" name="Add Comment" class="button small" />
+                    <form id="post-submission-form">
+                        <div>
+                            <label for="post-submission-title">
+                                <?php _e( 'Title', 'your-text-domain' ); ?>
+                            </label>
+                            <input type="text" name="post-submission-title" id="post-submission-title" required aria-required="true">
+                        </div>
+                        <div>
+                            <label for="post-submission-excerpt">
+                                <?php _e( 'Excerpt', 'your-text-domain' ); ?>
+                            </label>
+                            <textarea rows="2" cols="20" name="post-submission-excerpt" id="post-submission-excerpt" required aria-required="true"></textarea>
+                        </div>
+                        <div>
+                            <label for="post-submission-content">
+                                <?php _e( 'Content', 'your-text-domain' ); ?>
+                            </label>
+                            <textarea rows="10" cols="20" name="post-submission-content" id="post-submission-content"></textarea>
+                        </div>
+                        <input type="submit" value="<?php esc_attr_e( 'Submit', 'disciple_tools_theme'); ?>">
                     </form>
                 </section>
+
+
+
+
+
+
 
                 <section class="block">
                 <!-- Project Stats -->
