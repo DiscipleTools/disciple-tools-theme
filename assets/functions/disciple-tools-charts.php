@@ -54,6 +54,43 @@ function dt_chart_wordtree_relationships () {
 }
 
 /**
+ * Combo Graph
+ * call by dt_chart_combograph() and use in conjunction with echo '<div id="chart_combo_div" style="width: 900px; height: 500px;" ></div>';
+ *
+ */
+function dt_chart_dounut () {
+    add_action('wp_footer', 'dt_chart_dounut_script');
+}
+
+function dt_chart_dounut_script () {
+    //https://developers.google.com/chart/interactive/docs/gallery
+    echo "
+    <script type=\"text/javascript\">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart1);
+
+      function drawChart1() {
+            var data = google.visualization.arrayToDataTable([
+              ['Year', 'Sales', 'Expenses'],
+              ['2014',  1170,      460],
+              ['2015',  660,       1120],
+              ['2016',  1030,      540]
+            ]);
+    
+            
+            var donutOption = {
+                title: 'Progress',
+                pieHole: 0.4,
+            }
+            
+            var chart = new google.visualization.PieChart(document.getElementById('chart_dounut_div'));
+            chart.draw(data, donutOption);
+        }
+    </script>
+    ";
+}
+
+/**
  * Sample Bargraph Chart
  */
 function dt_chart_bargraph () {

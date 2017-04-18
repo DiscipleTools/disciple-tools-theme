@@ -89,6 +89,8 @@ function dt_chart_enqueue () {
 
             </div>
 
+            <?php dt_chart_bargraph (); ?>
+
         </div> <!-- end #inner-content -->
 
     </div> <!-- end #content -->

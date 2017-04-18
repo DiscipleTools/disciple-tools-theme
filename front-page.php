@@ -1,3 +1,5 @@
+<?php require_once (get_template_directory() . '/assets/functions/page-front-page.php'); ?>
+
 <?php get_header(); ?>
 
 <div id="content">
@@ -56,6 +58,7 @@
                     <ul class="tabs" data-tabs id="example-tabs">
                         <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">Mine</a></li>
                         <li class="tabs-title"><a href="#panel2">My Team</a></li>
+                        <li class="tabs-title"><a href="#panel3">By Location</a></li>
                     </ul>
                     <div class="tabs-content" data-tabs-content="example-tabs">
                         <div class="tabs-panel is-active" id="panel1">
@@ -99,7 +102,7 @@
                             <?php if ( $query2->have_posts() ) : while ( $query2->have_posts() ) : $query2->the_post(); ?>
 
                                 <!-- To see additional archive styles, visit the /parts directory -->
-                                <li><a href="<?php the_permalink() ?>" rel="link" title="<?php the_title_attribute(); ?>"><?php the_title(); ?> </a> (<?php dt_get_assigned_name(get_the_ID() ); ?>) </li>
+                                <li><a href="<?php the_permalink() ?>" rel="link" title="<?php the_title_attribute(); ?>"><?php the_title(); ?> </a> <span class="float-right small grey">(<?php dt_get_assigned_name(get_the_ID() ); ?>)</span> </li>
 
 
                             <?php endwhile; ?>
@@ -113,6 +116,9 @@
                             <?php endif; ?>
 
                         </div>
+                        <div class="tabs-panel" id="panel2">
+                            list of contacts by location
+                        </div>
                     </div>
                 </section>
 
@@ -120,7 +126,8 @@
 
                     <div class="medium-6 columns">
                         <section class="block">
-                            <h4>My Team</h4>
+                            <?php dt_chart_dounut(); ?>
+                            <div id="chart_dounut_div" style="width: 100%; " ></div>
                         </section>
                     </div>
 
@@ -138,36 +145,28 @@
 
 
 
-
-
                 <section class="block">
                     <!-- Project Stats -->
-                    <h4>Quick Note</h4>
-                    <form id="post-submission-form">
+                    <h4>Quick Update</h4>
+                    <form id="post-comment-form">
                         <div>
                             <label for="post-submission-title">
-                                <?php _e( 'Title', 'your-text-domain' ); ?>
+                                <?php _e( 'Select Contact', 'disciple_tools' ); ?>
                             </label>
-                            <input type="text" name="post-submission-title" id="post-submission-title" required aria-required="true">
+                            <select name="post-comment-id" id="post-comment-id" required aria-required="true">
+                                    <option value="65">Abe New</option>
+                            </select>
                         </div>
-                        <div>
-                            <label for="post-submission-excerpt">
-                                <?php _e( 'Excerpt', 'your-text-domain' ); ?>
-                            </label>
-                            <textarea rows="2" cols="20" name="post-submission-excerpt" id="post-submission-excerpt" required aria-required="true"></textarea>
-                        </div>
+
                         <div>
                             <label for="post-submission-content">
-                                <?php _e( 'Content', 'your-text-domain' ); ?>
+                                <?php _e( 'Content', 'disciple_tools' ); ?>
                             </label>
-                            <textarea rows="10" cols="20" name="post-submission-content" id="post-submission-content"></textarea>
+                            <textarea rows="3" cols="20" name="post-comment-content" id="post-comment-content"></textarea>
                         </div>
-                        <input type="submit" value="<?php esc_attr_e( 'Submit', 'disciple_tools_theme'); ?>">
+                        <input type="submit" value="<?php esc_attr_e( 'Submit', 'disciple_tools'); ?>" class="button small">
                     </form>
                 </section>
-
-
-
 
 
 
