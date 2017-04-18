@@ -59,6 +59,9 @@ require_once(get_template_directory().'/assets/functions/page-profile.php');
 // Adds Disciple Tools Page Profile
 require_once(get_template_directory().'/assets/functions/page-prayer-guide.php');
 
+require_once (get_template_directory() . '/assets/functions/page-front-page.php');
+require_once (get_template_directory() . '/assets/functions/disciple-tools-contacts.php');
+
 
 // Remove 4.2 Emoji Support
 // require_once(get_template_directory().'/assets/functions/disable-emoji.php'); 

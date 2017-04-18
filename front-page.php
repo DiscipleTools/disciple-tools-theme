@@ -1,5 +1,3 @@
-<?php require_once (get_template_directory() . '/assets/functions/page-front-page.php'); ?>
-
 <?php get_header(); ?>
 
 <div id="content">
@@ -52,13 +50,13 @@
                     </span>
                 </div>
 
+                <div class="row column padding-bottom">
 
-                <section class="block">
-                    <h4>Contacts</h4>
+
                     <ul class="tabs" data-tabs id="example-tabs">
-                        <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">Mine</a></li>
-                        <li class="tabs-title"><a href="#panel2">My Team</a></li>
-                        <li class="tabs-title"><a href="#panel3">By Location</a></li>
+                        <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">My Contacts</a></li>
+                        <li class="tabs-title"><a href="#panel2">Team Contacts</a></li>
+                        <li class="tabs-title"><a href="#panel3">Contacts By Location</a></li>
                     </ul>
                     <div class="tabs-content" data-tabs-content="example-tabs">
                         <div class="tabs-panel is-active" id="panel1">
@@ -120,7 +118,8 @@
                             list of contacts by location
                         </div>
                     </div>
-                </section>
+
+                </div>
 
                 <div class="row">
 

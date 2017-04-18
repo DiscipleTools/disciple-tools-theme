@@ -4,6 +4,10 @@ add_action('wp_enqueue_scripts', 'dt_chart_enqueue');
 function dt_chart_enqueue () {
     wp_register_script( 'dt_google_chart', 'https://www.gstatic.com/charts/loader.js' );
     wp_enqueue_script( 'dt_google_chart', 'https://www.gstatic.com/charts/loader.js' );
+
+
+    wp_register_script( 'dt_jquery_lists', 'https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js', array( 'jquery' ) );
+    wp_enqueue_script( 'dt_jquery_lists', 'https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js', array( 'jquery' ) );
 }
 
 /**

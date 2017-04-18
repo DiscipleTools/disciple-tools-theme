@@ -16,38 +16,100 @@
 
             <main id="main" class="large-8 medium-8 columns frame" role="main">
 
-                <section class="block">
+                <ul class="tabs" data-tabs id="my-contact-tabs">
+                    <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">My Contacts</a></li>
+                    <li class="tabs-title"><a href="#panel2">Team Contacts</a></li>
+                    <li class="tabs-title"><a href="#panel3">Contacts By Location</a></li>
+                </ul>
+                <div class="tabs-content" data-tabs-content="my-contact-tabs">
+                    <div class="tabs-panel is-active" id="panel1">
 
-                    <header>
-                        <?php the_archive_title();?>
+                        <div id="my-contacts">
+                            <div class="row">
+                                <div class="medium-6 columns">
+                                    <input type="text" class="search"  />
+                                </div>
+                                <div class="medium-6 columns">
+                                    <button class="sort button small" data-sort="name">Sort by name</button> <button class="sort button small" data-sort="team">Sort by team</button>
+                                </div>
 
-                    </header>
+                            </div>
 
-                    <?php
-                    $args = array(
-                        'post_type' => 'contacts',
-                        'nopaging' => true,
-                        'meta_query' => dt_get_user_associations(),
-                    );
-                    $query = new WP_Query( $args );
-                    ?>
-                    <?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post(); ?>
+                            <ul class="list">
 
-                        <!-- To see additional archive styles, visit the /parts directory -->
-                    <?php get_template_part( 'parts/loop', 'contacts' ); ?>
+                                <?php
+                                $args = array(
+                                    'post_type' => 'contacts',
+                                    'nopaging' => true,
+                                    'meta_key' => 'assigned_to',
+                                    'meta_value' => 'user-'. get_current_user_id(),
+                                );
+                                $query = new WP_Query( $args );
+                                ?>
+                                <?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post(); ?>
+
+                                    <!-- To see additional archive styles, visit the /parts directory -->
+                                    <?php get_template_part( 'parts/loop', 'contacts' ); ?>
 
 
-                    <?php endwhile; ?>
+                                <?php endwhile; ?>
 
-                        <?php //disciple_tools_page_navi(); ?>
+                                <?php else : ?>
 
-                    <?php else : ?>
+                                    <?php echo 'No records'; ?>
 
-                        <?php get_template_part( 'parts/content', 'missing' ); ?>
+                                <?php endif; ?>
+                            </ul>
 
-                    <?php endif; ?>
+                            <ul class="pagination"></ul>
+                        </div> <!-- End my-contacts -->
 
-                </section>
+
+                    </div>
+                    <div class="tabs-panel" id="panel2">
+
+                        <div id="team-contacts">
+                            <div class="row">
+                                <div class="medium-6 columns">
+                                    <input type="text" class="search"  />
+                                </div>
+                                <div class="medium-6 columns">
+                                    <button class="sort button small" data-sort="name">Sort by name</button> <button class="sort button small" data-sort="team">Sort by team</button>
+                                </div>
+
+                            </div>
+
+                            <ul class="list">
+                                    <?php
+                                    $args = array(
+                                        'post_type' => 'contacts',
+                                        'nopaging' => true,
+                                        'meta_query' => dt_get_team_contacts(get_current_user_id()),
+                                    );
+                                    $query2 = new WP_Query( $args );
+                                    ?>
+                                    <?php if ( $query2->have_posts() ) : while ( $query2->have_posts() ) : $query2->the_post(); ?>
+
+                                        <!-- To see additional archive styles, visit the /parts directory -->
+                                        <li><span class="name"><a href="<?php the_permalink() ?>" rel="link" title="<?php the_title_attribute(); ?>"><?php the_title(); ?> </a></span> <span class="float-right small grey team">(<?php dt_get_assigned_name(get_the_ID() ); ?>)</span> </li>
+
+
+                                    <?php endwhile; ?>
+
+                                    <?php else : ?>
+
+                                        <?php echo 'No records'; ?>
+
+                                    <?php endif; ?>
+                            </ul>
+
+                            <ul class="pagination"></ul>
+                        </div> <!-- End my-contacts -->
+                    </div>
+                    <div class="tabs-panel" id="panel3">
+                        list of contacts by location
+                    </div>
+                </div>
 
             </main> <!-- end #main -->
 
@@ -55,7 +117,7 @@
 
                 <section class="block">
 
-                    <p>Sidebar</p>
+
 
                 </section>
 
@@ -65,4 +127,26 @@
 
     </div> <!-- end #content -->
 
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            var myContacts = new List('my-contacts', {
+                valueNames: ['name', 'team'],
+                page: 5,
+                pagination: true
+            });
+
+            var teamContacts = new List('team-contacts', {
+                valueNames: ['name', 'team'],
+                page: 5,
+                pagination: true
+            });
+        });
+    </script>
+    <style>
+        .pagination li {
+            display:inline-block;
+            padding:5px;
+        }
+
+    </style>
 <?php get_footer(); ?>
