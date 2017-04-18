@@ -271,6 +271,14 @@ function dt_save_group($post) {
     }
 }
 
+/**
+ * Get Number of Contacts for a Location
+ * @return int
+ */
+function dt_get_contacts_at_location( $post_id, $user_id ) {
+    return 0;
+}
+
 
 
 
