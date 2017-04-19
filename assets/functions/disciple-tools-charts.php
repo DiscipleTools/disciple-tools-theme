@@ -81,6 +81,8 @@ function dt_chart_dounut_script () {
             var donutOption = {
                 title: 'Progress',
                 pieHole: 0.4,
+                width: 100,
+                height: 500
             }
             
             var chart = new google.visualization.PieChart(document.getElementById('chart_dounut_div'));
@@ -107,7 +109,7 @@ function dt_chart_bargraph_script () {
     //https://developers.google.com/chart/interactive/docs/gallery
     echo "
     <script type=\"text/javascript\">
-      //google.charts.load('current', {'packages':['corechart']});
+      google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart1);
 
       function drawChart1() {

@@ -210,22 +210,7 @@
 
                 </div>
 
-                <div class="row">
 
-                    <div class="medium-6 columns">
-                        <section class="block">
-                            <?php dt_chart_dounut(); ?>
-                            <div id="chart_dounut_div" style="width: 100%; " ></div>
-                        </section>
-                    </div>
-
-                    <div class="medium-6 columns">
-                        <section class="block">
-                            <h4>Project News</h4>
-                        </section>
-                    </div>
-
-                </div>
 
             </main> <!-- end #main -->
 

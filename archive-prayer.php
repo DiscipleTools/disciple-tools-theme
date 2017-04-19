@@ -17,8 +17,14 @@
 		    <main id="main" class="large-8 medium-8 columns" role="main">
 
                 <section class="block">
-    
-                    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+                    <?php
+                    $args = array(
+                        'post_type' => 'prayer',
+
+                    );
+                    $query = new WP_Query( $args );
+                    ?>
+                    <?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post(); ?>
 
                         <!-- To see additional archive styles, visit the /parts directory -->
                         <?php get_template_part( 'parts/loop', 'archive' ); ?>

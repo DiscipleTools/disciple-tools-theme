@@ -4382,6 +4382,19 @@ NAVIGATION STYLES
     border-bottom: 0px; }
   .off-canvas-list ul .dropdown {
     margin-left: 20px; }
+  .off-canvas-list ul .off-canvas-padding {
+    padding: 0 1rem; }
+
+#off-canvas span.title {
+  padding: 2rem 1rem 1rem;
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.3rem; }
+
+.menu input {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  width: 80%; }
 
 /*********************
 POSTS & CONTENT STYLES

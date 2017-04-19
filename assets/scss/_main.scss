@@ -94,11 +94,39 @@ NAVIGATION STYLES
 			a {
 				border-bottom: 0px;
 			}
+
 		}
 		.dropdown {
 			margin-left: 20px;
 		}
+
+		.off-canvas-padding {
+			padding: 0 1rem;
+		}
 	}
+
+
+}
+
+
+#off-canvas {
+	span.title {
+		padding:2rem 1rem 1rem;
+		text-align: center;
+		font-weight: 800;
+		font-size:1.3rem;
+	}
+}
+
+
+.menu {
+	input {
+		margin-left: 1rem;
+		margin-right: 1rem;
+		width: 80%;
+	}
+
+
 }
 
 /*********************
@@ -178,9 +206,7 @@ aside {
 
 }
 
-.column .columns {
 
-}
 
 .single-title,
 .page-title {

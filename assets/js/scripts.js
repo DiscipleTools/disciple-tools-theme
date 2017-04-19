@@ -24,4 +24,16 @@ jQuery(document).ready(function() {
 });
 
 
+/**
+* Custom javascript for Disciple Tools
+*
+* */
 
+
+
+jQuery(document).ready(function($) {
+
+    // This adds padding to the top of the offcanvas menu, if the wp admin bar is turned on for the profile.
+    $( "#wpadminbar" ).addClass( "add" );
+
+});

@@ -26,7 +26,7 @@
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" />
 	    <?php } ?>
 
-		<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>">
+<!--		<link rel="pingback" href="--><?php //bloginfo('pingback_url'); ?><!--">-->
 
 		<?php wp_head(); ?>
 

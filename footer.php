@@ -2,6 +2,7 @@
 					<div id="inner-footer" class="row">
 						<div class="large-12 medium-12 columns">
 							<nav role="navigation">
+                                <?php if( user_can(get_current_user_id(), 'read' )) { echo '<a href="/wp-admin">Admin Panel</a>';} ?>
 	    						<?php disciple_tools_footer_links(); ?>
 	    					</nav>
 	    				</div>

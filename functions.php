@@ -20,6 +20,8 @@ if ( !defined( 'DISCIPLE_TOOLS_DIR') )
     define( 'DISCIPLE_TOOLS_DIR', WP_PLUGIN_DIR . '/disciple-tools' );
 
 
+
+
 // Theme support options
 require_once(get_template_directory().'/assets/functions/theme-support.php'); 
 
@@ -61,9 +63,16 @@ require_once(get_template_directory().'/assets/functions/page-prayer-guide.php')
 
 require_once(get_template_directory() . '/assets/functions/page-front-page.php');
 
+require_once(get_template_directory() . '/assets/functions/private-site.php');
+
+require_once(get_template_directory() . '/assets/functions/config-options-admin.php');
+$admin_options = Disciple_Tools_Theme_Admin::instance();
+
+
+
 
 // Remove 4.2 Emoji Support
-// require_once(get_template_directory().'/assets/functions/disable-emoji.php'); 
+ require_once(get_template_directory().'/assets/functions/disable-emoji.php');
 
 // Adds site styles to the WordPress editor
 //require_once(get_template_directory().'/assets/functions/editor-styles.php'); 
@@ -72,7 +81,4 @@ require_once(get_template_directory() . '/assets/functions/page-front-page.php')
 // require_once(get_template_directory().'/assets/functions/related-posts.php'); 
 
 // Customize the WordPress login menu
-// require_once(get_template_directory().'/assets/functions/login.php'); 
-
-// Customize the WordPress admin
-// require_once(get_template_directory().'/assets/functions/admin.php'); 
+ require_once(get_template_directory().'/assets/functions/login.php');
