@@ -56,38 +56,34 @@
                         <p>Results for: <?php echo esc_attr(get_search_query()); ?></p><hr>
                     </header>
 
-                    <h3>Contacts</h3>
-                    <?php if ( $search1->have_posts() ) : while ( $search1->have_posts() ) : $search1->the_post(); ?>
 
-                        <!-- To see additional archive styles, visit the /parts directory -->
-                        <?php get_template_part( 'parts/loop', 'list' ); ?>
+                    <?php if ( $search1->have_posts() ) : ?>
 
-                    <?php endwhile; ?>
+                        <h3>Contacts</h3>
 
-                        <?php //disciple_tools_page_navi(); ?>
+                        <?php while ( $search1->have_posts() ) : $search1->the_post(); ?>
 
-                    <?php else : ?>
+                            <li><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></li>
 
-                        <?php get_template_part( 'parts/content', 'missing' ); ?>
+                        <?php endwhile; ?>
 
                     <?php endif; ?>
 
-                    <h3>Groups</h3>
 
-                    <?php if ( $search2->have_posts() ) : while ( $search2->have_posts() ) : $search2->the_post(); ?>
 
-                        <!-- To see additional archive styles, visit the /parts directory -->
-                        <?php get_template_part( 'parts/loop', 'list' ); ?>
+                    <?php if ( $search2->have_posts() ) : ?>
 
-                    <?php endwhile; ?>
+                        <h3>Groups</h3>
 
-                        <?php //disciple_tools_page_navi(); ?>
+                        <?php while ( $search2->have_posts() ) : $search2->the_post(); ?>
 
-                    <?php else : ?>
+                            <li><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></li>
 
-                        <?php get_template_part( 'parts/content', 'missing' ); ?>
+                        <?php endwhile; ?>
 
                     <?php endif; ?>
+
+                    <?php if ( ! $search1->have_posts() && ! $search2->have_posts() ) {  get_template_part( 'parts/content', 'missing' ); } ?>
 
                 </section class="block">
 	
@@ -100,14 +96,6 @@
             </aside>
 		
 		</div> <!-- end #inner-content -->
-        <div class="row">
-            <div class="large-8 medium-8 columns">
-                <?php print '<pre>'; print_r($search); print '</pre>'; ?>
-            </div>
-            <div class="large-4 medium-4 columns">
-
-            </div>
-        </div>
 
 	</div> <!-- end #content -->
 

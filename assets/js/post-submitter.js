@@ -39,19 +39,11 @@ jQuery( document ).ready( function ( $ ) {
 jQuery( document ).ready( function ( $ ) {
     $( '#post-comment-form' ).on( 'submit', function(e) {
         e.preventDefault();
-        var author = 1;
-        var author_email = 'chris@chasm.solutions';
-        var author_ip = '192.168.2.1';
         var content = $( '#post-comment-content' ).val();
-        var post = 65;
+        var post = $( '#post-comment-id' ).val();
         var status = 'publish';
 
-
-
         var data = {
-            // author: author,
-            // author_email: author_email,
-            // author_ip: author_ip,
             content: content,
             post: post,
             status: status
