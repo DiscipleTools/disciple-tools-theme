@@ -1,6 +1,9 @@
 <?php
 
-// Pre-2.6 compatibility
+/**
+ * Globals
+ */
+
 if ( !defined( 'WP_CONTENT_URL' ) )
     define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' );
 
@@ -20,7 +23,9 @@ if ( !defined( 'DISCIPLE_TOOLS_DIR') )
     define( 'DISCIPLE_TOOLS_DIR', WP_PLUGIN_DIR . '/disciple-tools' );
 
 
-
+/**
+ * Functions
+ */
 
 // Theme support options
 require_once(get_template_directory().'/assets/functions/theme-support.php'); 
@@ -61,24 +66,98 @@ require_once(get_template_directory().'/assets/functions/page-profile.php');
 // Adds Disciple Tools Page Profile
 require_once(get_template_directory().'/assets/functions/page-prayer-guide.php');
 
-require_once(get_template_directory() . '/assets/functions/page-front-page.php');
-
+// Add private site functionality
 require_once(get_template_directory() . '/assets/functions/private-site.php');
 
-require_once(get_template_directory() . '/assets/functions/config-options-admin.php');
-$admin_options = Disciple_Tools_Theme_Admin::instance();
-
-
-
+// Customize the WordPress login menu
+require_once(get_template_directory().'/assets/functions/login.php');
 
 // Remove 4.2 Emoji Support
- require_once(get_template_directory().'/assets/functions/disable-emoji.php');
+require_once(get_template_directory().'/assets/functions/disable-emoji.php');
+
+
+
+/**
+ * Disciple_Tools_Theme
+ *
+ * @class Disciple_Tools_Theme
+ * @version	0.1
+ * @since 0.1
+ * @package	Disciple_Tools_Theme
+ * @author Chasm.Solutions & Kingdom.Training
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+class Disciple_Tools_Theme {
+
+    /**
+     * Disciple_Tools_Theme The single instance of Disciple_Tools_Theme.
+     * @var 	object
+     * @access  private
+     * @since 	0.1
+     */
+    private static $_instance = null;
+
+    /**
+     * Main Disciple_Tools_Theme Instance
+     *
+     * Ensures only one instance of Disciple_Tools_Admin_Menus is loaded or can be loaded.
+     *
+     * @since 0.1
+     * @static
+     * @return Disciple_Tools_Theme instance
+     */
+    public static function instance () {
+        if ( is_null( self::$_instance ) )
+            self::$_instance = new self();
+        return self::$_instance;
+    } // End instance()
+
+    /**
+     * Constructor function.
+     * @access  public
+     * @since   0.1
+     */
+    public function __construct () {
+
+        /**
+         * Classes
+         */
+
+        require_once(get_template_directory() . '/assets/classes/config-options-admin.php');
+        $this->admin_options = Disciple_Tools_Theme_Admin::instance();
+
+
+    } // End __construct()
+
+
+
+}
+
+/**
+ * Gets the instance of the `dt_sample_data` class.  This function is useful for quickly grabbing data
+ * used throughout the plugin.
+ *
+ * @since  0.1
+ * @access public
+ * @return object
+    */
+function dt_theme() {
+    return Disciple_Tools_Theme::instance();
+}
+
+// Let's roll!
+//add_action( 'after_setup_theme', 'dt_theme' );
+dt_theme();
+
+
+
+
+
 
 // Adds site styles to the WordPress editor
-//require_once(get_template_directory().'/assets/functions/editor-styles.php'); 
+//require_once(get_template_directory().'/assets/functions/editor-styles.php');
 
 // Related post function - no need to rely on plugins
-// require_once(get_template_directory().'/assets/functions/related-posts.php'); 
-
-// Customize the WordPress login menu
- require_once(get_template_directory().'/assets/functions/login.php');
+// require_once(get_template_directory().'/assets/functions/related-posts.php');

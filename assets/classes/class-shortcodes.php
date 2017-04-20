@@ -93,7 +93,7 @@ class Disciple_Tools_Function_Callback
             // Select the file to include
             switch ($atts['name']) {
                 case 'map';
-                    require_once('maps.php');
+                    require_once('shortcode-maps.php');
                     break;
                 case 'chart':
                     require_once('charts.php');
