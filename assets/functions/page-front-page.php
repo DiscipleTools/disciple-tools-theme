@@ -40,7 +40,7 @@ add_action( 'wp_enqueue_scripts', function() {
     wp_enqueue_script( 'dt-comment-submitter', get_stylesheet_directory_uri( ) . '/assets/js/post-submitter.js', array( 'jquery' ) );
 
     //localize data for script
-    wp_localize_script( 'dt-comment-submitter', 'COMMENT_SUBMITTER', array(
+    wp_localize_script( 'dt-comment-submitter', 'POST_SUBMITTER', array(
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'success' => __( 'Thanks for your submission!', 'disciple_tools' ),

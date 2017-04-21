@@ -1,4 +1,4 @@
-<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+<article >
 
     <header class="article-header">
 
@@ -10,7 +10,7 @@
 
             <?php dt_get_contact_edit_form();  ?>
 
-            <input type="submit" name="Update" value="Update" class="button center" />
+            <input type="submit" name="Update" value="Update" class="button" />
 
         </form>
 

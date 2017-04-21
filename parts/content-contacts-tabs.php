@@ -24,8 +24,19 @@
                 $args = array(
                     'post_type' => 'contacts',
                     'nopaging' => true,
-                    'meta_key' => 'assigned_to',
-                    'meta_value' => 'user-'. get_current_user_id(),
+                    'meta_query' => array (
+                        'relation' => 'AND', // Optional, defaults to "AND"
+                        array(
+                            'key'     => 'assigned_to',
+                            'value'   => 'user-'. get_current_user_id(),
+                            'compare' => '='
+                        ),
+                        array(
+                            'key'     => 'overall_status',
+                            'value'   => 'Accepted',
+                            'compare' => '='
+                        )
+                    ),
                 );
                 $query1 = new WP_Query( $args );
                 ?>
@@ -116,24 +127,27 @@
                 <?php if ( $query2->have_posts() ) : while ( $query2->have_posts() ) : $query2->the_post(); ?>
 
                     <!-- To see additional archive styles, visit the /parts directory -->
-                    <li><span class="name">
-                                        <a href="<?php the_permalink() ?>" rel="link" title="<?php the_title_attribute(); ?>"><?php the_title(); ?> </a>
-                                    </span>
-                        <span class="float-right small grey team">
-                                        (active:
-                            <?php
-                            // Display connected pages
-                            $i = 0;
-                            foreach ( $post->connected as $post ) : setup_postdata( $post );
-                                $i++;
-                            endforeach;
-                            echo $i;
-                            wp_reset_postdata(); // set $post back to original post
-                            ?>
-                            )
-                                    </span>
-                    </li>
+                    <li>
 
+                        <span class="name">
+                            <a href="<?php the_permalink() ?>" rel="link" title="<?php the_title_attribute(); ?>"><?php the_title(); ?> </a>
+                        </span>
+
+                        <span class="float-right small grey team">
+                            (active:
+                                <?php
+                                    // Display connected pages
+                                    $i = 0;
+                                    foreach ( $post->connected as $post ) : setup_postdata( $post );
+                                        $i++;
+                                    endforeach;
+                                    echo $i;
+                                    wp_reset_postdata(); // set $post back to original post
+                                ?>
+                            )
+                        </span>
+
+                    </li>
 
                 <?php endwhile; ?>
 
@@ -145,6 +159,7 @@
             </ul>
 
             <ul class="pagination"></ul>
+
         </div> <!-- End my-contacts -->
 
 
@@ -154,19 +169,19 @@
     jQuery(document).ready(function() {
         var myContacts = new List('my-contacts', {
             valueNames: ['name', 'team'],
-            page: 5,
+            page: 10,
             pagination: true
         });
 
         var teamContacts = new List('team-contacts', {
             valueNames: ['name', 'team'],
-            page: 5,
+            page: 10,
             pagination: true
         });
 
         var locationContacts = new List('location-contacts', {
             valueNames: ['name'],
-            page: 5,
+            page: 10,
             pagination: true
         });
     });
