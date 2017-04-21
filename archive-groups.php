@@ -16,38 +16,7 @@
 
         <main id="main" class="large-8 medium-8 columns" role="main">
 
-            <section class="block">
-
-                <header>
-                    Groups
-
-                </header>
-
-                <?php
-                $args = array(
-                    'post_type' => 'groups',
-                    'nopaging' => true,
-
-                );
-                $query = new WP_Query( $args );
-                ?>
-                <?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post(); ?>
-
-                        <!-- To see additional archive styles, visit the /parts directory -->
-                        <?php get_template_part( 'parts/loop', 'groups' ); ?>
-
-
-                    <?php endwhile; ?>
-
-                <?php disciple_tools_page_navi(); ?>
-
-                <?php else : ?>
-
-                    <?php get_template_part( 'parts/content', 'missing' ); ?>
-
-                <?php endif; ?>
-
-            </section>
+            <?php include ('parts/content-groups-tabs.php') ?>
 
         </main> <!-- end #main -->
 
@@ -55,7 +24,7 @@
 
             <section class="block">
 
-                <p>Sidebar</p>
+                <p>Links</p>
 
             </section>
 

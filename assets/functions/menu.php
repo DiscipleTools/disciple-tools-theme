@@ -93,24 +93,67 @@ class Topbar_Menu_Walker extends Walker_Nav_Menu {
 // The Off Canvas Menu
 function disciple_tools_off_canvas_nav() {
 
-    echo '
-          <ul class="vertical menu" data-accordion-menu>
-            <li><span class="title">Disciple Tools</span></li>
-            <li><hr /></li>
-            <li><a href="/">Dashboard</a></li>
-            <li><a href="/contacts">Contacts</a></li>
-            <li><a href="/groups">Groups</a></li>
-            <li><a href="/prayer">Prayer Guide</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><hr /></li>
-            <li>
-            <form role="search" method="get" class="search-form" action="'. home_url( '/' ) .'" >
+    $html = '';
+
+    if( user_can(get_current_user_id(), 'read_contact') ) {
+
+    $html .= '<ul class="vertical menu" data-accordion-menu>';
+
+    $html .= '<li><span class="title">Disciple Tools</span></li>
+                    <li><hr /></li>';
+
+    // User is multiplier or role of higher position
+    $html .= '<li><a href="/">Dashboard</a></li>';
+    $html .= '<li><a href="/contacts">Contacts</a></li>';
+    $html .= '<li><a href="/groups">Groups</a></li>';
+    $html .= '<li><a href="#">Project</a><ul class="vertical menu" data-accordion-menu>';
+
+    $html .= '<li><a href="/prayer">Prayer Guide</a></li>';
+    $html .= '<li><a href="/progress">Progress Updates</a></li>';
+    $html .= '<li><a href="/reports">Reports</a></li>';
+    $html .= '<li><a href="/locations">Locations</a></li>';
+
+    $html .= '</ul></li>';
+
+    $html .= '<li><a href="/profile">Profile</a></li>';
+
+    $html .= '<li><form role="search" method="get" class="search-form" action="'. home_url( '/' ) .'">
                 <input type="search" class="small" placeholder="' . esc_attr_x( 'Search...', 'disciple_tools' ) . '" value="' . get_search_query() . '" name="s" title="'. esc_attr_x( 'Search for:', 'disciple_tools' ).'" />
                 <input type="hidden" class=" button small" value="'. esc_attr_x( 'Search', 'disciple_tools' ) .'" />
-            </form>
-            </li>
-          </ul>
-        ';
+            </form></li>';
+
+    $html .= '</ul>';
+
+    } elseif ( user_can(get_current_user_id(), 'read_progress') ) {
+
+    $html .= '<div class="menu-centered">
+                    <ul class="vertical medium-horizontal menu" data-accordion-menu>';
+
+    $html .= '<li><a href="/about-us">About Us</a></li>';
+    $html .= '<li><a href="/prayer">Prayer Guide</a></li>';
+    $html .= '<li><a href="/project">Project Updates</a></li>';
+    $html .= '<li><a href="/profile">Profile</a></li>';
+
+    $html .= '</ul></div>';
+
+    } elseif ( user_can(get_current_user_id(), 'read_prayer')) {
+
+        /* user is prayer supporter */
+
+    $html .= '<div class="menu-centered">
+                    <ul class="vertical medium-horizontal menu" data-accordion-menu>';
+
+    $html .= '<li><a href="/about-us">About Us</a></li>';
+    $html .= '<li><a href="/prayer">Prayer Guide</a></li>';
+    $html .= '<li><a href="/profile">Profile</a></li>';
+
+    $html .= '</ul></div>';
+
+    } else {
+        /* redirect to registered page */
+    }
+
+    echo $html;
 
     // Removed because we are not using the menu tool in wp admin for the main nav.
 //    wp_nav_menu(array(
