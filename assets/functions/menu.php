@@ -45,7 +45,7 @@ function disciple_tools_top_nav() {
 
         $html .= '<li><a href="/about-us">About Us</a></li>';
         $html .= '<li><a href="/prayer">Prayer Guide</a></li>';
-        $html .= '<li><a href="/project">Project Updates</a></li>';
+        $html .= '<li><a href="/progress">Project Updates</a></li>';
         $html .= '<li><a href="/profile">Profile</a></li>';
 
         $html .= '</ul></div>';

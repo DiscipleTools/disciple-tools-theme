@@ -1,4 +1,4 @@
-<article id="post-<?php the_ID(); ?>" <?php post_class(''); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+<article id="post-<?php the_ID(); ?>" role="article" >
 
     <header class="article-header">
         <h4 class="entry-title single-title" itemprop="headline"><?php the_title(); ?></h4>

@@ -22,6 +22,9 @@ if ( !defined( 'WP_LANG_DIR') )
 if ( !defined( 'DISCIPLE_TOOLS_DIR') )
     define( 'DISCIPLE_TOOLS_DIR', WP_PLUGIN_DIR . '/disciple-tools' );
 
+// Removes the admin bar
+add_filter( 'show_admin_bar', '__return_false' );
+
 
 /**
  * Functions
