@@ -98,3 +98,31 @@ function disciple_tools_get_the_author_posts_link() {
 	);
 	return $link;
 }
+
+// Todo dashboard removal not installed yet.
+function remove_dashboard_meta () {
+
+    remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'normal' );
+    remove_meta_box( 'dashboard_plugins', 'dashboard', 'normal' );
+    remove_meta_box( 'dashboard_primary', 'dashboard', 'side' );
+    remove_meta_box( 'dashboard_secondary', 'dashboard', 'normal' );
+    remove_meta_box( 'dashboard_quick_press', 'dashboard', 'side' );
+    remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'side' );
+    remove_meta_box( 'dashboard_right_now', 'dashboard', 'normal' );
+
+    //remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
+    //remove_meta_box( 'dashboard_activity', 'dashboard', 'normal');
+
+    // Remove_meta_box('dashboard_right_now', 'dashboard', 'core');    // Right Now Widget
+    remove_meta_box('dashboard_recent_comments', 'dashboard', 'core'); // Comments Widget
+    remove_meta_box('dashboard_incoming_links', 'dashboard', 'core');  // Incoming Links Widget
+    remove_meta_box('dashboard_plugins', 'dashboard', 'core');         // Plugins Widget
+
+    // Remove_meta_box('dashboard_quick_press', 'dashboard', 'core');  // Quick Press Widget
+    remove_meta_box('dashboard_recent_drafts', 'dashboard', 'core');   // Recent Drafts Widget
+    remove_meta_box('dashboard_primary', 'dashboard', 'core');         //
+    remove_meta_box('dashboard_secondary', 'dashboard', 'core');       //
+
+    // Removing plugin dashboard boxes
+    remove_meta_box('yoast_db_widget', 'dashboard', 'normal');         // Yoast's SEO Plugin Widget
+}
