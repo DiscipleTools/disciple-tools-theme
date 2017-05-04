@@ -134,7 +134,6 @@ function dt_get_team_contacts($user_id) {
                 $members[] = $result2['object_id'];
             }
         }
-
     }
 
     $members = array_unique($members);
@@ -276,12 +275,83 @@ function dt_save_group($post) {
  * @return int
  */
 function dt_get_contacts_at_location( $post_id, $user_id ) {
-    return 0;
+    return 0; //TODO
+}
+
+/**
+ * Get an array of records that require an update
+ */
+function dt_get_requires_update ($user_id) {
+    global $wpdb;
+    $assigned_to = 'user-' . $user_id;
+    $requires_update = array();
+
+    // Search for records assigned to user and have the meta_key requires_update and meta_value Yes
+    // Build arrays for current groups connected to user
+    $meta_query_args = array(
+        'relation' => 'AND', // Optional, defaults to "AND"
+        array(
+            'key'     => 'assigned_to',
+            'value'   => $assigned_to,
+            'compare' => '='
+        ),
+        array(
+            'key'     => 'requires_update',
+            'value'   => 'Yes',
+            'compare' => '='
+        )
+    );
+    $meta_query = new WP_Meta_Query( $meta_query_args );
+    $mq_sql = $meta_query->get_sql(
+        $type = 'post',
+        $primary_table = $wpdb->posts,
+        $primary_id_column = 'ID',
+        $context = null
+    );
+    $query = new WP_Query( $meta_query_args  );
+
+    return $query;
 }
 
 
+/**
+ * Updates meta_data from form response
+ */
+function dt_update_overall_status ($post) {
+
+    if ($post['response'] == 'accept') {
+
+        update_post_meta( $post_id = $post['post_id'], $meta_key = 'overall_status', $meta_value = 'Accepted');
+
+    } elseif ($post['response'] == 'decline') {
+
+        update_post_meta( $post_id = $post['post_id'], $meta_key = 'assigned_to', $meta_value = 'Dispatch');
+        update_post_meta( $post_id = $post['post_id'], $meta_key = 'overall_status', $meta_value = 'Unassigned');
+
+    }
+
+}
 
 
+/**
+ * Updates meta_data from form response
+ */
+function dt_update_required_update ($post_data) {
+
+    global  $current_user; //for this example only :)
+
+    $commentdata = array(
+        'comment_post_ID' => $post_data['post_ID'], // to which post the comment will show up
+        'comment_content' => $post_data['comment_content'], //fixed value - can be dynamic
+        'user_id' => $current_user->ID, //passing current user ID or any predefined as per the demand
+    );
+
+    //Insert new comment and get the comment ID
+    $comment_id = wp_new_comment( $commentdata );
+
+    update_post_meta( $post_id = $post_data['post_ID'], $meta_key = 'requires_update', $meta_value = 'No');
+
+}
 
 
 

@@ -16,7 +16,7 @@ function dt_theme_page_profile_content ($content) {
 
 
     if(is_page(get_option('dt_page_profile'))) {
-        return 'This is filtered content';
+        return 'This page will be for the management of your personal profile and setting preferences.';
     }
 
     return $content;

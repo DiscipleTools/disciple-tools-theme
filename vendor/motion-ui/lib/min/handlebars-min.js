@@ -1,0 +1,1 @@
+var handlebars=require("handlebars");handlebars.registerHelper("private",function(e,r){return"public"===e.access?r.fn(this):r.inverse(this)}),module.exports=handlebars;

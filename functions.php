@@ -22,63 +22,42 @@ if ( !defined( 'WP_LANG_DIR') )
 if ( !defined( 'DISCIPLE_TOOLS_DIR') )
     define( 'DISCIPLE_TOOLS_DIR', WP_PLUGIN_DIR . '/disciple-tools' );
 
+// Removes the admin bar
+add_filter( 'show_admin_bar', '__return_false' );
+
 
 /**
  * Functions
  */
 
-// Theme support options
-require_once(get_template_directory().'/assets/functions/theme-support.php'); 
+// Foundations theme configurations
+require_once(get_template_directory().'/assets/functions/theme-support.php'); // Theme support options
+require_once(get_template_directory().'/assets/functions/cleanup.php'); // WP Head and other cleanup functions
+require_once(get_template_directory().'/assets/functions/enqueue-scripts.php'); // Register scripts and stylesheets
+require_once(get_template_directory().'/assets/functions/sidebar.php'); // Register sidebars/widget areas
+require_once(get_template_directory().'/assets/functions/comments.php'); // Makes WordPress comments suck less
+require_once(get_template_directory().'/assets/functions/page-navi.php'); // Replace 'older/newer' post links with numbered navigation
+require_once(get_template_directory().'/assets/translation/translation.php'); // Adds support for multiple languages
+require_once(get_template_directory().'/assets/functions/disable-emoji.php'); // Remove 4.2 Emoji Support
 
-// WP Head and other cleanup functions
-require_once(get_template_directory().'/assets/functions/cleanup.php'); 
-
-// Register scripts and stylesheets
-require_once(get_template_directory().'/assets/functions/enqueue-scripts.php'); 
-
-// Register custom menus and menu walkers
-require_once(get_template_directory().'/assets/functions/menu.php'); 
-
-// Register sidebars/widget areas
-require_once(get_template_directory().'/assets/functions/sidebar.php'); 
-
-// Makes WordPress comments suck less
-require_once(get_template_directory().'/assets/functions/comments.php'); 
-
-// Replace 'older/newer' post links with numbered navigation
-require_once(get_template_directory().'/assets/functions/page-navi.php'); 
-
-// Adds support for multiple languages
-require_once(get_template_directory().'/assets/translation/translation.php');
-
-// Adds Disciple Tools functions
+// Adds Disciple Tools Theme General Functions
 require_once(get_template_directory().'/assets/functions/disciple-tools-user.php');
-
-// Adds Disciple Tools functions
 require_once(get_template_directory().'/assets/functions/disciple-tools-charts.php');
+require_once(get_template_directory().'/assets/functions/private-site.php'); // Sets site to private
+require_once(get_template_directory().'/assets/functions/login.php'); // Customize the WordPress login menu
+require_once(get_template_directory().'/assets/functions/menu.php'); // Register menus and menu walkers
 
-// Adds Disciple Tools Page Reports
+// Adds Page Specific Scripts
+require_once(get_template_directory().'/assets/functions/page-front-page.php');
 require_once(get_template_directory().'/assets/functions/page-reports.php');
-
-// Adds Disciple Tools Page Profile
 require_once(get_template_directory().'/assets/functions/page-profile.php');
-
-// Adds Disciple Tools Page Profile
 require_once(get_template_directory().'/assets/functions/page-prayer-guide.php');
 
-// Add private site functionality
-require_once(get_template_directory() . '/assets/functions/private-site.php');
-
-// Customize the WordPress login menu
-require_once(get_template_directory().'/assets/functions/login.php');
-
-// Remove 4.2 Emoji Support
-require_once(get_template_directory().'/assets/functions/disable-emoji.php');
 
 
 
 /**
- * Disciple_Tools_Theme
+ * Disciple_Tools_Theme Classes
  *
  * @class Disciple_Tools_Theme
  * @version	0.1
@@ -121,17 +100,11 @@ class Disciple_Tools_Theme {
      */
     public function __construct () {
 
-        /**
-         * Classes
-         */
-
         require_once(get_template_directory() . '/assets/classes/config-options-admin.php');
         $this->admin_options = Disciple_Tools_Theme_Admin::instance();
 
 
     } // End __construct()
-
-
 
 }
 

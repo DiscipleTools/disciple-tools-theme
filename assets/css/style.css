@@ -2864,7 +2864,7 @@ select {
     .menu.menu-bordered li:not(:first-child) {
       border-top: 0; }
   .menu.menu-hover li:hover {
-    background-color: #e6e6e6; }
+    background-color: #1779ba; }
 
 .menu-text {
   padding-top: 0;
@@ -4423,6 +4423,17 @@ POSTS & CONTENT STYLES
   background-color: #fefefe;
   padding: 1rem;
   margin-bottom: 1rem; }
+
+.tabs a.maginifying-glass {
+  display: block;
+  padding: .75rem .75rem;
+  font-size: 1.5rem;
+  line-height: 1; }
+
+.pagination li {
+  display: inline-block;
+  padding: 5px;
+  border: 1px solid #e6e6e6; }
 
 .page-title .vcard {
   border: 0px;

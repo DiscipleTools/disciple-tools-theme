@@ -206,6 +206,21 @@ aside {
 
 }
 
+.tabs {
+	a.maginifying-glass {
+		display: block;
+		padding: .75rem .75rem;
+		font-size: 1.5rem;
+		line-height: 1;
+	}
+}
+
+
+.pagination li {
+	display:inline-block;
+	padding:5px;
+	border: 1px solid $light-gray;
+}
 
 
 .single-title,

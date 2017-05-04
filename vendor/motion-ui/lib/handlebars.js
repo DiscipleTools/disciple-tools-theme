@@ -1,7 +1,7 @@
 var handlebars = require('handlebars');
 
 handlebars.registerHelper('private', function(item, content) {
-  if (item.access === 'portal') return content.fn(this);
+  if (item.access === 'public') return content.fn(this);
   else return content.inverse(this);
 });
 

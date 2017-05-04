@@ -1,25 +1,26 @@
 <?php get_header(); ?>
-			
-	<div id="content">
-	
-		<div id="inner-content" class="row">
+
+    <div id="content">
+
+        <div id="inner-content" class="row">
 
             <!-- Breadcrumb Navigation-->
             <nav aria-label="You are here:" role="navigation">
                 <ul class="breadcrumbs">
                     <li><a href="/">Dashboard</a></li>
                     <li>
-                        <span class="show-for-sr">Current: </span> Prayer Guide
+                        <span class="show-for-sr">Current: </span> Progress Updates
                     </li>
                 </ul>
             </nav>
-	
-		    <main id="main" class="large-8 medium-8 columns" role="main">
+
+            <main id="main" class="large-8 medium-8 columns" role="main">
 
                 <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
                         <!-- To see additional archive styles, visit the /parts directory -->
-                        <?php get_template_part( 'parts/loop', 'archive-prayer' ); ?>
+                        <?php get_template_part( 'parts/loop', 'progress' ); ?>
+
 
                     <?php endwhile; ?>
 
@@ -31,7 +32,8 @@
 
                     <?php endif; ?>
 
-		    </main> <!-- end #main -->
+
+            </main> <!-- end #main -->
 
             <aside class="large-4 medium-4 columns ">
 
@@ -42,9 +44,9 @@
                 </section>
 
             </aside> <!-- end #aside -->
-		    
-		</div> <!-- end #inner-content -->
 
-	</div> <!-- end #content -->
+        </div> <!-- end #inner-content -->
+
+    </div> <!-- end #content -->
 
 <?php get_footer(); ?>

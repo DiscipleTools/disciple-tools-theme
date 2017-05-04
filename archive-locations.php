@@ -9,14 +9,14 @@
             <ul class="breadcrumbs">
                 <li><a href="/">Dashboard</a></li>
                 <li>
-                    <span class="show-for-sr">Current: </span> Groups
+                    <span class="show-for-sr">Current: </span> Locations
                 </li>
             </ul>
         </nav>
 
         <main id="main" class="large-8 medium-8 columns" role="main">
 
-            <?php include ('parts/content-groups-tabs.php') ?>
+            <?php include ('parts/content-locations-tabs.php') ?>
 
         </main> <!-- end #main -->
 

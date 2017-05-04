@@ -220,7 +220,7 @@ final class Disciple_Tools_Theme_Admin {
 					$class .= ' nav-tab-active';
 				}
 
-				$response['content'] .= '<a href="' . admin_url( 'options-general.php?page=disciple_tools_options&tab=' . sanitize_title_with_dashes( $key ) ) . '" class="' . esc_attr( $class ) . '">' . esc_html( $value ) . '</a>';
+				$response['content'] .= '<a href="' . admin_url( 'options-general.php?page=disciple_tools_theme_options&tab=' . sanitize_title_with_dashes( $key ) ) . '" class="' . esc_attr( $class ) . '">' . esc_html( $value ) . '</a>';
 			}
 		}
 
@@ -396,14 +396,13 @@ final class Disciple_Tools_Theme_Admin {
     public function get_settings_sections () {
         $settings_sections = array();
 
-        $settings_sections['general'] = __( 'General', 'disciple_tools' );
-		$settings_sections['integrations'] = __( 'Integrations', 'disciple_tools' );
-		$settings_sections['daily_reports'] = __( 'Daily Reports', 'disciple_tools' );
+        $settings_sections['theme_main'] = __( 'General', 'disciple_tools' );
+        $settings_sections['theme_second'] = __( 'Second Tab', 'disciple_tools' );
         // Add your new sections below here.
         // Admin tabs will be created for each section.
         // Don't forget to add fields for the section in the get_settings_fields() function below
 
-        return (array)apply_filters( 'disciple-tools-settings-sections', $settings_sections );
+        return (array)apply_filters( 'disciple-tools-theme-settings-sections', $settings_sections );
     } // End get_settings_sections()
 
     /**
@@ -418,97 +417,40 @@ final class Disciple_Tools_Theme_Admin {
         // Declare the default settings fields.
 
         switch ( $section ) {
-            case 'general':
+            case 'theme_main':
 
                 $settings_fields['theme_profile_page'] = array(
                     'name' => __( 'Profile Page', 'disciple_tools' ),
                     'type' => 'text',
                     'default' => 'Profile',
-                    'section' => 'general',
-                    'description' => __( 'Title of the page for profile. Default: Profile.', 'disciple_tools' )
+                    'section' => 'theme_main',
+                    'description' => '',
                 );
                 $settings_fields['theme_reports_page'] = array(
                     'name' => __( 'Reports Page', 'disciple_tools' ),
                     'type' => 'text',
                     'default' => 'Reports',
-                    'section' => 'general',
-                    'description' => __( 'Title of the page for reports. Default: Reports.', 'disciple_tools' )
+                    'section' => 'theme_main',
+                    'description' => '',
                 );
-                $settings_fields['delete_activity_db'] = array(
-                    'name' => __( 'Delete Activity Logs', 'disciple_tools' ),
-                    'type' => 'checkbox',
-                    'default' => false,
-                    'section' => 'standard-fields',
-                    'description' => __( 'Delete activity logs and disciple tools activity database on uninstall.', 'disciple_tools' )
-                );
-                $settings_fields['select'] = array(
-                    'name' => __( 'Select', 'disciple_tools' ),
-                    'type' => 'select',
-                    'default' => '',
-                    'section' => 'standard-fields',
-                    'options' => array(
-                        'one' => __( 'One', 'disciple_tools' ),
-                        'two' => __( 'Two', 'disciple_tools' ),
-                        'three' => __( 'Three', 'disciple_tools' )
-                    ),
-                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
-                );
-                $settings_fields['text'] = array(
-                    'name' => __( 'Example Text Input', 'disciple_tools' ),
+                $settings_fields['theme_about_us_page'] = array(
+                    'name' => __( 'About Us Page', 'disciple_tools' ),
                     'type' => 'text',
-                    'default' => '',
-                    'section' => 'standard-fields',
-                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
-                );
-                $settings_fields['textarea'] = array(
-                    'name' => __( 'Example Textarea', 'disciple_tools' ),
-                    'type' => 'textarea',
-                    'default' => '',
-                    'section' => 'standard-fields',
-                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
-                );
-                $settings_fields['checkbox'] = array(
-                    'name' => __( 'Example Checkbox', 'disciple_tools' ),
-                    'type' => 'checkbox',
-                    'default' => '',
-                    'section' => 'standard-fields',
-                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
-                );
-                $settings_fields['radio'] = array(
-                    'name' => __( 'Example Radio Buttons', 'disciple_tools' ),
-                    'type' => 'radio',
-                    'default' => '',
-                    'section' => 'standard-fields',
-                    'options' => array(
-                        'one' => __( 'One', 'disciple_tools' ),
-                        'two' => __( 'Two', 'disciple_tools' ),
-                        'three' => __( 'Three', 'disciple_tools' )
-                    ),
-                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
-                );
-
-
-                break;
-            case 'integrations':
-
-                $settings_fields['google_api_name'] = array(
-                    'name' => __( 'Google API Name', 'disciple_tools' ),
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'integrations',
-                    'description' => __( 'Google Analytics API key to give access to the reports within the system.', 'disciple_tools' )
+                    'default' => 'About Us',
+                    'section' => 'theme_main',
+                    'description' => '',
                 );
 
                 break;
 
-            case 'daily_reports':
+            case 'theme_second':
 
-                $settings_fields['build_report_for_contacts'] = array(
-                    'name' => __( 'Disciple Tools Contacts', 'disciple_tools' ),
-                    'type' => 'checkbox',
+                $settings_fields['theme_field'] = array(
+                    'name' => __( 'Field', 'disciple_tools' ),
+                    'type' => 'text',
                     'default' => '',
-                    'section' => 'daily_reports',
-                    'description' => __( 'Default is true and enables the scheduling of daily report collection for Disciple Tools Contacts.', 'disciple_tools' )
+                    'section' => 'theme_second',
+                    'description' => '',
                 );
 
 
@@ -518,7 +460,7 @@ final class Disciple_Tools_Theme_Admin {
                 break;
         }
 
-        return (array)apply_filters( 'disciple-tools-settings-fields', $settings_fields, $section);
+        return (array)apply_filters( 'disciple-tools-theme-settings-fields', $settings_fields, $section);
     } // End get_settings_fields()
 
     /**
