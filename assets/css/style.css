@@ -4347,6 +4347,12 @@ GENERAL STYLES
 .padding-bottom {
   padding-bottom: 1rem; }
 
+.center {
+  text-align: center; }
+
+.float-right {
+  float: right; }
+
 /*********************
 LINK STYLES
 *********************/

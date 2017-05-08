@@ -106,17 +106,26 @@
 
                 <section class="block">
 
+                    <form method="get" action="<?php echo get_permalink(); ?>">
+                            <span class="float-right">
+                                <input type="hidden" name="action" value="edit"/>
+                                <input type="submit" value="Add" class="button" />
+                            </span>
+                    </form>
+
+                    <h3>Relationships</h3>
+
                     <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 
-                        <h3>Relationships</h3>
 
-                        <?php foreach ( $post->disciple as $post ) : setup_postdata( $post ); ?>
 
-                            <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
+                            <?php foreach ( $post->disciple as $post ) : setup_postdata( $post ); ?>
 
-                        <?php endforeach; ?>
+                                <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
 
-                        <?php  wp_reset_postdata(); // set $post back to original post ?>
+                            <?php endforeach; ?>
+
+                            <?php  wp_reset_postdata(); // set $post back to original post ?>
 
                     <?php endwhile; ?>
 
@@ -126,9 +135,16 @@
 
                 <section class="block">
 
-                    <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
+                    <form method="get" action="<?php echo get_permalink(); ?>">
+                        <span class="float-right">
+                            <input type="hidden" name="action" value="edit"/>
+                            <input type="submit" value="Add" class="button" />
+                        </span>
+                    </form>
 
-                        <h3>Groups</h3>
+                    <h3>Groups</h3>
+
+                    <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 
                         <?php foreach ( $post->groups as $post ) : setup_postdata( $post ); ?>
 
@@ -140,14 +156,22 @@
 
                     <?php endwhile; ?>
 
+
                 </section>
 
 
                 <section class="block">
 
-                    <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
+                    <form method="get" action="<?php echo get_permalink(); ?>">
+                            <span class="float-right">
+                                <input type="hidden" name="action" value="edit"/>
+                                <input type="submit" value="Add" class="button" />
+                            </span>
+                    </form>
 
-                        <h3>Locations</h3>
+                    <h3>Locations</h3>
+
+                    <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 
                         <?php foreach ( $post->locations as $post ) : setup_postdata( $post ); ?>
 
@@ -158,6 +182,8 @@
                         <?php  wp_reset_postdata(); // set $post back to original post ?>
 
                     <?php endwhile; ?>
+
+
 
                 </section>
 

@@ -169,19 +169,19 @@
     jQuery(document).ready(function() {
         var myContacts = new List('my-contacts', {
             valueNames: ['name', 'team'],
-            page: 10,
+            page: 30,
             pagination: true
         });
 
         var teamContacts = new List('team-contacts', {
             valueNames: ['name', 'team'],
-            page: 10,
+            page: 30,
             pagination: true
         });
 
         var locationContacts = new List('location-contacts', {
             valueNames: ['name'],
-            page: 10,
+            page: 30,
             pagination: true
         });
     });
