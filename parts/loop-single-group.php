@@ -16,10 +16,28 @@
 
     </section>
 
-    <section class="block">
+
+
+</article> <!-- end article -->
+
+<ul class="tabs" data-tabs id="my-activity-tabs" data-options="deep_linking:true" data-options="scroll_to_content: false">
+
+    <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">Activity</a></li>
+    <li class="tabs-title"><a href="#panel2">Comments</a></li>
+
+</ul>
+
+<div class="tabs-content" data-tabs-content="my-activity-tabs">
+
+    <div class="tabs-panel is-active" id="panel1">
+
+        <?php dt_activity_meta_box (get_the_ID()); ?>
+
+    </div>
+    <div class="tabs-panel" id="panel2">
 
         <?php comments_template(); ?>
 
-    </section>
+    </div>
 
-</article> <!-- end article -->
+</div>

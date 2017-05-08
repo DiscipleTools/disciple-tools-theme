@@ -10,33 +10,24 @@
             <nav aria-label="You are here:" role="navigation">
                 <ul class="breadcrumbs">
                     <li><a href="/">Dashboard</a></li>
-                    <li><a href="/groups/">Groups</a></li>
+                    <li><a href="/locations/">Locations</a></li>
                     <li>
-                        <span class="show-for-sr">Current: </span> Current Group
+                        <span class="show-for-sr">Current: </span> <?php the_title(); ?>
                     </li>
                 </ul>
             </nav>
 
             <main id="main" class="large-8 medium-8 columns" role="main">
 
-                    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+                <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
-                        <?php
-                            if(isset($_GET['action']) && $_GET['action'] == 'edit') { // check if edit screen
+                    <?php get_template_part( 'parts/loop', 'single-location' ); ?>
 
-                                get_template_part( 'parts/edit', 'group' );
+                <?php endwhile; else : ?>
 
-                            } else {
+                    <?php get_template_part( 'parts/content', 'missing' ); ?>
 
-                                get_template_part( 'parts/loop', 'single-group' );
-                            }
-                        ?>
-
-                    <?php endwhile; else : ?>
-
-                        <?php get_template_part( 'parts/content', 'missing' ); ?>
-
-                    <?php endif; ?>
+                <?php endif; ?>
 
             </main> <!-- end #main -->
 
@@ -46,25 +37,16 @@
                 global $wp_query, $post_id;
 
                 // Find connected pages (for all posts)
-                p2p_type( 'contacts_to_groups' )->each_connected( $wp_query, array(), 'contacts' );
-                p2p_type( 'groups_to_groups' )->each_connected( $wp_query, array(), 'groups' );
-                p2p_type( 'groups_to_locations' )->each_connected( $wp_query, array(), 'locations' );
+                p2p_type( 'contacts_to_locations' )->each_connected( $wp_query, array(), 'contacts' );
+                p2p_type( 'groups_to_locations' )->each_connected( $wp_query, array(), 'groups' );
+                p2p_type( 'assets_to_locations' )->each_connected( $wp_query, array(), 'assets' );
                 ?>
 
                 <section class="block">
 
-                    <form method="get" action="<?php echo get_permalink(); ?>">
-                            <span class="float-right">
-                                <input type="hidden" name="action" value="edit"/>
-                                <input type="submit" value="Add" class="button" />
-                            </span>
-                    </form>
-
-                    <h3>Members</h3>
-
                     <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 
-
+                        <h3>Contacts</h3>
 
                         <?php foreach ( $post->contacts as $post ) : setup_postdata( $post ); ?>
 
@@ -82,16 +64,9 @@
 
                 <section class="block">
 
-                    <form method="get" action="<?php echo get_permalink(); ?>">
-                        <span class="float-right">
-                            <input type="hidden" name="action" value="edit"/>
-                            <input type="submit" value="Add" class="button" />
-                        </span>
-                    </form>
-
-                    <h3>Groups</h3>
-
                     <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
+
+                        <h3>Groups</h3>
 
                         <?php foreach ( $post->groups as $post ) : setup_postdata( $post ); ?>
 
@@ -103,24 +78,16 @@
 
                     <?php endwhile; ?>
 
-
                 </section>
 
 
                 <section class="block">
 
-                    <form method="get" action="<?php echo get_permalink(); ?>">
-                            <span class="float-right">
-                                <input type="hidden" name="action" value="edit"/>
-                                <input type="submit" value="Add" class="button" />
-                            </span>
-                    </form>
-
-                    <h3>Locations</h3>
-
                     <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 
-                        <?php foreach ( $post->locations as $post ) : setup_postdata( $post ); ?>
+                        <h3>Assets</h3>
+
+                        <?php foreach ( $post->assets as $post ) : setup_postdata( $post ); ?>
 
                             <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
 
@@ -129,8 +96,6 @@
                         <?php  wp_reset_postdata(); // set $post back to original post ?>
 
                     <?php endwhile; ?>
-
-
 
                 </section>
 

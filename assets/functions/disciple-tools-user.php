@@ -157,17 +157,20 @@ function dt_get_assigned_name ($contact_id) {
 
     $metadata = get_post_meta( $contact_id, $key = 'assigned_to', true );
 
-    $meta_array = explode('-', $metadata); // Separate the type and id
-    $type = $meta_array[0];
-    $id = $meta_array[1];
+    if(!empty($metadata)) {
+        $meta_array = explode('-', $metadata); // Separate the type and id
+        $type = $meta_array[0];
+        $id = $meta_array[1];
 
-    if($type == 'user') {
-        $value = get_user_by('id', $id);
-        echo $value->display_name;
-    } else {
-        $value = get_term( $id);
-        echo $value->name;
+        if($type == 'user') {
+            $value = get_user_by('id', $id);
+            echo $value->display_name;
+        } else {
+            $value = get_term( $id);
+            echo $value->name;
+        }
     }
+
 }
 
 /**
