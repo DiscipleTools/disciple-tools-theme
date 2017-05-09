@@ -22,9 +22,12 @@
 
             <aside class="large-4 medium-4 columns ">
 
+                <?php include ('parts/content-assigned-to.php') ?>
+
+                <?php include 'parts/content-required-updates.php'; ?>
+
+
                 <section class="block">
-
-
 
                 </section>
 
