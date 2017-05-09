@@ -16,15 +16,15 @@
 
             <main id="main" class="large-12 medium-12 columns" role="main">
 
-                <section class="block">
+                <div class="row small-up-2 medium-up-3 large-up-4">
 
                     <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
-                        <?php get_template_part( 'parts/loop', 'page' ); ?>
+                        <?php get_template_part( 'parts/loop', 'media' ); ?>
 
                     <?php endwhile; endif; ?>
 
-                </section>
+                </div>
 
             </main> <!-- end #main -->
 
