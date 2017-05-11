@@ -5,7 +5,8 @@
 $assigned_to = 'user-' . get_current_user_id();
 $args = array(
     'post_type' => 'contacts',
-    'nopaging' => true,
+    'nopaging'               => true,
+//    'posts_per_page'         => '5',
     'meta_query' =>  array(
         'relation' => 'AND', // Optional, defaults to "AND"
         array(

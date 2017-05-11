@@ -1,3 +1,5 @@
+<?php if (is_front_page() ) {dt_route_front_page ();}  ?>
+
 <?php get_header(); ?>
 			
 	<div id="content">
