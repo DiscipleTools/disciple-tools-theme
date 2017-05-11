@@ -12,101 +12,14 @@
                 </section>
             </div>
 
-            <!-- Begin Assigned Contacts -->
-            <?php if ( ! empty($_POST['response'] )) { dt_update_overall_status($_POST); } ?>
-            <?php
-            /* Loop for the new assigned contacts */
-            $assigned_to = 'user-' . get_current_user_id();
-            $args = array(
-                'post_type' => 'contacts',
-                'nopaging' => true,
-                'meta_query' =>  array(
-                    'relation' => 'AND', // Optional, defaults to "AND"
-                    array(
-                        'key'     => 'assigned_to',
-                        'value'   => $assigned_to,
-                        'compare' => '='
-                    ),
-                    array(
-                        'key'     => 'overall_status',
-                        'value'   => 'Accepted',
-                        'compare' => '!='
-                    )
-                )
-            );
-            $requires_update = new WP_Query( $args );
-            ?>
-            <?php if ( $requires_update->have_posts() ) : while ( $requires_update->have_posts() ) : $requires_update->the_post(); ?>
+            <?php include ('parts/content-assigned-to.php'); ?>
 
-                <form method="post" action="">
-                    <div class="callout alert" >
-                        <i class="fi-plus"> New </i>
-                        <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                        <span class="float-right">
-                            <input type="hidden" name="post_id" value="<?php echo get_the_ID(); ?>" />
-                            <button type="submit" name="response" value="accept" class="button small ">Accept</button>
-                            <button type="submit" name="response" value="decline" class="button small ">Decline</button>
-                        </span>
-                    </div>
-                </form>
-
-            <?php endwhile; endif; ?>
-            <!-- End Assigned Contacts -->
-
-            <!-- Begin Updates Required Section -->
-            <?php if ( ! empty($_POST['comment_content'] )) { dt_update_required_update($_POST); } ?>
-            <?php
-            /* Loop for the requires update contacts */
-            $assigned_to = 'user-' . get_current_user_id();
-            $args = array(
-                'post_type' => 'contacts',
-                'nopaging' => true,
-                'meta_query' =>  array(
-                    'relation' => 'AND', // Optional, defaults to "AND"
-                    array(
-                        'key'     => 'assigned_to',
-                        'value'   => $assigned_to,
-                        'compare' => '='
-                    ),
-                    array(
-                        'key'     => 'requires_update',
-                        'value'   => 'Yes',
-                        'compare' => '='
-                    )
-                )
-            );
-            $requires_update = new WP_Query( $args );
-            ?>
-            <?php if ( $requires_update->have_posts() ) : while ( $requires_update->have_posts() ) : $requires_update->the_post(); ?>
-
-                <form action="" method="post">
-                    <div class="callout warning" >
-
-                        <i class="fi-alert"> Update Needed </i>
-
-                        <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-
-                        <span class="float-right">
-                            <button type="button" class="button small update-<?php echo get_the_ID(); ?>" onclick="jQuery('.update-<?php echo get_the_ID(); ?>').toggle();">Update</button>
-                        </span>
-
-                        <p style="display:none;" class="update-<?php echo get_the_ID(); ?>" >
-
-                            <input type="hidden" name="post_ID" value="<?php echo get_the_ID(); ?>" />
-                            <input type="text" name="comment_content"  />
-
-                        </p>
-
-                    </div>
-                </form>
-
-            <?php endwhile; endif; ?>
-            <!-- End Updates Required Section -->
+            <?php include ('parts/content-required-updates.php'); ?>
 
             <!-- Begin Contacts Tabs Section -->
             <div class="row column padding-bottom">
 
-                <?php include ('parts/content-contacts-tabs.php') ?>
+                <?php include ('parts/content-contacts-tabs.php'); ?>
 
             </div>
             <!-- End Contacts Tabs Section -->

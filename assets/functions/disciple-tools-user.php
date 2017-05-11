@@ -182,17 +182,15 @@ function dt_get_contact_edit_form () {
     if(class_exists('Disciple_Tools')) {
 
         // Create the title field
-        $html = '<table class="form-table">' . "\n";
-        $html .= '<tbody>' . "\n";
-        $html .= '<input type="hidden" name="dt_contacts_noonce" id="dt_contacts_noonce" value="' . wp_create_nonce( 'update_dt_contacts' ) . '" />';
-        $html .= '<tr valign="top"><th scope="row"><label for="post_title">Title</label></th>
-                                <td><input name="post_title" type="text" id="post_title" class="regular-text" value="'. get_the_title() .'" />' ;
-        $html .= '</td><tr/></tbody></table>';
+        $html = '<input type="hidden" name="dt_contacts_noonce" id="dt_contacts_noonce" value="' . wp_create_nonce( 'update_dt_contacts' ) . '" />';
+        $html .= '<input name="post_title" type="text" id="post_title" class="regular-text" value="'. get_the_title() .'" />' ;
         echo $html;
 
 
         // Call the metadata fields
         $contact = new Disciple_Tools_Contact_Post_Type();
+
+        echo $contact->load_status_meta_box(get_the_ID());
 
         echo $contact->meta_box_content('all');
 
