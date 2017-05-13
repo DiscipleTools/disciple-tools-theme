@@ -19,8 +19,6 @@
 
             <main id="main" class="large-8 medium-8 columns" role="main">
 
-                <section class="block">
-
 
                     <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
@@ -31,8 +29,6 @@
                         <?php get_template_part( 'parts/content', 'missing' ); ?>
 
                     <?php endif; ?>
-
-                </section>
 
 
             </main> <!-- end #main -->

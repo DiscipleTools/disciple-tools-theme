@@ -24,7 +24,6 @@
 
             <aside class="large-4 medium-4 columns ">
 
-                <section class="block">
 
                     <section class="block">
 
@@ -84,8 +83,6 @@
                         ?>
 
                     </section>
-
-                </section>
 
             </aside> <!-- end #aside -->
 
