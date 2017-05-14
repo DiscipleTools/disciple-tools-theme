@@ -31,7 +31,7 @@
 
     <div class="tabs-panel is-active" id="panel1">
 
-        <?php dt_activity_meta_box (get_the_ID()); ?>
+        <?php dt_activity_metabox()->activity_meta_box(get_the_ID()); ?>
 
     </div>
     <div class="tabs-panel" id="panel2">
