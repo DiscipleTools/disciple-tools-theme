@@ -175,7 +175,7 @@ function dt_get_assigned_name ($contact_id) {
 
 /**
  *
- * @return void
+ * @return mixed
  */
 function dt_get_contact_edit_form () {
 
@@ -189,8 +189,6 @@ function dt_get_contact_edit_form () {
 
         // Call the metadata fields
         $contact = new Disciple_Tools_Contact_Post_Type();
-
-        echo $contact->load_status_meta_box(get_the_ID());
 
         echo $contact->meta_box_content('all');
 
