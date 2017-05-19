@@ -240,7 +240,7 @@ function dt_get_group_edit_form () {
         // Call the metadata fields
         $group = new Disciple_Tools_Group_Post_Type();
 
-        echo $group->meta_box_content();
+        echo ''.$group->load_type_meta_box();
 
 
     } // end if class exists
