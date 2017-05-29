@@ -33,7 +33,7 @@
                         ),
                         array(
                             'key'     => 'overall_status',
-                            'value'   => 'Accepted',
+                            'value'   => '1',
                             'compare' => '='
                         )
                     ),

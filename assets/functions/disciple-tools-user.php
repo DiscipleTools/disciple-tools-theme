@@ -318,14 +318,14 @@ function dt_get_requires_update ($user_id) {
  */
 function dt_update_overall_status ($post) {
 
-    if ($post['response'] == 'accept') {
+    if ($post['response'] == '1') {
 
-        update_post_meta( $post_id = $post['post_id'], $meta_key = 'overall_status', $meta_value = 'Accepted');
+        update_post_meta( $post_id = $post['post_id'], $meta_key = 'overall_status', $meta_value = '1');
 
     } elseif ($post['response'] == 'decline') {
 
         update_post_meta( $post_id = $post['post_id'], $meta_key = 'assigned_to', $meta_value = 'Dispatch');
-        update_post_meta( $post_id = $post['post_id'], $meta_key = 'overall_status', $meta_value = 'Unassigned');
+        update_post_meta( $post_id = $post['post_id'], $meta_key = 'overall_status', $meta_value = '0');
 
     }
 

@@ -16,7 +16,7 @@ $args = array(
         ),
         array(
             'key'     => 'overall_status',
-            'value'   => 'Accepted',
+            'value'   => '1',
             'compare' => '!='
         )
     )
@@ -32,8 +32,8 @@ $requires_update = new WP_Query( $args );
             <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
             <span class="float-right">
                 <input type="hidden" name="post_id" value="<?php echo get_the_ID(); ?>" />
-                <button type="submit" name="response" value="accept" class="button small ">Accept</button>
-                <button type="submit" name="response" value="decline" class="button small ">Decline</button>
+                <button type="submit" name="response" value="1" class="button small ">Accept</button>
+                <button type="submit" name="response" value="0" class="button small ">Decline</button>
             </span>
         </div>
     </form>
