@@ -2322,7 +2322,7 @@ select {
   padding: 0.85em 1em;
   -webkit-appearance: none;
   border: 1px solid transparent;
-  border-radius: 10px;
+  border-radius: 0;
   transition: background-color 0.25s ease-out, color 0.25s ease-out;
   font-size: 0.9rem;
   line-height: 1;
@@ -3860,7 +3860,7 @@ html.is-reveal-open body {
   display: block;
   width: 4rem;
   height: 2rem;
-  border-radius: 10px;
+  border-radius: 0;
   background: #cacaca;
   transition: all 0.25s ease-out;
   font-weight: inherit;
@@ -3876,7 +3876,7 @@ html.is-reveal-open body {
     width: 1.5rem;
     height: 1.5rem;
     transform: translate3d(0, 0, 0);
-    border-radius: 10px;
+    border-radius: 0;
     background: #fefefe;
     transition: all 0.25s ease-out;
     content: ''; }
@@ -4046,15 +4046,15 @@ table.hover:not(.unstriped) tr:nth-of-type(even):hover {
   .tabs-title > a {
     display: block;
     padding: 1.25rem 1.5rem;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     line-height: 1;
     color: #1779ba; }
     .tabs-title > a:hover {
       background: #fefefe;
       color: #1468a0; }
     .tabs-title > a:focus, .tabs-title > a[aria-selected='true'] {
-      background: #e6e6e6;
-      color: #1779ba; }
+      background: #1779ba;
+      color: #fefefe; }
 
 .tabs-content {
   border: 1px solid #e6e6e6;
@@ -4430,6 +4430,9 @@ POSTS & CONTENT STYLES
   padding: 1rem;
   margin-bottom: 1rem; }
 
+.tabs-panel .outer-container {
+  padding: 0 !important; }
+
 .tabs a.maginifying-glass {
   display: block;
   padding: .75rem .75rem;
@@ -4497,7 +4500,7 @@ POSTS & CONTENT STYLES
   padding: 0.85em 1em;
   -webkit-appearance: none;
   border: 1px solid transparent;
-  border-radius: 10px;
+  border-radius: 0;
   transition: background-color 0.25s ease-out, color 0.25s ease-out;
   font-size: 0.9rem;
   line-height: 1;
