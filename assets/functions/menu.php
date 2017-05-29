@@ -20,10 +20,10 @@ function disciple_tools_top_nav() {
         $html .= '<li><a href="/">Dashboard</a></li>';
         $html .= '<li><a href="/contacts">Contacts</a></li>';
         $html .= '<li><a href="/groups">Groups</a></li>';
+        $html .= '<li><a href="/locations">Locations</a></li>';
 
         $html .= '<li><a href="#">Project</a><ul class="menu">';
 
-            $html .= '<li><a href="/locations">Locations</a></li>';
             $html .= '<li><a href="/prayer">Prayer Guide</a></li>';
             $html .= '<li><a href="/progress">Progress Updates</a></li>';
             $html .= '<li><a href="/reports">Reports</a></li>';

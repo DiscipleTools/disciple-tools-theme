@@ -544,6 +544,27 @@
                                                 <option value="Daily">Daily</option>
                                                 <option value="Weekly">Weekly</option>
                                             </select>
+                                            <div class="controlgroup">
+                                                <select id="car-type">
+                                                    <option>Compact car</option>
+                                                    <option>Midsize car</option>
+                                                    <option>Full size car</option>
+                                                    <option>SUV</option>
+                                                    <option>Luxury</option>
+                                                    <option>Truck</option>
+                                                    <option>Van</option>
+                                                </select>
+                                                <label for="transmission-standard">Standard</label>
+                                                <input type="radio" name="transmission" id="transmission-standard">
+                                                <label for="transmission-automatic">Automatic</label>
+                                                <input type="radio" name="transmission" id="transmission-automatic">
+                                                <label for="insurance">Insurance</label>
+                                                <input type="checkbox" name="insurance" id="insurance">
+                                                <label for="horizontal-spinner" class="ui-controlgroup-label"># of cars</label>
+                                                <input id="horizontal-spinner" class="ui-spinner-input">
+                                                <button>Book Now!</button>
+                                            </div>
+                                            </fieldset>
                                         </td>
                                     </tr>
                                     <tr>

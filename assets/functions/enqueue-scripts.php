@@ -8,11 +8,14 @@ function site_scripts() {
     // Adding Foundation scripts file in the footer
     wp_enqueue_script( 'foundation-js', get_template_directory_uri() . '/assets/js/foundation.js', array( 'jquery' ), '6.2.3', true );
 
+    wp_enqueue_script('jquery-ui-core');
+
     // Adding scripts file in the footer
-    wp_enqueue_script( 'site-js', get_template_directory_uri() . '/assets/js/scripts.js', array( 'jquery', 'jquery-ui-core' ), '', true );
+    wp_enqueue_script( 'site-js', get_template_directory_uri() . '/assets/js/scripts.js', array( 'jquery' ), '', true );
    
     // Register main stylesheet
     wp_enqueue_style( 'site-css', get_template_directory_uri() . '/assets/css/style.css', array(), '', 'all' );
+    wp_enqueue_style( 'jquery-ui-css', '', array(), '', 'all' );
 
     // Comment reply script for threaded comments
     if ( is_singular() AND comments_open() AND (get_option('thread_comments') == 1)) {
