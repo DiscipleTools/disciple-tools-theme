@@ -283,6 +283,7 @@
                             <div class="tabs-panel is-active" id="dashboard-panel1">
 
                                 <h3>Elements</h3>
+                                <p>You can add or remove elements from your dashboard.</p>
                                 <table class="form-table">
                                     <thead>
                                     <tr>
@@ -364,15 +365,13 @@
                                             </div>
                                         </td>
                                     </tr>
-
-
-
                                     </tbody>
                                 </table>
 
                                 <hr>
 
                                 <h3>Views</h3>
+                                <p>You can choose the views available in the dashboard to filter your contact lists.</p>
                                 <table class="form-table">
                                     <thead>
                                     <tr>
@@ -544,6 +543,7 @@
                                                 <option value="Daily">Daily</option>
                                                 <option value="Weekly">Weekly</option>
                                             </select>
+                                            <fieldset>
                                             <div class="controlgroup">
                                                 <select id="car-type">
                                                     <option>Compact car</option>
@@ -743,6 +743,12 @@
         </div> <!-- end #inner-content -->
 
     </div> <!-- end #content -->
+
+<script>
+    jQuery(document).ready(function($) {
+        jQuery( ".controlgroup" ).controlgroup();
+    });
+</script>
 
 
 <?php get_footer(); ?>
