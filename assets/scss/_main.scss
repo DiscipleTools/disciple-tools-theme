@@ -658,3 +658,20 @@ PLUGIN STYLES
     list-style: none outside none;
     margin: 0;
 }
+
+
+/*********************
+JQUERY OVERRIDES
+*********************/
+.ui-state-active {
+	background: $primary-color;
+	border-color: $primary-color;
+}
+.ui-button.ui-state-active:hover {
+	background: $primary-color;
+	border-color: $primary-color;
+}
+.ui-button:active {
+	background: $primary-color;
+	border-color: $primary-color;
+}

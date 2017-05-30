@@ -4666,6 +4666,21 @@ PLUGIN STYLES
   list-style: none outside none;
   margin: 0; }
 
+/*********************
+JQUERY OVERRIDES
+*********************/
+.ui-state-active {
+  background: #1779ba;
+  border-color: #1779ba; }
+
+.ui-button.ui-state-active:hover {
+  background: #1779ba;
+  border-color: #1779ba; }
+
+.ui-button:active {
+  background: #1779ba;
+  border-color: #1779ba; }
+
 /******************************************************************
 
 Stylesheet: Retina Screens & Devices Stylesheet

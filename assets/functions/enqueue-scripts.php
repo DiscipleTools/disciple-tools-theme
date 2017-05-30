@@ -7,7 +7,9 @@ function site_scripts() {
      * Forcing newest version of jquery and jquery ui because of the themes use of controlgroups and checkboxradio widget. Once Wordpress core updates to 1.12, then
      * the next section could be removed.
      */
-    wp_enqueue_style( 'jquery-ui-site-css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css', array(), '', 'all' );
+
+    /** jQuery UI custom theme styles. @see http://jqueryui.com/themeroller/  */
+    wp_enqueue_style( 'jquery-ui-site-css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css', array(), '', 'all' );
 
     // comment out the next two lines to load the local copy of jQuery
     wp_deregister_script('jquery');

@@ -71,42 +71,50 @@
                                             <td></td>
                                         </tr>
                                     </thead>
+
+                                    <?php $current_user = get_user_by('id', get_current_user_id()); ?>
+
                                     <tbody>
                                         <tr>
                                             <td>Username</td>
-                                            <td>Text</td>
+                                            <td><?php echo $current_user->display_name; ?></td>
                                         </tr>
                                         <tr>
                                             <td>First Name</td>
-                                            <td>Text</td>
+                                            <td><?php echo $current_user->user_firstname; ?></td>
                                         </tr>
                                         <tr>
                                             <td>Last Name</td>
-                                            <td>Text</td>
+                                            <td><?php echo $current_user->user_lastname; ?></td>
                                         </tr>
                                         <tr>
                                             <td>Nickname</td>
-                                            <td>Text</td>
+                                            <td><?php echo $current_user->nickname; ?></td>
                                         </tr>
                                         <tr>
                                             <td>Email</td>
-                                            <td>Text</td>
+                                            <td><?php echo $current_user->user_email; ?></td>
                                         </tr>
                                         <tr>
                                             <td>Phone</td>
-                                            <td>Text</td>
+                                            <td>x</td>
+                                        </tr
+                                        <tr>
+                                            <td>Twitter</td>
+                                            <td>x</td>
                                         </tr>
                                         <tr>
                                             <td>Biographical Info</td>
-                                            <td>Text</td>
+                                            <td><?php echo $current_user->description; ?></td>
                                         </tr>
                                         <tr>
                                             <td>Profile Picture</td>
-                                            <td>Text</td>
+                                            <td><?php echo get_avatar($current_user->ID); ?></td>
                                         </tr>
 
                                     </tbody>
                                 </table>
+
 
 
 
@@ -155,8 +163,8 @@
                                     <strong>Enable Vacation Settings: </strong>
                                 <div class="switch">
 
-                                    <input class="switch-input" id="switch0" type="checkbox" name="switch0">
-                                    <label class="switch-paddle" for="e-switch0">
+                                    <input class="switch-input" id="switch0vac" type="checkbox" name="switch0vac">
+                                    <label class="switch-paddle" for="switch0vac">
                                         <span class="show-for-sr">Enable</span>
                                     </label>
                                 </div>
@@ -298,7 +306,7 @@
                                         <td>Quick update box to add notes from the dashboard to contacts.</td>
                                         <td>
                                             <div class="switch">
-                                                <input class="switch-input" id="e-switch1" type="checkbox" name="switch1">
+                                                <input class="switch-input" id="e-switch1" type="checkbox" name="switch1" checked>
                                                 <label class="switch-paddle" for="e-switch1">
                                                     <span class="show-for-sr">Enable</span>
                                                 </label>
@@ -310,7 +318,7 @@
                                         <td>Gives high level summary for the critical path of the project.</td>
                                         <td>
                                             <div class="switch">
-                                                <input class="switch-input" id="e-switch2" type="checkbox" name="switch2">
+                                                <input class="switch-input" id="e-switch2" type="checkbox" name="switch2" checked>
                                                 <label class="switch-paddle" for="e-switch2">
                                                     <span class="show-for-sr">Enable</span>
                                                 </label>
@@ -334,7 +342,7 @@
                                         <td>Your most recent activty</td>
                                         <td>
                                             <div class="switch">
-                                                <input class="switch-input" id="e-switch4" type="checkbox" name="switch4">
+                                                <input class="switch-input" id="e-switch4" type="checkbox" name="switch4" checked>
                                                 <label class="switch-paddle" for="e-switch4">
                                                     <span class="show-for-sr">Enable</span>
                                                 </label>
@@ -346,7 +354,7 @@
                                         <td>Recent prayer posts.</td>
                                         <td>
                                             <div class="switch">
-                                                <input class="switch-input" id="e-switch5" type="checkbox" name="switch5">
+                                                <input class="switch-input" id="e-switch5" type="checkbox" name="switch5" checked>
                                                 <label class="switch-paddle" for="e-switch5">
                                                     <span class="show-for-sr">Enable</span>
                                                 </label>
@@ -386,7 +394,7 @@
                                         <td>Shows all contacts that are assigned to me.</td>
                                         <td>
                                             <div class="switch">
-                                                <input class="switch-input" id="switch1" type="checkbox" name="switch1">
+                                                <input class="switch-input" id="switch1" type="checkbox" name="switch1" checked>
                                                 <label class="switch-paddle" for="switch1">
                                                     <span class="show-for-sr">Enable</span>
                                                 </label>
@@ -398,7 +406,7 @@
                                         <td>Shows all contacts that are assigned to me.</td>
                                         <td>
                                             <div class="switch">
-                                                <input class="switch-input" id="switch1b" type="checkbox" name="switch1b">
+                                                <input class="switch-input" id="switch1b" type="checkbox" name="switch1b" checked>
                                                 <label class="switch-paddle" for="switch1b">
                                                     <span class="show-for-sr">Enable</span>
                                                 </label>
@@ -410,7 +418,7 @@
                                         <td>Shows all contacts by location</td>
                                         <td>
                                             <div class="switch">
-                                                <input class="switch-input" id="switch2" type="checkbox" name="switch2">
+                                                <input class="switch-input" id="switch2" type="checkbox" name="switch2" checked>
                                                 <label class="switch-paddle" for="switch2">
                                                     <span class="show-for-sr">Enable</span>
                                                 </label>
@@ -422,7 +430,7 @@
                                         <td>Contacts that need updates</td>
                                         <td>
                                             <div class="switch">
-                                                <input class="switch-input" id="switch3" type="checkbox" name="switch3">
+                                                <input class="switch-input" id="switch3" type="checkbox" name="switch3" checked>
                                                 <label class="switch-paddle" for="switch3">
                                                     <span class="show-for-sr">Enable</span>
                                                 </label>
@@ -434,7 +442,7 @@
                                         <td>Shows most active contacts</td>
                                         <td>
                                             <div class="switch">
-                                                <input class="switch-input" id="switch4" type="checkbox" name="switch4">
+                                                <input class="switch-input" id="switch4" type="checkbox" name="switch4" checked>
                                                 <label class="switch-paddle" for="switch4">
                                                     <span class="show-for-sr">Enable</span>
                                                 </label>
@@ -446,7 +454,7 @@
                                         <td>List of most recently modified contacts.</td>
                                         <td>
                                             <div class="switch">
-                                                <input class="switch-input" id="switch5" type="checkbox" name="switch5">
+                                                <input class="switch-input" id="switch5" type="checkbox" name="switch5" checked>
                                                 <label class="switch-paddle" for="switch5">
                                                     <span class="show-for-sr">Enable</span>
                                                 </label>
@@ -458,7 +466,7 @@
                                         <td>Contacts your have actively been engaging</td>
                                         <td>
                                             <div class="switch">
-                                                <input class="switch-input" id="switch6" type="checkbox" name="switch6">
+                                                <input class="switch-input" id="switch6" type="checkbox" name="switch6" checked>
                                                 <label class="switch-paddle" for="switch6">
                                                     <span class="show-for-sr">Enable</span>
                                                 </label>
@@ -470,7 +478,7 @@
                                         <td>Contacts who are slipping</td>
                                         <td>
                                             <div class="switch">
-                                                <input class="switch-input" id="switch6b" type="checkbox" name="switch6b">
+                                                <input class="switch-input" id="switch6b" type="checkbox" name="switch6b" checked>
                                                 <label class="switch-paddle" for="switch6b">
                                                     <span class="show-for-sr">Enable</span>
                                                 </label>
@@ -494,7 +502,7 @@
                                         <td>Contacts that have "New Assigned", "Update Needed", or "Fading".</td>
                                         <td>
                                             <div class="switch">
-                                                <input class="switch-input" id="switch6d" type="checkbox" name="switch6d">
+                                                <input class="switch-input" id="switch6d" type="checkbox" name="switch6d" checked>
                                                 <label class="switch-paddle" for="switch6d">
                                                     <span class="show-for-sr">Enable</span>
                                                 </label>
@@ -537,89 +545,91 @@
                                     <tr>
                                         <td>New Contacts</td>
                                         <td>
-                                            <select>
-                                                <option value="Disabled">Disabled</option>
-                                                <option value="Immediately" selected>Immediately</option>
-                                                <option value="Daily">Daily</option>
-                                                <option value="Weekly">Weekly</option>
-                                            </select>
                                             <fieldset>
-                                            <div class="controlgroup">
-                                                <select id="car-type">
-                                                    <option>Compact car</option>
-                                                    <option>Midsize car</option>
-                                                    <option>Full size car</option>
-                                                    <option>SUV</option>
-                                                    <option>Luxury</option>
-                                                    <option>Truck</option>
-                                                    <option>Van</option>
-                                                </select>
-                                                <label for="transmission-standard">Standard</label>
-                                                <input type="radio" name="transmission" id="transmission-standard">
-                                                <label for="transmission-automatic">Automatic</label>
-                                                <input type="radio" name="transmission" id="transmission-automatic">
-                                                <label for="insurance">Insurance</label>
-                                                <input type="checkbox" name="insurance" id="insurance">
-                                                <label for="horizontal-spinner" class="ui-controlgroup-label"># of cars</label>
-                                                <input id="horizontal-spinner" class="ui-spinner-input">
-                                                <button>Book Now!</button>
-                                            </div>
+                                                <label for="new-contacts-none">None</label>
+                                                <input type="radio" name="new-contacts" id="new-contacts-none">
+                                                <label for="new-contacts-immediately">Immediately</label>
+                                                <input type="radio" name="new-contacts" id="new-contacts-immediately" checked>
+                                                <label for="new-contacts-daily">Daily</label>
+                                                <input type="radio" name="new-contacts" id="new-contacts-daily">
+                                                <label for="new-contacts-weekly">Weekly</label>
+                                                <input type="radio" name="new-contacts" id="new-contacts-weekly">
                                             </fieldset>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>New Messages</td>
                                         <td>
-                                            <select>
-                                                <option value="Disabled">Disabled</option>
-                                                <option value="Immediately" selected>Immediately</option>
-                                                <option value="Daily">Daily</option>
-                                                <option value="Weekly">Weekly</option>
-                                            </select>
+                                            <fieldset>
+                                                <label for="new-messages-none">None</label>
+                                                <input type="radio" name="new-messages" id="new-messages-none">
+                                                <label for="new-messages-immediately">Immediately</label>
+                                                <input type="radio" name="new-messages" id="new-messages-immediately" checked>
+                                                <label for="new-messages-daily">Daily</label>
+                                                <input type="radio" name="new-messages" id="new-messages-daily">
+                                                <label for="new-messages-weekly">Weekly</label>
+                                                <input type="radio" name="new-messages" id="new-messages-weekly">
+                                            </fieldset>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Activity on my Contacts</td>
                                         <td>
-                                            <select>
-                                                <option value="Disabled">Disabled</option>
-                                                <option value="Immediately" selected>Immediately</option>
-                                                <option value="Daily">Daily</option>
-                                                <option value="Weekly">Weekly</option>
-                                            </select>
+                                            <fieldset>
+                                                <label for="activity-none">None</label>
+                                                <input type="radio" name="activity" id="activity-none">
+                                                <label for="activity-immediately">Immediately</label>
+                                                <input type="radio" name="activity" id="activity-immediately" checked>
+                                                <label for="activity-daily">Daily</label>
+                                                <input type="radio" name="activity" id="activity-daily">
+                                                <label for="activity-weekly">Weekly</label>
+                                                <input type="radio" name="activity" id="activity-weekly">
+                                            </fieldset>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Notifications</td>
                                         <td>
-                                            <select>
-                                                <option value="Disabled" selected>Disabled</option>
-                                                <option value="Immediately" >Immediately</option>
-                                                <option value="Daily">Daily</option>
-                                                <option value="Weekly">Weekly</option>
-                                            </select>
+                                            <fieldset>
+                                                <label for="notifications-none">None</label>
+                                                <input type="radio" name="notifications" id="notifications-none">
+                                                <label for="notifications-immediately">Immediately</label>
+                                                <input type="radio" name="notifications" id="notifications-immediately" checked>
+                                                <label for="notifications-daily">Daily</label>
+                                                <input type="radio" name="notifications" id="notifications-daily">
+                                                <label for="notifications-weekly">Weekly</label>
+                                                <input type="radio" name="notifications" id="notifications-weekly">
+                                            </fieldset>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>New Project Updates</td>
                                         <td>
-                                            <select>
-                                                <option value="Disabled" selected>Disabled</option>
-                                                <option value="Immediately" >Immediately</option>
-                                                <option value="Daily">Daily</option>
-                                                <option value="Weekly">Weekly</option>
-                                            </select>
+                                            <fieldset>
+                                                <label for="project-updates-none">None</label>
+                                                <input type="radio" name="project-updates" id="project-updates-none">
+                                                <label for="project-updates-immediately">Immediately</label>
+                                                <input type="radio" name="project-updates" id="project-updates-immediately">
+                                                <label for="project-updates-daily">Daily</label>
+                                                <input type="radio" name="project-updates" id="project-updates-daily">
+                                                <label for="project-updates-weekly">Weekly</label>
+                                                <input type="radio" name="project-updates" id="project-updates-weekly" checked>
+                                            </fieldset>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Prayer Posts</td>
                                         <td>
-                                            <select>
-                                                <option value="Disabled" selected>Disabled</option>
-                                                <option value="Immediately" >Immediately</option>
-                                                <option value="Daily">Daily</option>
-                                                <option value="Weekly">Weekly</option>
-                                            </select>
+                                            <fieldset>
+                                                <label for="prayer-posts-none">None</label>
+                                                <input type="radio" name="prayer-posts" id="prayer-posts-none">
+                                                <label for="prayer-posts-immediately">Immediately</label>
+                                                <input type="radio" name="prayer-posts" id="prayer-posts-immediately">
+                                                <label for="prayer-posts-daily">Daily</label>
+                                                <input type="radio" name="prayer-posts" id="prayer-posts-daily">
+                                                <label for="prayer-posts-weekly">Weekly</label>
+                                                <input type="radio" name="prayer-posts" id="prayer-posts-weekly" checked>
+                                            </fieldset>
                                         </td>
                                     </tr>
 
@@ -656,8 +666,8 @@
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td></td>
-                                        <td></td>
+                                        <td>My Activity</td>
+                                        <td>A chart of my activity with contacts over time.</td>
                                         <td>
                                             <div class="switch">
                                                 <input class="switch-input" id="switch14" type="checkbox" name="switch14">
@@ -668,8 +678,8 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td></td>
-                                        <td></td>
+                                        <td>Project Overview</td>
+                                        <td>The high-level critical path stats for the project.</td>
                                         <td>
                                             <div class="switch">
                                                 <input class="switch-input" id="switch15" type="checkbox" name="switch15">
@@ -680,8 +690,8 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td></td>
-                                        <td></td>
+                                        <td>Media Overview</td>
+                                        <td>Stats for the project media campaign.</td>
                                         <td>
                                             <div class="switch">
                                                 <input class="switch-input" id="switch16" type="checkbox" name="switch16">
@@ -692,8 +702,8 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td></td>
-                                        <td></td>
+                                        <td>Engagement Overview</td>
+                                        <td>Stats for the face to face engagement.</td>
                                         <td>
                                             <div class="switch">
                                                 <input class="switch-input" id="switch17" type="checkbox" name="switch17">
@@ -704,24 +714,12 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td></td>
-                                        <td></td>
+                                        <td>Groups and Churches Overview</td>
+                                        <td>Stats for the multiplication of groups and churches.</td>
                                         <td>
                                             <div class="switch">
-                                                <input class="switch-input" id="switch18" type="checkbox" name="switch18">
+                                                <input class="switch-input" id="switch18" type="checkbox" name="switch18" checked>
                                                 <label class="switch-paddle" for="switch18">
-                                                    <span class="show-for-sr">Enable</span>
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            <div class="switch">
-                                                <input class="switch-input" id="switch19" type="checkbox" name="switch19">
-                                                <label class="switch-paddle" for="switch19">
                                                     <span class="show-for-sr">Enable</span>
                                                 </label>
                                             </div>
@@ -746,7 +744,8 @@
 
 <script>
     jQuery(document).ready(function($) {
-        jQuery( ".controlgroup" ).controlgroup();
+        jQuery( "fieldset" ).controlgroup();
+        jQuery(':radio').checkboxradio({icon: false});
     });
 </script>
 
