@@ -27,6 +27,7 @@
                     <!-- Check if has not accepted the contact -->
 
                     <?php if ( get_post_meta( get_the_ID(), $key = 'overall_status', true ) != 'Accepted' && get_post_meta( get_the_ID(), $key = 'assigned_to', true ) == 'user-' . get_current_user() ) : ?>
+
                         <div class="callout alert" >
                             <form method="post" action="">
 
@@ -49,6 +50,7 @@
 
 
                         <div class="callout warning" >
+
                             <form action="" method="post">
 
                                 <i class="fi-alert"> Update Needed </i>
@@ -67,23 +69,34 @@
                                 </p>
 
                             </form>
+
                         </div>
 
 
                     <?php endif; ?>
 
-                    <?php
 
-                        if(isset($_GET['action']) && $_GET['action'] == 'edit') { // check if edit screen
+                    <div class="padding-bottom">
+                        <ul class="tabs" data-tabs id="contact-tabs">
+                            <li class="tabs-title is-active"><a href="#contact-panel1" aria-selected="true">Contact</a></li>
+                            <li class="tabs-title"><a href="#contact-panel2" aria-selected="true">Edit</a></li>
+                        </ul>
 
-                           get_template_part( 'parts/edit', 'contact' );
+                        <div class="tabs-content" data-tabs-content="contact-tabs">
+                            <div class="tabs-panel is-active" id="contact-panel1">
 
-                        } else {
+                                <?php get_template_part( 'parts/loop', 'single-contact' ); ?>
 
-                            get_template_part( 'parts/loop', 'single-contact' );
-                        }
+                            </div>
+                            <div class="tabs-panel" id="contact-panel2">
 
-                    ?>
+                                <?php get_template_part( 'parts/edit', 'contact' ); ?>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
 
                 <?php endwhile; else : ?>
 

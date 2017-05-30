@@ -10,7 +10,7 @@
 
             <?php dt_get_contact_edit_form();  ?>
 
-            <input type="submit" name="Update" value="Update" class="button" />
+            <div class="center"><input type="submit" name="Update" value="Update" class="button" /></div>
 
         </form>
 

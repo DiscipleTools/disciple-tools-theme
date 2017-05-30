@@ -14,7 +14,7 @@
                 </ul>
             </nav>
 
-            <aside class="large-4 medium-4 columns">
+            <aside class="large-4 medium-4 columns padding-bottom">
 
                 <ul class="vertical tabs" data-tabs id="profile-nav" data-deep-link="true" data-update-history="true" data-deep-link-smudge="true" data-deep-link-smudge="500">
 <!--                    <li class="tabs-title"><a href="#profile-panel1v" aria-selected="true">Settings Overview</a></li>-->
@@ -34,21 +34,21 @@
 
                     <!-- Panel 1 -->
 
-                    <div class="tabs-panel is-active" id="profile-panel1v" style="padding:0;">
-
-                        <ul class="tabs" data-tabs id="overview-tabs">
-                            <li class="tabs-title is-active"><a href="#overview-panel1" aria-selected="true">Overview</a></li>
-                        </ul>
-
-                        <div class="tabs-content" data-tabs-content="overview-tabs">
-                            <div class="tabs-panel is-active" id="overview-panel1">
-
-                                <h2>Overview</h2>
-
-                            </div>
-                        </div>
-
-                    </div> <!-- end panel 1-->
+<!--                    <div class="tabs-panel is-active" id="profile-panel1v" style="padding:0;">-->
+<!---->
+<!--                        <ul class="tabs" data-tabs id="overview-tabs">-->
+<!--                            <li class="tabs-title is-active"><a href="#overview-panel1" aria-selected="true">Overview</a></li>-->
+<!--                        </ul>-->
+<!---->
+<!--                        <div class="tabs-content" data-tabs-content="overview-tabs">-->
+<!--                            <div class="tabs-panel is-active" id="overview-panel1">-->
+<!---->
+<!--                                <h2>Overview</h2>-->
+<!---->
+<!--                            </div>-->
+<!--                        </div>-->
+<!---->
+<!--                    </div> <!-- end panel 1-->-->
 
                     <!-- Panel 2 -->
 
