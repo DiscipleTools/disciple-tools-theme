@@ -41,8 +41,6 @@ require_once(get_template_directory().'/assets/translation/translation.php'); //
 require_once(get_template_directory().'/assets/functions/disable-emoji.php'); // Remove 4.2 Emoji Support
 
 // Adds Disciple Tools Theme General Functions
-require_once(get_template_directory().'/assets/functions/disciple-tools-user.php');
-require_once(get_template_directory().'/assets/functions/disciple-tools-charts.php');
 require_once(get_template_directory().'/assets/functions/private-site.php'); // Sets site to private
 require_once(get_template_directory().'/assets/functions/login.php'); // Customize the WordPress login menu
 require_once(get_template_directory().'/assets/functions/menu.php'); // Register menus and menu walkers
