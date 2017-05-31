@@ -380,7 +380,6 @@ COMMENT STYLES
 		clear: both;
 		overflow: hidden;
 		list-style-type: none;
-		margin-bottom: 1.5em;
 		padding: 0.7335em 10px;
 
 		&:last-child {
@@ -581,6 +580,10 @@ COMMENT FORM STYLES
 	}
 }
 
+.media-object {
+	width: 100%;
+}
+
 // comment submit button  
 #submit {}
 
@@ -657,4 +660,21 @@ PLUGIN STYLES
 .gform_body ul {
     list-style: none outside none;
     margin: 0;
+}
+
+
+/*********************
+JQUERY OVERRIDES
+*********************/
+.ui-state-active {
+	background: $primary-color;
+	border-color: $primary-color;
+}
+.ui-button.ui-state-active:hover {
+	background: $primary-color;
+	border-color: $primary-color;
+}
+.ui-button:active {
+	background: $primary-color;
+	border-color: $primary-color;
 }

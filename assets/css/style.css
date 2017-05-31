@@ -3286,7 +3286,7 @@ select {
 
 .media-object {
   display: block;
-  margin-bottom: 1rem; }
+  margin-bottom: 0; }
   .media-object img {
     max-width: none; }
   @media screen and (max-width: 39.9375em) {
@@ -4078,7 +4078,7 @@ table.hover:not(.unstriped) tr:nth-of-type(even):hover {
   max-width: 100%;
   margin-bottom: 1rem;
   border: solid 4px #fefefe;
-  border-radius: 10px;
+  border-radius: 0;
   box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.2);
   line-height: 0; }
 
@@ -4537,7 +4537,6 @@ COMMENT STYLES
   clear: both;
   overflow: hidden;
   list-style-type: none;
-  margin-bottom: 1.5em;
   padding: 0.7335em 10px; }
   .commentlist li:last-child {
     margin-bottom: 0; }
@@ -4632,6 +4631,9 @@ COMMENT FORM STYLES
       width: 97.3%;
       height: 150px; }
 
+.media-object {
+  width: 100%; }
+
 #comment-form-title {
   margin: 0 0 1.1em; }
 
@@ -4665,6 +4667,21 @@ PLUGIN STYLES
 .gform_body ul {
   list-style: none outside none;
   margin: 0; }
+
+/*********************
+JQUERY OVERRIDES
+*********************/
+.ui-state-active {
+  background: #1779ba;
+  border-color: #1779ba; }
+
+.ui-button.ui-state-active:hover {
+  background: #1779ba;
+  border-color: #1779ba; }
+
+.ui-button:active {
+  background: #1779ba;
+  border-color: #1779ba; }
 
 /******************************************************************
 

@@ -14,13 +14,7 @@
                 </ul>
             </nav>
 
-            <main id="main" class="large-8 medium-8 columns frame" role="main">
-
-                <?php include ('parts/content-contacts-tabs.php') ?>
-
-            </main> <!-- end #main -->
-
-            <aside class="large-4 medium-4 columns ">
+            <aside class="large-4 medium-4 columns padding-bottom">
 
                 <?php include ('parts/content-assigned-to.php') ?>
 
@@ -32,6 +26,12 @@
                 </section>
 
             </aside> <!-- end #aside -->
+
+            <main id="main" class="large-8 medium-8 columns padding-bottom" role="main">
+
+                <?php include ('parts/content-contacts-tabs.php') ?>
+
+            </main> <!-- end #main -->
 
         </div> <!-- end #inner-content -->
 

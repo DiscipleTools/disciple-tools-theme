@@ -21,16 +21,29 @@
 
                     <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
-                        <?php
-                            if(isset($_GET['action']) && $_GET['action'] == 'edit') { // check if edit screen
+                        <div class="padding-bottom">
 
-                                get_template_part( 'parts/edit', 'group' );
+                            <ul class="tabs" data-tabs id="contact-tabs">
+                                <li class="tabs-title is-active"><a href="#contact-panel1" aria-selected="true">Group</a></li>
+                                <li class="tabs-title"><a href="#contact-panel2" aria-selected="true">Edit</a></li>
+                            </ul>
 
-                            } else {
+                            <div class="tabs-content" data-tabs-content="contact-tabs">
+                                <div class="tabs-panel is-active" id="contact-panel1">
 
-                                get_template_part( 'parts/loop', 'single-group' );
-                            }
-                        ?>
+                                    <?php get_template_part( 'parts/loop', 'single-group' ); ?>
+
+                                </div>
+                                <div class="tabs-panel" id="contact-panel2">
+
+                                    <?php get_template_part( 'parts/edit', 'group' ); ?>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
 
                     <?php endwhile; else : ?>
 

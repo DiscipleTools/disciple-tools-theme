@@ -9,15 +9,7 @@
 	<?php // You can start editing here ?>
 
 	<?php if ( have_comments() ) : ?>
-		<h2 class="comments-title">
-			<?php
-				printf( // WPCS: XSS OK.
-					esc_html( _nx( 'One comment on &ldquo;%2$s&rdquo;', '%1$s comments on &ldquo;%2$s&rdquo;', get_comments_number(), 'comments title', 'disciple_tools' ) ),
-					number_format_i18n( get_comments_number() ),
-					'<span>' . get_the_title() . '</span>'
-				);
-			?>
-		</h2>
+
 
 		<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
 		<nav id="comment-nav-above" class="navigation comment-navigation" role="navigation">
@@ -32,12 +24,12 @@
 		<?php endif; // Check for comment navigation. ?>
 
 		<ol class="commentlist">
-			<?php wp_list_comments('type=comment&callback=disciple_tools_comments'); ?>
+			<?php wp_list_comments('type=comment&callback=disciple_tools_comments&reverse_top_level=true'); ?>
 		</ol>
 
 		<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
 		<nav id="comment-nav-below" class="navigation comment-navigation" role="navigation">
-			<h2 class="screen-reader-text"><?php esc_html_e( 'Comment navigation', 'disciple_tools' ); ?></h2>
+			<h4 class="screen-reader-text"><?php esc_html_e( 'Comment navigation', 'disciple_tools' ); ?></h4>
 			<div class="nav-links">
 
 				<div class="nav-previous"><?php previous_comments_link( esc_html__( 'Older Comments', 'disciple_tools' ) ); ?></div>

@@ -406,7 +406,7 @@ $label-radius: $global-radius;
 // 21. Media Object
 // ----------------
 
-$mediaobject-margin-bottom: $global-margin;
+$mediaobject-margin-bottom: 0; //$global-margin;
 $mediaobject-section-padding: $global-padding;
 $mediaobject-image-width-stacked: 100%;
 
@@ -587,7 +587,7 @@ $thumbnail-margin-bottom: $global-margin;
 $thumbnail-shadow: 0 0 0 1px rgba($black, 0.2);
 $thumbnail-shadow-hover: 0 0 6px 1px rgba($primary-color, 0.5);
 $thumbnail-transition: box-shadow 200ms ease-out;
-$thumbnail-radius: $global-radius;
+$thumbnail-radius: 0; //$global-radius;
 
 // 35. Title Bar
 // -------------
