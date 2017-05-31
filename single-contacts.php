@@ -96,6 +96,12 @@
                         </div>
                     </div>
 
+                    <section class="block">
+
+                        <?php dt_availability_metabox()->display_availability_box(); ?>
+
+                    </section>
+
                     <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
 
                 <?php endwhile; else : ?>
