@@ -18,16 +18,16 @@ function disciple_tools_top_nav() {
 
         // User is multiplier or role of higher position
         $html .= '<li><a href="'.home_url('/').'">Dashboard</a></li>';
-        $html .= '<li><a href="'.home_url('/').'contacts">Contacts</a></li>';
-        $html .= '<li><a href="'.home_url('/').'groups">Groups</a></li>';
-        $html .= '<li><a href="'.home_url('/').'locations">Locations</a></li>';
+        $html .= '<li><a href="'.home_url('/').'contacts/">Contacts</a></li>';
+        $html .= '<li><a href="'.home_url('/').'groups/">Groups</a></li>';
+        $html .= '<li><a href="'.home_url('/').'locations/">Locations</a></li>';
 
         $html .= '<li><a href="#">Project</a><ul class="menu">';
 
-            $html .= '<li><a href="'.home_url('/').'prayer">Prayer Guide</a></li>';
-            $html .= '<li><a href="'.home_url('/').'progress">Progress Updates</a></li>';
-            $html .= '<li><a href="'.home_url('/').'reports">Reports</a></li>';
-            $html .= '<li><a href="'.home_url('/').'media">Media</a></li>';
+            $html .= '<li><a href="'.home_url('/').'prayer/">Prayer Guide</a></li>';
+            $html .= '<li><a href="'.home_url('/').'progress/">Progress Updates</a></li>';
+            $html .= '<li><a href="'.home_url('/').'reports/">Reports</a></li>';
+            $html .= '<li><a href="'.home_url('/').'media/">Media</a></li>';
 
 
         $html .= '</ul></li>';
@@ -46,10 +46,10 @@ function disciple_tools_top_nav() {
         $html .= '<div class="menu-centered">
                 <ul class="vertical medium-horizontal menu" data-accordion-menu>';
 
-        $html .= '<li><a href="'.home_url('/').'about-us">About Us</a></li>';
-        $html .= '<li><a href="'.home_url('/').'prayer">Prayer Guide</a></li>';
-        $html .= '<li><a href="'.home_url('/').'progress">Project Updates</a></li>';
-        $html .= '<li><a href="'.home_url('/').'profile">Profile</a></li>';
+        $html .= '<li><a href="'.home_url('/').'about-us/">About Us</a></li>';
+        $html .= '<li><a href="'.home_url('/').'prayer/">Prayer Guide</a></li>';
+        $html .= '<li><a href="'.home_url('/').'progress/">Project Updates</a></li>';
+        $html .= '<li><a href="'.home_url('/').'profile/">Profile</a></li>';
 
         $html .= '</ul></div>';
 
@@ -60,9 +60,9 @@ function disciple_tools_top_nav() {
         $html .= '<div class="menu-centered">
                 <ul class="vertical medium-horizontal menu" data-accordion-menu>';
 
-        $html .= '<li><a href="'.home_url('/').'about-us">About Us</a></li>';
-        $html .= '<li><a href="'.home_url('/').'prayer">Prayer Guide</a></li>';
-        $html .= '<li><a href="'.home_url('/').'profile">Profile</a></li>';
+        $html .= '<li><a href="'.home_url('/').'about-us/">About Us</a></li>';
+        $html .= '<li><a href="'.home_url('/').'prayer/">Prayer Guide</a></li>';
+        $html .= '<li><a href="'.home_url('/').'profile/">Profile</a></li>';
 
         $html .= '</ul></div>';
 
@@ -107,17 +107,17 @@ function disciple_tools_off_canvas_nav() {
 
     // User is multiplier or role of higher position
     $html .= '<li><a href="'.home_url('/').'">Dashboard</a></li>';
-    $html .= '<li><a href="'.home_url('/').'contacts">Contacts</a></li>';
-    $html .= '<li><a href="'.home_url('/').'groups">Groups</a></li>';
-    $html .= '<li><a href="'.home_url('/').'locations">Locations</a></li>';
+    $html .= '<li><a href="'.home_url('/').'contacts/">Contacts</a></li>';
+    $html .= '<li><a href="'.home_url('/').'groups/">Groups</a></li>';
+    $html .= '<li><a href="'.home_url('/').'locations/">Locations</a></li>';
     $html .= '<li><a href="#">Project</a></li>';
 
-    $html .= '<li><a href="'.home_url('/').'prayer"> - Prayer Guide</a></li>';
-    $html .= '<li><a href="'.home_url('/').'progress"> - Progress Updates</a></li>';
-    $html .= '<li><a href="'.home_url('/').'reports"> - Reports</a></li>';
-    $html .= '<li><a href="'.home_url('/').'media"> - Media</a></li>';
+    $html .= '<li><a href="'.home_url('/').'prayer/"> - Prayer Guide</a></li>';
+    $html .= '<li><a href="'.home_url('/').'progress/"> - Progress Updates</a></li>';
+    $html .= '<li><a href="'.home_url('/').'reports/"> - Reports</a></li>';
+    $html .= '<li><a href="'.home_url('/').'media/"> - Media</a></li>';
 
-    $html .= '<li><a href="'.home_url('/').'profile">Profile</a></li>';
+    $html .= '<li><a href="'.home_url('/').'profile/">Profile</a></li>';
 
     $html .= '<li><form role="search" method="get" class="search-form" action="'. home_url( '/' ) .'">
                 <input type="search" class="small" placeholder="' . esc_attr_x( 'Search...', 'disciple_tools' ) . '" value="' . get_search_query() . '" name="s" title="'. esc_attr_x( 'Search for:', 'disciple_tools' ).'" />
@@ -131,10 +131,10 @@ function disciple_tools_off_canvas_nav() {
     $html .= '<div class="menu-centered">
                     <ul class="vertical medium-horizontal menu" data-accordion-menu>';
 
-    $html .= '<li><a href="'.home_url('/').'about-us">About Us</a></li>';
-    $html .= '<li><a href="'.home_url('/').'prayer">Prayer Guide</a></li>';
-    $html .= '<li><a href="'.home_url('/').'project">Project Updates</a></li>';
-    $html .= '<li><a href="'.home_url('/').'profile">Profile</a></li>';
+    $html .= '<li><a href="'.home_url('/').'about-us/">About Us</a></li>';
+    $html .= '<li><a href="'.home_url('/').'prayer/">Prayer Guide</a></li>';
+    $html .= '<li><a href="'.home_url('/').'project/">Project Updates</a></li>';
+    $html .= '<li><a href="'.home_url('/').'profile/">Profile</a></li>';
 
     $html .= '</ul></div>';
 
@@ -145,9 +145,9 @@ function disciple_tools_off_canvas_nav() {
     $html .= '<div class="menu-centered">
                     <ul class="vertical medium-horizontal menu" data-accordion-menu>';
 
-    $html .= '<li><a href="'.home_url('/').'about-us">About Us</a></li>';
-    $html .= '<li><a href="'.home_url('/').'prayer">Prayer Guide</a></li>';
-    $html .= '<li><a href="'.home_url('/').'profile">Profile</a></li>';
+    $html .= '<li><a href="'.home_url('/').'about-us/">About Us</a></li>';
+    $html .= '<li><a href="'.home_url('/').'prayer/">Prayer Guide</a></li>';
+    $html .= '<li><a href="'.home_url('/').'profile/">Profile</a></li>';
 
     $html .= '</ul></div>';
 
