@@ -9,7 +9,7 @@
         <div id="inner-content" class="row">
 
             <!-- Breadcrumb Navigation-->
-            <nav aria-label="You are here:" role="navigation">
+            <nav aria-label="You are here:" role="navigation" class="hide-for-small-only">
                 <ul class="breadcrumbs">
 
                     <li><a href="/">Dashboard</a></li>
@@ -96,11 +96,6 @@
                         </div>
                     </div>
 
-                    <section class="block">
-
-                        <?php dt_availability_metabox()->display_availability_box(); ?>
-
-                    </section>
 
                     <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
 
