@@ -13,7 +13,6 @@ For more info, check out the codex:
 http://codex.wordpress.org/Creating_Admin_Themes
 
 ******************************************************************/
-/* line 27, ../scss/login.scss */
 .login h1 a {
   background: url(../images/login-logo.png) no-repeat top center;
   width: 326px;
@@ -21,5 +20,4 @@ http://codex.wordpress.org/Creating_Admin_Themes
   text-indent: -9999px;
   overflow: hidden;
   padding-bottom: 15px;
-  display: block;
-}
+  display: block; }
