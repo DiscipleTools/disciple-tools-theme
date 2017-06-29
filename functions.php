@@ -44,6 +44,7 @@ require_once(get_template_directory().'/assets/functions/disable-emoji.php'); //
 require_once(get_template_directory().'/assets/functions/private-site.php'); // Sets site to private
 require_once(get_template_directory().'/assets/functions/login.php'); // Customize the WordPress login menu
 require_once(get_template_directory().'/assets/functions/menu.php'); // Register menus and menu walkers
+require_once(get_template_directory().'/assets/functions/admin-dashboard.php'); // Admin Dashboard
 
 // Adds Page Specific Scripts
 require_once(get_template_directory().'/assets/functions/page-front-page.php');
