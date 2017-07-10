@@ -52,6 +52,9 @@ require_once(get_template_directory().'/assets/functions/page-reports.php');
 require_once(get_template_directory().'/assets/functions/page-profile.php');
 require_once(get_template_directory().'/assets/functions/page-prayer-guide.php');
 
+// Load plugin library that "requires plugins" at activation
+require_once(get_template_directory().'/assets/functions/config-required-plugins.php');
+require_once(get_template_directory().'/assets/functions/class-tgm-plugin-activation.php');
 
 
 

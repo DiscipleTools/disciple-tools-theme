@@ -66,19 +66,6 @@
 
 
 
-
-            <section class="block">
-                <!-- Project Stats -->
-                <h4>Critical Path</h4>
-                <?php  if (class_exists('Disciple_Tools')) {
-                    require_once ( DISCIPLE_TOOLS_DIR. '/includes/admin/reports-funnel.php');
-                    require_once( DISCIPLE_TOOLS_DIR. '/includes/factories/class-page-factory.php'); // Factory class for page building
-                    $reports = Disciple_Tools_Funnel_Reports::instance();
-                    echo $reports->critical_path_stats() ;
-                } ?>
-            </section>
-
-
         </aside> <!-- end #aside -->
 
     </div> <!-- end #inner-content -->
