@@ -7,7 +7,7 @@
             <!-- Breadcrumb Navigation-->
             <nav aria-label="You are here:" role="navigation" class="hide-for-small-only">
                 <ul class="breadcrumbs">
-                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="<?php echo home_url('/'); ?>">Dashboard</a></li>
                     <li>
                         <span class="show-for-sr">Current: </span> Contacts
                     </li>
