@@ -4,5 +4,5 @@ php:
     - '7.0'
     - '7.1'
 script:
-  - ./test.sh
+  - ./test/test_for_syntax_errors.sh
 
