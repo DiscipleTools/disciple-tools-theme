@@ -8,63 +8,35 @@ register_nav_menus(
 );
 
 // The Top Menu
-function disciple_tools_top_nav() {
+function disciple_tools_top_nav_desktop() {
 
     $html = '';
 
     if( user_can(get_current_user_id(), 'read_contact') ) {
 
-        $html .= '<ul class="dropdown menu" data-dropdown-menu>';
 
         // User is multiplier or role of higher position
         $html .= '<li><a href="'.home_url('/').'">Dashboard</a></li>';
         $html .= '<li><a href="'.home_url('/').'contacts/">Contacts</a></li>';
         $html .= '<li><a href="'.home_url('/').'groups/">Groups</a></li>';
-        $html .= '<li><a href="'.home_url('/').'locations/">Locations</a></li>';
 
-        $html .= '<li><a href="#">Project</a><ul class="menu">';
-
-            $html .= '<li><a href="'.home_url('/').'prayer/">Prayer Guide</a></li>';
-            $html .= '<li><a href="'.home_url('/').'progress/">Progress Updates</a></li>';
-            $html .= '<li><a href="'.home_url('/').'reports/">Reports</a></li>';
-            $html .= '<li><a href="'.home_url('/').'media/">Media</a></li>';
-
-
-        $html .= '</ul></li>';
-
-        $html .= '<li><a href="'.home_url('/').'profile">Profile</a></li>';
-
-        $html .= '<li><form role="search" method="get" class="search-form" action="'. home_url( '/' ) .'">
-                <input type="search" class="small" placeholder="' . esc_attr_x( 'Search...', 'disciple_tools' ) . '" value="' . get_search_query() . '" name="s" title="'. esc_attr_x( 'Search for:', 'disciple_tools' ).'" />
-                <input type="hidden" class=" button small" value="'. esc_attr_x( 'Search', 'disciple_tools' ) .'" />
-            </form></li>';
-
-        $html .= '</ul>';
 
     } elseif ( user_can(get_current_user_id(), 'read_progress') ) {
-
-        $html .= '<div class="menu-centered">
-                <ul class="vertical medium-horizontal menu" data-accordion-menu>';
 
         $html .= '<li><a href="'.home_url('/').'about-us/">About Us</a></li>';
         $html .= '<li><a href="'.home_url('/').'prayer/">Prayer Guide</a></li>';
         $html .= '<li><a href="'.home_url('/').'progress/">Project Updates</a></li>';
         $html .= '<li><a href="'.home_url('/').'profile/">Profile</a></li>';
 
-        $html .= '</ul></div>';
 
     } elseif ( user_can(get_current_user_id(), 'read_prayer')) {
 
         /* user is prayer supporter */
 
-        $html .= '<div class="menu-centered">
-                <ul class="vertical medium-horizontal menu" data-accordion-menu>';
-
         $html .= '<li><a href="'.home_url('/').'about-us/">About Us</a></li>';
         $html .= '<li><a href="'.home_url('/').'prayer/">Prayer Guide</a></li>';
         $html .= '<li><a href="'.home_url('/').'profile/">Profile</a></li>';
 
-        $html .= '</ul></div>';
 
     } else {
         /* redirect to registered page */
@@ -82,6 +54,20 @@ function disciple_tools_top_nav() {
     //        'fallback_cb' => false,                         // Fallback function (see below)
     //        'walker' => new Topbar_Menu_Walker()
     //    ));
+
+}
+
+
+function disciple_tools_top_nav_mobile() {
+    $html = '';
+
+    if( user_can(get_current_user_id(), 'read_contact') ) {
+        $html .= '<li><a href="' . home_url( '/' ) . 'groups/"><i class="fi-torsos-all"></i></a></li>';
+        $html .= '<li><a href="' . home_url( '/' ) . 'contacts/"><i class="fi-address-book"></i></a></li>';
+        $html .= '<li><a href="' . home_url( '/' ) . '"><i class="fi-graph-pie"></i></a></li>';
+    }
+
+    echo $html;
 
 }
 
@@ -169,7 +155,7 @@ function disciple_tools_off_canvas_nav() {
 //    ));
 
 
-} 
+}
 
 class Off_Canvas_Menu_Walker extends Walker_Nav_Menu {
     function start_lvl(&$output, $depth = 0, $args = Array() ) {
