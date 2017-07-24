@@ -1,15 +1,25 @@
 language: php
 php:
-    - '5.6'
-    - '7.0'
-    - '7.1'
+  - '5.6'
+  - '7.0'
+  - '7.1'
 dist: trusty
 sudo: required # this seems to be required for some reason to get MySQL to work
 services:
   - mysql
+cache:
+  directories:
+    - "node_modules"
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS testdb'
   - mysql -e "GRANT ALL ON testdb.* TO 'travis'@'localhost'"
+  - npm install -g gulp-cli
+  - npm install
 script:
   - ./test/test_for_syntax_errors.sh
   - ./test/test_installation.sh
+  - gulp
+  - git diff --exit-code
+  # If the previous command returns a non-zero exit code, that means gulp has
+  # modified some files in version control. This shouldn't happen, developers
+  # should remember to run gulp before committing.
