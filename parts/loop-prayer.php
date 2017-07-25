@@ -1,4 +1,4 @@
-<section class="block">
+<section class="bordered-box">
 
     <h3><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
 

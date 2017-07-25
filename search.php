@@ -33,7 +33,7 @@
 ?>
 
 <?php get_header(); ?>
-			
+
 	<div id="content">
 
 		<div id="inner-content" class="row">
@@ -47,10 +47,10 @@
                     </li>
                 </ul>
             </nav>
-	
+
 			<main id="main" class="large-8 medium-8 columns first" role="main">
 
-                <section class="block">
+                <section class="bordered-box">
 
                     <header>
                         <p>Results for: <?php echo esc_attr(get_search_query()); ?></p><hr>
@@ -85,8 +85,8 @@
 
                     <?php if ( ! $search1->have_posts() && ! $search2->have_posts() ) {  get_template_part( 'parts/content', 'missing' ); } ?>
 
-                </section class="block">
-	
+                </section class="bordered-box">
+
 		    </main> <!-- end #main -->
 
             <aside class="large-4 medium-4 columns">
@@ -94,7 +94,7 @@
 
 
             </aside>
-		
+
 		</div> <!-- end #inner-content -->
 
 	</div> <!-- end #content -->

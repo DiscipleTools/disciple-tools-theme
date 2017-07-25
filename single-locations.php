@@ -42,7 +42,7 @@
                 p2p_type( 'assets_to_locations' )->each_connected( $wp_query, array(), 'assets' );
                 ?>
 
-                <section class="block">
+                <section class="bordered-box">
 
                     <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 
@@ -62,7 +62,7 @@
 
 
 
-                <section class="block">
+                <section class="bordered-box">
 
                     <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 
@@ -81,7 +81,7 @@
                 </section>
 
 
-                <section class="block">
+                <section class="bordered-box">
 
                     <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 

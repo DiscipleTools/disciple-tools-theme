@@ -1,6 +1,6 @@
 <article id="post-<?php the_ID(); ?>" role="article" >
 
-    <section class="block">
+    <section class="bordered-box">
 
         <header class="article-header">
             <h1 class="entry-title single-title" itemprop="headline"><?php the_title(); ?></h1>
@@ -16,7 +16,7 @@
 
     </section>
 
-    <section class="block">
+    <section class="bordered-box">
 
         <?php comments_template(); ?>
 

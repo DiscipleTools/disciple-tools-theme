@@ -18,7 +18,7 @@
 
             <main id="main" class="large-12 medium-12 columns" role="main">
 
-                <section class="block">
+                <section class="bordered-box">
                     <?php dt_chart_bargraph (); ?>
                 </section>
 

@@ -64,7 +64,7 @@
                 p2p_type( 'groups_to_locations' )->each_connected( $wp_query, array(), 'locations' );
                 ?>
 
-                <section class="block">
+                <section class="bordered-box">
 
                     <form method="get" action="<?php echo get_permalink(); ?>">
                             <span class="float-right">
@@ -93,7 +93,7 @@
 
 
 
-                <section class="block">
+                <section class="bordered-box">
 
                     <form method="get" action="<?php echo get_permalink(); ?>">
                         <span class="float-right">
@@ -120,7 +120,7 @@
                 </section>
 
 
-                <section class="block">
+                <section class="bordered-box">
 
                     <form method="get" action="<?php echo get_permalink(); ?>">
                             <span class="float-right">

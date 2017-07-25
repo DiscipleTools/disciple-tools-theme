@@ -1,13 +1,13 @@
 <?php get_header(); ?>
-			
+
 <div id="content">
 
 	<div id="inner-content" class="row">
 
 		<main id="main" class="large-8 medium-8 columns" role="main">
 
-            <section class="block">
-		
+            <section class="bordered-box">
+
                 <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
                     <?php get_template_part( 'parts/loop', 'single' ); ?>
@@ -24,7 +24,7 @@
 
         <aside class="large-4 medium-4 columns ">
 
-            <section class="block">
+            <section class="bordered-box">
 
                 <p>Sidebar</p>
 

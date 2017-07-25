@@ -7,7 +7,7 @@
         <main id="main" class="large-8 medium-8 columns " role="main">
 
             <div class="show-for-small-only">
-                <section class="block">
+                <section class="bordered-box">
                     <?php include ('searchform.php'); ?>
                 </section>
             </div>
@@ -29,7 +29,7 @@
 
         <aside class="large-4 medium-4 columns ">
 
-            <section class="block">
+            <section class="bordered-box">
 
                 <!-- Project Stats -->
                 <h4>Quick Update</h4>

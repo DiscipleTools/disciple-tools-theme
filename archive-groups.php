@@ -22,7 +22,7 @@
 
         <aside class="large-4 medium-4 columns ">
 
-            <section class="block">
+            <section class="bordered-box">
 
                 <p>Links</p>
 

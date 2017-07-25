@@ -36,13 +36,13 @@
             <aside class="large-4 medium-4 columns ">
 
 
-                    <section class="block">
+                    <section class="bordered-box">
 
                         <?php include 'searchform.php'; ?>
 
                     </section>
 
-                    <section class="block">
+                    <section class="bordered-box">
 
                         <h4>Recent Posts</h4>
 
@@ -73,7 +73,7 @@
 
                     </section>
 
-                    <section class="block">
+                    <section class="bordered-box">
 
                         <p>Archives</p>
 

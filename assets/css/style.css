@@ -4462,7 +4462,7 @@ POSTS & CONTENT STYLES
   #content article .article-header .title {
     text-transform: uppercase; }
 
-#content section.block {
+#content .bordered-box {
   border: 1px solid #e6e6e6;
   background-color: #fefefe;
   padding: 1rem;

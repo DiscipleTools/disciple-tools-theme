@@ -1,7 +1,7 @@
 <?php get_header(); ?>
-			
+
 	<div id="content">
-	
+
 		<div id="inner-content" class="row">
 
             <!-- Breadcrumb Navigation-->
@@ -13,7 +13,7 @@
                     </li>
                 </ul>
             </nav>
-	
+
 		    <main id="main" class="large-8 medium-8 columns" role="main">
 
                 <?php
@@ -42,13 +42,13 @@
 
             <aside class="large-4 medium-4 columns ">
 
-                <section class="block">
+                <section class="bordered-box">
 
                     <?php include 'searchform.php'; ?>
 
                 </section>
 
-                <section class="block">
+                <section class="bordered-box">
 
                     <h4>Recent Posts</h4>
 
@@ -79,7 +79,7 @@
 
                 </section>
 
-                <section class="block">
+                <section class="bordered-box">
 
                     <p>Archives</p>
 
@@ -103,7 +103,7 @@
 
 
             </aside> <!-- end #aside -->
-		    
+
 		</div> <!-- end #inner-content -->
 
 	</div> <!-- end #content -->
