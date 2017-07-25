@@ -2,7 +2,7 @@
 
     <div id="content">
 
-        <div id="inner-content" class="row">
+        <div id="inner-content">
 
             <!-- Breadcrumb Navigation-->
             <nav aria-label="You are here:" role="navigation" class="hide-for-small-only">
@@ -14,24 +14,27 @@
                 </ul>
             </nav>
 
-            <aside class="large-4 medium-4 columns padding-bottom">
 
-                <?php include ('parts/content-assigned-to.php') ?>
-
-                <?php include 'parts/content-required-updates.php'; ?>
-
-
-                <section class="block">
-
-                </section>
+            <aside class="large-3 medium-3 columns padding-bottom" data-sticky-container>
+                <div class="bordered-box sticky" data-sticky data-top-anchor="main:top"  style="width:100%">
+                    <h3>Filters</h3>
+                </div>
 
             </aside> <!-- end #aside -->
 
-            <main id="main" class="large-8 medium-8 columns padding-bottom" role="main">
+            <main id="main" class="large-6 medium-6 columns padding-bottom" role="main">
 
                 <?php include ('parts/content-contacts-tabs.php') ?>
 
             </main> <!-- end #main -->
+
+            <aside class="large-3 medium-3 columns padding-bottom" data-sticky-container>
+                <div class="bordered-box sticky" data-sticky data-top-anchor="main:top"  style="width:100%">
+                    <h3>Priorities</h3>
+
+                </div>
+            </aside>
+
 
         </div> <!-- end #inner-content -->
 
