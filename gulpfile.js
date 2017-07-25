@@ -106,13 +106,14 @@ gulp.task('bower', function() {
 });  
 
 // Browser-Sync watch files and inject changes
-gulp.task('browsersync', function() {
+gulp.task('browsersync', ['styles', 'site-js', 'foundation-js'], function() {
     // Watch files
     var files = [
-    	'./assets/css/*.css', 
-    	'./assets/js/*.js',
-    	'**/*.php',
-    	'assets/images/**/*.{png,jpg,gif,svg,webp}',
+      './assets/css/*.css',
+      './assets/js/*.js',
+      './assets/js/scripts/*.js',
+      '**/*.php',
+      'assets/images/**/*.{png,jpg,gif,svg,webp}',
     ];
 
     browserSync.init(files, {
