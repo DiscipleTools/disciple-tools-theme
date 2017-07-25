@@ -19,7 +19,7 @@
             <!-- Begin Contacts Tabs Section -->
             <div class="row column padding-bottom">
 
-                <?php include ('parts/content-contacts-tabs.php'); ?>
+                <?php include('parts/content-contacts.php'); ?>
 
             </div>
             <!-- End Contacts Tabs Section -->
