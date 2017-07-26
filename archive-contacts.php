@@ -24,7 +24,7 @@
 
             <main id="main" class="large-6 medium-6 columns padding-bottom" role="main">
 
-                <?php include('parts/content-contacts.php') ?>
+                <?php get_template_part('parts/content', 'contacts'); ?>
 
             </main> <!-- end #main -->
 
