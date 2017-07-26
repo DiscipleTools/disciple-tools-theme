@@ -1,22 +1,30 @@
-/* global jQuery:false, List:false */
+/* global jQuery:false, List:false, wpApiSettings:false */
 
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function($) {
   var myContacts = new List('my-contacts', {
-    valueNames: ['name', 'team'],
+    valueNames: [
+      'post_title',
+      'team',
+      { name: 'permalink', attr: 'href' },
+    ],
     page: 30,
     pagination: true,
   });
 
-
-  // load contacts over ajax strategy
-  // setTimeout(()=>{
-  //   myContacts.clear()
-  //   myContacts.add([
-  //     { name: 'Jonny', city:'Stockholm' },
-  //     { name: 'Jonas', city:'Berlin' }
-  //   ])
-  // }, 1000)
-
+  $.ajax({
+    url: wpApiSettings.root + "dt-hooks/v1/user/1/contacts",
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+    },
+    success: function(data) {
+      $(".js-list-contacts-loading").remove();
+      myContacts.clear();
+      myContacts.add(data);
+    },
+    error: function() {
+      $(".js-list-contacts-loading").text(wpApiSettings.txt_error);
+    }
+  });
 
 });

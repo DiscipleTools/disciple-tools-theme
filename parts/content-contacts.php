@@ -15,6 +15,7 @@
         $args = array(
             'post_type' => 'contacts',
             'nopaging' => true,
+            'posts_per_page' => 29,
             'meta_query' => array (
                 'relation' => 'AND', // Optional, defaults to "AND"
                 array(
@@ -23,20 +24,23 @@
                     'compare' => '='
                 )
             ),
+            'orderby' => 'ID',
         );
         $query1 = new WP_Query( $args );
         ?>
-        <?php if ( $query1->have_posts() ) : while ( $query1->have_posts() ) : $query1->the_post(); ?>
+        <?php if ( $query1->have_posts() ) :
+            while ( $query1->have_posts() ) : $query1->the_post(); ?>
 
-            <!-- To see additional archive styles, visit the /parts directory -->
-            <?php get_template_part( 'parts/loop', 'contacts' ); ?>
+                <!-- To see additional archive styles, visit the /parts directory -->
+                <?php get_template_part( 'parts/loop', 'contacts' ); ?>
 
+            <?php endwhile; ?>
 
-        <?php endwhile; ?>
+            <li class="js-list-contacts-loading"><?php _e("Loading..."); ?></li>
 
         <?php else : ?>
 
-            <?php echo 'No records'; ?>
+            <li><?php _e( 'No records' ); ?></li>
 
         <?php endif; ?>
     </ul>

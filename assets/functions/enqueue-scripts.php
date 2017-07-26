@@ -44,7 +44,12 @@ function site_scripts() {
     }
 
     if (is_post_type_archive("contacts")){
-        wp_enqueue_script( 'list-contacts.js', get_template_directory_uri() . '/assets/js/list-contacts.js', array( 'jquery' ));
+        wp_enqueue_script( 'list-contacts-js', get_template_directory_uri() . '/assets/js/list-contacts.js', array( 'jquery', 'dt_jquery_lists' ));
+        wp_localize_script( 'list-contacts-js', 'wpApiSettings', array(
+            'root' => esc_url_raw( rest_url() ),
+            'nonce' => wp_create_nonce( 'wp_rest' ),
+            'txt_error' => __('An error occurred'),
+        ) );
     }
 
 }
