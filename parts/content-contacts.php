@@ -21,11 +21,6 @@
                     'key'     => 'assigned_to',
                     'value'   => 'user-'. get_current_user_id(),
                     'compare' => '='
-                ),
-                array(
-                    'key'     => 'overall_status',
-                    'value'   => '1',
-                    'compare' => '='
                 )
             ),
         );
