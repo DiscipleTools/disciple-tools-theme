@@ -14,7 +14,7 @@ function after_switch_theme_switch_back() {
 }
 
 
-if (version_compare( phpversion(), '7.0', '<' ) || true) {
+if (version_compare( phpversion(), '7.0', '<' )) {
 
     /* We only support PHP >= 7.0, however, we want to support allowing users
      * to install this theme even on old versions of PHP, without showing a
