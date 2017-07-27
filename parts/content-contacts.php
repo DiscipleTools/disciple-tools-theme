@@ -1,3 +1,26 @@
+<?php
+declare(strict_types=1);
+
+/* Fetch and print the first 29 results only, list-contacts.js will fetch all
+ * the results using AJAX and will replace the list. */
+
+$args = array(
+    'post_type' => 'contacts',
+    'nopaging' => true,
+    'posts_per_page' => 29,
+    'meta_query' => array (
+        'relation' => 'AND', // Optional, defaults to "AND"
+        array(
+            'key'     => 'assigned_to',
+            'value'   => 'user-'. get_current_user_id(),
+            'compare' => '='
+        )
+    ),
+    'orderby' => 'ID',
+);
+$query1 = new WP_Query( $args );
+
+?>
 <div id="my-contacts" class="bordered-box">
     <div class="row search-tools" style="display:none;">
         <div class="medium-6 columns">
@@ -9,27 +32,10 @@
 
     </div>
 
-    <ul class="list">
+    <?php if ( $query1->have_posts() ) : ?>
+        <ul class="list">
 
-        <?php
-        $args = array(
-            'post_type' => 'contacts',
-            'nopaging' => true,
-            'posts_per_page' => 29,
-            'meta_query' => array (
-                'relation' => 'AND', // Optional, defaults to "AND"
-                array(
-                    'key'     => 'assigned_to',
-                    'value'   => 'user-'. get_current_user_id(),
-                    'compare' => '='
-                )
-            ),
-            'orderby' => 'ID',
-        );
-        $query1 = new WP_Query( $args );
-        ?>
-        <?php if ( $query1->have_posts() ) :
-            while ( $query1->have_posts() ) : $query1->the_post(); ?>
+            <?php while ( $query1->have_posts() ) : $query1->the_post(); ?>
 
                 <!-- To see additional archive styles, visit the /parts directory -->
                 <?php get_template_part( 'parts/loop', 'contacts' ); ?>
@@ -38,12 +44,12 @@
 
             <li class="js-list-contacts-loading"><?php _e("Loading..."); ?></li>
 
-        <?php else : ?>
+        </ul>
 
-            <li><?php _e( 'No records' ); ?></li>
+        <ul class="pagination"></ul>
 
-        <?php endif; ?>
-    </ul>
+    <?php else: ?>
+        <p><?php _e("No contacts found."); ?></p>
+    <?php endif; ?>
 
-    <ul class="pagination"></ul>
 </div> <!-- End my-contacts -->
