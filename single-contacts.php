@@ -6,7 +6,7 @@
 
     <div id="content">
 
-        <div id="inner-content" class="row">
+        <div id="inner-content">
 
             <!-- Breadcrumb Navigation-->
             <nav aria-label="You are here:" role="navigation" class="hide-for-small-only">
@@ -20,118 +20,45 @@
                 </ul>
             </nav>
 
+
             <main id="main" class="large-8 medium-8 columns" role="main">
 
-                <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+                <section id="contact-details" class="bordered-box medium-12 columns">
+                    <?php get_template_part( 'parts/loop', 'single-contact' ); ?>
+                </section>
 
-                    <!-- Check if has not accepted the contact -->
+                <section id="faith" class="bordered-box medium-6 columns">
+                    <h1>Faith</h1>
+                    <p>yah</p>
+                    <p>yah</p>
+                    <p>yah</p>
+                    <p>yah</p>
+                    <p>yah</p>
+                    <p>yah</p>
+                </section>
 
-                    <?php if ( get_post_meta( get_the_ID(), $key = 'overall_status', true ) != 'Accepted' && get_post_meta( get_the_ID(), $key = 'assigned_to', true ) == 'user-' . get_current_user() ) : ?>
-
-                        <div class="callout alert" >
-                            <form method="post" action="">
-
-                                    <i class="fi-plus"> Accept or Decline <?php the_title(); ?></i>
-
-                                    <span class="float-right">
-                                        <input type="hidden" name="post_id" value="<?php echo get_the_ID(); ?>" />
-                                        <button type="submit" name="response" value="accept" class="button small ">Accept</button>
-                                        <button type="submit" name="response" value="decline" class="button small ">Decline</button>
-                                    </span>
-
-                            </form>
-                        </div>
-
-                    <?php endif; ?>
-
-                    <!-- Check if update required -->
-
-                    <?php if ( get_post_meta( get_the_ID(), $key = 'requires_update', true ) == 'Yes') : ?>
-
-
-                        <div class="callout warning" >
-
-                            <form action="" method="post">
-
-                                <i class="fi-alert"> Update Needed </i>
-
-                                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-
-                                <span class="float-right">
-                                    <button type="button" class="button small update-<?php echo get_the_ID(); ?>" onclick="jQuery('.update-<?php echo get_the_ID(); ?>').toggle();">Update</button>
-                                </span>
-
-                                <p style="display:none;" class="update-<?php echo get_the_ID(); ?>" >
-
-                                    <input type="hidden" name="post_ID" value="<?php echo get_the_ID(); ?>" />
-                                    <input type="text" name="comment_content"  />
-
-                                </p>
-
-                            </form>
-
-                        </div>
-
-
-                    <?php endif; ?>
-
-
-                    <div class="padding-bottom">
-                        <ul class="tabs" data-tabs id="contact-tabs">
-                            <li class="tabs-title is-active"><a href="#contact-panel1" aria-selected="true">Contact</a></li>
-                            <li class="tabs-title"><a href="#contact-panel2" aria-selected="true">Edit</a></li>
-                        </ul>
-
-                        <div class="tabs-content" data-tabs-content="contact-tabs">
-                            <div class="tabs-panel is-active" id="contact-panel1">
-
-                                <?php get_template_part( 'parts/loop', 'single-contact' ); ?>
-
-                            </div>
-                            <div class="tabs-panel" id="contact-panel2">
-
-                                <?php get_template_part( 'parts/edit', 'contact' ); ?>
-
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
-
-                <?php endwhile; else : ?>
-
-                    <?php get_template_part( 'parts/content', 'missing' ); ?>
-
-                <?php endif; ?>
-
-            </main> <!-- end #main -->
-
-            <aside class="large-4 medium-4 columns ">
-
-                <?php
+                <section id="relationships" class="bordered-box medium-6 columns">
+                    <?php
                     global $wp_query, $post_id;
 
                     // Find connected pages (for all posts)
                     p2p_type( 'contacts_to_contacts' )->each_connected( $wp_query, array(), 'disciple' );
                     p2p_type( 'contacts_to_groups' )->each_connected( $wp_query, array(), 'groups' );
                     p2p_type( 'contacts_to_locations' )->each_connected( $wp_query, array(), 'locations' );
-                ?>
+                    ?>
 
-                <section class="bordered-box">
+                    <section class="bordered-box">
 
-                    <form method="get" action="<?php echo get_permalink(); ?>">
+                        <form method="get" action="<?php echo get_permalink(); ?>">
                             <span class="float-right">
                                 <input type="hidden" name="action" value="edit"/>
                                 <input type="submit" value="Add" class="button" />
                             </span>
-                    </form>
+                        </form>
 
-                    <h3>Relationships</h3>
+                        <h3>Relationships</h3>
 
-                    <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
-
-
+                        <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 
                             <?php foreach ( $post->disciple as $post ) : setup_postdata( $post ); ?>
 
@@ -141,67 +68,69 @@
 
                             <?php  wp_reset_postdata(); // set $post back to original post ?>
 
-                    <?php endwhile; ?>
+                        <?php endwhile; ?>
 
-                </section>
+                    </section>
 
+                    <section class="bordered-box">
 
-
-                <section class="bordered-box">
-
-                    <form method="get" action="<?php echo get_permalink(); ?>">
+                        <form method="get" action="<?php echo get_permalink(); ?>">
                         <span class="float-right">
                             <input type="hidden" name="action" value="edit"/>
                             <input type="submit" value="Add" class="button" />
                         </span>
-                    </form>
+                        </form>
 
-                    <h3>Groups</h3>
+                        <h3>Groups</h3>
 
-                    <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
+                        <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 
-                        <?php foreach ( $post->groups as $post ) : setup_postdata( $post ); ?>
+                            <?php foreach ( $post->groups as $post ) : setup_postdata( $post ); ?>
 
-                            <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a> </li>
+                                <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a> </li>
 
-                        <?php endforeach; ?>
+                            <?php endforeach; ?>
 
-                       <?php  wp_reset_postdata(); // set $post back to original post ?>
+                            <?php  wp_reset_postdata(); // set $post back to original post ?>
 
-                    <?php endwhile; ?>
-
-
-                </section>
+                        <?php endwhile; ?>
 
 
-                <section class="bordered-box">
+                    </section>
 
-                    <form method="get" action="<?php echo get_permalink(); ?>">
+                    <section class="bordered-box">
+
+                        <form method="get" action="<?php echo get_permalink(); ?>">
                             <span class="float-right">
                                 <input type="hidden" name="action" value="edit"/>
                                 <input type="submit" value="Add" class="button" />
                             </span>
-                    </form>
+                        </form>
 
-                    <h3>Locations</h3>
+                        <h3>Locations</h3>
 
-                    <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
+                        <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 
-                        <?php foreach ( $post->locations as $post ) : setup_postdata( $post ); ?>
+                            <?php foreach ( $post->locations as $post ) : setup_postdata( $post ); ?>
 
-                            <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
+                                <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
 
-                        <?php endforeach; ?>
+                            <?php endforeach; ?>
 
-                        <?php  wp_reset_postdata(); // set $post back to original post ?>
+                            <?php  wp_reset_postdata(); // set $post back to original post ?>
 
-                    <?php endwhile; ?>
+                        <?php endwhile; ?>
 
 
 
+                    </section>
                 </section>
 
-            </aside> <!-- end #aside -->
+            </main> <!-- end #main -->
+
+            <aside class="medium-4 columns">
+                <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
+            </aside>
 
         </div> <!-- end #inner-content -->
 
