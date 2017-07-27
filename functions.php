@@ -8,6 +8,12 @@ function admin_notice_required_php_version_dt_theme() {
     <?php
 }
 
+function after_switch_theme_switch_back() {
+    switch_theme( get_option( 'theme_switched' ) );
+    return false;
+}
+
+
 if (version_compare( phpversion(), '7.0', '<' ) || true) {
 
     /* We only support PHP >= 7.0, however, we want to support allowing users
@@ -20,6 +26,7 @@ if (version_compare( phpversion(), '7.0', '<' ) || true) {
 
     add_action( 'admin_notices', 'admin_notice_required_php_version_dt_theme' );
     error_log( 'Disciple Tools theme requires PHP version 7.0 or greater, please upgrade PHP or uninstall this theme' );
+    add_action( 'after_switch_theme', 'after_switch_theme_switch_back' );
     return;
 }
 
