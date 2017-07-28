@@ -15,12 +15,12 @@ if (is_wp_error( $query1 )) {
 <div id="my-contacts" class="bordered-box">
     <h3><?php _e( "Contacts" ); ?></h3>
 
-    <div class="row search-tools" style="display:none;">
+    <div class="row search-tools js-search-tools faded-out">
         <div class="medium-6 columns">
-            <input type="text" class="search"  />
+            <input type="text" class="search" disabled>
         </div>
         <div class="medium-6 columns">
-            <button class="sort button small" data-sort="name">Sort by name</button> <button class="sort button small" data-sort="team">Sort by team</button>
+            <button class="sort button small" data-sort="post_title" disabled><?php _e( "Sort by name "); ?></button> <button class="sort button small" data-sort="assigned_name" disabled><?php _e( "Sort by team" ); ?></button>
         </div>
 
     </div>

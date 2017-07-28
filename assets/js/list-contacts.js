@@ -21,13 +21,21 @@ jQuery(document).ready(function($) {
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
     },
     success: function(data) {
-      $(".js-list-contacts-loading").remove();
       myContacts.clear();
       myContacts.add(data);
     },
     error: function() {
       $(".js-list-contacts-loading").text(wpApiSettings.txt_error);
-    }
+    },
+    complete: function() {
+      $("#my-contacts .js-search-tools")
+        .removeClass("faded-out")
+        .find("button.sort[data-sort]")
+          .removeAttr("disabled")
+        .end()
+        .find("input.search")
+          .removeAttr("disabled");
+    },
   });
 
 });
