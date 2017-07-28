@@ -1,7 +1,7 @@
 <?php if ((isset($_POST['dt_contacts_noonce']) && wp_verify_nonce( $_POST['dt_contacts_noonce'], 'update_dt_contacts' ))) { dt_save_contact($_POST); } // Catch and save update info ?>
 <?php if ( ! empty($_POST['response'] )) { dt_update_overall_status($_POST); } ?>
 <?php if ( ! empty($_POST['comment_content'] )) { dt_update_required_update($_POST); } ?>
-
+<?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true ); ?>
 <?php get_header(); ?>
 
     <div id="content">
@@ -22,6 +22,9 @@
 
 
             <main id="main" class="large-8 medium-8 columns" role="main">
+                <section class="bordered-box medium-12 columns">
+                    Status: <?php echo $contact->fields["overall_status"]["label"] ?>
+                </section>
 
                 <section id="contact-details" class="bordered-box medium-12 columns">
                     <?php get_template_part( 'parts/loop', 'single-contact' ); ?>
@@ -44,7 +47,6 @@
                     // Find connected pages (for all posts)
                     p2p_type( 'contacts_to_contacts' )->each_connected( $wp_query, array(), 'disciple' );
                     p2p_type( 'contacts_to_groups' )->each_connected( $wp_query, array(), 'groups' );
-                    p2p_type( 'contacts_to_locations' )->each_connected( $wp_query, array(), 'locations' );
                     ?>
 
                     <section class="bordered-box">
@@ -98,32 +100,7 @@
 
                     </section>
 
-                    <section class="bordered-box">
 
-                        <form method="get" action="<?php echo get_permalink(); ?>">
-                            <span class="float-right">
-                                <input type="hidden" name="action" value="edit"/>
-                                <input type="submit" value="Add" class="button" />
-                            </span>
-                        </form>
-
-                        <h3>Locations</h3>
-
-                        <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
-
-                            <?php foreach ( $post->locations as $post ) : setup_postdata( $post ); ?>
-
-                                <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
-
-                            <?php endforeach; ?>
-
-                            <?php  wp_reset_postdata(); // set $post back to original post ?>
-
-                        <?php endwhile; ?>
-
-
-
-                    </section>
                 </section>
 
             </main> <!-- end #main -->
