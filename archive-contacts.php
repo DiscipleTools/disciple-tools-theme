@@ -17,7 +17,7 @@
 
             <aside class="large-3 medium-3 columns padding-bottom" data-sticky-container>
                 <div class="bordered-box sticky" data-sticky data-top-anchor="main:top"  style="width:100%">
-                    <h3>Filters</h3>
+                    <h3><?php _e( "Filters" ); ?></h3>
                 </div>
 
             </aside> <!-- end #aside -->
@@ -30,7 +30,7 @@
 
             <aside class="large-3 medium-3 columns padding-bottom" data-sticky-container>
                 <div class="bordered-box sticky" data-sticky data-top-anchor="main:top"  style="width:100%">
-                    <h3>Priorities</h3>
+                    <h3><?php _e( "Priorities" ); ?></h3>
 
                 </div>
             </aside>
