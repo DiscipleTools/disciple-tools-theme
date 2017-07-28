@@ -8,7 +8,7 @@ jQuery(document).ready(function($) {
   var myContacts = new List('my-contacts', {
     valueNames: [
       'post_title',
-      'team',
+      'assigned_name',
       { name: 'permalink', attr: 'href' },
     ],
     page: 30,
