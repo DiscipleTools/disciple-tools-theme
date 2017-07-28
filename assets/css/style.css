@@ -4719,6 +4719,16 @@ JQUERY OVERRIDES
   background: #323A68;
   border-color: #323A68; }
 
+/**
+BREADCRUMBS
+ */
+.breadcrumbs {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto; }
+
 /******************************************************************
 
 Stylesheet: Retina Screens & Devices Stylesheet
