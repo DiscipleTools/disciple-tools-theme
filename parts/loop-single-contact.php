@@ -6,7 +6,31 @@
         </header> <!-- end article header -->
 
         <section class="entry-content" itemprop="articleBody">
-            <?php the_meta(); ?>
+            <?php
+            $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
+            $meta = get_post_meta( get_the_ID() );
+            ?><h3>Phone Numbers</h3>
+            <ul>
+            <?php
+            foreach($contact->fields[ "phone_numbers" ] as $field => $value){
+                echo '<li>' . $value[0] . '</li>';
+            }?>
+            </ul>
+            <h3>Email Addresses</h3>
+            <ul>
+            <?php
+            foreach($contact->fields[ "emails" ] as $value){
+                echo '<li>' . $value[0] . '</li>';
+            }
+            ?>
+            </ul>
+            <h3>Mailing Address</h3>
+            <ul>
+            <?php
+            foreach($contact->fields[ "address" ] as $value){
+                echo '<li>' . $value[0] . '</li>';
+            }?>
+            </ul>
         </section> <!-- end article section -->
 
         <footer class="article-footer">
