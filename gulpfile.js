@@ -49,7 +49,6 @@ gulp.task('site-js', function() {
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'))
     .pipe(concat('scripts.js'))
-    .pipe(gulp.dest('./assets/js'))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(sourcemaps.write('.')) // Creates sourcemap for minified JS
@@ -91,7 +90,6 @@ gulp.task('foundation-js', function() {
 	}))
     .pipe(sourcemaps.init())
     .pipe(concat('foundation.js'))
-    .pipe(gulp.dest('./assets/js'))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(sourcemaps.write('.')) // Creates sourcemap for minified Foundation JS

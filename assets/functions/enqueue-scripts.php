@@ -27,13 +27,13 @@ function site_scripts() {
     wp_enqueue_script( 'what-input', get_template_directory_uri() . '/vendor/what-input/dist/what-input.min.js', array(), '', true );
 
     // Adding Foundation scripts file in the footer
-    wp_enqueue_script( 'foundation-js', get_template_directory_uri() . '/assets/js/foundation.js', array( 'jquery' ), '6.2.3', true );
+    wp_enqueue_script( 'foundation-js', get_template_directory_uri() . '/assets/js/foundation.min.js', array( 'jquery' ), '6.2.3', true );
 
     // Adding scripts file in the header, also adds jquery and jquery ui to the head.
     wp_enqueue_script( 'header-site-js', get_template_directory_uri() . '/assets/js/header-scripts.js', array( 'jquery', 'jquery-ui' ), '', false );
 
     // Adding scripts file in the footer
-    wp_enqueue_script( 'footer-site-js', get_template_directory_uri() . '/assets/js/footer-scripts.js', array( 'jquery' ), '', true );
+    wp_enqueue_script( 'footer-site-js', get_template_directory_uri() . '/assets/js/footer-scripts.min.js', array( 'jquery' ), '', true );
 
     // Register main stylesheet
     wp_enqueue_style( 'site-css', get_template_directory_uri() . '/assets/css/style.min.css', array(), '', 'all' );
