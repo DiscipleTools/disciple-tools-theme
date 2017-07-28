@@ -2,6 +2,9 @@
 
 
 jQuery(document).ready(function($) {
+  if (! $("#my-contacts").length || ! $("#my-contacts .list").length) {
+    return;
+  }
   var myContacts = new List('my-contacts', {
     valueNames: [
       'post_title',
