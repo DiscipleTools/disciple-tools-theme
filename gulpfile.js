@@ -84,11 +84,11 @@ gulp.task('foundation-js', function() {
           './vendor/foundation-sites/js/foundation.toggler.js',
           './vendor/foundation-sites/js/foundation.tooltip.js',
   ])
+    .pipe(sourcemaps.init())
 	.pipe(babel({
 		presets: ['es2015'],
 	    compact: true
 	}))
-    .pipe(sourcemaps.init())
     .pipe(concat('foundation.js'))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
