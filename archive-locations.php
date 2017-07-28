@@ -16,7 +16,7 @@
 
         <main id="main" class="large-8 medium-8 columns" role="main">
 
-            <?php include ('parts/content-locations-tabs.php') ?>
+            <?php get_template_part( 'parts/content', 'locations-tabs.php'); ?>
 
         </main> <!-- end #main -->
 

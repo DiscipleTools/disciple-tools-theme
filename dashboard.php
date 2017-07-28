@@ -12,14 +12,14 @@
                 </section>
             </div>
 
-            <?php include ('parts/content-assigned-to.php'); ?>
+            <?php get_template_part( 'parts/content', 'assigned-to' ); ?>
 
-            <?php include ('parts/content-required-updates.php'); ?>
+            <?php get_template_part( 'parts/content', 'required-updates'); ?>
 
             <!-- Begin Contacts Tabs Section -->
             <div class="row column padding-bottom">
 
-                <?php include('parts/content-contacts.php'); ?>
+                <?php get_template_part( 'parts/content', 'contacts' ); ?>
 
             </div>
             <!-- End Contacts Tabs Section -->
