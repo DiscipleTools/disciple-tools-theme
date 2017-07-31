@@ -23,6 +23,7 @@ jQuery(document).ready(function($) {
     success: function(data) {
       myContacts.clear();
       myContacts.add(data);
+      setUpFilters(data);
     },
     error: function() {
       $(".js-list-contacts-loading").text(wpApiSettings.txt_error);
@@ -37,5 +38,48 @@ jQuery(document).ready(function($) {
           .removeAttr("disabled");
     },
   });
+
+  function setUpFilters(data) {
+    var names = wpApiSettings.contacts_custom_fields_settings.overall_status.default;
+    var counts = {
+      status_number: {},
+      locations: {},
+    };
+    for (var i = 0; i < data.length; i++) {
+      var contact = data[i];
+      var status = names[contact.status_number];
+      if (! counts.status_number.hasOwnProperty(status)) {
+        counts.status_number[status] = 0;
+      }
+      counts.status_number[status]++;
+      for (var j = 0; j < contact.locations.length; j++) {
+        var location = contact.locations[j];
+        if (! counts.locations.hasOwnProperty(location)) {
+          counts.locations[location] = 0;
+        }
+        counts.locations[location]++;
+      }
+    }
+
+    $(".js-contacts-filters")
+      .empty()
+      .append($("<h4>").append(document.createTextNode(wpApiSettings.txt_status)))
+      .append(createFilterTable(counts.status_number))
+      .append($("<h4>").append(document.createTextNode(wpApiSettings.txt_locations)))
+      .append(createFilterTable(counts.locations));
+
+  }
+
+  function createFilterTable(counts) {
+    var $table = $("<table>");
+    Object.keys(counts).forEach(function(key) {
+      $table = $table.append(
+        $("<tr>")
+          .append($("<th>").append(document.createTextNode(key)))
+          .append($("<td>").append(document.createTextNode(counts[key])))
+      );
+    });
+    return $table;
+  }
 
 });

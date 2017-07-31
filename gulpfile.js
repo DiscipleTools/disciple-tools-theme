@@ -15,7 +15,8 @@ var gulp  = require('gulp'),
     plumber = require('gulp-plumber'),
     bower = require('gulp-bower'),
     babel = require('gulp-babel'),
-    browserSync = require('browser-sync').create();
+    browserSync = require('browser-sync').create(),
+    merge = require('merge-stream');
 
 // Compile Sass, Autoprefix and minify
 gulp.task('styles', function() {
@@ -38,21 +39,31 @@ gulp.task('styles', function() {
 
 // JSHint, concat, and minify JavaScript
 gulp.task('site-js', function() {
-  return gulp.src([
-
-           // Grab your custom scripts
-  		  './assets/js/scripts/*.js'
-
+  var scriptsPipeline = gulp.src([
+    // Grab your custom scripts
+    './assets/js/scripts/*.js'
   ])
     .pipe(plumber())
     .pipe(sourcemaps.init())
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'))
     .pipe(concat('scripts.js'))
-    .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
+    .pipe(rename({suffix: '.min'}))
     .pipe(sourcemaps.write('.')) // Creates sourcemap for minified JS
     .pipe(gulp.dest('./assets/js'))
+  var footerPipeline = gulp.src([
+    // TODO: it may be a good idea to not generate a separate file for footer-scripts.js
+    './assets/js/footer-scripts.js',
+  ])
+    .pipe(sourcemaps.init())
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'))
+    .pipe(uglify())
+    .pipe(rename({suffix: '.min'}))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('./assets/js'))
+  return merge(scriptsPipeline, footerPipeline);
 });
 
 // JSHint, concat, and minify Foundation JavaScript
