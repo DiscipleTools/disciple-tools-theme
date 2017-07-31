@@ -1,4 +1,4 @@
-<article id="post-<?php the_ID(); ?>"  role="article" >
+<section id="post-<?php the_ID(); ?>" >
 
 
   <header class="article-header">
@@ -52,6 +52,6 @@
   </footer> <!-- end article footer -->
 
 
-</article> <!-- end article -->
+</section> <!-- end article -->
 
 
