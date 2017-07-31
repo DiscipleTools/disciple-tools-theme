@@ -18,6 +18,7 @@ before_install:
 script:
   - ./test/test_for_syntax_errors.sh
   - ./test/test_installation.sh
+  - rm -f assets/js/*.min.js assets/js/*.map assets/css/*.min.css assets/css/*.map
   - gulp
   - git diff --exit-code
   # If the previous command returns a non-zero exit code, that means gulp has
