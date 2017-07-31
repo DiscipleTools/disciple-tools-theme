@@ -205,6 +205,12 @@ POSTS & CONTENT STYLES
 	}
 
 
+  i.large {
+    font-size: 50px;
+    line-height: 50px;
+  }
+
+
 }
 
 main {
@@ -269,7 +275,7 @@ Title for boxed section
 /**
 Css for option buttons
  */
-.select-button {
+.button.select-button {
   border-radius: 30px;
   margin-right: 5px;
 }
@@ -286,6 +292,13 @@ Selected button
 .selected-select-button {
   background-color: #4CAF50;
   color: white;
+}
+.item-details-header {
+  font-size: 1.7rem;
+  margin: 0 10px 0 10px;
+}
+.item-details-header-row {
+  margin-bottom:15px;
 }
 
 
