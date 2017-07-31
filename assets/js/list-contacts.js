@@ -23,6 +23,7 @@ jQuery(document).ready(function($) {
     success: function(data) {
       myContacts.clear();
       myContacts.add(data);
+      setUpFilters(data);
     },
     error: function() {
       $(".js-list-contacts-loading").text(wpApiSettings.txt_error);
@@ -37,5 +38,26 @@ jQuery(document).ready(function($) {
           .removeAttr("disabled");
     },
   });
+
+  function setUpFilters(data) {
+    var names = wpApiSettings.contacts_custom_fields_settings.overall_status.default;
+    var counts = {};
+    for (var i = 0; i < data.length; i++) {
+      var contact = data[i];
+      if (! counts.hasOwnProperty("s" + contact.status_number)) {
+        counts["s" + contact.status_number] = 0;
+      }
+      counts["s" + contact.status_number]++;
+    }
+    $(".js-contacts-filters").empty().append($("<table>"));
+    Object.keys(counts).forEach(function(key) {
+      var keyName = names[parseInt(key.substring(1))];
+      $(".js-contacts-filters table").append(
+        $("<tr>")
+          .append($("<th>").append(document.createTextNode(keyName)))
+          .append($("<td>").append(document.createTextNode(counts[key])))
+      );
+    });
+  }
 
 });

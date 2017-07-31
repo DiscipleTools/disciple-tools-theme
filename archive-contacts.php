@@ -18,6 +18,7 @@
             <aside class="large-3 medium-3 columns padding-bottom" data-sticky-container>
                 <div class="bordered-box sticky" data-sticky data-top-anchor="main:top"  style="width:100%">
                     <h3><?php _e( "Filters" ); ?></h3>
+                    <div class="js-contacts-filters"></div>
                 </div>
 
             </aside> <!-- end #aside -->
