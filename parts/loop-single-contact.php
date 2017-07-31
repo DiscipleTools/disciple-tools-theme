@@ -13,14 +13,14 @@
       <strong>Phone</strong>
       <ul>
       <?php
-      foreach($contact->fields[ "phone_numbers" ] as $field => $value){
+      foreach($contact->fields[ "phone_numbers" ] ?? [] as $field => $value){
         echo '<li>' . $value[0] . '</li>';
       }?>
       </ul>
       <strong>Email</strong>
       <ul>
       <?php
-      foreach($contact->fields[ "emails" ] as $value){
+      foreach($contact->fields[ "emails" ] ?? [] as $value){
         echo '<li>' . $value[0] . '</li>';
       }
       ?>
@@ -30,14 +30,14 @@
       <strong>Locations</strong>
       <ul>
 	    <?php
-	    foreach($contact->fields[ "locations" ] as $value){
+	    foreach($contact->fields[ "locations" ] ?? [] as $value){
 		    echo '<li><a href="' . $value->permalink . '">'. $value->post_title .'</a></li>';
 	    }?>
       </ul>
       <strong>Address</strong>
       <ul>
       <?php
-      foreach($contact->fields[ "address" ] as $value){
+      foreach($contact->fields[ "address" ]  ?? [] as $value){
         echo '<li>' . $value[0] . '</li>';
       }?>
       </ul>

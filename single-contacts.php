@@ -2,7 +2,10 @@
 <?php if ( ! empty($_POST['response'] )) { dt_update_overall_status($_POST); } ?>
 <?php if ( ! empty($_POST['comment_content'] )) { dt_update_required_update($_POST); } ?>
 <?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true ); ?>
+<?php $contact_fields = Disciple_Tools_Contacts::get_contact_fields(); ?>
 <?php get_header(); ?>
+<?php //var_dump($contact_fields)?>
+<?php //var_dump($contact->fields)?>
 
     <div id="content">
 
@@ -31,13 +34,28 @@
                 </section>
 
                 <section id="faith" class="bordered-box medium-6 columns">
-                    <h1>Faith</h1>
-                    <p>yah</p>
-                    <p>yah</p>
-                    <p>yah</p>
-                    <p>yah</p>
-                    <p>yah</p>
-                    <p>yah</p>
+                    <label class="section-header">Progress</label>
+                    <strong>Seeker Path</strong>
+<!--                    @todo calculate % based on actions-->
+                    <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20"
+                         aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
+                        <span class="progress-meter" style="width: <?php echo ($contact->fields["seeker_path"]["key"] ?? 0) * 20?>%">
+                        <p class="progress-meter-text"><?php echo $contact->fields["seeker_path"]["label"] ?? ""?></p>
+                        </span>
+                    </div>
+                    <strong>Faith Milestones</strong>
+                  <div class="small button-group">
+
+                    <?php forEach($contact->fields as $field => $val){
+                        if (strpos($field, "milestone_") === 0){
+                          $class = $val['key'] === '1' ?  "empty-select-button" : "selected-select-button";
+
+                          echo '<a class="' . $class . ' select-button button ">' . $contact_fields[$field]["name"] . '</a>';
+
+                        }
+                    }
+                    ?>
+                  </div>
                 </section>
 
                 <section id="relationships" class="bordered-box medium-6 columns">

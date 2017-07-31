@@ -248,7 +248,6 @@ aside {
 }
 
 .page-title {
-
 	// Remove Foundation vcard styling from author page titles
 	.vcard {
 		border: 0px;
@@ -257,8 +256,38 @@ aside {
 }
 
 .archive-title {
-
 }
+
+/**
+Title for boxed section
+ */
+.section-header {
+  color: #3F729B;
+  font-size: 1.5rem;
+}
+
+/**
+Css for option buttons
+ */
+.select-button {
+  border-radius: 30px;
+  margin-right: 5px;
+}
+/**
+Css for unselected options
+ */
+.empty-select-button {
+  background-color: #eee;
+  color: black;
+}
+/**
+Selected button
+ */
+.selected-select-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
 
 // Post meta
 .byline {
@@ -698,3 +727,5 @@ CONTACTS
 .faded-out {
     opacity: 0.5;
 }
+
+
