@@ -1,5 +1,5 @@
 <section class="test-flex bordered-box"
-         style="position:fixed; top:100px; bottom:20px; right:20px; display:flex; flex-direction:column; width:100%">
+         style="position:fixed; top:100px; bottom:20px; display:flex; flex-direction:column; width:30%">
     <div>
         <textarea></textarea>
 
