@@ -43,6 +43,15 @@ function site_scripts() {
       wp_enqueue_script( 'comment-reply' );
     }
 
+    if (is_singular("contacts")){
+        wp_enqueue_script( 'contact-details', get_template_directory_uri() . '/assets/js/contact-details.js', array( 'jquery'));
+        wp_localize_script( 'contact-details', 'wpApiSettings', array(
+            'root' => esc_url_raw( rest_url() ),
+            'nonce' => wp_create_nonce( 'wp_rest' ),
+        ) );
+    }
+
+
     if (is_post_type_archive("contacts")){
         wp_enqueue_script( 'list-contacts-js', get_template_directory_uri() . '/assets/js/list-contacts.js', array( 'jquery', 'dt_jquery_lists' ));
         wp_localize_script( 'list-contacts-js', 'wpApiSettings', array(
@@ -54,6 +63,7 @@ function site_scripts() {
             'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
         ) );
     }
+
 
 }
 add_action('wp_enqueue_scripts', 'site_scripts', 999);
