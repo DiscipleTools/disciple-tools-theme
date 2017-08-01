@@ -5,7 +5,7 @@
 <?php $contact_fields = Disciple_Tools_Contacts::get_contact_fields(); ?>
 <?php get_header(); ?>
 <?php //var_dump($contact_fields['milestone_sharing'])?>
-<?php //var_dump($contact->fields["milestone_sharing"])?>
+<?php //var_dump($contact->fields["milestone_sharing"] ?? "test")?>
 
 <div id="errors"> </div>
 
@@ -48,10 +48,11 @@
                     <strong>Faith Milestones</strong>
                   <div class="small button-group">
 
-                    <?php forEach($contact->fields as $field => $val){
+                    <?php forEach($contact_fields as $field => $val){
                         if (strpos($field, "milestone_") === 0){
-                          $class = $val['key'] === '0' ?  "empty-select-button" : "selected-select-button";
-                          $html = '<button onclick="save('. get_the_ID() .', \'' .  $field . '\', ' . ($val['key'] === '1' ? '0' : '1') . ')"';
+                          $class = (isset($contact->fields[$field]) && $contact->fields[$field]['key'] === '1') ?
+                              "selected-select-button" : "empty-select-button";
+                          $html = '<button onclick="save('. get_the_ID() .', \'' .  $field . '\'' . ')"';
                           $html .= 'id="'.$field .'"';
                           $html .= 'class="' . $class . ' select-button button ">' . $contact_fields[$field]["name"] . '</a>';
                           echo  $html;
