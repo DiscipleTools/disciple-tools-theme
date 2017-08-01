@@ -35,34 +35,6 @@
                     <?php get_template_part( 'parts/loop', 'single-contact' ); ?>
                 </section>
 
-                <section id="faith" class="bordered-box medium-6 columns">
-                    <label class="section-header">Progress</label>
-                    <strong>Seeker Path</strong>
-<!--                    @todo calculate % based on actions-->
-                    <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20"
-                         aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                        <span class="progress-meter" style="width: <?php echo ($contact->fields["seeker_path"]["key"] ?? 0) * 20?>%">
-                        <p class="progress-meter-text"><?php echo $contact->fields["seeker_path"]["label"] ?? ""?></p>
-                        </span>
-                    </div>
-                    <strong>Faith Milestones</strong>
-                  <div class="small button-group">
-
-                    <?php forEach($contact_fields as $field => $val){
-                        if (strpos($field, "milestone_") === 0){
-                          $class = (isset($contact->fields[$field]) && $contact->fields[$field]['key'] === '1') ?
-                              "selected-select-button" : "empty-select-button";
-                          $html = '<button onclick="save('. get_the_ID() .', \'' .  $field . '\'' . ')"';
-                          $html .= 'id="'.$field .'"';
-                          $html .= 'class="' . $class . ' select-button button ">' . $contact_fields[$field]["name"] . '</a>';
-                          echo  $html;
-
-                        }
-                    }
-                    ?>
-                  </div>
-                </section>
-
                 <section id="relationships" class="bordered-box medium-6 columns">
                     <?php
                     global $wp_query, $post_id;
@@ -124,6 +96,83 @@
                     </section>
 
 
+                </section>
+
+                <section id="faith" class="bordered-box medium-6 columns">
+                    <label class="section-header">Progress</label>
+                    <strong>Seeker Path</strong>
+                    <!--                    @todo calculate % based on actions-->
+                    <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20"
+                         aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
+                        <span class="progress-meter" style="width: <?php echo ($contact->fields["seeker_path"]["key"] ?? 0) * 20?>%">
+                        <p class="progress-meter-text"><?php echo $contact->fields["seeker_path"]["label"] ?? ""?></p>
+                        </span>
+                    </div>
+                    <strong>Faith Milestones</strong>
+                    <div class="small button-group">
+
+                        <?php forEach($contact_fields as $field => $val){
+                            if (strpos($field, "milestone_") === 0){
+                                $class = (isset($contact->fields[$field]) && $contact->fields[$field]['key'] === '1') ?
+                                    "selected-select-button" : "empty-select-button";
+                                $html = '<button onclick="save('. get_the_ID() .', \'' .  $field . '\'' . ')"';
+                                $html .= 'id="'.$field .'"';
+                                $html .= 'class="' . $class . ' select-button button ">' . $contact_fields[$field]["name"] . '</a>';
+                                echo  $html;
+
+                            }
+                        }
+                        ?>
+                    </div>
+                </section>
+
+                <section id="availability" class="bordered-box medium-6 columns">
+                    <label class="section-header">Availability</label>
+                    <div class="row" style="display: flex; justify-content: center">
+                        <div style="flex: 0 1 13%">Sun</div>
+                        <div style="flex: 0 1 13%">Mon</div>
+                        <div style="flex: 0 1 13%">Tue</div>
+                        <div style="flex: 0 1 13%">Wed</div>
+                        <div style="flex: 0 1 13%">Thu</div>
+                        <div style="flex: 0 1 13%">Fri</div>
+                        <div style="flex: 0 1 13%">Sat</div>
+                    </div>
+                    <div class="row" style="display: flex; justify-content: center">
+                        <div style="flex: 0 1 13%">Morn</div>
+                        <div style="flex: 0 1 13%">Morn</div>
+                        <div style="flex: 0 1 13%">Morn</div>
+                        <div style="flex: 0 1 13%">Morn</div>
+                        <div style="flex: 0 1 13%">Morn</div>
+                        <div style="flex: 0 1 13%">Morn</div>
+                        <div style="flex: 0 1 13%">Morn</div>
+                    </div>
+                    <div class="row" style="display: flex; justify-content: center">
+                        <div style="flex: 0 1 13%">Lunch</div>
+                        <div style="flex: 0 1 13%">Lunch</div>
+                        <div style="flex: 0 1 13%">Lunch</div>
+                        <div style="flex: 0 1 13%">Lunch</div>
+                        <div style="flex: 0 1 13%">Lunch</div>
+                        <div style="flex: 0 1 13%">Lunch</div>
+                        <div style="flex: 0 1 13%">Lunch</div>
+                    </div>
+                    <div class="row" style="display: flex; justify-content: center">
+                        <div style="flex: 0 1 13%">Aftr</div>
+                        <div style="flex: 0 1 13%">Aftr</div>
+                        <div style="flex: 0 1 13%">Aftr</div>
+                        <div style="flex: 0 1 13%">Aftr</div>
+                        <div style="flex: 0 1 13%">Aftr</div>
+                        <div style="flex: 0 1 13%">Aftr</div>
+                        <div style="flex: 0 1 13%">Aftr</div>
+                    </div>
+                    <div class="row" style="display: flex; justify-content: center">
+                        <div style="flex: 0 1 13%">Night</div>
+                        <div style="flex: 0 1 13%">Night</div>
+                        <div style="flex: 0 1 13%">Night</div>
+                        <div style="flex: 0 1 13%">Night</div>
+                        <div style="flex: 0 1 13%">Night</div>
+                        <div style="flex: 0 1 13%">Night</div>
+                        <div style="flex: 0 1 13%">Night</div>
+                    </div>
                 </section>
 
             </main> <!-- end #main -->
