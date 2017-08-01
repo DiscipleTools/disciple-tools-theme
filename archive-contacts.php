@@ -18,7 +18,14 @@
             <aside class="large-3 medium-3 columns padding-bottom" data-sticky-container>
                 <div class="bordered-box sticky" data-sticky data-top-anchor="main:top"  style="width:100%; max-height: 100vh; overflow: auto">
                     <h3><?php _e( "Filters" ); ?></h3>
-                    <div class="js-contacts-filters"></div>
+                    <details class="js-contacts-filter" data-filter="status">
+                        <summary><?php _e( "Status" ); ?></summary>
+                        <p><?php _e( "Loading..." ); ?></p>
+                    </details>
+                    <details class="js-contacts-filter" data-filter="locations">
+                        <summary><?php _e( "Locations" ); ?></summary>
+                        <p><?php _e( "Loading..." ); ?></p>
+                    </details>
                 </div>
 
             </aside> <!-- end #aside -->
