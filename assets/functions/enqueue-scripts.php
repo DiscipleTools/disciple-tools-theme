@@ -29,6 +29,8 @@ function site_scripts() {
     // Adding Foundation scripts file in the footer
     wp_enqueue_script( 'foundation-js', get_template_directory_uri() . '/assets/js/foundation.min.js', array( 'jquery' ), '6.2.3', true );
 
+    wp_enqueue_script( 'lodash', get_template_directory_uri() . '/vendor/lodash/lodash.min.js', array(), '4.17.4' );
+
     // Adding scripts file in the header, also adds jquery and jquery ui to the head.
     wp_enqueue_script( 'header-site-js', get_template_directory_uri() . '/assets/js/header-scripts.js', array( 'jquery', 'jquery-ui' ), '', false );
 
@@ -44,7 +46,7 @@ function site_scripts() {
     }
 
     if (is_post_type_archive("contacts")){
-        wp_enqueue_script( 'list-contacts-js', get_template_directory_uri() . '/assets/js/list-contacts.js', array( 'jquery', 'dt_jquery_lists' ));
+        wp_enqueue_script( 'list-contacts-js', get_template_directory_uri() . '/assets/js/list-contacts.js', array( 'jquery', 'dt_jquery_lists', 'lodash' ) );
         wp_localize_script( 'list-contacts-js', 'wpApiSettings', array(
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
