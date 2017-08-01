@@ -49,8 +49,7 @@ function site_scripts() {
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'txt_error' => __('An error occurred'),
-            'txt_status' => __('Status'),
-            'txt_locations' => __('Locations'),
+            'txt_no_records' => __('No records'),
             'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
         ) );
     }

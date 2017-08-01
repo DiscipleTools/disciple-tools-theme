@@ -61,11 +61,10 @@ jQuery(document).ready(function($) {
       }
     }
 
-    $(".js-contacts-filters")
-      .empty()
-      .append($("<h4>").append(document.createTextNode(wpApiSettings.txt_status)))
-      .append(createFilterTable(counts.status_number))
-      .append($("<h4>").append(document.createTextNode(wpApiSettings.txt_locations)))
+    $(".js-contacts-filter :not(summary)").remove();
+    $(".js-contacts-filter[data-filter='status']")
+      .append(createFilterTable(counts.status_number));
+    $(".js-contacts-filter[data-filter='locations']")
       .append(createFilterTable(counts.locations));
 
   }
@@ -73,12 +72,18 @@ jQuery(document).ready(function($) {
   function createFilterTable(counts) {
     var $table = $("<table>");
     Object.keys(counts).forEach(function(key) {
-      $table = $table.append(
+      $table.append(
         $("<tr>")
           .append($("<th>").append(document.createTextNode(key)))
           .append($("<td>").append(document.createTextNode(counts[key])))
       );
     });
+    if ($.isEmptyObject(counts)) {
+      $table.append(
+        $("<tr>")
+          .append($("<td>").append(document.createTextNode(wpApiSettings.txt_no_records)))
+      );
+    }
     return $table;
   }
 
