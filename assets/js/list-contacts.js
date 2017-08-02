@@ -1,17 +1,8 @@
-/* global jQuery:false, wpApiSettings:false, _:false */
-
-// TODO: trigger the AJAX call before the document is ready
-
-jQuery(document).ready(function($) {
+(function($, wpApiSettings) {
   "use strict";
   let contacts;
   let searchFilterFunction;
   let otherFilterFunctions = [];
-
-  if (! $(".js-list-contacts").length) {
-    $(".js-contacts-filter :not(summary)").remove();
-    return;
-  }
 
   $.ajax({
     url: wpApiSettings.root + "dt-hooks/v1/user/1/contacts",
@@ -25,36 +16,49 @@ jQuery(document).ready(function($) {
         contact.status = statusNames[contact.status_number];
       });
       contacts = data;
-      displayContacts();
-      setUpFilterPane();
+      $(function() {
+        displayContacts();
+        setUpFilterPane();
+        /* The page could have been loaded with this search field already
+         * filled in, for instance, after clicking the back button, so it's
+         * useful to make sure the search filter is still applied after
+         * clicking the back button. */
+        $(".js-list-contacts-search").trigger("input");
+      });
     },
     error: function() {
-      $(".js-list-contacts-loading").text(wpApiSettings.txt_error);
+      $(function() {
+        $(".js-list-contacts-loading").text(wpApiSettings.txt_error);
+      });
     },
     complete: function() {
-      $(".js-search-tools").removeClass("faded-out");
-      $(".js-list-contacts-search").removeAttr("disabled");
-      $(".js-list-contacts-sort").removeAttr("disabled");
+      $(function() {
+        $(".js-search-tools").removeClass("faded-out");
+        $(".js-list-contacts-search").removeAttr("disabled");
+        $(".js-list-contacts-sort").removeAttr("disabled");
+      });
     },
   });
 
-  $(".js-list-contacts-search").on("input", function() {
-    const searchString = $(this).val().trim();
-    if (searchString) {
-      searchFilterFunction = function(contact) {
-        return contact.post_title.toLowerCase().indexOf(searchString) !== -1;
-      };
-    } else {
-      searchFilterFunction = null;
-    }
-    filterContacts();
-  });
+  $(function() {
+    $(".js-list-contacts-search").on("input", function() {
+      const searchString = $(this).val().trim();
+      if (searchString) {
+        searchFilterFunction = function(contact) {
+          return contact.post_title.toLowerCase().indexOf(searchString) !== -1;
+        };
+      } else {
+        searchFilterFunction = null;
+      }
+      filterContacts();
+    });
 
-  $(".js-list-contacts-sort").on("click", function() {
-    const sortBy = $(this).data("sort");
-    const sortOrder = $(this).data("order") || "asc";
-    sortList(sortBy, sortOrder);
-    $(this).data("order", sortOrder === "asc" ? "desc" : "asc");
+    $(".js-list-contacts-sort").on("click", function() {
+      const sortBy = $(this).data("sort");
+      const sortOrder = $(this).data("order") || "asc";
+      sortList(sortBy, sortOrder);
+      $(this).data("order", sortOrder === "asc" ? "desc" : "asc");
+    });
   });
 
   function sortList(sortBy, sortOrder) {
@@ -68,6 +72,10 @@ jQuery(document).ready(function($) {
 
   function displayContacts() {
     const $ul = $(".js-list-contacts");
+    if (! $ul.length) {
+      $ul.find(":not(summary)").remove();
+      return;
+    }
     $ul.empty();
     _.forEach(contacts, function(contact, index) {
       $ul.append(
@@ -90,6 +98,9 @@ jQuery(document).ready(function($) {
 
 
   function setUpFilterPane() {
+    if (! $(".js-list-contacts").length) {
+      return;
+    }
     const counts = {
       status: _.countBy(_.map(contacts, 'status')),
       locations: _.countBy(_.flatten(_.map(contacts, 'locations'))),
@@ -188,4 +199,4 @@ jQuery(document).ready(function($) {
     }
   }
 
-});
+})(window.jQuery, window.wpApiSettings);
