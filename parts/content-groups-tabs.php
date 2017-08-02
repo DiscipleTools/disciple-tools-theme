@@ -84,7 +84,7 @@
                 <?php if ( $query2->have_posts() ) : while ( $query2->have_posts() ) : $query2->the_post(); ?>
 
                     <!-- To see additional archive styles, visit the /parts directory -->
-                    <li><span class="name"><a href="<?php the_permalink() ?>" rel="link" title="<?php the_title_attribute(); ?>"><?php the_title(); ?> </a></span> <span class="float-right small grey team">(<?php dt_get_assigned_name(get_the_ID() ); ?>)</span> </li>
+                    <li><span class="name"><a href="<?php the_permalink() ?>" rel="link" title="<?php the_title_attribute(); ?>"><?php the_title(); ?> </a></span> <span class="float-right small grey team">(<?php dt_get_assigned_name( get_the_ID() ); ?>)</span> </li>
 
 
                 <?php endwhile; ?>

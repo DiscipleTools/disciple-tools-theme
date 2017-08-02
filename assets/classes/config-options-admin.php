@@ -1,5 +1,5 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * Disciple_Tools_Admin Class
@@ -53,8 +53,9 @@ final class Disciple_Tools_Theme_Admin {
      * @return Disciple_Tools_Theme_Admin instance
      */
     public static function instance () {
-        if ( is_null( self::$_instance ) )
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
+        }
         return self::$_instance;
     } // End instance()
 
@@ -164,7 +165,7 @@ final class Disciple_Tools_Theme_Admin {
         $args = wp_parse_args( $args, $defaults );
 
         $atts = '';
-        if ( 0 < count ( $args['atts'] ) ) {
+        if ( 0 < count( $args['atts'] ) ) {
             foreach ( $args['atts'] as $k => $v ) {
                 $atts .= ' ' . esc_attr( $k ) . '="' . esc_attr( $v ) . '"';
             }
@@ -183,7 +184,7 @@ final class Disciple_Tools_Theme_Admin {
      * @return  string              The current tab key.
      */
     private function _get_current_tab ( $sections = array() ) {
-        if ( isset ( $_GET['tab'] ) ) {
+        if ( isset( $_GET['tab'] ) ) {
             $response = sanitize_title_with_dashes( $_GET['tab'] );
         } else {
             if ( is_array( $sections ) && ! empty( $sections ) ) {
@@ -224,7 +225,7 @@ final class Disciple_Tools_Theme_Admin {
             }
         }
 
-        return (array)apply_filters( 'dt-get-admin-header-data', $response );
+        return (array) apply_filters( 'dt-get-admin-header-data', $response );
     } // End _get_admin_header_data()
 
     /**
@@ -248,7 +249,7 @@ final class Disciple_Tools_Theme_Admin {
                 $method = 'validate_field_' . $fields[$k]['type'];
 
                 if ( ! method_exists( $this, $method ) ) {
-                    if ( true === (bool)apply_filters( 'dt-validate-field-' . $fields[$k]['type'] . '_use_default', true ) ) {
+                    if ( true === (bool) apply_filters( 'dt-validate-field-' . $fields[$k]['type'] . '_use_default', true ) ) {
                         $method = 'validate_field_text';
                     } else {
                         $method = '';
@@ -277,7 +278,7 @@ final class Disciple_Tools_Theme_Admin {
      * @return  void
      */
     public function validate_field_text ( $v ) {
-        return (string)wp_kses_post( $v );
+        return (string) wp_kses_post( $v );
     } // End validate_field_text()
 
     /**
@@ -352,7 +353,8 @@ final class Disciple_Tools_Theme_Admin {
      */
     public function render_field ( $args ) {
         $html = '';
-        if ( ! in_array( $args['type'], $this->get_supported_fields() ) ) return ''; // Supported field type sanity check.
+        if ( ! in_array( $args['type'], $this->get_supported_fields() ) ) { return ''; // Supported field type sanity check.
+        }
 
         // Make sure we have some kind of default, if the key isn't set.
         if ( ! isset( $args['default'] ) ) {
@@ -374,10 +376,10 @@ final class Disciple_Tools_Theme_Admin {
         }
 
         // Output the description, if the current field allows it.
-        if ( isset( $args['type'] ) && ! in_array( $args['type'], (array)apply_filters( 'dt-no-description-fields', array( 'checkbox' ) ) ) ) {
+        if ( isset( $args['type'] ) && ! in_array( $args['type'], (array) apply_filters( 'dt-no-description-fields', array( 'checkbox' ) ) ) ) {
             if ( isset( $args['description'] ) ) {
                 $description = '<p class="description">' . wp_kses_post( $args['description'] ) . '</p>' . "\n";
-                if ( in_array( $args['type'], (array)apply_filters( 'dt-new-line-description-fields', array( 'textarea', 'select' ) ) ) ) {
+                if ( in_array( $args['type'], (array) apply_filters( 'dt-new-line-description-fields', array( 'textarea', 'select' ) ) ) ) {
                     $description = wpautop( $description );
                 }
                 $html .= $description;
@@ -402,7 +404,7 @@ final class Disciple_Tools_Theme_Admin {
         // Admin tabs will be created for each section.
         // Don't forget to add fields for the section in the get_settings_fields() function below
 
-        return (array)apply_filters( 'disciple-tools-theme-settings-sections', $settings_sections );
+        return (array) apply_filters( 'disciple-tools-theme-settings-sections', $settings_sections );
     } // End get_settings_sections()
 
     /**
@@ -460,7 +462,7 @@ final class Disciple_Tools_Theme_Admin {
                 break;
         }
 
-        return (array)apply_filters( 'disciple-tools-theme-settings-fields', $settings_fields, $section);
+        return (array) apply_filters( 'disciple-tools-theme-settings-fields', $settings_fields, $section );
     } // End get_settings_fields()
 
     /**
@@ -486,7 +488,7 @@ final class Disciple_Tools_Theme_Admin {
      */
     protected function render_field_radio ( $key, $args ) {
         $html = '';
-        if ( isset( $args['options'] ) && ( 0 < count( (array)$args['options'] ) ) ) {
+        if ( isset( $args['options'] ) && ( 0 < count( (array) $args['options'] ) ) ) {
             $html = '';
             foreach ( $args['options'] as $k => $v ) {
                 $html .= '<input type="radio" name="' . esc_attr( $key ) . '" value="' . esc_attr( $k ) . '"' . checked( esc_attr( $this->get_value( $args['id'], $args['default'], $args['section'] ) ), $k, false ) . ' /> ' . esc_html( $v ) . '<br />' . "\n";
@@ -543,7 +545,7 @@ final class Disciple_Tools_Theme_Admin {
         $this->_has_select = true;
 
         $html = '';
-        if ( isset( $args['options'] ) && ( 0 < count( (array)$args['options'] ) ) ) {
+        if ( isset( $args['options'] ) && ( 0 < count( (array) $args['options'] ) ) ) {
             $html .= '<select id="' . esc_attr( $key ) . '" name="' . esc_attr( $key ) . '">' . "\n";
             foreach ( $args['options'] as $k => $v ) {
                 $html .= '<option value="' . esc_attr( $k ) . '"' . selected( esc_attr( $this->get_value( $args['id'], $args['default'], $args['section'] ) ), $k, false ) . '>' . esc_html( $v ) . '</option>' . "\n";
@@ -625,7 +627,7 @@ final class Disciple_Tools_Theme_Admin {
      * @return  array Supported field type keys.
      */
     public function get_supported_fields () {
-        return (array)apply_filters( 'dt-supported-fields', array( 'text', 'checkbox', 'radio', 'textarea', 'select', 'select_taxonomy' ) );
+        return (array) apply_filters( 'dt-supported-fields', array( 'text', 'checkbox', 'radio', 'textarea', 'select', 'select_taxonomy' ) );
     } // End get_supported_fields()
 
     /**
@@ -658,7 +660,7 @@ final class Disciple_Tools_Theme_Admin {
     public function get_settings ( $section = '' ) {
         $response = false;
 
-        $sections = array_keys( (array)$this->get_settings_sections() );
+        $sections = array_keys( (array) $this->get_settings_sections() );
 
         if ( in_array( $section, $sections ) ) {
             $sections = array( $section );
@@ -667,7 +669,7 @@ final class Disciple_Tools_Theme_Admin {
         if ( 0 < count( $sections ) ) {
             foreach ( $sections as $k => $v ) {
                 $fields = $this->get_settings_fields( $k );
-                $values = get_option($this->token . '-' . $k, array());
+                $values = get_option( $this->token . '-' . $k, array() );
 
                 if ( is_array( $fields ) && 0 < count( $fields ) ) {
                     foreach ( $fields as $i => $j ) {

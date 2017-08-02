@@ -1,5 +1,5 @@
 <!-- Begin Assigned Contacts -->
-<?php if ( ! empty($_POST['response'] )) { dt_update_overall_status($_POST); } ?>
+<?php if ( ! empty( $_POST['response'] )) { dt_update_overall_status( $_POST ); } ?>
 <?php
 
 /* Loop for the new assigned contacts */

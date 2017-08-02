@@ -3407,12 +3407,14 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
                          *     @type array  $packages Array of plugin, theme, or core packages to update.
                          * }
                          */
-                        do_action( 'upgrader_process_complete', $this, array(
-                            'action'  => 'install', // [TGMPA + ] adjusted.
-                            'type'    => 'plugin',
-                            'bulk'    => true,
-                            'plugins' => $plugins,
-                        ) );
+                        do_action(
+                            'upgrader_process_complete', $this, array(
+                                'action'  => 'install', // [TGMPA + ] adjusted.
+                                'type'    => 'plugin',
+                                'bulk'    => true,
+                                'plugins' => $plugins,
+                            )
+                        );
 
                         $this->skin->bulk_footer();
 

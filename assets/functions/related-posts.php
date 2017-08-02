@@ -15,15 +15,15 @@ function disciple_tools_related_posts() {
         );
         $related_posts = get_posts( $args );
         if($related_posts) {
-        echo __( '<h4>Related Posts</h4>', 'disciple_tools' );
-        echo '<ul id="joints-related-posts">';
+            echo __( '<h4>Related Posts</h4>', 'disciple_tools' );
+            echo '<ul id="joints-related-posts">';
             foreach ( $related_posts as $post ) : setup_postdata( $post ); ?>
                 <li class="related_post">
                     <a href="<?php the_permalink() ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a>
                     <?php get_template_part( 'parts/content', 'byline' ); ?>
                 </li>
             <?php endforeach; }
-            }
+    }
     wp_reset_postdata();
     echo '</ul>';
 } /* end joints related posts function */

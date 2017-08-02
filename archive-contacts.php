@@ -7,7 +7,7 @@
             <!-- Breadcrumb Navigation-->
             <nav aria-label="You are here:" role="navigation" class="hide-for-small-only">
                 <ul class="breadcrumbs">
-                    <li><a href="<?php echo home_url('/'); ?>">Dashboard</a></li>
+                    <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
                     <li>
                         <span class="show-for-sr">Current: </span> Contacts
                     </li>
@@ -32,7 +32,7 @@
 
             <main id="main" class="large-6 medium-6 columns padding-bottom" role="main">
 
-                <?php get_template_part('parts/content', 'contacts'); ?>
+                <?php get_template_part( 'parts/content', 'contacts' ); ?>
 
             </main> <!-- end #main -->
 

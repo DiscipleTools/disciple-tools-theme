@@ -54,7 +54,7 @@
                                         </tr>
                                     </thead>
 
-                                    <?php $current_user = get_user_by('id', get_current_user_id()); ?>
+                                    <?php $current_user = get_user_by( 'id', get_current_user_id() ); ?>
 
                                     <tbody>
                                         <tr>
@@ -91,7 +91,7 @@
                                         </tr>
                                         <tr>
                                             <td>Profile Picture</td>
-                                            <td><?php echo get_avatar($current_user->ID); ?></td>
+                                            <td><?php echo get_avatar( $current_user->ID ); ?></td>
                                         </tr>
 
                                     </tbody>

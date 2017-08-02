@@ -7,7 +7,7 @@
             <!-- Breadcrumb Navigation-->
             <nav aria-label="You are here:" role="navigation" class="hide-for-small-only">
                 <ul class="breadcrumbs">
-                    <li><a href="<?php echo home_url('/'); ?>">Dashboard</a></li>
+                    <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
                     <li>
                         <span class="show-for-sr">Current: </span> Prayer Guide
                     </li>
@@ -70,9 +70,11 @@
                     $recent_posts = wp_get_recent_posts( $args, ARRAY_A );
 
                     echo '<ul>';
-                    foreach ($recent_posts as $recent_post) {
-                        echo '<li><a href="'. $recent_post['guid'] .'">' . $recent_post['post_title'] . '</a></li>';
-                    }
+                    ?>
+                    <?php foreach ($recent_posts as $recent_post): ?>
+                        <li><a href="<?php echo $recent_post['guid'] ?>"><?php echo $recent_post['post_title'] ?></a></li>
+                    <?php endforeach; ?>
+                    <?php
                     echo '</ul>';
 
 //                    print_r($recent_posts);?>

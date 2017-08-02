@@ -1,55 +1,65 @@
 <?php
 // SIDEBARS AND WIDGETIZED AREAS
 function disciple_tools_register_sidebars() {
-    register_sidebar(array(
+    register_sidebar(
+        array(
         'id' => 'general',
-        'name' => __('General', 'disciple_tools'),
-        'description' => __('Main sidebar.', 'disciple_tools'),
+        'name' => __( 'General', 'disciple_tools' ),
+        'description' => __( 'Main sidebar.', 'disciple_tools' ),
         'before_widget' => '<div id="%1$s" class="widget %2$s">',
         'after_widget' => '</div>',
         'before_title' => '<h4 class="widgettitle">',
         'after_title' => '</h4>',
-    ));
+        )
+    );
 
-    register_sidebar(array(
+    register_sidebar(
+        array(
         'id' => 'offcanvas',
-        'name' => __('Offcanvas', 'disciple_tools'),
-        'description' => __('The offcanvas sidebar.', 'disciple_tools'),
+        'name' => __( 'Offcanvas', 'disciple_tools' ),
+        'description' => __( 'The offcanvas sidebar.', 'disciple_tools' ),
         'before_widget' => '<div id="%1$s" class="widget %2$s">',
         'after_widget' => '</div>',
         'before_title' => '<h4 class="widgettitle">',
         'after_title' => '</h4>',
-    ));
+        )
+    );
 
-    register_sidebar(array(
+    register_sidebar(
+        array(
         'id' => 'contacts',
-        'name' => __('Contacts', 'disciple_tools'),
-        'description' => __('Contacts sidebar.', 'disciple_tools'),
+        'name' => __( 'Contacts', 'disciple_tools' ),
+        'description' => __( 'Contacts sidebar.', 'disciple_tools' ),
         'before_widget' => '<div id="%1$s" class="widget %2$s">',
         'after_widget' => '</div>',
         'before_title' => '<h4 class="widgettitle">',
         'after_title' => '</h4>',
-    ));
+        )
+    );
 
-    register_sidebar(array(
+    register_sidebar(
+        array(
         'id' => 'groups',
-        'name' => __('Groups', 'disciple_tools'),
-        'description' => __('Groups sidebar.', 'disciple_tools'),
+        'name' => __( 'Groups', 'disciple_tools' ),
+        'description' => __( 'Groups sidebar.', 'disciple_tools' ),
         'before_widget' => '<div id="%1$s" class="widget %2$s">',
         'after_widget' => '</div>',
         'before_title' => '<h4 class="widgettitle">',
         'after_title' => '</h4>',
-    ));
+        )
+    );
 
-    register_sidebar(array(
+    register_sidebar(
+        array(
         'id' => 'reports',
-        'name' => __('Reports', 'disciple_tools'),
-        'description' => __('Reports sidebar.', 'disciple_tools'),
+        'name' => __( 'Reports', 'disciple_tools' ),
+        'description' => __( 'Reports sidebar.', 'disciple_tools' ),
         'before_widget' => '<div id="%1$s" class="widget %2$s">',
         'after_widget' => '</div>',
         'before_title' => '<h4 class="widgettitle">',
         'after_title' => '</h4>',
-    ));
+        )
+    );
 
     /*
 	to add more sidebars or widgetized areas, just copy

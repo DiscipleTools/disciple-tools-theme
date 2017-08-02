@@ -1,6 +1,6 @@
 <?php
 function site_scripts() {
-  global $wp_styles; // Call global $wp_styles variable to add conditional wrapper around ie stylesheet the WordPress way
+    global $wp_styles; // Call global $wp_styles variable to add conditional wrapper around ie stylesheet the WordPress way
 
     /**
      * Force new version of jQuery.
@@ -12,13 +12,13 @@ function site_scripts() {
     wp_enqueue_style( 'jquery-ui-site-css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css', array(), '', 'all' );
 
     // comment out the next two lines to load the local copy of jQuery
-    wp_deregister_script('jquery');
-    wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js', false, '1.12.4');
-    wp_enqueue_script('jquery');
+    wp_deregister_script( 'jquery' );
+    wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js', false, '1.12.4' );
+    wp_enqueue_script( 'jquery' );
 
     // comment out the next two lines to load the local copy of jQuery
-    wp_register_script('jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', false, '1.12.1');
-    wp_enqueue_script('jquery-ui');
+    wp_register_script( 'jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', false, '1.12.1' );
+    wp_enqueue_script( 'jquery-ui' );
     /**
      * End jQuery force new version
      */
@@ -41,33 +41,37 @@ function site_scripts() {
     wp_enqueue_style( 'site-css', get_template_directory_uri() . '/assets/css/style.min.css', array(), '', 'all' );
 
     // Comment reply script for threaded comments
-    if ( is_singular() AND comments_open() AND (get_option('thread_comments') == 1)) {
-      wp_enqueue_script( 'comment-reply' );
+    if ( is_singular() and comments_open() and (get_option( 'thread_comments' ) == 1)) {
+        wp_enqueue_script( 'comment-reply' );
     }
 
-    if (is_singular("contacts")){
-        wp_enqueue_script( 'contact-details', get_template_directory_uri() . '/assets/js/contact-details.js', array( 'jquery'));
-        wp_localize_script( 'contact-details', 'wpApiSettings', array(
-            'root' => esc_url_raw( rest_url() ),
-            'nonce' => wp_create_nonce( 'wp_rest' ),
-        ) );
+    if (is_singular( "contacts" )){
+        wp_enqueue_script( 'contact-details', get_template_directory_uri() . '/assets/js/contact-details.js', array( 'jquery' ) );
+        wp_localize_script(
+            'contact-details', 'wpApiSettings', array(
+                'root' => esc_url_raw( rest_url() ),
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+            )
+        );
     }
 
 
-    if (is_post_type_archive("contacts")){
+    if (is_post_type_archive( "contacts" )){
         wp_enqueue_script( 'list-contacts-js', get_template_directory_uri() . '/assets/js/list-contacts.js', array( 'jquery', 'dt_jquery_lists', 'lodash' ) );
-        wp_localize_script( 'list-contacts-js', 'wpApiSettings', array(
+        wp_localize_script(
+            'list-contacts-js', 'wpApiSettings', array(
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
-            'txt_error' => __('An error occurred'),
-            'txt_no_records' => __('No records'),
+            'txt_error' => __( 'An error occurred' ),
+            'txt_no_records' => __( 'No records' ),
             'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
-        ) );
+            )
+        );
     }
 
 
 }
-add_action('wp_enqueue_scripts', 'site_scripts', 999);
+add_action( 'wp_enqueue_scripts', 'site_scripts', 999 );
 
 
 

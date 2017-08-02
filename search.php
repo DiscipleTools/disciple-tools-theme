@@ -1,34 +1,34 @@
 <?php
 
-    global $query_string;
+global $query_string;
 
-    $query_args = explode("&", $query_string);
-    $search_query = array();
+$query_args = explode( "&", $query_string );
+$search_query = array();
 
-    if( strlen($query_string) > 0 ) {
-        foreach($query_args as $key => $string) {
-            $query_split = explode("=", $string);
-            $search_query[$query_split[0]] = urldecode($query_split[1]);
-        } // foreach
-    } //if
+if( strlen( $query_string ) > 0 ) {
+    foreach($query_args as $key => $string) {
+        $query_split = explode( "=", $string );
+        $search_query[$query_split[0]] = urldecode( $query_split[1] );
+    } // foreach
+} //if
 
-    $search_args1 = array(
-        'post_type' => array( 'contacts' ),
-        'nopaging' => true,
-        'meta_query' => dt_get_user_associations(),
-    );
+$search_args1 = array(
+    'post_type' => array( 'contacts' ),
+    'nopaging' => true,
+    'meta_query' => dt_get_user_associations(),
+);
 
-    $search_args2 = array(
-        'post_type' => array( 'groups' ),
-        'nopaging' => true,
-    );
+$search_args2 = array(
+    'post_type' => array( 'groups' ),
+    'nopaging' => true,
+);
 
-    $args1 = array_merge($search_args1, $search_query);
+$args1 = array_merge( $search_args1, $search_query );
 
-    $args2 = array_merge($search_args2, $search_query);
+$args2 = array_merge( $search_args2, $search_query );
 
-    $search1 = new WP_Query($args1);
-    $search2 = new WP_Query($args2);
+$search1 = new WP_Query( $args1 );
+$search2 = new WP_Query( $args2 );
 
 ?>
 
@@ -53,7 +53,7 @@
                 <section class="bordered-box">
 
                     <header>
-                        <p>Results for: <?php echo esc_attr(get_search_query()); ?></p><hr>
+                        <p>Results for: <?php echo esc_attr( get_search_query() ); ?></p><hr>
                     </header>
 
 

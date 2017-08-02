@@ -8,12 +8,12 @@ function disciple_tools_login_css() {
 function disciple_tools_login_url() {  return home_url(); }
 
 // changing the alt text on the logo to show your site name
-function disciple_tools_login_title() { return get_option('blogname'); }
+function disciple_tools_login_title() { return get_option( 'blogname' ); }
 
 // calling it only on the login page
 add_action( 'login_enqueue_scripts', 'disciple_tools_login_css', 10 );
-add_filter('login_headerurl', 'disciple_tools_login_url');
-add_filter('login_headertitle', 'disciple_tools_login_title');
+add_filter( 'login_headerurl', 'disciple_tools_login_url' );
+add_filter( 'login_headertitle', 'disciple_tools_login_title' );
 
 
 

@@ -2,7 +2,7 @@
 // Register menus
 register_nav_menus(
     array(
-//		'main-nav' => __( 'The Main Menu', 'disciple_tools' ),   // Main nav in header
+    //		'main-nav' => __( 'The Main Menu', 'disciple_tools' ),   // Main nav in header
         'footer-links' => __( 'Footer Links', 'disciple_tools' ) // Secondary nav in footer
     )
 );
@@ -12,30 +12,30 @@ function disciple_tools_top_nav_desktop() {
 
     $html = '';
 
-    if( user_can(get_current_user_id(), 'read_contact') ) {
+    if( user_can( get_current_user_id(), 'read_contact' ) ) {
 
 
         // User is multiplier or role of higher position
-        $html .= '<li><a href="'.home_url('/').'">Dashboard</a></li>';
-        $html .= '<li><a href="'.home_url('/').'contacts/">Contacts</a></li>';
-        $html .= '<li><a href="'.home_url('/').'groups/">Groups</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'">Dashboard</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'contacts/">Contacts</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'groups/">Groups</a></li>';
 
 
-    } elseif ( user_can(get_current_user_id(), 'read_progress') ) {
+    } elseif ( user_can( get_current_user_id(), 'read_progress' ) ) {
 
-        $html .= '<li><a href="'.home_url('/').'about-us/">About Us</a></li>';
-        $html .= '<li><a href="'.home_url('/').'prayer/">Prayer Guide</a></li>';
-        $html .= '<li><a href="'.home_url('/').'progress/">Project Updates</a></li>';
-        $html .= '<li><a href="'.home_url('/').'profile/">Profile</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'about-us/">About Us</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'prayer/">Prayer Guide</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'progress/">Project Updates</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'profile/">Profile</a></li>';
 
 
-    } elseif ( user_can(get_current_user_id(), 'read_prayer')) {
+    } elseif ( user_can( get_current_user_id(), 'read_prayer' )) {
 
         /* user is prayer supporter */
 
-        $html .= '<li><a href="'.home_url('/').'about-us/">About Us</a></li>';
-        $html .= '<li><a href="'.home_url('/').'prayer/">Prayer Guide</a></li>';
-        $html .= '<li><a href="'.home_url('/').'profile/">Profile</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'about-us/">About Us</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'prayer/">Prayer Guide</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'profile/">Profile</a></li>';
 
 
     } else {
@@ -61,7 +61,7 @@ function disciple_tools_top_nav_desktop() {
 function disciple_tools_top_nav_mobile() {
     $html = '';
 
-    if( user_can(get_current_user_id(), 'read_contact') ) {
+    if( user_can( get_current_user_id(), 'read_contact' ) ) {
         $html .= '<li><a href="' . home_url( '/' ) . 'groups/"><i class="fi-torsos-all"></i></a></li>';
         $html .= '<li><a href="' . home_url( '/' ) . 'contacts/"><i class="fi-address-book"></i></a></li>';
         $html .= '<li><a href="' . home_url( '/' ) . '"><i class="fi-graph-pie"></i></a></li>';
@@ -73,8 +73,8 @@ function disciple_tools_top_nav_mobile() {
 
 // Big thanks to Brett Mason (https://github.com/brettsmason) for the awesome walker
 class Topbar_Menu_Walker extends Walker_Nav_Menu {
-    function start_lvl(&$output, $depth = 0, $args = Array() ) {
-        $indent = str_repeat("\t", $depth);
+    function start_lvl( &$output, $depth = 0, $args = array() ) {
+        $indent = str_repeat( "\t", $depth );
         $output .= "\n$indent<ul class=\"menu\">\n";
     }
 }
@@ -84,58 +84,58 @@ function disciple_tools_off_canvas_nav() {
 
     $html = '';
 
-    if( user_can(get_current_user_id(), 'read_contact') ) {
+    if( user_can( get_current_user_id(), 'read_contact' ) ) {
 
-    $html .= '<ul class="vertical menu" data-accordion-menu>';
+        $html .= '<ul class="vertical menu" data-accordion-menu>';
 
-    $html .= '<li><span class="title">Disciple Tools</span></li>
+        $html .= '<li><span class="title">Disciple Tools</span></li>
                     <li><hr /></li>';
 
     // User is multiplier or role of higher position
-    $html .= '<li><a href="'.home_url('/').'">Dashboard</a></li>';
-    $html .= '<li><a href="'.home_url('/').'contacts/">Contacts</a></li>';
-    $html .= '<li><a href="'.home_url('/').'groups/">Groups</a></li>';
-    $html .= '<li><a href="'.home_url('/').'locations/">Locations</a></li>';
-    $html .= '<li><a href="#">Project</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'">Dashboard</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'contacts/">Contacts</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'groups/">Groups</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'locations/">Locations</a></li>';
+        $html .= '<li><a href="#">Project</a></li>';
 
-    $html .= '<li><a href="'.home_url('/').'prayer/"> - Prayer Guide</a></li>';
-    $html .= '<li><a href="'.home_url('/').'progress/"> - Progress Updates</a></li>';
-    $html .= '<li><a href="'.home_url('/').'reports/"> - Reports</a></li>';
-    $html .= '<li><a href="'.home_url('/').'media/"> - Media</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'prayer/"> - Prayer Guide</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'progress/"> - Progress Updates</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'reports/"> - Reports</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'media/"> - Media</a></li>';
 
-    $html .= '<li><a href="'.home_url('/').'profile/">Profile</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'profile/">Profile</a></li>';
 
-    $html .= '<li><form role="search" method="get" class="search-form" action="'. home_url( '/' ) .'">
+        $html .= '<li><form role="search" method="get" class="search-form" action="'. home_url( '/' ) .'">
                 <input type="search" class="small" placeholder="' . esc_attr_x( 'Search...', 'disciple_tools' ) . '" value="' . get_search_query() . '" name="s" title="'. esc_attr_x( 'Search for:', 'disciple_tools' ).'" />
                 <input type="hidden" class=" button small" value="'. esc_attr_x( 'Search', 'disciple_tools' ) .'" />
             </form></li>';
 
-    $html .= '</ul>';
+        $html .= '</ul>';
 
-    } elseif ( user_can(get_current_user_id(), 'read_progress') ) {
+    } elseif ( user_can( get_current_user_id(), 'read_progress' ) ) {
 
-    $html .= '<div class="menu-centered">
+        $html .= '<div class="menu-centered">
                     <ul class="vertical medium-horizontal menu" data-accordion-menu>';
 
-    $html .= '<li><a href="'.home_url('/').'about-us/">About Us</a></li>';
-    $html .= '<li><a href="'.home_url('/').'prayer/">Prayer Guide</a></li>';
-    $html .= '<li><a href="'.home_url('/').'project/">Project Updates</a></li>';
-    $html .= '<li><a href="'.home_url('/').'profile/">Profile</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'about-us/">About Us</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'prayer/">Prayer Guide</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'project/">Project Updates</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'profile/">Profile</a></li>';
 
-    $html .= '</ul></div>';
+        $html .= '</ul></div>';
 
-    } elseif ( user_can(get_current_user_id(), 'read_prayer')) {
+    } elseif ( user_can( get_current_user_id(), 'read_prayer' )) {
 
         /* user is prayer supporter */
 
-    $html .= '<div class="menu-centered">
+        $html .= '<div class="menu-centered">
                     <ul class="vertical medium-horizontal menu" data-accordion-menu>';
 
-    $html .= '<li><a href="'.home_url('/').'about-us/">About Us</a></li>';
-    $html .= '<li><a href="'.home_url('/').'prayer/">Prayer Guide</a></li>';
-    $html .= '<li><a href="'.home_url('/').'profile/">Profile</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'about-us/">About Us</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'prayer/">Prayer Guide</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'profile/">Profile</a></li>';
 
-    $html .= '</ul></div>';
+        $html .= '</ul></div>';
 
     } else {
         /* redirect to registered page */
@@ -158,27 +158,30 @@ function disciple_tools_off_canvas_nav() {
 }
 
 class Off_Canvas_Menu_Walker extends Walker_Nav_Menu {
-    function start_lvl(&$output, $depth = 0, $args = Array() ) {
-        $indent = str_repeat("\t", $depth);
+    function start_lvl( &$output, $depth = 0, $args = array() ) {
+        $indent = str_repeat( "\t", $depth );
         $output .= "\n$indent<ul class=\"vertical menu\">\n";
     }
 }
 
 // The Footer Menu
 function disciple_tools_footer_links() {
-    wp_nav_menu(array(
+    wp_nav_menu(
+        array(
         'container' => 'false',                         // Remove nav container
         'menu' => __( 'Footer Links', 'disciple_tools' ),       // Nav name
         'menu_class' => 'menu',                          // Adding custom nav class
         'theme_location' => 'footer-links',             // Where it's located in the theme
         'depth' => 0,                                   // Limit the depth of the nav
         'fallback_cb' => ''                              // Fallback function
-    ));
+        )
+    );
 } /* End Footer Menu */
 
 // Header Fallback Menu
 function disciple_tools_main_nav_fallback() {
-    wp_page_menu( array(
+    wp_page_menu(
+        array(
         'show_home' => true,
         'menu_class' => '',                              // Adding custom nav class
         'include'     => '',
@@ -186,7 +189,8 @@ function disciple_tools_main_nav_fallback() {
         'echo'        => true,
         'link_before' => '',                           // Before each link
         'link_after' => ''                             // After each link
-    ) );
+        )
+    );
 }
 
 // Footer Fallback Menu
@@ -220,7 +224,7 @@ function dt_pages_check () {
     );
 
     foreach ($postarr as $item) {
-        if (! post_exists ($item)) {
+        if (! post_exists( $item )) {
             dt_add_core_pages();
         }
     }
@@ -235,7 +239,7 @@ function dt_add_core_pages ()
 {
     $html = '';
 
-    if ( TRUE == get_post_status( 2 ) ) {    wp_delete_post(2);  } // Delete default page
+    if ( true == get_post_status( 2 ) ) {    wp_delete_post( 2 );  } // Delete default page
 
     $postarr = array(
         array(
@@ -272,11 +276,11 @@ function dt_add_core_pages ()
     );
 
     foreach ($postarr as $item) {
-        if (! post_exists ($item['post_title']) ) {
+        if (! post_exists( $item['post_title'] ) ) {
             wp_insert_post( $item, false );
         } else {
-            $page = get_page_by_title($item['post_title']);
-            wp_delete_post($page->ID);
+            $page = get_page_by_title( $item['post_title'] );
+            wp_delete_post( $page->ID );
             wp_insert_post( $item, false );
         }
 

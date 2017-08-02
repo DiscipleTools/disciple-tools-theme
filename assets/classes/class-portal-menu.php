@@ -10,7 +10,7 @@
  * @author Chasm.Solutions & Kingdom.Training
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Portal_Nav {
 
@@ -37,8 +37,9 @@ class Disciple_Tools_Portal_Nav {
      * @return Disciple_Tools_Portal_Nav instance
      */
     public static function instance () {
-        if ( is_null( self::$_instance ) )
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
+        }
         return self::$_instance;
     } // End instance()
 
@@ -52,9 +53,9 @@ class Disciple_Tools_Portal_Nav {
         if (is_admin()) {
 
             // Forces nav menu installation
-            if(!wp_get_nav_menu_object($this->top_nav)) {
+            if(!wp_get_nav_menu_object( $this->top_nav )) {
                 $this->add_top_nav();
-                $this->set_top_menu_to_main ();
+                $this->set_top_menu_to_main();
             }
         }
 
@@ -70,24 +71,28 @@ class Disciple_Tools_Portal_Nav {
         $menuname = $this->top_nav;
 
         // Does the menu exist already?
-        $menu_exists = wp_get_nav_menu_object($menuname);
+        $menu_exists = wp_get_nav_menu_object( $menuname );
 
         // If it doesn't exist, let's create it.
         if (!$menu_exists) {
-            $menu_id = wp_create_nav_menu($menuname);
+            $menu_id = wp_create_nav_menu( $menuname );
 
             // Set up default Disciple Tools links and add them to the menu.
-            wp_update_nav_menu_item($menu_id, 0, array(
-                'menu-item-title' => __('Reports'),
+            wp_update_nav_menu_item(
+                $menu_id, 0, array(
+                'menu-item-title' => __( 'Reports' ),
                 'menu-item-classes' => 'reports',
-                'menu-item-url' => home_url('/reports/'),
-                'menu-item-status' => 'publish'));
+                'menu-item-url' => home_url( '/reports/' ),
+                'menu-item-status' => 'publish')
+            );
 
-            wp_update_nav_menu_item($menu_id, 0, array(
-                'menu-item-title' => __('Profile'),
+            wp_update_nav_menu_item(
+                $menu_id, 0, array(
+                'menu-item-title' => __( 'Profile' ),
                 'menu-item-classes' => 'profile',
-                'menu-item-url' => home_url('/profile/'),
-                'menu-item-status' => 'publish'));
+                'menu-item-url' => home_url( '/profile/' ),
+                'menu-item-status' => 'publish')
+            );
 
         }
     }
@@ -103,10 +108,10 @@ class Disciple_Tools_Portal_Nav {
         $main_nav = $this->top_theme_location;
 
         // Grab the theme locations and assign our newly-created menu
-        if (!has_nav_menu($main_nav)) {
-            $locations = get_theme_mod('nav_menu_locations');
+        if (!has_nav_menu( $main_nav )) {
+            $locations = get_theme_mod( 'nav_menu_locations' );
             $locations[$main_nav] = $menu_id;
-            set_theme_mod('nav_menu_locations', $locations);
+            set_theme_mod( 'nav_menu_locations', $locations );
         }
     }
 
@@ -118,7 +123,7 @@ class Disciple_Tools_Portal_Nav {
     {
         $html = '';
 
-        if ( TRUE == get_post_status( 2 ) ) {    wp_delete_post(2);  } // Delete default page
+        if ( true == get_post_status( 2 ) ) {    wp_delete_post( 2 );  } // Delete default page
 
         $postarr = array(
             array(
@@ -145,11 +150,11 @@ class Disciple_Tools_Portal_Nav {
         );
 
         foreach ($postarr as $item) {
-            if (! post_exists ($item['post_title']) ) {
+            if (! post_exists( $item['post_title'] ) ) {
                 wp_insert_post( $item, false );
             } else {
-                $page = get_page_by_title($item['post_title']);
-                wp_delete_post($page->ID);
+                $page = get_page_by_title( $item['post_title'] );
+                wp_delete_post( $page->ID );
                 wp_insert_post( $item, false );
             }
 
@@ -170,7 +175,7 @@ class Disciple_Tools_Portal_Nav {
         );
 
         foreach ($postarr as $item) {
-            if (! post_exists ($item)) {
+            if (! post_exists( $item )) {
                 return true;
             }
         }

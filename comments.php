@@ -1,7 +1,7 @@
 <?php
-    if ( post_password_required() ) {
-        return;
-    }
+if ( post_password_required() ) {
+    return;
+}
 ?>
 
 <div id="comments" class="comments-area">
@@ -24,7 +24,7 @@
         <?php endif; // Check for comment navigation. ?>
 
         <ol class="commentlist">
-            <?php wp_list_comments('type=comment&callback=disciple_tools_comments&reverse_top_level=true'); ?>
+            <?php wp_list_comments( 'type=comment&callback=disciple_tools_comments&reverse_top_level=true' ); ?>
         </ol>
 
         <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
@@ -43,11 +43,11 @@
 
     <?php
         // If comments are closed and there are comments, let's leave a little note, shall we?
-        if ( ! comments_open() && '0' != get_comments_number() && post_type_supports( get_post_type(), 'comments' ) ) :
+    if ( ! comments_open() && '0' != get_comments_number() && post_type_supports( get_post_type(), 'comments' ) ) :
     ?>
-        <p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'disciple_tools' ); ?></p>
+    <p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'disciple_tools' ); ?></p>
     <?php endif; ?>
 
-    <?php comment_form(array('class_submit'=>'button', 'logged_in_as' => '')); ?>
+    <?php comment_form( array('class_submit'=>'button', 'logged_in_as' => '') ); ?>
 
 </div><!-- #comments -->

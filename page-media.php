@@ -22,7 +22,8 @@
 
                         <?php get_template_part( 'parts/loop', 'media' ); ?>
 
-                    <?php endwhile; endif; ?>
+                    <?php endwhile; ?>
+                    <?php endif; ?>
 
                 </div>
 

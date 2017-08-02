@@ -20,7 +20,7 @@ if (is_wp_error( $query1 )) {
             <input type="text" class="search" disabled>
         </div>
         <div class="medium-6 columns">
-            <button class="sort button small" data-sort="post_title" disabled><?php _e( "Sort by name "); ?></button> <button class="sort button small" data-sort="assigned_name" disabled><?php _e( "Sort by team" ); ?></button>
+            <button class="sort button small" data-sort="post_title" disabled><?php _e( "Sort by name " ); ?></button> <button class="sort button small" data-sort="assigned_name" disabled><?php _e( "Sort by team" ); ?></button>
         </div>
 
     </div>
@@ -35,14 +35,14 @@ if (is_wp_error( $query1 )) {
 
             <?php endwhile; ?>
 
-            <li class="js-list-contacts-loading"><?php _e("Loading..."); ?></li>
+            <li class="js-list-contacts-loading"><?php _e( "Loading..." ); ?></li>
 
         </ul>
 
         <ul class="pagination"></ul>
 
     <?php else: ?>
-        <p><?php _e("No contacts found."); ?></p>
+        <p><?php _e( "No contacts found." ); ?></p>
     <?php endif; ?>
 
 </div> <!-- End my-contacts -->

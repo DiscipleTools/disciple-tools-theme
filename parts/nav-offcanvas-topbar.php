@@ -30,7 +30,7 @@
     <div class="top-bar-left">
       <ul class="menu">
         <li><a data-toggle="off-canvas"><i class="fi-list"></i></a></li>
-          <?php disciple_tools_top_nav_mobile(); ?>
+            <?php disciple_tools_top_nav_mobile(); ?>
       </ul>
     </div>
     <div class="top-bar-right">

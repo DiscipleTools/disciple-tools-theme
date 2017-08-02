@@ -1,5 +1,5 @@
 <!-- Begin Updates Required Section -->
-<?php if ( ! empty($_POST['comment_content'] )) { dt_update_required_update($_POST); } ?>
+<?php if ( ! empty( $_POST['comment_content'] )) { dt_update_required_update( $_POST ); } ?>
 <?php
 /* Loop for the requires update contacts */
 $assigned_to = 'user-' . get_current_user_id();
@@ -46,5 +46,6 @@ $requires_update = new WP_Query( $args );
         </div>
     </form>
 
-<?php endwhile; endif; ?>
+<?php endwhile; ?>
+<?php endif; ?>
 <!-- End Updates Required Section -->

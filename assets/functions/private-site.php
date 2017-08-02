@@ -55,8 +55,9 @@ function disciple_tools_please_log_in() {
     if ( disciple_tools_is_private_blog() && ! is_user_logged_in() ) {
 
         // If using BuddyPress and on the register/activate page, don't do anything.
-        if ( function_exists( 'bp_is_current_component' ) && ( bp_is_current_component( 'register' ) || bp_is_current_component( 'activate' ) ) )
+        if ( function_exists( 'bp_is_current_component' ) && ( bp_is_current_component( 'register' ) || bp_is_current_component( 'activate' ) ) ) {
             return;
+        }
 
         // Redirect to the login page.
         auth_redirect();

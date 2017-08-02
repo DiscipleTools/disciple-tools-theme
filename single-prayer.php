@@ -53,9 +53,9 @@
                         $recent_posts = wp_get_recent_posts( $args, ARRAY_A );
 
                         echo '<ul>';
-                        foreach ($recent_posts as $recent_post) {
-                            echo '<li><a href="'. $recent_post['guid'] .'">' . $recent_post['post_title'] . '</a></li>';
-                        }
+foreach ($recent_posts as $recent_post) {
+    echo '<li><a href="'. $recent_post['guid'] .'">' . $recent_post['post_title'] . '</a></li>';
+}
                         echo '</ul>';
 
                         //                    print_r($recent_posts);?>

@@ -8,13 +8,13 @@
 
             <div class="show-for-small-only">
                 <section class="bordered-box">
-                    <?php include ('searchform.php'); ?>
+                    <?php include( 'searchform.php' ); ?>
                 </section>
             </div>
 
             <?php get_template_part( 'parts/content', 'assigned-to' ); ?>
 
-            <?php get_template_part( 'parts/content', 'required-updates'); ?>
+            <?php get_template_part( 'parts/content', 'required-updates' ); ?>
 
             <!-- Begin Contacts Tabs Section -->
             <div class="row column padding-bottom">
@@ -59,7 +59,7 @@
 
                         <textarea rows="3" cols="20" name="post-comment-content" id="post-comment-content" placeholder="<?php _e( 'Leave an update', 'disciple_tools' ); ?>" required aria-required="true"></textarea>
                     </div>
-                    <input type="submit" value="<?php esc_attr_e( 'Submit', 'disciple_tools'); ?>" class="button small">
+                    <input type="submit" value="<?php esc_attr_e( 'Submit', 'disciple_tools' ); ?>" class="button small">
                 </form>
 
             </section>

@@ -1,4 +1,4 @@
-<?php if ((isset($_POST['dt_groups_noonce']) && wp_verify_nonce( $_POST['dt_groups_noonce'], 'update_dt_groups' ))) { dt_save_group($_POST); } // Catch and save update info ?>
+<?php if ((isset( $_POST['dt_groups_noonce'] ) && wp_verify_nonce( $_POST['dt_groups_noonce'], 'update_dt_groups' ))) { dt_save_group( $_POST ); } // Catch and save update info ?>
 
 <?php get_header(); ?>
 
@@ -9,8 +9,8 @@
             <!-- Breadcrumb Navigation-->
             <nav aria-label="You are here:" role="navigation" class="hide-for-small-only">
                 <ul class="breadcrumbs">
-                    <li><a href="<?php echo home_url('/'); ?>">Dashboard</a></li>
-                    <li><a href="<?php echo home_url('/'); ?>locations/">Locations</a></li>
+                    <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
+                    <li><a href="<?php echo home_url( '/' ); ?>locations/">Locations</a></li>
                     <li>
                         <span class="show-for-sr">Current: </span> <?php the_title(); ?>
                     </li>

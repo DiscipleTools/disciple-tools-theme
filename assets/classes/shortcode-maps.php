@@ -6,11 +6,11 @@
  *
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Dtools_Maps
 {
-    public static function first_map($param)
+    public static function first_map( $param )
     {
         return 'This is a map from a class::staticfunction ' . $param;
     }

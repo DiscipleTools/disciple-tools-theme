@@ -6,11 +6,11 @@
  *
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Dtools_Charts
 {
-    public static function first_chart($param)
+    public static function first_chart( $param )
     {
         return 'This is a chart from a class::staticfunction ' . $param;
     }

@@ -1,7 +1,7 @@
 <?php
 
 if (is_admin()) {
-    add_action('init', 'dt_pages_check');
+    add_action( 'init', 'dt_pages_check' );
 }
 
 
@@ -18,7 +18,7 @@ function dt_pages_check () {
     );
 
     foreach ($postarr as $item) {
-        if (! post_exists ($item)) {
+        if (! post_exists( $item )) {
             dt_add_core_pages();
         }
     }
@@ -33,7 +33,7 @@ function dt_add_core_pages ()
 {
     $html = '';
 
-    if ( TRUE == get_post_status( 2 ) ) {    wp_delete_post(2);  } // Delete default page
+    if ( true == get_post_status( 2 ) ) {    wp_delete_post( 2 );  } // Delete default page
 
     $postarr = array(
         array(
@@ -70,11 +70,11 @@ function dt_add_core_pages ()
     );
 
     foreach ($postarr as $item) {
-        if (! post_exists ($item['post_title']) ) {
+        if (! post_exists( $item['post_title'] ) ) {
             wp_insert_post( $item, false );
         } else {
-            $page = get_page_by_title($item['post_title']);
-            wp_delete_post($page->ID);
+            $page = get_page_by_title( $item['post_title'] );
+            wp_delete_post( $page->ID );
             wp_insert_post( $item, false );
         }
 

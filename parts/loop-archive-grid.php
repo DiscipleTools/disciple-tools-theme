@@ -11,7 +11,7 @@ $grid_columns = 4; ?>
         <!--Item: -->
         <div class="large-3 medium-3 columns panel" data-equalizer-watch>
         
-            <article id="post-<?php the_ID(); ?>" <?php post_class(''); ?> role="article">
+            <article id="post-<?php the_ID(); ?>" <?php post_class( '' ); ?> role="article">
 
                 <header class="article-header">
                     <h3 class="title"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
@@ -19,11 +19,11 @@ $grid_columns = 4; ?>
                 </header> <!-- end article header -->
 
                 <section class="featured-image" itemprop="articleBody">
-                    <?php the_post_thumbnail('full'); ?>
+                    <?php the_post_thumbnail( 'full' ); ?>
                 </section> <!-- end article section -->
             
                 <section class="entry-content" itemprop="articleBody">
-                    <?php the_content('<button class="tiny">' . __( 'Read more...', 'disciple_tools' ) . '</button>'); ?>
+                    <?php the_content( '<button class="tiny">' . __( 'Read more...', 'disciple_tools' ) . '</button>' ); ?>
                 </section> <!-- end article section -->
 
                 <footer class="article-footer">
@@ -34,7 +34,7 @@ $grid_columns = 4; ?>
             
         </div>
 
-<?php if( 0 === ( $wp_query->current_post + 1 )  % $grid_columns ||  ( $wp_query->current_post + 1 ) ===  $wp_query->post_count ): ?>
+<?php if( 0 === ( $wp_query->current_post + 1 )  % $grid_columns || ( $wp_query->current_post + 1 ) ===  $wp_query->post_count ): ?>
 
    </div>  <!--End Row: --> 
 

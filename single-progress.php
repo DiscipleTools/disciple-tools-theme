@@ -7,9 +7,9 @@
             <!-- Breadcrumb Navigation-->
             <nav aria-label="You are here:" role="navigation" class="hide-for-small-only">
                 <ul class="breadcrumbs">
-                    <li><a href="<?php echo home_url('/'); ?>">Dashboard</a></li>
+                    <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
                     <li>
-                        <a href="<?php echo home_url('/'); ?>progress">PROGRESS UPDATES</a>
+                        <a href="<?php echo home_url( '/' ); ?>progress">PROGRESS UPDATES</a>
                     </li>
                     <li>
                         <span class="show-for-sr">Current: </span> <?php the_title(); ?>
@@ -64,9 +64,9 @@
                         $recent_posts = wp_get_recent_posts( $args, ARRAY_A );
 
                         echo '<ul>';
-                        foreach ($recent_posts as $recent_post) {
-                            echo '<li><a href="'. $recent_post['guid'] .'">' . $recent_post['post_title'] . '</a></li>';
-                        }
+foreach ($recent_posts as $recent_post) {
+    echo '<li><a href="'. $recent_post['guid'] .'">' . $recent_post['post_title'] . '</a></li>';
+}
                         echo '</ul>';
 
                         //                    print_r($recent_posts);?>
