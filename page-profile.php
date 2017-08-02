@@ -213,7 +213,7 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <div class="alert alert-box"  style="display:none;" id="alert">	<strong>Oh snap!</strong>
+                                    <div class="alert alert-box"  style="display:none;" id="alert">    <strong>Oh snap!</strong>
                                     </div>
                                     <button class="button">Add New Vacation</button>
                                 </div>

@@ -1,8 +1,8 @@
 <?php get_header(); ?>
 
-	<div id="content">
+    <div id="content">
 
-		<div id="inner-content" class="row">
+        <div id="inner-content" class="row">
 
             <!-- Breadcrumb Navigation-->
             <nav aria-label="You are here:" role="navigation" class="hide-for-small-only">
@@ -14,7 +14,7 @@
                 </ul>
             </nav>
 
-		    <main id="main" class="large-8 medium-8 columns" role="main">
+            <main id="main" class="large-8 medium-8 columns" role="main">
 
                 <?php
                 $args = array(
@@ -38,7 +38,7 @@
 
                     <?php endif; ?>
 
-		    </main> <!-- end #main -->
+            </main> <!-- end #main -->
 
             <aside class="large-4 medium-4 columns ">
 
@@ -104,8 +104,8 @@
 
             </aside> <!-- end #aside -->
 
-		</div> <!-- end #inner-content -->
+        </div> <!-- end #inner-content -->
 
-	</div> <!-- end #content -->
+    </div> <!-- end #content -->
 
 <?php get_footer(); ?>

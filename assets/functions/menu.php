@@ -1,10 +1,10 @@
 <?php
 // Register menus
 register_nav_menus(
-	array(
+    array(
 //		'main-nav' => __( 'The Main Menu', 'disciple_tools' ),   // Main nav in header
-		'footer-links' => __( 'Footer Links', 'disciple_tools' ) // Secondary nav in footer
-	)
+        'footer-links' => __( 'Footer Links', 'disciple_tools' ) // Secondary nav in footer
+    )
 );
 
 // The Top Menu
@@ -167,31 +167,31 @@ class Off_Canvas_Menu_Walker extends Walker_Nav_Menu {
 // The Footer Menu
 function disciple_tools_footer_links() {
     wp_nav_menu(array(
-    	'container' => 'false',                         // Remove nav container
-    	'menu' => __( 'Footer Links', 'disciple_tools' ),   	// Nav name
-    	'menu_class' => 'menu',      					// Adding custom nav class
-    	'theme_location' => 'footer-links',             // Where it's located in the theme
+        'container' => 'false',                         // Remove nav container
+        'menu' => __( 'Footer Links', 'disciple_tools' ),       // Nav name
+        'menu_class' => 'menu',                          // Adding custom nav class
+        'theme_location' => 'footer-links',             // Where it's located in the theme
         'depth' => 0,                                   // Limit the depth of the nav
-    	'fallback_cb' => ''  							// Fallback function
-	));
+        'fallback_cb' => ''                              // Fallback function
+    ));
 } /* End Footer Menu */
 
 // Header Fallback Menu
 function disciple_tools_main_nav_fallback() {
-	wp_page_menu( array(
-		'show_home' => true,
-    	'menu_class' => '',      						// Adding custom nav class
-		'include'     => '',
-		'exclude'     => '',
-		'echo'        => true,
+    wp_page_menu( array(
+        'show_home' => true,
+        'menu_class' => '',                              // Adding custom nav class
+        'include'     => '',
+        'exclude'     => '',
+        'echo'        => true,
         'link_before' => '',                           // Before each link
         'link_after' => ''                             // After each link
-	) );
+    ) );
 }
 
 // Footer Fallback Menu
 function disciple_tools_footer_links_fallback() {
-	/* You can put a default here if you like */
+    /* You can put a default here if you like */
 }
 
 // Add Foundation active class to menu
@@ -235,7 +235,7 @@ function dt_add_core_pages ()
 {
     $html = '';
 
-    if ( TRUE == get_post_status( 2 ) ) {	wp_delete_post(2);  } // Delete default page
+    if ( TRUE == get_post_status( 2 ) ) {    wp_delete_post(2);  } // Delete default page
 
     $postarr = array(
         array(

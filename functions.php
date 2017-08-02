@@ -92,9 +92,9 @@ require_once(get_template_directory().'/assets/functions/class-tgm-plugin-activa
  * Disciple_Tools_Theme Classes
  *
  * @class Disciple_Tools_Theme
- * @version	0.1
+ * @version    0.1
  * @since 0.1
- * @package	Disciple_Tools_Theme
+ * @package    Disciple_Tools_Theme
  * @author Chasm.Solutions & Kingdom.Training
  */
 
@@ -104,9 +104,9 @@ class Disciple_Tools_Theme {
 
     /**
      * Disciple_Tools_Theme The single instance of Disciple_Tools_Theme.
-     * @var 	object
+     * @var     object
      * @access  private
-     * @since 	0.1
+     * @since     0.1
      */
     private static $_instance = null;
 

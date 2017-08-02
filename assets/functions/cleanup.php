@@ -27,24 +27,24 @@ function disciple_tools_start() {
 
 //The default wordpress head is a mess. Let's clean it up by removing all the junk we don't need.
 function disciple_tools_head_cleanup() {
-	// Remove category feeds
-	 remove_action( 'wp_head', 'feed_links_extra', 3 );
-	// Remove post and comment feeds
-	 remove_action( 'wp_head', 'feed_links', 2 );
-	// Remove EditURI link
-	remove_action( 'wp_head', 'rsd_link' );
-	// Remove Windows live writer
-	remove_action( 'wp_head', 'wlwmanifest_link' );
-	// Remove index link
-	remove_action( 'wp_head', 'index_rel_link' );
-	// Remove previous link
-	remove_action( 'wp_head', 'parent_post_rel_link', 10, 0 );
-	// Remove start link
-	remove_action( 'wp_head', 'start_post_rel_link', 10, 0 );
-	// Remove links for adjacent posts
-	remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
-	// Remove WP version
-	remove_action( 'wp_head', 'wp_generator' );
+    // Remove category feeds
+     remove_action( 'wp_head', 'feed_links_extra', 3 );
+    // Remove post and comment feeds
+     remove_action( 'wp_head', 'feed_links', 2 );
+    // Remove EditURI link
+    remove_action( 'wp_head', 'rsd_link' );
+    // Remove Windows live writer
+    remove_action( 'wp_head', 'wlwmanifest_link' );
+    // Remove index link
+    remove_action( 'wp_head', 'index_rel_link' );
+    // Remove previous link
+    remove_action( 'wp_head', 'parent_post_rel_link', 10, 0 );
+    // Remove start link
+    remove_action( 'wp_head', 'start_post_rel_link', 10, 0 );
+    // Remove links for adjacent posts
+    remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
+    // Remove WP version
+    remove_action( 'wp_head', 'wp_generator' );
 } /* end Joints head cleanup */
 
 // Remove injected CSS for recent comments widget
@@ -69,34 +69,34 @@ function disciple_tools_gallery_style($css) {
 
 // This removes the annoying […] to a Read More link
 function disciple_tools_excerpt_more($more) {
-	global $post;
-	// edit here if you like
+    global $post;
+    // edit here if you like
 return '<a class="excerpt-read-more" href="'. get_permalink($post->ID) . '" title="'. __('Read', 'disciple_tools') . get_the_title($post->ID).'">'. __('... Read more &raquo;', 'disciple_tools') .'</a>';
 }
 
 //  Stop WordPress from using the sticky class (which conflicts with Foundation), and style WordPress sticky posts using the .wp-sticky class instead
 function remove_sticky_class($classes) {
-	if(in_array('sticky', $classes)) {
-		$classes = array_diff($classes, array("sticky"));
-		$classes[] = 'wp-sticky';
-	}
-	
-	return $classes;
+    if(in_array('sticky', $classes)) {
+        $classes = array_diff($classes, array("sticky"));
+        $classes[] = 'wp-sticky';
+    }
+    
+    return $classes;
 }
 add_filter('post_class','remove_sticky_class');
 
 //This is a modified the_author_posts_link() which just returns the link. This is necessary to allow usage of the usual l10n process with printf()
 function disciple_tools_get_the_author_posts_link() {
-	global $authordata;
-	if ( !is_object( $authordata ) )
-		return false;
-	$link = sprintf(
-		'<a href="%1$s" title="%2$s" rel="author">%3$s</a>',
-		get_author_posts_url( $authordata->ID, $authordata->user_nicename ),
-		esc_attr( sprintf( __( 'Posts by %s', 'disciple_tools' ), get_the_author() ) ), // No further l10n needed, core will take care of this one
-		get_the_author()
-	);
-	return $link;
+    global $authordata;
+    if ( !is_object( $authordata ) )
+        return false;
+    $link = sprintf(
+        '<a href="%1$s" title="%2$s" rel="author">%3$s</a>',
+        get_author_posts_url( $authordata->ID, $authordata->user_nicename ),
+        esc_attr( sprintf( __( 'Posts by %s', 'disciple_tools' ), get_the_author() ) ), // No further l10n needed, core will take care of this one
+        get_the_author()
+    );
+    return $link;
 }
 
 // Todo dashboard removal not installed yet.

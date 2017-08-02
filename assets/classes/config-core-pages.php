@@ -33,7 +33,7 @@ function dt_add_core_pages ()
 {
     $html = '';
 
-    if ( TRUE == get_post_status( 2 ) ) {	wp_delete_post(2);  } // Delete default page
+    if ( TRUE == get_post_status( 2 ) ) {    wp_delete_post(2);  } // Delete default page
 
     $postarr = array(
         array(

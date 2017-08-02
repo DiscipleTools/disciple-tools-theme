@@ -1,5 +1,5 @@
 <?php 
-	
+    
 function disable_wp_emoji() {
 
   // all actions related to emojis

@@ -24,7 +24,7 @@ class Disciple_Tools_Function_Callback
 
     /**
      * Disciple_Tools_Function_Callback The single instance of Disciple_Tools_Function_Callback.
-     * @var 	object
+     * @var     object
      * @access  private
      * @since  0.1
      */

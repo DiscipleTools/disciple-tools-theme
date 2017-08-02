@@ -5,7 +5,7 @@ function disciple_tools_comments($comment, $args, $depth) {
     $GLOBALS['comment'] = $comment; ?>
 
     <li <?php comment_class('panel'); ?>>
-		<div class="media-object">
+        <div class="media-object">
             <div class="float-right">
 
                 <a href="javascript:void(0)" onclick="jQuery('#commentform-hidden-<?php echo get_comment_ID(); ?>').toggle();"><i class="fi-comment"></i></a>
@@ -54,9 +54,9 @@ function disciple_tools_comments($comment, $args, $depth) {
                     </div>
                 <?php endif; ?>
 
-			</div>
+            </div>
 
         </div>
-	<!-- </li> is added by WordPress automatically -->
+    <!-- </li> is added by WordPress automatically -->
 <?php
 }

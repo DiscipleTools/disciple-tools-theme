@@ -2,16 +2,16 @@
 
 	<?php if ( is_active_sidebar( 'general' ) ) : ?>
 
-		<?php dynamic_sidebar( 'general' ); ?>
+        <?php dynamic_sidebar( 'general' ); ?>
 
-	<?php else : ?>
+    <?php else : ?>
 
-	<!-- This content shows up if there are no widgets defined in the backend. -->
-						
-	<div class="alert help">
-		<p><?php _e( 'Please activate some Widgets.', 'disciple_tools' );  ?></p>
-	</div>
+    <!-- This content shows up if there are no widgets defined in the backend. -->
+                        
+    <div class="alert help">
+        <p><?php _e( 'Please activate some Widgets.', 'disciple_tools' );  ?></p>
+    </div>
 
-	<?php endif; ?>
+    <?php endif; ?>
 
 </div>

@@ -8,12 +8,12 @@ $breakpoint = "medium"; ?>
 </div>
 
 <div class="top-bar" id="top-bar-menu">
-	<div class="top-bar-left show-for-<?php echo $breakpoint ?>">
-		<ul class="menu">
-			<li><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></li>
-		</ul>
-	</div>
-	<div class="top-bar-right">
-		<?php disciple_tools_top_nav(); ?>
-	</div>
+    <div class="top-bar-left show-for-<?php echo $breakpoint ?>">
+        <ul class="menu">
+            <li><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></li>
+        </ul>
+    </div>
+    <div class="top-bar-right">
+        <?php disciple_tools_top_nav(); ?>
+    </div>
 </div>
