@@ -15,8 +15,8 @@
             </nav>
 
 
-            <aside class="large-3 medium-3 columns padding-bottom" data-sticky-container>
-                <div class="bordered-box sticky" data-sticky data-top-anchor="main:top"  style="width:100%; max-height: 100vh; overflow: auto">
+            <aside class="large-3 medium-3 columns padding-bottom">
+                <div class="bordered-box">
                     <h3><?php _e( "Filters" ); ?></h3>
                     <details class="js-contacts-filter" data-filter="status">
                         <summary><?php _e( "Status" ); ?></summary>
@@ -37,7 +37,7 @@
             </main> <!-- end #main -->
 
             <aside class="large-3 medium-3 columns padding-bottom" data-sticky-container>
-                <div class="bordered-box sticky" data-sticky data-top-anchor="main:top"  style="width:100%">
+                <div class="bordered-box">
                     <h3><?php _e( "Priorities" ); ?></h3>
 
                 </div>
