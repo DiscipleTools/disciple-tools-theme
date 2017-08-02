@@ -1,22 +1,17 @@
-/* global jQuery:false, List:false, wpApiSettings:false, _:false */
+/* global jQuery:false, wpApiSettings:false, _:false */
 
+// TODO: trigger the AJAX call before the document is ready
 
 jQuery(document).ready(function($) {
   "use strict";
+  let contacts;
+  let searchFilterFunction;
+  let otherFilterFunctions = [];
 
-  if (! $("#my-contacts").length || ! $("#my-contacts .list").length) {
+  if (! $(".js-list-contacts").length) {
     $(".js-contacts-filter :not(summary)").remove();
     return;
   }
-  const myContacts = new List('my-contacts', {
-    valueNames: [
-      'post_title',
-      'assigned_name',
-      { name: 'permalink', attr: 'href' },
-    ],
-    page: 30,
-    pagination: true,
-  });
 
   $.ajax({
     url: wpApiSettings.root + "dt-hooks/v1/user/1/contacts",
@@ -29,28 +24,75 @@ jQuery(document).ready(function($) {
         if (contact.status) { throw new Exception("Did not expect 'status' to be defined"); }
         contact.status = statusNames[contact.status_number];
       });
-      myContacts.clear();
-      myContacts.add(data);
-      setUpFilters(data);
+      contacts = data;
+      displayContacts();
+      setUpFilterPane();
     },
     error: function() {
       $(".js-list-contacts-loading").text(wpApiSettings.txt_error);
     },
     complete: function() {
-      $("#my-contacts .js-search-tools")
-        .removeClass("faded-out")
-        .find("button.sort[data-sort]")
-          .removeAttr("disabled")
-        .end()
-        .find("input.search")
-          .removeAttr("disabled");
+      $(".js-search-tools").removeClass("faded-out");
+      $(".js-list-contacts-search").removeAttr("disabled");
+      $(".js-list-contacts-sort").removeAttr("disabled");
     },
   });
 
-  function setUpFilters(data) {
+  $(".js-list-contacts-search").on("input", function() {
+    const searchString = $(this).val().trim();
+    if (searchString) {
+      searchFilterFunction = function(contact) {
+        return contact.post_title.toLowerCase().indexOf(searchString) !== -1;
+      };
+    } else {
+      searchFilterFunction = null;
+    }
+    filterContacts();
+  });
+
+  $(".js-list-contacts-sort").on("click", function() {
+    const sortBy = $(this).data("sort");
+    const sortOrder = $(this).data("order") || "asc";
+    sortList(sortBy, sortOrder);
+    $(this).data("order", sortOrder === "asc" ? "desc" : "asc");
+  });
+
+  function sortList(sortBy, sortOrder) {
+    const $list = $(".js-list-contacts");
+    _($(".js-list-contacts > li").get())
+      .orderBy(function(item) { return contacts[$(item).data("contact-index")][sortBy]; }, sortOrder)
+      .forEach(function(item) { $list.append(item); });
+  }
+
+
+
+  function displayContacts() {
+    const $ul = $(".js-list-contacts");
+    $ul.empty();
+    _.forEach(contacts, function(contact, index) {
+      $ul.append(
+        $("<li>")
+          .data("contact-index", index)
+          .append(
+            $("<a>")
+              .attr("href", contact.permalink)
+              .append(document.createTextNode(contact.post_title))
+          )
+          .append(
+            $("<span>")
+              .addClass("float-right")
+              .addClass("grey")
+              .append(document.createTextNode(contact.assigned_name))
+          )
+      );
+    });
+  }
+
+
+  function setUpFilterPane() {
     const counts = {
-      status: _.countBy(_.map(data, 'status')),
-      locations: _.countBy(_.flatten(_.map(data, 'locations'))),
+      status: _.countBy(_.map(contacts, 'status')),
+      locations: _.countBy(_.flatten(_.map(contacts, 'locations'))),
     };
 
     $(".js-contacts-filter :not(summary)").remove();
@@ -73,7 +115,7 @@ jQuery(document).ready(function($) {
             .append(
               $("<input>")
               .attr("type", "checkbox")
-              .on("change", function() { updateFilters(); })
+              .on("change", function() { updateOtherFilters(); })
             )
             .append(document.createTextNode(key))
             .append($("<span>")
@@ -91,19 +133,17 @@ jQuery(document).ready(function($) {
     return $div;
   }
 
-  function updateFilters() {
-    const filterFunctions = [];
-
+  function updateOtherFilters() {
+    otherFilterFunctions = [];
     {
       const $checkedStatusLabels = $(".js-filter-checkbox-label")
         .filter(function() { return $(this).data("filter-type") === "status"; })
         .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
 
       if ($checkedStatusLabels.length > 0) {
-        filterFunctions.push(function(item) {
-          const values = item.values();
+        otherFilterFunctions.push(function(contact) {
           return _.some($checkedStatusLabels, function(label) {
-            return $(label).data("filter-value") === values.status;
+            return $(label).data("filter-value") === contact.status;
           });
         });
       }
@@ -115,21 +155,36 @@ jQuery(document).ready(function($) {
         .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
 
       if ($checkedLocationsLabels.length > 0) {
-        filterFunctions.push(function(item) {
-          const values = item.values();
+        otherFilterFunctions.push(function(contact) {
           return _.some($checkedLocationsLabels, function(label) {
-            return _.includes(values.locations, $(label).data("filter-value"));
+            return _.includes(contact.locations, $(label).data("filter-value"));
           });
         });
       }
     }
 
+    filterContacts();
+  }
+
+  function filterContacts() {
+    const filterFunctions = _.clone(otherFilterFunctions);
+    if (searchFilterFunction) {
+      filterFunctions.push(searchFilterFunction);
+    }
     if (filterFunctions.length > 0) {
-      myContacts.filter(function(item) {
-        return _.every(filterFunctions, function(filterFunction) { return filterFunction(item); });
+      $(".js-list-contacts > li").each(function() {
+        const contact = contacts[$(this).data("contact-index")];
+        const show = _.every(filterFunctions, function(filterFunction) {
+          return filterFunction(contact);
+        });
+        if (show) {
+          $(this).removeAttr("hidden");
+        } else {
+          $(this).attr("hidden", true);
+        }
       });
     } else {
-      myContacts.filter(); // reset filters
+      $(".js-list-contacts > li").removeAttr("hidden");
     }
   }
 

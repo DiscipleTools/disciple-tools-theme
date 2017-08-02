@@ -12,21 +12,22 @@ if (is_wp_error( $query1 )) {
 }
 
 ?>
-<div id="my-contacts" class="bordered-box">
+<div class="bordered-box">
     <h3><?php _e( "Contacts" ); ?></h3>
 
-    <div class="row search-tools js-search-tools faded-out">
+    <div class="row js-search-tools faded-out">
         <div class="medium-6 columns">
-            <input type="text" class="search" disabled>
+            <input type="search" disabled class="js-list-contacts-search">
         </div>
         <div class="medium-6 columns">
-            <button class="sort button small" data-sort="post_title" disabled><?php _e( "Sort by name " ); ?></button> <button class="sort button small" data-sort="assigned_name" disabled><?php _e( "Sort by team" ); ?></button>
+            <button class="button small js-list-contacts-sort" data-sort="post_title" disabled><?php _e( "Sort by name " ); ?></button>
+            <button class="button small js-list-contacts-sort" data-sort="assigned_name" disabled><?php _e( "Sort by team" ); ?></button>
         </div>
 
     </div>
 
     <?php if ( $query1->have_posts() ) : ?>
-        <ul class="list">
+        <ul class="js-list-contacts">
 
             <?php while ( $query1->have_posts() ) : $query1->the_post(); ?>
 
@@ -39,10 +40,8 @@ if (is_wp_error( $query1 )) {
 
         </ul>
 
-        <ul class="pagination"></ul>
-
     <?php else: ?>
         <p><?php _e( "No contacts found." ); ?></p>
     <?php endif; ?>
 
-</div> <!-- End my-contacts -->
+</div>
