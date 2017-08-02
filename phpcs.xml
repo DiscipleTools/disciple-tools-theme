@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<ruleset name="PHP_CodeSniffer">
+  <description>The coding standard for disciple-tools theme</description>
+
+  <!-- This should be the same as for disciple-tools plugin -->
+
+  <!-- To check the code for style issues, run:
+
+       $ phpcs
+
+       It will automatically find phpcs.xml and apply its rules.
+
+       These rules have been selected to be similar to Wordpress's style guide,
+       which we encourage you to follow:
+
+       https://make.wordpress.org/core/handbook/best-practices/coding-standards/php/
+
+       The main difference is that we use four spaces for indentation, not hard
+       tabs. I highly recommend using an editor that supports
+       http://editorconfig.org/ so that your editor automatically uses the
+       right settings for this project.
+  -->
+
+  <file>.</file>
+
+  <exclude-pattern>*/vendor/*</exclude-pattern>
+
+  <arg name="extensions" value="php,inc,lib"/>
+  <arg value="n"/>
+
+  <!-- To get a list of all currently enabled sniffs, run: phpcs -e -->
+
+  <!-- To get a list of all available standards, run phpcs -i. To get a list of
+       the sniffs in a standard, run phpcs -e \-\-standard=STANDARD -->
+
+  <!-- Keeping these ones: -->
+  <rule ref="Generic.ControlStructures.InlineControlStructure"/>
+  <rule ref="Generic.Debug.ClosureLinter"/>
+  <rule ref="Generic.Files.ByteOrderMark"/>
+  <rule ref="Generic.Files.LineEndings"/>
+  <rule ref="Generic.Formatting.DisallowMultipleStatements"/>
+  <rule ref="Generic.Formatting.SpaceAfterCast"/>
+  <rule ref="Generic.NamingConventions.ConstructorName"/>
+  <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
+  <rule ref="Generic.PHP.DeprecatedFunctions"/>
+  <rule ref="Generic.PHP.LowerCaseConstant"/>
+  <rule ref="Generic.PHP.LowerCaseKeyword"/>
+  <rule ref="Generic.Strings.UnnecessaryStringConcat"/>
+  <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
+  <rule ref="Generic.WhiteSpace.ScopeIndent">
+    <properties>
+      <property name="indent" value="4"/>
+      <property name="ignoreIndentationTokens" type="array" value="T_COMMENT,T_DOC_COMMENT_OPEN_TAG"/>
+    </properties>
+  </rule>
+  <rule ref="PSR2.ControlStructures.ElseIfDeclaration"/>
+  <rule ref="Squiz.Functions.FunctionDeclarationArgumentSpacing">
+    <properties>
+      <property name="equalsSpacing" value="1"/>
+      <property name="requiredSpacesAfterOpen" value="1"/>
+      <property name="requiredSpacesBeforeClose" value="1"/>
+    </properties>
+  </rule>
+  <rule ref="Squiz.PHP.DiscouragedFunctions"/>
+  <rule ref="PEAR.Functions.FunctionCallSignature">
+    <properties>
+      <property name="requiredSpacesAfterOpen" value="1"/>
+      <property name="requiredSpacesBeforeClose" value="1"/>
+    </properties>
+  </rule>
+  <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
+  <rule ref="PEAR.NamingConventions.ValidClassName"/>
+
+  <!-- Maybe these rules will be enabled in the future: -->
+  <!-- <rule ref="Generic.Files.LineLength"/> -->
+  <!-- <rule ref="Generic.Commenting.DocComment"/> -->
+
+  <!-- Rejecting these ones: -->
+  <!-- <rule ref="Generic.Commenting.Todo"/> -->
+  <!-- <rule ref="Generic.CodeAnalysis.EmptyStatement"/> -->
+  <!-- <rule ref="Generic.Formatting.MultipleStatementAlignment"/> -->
+  <!-- <rule ref="Generic.Functions.OpeningFunctionBraceBsdAllman"/> -->
+  <!-- <rule ref="Generic.PHP.DisallowShortOpenTag"/> -->
+  <!-- <rule ref="Generic.Functions.FunctionCallArgumentSpacing"/> -->
+  <!-- <rule ref="PEAR.NamingConventions.ValidFunctionName"/> -->
+  <!-- <rule ref="PEAR.NamingConventions.ValidVariableName"/> -->
+  <!-- <rule ref="PSR2.Files.ClosingTag"/> -->
+  <!-- <rule ref="Squiz.PHP.ForbiddenFunctions"/> -->
+  <!-- <rule ref="Generic.Arrays.DisallowLongArraySyntax"/> -->
+
+</ruleset>
+
