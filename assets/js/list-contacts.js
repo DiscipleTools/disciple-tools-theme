@@ -5,6 +5,7 @@ jQuery(document).ready(function($) {
   "use strict";
 
   if (! $("#my-contacts").length || ! $("#my-contacts .list").length) {
+    $(".js-contacts-filter :not(summary)").remove();
     return;
   }
   const myContacts = new List('my-contacts', {
@@ -55,7 +56,7 @@ jQuery(document).ready(function($) {
     $(".js-contacts-filter :not(summary)").remove();
     _.forEach(["status", "locations"], function(filterType) {
       $(".js-contacts-filter[data-filter='" + filterType + "']")
-        .append(createFilterCheckboxes(filterType, counts.status));
+        .append(createFilterCheckboxes(filterType, counts[filterType]));
     });
   }
 
@@ -95,7 +96,7 @@ jQuery(document).ready(function($) {
 
     {
       const $checkedStatusLabels = $(".js-filter-checkbox-label")
-        .filter(function() { return $(this).data("filter-type") === "status_number"; })
+        .filter(function() { return $(this).data("filter-type") === "status"; })
         .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
 
       if ($checkedStatusLabels.length > 0) {
