@@ -204,7 +204,6 @@ POSTS & CONTENT STYLES
     .submitting-select-button {
         opacity: .5;
     }
-
     /**
         Item details
      */
@@ -215,6 +214,31 @@ POSTS & CONTENT STYLES
     .item-details-header-row {
         margin-bottom:15px;
     }
+    //contact quick buttons
+    .contact-quick-button-number {
+        background-color: rgb(63, 114, 155);
+        border-radius: 20px;
+        color: white;
+        padding: 2px 4px;
+        font-size: 10px;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    .contact-quick-buttons {
+        display: flex;
+        justify-content: space-evenly;
+    }
+    .contact-quick-button {
+        width: min-content;
+        position: relative;
+        flex: 1 1 auto;
+        p {
+            font-size: 10px;
+            word-spacing: 10vw;
+        }
+    }
+
 }
 
 .tabs-panel .outer-container {

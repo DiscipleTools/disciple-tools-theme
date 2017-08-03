@@ -1,0 +1,20 @@
+<svg width="20" height="20" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>meeting-scheduled</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(1047 164)">
+<g id="meeting-scheduled">
+<g id="Group">
+<g id="Vector">
+<use xlink:href="#path0_fill" transform="translate(-1047 -157.333)" fill="#3F729B"/>
+</g>
+<g id="Vector">
+<use xlink:href="#path1_fill" transform="translate(-1047 -164)" fill="#3F729B"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_fill" d="M 0 0L 0 12.5C 0 12.9608 0.3725 13.3333 0.833333 13.3333L 19.1667 13.3333C 19.6275 13.3333 20 12.9608 20 12.5L 20 0L 0 0ZM 13.3333 7.5L 10.8333 7.5L 10.8333 10L 9.16667 10L 9.16667 7.5L 6.66667 7.5L 6.66667 5.83333L 9.16667 5.83333L 9.16667 3.33333L 10.8333 3.33333L 10.8333 5.83333L 13.3333 5.83333L 13.3333 7.5Z"/>
+<path id="path1_fill" d="M 19.1667 1.66667L 15.8333 1.66667L 15.8333 0L 14.175 0L 14.175 1.66667L 10.8333 1.66667L 10.8333 0L 9.175 0L 9.175 1.66667L 5.83333 1.66667L 5.83333 0L 4.175 0L 4.175 1.66667L 0.833333 1.66667C 0.3725 1.66667 0 2.03917 0 2.5L 0 5L 20 5L 20 2.5C 20 2.03917 19.6275 1.66667 19.1667 1.66667Z"/>
+</defs>
+</svg>
