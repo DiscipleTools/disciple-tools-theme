@@ -6,11 +6,11 @@ function save_seeker_milestones(contactId, fieldKey, fieldValue){
   var field = jQuery("#" + fieldKey)
   field.addClass("submitting-select-button")
   if (field.hasClass("selected-select-button")){
-    fieldValue = 0
+    fieldValue = "no"
   } else {
     field.removeClass("empty-select-button")
     field.addClass("selected-select-button")
-    fieldValue = 1
+    fieldValue = "yes"
   }
   data[fieldKey] = fieldValue
   jQuery.ajax({
@@ -24,14 +24,14 @@ function save_seeker_milestones(contactId, fieldKey, fieldValue){
     },
     success: function(data) {
       field.removeClass("submitting-select-button selected-select-button")
-      field.addClass( fieldValue === 0 ? "empty-select-button" : "selected-select-button")
+      field.addClass( fieldValue === "no" ? "empty-select-button" : "selected-select-button")
     },
     error: function(err) {
       console.log("error")
       console.log(err)
       jQuery("#errors").text(err.responseText)
       field.removeClass("submitting-select-button selected-select-button")
-      field.addClass( fieldValue === 1 ? "empty-select-button" : "selected-select-button")
+      field.addClass( fieldValue === "yes" ? "empty-select-button" : "selected-select-button")
     },
   })
 }

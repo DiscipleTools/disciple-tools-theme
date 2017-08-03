@@ -111,9 +111,9 @@
                         <?php foreach($contact_fields as $field => $val): ?>
                             <?php
                             if (strpos( $field, "milestone_" ) === 0){
-                                $class = (isset( $contact->fields[$field] ) && $contact->fields[$field]['key'] === '1') ?
+                                $class = (isset( $contact->fields[$field] ) && $contact->fields[$field]['key'] === 'yes') ?
                                     "selected-select-button" : "empty-select-button";
-                                $html = '<button onclick="save_contact_field('. get_the_ID() . ", '$field')\"";
+                                $html = '<button onclick="save_seeker_milestones('. get_the_ID() . ", '$field')\"";
                                 $html .= 'id="'.$field .'"';
                                 $html .= 'class="' . $class . ' select-button button ">' . $contact_fields[$field]["name"] . '</a>';
                                 echo  $html;
