@@ -4,7 +4,9 @@
     <div class="row item-details-header-row">
         <div class="medium-12 columns">
             <i class="fi-torso large"></i><span class="item-details-header"><?php the_title(); ?></span>
-            <span class="button alert label">Active</span>
+            <span class="button alert label">
+              Status: <?php echo $contact->fields["overall_status"]["label"] ?>
+            </span>
             <button class="tiny button">Pause</button>
             <button class="tiny button">Close</button>
         </div>

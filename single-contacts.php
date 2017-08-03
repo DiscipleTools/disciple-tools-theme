@@ -27,9 +27,6 @@
 
 
             <main id="main" class="large-8 medium-8 columns" role="main">
-                <section class="bordered-box medium-12 columns">
-                    Status: <?php echo $contact->fields["overall_status"]["label"] ?>
-                </section>
 
                 <section id="contact-details" class="bordered-box medium-12 columns">
                     <?php get_template_part( 'parts/loop', 'single-contact' ); ?>
