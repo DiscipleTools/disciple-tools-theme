@@ -24,57 +24,16 @@
         </div>
     </div>
     <div>
-        <textarea></textarea>
+        <textarea id="comment-input"></textarea>
 
-        <button class="button">Add</button>
+        <button class="button" onclick="post_comment( <?php echo get_the_ID()?>)">Add</button>
     </div>
     <div>
-            <a>Activity</a>
+            <a>Activity / </a>
             <a>Comments</a>
             <br>
     </div>
-    <div style="overflow-y:scroll">
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
-        <p>a</p>
+    <div style="overflow-y:scroll" id="comments-wrapper" onload="get_contacts(<?php echo get_the_ID()?>)">
+
     </div>
 </section>

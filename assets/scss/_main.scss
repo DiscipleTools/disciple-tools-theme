@@ -242,6 +242,34 @@ POSTS & CONTENT STYLES
         }
     }
 
+    .comment-bubble {
+        margin: 0 20px 20px 20px;
+        position: relative;
+        height: auto;
+        background-color: lightyellow;
+        padding: 1em;
+        text-align: left;
+        line-height: 1.5em;
+
+        &:after{
+            content: ' ';
+            position: absolute;
+            width: 0;
+            height: 0;
+            left: -20px;
+            right: auto;
+            top: 0px;
+            bottom: auto;
+            border: 22px solid;
+            border-color: lightyellow transparent transparent transparent;
+        }
+    }
+    .comment-date {
+        text-align: right;
+        margin-right: 20px;
+        font-size:10px;
+    }
+
 }
 
 .tabs-panel .outer-container {

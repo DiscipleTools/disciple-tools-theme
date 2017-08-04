@@ -1,5 +1,6 @@
 <?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true ); ?>
 <section id="post-<?php the_ID(); ?>" >
+    <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
 
     <div class="row item-details-header-row">
         <div class="medium-12 columns">

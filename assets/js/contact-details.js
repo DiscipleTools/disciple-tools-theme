@@ -70,3 +70,58 @@ function save_contact_field(contactId, fieldKey, fieldValue){
     jQuery("#" + fieldKey +  " span").text(fieldValue)
   }
 }
+
+function post_comment(contactId) {
+  let comment = jQuery("#comment-input").val()
+  console.log(comment);
+  var data = {}
+  data["comment"] = comment
+  jQuery.ajax({
+    type:"POST",
+    data:JSON.stringify(data),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId +'/comment',
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+    },
+    success: function(data, two, three) {
+      console.log(`added comment ${comment}`)
+      jQuery("#comment-input").val("")
+
+    },
+    error: function(err) {
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
+    },
+  })
+}
+
+jQuery(document).ready(function($) {
+  let id = $("#contact-id").text()
+  jQuery.ajax({
+    type:"GET",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ id +'/comments',
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+    },
+    success: function(data) {
+      let commentsWrapper = $("#comments-wrapper")
+      data.forEach(comment=>{
+        let html = `<div class="comment-date">${comment.comment_date}</div>
+            <p class="comment-bubble">${comment.comment_content}</p>`
+        commentsWrapper.append(html)
+      })
+    },
+    error: function(err) {
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
+    },
+  })
+})
+
+
