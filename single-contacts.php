@@ -98,12 +98,23 @@
                 <section id="faith" class="bordered-box medium-6 columns">
                     <label class="section-header">Progress</label>
                     <strong>Seeker Path</strong>
-                    <!--                    @todo calculate % based on actions-->
-                    <div class="progress" role="progressbar" tabindex="0" aria-valuenow="20"
-                         aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                        <span class="progress-meter" style="width: <?php echo ($contact->fields["seeker_path"]["key"] ?? 0) * 20?>%">
-                        <p class="progress-meter-text"><?php echo $contact->fields["seeker_path"]["label"] ?? ""?></p>
-                        </span>
+                    <div class="row">
+                        <div class="small-6 columns">
+                          <p>Current: <span id="current_seeker_path"><?php echo $contact->fields["seeker_path"]["label"] ?? ""?></span></p>
+                        </div>
+                        <div class="small-6 columns">
+                            <p>Next: <span id="next_seeker_path">
+                            <?php
+                            $keys = array_keys( $contact_fields["seeker_path"]["default"] );
+                            $path_index = array_search( $contact->fields["seeker_path"]["key"], $keys ) ?? 0;
+                            if ( isset( $keys[$path_index+1] ) ){
+                                echo $contact_fields["seeker_path"]["default"][$keys[$path_index+1]];
+                            }
+                            ?>
+                            </span>
+                            </p>
+
+                        </div>
                     </div>
                     <strong>Faith Milestones</strong>
                     <div class="small button-group">

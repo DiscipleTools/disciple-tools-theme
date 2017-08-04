@@ -51,6 +51,7 @@ function site_scripts() {
             'contact-details', 'wpApiSettings', array(
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
+                'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
             )
         );
     }
