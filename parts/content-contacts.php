@@ -27,18 +27,20 @@ if (is_wp_error( $query1 )) {
     </div>
 
     <?php if ( $query1->have_posts() ) : ?>
-        <ul class="js-list-contacts">
-
-            <?php while ( $query1->have_posts() ) : $query1->the_post(); ?>
-
-                <!-- To see additional archive styles, visit the /parts directory -->
-                <?php get_template_part( 'parts/loop', 'contacts' ); ?>
-
-            <?php endwhile; ?>
-
-            <li class="js-list-contacts-loading"><?php _e( "Loading..." ); ?></li>
-
-        </ul>
+        <table class="js-list-contacts">
+            <thead><tr>
+                <th style="min-width: 34px"></th>
+                <th><?php _e( "Name" ); ?></th>
+                <th><?php _e( "Status" ); ?></th>
+                <th><?php _e( "Faith Milestones" ); ?></th>
+                <th><?php _e( "Assigned to" ); ?></th>
+                <th><?php _e( "Location" ); ?></th>
+                <th><?php _e( "Group" ); ?></th>
+            </tr></thead>
+            <tbody>
+                <tr class="js-list-contacts-loading"><td colspan=7><?php _e( "Loading..." ); ?></td></tr>
+            </tbody>
+        </table>
 
     <?php else: ?>
         <p><?php _e( "No contacts found." ); ?></p>

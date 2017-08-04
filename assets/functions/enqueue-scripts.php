@@ -66,6 +66,7 @@ function site_scripts() {
             'txt_error' => __( 'An error occurred' ),
             'txt_no_records' => __( 'No records' ),
             'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
+            'template_directory_uri' => get_template_directory_uri(),
             )
         );
     }

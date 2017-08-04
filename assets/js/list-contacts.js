@@ -13,7 +13,7 @@
       const statusNames = wpApiSettings.contacts_custom_fields_settings.overall_status.default;
       _.forEach(data, function(contact) {
         if (contact.status) { throw new Exception("Did not expect 'status' to be defined"); }
-        contact.status = statusNames[contact.status_number];
+        contact.status = statusNames[contact.overall_status];
       });
       contacts = data;
       $(function() {
@@ -28,7 +28,7 @@
     },
     error: function() {
       $(function() {
-        $(".js-list-contacts-loading").text(wpApiSettings.txt_error);
+        $(".js-list-contacts-loading > td").text(wpApiSettings.txt_error);
       });
     },
     complete: function() {
@@ -63,7 +63,7 @@
 
   function sortList(sortBy, sortOrder) {
     const $list = $(".js-list-contacts");
-    _($(".js-list-contacts > li").get())
+    _($(".js-list-contacts > tbody > tr").get())
       .orderBy(function(item) { return contacts[$(item).data("contact-index")][sortBy]; }, sortOrder)
       .forEach(function(item) { $list.append(item); });
   }
@@ -71,27 +71,55 @@
 
 
   function displayContacts() {
-    const $ul = $(".js-list-contacts");
-    if (! $ul.length) {
+    const $table = $(".js-list-contacts");
+    if (! $table.length) {
       $ul.find(":not(summary)").remove();
       return;
     }
-    $ul.empty();
+    $table.find("> tbody").empty();
+    const template = _.template(`<tr data-contact-index="<%- index %>">
+      <td><img src="<%- template_directory_uri %>/assets/images/star.svg" width=13 height=12></td>
+      <td>
+        <a href="<%- permalink %>"><%- post_title %></a>
+        <br>
+        <%- phone_numbers.join(", ") %>
+      </td>
+      <td><span class="status status--<%- overall_status %>"><%- status %></td>
+      <td>
+        <span class="milestone milestone--<%- sharing_milestone_key %>"><%- sharing_milestone %></span>
+        <br>
+        <span class="milestone milestone--<%- belief_milestone_key %>"><%- belief_milestone %></span>
+      </td>
+      <td><%- assigned_name %></td>
+      <td><%- locations.join(", ") %></td>
+      <td></td>
+    </tr>`);
+    const ccfs = wpApiSettings.contacts_custom_fields_settings;
     _.forEach(contacts, function(contact, index) {
-      $ul.append(
-        $("<li>")
-          .data("contact-index", index)
-          .append(
-            $("<a>")
-              .attr("href", contact.permalink)
-              .append(document.createTextNode(contact.post_title))
-          )
-          .append(
-            $("<span>")
-              .addClass("float-right")
-              .addClass("grey")
-              .append(document.createTextNode(contact.assigned_name))
-          )
+      const belief_milestone_key = _.find(
+        ['baptizing', 'baptized', 'belief'],
+        function(key) { return contact["milestone_" + key]; }
+      );
+      const sharing_milestone_key = _.find(
+        ['planting', 'in_group', 'sharing', 'can_share'],
+        function(key) { return contact["milestone_" + key]; }
+      );
+      let status = "";
+      if (contact.overall_status === "accepted") {
+        status = ccfs.seeker_path.default[contact.seeker_path];
+      } else {
+        status = ccfs.overall_status.default[contact.overall_status];
+      }
+      const context = _.assign({}, contact, wpApiSettings, {
+        index,
+        status,
+        belief_milestone_key,
+        sharing_milestone_key,
+        belief_milestone: (ccfs["milestone_" + belief_milestone_key] || {}).name || "",
+        sharing_milestone: (ccfs["milestone_" + sharing_milestone_key] || {}).name || "",
+      });
+      $table.append(
+        $.parseHTML(template(context))
       );
     });
   }
@@ -183,7 +211,7 @@
       filterFunctions.push(searchFilterFunction);
     }
     if (filterFunctions.length > 0) {
-      $(".js-list-contacts > li").each(function() {
+      $(".js-list-contacts > tbody > tr").each(function() {
         const contact = contacts[$(this).data("contact-index")];
         const show = _.every(filterFunctions, function(filterFunction) {
           return filterFunction(contact);
@@ -195,7 +223,7 @@
         }
       });
     } else {
-      $(".js-list-contacts > li").removeAttr("hidden");
+      $(".js-list-contacts > tbody > tr").removeAttr("hidden");
     }
   }
 
