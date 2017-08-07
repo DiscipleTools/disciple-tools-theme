@@ -92,7 +92,7 @@
       </td>
       <td><%- assigned_name %></td>
       <td><%- locations.join(", ") %></td>
-      <td></td>
+      <td><%- groups.join(", ") %></td>
     </tr>`);
     const ccfs = wpApiSettings.contacts_custom_fields_settings;
     _.forEach(contacts, function(contact, index) {
