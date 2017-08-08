@@ -5,7 +5,7 @@
   let dataTable;
 
   $.ajax({
-    url: wpApiSettings.root + "dt-hooks/v1/user/1/contacts",
+    url: wpApiSettings.root + "dt-hooks/v1/contacts",
     beforeSend: function(xhr) {
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
     },
@@ -49,7 +49,7 @@
         <br>
         <span class="milestone milestone--<%- belief_milestone_key %>"><%- belief_milestone %></span>
       </td>
-      <td><%- assigned_name %></td>
+      <td><%- assigned_to.user_login %></td>
       <td><%- locations.join(", ") %></td>
       <td><%- groups.join(", ") %></td>
     </tr>`);
@@ -99,12 +99,13 @@
       return;
     }
     const counts = {
+      assigned_login: _.countBy(_.map(contacts, 'assigned_to.user_login')),
       status: _.countBy(_.map(contacts, 'status')),
       locations: _.countBy(_.flatten(_.map(contacts, 'locations'))),
     };
 
     $(".js-contacts-filter :not(.js-contacts-filter-title)").remove();
-    _.forEach(["status", "locations"], function(filterType) {
+    _.forEach(["assigned_login", "status", "locations"], function(filterType) {
       $(".js-contacts-filter[data-filter='" + filterType + "']")
         .append(createFilterCheckboxes(filterType, counts[filterType]));
     });
@@ -116,7 +117,7 @@
 
   function createFilterCheckboxes(filterType, counts) {
     const $div = $("<div>");
-    Object.keys(counts).forEach(function(key) {
+    Object.keys(counts).sort().forEach(function(key) {
       $div.append(
         $("<div>").append(
           $("<label>")
@@ -173,6 +174,20 @@
         filterFunctions.push(function(contact) {
           return _.some($checkedLocationsLabels, function(label) {
             return _.includes(contact.locations, $(label).data("filter-value"));
+          });
+        });
+      }
+    }
+
+    {
+      const $checkedAssignedLabels = $(".js-filter-checkbox-label")
+        .filter(function() { return $(this).data("filter-type") === "assigned_login"; })
+        .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
+
+      if ($checkedAssignedLabels.length > 0) {
+        filterFunctions.push(function(contact) {
+          return _.some($checkedAssignedLabels, function(label) {
+            return $(label).data("filter-value") === contact.assigned_to.user_login;
           });
         });
       }
