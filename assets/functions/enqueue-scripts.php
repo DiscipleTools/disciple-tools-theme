@@ -58,7 +58,7 @@ function site_scripts() {
 
 
     if (is_post_type_archive( "contacts" )){
-        wp_enqueue_script( 'list-contacts-js', get_template_directory_uri() . '/assets/js/list-contacts.js', array( 'jquery', 'dt_jquery_lists', 'lodash' ) );
+        wp_enqueue_script( 'list-contacts-js', get_template_directory_uri() . '/assets/js/list-contacts.js', array( 'jquery', 'lodash' ) );
         wp_localize_script(
             'list-contacts-js', 'wpApiSettings', array(
             'root' => esc_url_raw( rest_url() ),
@@ -66,6 +66,7 @@ function site_scripts() {
             'txt_error' => __( 'An error occurred' ),
             'txt_no_records' => __( 'No records' ),
             'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
+            'template_directory_uri' => get_template_directory_uri(),
             )
         );
     }

@@ -12,37 +12,38 @@ if (is_wp_error( $query1 )) {
 }
 
 ?>
-<div id="my-contacts" class="bordered-box">
+<div class="bordered-box">
     <h3><?php _e( "Contacts" ); ?></h3>
 
-    <div class="row search-tools js-search-tools faded-out">
+    <div class="row js-search-tools faded-out">
         <div class="medium-6 columns">
-            <input type="text" class="search" disabled>
+            <input type="search" disabled class="js-list-contacts-search">
         </div>
         <div class="medium-6 columns">
-            <button class="sort button small" data-sort="post_title" disabled><?php _e( "Sort by name " ); ?></button> <button class="sort button small" data-sort="assigned_name" disabled><?php _e( "Sort by team" ); ?></button>
+            <button class="button small js-list-contacts-sort" data-sort="post_title" disabled><?php _e( "Sort by name " ); ?></button>
+            <button class="button small js-list-contacts-sort" data-sort="assigned_name" disabled><?php _e( "Sort by team" ); ?></button>
         </div>
 
     </div>
 
     <?php if ( $query1->have_posts() ) : ?>
-        <ul class="list">
-
-            <?php while ( $query1->have_posts() ) : $query1->the_post(); ?>
-
-                <!-- To see additional archive styles, visit the /parts directory -->
-                <?php get_template_part( 'parts/loop', 'contacts' ); ?>
-
-            <?php endwhile; ?>
-
-            <li class="js-list-contacts-loading"><?php _e( "Loading..." ); ?></li>
-
-        </ul>
-
-        <ul class="pagination"></ul>
+        <table class="js-list-contacts">
+            <thead><tr>
+                <th style="min-width: 34px"></th>
+                <th><?php _e( "Name" ); ?></th>
+                <th><?php _e( "Status" ); ?></th>
+                <th><?php _e( "Faith Milestones" ); ?></th>
+                <th><?php _e( "Assigned to" ); ?></th>
+                <th><?php _e( "Location" ); ?></th>
+                <th><?php _e( "Group" ); ?></th>
+            </tr></thead>
+            <tbody>
+                <tr class="js-list-contacts-loading"><td colspan=7><?php _e( "Loading..." ); ?></td></tr>
+            </tbody>
+        </table>
 
     <?php else: ?>
         <p><?php _e( "No contacts found." ); ?></p>
     <?php endif; ?>
 
-</div> <!-- End my-contacts -->
+</div>

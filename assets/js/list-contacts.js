@@ -1,22 +1,8 @@
-/* global jQuery:false, List:false, wpApiSettings:false, _:false */
-
-
-jQuery(document).ready(function($) {
+(function($, wpApiSettings) {
   "use strict";
-
-  if (! $("#my-contacts").length || ! $("#my-contacts .list").length) {
-    $(".js-contacts-filter :not(summary)").remove();
-    return;
-  }
-  const myContacts = new List('my-contacts', {
-    valueNames: [
-      'post_title',
-      'assigned_name',
-      { name: 'permalink', attr: 'href' },
-    ],
-    page: 30,
-    pagination: true,
-  });
+  let contacts;
+  let searchFilterFunction;
+  let otherFilterFunctions = [];
 
   $.ajax({
     url: wpApiSettings.root + "dt-hooks/v1/user/1/contacts",
@@ -27,30 +13,125 @@ jQuery(document).ready(function($) {
       const statusNames = wpApiSettings.contacts_custom_fields_settings.overall_status.default;
       _.forEach(data, function(contact) {
         if (contact.status) { throw new Exception("Did not expect 'status' to be defined"); }
-        contact.status = statusNames[contact.status_number];
+        contact.status = statusNames[contact.overall_status];
       });
-      myContacts.clear();
-      myContacts.add(data);
-      setUpFilters(data);
+      contacts = data;
+      $(function() {
+        displayContacts();
+        setUpFilterPane();
+        /* The page could have been loaded with this search field already
+         * filled in, for instance, after clicking the back button, so it's
+         * useful to make sure the search filter is still applied after
+         * clicking the back button. */
+        $(".js-list-contacts-search").trigger("input");
+      });
     },
     error: function() {
-      $(".js-list-contacts-loading").text(wpApiSettings.txt_error);
+      $(function() {
+        $(".js-list-contacts-loading > td").text(wpApiSettings.txt_error);
+      });
     },
     complete: function() {
-      $("#my-contacts .js-search-tools")
-        .removeClass("faded-out")
-        .find("button.sort[data-sort]")
-          .removeAttr("disabled")
-        .end()
-        .find("input.search")
-          .removeAttr("disabled");
+      $(function() {
+        $(".js-search-tools").removeClass("faded-out");
+        $(".js-list-contacts-search").removeAttr("disabled");
+        $(".js-list-contacts-sort").removeAttr("disabled");
+      });
     },
   });
 
-  function setUpFilters(data) {
+  $(function() {
+    $(".js-list-contacts-search").on("input", function() {
+      const searchString = $(this).val().trim();
+      if (searchString) {
+        searchFilterFunction = function(contact) {
+          return contact.post_title.toLowerCase().indexOf(searchString) !== -1;
+        };
+      } else {
+        searchFilterFunction = null;
+      }
+      filterContacts();
+    });
+
+    $(".js-list-contacts-sort").on("click", function() {
+      const sortBy = $(this).data("sort");
+      const sortOrder = $(this).data("order") || "asc";
+      sortList(sortBy, sortOrder);
+      $(this).data("order", sortOrder === "asc" ? "desc" : "asc");
+    });
+  });
+
+  function sortList(sortBy, sortOrder) {
+    const $list = $(".js-list-contacts");
+    _($(".js-list-contacts > tbody > tr").get())
+      .orderBy(function(item) { return contacts[$(item).data("contact-index")][sortBy]; }, sortOrder)
+      .forEach(function(item) { $list.append(item); });
+  }
+
+
+
+  function displayContacts() {
+    const $table = $(".js-list-contacts");
+    if (! $table.length) {
+      $ul.find(":not(summary)").remove();
+      return;
+    }
+    $table.find("> tbody").empty();
+    const template = _.template(`<tr data-contact-index="<%- index %>">
+      <td><img src="<%- template_directory_uri %>/assets/images/star.svg" width=13 height=12></td>
+      <td>
+        <a href="<%- permalink %>"><%- post_title %></a>
+        <br>
+        <%- phone_numbers.join(", ") %>
+      </td>
+      <td><span class="status status--<%- overall_status %>"><%- status %></td>
+      <td>
+        <span class="milestone milestone--<%- sharing_milestone_key %>"><%- sharing_milestone %></span>
+        <br>
+        <span class="milestone milestone--<%- belief_milestone_key %>"><%- belief_milestone %></span>
+      </td>
+      <td><%- assigned_name %></td>
+      <td><%- locations.join(", ") %></td>
+      <td></td>
+    </tr>`);
+    const ccfs = wpApiSettings.contacts_custom_fields_settings;
+    _.forEach(contacts, function(contact, index) {
+      const belief_milestone_key = _.find(
+        ['baptizing', 'baptized', 'belief'],
+        function(key) { return contact["milestone_" + key]; }
+      );
+      const sharing_milestone_key = _.find(
+        ['planting', 'in_group', 'sharing', 'can_share'],
+        function(key) { return contact["milestone_" + key]; }
+      );
+      let status = "";
+      if (contact.overall_status === "accepted") {
+        status = ccfs.seeker_path.default[contact.seeker_path];
+      } else {
+        status = ccfs.overall_status.default[contact.overall_status];
+      }
+      const context = _.assign({}, contact, wpApiSettings, {
+        index,
+        status,
+        belief_milestone_key,
+        sharing_milestone_key,
+        belief_milestone: (ccfs["milestone_" + belief_milestone_key] || {}).name || "",
+        sharing_milestone: (ccfs["milestone_" + sharing_milestone_key] || {}).name || "",
+      });
+      $table.append(
+        $.parseHTML(template(context))
+      );
+    });
+  }
+
+
+  function setUpFilterPane() {
+    if (! $(".js-list-contacts").length) {
+      return;
+    }
     const counts = {
-      status: _.countBy(_.map(data, 'status')),
-      locations: _.countBy(_.flatten(_.map(data, 'locations'))),
+      status: _.countBy(_.map(contacts, 'status')),
+      locations: _.countBy(_.flatten(_.map(contacts, 'locations'))),
     };
 
     $(".js-contacts-filter :not(summary)").remove();
@@ -73,7 +154,7 @@ jQuery(document).ready(function($) {
             .append(
               $("<input>")
               .attr("type", "checkbox")
-              .on("change", function() { updateFilters(); })
+              .on("change", function() { updateOtherFilters(); })
             )
             .append(document.createTextNode(key))
             .append($("<span>")
@@ -91,19 +172,17 @@ jQuery(document).ready(function($) {
     return $div;
   }
 
-  function updateFilters() {
-    const filterFunctions = [];
-
+  function updateOtherFilters() {
+    otherFilterFunctions = [];
     {
       const $checkedStatusLabels = $(".js-filter-checkbox-label")
         .filter(function() { return $(this).data("filter-type") === "status"; })
         .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
 
       if ($checkedStatusLabels.length > 0) {
-        filterFunctions.push(function(item) {
-          const values = item.values();
+        otherFilterFunctions.push(function(contact) {
           return _.some($checkedStatusLabels, function(label) {
-            return $(label).data("filter-value") === values.status;
+            return $(label).data("filter-value") === contact.status;
           });
         });
       }
@@ -115,22 +194,37 @@ jQuery(document).ready(function($) {
         .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
 
       if ($checkedLocationsLabels.length > 0) {
-        filterFunctions.push(function(item) {
-          const values = item.values();
+        otherFilterFunctions.push(function(contact) {
           return _.some($checkedLocationsLabels, function(label) {
-            return _.includes(values.locations, $(label).data("filter-value"));
+            return _.includes(contact.locations, $(label).data("filter-value"));
           });
         });
       }
     }
 
+    filterContacts();
+  }
+
+  function filterContacts() {
+    const filterFunctions = _.clone(otherFilterFunctions);
+    if (searchFilterFunction) {
+      filterFunctions.push(searchFilterFunction);
+    }
     if (filterFunctions.length > 0) {
-      myContacts.filter(function(item) {
-        return _.every(filterFunctions, function(filterFunction) { return filterFunction(item); });
+      $(".js-list-contacts > tbody > tr").each(function() {
+        const contact = contacts[$(this).data("contact-index")];
+        const show = _.every(filterFunctions, function(filterFunction) {
+          return filterFunction(contact);
+        });
+        if (show) {
+          $(this).removeAttr("hidden");
+        } else {
+          $(this).attr("hidden", true);
+        }
       });
     } else {
-      myContacts.filter(); // reset filters
+      $(".js-list-contacts > tbody > tr").removeAttr("hidden");
     }
   }
 
-});
+})(window.jQuery, window.wpApiSettings);

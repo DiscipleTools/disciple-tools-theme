@@ -1,0 +1,35 @@
+<svg width="13" height="12" viewBox="0 0 13 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Canvas" transform="translate(-647 1266)">
+<rect x="647" y="-1266" width="13" height="12" fill="#E5E5E5"/>
+<clipPath id="clip-0" clip-rule="evenodd">
+<path d="M 273 -1517L 1713 -1517L 1713 -493L 273 -493L 273 -1517Z" fill="#FFFFFF"/>
+</clipPath>
+<g id="Contacts LIst" clip-path="url(#clip-0)">
+<path d="M 273 -1517L 1713 -1517L 1713 -493L 273 -493L 273 -1517Z" fill="#E2E2E2"/>
+<g id="Contact List">
+<path d="M 643 -1387L 1343 -1387L 1343 -523L 643 -523L 643 -1387Z" fill="#E2E2E2"/>
+<g id="Rectangle 12">
+<use xlink:href="#path0_fill" transform="translate(643 -1387)" fill="#FFFFFF"/>
+</g>
+</g>
+<g id="Group">
+<g id="Rectangle 19">
+<use xlink:href="#path1_fill" transform="translate(643 -1274)" fill="#FFFFFF"/>
+</g>
+<g id="favorite-pressed">
+<g id="Group">
+<g id="Vector">
+<use xlink:href="#path2_fill" transform="translate(647 -1266)" fill="#FFEB3B"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_fill" d="M 0 10C 0 4.47715 4.47715 0 10 0L 690 0C 695.523 0 700 4.47715 700 10L 700 854C 700 859.523 695.523 864 690 864L 10 864C 4.47715 864 0 859.523 0 854L 0 10Z"/>
+<path id="path1_fill" d="M 0 0L 700 0L 700 60L 0 60L 0 0Z"/>
+<path id="path2_fill" d="M 11.9008 3.96854L 8.50922 3.47584L 6.99182 0.402532C 6.72622 -0.134177 5.84768 -0.134177 5.58208 0.402532L 4.06546 3.47584L 0.673114 3.96854C 0.0311062 4.06206 -0.228997 4.85415 0.237774 5.30992L 2.69265 7.70193L 2.11351 11.0801C 2.00428 11.7198 2.67693 12.2109 3.25372 11.9084L 6.28695 10.314L 9.32097 11.9092C 9.89304 12.2086 10.5712 11.7253 10.4612 11.0809L 9.88204 7.70272L 12.3369 5.31071C 12.8029 4.85415 12.5428 4.06206 11.9008 3.96854Z"/>
+</defs>
+</svg>
+

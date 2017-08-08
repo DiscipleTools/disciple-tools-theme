@@ -1,4 +1,4 @@
-/* global jQuery:false, List:false, wpApiSettings:false */
+/* global jQuery:false, wpApiSettings:false */
 
 
 function save_seeker_milestones(contactId, fieldKey, fieldValue){
