@@ -30,7 +30,7 @@
                 <ul>
                     <?php
                     foreach($contact->fields[ "emails" ] ?? [] as $value){
-                        echo '<li>' . esc_html( $value["number"] ) . '</li>';
+                        echo '<li>' . esc_html( $value["email"] ) . '</li>';
                     }
                     ?>
                 </ul>
