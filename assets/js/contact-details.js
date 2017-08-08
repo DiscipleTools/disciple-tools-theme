@@ -145,6 +145,7 @@ function save_field(contactId, fieldKey){
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
     },
     success: function(data, two, three) {
+      console.log(data)
       console.log("updated " + fieldKey + " to: " + val)
     },
     error: function(err) {
@@ -153,4 +154,11 @@ function save_field(contactId, fieldKey){
       jQuery("#errors").append(err.responseText)
     },
   })
+}
+
+function addNumber(contactId) {
+  if (jQuery("#new-number").length === 0 ){
+    var newNum = `<li><input id="new-number" name="new-number" onchange="save_field(${contactId}, 'new-number')"\>`
+    jQuery("#number-list").append(newNum)
+  }
 }

@@ -1,4 +1,5 @@
 <?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true ); ?>
+<?php $contact_fields = Disciple_Tools_Contacts::get_channel_list(); ?>
 <section id="post-<?php the_ID(); ?>" >
     <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
 
@@ -83,9 +84,9 @@
         </div>
     </div>
     <div id="edit-fields" style="display: none">
-        <strong>Phone</strong>
-        <i class="fa fa-plus"></i>
-        <ul>
+        <strong>Phone</strong><button onclick="addNumber(<?php echo get_the_ID()?>)"><i class="fi-plus"></i></button>
+
+        <ul id="number-list">
             <?php
             foreach($contact->fields[ "phone_numbers" ] ?? [] as $field => $value){
                 echo '<li><input id="' . $field . '" value="' . $value[0] . '" onchange="save_field('. get_the_ID() . ', \'' . $field . '\')"></li>';
