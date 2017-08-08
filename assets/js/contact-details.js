@@ -35,7 +35,7 @@ function save_seeker_milestones(contactId, fieldKey, fieldValue){
     },
   })
 }
-function save_contact_field(contactId, fieldKey, fieldValue){
+function save_quick_action(contactId, fieldKey, fieldValue){
   var data = {}
   data[fieldKey] = fieldValue
   jQuery.ajax({
@@ -125,3 +125,32 @@ jQuery(document).ready(function($) {
 })
 
 
+function edit_fields() {
+  jQuery("#display-fields").toggle()
+  jQuery("#edit-fields").toggle()
+}
+
+function save_field(contactId, fieldKey){
+  var val = jQuery("#"+fieldKey).val()
+  console.log(val)
+  var data = {}
+  data[fieldKey] = val
+  jQuery.ajax({
+    type:"POST",
+    data:JSON.stringify(data),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId,
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+    },
+    success: function(data, two, three) {
+      console.log("updated " + fieldKey + " to: " + val)
+    },
+    error: function(err) {
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
+    },
+  })
+}
