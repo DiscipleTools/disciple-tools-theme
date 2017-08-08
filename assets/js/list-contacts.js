@@ -89,6 +89,7 @@
       responsive: true,
       iDisplayLength: 100,
       bLengthChange: false,
+      sDom: 'firtlp<"clearfix">'
     });
   }
 
