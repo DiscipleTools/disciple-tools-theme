@@ -12,7 +12,7 @@
                     <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
                     <li><a href="<?php echo home_url( '/' ); ?>locations/">Locations</a></li>
                     <li>
-                        <span class="show-for-sr">Current: </span> <?php the_title(); ?>
+                        <span class="show-for-sr">Current: </span> <?php the_title_attribute(); ?>
                     </li>
                 </ul>
             </nav>
@@ -50,7 +50,7 @@
 
                         <?php foreach ( $post->contacts as $post ) : setup_postdata( $post ); ?>
 
-                            <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
+                            <li><a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a></li>
 
                         <?php endforeach; ?>
 
@@ -70,7 +70,7 @@
 
                         <?php foreach ( $post->groups as $post ) : setup_postdata( $post ); ?>
 
-                            <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a> </li>
+                            <li><a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a> </li>
 
                         <?php endforeach; ?>
 
@@ -89,7 +89,7 @@
 
                         <?php foreach ( $post->assets as $post ) : setup_postdata( $post ); ?>
 
-                            <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
+                            <li><a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a></li>
 
                         <?php endforeach; ?>
 

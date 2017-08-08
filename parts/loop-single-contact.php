@@ -4,9 +4,9 @@
     <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
 
     <div class="row item-details-header-row">
-            <i class="fi-torso large"></i><span class="item-details-header"><?php the_title(); ?></span>
+            <i class="fi-torso large"></i><span class="item-details-header"><?php the_title_attribute(); ?></span>
             <span class="button alert label">
-              Status: <?php echo $contact->fields["overall_status"]["label"] ?>
+              Status: <?php echo esc_html( $contact->fields["overall_status"]["label"] ) ?>
             </span>
             <button class="tiny button">Pause</button>
             <button class="tiny button">Close</button>
@@ -23,14 +23,14 @@
                 <ul>
                     <?php
                     foreach($contact->fields[ "phone_numbers" ] ?? [] as $field => $value){
-                        echo '<li>' . $value["number"] . '</li>';
+                        echo '<li>' . esc_html( $value["number"] ) . '</li>';
                     }?>
                 </ul>
                 <strong>Email</strong>
                 <ul>
                     <?php
                     foreach($contact->fields[ "emails" ] ?? [] as $value){
-                        echo '<li>' . $value["email"] . '</li>';
+                        echo '<li>' . esc_html( $value["number"] ) . '</li>';
                     }
                     ?>
                 </ul>
@@ -52,7 +52,7 @@
                 <ul>
                     <?php
                     foreach($contact->fields[ "locations" ] ?? [] as $value){
-                        echo '<li><a href="' . $value->permalink . '">'. $value->post_title .'</a></li>';
+                        echo '<li><a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a></li>';
                     }?>
                 </ul>
 
@@ -70,7 +70,7 @@
                     <ul>
                         <?php
                         foreach($contact->fields[ "address" ]  ?? [] as $value){
-                            echo '<li>' . $value[0] . '</li>';
+                            echo '<li>' . esc_html( $value[0] ) . '</li>';
                         }?>
                     </ul>
                 </div>
@@ -89,7 +89,7 @@
         <ul id="number-list">
             <?php
             foreach($contact->fields[ "phone_numbers" ] ?? [] as $field => $value){
-                echo '<li><input id="' . $field . '" value="' . $value[0] . '" onchange="save_field('. get_the_ID() . ', \'' . $field . '\')"></li>';
+                echo '<li><input id="' . esc_attr( $field ) . '" value="' . esc_attr( $value[0] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $field ) . '\')"></li>';
             }?>
         </ul>
     </div>

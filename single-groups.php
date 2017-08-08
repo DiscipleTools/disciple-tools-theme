@@ -81,7 +81,7 @@
 
                         <?php foreach ( $post->contacts as $post ) : setup_postdata( $post ); ?>
 
-                            <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
+                            <li><a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a></li>
 
                         <?php endforeach; ?>
 
@@ -108,7 +108,7 @@
 
                         <?php foreach ( $post->groups as $post ) : setup_postdata( $post ); ?>
 
-                            <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a> </li>
+                            <li><a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a> </li>
 
                         <?php endforeach; ?>
 
@@ -135,7 +135,7 @@
 
                         <?php foreach ( $post->locations as $post ) : setup_postdata( $post ); ?>
 
-                            <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
+                            <li><a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a></li>
 
                         <?php endforeach; ?>
 

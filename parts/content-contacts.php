@@ -11,25 +11,15 @@ if (is_wp_error( $query1 )) {
     throw new Exception( "permission denied: " . implode( $query1->get_error_messages() ) );
 }
 
+
 ?>
 <div class="bordered-box">
     <h3><?php _e( "Contacts" ); ?></h3>
 
-    <div class="row js-search-tools faded-out">
-        <div class="medium-6 columns">
-            <input type="search" disabled class="js-list-contacts-search">
-        </div>
-        <div class="medium-6 columns">
-            <button class="button small js-list-contacts-sort" data-sort="post_title" disabled><?php _e( "Sort by name " ); ?></button>
-            <button class="button small js-list-contacts-sort" data-sort="assigned_name" disabled><?php _e( "Sort by team" ); ?></button>
-        </div>
-
-    </div>
-
     <?php if ( $query1->have_posts() ) : ?>
         <table class="js-list-contacts">
             <thead><tr>
-                <th style="min-width: 34px"></th>
+                <th></th>
                 <th><?php _e( "Name" ); ?></th>
                 <th><?php _e( "Status" ); ?></th>
                 <th><?php _e( "Faith Milestones" ); ?></th>

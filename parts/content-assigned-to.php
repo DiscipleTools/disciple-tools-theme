@@ -29,7 +29,7 @@ $requires_update = new WP_Query( $args );
     <form method="post" action="">
         <div class="callout alert" >
             <i class="fi-plus"> New </i>
-            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+            <a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a>
             <span class="float-right">
                 <input type="hidden" name="post_id" value="<?php echo get_the_ID(); ?>" />
                 <button type="submit" name="response" value="1" class="button small ">Accept</button>
