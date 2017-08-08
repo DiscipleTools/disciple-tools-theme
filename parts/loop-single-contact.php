@@ -23,14 +23,14 @@
                 <ul>
                     <?php
                     foreach($contact->fields[ "phone_numbers" ] ?? [] as $field => $value){
-                        echo '<li>' . $value[0] . '</li>';
+                        echo '<li>' . $value["number"] . '</li>';
                     }?>
                 </ul>
                 <strong>Email</strong>
                 <ul>
                     <?php
                     foreach($contact->fields[ "emails" ] ?? [] as $value){
-                        echo '<li>' . $value[0] . '</li>';
+                        echo '<li>' . $value["email"] . '</li>';
                     }
                     ?>
                 </ul>
