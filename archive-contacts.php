@@ -1,3 +1,11 @@
+<?php
+
+$contacts_update_needed = Disciple_Tools_Contacts::get_user_prioritized_contacts( get_current_user_id(), 'update_needed', true, [ 'posts_per_page' => 5 ] );
+$contacts_meeting_scheduled = Disciple_Tools_Contacts::get_user_prioritized_contacts( get_current_user_id(), 'meeting_scheduled', true, [ 'posts_per_page' => 5 ] );
+$contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_contacts( get_current_user_id(), 'contact_unattempted', true, [ 'posts_per_page' => 5 ] );
+
+?>
+
 <?php get_header(); ?>
 
     <div id="content">
@@ -44,6 +52,43 @@
                 <div class="bordered-box">
                     <h3><?php _e( "Priorities" ); ?></h3>
 
+                    <h6><?php _e( "Update needed" ); ?> (<?php echo $contacts_update_needed->found_posts; ?>)</h4>
+                    <?php if ( $contacts_update_needed->have_posts() ): ?>
+                        <ul>
+                        <?php while ( $contacts_update_needed->have_posts() ): $contacts_update_needed->the_post(); ?>
+                            <li><a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a></li>
+                        <?php endwhile; ?>
+                        </ul>
+                    <?php else: ?>
+                        <ul>
+                            <li><?php _e( "Well done! You have no contacts that need to be updated." ); ?></li>
+                        </ul>
+                    <?php endif; ?>
+
+                    <h6><?php _e( "Meeting scheduled" ); ?> (<?php echo $contacts_meeting_scheduled->found_posts; ?>)</h4>
+                    <?php if ( $contacts_meeting_scheduled->have_posts() ): ?>
+                        <ul>
+                        <?php while ( $contacts_meeting_scheduled->have_posts() ): $contacts_meeting_scheduled->the_post(); ?>
+                            <li><a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a></li>
+                        <?php endwhile; ?>
+                        </ul>
+                    <?php else: ?>
+                        <ul>
+                            <li><?php _e( "You have no contacts that are waiting for a scheduled meeting." ); ?></li>
+                        </ul>
+                    <?php endif; ?>
+
+                    <h6><?php _e( "Contact unattempted" ); ?> (<?php echo $contacts_contact_unattempted->found_posts; ?>)</h4>
+                    <?php if ( $contacts_contact_unattempted->have_posts() ): ?>
+                        <ul>
+                        <?php while ( $contacts_contact_unattempted->have_posts() ): $contacts_contact_unattempted->the_post(); ?>
+                            <li><a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a></li>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <ul>
+                            <li><?php _e( "Well done! You have no contacts that are waiting to be contacted." ); ?></li>
+                        </ul>
+                    <?php endif; ?>
                 </div>
             </aside>
 
