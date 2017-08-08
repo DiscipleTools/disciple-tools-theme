@@ -1,8 +1,8 @@
 (function($, wpApiSettings) {
   "use strict";
   let contacts;
-  let searchFilterFunction;
-  let otherFilterFunctions = [];
+  let filterFunctions = [];
+  let dataTable;
 
   $.ajax({
     url: wpApiSettings.root + "dt-hooks/v1/user/1/contacts",
@@ -19,11 +19,6 @@
       $(function() {
         displayContacts();
         setUpFilterPane();
-        /* The page could have been loaded with this search field already
-         * filled in, for instance, after clicking the back button, so it's
-         * useful to make sure the search filter is still applied after
-         * clicking the back button. */
-        $(".js-list-contacts-search").trigger("input");
       });
     },
     error: function() {
@@ -31,43 +26,7 @@
         $(".js-list-contacts-loading > td").text(wpApiSettings.txt_error);
       });
     },
-    complete: function() {
-      $(function() {
-        $(".js-search-tools").removeClass("faded-out");
-        $(".js-list-contacts-search").removeAttr("disabled");
-        $(".js-list-contacts-sort").removeAttr("disabled");
-      });
-    },
   });
-
-  $(function() {
-    $(".js-list-contacts-search").on("input", function() {
-      const searchString = $(this).val().trim();
-      if (searchString) {
-        searchFilterFunction = function(contact) {
-          return contact.post_title.toLowerCase().indexOf(searchString) !== -1;
-        };
-      } else {
-        searchFilterFunction = null;
-      }
-      filterContacts();
-    });
-
-    $(".js-list-contacts-sort").on("click", function() {
-      const sortBy = $(this).data("sort");
-      const sortOrder = $(this).data("order") || "asc";
-      sortList(sortBy, sortOrder);
-      $(this).data("order", sortOrder === "asc" ? "desc" : "asc");
-    });
-  });
-
-  function sortList(sortBy, sortOrder) {
-    const $list = $(".js-list-contacts");
-    _($(".js-list-contacts > tbody > tr").get())
-      .orderBy(function(item) { return contacts[$(item).data("contact-index")][sortBy]; }, sortOrder)
-      .forEach(function(item) { $list.append(item); });
-  }
-
 
 
   function displayContacts() {
@@ -122,6 +81,15 @@
         $.parseHTML(template(context))
       );
     });
+    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+      const contact = contacts[dataIndex];
+      return _.every(filterFunctions, function(filterFunction) { return filterFunction(contact); });
+    });
+    dataTable = $table.DataTable({
+      responsive: true,
+      iDisplayLength: 100,
+      bLengthChange: false,
+    });
   }
 
 
@@ -154,7 +122,10 @@
             .append(
               $("<input>")
               .attr("type", "checkbox")
-              .on("change", function() { updateOtherFilters(); })
+              .on("change", function() {
+                updateFilterFunctions();
+                dataTable.draw();
+              })
             )
             .append(document.createTextNode(key))
             .append($("<span>")
@@ -172,15 +143,15 @@
     return $div;
   }
 
-  function updateOtherFilters() {
-    otherFilterFunctions = [];
+  function updateFilterFunctions() {
+    filterFunctions = [];
     {
       const $checkedStatusLabels = $(".js-filter-checkbox-label")
         .filter(function() { return $(this).data("filter-type") === "status"; })
         .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
 
       if ($checkedStatusLabels.length > 0) {
-        otherFilterFunctions.push(function(contact) {
+        filterFunctions.push(function(contact) {
           return _.some($checkedStatusLabels, function(label) {
             return $(label).data("filter-value") === contact.status;
           });
@@ -194,7 +165,7 @@
         .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
 
       if ($checkedLocationsLabels.length > 0) {
-        otherFilterFunctions.push(function(contact) {
+        filterFunctions.push(function(contact) {
           return _.some($checkedLocationsLabels, function(label) {
             return _.includes(contact.locations, $(label).data("filter-value"));
           });
@@ -202,29 +173,7 @@
       }
     }
 
-    filterContacts();
   }
 
-  function filterContacts() {
-    const filterFunctions = _.clone(otherFilterFunctions);
-    if (searchFilterFunction) {
-      filterFunctions.push(searchFilterFunction);
-    }
-    if (filterFunctions.length > 0) {
-      $(".js-list-contacts > tbody > tr").each(function() {
-        const contact = contacts[$(this).data("contact-index")];
-        const show = _.every(filterFunctions, function(filterFunction) {
-          return filterFunction(contact);
-        });
-        if (show) {
-          $(this).removeAttr("hidden");
-        } else {
-          $(this).attr("hidden", true);
-        }
-      });
-    } else {
-      $(".js-list-contacts > tbody > tr").removeAttr("hidden");
-    }
-  }
 
 })(window.jQuery, window.wpApiSettings);
