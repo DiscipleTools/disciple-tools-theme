@@ -156,9 +156,42 @@ function save_field(contactId, fieldKey){
   })
 }
 
+function add_contact_detail(contactId, fieldKey){
+  var input = jQuery("#"+fieldKey)
+  var data = {}
+  data[fieldKey] = input.val()
+  jQuery.ajax({
+    type:"POST",
+    data:JSON.stringify(data),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId + '/details',
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+    },
+    success: function(data) {
+      if (data != contactId){
+        input.removeAttr('onchange');
+        input.attr('id', data)
+        input.change(function () {
+          save_field(contactId, data)
+        })
+      }
+      console.log("updated " + fieldKey + " to: " + input.val())
+    },
+    error: function(err) {
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
+    },
+  })
+}
+
+
+
 function addNumber(contactId) {
   if (jQuery("#new-number").length === 0 ){
-    var newNum = `<li><input id="new-number" name="new-number" onchange="save_field(${contactId}, 'new-number')"\>`
+    var newNum = `<li><input id="new-number" onchange="add_contact_detail(${contactId}, 'new-number')"\>`
     jQuery("#number-list").append(newNum)
   }
 }

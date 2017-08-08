@@ -1,5 +1,5 @@
 <?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true ); ?>
-<?php $contact_fields = Disciple_Tools_Contacts::get_channel_list(); ?>
+<?php $channel_list = Disciple_Tools_Contacts::get_channel_list(); ?>
 <section id="post-<?php the_ID(); ?>" >
     <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
 
@@ -88,8 +88,10 @@
 
         <ul id="number-list">
             <?php
-            foreach($contact->fields[ "phone_numbers" ] ?? [] as $field => $value){
-                echo '<li><input id="' . esc_attr( $field ) . '" value="' . esc_attr( $value[0] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $field ) . '\')"></li>';
+            foreach($contact->fields[ "phone_numbers" ] ?? [] as $value){
+                echo '<li>
+                <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["number"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">
+                </li>';
             }?>
         </ul>
     </div>
