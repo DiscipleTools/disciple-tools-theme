@@ -749,6 +749,10 @@ CONTACTS
     padding-bottom: 0;
 }
 
+.filter__title:hover {
+    color: #2196f3;
+}
+
 .filter__title:before {
     content: "▼";
     float: right;
@@ -769,4 +773,8 @@ CONTACTS
 
 .filter input {
     margin: 0 0.2rem 0 0;
+}
+
+.filter label:hover {
+    color: #2196f3;
 }
