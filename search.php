@@ -63,7 +63,7 @@ $search2 = new WP_Query( $args2 );
 
                         <?php while ( $search1->have_posts() ) : $search1->the_post(); ?>
 
-                            <li><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></li>
+                            <li><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title_attribute(); ?></a></li>
 
                         <?php endwhile; ?>
 
@@ -77,7 +77,7 @@ $search2 = new WP_Query( $args2 );
 
                         <?php while ( $search2->have_posts() ) : $search2->the_post(); ?>
 
-                            <li><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></li>
+                            <li><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title_attribute(); ?></a></li>
 
                         <?php endwhile; ?>
 

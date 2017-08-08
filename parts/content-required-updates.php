@@ -30,7 +30,7 @@ $requires_update = new WP_Query( $args );
 
             <i class="fi-alert"> Update Needed </i>
 
-            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+            <a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a>
 
             <span class="float-right">
                             <button type="button" class="button small update-<?php echo get_the_ID(); ?>" onclick="jQuery('.update-<?php echo get_the_ID(); ?>').toggle();">Update</button>

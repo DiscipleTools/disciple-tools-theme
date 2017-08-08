@@ -42,7 +42,7 @@
 
                             <?php if ( $query1->have_posts() ) : while ( $query1->have_posts() ) : $query1->the_post(); ?>
 
-                                <option value="<?php the_ID(); ?>"><?php the_title(); ?></option>
+                                <option value="<?php the_ID(); ?>"><?php the_title_attribute(); ?></option>
 
                             <?php endwhile; ?>
 

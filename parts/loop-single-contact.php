@@ -3,7 +3,7 @@
     <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
 
     <div class="row item-details-header-row">
-            <i class="fi-torso large"></i><span class="item-details-header"><?php the_title(); ?></span>
+            <i class="fi-torso large"></i><span class="item-details-header"><?php the_title_attribute(); ?></span>
             <span class="button alert label">
               Status: <?php echo $contact->fields["overall_status"]["label"] ?>
             </span>

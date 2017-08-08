@@ -12,7 +12,7 @@
                         <a href="<?php echo home_url( '/' ); ?>progress">PROGRESS UPDATES</a>
                     </li>
                     <li>
-                        <span class="show-for-sr">Current: </span> <?php the_title(); ?>
+                        <span class="show-for-sr">Current: </span> <?php the_title_attribute(); ?>
                     </li>
                 </ul>
             </nav>
