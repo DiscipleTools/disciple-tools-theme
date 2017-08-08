@@ -18,14 +18,14 @@
             <aside class="large-3 medium-3 columns padding-bottom">
                 <div class="bordered-box">
                     <h3><?php _e( "Filters" ); ?></h3>
-                    <details class="js-contacts-filter" data-filter="status">
-                        <summary><?php _e( "Status" ); ?></summary>
+                    <div class="filter js-contacts-filter" data-filter="status">
+                        <div class="filter__title js-contacts-filter-title"><?php _e( "Status" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>
-                    </details>
-                    <details class="js-contacts-filter" data-filter="locations">
-                        <summary><?php _e( "Locations" ); ?></summary>
+                    </div>
+                    <div class="filter js-contacts-filter" data-filter="locations">
+                        <div class="filter__title js-contacts-filter-title"><?php _e( "Locations" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>
-                    </details>
+                    </div>
                 </div>
 
             </aside> <!-- end #aside -->

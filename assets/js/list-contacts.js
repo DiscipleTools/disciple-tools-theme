@@ -102,10 +102,14 @@
       locations: _.countBy(_.flatten(_.map(contacts, 'locations'))),
     };
 
-    $(".js-contacts-filter :not(summary)").remove();
+    $(".js-contacts-filter :not(.js-contacts-filter-title)").remove();
     _.forEach(["status", "locations"], function(filterType) {
       $(".js-contacts-filter[data-filter='" + filterType + "']")
         .append(createFilterCheckboxes(filterType, counts[filterType]));
+    });
+    $(".js-contacts-filter-title").on("click", function() {
+      const $title = $(this);
+      $title.parents(".js-contacts-filter").toggleClass("filter--closed");
     });
   }
 

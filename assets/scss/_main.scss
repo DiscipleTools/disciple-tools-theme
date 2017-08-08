@@ -737,3 +737,36 @@ CONTACTS
 .milestone--sharing   { color: #4CAF50; }
 .milestone--in_group  { color: #4CAF50; }
 .milestone--planting  { color: #9C27B0; }
+
+
+.filter {
+    border-top: 1px #E2E2E2 solid;
+    border-bottom: 1px #E2E2E2 solid;
+    padding-bottom: 10px;
+}
+
+.filter--closed {
+    padding-bottom: 0;
+}
+
+.filter__title:before {
+    content: "▼";
+    float: right;
+}
+
+.filter--closed .filter__title:before {
+    content: "▶";
+    float: right;
+}
+
+.filter--closed :not(.filter__title) {
+    display: none;
+}
+
+.filter__title {
+    cursor: pointer;
+}
+
+.filter input {
+    margin: 0 0.2rem 0 0;
+}
