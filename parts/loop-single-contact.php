@@ -1,6 +1,6 @@
 <?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true ); ?>
 <?php $channel_list = Disciple_Tools_Contacts::get_channel_list(); ?>
-<?php //var_dump($contact->fields) ?>
+<?php //var_dump($contact->fields["address"]) ?>
 <section id="post-<?php the_ID(); ?>" >
     <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
 
@@ -94,7 +94,7 @@
                     <ul>
                         <?php
                         foreach($contact->fields[ "address" ]  ?? [] as $value){
-                            echo '<li>' . esc_html( $value[0] ) . '</li>';
+                            echo '<li>' . esc_html( $value["value"] ) . '</li>';
                         }?>
                     </ul>
                 </div>
