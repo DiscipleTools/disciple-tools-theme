@@ -1,5 +1,6 @@
 <?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true ); ?>
 <?php $channel_list = Disciple_Tools_Contacts::get_channel_list(); ?>
+<?php //var_dump($contact->fields) ?>
 <section id="post-<?php the_ID(); ?>" >
     <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
 
@@ -22,15 +23,15 @@
                 <i class="fa fa-plus"></i>
                 <ul>
                     <?php
-                    foreach($contact->fields[ "phone_numbers" ] ?? [] as $field => $value){
-                        echo '<li>' . esc_html( $value["number"] ) . '</li>';
+                    foreach($contact->fields[ "contact_phone" ] ?? [] as $field => $value){
+                        echo '<li>' . esc_html( $value["value"] ) . '</li>';
                     }?>
                 </ul>
                 <strong>Email</strong>
                 <ul>
                     <?php
-                    foreach($contact->fields[ "emails" ] ?? [] as $value){
-                        echo '<li>' . esc_html( $value["email"] ) . '</li>';
+                    foreach($contact->fields[ "contact_email" ] ?? [] as $value){
+                        echo '<li>' . esc_html( $value["value"] ) . '</li>';
                     }
                     ?>
                 </ul>
@@ -58,7 +59,30 @@
 
             </div>
             <div class="medium-4 columns">
-                <strong>Social Links</strong>
+<!--                <strong>Social Links</strong>-->
+                <?php
+                foreach($contact->fields as $field_key => $values){
+                    if ( strpos( $field_key, "contact_" ) === 0 &&
+                        isset( $channel_list[explode( '_', $field_key )[1]] ) &&
+                        strpos( $field_key, "contact_phone" ) === false &&
+                        strpos( $field_key, "contact_email" ) === false ){
+                        if ( $values && sizeof( $values ) > 0 ){
+                            echo "<strong>".$values[0]["type_label"]??$field_key."</strong>";
+                        }
+                        $html = "<ul>";
+                        foreach( $values as $value ){
+                            $html .= "<li>" . esc_html( $value["value"] ) . "</li>";
+
+                        }
+                        $html .= "</ul>";
+                        echo $html;
+//                        var_dump($field_key);
+//                        var_dump($values);
+                    }
+                }
+                ?>
+
+
             </div>
         </div>
 
@@ -84,16 +108,34 @@
         </div>
     </div>
     <div id="edit-fields" style="display: none">
-        <strong>Phone</strong><button onclick="addNumber(<?php echo get_the_ID()?>)"><i class="fi-plus"></i></button>
 
-        <ul id="number-list">
-            <?php
-            foreach($contact->fields[ "phone_numbers" ] ?? [] as $value){
-                echo '<li>
-                <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["number"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">
-                </li>';
-            }?>
-        </ul>
+        <?php
+        foreach( $contact->fields as $field_key => $values ){
+            if ( strpos( $field_key, "contact_" ) === 0 ) {
+                $type = explode( "_", $field_key )[1];
+                if ( isset( $channel_list[$type] )){
+                    $type_label = $channel_list[$type]["label"];
+                    $new_input_id = "new-" . $type;
+                    $list_id = $type . "-list";
+                    ?>
+                    <strong><?php echo $type_label?></strong>
+                    <button onclick="add_contact_input(<?php echo get_the_ID() ?>, '<?php echo $new_input_id?>', '<?php echo $list_id?>' )">
+                        <i class="fi-plus"></i>
+                    </button>
+                    <ul id="<?php echo $list_id?>">
+                        <?php
+                        foreach($contact->fields[ $field_key ] ?? [] as $value){
+                            echo '<li>
+                            <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["value"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">
+                            </li>';
+                        }?>
+                    </ul>
+
+                    <?php
+                }
+            }
+        }
+        ?>
     </div>
 
 

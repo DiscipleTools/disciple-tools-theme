@@ -6,7 +6,7 @@
     <div>
         <div class="contact-quick-buttons">
             <?php foreach( $contact_fields as $field => $val ){
-                if ( strpos( $field, "contact_quick_button" ) === 0){
+                if ( strpos( $field, "quick_button" ) === 0){
                     $current_value = 0;
                     if ( isset( $contact->fields[$field] ) ){
                         $current_value = $contact->fields[$field];

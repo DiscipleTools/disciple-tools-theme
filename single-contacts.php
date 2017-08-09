@@ -5,7 +5,7 @@
 <?php $contact_fields = Disciple_Tools_Contacts::get_contact_fields(); ?>
 <?php get_header(); ?>
 <?php //var_dump($contact_fields['quick_button_no_answer'])?>
-<?php //var_dump($contact->fields["contact_quick_button_no_answer"] ?? "test")?>
+<?php //var_dump($contact->fields["quick_button_no_answer"] ?? "test")?>
 
 <div id="errors"> </div>
 

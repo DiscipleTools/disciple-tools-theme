@@ -49,7 +49,7 @@ function save_quick_action(contactId, fieldKey, fieldValue){
     },
     success: function(data, two, three) {
       console.log("updated " + fieldKey + " to: " + fieldValue)
-      if (fieldKey.indexOf("contact_quick_button")>-1){
+      if (fieldKey.indexOf("quick_button")>-1){
         if (data.seeker_path){
           jQuery("#current_seeker_path").text(data.seeker_path.current)
           if (data.seeker_path.next){
@@ -65,7 +65,7 @@ function save_quick_action(contactId, fieldKey, fieldValue){
     },
   })
 
-  if (fieldKey.indexOf("contact_quick_button")>-1){
+  if (fieldKey.indexOf("quick_button")>-1){
 
     jQuery("#" + fieldKey +  " span").text(fieldValue)
   }
@@ -189,9 +189,9 @@ function add_contact_detail(contactId, fieldKey){
 
 
 
-function addNumber(contactId) {
-  if (jQuery("#new-number").length === 0 ){
-    var newNum = `<li><input id="new-number" onchange="add_contact_detail(${contactId}, 'new-number')"\>`
-    jQuery("#number-list").append(newNum)
+function add_contact_input(contactId, inputId, listId){
+  if (jQuery(`#${inputId}`).length === 0 ){
+    var newInput = `<li><input id="${inputId}" onchange="add_contact_detail(${contactId},'${inputId}')"\>`
+    jQuery(`#${listId}`).append(newInput)
   }
 }
