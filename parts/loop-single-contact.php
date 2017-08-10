@@ -1,6 +1,7 @@
 <?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
 $channel_list = Disciple_Tools_Contacts::get_channel_list();
 $users = Disciple_Tools_Contacts::get_assignable_users( get_the_ID() );
+$locations = Disciple_Tools_Locations::get_locations();
 function contact_details_status( $id, $verified, $invalid ){
     $buttons = '<img id="'. $id .'-verified" class="details-status" style="display:' . $verified . '" src="'.get_template_directory_uri() . '/assets/images/verified.svg"/>';
     $buttons .= '<img id="'. $id .'-invalid" class="details-status" style="display:' . $invalid . '" src="'.get_template_directory_uri() . '/assets/images/broken.svg" />';
@@ -65,10 +66,10 @@ function contact_details_status( $id, $verified, $invalid ){
                     </li>
                 </ul>
                 <strong>Locations</strong>
-                <ul>
+                <ul class="locations-list">
                     <?php
                     foreach($contact->fields[ "locations" ] ?? [] as $value){
-                        echo '<li><a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a></li>';
+                        echo '<li class="'. $value->ID .'"><a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a></li>';
                     }?>
                 </ul>
 
@@ -207,6 +208,29 @@ function contact_details_status( $id, $verified, $invalid ){
                             echo '<option value="user-' . $user->ID. '" selected>' . $user->display_name . '</option>';
                         } else {
                             echo '<option value="user-' . $user->ID. '">' . $user->display_name . '</option>';
+                        }
+                    }
+                    ?>
+                </select>
+
+                <strong>Locations</strong>
+                <ul class="locations-list">
+                <?php
+                $location_ids = [];
+                foreach($contact->fields[ "locations" ] ?? [] as $value){
+                    $location_ids[] = $value->ID;
+                    echo '<li class="'. $value->ID .'">
+                    <a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a>
+                    <button onclick="remove_location(' . get_the_ID() . ', \'locations\', ' . $value->ID . ')">Remove</button>
+                    </li>';
+                }?>
+                </ul>
+                <select id="locations" onchange="add_location( <?php echo get_the_ID();?>, 'locations')">
+                    <?php
+                    echo '<option value="0"></option>';
+                    foreach( $locations as $location ){
+                        if ( !in_array( $location->ID, $location_ids )){
+                            echo '<option value="' . $location->ID. '">' . esc_html( $location->post_title ) . '</option>';
                         }
                     }
                     ?>

@@ -145,8 +145,7 @@ function save_field(contactId, fieldKey){
     beforeSend: function(xhr) {
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
     },
-    success: function(data, two, three) {
-      console.log(data)
+    success: function(data) {
       console.log("updated " + fieldKey + " to: " + val)
     },
     error: function(err) {
@@ -157,7 +156,7 @@ function save_field(contactId, fieldKey){
   })
 }
 
-function add_contact_detail(contactId, fieldKey){
+function add_contact_detail(contactId, fieldKey, callback){
   var input = jQuery("#"+fieldKey)
   var data = {}
   data[fieldKey] = input.val()
@@ -171,13 +170,14 @@ function add_contact_detail(contactId, fieldKey){
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
     },
     success: function(data) {
-      if (data != contactId){
+      if (data != contactId && fieldKey.indexOf("new-")>-1){
         input.removeAttr('onchange');
         input.attr('id', data)
         input.change(function () {
           save_field(contactId, data)
         })
       }
+      callback(data)
       console.log("updated " + fieldKey + " to: " + input.val())
     },
     error: function(err) {
@@ -188,28 +188,53 @@ function add_contact_detail(contactId, fieldKey){
   })
 }
 
-function update_contact_method_detail(contactId, fieldKey, values, callback){
-  let data = { key: fieldKey, values:values }
+function update_contact_method_detail(contactId, fieldKey, values, callback) {
+  let data = {key: fieldKey, values: values}
   jQuery.ajax({
-    type:"POST",
-    data:JSON.stringify(data),
+    type: "POST",
+    data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId + '/details_update',
-    beforeSend: function(xhr) {
+    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + '/details_update',
+    beforeSend: function (xhr) {
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
     },
-    success: function(data) {
+    success: function (data) {
       console.log("updated " + fieldKey + " to: " + JSON.stringify(values))
-      callback()
+      callback(data)
     },
-    error: function(err) {
+    error: function (err) {
       console.log("error")
       console.log(err)
       jQuery("#errors").append(err.responseText)
     },
   })
 }
+
+
+function remove_contact_detail(contactId, fieldKey, valueId, callback) {
+  let data = {key: fieldKey, value: valueId}
+  jQuery.ajax({
+    type: "DELETE",
+    data: JSON.stringify(data),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + '/details',
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+    },
+    success: function (data) {
+      console.log("delete " + fieldKey + " at: " + JSON.stringify(valueId))
+      callback(data)
+    },
+    error: function (err) {
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
+    },
+  })
+}
+
 
 
 function add_contact_input(contactId, inputId, listId){
@@ -230,5 +255,22 @@ function invalidate_contact_method(contactId, fieldId) {
   update_contact_method_detail(contactId, fieldId, {"invalid":true}, function (){
     jQuery(`#${fieldId}-invalid`).show()
     jQuery(`#${fieldId}-invalidate`).hide()
+  })
+}
+
+function add_location(contactID, fieldId) {
+  let select = jQuery(`#${fieldId}`)
+  if (select.val() !== "0"){
+    add_contact_detail(contactID, fieldId, function (location){
+      select.val("0")
+      jQuery(".locations-list").append(`<li><a href="${location.permalink}">${location.post_title}</a></li>`)
+      select.find(`option[value='${location.ID}']`).remove()
+    })
+  }
+}
+
+function remove_location(contactId, fieldId, locationId){
+  remove_contact_detail(contactId, fieldId, locationId, function () {
+    jQuery(`.locations-list .${locationId}`).remove()
   })
 }
