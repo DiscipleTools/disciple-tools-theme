@@ -35,9 +35,11 @@ function save_seeker_milestones(contactId, fieldKey, fieldValue){
     },
   })
 }
-function save_quick_action(contactId, fieldKey, fieldValue){
+function save_quick_action(contactId, fieldKey){
   var data = {}
-  data[fieldKey] = fieldValue
+  var numberIndicator = jQuery("#" + fieldKey +  " span")
+  var newNumber = parseInt(numberIndicator.text()) + 1
+  data[fieldKey] = newNumber
   jQuery.ajax({
     type:"POST",
     data:JSON.stringify(data),
@@ -48,7 +50,7 @@ function save_quick_action(contactId, fieldKey, fieldValue){
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
     },
     success: function(data, two, three) {
-      console.log("updated " + fieldKey + " to: " + fieldValue)
+      console.log("updated " + fieldKey + " to: " + newNumber)
       if (fieldKey.indexOf("quick_button")>-1){
         if (data.seeker_path){
           jQuery("#current_seeker_path").text(data.seeker_path.current)
@@ -66,8 +68,7 @@ function save_quick_action(contactId, fieldKey, fieldValue){
   })
 
   if (fieldKey.indexOf("quick_button")>-1){
-
-    jQuery("#" + fieldKey +  " span").text(fieldValue)
+    numberIndicator.text(newNumber)
   }
 }
 
