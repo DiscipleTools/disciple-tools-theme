@@ -187,6 +187,28 @@ function add_contact_detail(contactId, fieldKey){
   })
 }
 
+function update_contact_method_detail(contactId, fieldKey, values, callback){
+  let data = { key: fieldKey, values:values }
+  jQuery.ajax({
+    type:"POST",
+    data:JSON.stringify(data),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId + '/details_update',
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+    },
+    success: function(data) {
+      console.log("updated " + fieldKey + " to: " + JSON.stringify(values))
+      callback()
+    },
+    error: function(err) {
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
+    },
+  })
+}
 
 
 function add_contact_input(contactId, inputId, listId){
@@ -194,4 +216,18 @@ function add_contact_input(contactId, inputId, listId){
     var newInput = `<li><input id="${inputId}" onchange="add_contact_detail(${contactId},'${inputId}')"\>`
     jQuery(`#${listId}`).append(newInput)
   }
+}
+
+function verify_contact_method(contactId, fieldId) {
+  update_contact_method_detail(contactId, fieldId, {"verified":true}, function (){
+    jQuery(`#${fieldId}-verified`).show()
+    jQuery(`#${fieldId}-verify`).hide()
+  })
+}
+
+function invalidate_contact_method(contactId, fieldId) {
+  update_contact_method_detail(contactId, fieldId, {"invalid":true}, function (){
+    jQuery(`#${fieldId}-invalid`).show()
+    jQuery(`#${fieldId}-invalidate`).hide()
+  })
 }

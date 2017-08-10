@@ -270,6 +270,20 @@ POSTS & CONTENT STYLES
         font-size:10px;
     }
 
+    .details-status-button {
+        font-size: 14px;
+        margin: 0 10px 0 10px;
+        &.verify {
+            color: #4CAF50
+        }
+        &.invalid {
+            color: #F43636
+        }
+    }
+    .details-status {
+        margin-left: 10px;
+    }
+
 }
 
 .tabs-panel .outer-container {

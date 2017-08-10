@@ -1,0 +1,16 @@
+<svg width="14" height="14" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>verified</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(1120 91)">
+<g id="verified">
+<g id="Group">
+<g id="Vector">
+<use xlink:href="#path0_fill" transform="translate(-1120 -91)" fill="#4CAF50"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_fill" d="M 7 0C 3.136 0 0 3.136 0 7C 0 10.864 3.136 14 7 14C 10.864 14 14 10.864 14 7C 14 3.136 10.864 0 7 0ZM 5.6 10.5L 2.1 7L 3.087 6.013L 5.6 8.519L 10.913 3.206L 11.9 4.2L 5.6 10.5Z"/>
+</defs>
+</svg>

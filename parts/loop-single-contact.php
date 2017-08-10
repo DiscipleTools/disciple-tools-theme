@@ -1,6 +1,14 @@
 <?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true ); ?>
 <?php $channel_list = Disciple_Tools_Contacts::get_channel_list(); ?>
-<?php //var_dump($contact->fields["address"]) ?>
+<?php //var_dump($contact->fields) ?>
+<?php
+function contact_details_status( $id, $verified, $invalid ){
+    $buttons = '<img id="'. $id .'-verified" class="details-status" style="display:' . $verified . '" src="'.get_template_directory_uri() . '/assets/images/verified.svg"/>';
+    $buttons .= '<img id="'. $id .'-invalid" class="details-status" style="display:' . $invalid . '" src="'.get_template_directory_uri() . '/assets/images/invalid.svg" />';
+    return $buttons;
+}
+?>
+
 <section id="post-<?php the_ID(); ?>" >
     <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
 
@@ -24,14 +32,22 @@
                 <ul>
                     <?php
                     foreach($contact->fields[ "contact_phone" ] ?? [] as $field => $value){
-                        echo '<li>' . esc_html( $value["value"] ) . '</li>';
+                        $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
+                        $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
+                        echo  '<li>' . esc_html( $value["value"] ) .
+                        contact_details_status( $value["key"], $verified, $invalid ) .
+                        '</li>';
                     }?>
                 </ul>
                 <strong><?php echo $channel_list["email"]["label"] ?></strong>
                 <ul>
                     <?php
                     foreach($contact->fields[ "contact_email" ] ?? [] as $value){
-                        echo '<li>' . esc_html( $value["value"] ) . '</li>';
+                        $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
+                        $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
+                        echo  '<li>' . esc_html( $value["value"] ) .
+                        contact_details_status( $value["key"], $verified, $invalid ) .
+                        '</li>';
                     }
                     ?>
                 </ul>
@@ -71,7 +87,11 @@
                             }
                             $html = "<ul>";
                             foreach ($values as $value) {
-                                $html .= "<li>" . esc_html( $value["value"] ) . "</li>";
+                                $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
+                                $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
+                                echo  '<li>' . esc_html( $value["value"] ) .
+                                    contact_details_status( $value["key"], $verified, $invalid ) .
+                                    '</li>';
                             }
                             $html .= "</ul>";
                             echo $html;
@@ -90,7 +110,11 @@
                     <ul>
                         <?php
                         foreach($contact->fields[ "address" ]  ?? [] as $value){
-                            echo '<li>' . esc_html( $value["value"] ) . '</li>';
+                            $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
+                            $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
+                            echo  '<li>' . esc_html( $value["value"] ) .
+                            contact_details_status( $value["key"], $verified, $invalid ) .
+                            '</li>';
                         }?>
                     </ul>
                 </div>
@@ -119,9 +143,18 @@
             <?php
             if ( isset( $contact->fields[$field_key] )){
                 foreach($contact->fields[ $field_key ] ?? [] as $value){
-                    echo '<li>
-                        <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["value"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">
-                    </li>';
+                    $verified = isset( $value["verified"] ) && $value["verified"] === true;
+                    $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
+                    $html = '<li>
+                        <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["value"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">';
+                    if ( !$verified ){
+                        $html .= '<button class="details-status-button verify" id="' . esc_attr( $value["key"] ) . '-verify" onclick="verify_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Verify</button>';
+                    }
+                    if ( !$invalid ){
+                        $html .= '<button class="details-status-button invalid" id="' . esc_attr( $value["key"] ) . '-invalidate" onclick="invalidate_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Invalidate</button>';
+                    }
+                    $html .= '</li>';
+                    echo $html;
                 }
             }?>
             </ul>
@@ -142,11 +175,20 @@
             <ul id="<?php echo $list_id?>">
                 <?php
                 foreach($contact->fields[ "address" ] ?? [] as $value){
-                    echo '<li>
-                        <textarea id="' . esc_attr( $value["key"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">'
+                    $verified = isset( $value["verified"] ) && $value["verified"] === true;
+                    $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
+                    $html = '<li>';
+                    if ( !$verified ){
+                        $html .= '<button class="details-status-button verify" id="' . esc_attr( $value["key"] ) . '-verify" onclick="verify_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Verify</button>';
+                    }
+                    if ( !$invalid ){
+                        $html .= '<button class="details-status-button invalid" id="' . esc_attr( $value["key"] ) . '-invalidate" onclick="invalidate_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Invalidate</button>';
+                    }
+                    $html .= '<textarea id="' . esc_attr( $value["key"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">'
                             . esc_html( $value["value"] ) .
                         '</textarea>
                     </li>';
+                    echo $html;
                 }?>
             </ul>
             <?php
