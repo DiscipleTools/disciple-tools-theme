@@ -19,7 +19,7 @@
         <div class="row">
 
             <div class="medium-4 columns">
-                <strong>Phone</strong>
+                <strong><?php echo $channel_list["phone"]["label"] ?></strong>
                 <i class="fa fa-plus"></i>
                 <ul>
                     <?php
@@ -27,7 +27,7 @@
                         echo '<li>' . esc_html( $value["value"] ) . '</li>';
                     }?>
                 </ul>
-                <strong>Email</strong>
+                <strong><?php echo $channel_list["email"]["label"] ?></strong>
                 <ul>
                     <?php
                     foreach($contact->fields[ "contact_email" ] ?? [] as $value){
@@ -59,30 +59,26 @@
 
             </div>
             <div class="medium-4 columns">
-<!--                <strong>Social Links</strong>-->
                 <?php
                 foreach($contact->fields as $field_key => $values){
                     if ( strpos( $field_key, "contact_" ) === 0 &&
-                        isset( $channel_list[explode( '_', $field_key )[1]] ) &&
                         strpos( $field_key, "contact_phone" ) === false &&
-                        strpos( $field_key, "contact_email" ) === false ){
-                        if ( $values && sizeof( $values ) > 0 ){
-                            echo "<strong>".$values[0]["type_label"]??$field_key."</strong>";
+                        strpos( $field_key, "contact_email" ) === false) {
+                        $channel =   explode( '_', $field_key )[1];
+                        if ( isset( $channel_list[$channel] ) ) {
+                            if ( $values && sizeof( $values ) > 0 ) {
+                                echo "<strong>" . $channel_list[$channel]["label"] . "</strong>";
+                            }
+                            $html = "<ul>";
+                            foreach ($values as $value) {
+                                $html .= "<li>" . esc_html( $value["value"] ) . "</li>";
+                            }
+                            $html .= "</ul>";
+                            echo $html;
                         }
-                        $html = "<ul>";
-                        foreach( $values as $value ){
-                            $html .= "<li>" . esc_html( $value["value"] ) . "</li>";
-
-                        }
-                        $html .= "</ul>";
-                        echo $html;
-//                        var_dump($field_key);
-//                        var_dump($values);
                     }
                 }
                 ?>
-
-
             </div>
         </div>
 
@@ -110,32 +106,29 @@
     <div id="edit-fields" style="display: none">
 
         <?php
-        foreach( $contact->fields as $field_key => $values ){
-            if ( strpos( $field_key, "contact_" ) === 0 ) {
-                $type = explode( "_", $field_key )[1];
-                if ( isset( $channel_list[$type] )){
-                    $type_label = $channel_list[$type]["label"];
-                    $new_input_id = "new-" . $type;
-                    $list_id = $type . "-list";
-                    ?>
-                    <strong><?php echo $type_label?></strong>
-                    <button onclick="add_contact_input(<?php echo get_the_ID() ?>, '<?php echo $new_input_id?>', '<?php echo $list_id?>' )">
-                        <i class="fi-plus"></i>
-                    </button>
-                    <ul id="<?php echo $list_id?>">
-                        <?php
-                        foreach($contact->fields[ $field_key ] ?? [] as $value){
-                            echo '<li>
-                            <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["value"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">
-                            </li>';
-                        }?>
-                    </ul>
-
-                    <?php
+        foreach( $channel_list as $channel_key => $channel_value ){
+            $field_key = "contact_" . $channel_key;
+            $new_input_id = "new-" . $channel_key;
+            $list_id = $channel_key . "-list";
+            ?>
+            <strong><?php echo $channel_value["label"] ?></strong>
+            <button onclick="add_contact_input(<?php echo get_the_ID() ?>, '<?php echo $new_input_id?>', '<?php echo $list_id?>' )">
+             <i class="fi-plus"></i>
+            </button>
+            <ul id="<?php echo $list_id?>">
+            <?php
+            if ( isset( $contact->fields[$field_key] )){
+                foreach($contact->fields[ $field_key ] ?? [] as $value){
+                    echo '<li>
+                        <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["value"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">
+                    </li>';
                 }
-            }
+            }?>
+            </ul>
 
+            <?php
         }
+
         if ( isset( $contact->fields["address"] ) ){
             $type_label = "Address";
             $type = "address";
@@ -150,8 +143,10 @@
                 <?php
                 foreach($contact->fields[ "address" ] ?? [] as $value){
                     echo '<li>
-                                <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["value"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">
-                                </li>';
+                        <textarea id="' . esc_attr( $value["key"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">'
+                            . esc_html( $value["value"] ) .
+                        '</textarea>
+                    </li>';
                 }?>
             </ul>
             <?php
@@ -161,5 +156,4 @@
 
 
 </section> <!-- end article -->
-
 
