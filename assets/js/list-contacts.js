@@ -32,7 +32,6 @@
   function displayContacts() {
     const $table = $(".js-list-contacts");
     if (! $table.length) {
-      $ul.find(":not(summary)").remove();
       return;
     }
     $table.find("> tbody").empty();
