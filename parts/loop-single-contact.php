@@ -134,6 +134,27 @@
                     <?php
                 }
             }
+
+        }
+        if ( isset( $contact->fields["address"] ) ){
+            $type_label = "Address";
+            $type = "address";
+            $new_input_id = "new-" . $type;
+            $list_id = $type . "-list";
+            ?>
+            <strong><?php echo $type_label?></strong>
+            <button onclick="add_contact_input(<?php echo get_the_ID() ?>, '<?php echo $new_input_id?>', '<?php echo $list_id?>' )">
+                <i class="fi-plus"></i>
+            </button>
+            <ul id="<?php echo $list_id?>">
+                <?php
+                foreach($contact->fields[ "address" ] ?? [] as $value){
+                    echo '<li>
+                                <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["value"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">
+                                </li>';
+                }?>
+            </ul>
+            <?php
         }
         ?>
     </div>
