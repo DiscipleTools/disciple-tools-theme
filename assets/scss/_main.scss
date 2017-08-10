@@ -276,7 +276,7 @@ POSTS & CONTENT STYLES
 
     .details-status-button {
         font-size: 14px;
-        margin: 0 10px 0 10px;
+        margin-left: 10px;
         &.verify {
             color: #4CAF50
         }
@@ -286,6 +286,11 @@ POSTS & CONTENT STYLES
     }
     .details-status {
         margin-left: 10px;
+    }
+    .details-remove-button {
+        font-size: 14px;
+        margin-left: 10px;
+        color: #F43636;
     }
 
 }

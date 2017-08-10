@@ -221,7 +221,7 @@ function contact_details_status( $id, $verified, $invalid ){
                     $location_ids[] = $value->ID;
                     echo '<li class="'. $value->ID .'">
                     <a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a>
-                    <button onclick="remove_location(' . get_the_ID() . ', \'locations\', ' . $value->ID . ')">Remove</button>
+                    <button class="details-remove-button" onclick="remove_location(' . get_the_ID() . ', \'locations\', ' . $value->ID . ')">Remove</button>
                     </li>';
                 }?>
                 </ul>
