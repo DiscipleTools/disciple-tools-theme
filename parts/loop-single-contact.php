@@ -122,7 +122,7 @@ function contact_details_status( $id, $verified, $invalid ){
         </div>
         <div class="row show-more-button" style="text-align: center" >
             <button class="clear" data-toggle="show-more-button show-more-content show-content-button"  href="#">SHOW
-                <span id="show-more-button" data-toggler data-animate="fade-in fade-out">MORE <i class="fi-plus"></i></span>
+                <span id="show-more-button" data-toggler data-animate="fade-in fade-out">MORE <img src="<?php echo get_template_directory_uri() . '/assets/images/small-add.svg' ?>"/></span>
                 <span id="show-content-button" data-toggler data-animate="fade-in fade-out" aria-expanded="false" style="display:none;">LESS <i class="fi-minus"></i></span>
             </button>
         </div>
@@ -137,7 +137,7 @@ function contact_details_status( $id, $verified, $invalid ){
             ?>
             <strong><?php echo $channel_value["label"] ?></strong>
             <button onclick="add_contact_input(<?php echo get_the_ID() ?>, '<?php echo $new_input_id?>', '<?php echo $list_id?>' )">
-             <i class="fi-plus"></i>
+             <img src="<?php echo get_template_directory_uri() . '/assets/images/small-add.svg' ?>"/>
             </button>
             <ul id="<?php echo $list_id?>">
             <?php
@@ -170,7 +170,7 @@ function contact_details_status( $id, $verified, $invalid ){
             ?>
             <strong><?php echo $type_label?></strong>
             <button onclick="add_contact_input(<?php echo get_the_ID() ?>, '<?php echo $new_input_id?>', '<?php echo $list_id?>' )">
-                <i class="fi-plus"></i>
+                <img src="<?php echo get_template_directory_uri() . '/assets/images/small-add.svg' ?>"/>
             </button>
             <ul id="<?php echo $list_id?>">
                 <?php
