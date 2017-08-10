@@ -32,7 +32,6 @@
   function displayContacts() {
     const $table = $(".js-list-contacts");
     if (! $table.length) {
-      $ul.find(":not(summary)").remove();
       return;
     }
     $table.find("> tbody").empty();
@@ -49,7 +48,7 @@
         <br>
         <span class="milestone milestone--<%- belief_milestone_key %>"><%- belief_milestone %></span>
       </td>
-      <td><%- assigned_to.user_login %></td>
+      <td><%- assigned_to ? assigned_to.user_login : "" %></td>
       <td><%- locations.join(", ") %></td>
       <td><%- groups.join(", ") %></td>
     </tr>`);
@@ -77,6 +76,7 @@
         belief_milestone: (ccfs["milestone_" + belief_milestone_key] || {}).name || "",
         sharing_milestone: (ccfs["milestone_" + sharing_milestone_key] || {}).name || "",
       });
+      context.assigned_to = context.assigned_to;
       $table.append(
         $.parseHTML(template(context))
       );
@@ -99,7 +99,7 @@
       return;
     }
     const counts = {
-      assigned_login: _.countBy(_.map(contacts, 'assigned_to.user_login')),
+      assigned_login: _.countBy(_(contacts).map('assigned_to.user_login').filter().value()),
       status: _.countBy(_.map(contacts, 'status')),
       locations: _.countBy(_.flatten(_.map(contacts, 'locations'))),
     };
@@ -143,7 +143,7 @@
     });
     if ($.isEmptyObject(counts)) {
       $div.append(
-          document.createTextNode(wpApiSettings.txt_no_records)
+          document.createTextNode(wpApiSettings.txt_no_filters)
       );
     }
     return $div;
