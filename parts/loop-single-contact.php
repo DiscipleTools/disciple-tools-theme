@@ -1,10 +1,9 @@
-<?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true ); ?>
-<?php $channel_list = Disciple_Tools_Contacts::get_channel_list(); ?>
-<?php //var_dump($contact->fields) ?>
-<?php
+<?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
+$channel_list = Disciple_Tools_Contacts::get_channel_list();
+$users = Disciple_Tools_Contacts::get_assignable_users( get_the_ID() );
 function contact_details_status( $id, $verified, $invalid ){
     $buttons = '<img id="'. $id .'-verified" class="details-status" style="display:' . $verified . '" src="'.get_template_directory_uri() . '/assets/images/verified.svg"/>';
-    $buttons .= '<img id="'. $id .'-invalid" class="details-status" style="display:' . $invalid . '" src="'.get_template_directory_uri() . '/assets/images/invalid.svg" />';
+    $buttons .= '<img id="'. $id .'-invalid" class="details-status" style="display:' . $invalid . '" src="'.get_template_directory_uri() . '/assets/images/broken.svg" />';
     return $buttons;
 }
 ?>
@@ -128,72 +127,92 @@ function contact_details_status( $id, $verified, $invalid ){
         </div>
     </div>
     <div id="edit-fields" style="display: none">
-
-        <?php
-        foreach( $channel_list as $channel_key => $channel_value ){
-            $field_key = "contact_" . $channel_key;
-            $new_input_id = "new-" . $channel_key;
-            $list_id = $channel_key . "-list";
-            ?>
-            <strong><?php echo $channel_value["label"] ?></strong>
-            <button onclick="add_contact_input(<?php echo get_the_ID() ?>, '<?php echo $new_input_id?>', '<?php echo $list_id?>' )">
-             <img src="<?php echo get_template_directory_uri() . '/assets/images/small-add.svg' ?>"/>
-            </button>
-            <ul id="<?php echo $list_id?>">
-            <?php
-            if ( isset( $contact->fields[$field_key] )){
-                foreach($contact->fields[ $field_key ] ?? [] as $value){
-                    $verified = isset( $value["verified"] ) && $value["verified"] === true;
-                    $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
-                    $html = '<li>
-                        <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["value"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">';
-                    if ( !$verified ){
-                        $html .= '<button class="details-status-button verify" id="' . esc_attr( $value["key"] ) . '-verify" onclick="verify_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Verify</button>';
-                    }
-                    if ( !$invalid ){
-                        $html .= '<button class="details-status-button invalid" id="' . esc_attr( $value["key"] ) . '-invalidate" onclick="invalidate_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Invalidate</button>';
-                    }
-                    $html .= '</li>';
-                    echo $html;
-                }
-            }?>
-            </ul>
-
-            <?php
-        }
-
-        if ( isset( $contact->fields["address"] ) ){
-            $type_label = "Address";
-            $type = "address";
-            $new_input_id = "new-" . $type;
-            $list_id = $type . "-list";
-            ?>
-            <strong><?php echo $type_label?></strong>
-            <button onclick="add_contact_input(<?php echo get_the_ID() ?>, '<?php echo $new_input_id?>', '<?php echo $list_id?>' )">
-                <img src="<?php echo get_template_directory_uri() . '/assets/images/small-add.svg' ?>"/>
-            </button>
-            <ul id="<?php echo $list_id?>">
+        <div class="row">
+            <!-- Contact information. Phone, email, etc -->
+            <div class="medium-6 columns">
                 <?php
-                foreach($contact->fields[ "address" ] ?? [] as $value){
-                    $verified = isset( $value["verified"] ) && $value["verified"] === true;
-                    $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
-                    $html = '<li>';
-                    if ( !$verified ){
-                        $html .= '<button class="details-status-button verify" id="' . esc_attr( $value["key"] ) . '-verify" onclick="verify_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Verify</button>';
-                    }
-                    if ( !$invalid ){
-                        $html .= '<button class="details-status-button invalid" id="' . esc_attr( $value["key"] ) . '-invalidate" onclick="invalidate_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Invalidate</button>';
-                    }
-                    $html .= '<textarea id="' . esc_attr( $value["key"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">'
-                            . esc_html( $value["value"] ) .
-                        '</textarea>
+                foreach( $channel_list as $channel_key => $channel_value ){
+                    $field_key = "contact_" . $channel_key;
+                    $new_input_id = "new-" . $channel_key;
+                    $list_id = $channel_key . "-list";
+                    ?>
+                    <strong><?php echo $channel_value["label"] ?></strong>
+                    <button onclick="add_contact_input(<?php echo get_the_ID() ?>, '<?php echo $new_input_id?>', '<?php echo $list_id?>' )">
+                        <img src="<?php echo get_template_directory_uri() . '/assets/images/small-add.svg' ?>"/>
+                    </button>
+                    <ul id="<?php echo $list_id?>">
+                        <?php
+                        if ( isset( $contact->fields[$field_key] )){
+                            foreach($contact->fields[ $field_key ] ?? [] as $value){
+                                $verified = isset( $value["verified"] ) && $value["verified"] === true;
+                                $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
+                                $html = '<li>
+                        <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["value"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">';
+                                if ( !$verified ){
+                                    $html .= '<button class="details-status-button verify" id="' . esc_attr( $value["key"] ) . '-verify" onclick="verify_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Verify</button>';
+                                }
+                                if ( !$invalid ){
+                                    $html .= '<button class="details-status-button invalid" id="' . esc_attr( $value["key"] ) . '-invalidate" onclick="invalidate_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Invalidate</button>';
+                                }
+                                $html .= '</li>';
+                                echo $html;
+                            }
+                        }?>
+                    </ul>
+
+                    <?php
+                }
+
+                if ( isset( $contact->fields["address"] ) ){
+                    $type_label = "Address";
+                    $type = "address";
+                    $new_input_id = "new-" . $type;
+                    $list_id = $type . "-list";
+                    ?>
+                    <strong><?php echo $type_label?></strong>
+                    <button onclick="add_contact_input(<?php echo get_the_ID() ?>, '<?php echo $new_input_id?>', '<?php echo $list_id?>' )">
+                        <img src="<?php echo get_template_directory_uri() . '/assets/images/small-add.svg' ?>"/>
+                    </button>
+                    <ul id="<?php echo $list_id?>">
+                        <?php
+                        foreach($contact->fields[ "address" ] ?? [] as $value){
+                            $verified = isset( $value["verified"] ) && $value["verified"] === true;
+                            $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
+                            $html = '<li>';
+                            if ( !$verified ){
+                                $html .= '<button class="details-status-button verify" id="' . esc_attr( $value["key"] ) . '-verify" onclick="verify_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Verify</button>';
+                            }
+                            if ( !$invalid ){
+                                $html .= '<button class="details-status-button invalid" id="' . esc_attr( $value["key"] ) . '-invalidate" onclick="invalidate_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Invalidate</button>';
+                            }
+                            $html .= '<textarea id="' . esc_attr( $value["key"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">'
+                                . esc_html( $value["value"] ) .
+                                '</textarea>
                     </li>';
-                    echo $html;
-                }?>
-            </ul>
-            <?php
-        }
-        ?>
+                            echo $html;
+                        }?>
+                    </ul>
+                    <?php
+                }
+                ?>
+            </div>
+            <!-- Contact Fields. Assigned to, location, etc -->
+            <div class="medium-6 columns">
+                <strong>Assigned To</strong>
+                <select id="assigned_to" onchange="save_field(<?php echo get_the_ID();?>, 'assigned_to')">
+                    <?php
+                    foreach( $users as $user ){
+                        if ( isset( $contact->fields["assigned_to"] ) &&
+                            $user->ID === (int) $contact->fields["assigned_to"]['id'] ){
+                            echo '<option value="user-' . $user->ID. '" selected>' . $user->display_name . '</option>';
+                        } else {
+                            echo '<option value="user-' . $user->ID. '">' . $user->display_name . '</option>';
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
     </div>
 
 
