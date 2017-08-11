@@ -2,11 +2,14 @@
 $channel_list = Disciple_Tools_Contacts::get_channel_list();
 $users = Disciple_Tools_Contacts::get_assignable_users( get_the_ID() );
 $locations = Disciple_Tools_Locations::get_locations();
+$contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 function contact_details_status( $id, $verified, $invalid ){
     $buttons = '<img id="'. $id .'-verified" class="details-status" style="display:' . $verified . '" src="'.get_template_directory_uri() . '/assets/images/verified.svg"/>';
     $buttons .= '<img id="'. $id .'-invalid" class="details-status" style="display:' . $invalid . '" src="'.get_template_directory_uri() . '/assets/images/broken.svg" />';
     return $buttons;
 }
+//var_dump($contact->fields["reason_closed"]);
+//var_dump($contact->fields["overall_status"]);
 ?>
 
 <section id="post-<?php the_ID(); ?>" >
@@ -18,10 +21,33 @@ function contact_details_status( $id, $verified, $invalid ){
               Status: <?php echo esc_html( $contact->fields["overall_status"]["label"] ) ?>
             </span>
             <button class="tiny button">Pause</button>
-            <button class="tiny button">Close</button>
+            <button data-open="close-contact-modal" class="tiny button">Close</button>
             <button class="tiny button float-right" onclick="edit_fields()">Edit</button>
     </div>
 
+    <div class="reveal" id="close-contact-modal" data-reveal>
+        <h1>Close Contact</h1>
+        <p class="lead">Why do you want to close this contact?</p>
+
+        <select id="reason-closed-options">
+            <?php
+            foreach( $contact_fields["reason_closed"]["default"] as $reason_key => $reason_label ) {
+            ?>
+                <option value="<?php echo esc_attr( $reason_key )?>"> <?php echo esc_html( $reason_label )?></option>
+            <?php
+            }
+            ?>
+        </select>
+        <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+            Cancel
+        </button>
+        <button class="button" type="button" onclick="close_contact(<?php echo get_the_ID()?>)">
+            Confirm
+        </button>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
     <div id="display-fields">
         <div class="row">

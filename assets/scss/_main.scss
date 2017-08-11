@@ -172,128 +172,135 @@ POSTS & CONTENT STYLES
             }
         }
     }
+}
 
-    .bordered-box {
-        border: 1px solid $light-gray;
-        background-color: $white;
-        padding: 1rem;
-        margin-bottom: 1rem;
-    }
+.bordered-box {
+    border: 1px solid $light-gray;
+    background-color: $white;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
 
-    i.large {
-        font-size: 50px;
-        line-height: 50px;
-    }
+i.large {
+    font-size: 50px;
+    line-height: 50px;
+}
 
-    button {
-        cursor: pointer;
-    }
-    img {
-        vertical-align:inherit
-    }
-
-    /**
-        Option buttons
-     */
-    .button.select-button {
-        border-radius: 30px;
-        margin-right: 5px;
-    }
-    //unselected options
-    .empty-select-button {
-        background-color: #eee;
+button {
+    cursor: pointer;
+    &.clear {
+        background-color: white;
         color: black;
+        border: solid 1px #ccc;
     }
-    .selected-select-button {
-        background-color: #4CAF50;
-        color: white;
-    }
-    .submitting-select-button {
-        opacity: .5;
-    }
-    /**
-        Item details
-     */
-    .item-details-header {
-        font-size: 1.7rem;
-        margin: 0 10px 0 10px;
-    }
-    .item-details-header-row {
-        margin-bottom:15px;
-    }
-    //contact quick buttons
-    .contact-quick-button-number {
-        background-color: rgb(63, 114, 155);
-        border-radius: 20px;
-        color: white;
-        padding: 2px 4px;
-        font-size: 10px;
-        position: absolute;
-        top: 0;
-        margin-left: 3px;
-    }
-    .contact-quick-buttons {
-        display: flex;
-        justify-content: space-evenly;
-    }
-    .contact-quick-button {
-        width: min-content;
-        position: relative;
-        flex: 1 1 auto;
-        p {
-            font-size: 10px;
-            word-spacing: 10vw;
-        }
-    }
+}
+img {
+    vertical-align: inherit
+}
+/**
+    Option buttons
+ */
+.button.select-button {
+    border-radius: 30px;
+    margin-right: 5px;
 
-    .comment-bubble {
-        margin: 0 20px 20px 20px;
-        position: relative;
-        height: auto;
-        background-color: lightyellow;
-        padding: 1em;
-        text-align: left;
-        line-height: 1.5em;
-
-        &:after{
-            content: ' ';
-            position: absolute;
-            width: 0;
-            height: 0;
-            left: -20px;
-            right: auto;
-            top: 0px;
-            bottom: auto;
-            border: 22px solid;
-            border-color: lightyellow transparent transparent transparent;
-        }
-    }
-    .comment-date {
-        text-align: right;
-        margin-right: 20px;
-        font-size:10px;
-    }
-
-    .details-status-button {
-        font-size: 14px;
-        margin-left: 10px;
-        &.verify {
-            color: #4CAF50
-        }
-        &.invalid {
-            color: #F43636
-        }
-    }
-    .details-status {
-        margin-left: 10px;
-    }
-    .details-remove-button {
-        font-size: 14px;
-        margin-left: 10px;
-        color: #F43636;
-    }
 
 }
+//unselected options
+.empty-select-button {
+    background-color: #eee;
+    color: black;
+}
+.selected-select-button {
+    background-color: #4CAF50;
+    color: white;
+}
+.submitting-select-button {
+    opacity: .5;
+}
+/**
+    Item details
+ */
+.item-details-header {
+    font-size: 1.7rem;
+    margin: 0 10px 0 10px;
+}
+.item-details-header-row {
+    margin-bottom:15px;
+}
+//contact quick buttons
+.contact-quick-button-number {
+    background-color: rgb(63, 114, 155);
+    border-radius: 20px;
+    color: white;
+    padding: 2px 4px;
+    font-size: 10px;
+    position: absolute;
+    top: 0;
+    margin-left: 3px;
+}
+.contact-quick-buttons {
+    display: flex;
+    justify-content: space-evenly;
+}
+.contact-quick-button {
+    width: min-content;
+    position: relative;
+    flex: 1 1 auto;
+    p {
+        font-size: 10px;
+        word-spacing: 10vw;
+    }
+}
+
+.comment-bubble {
+    margin: 0 20px 20px 20px;
+    position: relative;
+    height: auto;
+    background-color: lightyellow;
+    padding: 1em;
+    text-align: left;
+    line-height: 1.5em;
+
+    &:after{
+        content: ' ';
+        position: absolute;
+        width: 0;
+        height: 0;
+        left: -20px;
+        right: auto;
+        top: 0px;
+        bottom: auto;
+        border: 22px solid;
+        border-color: lightyellow transparent transparent transparent;
+    }
+}
+.comment-date {
+    text-align: right;
+    margin-right: 20px;
+    font-size:10px;
+}
+
+.details-status-button {
+    font-size: 14px;
+    margin-left: 10px;
+    &.verify {
+        color: #4CAF50
+    }
+    &.invalid {
+        color: #F43636
+    }
+}
+.details-status {
+    margin-left: 10px;
+}
+.details-remove-button {
+    font-size: 14px;
+    margin-left: 10px;
+    color: #F43636;
+}
+
+
 
 .tabs-panel .outer-container {
     padding: 0 !important;
