@@ -73,6 +73,7 @@ function save_quick_action(contactId, fieldKey){
 }
 
 function post_comment(contactId) {
+  jQuery("#add-comment-button").toggleClass('loading')
   let comment = jQuery("#comment-input").val()
   console.log(comment);
   var data = {}
@@ -87,9 +88,12 @@ function post_comment(contactId) {
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
     },
     success: function(data, two, three) {
+      console.log(data)
       console.log(`added comment ${comment}`)
+      let commentsWrapper = $("#comments-wrapper")
       jQuery("#comment-input").val("")
-
+      jQuery("#add-comment-button").toggleClass('loading')
+      commentsWrapper.prepend(commentTemplate({date:data.comment.comment_date,comment:data.comment.comment_content}))
     },
     error: function(err) {
       console.log("error")
@@ -98,6 +102,9 @@ function post_comment(contactId) {
     },
   })
 }
+
+var commentTemplate = _.template(`<div class="comment-date"> <%- date %> </div>
+                                <p class="comment-bubble"> <%- comment %></p>`)
 
 jQuery(document).ready(function($) {
   let id = $("#contact-id").text()
@@ -112,9 +119,11 @@ jQuery(document).ready(function($) {
     success: function(data) {
       let commentsWrapper = $("#comments-wrapper")
       data.forEach(comment=>{
-        let html = `<div class="comment-date">${comment.comment_date}</div>
-            <p class="comment-bubble">${comment.comment_content}</p>`
-        commentsWrapper.append(html)
+        let c = commentTemplate({date:comment.comment_date,comment:comment.comment_content})
+        console.log(c)
+        // let html = `<div class="comment-date">${comment.comment_date}</div>
+        //     <p class="comment-bubble">${comment.comment_content}</p>`
+        commentsWrapper.append(c)
       })
     },
     error: function(err) {
@@ -276,6 +285,7 @@ function remove_location(contactId, fieldId, locationId){
 }
 
 function close_contact(contactId){
+  jQuery("#confirm-close").toggleClass('loading')
   let reasonClosed = jQuery('#reason-closed-options').val()
   let data = {overall_status:"closed", "reason_closed":reasonClosed}
   console.log(reasonClosed)
@@ -291,6 +301,7 @@ function close_contact(contactId){
   })
     .done(function (data) {
       console.log(data)
+      jQuery("#confirm-close").toggleClass('loading')
       jQuery('#close-contact-modal').foundation('close')
     })
 }

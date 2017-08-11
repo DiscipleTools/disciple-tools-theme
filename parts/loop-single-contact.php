@@ -41,7 +41,7 @@ function contact_details_status( $id, $verified, $invalid ){
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
             Cancel
         </button>
-        <button class="button" type="button" onclick="close_contact(<?php echo get_the_ID()?>)">
+        <button class="button" type="button" id="confirm-close" onclick="close_contact(<?php echo get_the_ID()?>)">
             Confirm
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">

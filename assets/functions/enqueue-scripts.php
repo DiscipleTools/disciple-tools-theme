@@ -46,7 +46,7 @@ function site_scripts() {
     }
 
     if (is_singular( "contacts" )){
-        wp_enqueue_script( 'contact-details', get_template_directory_uri() . '/assets/js/contact-details.js', array( 'jquery' ) );
+        wp_enqueue_script( 'contact-details', get_template_directory_uri() . '/assets/js/contact-details.js', array( 'jquery', 'lodash' ) );
         wp_localize_script(
             'contact-details', 'wpApiSettings', array(
                 'root' => esc_url_raw( rest_url() ),
