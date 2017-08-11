@@ -67,6 +67,8 @@
       <property name="requiredSpacesAfterOpen" value="1"/>
       <property name="requiredSpacesBeforeClose" value="1"/>
     </properties>
+    <exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket"/>
+    <exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine"/>
   </rule>
   <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
   <rule ref="PEAR.NamingConventions.ValidClassName"/>
