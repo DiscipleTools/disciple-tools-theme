@@ -294,3 +294,23 @@ function close_contact(contactId){
       jQuery('#close-contact-modal').foundation('close')
     })
 }
+
+function pause_contact(contactId){
+  let reasonClosed = jQuery('#reason-paused-options').val()
+  let data = {overall_status:"paused", "reason_paused":reasonClosed}
+  console.log(reasonClosed)
+  jQuery.ajax({
+    type: "POST",
+    data: JSON.stringify(data),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId,
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+    }
+  })
+    .done(function (data) {
+      console.log(data)
+      jQuery('#close-contact-modal').foundation('close')
+    })
+}

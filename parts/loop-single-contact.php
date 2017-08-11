@@ -8,7 +8,7 @@ function contact_details_status( $id, $verified, $invalid ){
     $buttons .= '<img id="'. $id .'-invalid" class="details-status" style="display:' . $invalid . '" src="'.get_template_directory_uri() . '/assets/images/broken.svg" />';
     return $buttons;
 }
-//var_dump($contact->fields["reason_closed"]);
+//var_dump($contact->fields["reason_paused"]);
 //var_dump($contact->fields["overall_status"]);
 ?>
 
@@ -20,7 +20,7 @@ function contact_details_status( $id, $verified, $invalid ){
             <span class="button alert label">
               Status: <?php echo esc_html( $contact->fields["overall_status"]["label"] ) ?>
             </span>
-            <button class="tiny button">Pause</button>
+            <button data-open="pause-contact-modal"class="tiny button">Pause</button>
             <button data-open="close-contact-modal" class="tiny button">Close</button>
             <button class="tiny button float-right" onclick="edit_fields()">Edit</button>
     </div>
@@ -42,6 +42,30 @@ function contact_details_status( $id, $verified, $invalid ){
             Cancel
         </button>
         <button class="button" type="button" onclick="close_contact(<?php echo get_the_ID()?>)">
+            Confirm
+        </button>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="reveal" id="pause-contact-modal" data-reveal>
+        <h1>Pause Contact</h1>
+        <p class="lead">Why do you want to pause this contact?</p>
+
+        <select id="reason-paused-options">
+            <?php
+            foreach( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
+            ?>
+                <option value="<?php echo esc_attr( $reason_key )?>"> <?php echo esc_html( $reason_label )?></option>
+            <?php
+            }
+            ?>
+        </select>
+        <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+            Cancel
+        </button>
+        <button class="button" type="button" onclick="pause_contact(<?php echo get_the_ID()?>)">
             Confirm
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">
