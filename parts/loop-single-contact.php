@@ -22,7 +22,7 @@ function contact_details_status( $id, $verified, $invalid ){
             </span>
             <button data-open="pause-contact-modal"class="tiny button">Pause</button>
             <button data-open="close-contact-modal" class="tiny button">Close</button>
-            <button class="tiny button float-right" onclick="edit_fields()">Edit</button>
+            <button class=" float-right" onclick="edit_fields()"><i class="fi-pencil"></i> Edit</button>
     </div>
 
     <div class="reveal" id="close-contact-modal" data-reveal>
