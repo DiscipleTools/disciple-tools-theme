@@ -33,65 +33,36 @@
                 </section>
 
                 <section id="relationships" class="bordered-box medium-6 columns">
-                    <?php
-                    global $wp_query, $post_id;
-
-                    // Find connected pages (for all posts)
-                    p2p_type( 'contacts_to_contacts' )->each_connected( $wp_query, array(), 'disciple' );
-                    p2p_type( 'contacts_to_groups' )->each_connected( $wp_query, array(), 'groups' );
-                    ?>
-
-                    <section class="bordered-box">
-
-                        <form method="get" action="<?php echo get_permalink(); ?>">
-                            <span class="float-right">
-                                <input type="hidden" name="action" value="edit"/>
-                                <input type="submit" value="Add" class="button" />
-                            </span>
-                        </form>
-
-                        <h3>Relationships</h3>
-
-                        <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
-
-                            <?php foreach ( $post->disciple as $post ) : setup_postdata( $post ); ?>
-
-                                <li><a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a></li>
-
-                            <?php endforeach; ?>
-
-                            <?php  wp_reset_postdata(); // set $post back to original post ?>
-
-                        <?php endwhile; ?>
-
-                    </section>
-
-                    <section class="bordered-box">
-
-                        <form method="get" action="<?php echo get_permalink(); ?>">
-                        <span class="float-right">
-                            <input type="hidden" name="action" value="edit"/>
-                            <input type="submit" value="Add" class="button" />
-                        </span>
-                        </form>
-
-                        <h3>Groups</h3>
-
-                        <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
-
-                            <?php foreach ( $post->groups as $post ) : setup_postdata( $post ); ?>
-
-                                <li><a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a> </li>
-
-                            <?php endforeach; ?>
-
-                            <?php  wp_reset_postdata(); // set $post back to original post ?>
-
-                        <?php endwhile; ?>
-
-
-                    </section>
-
+                    <label class="section-header">Groups</label>
+                    <ul>
+                    <?php foreach( $contact->fields["groups"] as $group){ ?>
+                        <li><a href="<?php echo $group->permalink ?>"><?php echo esc_html( $group->post_title )?></a></li>
+                    <?php } ?>
+                    </ul>
+                    <label class="section-header">Baptized By</label>
+                    <?php foreach( $contact->fields["baptized_by"] as $baptized_by){ ?>
+                        <li><a href="<?php echo $baptized_by->permalink ?>"><?php echo esc_html( $baptized_by->post_title )?></a></li>
+                    <?php } ?>
+                    <ul>
+                    </ul>
+                    <label class="section-header">Baptized</label>
+                    <?php foreach( $contact->fields["baptized"] as $baptized){ ?>
+                        <li><a href="<?php echo $baptized->permalink ?>"><?php echo esc_html( $baptized->post_title )?></a></li>
+                    <?php } ?>
+                    <ul>
+                    </ul>
+                    <label class="section-header">Coached By</label>
+                    <?php foreach( $contact->fields["coached_by"] as $coached_by){ ?>
+                        <li><a href="<?php echo $coached_by->permalink ?>"><?php echo esc_html( $coached_by->post_title )?></a></li>
+                    <?php } ?>
+                    <ul>
+                    </ul>
+                    <label class="section-header">Coaching</label>
+                    <?php foreach( $contact->fields["coaching"] as $coaching){ ?>
+                        <li><a href="<?php echo $coaching->permalink ?>"><?php echo esc_html( $coaching->post_title )?></a></li>
+                    <?php } ?>
+                    <ul>
+                    </ul>
 
                 </section>
 
