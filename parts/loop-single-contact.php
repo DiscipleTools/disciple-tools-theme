@@ -16,13 +16,13 @@ function contact_details_status( $id, $verified, $invalid ){
     <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
 
     <div class="row item-details-header-row">
-            <i class="fi-torso large"></i><span class="item-details-header"><?php the_title_attribute(); ?></span>
-            <span class="button alert label">
-              Status: <?php echo esc_html( $contact->fields["overall_status"]["label"] ) ?>
-            </span>
-            <button data-open="pause-contact-modal"class="tiny button">Pause</button>
-            <button data-open="close-contact-modal" class="tiny button">Close</button>
-            <button class=" float-right" onclick="edit_fields()"><i class="fi-pencil"></i> Edit</button>
+        <i class="fi-torso large"></i><span class="item-details-header"><?php the_title_attribute(); ?></span>
+        <span class="button alert label">
+          Status: <?php echo esc_html( $contact->fields["overall_status"]["label"] ) ?>
+        </span>
+        <button data-open="pause-contact-modal"class="tiny button">Pause</button>
+        <button data-open="close-contact-modal" class="tiny button">Close</button>
+        <button class=" float-right" onclick="edit_fields()"><i class="fi-pencil"></i> Edit</button>
     </div>
 
     <div class="reveal" id="close-contact-modal" data-reveal>
@@ -73,7 +73,7 @@ function contact_details_status( $id, $verified, $invalid ){
         </button>
     </div>
 
-    <div id="display-fields">
+    <div class="display-fields">
         <div class="row">
 
             <div class="medium-4 columns">
@@ -177,7 +177,7 @@ function contact_details_status( $id, $verified, $invalid ){
             </button>
         </div>
     </div>
-    <div id="edit-fields" style="display: none">
+    <div class="edit-fields" style="display: none">
         <div class="row">
             <!-- Contact information. Phone, email, etc -->
             <div class="medium-6 columns">
@@ -271,7 +271,7 @@ function contact_details_status( $id, $verified, $invalid ){
                     $location_ids[] = $value->ID;
                     echo '<li class="'. $value->ID .'">
                     <a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a>
-                    <button class="details-remove-button" onclick="remove_location(' . get_the_ID() . ', \'locations\', ' . $value->ID . ')">Remove</button>
+                    <button class="details-remove-button" onclick="remove_item(' . get_the_ID() . ', \'locations\', ' . $value->ID . ')">Remove</button>
                     </li>';
                 }?>
                 </ul>

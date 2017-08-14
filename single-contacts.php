@@ -1,9 +1,13 @@
 <?php if ((isset( $_POST['dt_contacts_noonce'] ) && wp_verify_nonce( $_POST['dt_contacts_noonce'], 'update_dt_contacts' ))) { dt_save_contact( $_POST ); } // Catch and save update info ?>
 <?php if ( ! empty( $_POST['response'] )) { dt_update_overall_status( $_POST ); } ?>
 <?php if ( ! empty( $_POST['comment_content'] )) { dt_update_required_update( $_POST ); } ?>
-<?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true ); ?>
-<?php $contact_fields = Disciple_Tools_Contacts::get_contact_fields(); ?>
-<?php get_header(); ?>
+<?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
+$contact_fields = Disciple_Tools_Contacts::get_contact_fields();
+$groups = Disciple_Tools_Groups::get_groups();
+//@todo get restricted options
+$contacts = Disciple_Tools_Contacts::get_viewable_contacts( true );
+$connection_fields = ["groups" => $groups, "contacts" => $contacts->posts];
+ get_header(); ?>
 <?php //var_dump($contact_fields['quick_button_no_answer'])?>
 <?php //var_dump($contact->fields["quick_button_no_answer"] ?? "test")?>
 
@@ -37,36 +41,82 @@
 
                 <section id="relationships" class="medium-6 columns">
                     <div class="bordered-box">
-                        <label class="section-header">Groups</label>
-                        <ul>
-                        <?php foreach( $contact->fields["groups"] as $group){ ?>
-                            <li><a href="<?php echo $group->permalink ?>"><?php echo esc_html( $group->post_title )?></a></li>
-                        <?php } ?>
+                        <button class=" float-right" onclick="edit_connections()"><i class="fi-pencil"></i> Edit</button>
+
+
+                        <span class="section-header">Groups</span>
+                        <ul class="groups-list">
+                            <?php
+                            $ids = [];
+                            foreach( $contact->fields["groups"] as $value){
+                                $ids[] = $value->ID;
+                                ?>
+                                <li class="<?php echo $value->ID ?>">
+                                    <a href="<?php echo $value->permalink ?>"><?php echo esc_html( $value->post_title )?></a>
+                                    <button class="details-remove-button connections-edit" onclick="remove_item(<?php echo get_the_ID()?>,  'groups', <?php echo $value->ID ?>)">Remove</button>
+                                </li>
+                            <?php } ?>
                         </ul>
-                        <label class="section-header">Baptized By</label>
-                        <?php foreach( $contact->fields["baptized_by"] as $baptized_by){ ?>
-                            <li><a href="<?php echo $baptized_by->permalink ?>"><?php echo esc_html( $baptized_by->post_title )?></a></li>
-                        <?php } ?>
-                        <ul>
+                        <div class="connections-edit" >
+                            <label for="groups" for="<?php echo $value->ID ?>">Add Group:</label>
+                            <select id="groups" onchange="add_input_item( <?php echo get_the_ID();?>, 'groups')">
+                                <?php
+                                echo '<option value="0"></option>';
+                                foreach( $groups as $value ){
+                                    if ( !in_array( $value->ID, $ids )){
+                                        echo '<option value="' . $value->ID. '">' . esc_html( $value->post_title ) . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+
+                        <?php
+                        $connections = [
+                            "baptized_by" => "Baptized By",
+                            "baptized" => "Baptized",
+                            "coached_by" => "Coached By",
+                            "coaching" => "Coaching"
+                        ];
+                        foreach($connections as $connection => $connection_label){
+                        ?>
+
+
+
+                        <span class="section-header"><?php echo $connection_label ?></span>
+                        <ul class="<?php echo $connection ?>-list">
+                            <?php
+                            $ids = [];
+                            foreach( $contact->fields[$connection] as $value){
+                                $ids[] = $value->ID;
+                                ?>
+                                <li class="<?php echo $value->ID ?>">
+                                    <a href="<?php echo $value->permalink ?>"><?php echo esc_html( $value->post_title )?></a>
+                                    <button class="details-remove-button connections-edit" onclick="remove_item(<?php echo get_the_ID()?>,  '<?php echo $connection ?>', <?php echo $value->ID ?>)">Remove</button>
+                                </li>
+                            <?php } ?>
                         </ul>
-                        <label class="section-header">Baptized</label>
-                        <?php foreach( $contact->fields["baptized"] as $baptized){ ?>
-                            <li><a href="<?php echo $baptized->permalink ?>"><?php echo esc_html( $baptized->post_title )?></a></li>
-                        <?php } ?>
-                        <ul>
-                        </ul>
-                        <label class="section-header">Coached By</label>
-                        <?php foreach( $contact->fields["coached_by"] as $coached_by){ ?>
-                            <li><a href="<?php echo $coached_by->permalink ?>"><?php echo esc_html( $coached_by->post_title )?></a></li>
-                        <?php } ?>
-                        <ul>
-                        </ul>
-                        <label class="section-header">Coaching</label>
-                        <?php foreach( $contact->fields["coaching"] as $coaching){ ?>
-                            <li><a href="<?php echo $coaching->permalink ?>"><?php echo esc_html( $coaching->post_title )?></a></li>
-                        <?php } ?>
-                        <ul>
-                        </ul>
+                        <div class="connections-edit">
+                            <label for="<?php echo $connection ?>">Add <?php echo $connection_label ?>:</label>
+                            <select id="<?php echo $connection ?>" onchange="add_input_item( <?php echo get_the_ID();?>, '<?php echo $connection ?>')">
+                                <?php
+                                echo '<option value="0"></option>';
+                                foreach( $connection_fields["contacts"] as $value ){
+                                    if ( !in_array( $value->ID, $ids )){
+                                        echo '<option value="' . $value->ID. '">' . esc_html( $value->post_title ) . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+
+                        <?php
+                        }
+                        ?>
+
+
                     </div>
                 </section>
 
@@ -112,7 +162,7 @@
                     </div>
                 </section>
 
-                <section id="availability" class="medium-6 columns">
+                <section id="availability" class="medium-6 columns" style="display: none">
                     <div class="bordered-box">
                         <label class="section-header">Availability</label>
                         <div class="row" style="display: flex; justify-content: center">

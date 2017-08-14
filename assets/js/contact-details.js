@@ -120,9 +120,6 @@ jQuery(document).ready(function($) {
       let commentsWrapper = $("#comments-wrapper")
       data.forEach(comment=>{
         let c = commentTemplate({date:comment.comment_date,comment:comment.comment_content})
-        console.log(c)
-        // let html = `<div class="comment-date">${comment.comment_date}</div>
-        //     <p class="comment-bubble">${comment.comment_content}</p>`
         commentsWrapper.append(c)
       })
     },
@@ -136,8 +133,8 @@ jQuery(document).ready(function($) {
 
 
 function edit_fields() {
-  jQuery("#display-fields").toggle()
-  jQuery("#edit-fields").toggle()
+  jQuery(".display-fields").toggle()
+  jQuery(".edit-fields").toggle()
 }
 
 function save_field(contactId, fieldKey){
@@ -233,8 +230,11 @@ function remove_contact_detail(contactId, fieldKey, valueId, callback) {
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
     },
     success: function (data) {
-      console.log("delete " + fieldKey + " at: " + JSON.stringify(valueId))
-      callback(data)
+      console.log(data)
+      if (data!==false){
+        console.log("delete " + fieldKey + " at: " + JSON.stringify(valueId))
+        callback(data)
+      }
     },
     error: function (err) {
       console.log("error")
@@ -248,7 +248,7 @@ function remove_contact_detail(contactId, fieldKey, valueId, callback) {
 
 function add_contact_input(contactId, inputId, listId){
   if (jQuery(`#${inputId}`).length === 0 ){
-    var newInput = `<li><input id="${inputId}" onchange="add_contact_detail(${contactId},'${inputId}')"\>`
+    var newInput = `<li><input id="${inputId}" onchange="add_contact_detail(${contactId},'${inputId}', function(){})"\>`
     jQuery(`#${listId}`).append(newInput)
   }
 }
@@ -267,20 +267,23 @@ function invalidate_contact_method(contactId, fieldId) {
   })
 }
 
-function add_location(contactID, fieldId) {
+function add_location(contactId, fieldId) {
   let select = jQuery(`#${fieldId}`)
   if (select.val() !== "0"){
-    add_contact_detail(contactID, fieldId, function (location){
+    add_contact_detail(contactId, fieldId, function (location){
       select.val("0")
-      jQuery(".locations-list").append(`<li><a href="${location.permalink}">${location.post_title}</a></li>`)
+      jQuery(".locations-list").append(`<li>
+        <a href="${location.permalink}">${location.post_title}</a>
+        <button class="details-remove-button edit-fields" onclick="remove_item(${contactId}, '${fieldId}', ${location.ID})">Remove</button>
+      </li>`)
       select.find(`option[value='${location.ID}']`).remove()
     })
   }
 }
 
-function remove_location(contactId, fieldId, locationId){
-  remove_contact_detail(contactId, fieldId, locationId, function () {
-    jQuery(`.locations-list .${locationId}`).remove()
+function remove_item(contactId, fieldId, itemId){
+  remove_contact_detail(contactId, fieldId, itemId, function () {
+    jQuery(`.${fieldId}-list .${itemId}`).remove()
   })
 }
 
@@ -324,4 +327,30 @@ function pause_contact(contactId){
       console.log(data)
       jQuery('#close-contact-modal').foundation('close')
     })
+}
+
+/***
+ * Connections
+ */
+function edit_connections() {
+  console.log("edit_connections")
+  jQuery(".connections-edit").toggle()
+}
+
+function add_input_item(contactId, fieldId) {
+  let select = jQuery(`#${fieldId}`)
+  console.log(select.val())
+  if (select.val() !== "0"){
+    add_contact_detail(contactId, fieldId, function (addedItem){
+      console.log(addedItem)
+      select.val("0")
+      jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
+        <a href="${addedItem.permalink}">${addedItem.post_title}</a>
+        <button class="details-remove-button connections-edit" onclick="remove_item(${contactId}, '${fieldId}', ${addedItem.ID})">Remove</button>
+        </li>`)
+      select.find(`option[value='${addedItem.ID}']`).remove()
+      jQuery(".connections-edit").show()
+    })
+
+  }
 }
