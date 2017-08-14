@@ -10,18 +10,17 @@ $contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_co
 
     <div id="content">
 
+        <!-- Breadcrumb Navigation-->
+        <nav aria-label="You are here:" role="navigation" class="hide-for-small-only">
+            <ul class="breadcrumbs">
+                <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
+                <li>
+                    <span class="show-for-sr">Current: </span> Contacts
+                </li>
+            </ul>
+        </nav>
+
         <div id="inner-content">
-
-            <!-- Breadcrumb Navigation-->
-            <nav aria-label="You are here:" role="navigation" class="hide-for-small-only">
-                <ul class="breadcrumbs">
-                    <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
-                    <li>
-                        <span class="show-for-sr">Current: </span> Contacts
-                    </li>
-                </ul>
-            </nav>
-
 
             <aside class="large-2 medium-2 columns padding-bottom">
                 <div class="bordered-box">
@@ -52,7 +51,7 @@ $contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_co
                 <div class="bordered-box">
                     <h3><?php _e( "Priorities" ); ?></h3>
 
-                    <h6><?php _e( "Update needed" ); ?> (<?php echo $contacts_update_needed->found_posts; ?>)</h4>
+                    <h6><?php _e( "Update needed" ); ?> (<?php echo $contacts_update_needed->found_posts; ?>)</h6>
                     <?php if ( $contacts_update_needed->have_posts() ): ?>
                         <ul>
                         <?php while ( $contacts_update_needed->have_posts() ): $contacts_update_needed->the_post(); ?>
@@ -65,7 +64,7 @@ $contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_co
                         </ul>
                     <?php endif; ?>
 
-                    <h6><?php _e( "Meeting scheduled" ); ?> (<?php echo $contacts_meeting_scheduled->found_posts; ?>)</h4>
+                    <h6><?php _e( "Meeting scheduled" ); ?> (<?php echo $contacts_meeting_scheduled->found_posts; ?>)</h6>
                     <?php if ( $contacts_meeting_scheduled->have_posts() ): ?>
                         <ul>
                         <?php while ( $contacts_meeting_scheduled->have_posts() ): $contacts_meeting_scheduled->the_post(); ?>
@@ -78,7 +77,7 @@ $contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_co
                         </ul>
                     <?php endif; ?>
 
-                    <h6><?php _e( "Contact unattempted" ); ?> (<?php echo $contacts_contact_unattempted->found_posts; ?>)</h4>
+                    <h6><?php _e( "Contact unattempted" ); ?> (<?php echo $contacts_contact_unattempted->found_posts; ?>)</h6>
                     <?php if ( $contacts_contact_unattempted->have_posts() ): ?>
                         <ul>
                         <?php while ( $contacts_contact_unattempted->have_posts() ): $contacts_contact_unattempted->the_post(); ?>

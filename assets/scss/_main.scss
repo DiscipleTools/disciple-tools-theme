@@ -24,6 +24,10 @@ GENERAL STYLES
 .float-right {
     float: right;
 }
+
+body {
+    background-color: #e2e2e2;
+}
 /*********************
 LINK STYLES
 *********************/
@@ -92,6 +96,22 @@ NAVIGATION STYLES
         max-width: none;
     }
 
+    background-color: $primary-color;
+    ul {
+        background-color: $primary-color;
+    }
+    a {
+        color:white;
+
+    }
+}
+
+#content nav {
+    padding:.5rem;
+    background-color: white;
+    .breadcrumbs {
+        margin-bottom: 0;
+    }
 }
 
 .off-canvas-list {
@@ -179,6 +199,8 @@ POSTS & CONTENT STYLES
     background-color: $white;
     padding: 1rem;
     margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    border-radius: 10px;
 }
 
 i.large {
