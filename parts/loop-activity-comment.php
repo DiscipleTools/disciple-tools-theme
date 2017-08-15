@@ -29,11 +29,12 @@
         <button id="add-comment-button" class="button" onclick="post_comment( <?php echo get_the_ID()?>)">Add</button>
     </div>
     <div>
-            <a>Activity / </a>
-            <a>Comments</a>
+            <button onclick="display_activity_comment('all')">ALL / </button>
+            <button onclick="display_activity_comment('comments')">COMMENTS / </button>
+            <button onclick="display_activity_comment('activity')">ACTIVITY</button>
             <br>
     </div>
-    <div style="overflow-y:scroll" id="comments-wrapper")">
+    <div style="overflow-y:scroll" id="comments-wrapper">
 
     </div>
 </section>

@@ -106,30 +106,91 @@ function post_comment(contactId) {
 var commentTemplate = _.template(`<div class="comment-date"> <%- date %> </div>
                                 <p class="comment-bubble"> <%- comment %></p>`)
 
+let comments = []
+let activity = []
 jQuery(document).ready(function($) {
   let id = $("#contact-id").text()
-  jQuery.ajax({
-    type:"GET",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ id +'/comments',
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-    },
-    success: function(data) {
-      let commentsWrapper = $("#comments-wrapper")
-      data.forEach(comment=>{
-        let c = commentTemplate({date:comment.comment_date,comment:comment.comment_content})
-        commentsWrapper.append(c)
+
+
+  jQuery.when(
+    jQuery.ajax({
+      type:"GET",
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ id +'/comments',
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      },
+      success: function(data) {
+        data.forEach(comment=>{
+          comment.date = new Date(comment.comment_date)
+        })
+        comments = data
+      },
+      error: function(err) {
+        console.log("error")
+        console.log(err)
+        jQuery("#errors").append(err.responseText)
+      },
+    }),
+
+    jQuery.ajax({
+      type: "GET",
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: wpApiSettings.root + 'dt-hooks/v1/contact/' + id + "/activity",
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      }
+    })
+      .done(function (data) {
+        data.forEach(d=>{
+          d.date = new Date(d.hist_time*1000)
+        })
+        activity = data
       })
-    },
-    error: function(err) {
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    },
+      .fail(function (err) {
+        console.log("error")
+        console.log(err)
+        jQuery("#errors").append(err.responseText)
+      })
+  ).then(function () {
+    console.log("done")
+    display_activity_comment("all")
   })
 })
+
+function formatDate(date) {
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  var month = date.getMonth()+1
+  month = month < 10 ? "0"+month.toString() : month
+  return date.getFullYear() + "/" + date.getDate() + "/" + month + "  " + strTime;
+}
+
+function display_activity_comment(section) {
+  let commentsWrapper = $("#comments-wrapper")
+  commentsWrapper.empty()
+  let displayed = []
+  if (section === "all"){
+    displayed = _.union(comments, activity)
+  } else if (section === "comments"){
+    displayed = comments
+  } else if ( section === "activity"){
+    displayed = activity
+  }
+  displayed = _.orderBy(displayed, "date", "desc")
+  displayed.forEach(d=>{
+    let c = commentTemplate({date:formatDate(d.date), comment:d.object_note || d.comment_content})
+    commentsWrapper.append(c)
+  })
+}
+
 
 
 function edit_fields() {

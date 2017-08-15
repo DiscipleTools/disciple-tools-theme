@@ -284,6 +284,7 @@ img {
     padding: 1em;
     text-align: left;
     line-height: 1.5em;
+    word-wrap: break-word;
 
     &:after{
         content: ' ';
