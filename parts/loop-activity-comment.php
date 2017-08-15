@@ -1,7 +1,7 @@
 <?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true ); ?>
 <?php $contact_fields = Disciple_Tools_Contacts::get_contact_fields(); ?>
 
-<section class="test-flex bordered-box comment-activity-section">
+<section class="comment-activity-section bordered-box">
     <div>
         <div class="contact-quick-buttons">
             <?php foreach( $contact_fields as $field => $val ){
@@ -27,11 +27,12 @@
 
         <button id="add-comment-button" class="button" onclick="post_comment( <?php echo get_the_ID()?>)">Add</button>
     </div>
-    <div>
-            <button onclick="display_activity_comment('all')">ALL / </button>
-            <button onclick="display_activity_comment('comments')">COMMENTS / </button>
+    <div style="text-align: center">
+            <button onclick="display_activity_comment('all')">ALL | </button>
+            <button onclick="display_activity_comment('comments')">COMMENTS | </button>
             <button onclick="display_activity_comment('activity')">ACTIVITY</button>
             <br>
+    <hr>
     </div>
     <div style="overflow-y:scroll" id="comments-wrapper">
 

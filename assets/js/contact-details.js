@@ -103,8 +103,12 @@ function post_comment(contactId) {
   })
 }
 
-var commentTemplate = _.template(`<div class="comment-date"> <%- date %> </div>
-                                <p class="comment-bubble"> <%- comment %></p>`)
+var commentTemplate = _.template(`
+  <div>
+    <div><span><strong><%- name %></strong></span> <span class="comment-date"> <%- date %> </span></div>
+    <p class="comment-bubble"> <%- comment %></p>
+  </div>`
+)
 
 let comments = []
 let activity = []
@@ -186,7 +190,11 @@ function display_activity_comment(section) {
   }
   displayed = _.orderBy(displayed, "date", "desc")
   displayed.forEach(d=>{
-    let c = commentTemplate({date:formatDate(d.date), comment:d.object_note || d.comment_content})
+    let c = commentTemplate({
+      name: d.comment_author || d.name,
+      date:formatDate(d.date),
+      comment:d.object_note || d.comment_content
+    })
     commentsWrapper.append(c)
   })
 }
