@@ -58,7 +58,7 @@ $connection_fields = ["groups" => $groups, "contacts" => $contacts->posts];
                             <?php } ?>
                         </ul>
                         <div class="connections-edit" >
-                            <label for="groups" for="<?php echo $value->ID ?>">Add Group:</label>
+                            <label for="groups">Add Group:</label>
                             <select id="groups" onchange="add_input_item( <?php echo get_the_ID();?>, 'groups')">
                                 <?php
                                 echo '<option value="0"></option>';
