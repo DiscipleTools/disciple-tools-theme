@@ -1,8 +1,7 @@
 <?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true ); ?>
 <?php $contact_fields = Disciple_Tools_Contacts::get_contact_fields(); ?>
 
-<section class="test-flex bordered-box"
-         style="position:fixed; top:100px; bottom:20px; display:flex; flex-direction:column; width:30%">
+<section class="test-flex bordered-box comment-activity-section">
     <div>
         <div class="contact-quick-buttons">
             <?php foreach( $contact_fields as $field => $val ){

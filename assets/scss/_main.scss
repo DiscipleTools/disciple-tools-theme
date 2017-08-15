@@ -276,6 +276,18 @@ img {
     }
 }
 
+.comment-activity-section {
+
+    display:flex;
+    flex-direction:column;
+    @media screen and (min-width : map-get($breakpoints, large )){
+        position:fixed;
+        top:100px;
+        width:40%;
+        bottom:0;
+    }
+}
+
 .comment-bubble {
     margin: 0 20px 20px 20px;
     position: relative;

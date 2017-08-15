@@ -30,7 +30,7 @@ $connection_fields = ["groups" => $groups, "contacts" => $contacts->posts];
 
 
 
-            <main id="main" class="large-8 medium-8 columns" role="main">
+            <main id="main" class="large-7 medium-12 small-12 columns" role="main" style="padding:0">
 
                 <section id="contact-details" class="medium-12 columns">
                     <div class="bordered-box">
@@ -215,7 +215,7 @@ $connection_fields = ["groups" => $groups, "contacts" => $contacts->posts];
 
             </main> <!-- end #main -->
 
-            <aside class="medium-4 columns">
+            <aside class="large-5 medium-12 small-12 columns">
                 <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
             </aside>
 
