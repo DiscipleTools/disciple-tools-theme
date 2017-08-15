@@ -48,7 +48,7 @@
         <br>
         <span class="milestone milestone--<%- belief_milestone_key %>"><%- belief_milestone %></span>
       </td>
-      <td><%- assigned_to ? assigned_to.user_login : "" %></td>
+      <td><%- assigned_to ? assigned_to.name : "" %></td>
       <td><%- locations.join(", ") %></td>
       <td><%- groups.join(", ") %></td>
     </tr>`);
