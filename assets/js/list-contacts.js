@@ -187,7 +187,7 @@
       if ($checkedAssignedLabels.length > 0) {
         filterFunctions.push(function(contact) {
           return _.some($checkedAssignedLabels, function(label) {
-            return $(label).data("filter-value") === contact.assigned_to.user_login;
+            return $(label).data("filter-value") === _.get(contact, "assigned_to.user_login");
           });
         });
       }
