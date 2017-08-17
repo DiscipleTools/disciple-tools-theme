@@ -58,9 +58,20 @@ function contact_details_status( $id, $verified, $invalid ){
     <div class="row item-details-header-row">
         <i class="fi-torso large"></i><span class="item-details-header"><?php the_title_attribute(); ?></span>
         <span class="button alert label">
-          Status: <?php echo esc_html( $contact->fields["overall_status"]["label"] ) ?>
+            Status: <span id="overall-status"><?php echo esc_html( $contact->fields["overall_status"]["label"] ) ?></span>
+            (<span id="reason">
+                <?php
+                if ( $contact->fields["overall_status"]["key"] === "paused" &&
+                    isset( $contact->fields["reason_paused"] )){
+                    echo $contact->fields["reason_paused"]["label"];
+                } else if ( $contact->fields["overall_status"]["key"] === "closed" &&
+                    isset( $contact->fields["reason_closed"] )){
+                    echo $contact->fields["reason_closed"]["label"];
+                }
+                ?>
+            </span> )
         </span>
-        <button data-open="pause-contact-modal"class="tiny button">Pause</button>
+        <button data-open="pause-contact-modal" class="tiny button">Pause</button>
         <button data-open="close-contact-modal" class="tiny button">Close</button>
         <button class=" float-right" onclick="edit_fields()"><i class="fi-pencil"></i> Edit</button>
     </div>
@@ -105,7 +116,7 @@ function contact_details_status( $id, $verified, $invalid ){
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
             Cancel
         </button>
-        <button class="button" type="button" onclick="pause_contact(<?php echo get_the_ID()?>)">
+        <button class="button" type="button" id="confirm-pause" onclick="pause_contact(<?php echo get_the_ID()?>)">
             Confirm
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">

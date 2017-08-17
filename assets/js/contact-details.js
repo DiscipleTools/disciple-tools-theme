@@ -376,11 +376,13 @@ function remove_item(contactId, fieldId, itemId){
   })
 }
 
+
+
+
 function close_contact(contactId){
   jQuery("#confirm-close").toggleClass('loading')
-  let reasonClosed = jQuery('#reason-closed-options').val()
-  let data = {overall_status:"closed", "reason_closed":reasonClosed}
-  console.log(reasonClosed)
+  let reasonClosed = jQuery('#reason-closed-options')
+  let data = {overall_status:"closed", "reason_closed":reasonClosed.val()}
   jQuery.ajax({
     type: "POST",
     data: JSON.stringify(data),
@@ -389,17 +391,20 @@ function close_contact(contactId){
     url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId,
   })
     .done(function (data) {
-      console.log(data)
+      let closedLabel = wpApiSettings.contacts_custom_fields_settings.overall_status.default.closed;
+      jQuery('#overall-status').text(closedLabel)
       jQuery("#confirm-close").toggleClass('loading')
       jQuery('#close-contact-modal').foundation('close')
+      jQuery('#reason').text(reasonClosed.find('option:selected').text())
       get_activity(contactId)
     })
 }
 
+let confirmPauseButton = jQuery("#confirm-pause")
 function pause_contact(contactId){
-  let reasonClosed = jQuery('#reason-paused-options').val()
-  let data = {overall_status:"paused", "reason_paused":reasonClosed}
-  console.log(reasonClosed)
+  confirmPauseButton.toggleClass('loading')
+  let reasonPaused = jQuery('#reason-paused-options')
+  let data = {overall_status:"paused", "reason_paused":reasonPaused.val()}
   jQuery.ajax({
     type: "POST",
     data: JSON.stringify(data),
@@ -408,9 +413,12 @@ function pause_contact(contactId){
     url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId,
   })
     .done(function (data) {
-      console.log(data)
-      jQuery('#close-contact-modal').foundation('close')
+      let pausedLabel = wpApiSettings.contacts_custom_fields_settings.overall_status.default.paused;
+      jQuery('#overall-status').text(pausedLabel)
+      jQuery('#reason').text(reasonPaused.find('option:selected').text())
+      jQuery('#pause-contact-modal').foundation('close')
       get_activity(contactId)
+      confirmPauseButton.toggleClass('loading')
     })
 }
 
