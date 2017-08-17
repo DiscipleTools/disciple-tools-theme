@@ -21,9 +21,12 @@
         setUpFilterPane();
       });
     },
-    error: function() {
+    error: function(jqXHR, textStatus, errorThrown) {
       $(function() {
-        $(".js-list-contacts-loading > td").text(wpApiSettings.txt_error);
+        $(".js-list-contacts-loading > td").html(
+            "<div>" + wpApiSettings.txt_error + "</div>" +
+            "<div>" + jqXHR.responseText + "</div>"
+        );
       });
     },
   });
