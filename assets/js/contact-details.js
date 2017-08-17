@@ -207,10 +207,10 @@ function edit_fields() {
   jQuery(".edit-fields").toggle()
 }
 
-function save_field(contactId, fieldKey){
-  var val = jQuery("#"+fieldKey).val()
-  console.log(val)
-  var data = {}
+function save_field(contactId, fieldKey, inputId){
+  let field = jQuery("#"+ (inputId || fieldKey))
+  let val = field.val()
+  let data = {}
   data[fieldKey] = val
   jQuery.ajax({
     type:"POST",
@@ -223,6 +223,11 @@ function save_field(contactId, fieldKey){
     },
     success: function(data) {
       console.log("updated " + fieldKey + " to: " + val)
+
+      if (fieldKey === "assigned_to"){
+        jQuery('#assigned-to').text(field.find(`option:selected`).text())
+        jQuery('.assigned_to_select').val(val)
+      }
     },
     error: function(err) {
       console.log("error")

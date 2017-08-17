@@ -12,7 +12,47 @@ function contact_details_status( $id, $verified, $invalid ){
 //var_dump($contact->fields["overall_status"]);
 ?>
 
-<section id="post-<?php the_ID(); ?>" >
+<?php if (current_user_can( "assign_any_contact" )){?>
+<section class="bordered-box">
+    <p class="section-header">Dispatch</p>
+    <div class="row">
+        <div class="medium-6 columns">
+            <strong>Assigned To:</strong>
+            <select class="assigned_to_select" id="dispatcher_assigned_to" onchange="save_field(<?php echo get_the_ID();?>, 'assigned_to', 'dispatcher_assigned_to')">
+                <option value="0"></option>
+                <?php
+                foreach( $users as $user ){
+                    if ( isset( $contact->fields["assigned_to"] ) &&
+                        $user->ID === (int) $contact->fields["assigned_to"]['id'] ){
+                        echo '<option value="user-' . $user->ID. '" selected>' . $user->display_name . '</option>';
+                    } else {
+                        echo '<option value="user-' . $user->ID. '">' . $user->display_name . '</option>';
+                    }
+                }
+                ?>
+            </select>
+        </div>
+        <div class="medium-6 columns">
+            <strong>Set Unassignable Reason:</strong>
+            <select id="reason_unassignable" onchange="save_field(<?php echo get_the_ID();?>, 'reason_unassignable')">
+                <?php
+                foreach( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_value ) {
+                    if ( isset( $contact->fields["reason_unassignable"] ) &&
+                        $contact->fields["reason_unassignable"]["key"] === $reason_key ){
+                        echo '<option value="'.$reason_key . '" selected>' . $reason_value . '</option>';
+                    } else {
+                        echo '<option value="'.$reason_key . '">' . $reason_value . '</option>';
+
+                    }
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+</section>
+<?php } ?>
+
+<section class="bordered-box">
     <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
 
     <div class="row item-details-header-row">
@@ -105,7 +145,7 @@ function contact_details_status( $id, $verified, $invalid ){
             <div class="medium-4 columns">
                 <strong>Assigned To</strong>
                 <ul>
-                    <li>
+                    <li id="assigned-to">
                     <?php
                     if ( isset( $contact->fields["assigned_to"] ) ){
                         echo esc_html( $contact->fields["assigned_to"]["display"] );
@@ -250,7 +290,8 @@ function contact_details_status( $id, $verified, $invalid ){
             <!-- Contact Fields. Assigned to, location, etc -->
             <div class="medium-6 columns">
                 <strong>Assigned To</strong>
-                <select id="assigned_to" onchange="save_field(<?php echo get_the_ID();?>, 'assigned_to')">
+                <select class="assigned_to_select" id="assigned_to" onchange="save_field(<?php echo get_the_ID();?>, 'assigned_to', 'assigned_to')">
+                    <option value="0"></option>
                     <?php
                     foreach( $users as $user ){
                         if ( isset( $contact->fields["assigned_to"] ) &&

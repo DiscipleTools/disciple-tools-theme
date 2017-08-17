@@ -60,10 +60,7 @@ $connection_fields = ["groups" => $groups, "contacts" => $contacts->posts];
             <main id="main" class="large-7 medium-12 small-12 columns" role="main" style="padding:0">
 
                 <section id="contact-details" class="medium-12 columns">
-                    <div class="bordered-box">
-                        <?php get_template_part( 'parts/loop', 'single-contact' ); ?>
-
-                    </div>
+                    <?php get_template_part( 'parts/loop', 'single-contact' ); ?>
                 </section>
 
                 <section id="relationships" class="medium-6 columns">
