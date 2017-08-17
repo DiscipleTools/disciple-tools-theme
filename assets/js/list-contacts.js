@@ -59,7 +59,7 @@
       </td>
       <td><%- assigned_to ? assigned_to.name : "" %></td>
       <td><%- locations.join(", ") %></td>
-      <td><%- groups.join(", ") %></td>
+      <td><%= group_links %></td>
     </tr>`);
     const ccfs = wpApiSettings.contacts_custom_fields_settings;
     _.forEach(contacts, function(contact, index) {
@@ -77,6 +77,9 @@
       } else {
         status = ccfs.overall_status.default[contact.overall_status];
       }
+      const group_links = _.map(contact.groups, function(group) {
+          return '<a href="' + _.escape(group.permalink) + '">' + _.escape(group.post_title) + "</a>";
+        }).join(", ");
       const context = _.assign({}, contact, wpApiSettings, {
         index,
         status,
@@ -84,6 +87,7 @@
         sharing_milestone_key,
         belief_milestone: (ccfs["milestone_" + belief_milestone_key] || {}).name || "",
         sharing_milestone: (ccfs["milestone_" + sharing_milestone_key] || {}).name || "",
+        group_links,
       });
       context.assigned_to = context.assigned_to;
       $table.append(
