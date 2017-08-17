@@ -19,6 +19,12 @@
           priorityShow($(this).data("priority"));
           e.preventDefault();
         });
+        $(".js-contacts-clear-filters").on("click", function() {
+          clearFilters();
+        });
+        $(".js-contacts-my-contacts").on("click", function() {
+          showMyContacts();
+        });
       });
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -144,6 +150,7 @@
               .attr("type", "checkbox")
               .on("change", function() {
                 updateFilterFunctions();
+                updateButtonStates();
                 dataTable.draw();
               })
             )
@@ -161,6 +168,10 @@
       );
     }
     return $div;
+  }
+
+  function updateButtonStates() {
+    $(".js-contacts-clear-filters").prop("disabled", filterFunctions.length == 0);
   }
 
   function updateFilterFunctions() {
@@ -256,8 +267,18 @@
     }
 
     updateFilterFunctions();
+    updateButtonStates();
     dataTable.draw();
+  }
 
+  function showMyContacts() {
+    $(".js-filter-checkbox-label input[type=checkbox]").each(function() {
+      this.checked = false;
+    });
+    tickFilters("assigned_login", wpApiSettings.current_user_login);
+    updateFilterFunctions();
+    updateButtonStates();
+    dataTable.draw();
   }
 
   function tickFilters(filterType, filterValue) {
@@ -269,6 +290,15 @@
         }
       });
     $(".js-contacts-filter[data-filter=" + filterType + "]").removeClass("filter--closed");
+  }
+
+  function clearFilters() {
+    $(".js-filter-checkbox-label input[type=checkbox]").each(function() {
+      this.checked = false;
+    });
+    updateFilterFunctions();
+    updateButtonStates();
+    dataTable.draw();
   }
 
 

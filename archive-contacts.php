@@ -25,6 +25,10 @@ $contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_co
             <aside class="large-2 medium-2 columns padding-bottom">
                 <div class="bordered-box">
                     <h3><?php _e( "Filters" ); ?></h3>
+                    <div>
+                        <button class="button small js-contacts-my-contacts"><?php _e( "My contacts" ); ?></button>
+                        <button disabled class="button small js-contacts-clear-filters"><?php _e( "Clear filters" ); ?></button>
+                    </div>
                     <div class="filter js-contacts-filter" data-filter="assigned_login">
                         <div class="filter__title js-contacts-filter-title"><?php _e( "Assigned to" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>
