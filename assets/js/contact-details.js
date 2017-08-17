@@ -43,8 +43,7 @@ function save_seeker_milestones(contactId, fieldKey, fieldValue){
 function save_quick_action(contactId, fieldKey){
   var data = {}
   var numberIndicator = jQuery("." + fieldKey +  " span")
-  console.log(numberIndicator)
-  var newNumber = parseInt(numberIndicator.text()) + 1
+  var newNumber = parseInt(numberIndicator.first().text()) + 1
   data[fieldKey] = newNumber
   jQuery.ajax({
     type:"POST",
