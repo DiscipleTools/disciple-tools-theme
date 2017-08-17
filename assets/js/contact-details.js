@@ -1,5 +1,11 @@
 /* global jQuery:false, wpApiSettings:false */
 
+jQuery.ajaxSetup({
+  beforeSend: function(xhr) {
+    xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+  },
+})
+
 
 function save_seeker_milestones(contactId, fieldKey, fieldValue){
   var data = {}
@@ -19,9 +25,7 @@ function save_seeker_milestones(contactId, fieldKey, fieldValue){
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/'+contactId,
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-    },
+
     success: function(data) {
       field.removeClass("submitting-select-button selected-select-button")
       field.addClass( fieldValue === "no" ? "empty-select-button" : "selected-select-button")
@@ -47,9 +51,6 @@ function save_quick_action(contactId, fieldKey){
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId +'/quick_action_button',
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-    },
     success: function(data, two, three) {
       console.log("updated " + fieldKey + " to: " + newNumber)
       if (fieldKey.indexOf("quick_button")>-1){
@@ -85,9 +86,6 @@ function post_comment(contactId) {
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId +'/comment',
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-    },
     success: function(data, two, three) {
       console.log(data)
       console.log(`added comment ${comment}`)
@@ -123,9 +121,6 @@ jQuery(document).ready(function($) {
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ id +'/comments',
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-      },
       success: function(data) {
         data.forEach(comment=>{
           comment.date = new Date(comment.comment_date)
@@ -144,9 +139,6 @@ jQuery(document).ready(function($) {
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       url: wpApiSettings.root + 'dt-hooks/v1/contact/' + id + "/activity",
-      beforeSend: function (xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-      }
     })
       .done(function (data) {
         data.forEach(d=>{
@@ -218,9 +210,6 @@ function save_field(contactId, fieldKey, inputId){
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId,
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-    },
     success: function(data) {
       console.log("updated " + fieldKey + " to: " + val)
 
@@ -247,9 +236,6 @@ function add_contact_detail(contactId, fieldKey, callback){
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId + '/details',
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-    },
     success: function(data) {
       if (data != contactId && fieldKey.indexOf("new-")>-1){
         input.removeAttr('onchange');
@@ -277,9 +263,6 @@ function update_contact_method_detail(contactId, fieldKey, values, callback) {
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + '/details_update',
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-    },
     success: function (data) {
       console.log("updated " + fieldKey + " to: " + JSON.stringify(values))
       callback(data)
@@ -301,9 +284,6 @@ function remove_contact_detail(contactId, fieldKey, valueId, callback) {
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + '/details',
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-    },
     success: function (data) {
       console.log(data)
       if (data!==false){
@@ -373,9 +353,6 @@ function close_contact(contactId){
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId,
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-    }
   })
     .done(function (data) {
       console.log(data)
@@ -394,9 +371,6 @@ function pause_contact(contactId){
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId,
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-    }
   })
     .done(function (data) {
       console.log(data)
