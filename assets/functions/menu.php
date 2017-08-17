@@ -12,7 +12,7 @@ function disciple_tools_top_nav_desktop() {
 
     $html = '';
 
-    if( user_can( get_current_user_id(), 'read_contact' ) ) {
+    if( user_can( get_current_user_id(), 'access_contacts' ) ) {
 
 
         // User is multiplier or role of higher position
@@ -61,7 +61,7 @@ function disciple_tools_top_nav_desktop() {
 function disciple_tools_top_nav_mobile() {
     $html = '';
 
-    if( user_can( get_current_user_id(), 'read_contact' ) ) {
+    if( user_can( get_current_user_id(), 'access_contacts' ) ) {
         $html .= '<li><a href="' . home_url( '/' ) . 'groups/"><i class="fi-torsos-all"></i></a></li>';
         $html .= '<li><a href="' . home_url( '/' ) . 'contacts/"><i class="fi-address-book"></i></a></li>';
         $html .= '<li><a href="' . home_url( '/' ) . '"><i class="fi-graph-pie"></i></a></li>';
@@ -84,7 +84,7 @@ function disciple_tools_off_canvas_nav() {
 
     $html = '';
 
-    if( user_can( get_current_user_id(), 'read_contact' ) ) {
+    if( user_can( get_current_user_id(), 'access_contact' ) ) {
 
         $html .= '<ul class="vertical menu" data-accordion-menu>';
 

@@ -3,6 +3,9 @@
 <?php if ( ! empty( $_POST['comment_content'] )) { dt_update_required_update( $_POST ); } ?>
 <?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
 $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
+if( !Disciple_Tools_Contacts::can_view_contact( get_the_ID() )){
+    return wp_redirect( "not-found" );
+}
 $groups = Disciple_Tools_Groups::get_groups();
 //@todo get restricted options
 $contacts = Disciple_Tools_Contacts::get_viewable_contacts( true );
