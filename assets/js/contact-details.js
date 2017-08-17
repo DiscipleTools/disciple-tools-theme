@@ -29,6 +29,7 @@ function save_seeker_milestones(contactId, fieldKey, fieldValue){
     success: function(data) {
       field.removeClass("submitting-select-button selected-select-button")
       field.addClass( fieldValue === "no" ? "empty-select-button" : "selected-select-button")
+      get_activity(contactId)
     },
     error: function(err) {
       console.log("error")
@@ -61,6 +62,7 @@ function save_quick_action(contactId, fieldKey){
           }
         }
       }
+      get_activity(contactId)
     },
     error: function(err) {
       console.log("error")
@@ -92,7 +94,11 @@ function post_comment(contactId) {
       let commentsWrapper = $("#comments-wrapper")
       jQuery("#comment-input").val("")
       jQuery("#add-comment-button").toggleClass('loading')
-      commentsWrapper.prepend(commentTemplate({date:data.comment.comment_date,comment:data.comment.comment_content}))
+      commentsWrapper.prepend(commentTemplate({
+        date:data.comment.comment_date,
+        comment:data.comment.comment_content,
+        name:data.comment.comment_author
+      }))
     },
     error: function(err) {
       console.log("error")
@@ -133,7 +139,6 @@ jQuery(document).ready(function($) {
         jQuery("#errors").append(err.responseText)
       },
     }),
-
     jQuery.ajax({
       type: "GET",
       contentType: "application/json; charset=utf-8",
@@ -151,11 +156,34 @@ jQuery(document).ready(function($) {
         console.log(err)
         jQuery("#errors").append(err.responseText)
       })
+
   ).then(function () {
     console.log("done")
     display_activity_comment("all")
   })
 })
+
+function get_activity(id){
+  return jQuery.ajax({
+    type: "GET",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + id + "/activity",
+  })
+    .done(function (data) {
+      data.forEach(d=>{
+        d.date = new Date(d.hist_time*1000)
+      })
+      activity = data
+      display_activity_comment()
+    })
+    .fail(function (err) {
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
+    })
+}
+
 
 function formatDate(date) {
   var hours = date.getHours();
@@ -170,15 +198,18 @@ function formatDate(date) {
   return date.getFullYear() + "/" + date.getDate() + "/" + month + "  " + strTime;
 }
 
+let current_section = "all"
 function display_activity_comment(section) {
+  current_section = section || current_section
+
   let commentsWrapper = $("#comments-wrapper")
   commentsWrapper.empty()
   let displayed = []
-  if (section === "all"){
+  if (current_section === "all"){
     displayed = _.union(comments, activity)
-  } else if (section === "comments"){
+  } else if (current_section === "comments"){
     displayed = comments
-  } else if ( section === "activity"){
+  } else if ( current_section === "activity"){
     displayed = activity
   }
   displayed = _.orderBy(displayed, "date", "desc")
@@ -212,11 +243,11 @@ function save_field(contactId, fieldKey, inputId){
     url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId,
     success: function(data) {
       console.log("updated " + fieldKey + " to: " + val)
-
       if (fieldKey === "assigned_to"){
         jQuery('#assigned-to').text(field.find(`option:selected`).text())
         jQuery('.assigned_to_select').val(val)
       }
+      get_activity(contactId)
     },
     error: function(err) {
       console.log("error")
@@ -246,6 +277,7 @@ function add_contact_detail(contactId, fieldKey, callback){
       }
       callback(data)
       console.log("updated " + fieldKey + " to: " + input.val())
+      get_activity(contactId)
     },
     error: function(err) {
       console.log("error")
@@ -266,6 +298,7 @@ function update_contact_method_detail(contactId, fieldKey, values, callback) {
     success: function (data) {
       console.log("updated " + fieldKey + " to: " + JSON.stringify(values))
       callback(data)
+      get_activity(contactId)
     },
     error: function (err) {
       console.log("error")
@@ -290,6 +323,7 @@ function remove_contact_detail(contactId, fieldKey, valueId, callback) {
         console.log("delete " + fieldKey + " at: " + JSON.stringify(valueId))
         callback(data)
       }
+      get_activity(contactId)
     },
     error: function (err) {
       console.log("error")
@@ -358,6 +392,7 @@ function close_contact(contactId){
       console.log(data)
       jQuery("#confirm-close").toggleClass('loading')
       jQuery('#close-contact-modal').foundation('close')
+      get_activity(contactId)
     })
 }
 
@@ -375,6 +410,7 @@ function pause_contact(contactId){
     .done(function (data) {
       console.log(data)
       jQuery('#close-contact-modal').foundation('close')
+      get_activity(contactId)
     })
 }
 
