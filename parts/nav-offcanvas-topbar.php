@@ -19,7 +19,7 @@
               <a href="#"><i class="fi-widget"></i></a></a>
               <ul class="menu vertical">
                 <li><a href="#">Account</a></li>
-                <li><a href="#">Log Off</a></li>
+                <li><a href="<?php echo wp_logout_url()?>">Log Off</a></li>
               </ul>
             </li>
           </ul>
