@@ -855,6 +855,13 @@ CONTACTS
     color: #2196f3;
 }
 
+.priorities-show-all {
+    float: right;
+    & > span {
+        font-size: 70%;
+    }
+}
+
 
 /**
 Loader
