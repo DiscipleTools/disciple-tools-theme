@@ -61,16 +61,17 @@ function site_scripts() {
         wp_enqueue_script( 'data-tables', get_template_directory_uri() . '/vendor/DataTables/datatables.min.js',  array( 'jquery' ), '1.10.15' );
         wp_enqueue_style( 'data-tables', get_template_directory_uri() . '/vendor/DataTables/datatables.min.css', array(), '', 'all' );
         wp_enqueue_script( 'list-contacts-js', get_template_directory_uri() . '/assets/js/list-contacts.js', array( 'jquery', 'lodash', 'data-tables' ) );
-        wp_localize_script(
-            'list-contacts-js', 'wpApiSettings', array(
+        wp_localize_script( 'list-contacts-js', 'wpApiSettings', array(
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'txt_error' => __( 'An error occurred' ),
             'txt_no_filters' => __( 'No filters' ),
+            'txt_yes' => __( 'Yes' ),
+            'txt_no' => __( 'No' ),
             'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
             'template_directory_uri' => get_template_directory_uri(),
-            )
-        );
+            'current_user_login' => wp_get_current_user()->user_login,
+        ) );
     }
 
 

@@ -11,14 +11,20 @@
     },
     success: function(data) {
       const statusNames = wpApiSettings.contacts_custom_fields_settings.overall_status.default;
-      _.forEach(data, function(contact) {
-        if (contact.status) { throw new Exception("Did not expect 'status' to be defined"); }
-        contact.status = statusNames[contact.overall_status];
-      });
       contacts = data;
       $(function() {
         displayContacts();
         setUpFilterPane();
+        $(".js-priorities-show").on("click", function(e) {
+          priorityShow($(this).data("priority"));
+          e.preventDefault();
+        });
+        $(".js-contacts-clear-filters").on("click", function() {
+          clearFilters();
+        });
+        $(".js-contacts-my-contacts").on("click", function() {
+          showMyContacts();
+        });
       });
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -103,12 +109,14 @@
     }
     const counts = {
       assigned_login: _.countBy(_(contacts).map('assigned_to.user_login').filter().value()),
-      status: _.countBy(_.map(contacts, 'status')),
+      overall_status: _.countBy(_.map(contacts, 'overall_status')),
       locations: _.countBy(_.flatten(_.map(contacts, 'locations'))),
+      seeker_path: _.countBy(contacts, 'seeker_path'),
+      requires_update: _.countBy(contacts, 'requires_update'),
     };
 
     $(".js-contacts-filter :not(.js-contacts-filter-title)").remove();
-    _.forEach(["assigned_login", "status", "locations"], function(filterType) {
+    Object.keys(counts).forEach(function(filterType) {
       $(".js-contacts-filter[data-filter='" + filterType + "']")
         .append(createFilterCheckboxes(filterType, counts[filterType]));
     });
@@ -120,7 +128,16 @@
 
   function createFilterCheckboxes(filterType, counts) {
     const $div = $("<div>");
+    const ccfs = wpApiSettings.contacts_custom_fields_settings;
     Object.keys(counts).sort().forEach(function(key) {
+      let humanText;
+      if (filterType === 'seeker_path' || filterType === 'overall_status') {
+        humanText = ccfs[filterType].default[key];
+      } else if (filterType === 'requires_update') {
+        humanText = key === "true" ? wpApiSettings.txt_yes : wpApiSettings.txt_no;
+      } else {
+        humanText = key;
+      }
       $div.append(
         $("<div>").append(
           $("<label>")
@@ -133,10 +150,11 @@
               .attr("type", "checkbox")
               .on("change", function() {
                 updateFilterFunctions();
+                updateButtonStates();
                 dataTable.draw();
               })
             )
-            .append(document.createTextNode(key))
+            .append(document.createTextNode(humanText))
             .append($("<span>")
               .css("float", "right")
               .append(document.createTextNode(counts[key]))
@@ -152,17 +170,21 @@
     return $div;
   }
 
+  function updateButtonStates() {
+    $(".js-contacts-clear-filters").prop("disabled", filterFunctions.length == 0);
+  }
+
   function updateFilterFunctions() {
     filterFunctions = [];
     {
       const $checkedStatusLabels = $(".js-filter-checkbox-label")
-        .filter(function() { return $(this).data("filter-type") === "status"; })
+        .filter(function() { return $(this).data("filter-type") === "overall_status"; })
         .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
 
       if ($checkedStatusLabels.length > 0) {
         filterFunctions.push(function(contact) {
           return _.some($checkedStatusLabels, function(label) {
-            return $(label).data("filter-value") === contact.status;
+            return $(label).data("filter-value") === contact.overall_status;
           });
         });
       }
@@ -196,6 +218,87 @@
       }
     }
 
+    {
+      const $checkedSeekerPathLabels = $(".js-filter-checkbox-label")
+        .filter(function() { return $(this).data("filter-type") === "seeker_path"; })
+        .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
+
+      if ($checkedSeekerPathLabels.length > 0) {
+        filterFunctions.push(function(contact) {
+          return _.some($checkedSeekerPathLabels, function(label) {
+            return $(label).data("filter-value") === contact.seeker_path;
+          });
+        });
+      }
+    }
+
+    {
+      const $checkedRequiresUpdateLabels = $(".js-filter-checkbox-label")
+        .filter(function() { return $(this).data("filter-type") === "requires_update"; })
+        .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
+
+      if ($checkedRequiresUpdateLabels.length > 0) {
+        filterFunctions.push(function(contact) {
+          return _.some($checkedRequiresUpdateLabels, function(label) {
+            const value = $(label).data("filter-value") === "true";
+            return value === contact.requires_update;
+          });
+        });
+      }
+    }
+
+  }
+
+  function priorityShow(priority) {
+    $(".js-filter-checkbox-label input[type=checkbox]").each(function() {
+      this.checked = false;
+    });
+    tickFilters("assigned_login", wpApiSettings.current_user_login);
+    tickFilters("overall_status", "accepted");
+
+    if (priority === "update_needed") {
+      tickFilters("requires_update", "true");
+    } else if (priority === "meeting_scheduled") {
+      tickFilters("seeker_path", "scheduled");
+    } else if (priority === "contact_unattempted") {
+      tickFilters("seeker_path", "none");
+    } else {
+      throw new Error("Priority not recognized: " + priority);
+    }
+
+    updateFilterFunctions();
+    updateButtonStates();
+    dataTable.draw();
+  }
+
+  function showMyContacts() {
+    $(".js-filter-checkbox-label input[type=checkbox]").each(function() {
+      this.checked = false;
+    });
+    tickFilters("assigned_login", wpApiSettings.current_user_login);
+    updateFilterFunctions();
+    updateButtonStates();
+    dataTable.draw();
+  }
+
+  function tickFilters(filterType, filterValue) {
+    $(".js-filter-checkbox-label")
+      .filter(function() { return $(this).data("filter-type") == filterType; })
+      .each(function() {
+        if ($(this).data("filter-value") === filterValue) {
+          $(this).find("input[type=checkbox]")[0].checked = true;
+        }
+      });
+    $(".js-contacts-filter[data-filter=" + filterType + "]").removeClass("filter--closed");
+  }
+
+  function clearFilters() {
+    $(".js-filter-checkbox-label input[type=checkbox]").each(function() {
+      this.checked = false;
+    });
+    updateFilterFunctions();
+    updateButtonStates();
+    dataTable.draw();
   }
 
 
