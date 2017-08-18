@@ -84,7 +84,7 @@ function disciple_tools_off_canvas_nav() {
 
     $html = '';
 
-    if( user_can( get_current_user_id(), 'access_contact' ) ) {
+    if( user_can( get_current_user_id(), 'access_contacts' ) ) {
 
         $html .= '<ul class="vertical menu" data-accordion-menu>';
 

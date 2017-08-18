@@ -24,52 +24,9 @@
             </div>
             <!-- End Contacts Tabs Section -->
 
-
         </main> <!-- end #main -->
 
-        <aside class="large-4 medium-4 columns ">
-
-            <section class="bordered-box">
-
-                <!-- Project Stats -->
-                <h4>Quick Update</h4>
-
-                <form id="post-comment-form">
-                    <div>
-                        <select name="post-comment-id" id="post-comment-id" required aria-required="true">
-
-                            <option disabled><?php _e( 'Select Contact', 'disciple_tools' ); ?></option>
-
-                            <?php if ( $query1->have_posts() ) : while ( $query1->have_posts() ) : $query1->the_post(); ?>
-
-                                <option value="<?php the_ID(); ?>"><?php the_title_attribute(); ?></option>
-
-                            <?php endwhile; ?>
-
-                            <?php else : ?>
-
-                                <option disabled>No Contacts</option>
-
-                            <?php endif; ?>
-
-                        </select>
-                    </div>
-
-                    <div>
-
-                        <textarea rows="3" cols="20" name="post-comment-content" id="post-comment-content" placeholder="<?php _e( 'Leave an update', 'disciple_tools' ); ?>" required aria-required="true"></textarea>
-                    </div>
-                    <input type="submit" value="<?php esc_attr_e( 'Submit', 'disciple_tools' ); ?>" class="button small">
-                </form>
-
-            </section>
-
-
-
-        </aside> <!-- end #aside -->
-
     </div> <!-- end #inner-content -->
-
 
 
 </div> <!-- end #content -->
