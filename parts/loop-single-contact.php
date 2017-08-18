@@ -12,6 +12,23 @@ function contact_details_status( $id, $verified, $invalid ){
 //var_dump($contact->fields["overall_status"]);
 ?>
 
+<?php if (isset( $contact->fields["requires_update"] ) && $contact->fields["requires_update"]["key"] === "yes"){ ?>
+<div class="callout alert">
+    <h4>This contact needs and update.</h4>
+    <p>It has been a while since this contact seen an update. Please do so.</p>
+</div>
+<?php } ?>
+<?php if (isset( $contact->fields["overall_status"] ) && $contact->fields["overall_status"]["key"] == "assigned"){ ?>
+<div id="accept-contact" class="callout alert">
+    <h4 style="display: inline-block">This contact has been assigned to you</h4>
+    <span class="float-right">
+        <button onclick="details_accept_contact(<?php echo get_the_ID() ?>, true)" class="button small ">Accept</button>
+        <button onclick="details_accept_contact(<?php echo get_the_ID() ?>, false)" class="button small ">Decline</button>
+    </span>
+</div>
+<?php } ?>
+
+
 <?php if (current_user_can( "assign_any_contact" )){?>
 <section class="bordered-box">
     <p class="section-header">Dispatch</p>
@@ -59,17 +76,17 @@ function contact_details_status( $id, $verified, $invalid ){
         <i class="fi-torso large"></i><span class="item-details-header"><?php the_title_attribute(); ?></span>
         <span class="button alert label">
             Status: <span id="overall-status"><?php echo esc_html( $contact->fields["overall_status"]["label"] ) ?></span>
-            (<span id="reason">
+            <span id="reason">
                 <?php
                 if ( $contact->fields["overall_status"]["key"] === "paused" &&
                     isset( $contact->fields["reason_paused"] )){
-                    echo $contact->fields["reason_paused"]["label"];
+                    echo '(' . $contact->fields["reason_paused"]["label"] . ')';
                 } else if ( $contact->fields["overall_status"]["key"] === "closed" &&
                     isset( $contact->fields["reason_closed"] )){
-                    echo $contact->fields["reason_closed"]["label"];
+                    echo '(' . $contact->fields["reason_closed"]["label"] . ')';
                 }
                 ?>
-            </span> )
+            </span>
         </span>
         <button data-open="pause-contact-modal" class="tiny button">Pause</button>
         <button data-open="close-contact-modal" class="tiny button">Close</button>

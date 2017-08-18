@@ -394,7 +394,7 @@ function close_contact(contactId){
       jQuery('#overall-status').text(closedLabel)
       jQuery("#confirm-close").toggleClass('loading')
       jQuery('#close-contact-modal').foundation('close')
-      jQuery('#reason').text(reasonClosed.find('option:selected').text())
+      jQuery('#reason').text(`(${reasonClosed.find('option:selected').text()})`)
       get_activity(contactId)
     })
 }
@@ -414,7 +414,7 @@ function pause_contact(contactId){
     .done(function (data) {
       let pausedLabel = wpApiSettings.contacts_custom_fields_settings.overall_status.default.paused;
       jQuery('#overall-status').text(pausedLabel)
-      jQuery('#reason').text(reasonPaused.find('option:selected').text())
+      jQuery('#reason').text(`(${reasonPaused.find('option:selected').text()})`)
       jQuery('#pause-contact-modal').foundation('close')
       get_activity(contactId)
       confirmPauseButton.toggleClass('loading')
@@ -445,4 +445,26 @@ function add_input_item(contactId, fieldId) {
     })
 
   }
+}
+
+function details_accept_contact(contactId, accept){
+  console.log(contactId)
+
+  let data = {accept:accept}
+  jQuery.ajax({
+    type: "POST",
+    data: JSON.stringify(data),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + "/accept",
+  })
+    .done(function (data) {
+      console.log(data)
+      jQuery('#accept-contact').hide()
+      if (data['overall_status']){
+        jQuery('#overall-status').text(data['overall_status'])
+      }
+    }).error(err=>{
+    console.log(err)
+  })
 }

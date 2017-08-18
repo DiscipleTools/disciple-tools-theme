@@ -1,6 +1,3 @@
-<?php if ((isset( $_POST['dt_contacts_noonce'] ) && wp_verify_nonce( $_POST['dt_contacts_noonce'], 'update_dt_contacts' ))) { dt_save_contact( $_POST ); } // Catch and save update info ?>
-<?php if ( ! empty( $_POST['response'] )) { dt_update_overall_status( $_POST ); } ?>
-<?php if ( ! empty( $_POST['comment_content'] )) { dt_update_required_update( $_POST ); } ?>
 <?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
 $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 if( !Disciple_Tools_Contacts::can_view_contact( get_the_ID() )){
