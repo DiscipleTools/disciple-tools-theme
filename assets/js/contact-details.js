@@ -113,6 +113,13 @@ var commentTemplate = _.template(`
     <p class="comment-bubble"> <%- comment %></p>
   </div>`
 )
+var activityTemplate = _.template(`
+  <div>
+    <div><span><strong><%- name %></strong></span> <span class="comment-date"> <%- date %> </span></div>
+    <!--<p class=""><strong><%- activity_key %> </strong> <%- value %></p>-->
+    <p class="comment-bubble"> <%- activity %></p>
+  </div>`
+)
 
 let comments = []
 let activity = []
@@ -213,11 +220,22 @@ function display_activity_comment(section) {
   }
   displayed = _.orderBy(displayed, "date", "desc")
   displayed.forEach(d=>{
-    let c = commentTemplate({
-      name: d.comment_author || d.name,
-      date:formatDate(d.date),
-      comment:d.object_note || d.comment_content
-    })
+    let c = ""
+    if (d.comment_content){
+      c = commentTemplate({
+        name: d.comment_author,
+        date:formatDate(d.date),
+        comment:d.object_note ?  `<strong>${d.meta_key}</strong>` : d.comment_content
+      })
+    } else {
+      c = activityTemplate({
+        name: d.name,
+        date:formatDate(d.date),
+        activity: d.object_note,
+        activity_key:d.meta_key,
+        value: d.meta_value
+      })
+    }
     commentsWrapper.append(c)
   })
 }
