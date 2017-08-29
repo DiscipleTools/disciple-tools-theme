@@ -87,17 +87,13 @@ function post_comment(contactId) {
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId +'/comment',
-    success: function(data, two, three) {
-      console.log(data)
+    success: function(data) {
       console.log(`added comment ${comment}`)
-      let commentsWrapper = $("#comments-wrapper")
       jQuery("#comment-input").val("")
       jQuery("#add-comment-button").toggleClass('loading')
-      commentsWrapper.prepend(commentTemplate({
-        date:data.comment.comment_date,
-        comment:data.comment.comment_content,
-        name:data.comment.comment_author
-      }))
+      data.comment.date = new Date(data.comment.comment_date)
+      comments.push(data.comment)
+      display_activity_comment()
     },
     error: function(err) {
       console.log("error")
@@ -110,16 +106,18 @@ function post_comment(contactId) {
 var commentTemplate = _.template(`
   <div>
     <div><span><strong><%- name %></strong></span> <span class="comment-date"> <%- date %> </span></div>
-    <p class="comment-bubble"> <%- comment %></p>
+    <div class="activity-text">
+    <% _.forEach(activity, function(a){ 
+        if (a.comment){ %>
+            <p class="comment-bubble"> <%- a.text %> </p>
+      <% } else { %> 
+            <p class="activity-bubble">  <%- a.text %> </p>
+    <%  } 
+    }); %>
+    </div>
   </div>`
 )
-var activityTemplate = _.template(`
-  <div>
-    <div><span><strong><%- name %></strong></span> <span class="comment-date"> <%- date %> </span></div>
-    <!--<p class=""><strong><%- activity_key %> </strong> <%- value %></p>-->
-    <p class="comment-bubble"> <%- activity %></p>
-  </div>`
-)
+
 
 let comments = []
 let activity = []
@@ -219,25 +217,38 @@ function display_activity_comment(section) {
     displayed = activity
   }
   displayed = _.orderBy(displayed, "date", "desc")
+  let array = []
+
   displayed.forEach(d=>{
-    let c = ""
-    if (d.comment_content){
-      c = commentTemplate({
-        name: d.comment_author,
-        date:formatDate(d.date),
-        comment:d.object_note ?  `<strong>${d.meta_key}</strong>` : d.comment_content
-      })
-    } else {
-      c = activityTemplate({
-        name: d.name,
-        date:formatDate(d.date),
-        activity: d.object_note,
-        activity_key:d.meta_key,
-        value: d.meta_value
-      })
+    let first = _.first(array)
+    let name = d.comment_author || d.name
+    let obj = {
+      name: name,
+      date: d.date,
+      text:d.object_note ||  d.comment_content,
+      comment: !!d.comment_content
     }
-    commentsWrapper.append(c)
+
+
+    let diff = (first ? first.date.getTime() : new Date().getTime()) - obj.date.getTime()
+    if (!first || (first.name === name && diff < 60 * 60 * 1000) ){
+      array.push(obj)
+    } else {
+      commentsWrapper.append(commentTemplate({
+        name: name,
+        date:formatDate(d.date),
+        activity: array
+      }))
+      array = [obj]
+    }
   })
+  if (array.length > 0){
+    commentsWrapper.append(commentTemplate({
+      name: name,
+      date:formatDate(_.first(displayed).date),
+      activity: array
+    }))
+  }
 }
 
 

@@ -295,33 +295,28 @@ img {
 }
 
 .comment-bubble {
-    //margin: 0 20px 20px 20px;
-    //position: relative;
-    //height: auto;
-    //background-color: lightyellow;
-    //padding: 1em;
-    //text-align: left;
-    //line-height: 1.5em;
     word-wrap: break-word;
-    //
-    //&:after{
-    //    content: ' ';
-    //    position: absolute;
-    //    width: 0;
-    //    height: 0;
-    //    left: -20px;
-    //    right: auto;
-    //    top: 0px;
-    //    bottom: auto;
-    //    border: 22px solid;
-    //    border-color: lightyellow transparent transparent transparent;
-    //}
+    margin: 0;
+
 }
 .comment-date {
     text-align: right;
     margin-right: 20px;
     font-size:10px;
 }
+
+.activity-text {
+    margin-left: 30px;
+}
+.activity-bubble {
+    word-wrap: break-word;
+    color:gray;
+    font-style: italic;
+    border-left: 3px solid gainsboro;
+    padding-left: 15px;
+    margin: 0;
+}
+
 
 .details-status-button {
     font-size: 14px;
