@@ -104,7 +104,7 @@ function post_comment(contactId) {
 }
 
 var commentTemplate = _.template(`
-  <div>
+  <div class="activity-block">
     <div><span><strong><%- name %></strong></span> <span class="comment-date"> <%- date %> </span></div>
     <div class="activity-text">
     <% _.forEach(activity, function(a){ 

@@ -296,7 +296,7 @@ img {
 
 .comment-bubble {
     word-wrap: break-word;
-    margin: 0 10px 10px 0;
+    margin: 10px 10px 0 0;
 
 }
 .comment-date {
@@ -305,6 +305,9 @@ img {
     font-size:10px;
 }
 
+.activity-block {
+    margin-top: 10px;
+}
 .activity-text {
     margin-left: 30px;
 }
