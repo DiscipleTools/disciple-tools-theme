@@ -23,7 +23,7 @@
         </div>
     </div>
     <div>
-        <textarea id="comment-input"></textarea>
+        <textarea dir="auto" id="comment-input"></textarea>
 
         <button id="add-comment-button" class="button" onclick="post_comment( <?php echo get_the_ID()?>)">Add</button>
     </div>

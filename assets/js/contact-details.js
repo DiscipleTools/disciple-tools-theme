@@ -109,7 +109,7 @@ var commentTemplate = _.template(`
     <div class="activity-text">
     <% _.forEach(activity, function(a){ 
         if (a.comment){ %>
-            <p class="comment-bubble"> <%- a.text %> </p>
+            <p dir="auto" class="comment-bubble"> <%- a.text %> </p>
       <% } else { %> 
             <p class="activity-bubble">  <%- a.text %> </p>
     <%  } 
