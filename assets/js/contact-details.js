@@ -244,7 +244,7 @@ function display_activity_comment(section) {
   })
   if (array.length > 0){
     commentsWrapper.append(commentTemplate({
-      name: name,
+      name: array[0].name,
       date:formatDate(_.first(displayed).date),
       activity: array
     }))
