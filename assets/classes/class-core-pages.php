@@ -7,7 +7,8 @@
  * @package dt_demo
  */
 
-if (!defined('ABSPATH')) exit; // Exit if accessed directly
+if (!defined( 'ABSPATH' )) { exit; // Exit if accessed directly
+}
 
 class Disciple_Tools_Add_Core_Pages
 {
@@ -18,7 +19,7 @@ class Disciple_Tools_Add_Core_Pages
      * @access  private
      * @since    1.0.0
      */
-    private static $_instance = NULL;
+    private static $_instance = null;
 
     /**
      * Access plugin instance. You can create further instances by calling
@@ -29,14 +30,15 @@ class Disciple_Tools_Add_Core_Pages
      */
     public static function instance()
     {
-        if (NULL === self::$_instance)
+        if (null === self::$_instance) {
             self::$_instance = new self;
+        }
         return self::$_instance;
     }
 
     // Constructor class
     public function __construct() {
-        if (get_option('dt_add_core_pages') !== '1') {
+        if (get_option( 'dt_add_core_pages' ) !== '1') {
         
             $this->add_core_pages();
         
@@ -45,7 +47,7 @@ class Disciple_Tools_Add_Core_Pages
             $deprecated = '';
             $autoload = false;
         
-            add_option($option, $value, $deprecated, $autoload);
+            add_option( $option, $value, $deprecated, $autoload );
         }
     }
 
@@ -59,7 +61,7 @@ class Disciple_Tools_Add_Core_Pages
             require_once( ABSPATH . 'wp-admin/includes/post.php' );
         }
 
-        if ( TRUE == get_post_status( 2 ) ) {	wp_delete_post(2);  } // Delete default page
+        if ( true == get_post_status( 2 ) ) {    wp_delete_post( 2 );  } // Delete default page
 
         $postarr = array(
             array(
@@ -105,11 +107,11 @@ class Disciple_Tools_Add_Core_Pages
         );
 
         foreach ($postarr as $item) {
-            if (! post_exists ($item['post_title']) ) {
+            if (! post_exists( $item['post_title'] ) ) {
                 wp_insert_post( $item, false );
             } else {
-                $page = get_page_by_title($item['post_title']);
-                wp_delete_post($page->ID);
+                $page = get_page_by_title( $item['post_title'] );
+                wp_delete_post( $page->ID );
                 wp_insert_post( $item, false );
             }
         }
