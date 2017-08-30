@@ -30,6 +30,7 @@
     "merge-stream": "^1.0.1"
   },
   "dependencies": {
-    "babel-preset-stage-2": "^6.24.1"
+    "babel-preset-stage-2": "^6.24.1",
+    "foundation-sites": "^6.4.3"
   }
 }

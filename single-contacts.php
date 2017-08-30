@@ -11,24 +11,37 @@ $connection_fields = ["groups" => $groups, "contacts" => $contacts->posts];
 <?php //var_dump($contact_fields['quick_button_no_answer'])?>
 <?php //var_dump($contact->fields["quick_button_no_answer"] ?? "test")?>
 
+<div data-sticky-container>
+    <nav aria-label="You are here:" role="navigation"
+         data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
+         class="second-bar hide-for-small-only">
+
+        <div class="grid-x">
+            <div class="small-offset-4 cell small-4 center-items">
+                <ul class="breadcrumbs">
+
+                    <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
+                    <li><a href="<?php echo home_url( '/' ); ?>contacts/">Contacts</a></li>
+                    <li>
+                        <span class="show-for-sr">Current: </span> <?php the_title_attribute(); ?>
+                    </li>
+                </ul>
+            </div>
+            <div class="cell small-4 center-items" style="text-align: end;">
+
+                    <img src="<?php echo get_template_directory_uri() . "/assets/images/share.svg" ?>"> <a>Share</a>
+            </div>
+        </div>
+    </nav>
+</div>
 <div id="errors"> </div>
 
+    <!-- Breadcrumb Navigation-->
     <div id="content">
 
-        <!-- Breadcrumb Navigation-->
-        <nav aria-label="You are here:" role="navigation" class="second-bar hide-for-small-only">
-            <ul class="breadcrumbs">
+        <div id="inner-content" class="grid-x grid-margin-x">
 
-                <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
-                <li><a href="<?php echo home_url( '/' ); ?>contacts/">Contacts</a></li>
-                <li>
-                    <span class="show-for-sr">Current: </span> <?php the_title_attribute(); ?>
-                </li>
-            </ul>
-        </nav>
-        <div id="inner-content">
-
-            <section class="hide-for-large small-12 columns">
+            <section class="hide-for-large small-12 cell">
                 <div class="bordered-box">
                     <div class="contact-quick-buttons">
                         <?php foreach( $contact_fields as $field => $val ){
@@ -54,17 +67,15 @@ $connection_fields = ["groups" => $groups, "contacts" => $contacts->posts];
                 </div>
             </section>
 
-            <main id="main" class="large-7 medium-12 small-12 columns" role="main" style="padding:0">
+            <main id="main" class="large-7 medium-12 small-12 cell grid-x grid-margin-x" role="main" style="padding:0">
 
-                <section id="contact-details" class="medium-12 columns">
+                <section id="contact-details" class="medium-12 cell">
                     <?php get_template_part( 'parts/loop', 'single-contact' ); ?>
                 </section>
 
-                <section id="relationships" class="medium-6 columns">
+                <section id="relationships" class="medium-6 cell">
                     <div class="bordered-box">
                         <button class=" float-right" onclick="edit_connections()"><i class="fi-pencil"></i> Edit</button>
-
-
                         <span class="section-header">Groups</span>
                         <ul class="groups-list">
                             <?php
@@ -141,7 +152,7 @@ $connection_fields = ["groups" => $groups, "contacts" => $contacts->posts];
                     </div>
                 </section>
 
-                <section id="faith" class="medium-6 columns">
+                <section id="faith" class="medium-6 cell">
                     <div class="bordered-box">
                         <label class="section-header">Progress</label>
                         <strong>Seeker Path</strong>
@@ -164,7 +175,7 @@ $connection_fields = ["groups" => $groups, "contacts" => $contacts->posts];
                             </div>
                         </div>
                         <strong>Faith Milestones</strong>
-                        <div class="small button-group">
+                        <div class="small button-group" style="display: inline-block">
 
                             <?php foreach($contact_fields as $field => $val): ?>
                                 <?php
@@ -183,7 +194,7 @@ $connection_fields = ["groups" => $groups, "contacts" => $contacts->posts];
                     </div>
                 </section>
 
-                <section id="availability" class="medium-6 columns" style="display: none">
+                <section id="availability" class="medium-6 cell" style="display: none">
                     <div class="bordered-box">
                         <label class="section-header">Availability</label>
                         <div class="row" style="display: flex; justify-content: center">
@@ -236,7 +247,7 @@ $connection_fields = ["groups" => $groups, "contacts" => $contacts->posts];
 
             </main> <!-- end #main -->
 
-            <aside class="large-5 medium-12 small-12 columns">
+            <aside class="large-5 medium-12 small-12 cell">
                 <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
             </aside>
 

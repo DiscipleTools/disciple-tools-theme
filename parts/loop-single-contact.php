@@ -32,8 +32,8 @@ function contact_details_status( $id, $verified, $invalid ){
 <?php if (current_user_can( "assign_any_contact" )){?>
 <section class="bordered-box">
     <p class="section-header">Dispatch</p>
-    <div class="row">
-        <div class="medium-6 columns">
+    <div class="grid-x grid-margin-x">
+        <div class="medium-6 cell">
             <strong>Assigned To:</strong>
             <select class="assigned_to_select" id="dispatcher_assigned_to" onchange="save_field(<?php echo get_the_ID();?>, 'assigned_to', 'dispatcher_assigned_to')">
                 <option value="0"></option>
@@ -49,7 +49,7 @@ function contact_details_status( $id, $verified, $invalid ){
                 ?>
             </select>
         </div>
-        <div class="medium-6 columns">
+        <div class="medium-6 cell">
             <strong>Set Unassignable Reason:</strong>
             <select id="reason_unassignable" onchange="save_field(<?php echo get_the_ID();?>, 'reason_unassignable')">
                 <?php
@@ -72,7 +72,7 @@ function contact_details_status( $id, $verified, $invalid ){
 <section class="bordered-box">
     <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
 
-    <div class="row item-details-header-row">
+    <div class=" item-details-header-row">
         <i class="fi-torso large"></i><span class="item-details-header"><?php the_title_attribute(); ?></span>
         <span class="button alert label">
             Status: <span id="overall-status"><?php echo esc_html( $contact->fields["overall_status"]["label"] ) ?></span>
@@ -142,9 +142,9 @@ function contact_details_status( $id, $verified, $invalid ){
     </div>
 
     <div class="display-fields">
-        <div class="row">
+        <div class="grid-x">
 
-            <div class="medium-4 columns">
+            <div class="medium-4 cell">
                 <strong><?php echo $channel_list["phone"]["label"] ?></strong>
                 <i class="fa fa-plus"></i>
                 <ul>
@@ -170,7 +170,7 @@ function contact_details_status( $id, $verified, $invalid ){
                     ?>
                 </ul>
             </div>
-            <div class="medium-4 columns">
+            <div class="medium-4 cell">
                 <strong>Assigned To</strong>
                 <ul>
                     <li id="assigned-to">
@@ -192,7 +192,7 @@ function contact_details_status( $id, $verified, $invalid ){
                 </ul>
 
             </div>
-            <div class="medium-4 columns">
+            <div class="medium-4 cell">
                 <?php
                 foreach($contact->fields as $field_key => $values){
                     if ( strpos( $field_key, "contact_" ) === 0 &&
@@ -220,10 +220,10 @@ function contact_details_status( $id, $verified, $invalid ){
             </div>
         </div>
 
-        <div class="row">
+        <div class="grid-x">
             <div id="show-more-content" data-toggler
                  data-animate="fade-in fade-out" aria-expanded="false" style="display:none;">
-                <div class="medium-4 columns">
+                <div class="medium-4 cell">
                     <strong>Address</strong>
                     <ul>
                         <?php
@@ -246,9 +246,9 @@ function contact_details_status( $id, $verified, $invalid ){
         </div>
     </div>
     <div class="edit-fields" style="display: none">
-        <div class="row">
+        <div class="grid-x">
             <!-- Contact information. Phone, email, etc -->
-            <div class="medium-6 columns">
+            <div class="medium-6 cell">
                 <?php
                 foreach( $channel_list as $channel_key => $channel_value ){
                     $field_key = "contact_" . $channel_key;
@@ -316,7 +316,7 @@ function contact_details_status( $id, $verified, $invalid ){
                 ?>
             </div>
             <!-- Contact Fields. Assigned to, location, etc -->
-            <div class="medium-6 columns">
+            <div class="medium-6 cell">
                 <strong>Assigned To</strong>
                 <select class="assigned_to_select" id="assigned_to" onchange="save_field(<?php echo get_the_ID();?>, 'assigned_to', 'assigned_to')">
                     <option value="0"></option>
