@@ -48,12 +48,12 @@ function dt_register_required_plugins() {
             'is_callable'       => 'Psalm_119',
         ),
         array(
-            'name'               => 'Disciple Tools - Training',
-            'slug'               => 'disciple-tools-training',
-            'source'             => 'https://github.com/ChasmSolutions/disciple-tools-training/archive/master.zip',
+            'name'               => 'Disciple Tools Demo Plugin',
+            'slug'               => 'disciple-tools-demo-plugin',
+            'source'             => 'https://github.com/ChasmSolutions/disciple-tools-demo-plugin/archive/master.zip',
             'required'           => false,
             'version'            => '0.1',
-            'is_callable'        => 'dt_training',
+            'is_callable'        => 'dt_demo',
         ),
         array(
             'name'               => 'Disciple Tools',
