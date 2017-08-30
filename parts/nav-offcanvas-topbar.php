@@ -2,7 +2,7 @@
 	 and a topbar for medium-up -->
 
 <div data-sticky-container>
-    <div class="top-bar" data-sticky data-options="marginTop:0;" style="width:100%" data-top-anchor="1" data-btm-anchor="content:bottom">
+    <div class="top-bar" id="top-bar-menu" data-sticky data-options="marginTop:0;" style="width:100%" data-top-anchor="1" data-btm-anchor="content:bottom">
 
         <div class="top-bar-left">
             <ul class="menu">
@@ -26,6 +26,4 @@
             </ul>
         </div>
     </div>
-
-
 </div>
