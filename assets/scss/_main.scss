@@ -28,6 +28,12 @@ GENERAL STYLES
 body {
     background-color: #e2e2e2;
 }
+
+footer {
+    .copyright {
+        padding-left: 1em;
+    }
+}
 /*********************
 LINK STYLES
 *********************/
@@ -163,6 +169,7 @@ POSTS & CONTENT STYLES
         }
     }
 }
+
 
 .bordered-box {
     border: 1px solid $light-gray;
