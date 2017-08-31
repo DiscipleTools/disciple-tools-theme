@@ -5,7 +5,9 @@ var gulp  = require('gulp'),
   browserSync = require('browser-sync').create(),
   filter = require('gulp-filter'),
   plugin = require('gulp-load-plugins')(),
-  rename = require('gulp-rename');
+  rename = require('gulp-rename'),
+  merge = require('merge-stream');
+  ;
 
 // GULP VARIABLES
 // Modify these variables to match your project needs
@@ -87,6 +89,35 @@ const JSHINT_CONFIG = {
   }
 };
 
+gulp.task('site-js', function() {
+  var scriptsPipeline = gulp.src([
+    // Grab your custom scripts
+    './assets/js/scripts/*.js'
+  ])
+
+    .pipe(plugin.plumber())
+    .pipe(plugin.sourcemaps.init())
+    .pipe(plugin.jshint())
+    .pipe(plugin.jshint.reporter('jshint-stylish'))
+    .pipe(plugin.concat('scripts.js'))
+    .pipe(plugin.uglify())
+    .pipe(rename({suffix: '.min'}))
+    .pipe(plugin.sourcemaps.write('.')) // Creates sourcemap for minified JS
+    .pipe(gulp.dest('./assets/js'))
+  var footerPipeline = gulp.src([
+    // TODO: it may be a good idea to not generate a separate file for footer-scripts.js
+    './assets/js/footer-scripts.js',
+  ])
+    .pipe(plugin.sourcemaps.init())
+    .pipe(plugin.jshint())
+    .pipe(plugin.jshint.reporter('jshint-stylish'))
+    .pipe(plugin.uglify())
+    .pipe(rename({suffix: '.min'}))
+    .pipe(plugin.sourcemaps.write('.'))
+    .pipe(gulp.dest('./assets/js'))
+  return merge(scriptsPipeline, footerPipeline);
+});
+
 // GULP FUNCTIONS
 // JSHint, concat, and minify JavaScript
 gulp.task('scripts', function() {
@@ -111,6 +142,7 @@ gulp.task('scripts', function() {
     .pipe(CUSTOMFILTER.restore)
     .pipe(plugin.concat('scripts.js'))
     .pipe(plugin.uglify())
+    .pipe(rename({suffix: '.min'}))
     .pipe(plugin.sourcemaps.write('.')) // Creates sourcemap for minified JS
     .pipe(gulp.dest(ASSETS.scripts))
 });
@@ -190,4 +222,4 @@ gulp.task('watch', function() {
 });
 
 // Run styles, scripts and foundation-js
-gulp.task('default', gulp.parallel('styles', 'scripts', 'images'));
+gulp.task('default', gulp.parallel('styles', 'site-js', 'scripts', 'images'));
