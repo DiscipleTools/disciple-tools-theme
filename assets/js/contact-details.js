@@ -236,7 +236,7 @@ function display_activity_comment(section) {
     } else {
       commentsWrapper.append(commentTemplate({
         name: name,
-        date:formatDate(d.date),
+        date:formatDate(_.first(array).date),
         activity: array
       }))
       array = [obj]
@@ -245,7 +245,7 @@ function display_activity_comment(section) {
   if (array.length > 0){
     commentsWrapper.append(commentTemplate({
       name: array[0].name,
-      date:formatDate(_.first(displayed).date),
+      date:formatDate(_.first(array).date),
       activity: array
     }))
   }
