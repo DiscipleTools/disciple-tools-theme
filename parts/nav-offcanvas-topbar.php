@@ -6,7 +6,11 @@
 
         <div class="top-bar-left">
             <ul class="menu">
-                <li data-toggle="off-canvas"><i class="fi-list"></i></li>
+                <li data-toggle="off-canvas" class="center-items">
+                    <button>
+                    <img src="<?php echo get_template_directory_uri() . "/assets/images/hamburger.svg" ?>">
+                    </button>
+                </li>
                 <?php disciple_tools_top_nav_desktop(); ?>
             </ul>
         </div>
