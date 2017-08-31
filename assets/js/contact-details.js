@@ -497,3 +497,8 @@ function details_accept_contact(contactId, accept){
     console.log(err)
   })
 }
+
+
+function share_contact(){
+
+}

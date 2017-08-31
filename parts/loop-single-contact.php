@@ -359,5 +359,41 @@ function contact_details_status( $id, $verified, $invalid ){
     </div>
 
 
+
+
+    <div class="reveal" id="share-contact-modal" data-reveal>
+
+        <p class="lead">Share settings</p>
+
+        <h6>Already sharing with</h6>
+
+        <ul>
+            <?php
+            foreach( ["contact1", "contact2", "contact3"] as $contact ) {
+                ?>
+                <li> <?php echo $contact?></li>
+            <?php } ?>
+        </ul>
+
+        <p>
+            <label>Share this contact with the following email address:
+            <input type="text" placeholder="Enter an email address">
+            </label>
+        </p>
+
+        <div class="grid-x">
+            <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                Cancel
+            </button>
+            <button class="button" type="button" id="confirm-pause" onclick="share_contact(<?php echo get_the_ID()?>)">
+                Share
+            </button>
+            <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+        </div>
+    </div>
+
 </section> <!-- end article -->
 

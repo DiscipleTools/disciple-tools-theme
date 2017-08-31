@@ -28,9 +28,11 @@ $connection_fields = ["groups" => $groups, "contacts" => $contacts->posts];
                 </ul>
             </div>
             <div class="cell small-4 align-right grid-x">
-                <div class="cell shrink center-items">
-                    <img src="<?php echo get_template_directory_uri() . "/assets/images/share.svg" ?>">
-                    <span style="margin:0 10px 0 10px">Share</span>
+                <div class="cell shrink ">
+                    <button data-open="share-contact-modal" class="center-items">
+                        <img src="<?php echo get_template_directory_uri() . "/assets/images/share.svg" ?>">
+                        <span style="margin:0 10px 0 10px">Share</span>
+                    </button>
                 </div>
             </div>
         </div>
