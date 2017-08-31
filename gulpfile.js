@@ -4,8 +4,8 @@ var gulp  = require('gulp'),
   gutil = require('gulp-util'),
   browserSync = require('browser-sync').create(),
   filter = require('gulp-filter'),
-  plugin = require('gulp-load-plugins')();
-
+  plugin = require('gulp-load-plugins')(),
+  rename = require('gulp-rename');
 
 // GULP VARIABLES
 // Modify these variables to match your project needs
@@ -64,7 +64,7 @@ const SOURCE = {
   ],
 
   // Scss files will be concantonated, minified if ran with --production
-  styles: './assets/scss/**/*.scss)',
+  styles: 'assets/scss/**/*.scss',
 
   // Images placed here will be optimized
   images: 'assets/images/**/*',
@@ -128,6 +128,7 @@ gulp.task('styles', function() {
       browsers: ['last 2 versions'],
       cascade: false
     }))
+    .pipe(rename({suffix: '.min'}))
     .pipe(plugin.cssnano())
     .pipe(plugin.sourcemaps.write('.'))
     .pipe(gulp.dest(ASSETS.styles))
