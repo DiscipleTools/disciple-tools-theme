@@ -64,7 +64,7 @@ const SOURCE = {
   ],
 
   // Scss files will be concantonated, minified if ran with --production
-  styles: 'assets/styles/scss/**/*.scss',
+  styles: './assets/scss/**/*.scss)',
 
   // Images placed here will be optimized
   images: 'assets/images/**/*',
@@ -73,7 +73,7 @@ const SOURCE = {
 };
 
 const ASSETS = {
-  styles: 'assets/styles/',
+  styles: 'assets/css/',
   scripts: 'assets/scripts/',
   images: 'assets/images/',
   all: 'assets/'
