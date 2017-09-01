@@ -57,9 +57,9 @@ class Disciple_Tools_Add_Core_Pages
      */
     protected function add_core_pages ()
     {
-        if ( ! is_admin() ) {
-            require_once( ABSPATH . 'wp-admin/includes/post.php' );
-        }
+        
+        require_once( ABSPATH . 'wp-admin/includes/post.php' );
+        
 
         if ( true == get_post_status( 2 ) ) {    wp_delete_post( 2 );  } // Delete default page
 
