@@ -94,6 +94,11 @@ function contact_details_status( $id, $verified, $invalid ){
         </span>
         <button data-open="pause-contact-modal" class="tiny button">Pause</button>
         <button data-open="close-contact-modal" class="tiny button">Close</button>
+        <button id="return-active" onclick="make_active( <?php echo get_the_ID() ?> )"
+                style="display: <?php echo ($contact->fields["overall_status"]["key"] === "paused" || $contact->fields["overall_status"]["key"] === "closed") ? "" : "none" ?>"
+                class="tiny button">
+            Return to Active
+        </button>
         <button class=" float-right" onclick="edit_fields()"><i class="fi-pencil"></i> Edit</button>
     </div>
 

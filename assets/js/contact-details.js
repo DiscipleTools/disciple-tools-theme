@@ -425,6 +425,7 @@ function close_contact(contactId){
       jQuery('#close-contact-modal').foundation('close')
       jQuery('#reason').text(`(${reasonClosed.find('option:selected').text()})`)
       get_activity(contactId)
+      jQuery('#return-active').show()
     })
 }
 
@@ -445,6 +446,7 @@ function pause_contact(contactId){
       jQuery('#overall-status').text(pausedLabel)
       jQuery('#reason').text(`(${reasonPaused.find('option:selected').text()})`)
       jQuery('#pause-contact-modal').foundation('close')
+      jQuery('#return-active').show()
       get_activity(contactId)
       confirmPauseButton.toggleClass('loading')
     })
@@ -452,7 +454,7 @@ function pause_contact(contactId){
 
 
 function make_active(contactId) {
-  let data = {overall_status:"accepted", "reason_paused":reasonPaused.val()}
+  let data = {overall_status:"active"}
 
   jQuery.ajax({
     type: "POST",
@@ -462,12 +464,11 @@ function make_active(contactId) {
     url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId,
   })
     .done(function (data) {
-      let pausedLabel = wpApiSettings.contacts_custom_fields_settings.overall_status.default.paused;
-      jQuery('#overall-status').text(pausedLabel)
-      jQuery('#reason').text(`(${reasonPaused.find('option:selected').text()})`)
-      jQuery('#pause-contact-modal').foundation('close')
+      let activeLabel = wpApiSettings.contacts_custom_fields_settings.overall_status.default.active;
+      jQuery('#return-active').toggle()
+      jQuery('#overall-status').text(activeLabel || "Active")
+      jQuery('#reason').text(``)
       get_activity(contactId)
-      confirmPauseButton.toggleClass('loading')
     })
 }
 
