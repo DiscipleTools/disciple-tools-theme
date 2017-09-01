@@ -9,9 +9,7 @@ $contacts = Disciple_Tools_Contacts::get_viewable_contacts( true );
 $connection_fields = ["groups" => $groups, "contacts" => $contacts->posts];
 $shared_with = Disciple_Tools_Contacts::get_shared_with( get_the_id() );
 $users = Disciple_Tools_Contacts::get_assignable_users( get_the_ID() );
- get_header(); ?>
-<?php //var_dump($contact_fields['quick_button_no_answer'])?>
-<?php //var_dump($contact->fields["quick_button_no_answer"] ?? "test")?>
+get_header(); ?>
 
 <div data-sticky-container>
     <nav aria-label="You are here:" role="navigation"
@@ -76,7 +74,7 @@ $users = Disciple_Tools_Contacts::get_assignable_users( get_the_ID() );
             <main id="main" class="large-7 medium-12 small-12 cell grid-x grid-margin-x" role="main" style="padding:0">
 
                 <section id="contact-details" class="medium-12 cell">
-                    <?php get_template_part( 'parts/loop', 'single-contact' ); ?>
+                    <?php get_template_part( 'parts/contact', 'details' ); ?>
                 </section>
 
                 <section id="relationships" class="medium-6 cell">
