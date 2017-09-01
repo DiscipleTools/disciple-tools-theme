@@ -76,6 +76,7 @@
       <td><%- assigned_to ? assigned_to.name : "" %></td>
       <td><%- locations.join(", ") %></td>
       <td><%= group_links %></td>
+      <td><%= last_modified %></td>
     </tr>`);
     const ccfs = wpApiSettings.contacts_custom_fields_settings;
     _.forEach(contacts, function(contact, index) {
@@ -139,7 +140,15 @@
           .css("float", "right");
 
         $(".dataTables_info").css("display", "inline");
-      }
+      },
+      columnDefs: [
+        {
+          // Hide the last modified column, it's only used for sorting
+          targets: [7],
+          visible: false,
+          searchable: false,
+        },
+      ],
     });
   }
 

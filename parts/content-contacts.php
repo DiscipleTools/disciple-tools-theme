@@ -12,6 +12,7 @@ declare(strict_types=1);
             <button class="js-sort-by button small hollow" data-column-index="4"><?php _e( "Assigned to" ); ?></button>
             <button class="js-sort-by button small hollow" data-column-index="5"><?php _e( "Location" ); ?></button>
             <button class="js-sort-by button small hollow" data-column-index="6"><?php _e( "Group" ); ?></button>
+            <button class="js-sort-by button small hollow" data-column-index="7"><?php _e( "Last modified" ); ?></button>
         </div>
         <button class="close-button" data-close aria-label="<?php _e( "Close" ); ?>" type="button"><!--
             --><span aria-hidden="true">&times;</span><!--
@@ -27,6 +28,7 @@ declare(strict_types=1);
             <th><?php _e( "Assigned to" ); ?></th>
             <th><?php _e( "Location" ); ?></th>
             <th><?php _e( "Group" ); ?></th>
+            <!--<th><?php _e( "Last modified" ); ?></th>-->
         </tr></thead>
         <tbody>
             <tr class="js-list-contacts-loading"><td colspan=7><?php _e( "Loading..." ); ?></td></tr>
