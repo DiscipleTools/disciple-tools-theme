@@ -2,6 +2,7 @@
 $channel_list = Disciple_Tools_Contacts::get_channel_list();
 $users = Disciple_Tools_Contacts::get_assignable_users( get_the_ID() );
 $locations = Disciple_Tools_Locations::get_locations();
+$current_user = wp_get_current_user();
 $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 function contact_details_status( $id, $verified, $invalid ){
     $buttons = '<img id="'. $id .'-verified" class="details-status" style="display:' . $verified . '" src="'.get_template_directory_uri() . '/assets/images/verified.svg"/>';
@@ -18,7 +19,10 @@ function contact_details_status( $id, $verified, $invalid ){
     <p>It has been a while since this contact seen an update. Please do so.</p>
 </div>
 <?php } ?>
-<?php if (isset( $contact->fields["overall_status"] ) && $contact->fields["overall_status"]["key"] == "assigned"){ ?>
+<?php if (isset( $contact->fields["overall_status"] ) &&
+    $contact->fields["overall_status"]["key"] == "assigned" &&
+    $contact->fields["assigned_to"]['id'] == $current_user->ID
+) { ?>
 <div id="accept-contact" class="callout alert">
     <h4 style="display: inline-block">This contact has been assigned to you</h4>
     <span class="float-right">
@@ -355,43 +359,6 @@ function contact_details_status( $id, $verified, $invalid ){
                     ?>
                 </select>
             </div>
-        </div>
-    </div>
-
-
-
-
-    <div class="reveal" id="share-contact-modal" data-reveal>
-
-        <p class="lead">Share settings</p>
-
-        <h6>Already sharing with</h6>
-
-        <ul>
-            <?php
-            foreach( ["contact1", "contact2", "contact3"] as $contact ) {
-                ?>
-                <li> <?php echo $contact?></li>
-            <?php } ?>
-        </ul>
-
-        <p>
-            <label>Share this contact with the following email address:
-            <input type="text" placeholder="Enter an email address">
-            </label>
-        </p>
-
-        <div class="grid-x">
-            <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                Cancel
-            </button>
-            <button class="button" type="button" id="confirm-pause" onclick="share_contact(<?php echo get_the_ID()?>)">
-                Share
-            </button>
-            <button class="close-button" data-close aria-label="Close modal" type="button">
-                <span aria-hidden="true">&times;</span>
-            </button>
-
         </div>
     </div>
 

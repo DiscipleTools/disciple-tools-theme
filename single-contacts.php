@@ -7,6 +7,8 @@ $groups = Disciple_Tools_Groups::get_groups();
 //@todo get restricted options
 $contacts = Disciple_Tools_Contacts::get_viewable_contacts( true );
 $connection_fields = ["groups" => $groups, "contacts" => $contacts->posts];
+$shared_with = Disciple_Tools_Contacts::get_shared_with( get_the_id() );
+$users = Disciple_Tools_Contacts::get_assignable_users( get_the_ID() );
  get_header(); ?>
 <?php //var_dump($contact_fields['quick_button_no_answer'])?>
 <?php //var_dump($contact->fields["quick_button_no_answer"] ?? "test")?>
@@ -258,5 +260,54 @@ $connection_fields = ["groups" => $groups, "contacts" => $contacts->posts];
         </div> <!-- end #inner-content -->
 
     </div> <!-- end #content -->
+
+
+<div class="reveal" id="share-contact-modal" data-reveal>
+
+    <p class="lead">Share settings</p>
+    <h6>Already sharing with</h6>
+
+    <ul id="shared-with-list">
+        <?php
+        foreach( ["test1"] as $contact ) { ?>
+            <li class="<?php echo $contact ?>"> <?php echo $contact?>
+                <button class="details-remove-button"
+                        onclick="remove_shared(<?php echo get_the_ID()?>,  '<?php echo $contact?>')">
+                    Unshare
+                </button>
+            </li>
+        <?php } ?>
+    </ul>
+
+    <p>
+        <label>Share this contact with the following user:
+            <select class="share-with-select" id="share-with">
+                <option value="0"></option>
+                <?php
+                foreach( $users as $user ){
+                    echo '<option value="' . $user->ID. '">' . $user->display_name . '</option>';
+                }
+                ?>
+            </select>
+        </label>
+    </p>
+
+    <div class="grid-x">
+        <button class="button button-cancel clear"
+                data-close aria-label="Close reveal" type="button">
+            Cancel
+        </button>
+        <button class="button" type="button"
+                id="confirm-pause"
+                onclick="add_shared(<?php echo get_the_ID();?>, 'share-with')">
+            Share
+        </button>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+
+
 
 <?php get_footer(); ?>

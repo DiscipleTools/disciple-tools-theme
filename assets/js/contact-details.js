@@ -450,6 +450,27 @@ function pause_contact(contactId){
     })
 }
 
+
+function make_active(contactId) {
+  let data = {overall_status:"accepted", "reason_paused":reasonPaused.val()}
+
+  jQuery.ajax({
+    type: "POST",
+    data: JSON.stringify(data),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId,
+  })
+    .done(function (data) {
+      let pausedLabel = wpApiSettings.contacts_custom_fields_settings.overall_status.default.paused;
+      jQuery('#overall-status').text(pausedLabel)
+      jQuery('#reason').text(`(${reasonPaused.find('option:selected').text()})`)
+      jQuery('#pause-contact-modal').foundation('close')
+      get_activity(contactId)
+      confirmPauseButton.toggleClass('loading')
+    })
+}
+
 /***
  * Connections
  */
@@ -499,6 +520,36 @@ function details_accept_contact(contactId, accept){
 }
 
 
-function share_contact(){
+function add_shared(contactId, selectId){
+  let select = jQuery(`#${selectId}`)
+  console.log(select.val())
+  jQuery.ajax({
+    type: "POST",
+    data: JSON.stringify({user_id:select.val()}),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + "/add_shared",
+  })
+    .done(function (data) {
+      console.log(data)
+    }).error(err=>{
+      console.log(err)
+    })
+}
 
+
+function remove_shared(contactId, user_id){
+  jQuery.ajax({
+    type: "POST",
+    data: JSON.stringify({user_id:user_id}),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + "/remove_shared",
+  })
+    .done(function (data) {
+      console.log(data)
+      jQuery(`#share-with-list-list .${user_id}`).remove()
+    }).error(err=>{
+      console.log(err)
+    })
 }
