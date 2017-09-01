@@ -142,6 +142,9 @@
         $(".dataTables_info").css("display", "inline");
       },
       columnDefs: [
+        { targets: [0], width: "2%" },
+        { targets: [1], width: "30%", },
+        { targets: [2], width: "5%", },
         {
           // Hide the last modified column, it's only used for sorting
           targets: [7],
@@ -150,6 +153,7 @@
         },
       ],
       order: [[7, 'desc']],
+      autoWidth: false,
     });
   }
 
