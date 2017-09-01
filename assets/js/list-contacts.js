@@ -27,7 +27,6 @@
         });
         $(".js-sort-by").on("click", function() {
           sortBy(parseInt($(this).data("column-index")));
-          $(".js-list-contacts-sort-by-modal").foundation('close');
         });
       });
     },
@@ -51,6 +50,7 @@
     }
     dataTable.order([[columnIndex, ascending ? "asc" : "desc"]]);
     dataTable.draw();
+    updateSortModal();
   }
 
 
@@ -149,10 +149,16 @@
           searchable: false,
         },
       ],
+      order: [[7, 'desc']],
     });
   }
 
   function showSortModal() {
+    updateSortModal();
+    $(".js-list-contacts-sort-by-modal").foundation('open');
+  }
+
+  function updateSortModal() {
     const currentOrder = dataTable.order();
     const templateDirectoryUri = wpApiSettings.template_directory_uri;
     $(".js-sort-by").each(function() {
@@ -169,9 +175,7 @@
         .css("background-repeat", "no-repeat")
         .css("padding-right", "18px");
     });
-    $(".js-list-contacts-sort-by-modal").foundation('open');
   }
-
 
   function setUpFilterPane() {
     if (! $(".js-list-contacts").length) {
