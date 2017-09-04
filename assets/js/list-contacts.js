@@ -25,6 +25,9 @@
         $(".js-contacts-my-contacts").on("click", function() {
           showMyContacts();
         });
+        $(".js-sort-by").on("click", function() {
+          sortBy(parseInt($(this).data("column-index")));
+        });
       });
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -36,6 +39,19 @@
       });
     },
   });
+
+  function sortBy(columnIndex) {
+    const currentOrder = dataTable.order();
+    let ascending = true;
+    if (currentOrder[0][0] === columnIndex) {
+      if (currentOrder[0][1] === "asc") {
+        ascending = false;
+      }
+    }
+    dataTable.order([[columnIndex, ascending ? "asc" : "desc"]]);
+    dataTable.draw();
+    updateSortModal();
+  }
 
 
   function displayContacts() {
@@ -60,6 +76,7 @@
       <td><%- assigned_to ? assigned_to.name : "" %></td>
       <td><%- locations.join(", ") %></td>
       <td><%= group_links %></td>
+      <td><%= last_modified %></td>
     </tr>`);
     const ccfs = wpApiSettings.contacts_custom_fields_settings;
     _.forEach(contacts, function(contact, index) {
@@ -102,10 +119,67 @@
       responsive: true,
       iDisplayLength: 100,
       bLengthChange: false,
-      sDom: 'firtlp<"clearfix">'
+      sDom: 'fir<"js-list-contacts-toolbar">tlp<"clearfix">',
+        /* f: filtering input
+         * i: information
+         * r: processing
+         * <"js-list-contacts-toolbar"> div with class toolbar
+         * t: table
+         * l: length changing
+         * p: pagination
+         * <"clearfix"> div with class clearfix
+         */
+      initComplete: function() {
+        $(".js-list-contacts-toolbar")
+          .append(
+            $('<button class="button small">Sort by...</button>')
+              .css("margin-bottom", "0")
+              .on("click", showSortModal)
+          )
+          .css("margin", "0 10px")
+          .css("float", "right");
+
+        $(".dataTables_info").css("display", "inline");
+      },
+      columnDefs: [
+        { targets: [0], width: "2%" },
+        { targets: [1], width: "30%", },
+        { targets: [2], width: "5%", },
+        {
+          // Hide the last modified column, it's only used for sorting
+          targets: [7],
+          visible: false,
+          searchable: false,
+        },
+      ],
+      order: [[7, 'desc']],
+      autoWidth: false,
     });
   }
 
+  function showSortModal() {
+    updateSortModal();
+    $(".js-list-contacts-sort-by-modal").foundation('open');
+  }
+
+  function updateSortModal() {
+    const currentOrder = dataTable.order();
+    const templateDirectoryUri = wpApiSettings.template_directory_uri;
+    $(".js-sort-by").each(function() {
+      let sort = 'both';
+      if (currentOrder[0][0] === parseInt($(this).data("column-index"))) {
+        sort = currentOrder[0][1];
+      }
+      $(this)
+        .css(
+          "background-image",
+          `url("${templateDirectoryUri}/vendor/DataTables/DataTables-1.10.15/images/sort_${sort}.png")`
+        )
+        .css("background-position", "100% 50%")
+        .css("background-repeat", "no-repeat")
+        .css("padding-right", "18px");
+    });
+  }
 
   function setUpFilterPane() {
     if (! $(".js-list-contacts").length) {

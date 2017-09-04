@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 // GULP PACKAGES
 // Most packages are lazy loaded
 var gulp  = require('gulp'),
@@ -7,13 +9,13 @@ var gulp  = require('gulp'),
   plugin = require('gulp-load-plugins')(),
   rename = require('gulp-rename'),
   merge = require('merge-stream');
-  ;
+
 
 // GULP VARIABLES
 // Modify these variables to match your project needs
 
 // Set local URL if using Browser-Sync
-const LOCAL_URL = 'http://jointswp-github.dev/';
+const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || 'http://jointswp-github.dev/';
 
 const TRANSLATE = {
   domain: 'WPGULP', // Your textdomain here

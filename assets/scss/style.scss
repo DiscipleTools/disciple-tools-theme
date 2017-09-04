@@ -15,7 +15,7 @@ CSS file.
 @import "settings";
 
 // Import foundation.scss from vendor files
-@import "../../vendor/foundation-sites/scss/foundation";
+@import "../../node_modules/foundation-sites/scss/foundation";
 
 // Import Motion-UI from vendor files
 @import "../../vendor/motion-ui/src/motion-ui";

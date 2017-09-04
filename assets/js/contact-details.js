@@ -523,6 +523,7 @@ function details_accept_contact(contactId, accept){
 
 function add_shared(contactId, selectId){
   let select = jQuery(`#${selectId}`)
+  let name = jQuery(`#${selectId} option:selected`)
   console.log(select.val())
   jQuery.ajax({
     type: "POST",
@@ -533,6 +534,14 @@ function add_shared(contactId, selectId){
   })
     .done(function (data) {
       console.log(data)
+      jQuery(`#shared-with-list`).append(
+        '<li class="'+select.val()+'">' +
+        name.text()+
+        '<button class="details-remove-button" onclick="remove_shared(51,2)">' +
+        'Unshare' +
+        '</button></li>'
+      );
+
     }).error(err=>{
       console.log(err)
     })
@@ -549,7 +558,7 @@ function remove_shared(contactId, user_id){
   })
     .done(function (data) {
       console.log(data)
-      jQuery(`#share-with-list-list .${user_id}`).remove()
+      jQuery("#shared-with-list ." + user_id).remove()
     }).error(err=>{
       console.log(err)
     })

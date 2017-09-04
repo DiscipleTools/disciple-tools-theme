@@ -267,10 +267,11 @@ get_header(); ?>
 
     <ul id="shared-with-list">
         <?php
-        foreach( ["test1"] as $contact ) { ?>
-            <li class="<?php echo $contact ?>"> <?php echo $contact?>
+        $shared_with = dt_get_contacts_shared_with( get_the_ID() );
+        foreach( $shared_with as $contact ) { ?>
+            <li class="<?php echo $contact['user_id'] ?>"> <?php echo $contact['display_name'] ?>
                 <button class="details-remove-button"
-                        onclick="remove_shared(<?php echo get_the_ID()?>,  '<?php echo $contact?>')">
+                        onclick="remove_shared(<?php echo get_the_ID()?>,  <?php echo $contact['user_id'] ?>)">
                     Unshare
                 </button>
             </li>
