@@ -97,7 +97,7 @@
       const group_links = _.map(contact.groups, function(group) {
           return '<a href="' + _.escape(group.permalink) + '">' + _.escape(group.post_title) + "</a>";
         }).join(", ");
-      const context = _.assign({}, contact, wpApiSettings, {
+      const context = _.assign({last_modified: 0}, contact, wpApiSettings, {
         index,
         status,
         belief_milestone_key,
