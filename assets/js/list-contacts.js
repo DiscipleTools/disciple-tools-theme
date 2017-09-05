@@ -89,7 +89,7 @@
         function(key) { return contact["milestone_" + key]; }
       );
       let status = "";
-      if (contact.overall_status === "accepted") {
+      if (contact.overall_status === "active") {
         status = ccfs.seeker_path.default[contact.seeker_path];
       } else {
         status = ccfs.overall_status.default[contact.overall_status];
@@ -332,7 +332,7 @@
       this.checked = false;
     });
     tickFilters("assigned_login", wpApiSettings.current_user_login);
-    tickFilters("overall_status", "accepted");
+    tickFilters("overall_status", "active");
 
     if (priority === "update_needed") {
       tickFilters("requires_update", "true");
