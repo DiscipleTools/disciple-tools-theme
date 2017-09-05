@@ -203,8 +203,6 @@ jQuery(document).ready(function($) {
       display: 'post_title'
     })
     .bind('typeahead:select', function (ev, sug) {
-      console.log('Selection: ' + sug);
-      console.log(sug)
       groupsTypeahead.typeahead('val', '')
       groupsTypeahead.blur()
       add_typeahead_item(id, 'groups', sug.ID)
@@ -248,8 +246,6 @@ jQuery(document).ready(function($) {
         display: 'post_title'
       })
       .bind('typeahead:select', function (ev, sug) {
-        console.log('Selection: ' + sug);
-        console.log(sug)
         typeahead.typeahead('val', '')
         typeahead.blur()
         add_typeahead_item(id, field_id, sug.ID)
@@ -282,23 +278,21 @@ jQuery(document).ready(function($) {
 
   let assigned_to_typeahead = $('.assigned_to .typeahead')
   assigned_to_typeahead.typeahead({
-      highlight: true,
-      minLength: 0,
-      autoselect: true,
-    },
-    {
-      name: 'users',
-      source: defaultusers,
-      display: 'display_name'
+    highlight: true,
+    minLength: 0,
+    autoselect: true,
+  },
+  {
+    name: 'users',
+    source: users,
+    display: 'display_name'
+  })
+  .bind('typeahead:select', function (ev, sug) {
+    save_field_api(id, {assigned_to: 'user-' + sug.ID}, function () {
+      assigned_to_typeahead.typeahead('val', '')
+      jQuery('.current-assigned').text(sug.display_name)
     })
-    .bind('typeahead:select', function (ev, sug) {
-      console.log('Selection: ' + sug);
-      console.log(sug)
-      save_field_api(id, {assigned_to: 'user-' + sug.ID}, function () {
-        jQuery('#assigned-to').text(sug.display_name)
-        assigned_to_typeahead.typeahead('val', sug.display_name)
-      })
-    })
+  })
 
   var locations = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('post_title'),
@@ -314,6 +308,8 @@ jQuery(document).ready(function($) {
       wildcard: '%QUERY'
     }
   });
+
+
   function defaultLocations(q, sync) {
     if (q === '') {
       sync(locations.all());
@@ -335,8 +331,6 @@ jQuery(document).ready(function($) {
     display: 'post_title'
   })
   .bind('typeahead:select', function (ev, sug) {
-    console.log('Selection: ' + sug);
-    console.log(sug)
     locationsTypeahead.typeahead('val', '')
     locationsTypeahead.blur()
     add_typeahead_item(id, 'locations', sug.ID)
@@ -345,22 +339,22 @@ jQuery(document).ready(function($) {
   /**
    * Get the contact
    */
-  jQuery.ajax({
-    type:"GET",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ id,
-    success: function(data) {
-      contact = data
-      console.log(contact)
-      assigned_to_typeahead.typeahead('val', _.get(contact, "fields.assigned_to.display"))
-    },
-    error: function(err) {
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    },
-  })
+  // jQuery.ajax({
+  //   type:"GET",
+  //   contentType: "application/json; charset=utf-8",
+  //   dataType: "json",
+  //   url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ id,
+  //   success: function(data) {
+  //     contact = data
+  //     console.log(contact)
+  //     assigned_to_typeahead.typeahead('val', _.get(contact, "fields.assigned_to.display"))
+  //   },
+  //   error: function(err) {
+  //     console.log("error")
+  //     console.log(err)
+  //     jQuery("#errors").append(err.responseText)
+  //   },
+  // })
 
 
 

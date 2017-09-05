@@ -38,9 +38,19 @@ function contact_details_status( $id, $verified, $invalid ){
     <p class="section-header">Dispatch</p>
     <div class="grid-x grid-margin-x">
         <div class="medium-6 cell">
-            <strong>Assigned To:</strong>
+            <strong>Assigned To:
+                <span class="current-assigned">
+                    <?php
+                    if ( isset( $contact->fields["assigned_to"] ) ){
+                        echo esc_html( $contact->fields["assigned_to"]["display"] );
+                    } else {
+                        echo "Nobody";
+                    }
+                    ?>
+                </span>
+            </strong>
             <div class="assigned_to">
-                <input class="typeahead" type="text" placeholder="Select a user">
+                <input class="typeahead" type="text" placeholder="Select a new user">
             </div>
         </div>
         <div class="medium-6 cell">
@@ -172,7 +182,7 @@ function contact_details_status( $id, $verified, $invalid ){
             <div class="medium-4 cell">
                 <strong>Assigned To</strong>
                 <ul>
-                    <li id="assigned-to">
+                    <li class="current-assigned">
                     <?php
                     if ( isset( $contact->fields["assigned_to"] ) ){
                         echo esc_html( $contact->fields["assigned_to"]["display"] );
@@ -316,9 +326,19 @@ function contact_details_status( $id, $verified, $invalid ){
             </div>
             <!-- Contact Fields. Assigned to, location, etc -->
             <div class="medium-6 cell">
-                <strong>Assigned To</strong>
+                <strong>Assigned To:
+                    <span class="current-assigned">
+                        <?php
+                        if ( isset( $contact->fields["assigned_to"] ) ){
+                            echo esc_html( $contact->fields["assigned_to"]["display"] );
+                        } else {
+                            echo "None Assigned";
+                        }
+                        ?>
+                    </span>
+                </strong>
                 <div class="assigned_to">
-                    <input class="typeahead" type="text" placeholder="Select a user">
+                    <input class="typeahead" type="text" placeholder="Select a new user">
                 </div>
                 <strong>Locations</strong>
                 <ul class="locations-list">
