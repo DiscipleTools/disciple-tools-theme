@@ -25,6 +25,8 @@ function site_scripts() {
 
     wp_enqueue_script( 'site-js', get_template_directory_uri() . '/assets/scripts/scripts.min.js', array( 'jquery' ), filemtime( get_template_directory() . '/assets/js/scripts/' ), true );
 
+    wp_enqueue_script( 'typeahead', get_template_directory_uri() . '/assets/js/typeahead.bundle.min.js', array( 'jquery' ), filemtime( get_template_directory() . '/assets/js/scripts/' ), true );
+
 
     wp_enqueue_script( 'lodash', get_template_directory_uri() . '/vendor/lodash/lodash.min.js', array(), '4.17.4' );
 
@@ -43,7 +45,7 @@ function site_scripts() {
     }
 
     if (is_singular( "contacts" )){
-        wp_enqueue_script( 'contact-details', get_template_directory_uri() . '/assets/js/contact-details.js', array( 'jquery', 'lodash' ) );
+        wp_enqueue_script( 'contact-details', get_template_directory_uri() . '/assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead' ) );
         wp_localize_script(
             'contact-details', 'wpApiSettings', array(
                 'root' => esc_url_raw( rest_url() ),

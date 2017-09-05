@@ -45,6 +45,7 @@ get_header(); ?>
 
         <div id="inner-content" class="grid-x grid-margin-x">
 
+
             <section class="hide-for-large small-12 cell">
                 <div class="bordered-box">
                     <div class="contact-quick-buttons">
@@ -95,16 +96,9 @@ get_header(); ?>
                         </ul>
                         <div class="connections-edit" >
                             <label for="groups">Add Group:</label>
-                            <select id="groups" onchange="add_input_item( <?php echo get_the_ID();?>, 'groups')">
-                                <?php
-                                echo '<option value="0"></option>';
-                                foreach( $groups as $value ){
-                                    if ( !in_array( $value->ID, $ids )){
-                                        echo '<option value="' . $value->ID. '">' . esc_html( $value->post_title ) . '</option>';
-                                    }
-                                }
-                                ?>
-                            </select>
+                            <div id="groups">
+                                <input class="typeahead" type="text" placeholder="Select a Group">
+                            </div>
                         </div>
 
 
@@ -135,16 +129,9 @@ get_header(); ?>
                         </ul>
                         <div class="connections-edit">
                             <label for="<?php echo $connection ?>">Add <?php echo $connection_label ?>:</label>
-                            <select id="<?php echo $connection ?>" onchange="add_input_item( <?php echo get_the_ID();?>, '<?php echo $connection ?>')">
-                                <?php
-                                echo '<option value="0"></option>';
-                                foreach( $connection_fields["contacts"] as $value ){
-                                    if ( !in_array( $value->ID, $ids )){
-                                        echo '<option value="' . $value->ID. '">' . esc_html( $value->post_title ) . '</option>';
-                                    }
-                                }
-                                ?>
-                            </select>
+                            <div id="<?php echo $connection ?>">
+                                <input class="typeahead" type="text" placeholder="Select <?php echo $connection_label ?>">
+                            </div>
                         </div>
 
 
