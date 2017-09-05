@@ -1,28 +1,49 @@
 (function($, wpApiSettings) {
   "use strict";
-  let contacts;
+  let items; // contacts or groups
   let filterFunctions = [];
   let dataTable;
 
+  const templates = {
+    contacts: _.template(`<tr data-contact-index="<%- index %>">
+      <td><img src="<%- template_directory_uri %>/assets/images/star.svg" width=13 height=12></td>
+      <td>
+        <a href="<%- permalink %>"><%- post_title %></a>
+        <br>
+        <%- phone_numbers.join(", ") %>
+      </td>
+      <td><span class="status status--<%- overall_status %>"><%- status %></td>
+      <td>
+        <span class="milestone milestone--<%- sharing_milestone_key %>"><%- sharing_milestone %></span>
+        <br>
+        <span class="milestone milestone--<%- belief_milestone_key %>"><%- belief_milestone %></span>
+      </td>
+      <td><%- assigned_to ? assigned_to.name : "" %></td>
+      <td><%- locations.join(", ") %></td>
+      <td><%= group_links %></td>
+      <td><%= last_modified %></td>
+    </tr>`),
+  };
+
   $.ajax({
-    url: wpApiSettings.root + "dt-hooks/v1/contacts",
+    url: wpApiSettings.root + "dt-hooks/v1/" + wpApiSettings.current_post_type,
     beforeSend: function(xhr) {
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
     },
     success: function(data) {
       const statusNames = wpApiSettings.contacts_custom_fields_settings.overall_status.default;
-      contacts = data;
+      items = data;
       $(function() {
-        displayContacts();
+        displayRows();
         setUpFilterPane();
         $(".js-priorities-show").on("click", function(e) {
           priorityShow($(this).data("priority"));
           e.preventDefault();
         });
-        $(".js-contacts-clear-filters").on("click", function() {
+        $(".js-clear-filters").on("click", function() {
           clearFilters();
         });
-        $(".js-contacts-my-contacts").on("click", function() {
+        $(".js-my-contacts").on("click", function() {
           showMyContacts();
         });
         $(".js-sort-by").on("click", function() {
@@ -32,7 +53,7 @@
     },
     error: function(jqXHR, textStatus, errorThrown) {
       $(function() {
-        $(".js-list-contacts-loading > td").html(
+        $(".js-list-loading > td").html(
             "<div>" + wpApiSettings.txt_error + "</div>" +
             "<div>" + jqXHR.responseText + "</div>"
         );
@@ -54,83 +75,37 @@
   }
 
 
-  function displayContacts() {
-    const $table = $(".js-list-contacts");
+  function displayRows() {
+    const $table = $(".js-list");
     if (! $table.length) {
       return;
     }
     $table.find("> tbody").empty();
-    const template = _.template(`<tr data-contact-index="<%- index %>">
-      <td><img src="<%- template_directory_uri %>/assets/images/star.svg" width=13 height=12></td>
-      <td>
-        <a href="<%- permalink %>"><%- post_title %></a>
-        <br>
-        <%- phone_numbers.join(", ") %>
-      </td>
-      <td><span class="status status--<%- overall_status %>"><%- status %></td>
-      <td>
-        <span class="milestone milestone--<%- sharing_milestone_key %>"><%- sharing_milestone %></span>
-        <br>
-        <span class="milestone milestone--<%- belief_milestone_key %>"><%- belief_milestone %></span>
-      </td>
-      <td><%- assigned_to ? assigned_to.name : "" %></td>
-      <td><%- locations.join(", ") %></td>
-      <td><%= group_links %></td>
-      <td><%= last_modified %></td>
-    </tr>`);
-    const ccfs = wpApiSettings.contacts_custom_fields_settings;
-    _.forEach(contacts, function(contact, index) {
-      const belief_milestone_key = _.find(
-        ['baptizing', 'baptized', 'belief'],
-        function(key) { return contact["milestone_" + key]; }
-      );
-      const sharing_milestone_key = _.find(
-        ['planting', 'in_group', 'sharing', 'can_share'],
-        function(key) { return contact["milestone_" + key]; }
-      );
-      let status = "";
-      if (contact.overall_status === "active") {
-        status = ccfs.seeker_path.default[contact.seeker_path];
-      } else {
-        status = ccfs.overall_status.default[contact.overall_status];
+    _.forEach(items, function(item, index) {
+      if (wpApiSettings.current_post_type === "contacts") {
+        $table.append(buildContactRow(item, index));
       }
-      const group_links = _.map(contact.groups, function(group) {
-          return '<a href="' + _.escape(group.permalink) + '">' + _.escape(group.post_title) + "</a>";
-        }).join(", ");
-      const context = _.assign({last_modified: 0}, contact, wpApiSettings, {
-        index,
-        status,
-        belief_milestone_key,
-        sharing_milestone_key,
-        belief_milestone: (ccfs["milestone_" + belief_milestone_key] || {}).name || "",
-        sharing_milestone: (ccfs["milestone_" + sharing_milestone_key] || {}).name || "",
-        group_links,
-      });
-      context.assigned_to = context.assigned_to;
-      $table.append(
-        $.parseHTML(template(context))
-      );
     });
     $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-      const contact = contacts[dataIndex];
-      return _.every(filterFunctions, function(filterFunction) { return filterFunction(contact); });
+      const item = items[dataIndex];
+      return _.every(filterFunctions, function(filterFunction) { return filterFunction(item); });
     });
-    dataTable = $table.DataTable({
+    const dataTableOptions = {
       responsive: true,
       iDisplayLength: 100,
       bLengthChange: false,
-      sDom: 'fir<"js-list-contacts-toolbar">tlp<"clearfix">',
+      sDom: 'fir<"js-list-toolbar">tlp<"clearfix">',
         /* f: filtering input
          * i: information
          * r: processing
-         * <"js-list-contacts-toolbar"> div with class toolbar
+         * <"js-list-toolbar"> div with class toolbar
          * t: table
          * l: length changing
          * p: pagination
          * <"clearfix"> div with class clearfix
          */
       initComplete: function() {
-        $(".js-list-contacts-toolbar")
+        $(".js-list-toolbar")
           .append(
             $('<button class="button small">Sort by...</button>')
               .css("margin-bottom", "0")
@@ -141,25 +116,63 @@
 
         $(".dataTables_info").css("display", "inline");
       },
-      columnDefs: [
-        { targets: [0], width: "2%" },
-        { targets: [1], width: "30%", },
-        { targets: [2], width: "5%", },
-        {
-          // Hide the last modified column, it's only used for sorting
-          targets: [7],
-          visible: false,
-          searchable: false,
-        },
-      ],
-      order: [[7, 'desc']],
-      autoWidth: false,
+    };
+    if (wpApiSettings.current_post_type == "contacts") {
+      _.assign(dataTableOptions, {
+        columnDefs: [
+          { targets: [0], width: "2%" },
+          { targets: [1], width: "30%", },
+          { targets: [2], width: "5%", },
+          {
+            // Hide the last modified column, it's only used for sorting
+            targets: [7],
+            visible: false,
+            searchable: false,
+          },
+        ],
+        order: [[7, 'desc']],
+        autoWidth: false,
+      });
+    }
+    dataTable = $table.DataTable(dataTableOptions);
+  }
+
+  function buildContactRow(contact, index) {
+    const template = templates[wpApiSettings.current_post_type];
+    const ccfs = wpApiSettings.contacts_custom_fields_settings;
+    const belief_milestone_key = _.find(
+      ['baptizing', 'baptized', 'belief'],
+      function(key) { return contact["milestone_" + key]; }
+    );
+    const sharing_milestone_key = _.find(
+      ['planting', 'in_group', 'sharing', 'can_share'],
+      function(key) { return contact["milestone_" + key]; }
+    );
+    let status = "";
+    if (contact.overall_status === "active") {
+      status = ccfs.seeker_path.default[contact.seeker_path];
+    } else {
+      status = ccfs.overall_status.default[contact.overall_status];
+    }
+    const group_links = _.map(contact.groups, function(group) {
+        return '<a href="' + _.escape(group.permalink) + '">' + _.escape(group.post_title) + "</a>";
+      }).join(", ");
+    const context = _.assign({last_modified: 0}, contact, wpApiSettings, {
+      index,
+      status,
+      belief_milestone_key,
+      sharing_milestone_key,
+      belief_milestone: (ccfs["milestone_" + belief_milestone_key] || {}).name || "",
+      sharing_milestone: (ccfs["milestone_" + sharing_milestone_key] || {}).name || "",
+      group_links,
     });
+    context.assigned_to = context.assigned_to;
+    return $.parseHTML(template(context));
   }
 
   function showSortModal() {
     updateSortModal();
-    $(".js-list-contacts-sort-by-modal").foundation('open');
+    $(".js-list-sort-by-modal").foundation('open');
   }
 
   function updateSortModal() {
@@ -182,9 +195,13 @@
   }
 
   function setUpFilterPane() {
-    if (! $(".js-list-contacts").length) {
+    if (! $(".js-list").length) {
       return;
     }
+    if (wpApiSettings.current_post_type !== "contacts") {
+      return;
+    }
+    const contacts = items;
     const counts = {
       assigned_login: _.countBy(_(contacts).map('assigned_to.user_login').filter().value()),
       overall_status: _.countBy(_.map(contacts, 'overall_status')),
@@ -249,7 +266,7 @@
   }
 
   function updateButtonStates() {
-    $(".js-contacts-clear-filters").prop("disabled", filterFunctions.length == 0);
+    $(".js-clear-filters").prop("disabled", filterFunctions.length == 0);
   }
 
   function updateFilterFunctions() {

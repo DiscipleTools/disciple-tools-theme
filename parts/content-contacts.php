@@ -3,7 +3,7 @@ declare(strict_types=1);
 ?>
 <div class="bordered-box">
     <h3><?php _e( "Contacts" ); ?></h3>
-    <div class="reveal js-list-contacts-sort-by-modal" data-reveal>
+    <div class="reveal js-list-sort-by-modal" data-reveal>
         <h1><?php _e( "Sort by:" ); ?></h1>
         <div>
             <button class="js-sort-by button small hollow" data-column-index="1"><?php _e( "Name" ); ?></button>
@@ -19,7 +19,7 @@ declare(strict_types=1);
         --></button>
     </div>
 
-    <table class="js-list-contacts">
+    <table class="js-list">
         <thead><tr>
             <th></th>
             <th><?php _e( "Name" ); ?></th>

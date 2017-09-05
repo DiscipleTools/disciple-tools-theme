@@ -68,6 +68,7 @@ function site_scripts() {
             'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
             'template_directory_uri' => get_template_directory_uri(),
             'current_user_login' => wp_get_current_user()->user_login,
+            'current_post_type' => "contacts",
         ) );
     }
 
