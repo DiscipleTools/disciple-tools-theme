@@ -121,6 +121,7 @@ var commentTemplate = _.template(`
 
 let comments = []
 let activity = []
+let contact = {}
 jQuery(document).ready(function($) {
   let id = $("#contact-id").text()
 
@@ -232,8 +233,9 @@ jQuery(document).ready(function($) {
     }
   }
 
-  ["baptized_by", "baptized", "coached_by", "coaching"].forEach(field_id=>{
 
+  //autocomplete for dealing with contacts
+  ["baptized_by", "baptized", "coached_by", "coaching"].forEach(field_id=>{
     let typeahead = $(`#${field_id} .typeahead`)
     typeahead.typeahead({
         highlight: true,
@@ -253,6 +255,114 @@ jQuery(document).ready(function($) {
         add_typeahead_item(id, field_id, sug.ID)
       })
   })
+
+  var users = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('display_name'),
+    queryTokenizer: Bloodhound.tokenizers.ngram,
+    identify: function (obj) {
+      return obj.display_name
+    },
+    prefetch: {
+      url: wpApiSettings.root + 'dt/v1/users/',
+    },
+    remote: {
+      url: wpApiSettings.root + 'dt/v1/users/?s=%QUERY',
+      wildcard: '%QUERY'
+    }
+  });
+
+  function defaultusers(q, sync) {
+    if (q === '') {
+      sync(users.all());
+    }
+    else {
+      users.search(q, sync);
+    }
+  }
+
+  let assigned_to_typeahead = $('.assigned_to .typeahead')
+  assigned_to_typeahead.typeahead({
+      highlight: true,
+      minLength: 0,
+      autoselect: true,
+    },
+    {
+      name: 'users',
+      source: defaultusers,
+      display: 'display_name'
+    })
+    .bind('typeahead:select', function (ev, sug) {
+      console.log('Selection: ' + sug);
+      console.log(sug)
+      save_field_api(id, {assigned_to: 'user-' + sug.ID}, function () {
+        jQuery('#assigned-to').text(sug.display_name)
+        assigned_to_typeahead.typeahead('val', sug.display_name)
+      })
+    })
+
+  var locations = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('post_title'),
+    queryTokenizer: Bloodhound.tokenizers.ngram,
+    identify: function (obj) {
+      return obj.post_title
+    },
+    prefetch: {
+      url: wpApiSettings.root + 'dt/v1/locations/',
+    },
+    remote: {
+      url: wpApiSettings.root + 'dt/v1/locations/?s=%QUERY',
+      wildcard: '%QUERY'
+    }
+  });
+  function defaultLocations(q, sync) {
+    if (q === '') {
+      sync(locations.all());
+    }
+    else {
+      locations.search(q, sync);
+    }
+  }
+
+  let locationsTypeahead = $('#locations .typeahead')
+  locationsTypeahead.typeahead({
+    highlight: true,
+    minLength: 0,
+    autoselect: true,
+  },
+  {
+    name: 'locations',
+    source: defaultLocations,
+    display: 'post_title'
+  })
+  .bind('typeahead:select', function (ev, sug) {
+    console.log('Selection: ' + sug);
+    console.log(sug)
+    locationsTypeahead.typeahead('val', '')
+    locationsTypeahead.blur()
+    add_typeahead_item(id, 'locations', sug.ID)
+  })
+
+  /**
+   * Get the contact
+   */
+  jQuery.ajax({
+    type:"GET",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ id,
+    success: function(data) {
+      contact = data
+      console.log(contact)
+      assigned_to_typeahead.typeahead('val', _.get(contact, "fields.assigned_to.display"))
+    },
+    error: function(err) {
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
+    },
+  })
+
+
 
 })
 
@@ -352,18 +462,21 @@ function save_field(contactId, fieldKey, inputId){
   let val = field.val()
   let data = {}
   data[fieldKey] = val
+  save_field_api(contactId, data, function () {
+  })
+}
+
+function save_field_api(contactId, post_data, callback){
   jQuery.ajax({
     type:"POST",
-    data:JSON.stringify(data),
+    data:JSON.stringify(post_data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId,
     success: function(data) {
-      console.log("updated " + fieldKey + " to: " + val)
-      if (fieldKey === "assigned_to"){
-        jQuery('#assigned-to').text(field.find(`option:selected`).text())
-        jQuery('.assigned_to_select').val(val)
-      }
+      console.log("updated " + JSON.stringify(post_data))
+      callback()
+
       get_activity(contactId)
     },
     error: function(err) {
