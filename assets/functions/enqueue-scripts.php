@@ -57,8 +57,8 @@ function site_scripts() {
     if (is_post_type_archive( "contacts" )){
         wp_enqueue_script( 'data-tables', get_template_directory_uri() . '/vendor/DataTables/datatables.min.js',  array( 'jquery' ), '1.10.15' );
         wp_enqueue_style( 'data-tables', get_template_directory_uri() . '/vendor/DataTables/datatables.min.css', array(), '', 'all' );
-        wp_enqueue_script( 'list-contacts-js', get_template_directory_uri() . '/assets/js/list-contacts.js', array( 'jquery', 'lodash', 'data-tables' ) );
-        wp_localize_script( 'list-contacts-js', 'wpApiSettings', array(
+        wp_enqueue_script( 'list-js', get_template_directory_uri() . '/assets/js/list.js', array( 'jquery', 'lodash', 'data-tables' ) );
+        wp_localize_script( 'list-js', 'wpApiSettings', array(
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'txt_error' => __( 'An error occurred' ),
