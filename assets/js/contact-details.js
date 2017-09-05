@@ -482,8 +482,7 @@ function save_field_api(contactId, post_data, callback){
 }
 
 function add_contact_detail(contactId, fieldKey, value, callback){
-  var input = jQuery("#"+fieldKey)
-  var data = {}
+  let data = {}
   data[fieldKey] = value
   jQuery.ajax({
     type:"POST",
@@ -492,17 +491,7 @@ function add_contact_detail(contactId, fieldKey, value, callback){
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId + '/details',
     success: function(data) {
-      console.log(data)
-      // @todo remove
-      if (data != contactId && fieldKey.indexOf("new-")>-1){
-        input.removeAttr('onchange');
-        input.attr('id', data)
-        input.change(function () {
-          save_field(contactId, data)
-        })
-      }
       callback(data)
-      console.log("updated " + fieldKey + " to: " + input.val())
       get_activity(contactId)
     },
     error: function(err) {
@@ -560,10 +549,22 @@ function remove_contact_detail(contactId, fieldKey, valueId, callback) {
 }
 
 
+function new_contact_input_added(contactId, inputId){
+  let input = jQuery("#"+inputId)
+  add_contact_detail(contactId, inputId, input.val(), function (data) {
+    if (data != contactId && inputId.indexOf("new-")>-1){
+      input.removeAttr('onchange');
+      input.attr('id', data)
+      input.change(function () {
+        save_field(contactId, data)
+      })
+    }
+  })
+}
 
 function add_contact_input(contactId, inputId, listId){
   if (jQuery(`#${inputId}`).length === 0 ){
-    var newInput = `<li><input id="${inputId}" onchange="add_contact_detail(${contactId},'${inputId}', function(){})"\>`
+    var newInput = `<li><input id="${inputId}" onchange="new_contact_input_added(${contactId},'${inputId}')"\>`
     jQuery(`#${listId}`).append(newInput)
   }
 }
@@ -582,27 +583,12 @@ function invalidate_contact_method(contactId, fieldId) {
   })
 }
 
-function add_location(contactId, fieldId) {
-  let select = jQuery(`#${fieldId}`)
-  if (select.val() !== "0"){
-    add_contact_detail(contactId, fieldId, function (location){
-      select.val("0")
-      jQuery(".locations-list").append(`<li>
-        <a href="${location.permalink}">${location.post_title}</a>
-        <button class="details-remove-button edit-fields" onclick="remove_item(${contactId}, '${fieldId}', ${location.ID})">Remove</button>
-      </li>`)
-      select.find(`option[value='${location.ID}']`).remove()
-    })
-  }
-}
 
 function remove_item(contactId, fieldId, itemId){
   remove_contact_detail(contactId, fieldId, itemId, function () {
     jQuery(`.${fieldId}-list .${itemId}`).remove()
   })
 }
-
-
 
 
 function close_contact(contactId){
@@ -678,26 +664,8 @@ function edit_connections() {
   jQuery(".connections-edit").toggle()
 }
 
-function add_input_item(contactId, fieldId) {
-  let select = jQuery(`#${fieldId}`)
-  console.log(select.val())
-  if (select.val() !== "0"){
-    add_contact_detail(contactId, fieldId, function (addedItem){
-      console.log(addedItem)
-      select.val("0")
-      jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
-        <a href="${addedItem.permalink}">${addedItem.post_title}</a>
-        <button class="details-remove-button connections-edit" onclick="remove_item(${contactId}, '${fieldId}', ${addedItem.ID})">Remove</button>
-        </li>`)
-      select.find(`option[value='${addedItem.ID}']`).remove()
-      jQuery(".connections-edit").show()
-    })
-  }
-}
-
 function add_typeahead_item(contactId, fieldId, val) {
   add_contact_detail(contactId, fieldId, val, function (addedItem){
-    console.log(addedItem)
     jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
     <a href="${addedItem.permalink}">${addedItem.post_title}</a>
     <button class="details-remove-button connections-edit" onclick="remove_item(${contactId}, '${fieldId}', ${addedItem.ID})">Remove</button>
