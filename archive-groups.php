@@ -1,8 +1,6 @@
 <?php get_header(); ?>
 
-<div id="content">
-
-    <div id="inner-content" class="row">
+    <div id="content">
 
         <!-- Breadcrumb Navigation-->
         <nav aria-label="You are here:" role="navigation" class="hide-for-small-only">
@@ -14,24 +12,30 @@
             </ul>
         </nav>
 
-        <main id="main" class="large-8 medium-8 columns" role="main">
+        <div id="inner-content" class="grid-x grid-margin-x">
+            <aside class="large-2 medium-2 cell padding-bottom">
+                <div class="bordered-box">
+                    <h3><?php _e( "Filters" ); ?></h3>
+                </div>
+            </aside>
 
-            <?php get_template_part( 'parts/content', 'groups-tabs' ); ?>
+            <main id="main" class="large-8 medium-8 cell padding-bottom" role="main">
 
-        </main> <!-- end #main -->
+                <?php get_template_part( 'parts/content', 'groups' ); ?>
 
-        <aside class="large-4 medium-4 columns ">
+            </main> <!-- end #main -->
 
-            <section class="bordered-box">
+            <aside class="large-2 medium-2 cell padding-bottom" data-sticky-container>
+                <div class="bordered-box">
 
-                <p>Links</p>
+                    <h3><?php _e( "Priorities" ); ?></h3>
 
-            </section>
+                </div>
 
-        </aside> <!-- end #aside -->
+            </aside>
 
-    </div> <!-- end #inner-content -->
+        </div> <!-- end #inner-content -->
 
-</div> <!-- end #content -->
+    </div> <!-- end #content -->
 
 <?php get_footer(); ?>

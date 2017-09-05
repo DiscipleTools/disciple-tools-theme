@@ -5,7 +5,7 @@
   let dataTable;
 
   const templates = {
-    contacts: _.template(`<tr data-contact-index="<%- index %>">
+    contacts: _.template(`<tr>
       <td><img src="<%- template_directory_uri %>/assets/images/star.svg" width=13 height=12></td>
       <td>
         <a href="<%- permalink %>"><%- post_title %></a>
@@ -19,9 +19,17 @@
         <span class="milestone milestone--<%- belief_milestone_key %>"><%- belief_milestone %></span>
       </td>
       <td><%- assigned_to ? assigned_to.name : "" %></td>
-      <td><%- locations.join(", ") %></td>
+      <td><%= locations.join(", ") %></td>
       <td><%= group_links %></td>
-      <td><%= last_modified %></td>
+      <td><%- last_modified %></td>
+    </tr>`),
+    groups: _.template(`<tr>
+      <td></td>
+      <td><a href="<%- permalink %>"><%- post_title %></a></td>
+      <td><%- yeses.join(", ") %></td>
+      <td style="text-align: right"><%- member_count %></td>
+      <td><%= leader_links %></td>
+      <td><%- locations.join(", ") %></td>
     </tr>`),
   };
 
@@ -84,6 +92,8 @@
     _.forEach(items, function(item, index) {
       if (wpApiSettings.current_post_type === "contacts") {
         $table.append(buildContactRow(item, index));
+      } else if (wpApiSettings.current_post_type === "groups") {
+        $table.append(buildGroupRow(item, index));
       }
     });
     $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
@@ -105,15 +115,16 @@
          * <"clearfix"> div with class clearfix
          */
       initComplete: function() {
-        $(".js-list-toolbar")
-          .append(
-            $('<button class="button small">Sort by...</button>')
-              .css("margin-bottom", "0")
-              .on("click", showSortModal)
-          )
-          .css("margin", "0 10px")
-          .css("float", "right");
-
+        if ($(".js-list-sort-by-modal").length) {
+          $(".js-list-toolbar")
+            .append(
+              $('<button class="button small">Sort by...</button>')
+                .css("margin-bottom", "0")
+                .on("click", showSortModal)
+            )
+            .css("margin", "0 10px")
+            .css("float", "right");
+        }
         $(".dataTables_info").css("display", "inline");
       },
     };
@@ -131,6 +142,16 @@
           },
         ],
         order: [[7, 'desc']],
+        autoWidth: false,
+      });
+    } else if (wpApiSettings.current_post_type === "groups") {
+      _.assign(dataTableOptions, {
+        columnDefs: [
+          { targets: [0], width: "2%" },
+          { targets: [1], width: "30%" },
+          { targets: [2], width: "30%" },
+          { targets: [3], width: "5%" },
+        ],
         autoWidth: false,
       });
     }
@@ -167,6 +188,23 @@
       group_links,
     });
     context.assigned_to = context.assigned_to;
+    return $.parseHTML(template(context));
+  }
+
+  function buildGroupRow(group, index) {
+    const template = templates[wpApiSettings.current_post_type];
+    const leader_links = _.map(group.leaders, function(leader) {
+      return '<a href="' + _.escape(leader.permalink) + '">' + _.escape(leader.post_title) + "</a>";
+    }).join(", ");
+    const yeses = _.filter([
+      'church_baptism', 'church_bible', 'church_communion',
+      'church_fellowship', 'church_tithe', 'church_prayer', 'church_praise',
+      'church_sharing', 'church_leaders', 'is_church',
+    ], function(k) { return _.get(group, k); });
+    const context = _.assign({}, group, {
+      leader_links,
+      yeses,
+    });
     return $.parseHTML(template(context));
   }
 
