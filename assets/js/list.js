@@ -24,7 +24,7 @@
       <td><%- last_modified %></td>
     </tr>`),
     groups: _.template(`<tr>
-      <td></td>
+      <td><img src="<%- template_directory_uri %>/assets/images/green_flag.svg" width=10 height=12></td>
       <td><a href="<%- permalink %>"><%- post_title %></a></td>
       <td><span class="group-status group-status--<%- group_status %>"><%- status %></span></td>
       <td style="text-align: right"><%- member_count %></td>
@@ -197,7 +197,7 @@
     }).join(", ");
     const gcfs = wpApiSettings.groups_custom_fields_settings;
     const status = gcfs.group_status.default[group.group_status || "no_value"];
-    const context = _.assign({}, group, {
+    const context = _.assign({}, group, wpApiSettings, {
       leader_links,
       status,
     });
