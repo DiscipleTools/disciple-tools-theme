@@ -306,76 +306,55 @@
 
   function updateFilterFunctions() {
     filterFunctions = [];
-    {
-      const $checkedStatusLabels = $(".js-filter-checkbox-label")
-        .filter(function() { return $(this).data("filter-type") === "overall_status"; })
-        .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
 
-      if ($checkedStatusLabels.length > 0) {
-        filterFunctions.push(function(contact) {
-          return _.some($checkedStatusLabels, function(label) {
-            return $(label).data("filter-value") === contact.overall_status;
-          });
-        });
-      }
+    let filterTypes;
+    if (wpApiSettings.current_post_type === "contacts") {
+      filterTypes = ["overall_status", "locations", "assigned_to", "seeker_path", "requires_update"];
     }
 
-    {
-      const $checkedLocationsLabels = $(".js-filter-checkbox-label")
-        .filter(function() { return $(this).data("filter-type") === "locations"; })
+    filterTypes.forEach(function(filterType) {
+      const $checkedLabels = $(".js-filter-checkbox-label")
+        .filter(function() { return $(this).data("filter-type") === filterType; })
         .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
 
-      if ($checkedLocationsLabels.length > 0) {
-        filterFunctions.push(function(contact) {
-          return _.some($checkedLocationsLabels, function(label) {
-            return _.includes(contact.locations, $(label).data("filter-value"));
-          });
-        });
+      if ($checkedLabels.length <= 0) {
+        return;
       }
-    }
-
-    {
-      const $checkedAssignedLabels = $(".js-filter-checkbox-label")
-        .filter(function() { return $(this).data("filter-type") === "assigned_login"; })
-        .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
-
-      if ($checkedAssignedLabels.length > 0) {
-        filterFunctions.push(function(contact) {
-          return _.some($checkedAssignedLabels, function(label) {
-            return $(label).data("filter-value") === _.get(contact, "assigned_to.user_login");
+      if (wpApiSettings.current_post_type === "contacts") {
+        if (filterType === "overall_status") {
+          filterFunctions.push(function(contact) {
+            return _.some($checkedLabels, function(label) {
+              return $(label).data("filter-value") === contact.overall_status;
+            });
           });
-        });
-      }
-    }
-
-    {
-      const $checkedSeekerPathLabels = $(".js-filter-checkbox-label")
-        .filter(function() { return $(this).data("filter-type") === "seeker_path"; })
-        .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
-
-      if ($checkedSeekerPathLabels.length > 0) {
-        filterFunctions.push(function(contact) {
-          return _.some($checkedSeekerPathLabels, function(label) {
-            return $(label).data("filter-value") === contact.seeker_path;
+        } else if (filterType === "locations") {
+          filterFunctions.push(function(contact) {
+            return _.some($checkedLabels, function(label) {
+              return _.includes(contact.locations, $(label).data("filter-value"));
+            });
           });
-        });
-      }
-    }
-
-    {
-      const $checkedRequiresUpdateLabels = $(".js-filter-checkbox-label")
-        .filter(function() { return $(this).data("filter-type") === "requires_update"; })
-        .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
-
-      if ($checkedRequiresUpdateLabels.length > 0) {
-        filterFunctions.push(function(contact) {
-          return _.some($checkedRequiresUpdateLabels, function(label) {
-            const value = $(label).data("filter-value") === "true";
-            return value === contact.requires_update;
+        } else if (filterType === "assigned_to") {
+          filterFunctions.push(function(contact) {
+            return _.some($checkedLabels, function(label) {
+              return $(label).data("filter-value") === _.get(contact, "assigned_to.user_login");
+            });
           });
-        });
+        } else if (filterType === "seeker_path") {
+          filterFunctions.push(function(contact) {
+            return _.some($checkedLabels, function(label) {
+              return $(label).data("filter-value") === contact.seeker_path;
+            });
+          });
+        } else if (filterType === "requires_update") {
+          filterFunctions.push(function(contact) {
+            return _.some($checkedLabels, function(label) {
+              const value = $(label).data("filter-value") === "true";
+              return value === contact.requires_update;
+            });
+          });
+        }
       }
-    }
+    });
 
   }
 
