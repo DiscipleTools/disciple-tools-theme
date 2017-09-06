@@ -792,6 +792,14 @@ CONTACTS
 .milestone--in_group  { color: #4CAF50; }
 .milestone--planting  { color: #9C27B0; }
 
+.group-status--no_value           { color: black;   }
+.group-status--active_pre_group   { color: #FF9800; }
+.group-status--active_group       { color: #4CAF50; }
+.group-status--active_church      { color: #4CAF50; }
+.group-status--inactive_church    { color: #F43636; }
+.group-status--inactive_group     { color: #F43636; }
+.group-status--inactive_pre_group { color: #F43636; }
+
 
 .filter {
     border-top: 1px #E2E2E2 solid;

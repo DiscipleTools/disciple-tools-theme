@@ -1,0 +1,47 @@
+<svg width="11" height="12" viewBox="0 0 11 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Vector</title>
+<g id="Canvas" transform="translate(-2158 1248)">
+<rect x="2158" y="-1248" width="11" height="12" fill="#E5E5E5"/>
+<clipPath id="clip-0" clip-rule="evenodd">
+<path d="M 1778 -1517L 3218 -1517L 3218 -493L 1778 -493L 1778 -1517Z" fill="#FFFFFF"/>
+</clipPath>
+<g id="Groups List - actions" clip-path="url(#clip-0)">
+<path d="M 1778 -1517L 3218 -1517L 3218 -493L 1778 -493L 1778 -1517Z" fill="#E2E2E2"/>
+<g id="Contact List">
+<path d="M 2148 -1387L 2848 -1387L 2848 -523L 2148 -523L 2148 -1387Z" fill="#E2E2E2"/>
+<g id="Rectangle 12" filter="url(#filter0_d)">
+<use xlink:href="#path0_fill" transform="translate(2148 -1387)" fill="#FFFFFF"/>
+</g>
+</g>
+<g id="group card">
+<g id="Rectangle 19">
+<use xlink:href="#path1_fill" transform="translate(2148 -1274)" fill="#FFFFFF"/>
+</g>
+<g id="favorite-pressed">
+<g id="flag-points-32">
+<g id="Group">
+<g id="Vector">
+<use xlink:href="#path2_fill" transform="translate(2158.2 -1248)" fill="#4CAF50"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_d" filterUnits="userSpaceOnUse" x="2144" y="-1389" width="708" height="872" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255 0"/>
+<feOffset dx="0" dy="2"/>
+<feGaussianBlur stdDeviation="2"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<path id="path0_fill" d="M 0 10C 0 4.47715 4.47715 0 10 0L 690 0C 695.523 0 700 4.47715 700 10L 700 854C 700 859.523 695.523 864 690 864L 10 864C 4.47715 864 0 859.523 0 854L 0 10Z"/>
+<path id="path1_fill" d="M 0 0L 700 0L 700 66L 0 66L 0 0Z"/>
+<path id="path2_fill" d="M 9 4.5L 10.5 0.75L 1.5 0.75C 1.5 0.3 1.2 0 0.75 0C 0.3 0 0 0.3 0 0.75L 0 11.25C 0 11.7 0.3 12 0.75 12C 1.2 12 1.5 11.7 1.5 11.25L 1.5 8.25L 10.5 8.25L 9 4.5Z"/>
+</defs>
+</svg>
+
