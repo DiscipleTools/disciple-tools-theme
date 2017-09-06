@@ -12,7 +12,7 @@
         <br>
         <%- phone_numbers.join(", ") %>
       </td>
-      <td><span class="status status--<%- overall_status %>"><%- status %></td>
+      <td><span class="status status--<%- overall_status %>"><%- status %></span></td>
       <td>
         <span class="milestone milestone--<%- sharing_milestone_key %>"><%- sharing_milestone %></span>
         <br>
@@ -26,7 +26,7 @@
     groups: _.template(`<tr>
       <td></td>
       <td><a href="<%- permalink %>"><%- post_title %></a></td>
-      <td><%- status %></td>
+      <td><span class="group-status group-status--<%- group_status %>"><%- status %></span></td>
       <td style="text-align: right"><%- member_count %></td>
       <td><%= leader_links %></td>
       <td><%- locations.join(", ") %></td>
