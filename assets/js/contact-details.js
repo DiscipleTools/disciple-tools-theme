@@ -189,10 +189,10 @@ jQuery(document).ready(function($) {
       return obj.name
     },
     prefetch: {
-      url: wpApiSettings.root + 'dt/v1/groups-compact/',
+      url: wpApiSettings.root + 'dt-hooks/v1/groups-compact/',
     },
     remote: {
-      url: wpApiSettings.root + 'dt/v1/groups-compact/?s=%QUERY',
+      url: wpApiSettings.root + 'dt-hooks/v1/groups-compact/?s=%QUERY',
       wildcard: '%QUERY',
     }
   })
