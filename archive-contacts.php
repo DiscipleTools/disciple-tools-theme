@@ -29,24 +29,24 @@ $contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_co
                         <button class="button small js-my-contacts"><?php _e( "My contacts" ); ?></button>
                         <button disabled class="button small js-clear-filters"><?php _e( "Clear filters" ); ?></button>
                     </div>
-                    <div class="filter js-contacts-filter" data-filter="assigned_login">
-                        <div class="filter__title js-contacts-filter-title"><?php _e( "Assigned to" ); ?></div>
+                    <div class="filter js-list-filter" data-filter="assigned_login">
+                        <div class="filter__title js-list-filter-title"><?php _e( "Assigned to" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>
                     </div>
-                    <div class="filter filter--closed js-contacts-filter" data-filter="overall_status">
-                        <div class="filter__title js-contacts-filter-title"><?php _e( "Status" ); ?></div>
+                    <div class="filter filter--closed js-list-filter" data-filter="overall_status">
+                        <div class="filter__title js-list-filter-title"><?php _e( "Status" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>
                     </div>
-                    <div class="filter filter--closed js-contacts-filter" data-filter="locations">
-                        <div class="filter__title js-contacts-filter-title"><?php _e( "Locations" ); ?></div>
+                    <div class="filter filter--closed js-list-filter" data-filter="locations">
+                        <div class="filter__title js-list-filter-title"><?php _e( "Locations" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>
                     </div>
-                    <div class="filter filter--closed js-contacts-filter" data-filter="seeker_path">
-                        <div class="filter__title js-contacts-filter-title"><?php _e( "Seeker path" ); ?></div>
+                    <div class="filter filter--closed js-list-filter" data-filter="seeker_path">
+                        <div class="filter__title js-list-filter-title"><?php _e( "Seeker path" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>
                     </div>
-                    <div class="filter filter--closed js-contacts-filter" data-filter="requires_update">
-                        <div class="filter__title js-contacts-filter-title"><?php _e( "Update needed" ); ?></div>
+                    <div class="filter filter--closed js-list-filter" data-filter="requires_update">
+                        <div class="filter__title js-list-filter-title"><?php _e( "Update needed" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>
                     </div>
                 </div>
