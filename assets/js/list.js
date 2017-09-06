@@ -30,6 +30,7 @@
       <td style="text-align: right"><%- member_count %></td>
       <td><%= leader_links %></td>
       <td><%- locations.join(", ") %></td>
+      <td><%- last_modified %></td>
     </tr>`),
   };
 
@@ -150,7 +151,14 @@
           { targets: [1], width: "30%" },
           { targets: [2], width: "30%" },
           { targets: [3], width: "5%" },
+          {
+            // Hide the last modified column, it's only used for sorting
+            targets: [6],
+            visible: false,
+            searchable: false,
+          },
         ],
+        order: [[6, 'desc']],
         autoWidth: false,
       });
     }
