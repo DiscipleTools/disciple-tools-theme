@@ -167,27 +167,41 @@ jQuery(document).ready(function($) {
     display_activity_comment("all")
   })
 
+  let searchAnyPieceOfWord = function(d) {
+    var tokens = [];
+    //the available string is 'name' in your datum
+    var stringSize = d.name.length;
+    //multiple combinations for every available size
+    //(eg. dog = d, o, g, do, og, dog)
+    for (var size = 1; size <= stringSize; size++) {
+      for (var i = 0; i + size <= stringSize; i++) {
+        tokens.push(d.name.substr(i, size));
+      }
+    }
+    return tokens;
+  }
+
   // https://typeahead.js.org/examples/
   var groups = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('post_title'),
-    queryTokenizer: Bloodhound.tokenizers.ngram,
+    datumTokenizer: searchAnyPieceOfWord,
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
     identify: function (obj) {
-      return obj.post_title
+      return obj.name
     },
     prefetch: {
-      url: wpApiSettings.root + 'dt/v1/groups/',
+      url: wpApiSettings.root + 'dt/v1/groups-compact/',
     },
     remote: {
-      url: wpApiSettings.root + 'dt/v1/groups/?s=%QUERY',
-      wildcard: '%QUERY'
+      url: wpApiSettings.root + 'dt/v1/groups-compact/?s=%QUERY',
+      wildcard: '%QUERY',
     }
-  });
-  function defaultGroups(q, sync) {
+  })
+  function defaultGroups(q, sync, async) {
     if (q === '') {
       sync(groups.all());
     }
     else {
-      groups.search(q, sync);
+      groups.search(q, sync, async);
     }
   }
 
@@ -198,9 +212,10 @@ jQuery(document).ready(function($) {
       autoselect: true,
     },
     {
+      async:false,
       name: 'groups',
       source: defaultGroups,
-      display: 'post_title'
+      display: 'name'
     })
     .bind('typeahead:select', function (ev, sug) {
       groupsTypeahead.typeahead('val', '')
