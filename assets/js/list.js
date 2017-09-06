@@ -26,7 +26,7 @@
     groups: _.template(`<tr>
       <td></td>
       <td><a href="<%- permalink %>"><%- post_title %></a></td>
-      <td><%- yeses.join(", ") %></td>
+      <td><%- status %></td>
       <td style="text-align: right"><%- member_count %></td>
       <td><%= leader_links %></td>
       <td><%- locations.join(", ") %></td>
@@ -196,14 +196,11 @@
     const leader_links = _.map(group.leaders, function(leader) {
       return '<a href="' + _.escape(leader.permalink) + '">' + _.escape(leader.post_title) + "</a>";
     }).join(", ");
-    const yeses = _.filter([
-      'church_baptism', 'church_bible', 'church_communion',
-      'church_fellowship', 'church_tithe', 'church_prayer', 'church_praise',
-      'church_sharing', 'church_leaders', 'is_church',
-    ], function(k) { return _.get(group, k); });
+    const gcfs = wpApiSettings.groups_custom_fields_settings;
+    const status = gcfs.group_status.default[group.group_status || "no_value"];
     const context = _.assign({}, group, {
       leader_links,
-      yeses,
+      status,
     });
     return $.parseHTML(template(context));
   }

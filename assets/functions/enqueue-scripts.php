@@ -72,6 +72,7 @@ function site_scripts() {
             'txt_yes' => __( 'Yes' ),
             'txt_no' => __( 'No' ),
             'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
+            'groups_custom_fields_settings' => Disciple_Tools_Groups_Post_type::instance()->get_custom_fields_settings(),
             'template_directory_uri' => get_template_directory_uri(),
             'current_user_login' => wp_get_current_user()->user_login,
             'current_post_type' => $post_type,
