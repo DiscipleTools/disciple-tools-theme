@@ -16,13 +16,13 @@
 
             <?php get_template_part( 'parts/content', 'required-updates' ); ?>
 
-            <!-- Begin Contacts Tabs Section -->
             <div class="row column padding-bottom">
 
-                <?php get_template_part( 'parts/content', 'contacts' ); ?>
+                <div class="bordered-box">
+                    <p><?php _e( "Welcome to Disciple.Tools!" ); ?></p>
+                </div>
 
             </div>
-            <!-- End Contacts Tabs Section -->
 
         </main> <!-- end #main -->
 
