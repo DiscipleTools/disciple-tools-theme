@@ -1,6 +1,5 @@
 <?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
 $channel_list = Disciple_Tools_Contacts::get_channel_list();
-$users = Disciple_Tools_Contacts::get_assignable_users( get_the_ID() );
 $locations = Disciple_Tools_Locations::get_locations();
 $current_user = wp_get_current_user();
 $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
@@ -236,7 +235,7 @@ function contact_details_status( $id, $verified, $invalid ){
                     <strong>Address</strong>
                     <ul>
                         <?php
-                        foreach($contact->fields[ "address" ]  ?? [] as $value){
+                        foreach($group[ "address" ]  ?? [] as $value){
                             $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                             echo  '<li>' . esc_html( $value["value"] ) .

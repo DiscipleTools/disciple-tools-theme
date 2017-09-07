@@ -1019,3 +1019,19 @@ button:not(.disabled).loading:after {
 .tt-suggestion p {
     margin: 0;
 }
+
+
+/**
+Groups
+**/
+
+.group-progress-img {
+    padding:10px;
+    background-color:$primary-color;
+    border-radius:5px;
+    min-height:60px;
+}
+
+.group-progress-button {
+    text-align:center;
+}

@@ -1,0 +1,20 @@
+<svg width="40" height="40" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>covenant</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(-2632 -290)">
+<g id="covenant">
+<g id="Ellipse 3">
+<mask id="mask0_outline_ins">
+<use xlink:href="#path0_fill" fill="white" transform="translate(2632 290)"/>
+</mask>
+<g mask="url(#mask0_outline_ins)">
+<use xlink:href="#path1_stroke_2x" transform="translate(2632 290)" fill="#FFFFFF"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_fill" d="M 40 20C 40 31.0457 31.0457 40 20 40C 8.95431 40 0 31.0457 0 20C 0 8.95431 8.95431 0 20 0C 31.0457 0 40 8.95431 40 20Z"/>
+<path id="path1_stroke_2x" d="M 38 20C 38 29.9411 29.9411 38 20 38L 20 42C 32.1503 42 42 32.1503 42 20L 38 20ZM 20 38C 10.0589 38 2 29.9411 2 20L -2 20C -2 32.1503 7.84974 42 20 42L 20 38ZM 2 20C 2 10.0589 10.0589 2 20 2L 20 -2C 7.84974 -2 -2 7.84974 -2 20L 2 20ZM 20 2C 29.9411 2 38 10.0589 38 20L 42 20C 42 7.84974 32.1503 -2 20 -2L 20 2Z"/>
+</defs>
+</svg>

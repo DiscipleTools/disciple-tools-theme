@@ -3,8 +3,6 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 if( !Disciple_Tools_Contacts::can_view_contact( get_the_ID() )){
     return wp_redirect( "not-found" );
 }
-//@todo get restricted options
-$contacts = Disciple_Tools_Contacts::get_viewable_contacts( true );
 $shared_with = Disciple_Tools_Contacts::get_shared_with( get_the_id() );
 $users = Disciple_Tools_Contacts::get_assignable_users( get_the_ID() );
 get_header(); ?>
