@@ -1,5 +1,26 @@
-<!-- By default, this menu will use off-canvas for small
-	 and a topbar for medium-up -->
+<?php
+/*
+ * By default, Foundation will use .title-bar for small, and .top-bar for
+ * medium up
+ */
+?>
+
+<div class="title-bar" data-responsive-toggle="top-bar-menu" data-hide-for="medium">
+    <div class="title-bar-left">
+        <button class="menu-icon" type="button" data-open="off-canvas">
+            <img src="<?php echo get_template_directory_uri() . "/assets/images/hamburger.svg" ?>">
+        </button>
+        <div class="title-bar-title"><?php _e( "Disciple Tools" ); ?></div>
+    </div>
+    <div class="title-bar-right">
+        <a href="#">
+            <img title="<?php _e( "Notifications" ); ?>" src="<?php echo get_template_directory_uri() . "/assets/images/bell.svg" ?>">
+        </a>
+        <a href="<?php echo get_admin_url(); ?>">
+            <img title="<?php _e( "WordPress Admin" ); ?>" src="<?php echo get_template_directory_uri() . "/assets/images/gear.svg" ?>">
+        </a>
+    </div>
+</div>
 
 <div data-sticky-container>
     <div class="top-bar" id="top-bar-menu" data-sticky data-options="marginTop:0;" style="width:100%" data-top-anchor="1" data-btm-anchor="content:bottom">
