@@ -38,20 +38,20 @@ function contact_details_status( $id, $verified, $invalid ){
     <p class="section-header">Dispatch</p>
     <div class="grid-x grid-margin-x">
         <div class="medium-6 cell">
-            <strong>Assigned To:</strong>
-            <select class="assigned_to_select" id="dispatcher_assigned_to" onchange="save_field(<?php echo get_the_ID();?>, 'assigned_to', 'dispatcher_assigned_to')">
-                <option value="0"></option>
-                <?php
-                foreach( $users as $user ){
-                    if ( isset( $contact->fields["assigned_to"] ) &&
-                        $user->ID === (int) $contact->fields["assigned_to"]['id'] ){
-                        echo '<option value="user-' . $user->ID. '" selected>' . $user->display_name . '</option>';
+            <strong>Assigned To:
+                <span class="current-assigned">
+                    <?php
+                    if ( isset( $contact->fields["assigned_to"] ) ){
+                        echo esc_html( $contact->fields["assigned_to"]["display"] );
                     } else {
-                        echo '<option value="user-' . $user->ID. '">' . $user->display_name . '</option>';
+                        echo "Nobody";
                     }
-                }
-                ?>
-            </select>
+                    ?>
+                </span>
+            </strong>
+            <div class="assigned_to">
+                <input class="typeahead" type="text" placeholder="Select a new user">
+            </div>
         </div>
         <div class="medium-6 cell">
             <strong>Set Unassignable Reason:</strong>
@@ -182,7 +182,7 @@ function contact_details_status( $id, $verified, $invalid ){
             <div class="medium-4 cell">
                 <strong>Assigned To</strong>
                 <ul>
-                    <li id="assigned-to">
+                    <li class="current-assigned">
                     <?php
                     if ( isset( $contact->fields["assigned_to"] ) ){
                         echo esc_html( $contact->fields["assigned_to"]["display"] );
@@ -326,21 +326,20 @@ function contact_details_status( $id, $verified, $invalid ){
             </div>
             <!-- Contact Fields. Assigned to, location, etc -->
             <div class="medium-6 cell">
-                <strong>Assigned To</strong>
-                <select class="assigned_to_select" id="assigned_to" onchange="save_field(<?php echo get_the_ID();?>, 'assigned_to', 'assigned_to')">
-                    <option value="0"></option>
-                    <?php
-                    foreach( $users as $user ){
-                        if ( isset( $contact->fields["assigned_to"] ) &&
-                            $user->ID === (int) $contact->fields["assigned_to"]['id'] ){
-                            echo '<option value="user-' . $user->ID. '" selected>' . $user->display_name . '</option>';
+                <strong>Assigned To:
+                    <span class="current-assigned">
+                        <?php
+                        if ( isset( $contact->fields["assigned_to"] ) ){
+                            echo esc_html( $contact->fields["assigned_to"]["display"] );
                         } else {
-                            echo '<option value="user-' . $user->ID. '">' . $user->display_name . '</option>';
+                            echo "None Assigned";
                         }
-                    }
-                    ?>
-                </select>
-
+                        ?>
+                    </span>
+                </strong>
+                <div class="assigned_to">
+                    <input class="typeahead" type="text" placeholder="Select a new user">
+                </div>
                 <strong>Locations</strong>
                 <ul class="locations-list">
                 <?php
@@ -353,16 +352,9 @@ function contact_details_status( $id, $verified, $invalid ){
                     </li>';
                 }?>
                 </ul>
-                <select id="locations" onchange="add_location( <?php echo get_the_ID();?>, 'locations')">
-                    <?php
-                    echo '<option value="0"></option>';
-                    foreach( $locations as $location ){
-                        if ( !in_array( $location->ID, $location_ids )){
-                            echo '<option value="' . $location->ID. '">' . esc_html( $location->post_title ) . '</option>';
-                        }
-                    }
-                    ?>
-                </select>
+                <div id="locations">
+                    <input class="typeahead" type="text" placeholder="Select a location">
+                </div>
             </div>
         </div>
     </div>

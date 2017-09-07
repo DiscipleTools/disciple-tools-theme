@@ -121,6 +121,7 @@ var commentTemplate = _.template(`
 
 let comments = []
 let activity = []
+let contact = {}
 jQuery(document).ready(function($) {
   let id = $("#contact-id").text()
 
@@ -165,6 +166,213 @@ jQuery(document).ready(function($) {
     console.log("done")
     display_activity_comment("all")
   })
+
+  let searchAnyPieceOfWord = function(d) {
+    var tokens = [];
+    //the available string is 'name' in your datum
+    var stringSize = d.name.length;
+    //multiple combinations for every available size
+    //(eg. dog = d, o, g, do, og, dog)
+    for (var size = 1; size <= stringSize; size++) {
+      for (var i = 0; i + size <= stringSize; i++) {
+        tokens.push(d.name.substr(i, size));
+      }
+    }
+    return tokens;
+  }
+
+  // https://typeahead.js.org/examples/
+  var groups = new Bloodhound({
+    datumTokenizer: searchAnyPieceOfWord,
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    identify: function (obj) {
+      return obj.name
+    },
+    prefetch: {
+      url: wpApiSettings.root + 'dt-hooks/v1/groups-compact/',
+    },
+    remote: {
+      url: wpApiSettings.root + 'dt-hooks/v1/groups-compact/?s=%QUERY',
+      wildcard: '%QUERY',
+    }
+  })
+  function defaultGroups(q, sync, async) {
+    if (q === '') {
+      sync(groups.all());
+    }
+    else {
+      groups.search(q, sync, async);
+    }
+  }
+
+  let groupsTypeahead = $('#groups .typeahead')
+  groupsTypeahead.typeahead({
+      highlight: true,
+      minLength: 0,
+      autoselect: true,
+    },
+    {
+      async:false,
+      name: 'groups',
+      source: defaultGroups,
+      display: 'name'
+    })
+    .bind('typeahead:select', function (ev, sug) {
+      groupsTypeahead.typeahead('val', '')
+      groupsTypeahead.blur()
+      add_typeahead_item(id, 'groups', sug.ID)
+    })
+
+  var contacts = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('post_title'),
+    queryTokenizer: Bloodhound.tokenizers.ngram,
+    identify: function (obj) {
+      return obj.post_title
+    },
+    prefetch: {
+      url: wpApiSettings.root + 'dt-hooks/v1/contacts/',
+    },
+    remote: {
+      url: wpApiSettings.root + 'dt-hooks/v1/contacts/?s=%QUERY',
+      wildcard: '%QUERY'
+    }
+  });
+  function defaultcontacts(q, sync) {
+    if (q === '') {
+      sync(contacts.all());
+    }
+    else {
+      contacts.search(q, sync);
+    }
+  }
+
+
+  //autocomplete for dealing with contacts
+  ["baptized_by", "baptized", "coached_by", "coaching"].forEach(field_id=>{
+    let typeahead = $(`#${field_id} .typeahead`)
+    typeahead.typeahead({
+        highlight: true,
+        minLength: 0,
+        autoselect: true,
+      },
+      {
+        name: 'contacts',
+        source: defaultcontacts,
+        display: 'post_title'
+      })
+      .bind('typeahead:select', function (ev, sug) {
+        typeahead.typeahead('val', '')
+        typeahead.blur()
+        add_typeahead_item(id, field_id, sug.ID)
+      })
+  })
+
+  var users = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('display_name'),
+    queryTokenizer: Bloodhound.tokenizers.ngram,
+    identify: function (obj) {
+      return obj.display_name
+    },
+    prefetch: {
+      url: wpApiSettings.root + 'dt/v1/users/',
+    },
+    remote: {
+      url: wpApiSettings.root + 'dt/v1/users/?s=%QUERY',
+      wildcard: '%QUERY'
+    }
+  });
+
+  function defaultusers(q, sync) {
+    if (q === '') {
+      sync(users.all());
+    }
+    else {
+      users.search(q, sync);
+    }
+  }
+
+  let assigned_to_typeahead = $('.assigned_to .typeahead')
+  assigned_to_typeahead.typeahead({
+    highlight: true,
+    minLength: 0,
+    autoselect: true,
+  },
+  {
+    name: 'users',
+    source: users,
+    display: 'display_name'
+  })
+  .bind('typeahead:select', function (ev, sug) {
+    save_field_api(id, {assigned_to: 'user-' + sug.ID}, function () {
+      assigned_to_typeahead.typeahead('val', '')
+      jQuery('.current-assigned').text(sug.display_name)
+    })
+  })
+
+  var locations = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('post_title'),
+    queryTokenizer: Bloodhound.tokenizers.ngram,
+    identify: function (obj) {
+      return obj.post_title
+    },
+    prefetch: {
+      url: wpApiSettings.root + 'dt/v1/locations/',
+    },
+    remote: {
+      url: wpApiSettings.root + 'dt/v1/locations/?s=%QUERY',
+      wildcard: '%QUERY'
+    }
+  });
+
+
+  function defaultLocations(q, sync) {
+    if (q === '') {
+      sync(locations.all());
+    }
+    else {
+      locations.search(q, sync);
+    }
+  }
+
+  let locationsTypeahead = $('#locations .typeahead')
+  locationsTypeahead.typeahead({
+    highlight: true,
+    minLength: 0,
+    autoselect: true,
+  },
+  {
+    name: 'locations',
+    source: defaultLocations,
+    display: 'post_title'
+  })
+  .bind('typeahead:select', function (ev, sug) {
+    locationsTypeahead.typeahead('val', '')
+    locationsTypeahead.blur()
+    add_typeahead_item(id, 'locations', sug.ID)
+  })
+
+  /**
+   * Get the contact
+   */
+  // jQuery.ajax({
+  //   type:"GET",
+  //   contentType: "application/json; charset=utf-8",
+  //   dataType: "json",
+  //   url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ id,
+  //   success: function(data) {
+  //     contact = data
+  //     console.log(contact)
+  //     assigned_to_typeahead.typeahead('val', _.get(contact, "fields.assigned_to.display"))
+  //   },
+  //   error: function(err) {
+  //     console.log("error")
+  //     console.log(err)
+  //     jQuery("#errors").append(err.responseText)
+  //   },
+  // })
+
+
+
 })
 
 function get_activity(id){
@@ -263,18 +471,21 @@ function save_field(contactId, fieldKey, inputId){
   let val = field.val()
   let data = {}
   data[fieldKey] = val
+  save_field_api(contactId, data, function () {
+  })
+}
+
+function save_field_api(contactId, post_data, callback){
   jQuery.ajax({
     type:"POST",
-    data:JSON.stringify(data),
+    data:JSON.stringify(post_data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId,
     success: function(data) {
-      console.log("updated " + fieldKey + " to: " + val)
-      if (fieldKey === "assigned_to"){
-        jQuery('#assigned-to').text(field.find(`option:selected`).text())
-        jQuery('.assigned_to_select').val(val)
-      }
+      console.log("updated " + JSON.stringify(post_data))
+      callback()
+
       get_activity(contactId)
     },
     error: function(err) {
@@ -285,10 +496,9 @@ function save_field(contactId, fieldKey, inputId){
   })
 }
 
-function add_contact_detail(contactId, fieldKey, callback){
-  var input = jQuery("#"+fieldKey)
-  var data = {}
-  data[fieldKey] = input.val()
+function add_contact_detail(contactId, fieldKey, value, callback){
+  let data = {}
+  data[fieldKey] = value
   jQuery.ajax({
     type:"POST",
     data:JSON.stringify(data),
@@ -296,15 +506,7 @@ function add_contact_detail(contactId, fieldKey, callback){
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId + '/details',
     success: function(data) {
-      if (data != contactId && fieldKey.indexOf("new-")>-1){
-        input.removeAttr('onchange');
-        input.attr('id', data)
-        input.change(function () {
-          save_field(contactId, data)
-        })
-      }
       callback(data)
-      console.log("updated " + fieldKey + " to: " + input.val())
       get_activity(contactId)
     },
     error: function(err) {
@@ -362,10 +564,22 @@ function remove_contact_detail(contactId, fieldKey, valueId, callback) {
 }
 
 
+function new_contact_input_added(contactId, inputId){
+  let input = jQuery("#"+inputId)
+  add_contact_detail(contactId, inputId, input.val(), function (data) {
+    if (data != contactId && inputId.indexOf("new-")>-1){
+      input.removeAttr('onchange');
+      input.attr('id', data)
+      input.change(function () {
+        save_field(contactId, data)
+      })
+    }
+  })
+}
 
 function add_contact_input(contactId, inputId, listId){
   if (jQuery(`#${inputId}`).length === 0 ){
-    var newInput = `<li><input id="${inputId}" onchange="add_contact_detail(${contactId},'${inputId}', function(){})"\>`
+    var newInput = `<li><input id="${inputId}" onchange="new_contact_input_added(${contactId},'${inputId}')"\>`
     jQuery(`#${listId}`).append(newInput)
   }
 }
@@ -384,27 +598,12 @@ function invalidate_contact_method(contactId, fieldId) {
   })
 }
 
-function add_location(contactId, fieldId) {
-  let select = jQuery(`#${fieldId}`)
-  if (select.val() !== "0"){
-    add_contact_detail(contactId, fieldId, function (location){
-      select.val("0")
-      jQuery(".locations-list").append(`<li>
-        <a href="${location.permalink}">${location.post_title}</a>
-        <button class="details-remove-button edit-fields" onclick="remove_item(${contactId}, '${fieldId}', ${location.ID})">Remove</button>
-      </li>`)
-      select.find(`option[value='${location.ID}']`).remove()
-    })
-  }
-}
 
 function remove_item(contactId, fieldId, itemId){
   remove_contact_detail(contactId, fieldId, itemId, function () {
     jQuery(`.${fieldId}-list .${itemId}`).remove()
   })
 }
-
-
 
 
 function close_contact(contactId){
@@ -480,22 +679,14 @@ function edit_connections() {
   jQuery(".connections-edit").toggle()
 }
 
-function add_input_item(contactId, fieldId) {
-  let select = jQuery(`#${fieldId}`)
-  console.log(select.val())
-  if (select.val() !== "0"){
-    add_contact_detail(contactId, fieldId, function (addedItem){
-      console.log(addedItem)
-      select.val("0")
-      jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
-        <a href="${addedItem.permalink}">${addedItem.post_title}</a>
-        <button class="details-remove-button connections-edit" onclick="remove_item(${contactId}, '${fieldId}', ${addedItem.ID})">Remove</button>
-        </li>`)
-      select.find(`option[value='${addedItem.ID}']`).remove()
-      jQuery(".connections-edit").show()
-    })
-
-  }
+function add_typeahead_item(contactId, fieldId, val) {
+  add_contact_detail(contactId, fieldId, val, function (addedItem){
+    jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
+    <a href="${addedItem.permalink}">${addedItem.post_title}</a>
+    <button class="details-remove-button connections-edit" onclick="remove_item(${contactId}, '${fieldId}', ${addedItem.ID})">Remove</button>
+    </li>`)
+    jQuery(".connections-edit").show()
+  })
 }
 
 function details_accept_contact(contactId, accept){

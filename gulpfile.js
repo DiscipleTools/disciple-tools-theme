@@ -64,7 +64,7 @@ const SOURCE = {
     FOUNDATION + '/dist/js/plugins/foundation.tooltip.js',
 
     // Place custom JS here, files will be concantonated, minified if ran with --production
-    'assets/scripts/js/**/*.js',
+    'assets/js/footer-scripts.js',
   ],
 
   // Scss files will be concantonated, minified if ran with --production
@@ -92,20 +92,7 @@ const JSHINT_CONFIG = {
 };
 
 gulp.task('site-js', function() {
-  var scriptsPipeline = gulp.src([
-    // Grab your custom scripts
-    './assets/js/scripts/*.js'
-  ])
 
-    .pipe(plugin.plumber())
-    .pipe(plugin.sourcemaps.init())
-    .pipe(plugin.jshint())
-    .pipe(plugin.jshint.reporter('jshint-stylish'))
-    .pipe(plugin.concat('scripts.js'))
-    .pipe(plugin.uglify())
-    .pipe(rename({suffix: '.min'}))
-    .pipe(plugin.sourcemaps.write('.')) // Creates sourcemap for minified JS
-    .pipe(gulp.dest('./assets/js'))
   var footerPipeline = gulp.src([
     // TODO: it may be a good idea to not generate a separate file for footer-scripts.js
     './assets/js/footer-scripts.js',
@@ -224,4 +211,4 @@ gulp.task('watch', function() {
 });
 
 // Run styles, scripts and foundation-js
-gulp.task('default', gulp.parallel('styles', 'site-js', 'scripts', 'images'));
+gulp.task('default', gulp.parallel('styles', 'scripts', 'images'));
