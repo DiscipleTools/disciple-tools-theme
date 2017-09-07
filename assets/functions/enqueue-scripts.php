@@ -23,18 +23,12 @@ function site_scripts() {
      * End jQuery force new version
      */
 
-    wp_enqueue_script( 'site-js', get_template_directory_uri() . '/assets/scripts/scripts.min.js', array( 'jquery' ), filemtime( get_template_directory() . '/assets/js/scripts/' ), true );
-
-    wp_enqueue_script( 'typeahead', get_template_directory_uri() . '/assets/js/typeahead.bundle.min.js', array( 'jquery' ), filemtime( get_template_directory() . '/assets/js/scripts/' ), true );
-
-
     wp_enqueue_script( 'lodash', get_template_directory_uri() . '/vendor/lodash/lodash.min.js', array(), '4.17.4' );
 
-    // Adding scripts file in the header, also adds jquery and jquery ui to the head.
-    wp_enqueue_script( 'header-site-js', get_template_directory_uri() . '/assets/js/header-scripts.js', array( 'jquery', 'jquery-ui' ), '', false );
+    wp_enqueue_script( 'typeahead', get_template_directory_uri() . '/vendor/corejs-typeahead/dist/typeahead.bundle.min.js', array( 'jquery' ), filemtime( get_template_directory() . '/assets/scripts/' ), true );
 
-    // Adding scripts file in the footer
-    wp_enqueue_script( 'footer-site-js', get_template_directory_uri() . '/assets/js/footer-scripts.min.js', array( 'jquery' ), '', true );
+    wp_enqueue_script( 'site-js', get_template_directory_uri() . '/assets/scripts/scripts.min.js', array( 'jquery'), filemtime( get_template_directory() . '/assets/scripts/' ), true );
+
 
     // Register main stylesheet
     wp_enqueue_style( 'site-css', get_template_directory_uri() . '/assets/css/style.min.css', array(), '', 'all' );
