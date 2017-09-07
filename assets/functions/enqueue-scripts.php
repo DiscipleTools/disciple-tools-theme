@@ -25,7 +25,7 @@ function site_scripts() {
 
     wp_enqueue_script( 'lodash', get_template_directory_uri() . '/vendor/lodash/lodash.min.js', array(), '4.17.4' );
 
-    wp_enqueue_script( 'typeahead', get_template_directory_uri() . '/vendor/corejs-typeahead/dist/typeahead.bundle.min.js', array( 'jquery' ), filemtime( get_template_directory() . '/assets/scripts/' ), true );
+    wp_enqueue_script( 'typeahead', get_template_directory_uri() . '/vendor/typeahead/typeahead.bundle.min.js', array( 'jquery' ), filemtime( get_template_directory() . '/assets/scripts/' ), true );
 
     wp_enqueue_script( 'site-js', get_template_directory_uri() . '/assets/scripts/scripts.min.js', array( 'jquery'), filemtime( get_template_directory() . '/assets/scripts/' ), true );
 
