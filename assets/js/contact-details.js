@@ -485,7 +485,6 @@ function save_field_api(contactId, post_data, callback){
     success: function(data) {
       console.log("updated " + JSON.stringify(post_data))
       callback()
-
       get_activity(contactId)
     },
     error: function(err) {

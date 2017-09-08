@@ -48,6 +48,16 @@ function site_scripts() {
             )
         );
     }
+    if (is_singular( "groups" )){
+        wp_enqueue_script( 'group-details', get_template_directory_uri() . '/assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead' ) );
+        wp_localize_script(
+            'group-details', 'wpApiSettings', array(
+                'root' => esc_url_raw( rest_url() ),
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+//                'groups_custom_fields_settings' => Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( ),
+            )
+        );
+    }
 
 
     if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )) {

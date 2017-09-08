@@ -22,6 +22,7 @@ function contact_details_status( $id, $verified, $invalid ){
     <div class="item-details-header-row">
         <i class="fi-torsos-all large"></i>
         <span class="item-details-header"><?php the_title_attribute(); ?></span>
+        <button class=" float-right" id="edit-details"><i class="fi-pencil"></i> Edit</button>
     </div>
 
     <div class="display-fields grid-x">
@@ -50,15 +51,17 @@ function contact_details_status( $id, $verified, $invalid ){
         </div>
         <div class="medium-4 cell">
             <strong>Start Date</strong>
-            <div><?php echo $group["start_date"] ?? "No start date" ?> </div>
+            <div class="start_date details-list"><?php echo $group["start_date"] ?? "No start date" ?> </div>
+            <div class="start_date details-edit"><input type="text" id="start-date-picker"></div>
         </div>
         <div class="medium-4 cell">
             <strong>End Date</strong>
-            <div><?php echo $group["end_date"] ?? "No end date" ?> </div>
+            <div class="end_date details-list"><?php echo $group["end_date"] ?? "No end date" ?> </div>
+            <div class="end_date details-edit"><input type="text" id="end-date-picker"></div>
         </div>
         <div class="medium-4 cell">
-            <strong>Assigned to</strong>
-            <ul>
+            <strong>Assigned to <span class="assigned_to details-edit current-assigned">:</span> </strong>
+            <ul class="details-list assigned_to">
                 <li class="current-assigned">
                     <?php
                     if ( isset( $group["assigned_to"] ) ){
@@ -69,6 +72,9 @@ function contact_details_status( $id, $verified, $invalid ){
                     ?>
                 </li>
             </ul>
+            <div class="assigned_to details-edit">
+                <input class="typeahead" type="text" placeholder="Select a new user">
+            </div>
         </div>
 
 
