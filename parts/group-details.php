@@ -47,8 +47,10 @@ function contact_details_status( $id, $verified, $invalid ){
                 foreach($group[ "locations" ] ?? [] as $value){
                     echo '<li class="'. $value->ID .'">
                         <a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a>
-                        <button class="details-remove-button details-edit" onclick="remove_item('
-                              . get_the_ID() . ', \'locations\', ' . $value->ID . ')">Remove</button>
+                        <button class="details-remove-button details-edit" 
+                                data-field="locations" data-id="'. $value->ID . '" data-name="'. $value->post_title .'">
+                            Remove
+                        </button>
                     </li>';
                 }
                 if (sizeof( $group["locations"] ) === 0){
