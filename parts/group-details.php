@@ -45,9 +45,20 @@ function contact_details_status( $id, $verified, $invalid ){
             <ul class="locations-list">
                 <?php
                 foreach($group[ "locations" ] ?? [] as $value){
-                    echo '<li class="'. $value->ID .'"><a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a></li>';
-                }?>
+                    echo '<li class="'. $value->ID .'">
+                        <a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a>
+                        <button class="details-remove-button details-edit" onclick="remove_item('
+                              . get_the_ID() . ', \'locations\', ' . $value->ID . ')">Remove</button>
+                    </li>';
+                }
+                if (sizeof( $group["locations"] ) === 0){
+                    echo '<li>No location set</li>';
+                }
+                ?>
             </ul>
+            <div class="locations details-edit">
+                <input class="typeahead" type="text" placeholder="Select a new location">
+            </div>
         </div>
         <div class="medium-4 cell">
             <strong>Start Date</strong>
@@ -60,7 +71,9 @@ function contact_details_status( $id, $verified, $invalid ){
             <div class="end_date details-edit"><input type="text" id="end-date-picker"></div>
         </div>
         <div class="medium-4 cell">
-            <strong>Assigned to <span class="assigned_to details-edit current-assigned">:</span> </strong>
+            <strong>Assigned to
+                <span class="assigned_to details-edit">:
+                </span> <span class="assigned_to details-edit current-assigned">:</span> </strong>
             <ul class="details-list assigned_to">
                 <li class="current-assigned">
                     <?php

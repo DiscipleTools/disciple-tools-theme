@@ -1038,6 +1038,10 @@ Groups
 
 .details-edit {
     display: none;
+
+    input {
+        width: 95%
+    }
 }
 .details-list {
     margin-bottom: 1rem;
