@@ -68,7 +68,7 @@ function filterTypeahead(array, existing){
 
 function defaultFilter(q, sync, async, local, existing) {
   if (q === '') {
-    sync(filterTypeahead(local.all(), existing, "ID"));
+    sync(filterTypeahead(local.all(), existing));
   }
   else {
     local.search(q, sync, async);
@@ -246,7 +246,8 @@ let searchAnyPieceOfWord = function(d) {
       url: wpApiSettings.root + 'dt/v1/locations-compact/',
       transform: function(data){
         return filterTypeahead(data, group.locations || [])
-      }
+      },
+      cache: false
     },
     remote: {
       url: wpApiSettings.root + 'dt/v1/locations-compact/?s=%QUERY',
@@ -269,7 +270,7 @@ let searchAnyPieceOfWord = function(d) {
     {
       name: 'locations',
       source: function (q, sync, async) {
-        defaultFilter(q, sync, async, locations, group.locations)
+        return defaultFilter(q, sync, async, locations, group.locations)
       },
       display: 'name'
     })
