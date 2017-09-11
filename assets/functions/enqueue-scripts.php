@@ -25,13 +25,13 @@ function site_scripts() {
 
     wp_enqueue_script( 'lodash', get_template_directory_uri() . '/vendor/lodash/lodash.min.js', array(), '4.17.4' );
 
-    wp_enqueue_script( 'typeahead', get_template_directory_uri() . '/vendor/typeahead/typeahead.bundle.min.js', array( 'jquery' ), filemtime( get_template_directory() . '/assets/scripts/' ), true );
+    wp_enqueue_script( 'typeahead', get_template_directory_uri() . '/vendor/typeahead/typeahead.bundle.min.js', array( 'jquery' ), filemtime( get_template_directory() . '/vendor/typeahead/typeahead.bundle.min.js' ), true );
 
-    wp_enqueue_script( 'site-js', get_template_directory_uri() . '/assets/scripts/scripts.min.js', array( 'jquery'), filemtime( get_template_directory() . '/assets/scripts/' ), true );
+    wp_enqueue_script( 'site-js', get_template_directory_uri() . '/build/js/scripts.min.js', array( 'jquery'), filemtime( get_template_directory() . '/build/js/scripts.min.js' ), true );
 
 
     // Register main stylesheet
-    wp_enqueue_style( 'site-css', get_template_directory_uri() . '/assets/css/style.min.css', array(), '', 'all' );
+    wp_enqueue_style( 'site-css', get_template_directory_uri() . '/build/css/style.min.css', array(), '', 'all' );
 
     // Comment reply script for threaded comments
     if ( is_singular() and comments_open() and (get_option( 'thread_comments' ) == 1)) {

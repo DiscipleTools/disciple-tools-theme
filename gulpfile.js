@@ -66,11 +66,10 @@ const SOURCE = {
   php: '**/*.php'
 };
 
-const ASSETS = {
-  styles: 'assets/css/',
-  scripts: 'assets/scripts/',
+const BUILD_DIRS = {
+  styles: 'build/css/',
+  scripts: 'build/js/',
   images: 'assets/images/',
-  all: 'assets/'
 };
 
 // GULP FUNCTIONS
@@ -92,7 +91,7 @@ gulp.task('scripts', function() {
     .pipe(plugin.uglify())
     .pipe(rename({suffix: '.min'}))
     .pipe(plugin.sourcemaps.write('.')) // Creates sourcemap for minified JS
-    .pipe(gulp.dest(ASSETS.scripts))
+    .pipe(gulp.dest(BUILD_DIRS.scripts))
 });
 
 // Compile Sass, Autoprefix and minify
@@ -111,18 +110,18 @@ gulp.task('styles', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(plugin.cssnano())
     .pipe(plugin.sourcemaps.write('.'))
-    .pipe(gulp.dest(ASSETS.styles))
+    .pipe(gulp.dest(BUILD_DIRS.styles))
     .pipe(browserSync.reload({
       stream: true
     }));
 });
 
-// Optimize images, move into assets directory
+// Optimize images
 gulp.task('images', function() {
   return gulp.src(SOURCE.images)
-    .pipe(plugin.newer(ASSETS.images))
+    .pipe(plugin.newer(BUILD_DIRS.images))
     .pipe(plugin.imagemin())
-    .pipe(gulp.dest(ASSETS.images))
+    .pipe(gulp.dest(BUILD_DIRS.images))
 });
 
 // Browser-Sync watch files and inject changes
