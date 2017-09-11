@@ -113,7 +113,7 @@ gulp.task('styles', function() {
 });
 
 // Browser-Sync watch files and inject changes
-gulp.task('browsersync', function() {
+gulp.task('browsersync', ['default'], function() {
 
   // Watch these files
   var files = [
