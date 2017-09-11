@@ -17,16 +17,6 @@ var gulp  = require('gulp'),
 // Set local URL if using Browser-Sync
 const LOCAL_URL = process.env.BROWSERSYNC_PROXIED_SITE || 'http://jointswp-github.dev/';
 
-const TRANSLATE = {
-  domain: 'WPGULP', // Your textdomain here
-  destFile: 'WPGULP.pot',
-  packageName:'WPGULP',
-  bugReport: 'https://AhmadAwais.com/contact/', // Where can users report bugs.
-  lastTranslator: 'Ahmad Awais <your_email@email.com>', // Last translator Email ID.
-  team: 'WPTie <your_email@email.com>', // Team's Email ID.
-  translatePath: './languages' // Where to save the translation files.
-};
-
 // Set path to Foundation files
 const FOUNDATION = 'node_modules/foundation-sites';
 
@@ -70,49 +60,17 @@ const SOURCE = {
   // Scss files will be concantonated, minified if ran with --production
   styles: 'assets/scss/**/*.scss',
 
-  // Images placed here will be optimized
-  images: 'assets/images/**/*',
-
   php: '**/*.php'
 };
 
-const ASSETS = {
-  styles: 'assets/css/',
-  scripts: 'assets/scripts/',
-  images: 'assets/images/',
-  all: 'assets/'
+const BUILD_DIRS = {
+  styles: 'build/css/',
+  scripts: 'build/js/',
 };
-
-const JSHINT_CONFIG = {
-  "node": true,
-  "globals": {
-    "document": true,
-    "jQuery": true
-  }
-};
-
-gulp.task('site-js', function() {
-
-  var footerPipeline = gulp.src([
-    // TODO: it may be a good idea to not generate a separate file for footer-scripts.js
-    './assets/js/footer-scripts.js',
-  ])
-    .pipe(plugin.sourcemaps.init())
-    .pipe(plugin.jshint())
-    .pipe(plugin.jshint.reporter('jshint-stylish'))
-    .pipe(plugin.uglify())
-    .pipe(rename({suffix: '.min'}))
-    .pipe(plugin.sourcemaps.write('.'))
-    .pipe(gulp.dest('./assets/js'))
-  return merge(scriptsPipeline, footerPipeline);
-});
 
 // GULP FUNCTIONS
-// JSHint, concat, and minify JavaScript
+// concat, and minify JavaScript
 gulp.task('scripts', function() {
-
-  // Use a custom filter so we only lint custom JS
-  const CUSTOMFILTER = filter(ASSETS.scripts + 'js/**/*.js', {restore: true});
 
   return gulp.src(SOURCE.scripts)
     .pipe(plugin.plumber(function(error) {
@@ -125,15 +83,11 @@ gulp.task('scripts', function() {
       compact: true,
       ignore: ['what-input.js']
     }))
-    .pipe(CUSTOMFILTER)
-    .pipe(plugin.jshint(JSHINT_CONFIG))
-    .pipe(plugin.jshint.reporter('jshint-stylish'))
-    .pipe(CUSTOMFILTER.restore)
     .pipe(plugin.concat('scripts.js'))
     .pipe(plugin.uglify())
     .pipe(rename({suffix: '.min'}))
     .pipe(plugin.sourcemaps.write('.')) // Creates sourcemap for minified JS
-    .pipe(gulp.dest(ASSETS.scripts))
+    .pipe(gulp.dest(BUILD_DIRS.scripts))
 });
 
 // Compile Sass, Autoprefix and minify
@@ -152,37 +106,19 @@ gulp.task('styles', function() {
     .pipe(rename({suffix: '.min'}))
     .pipe(plugin.cssnano())
     .pipe(plugin.sourcemaps.write('.'))
-    .pipe(gulp.dest(ASSETS.styles))
+    .pipe(gulp.dest(BUILD_DIRS.styles))
     .pipe(browserSync.reload({
       stream: true
     }));
 });
 
-// Optimize images, move into assets directory
-gulp.task('images', function() {
-  return gulp.src(SOURCE.images)
-    .pipe(plugin.newer(ASSETS.images))
-    .pipe(plugin.imagemin())
-    .pipe(gulp.dest(ASSETS.images))
-});
-
-gulp.task( 'translate', function () {
-  return gulp.src( SOURCE.php )
-    .pipe(plugin.wpPot( {
-      domain: 'jointswp',
-      package: 'Example project'
-    } ))
-    .pipe(gulp.dest('file.pot'));
-});
-
 // Browser-Sync watch files and inject changes
-gulp.task('browsersync', function() {
+gulp.task('browsersync', ['default'], function() {
 
   // Watch these files
   var files = [
     SOURCE.styles,
     SOURCE.scripts,
-    SOURCE.images,
     SOURCE.php,
   ];
 
@@ -190,9 +126,8 @@ gulp.task('browsersync', function() {
     proxy: LOCAL_URL,
   });
 
-  gulp.watch(SOURCE.styles, gulp.parallel('styles'));
-  gulp.watch(SOURCE.scripts, gulp.parallel('scripts')).on('change', browserSync.reload);
-  gulp.watch(SOURCE.images, gulp.parallel('images'));
+  gulp.watch(SOURCE.styles, ['styles']);
+  gulp.watch(SOURCE.scripts, ['scripts']).on('change', browserSync.reload);
 
 });
 
@@ -200,15 +135,12 @@ gulp.task('browsersync', function() {
 gulp.task('watch', function() {
 
   // Watch .scss files
-  gulp.watch(SOURCE.styles, gulp.parallel('styles'));
+  gulp.watch(SOURCE.styles, ['styles']);
 
   // Watch scripts files
-  gulp.watch(SOURCE.scripts, gulp.parallel('scripts'));
-
-  // Watch images files
-  gulp.watch(SOURCE.images, gulp.parallel('images'));
+  gulp.watch(SOURCE.scripts, ['scripts']);
 
 });
 
 // Run styles, scripts and foundation-js
-gulp.task('default', gulp.parallel('styles', 'scripts', 'images'));
+gulp.task('default', ['styles', 'scripts']);

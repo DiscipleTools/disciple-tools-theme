@@ -25,13 +25,13 @@ function site_scripts() {
 
     wp_enqueue_script( 'lodash', get_template_directory_uri() . '/vendor/lodash/lodash.min.js', array(), '4.17.4' );
 
-    wp_enqueue_script( 'typeahead', get_template_directory_uri() . '/vendor/typeahead/typeahead.bundle.min.js', array( 'jquery' ), filemtime( get_template_directory() . '/assets/scripts/' ), true );
+    wp_enqueue_script( 'typeahead', get_template_directory_uri() . '/vendor/typeahead/typeahead.bundle.min.js', array( 'jquery' ), filemtime( get_template_directory() . '/vendor/typeahead/typeahead.bundle.min.js' ), true );
 
-    wp_enqueue_script( 'site-js', get_template_directory_uri() . '/assets/scripts/scripts.min.js', array( 'jquery'), filemtime( get_template_directory() . '/assets/scripts/' ), true );
+    wp_enqueue_script( 'site-js', get_template_directory_uri() . '/build/js/scripts.min.js', array( 'jquery'), filemtime( get_template_directory() . '/build/js/scripts.min.js' ), true );
 
 
     // Register main stylesheet
-    wp_enqueue_style( 'site-css', get_template_directory_uri() . '/assets/css/style.min.css', array(), '', 'all' );
+    wp_enqueue_style( 'site-css', get_template_directory_uri() . '/build/css/style.min.css', array(), '', 'all' );
 
     // Comment reply script for threaded comments
     if ( is_singular() and comments_open() and (get_option( 'thread_comments' ) == 1)) {
@@ -53,7 +53,7 @@ function site_scripts() {
     if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )) {
         wp_enqueue_script( 'data-tables', get_template_directory_uri() . '/vendor/DataTables/datatables.min.js',  array( 'jquery' ), '1.10.15' );
         wp_enqueue_style( 'data-tables', get_template_directory_uri() . '/vendor/DataTables/datatables.min.css', array(), '', 'all' );
-        wp_enqueue_script( 'list-js', get_template_directory_uri() . '/assets/js/list.js', array( 'jquery', 'lodash', 'data-tables' ) );
+        wp_enqueue_script( 'list-js', get_template_directory_uri() . '/assets/js/list.js', array( 'jquery', 'lodash', 'data-tables', 'site-js' ), filemtime( get_template_directory() . '/assets/js/list.js' ), true );
         $post_type = null;
         if (is_post_type_archive( "contacts" )) {
             $post_type = "contacts";

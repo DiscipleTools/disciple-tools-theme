@@ -22,8 +22,14 @@ $contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_co
 
         <div id="inner-content" class="grid-x grid-margin-x">
 
-            <aside class="large-2 cell padding-bottom">
-                <div class="bordered-box">
+            <aside class="large-2 cell padding-bottom hide-for-small-only">
+                <div class="bordered-box js-pane-filters">
+                    <?php /* Javascript may move .js-filters-modal-content to this location. */ ?>
+                </div>
+            </aside>
+
+            <div class="reveal js-filters-modal" id="filters-modal" data-reveal>
+                <div class="js-filters-modal-content">
                     <h3><?php _e( "Filters" ); ?></h3>
                     <div>
                         <button class="button small js-my-contacts"><?php _e( "My contacts" ); ?></button>
@@ -50,8 +56,10 @@ $contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_co
                         <p><?php _e( "Loading..." ); ?></p>
                     </div>
                 </div>
-
-            </aside>
+                <button class="close-button" data-close aria-label="<?php _e( "Close modal" ); ?>" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
             <main id="main" class="large-8 cell padding-bottom" role="main">
 
