@@ -1,0 +1,36 @@
+<svg width="24" height="24" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Vector</title>
+<g id="Canvas" transform="translate(-3596 1504)">
+<rect x="3596" y="-1504" width="24" height="24" fill="#E5E5E5"/>
+<clipPath id="clip-0" clip-rule="evenodd">
+<path d="M 3356 -1517L 3715 -1517L 3715 -661L 3356 -661L 3356 -1517Z" fill="#FFFFFF"/>
+</clipPath>
+<g id="Contact List Mobile" clip-path="url(#clip-0)">
+<path d="M 3356 -1517L 3715 -1517L 3715 -661L 3356 -661L 3356 -1517Z" fill="#E2E2E2"/>
+<g id="Rectangle 8" filter="url(#filter0_d)">
+<use xlink:href="#path0_fill" transform="translate(3356 -1517)" fill="#3F729B"/>
+</g>
+<g id="filter">
+<g id="Group">
+<g id="Vector">
+<use xlink:href="#path1_fill" transform="translate(3596 -1504)" fill="#FFFFFF"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_d" filterUnits="userSpaceOnUse" x="3356" y="-1517" width="359" height="58" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255 0"/>
+<feOffset dx="0" dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<path id="path0_fill" d="M 0 0L 359 0L 359 50L 0 50L 0 0Z"/>
+<path id="path1_fill" d="M 23.842 0.8295C 23.587 0.321 23.068 0 22.4995 0L 1.49954 0C 0.931036 0 0.412036 0.321 0.157036 0.8295C -0.094964 1.338 -0.040964 1.9455 0.299536 2.4L 8.99954 13.9995L 8.99954 22.5C 8.99954 23.3295 9.67004 24 10.4995 24L 13.4995 24C 14.329 24 14.9995 23.3295 14.9995 22.5L 14.9995 13.9995L 23.6995 2.4C 24.04 1.9455 24.094 1.338 23.842 0.8295Z"/>
+</defs>
+</svg>
+
