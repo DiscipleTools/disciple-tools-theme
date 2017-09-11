@@ -235,7 +235,7 @@ function contact_details_status( $id, $verified, $invalid ){
                     <strong>Address</strong>
                     <ul>
                         <?php
-                        foreach($group[ "address" ]  ?? [] as $value){
+                        foreach($contact->fields[ "address" ]  ?? [] as $value){
                             $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                             echo  '<li>' . esc_html( $value["value"] ) .

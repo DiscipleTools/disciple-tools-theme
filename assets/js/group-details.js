@@ -52,9 +52,7 @@ function add_typeahead_item(groupId, fieldId, val, name) {
     <button class="details-remove-button details-edit"
             data-field="locations" data-id="${val}"
             data-name="${name}"  
-            style="display: inline-block">
-      Remove
-    </button>
+            style="display: inline-block">Remove</button>
     </li>`)
     jQuery(".connections-edit").show()
   })
@@ -283,6 +281,44 @@ let searchAnyPieceOfWord = function(d) {
     loadLocationsTypeahead()
   })
   loadLocationsTypeahead()
+
+
+  /**
+   * Addresses
+   */
+  var button = $('.address.details-edit.add-button')
+  console.log(button)
+  button.on('click', e=>{
+    console.log(e)
+    if ($('#new-address').length === 0 ) {
+      let newInput = `<li>
+        <textarea id="new-address"></textarea>
+      </li>`
+      $('.details-edit.address-list').append(newInput)
+    }
+  })
+  //for a new address field that has not been saved yet
+  $(document).on('change', '#new-address', function (val) {
+    let input = $('#new-address')
+    add_item_to_field(groupId, {"new-address":input.val()}).done(function (data) {
+      if (data != groupId){
+        //change the it to the created field
+        input.attr('id', data)
+        $('.details-list.address').append(`<li class="${data}">${input.val()}</li>`)
+      }
+
+    })
+  })
+  $(document).on('change', '.address-list textarea', function(){
+    let id = $(this).attr('id')
+    if (id && id !== "new-address"){
+      save_field_api(groupId, {[id]: $(this).val()}).done(()=>{
+        $(`.address.details-list .${id}`).text($(this).val())
+      })
+
+    }
+  })
+
 
 
 

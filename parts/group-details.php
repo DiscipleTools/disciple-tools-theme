@@ -28,16 +28,49 @@ function contact_details_status( $id, $verified, $invalid ){
     <div class="display-fields grid-x">
         <div class="medium-4 cell">
             <strong>Address</strong>
-            <ul>
+            <button class="address details-edit add-button">
+                <img src="<?php echo get_template_directory_uri() . '/assets/images/small-add.svg' ?>"/>
+            </button>
+            <ul class="address details-list">
                 <?php
                 foreach($group[ "address" ]  ?? [] as $value){
                     $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                     $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                    echo  '<li>' . esc_html( $value["value"] ) .
+                    echo  '<li class="'. $value["key"] .'">' . esc_html( $value["value"] ) .
                         contact_details_status( $value["key"], $verified, $invalid ) .
                         '</li>';
                 }?>
             </ul>
+            <?php
+            if ( isset( $group["address"] ) ){
+                $type_label = "Address";
+                $type = "address";
+                $new_input_id = "new-" . $type;
+                $list_id = $type . "-list";
+                ?>
+
+                <ul class="details-edit address-list">
+                    <?php
+                    foreach($group[ "address" ] ?? [] as $value){
+                        $verified = isset( $value["verified"] ) && $value["verified"] === true;
+                        $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
+                        $html = '<li>';
+                        if ( !$verified ){
+                            $html .= '<button class="details-status-button verify" id="' . esc_attr( $value["key"] ) . '-verify" onclick="verify_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Verify</button>';
+                        }
+                        if ( !$invalid ){
+                            $html .= '<button class="details-status-button invalid" id="' . esc_attr( $value["key"] ) . '-invalidate" onclick="invalidate_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Invalidate</button>';
+                        }
+                        $html .= '<textarea id="' . esc_attr( $value["key"] ) . '">'
+                            . esc_html( $value["value"] ) .
+                            '</textarea>
+                </li>';
+                        echo $html;
+                    }?>
+                </ul>
+                <?php
+            }
+            ?>
         </div>
 
         <div class="medium-4 cell">
@@ -48,9 +81,9 @@ function contact_details_status( $id, $verified, $invalid ){
                     echo '<li class="'. $value->ID .'">
                         <a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a>
                         <button class="details-remove-button details-edit" 
-                                data-field="locations" data-id="'. $value->ID . '" data-name="'. $value->post_title .'">
-                            Remove
-                        </button>
+                                data-field="locations" data-id="'. $value->ID . '" 
+                                data-name="'. $value->post_title .'"
+                        >Remove</button>
                     </li>';
                 }
                 if (sizeof( $group["locations"] ) === 0){

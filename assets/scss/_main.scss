@@ -1039,8 +1039,12 @@ Groups
 .details-edit {
     display: none;
 
+
     input {
-        width: 95%
+        width: 95%;
+    }
+    textarea {
+        width: 95%;
     }
 }
 .details-list {
