@@ -1,5 +1,11 @@
 /* global jQuery:false, wpApiSettings:false */
 
+jQuery.ajaxSetup({
+  beforeSend: function(xhr) {
+    xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+  },
+})
+
 jQuery(document).ready(function($) {
 function save_field_api(groupId, post_data){
   return jQuery.ajax({
@@ -48,13 +54,12 @@ function remove_item_from_field(groupId, fieldKey, valueId) {
 function add_typeahead_item(groupId, fieldId, val, name) {
   add_item_to_field(groupId, { [fieldId]: val }).done(function (addedItem){
     jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
-    <a href="${addedItem.permalink}">${addedItem.post_title}</a>
+    <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
     <button class="details-remove-button details-edit"
             data-field="locations" data-id="${val}"
             data-name="${name}"  
             style="display: inline-block">Remove</button>
     </li>`)
-    jQuery(".connections-edit").show()
   })
 }
 
@@ -107,8 +112,10 @@ let searchAnyPieceOfWord = function(d) {
 
   $(document)
     .on('click', '.details-remove-button', function () {
+      console.log("remove")
     let fieldId = $(this).data('field')
     let itemId = $(this).data('id')
+
     remove_item_from_field(groupId, fieldId, itemId).done(()=>{
       $(`.${fieldId}-list .${itemId}`).remove()
 
@@ -116,6 +123,11 @@ let searchAnyPieceOfWord = function(d) {
       if (fieldId === 'locations'){
         locations.add([{ID:itemId, name: $(this).data('name')}])
       }
+      if (fieldId === "members"){
+        members.add([{ID:itemId, name: $(this).data('name')}])
+      }
+    }).error(err=>{
+      console.log(err)
     })
   })
 
@@ -320,6 +332,61 @@ let searchAnyPieceOfWord = function(d) {
   })
 
 
+  /**
+   * Members
+   */
+
+  $("#members-edit").on('click', function () {
+    $('.members-edit').toggle()
+  })
+  let members = new Bloodhound({
+    datumTokenizer: searchAnyPieceOfWord,
+    queryTokenizer: Bloodhound.tokenizers.ngram,
+    identify: function (obj) {
+      return obj.ID
+    },
+    prefetch: {
+      url: wpApiSettings.root + 'dt-hooks/v1/contacts/compact',
+      transform: function(data){
+        return filterTypeahead(data, group.members || [])
+      },
+      cache: false
+    },
+    remote: {
+      url: wpApiSettings.root + 'dt-hooks/v1/contacts/compact/?s=%QUERY',
+      wildcard: '%QUERY',
+      transform: function(data){
+        return filterTypeahead(data, group.members || [])
+      }
+    },
+    initialize: false,
+    local : []
+  });
+
+  let membersTypeahead = $('#members .typeahead')
+  function loadMembersTypeahead() {
+    membersTypeahead.typeahead({
+        highlight: true,
+        minLength: 0,
+        autoselect: true,
+      },
+      {
+        name: 'members',
+        source: function (q, sync, async) {
+          return defaultFilter(q, sync, async, members, group.members)
+        },
+        display: 'name'
+      })
+  }
+  membersTypeahead.bind('typeahead:select', function (ev, sug) {
+    membersTypeahead.typeahead('val', '')
+    group.members.push(sug)
+    add_typeahead_item(groupId, 'members', sug.ID, sug.name)
+    membersTypeahead.typeahead('destroy')
+    loadMembersTypeahead()
+  })
+  loadMembersTypeahead()
+
 
 
   /**
@@ -339,6 +406,7 @@ let searchAnyPieceOfWord = function(d) {
       $('.current-assigned').text(_.get(groupData, "assigned_to.display"))
     }
     locations.initialize()
+    members.initialize()
   })
 
 
