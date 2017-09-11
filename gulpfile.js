@@ -125,15 +125,6 @@ gulp.task('images', function() {
     .pipe(gulp.dest(ASSETS.images))
 });
 
-gulp.task( 'translate', function () {
-  return gulp.src( SOURCE.php )
-    .pipe(plugin.wpPot( {
-      domain: 'jointswp',
-      package: 'Example project'
-    } ))
-    .pipe(gulp.dest('file.pot'));
-});
-
 // Browser-Sync watch files and inject changes
 gulp.task('browsersync', function() {
 
