@@ -190,6 +190,7 @@ jQuery(document).ready(function($) {
     },
     prefetch: {
       url: wpApiSettings.root + 'dt-hooks/v1/groups-compact/',
+      cache:false
     },
     remote: {
       url: wpApiSettings.root + 'dt-hooks/v1/groups-compact/?s=%QUERY',
