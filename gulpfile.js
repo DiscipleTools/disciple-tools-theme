@@ -140,9 +140,9 @@ gulp.task('browsersync', function() {
     proxy: LOCAL_URL,
   });
 
-  gulp.watch(SOURCE.styles, gulp.parallel('styles'));
-  gulp.watch(SOURCE.scripts, gulp.parallel('scripts')).on('change', browserSync.reload);
-  gulp.watch(SOURCE.images, gulp.parallel('images'));
+  gulp.watch(SOURCE.styles, ['styles']);
+  gulp.watch(SOURCE.scripts, ['scripts']).on('change', browserSync.reload);
+  gulp.watch(SOURCE.images, ['images']);
 
 });
 
@@ -150,15 +150,15 @@ gulp.task('browsersync', function() {
 gulp.task('watch', function() {
 
   // Watch .scss files
-  gulp.watch(SOURCE.styles, gulp.parallel('styles'));
+  gulp.watch(SOURCE.styles, ['styles']);
 
   // Watch scripts files
-  gulp.watch(SOURCE.scripts, gulp.parallel('scripts'));
+  gulp.watch(SOURCE.scripts, ['scripts']);
 
   // Watch images files
-  gulp.watch(SOURCE.images, gulp.parallel('images'));
+  gulp.watch(SOURCE.images, ['images']);
 
 });
 
 // Run styles, scripts and foundation-js
-gulp.task('default', gulp.parallel('styles', 'scripts', 'images'));
+gulp.task('default', ['styles', 'scripts', 'images']);
