@@ -1,4 +1,4 @@
-(function($, wpApiSettings) {
+(function($, wpApiSettings, Foundation) {
   "use strict";
   let items; // contacts or groups
   let filterFunctions = [];
@@ -67,6 +67,20 @@
         );
       });
     },
+  });
+
+  $(function() {
+    $(window).resize(function() {
+      if (Foundation.MediaQuery.is('small only')) {
+        if ($(".js-filters-modal .js-filters-modal-content").length === 0) {
+          $(".js-filters-modal").append($(".js-filters-modal-content").detach());
+        }
+      } else {
+        if ($(".js-pane-filters .js-filters-modal-contact").length === 0) {
+          $(".js-pane-filters").append($(".js-filters-modal-content").detach());
+        }
+      }
+    }).trigger("resize");
   });
 
   function sortBy(columnIndex) {
@@ -443,4 +457,4 @@
   }
 
 
-})(window.jQuery, window.wpApiSettings);
+})(window.jQuery, window.wpApiSettings, window.Foundation);

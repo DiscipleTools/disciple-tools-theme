@@ -19,7 +19,7 @@ script:
   - ./test/test_for_syntax_errors.sh
   - ./test/test_installation.sh
   - curl -sOL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar && php phpcs.phar && rm phpcs.phar
-  - rm -f assets/js/*.min.js assets/js/*.map assets/css/*.min.css assets/css/*.map
+  - find assets/ -iname "*.min.js" -or -iname "*.map" -or -iname "*.min.css" -delete && rm -rf build/
   - gulp
   - git diff --exit-code
   # If the previous command returns a non-zero exit code, that means gulp has

@@ -13,6 +13,11 @@
         <div class="title-bar-title"><?php _e( "Disciple Tools" ); ?></div>
     </div>
     <div class="title-bar-right">
+        <?php if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )): ?>
+        <button data-open="filters-modal">
+            <img title="<?php _e( "Filters" ); ?>" src="<?php echo get_template_directory_uri() . "/assets/images/filter.svg" ?>">
+        </button>
+        <?php endif; ?>
         <a href="#">
             <img title="<?php _e( "Notifications" ); ?>" src="<?php echo get_template_directory_uri() . "/assets/images/bell.svg" ?>">
         </a>
