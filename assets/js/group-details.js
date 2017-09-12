@@ -47,6 +47,33 @@ function remove_item_from_field(groupId, fieldKey, valueId) {
   })
 }
 
+function post_comment(groupId, comment) {
+  return jQuery.ajax({
+    type: "POST",
+    data: JSON.stringify({comment}),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/group/' + groupId + '/comment',
+  })
+}
+
+function get_comment(groupId) {
+  return jQuery.ajax({
+    type: "GET",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/group/' + groupId + '/comments',
+  })
+}
+
+function get_activity() {
+  return jQuery.ajax({
+    type: "GET",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettings.root + 'dt-hooks/v1/group/' + groupId + '/activity',
+  })
+}
 /**
  * Typeahead functions
  */
@@ -410,7 +437,30 @@ let searchAnyPieceOfWord = function(d) {
   })
 
 
+  /**
+   * Comments and Activity
+   */
 
+  let comments = []
+  let activity = []
+
+  let commentButton = $('#add-comment-button')
+    .on('click', function () {
+      commentButton.toggleClass('loading')
+      let input = $("#comment-input")
+      post_comment(groupId, input.val()).success(commentData=>{
+        commentButton.toggle('loading')
+        input.val('')
+        commentData.comment.date = new Date(data.comment.comment_date)
+        comments.push(data.comment)
+        display_activity_comment()
+      })
+    })
+
+  $.when(
+
+
+  )
 })
 
 

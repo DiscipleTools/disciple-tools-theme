@@ -173,7 +173,9 @@ get_header(); ?>
         </main> <!-- end #main -->
 
         <aside class="large-5 medium-12 small-12 cell">
-            <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
+            <section class="bordered-box comment-activity-section" id="comment-activity-section">
+                <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
+            </section>
         </aside>
 
     </div> <!-- end #inner-content -->

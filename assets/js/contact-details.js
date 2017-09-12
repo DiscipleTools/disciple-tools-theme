@@ -75,6 +75,8 @@ function save_quick_action(contactId, fieldKey){
   }
 }
 
+
+
 function post_comment(contactId) {
   jQuery("#add-comment-button").toggleClass('loading')
   let comment = jQuery("#comment-input").val()
@@ -383,6 +385,9 @@ jQuery(document).ready(function($) {
   // })
 
 
+  jQuery('#add-comment-button').on('click', function () {
+    post_comment(id)
+  })
 
 })
 

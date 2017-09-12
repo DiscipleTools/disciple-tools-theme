@@ -241,6 +241,7 @@ img {
 .contact-quick-buttons {
     display: flex;
     justify-content: space-evenly;
+    flex:none;
 }
 .contact-quick-button {
     width: min-content;
