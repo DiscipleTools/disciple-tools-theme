@@ -24,7 +24,7 @@ $contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_co
 
             <aside class="large-3 cell padding-bottom"  data-sticky-container>
                 <div class="bordered-box">
-                    <h3><?php _e( "Priorities" ); ?></h3>
+                    <h5><?php _e( "Priorities" ); ?></h5>
 
                     <h6>
                         <?php _e( "Update needed" ); ?>
@@ -98,7 +98,7 @@ $contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_co
 
             <div class="reveal js-filters-modal" id="filters-modal" data-reveal>
                 <div class="js-filters-modal-content">
-                    <h3><?php _e( "Filters" ); ?></h3>
+                    <h5><?php _e( "Filters" ); ?></h5>
                     <div>
                         <button class="button small js-my-contacts"><?php _e( "My contacts" ); ?></button>
                         <button disabled class="button small js-clear-filters"><?php _e( "Clear filters" ); ?></button>

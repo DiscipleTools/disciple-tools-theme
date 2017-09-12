@@ -2,7 +2,7 @@
 declare(strict_types=1);
 ?>
 <div class="bordered-box">
-    <h3><?php _e( "Groups" ); ?></h3>
+    <h5><?php _e( "Groups" ); ?></h5>
     <div class="reveal js-list-sort-by-modal" data-reveal>
         <h1><?php _e( "Sort by:" ); ?></h1>
         <div>
