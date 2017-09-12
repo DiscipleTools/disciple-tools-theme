@@ -1,18 +1,17 @@
 <?php get_header(); ?>
 
     <div id="content">
+        <!-- Breadcrumb Navigation-->
+        <nav aria-label="You are here:" role="navigation" class="second-bar">
+            <ul class="breadcrumbs">
+                <li><a href="/">Dashboard</a></li>
+                <li>
+                    <span class="show-for-sr">Current: </span> MEDIA
+                </li>
+            </ul>
+        </nav>
 
         <div id="inner-content" class="row">
-
-            <!-- Breadcrumb Navigation-->
-            <nav aria-label="You are here:" role="navigation">
-                <ul class="breadcrumbs">
-                    <li><a href="/">Dashboard</a></li>
-                    <li>
-                        <span class="show-for-sr">Current: </span> MEDIA
-                    </li>
-                </ul>
-            </nav>
 
             <main id="main" class="large-12 medium-12 columns" role="main">
 

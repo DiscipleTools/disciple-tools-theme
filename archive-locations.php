@@ -2,17 +2,17 @@
 
 <div id="content">
 
-    <div id="inner-content" class="row">
+    <!-- Breadcrumb Navigation-->
+    <nav aria-label="You are here:" role="navigation" class="second-bar hide-for-small-only">
+        <ul class="breadcrumbs">
+            <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
+            <li>
+                <span class="show-for-sr">Current: </span> Locations
+            </li>
+        </ul>
+    </nav>
 
-        <!-- Breadcrumb Navigation-->
-        <nav aria-label="You are here:" role="navigation" class="hide-for-small-only">
-            <ul class="breadcrumbs">
-                <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
-                <li>
-                    <span class="show-for-sr">Current: </span> Locations
-                </li>
-            </ul>
-        </nav>
+    <div id="inner-content" class="row">
 
         <main id="main" class="large-8 medium-8 columns" role="main">
 

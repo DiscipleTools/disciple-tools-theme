@@ -12,7 +12,7 @@ $contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_co
     <div id="content">
 
         <!-- Breadcrumb Navigation-->
-        <nav aria-label="You are here:" role="navigation" class="hide-for-small-only">
+        <nav aria-label="You are here:" role="navigation" class="second-bar hide-for-small-only">
             <ul class="breadcrumbs">
                 <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
                 <li>

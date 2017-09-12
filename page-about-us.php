@@ -2,17 +2,17 @@
 
     <div id="content">
 
-        <div id="inner-content" class="row">
+        <!-- Breadcrumb Navigation-->
+        <nav aria-label="You are here:" role="navigation" class="second-bar">
+            <ul class="breadcrumbs">
+                <li><a href="/">Dashboard</a></li>
+                <li>
+                    <span class="show-for-sr">Current: </span> ABOUT US
+                </li>
+            </ul>
+        </nav>
 
-            <!-- Breadcrumb Navigation-->
-            <nav aria-label="You are here:" role="navigation">
-                <ul class="breadcrumbs">
-                    <li><a href="/">Dashboard</a></li>
-                    <li>
-                        <span class="show-for-sr">Current: </span> ABOUT US
-                    </li>
-                </ul>
-            </nav>
+        <div id="inner-content" class="row">
 
             <main id="main" class="large-12 medium-12 columns" role="main">
 

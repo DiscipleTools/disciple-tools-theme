@@ -5,7 +5,7 @@
         <div id="inner-content" class="row">
 
             <!-- Breadcrumb Navigation-->
-            <nav aria-label="You are here:" role="navigation" class="hide-for-small-only">
+            <nav aria-label="You are here:" role="navigation" class="second-bar hide-for-small-only">
                 <ul class="breadcrumbs">
                     <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
                     <li>
