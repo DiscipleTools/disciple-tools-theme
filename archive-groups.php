@@ -23,7 +23,7 @@ $contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_co
 
         <div id="inner-content" class="grid-x grid-margin-x">
 
-            <aside class="large-2 cell padding-bottom" data-sticky-container>
+            <aside class="large-3 cell padding-bottom" data-sticky-container>
                 <div class="bordered-box">
 
                     <h3><?php _e( "Priorities" ); ?></h3>
@@ -88,13 +88,13 @@ $contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_co
 
             </aside>
 
-            <main id="main" class="large-8 cell padding-bottom" role="main">
+            <main id="main" class="large-6 cell padding-bottom" role="main">
 
                 <?php get_template_part( 'parts/content', 'groups' ); ?>
 
             </main> <!-- end #main -->
 
-            <aside class="large-2 cell padding-bottom hide-for-small-only">
+            <aside class="large-3 cell padding-bottom hide-for-small-only">
                 <div class="bordered-box js-pane-filters">
                     <?php /* Javascript my move .js-filters-modal-content to this location. */ ?>
                 </div>
