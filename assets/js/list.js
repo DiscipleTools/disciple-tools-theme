@@ -118,6 +118,10 @@
       responsive: true,
       iDisplayLength: 100,
       bLengthChange: false,
+      language: {
+        search: "",
+        searchPlaceholder: wpApiSettings.txt_search,
+      },
       sDom: 'fir<"js-list-toolbar">tlp<"clearfix">',
         /* f: filtering input
          * i: information

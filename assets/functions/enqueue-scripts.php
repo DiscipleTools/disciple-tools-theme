@@ -76,6 +76,7 @@ function site_scripts() {
             'txt_no_filters' => __( 'No filters' ),
             'txt_yes' => __( 'Yes' ),
             'txt_no' => __( 'No' ),
+            'txt_search' => __( 'Search' ),
             'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
             'groups_custom_fields_settings' => Disciple_Tools_Groups_Post_type::instance()->get_custom_fields_settings(),
             'template_directory_uri' => get_template_directory_uri(),
