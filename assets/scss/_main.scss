@@ -241,6 +241,7 @@ img {
 .contact-quick-buttons {
     display: flex;
     justify-content: space-evenly;
+    flex:none;
 }
 .contact-quick-button {
     width: min-content;
@@ -1034,4 +1035,19 @@ Groups
 
 .group-progress-button {
     text-align:center;
+}
+
+.details-edit {
+    display: none;
+
+
+    input {
+        width: 95%;
+    }
+    textarea {
+        width: 95%;
+    }
+}
+.details-list {
+    margin-bottom: 1rem;
 }

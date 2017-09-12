@@ -75,6 +75,8 @@ function save_quick_action(contactId, fieldKey){
   }
 }
 
+
+
 function post_comment(contactId) {
   jQuery("#add-comment-button").toggleClass('loading')
   let comment = jQuery("#comment-input").val()
@@ -182,6 +184,9 @@ jQuery(document).ready(function($) {
   }
 
   // https://typeahead.js.org/examples/
+  /**
+   * Groups
+   */
   var groups = new Bloodhound({
     datumTokenizer: searchAnyPieceOfWord,
     queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -224,6 +229,9 @@ jQuery(document).ready(function($) {
       add_typeahead_item(id, 'groups', sug.ID)
     })
 
+  /**
+   * Baptized by, Baptized, Coaching, Coached By
+   */
   var contacts = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('post_title'),
     queryTokenizer: Bloodhound.tokenizers.ngram,
@@ -247,7 +255,6 @@ jQuery(document).ready(function($) {
     }
   }
 
-
   //autocomplete for dealing with contacts
   ["baptized_by", "baptized", "coached_by", "coaching"].forEach(field_id=>{
     let typeahead = $(`#${field_id} .typeahead`)
@@ -268,6 +275,9 @@ jQuery(document).ready(function($) {
       })
   })
 
+  /**
+   * Assigned to
+   */
   var users = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('display_name'),
     queryTokenizer: Bloodhound.tokenizers.ngram,
@@ -310,6 +320,9 @@ jQuery(document).ready(function($) {
     })
   })
 
+  /**
+   * Locations
+   */
   var locations = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('post_title'),
     queryTokenizer: Bloodhound.tokenizers.ngram,
@@ -373,6 +386,9 @@ jQuery(document).ready(function($) {
   // })
 
 
+  jQuery('#add-comment-button').on('click', function () {
+    post_comment(id)
+  })
 
 })
 
@@ -486,7 +502,6 @@ function save_field_api(contactId, post_data, callback){
     success: function(data) {
       console.log("updated " + JSON.stringify(post_data))
       callback()
-
       get_activity(contactId)
     },
     error: function(err) {

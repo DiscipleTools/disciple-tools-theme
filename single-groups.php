@@ -1,5 +1,5 @@
-<?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
-$contact_fields = Disciple_Tools_Contacts::get_contact_fields();
+<?php
+$group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
 if( !Disciple_Tools_Contacts::can_view_contact( get_the_ID() )){
     return wp_redirect( "not-found" );
 }
@@ -80,15 +80,19 @@ get_header(); ?>
             <section id="relationships" class="medium-6 cell">
                 <div class="bordered-box">
                     <span class="section-header">Members</span>
-                    <ul class="member-list">
+<!--                    <button class=" float-right" id="members-edit"><i class="fi-pencil"></i> Edit</button>-->
+                    <ul class="members-list">
                         <?php
                         $ids = [];
-                        foreach( $contact->fields["groups"] as $value){
-                            $ids[] = $value->ID;
+                        foreach( $group["members"] as $member){
+                            $ids[] = $member->ID;
                             ?>
-                            <li class="<?php echo $value->ID ?>">
-                                <a href="<?php echo $value->permalink ?>"><?php echo esc_html( $value->post_title )?></a>
-                                <button class="details-remove-button connections-edit" onclick="remove_item(<?php echo get_the_ID()?>,  'groups', <?php echo $value->ID ?>)">Remove</button>
+                            <li class="<?php echo $member->ID ?>">
+                                <a href="<?php echo $member->permalink ?>"><?php echo esc_html( $member->post_title )?></a>
+                                <button class="details-remove-button members-edit"
+                                        data-field="members" data-id="<?php echo $member->ID ?>"
+                                        data-name="<?php echo esc_html( $member->post_title ) ?>"
+                                >Remove</button>
                             </li>
                         <?php } ?>
                     </ul>
@@ -169,7 +173,9 @@ get_header(); ?>
         </main> <!-- end #main -->
 
         <aside class="large-5 medium-12 small-12 cell">
-            <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
+            <section class="bordered-box comment-activity-section" id="comment-activity-section">
+                <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
+            </section>
         </aside>
 
     </div> <!-- end #inner-content -->
