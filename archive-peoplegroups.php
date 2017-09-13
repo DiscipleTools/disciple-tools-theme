@@ -1,7 +1,7 @@
 <?php declare(strict_types=1); ?>
 <?php get_header(); ?>
 
-<?php dt_print_breadcrumbs( null, __( "Prayer" ) ); ?>
+<?php dt_print_breadcrumbs( null, __( "People Groups" ) ); ?>
 
 <div id="content">
     
@@ -11,7 +11,7 @@
             
             <?php
             $args = array(
-                'post_type' => 'prayer',
+                'post_type' => 'peoplegroups',
             
             );
             $query1 = new WP_Query( $args );
@@ -55,7 +55,7 @@
                     'exclude' => '',
                     'meta_key' => '',
                     'meta_value' =>'',
-                    'post_type' => 'prayer',
+                    'post_type' => 'peoplegroups',
                     'post_status' => 'draft, publish, future, pending, private',
                     'suppress_filters' => true
                 );
@@ -88,7 +88,7 @@
                     'show_post_count' => false,
                     'echo'            => 1,
                     'order'           => 'DESC',
-                    'post_type'     => 'prayer'
+                    'post_type'     => 'peoplegroups'
                 );
                 wp_get_archives( $args );
                 

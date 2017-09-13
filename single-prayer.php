@@ -2,9 +2,9 @@
 
     <div id="content">
 
-        <div id="inner-content" class="row">
+        <div id="inner-content" class="grid-x grid-margin-x">
 
-            <main id="main" class="large-8 medium-8 columns" role="main" class="hide-for-small-only">
+            <main id="main" class="large-8 medium-8 cell" role="main" class="hide-for-small-only">
 
                 <section class="bordered-box">
 
@@ -22,7 +22,7 @@
 
             </main> <!-- end #main -->
 
-            <aside class="large-4 medium-4 columns ">
+            <aside class="large-4 medium-4 cell ">
 
 
                     <section class="bordered-box">
@@ -54,7 +54,7 @@
 
                         echo '<ul>';
 foreach ($recent_posts as $recent_post) {
-    echo '<li><a href="'. $recent_post['guid'] .'">' . $recent_post['post_title'] . '</a></li>';
+    echo '<li><a href="'. $recent_post['guid'] .'">' . esc_attr($recent_post['post_title']) . '</a></li>';
 }
                         echo '</ul>';
 
