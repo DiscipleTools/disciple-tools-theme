@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 $contacts_update_needed = Disciple_Tools_Contacts::get_user_prioritized_contacts( get_current_user_id(), 'update_needed', true, [ 'posts_per_page' => 5 ] );
 $contacts_meeting_scheduled = Disciple_Tools_Contacts::get_user_prioritized_contacts( get_current_user_id(), 'meeting_scheduled', true, [ 'posts_per_page' => 5 ] );
@@ -8,17 +9,11 @@ $contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_co
 
 <?php get_header(); ?>
 
-    <div id="content">
+<?php dt_print_breadcrumbs( null, __( "Contacts" ) ); ?>
 
-        <!-- Breadcrumb Navigation-->
-        <nav aria-label="You are here:" role="navigation" class="second-bar hide-for-small-only">
-            <ul class="breadcrumbs">
-                <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
-                <li>
-                    <span class="show-for-sr">Current: </span> Contacts
-                </li>
-            </ul>
-        </nav>
+<div id="errors"> </div>
+
+    <div id="content">
 
         <div id="inner-content" class="grid-x grid-margin-x">
 

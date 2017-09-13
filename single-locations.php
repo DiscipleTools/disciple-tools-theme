@@ -1,19 +1,17 @@
+<?php declare(strict_types=1); ?>
 <?php if ((isset( $_POST['dt_groups_noonce'] ) && wp_verify_nonce( $_POST['dt_groups_noonce'], 'update_dt_groups' ))) { dt_save_group( $_POST ); } // Catch and save update info ?>
 
 <?php get_header(); ?>
 
-    <div id="content">
+<?php dt_print_breadcrumbs(
+    [
+        [ home_url( '/' ), __( "Dashboard" ) ],
+        [ home_url( '/' ) . 'locations/', __( "Locations" ) ],
+    ],
+    get_the_title()
+); ?>
 
-        <!-- Breadcrumb Navigation-->
-        <nav aria-label="You are here:" role="navigation" class="second-bar hide-for-small-only">
-            <ul class="breadcrumbs">
-                <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
-                <li><a href="<?php echo home_url( '/' ); ?>locations/">Locations</a></li>
-                <li>
-                    <span class="show-for-sr">Current: </span> <?php the_title_attribute(); ?>
-                </li>
-            </ul>
-        </nav>
+    <div id="content">
 
         <div id="inner-content" class="row">
 

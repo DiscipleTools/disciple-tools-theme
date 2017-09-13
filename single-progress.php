@@ -1,19 +1,15 @@
+<?php declare(strict_types=1); ?>
 <?php get_header(); ?>
 
-    <div id="content">
+<?php dt_print_breadcrumbs(
+    [
+        [ home_url( '/' ), __( "Dashboard" ) ],
+        [ home_url( '/' ) . 'progress', __( "PROGRESS UPDATES" ) ],
+    ],
+    get_the_title()
+); ?>
 
-        <!-- Breadcrumb Navigation-->
-        <nav aria-label="You are here:" role="navigation" class="second-bar hide-for-small-only">
-            <ul class="breadcrumbs">
-                <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
-                <li>
-                    <a href="<?php echo home_url( '/' ); ?>progress">PROGRESS UPDATES</a>
-                </li>
-                <li>
-                    <span class="show-for-sr">Current: </span> <?php the_title_attribute(); ?>
-                </li>
-            </ul>
-        </nav>
+    <div id="content">
 
         <div id="inner-content" class="row">
 

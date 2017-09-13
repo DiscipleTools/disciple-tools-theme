@@ -1,18 +1,11 @@
+<?php declare(strict_types=1); ?>
 <?php get_header(); ?>
+
+<?php dt_print_breadcrumbs( null, __( "Progress Updates" ) ); ?>
 
     <div id="content">
 
         <div id="inner-content" class="row">
-
-            <!-- Breadcrumb Navigation-->
-            <nav aria-label="You are here:" role="navigation" class="second-bar hide-for-small-only">
-                <ul class="breadcrumbs">
-                    <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
-                    <li>
-                        <span class="show-for-sr">Current: </span> Progress Updates
-                    </li>
-                </ul>
-            </nav>
 
             <main id="main" class="large-8 medium-8 columns" role="main">
 

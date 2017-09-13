@@ -9,17 +9,9 @@ $contacts_contact_unattempted = Disciple_Tools_Contacts::get_user_prioritized_co
 
 <?php get_header(); ?>
 
-    <div id="content">
+<?php dt_print_breadcrumbs( null, __( "Groups" ) ); ?>
 
-        <!-- Breadcrumb Navigation-->
-        <nav aria-label="You are here:" role="navigation" class="second-bar hide-for-small-only">
-            <ul class="breadcrumbs">
-                <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
-                <li>
-                    <span class="show-for-sr">Current: </span> Groups
-                </li>
-            </ul>
-        </nav>
+    <div id="content">
 
         <div id="inner-content" class="grid-x grid-margin-x">
 

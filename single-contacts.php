@@ -1,4 +1,6 @@
-<?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
+<?php
+declare(strict_types=1);
+$contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
 $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 if( !Disciple_Tools_Contacts::can_view_contact( get_the_ID() )){
     return wp_redirect( "not-found" );
@@ -7,36 +9,19 @@ $shared_with = Disciple_Tools_Contacts::get_shared_with( get_the_id() );
 $users = Disciple_Tools_Contacts::get_assignable_users( get_the_ID() );
 get_header(); ?>
 
-<div data-sticky-container>
-    <nav aria-label="You are here:" role="navigation"
-         data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
-         class="second-bar hide-for-small-only">
+<?php
+dt_print_breadcrumbs(
+    [
+        [ home_url( '/' ), __( "Dashboard" ) ],
+        [ home_url( '/' ) . "contacts/", __( "Contacts" ) ],
+    ],
+    get_the_title(),
+    true
+); ?>
 
-        <div class="grid-x">
-            <div class="small-offset-4 cell small-4 center-items">
-                <ul class="breadcrumbs">
-
-                    <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
-                    <li><a href="<?php echo home_url( '/' ); ?>contacts/">Contacts</a></li>
-                    <li>
-                        <span class="show-for-sr">Current: </span> <?php the_title_attribute(); ?>
-                    </li>
-                </ul>
-            </div>
-            <div class="cell small-4 align-right grid-x">
-                <div class="cell shrink ">
-                    <button data-open="share-contact-modal" class="center-items">
-                        <img src="<?php echo get_template_directory_uri() . "/assets/images/share.svg" ?>">
-                        <span style="margin:0 10px 0 10px">Share</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
-</div>
 <div id="errors"> </div>
 
-    <!-- Breadcrumb Navigation-->
+    <!-- I'm not sure why this is indented -->
     <div id="content">
 
         <div id="inner-content" class="grid-x grid-margin-x">

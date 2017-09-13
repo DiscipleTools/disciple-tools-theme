@@ -1,16 +1,9 @@
+<?php declare(strict_types=1); ?>
 <?php get_header(); ?>
 
-    <div id="content">
+<?php dt_print_breadcrumbs( null, __( "ABOUT US" ) ); ?>
 
-        <!-- Breadcrumb Navigation-->
-        <nav aria-label="You are here:" role="navigation" class="second-bar">
-            <ul class="breadcrumbs">
-                <li><a href="/">Dashboard</a></li>
-                <li>
-                    <span class="show-for-sr">Current: </span> ABOUT US
-                </li>
-            </ul>
-        </nav>
+    <div id="content">
 
         <div id="inner-content" class="row">
 

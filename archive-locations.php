@@ -1,16 +1,9 @@
+<?php declare(strict_types=1); ?>
 <?php get_header(); ?>
 
-<div id="content">
+<?php dt_print_breadcrumbs( null, __( "Locations" ) ); ?>
 
-    <!-- Breadcrumb Navigation-->
-    <nav aria-label="You are here:" role="navigation" class="second-bar hide-for-small-only">
-        <ul class="breadcrumbs">
-            <li><a href="<?php echo home_url( '/' ); ?>">Dashboard</a></li>
-            <li>
-                <span class="show-for-sr">Current: </span> Locations
-            </li>
-        </ul>
-    </nav>
+<div id="content">
 
     <div id="inner-content" class="row">
 

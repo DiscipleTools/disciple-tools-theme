@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 global $query_string;
 
@@ -34,17 +35,9 @@ $search2 = new WP_Query( $args2 );
 
 <?php get_header(); ?>
 
-    <div id="content">
+<?php dt_print_breadcrumbs( null, __( "Search" ) ); ?>
 
-        <!-- Breadcrumb Navigation-->
-        <nav aria-label="You are here:" role="navigation" class="second-bar">
-            <ul class="breadcrumbs">
-                <li><a href="/">Dashboard</a></li>
-                <li>
-                    <span class="show-for-sr">Current: </span> Search
-                </li>
-            </ul>
-        </nav>
+    <div id="content">
 
         <div id="inner-content" class="row">
 
