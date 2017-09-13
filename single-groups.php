@@ -12,7 +12,7 @@ get_header();
 dt_print_breadcrumbs(
     [
         [ home_url( '/' ), __( "Dashboard" ) ],
-        [ home_url( '/' ) . 'contacts/', __( "Contacts" ) ],
+        [ home_url( '/' ) . 'groups/', __( "Groups" ) ],
     ],
     get_the_title(),
     true
