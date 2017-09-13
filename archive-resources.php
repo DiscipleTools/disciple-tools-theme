@@ -1,29 +1,30 @@
 <?php declare(strict_types=1); ?>
+
 <?php get_header(); ?>
 
-<?php dt_print_breadcrumbs( null, __( "Locations" ) ); ?>
+<?php dt_print_breadcrumbs( null, __( "Resources" ) ); ?>
 
 <div id="content">
     
     <div id="inner-content" class="grid-x grid-margin-x">
-    
+        
         <div class="large-3 medium-12 small-12 cell ">
-        
+            
             <section id="" class="medium-12 cell">
-            
+                
                 <div class="bordered-box">
-            
+                
                 </div>
-        
+            
             </section>
-    
+        
         </div>
         
         <div id="main" class="large-6 small-12 cell" role="main">
             
             <?php
             $args = array(
-                'post_type' => 'locations',
+                'post_type' => 'resources',
             
             );
             $query1 = new WP_Query( $args );
@@ -62,7 +63,7 @@
                     'exclude' => '',
                     'meta_key' => '',
                     'meta_value' =>'',
-                    'post_type' => 'locations',
+                    'post_type' => 'resources',
                     'post_status' => 'draft, publish, future, pending, private',
                     'suppress_filters' => true
                 );
@@ -95,7 +96,7 @@
                     'show_post_count' => false,
                     'echo'            => 1,
                     'order'           => 'DESC',
-                    'post_type'     => 'locations'
+                    'post_type'     => 'resources'
                 );
                 wp_get_archives( $args );
                 

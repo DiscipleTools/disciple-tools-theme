@@ -208,42 +208,6 @@ class Disciple_Tools_Theme {
             }
         });
     
-//        // Catch `settings` URL and load settings template.
-//        add_action('init', function() {
-//            $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
-//            if ( $url_path === 'settings' ) {
-//                // load the file if exists
-//                $load = locate_template( 'template-settings.php', true );
-//                if ($load) {
-//                    exit(); // just exit if template was found and loaded
-//                }
-//            }
-//        });
-//
-//        // Catch `notifications` URL and load notifications template.
-//        add_action('init', function() {
-//            $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
-//            if ( $url_path === 'notifications' ) {
-//                // load the file if exists
-//                $load = locate_template( 'template-notifications.php', true );
-//                if ($load) {
-//                    exit(); // just exit if template was found and loaded
-//                }
-//            }
-//        });
-//
-//        // Catch `about` URL and load about page template.
-//        add_action('init', function() {
-//            $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
-//            if ( $url_path === 'about' ) {
-//                // load the file if exists
-//                $load = locate_template( 'template-about.php', true );
-//                if ($load) {
-//                    exit(); // just exit if template was found and loaded
-//                }
-//            }
-//        });
-
 
     } // End __construct()
 

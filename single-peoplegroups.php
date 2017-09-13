@@ -7,16 +7,16 @@
 <?php dt_print_breadcrumbs(
     [
         [ home_url( '/' ), __( "Dashboard" ) ],
-        [ home_url( '/' ) . 'locations/', __( "Locations" ) ],
+        [ home_url( '/' ) . 'peoplegroups/', __( "People Groups" ) ],
     ],
     get_the_title()
 ); ?>
 
 <div id="content">
     
-    <div id="inner-content" class="row">
+    <div id="inner-content" class="grid-x grid-margin-x">
         
-        <main id="main" class="large-8 medium-8 columns" role="main">
+        <div id="main" class="large-8 small-12 cell" role="main">
             
             <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
                 
@@ -28,17 +28,18 @@
             
             <?php endif; ?>
         
-        </main> <!-- end #main -->
+        </div> <!-- end #main -->
         
-        <aside class="large-4 medium-4 columns ">
+        <div class="large-4 small-12 cell ">
             
             <?php
             global $wp_query, $post_id;
             
             // Find connected pages (for all posts)
-            p2p_type( 'contacts_to_locations' )->each_connected( $wp_query, array(), 'contacts' );
-            p2p_type( 'groups_to_locations' )->each_connected( $wp_query, array(), 'groups' );
-            p2p_type( 'assets_to_locations' )->each_connected( $wp_query, array(), 'assets' );
+            p2p_type( 'contacts_to_peoplegroups' )->each_connected( $wp_query, array(), 'contacts' );
+            p2p_type( 'groups_to_peoplegroups' )->each_connected( $wp_query, array(), 'groups' );
+            p2p_type( 'team_member_peoplegroups' )->each_connected( $wp_query, array(), 'users' );
+            p2p_type( 'peoplegroups_to_locations' )->each_connected( $wp_query, array(), 'locations' );
             ?>
             
             <section class="bordered-box">
@@ -84,9 +85,9 @@
                 
                 <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
                     
-                    <h3>Assets</h3>
+                    <h3>Workers</h3>
                     
-                    <?php foreach ( $post->assets as $post ) : setup_postdata( $post ); ?>
+                    <?php foreach ( $post->users as $post ) : setup_postdata( $post ); ?>
                         
                         <li><a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a></li>
                     
@@ -97,8 +98,26 @@
                 <?php endwhile; ?>
             
             </section>
+    
+            <section class="bordered-box">
         
-        </aside> <!-- end #aside -->
+                <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
+            
+                    <h3>Locations</h3>
+            
+                    <?php foreach ( $post->locations as $post ) : setup_postdata( $post ); ?>
+                
+                        <li><a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a></li>
+            
+                    <?php endforeach; ?>
+            
+                    <?php  wp_reset_postdata(); // set $post back to original post ?>
+        
+                <?php endwhile; ?>
+    
+            </section>
+        
+        </div> <!-- end #aside -->
     
     </div> <!-- end #inner-content -->
 

@@ -26,7 +26,7 @@ function disciple_tools_top_nav_desktop() {
         $html .= '<li><a href="'.home_url( '/' ).'about-us/">About Us</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'prayer/">Prayer Guide</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'progress/">Project Updates</a></li>';
-        $html .= '<li><a href="'.home_url( '/' ).'profile/">Profile</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'settings/">Settings</a></li>';
 
 
     } elseif ( user_can( get_current_user_id(), 'read_prayer' )) {
@@ -35,7 +35,7 @@ function disciple_tools_top_nav_desktop() {
 
         $html .= '<li><a href="'.home_url( '/' ).'about-us/">About Us</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'prayer/">Prayer Guide</a></li>';
-        $html .= '<li><a href="'.home_url( '/' ).'profile/">Profile</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'settings/">Settings</a></li>';
 
 
     } else {
@@ -102,7 +102,7 @@ function disciple_tools_off_canvas_nav() {
         $html .= '<li><a href="'.home_url( '/' ).'metrics/">Metrics</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'resources/">Resources</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'notifications/">Notifications</a></li>';
-        $html .= '<li><a href="'.home_url( '/' ).'profile/">Settings</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'settings/">Settings</a></li>';
         $html .= '<li>&nbsp;</li>';
 
         $html .= '
@@ -123,7 +123,7 @@ function disciple_tools_off_canvas_nav() {
         $html .= '<li><a href="'.home_url( '/' ).'about-us/">About Us</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'prayer/">Prayer Guide</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'project/">Project Updates</a></li>';
-        $html .= '<li><a href="'.home_url( '/' ).'profile/">Profile</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'settings/">Profile</a></li>';
 
         $html .= '</ul></div>';
 
@@ -136,7 +136,7 @@ function disciple_tools_off_canvas_nav() {
 
         $html .= '<li><a href="'.home_url( '/' ).'about-us/">About Us</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'prayer/">Prayer Guide</a></li>';
-        $html .= '<li><a href="'.home_url( '/' ).'profile/">Profile</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'settings/">Profile</a></li>';
 
         $html .= '</ul></div>';
 

@@ -9,17 +9,42 @@ Template Name: Notifications
     <div id="content">
         
         <div id="inner-content" class="grid-x grid-margin-x">
+    
+            <div class="large-3 medium-12 small-12 cell ">
+        
+                <section id="" class="medium-12 cell">
             
-            <main id="main" class="large-12 medium-12 cell" role="main">
-                
-                <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-                    
-                    <?php get_template_part( 'parts/loop', 'page' );  ?>
-                
-                <?php endwhile; ?>
-                <?php endif; ?>
+                    <div class="bordered-box">
             
-            </main> <!-- end #main -->
+                    </div>
+        
+                </section>
+    
+            </div>
+    
+            <div class="large-6 medium-12 small-12 cell ">
+        
+                <section id="" class="medium-12 cell">
+            
+                    <div class="bordered-box">
+            
+                    </div>
+        
+                </section>
+    
+            </div>
+    
+            <div class="large-3 medium-12 small-12 cell ">
+        
+                <section id="" class="medium-12 cell">
+            
+                    <div class="bordered-box">
+            
+                    </div>
+        
+                </section>
+    
+            </div>
         
         </div> <!-- end #inner-content -->
     

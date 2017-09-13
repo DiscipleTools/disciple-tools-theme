@@ -19,29 +19,41 @@ dt_print_breadcrumbs(
     <div id="content">
         
         <div id="inner-content" class="grid-x grid-margin-x">
-            
-            <div id="main" class="large-7 medium-12 small-12 cell " role="main">
     
-                <section id="" class="medium-12 cell">
-                    
-                    <div class="bordered-box">
-                    
-                    </div>
-                    
-                </section>
-            
-            </div> <!-- end #main -->
-    
-            <div class="large-5 medium-12 small-12 cell ">
-    
-                <section id="" class="medium-12 cell">
+            <div class="large-3 medium-12 small-12 cell ">
         
+                <section id="" class="medium-12 cell">
+            
                     <div class="bordered-box">
-        
+            
                     </div>
-    
+        
                 </section>
-                
+    
+            </div>
+    
+            <div class="large-6 medium-12 small-12 cell ">
+        
+                <section id="" class="medium-12 cell">
+            
+                    <div class="bordered-box">
+            
+                    </div>
+        
+                </section>
+    
+            </div>
+    
+            <div class="large-3 medium-12 small-12 cell ">
+        
+                <section id="" class="medium-12 cell">
+            
+                    <div class="bordered-box">
+            
+                    </div>
+        
+                </section>
+    
             </div>
         
         </div> <!-- end #inner-content -->
