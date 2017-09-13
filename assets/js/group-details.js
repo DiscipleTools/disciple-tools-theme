@@ -66,7 +66,7 @@ function get_comment(groupId) {
   })
 }
 
-function get_activity() {
+function get_activity(groupId) {
   return jQuery.ajax({
     type: "GET",
     contentType: "application/json; charset=utf-8",
@@ -74,6 +74,13 @@ function get_activity() {
     url: wpApiSettings.root + 'dt-hooks/v1/group/' + groupId + '/activity',
   })
 }
+
+$( document ).ajaxComplete(function(event, xhr, settings) {
+  if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
+    refreshActivity()
+  }
+});
+
 /**
  * Typeahead functions
  */
@@ -139,7 +146,6 @@ let searchAnyPieceOfWord = function(d) {
 
   $(document)
     .on('click', '.details-remove-button', function () {
-      console.log("remove")
     let fieldId = $(this).data('field')
     let itemId = $(this).data('id')
 
@@ -263,7 +269,6 @@ let searchAnyPieceOfWord = function(d) {
       jQuery('.current-assigned').text(sug.display_name)
     })
   }).bind('blur', ()=>{
-    console.log("blue")
     toggleEdit('assigned_to')
   })
 
@@ -442,15 +447,25 @@ let searchAnyPieceOfWord = function(d) {
   let comments = []
   let activity = []
 
+  function refreshActivity() {
+    get_activity(groupId).done(activityData=>{
+      activityData.forEach(d=>{
+        d.date = new Date(d.hist_time*1000)
+      })
+      activity = activityData
+      display_activity_comment()
+    })
+  }
+
   let commentButton = $('#add-comment-button')
     .on('click', function () {
       commentButton.toggleClass('loading')
       let input = $("#comment-input")
       post_comment(groupId, input.val()).success(commentData=>{
-        commentButton.toggle('loading')
+        commentButton.toggleClass('loading')
         input.val('')
-        commentData.comment.date = new Date(data.comment.comment_date)
-        comments.push(data.comment)
+        commentData.comment.date = new Date(commentData.comment.comment_date_gmt + " GMT")
+        comments.push(commentData.comment)
         display_activity_comment()
       })
     })
@@ -459,10 +474,8 @@ let searchAnyPieceOfWord = function(d) {
     get_comment(groupId),
     get_activity(groupId)
   ).done(function(commentData, activityData){
-    console.log(commentData[0])
-    console.log(activityData[0])
     commentData[0].forEach(comment=>{
-      comment.date = new Date(comment.comment_date)
+      comment.date = new Date(comment.comment_date_gmt + " GMT")
     })
     comments = commentData[0]
     activityData[0].forEach(d=>{
