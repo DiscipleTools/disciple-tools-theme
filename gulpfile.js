@@ -120,6 +120,7 @@ gulp.task('browsersync', ['default'], function() {
     SOURCE.styles,
     SOURCE.scripts,
     SOURCE.php,
+    'assets/**/*.js', // Some .js aren't in SOURCE.scripts
   ];
 
   browserSync.init(files, {
