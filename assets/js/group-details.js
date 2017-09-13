@@ -177,7 +177,6 @@ let searchAnyPieceOfWord = function(d) {
       console.log(date)
       save_field_api(groupId, {end_date:date}).done(function () {
         endDateList.text(date)
-        toggleEdit('end_date')
       })
     },
     onClose: function () {
@@ -201,7 +200,6 @@ let searchAnyPieceOfWord = function(d) {
       console.log(date)
       save_field_api(groupId, {start_date:date}).done(function () {
         startDateList.text(date)
-        toggleEdit('start_date')
       })
     },
     onClose: function () {
@@ -458,9 +456,98 @@ let searchAnyPieceOfWord = function(d) {
     })
 
   $.when(
+    get_comment(groupId),
+    get_activity(groupId)
+  ).done(function(commentData, activityData){
+    console.log(commentData[0])
+    console.log(activityData[0])
+    commentData[0].forEach(comment=>{
+      comment.date = new Date(comment.comment_date)
+    })
+    comments = commentData[0]
+    activityData[0].forEach(d=>{
+      d.date = new Date(d.hist_time*1000)
+    })
+    activity = activityData[0]
+    display_activity_comment("all")
+  })
+
+  function display_activity_comment(section) {
+    current_section = section || current_section
+
+    let commentsWrapper = $("#comments-wrapper")
+    commentsWrapper.empty()
+    let displayed = []
+    if (current_section === "all"){
+      displayed = _.union(comments, activity)
+    } else if (current_section === "comments"){
+      displayed = comments
+    } else if ( current_section === "activity"){
+      displayed = activity
+    }
+    displayed = _.orderBy(displayed, "date", "desc")
+    let array = []
+
+    displayed.forEach(d=>{
+      let first = _.first(array)
+      let name = d.comment_author || d.name
+      let obj = {
+        name: name,
+        date: d.date,
+        text:d.object_note ||  d.comment_content,
+        comment: !!d.comment_content
+      }
 
 
+      let diff = (first ? first.date.getTime() : new Date().getTime()) - obj.date.getTime()
+      if (!first || (first.name === name && diff < 60 * 60 * 1000) ){
+        array.push(obj)
+      } else {
+        commentsWrapper.append(commentTemplate({
+          name: name,
+          date:formatDate(_.first(array).date),
+          activity: array
+        }))
+        array = [obj]
+      }
+    })
+    if (array.length > 0){
+      commentsWrapper.append(commentTemplate({
+        name: array[0].name,
+        date:formatDate(_.first(array).date),
+        activity: array
+      }))
+    }
+  }
+
+  let commentTemplate = _.template(`
+  <div class="activity-block">
+    <div><span><strong><%- name %></strong></span> <span class="comment-date"> <%- date %> </span></div>
+    <div class="activity-text">
+    <% _.forEach(activity, function(a){ 
+        if (a.comment){ %>
+            <p dir="auto" class="comment-bubble"> <%- a.text %> </p>
+      <% } else { %> 
+            <p class="activity-bubble">  <%- a.text %> </p>
+    <%  } 
+    }); %>
+    </div>
+  </div>`
   )
+
+  function formatDate(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    var month = date.getMonth()+1
+    month = month < 10 ? "0"+month.toString() : month
+    return date.getFullYear() + "/" + date.getDate() + "/" + month + "  " + strTime;
+  }
+
 })
 
 
