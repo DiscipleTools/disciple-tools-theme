@@ -5,21 +5,44 @@ Template Name: Metrics
 ?>
 
 <?php get_header(); ?>
+
+<?php
+dt_print_breadcrumbs(
+    [
+        [ home_url( '/' ), __( "Dashboard" ) ],
+        [ home_url( '/' ) . "metrics", __( "Metrics" ) ],
+    ],
+    get_the_title(),
+    false
+); ?>
     
     <div id="content">
         
-        <div id="inner-content" class="row">
+        <div id="inner-content" class="grid-x grid-margin-x">
             
-            <main id="main" class="large-12 medium-12 columns" role="main">
-                
-                <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+            <div id="main" class="large-7 medium-12 small-12 cell " role="main">
+    
+                <section id="" class="medium-12 cell">
                     
-                    <?php get_template_part( 'parts/loop', 'page' );  ?>
-                
-                <?php endwhile; ?>
-                <?php endif; ?>
+                    <div class="bordered-box">
+                    
+                    </div>
+                    
+                </section>
             
-            </main> <!-- end #main -->
+            </div> <!-- end #main -->
+    
+            <div class="large-5 medium-12 small-12 cell ">
+    
+                <section id="" class="medium-12 cell">
+        
+                    <div class="bordered-box">
+        
+                    </div>
+    
+                </section>
+                
+            </div>
         
         </div> <!-- end #inner-content -->
     
