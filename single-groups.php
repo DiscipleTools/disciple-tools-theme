@@ -27,33 +27,6 @@ dt_print_breadcrumbs(
 
     <div id="inner-content" class="grid-x grid-margin-x">
 
-
-        <section class="hide-for-large small-12 cell">
-            <div class="bordered-box">
-                <div class="contact-quick-buttons">
-                    <?php foreach( $contact_fields as $field => $val ){
-                        if ( strpos( $field, "quick_button" ) === 0){
-                            $current_value = 0;
-                            if ( isset( $contact->fields[$field] ) ){
-                                $current_value = $contact->fields[$field];
-                            }?>
-
-                            <button class="contact-quick-button <?php echo $field ?>"
-                                    onclick="save_quick_action(<?php echo get_the_ID() ?>, '<?php echo $field?>')">
-                                <img src="<?php echo get_template_directory_uri() . "/assets/images/" . $val['icon'] ?>">
-                                <span class="contact-quick-button-number"><?php echo $current_value ?></span>
-                                <p><?php echo $val["name"] ?></p>
-                            </button>
-                        <?php }}
-                    ?>
-
-                </div>
-                <div style="text-align: center">
-                    <a class="button small" href="#comment-activity-section" style="margin-bottom: 0" >View Comments</a>
-                </div>
-            </div>
-        </section>
-
         <main id="main" class="large-7 medium-12 small-12 cell grid-x grid-margin-x" role="main" style="padding:0">
 
             <section id="contact-details" class="medium-12 cell">
