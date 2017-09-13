@@ -3,20 +3,23 @@ declare(strict_types=1);
 ?>
 <div class="bordered-box">
     <h5><?php _e( "Groups" ); ?></h5>
-    <div class="reveal js-list-sort-by-modal" data-reveal>
-        <h1><?php _e( "Sort by:" ); ?></h1>
-        <div>
-            <button class="js-sort-by button small hollow" data-column-index="1"><?php _e( "Name" ); ?></button>
-            <button class="js-sort-by button small hollow" data-column-index="2"><?php _e( "Status" ); ?></button>
-            <button class="js-sort-by button small hollow" data-column-index="3"><?php _e( "Members" ); ?></button>
-            <button class="js-sort-by button small hollow" data-column-index="4"><?php _e( "Leader" ); ?></button>
-            <button class="js-sort-by button small hollow" data-column-index="5"><?php _e( "Location" ); ?></button>
-            <button class="js-sort-by button small hollow" data-column-index="6"><?php _e( "Last modified" ); ?></button>
-        </div>
-        <button class="close-button" data-close aria-label="<?php _e( "Close" ); ?>" type="button"><!--
-            --><span aria-hidden="true">&times;</span><!--
-        --></button>
+
+    <div class="js-sort-dropdown" hidden>
+        <ul class="dropdown menu" data-dropdown-menu>
+            <li>
+                <a href="#"><?php _e( "Sort by" ); ?></a>
+                <ul class="menu">
+                    <li><a href="#" class="js-sort-by" data-column-index="6" data-order="desc">
+                        <?php _e( "Most recent" ); ?>
+                    </a></li>
+                    <li><a href="#" class="js-sort-by" data-column-index="6" data-order="asc">
+                        <?php _e( "Least recent" ); ?>
+                    </a></li>
+                </ul>
+            </li>
+        </ul>
     </div>
+
     <table class="js-list">
         <thead><tr>
             <th></th>

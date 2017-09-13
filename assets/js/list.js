@@ -55,7 +55,7 @@
           showMyContacts();
         });
         $(".js-sort-by").on("click", function() {
-          sortBy(parseInt($(this).data("column-index")));
+          sortBy(parseInt($(this).data("column-index")), $(this).data("order"));
         });
       });
     },
@@ -83,17 +83,10 @@
     }).trigger("resize");
   });
 
-  function sortBy(columnIndex) {
-    const currentOrder = dataTable.order();
-    let ascending = true;
-    if (currentOrder[0][0] === columnIndex) {
-      if (currentOrder[0][1] === "asc") {
-        ascending = false;
-      }
-    }
-    dataTable.order([[columnIndex, ascending ? "asc" : "desc"]]);
+  function sortBy(columnIndex, order) {
+    console.assert(order === "asc" || order === "desc", "Unexpected value for order argument");
+    dataTable.order([[columnIndex, order]]);
     dataTable.draw();
-    updateSortModal();
   }
 
 
@@ -133,16 +126,10 @@
          * <"clearfix"> div with class clearfix
          */
       initComplete: function() {
-        if ($(".js-list-sort-by-modal").length) {
-          $(".js-list-toolbar")
-            .append(
-              $('<button class="button small">Sort by...</button>')
-                .css("margin-bottom", "0")
-                .on("click", showSortModal)
-            )
-            .css("margin", "0 10px")
-            .css("float", "right");
-        }
+        $(".js-list-toolbar")
+          .append($(".js-sort-dropdown").removeAttr("hidden").detach())
+          .css("float", "right")
+          .foundation();
         $(".dataTables_info").css("display", "inline");
       },
     };
@@ -228,30 +215,6 @@
       status,
     });
     return $.parseHTML(template(context));
-  }
-
-  function showSortModal() {
-    updateSortModal();
-    $(".js-list-sort-by-modal").foundation('open');
-  }
-
-  function updateSortModal() {
-    const currentOrder = dataTable.order();
-    const templateDirectoryUri = wpApiSettings.template_directory_uri;
-    $(".js-sort-by").each(function() {
-      let sort = 'both';
-      if (currentOrder[0][0] === parseInt($(this).data("column-index"))) {
-        sort = currentOrder[0][1];
-      }
-      $(this)
-        .css(
-          "background-image",
-          `url("${templateDirectoryUri}/vendor/DataTables/DataTables-1.10.15/images/sort_${sort}.png")`
-        )
-        .css("background-position", "100% 50%")
-        .css("background-repeat", "no-repeat")
-        .css("padding-right", "18px");
-    });
   }
 
   function setUpFilterPane() {
