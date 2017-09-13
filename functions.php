@@ -141,8 +141,8 @@ class Disciple_Tools_Theme {
 
         // Adds Page Specific Scripts
         require_once( get_template_directory().'/assets/functions/page-front-page.php' );
-        require_once( get_template_directory().'/assets/functions/page-reports.php' );
-        require_once( get_template_directory().'/assets/functions/page-profile.php' );
+//        require_once( get_template_directory().'/assets/functions/page-metrics.php' );
+//        require_once( get_template_directory().'/assets/functions/page-profile.php' );
         require_once( get_template_directory().'/assets/functions/page-prayer-guide.php' );
 
         // Load plugin library that "requires plugins" at activation
@@ -152,12 +152,62 @@ class Disciple_Tools_Theme {
         require_once( get_template_directory() . '/assets/classes/config-options-admin.php' );
         $this->admin_options = Disciple_Tools_Theme_Admin::instance();
 
-        if ( !get_option( 'dt_add_core_pages' ) ) {
-            require_once( get_template_directory() . '/assets/classes/class-core-pages.php' );
-            $core_pages = Disciple_Tools_Add_Core_Pages::instance();
-
-        }
-
+//        if ( !get_option( 'dt_add_core_pages' ) ) {
+//            require_once( get_template_directory() . '/assets/classes/class-core-pages.php' );
+//            $core_pages = Disciple_Tools_Add_Core_Pages::instance();
+//
+//        }
+    
+        // Catch `metrics` URL and load metrics template.
+        add_action('init', function() {
+            $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
+            if ( $url_path === 'metrics' ) {
+                // load the file if exists
+                $load = locate_template( 'template-metrics.php', true );
+                if ($load) {
+                    exit(); // just exit if template was found and loaded
+                }
+            }
+            
+            switch($url_path) {
+                case 'metrics':
+                    // load the file if exists
+                    $load = locate_template( 'template-metrics.php', true );
+                    if ($load) {
+                        exit(); // just exit if template was found and loaded
+                    }
+                    break;
+                case 'settings':
+                    // load the file if exists
+                    $load = locate_template( 'template-settings.php', true );
+                    if ($load) {
+                        exit(); // just exit if template was found and loaded
+                    }
+                    break;
+                case 'notifications':
+                    // load the file if exists
+                    $load = locate_template( 'template-notifications.php', true );
+                    if ($load) {
+                        exit(); // just exit if template was found and loaded
+                    }
+                    break;
+                case 'about':
+                    // load the file if exists
+                    $load = locate_template( 'template-about.php', true );
+                    if ($load) {
+                        exit(); // just exit if template was found and loaded
+                    }
+                    break;
+                case 'workers':
+                    // load the file if exists
+                    $load = locate_template( 'template-workers.php', true );
+                    if ($load) {
+                        exit(); // just exit if template was found and loaded
+                    }
+                    break;
+            }
+        });
+    
 
     } // End __construct()
 
@@ -178,14 +228,3 @@ function dt_theme() {
 // Let's roll!
 //add_action( 'after_setup_theme', 'dt_theme' );
 dt_theme();
-
-
-
-
-
-
-// Adds site styles to the WordPress editor
-//require_once(get_template_directory().'/assets/functions/editor-styles.php');
-
-// Related post function - no need to rely on plugins
-// require_once(get_template_directory().'/assets/functions/related-posts.php');

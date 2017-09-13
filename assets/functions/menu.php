@@ -26,7 +26,7 @@ function disciple_tools_top_nav_desktop() {
         $html .= '<li><a href="'.home_url( '/' ).'about-us/">About Us</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'prayer/">Prayer Guide</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'progress/">Project Updates</a></li>';
-        $html .= '<li><a href="'.home_url( '/' ).'profile/">Profile</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'settings/">Settings</a></li>';
 
 
     } elseif ( user_can( get_current_user_id(), 'read_prayer' )) {
@@ -35,7 +35,7 @@ function disciple_tools_top_nav_desktop() {
 
         $html .= '<li><a href="'.home_url( '/' ).'about-us/">About Us</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'prayer/">Prayer Guide</a></li>';
-        $html .= '<li><a href="'.home_url( '/' ).'profile/">Profile</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'settings/">Settings</a></li>';
 
 
     } else {
@@ -86,41 +86,44 @@ function disciple_tools_off_canvas_nav() {
 
     if( user_can( get_current_user_id(), 'access_contacts' ) ) {
 
-        $html .= '<ul class="vertical menu" data-accordion-menu>';
+        $html .= '<ul class="vertical menu sticky is-stuck is-at-top" data-accordion-menu>';
 
         $html .= '<li><span class="title">Disciple Tools</span></li>
                     <li><hr /></li>';
 
     // User is multiplier or role of higher position
-        $html .= '<li><a href="'.home_url( '/' ).'">Dashboard</a></li>';
+//        $html .= '<li><a href="'.home_url( '/' ).'">Dashboard</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'contacts/">Contacts</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'groups/">Groups</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'locations/">Locations</a></li>';
-        $html .= '<li><a href="#">Project</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'workers/">Workers</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'peoplegroups/">People Groups</a></li>';
+        $html .= '<li>&nbsp;</li>';
+        $html .= '<li><a href="'.home_url( '/' ).'metrics/">Metrics</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'resources/">Resources</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'notifications/">Notifications</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'settings/">Settings</a></li>';
+        $html .= '<li>&nbsp;</li>';
 
-        $html .= '<li><a href="'.home_url( '/' ).'prayer/"> - Prayer Guide</a></li>';
-        $html .= '<li><a href="'.home_url( '/' ).'progress/"> - Progress Updates</a></li>';
-        $html .= '<li><a href="'.home_url( '/' ).'reports/"> - Reports</a></li>';
-        $html .= '<li><a href="'.home_url( '/' ).'media/"> - Media</a></li>';
-
-        $html .= '<li><a href="'.home_url( '/' ).'profile/">Profile</a></li>';
-
-        $html .= '<li><form role="search" method="get" class="search-form" action="'. home_url( '/' ) .'">
-                <input type="search" class="small" placeholder="' . esc_attr_x( 'Search...', 'disciple_tools' ) . '" value="' . get_search_query() . '" name="s" title="'. esc_attr_x( 'Search for:', 'disciple_tools' ).'" />
-                <input type="hidden" class=" button small" value="'. esc_attr_x( 'Search', 'disciple_tools' ) .'" />
-            </form></li>';
+        $html .= '
+            <li>
+                <form role="search" method="get" class="search-form" action="'. home_url( '/' ) .'">
+                    <input type="search" class="small" placeholder="' . esc_attr_x( 'Search...', 'disciple_tools' ) . '" value="' . get_search_query() . '" name="s" title="'. esc_attr_x( 'Search for:', 'disciple_tools' ).'" />
+                    <input type="hidden" class=" button small" value="'. esc_attr_x( 'Search', 'disciple_tools' ) .'" />
+                </form>
+            </li>';
 
         $html .= '</ul>';
 
     } elseif ( user_can( get_current_user_id(), 'read_progress' ) ) {
 
         $html .= '<div class="menu-centered">
-                    <ul class="vertical medium-horizontal menu" data-accordion-menu>';
+                    <ul class="vertical medium-horizontal menu sticky is-stuck is-at-top" data-accordion-menu>';
 
         $html .= '<li><a href="'.home_url( '/' ).'about-us/">About Us</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'prayer/">Prayer Guide</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'project/">Project Updates</a></li>';
-        $html .= '<li><a href="'.home_url( '/' ).'profile/">Profile</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'settings/">Profile</a></li>';
 
         $html .= '</ul></div>';
 
@@ -129,11 +132,11 @@ function disciple_tools_off_canvas_nav() {
         /* user is prayer supporter */
 
         $html .= '<div class="menu-centered">
-                    <ul class="vertical medium-horizontal menu" data-accordion-menu>';
+                    <ul class="vertical medium-horizontal menu sticky is-stuck is-at-top" data-accordion-menu>';
 
         $html .= '<li><a href="'.home_url( '/' ).'about-us/">About Us</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'prayer/">Prayer Guide</a></li>';
-        $html .= '<li><a href="'.home_url( '/' ).'profile/">Profile</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'settings/">Profile</a></li>';
 
         $html .= '</ul></div>';
 
@@ -142,19 +145,7 @@ function disciple_tools_off_canvas_nav() {
     }
 
     echo $html;
-
-    // Removed because we are not using the menu tool in wp admin for the main nav.
-//    wp_nav_menu(array(
-//        'container' => false,                           // Remove nav container
-//        'menu_class' => 'vertical menu',       // Adding custom nav class
-//        'items_wrap' => '<ul id="%1$s" class="%2$s" data-accordion-menu>%3$s</ul>',
-//        'theme_location' => 'main-nav',        			// Where it's located in the theme
-//        'depth' => 5,                                   // Limit the depth of the nav
-//        'fallback_cb' => false,                         // Fallback function (see below)
-//        'walker' => new Off_Canvas_Menu_Walker()
-//    ));
-
-
+    
 }
 
 class Off_Canvas_Menu_Walker extends Walker_Nav_Menu {
@@ -206,91 +197,3 @@ function required_active_nav_class( $classes, $item ) {
     return $classes;
 }
 add_filter( 'nav_menu_css_class', 'required_active_nav_class', 10, 2 );
-
-
-
-
-
-/**
- * Checks the existence of core pages for Disciple Tools
- * @return boolean
- */
-function dt_pages_check () {
-
-    $postarr = array(
-        'About Us',
-        'Reports',
-        'Profile'
-    );
-
-    foreach ($postarr as $item) {
-        if (! post_exists( $item )) {
-            dt_add_core_pages();
-        }
-    }
-    return false;
-}
-
-/**
- * Installs or Resets Core Pages
- *
- */
-function dt_add_core_pages ()
-{
-    $html = '';
-
-    if ( true == get_post_status( 2 ) ) {    wp_delete_post( 2 );  } // Delete default page
-
-    $postarr = array(
-        array(
-            'post_title'    =>  'Reports',
-            'post_name'     =>  'reports',
-            'post_content'  =>  'The content of the page is controlled by the Disciple Tools plugin, but this page is required by the plugin to display the dashboard.',
-            'post_status'   =>  'Publish',
-            'comment_status'    =>  'closed',
-            'ping_status'   =>  'closed',
-            'menu_order'    =>  '4',
-            'post_type'     =>  'page',
-        ),
-        array(
-            'post_title'    =>  'Profile',
-            'post_name'     =>  'profile',
-            'post_content'  =>  'The content of the page is controlled by the Disciple Tools plugin, but this page is required by the plugin to display the dashboard.',
-            'post_status'   =>  'Publish',
-            'comment_status'    =>  'closed',
-            'ping_status'   =>  'closed',
-            'menu_order'    =>  '4',
-            'post_type'     =>  'page',
-        ),
-        array(
-            'post_title'    =>  'About Us',
-            'post_name'     =>  'about-us',
-            'post_content'  =>  'You can replace this content with whatever you would like to say about your media-to-movement project and it will publish on the "About Us" page.',
-            'post_status'   =>  'Publish',
-            'comment_status'    =>  'closed',
-            'ping_status'   =>  'closed',
-            'menu_order'    =>  '4',
-            'post_type'     =>  'page',
-        ),
-
-    );
-
-    foreach ($postarr as $item) {
-        if (! post_exists( $item['post_title'] ) ) {
-            wp_insert_post( $item, false );
-        } else {
-            $page = get_page_by_title( $item['post_title'] );
-            wp_delete_post( $page->ID );
-            wp_insert_post( $item, false );
-        }
-
-    }
-
-    return $html;
-}
-
-
-
-
-
-
