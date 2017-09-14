@@ -40,6 +40,7 @@
 //  35. Title Bar
 //  36. Tooltip
 //  37. Top Bar
+//  Xy Grid
 
 @import '../../node_modules/foundation-sites/scss/util/util';
 
@@ -635,4 +636,23 @@ $topbar-submenu-background: $topbar-background;
 $topbar-title-spacing: 0.45rem 1rem 0 1rem;
 $topbar-input-width: 200px;
 $topbar-unstack-breakpoint: small;
+
+
+// Xy Grid
+// -------
+
+$xy-grid: true;
+$grid-container: $global-width;
+$grid-columns: 12;
+$grid-margin-gutters: (
+  small: 10px,
+  medium: 21px,
+  large: 21px,
+  xlarge: 21px,
+  xxlarge: 21px
+);
+$grid-padding-gutters: $grid-margin-gutters;
+$grid-container-padding: $grid-padding-gutters;
+$grid-container-max: $global-width;
+$block-grid-max: 8;
 
