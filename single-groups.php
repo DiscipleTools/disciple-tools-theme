@@ -65,53 +65,72 @@ dt_print_breadcrumbs(
                 <div class="bordered-box">
                     <label class="section-header">Progress</label>
 
-                    <div class="grid-x">
-                        <div class="cell auto group-progress-button">
-                            <img class="group-progress-img" src="<?php echo get_template_directory_uri() . '/assets/images/groups/heart.svg' ?>">
-                            <p>Fellowship</p>
+                    <div style="display:flex;flex-wrap:wrap">
+                        <div class="group-progress-button-wrapper">
+                            <button  class="group-progress-button" id="church_fellowship">
+                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/heart.svg' ?>">
+                            </button>
+                            <p><?php _e( 'Fellowship', 'disciple_tools' )?> </p>
                         </div>
-                        <div class="cell auto group-progress-button">
-                            <img class="group-progress-img" src="<?php echo get_template_directory_uri() . '/assets/images/groups/giving.svg' ?>">
-                            <p>Giving</p>
+                        <div class="group-progress-button-wrapper">
+                            <button class="group-progress-button" id="church_giving">
+                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/giving.svg' ?>">
+                            </button>
+                            <p><?php _e( 'Giving', 'disciple_tools' )?></p>
                         </div>
-                        <div class="cell auto group-progress-button">
-                            <img class="group-progress-img" src="<?php echo get_template_directory_uri() . '/assets/images/groups/communion.svg' ?>">
-                            <p>Communion</p>
+                        <div class="group-progress-button-wrapper">
+                            <button class="group-progress-button" id="church_communion">
+                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/communion.svg' ?>">
+                            </button>
+                            <p><?php _e( 'Communion', 'disciple_tools' )?></p>
                         </div>
-                        <div class="cell auto group-progress-button">
-                            <img class="group-progress-img" src="<?php echo get_template_directory_uri() . '/assets/images/groups/baptism.svg' ?>">
-                            <p>Baptism</p>
+                        <div class="group-progress-button-wrapper">
+                            <button class="group-progress-button" id="church_baptism">
+                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/baptism.svg' ?>">
+                            </button>
+                            <p><?php _e( 'Baptism', 'disciple_tools' )?></p>
+
                         </div>
-                        <button class="cell auto group-progress-button">
-                            <img class="group-progress-img" src="<?php echo get_template_directory_uri() . '/assets/images/groups/prayer.svg' ?>">
-                            <p>Prayer</p>
-                        </button>
-                    </div>
-                    <div class="grid-x">
-                        <div class="cell auto group-progress-button">
-                            <img class="group-progress-img" src="<?php echo get_template_directory_uri() . '/assets/images/groups/leadership.svg' ?>">
-                            <p>Leaders</p>
+                        <div class="group-progress-button-wrapper">
+                            <button class="cell auto group-progress-button" id="church_prayer">
+                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/prayer.svg' ?>">
+                            </button>
+                            <p><?php _e( 'Prayer', 'disciple_tools' )?></p>
                         </div>
-                        <div class="cell auto group-progress-button">
-                            <img class="group-progress-img" src="<?php echo get_template_directory_uri() . '/assets/images/groups/word.svg' ?>">
-                            <p>Word</p>
+                        <div class="group-progress-button-wrapper">
+                            <button class="group-progress-button" id="church_leaders">
+                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/leadership.svg' ?>">
+                            </button>
+                            <p><?php _e( 'Leaders', 'disciple_tools' )?></p>
                         </div>
-                        <div class="cell auto group-progress-button">
-                            <img class="group-progress-img" src="<?php echo get_template_directory_uri() . '/assets/images/groups/praise.svg' ?>">
-                            <p>Praise</p>
+                        <div class="group-progress-button-wrapper">
+                            <button class="group-progress-button" id="church_bible">
+                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/word.svg' ?>">
+                            </button>
+                            <p><?php _e( 'Word', 'disciple_tools' )?></p>
                         </div>
-                        <div class="cell auto group-progress-button">
-                            <img class="group-progress-img" src="<?php echo get_template_directory_uri() . '/assets/images/groups/evangelism.svg' ?>">
-                            <p>Evangelism</p>
+                        <div class="group-progress-button-wrapper">
+                            <button class="group-progress-button" id="church_praise">
+                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/praise.svg' ?>">
+                            </button>
+                            <p><?php _e( 'Praise', 'disciple_tools' )?> </p>
                         </div>
-                        <button class="cell auto group-progress-button">
-                            <img class="group-progress-img" src="<?php echo get_template_directory_uri() . '/assets/images/groups/covenant.svg' ?>">
-                            <p>Covenant</p>
-                        </button>
+                        <div class="group-progress-button-wrapper">
+                            <button class="group-progress-button" id="church_sharing">
+                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/evangelism.svg' ?>">
+                            </button>
+                            <p><?php _e( 'Evangelism', 'disciple_tools' )?></p>
+                        </div>
+                        <div class="group-progress-button-wrapper">
+                            <button class="group-progress-button" id="church_commitment">
+                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/covenant.svg' ?>">
+                            </button>
+                            <p><?php _e( 'Covenant', 'disciple_tools' )?></p>
+                        </div>
                     </div>
                     <div class="grid-x">
                         <div style="margin-right:auto; margin-left:auto">
-                        <img class="" src="<?php echo get_template_directory_uri() . '/assets/images/groups/component.svg' ?>">
+                            <object id="church-svg-wrapper" type="image/svg+xml" data="<?php echo get_template_directory_uri() . '/assets/images/groups/church-wheel.svg' ?>"></object>
                         </div>
                     </div>
                 </div>

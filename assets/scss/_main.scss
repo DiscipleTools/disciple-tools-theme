@@ -864,101 +864,101 @@ CONTACTS
 /**
 Loader
  */
-button:not(.disabled):before {
-    content: '';
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    margin-top: -11px;
-    width: 20px;
-    height: 20px;
-    border: 4px solid;
-    border-left-color: transparent;
-    border-radius: 50%;
-    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-    opacity: 0;
-    -moz-transition-duration: 0.5s;
-    -o-transition-duration: 0.5s;
-    -webkit-transition-duration: 0.5s;
-    transition-duration: 0.5s;
-    -moz-transition-property: opacity;
-    -o-transition-property: opacity;
-    -webkit-transition-property: opacity;
-    transition-property: opacity;
-    -moz-animation-duration: 1s;
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    -moz-animation-iteration-count: infinite;
-    -webkit-animation-iteration-count: infinite;
-    animation-iteration-count: infinite;
-    -moz-animation-name: rotate;
-    -webkit-animation-name: rotate;
-    animation-name: rotate;
-    -moz-animation-timing-function: linear;
-    -webkit-animation-timing-function: linear;
-    animation-timing-function: linear;
-}
-button:not(.disabled):after {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    width: 0px;
-    -moz-transition-delay: 0.5s;
-    -o-transition-delay: 0.5s;
-    -webkit-transition-delay: 0.5s;
-    transition-delay: 0.5s;
-    -moz-transition-duration: 0.75s;
-    -o-transition-duration: 0.75s;
-    -webkit-transition-duration: 0.75s;
-    transition-duration: 0.75s;
-    -moz-transition-property: width;
-    -o-transition-property: width;
-    -webkit-transition-property: width;
-    transition-property: width;
-}
-button:not(.disabled).loading {
-    position:relative;
-    pointer-events: none;
-    cursor: not-allowed;
-}
-button:not(.disabled).loading:not(.expand) {
-    text-align: left;
-}
-button:not(.disabled).loading:before {
-    -moz-transition-delay: 0.5s;
-    -o-transition-delay: 0.5s;
-    -webkit-transition-delay: 0.5s;
-    transition-delay: 0.5s;
-    -moz-transition-duration: 1s;
-    -o-transition-duration: 1s;
-    -webkit-transition-duration: 1s;
-    transition-duration: 1s;
-    filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
-    opacity: 1;
-}
-button:not(.disabled).loading:after {
-    -moz-transition-delay: 0s;
-    -o-transition-delay: 0s;
-    -webkit-transition-delay: 0s;
-    transition-delay: 0s;
-    width: 20px;
-}
-
-@keyframes rotate {
-    0% {
-        -moz-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
+button.loader{
+    &:not(.disabled):before {
+        content: '';
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        margin-top: -11px;
+        width: 20px;
+        height: 20px;
+        border: 4px solid;
+        border-left-color: transparent;
+        border-radius: 50%;
+        filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+        opacity: 0;
+        -moz-transition-duration: 0.5s;
+        -o-transition-duration: 0.5s;
+        -webkit-transition-duration: 0.5s;
+        transition-duration: 0.5s;
+        -moz-transition-property: opacity;
+        -o-transition-property: opacity;
+        -webkit-transition-property: opacity;
+        transition-property: opacity;
+        -moz-animation-duration: 1s;
+        -webkit-animation-duration: 1s;
+        animation-duration: 1s;
+        -moz-animation-iteration-count: infinite;
+        -webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+        -moz-animation-name: rotate;
+        -webkit-animation-name: rotate;
+        animation-name: rotate;
+        -moz-animation-timing-function: linear;
+        -webkit-animation-timing-function: linear;
+        animation-timing-function: linear;
     }
-    100% {
-        -moz-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
+    &:not(.disabled):after {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        width: 0px;
+        -moz-transition-delay: 0.5s;
+        -o-transition-delay: 0.5s;
+        -webkit-transition-delay: 0.5s;
+        transition-delay: 0.5s;
+        -moz-transition-duration: 0.75s;
+        -o-transition-duration: 0.75s;
+        -webkit-transition-duration: 0.75s;
+        transition-duration: 0.75s;
+        -moz-transition-property: width;
+        -o-transition-property: width;
+        -webkit-transition-property: width;
+        transition-property: width;
+    }
+    &:not(.disabled).loading {
+        position: relative;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+    &:not(.disabled).loading:not(.expand) {
+        text-align: left;
+    }
+    &:not(.disabled).loading:before {
+        -moz-transition-delay: 0.5s;
+        -o-transition-delay: 0.5s;
+        -webkit-transition-delay: 0.5s;
+        transition-delay: 0.5s;
+        -moz-transition-duration: 1s;
+        -o-transition-duration: 1s;
+        -webkit-transition-duration: 1s;
+        transition-duration: 1s;
+        filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+        opacity: 1;
+    }
+    &:not(.disabled).loading:after {
+        -moz-transition-delay: 0s;
+        -o-transition-delay: 0s;
+        -webkit-transition-delay: 0s;
+        transition-delay: 0s;
+        width: 20px;
+    }
+    @keyframes rotate {
+        0% {
+            -moz-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -moz-transform: rotate(360deg);
+            -ms-transform: rotate(360deg);
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
     }
 }
-
 .typeahead,
 .tt-query,
 .tt-hint {
@@ -1037,15 +1037,18 @@ button:not(.disabled).loading:after {
 Groups
 **/
 
-.group-progress-img {
-    padding:10px;
-    background-color:$primary-color;
-    border-radius:5px;
-    min-height:60px;
+.group-progress-button-wrapper {
+    text-align: center;
+    flex: 1 0 80px;
 }
 
 .group-progress-button {
     text-align:center;
+    padding:10px;
+    background-color:$primary-color;
+    border-radius:5px;
+    height:60px;
+    width:65px;
 }
 
 .details-edit {
