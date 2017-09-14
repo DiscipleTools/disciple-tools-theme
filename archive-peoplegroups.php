@@ -7,7 +7,19 @@
     
     <div id="inner-content" class="grid-x grid-margin-x">
         
-        <main id="main" class="large-8 medium-8 cell" role="main">
+        <div class="large-3 medium-12 small-12 cell ">
+        
+            <section id="" class="medium-12 cell">
+            
+                <div class="bordered-box">
+            
+                </div>
+        
+            </section>
+    
+        </div>
+        
+        <div id="main" class="large-6 small-12 cell" role="main">
             
             <?php
             $args = array(
@@ -19,21 +31,25 @@
             <?php if ( $query1->have_posts() ) : while ( $query1->have_posts() ) : $query1->the_post(); ?>
                 
                 <!-- To see additional archive styles, visit the /parts directory -->
-                <?php get_template_part( 'parts/loop', 'prayer' ); ?>
+                <?php get_template_part( 'parts/loop', 'peoplegroups' ); ?>
             
             <?php endwhile; ?>
                 
                 <?php disciple_tools_page_navi(); ?>
             
             <?php else : ?>
-                
-                <?php get_template_part( 'parts/content', 'missing' ); ?>
+    
+                <section class="bordered-box">
+        
+                    <h3>No People Groups found in the system.</h3>
+    
+                </section>
             
             <?php endif; ?>
         
-        </main> <!-- end #main -->
+        </div> <!-- end #main -->
         
-        <aside class="large-4 medium-4 cell">
+        <div class="large-3 small-12 cell">
             
             <section class="bordered-box">
                 
@@ -43,7 +59,7 @@
             
             <section class="bordered-box">
                 
-                <h4>Recent Posts</h4>
+                <h4>Recent People Groups</h4>
                 
                 <?php $args = array(
                     'numberposts' => 10,
@@ -73,31 +89,9 @@
                 //                    print_r($recent_posts);?>
             
             </section>
-            
-            <section class="bordered-box">
-                
-                <p>Archives</p>
-                
-                <?php
-                $args = array(
-                    'type'            => 'monthly',
-                    'limit'           => '',
-                    'format'          => 'html',
-                    'before'          => '',
-                    'after'           => '',
-                    'show_post_count' => false,
-                    'echo'            => 1,
-                    'order'           => 'DESC',
-                    'post_type'     => 'peoplegroups'
-                );
-                wp_get_archives( $args );
-                
-                ?>
-            
-            </section>
         
         
-        </aside> <!-- end #aside -->
+        </div> <!-- end #aside -->
     
     </div> <!-- end #inner-content -->
 

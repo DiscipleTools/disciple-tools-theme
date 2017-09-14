@@ -39,47 +39,18 @@
                 <?php disciple_tools_page_navi(); ?>
             
             <?php else : ?>
-                
-                <?php get_template_part( 'parts/content', 'missing' ); ?>
+    
+                <section class="bordered-box">
+        
+                    <h3>No Locations found in the system.</h3>
+    
+                </section>
             
             <?php endif; ?>
         
         </div> <!-- end #main -->
         
         <div class="large-3 small-12 cell">
-            
-            <section class="bordered-box">
-                
-                <h4>Recent Posts</h4>
-                
-                <?php $args = array(
-                    'numberposts' => 10,
-                    'offset' => 0,
-                    'category' => 0,
-                    'orderby' => 'post_date',
-                    'order' => 'DESC',
-                    'include' => '',
-                    'exclude' => '',
-                    'meta_key' => '',
-                    'meta_value' =>'',
-                    'post_type' => 'locations',
-                    'post_status' => 'draft, publish, future, pending, private',
-                    'suppress_filters' => true
-                );
-                
-                $recent_posts = wp_get_recent_posts( $args, ARRAY_A );
-                
-                echo '<ul>';
-                ?>
-                <?php foreach ($recent_posts as $recent_post): ?>
-                    <li><a href="<?php echo $recent_post['guid'] ?>"><?php echo $recent_post['post_title'] ?></a></li>
-                <?php endforeach; ?>
-                <?php
-                echo '</ul>';
-                
-                //                    print_r($recent_posts);?>
-            
-            </section>
             
             <section class="bordered-box">
                 
