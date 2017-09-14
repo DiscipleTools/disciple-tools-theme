@@ -9,7 +9,8 @@
 
 function dt_theme_page_profile_content ( $content ) {
 
-    // Check and set Reports Page Title in options //TODO: This is temporary until I build the options page to manage the name of the Reports page.
+    // Check and set Reports Page Title in options
+    // TODO: This is temporary until I build the options page to manage the name of the Reports page.
     if(! get_option( 'dt_page_profile' )  ) {
         update_option( 'dt_page_profile', 'Profile' ); // This is the name of the reports page selected through the options page. Can be a different name than 'Reports', but 'Reports' is recommended.
     }

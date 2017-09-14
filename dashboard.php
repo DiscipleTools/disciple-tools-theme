@@ -2,14 +2,28 @@
 
 <div id="content">
 
-    <div id="inner-content" class="row">
+    <div id="inner-content" class="grid-x grid-margin-x">
+    
+        <div class="large-3 medium-12 small-12 cell ">
+        
+            <section id="" class="medium-12 cell">
+            
+                <div class="bordered-box">
+            
+                </div>
+        
+            </section>
+    
+        </div>
 
-        <main id="main" class="large-8 medium-8 columns " role="main">
+        <div id="main" class="small-12 large-6  cell" role="main">
 
             <div class="show-for-small-only">
+                
                 <section class="bordered-box">
                     <?php include( 'searchform.php' ); ?>
                 </section>
+                
             </div>
 
             <?php get_template_part( 'parts/content', 'required-updates' ); ?>
@@ -22,7 +36,19 @@
 
             </div>
 
-        </main> <!-- end #main -->
+        </div> <!-- end #main -->
+    
+        <div class="large-3 medium-12 small-12 cell ">
+        
+            <section id="" class="medium-12 cell">
+            
+                <div class="bordered-box">
+            
+                </div>
+        
+            </section>
+    
+        </div>
 
     </div> <!-- end #inner-content -->
 

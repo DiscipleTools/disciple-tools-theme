@@ -18,7 +18,7 @@
             <img title="<?php _e( "Filters" ); ?>" src="<?php echo get_template_directory_uri() . "/assets/images/filter.svg" ?>">
         </button>
         <?php endif; ?>
-        <a href="#">
+        <a href="<?php echo home_url( '/notifications' ); ?>">
             <img title="<?php _e( "Notifications" ); ?>" src="<?php echo get_template_directory_uri() . "/assets/images/bell.svg" ?>">
         </a>
         <a href="<?php echo get_admin_url(); ?>">
@@ -44,7 +44,7 @@
             <ul class="dropdown menu" data-dropdown-menu>
                 <!--            <li><input style="margin: 0" type="search" placeholder="Search"></li>-->
                 <!--            <li><button type="button" class="button">Search</button></li>-->
-                <li><a href="#">Notifications</a></li>
+                <li><a href="<?php echo home_url( '/notifications' ); ?>">Notifications</a></li>
                 <li>
                     <a href="#"><i class="fi-widget"></i></a></a>
                     <ul class="menu vertical">
