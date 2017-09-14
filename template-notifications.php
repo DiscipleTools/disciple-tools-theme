@@ -5,16 +5,6 @@ Template Name: Notifications
 ?>
 
 <?php get_header(); ?>
-
-<?php
-dt_print_breadcrumbs(
-    [
-        [ home_url( '/' ), __( "Dashboard" ) ],
-        [ home_url( '/' ) . "notifications", __( "Notifications" ) ],
-    ],
-    get_the_title(),
-    false
-); ?>
     
     <div id="content">
         

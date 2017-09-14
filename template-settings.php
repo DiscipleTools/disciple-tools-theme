@@ -5,16 +5,6 @@ Template Name: Settings
 ?>
 
 <?php get_header(); ?>
-
-<?php
-dt_print_breadcrumbs(
-    [
-        [ home_url( '/' ), __( "Dashboard" ) ],
-        [ home_url( '/' ) . "settings", __( "Settings" ) ],
-    ],
-    get_the_title(),
-    false
-); ?>
     
     <div id="content">
         

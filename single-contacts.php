@@ -37,7 +37,7 @@ dt_print_breadcrumbs(
                 </div>
             </section>
 
-            <div class="large-7 medium-12 small-12 cell" role="main" >
+            <main id="main" class="large-7 medium-12 small-12 cell grid-x grid-margin-x" role="main" style="padding:0">
 
                 <section id="contact-details" class="medium-12 cell">
                     <?php get_template_part( 'parts/contact', 'details' ); ?>
@@ -201,15 +201,15 @@ dt_print_breadcrumbs(
                     </div>
                 </section>
 
-            </div> <!-- end #main -->
+            </main> <!-- end #main -->
 
-            <div class="large-5 medium-12 small-12 cell">
+            <aside class="large-5 medium-12 small-12 cell">
                 <section class="bordered-box comment-activity-section" id="comment-activity-section">
                     <?php get_template_part( 'parts/contact', 'quick-buttons' ); ?>
                     <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
                 </section>
 
-            </div>
+            </aside>
 
         </div> <!-- end #inner-content -->
 
