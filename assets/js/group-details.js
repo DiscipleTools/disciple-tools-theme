@@ -464,7 +464,7 @@ let searchAnyPieceOfWord = function(d) {
       post_comment(groupId, input.val()).success(commentData=>{
         commentButton.toggleClass('loading')
         input.val('')
-        commentData.comment.date = new Date(commentData.comment.comment_date_gmt + " GMT")
+        commentData.comment.date = new Date(commentData.comment.comment_date_gmt + "Z")
         comments.push(commentData.comment)
         display_activity_comment()
       })
@@ -475,7 +475,7 @@ let searchAnyPieceOfWord = function(d) {
     get_activity(groupId)
   ).done(function(commentData, activityData){
     commentData[0].forEach(comment=>{
-      comment.date = new Date(comment.comment_date_gmt + " GMT")
+      comment.date = new Date(comment.comment_date_gmt + "Z")
     })
     comments = commentData[0]
     activityData[0].forEach(d=>{
@@ -517,8 +517,8 @@ let searchAnyPieceOfWord = function(d) {
         array.push(obj)
       } else {
         commentsWrapper.append(commentTemplate({
-          name: name,
-          date:formatDate(_.first(array).date),
+          name: array[0].name,
+          date:formatDate(array[0].date),
           activity: array
         }))
         array = [obj]
@@ -527,7 +527,7 @@ let searchAnyPieceOfWord = function(d) {
     if (array.length > 0){
       commentsWrapper.append(commentTemplate({
         name: array[0].name,
-        date:formatDate(_.first(array).date),
+        date:formatDate(array[0].date),
         activity: array
       }))
     }
