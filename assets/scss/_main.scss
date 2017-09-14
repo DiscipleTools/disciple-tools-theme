@@ -864,9 +864,8 @@ CONTACTS
 /**
 Loader
  */
-.loader {
-
-    button:not(.disabled):before {
+button.loader{
+    &:not(.disabled):before {
         content: '';
         position: absolute;
         right: 10px;
@@ -900,7 +899,7 @@ Loader
         -webkit-animation-timing-function: linear;
         animation-timing-function: linear;
     }
-    button:not(.disabled):after {
+    &:not(.disabled):after {
         content: '';
         display: inline-block;
         height: 100%;
@@ -918,15 +917,15 @@ Loader
         -webkit-transition-property: width;
         transition-property: width;
     }
-    button:not(.disabled).loading {
+    &:not(.disabled).loading {
         position: relative;
         pointer-events: none;
         cursor: not-allowed;
     }
-    button:not(.disabled).loading:not(.expand) {
+    &:not(.disabled).loading:not(.expand) {
         text-align: left;
     }
-    button:not(.disabled).loading:before {
+    &:not(.disabled).loading:before {
         -moz-transition-delay: 0.5s;
         -o-transition-delay: 0.5s;
         -webkit-transition-delay: 0.5s;
@@ -938,14 +937,13 @@ Loader
         filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
         opacity: 1;
     }
-    button:not(.disabled).loading:after {
+    &:not(.disabled).loading:after {
         -moz-transition-delay: 0s;
         -o-transition-delay: 0s;
         -webkit-transition-delay: 0s;
         transition-delay: 0s;
         width: 20px;
     }
-
     @keyframes rotate {
         0% {
             -moz-transform: rotate(0deg);
