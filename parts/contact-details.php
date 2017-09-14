@@ -1,4 +1,5 @@
-<?php $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
+<?php
+$contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
 $channel_list = Disciple_Tools_Contacts::get_channel_list();
 $locations = Disciple_Tools_Locations::get_locations();
 $current_user = wp_get_current_user();
