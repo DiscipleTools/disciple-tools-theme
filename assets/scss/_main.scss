@@ -131,12 +131,18 @@ nav.second-bar {
     align-items: center;
 }
 
+.content-sticky-top-adjustment {
+    margin-top: 3rem;
+}
+
 /*********************
 POSTS & CONTENT STYLES
 *********************/
 #content {
+
     #inner-content {
-        padding: 1rem 0rem;
+        margin-top: 3rem;
+        padding: 1rem 0;
         margin-left: 5px;
         margin-right: 5px;
     }
