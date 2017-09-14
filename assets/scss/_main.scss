@@ -131,18 +131,12 @@ nav.second-bar {
     align-items: center;
 }
 
-.content-sticky-top-adjustment {
-    margin-top: 3rem;
-}
-
 /*********************
 POSTS & CONTENT STYLES
 *********************/
 #content {
-
     #inner-content {
-        margin-top: 3rem;
-        padding: 1rem 0;
+        padding: 1rem 0rem;
         margin-left: 5px;
         margin-right: 5px;
     }
@@ -927,17 +921,10 @@ button.loader{
         position: relative;
         pointer-events: none;
         cursor: not-allowed;
-<<<<<<< HEAD
     }
     &:not(.disabled).loading:not(.expand) {
         text-align: left;
     }
-=======
-    }
-    &:not(.disabled).loading:not(.expand) {
-        text-align: left;
-    }
->>>>>>> master
     &:not(.disabled).loading:before {
         -moz-transition-delay: 0.5s;
         -o-transition-delay: 0.5s;
