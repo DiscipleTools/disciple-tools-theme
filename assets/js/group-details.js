@@ -438,6 +438,7 @@ let searchAnyPieceOfWord = function(d) {
     }
     locations.initialize()
     members.initialize()
+    fillOutChurchHealthMetrics()
   })
 
 
@@ -561,6 +562,51 @@ let searchAnyPieceOfWord = function(d) {
     month = month < 10 ? "0"+month.toString() : month
     return date.getFullYear() + "/" + date.getDate() + "/" + month + "  " + strTime;
   }
+
+
+  /**
+   * Church fields
+   */
+  let metrics = [
+    'baptism',
+    'fellowship',
+    'communion',
+    'prayer',
+    'praise',
+    'giving',
+    'bible',
+    'leaders',
+    'sharing',
+    'commitment'
+  ]
+
+  function fillOutChurchHealthMetrics() {
+      let svgItem = document.getElementById("church-svg-wrapper").contentDocument
+      let churchWheel = $(svgItem).find('svg')
+      metrics.forEach(m=>{
+        if (group[`church_${m}`] && ["1", "Yes"].indexOf(group[`church_${m}`])> -1){
+          churchWheel.find(`#${m}`).css("opacity", "1")
+        } else {
+          churchWheel.find(`#${m}`).css("opacity", ".1")
+        }
+      })
+      if (!group["church_commitment"] || group["church_commitment"] === '0'){
+        churchWheel.find('#group').css("opacity", "1")
+      } else {
+        churchWheel.find('#group').css("opacity", ".1")
+      }
+  }
+
+  $('.group-progress-button').on('click', function () {
+    let fieldId = $(this).attr('id')
+    let field = group[fieldId] === "1" ? "0" : "1"
+    save_field_api(groupId, {[fieldId]: field}).success(groupData=>{
+      group = groupData
+      fillOutChurchHealthMetrics()
+    }).error(err=>{
+      alert(err.responseText)
+    })
+  })
 
 })
 
