@@ -97,7 +97,7 @@ function add_typeahead_item(groupId, fieldId, val, name) {
   })
 }
 
-function filterTypeahead(array, existing){
+function filterTypeahead(array, existing = []){
   return _.differenceBy(array, existing.map(l=>{
     return {ID:l.ID, name:l.display_name}
   }), "ID")
@@ -378,6 +378,7 @@ let searchAnyPieceOfWord = function(d) {
     prefetch: {
       url: wpApiSettings.root + 'dt-hooks/v1/contacts/compact',
       transform: function(data){
+        loadMembersTypeahead()
         return filterTypeahead(data, group.members || [])
       },
       cache: false
@@ -395,6 +396,7 @@ let searchAnyPieceOfWord = function(d) {
 
   let membersTypeahead = $('#members .typeahead')
   function loadMembersTypeahead() {
+    membersTypeahead.typeahead('destroy')
     membersTypeahead.typeahead({
         highlight: true,
         minLength: 0,
@@ -412,7 +414,6 @@ let searchAnyPieceOfWord = function(d) {
     membersTypeahead.typeahead('val', '')
     group.members.push(sug)
     add_typeahead_item(groupId, 'members', sug.ID, sug.name)
-    membersTypeahead.typeahead('destroy')
     loadMembersTypeahead()
   })
   loadMembersTypeahead()
