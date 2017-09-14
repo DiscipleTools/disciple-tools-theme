@@ -20,7 +20,7 @@ declare(strict_types=1);
         </ul>
     </div>
 
-    <table class="js-list">
+    <table class="table-remove-top-border js-list">
         <thead><tr>
             <th></th>
             <th><?php _e( "Name" ); ?></th>
