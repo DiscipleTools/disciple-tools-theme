@@ -12,8 +12,6 @@
                 </section>
             </div>
 
-            <?php get_template_part( 'parts/content', 'assigned-to' ); ?>
-
             <?php get_template_part( 'parts/content', 'required-updates' ); ?>
 
             <div class="row column padding-bottom">
