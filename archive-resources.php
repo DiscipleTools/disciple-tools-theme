@@ -2,7 +2,15 @@
 
 <?php get_header(); ?>
 
-<?php dt_print_breadcrumbs( null, __( "Resources" ) ); ?>
+<?php
+dt_print_breadcrumbs(
+    [
+        [ home_url( '/' ), __( "Dashboard" ) ],
+        [ home_url( '/' ) . "resources", __( "Resources" ) ],
+    ],
+    get_the_title(),
+    false
+); ?>
 
 <div id="content">
     
