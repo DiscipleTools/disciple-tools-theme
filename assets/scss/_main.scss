@@ -1068,3 +1068,16 @@ Groups
 table.table-remove-top-border thead {
     border-top: 0;
 }
+
+
+.clearfix {
+    clear: both;
+}
+
+div.dataTables_wrapper .datatable-first-line {
+    .dataTables_info {
+        padding: .7rem 0;
+        display: inline-block;
+        line-height: 1;
+    }
+}
