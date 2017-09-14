@@ -599,15 +599,16 @@ let searchAnyPieceOfWord = function(d) {
 
   $('.group-progress-button').on('click', function () {
     let fieldId = $(this).attr('id')
+    $(this).css('opacity', ".5");
     let field = group[fieldId] === "1" ? "0" : "1"
     save_field_api(groupId, {[fieldId]: field}).success(groupData=>{
       group = groupData
       fillOutChurchHealthMetrics()
+      $(this).css('opacity', "1");
     }).error(err=>{
       alert(err.responseText)
     })
   })
-
 })
 
 
