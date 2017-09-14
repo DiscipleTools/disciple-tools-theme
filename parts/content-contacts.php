@@ -7,7 +7,7 @@ declare(strict_types=1);
     <div class="js-sort-dropdown" hidden>
         <ul class="dropdown menu" data-dropdown-menu>
             <li>
-                <a href="#"><?php _e( "Sort by" ); ?></a>
+                <a href="#"><?php _e( "Sort" ); ?></a>
                 <ul class="menu">
                     <li><a href="#" class="js-sort-by" data-column-index="7" data-order="desc">
                         <?php _e( "Most recent" ); ?>
@@ -20,15 +20,15 @@ declare(strict_types=1);
         </ul>
     </div>
 
-    <table class="js-list">
+    <table class="table-remove-top-border js-list">
         <thead><tr>
-            <th></th>
-            <th><?php _e( "Name" ); ?></th>
+            <th data-priority="1"></th>
+            <th data-priority="2"><?php _e( "Name" ); ?></th>
             <th><?php _e( "Status" ); ?></th>
             <th><?php _e( "Faith Milestones" ); ?></th>
-            <th><?php _e( "Assigned to" ); ?></th>
+            <th data-priority="4"><?php _e( "Assigned to" ); ?></th>
             <th><?php _e( "Location" ); ?></th>
-            <th><?php _e( "Group" ); ?></th>
+            <th data-priority="3"><?php _e( "Group" ); ?></th>
             <!--<th><?php _e( "Last modified" ); ?></th>-->
         </tr></thead>
         <tbody>
