@@ -115,11 +115,13 @@
         search: "",
         searchPlaceholder: wpApiSettings.txt_search,
       },
-      sDom: 'fir<"js-list-toolbar">tlp<"clearfix">',
-        /* f: filtering input
-         * i: information
-         * r: processing
-         * <"js-list-toolbar"> div with class toolbar
+      sDom: '<"datatable-first-line"fir<"js-list-toolbar">>tlp<"clearfix">',
+        /* <"datatable-firstline": div which contains:
+         *     f: filtering input
+         *     i: information
+         *     r: processing
+         *     <"js-list-toolbar"> div with class js-list-toolbar
+         * >
          * t: table
          * l: length changing
          * p: pagination
@@ -130,7 +132,6 @@
           .append($(".js-sort-dropdown").removeAttr("hidden").detach())
           .css("float", "right")
           .foundation();
-        $(".dataTables_info").css("display", "inline");
       },
     };
     if (wpApiSettings.current_post_type == "contacts") {
