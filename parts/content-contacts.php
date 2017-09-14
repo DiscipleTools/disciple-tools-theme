@@ -22,13 +22,13 @@ declare(strict_types=1);
 
     <table class="table-remove-top-border js-list">
         <thead><tr>
-            <th></th>
-            <th><?php _e( "Name" ); ?></th>
+            <th data-priority="1"></th>
+            <th data-priority="2"><?php _e( "Name" ); ?></th>
             <th><?php _e( "Status" ); ?></th>
             <th><?php _e( "Faith Milestones" ); ?></th>
-            <th><?php _e( "Assigned to" ); ?></th>
+            <th data-priority="4"><?php _e( "Assigned to" ); ?></th>
             <th><?php _e( "Location" ); ?></th>
-            <th><?php _e( "Group" ); ?></th>
+            <th data-priority="3"><?php _e( "Group" ); ?></th>
             <!--<th><?php _e( "Last modified" ); ?></th>-->
         </tr></thead>
         <tbody>

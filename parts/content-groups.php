@@ -22,8 +22,8 @@ declare(strict_types=1);
 
     <table class="table-remove-top-border js-list">
         <thead><tr>
-            <th></th>
-            <th><?php _e( "Name" ); ?></th>
+            <th data-priority="1"></th>
+            <th data-priority="2"><?php _e( "Name" ); ?></th>
             <th><?php _e( "Status" ); ?></th>
             <th><?php _e( "Members" ); ?></th>
             <th><?php _e( "Leader" ); ?></th>
