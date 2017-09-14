@@ -62,6 +62,15 @@ dt_print_breadcrumbs(
                                     <div class="small-1 cell"><span class="badge" style="vertical-align: middle; float:right;">&nbsp;</span></div>
                                 </div>
                             </div>
+                            <div class="cell">
+                                <div class="grid-x grid-margin-x grid-padding-y">
+                                    <div class="auto cell"></div>
+                                    <div class="small-6 cell" style="text-align: center;">
+                                        << 1 2 3 4 5 6 >>
+                                    </div>
+                                    <div class="auto cell"></div>
+                                </div>
+                            </div>
                             
                         </div>
                     
