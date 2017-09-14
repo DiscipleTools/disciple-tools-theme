@@ -1,5 +1,14 @@
 <?php get_header(); ?>
 
+<?php
+dt_print_breadcrumbs(
+    [
+        [ home_url( '/' ), __( "Dashboard" ) ],
+    ],
+    '',
+    false
+); ?>
+
 <div id="content">
 
     <div id="inner-content" class="grid-x grid-margin-x">
