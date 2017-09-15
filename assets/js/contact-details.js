@@ -76,7 +76,7 @@ function post_comment(contactId) {
     console.log(`added comment ${comment}`)
     jQuery("#comment-input").val("")
     jQuery("#add-comment-button").toggleClass('loading')
-    data.comment.date = new Date(data.comment.comment_date)
+    data.comment.date = new Date(data.comment.comment_date_gmt + "Z")
     comments.push(data.comment)
     display_activity_comment()
   }).catch(err=>{
@@ -429,8 +429,8 @@ function display_activity_comment(section) {
       array.push(obj)
     } else {
       commentsWrapper.append(commentTemplate({
-        name: name,
-        date:formatDate(_.first(array).date),
+        name: array[0].name,
+        date:formatDate(array[0].date),
         activity: array
       }))
       array = [obj]
@@ -439,7 +439,7 @@ function display_activity_comment(section) {
   if (array.length > 0){
     commentsWrapper.append(commentTemplate({
       name: array[0].name,
-      date:formatDate(_.first(array).date),
+      date:formatDate(array[0].date),
       activity: array
     }))
   }
