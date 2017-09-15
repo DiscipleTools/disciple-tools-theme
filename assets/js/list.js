@@ -317,52 +317,56 @@
         return;
       }
       if (wpApiSettings.current_post_type === "contacts") {
+
         if (filterType === "overall_status") {
-          filterFunctions.push(function(contact) {
+          filterFunctions.push(function overall_status(contact) {
             return _.some($checkedLabels, function(label) {
               return $(label).data("filter-value") === contact.overall_status;
             });
           });
         } else if (filterType === "locations") {
-          filterFunctions.push(function(contact) {
+          filterFunctions.push(function locations(contact) {
             return _.some($checkedLabels, function(label) {
               return _.includes(contact.locations, $(label).data("filter-value"));
             });
           });
         } else if (filterType === "assigned_to") {
-          filterFunctions.push(function(contact) {
+          filterFunctions.push(function assigned_to(contact) {
             return _.some($checkedLabels, function(label) {
               return $(label).data("filter-value") === _.get(contact, "assigned_to.user_login");
             });
           });
         } else if (filterType === "seeker_path") {
-          filterFunctions.push(function(contact) {
+          filterFunctions.push(function seeker_path(contact) {
             return _.some($checkedLabels, function(label) {
               return $(label).data("filter-value") === contact.seeker_path;
             });
           });
         } else if (filterType === "requires_update") {
-          filterFunctions.push(function(contact) {
+          filterFunctions.push(function requires_update(contact) {
             return _.some($checkedLabels, function(label) {
               const value = $(label).data("filter-value") === "true";
               return value === contact.requires_update;
             });
           });
         }
+
       } else if (wpApiSettings.current_post_type === "groups") {
+
         if (filterType === "group_status") {
           filterFunctions.push(function(group) {
-            return _.some($checkedLabels, function(label) {
+            return _.some($checkedLabels, function group_status(label) {
               return $(label).data("filter-value") === group.group_status;
             });
           });
         } else if (filterType === "locations") {
           filterFunctions.push(function(group) {
-            return _.some($checkedLabels, function(label) {
+            return _.some($checkedLabels, function locations(label) {
               return _.includes(group.locations, $(label).data("filter-value"));
             });
           });
         }
+
       }
     });
 
