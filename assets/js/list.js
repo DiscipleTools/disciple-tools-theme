@@ -44,10 +44,6 @@
       $(function() {
         displayRows();
         setUpFilterPane();
-        $(".js-priorities-show").on("click", function(e) {
-          priorityShow($(this).data("priority"));
-          e.preventDefault();
-        });
         $(".js-clear-filters").on("click", function() {
           clearFilters();
         });
@@ -370,28 +366,6 @@
       }
     });
 
-  }
-
-  function priorityShow(priority) {
-    $(".js-filter-checkbox-label input[type=checkbox]").each(function() {
-      this.checked = false;
-    });
-    tickFilters("assigned_login", wpApiSettings.current_user_login);
-    tickFilters("overall_status", "active");
-
-    if (priority === "update_needed") {
-      tickFilters("requires_update", "true");
-    } else if (priority === "meeting_scheduled") {
-      tickFilters("seeker_path", "scheduled");
-    } else if (priority === "contact_unattempted") {
-      tickFilters("seeker_path", "none");
-    } else {
-      throw new Error("Priority not recognized: " + priority);
-    }
-
-    updateFilterFunctions();
-    updateButtonStates();
-    dataTable.draw();
   }
 
   function showMyContacts() {
