@@ -20,11 +20,41 @@ declare(strict_types=1);
 
             <div class="reveal js-filters-modal" id="filters-modal" data-reveal>
                 <div class="js-filters-modal-content">
-                    <h5><?php _e( "Filters" ); ?></h5>
-                    <div>
-                        <button class="button small js-my-contacts"><?php _e( "My contacts" ); ?></button>
-                        <button disabled class="button small js-clear-filters"><?php _e( "Clear filters" ); ?></button>
+                    <h5><?php _e( "Views" ); ?></h5>
+                    <div class="list-views">
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="view" value="my_contacts" class="js-list-view">
+                            <?php _e( "My contacts" ); ?>
+                            <span class="js-list-view-count" data-value="my_contacts" style="float: right">.</span>
+                        </label>
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="view" value="my_priorities" class="js-list-view" style="margin-left: 20px">
+                            <?php _e( "My priorities" ); ?>
+                            <span class="js-list-view-count" data-value="my_priorities" style="float: right">.</span>
+                        </label>
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="view" value="update_needed" class="js-list-view" style="margin-left: 40px">
+                            <?php _e( "Updated needed" ); ?>
+                            <span class="js-list-view-count" data-value="update_needed" style="float: right">.</span>
+                        </label>
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="view" value="meeting_scheduled" class="js-list-view" style="margin-left: 40px">
+                            <?php _e( "Meeting scheduled" ); ?>
+                            <span class="js-list-view-count" data-value="meeting_scheduled" style="float: right">.</span>
+                        </label>
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="view" value="contact_unattempted" class="js-list-view" style="margin-left: 40px">
+                            <?php _e( "Contact unattempted" ); ?>
+                            <span class="js-list-view-count" data-value="contact_unattempted" style="float: right">.</span>
+                        </label>
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="view" value="all_contacts" class="js-list-view" checked>
+                            <?php _e( "All contacts" ); ?>
+                            <span class="js-list-view-count" data-value="all_contacts" style="float: right">.</span>
+                        </label>
                     </div>
+
+                    <h5><?php _e( "Filters" ); ?></h5>
                     <div class="filter js-list-filter" data-filter="assigned_login">
                         <div class="filter__title js-list-filter-title"><?php _e( "Assigned to" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>

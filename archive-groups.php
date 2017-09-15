@@ -20,9 +20,6 @@ declare(strict_types=1);
             <div class="reveal js-filters-modal" id="filters-modal" data-reveal>
                 <div class="js-filters-modal-content">
                     <h5><?php _e( "Filters" ); ?></h5>
-                    <div>
-                        <button disabled class="button small js-clear-filters"><?php _e( "Clear filters" ); ?></button>
-                    </div>
                     <div class="filter js-list-filter" data-filter="group_status">
                         <div class="filter__title js-list-filter-title"><?php _e( "Group status" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>

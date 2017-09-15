@@ -3,6 +3,7 @@
   let items; // contacts or groups
   let filterFunctions = [];
   let dataTable;
+  const current_username = wpApiSettings.current_user_login;
 
   const templates = {
     contacts: _.template(`<tr>
@@ -34,6 +35,42 @@
     </tr>`),
   };
 
+  const viewFilterFunctions = {
+    my_contacts(contact) {
+      return _.get(contact, 'assigned_to.user_login') === current_username;
+    },
+    my_priorities(contact) {
+      return (
+        _.get(contact, 'assigned_to.user_login') === current_username
+        && (contact.requires_update
+          || contact.seeker_path === "scheduled"
+          || (contact.overall_status === "active" && contact.seeker_path === "none")
+        )
+      );
+    },
+    update_needed(contact) {
+      return (
+        _.get(contact, 'assigned_to.user_login') === current_username
+        && contact.requires_update
+      );
+    },
+    meeting_scheduled(contact) {
+      return (
+        _.get(contact, 'assigned_to.user_login') === current_username
+        && contact.seeker_path === "scheduled"
+      );
+    },
+    contact_unattempted(contact) {
+      return (
+        _.get(contact, 'assigned_to.user_login') === current_username
+        && (contact.overall_status === "active" && contact.seeker_path === "none")
+      );
+    },
+    all_contacts(contact) {
+      return true;
+    },
+  };
+
   $.ajax({
     url: wpApiSettings.root + "dt-hooks/v1/" + wpApiSettings.current_post_type,
     beforeSend: function(xhr) {
@@ -44,12 +81,8 @@
       $(function() {
         displayRows();
         setUpFilterPane();
-        $(".js-clear-filters").on("click", function() {
-          clearFilters();
-        });
-        $(".js-my-contacts").on("click", function() {
-          showMyContacts();
-        });
+        updateFilterFunctions();
+        dataTable.draw();
         $(".js-sort-by").on("click", function() {
           sortBy(parseInt($(this).data("column-index")), $(this).data("order"));
         });
@@ -236,6 +269,12 @@
       });
     }
 
+    $(".js-list-view-count").each(function() {
+      const $el = $(this);
+      const filterFunction = viewFilterFunctions[$el.data('value')];
+      $el.text(items.filter(filterFunction).length);
+    });
+
     $(".js-list-filter :not(.js-list-filter-title)").remove();
     Object.keys(counts).forEach(function(filterType) {
       $(".js-list-filter[data-filter='" + filterType + "']")
@@ -244,6 +283,11 @@
     $(".js-list-filter-title").on("click", function() {
       const $title = $(this);
       $title.parents(".js-list-filter").toggleClass("filter--closed");
+    });
+    $(".js-list-view").on("change", function() {
+      clearFilterCheckboxes();
+      updateFilterFunctions();
+      dataTable.draw();
     });
   }
 
@@ -274,7 +318,6 @@
               .attr("type", "checkbox")
               .on("change", function() {
                 updateFilterFunctions();
-                updateButtonStates();
                 dataTable.draw();
               })
             )
@@ -294,10 +337,6 @@
     return $div;
   }
 
-  function updateButtonStates() {
-    $(".js-clear-filters").prop("disabled", filterFunctions.length == 0);
-  }
-
   function updateFilterFunctions() {
     filterFunctions = [];
 
@@ -307,6 +346,8 @@
     } else if (wpApiSettings.current_post_type === "groups") {
       filterTypes = ["group_status", "locations"];
     }
+
+    filterFunctions.push(viewFilterFunctions[$(".js-list-view:checked").val()]);
 
     filterTypes.forEach(function(filterType) {
       const $checkedLabels = $(".js-filter-checkbox-label")
@@ -370,16 +411,7 @@
       }
     });
 
-  }
 
-  function showMyContacts() {
-    $(".js-filter-checkbox-label input[type=checkbox]").each(function() {
-      this.checked = false;
-    });
-    tickFilters("assigned_login", wpApiSettings.current_user_login);
-    updateFilterFunctions();
-    updateButtonStates();
-    dataTable.draw();
   }
 
   function tickFilters(filterType, filterValue) {
@@ -393,13 +425,10 @@
     $(".js-list-filter[data-filter=" + filterType + "]").removeClass("filter--closed");
   }
 
-  function clearFilters() {
+  function clearFilterCheckboxes() {
     $(".js-filter-checkbox-label input[type=checkbox]").each(function() {
       this.checked = false;
     });
-    updateFilterFunctions();
-    updateButtonStates();
-    dataTable.draw();
   }
 
 
