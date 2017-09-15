@@ -716,13 +716,13 @@ function details_accept_contact(contactId, accept){
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + "/accept",
   })
-    .done(function (data) {
+    .then(function (data) {
       console.log(data)
       jQuery('#accept-contact').hide()
       if (data['overall_status']){
         jQuery('#overall-status').text(data['overall_status'])
       }
-    }).error(err=>{
+    }).catch(err=>{
     console.log(err)
   })
 }
@@ -739,7 +739,7 @@ function add_shared(contactId, selectId){
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + "/add_shared",
   })
-    .done(function (data) {
+    .then(function (data) {
       console.log(data)
       jQuery(`#shared-with-list`).append(
         '<li class="'+select.val()+'">' +
@@ -749,7 +749,7 @@ function add_shared(contactId, selectId){
         '</button></li>'
       );
 
-    }).error(err=>{
+    }).catch(err=>{
       console.log(err)
     })
 }
@@ -763,10 +763,10 @@ function remove_shared(contactId, user_id){
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + "/remove_shared",
   })
-    .done(function (data) {
+    .then(function (data) {
       console.log(data)
       jQuery("#shared-with-list ." + user_id).remove()
-    }).error(err=>{
+    }).catch(err=>{
       console.log(err)
     })
 }

@@ -149,7 +149,7 @@ let searchAnyPieceOfWord = function(d) {
     let fieldId = $(this).data('field')
     let itemId = $(this).data('id')
 
-    remove_item_from_field(groupId, fieldId, itemId).done(()=>{
+    remove_item_from_field(groupId, fieldId, itemId).then(()=>{
       $(`.${fieldId}-list .${itemId}`).remove()
 
       //add the item back to the locations list
@@ -159,7 +159,7 @@ let searchAnyPieceOfWord = function(d) {
       if (fieldId === "members"){
         members.add([{ID:itemId, name: $(this).data('name')}])
       }
-    }).error(err=>{
+    }).catch(err=>{
       console.log(err)
     })
   })
@@ -463,7 +463,7 @@ let searchAnyPieceOfWord = function(d) {
     .on('click', function () {
       commentButton.toggleClass('loading')
       let input = $("#comment-input")
-      post_comment(groupId, input.val()).success(commentData=>{
+      post_comment(groupId, input.val()).then(commentData=>{
         commentButton.toggleClass('loading')
         input.val('')
         commentData.comment.date = new Date(commentData.comment.comment_date_gmt + "Z")
@@ -601,11 +601,11 @@ let searchAnyPieceOfWord = function(d) {
     let fieldId = $(this).attr('id')
     $(this).css('opacity', ".5");
     let field = group[fieldId] === "1" ? "0" : "1"
-    save_field_api(groupId, {[fieldId]: field}).success(groupData=>{
+    save_field_api(groupId, {[fieldId]: field}).then(groupData=>{
       group = groupData
       fillOutChurchHealthMetrics()
       $(this).css('opacity', "1");
-    }).error(err=>{
+    }).catch(err=>{
       alert(err.responseText)
     })
   })

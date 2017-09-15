@@ -13,7 +13,7 @@ function site_scripts() {
 
     // comment out the next two lines to load the local copy of jQuery
     wp_deregister_script( 'jquery' );
-    wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js', false, '1.12.4' );
+    wp_register_script( 'jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js', false, '1.12.4' );
     wp_enqueue_script( 'jquery' );
 
     // comment out the next two lines to load the local copy of jQuery
