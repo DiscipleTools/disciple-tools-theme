@@ -7,73 +7,7 @@ jQuery.ajaxSetup({
 })
 
 jQuery(document).ready(function($) {
-function save_field_api(groupId, post_data){
-  return jQuery.ajax({
-    type:"POST",
-    data:JSON.stringify(post_data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/group/'+ groupId,
-  })
-}
 
-function get_group(groupId){
-  return jQuery.ajax({
-    type:"GET",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/group/'+ groupId
-  })
-}
-
-function add_item_to_field(groupId, post_data) {
-  return jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify(post_data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/group/' + groupId + '/details',
-  })
-}
-
-function remove_item_from_field(groupId, fieldKey, valueId) {
-  let data = {key: fieldKey, value: valueId}
-  return jQuery.ajax({
-    type: "DELETE",
-    data: JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/group/' + groupId + '/details',
-  })
-}
-
-function post_comment(groupId, comment) {
-  return jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify({comment}),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/group/' + groupId + '/comment',
-  })
-}
-
-function get_comment(groupId) {
-  return jQuery.ajax({
-    type: "GET",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/group/' + groupId + '/comments',
-  })
-}
-
-function get_activity(groupId) {
-  return jQuery.ajax({
-    type: "GET",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/group/' + groupId + '/activity',
-  })
-}
 
 $( document ).ajaxComplete(function(event, xhr, settings) {
   if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
@@ -86,7 +20,7 @@ $( document ).ajaxComplete(function(event, xhr, settings) {
  */
 
 function add_typeahead_item(groupId, fieldId, val, name) {
-  add_item_to_field(groupId, { [fieldId]: val }).done(function (addedItem){
+  API.add_item_to_field( 'group', groupId, { [fieldId]: val }).then(function (addedItem){
     jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
     <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
     <button class="details-remove-button details-edit"
@@ -149,7 +83,7 @@ let searchAnyPieceOfWord = function(d) {
     let fieldId = $(this).data('field')
     let itemId = $(this).data('id')
 
-    remove_item_from_field(groupId, fieldId, itemId).then(()=>{
+    API.remove_item_from_field('group', groupId, fieldId, itemId).then(()=>{
       $(`.${fieldId}-list .${itemId}`).remove()
 
       //add the item back to the locations list
@@ -181,7 +115,7 @@ let searchAnyPieceOfWord = function(d) {
   endDatePicker.datepicker({
     onSelect: function (date) {
       console.log(date)
-      save_field_api(groupId, {end_date:date}).done(function () {
+      API.save_field_api('group', groupId, {end_date:date}).then(function () {
         endDateList.text(date)
       })
     },
@@ -204,7 +138,7 @@ let searchAnyPieceOfWord = function(d) {
   startDatePicker.datepicker({
     onSelect: function (date) {
       console.log(date)
-      save_field_api(groupId, {start_date:date}).done(function () {
+      API.save_field_api('group', groupId, {start_date:date}).then(function () {
         startDateList.text(date)
       })
     },
@@ -264,7 +198,7 @@ let searchAnyPieceOfWord = function(d) {
   })
   .bind('typeahead:select', function (ev, sug) {
     console.log(sug)
-    save_field_api(groupId, {assigned_to: 'user-' + sug.ID}).done(function () {
+    API.save_field_api('group', groupId, {assigned_to: 'user-' + sug.ID}).then(function () {
       assigned_to_typeahead.typeahead('val', '')
       jQuery('.current-assigned').text(sug.display_name)
     })
@@ -342,7 +276,7 @@ let searchAnyPieceOfWord = function(d) {
   //for a new address field that has not been saved yet
   $(document).on('change', '#new-address', function (val) {
     let input = $('#new-address')
-    add_item_to_field(groupId, {"new-address":input.val()}).done(function (data) {
+    API.add_item_to_field( 'group', groupId, {"new-address":input.val()}).then(function (data) {
       if (data != groupId){
         //change the it to the created field
         input.attr('id', data)
@@ -354,7 +288,7 @@ let searchAnyPieceOfWord = function(d) {
   $(document).on('change', '.address-list textarea', function(){
     let id = $(this).attr('id')
     if (id && id !== "new-address"){
-      save_field_api(groupId, {[id]: $(this).val()}).done(()=>{
+      API.save_field_api('group', groupId, {[id]: $(this).val()}).then(()=>{
         $(`.address.details-list .${id}`).text($(this).val())
       })
 
@@ -424,7 +358,7 @@ let searchAnyPieceOfWord = function(d) {
    * Get the group fields from the api
    */
 
-  get_group(groupId).done(function (groupData) {
+  API.get_post( 'group', groupId).then(function (groupData) {
     console.log(groupData)
     group = groupData
     if (groupData.end_date){
@@ -450,7 +384,7 @@ let searchAnyPieceOfWord = function(d) {
   let activity = []
 
   function refreshActivity() {
-    get_activity(groupId).done(activityData=>{
+    API.get_activity('group', groupId).then(activityData=>{
       activityData.forEach(d=>{
         d.date = new Date(d.hist_time*1000)
       })
@@ -463,7 +397,7 @@ let searchAnyPieceOfWord = function(d) {
     .on('click', function () {
       commentButton.toggleClass('loading')
       let input = $("#comment-input")
-      post_comment(groupId, input.val()).then(commentData=>{
+      API.post_comment('group', groupId, input.val()).then(commentData=>{
         commentButton.toggleClass('loading')
         input.val('')
         commentData.comment.date = new Date(commentData.comment.comment_date_gmt + "Z")
@@ -473,9 +407,9 @@ let searchAnyPieceOfWord = function(d) {
     })
 
   $.when(
-    get_comment(groupId),
-    get_activity(groupId)
-  ).done(function(commentData, activityData){
+    API.get_comments('group', groupId),
+    API.get_activity('group', groupId)
+  ).then(function(commentData, activityData){
     commentData[0].forEach(comment=>{
       comment.date = new Date(comment.comment_date_gmt + "Z")
     })
@@ -601,12 +535,13 @@ let searchAnyPieceOfWord = function(d) {
     let fieldId = $(this).attr('id')
     $(this).css('opacity', ".5");
     let field = group[fieldId] === "1" ? "0" : "1"
-    save_field_api(groupId, {[fieldId]: field}).then(groupData=>{
-      group = groupData
-      fillOutChurchHealthMetrics()
-      $(this).css('opacity', "1");
-    }).catch(err=>{
-      alert(err.responseText)
+    API.save_field_api('group', groupId, {[fieldId]: field})
+      .then(groupData=>{
+        group = groupData
+        fillOutChurchHealthMetrics()
+        $(this).css('opacity', "1");
+      }).catch(err=>{
+        console.log(err)
     })
   })
 })

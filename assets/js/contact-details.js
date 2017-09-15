@@ -19,25 +19,15 @@ function save_seeker_milestones(contactId, fieldKey, fieldValue){
     fieldValue = "yes"
   }
   data[fieldKey] = fieldValue
-  jQuery.ajax({
-    type:"POST",
-    data:JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/'+contactId,
-
-    success: function(data) {
-      field.removeClass("submitting-select-button selected-select-button")
-      field.addClass( fieldValue === "no" ? "empty-select-button" : "selected-select-button")
-      get_activity(contactId)
-    },
-    error: function(err) {
+  API.save_field_api('contact', contactId, data).then(()=>{
+    field.removeClass("submitting-select-button selected-select-button")
+    field.addClass( fieldValue === "no" ? "empty-select-button" : "selected-select-button")
+  }).catch(err=>{
       console.log("error")
       console.log(err)
       jQuery("#errors").text(err.responseText)
       field.removeClass("submitting-select-button selected-select-button")
       field.addClass( fieldValue === "yes" ? "empty-select-button" : "selected-select-button")
-    },
   })
 }
 function save_quick_action(contactId, fieldKey){
@@ -61,7 +51,6 @@ function save_quick_action(contactId, fieldKey){
           }
         }
       }
-      get_activity(contactId)
     },
     error: function(err) {
       console.log("error")
@@ -83,25 +72,17 @@ function post_comment(contactId) {
   console.log(comment);
   var data = {}
   data["comment"] = comment
-  jQuery.ajax({
-    type:"POST",
-    data:JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId +'/comment',
-    success: function(data) {
-      console.log(`added comment ${comment}`)
-      jQuery("#comment-input").val("")
-      jQuery("#add-comment-button").toggleClass('loading')
-      data.comment.date = new Date(data.comment.comment_date)
-      comments.push(data.comment)
-      display_activity_comment()
-    },
-    error: function(err) {
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    },
+  API.post_comment('contact', contactId, comment).then(data=>{
+    console.log(`added comment ${comment}`)
+    jQuery("#comment-input").val("")
+    jQuery("#add-comment-button").toggleClass('loading')
+    data.comment.date = new Date(data.comment.comment_date)
+    comments.push(data.comment)
+    display_activity_comment()
+  }).catch(err=>{
+    console.log("error")
+    console.log(err)
+    jQuery("#errors").append(err.responseText)
   })
 }
 
@@ -125,47 +106,34 @@ let comments = []
 let activity = []
 let contact = {}
 jQuery(document).ready(function($) {
-  let id = $("#contact-id").text()
 
 
-  jQuery.when(
-    jQuery.ajax({
-      type:"GET",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ id +'/comments',
-      success: function(data) {
-        data.forEach(comment=>{
-          comment.date = new Date(comment.comment_date)
-        })
-        comments = data
-      },
-      error: function(err) {
-        console.log("error")
-        console.log(err)
-        jQuery("#errors").append(err.responseText)
-      },
-    }),
-    jQuery.ajax({
-      type: "GET",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiSettings.root + 'dt-hooks/v1/contact/' + id + "/activity",
-    })
-      .done(function (data) {
-        data.forEach(d=>{
+  let contactId = $("#contact-id").text()
+  $( document ).ajaxComplete(function(event, xhr, settings) {
+    if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
+      API.get_activity('contact', contactId).then(activityData=>{
+        activityData.forEach(d=>{
           d.date = new Date(d.hist_time*1000)
         })
-        activity = data
+        activity = activityData
+        display_activity_comment()
       })
-      .fail(function (err) {
-        console.log("error")
-        console.log(err)
-        jQuery("#errors").append(err.responseText)
-      })
+    }
+  });
 
-  ).then(function () {
-    console.log("done")
+
+  $.when(
+    API.get_comments('contact', contactId),
+    API.get_activity('contact', contactId)
+  ).then(function(commentData, activityData) {
+    commentData[0].forEach(comment => {
+      comment.date = new Date(comment.comment_date_gmt + "Z")
+    })
+    comments = commentData[0]
+    activityData[0].forEach(d => {
+      d.date = new Date(d.hist_time * 1000)
+    })
+    activity = activityData[0]
     display_activity_comment("all")
   })
 
@@ -226,7 +194,7 @@ jQuery(document).ready(function($) {
     .bind('typeahead:select', function (ev, sug) {
       groupsTypeahead.typeahead('val', '')
       groupsTypeahead.blur()
-      add_typeahead_item(id, 'groups', sug.ID)
+      add_typeahead_item(contactId, 'groups', sug.ID)
     })
 
   /**
@@ -271,7 +239,7 @@ jQuery(document).ready(function($) {
       .bind('typeahead:select', function (ev, sug) {
         typeahead.typeahead('val', '')
         typeahead.blur()
-        add_typeahead_item(id, field_id, sug.ID)
+        add_typeahead_item(contactId, field_id, sug.ID)
       })
   })
 
@@ -314,9 +282,9 @@ jQuery(document).ready(function($) {
     display: 'display_name'
   })
   .bind('typeahead:select', function (ev, sug) {
-    save_field_api(id, {assigned_to: 'user-' + sug.ID}, function () {
+    API.save_field_api('contact', contactId, {assigned_to: 'user-' + sug.ID}).then(()=> {
       assigned_to_typeahead.typeahead('val', '')
-      jQuery('.current-assigned').text(sug.display_name)
+      $('.current-assigned').text(sug.display_name)
     })
   })
 
@@ -362,7 +330,7 @@ jQuery(document).ready(function($) {
   .bind('typeahead:select', function (ev, sug) {
     locationsTypeahead.typeahead('val', '')
     locationsTypeahead.blur()
-    add_typeahead_item(id, 'locations', sug.ID)
+    add_typeahead_item(contactId, 'locations', sug.ID)
   })
 
   /**
@@ -387,12 +355,13 @@ jQuery(document).ready(function($) {
 
 
   jQuery('#add-comment-button').on('click', function () {
-    post_comment(id)
+    post_comment(contactId)
   })
 
 })
 
-function get_activity(id){
+function refreshActivity(id){
+  API.get_activity('contact', contactId)
   return jQuery.ajax({
     type: "GET",
     contentType: "application/json; charset=utf-8",
@@ -483,106 +452,27 @@ function edit_fields() {
   jQuery(".edit-fields").toggle()
 }
 
+function handelAjaxError(err) {
+    console.trace("error")
+    console.log(err)
+    jQuery("#errors").append(err.responseText)
+
+}
+
 function save_field(contactId, fieldKey, inputId){
   let field = jQuery("#"+ (inputId || fieldKey))
   let val = field.val()
   let data = {}
   data[fieldKey] = val
-  save_field_api(contactId, data, function () {
-  })
-}
-
-function save_field_api(contactId, post_data, callback){
-  jQuery.ajax({
-    type:"POST",
-    data:JSON.stringify(post_data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId,
-    success: function(data) {
-      console.log("updated " + JSON.stringify(post_data))
-      callback()
-      get_activity(contactId)
-    },
-    error: function(err) {
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    },
-  })
-}
-
-function add_contact_detail(contactId, fieldKey, value, callback){
-  let data = {}
-  data[fieldKey] = value
-  jQuery.ajax({
-    type:"POST",
-    data:JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId + '/details',
-    success: function(data) {
-      callback(data)
-      get_activity(contactId)
-    },
-    error: function(err) {
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    },
-  })
-}
-
-function update_contact_method_detail(contactId, fieldKey, values, callback) {
-  let data = {key: fieldKey, values: values}
-  jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + '/details_update',
-    success: function (data) {
-      console.log("updated " + fieldKey + " to: " + JSON.stringify(values))
-      callback(data)
-      get_activity(contactId)
-    },
-    error: function (err) {
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    },
-  })
-}
-
-
-function remove_contact_detail(contactId, fieldKey, valueId, callback) {
-  let data = {key: fieldKey, value: valueId}
-  jQuery.ajax({
-    type: "DELETE",
-    data: JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + '/details',
-    success: function (data) {
-      console.log(data)
-      if (data!==false){
-        console.log("delete " + fieldKey + " at: " + JSON.stringify(valueId))
-        callback(data)
-      }
-      get_activity(contactId)
-    },
-    error: function (err) {
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    },
+  API.save_field_api('contact', contactId, data).catch(err=>{
+    handelAjaxError(err)
   })
 }
 
 
 function new_contact_input_added(contactId, inputId){
   let input = jQuery("#"+inputId)
-  add_contact_detail(contactId, inputId, input.val(), function (data) {
+  API.add_item_to_field('contact', contactId, {[inputId]: input.val()}).then(data=>{
     if (data != contactId && inputId.indexOf("new-")>-1){
       input.removeAttr('onchange');
       input.attr('id', data)
@@ -601,14 +491,14 @@ function add_contact_input(contactId, inputId, listId){
 }
 
 function verify_contact_method(contactId, fieldId) {
-  update_contact_method_detail(contactId, fieldId, {"verified":true}, function (){
+  API.update_contact_method_detail('contacts', contactId, fieldId, {"verified":true}).then(()=>{
     jQuery(`#${fieldId}-verified`).show()
     jQuery(`#${fieldId}-verify`).hide()
   })
 }
 
 function invalidate_contact_method(contactId, fieldId) {
-  update_contact_method_detail(contactId, fieldId, {"invalid":true}, function (){
+  API.update_contact_method_detail('contacts', contactId, fieldId, {"invalid":true}).then(()=>{
     jQuery(`#${fieldId}-invalid`).show()
     jQuery(`#${fieldId}-invalidate`).hide()
   })
@@ -616,7 +506,7 @@ function invalidate_contact_method(contactId, fieldId) {
 
 
 function remove_item(contactId, fieldId, itemId){
-  remove_contact_detail(contactId, fieldId, itemId, function () {
+  API.remove_item_from_field('contact', contactId, fieldId, itemId).then(()=>{
     jQuery(`.${fieldId}-list .${itemId}`).remove()
   })
 }
@@ -626,22 +516,14 @@ function close_contact(contactId){
   jQuery("#confirm-close").toggleClass('loading')
   let reasonClosed = jQuery('#reason-closed-options')
   let data = {overall_status:"closed", "reason_closed":reasonClosed.val()}
-  jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId,
+  API.save_field_api('contact', contactId, data).then(()=>{
+    let closedLabel = wpApiSettings.contacts_custom_fields_settings.overall_status.default.closed;
+    jQuery('#overall-status').text(closedLabel)
+    jQuery("#confirm-close").toggleClass('loading')
+    jQuery('#close-contact-modal').foundation('close')
+    jQuery('#reason').text(`(${reasonClosed.find('option:selected').text()})`)
+    jQuery('#return-active').show()
   })
-    .done(function (data) {
-      let closedLabel = wpApiSettings.contacts_custom_fields_settings.overall_status.default.closed;
-      jQuery('#overall-status').text(closedLabel)
-      jQuery("#confirm-close").toggleClass('loading')
-      jQuery('#close-contact-modal').foundation('close')
-      jQuery('#reason').text(`(${reasonClosed.find('option:selected').text()})`)
-      get_activity(contactId)
-      jQuery('#return-active').show()
-    })
 }
 
 let confirmPauseButton = jQuery("#confirm-pause")
@@ -649,42 +531,25 @@ function pause_contact(contactId){
   confirmPauseButton.toggleClass('loading')
   let reasonPaused = jQuery('#reason-paused-options')
   let data = {overall_status:"paused", "reason_paused":reasonPaused.val()}
-  jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId,
+  API.save_field_api('contact', contactId, data).then(()=>{
+    let pausedLabel = wpApiSettings.contacts_custom_fields_settings.overall_status.default.paused;
+    jQuery('#overall-status').text(pausedLabel)
+    jQuery('#reason').text(`(${reasonPaused.find('option:selected').text()})`)
+    jQuery('#pause-contact-modal').foundation('close')
+    jQuery('#return-active').show()
+    confirmPauseButton.toggleClass('loading')
   })
-    .done(function (data) {
-      let pausedLabel = wpApiSettings.contacts_custom_fields_settings.overall_status.default.paused;
-      jQuery('#overall-status').text(pausedLabel)
-      jQuery('#reason').text(`(${reasonPaused.find('option:selected').text()})`)
-      jQuery('#pause-contact-modal').foundation('close')
-      jQuery('#return-active').show()
-      get_activity(contactId)
-      confirmPauseButton.toggleClass('loading')
-    })
 }
 
 
 function make_active(contactId) {
   let data = {overall_status:"active"}
-
-  jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId,
+  API.save_field_api('contact', contactId, data).then(()=>{
+    let activeLabel = wpApiSettings.contacts_custom_fields_settings.overall_status.default.active;
+    jQuery('#return-active').toggle()
+    jQuery('#overall-status').text(activeLabel || "Active")
+    jQuery('#reason').text(``)
   })
-    .done(function (data) {
-      let activeLabel = wpApiSettings.contacts_custom_fields_settings.overall_status.default.active;
-      jQuery('#return-active').toggle()
-      jQuery('#overall-status').text(activeLabel || "Active")
-      jQuery('#reason').text(``)
-      get_activity(contactId)
-    })
 }
 
 /***
@@ -696,7 +561,7 @@ function edit_connections() {
 }
 
 function add_typeahead_item(contactId, fieldId, val) {
-  add_contact_detail(contactId, fieldId, val, function (addedItem){
+  API.add_item_to_field('contact', contactId, {[fieldId]: val}).then(addedItem=>{
     jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
     <a href="${addedItem.permalink}">${addedItem.post_title}</a>
     <button class="details-remove-button connections-edit" onclick="remove_item(${contactId}, '${fieldId}', ${addedItem.ID})">Remove</button>
@@ -715,14 +580,13 @@ function details_accept_contact(contactId, accept){
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + "/accept",
-  })
-    .then(function (data) {
-      console.log(data)
-      jQuery('#accept-contact').hide()
-      if (data['overall_status']){
-        jQuery('#overall-status').text(data['overall_status'])
-      }
-    }).catch(err=>{
+  }).then(function (data) {
+    console.log(data)
+    jQuery('#accept-contact').hide()
+    if (data['overall_status']){
+      jQuery('#overall-status').text(data['overall_status'])
+    }
+  }).catch(err=>{
     console.log(err)
   })
 }
@@ -732,41 +596,26 @@ function add_shared(contactId, selectId){
   let select = jQuery(`#${selectId}`)
   let name = jQuery(`#${selectId} option:selected`)
   console.log(select.val())
-  jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify({user_id:select.val()}),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + "/add_shared",
+  API.add_shared('contact', contactId, select.val()).then(function (data) {
+    console.log(data)
+    jQuery(`#shared-with-list`).append(
+      '<li class="'+select.val()+'">' +
+      name.text()+
+      '<button class="details-remove-button" onclick="remove_shared(51,2)">' +
+      'Unshare' +
+      '</button></li>'
+    );
+  }).catch(err=>{
+    console.log(err)
   })
-    .then(function (data) {
-      console.log(data)
-      jQuery(`#shared-with-list`).append(
-        '<li class="'+select.val()+'">' +
-        name.text()+
-        '<button class="details-remove-button" onclick="remove_shared(51,2)">' +
-        'Unshare' +
-        '</button></li>'
-      );
-
-    }).catch(err=>{
-      console.log(err)
-    })
 }
 
 
 function remove_shared(contactId, user_id){
-  jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify({user_id:user_id}),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + "/remove_shared",
+  API.remove_shared('contact', contactId, user_id).then(function (data) {
+    console.log(data)
+    jQuery("#shared-with-list ." + user_id).remove()
+  }).catch(err=>{
+    console.log(err)
   })
-    .then(function (data) {
-      console.log(data)
-      jQuery("#shared-with-list ." + user_id).remove()
-    }).catch(err=>{
-      console.log(err)
-    })
 }
