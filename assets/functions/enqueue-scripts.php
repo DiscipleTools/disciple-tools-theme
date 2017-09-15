@@ -74,7 +74,22 @@ function site_scripts() {
             )
         );
     }
-
+    
+    /**
+     * Enqueue for single utility pages
+     */
+    $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
+    if ( $url_path === 'notifications' ) {
+        wp_enqueue_script( 'dt-notifications', get_template_directory_uri() . '/assets/js/notifications.js', array( 'jquery', 'lodash', 'typeahead' ) );
+        wp_localize_script(
+            'dt-notifications', 'wpApiSettings', array(
+                'root' => esc_url_raw( rest_url() ),
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'current_user_login' => wp_get_current_user()->user_login,
+                'current_user_id' => get_current_user_id(),
+            )
+        );
+    }
 
     if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )) {
         dt_theme_enqueue_script( 'data-tables', 'vendor/DataTables/datatables.min.js',  array( 'jquery' ) );
