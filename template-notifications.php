@@ -20,11 +20,7 @@ dt_print_breadcrumbs(
         
         <div id="inner-content" class="grid-x grid-margin-x">
     
-            <div class="large-2 medium-12 small-12 cell ">
-        
-            
-    
-            </div>
+            <div class="large-2 medium-12 small-12 cell "></div>
     
             <div class="large-8 medium-12 small-12 cell ">
         
@@ -97,11 +93,7 @@ dt_print_breadcrumbs(
     
             </div>
     
-            <div class="large-2 medium-12 small-12 cell ">
-        
-            
-    
-            </div>
+            <div class="large-2 medium-12 small-12 cell "></div>
         
         </div> <!-- end #inner-content -->
     
