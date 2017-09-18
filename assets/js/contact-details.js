@@ -601,7 +601,7 @@ function add_shared(contactId, selectId){
     jQuery(`#shared-with-list`).append(
       '<li class="'+select.val()+'">' +
       name.text()+
-      '<button class="details-remove-button" onclick="remove_shared(51,2)">' +
+      '<button class="details-remove-button" onclick="remove_shared(${contactId},${select.val()})">' +
       'Unshare' +
       '</button></li>'
     );

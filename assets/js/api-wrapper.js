@@ -79,7 +79,7 @@ let API = {
       data: JSON.stringify({user_id:userId}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/add_shared`,
+      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/add-shared`,
     })
   },
   remove_shared(type, postId, userId){
@@ -88,7 +88,7 @@ let API = {
       data: JSON.stringify({user_id:userId}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/remove_shared`,
+      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/remove-shared`,
     })
   }
 

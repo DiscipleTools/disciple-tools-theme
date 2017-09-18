@@ -5,7 +5,7 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 if( !Disciple_Tools_Contacts::can_view( 'contacts',  get_the_ID() )){
     return wp_redirect( "not-found" );
 }
-$shared_with = Disciple_Tools_Contacts::get_shared_with( get_the_id() );
+$shared_with = Disciple_Tools_Contacts::get_shared_with_on_contact( get_the_ID() );
 $users = Disciple_Tools_Contacts::get_assignable_users( get_the_ID() );
 get_header(); ?>
 
@@ -223,11 +223,10 @@ dt_print_breadcrumbs(
 
     <ul id="shared-with-list">
         <?php
-        $shared_with = dt_get_contacts_shared_with( get_the_ID() );
-        foreach( $shared_with as $contact ) { ?>
-            <li class="<?php echo $contact['user_id'] ?>"> <?php echo $contact['display_name'] ?>
+        foreach( $shared_with as $user) { ?>
+            <li class="<?php echo $user['user_id'] ?>"> <?php echo $user['display_name'] ?>
                 <button class="details-remove-button"
-                        onclick="remove_shared(<?php echo get_the_ID()?>,  <?php echo $contact['user_id'] ?>)">
+                        onclick="remove_shared(<?php echo get_the_ID()?>,  <?php echo $user['user_id'] ?>)">
                     Unshare
                 </button>
             </li>

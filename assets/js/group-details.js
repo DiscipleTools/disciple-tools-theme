@@ -83,19 +83,21 @@ let searchAnyPieceOfWord = function(d) {
     let fieldId = $(this).data('field')
     let itemId = $(this).data('id')
 
-    API.remove_item_from_field('group', groupId, fieldId, itemId).then(()=>{
-      $(`.${fieldId}-list .${itemId}`).remove()
+    if (fieldId && itemId){
+      API.remove_item_from_field('group', groupId, fieldId, itemId).then(()=>{
+        $(`.${fieldId}-list .${itemId}`).remove()
 
-      //add the item back to the locations list
-      if (fieldId === 'locations'){
-        locations.add([{ID:itemId, name: $(this).data('name')}])
-      }
-      if (fieldId === "members"){
-        members.add([{ID:itemId, name: $(this).data('name')}])
-      }
-    }).catch(err=>{
-      console.log(err)
-    })
+        //add the item back to the locations list
+        if (fieldId === 'locations'){
+          locations.add([{ID:itemId, name: $(this).data('name')}])
+        }
+        if (fieldId === "members"){
+          members.add([{ID:itemId, name: $(this).data('name')}])
+        }
+      }).catch(err=>{
+        console.log(err)
+      })
+    }
   })
 
 
@@ -544,6 +546,36 @@ let searchAnyPieceOfWord = function(d) {
         console.log(err)
     })
   })
+
+  /**
+   * sharing
+   */
+  $('#add-shared-button').on('click', function () {
+    let select = jQuery(`#share-with`)
+    let name = jQuery(`#share-with option:selected`)
+    console.log(select.val())
+    API.add_shared('group', groupId, select.val()).then(function (data) {
+      console.log(data)
+      jQuery(`#shared-with-list`).append(
+        '<li class="'+select.val()+'">' +
+        name.text()+
+        '<button class="details-remove-button share" data-id="'+select.val()+'">' +
+        'Unshare' +
+        '</button></li>'
+      );
+    }).catch(err=>{
+      console.log(err)
+    })
+  })
+
+
+  $(document).on('click', '.details-remove-button.share', function () {
+    let userId = $(this).data('id')
+    API.remove_shared('group', groupId, userId).then(()=>{
+      $("#shared-with-list ." + userId).remove()
+    })
+  })
+
 })
 
 
