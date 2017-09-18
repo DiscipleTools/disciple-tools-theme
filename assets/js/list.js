@@ -283,6 +283,10 @@
     $(".js-list-filter-title").on("click", function() {
       const $title = $(this);
       $title.parents(".js-list-filter").toggleClass("filter--closed");
+    }).on("keydown", function(event) {
+      if (event.keyCode === 13) {
+        $(this).trigger("click");
+      }
     });
     $(".js-list-view").on("change", function() {
       clearFilterCheckboxes();

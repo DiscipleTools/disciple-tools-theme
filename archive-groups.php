@@ -21,11 +21,11 @@ declare(strict_types=1);
                 <div class="js-filters-modal-content">
                     <h5><?php _e( "Filters" ); ?></h5>
                     <div class="filter js-list-filter" data-filter="group_status">
-                        <div class="filter__title js-list-filter-title"><?php _e( "Group status" ); ?></div>
+                        <div class="filter__title js-list-filter-title" tabindex="0"><?php _e( "Group status" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>
                     </div>
                     <div class="filter filter--closed js-list-filter" data-filter="locations">
-                        <div class="filter__title js-list-filter-title"><?php _e( "Location" ); ?></div>
+                        <div class="filter__title js-list-filter-title" tabindex="0"><?php _e( "Location" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>
                     </div>
                 </div>

@@ -56,23 +56,23 @@ declare(strict_types=1);
 
                     <h5><?php _e( "Filters" ); ?></h5>
                     <div class="filter js-list-filter" data-filter="assigned_login">
-                        <div class="filter__title js-list-filter-title"><?php _e( "Assigned to" ); ?></div>
+                        <div class="filter__title js-list-filter-title" tabindex="0"><?php _e( "Assigned to" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>
                     </div>
                     <div class="filter filter--closed js-list-filter" data-filter="overall_status">
-                        <div class="filter__title js-list-filter-title"><?php _e( "Status" ); ?></div>
+                        <div class="filter__title js-list-filter-title" tabindex="0"><?php _e( "Status" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>
                     </div>
                     <div class="filter filter--closed js-list-filter" data-filter="locations">
-                        <div class="filter__title js-list-filter-title"><?php _e( "Locations" ); ?></div>
+                        <div class="filter__title js-list-filter-title" tabindex="0"><?php _e( "Locations" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>
                     </div>
                     <div class="filter filter--closed js-list-filter" data-filter="seeker_path">
-                        <div class="filter__title js-list-filter-title"><?php _e( "Seeker path" ); ?></div>
+                        <div class="filter__title js-list-filter-title" tabindex="0"><?php _e( "Seeker path" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>
                     </div>
                     <div class="filter filter--closed js-list-filter" data-filter="requires_update">
-                        <div class="filter__title js-list-filter-title"><?php _e( "Update needed" ); ?></div>
+                        <div class="filter__title js-list-filter-title" tabindex="0"><?php _e( "Update needed" ); ?></div>
                         <p><?php _e( "Loading..." ); ?></p>
                     </div>
                 </div>
