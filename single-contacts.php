@@ -2,7 +2,7 @@
 declare(strict_types=1);
 $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
 $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
-if( !Disciple_Tools_Contacts::can_view_contact( get_the_ID() )){
+if( !Disciple_Tools_Contacts::can_view( 'contacts',  get_the_ID() )){
     return wp_redirect( "not-found" );
 }
 $shared_with = Disciple_Tools_Contacts::get_shared_with( get_the_id() );

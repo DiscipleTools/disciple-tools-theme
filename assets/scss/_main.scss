@@ -846,11 +846,11 @@ CONTACTS
     cursor: pointer;
 }
 
-.filter input {
+.filter input, .list-views input {
     margin: 0 0.2rem 0 0;
 }
 
-.filter label:hover {
+.filter label:hover, .list-views label:hover {
     color: #2196f3;
 }
 

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
-if( !Disciple_Tools_Contacts::can_view_contact( get_the_ID() )){
+if( !Disciple_Tools_Contacts::can_view( 'groups', get_the_ID() )){
     return wp_redirect( "not-found" );
 }
 $shared_with = Disciple_Tools_Contacts::get_shared_with( get_the_id() );
