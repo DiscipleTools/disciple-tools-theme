@@ -34,7 +34,7 @@ declare(strict_types=1);
                 </button>
             </div>
 
-            <main id="main" class="large-6 cell padding-bottom" role="main">
+            <main id="main" class="large-9 cell padding-bottom" role="main">
 
                 <?php get_template_part( 'parts/content', 'groups' ); ?>
 
