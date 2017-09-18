@@ -37,7 +37,7 @@
                 // Find connected pages (for all posts)
                 p2p_type( 'contacts_to_locations' )->each_connected( $wp_query, array(), 'contacts' );
                 p2p_type( 'groups_to_locations' )->each_connected( $wp_query, array(), 'groups' );
-                p2p_type( 'assets_to_locations' )->each_connected( $wp_query, array(), 'assets' );
+                p2p_type( 'assetmapping_to_locations' )->each_connected( $wp_query, array(), 'assetmapping' );
                 ?>
 
                 <section class="bordered-box">
@@ -85,7 +85,7 @@
 
                         <h3>Assets</h3>
 
-                        <?php foreach ( $post->assets as $post ) : setup_postdata( $post ); ?>
+                        <?php foreach ( $post->assetmapping as $post ) : setup_postdata( $post ); ?>
 
                             <li><a href="<?php the_permalink(); ?>"><?php the_title_attribute(); ?></a></li>
 
