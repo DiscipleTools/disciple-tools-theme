@@ -4,11 +4,11 @@ $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
 if( !Disciple_Tools_Contacts::can_view( 'groups', get_the_ID() )){
     return wp_redirect( "not-found" );
 }
-$shared_with = Disciple_Tools_Contacts::get_shared_with( get_the_id() );
-$users = Disciple_Tools_Contacts::get_assignable_users( get_the_ID() );
-get_header();
+$shared_with = Disciple_Tools_Contacts::get_shared_with_on_contact( get_the_id() );
+$users = Disciple_Tools_Users::get_assignable_users_compact( );
+get_header();?>
 
-
+<?php
 dt_print_breadcrumbs(
     [
         [ home_url( '/' ), __( "Dashboard" ) ],
@@ -16,16 +16,14 @@ dt_print_breadcrumbs(
     ],
     get_the_title(),
     true
-);
+); ?>
 
-?>
-
-<span id="group-id" style="display: none"><?php echo get_the_ID()?></span>
 <div id="errors"> </div>
 
 <div id="content">
 
     <div id="inner-content" class="grid-x grid-margin-x">
+        <span id="group-id" style="display: none"><?php echo get_the_ID()?></span>
 
         <main id="main" class="large-7 medium-12 small-12 cell grid-x grid-margin-x" role="main" style="padding:0">
 
@@ -165,11 +163,10 @@ dt_print_breadcrumbs(
 
     <ul id="shared-with-list">
         <?php
-        $shared_with = dt_get_contacts_shared_with( get_the_ID() );
-        foreach( $shared_with as $contact ) { ?>
-            <li class="<?php echo $contact['user_id'] ?>"> <?php echo $contact['display_name'] ?>
-                <button class="details-remove-button"
-                        onclick="remove_shared(<?php echo get_the_ID()?>,  <?php echo $contact['user_id'] ?>)">
+        foreach( $shared_with as $user) { ?>
+            <li class="<?php echo $user['user_id'] ?>"> <?php echo $user['display_name'] ?>
+                <button class="details-remove-button share"
+                        data-id="<?php echo $user['user_id'] ?>">
                     Unshare
                 </button>
             </li>
@@ -177,12 +174,12 @@ dt_print_breadcrumbs(
     </ul>
 
     <p>
-        <label>Share this contact with the following user:
+        <label>Share this group with the following user:
             <select class="share-with-select" id="share-with">
                 <option value="0"></option>
                 <?php
                 foreach( $users as $user ){
-                    echo '<option value="' . $user->ID. '">' . $user->display_name . '</option>';
+                    echo '<option value="' . $user['ID']. '">' . $user['name'] . '</option>';
                 }
                 ?>
             </select>
@@ -195,8 +192,7 @@ dt_print_breadcrumbs(
             Cancel
         </button>
         <button class="button" type="button"
-                id="confirm-pause"
-                onclick="add_shared(<?php echo get_the_ID();?>, 'share-with')">
+                id="add-shared-button">
             Share
         </button>
         <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -204,6 +200,8 @@ dt_print_breadcrumbs(
         </button>
     </div>
 </div>
+
+
 
 
 

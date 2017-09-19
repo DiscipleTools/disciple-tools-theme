@@ -1,129 +1,57 @@
 /* global jQuery:false, wpApiSettings:false */
 
-jQuery.ajaxSetup({
-  beforeSend: function(xhr) {
-    xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-  },
-})
-
 jQuery(document).ready(function($) {
-function save_field_api(groupId, post_data){
-  return jQuery.ajax({
-    type:"POST",
-    data:JSON.stringify(post_data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/group/'+ groupId,
-  })
-}
 
-function get_group(groupId){
-  return jQuery.ajax({
-    type:"GET",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/group/'+ groupId
-  })
-}
 
-function add_item_to_field(groupId, post_data) {
-  return jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify(post_data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/group/' + groupId + '/details',
-  })
-}
+  $( document ).ajaxComplete(function(event, xhr, settings) {
+    if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
+      refreshActivity()
+    }
+  });
 
-function remove_item_from_field(groupId, fieldKey, valueId) {
-  let data = {key: fieldKey, value: valueId}
-  return jQuery.ajax({
-    type: "DELETE",
-    data: JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/group/' + groupId + '/details',
-  })
-}
+  /**
+   * Typeahead functions
+   */
 
-function post_comment(groupId, comment) {
-  return jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify({comment}),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/group/' + groupId + '/comment',
-  })
-}
-
-function get_comment(groupId) {
-  return jQuery.ajax({
-    type: "GET",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/group/' + groupId + '/comments',
-  })
-}
-
-function get_activity(groupId) {
-  return jQuery.ajax({
-    type: "GET",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/group/' + groupId + '/activity',
-  })
-}
-
-$( document ).ajaxComplete(function(event, xhr, settings) {
-  if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
-    refreshActivity()
+  function add_typeahead_item(groupId, fieldId, val, name) {
+    API.add_item_to_field( 'group', groupId, { [fieldId]: val }).then(function (addedItem){
+      jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
+      <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
+      <button class="details-remove-button details-edit"
+              data-field="locations" data-id="${val}"
+              data-name="${name}"  
+              style="display: inline-block">Remove</button>
+      </li>`)
+    })
   }
-});
 
-/**
- * Typeahead functions
- */
-
-function add_typeahead_item(groupId, fieldId, val, name) {
-  add_item_to_field(groupId, { [fieldId]: val }).done(function (addedItem){
-    jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
-    <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
-    <button class="details-remove-button details-edit"
-            data-field="locations" data-id="${val}"
-            data-name="${name}"  
-            style="display: inline-block">Remove</button>
-    </li>`)
-  })
-}
-
-function filterTypeahead(array, existing = []){
-  return _.differenceBy(array, existing.map(l=>{
-    return {ID:l.ID, name:l.display_name}
-  }), "ID")
-}
-
-function defaultFilter(q, sync, async, local, existing) {
-  if (q === '') {
-    sync(filterTypeahead(local.all(), existing));
+  function filterTypeahead(array, existing = []){
+    return _.differenceBy(array, existing.map(l=>{
+      return {ID:l.ID, name:l.display_name}
+    }), "ID")
   }
-  else {
-    local.search(q, sync, async);
-  }
-}
-let searchAnyPieceOfWord = function(d) {
-  var tokens = [];
-  //the available string is 'name' in your datum
-  var stringSize = d.name.length;
-  //multiple combinations for every available size
-  //(eg. dog = d, o, g, do, og, dog)
-  for (var size = 1; size <= stringSize; size++) {
-    for (var i = 0; i + size <= stringSize; i++) {
-      tokens.push(d.name.substr(i, size));
+
+  function defaultFilter(q, sync, async, local, existing) {
+    if (q === '') {
+      sync(filterTypeahead(local.all(), existing));
+    }
+    else {
+      local.search(q, sync, async);
     }
   }
-  return tokens;
-}
+  let searchAnyPieceOfWord = function(d) {
+    var tokens = [];
+    //the available string is 'name' in your datum
+    var stringSize = d.name.length;
+    //multiple combinations for every available size
+    //(eg. dog = d, o, g, do, og, dog)
+    for (var size = 1; size <= stringSize; size++) {
+      for (var i = 0; i + size <= stringSize; i++) {
+        tokens.push(d.name.substr(i, size));
+      }
+    }
+    return tokens;
+  }
 
 
   let group = {}
@@ -132,9 +60,9 @@ let searchAnyPieceOfWord = function(d) {
 
 
 
-/**
- * Group details Info
- */
+  /**
+   * Group details Info
+   */
   function toggleEditAll() {
     $(`.details-list`).toggle()
     $(`.details-edit`).toggle()
@@ -149,19 +77,21 @@ let searchAnyPieceOfWord = function(d) {
     let fieldId = $(this).data('field')
     let itemId = $(this).data('id')
 
-    remove_item_from_field(groupId, fieldId, itemId).then(()=>{
-      $(`.${fieldId}-list .${itemId}`).remove()
+    if (fieldId && itemId){
+      API.remove_item_from_field('group', groupId, fieldId, itemId).then(()=>{
+        $(`.${fieldId}-list .${itemId}`).remove()
 
-      //add the item back to the locations list
-      if (fieldId === 'locations'){
-        locations.add([{ID:itemId, name: $(this).data('name')}])
-      }
-      if (fieldId === "members"){
-        members.add([{ID:itemId, name: $(this).data('name')}])
-      }
-    }).catch(err=>{
-      console.log(err)
-    })
+        //add the item back to the locations list
+        if (fieldId === 'locations'){
+          locations.add([{ID:itemId, name: $(this).data('name')}])
+        }
+        if (fieldId === "members"){
+          members.add([{ID:itemId, name: $(this).data('name')}])
+        }
+      }).catch(err=>{
+        console.log(err)
+      })
+    }
   })
 
 
@@ -180,8 +110,7 @@ let searchAnyPieceOfWord = function(d) {
   let endDatePicker = $('.end_date #end-date-picker')
   endDatePicker.datepicker({
     onSelect: function (date) {
-      console.log(date)
-      save_field_api(groupId, {end_date:date}).done(function () {
+      API.save_field_api('group', groupId, {end_date:date}).then(function () {
         endDateList.text(date)
       })
     },
@@ -203,8 +132,7 @@ let searchAnyPieceOfWord = function(d) {
   let startDatePicker = $('.start_date #start-date-picker')
   startDatePicker.datepicker({
     onSelect: function (date) {
-      console.log(date)
-      save_field_api(groupId, {start_date:date}).done(function () {
+      API.save_field_api('group', groupId, {start_date:date}).then(function () {
         startDateList.text(date)
       })
     },
@@ -227,29 +155,29 @@ let searchAnyPieceOfWord = function(d) {
     toggleEdit('assigned_to')
     assigned_to_typeahead.focus()
   })
-  var users = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('display_name'),
+  let users = new Bloodhound({
+    datumTokenizer: API.searchAnyPieceOfWord,
     queryTokenizer: Bloodhound.tokenizers.ngram,
     identify: function (obj) {
-      return obj.display_name
+      return obj.ID
     },
     prefetch: {
       url: wpApiSettings.root + 'dt/v1/users/',
+      prepare : API.typeaheadPrefetchPrepare,
+      transform: function (data) {
+        return API.filterTypeahead(data)
+      },
+      cache:false
     },
     remote: {
       url: wpApiSettings.root + 'dt/v1/users/?s=%QUERY',
-      wildcard: '%QUERY'
+      wildcard: '%QUERY',
+      prepare : API.typeaheadRemotePrepare,
+      transform: function (data) {
+        return API.filterTypeahead(data)
+      }
     }
   });
-
-  function defaultusers(q, sync, async) {
-    if (q === '') {
-      sync(users.all());
-    }
-    else {
-      users.search(q, sync, async);
-    }
-  }
 
   let assigned_to_typeahead = $('.assigned_to .typeahead')
   assigned_to_typeahead.typeahead({
@@ -259,14 +187,20 @@ let searchAnyPieceOfWord = function(d) {
   },
   {
     name: 'users',
-    source: defaultusers,
-    display: 'display_name'
+    source: function (q, sync, async) {
+      return API.defaultFilter(q, sync, async, users, [])
+    },
+    display: 'name'
   })
   .bind('typeahead:select', function (ev, sug) {
     console.log(sug)
-    save_field_api(groupId, {assigned_to: 'user-' + sug.ID}).done(function () {
+    API.save_field_api('group', groupId, {assigned_to: 'user-' + sug.ID}).then(function () {
       assigned_to_typeahead.typeahead('val', '')
-      jQuery('.current-assigned').text(sug.display_name)
+      jQuery('.current-assigned').text(sug.name)
+    }).catch(err=>{
+      console.trace("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
     })
   }).bind('blur', ()=>{
     toggleEdit('assigned_to')
@@ -284,6 +218,7 @@ let searchAnyPieceOfWord = function(d) {
     },
     prefetch: {
       url: wpApiSettings.root + 'dt/v1/locations-compact/',
+      prepare : API.typeaheadPrefetchPrepare,
       transform: function(data){
         return filterTypeahead(data, group.locations || [])
       },
@@ -292,6 +227,7 @@ let searchAnyPieceOfWord = function(d) {
     remote: {
       url: wpApiSettings.root + 'dt/v1/locations-compact/?s=%QUERY',
       wildcard: '%QUERY',
+      prepare : API.typeaheadRemotePrepare,
       transform: function(data){
         return filterTypeahead(data, group.locations || [])
       }
@@ -342,7 +278,7 @@ let searchAnyPieceOfWord = function(d) {
   //for a new address field that has not been saved yet
   $(document).on('change', '#new-address', function (val) {
     let input = $('#new-address')
-    add_item_to_field(groupId, {"new-address":input.val()}).done(function (data) {
+    API.add_item_to_field( 'group', groupId, {"new-address":input.val()}).then(function (data) {
       if (data != groupId){
         //change the it to the created field
         input.attr('id', data)
@@ -354,7 +290,7 @@ let searchAnyPieceOfWord = function(d) {
   $(document).on('change', '.address-list textarea', function(){
     let id = $(this).attr('id')
     if (id && id !== "new-address"){
-      save_field_api(groupId, {[id]: $(this).val()}).done(()=>{
+      API.save_field_api('group', groupId, {[id]: $(this).val()}).then(()=>{
         $(`.address.details-list .${id}`).text($(this).val())
       })
 
@@ -381,6 +317,7 @@ let searchAnyPieceOfWord = function(d) {
         loadMembersTypeahead()
         return filterTypeahead(data, group.members || [])
       },
+      prepare : API.typeaheadPrefetchPrepare,
       cache: false
     },
     remote: {
@@ -388,7 +325,8 @@ let searchAnyPieceOfWord = function(d) {
       wildcard: '%QUERY',
       transform: function(data){
         return filterTypeahead(data, group.members || [])
-      }
+      },
+      prepare : API.typeaheadRemotePrepare,
     },
     initialize: false,
     local : []
@@ -424,7 +362,7 @@ let searchAnyPieceOfWord = function(d) {
    * Get the group fields from the api
    */
 
-  get_group(groupId).done(function (groupData) {
+  API.get_post( 'group', groupId).then(function (groupData) {
     console.log(groupData)
     group = groupData
     if (groupData.end_date){
@@ -450,7 +388,7 @@ let searchAnyPieceOfWord = function(d) {
   let activity = []
 
   function refreshActivity() {
-    get_activity(groupId).done(activityData=>{
+    API.get_activity('group', groupId).then(activityData=>{
       activityData.forEach(d=>{
         d.date = new Date(d.hist_time*1000)
       })
@@ -463,7 +401,7 @@ let searchAnyPieceOfWord = function(d) {
     .on('click', function () {
       commentButton.toggleClass('loading')
       let input = $("#comment-input")
-      post_comment(groupId, input.val()).then(commentData=>{
+      API.post_comment('group', groupId, input.val()).then(commentData=>{
         commentButton.toggleClass('loading')
         input.val('')
         commentData.comment.date = new Date(commentData.comment.comment_date_gmt + "Z")
@@ -473,9 +411,9 @@ let searchAnyPieceOfWord = function(d) {
     })
 
   $.when(
-    get_comment(groupId),
-    get_activity(groupId)
-  ).done(function(commentData, activityData){
+    API.get_comments('group', groupId),
+    API.get_activity('group', groupId)
+  ).then(function(commentData, activityData){
     commentData[0].forEach(comment=>{
       comment.date = new Date(comment.comment_date_gmt + "Z")
     })
@@ -601,14 +539,44 @@ let searchAnyPieceOfWord = function(d) {
     let fieldId = $(this).attr('id')
     $(this).css('opacity', ".5");
     let field = group[fieldId] === "1" ? "0" : "1"
-    save_field_api(groupId, {[fieldId]: field}).then(groupData=>{
-      group = groupData
-      fillOutChurchHealthMetrics()
-      $(this).css('opacity', "1");
-    }).catch(err=>{
-      alert(err.responseText)
+    API.save_field_api('group', groupId, {[fieldId]: field})
+      .then(groupData=>{
+        group = groupData
+        fillOutChurchHealthMetrics()
+        $(this).css('opacity', "1");
+      }).catch(err=>{
+        console.log(err)
     })
   })
+
+  /**
+   * sharing
+   */
+  $('#add-shared-button').on('click', function () {
+    let select = jQuery(`#share-with`)
+    let name = jQuery(`#share-with option:selected`)
+    console.log(select.val())
+    API.add_shared('group', groupId, select.val()).then(function (data) {
+      jQuery(`#shared-with-list`).append(
+        '<li class="'+select.val()+'">' +
+        name.text()+
+        '<button class="details-remove-button share" data-id="'+select.val()+'">' +
+        'Unshare' +
+        '</button></li>'
+      );
+    }).catch(err=>{
+      console.log(err)
+    })
+  })
+
+
+  $(document).on('click', '.details-remove-button.share', function () {
+    let userId = $(this).data('id')
+    API.remove_shared('group', groupId, userId).then(()=>{
+      $("#shared-with-list ." + userId).remove()
+    })
+  })
+
 })
 
 
