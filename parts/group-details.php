@@ -1,7 +1,6 @@
 <?php
 $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
 $channel_list = Disciple_Tools_Contacts::get_channel_list();
-$users = Disciple_Tools_Contacts::get_assignable_users( get_the_ID() );
 $locations = Disciple_Tools_Locations::get_locations();
 $current_user = wp_get_current_user();
 

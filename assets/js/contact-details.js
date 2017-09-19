@@ -1,12 +1,5 @@
 /* global jQuery:false, wpApiSettings:false */
 
-jQuery.ajaxSetup({
-  beforeSend: function(xhr) {
-    xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-  },
-})
-
-
 function save_seeker_milestones(contactId, fieldKey, fieldValue){
   var data = {}
   var field = jQuery("#" + fieldKey)
@@ -36,12 +29,15 @@ function save_quick_action(contactId, fieldKey){
   var newNumber = parseInt(numberIndicator.first().text()) + 1
   data[fieldKey] = newNumber
   jQuery.ajax({
-    type:"POST",
-    data:JSON.stringify(data),
+    type: "POST",
+    data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ contactId +'/quick_action_button',
-    success: function(data, two, three) {
+    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + '/quick_action_button',
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+    }
+  }).then(data=>{
       console.log("updated " + fieldKey + " to: " + newNumber)
       if (fieldKey.indexOf("quick_button")>-1){
         if (data.seeker_path){
@@ -51,12 +47,10 @@ function save_quick_action(contactId, fieldKey){
           }
         }
       }
-    },
-    error: function(err) {
+  }).catch(err=>{
       console.log("error")
       console.log(err)
       jQuery("#errors").append(err.responseText)
-    },
   })
 
   if (fieldKey.indexOf("quick_button")>-1){
@@ -163,11 +157,13 @@ jQuery(document).ready(function($) {
     },
     prefetch: {
       url: wpApiSettings.root + 'dt-hooks/v1/groups-compact/',
-      cache:false
+      cache:false,
+      prepare : API.typeaheadPrefetchPrepare
     },
     remote: {
       url: wpApiSettings.root + 'dt-hooks/v1/groups-compact/?s=%QUERY',
       wildcard: '%QUERY',
+      prepare : API.typeaheadRemotePrepare
     }
   })
   function defaultGroups(q, sync, async) {
@@ -208,10 +204,12 @@ jQuery(document).ready(function($) {
     },
     prefetch: {
       url: wpApiSettings.root + 'dt-hooks/v1/contacts/',
+      prepare : API.typeaheadPrefetchPrepare
     },
     remote: {
       url: wpApiSettings.root + 'dt-hooks/v1/contacts/?s=%QUERY',
-      wildcard: '%QUERY'
+      wildcard: '%QUERY',
+      prepare : API.typeaheadRemotePrepare
     }
   });
   function defaultcontacts(q, sync) {
@@ -246,29 +244,29 @@ jQuery(document).ready(function($) {
   /**
    * Assigned to
    */
-  var users = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('display_name'),
+  let users = new Bloodhound({
+    datumTokenizer: API.searchAnyPieceOfWord,
     queryTokenizer: Bloodhound.tokenizers.ngram,
     identify: function (obj) {
-      return obj.display_name
+      return obj.ID
     },
     prefetch: {
       url: wpApiSettings.root + 'dt/v1/users/',
+      prepare : API.typeaheadPrefetchPrepare,
+      transform: function (data) {
+        return API.filterTypeahead(data)
+      },
+      cache:false
     },
     remote: {
       url: wpApiSettings.root + 'dt/v1/users/?s=%QUERY',
-      wildcard: '%QUERY'
+      wildcard: '%QUERY',
+      prepare : API.typeaheadRemotePrepare,
+      transform: function (data) {
+        return API.filterTypeahead(data)
+      }
     }
   });
-
-  function defaultusers(q, sync) {
-    if (q === '') {
-      sync(users.all());
-    }
-    else {
-      users.search(q, sync);
-    }
-  }
 
   let assigned_to_typeahead = $('.assigned_to .typeahead')
   assigned_to_typeahead.typeahead({
@@ -278,13 +276,19 @@ jQuery(document).ready(function($) {
   },
   {
     name: 'users',
-    source: users,
-    display: 'display_name'
+    source: function (q, sync, async) {
+      return API.defaultFilter(q, sync, async, users, [])
+    },
+    display: 'name'
   })
   .bind('typeahead:select', function (ev, sug) {
     API.save_field_api('contact', contactId, {assigned_to: 'user-' + sug.ID}).then(()=> {
       assigned_to_typeahead.typeahead('val', '')
-      $('.current-assigned').text(sug.display_name)
+      $('.current-assigned').text(sug.name)
+    }).catch(err=>{
+      console.trace("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
     })
   })
 
@@ -299,10 +303,12 @@ jQuery(document).ready(function($) {
     },
     prefetch: {
       url: wpApiSettings.root + 'dt/v1/locations/',
+      prepare : API.typeaheadPrefetchPrepare
     },
     remote: {
       url: wpApiSettings.root + 'dt/v1/locations/?s=%QUERY',
-      wildcard: '%QUERY'
+      wildcard: '%QUERY',
+      prepare : API.typeaheadRemotePrepare
     }
   });
 
@@ -360,27 +366,6 @@ jQuery(document).ready(function($) {
 
 })
 
-function refreshActivity(id){
-  API.get_activity('contact', contactId)
-  return jQuery.ajax({
-    type: "GET",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + id + "/activity",
-  })
-    .done(function (data) {
-      data.forEach(d=>{
-        d.date = new Date(d.hist_time*1000)
-      })
-      activity = data
-      display_activity_comment()
-    })
-    .fail(function (err) {
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    })
-}
 
 
 function formatDate(date) {
@@ -580,8 +565,10 @@ function details_accept_contact(contactId, accept){
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + "/accept",
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+    }
   }).then(function (data) {
-    console.log(data)
     jQuery('#accept-contact').hide()
     if (data['overall_status']){
       jQuery('#overall-status').text(data['overall_status'])
@@ -597,7 +584,6 @@ function add_shared(contactId, selectId){
   let name = jQuery(`#${selectId} option:selected`)
   console.log(select.val())
   API.add_shared('contact', contactId, select.val()).then(function (data) {
-    console.log(data)
     jQuery(`#shared-with-list`).append(
       '<li class="'+select.val()+'">' +
       name.text()+
@@ -613,7 +599,6 @@ function add_shared(contactId, selectId){
 
 function remove_shared(contactId, user_id){
   API.remove_shared('contact', contactId, user_id).then(function (data) {
-    console.log(data)
     jQuery("#shared-with-list ." + user_id).remove()
   }).catch(err=>{
     console.log(err)

@@ -1,63 +1,57 @@
 /* global jQuery:false, wpApiSettings:false */
 
-jQuery.ajaxSetup({
-  beforeSend: function(xhr) {
-    xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-  },
-})
-
 jQuery(document).ready(function($) {
 
 
-$( document ).ajaxComplete(function(event, xhr, settings) {
-  if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
-    refreshActivity()
+  $( document ).ajaxComplete(function(event, xhr, settings) {
+    if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
+      refreshActivity()
+    }
+  });
+
+  /**
+   * Typeahead functions
+   */
+
+  function add_typeahead_item(groupId, fieldId, val, name) {
+    API.add_item_to_field( 'group', groupId, { [fieldId]: val }).then(function (addedItem){
+      jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
+      <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
+      <button class="details-remove-button details-edit"
+              data-field="locations" data-id="${val}"
+              data-name="${name}"  
+              style="display: inline-block">Remove</button>
+      </li>`)
+    })
   }
-});
 
-/**
- * Typeahead functions
- */
-
-function add_typeahead_item(groupId, fieldId, val, name) {
-  API.add_item_to_field( 'group', groupId, { [fieldId]: val }).then(function (addedItem){
-    jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
-    <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
-    <button class="details-remove-button details-edit"
-            data-field="locations" data-id="${val}"
-            data-name="${name}"  
-            style="display: inline-block">Remove</button>
-    </li>`)
-  })
-}
-
-function filterTypeahead(array, existing = []){
-  return _.differenceBy(array, existing.map(l=>{
-    return {ID:l.ID, name:l.display_name}
-  }), "ID")
-}
-
-function defaultFilter(q, sync, async, local, existing) {
-  if (q === '') {
-    sync(filterTypeahead(local.all(), existing));
+  function filterTypeahead(array, existing = []){
+    return _.differenceBy(array, existing.map(l=>{
+      return {ID:l.ID, name:l.display_name}
+    }), "ID")
   }
-  else {
-    local.search(q, sync, async);
-  }
-}
-let searchAnyPieceOfWord = function(d) {
-  var tokens = [];
-  //the available string is 'name' in your datum
-  var stringSize = d.name.length;
-  //multiple combinations for every available size
-  //(eg. dog = d, o, g, do, og, dog)
-  for (var size = 1; size <= stringSize; size++) {
-    for (var i = 0; i + size <= stringSize; i++) {
-      tokens.push(d.name.substr(i, size));
+
+  function defaultFilter(q, sync, async, local, existing) {
+    if (q === '') {
+      sync(filterTypeahead(local.all(), existing));
+    }
+    else {
+      local.search(q, sync, async);
     }
   }
-  return tokens;
-}
+  let searchAnyPieceOfWord = function(d) {
+    var tokens = [];
+    //the available string is 'name' in your datum
+    var stringSize = d.name.length;
+    //multiple combinations for every available size
+    //(eg. dog = d, o, g, do, og, dog)
+    for (var size = 1; size <= stringSize; size++) {
+      for (var i = 0; i + size <= stringSize; i++) {
+        tokens.push(d.name.substr(i, size));
+      }
+    }
+    return tokens;
+  }
 
 
   let group = {}
@@ -66,9 +60,9 @@ let searchAnyPieceOfWord = function(d) {
 
 
 
-/**
- * Group details Info
- */
+  /**
+   * Group details Info
+   */
   function toggleEditAll() {
     $(`.details-list`).toggle()
     $(`.details-edit`).toggle()
@@ -116,7 +110,6 @@ let searchAnyPieceOfWord = function(d) {
   let endDatePicker = $('.end_date #end-date-picker')
   endDatePicker.datepicker({
     onSelect: function (date) {
-      console.log(date)
       API.save_field_api('group', groupId, {end_date:date}).then(function () {
         endDateList.text(date)
       })
@@ -139,7 +132,6 @@ let searchAnyPieceOfWord = function(d) {
   let startDatePicker = $('.start_date #start-date-picker')
   startDatePicker.datepicker({
     onSelect: function (date) {
-      console.log(date)
       API.save_field_api('group', groupId, {start_date:date}).then(function () {
         startDateList.text(date)
       })
@@ -163,29 +155,29 @@ let searchAnyPieceOfWord = function(d) {
     toggleEdit('assigned_to')
     assigned_to_typeahead.focus()
   })
-  var users = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('display_name'),
+  let users = new Bloodhound({
+    datumTokenizer: API.searchAnyPieceOfWord,
     queryTokenizer: Bloodhound.tokenizers.ngram,
     identify: function (obj) {
-      return obj.display_name
+      return obj.ID
     },
     prefetch: {
       url: wpApiSettings.root + 'dt/v1/users/',
+      prepare : API.typeaheadPrefetchPrepare,
+      transform: function (data) {
+        return API.filterTypeahead(data)
+      },
+      cache:false
     },
     remote: {
       url: wpApiSettings.root + 'dt/v1/users/?s=%QUERY',
-      wildcard: '%QUERY'
+      wildcard: '%QUERY',
+      prepare : API.typeaheadRemotePrepare,
+      transform: function (data) {
+        return API.filterTypeahead(data)
+      }
     }
   });
-
-  function defaultusers(q, sync, async) {
-    if (q === '') {
-      sync(users.all());
-    }
-    else {
-      users.search(q, sync, async);
-    }
-  }
 
   let assigned_to_typeahead = $('.assigned_to .typeahead')
   assigned_to_typeahead.typeahead({
@@ -195,14 +187,20 @@ let searchAnyPieceOfWord = function(d) {
   },
   {
     name: 'users',
-    source: defaultusers,
-    display: 'display_name'
+    source: function (q, sync, async) {
+      return API.defaultFilter(q, sync, async, users, [])
+    },
+    display: 'name'
   })
   .bind('typeahead:select', function (ev, sug) {
     console.log(sug)
     API.save_field_api('group', groupId, {assigned_to: 'user-' + sug.ID}).then(function () {
       assigned_to_typeahead.typeahead('val', '')
-      jQuery('.current-assigned').text(sug.display_name)
+      jQuery('.current-assigned').text(sug.name)
+    }).catch(err=>{
+      console.trace("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
     })
   }).bind('blur', ()=>{
     toggleEdit('assigned_to')
@@ -220,6 +218,7 @@ let searchAnyPieceOfWord = function(d) {
     },
     prefetch: {
       url: wpApiSettings.root + 'dt/v1/locations-compact/',
+      prepare : API.typeaheadPrefetchPrepare,
       transform: function(data){
         return filterTypeahead(data, group.locations || [])
       },
@@ -228,6 +227,7 @@ let searchAnyPieceOfWord = function(d) {
     remote: {
       url: wpApiSettings.root + 'dt/v1/locations-compact/?s=%QUERY',
       wildcard: '%QUERY',
+      prepare : API.typeaheadRemotePrepare,
       transform: function(data){
         return filterTypeahead(data, group.locations || [])
       }
@@ -317,6 +317,7 @@ let searchAnyPieceOfWord = function(d) {
         loadMembersTypeahead()
         return filterTypeahead(data, group.members || [])
       },
+      prepare : API.typeaheadPrefetchPrepare,
       cache: false
     },
     remote: {
@@ -324,7 +325,8 @@ let searchAnyPieceOfWord = function(d) {
       wildcard: '%QUERY',
       transform: function(data){
         return filterTypeahead(data, group.members || [])
-      }
+      },
+      prepare : API.typeaheadRemotePrepare,
     },
     initialize: false,
     local : []
@@ -555,7 +557,6 @@ let searchAnyPieceOfWord = function(d) {
     let name = jQuery(`#share-with option:selected`)
     console.log(select.val())
     API.add_shared('group', groupId, select.val()).then(function (data) {
-      console.log(data)
       jQuery(`#shared-with-list`).append(
         '<li class="'+select.val()+'">' +
         name.text()+

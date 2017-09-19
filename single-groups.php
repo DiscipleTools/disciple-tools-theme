@@ -5,7 +5,7 @@ if( !Disciple_Tools_Contacts::can_view( 'groups', get_the_ID() )){
     return wp_redirect( "not-found" );
 }
 $shared_with = Disciple_Tools_Contacts::get_shared_with_on_contact( get_the_id() );
-$users = Disciple_Tools_Contacts::get_assignable_users( get_the_ID() );
+$users = Disciple_Tools_Users::get_assignable_users_compact( );
 get_header();?>
 
 <?php
@@ -179,7 +179,7 @@ dt_print_breadcrumbs(
                 <option value="0"></option>
                 <?php
                 foreach( $users as $user ){
-                    echo '<option value="' . $user->ID. '">' . $user->display_name . '</option>';
+                    echo '<option value="' . $user['ID']. '">' . $user['name'] . '</option>';
                 }
                 ?>
             </select>

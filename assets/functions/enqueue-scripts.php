@@ -56,7 +56,7 @@ function site_scripts() {
     }
 
 
-    dt_theme_enqueue_script( 'api-wrapper', 'assets/js/api-wrapper.js', array( 'jquery') );
+    dt_theme_enqueue_script( 'api-wrapper', 'assets/js/api-wrapper.js', array( 'jquery', 'lodash') );
     wp_localize_script(
         'api-wrapper', 'wpApiSettings', array(
             'root' => esc_url_raw( rest_url() ),
