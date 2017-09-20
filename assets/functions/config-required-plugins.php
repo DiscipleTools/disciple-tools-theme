@@ -50,7 +50,7 @@ function dt_register_required_plugins() {
         array(
             'name'               => 'Disciple Tools Demo Plugin',
             'slug'               => 'disciple-tools-demo-plugin',
-            'source'             => 'https://github.com/ChasmSolutions/disciple-tools-demo-plugin/archive/master.zip',
+            'source'             => 'https://github.com/DiscipleTools/disciple-tools-demo-plugin/archive/master.zip',
             'required'           => false,
             'version'            => '0.1',
             'is_callable'        => 'dt_demo',
@@ -58,7 +58,7 @@ function dt_register_required_plugins() {
         array(
             'name'               => 'Disciple Tools',
             'slug'               => 'disciple-tools',
-            'source'             => 'https://github.com/ChasmSolutions/disciple-tools/archive/master.zip',
+            'source'             => 'https://github.com/DiscipleTools/disciple-tools/archive/master.zip',
             'required'           => true,
             'version'            => '0.1',
             'is_callable'        => 'Disciple_Tools',

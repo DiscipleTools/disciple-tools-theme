@@ -3,7 +3,7 @@
 # Test installing this theme using the Wordpress CLI, with a command like this
 # one:
 #
-# wp theme install --activate https://github.com/ChasmSolutions/disciple-tools-theme/archive/master.zip
+# wp theme install --activate https://github.com/DiscipleTools/disciple-tools-theme/archive/master.zip
 #
 # If this fails, we know we have an issue that we need to fix to make the theme
 # installable again
