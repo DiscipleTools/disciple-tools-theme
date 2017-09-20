@@ -60,6 +60,7 @@ function dt_register_required_plugins() {
             'slug'               => 'disciple-tools',
             'source'             => 'https://github.com/DiscipleTools/disciple-tools/archive/master.zip',
             'required'           => true,
+            'force_activation'   => true,
             'version'            => '0.1',
             'is_callable'        => 'Disciple_Tools',
         ),

@@ -141,8 +141,6 @@ class Disciple_Tools_Theme {
 
         // Adds Page Specific Scripts
         require_once( get_template_directory().'/assets/functions/page-front-page.php' );
-//        require_once( get_template_directory().'/assets/functions/page-metrics.php' );
-//        require_once( get_template_directory().'/assets/functions/page-profile.php' );
         require_once( get_template_directory().'/assets/functions/page-prayer-guide.php' );
 
         // Load plugin library that "requires plugins" at activation
@@ -152,11 +150,6 @@ class Disciple_Tools_Theme {
         require_once( get_template_directory() . '/assets/classes/config-options-admin.php' );
         $this->admin_options = Disciple_Tools_Theme_Admin::instance();
 
-//        if ( !get_option( 'dt_add_core_pages' ) ) {
-//            require_once( get_template_directory() . '/assets/classes/class-core-pages.php' );
-//            $core_pages = Disciple_Tools_Add_Core_Pages::instance();
-//
-//        }
     
         // Catch `metrics` URL and load metrics template.
         add_action('init', function() {

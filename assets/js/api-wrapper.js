@@ -122,7 +122,6 @@ let API = {
     })
   },
 
-
   typeaheadPrefetchPrepare(options){
     options.beforeSend = function(xhr) {
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
@@ -163,9 +162,3 @@ let API = {
     return tokens;
   }
 }
-
-
-
-
-
-

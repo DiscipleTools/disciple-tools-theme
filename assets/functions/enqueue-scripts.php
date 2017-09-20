@@ -63,6 +63,7 @@ function site_scripts() {
             'nonce' => wp_create_nonce( 'wp_rest' ),
         )
     );
+    
     if (is_singular( "contacts" )){
         dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper' ) );
         wp_localize_script(
@@ -88,7 +89,7 @@ function site_scripts() {
      */
     $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
     if ( $url_path === 'notifications' ) {
-        wp_enqueue_script( 'dt-notifications', get_template_directory_uri() . '/assets/js/notifications.js', array( 'jquery', 'lodash', 'typeahead' ) );
+        dt_theme_enqueue_script( 'dt-notifications', 'assets/js/notifications.js', array( 'jquery', 'lodash', 'typeahead' ),  true );
         wp_localize_script(
             'dt-notifications', 'wpApiSettings', array(
                 'root' => esc_url_raw( rest_url() ),
@@ -99,7 +100,7 @@ function site_scripts() {
         );
     }
     if ( $url_path === 'settings' ) {
-        wp_enqueue_script( 'dt-settings', get_template_directory_uri() . '/assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash', 'typeahead' ) );
+        dt_theme_enqueue_script( 'dt-settings', 'assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash', 'typeahead' ),  true );
         wp_localize_script(
             'dt-settings', 'wpApiSettings', array(
                 'root' => esc_url_raw( rest_url() ),
@@ -136,9 +137,15 @@ function site_scripts() {
         ) );
     }
 
+//    dt_theme_enqueue_script( 'dt-footer', 'assets/js/footer-scripts.js', array( 'jquery', 'lodash', 'api-wrapper'), true );
+//    wp_localize_script(
+//        'dt-footer', 'wpApiSettings', array(
+//            'root' => esc_url_raw( rest_url() ),
+//            'nonce' => wp_create_nonce( 'wp_rest' ),
+//            'current_user_login' => wp_get_current_user()->user_login,
+//            'current_user_id' => get_current_user_id(),
+//        )
+//    );
 
 }
 add_action( 'wp_enqueue_scripts', 'site_scripts', 999 );
-
-
-

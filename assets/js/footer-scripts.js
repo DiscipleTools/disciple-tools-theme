@@ -29,11 +29,11 @@ jQuery(document).ready(function() {
 *
 * */
 
-
-
 jQuery(document).ready(function($) {
 
     // This adds padding to the top of the offcanvas menu, if the wp admin bar is turned on for the profile.
     $( "#wpadminbar" ).addClass( "add" );
 
 });
+
+

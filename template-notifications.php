@@ -61,7 +61,7 @@ dt_print_breadcrumbs(
                                                 <span class="grey"><?php echo $notification['pretty_time']; ?></span>
                                             </div>
                                             <div class="small-1 cell">
-                                                <?php if($notification['is_new']) : ?>
+                                                <?php if( $notification['is_new'] ) : ?>
                                                     <a id="mark-viewed-<?php echo $notification['id']; ?>" class="mark-viewed" onclick="mark_viewed(<?php echo $notification['id']; ?>);">
                                                         <span class="badge " style="vertical-align: middle; float:right;">&nbsp;</span>
                                                     </a>
@@ -79,15 +79,15 @@ dt_print_breadcrumbs(
                             // TODO Add notification bubble to top bar
                             
                             ?>
-<!--                            <div class="cell">-->
-<!--                                <div class="grid-x grid-margin-x grid-padding-y">-->
-<!--                                    <div class="cell" style="text-align:center;">-->
-<!--                                        -->
-<!--                                        <a id="load_older_notifications" onclick="load_next_notifications(50);">load older notifications</a>-->
-<!--                                        -->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                            <div class="cell">
+                                <div class="grid-x grid-margin-x grid-padding-y">
+                                    <div class="cell" style="text-align:center;">
+                                        
+                                        <a id="load_older_notifications" onclick="load_next_notifications(50);">load older notifications</a>
+                                        
+                                    </div>
+                                </div>
+                            </div>
                         
                         </div>
                     
