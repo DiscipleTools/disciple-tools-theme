@@ -123,7 +123,7 @@ function disciple_tools_off_canvas_nav() {
         $html .= '<li><a href="'.home_url( '/' ).'about-us/">About Us</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'prayer/">Prayer Guide</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'project/">Project Updates</a></li>';
-        $html .= '<li><a href="'.home_url( '/' ).'settings/">Profile</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'settings/">Settings</a></li>';
 
         $html .= '</ul></div>';
 
@@ -136,7 +136,7 @@ function disciple_tools_off_canvas_nav() {
 
         $html .= '<li><a href="'.home_url( '/' ).'about-us/">About Us</a></li>';
         $html .= '<li><a href="'.home_url( '/' ).'prayer/">Prayer Guide</a></li>';
-        $html .= '<li><a href="'.home_url( '/' ).'settings/">Profile</a></li>';
+        $html .= '<li><a href="'.home_url( '/' ).'settings/">Settings</a></li>';
 
         $html .= '</ul></div>';
 

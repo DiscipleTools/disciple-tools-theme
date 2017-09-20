@@ -44,12 +44,12 @@
             <ul class="dropdown menu" data-dropdown-menu>
                 <!--            <li><input style="margin: 0" type="search" placeholder="Search"></li>-->
                 <!--            <li><button type="button" class="button">Search</button></li>-->
-                <li><a href="<?php echo home_url( '/notifications' ); ?>">Notifications</a></li>
+                <li><a href="<?php echo home_url( '/notifications' ); ?>"><span class="badge alert notification-count" style="display:none;">&nbsp;</span> Notifications</a></li>
                 <li>
-                    <a href="#"><i class="fi-widget"></i></a></a>
+                    <a href="<?php echo home_url( '/' ) . 'settings/'; ?>"><i class="fi-widget"></i></a>
                     <ul class="menu vertical">
-                        <li><a href="#">Account</a></li>
-                        <li><a href="<?php echo get_admin_url(); ?>"><?php _e( "WordPress Admin" ); ?></a></li>
+                        <li><a href="<?php echo home_url( '/' ) . 'settings/'; ?>">Settings</a></li>
+                        <?php if( user_can( get_current_user_id(), 'read' ) ) : ?><li><a href="<?php echo get_admin_url(); ?>"><?php _e( "Admin" ); ?></a></li><?php endif; ?>
                         <li><a href="<?php echo wp_logout_url()?>">Log Off</a></li>
                     </ul>
                 </li>
