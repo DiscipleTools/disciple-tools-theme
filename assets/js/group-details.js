@@ -577,6 +577,21 @@ jQuery(document).ready(function($) {
     })
   })
 
+  /**
+   * Group Status
+   */
+  let statusSelect = $('#group-status-select')
+  let statusLabel = $('#group-status-label')
+
+  statusLabel.on('click', function () {
+    toggleEdit('status')
+  })
+  statusSelect.on('change', function () {
+    API.save_field_api('group', groupId, {group_status:statusSelect.val()}).then(group=>{
+      statusLabel.text(`Status: ${_.get(group, "group_status.label")}`)
+      toggleEdit('status')
+    })
+  })
 })
 
 

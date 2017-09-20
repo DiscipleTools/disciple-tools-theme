@@ -1,11 +1,8 @@
 <?php
 $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
-$channel_list = Disciple_Tools_Contacts::get_channel_list();
 $locations = Disciple_Tools_Locations::get_locations();
 $current_user = wp_get_current_user();
-
-
-
+$group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
 
 
 function contact_details_status( $id, $verified, $invalid ){
@@ -21,6 +18,18 @@ function contact_details_status( $id, $verified, $invalid ){
     <div class="item-details-header-row">
         <i class="fi-torsos-all large"></i>
         <span class="item-details-header"><?php the_title_attribute(); ?></span>
+        <span id="group-status-label" class="button alert label details-list status">Status: <?php echo $group['group_status']['label'] ?? ''; ?></span>
+          <select id="group-status-select" class="status details-edit" style="width:fit-content; display:none">
+          <?php foreach( $group_fields["group_status"]["default"] as $status_key => $status_label ) { ?>
+            <option value="<?php echo $status_key; ?>"
+                <?php echo $status_key === $group['group_status']['key'] ? 'selected': '' ?>>
+                <?php echo esc_html( $status_label ) ?>
+            </option>
+          <?php } ?>
+
+        </select>
+
+
         <button class=" float-right" id="edit-details"><i class="fi-pencil"></i> Edit</button>
     </div>
 
