@@ -32,7 +32,7 @@ dt_print_breadcrumbs(
                         <div class="grid-x">
                             <div class="cell">
                                 <div class="grid-x grid-margin-x " style="border-bottom: 1px solid #ccc;">
-                                    <div class="small-5 cell"><span class="badge alert notification-count">&nbsp;</span> <strong>New</strong></div>
+                                    <div class="small-5 cell"><span class="badge alert notification-count" style="display:none;">&nbsp;</span> <strong>New</strong></div>
                                     <div class="small-2 cell" >
                                         <div class="expanded small button-group" style="text-align:center;">
                                             <a href="#" class="button">All</a>
@@ -74,17 +74,21 @@ dt_print_breadcrumbs(
                             }
                             
                             ?>
+                            <?php
+                            // TODO Add infinite scroll or a click loader for the next 50 records.
+                            // TODO Add notification bubble to top bar
                             
-                            <div class="cell">
-                                <div class="grid-x grid-margin-x grid-padding-y">
-                                    <div class="cell" style="text-align:center;">
-                                        
-                                        <a id="load_older_notifications" onclick="load_next_notifications(50);">load older notifications</a>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            
+                            ?>
+<!--                            <div class="cell">-->
+<!--                                <div class="grid-x grid-margin-x grid-padding-y">-->
+<!--                                    <div class="cell" style="text-align:center;">-->
+<!--                                        -->
+<!--                                        <a id="load_older_notifications" onclick="load_next_notifications(50);">load older notifications</a>-->
+<!--                                        -->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                        
                         </div>
                     
                     </div>
