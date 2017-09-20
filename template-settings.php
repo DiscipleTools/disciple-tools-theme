@@ -25,13 +25,13 @@ dt_print_breadcrumbs(
                 <section id="" class="medium-12 cell">
             
                     <div class="bordered-box">
-    
-                        <ul class="menu expanded" data-magellan>
-                            <li><a href="#first">First Arrival</a></li>
-                            <li><a href="#second">Second Arrival</a></li>
-                            <li><a href="#third">Third Arrival</a></li>
+                    
+                        <ul class="menu vertical expanded" data-magellan>
+                            <li><a href="#profile">Profile</a></li>
+                            <li><a href="#availability">Availability</a></li>
+                            <li><a href="#notifications">Notifications</a></li>
                         </ul>
-            
+                    
                     </div>
         
                 </section>
@@ -42,21 +42,21 @@ dt_print_breadcrumbs(
         
                 <section id="" class="medium-12 cell">
             
-                    <div class="bordered-box" id="first" data-magellan-target="first">
-                        <p>Test</p>
+                    <div class="bordered-box" id="profile" data-magellan-target="profile">
+                        <button class=" float-right" onclick="edit_connections()"><i class="fi-pencil"></i> Edit</button>
+                        <span class="section-header">Profile</span>
                     </div>
                     
-                    <div class="bordered-box" id="second" data-magellan-target="second">
-                        <p>Test</p>
+                    <div class="bordered-box" id="availability" data-magellan-target="availability">
+                        <button class=" float-right" onclick="edit_connections()"><i class="fi-pencil"></i> Edit</button>
+                        <span class="section-header">Availability</span>
                     </div>
                     
-                    <div class="bordered-box" id="third" data-magellan-target="third">
-                        <p>Test</p>
+                    <div class="bordered-box" id="notifications" data-magellan-target="notifications">
+                        <button class=" float-right" onclick="edit_connections()"><i class="fi-pencil"></i> Edit</button>
+                        <span class="section-header">Notifications</span>
                     </div>
                     
-                    <div class="bordered-box" id="fourth" data-magellan-target="fourth">
-                        <p>Test</p>
-                    </div>
         
                 </section>
     
