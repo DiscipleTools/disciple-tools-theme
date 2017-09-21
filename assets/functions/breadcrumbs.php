@@ -67,9 +67,11 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
         <?php if ( $comment_button ): ?>
         <div class="grid-x align-center">
             <div class="cell shrink">
-                <button id="nav-view-comments" class="center-items">
-                    <img src="<?php echo get_template_directory_uri() . "/assets/images/view-comments.svg" ?>">
-                    <span style="margin:0 10px 0 10px"><?php _e( "Comments" ); ?></span>
+                <button  id="nav-view-comments" class="center-items">
+                    <a href="#comment-activity-section" class="center-items" style="color:black">
+                        <img src="<?php echo get_template_directory_uri() . "/assets/images/view-comments.svg" ?>">
+                        <span style="margin:0 10px 0 10px"><?php _e( "Comments" ); ?></span>
+                    </a>
                 </button>
             </div>
         <?php endif;
