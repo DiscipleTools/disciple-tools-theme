@@ -95,7 +95,7 @@ function contact_details_status( $id, $verified, $invalid ){
                     </li>';
                 }
                 if (sizeof( $group["locations"] ) === 0){
-                    echo '<li>No location set</li>';
+                    echo '<li id="no-location">No location set</li>';
                 }
                 ?>
             </ul>

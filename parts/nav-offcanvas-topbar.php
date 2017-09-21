@@ -5,7 +5,7 @@
  */
 ?>
 
-<div class="title-bar" data-responsive-toggle="top-bar-menu" data-hide-for="medium">
+<div class="title-bar show-for-small-only" data-responsive-toggle="top-bar-menu">
     <div class="title-bar-left">
         <button class="menu-icon" type="button" data-open="off-canvas">
             <img src="<?php echo get_template_directory_uri() . "/assets/images/hamburger.svg" ?>">
@@ -14,9 +14,9 @@
     </div>
     <div class="title-bar-right">
         <?php if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )): ?>
-        <button data-open="filters-modal">
-            <img title="<?php _e( "Filters" ); ?>" src="<?php echo get_template_directory_uri() . "/assets/images/filter.svg" ?>">
-        </button>
+            <button data-open="filters-modal">
+                <img title="<?php _e( "Filters" ); ?>" src="<?php echo get_template_directory_uri() . "/assets/images/filter.svg" ?>">
+            </button>
         <?php endif; ?>
         <a href="<?php echo home_url( '/notifications' ); ?>">
             <img title="<?php _e( "Notifications" ); ?>" src="<?php echo get_template_directory_uri() . "/assets/images/bell.svg" ?>">
@@ -27,14 +27,15 @@
     </div>
 </div>
 
-<div data-sticky-container>
-    <div class="top-bar" id="top-bar-menu" data-sticky data-options="marginTop:0;" style="width:100%" data-top-anchor="1" data-btm-anchor="content:bottom">
 
+<div data-sticky-container class="hide-for-small-only">
+    <div class="top-bar" id="top-bar-menu"
+         data-sticky style="width:100%;margin-top:0">
         <div class="top-bar-left">
             <ul class="menu">
                 <li data-toggle="off-canvas" class="center-items">
                     <button>
-                    <img src="<?php echo get_template_directory_uri() . "/assets/images/hamburger.svg" ?>">
+                        <img src="<?php echo get_template_directory_uri() . "/assets/images/hamburger.svg" ?>">
                     </button>
                 </li>
                 <?php disciple_tools_top_nav_desktop(); ?>
@@ -42,8 +43,6 @@
         </div>
         <div class="top-bar-right">
             <ul class="dropdown menu" data-dropdown-menu>
-                <!--            <li><input style="margin: 0" type="search" placeholder="Search"></li>-->
-                <!--            <li><button type="button" class="button">Search</button></li>-->
                 <li><a href="<?php echo home_url( '/notifications' ); ?>"><span class="badge alert notification-count" style="display:none;">&nbsp;</span> Notifications</a></li>
                 <li>
                     <a href="<?php echo home_url( '/' ) . 'settings/'; ?>"><i class="fi-widget"></i></a>
@@ -57,3 +56,4 @@
         </div>
     </div>
 </div>
+

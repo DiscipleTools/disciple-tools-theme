@@ -16,6 +16,7 @@ dt_print_breadcrumbs(
         [ home_url( '/' ) . "contacts/", __( "Contacts" ) ],
     ],
     get_the_title(),
+    true,
     true
 ); ?>
 

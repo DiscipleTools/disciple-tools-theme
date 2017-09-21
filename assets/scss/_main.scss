@@ -140,7 +140,6 @@ POSTS & CONTENT STYLES
 *********************/
 #content {
     #inner-content {
-        margin-top: 3rem;
         padding: 1rem 0rem;
         margin-left: 5px;
         margin-right: 5px;
@@ -1088,4 +1087,13 @@ div.dataTables_wrapper .datatable-first-line {
         display: inline-block;
         line-height: 1;
     }
+}
+
+#top-bar-menu {
+    margin-top:0 !important;
+    padding-bottom: 0;
+}
+.header {
+    z-index: 10;
+    position: relative;
 }
