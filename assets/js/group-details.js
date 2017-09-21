@@ -522,7 +522,7 @@ jQuery(document).ready(function($) {
       let svgItem = document.getElementById("church-svg-wrapper").contentDocument
       let churchWheel = $(svgItem).find('svg')
       metrics.forEach(m=>{
-        if (group[`church_${m}`] && ["1", "Yes"].indexOf(group[`church_${m}`])> -1){
+        if (group[`church_${m}`] && ["1", "Yes"].indexOf(group[`church_${m}`]["key"])> -1){
           churchWheel.find(`#${m}`).css("opacity", "1")
         } else {
           churchWheel.find(`#${m}`).css("opacity", ".1")
@@ -538,7 +538,7 @@ jQuery(document).ready(function($) {
   $('.group-progress-button').on('click', function () {
     let fieldId = $(this).attr('id')
     $(this).css('opacity', ".5");
-    let field = group[fieldId] === "1" ? "0" : "1"
+    let field = group[fieldId]['key'] === "1" ? "0" : "1"
     API.save_field_api('group', groupId, {[fieldId]: field})
       .then(groupData=>{
         group = groupData
@@ -555,7 +555,6 @@ jQuery(document).ready(function($) {
   $('#add-shared-button').on('click', function () {
     let select = jQuery(`#share-with`)
     let name = jQuery(`#share-with option:selected`)
-    console.log(select.val())
     API.add_shared('group', groupId, select.val()).then(function (data) {
       jQuery(`#shared-with-list`).append(
         '<li class="'+select.val()+'">' +
@@ -592,6 +591,10 @@ jQuery(document).ready(function($) {
       toggleEdit('status')
     })
   })
+  statusSelect.bind('blur', ()=>{
+    toggleEdit('status')
+  })
+
 })
 
 
