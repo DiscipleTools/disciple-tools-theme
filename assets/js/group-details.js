@@ -255,6 +255,7 @@ jQuery(document).ready(function($) {
     locationsTypeahead.typeahead('val', '')
     group.locations.push(sug)
     add_typeahead_item(groupId, 'locations', sug.ID, sug.name)
+    $("#no-location").remove()
     locationsTypeahead.typeahead('destroy')
     loadLocationsTypeahead()
   })
