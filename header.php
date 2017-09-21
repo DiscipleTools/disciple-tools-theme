@@ -4,14 +4,14 @@
 
     <head>
         <meta charset="utf-8">
-        
+
         <!-- Force IE to use the latest rendering engine available -->
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
         <!-- Mobile Meta -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta class="foundation-mq">
-        
+
         <!-- If Site Icon isn't set in customizer -->
         <?php if ( ! function_exists( 'has_site_icon' ) || ! has_site_icon() ) { ?>
             <!-- Icons & Favicons -->
@@ -34,21 +34,21 @@
         <!-- end analytics -->
 
     </head>
-    
+
     <!-- Uncomment this line if using the Off-Canvas Menu -->
-    
+
     <body <?php body_class(); ?>>
 
         <div class="off-canvas-wrapper">
-            
+
             <?php get_template_part( 'parts/content', 'offcanvas' ); ?>
-            
+
             <div class="off-canvas-content" data-off-canvas-content>
-                
-                <header class="header sticky is-stuck is-at-top" role="banner">
-                     
+
+                <header class="header" role="banner">
+
                      <!-- This navs will be applied to the topbar, above all content
                           To see additional nav styles, visit the /parts directory -->
                         <?php get_template_part( 'parts/nav', 'offcanvas-topbar' ); ?>
-         
+
                 </header> <!-- end .header -->

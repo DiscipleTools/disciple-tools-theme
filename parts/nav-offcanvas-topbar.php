@@ -21,39 +21,39 @@
         <a href="<?php echo home_url( '/notifications' ); ?>">
             <img title="<?php _e( "Notifications" ); ?>" src="<?php echo get_template_directory_uri() . "/assets/images/bell.svg" ?>">
         </a>
-        <a href="<?php echo get_admin_url(); ?>">
-            <img title="<?php _e( "WordPress Admin" ); ?>" src="<?php echo get_template_directory_uri() . "/assets/images/gear.svg" ?>">
+        <a href="<?php echo home_url( '/settings') ?>">
+            <img title="<?php _e( "settings" ); ?>" src="<?php echo get_template_directory_uri() . "/assets/images/gear.svg" ?>">
         </a>
     </div>
 </div>
 
-<div data-sticky-container>
-    <div class="top-bar" id="top-bar-menu" data-sticky data-options="marginTop:0;" style="width:100%" data-top-anchor="1" data-btm-anchor="content:bottom">
 
-        <div class="top-bar-left">
-            <ul class="menu">
-                <li data-toggle="off-canvas" class="center-items">
-                    <button>
-                    <img src="<?php echo get_template_directory_uri() . "/assets/images/hamburger.svg" ?>">
-                    </button>
-                </li>
-                <?php disciple_tools_top_nav_desktop(); ?>
+<div data-sticky-container class="hide-for-small-only">
+    <div class="top-bar" id="top-bar-menu"
+         data-sticky style="width:100%;margin-top:0">
+      <div class="top-bar-left">
+        <ul class="menu">
+          <li data-toggle="off-canvas" class="center-items">
+            <button>
+              <img src="<?php echo get_template_directory_uri() . "/assets/images/hamburger.svg" ?>">
+            </button>
+          </li>
+        <?php disciple_tools_top_nav_desktop(); ?>
+        </ul>
+      </div>
+      <div class="top-bar-right">
+        <ul class="dropdown menu" data-dropdown-menu>
+          <li><a href="<?php echo home_url( '/notifications' ); ?>"><span class="badge alert notification-count" style="display:none;">&nbsp;</span> Notifications</a></li>
+          <li>
+            <a href="<?php echo home_url( '/' ) . 'settings/'; ?>"><i class="fi-widget"></i></a>
+            <ul class="menu vertical">
+              <li><a href="<?php echo home_url( '/' ) . 'settings/'; ?>">Settings</a></li>
+          <?php if( user_can( get_current_user_id(), 'read' ) ) : ?><li><a href="<?php echo get_admin_url(); ?>"><?php _e( "Admin" ); ?></a></li><?php endif; ?>
+              <li><a href="<?php echo wp_logout_url()?>">Log Off</a></li>
             </ul>
-        </div>
-        <div class="top-bar-right">
-            <ul class="dropdown menu" data-dropdown-menu>
-                <!--            <li><input style="margin: 0" type="search" placeholder="Search"></li>-->
-                <!--            <li><button type="button" class="button">Search</button></li>-->
-                <li><a href="<?php echo home_url( '/notifications' ); ?>"><span class="badge alert notification-count" style="display:none;">&nbsp;</span> Notifications</a></li>
-                <li>
-                    <a href="<?php echo home_url( '/' ) . 'settings/'; ?>"><i class="fi-widget"></i></a>
-                    <ul class="menu vertical">
-                        <li><a href="<?php echo home_url( '/' ) . 'settings/'; ?>">Settings</a></li>
-                        <?php if( user_can( get_current_user_id(), 'read' ) ) : ?><li><a href="<?php echo get_admin_url(); ?>"><?php _e( "Admin" ); ?></a></li><?php endif; ?>
-                        <li><a href="<?php echo wp_logout_url()?>">Log Off</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+          </li>
+        </ul>
+      </div>
     </div>
 </div>
+

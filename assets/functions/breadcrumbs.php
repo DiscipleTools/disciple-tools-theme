@@ -20,7 +20,7 @@ declare(strict_types=1);
  * @return void
  */
 
-function dt_print_breadcrumbs( array $links = null, string $current, bool $share_button = false ) {
+function dt_print_breadcrumbs( array $links = null, string $current, bool $share_button = false, bool $comment_button = false ) {
 
     if ( is_null( $links ) ) {
         $links = [
@@ -31,13 +31,13 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
     ?>
 
     <!-- Breadcrumb Navigation-->
-    <div data-sticky-container>
+    <div data-sticky-container class="hide-for-small-only">
         <nav aria-label="<?php _e( "You are here:" ); ?>" role="navigation"
-            data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
-            class="second-bar hide-for-small-only">
+             data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
+             class="second-bar">
 
             <div class="grid-x">
-                <div class="small-offset-4 cell small-4 center-items">
+                <div class="small-offset-4 cell small-4 center-items hide-for-small-only">
                     <ul class="breadcrumbs">
 
                         <?php foreach ($links as $link) : ?>
@@ -61,7 +61,28 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
             </div>
         </nav>
     </div>
-
-    <?php
+    <?php if ( $comment_button || $share_button ): ?>
+    <nav  role="navigation" style="width:100%;"
+          class="second-bar show-for-small-only">
+        <?php if ( $comment_button ): ?>
+        <div class="grid-x align-center">
+            <div class="cell shrink">
+                <button id="nav-view-comments" class="center-items">
+                    <img src="<?php echo get_template_directory_uri() . "/assets/images/view-comments.svg" ?>">
+                    <span style="margin:0 10px 0 10px"><?php _e( "Comments" ); ?></span>
+                </button>
+            </div>
+        <?php endif;
+        if ( $share_button ): ?>
+            <div class="cell shrink">
+                <button data-open="share-contact-modal" class="center-items">
+                    <img src="<?php echo get_template_directory_uri() . "/assets/images/share.svg" ?>">
+                    <span style="margin:0 10px 0 10px"><?php _e( "Share" ); ?></span>
+                </button>
+            </div>
+        </div>
+        <?php endif; ?>
+    </nav>
+    <?php endif;
 }
 
