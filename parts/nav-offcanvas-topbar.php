@@ -7,7 +7,7 @@
 
 <div class="title-bar show-for-small-only" data-responsive-toggle="top-bar-menu">
     <div class="title-bar-left">
-        <button class="menu-icon" type="button" data-open="off-canvas">
+        <button class="" type="button" data-open="off-canvas">
             <img src="<?php echo get_template_directory_uri() . "/assets/images/hamburger.svg" ?>">
         </button>
         <div class="title-bar-title"><?php _e( "Disciple Tools" ); ?></div>
@@ -44,9 +44,11 @@
         <div class="top-bar-right">
             <ul class="dropdown menu" data-dropdown-menu>
                 <li><a href="<?php echo home_url( '/notifications' ); ?>"><span class="badge alert notification-count" style="display:none;">&nbsp;</span> Notifications</a></li>
-                <li>
-                    <a href="<?php echo home_url( '/' ) . 'settings/'; ?>"><i class="fi-widget"></i></a>
-                    <ul class="menu vertical">
+                <li class="has-submenu center-items">
+                    <button>
+                        <img src="<?php echo get_template_directory_uri() . "/assets/images/settings.svg" ?>">
+                    </button>
+                    <ul class="submenu menu vertical">
                         <li><a href="<?php echo home_url( '/' ) . 'settings/'; ?>">Settings</a></li>
                         <?php if( user_can( get_current_user_id(), 'read' ) ) : ?><li><a href="<?php echo get_admin_url(); ?>"><?php _e( "Admin" ); ?></a></li><?php endif; ?>
                         <li><a href="<?php echo wp_logout_url()?>">Log Off</a></li>
