@@ -8,12 +8,11 @@ jQuery.ajaxSetup({
 
 
 function get_new_notification_count(){
-  let id = wpApiSettings.current_user_id
   return jQuery.ajax({
     type: "POST",
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: wpApiSettings.root + 'dt/v1/notifications/' + id + "/get_new_notifications_count",
+    url: wpApiSettings.root + 'dt/v1/notifications/get_new_notifications_count',
   })
     .done(function (data) {
       if(data > 0) {
@@ -21,7 +20,6 @@ function get_new_notification_count(){
       } else {
         jQuery('.notification-count').hide()
       }
-
     })
     .fail(function (err) {
       console.log("error")

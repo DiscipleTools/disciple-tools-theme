@@ -35,5 +35,3 @@ jQuery(document).ready(function($) {
     $( "#wpadminbar" ).addClass( "add" );
 
 });
-
-
