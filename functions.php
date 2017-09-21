@@ -147,57 +147,29 @@ class Disciple_Tools_Theme {
         require_once( get_template_directory() . '/assets/functions/config-options-admin.php' );
         $this->admin_options = Disciple_Tools_Theme_Admin::instance();
 
-    
+
         // Catch `metrics` URL and load metrics template.
         add_action('init', function() {
+            $template_for_url = array(
+                'metrics' => 'template-metrics.php',
+                'settings' => 'template-settings.php',
+                'notifications' => 'template-notifications.php',
+                'about' => 'template-about.php',
+                'workers' => 'template-workers.php',
+            );
             $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
-            if ( $url_path === 'metrics' ) {
-                // load the file if exists
-                $load = locate_template( 'template-metrics.php', true );
-                if ($load) {
+
+            if ( isset( $template_for_url[$url_path] ) ) {
+                $template_filename = locate_template( $template_for_url[$url_path], true );
+                if ( $template_filename ) {
                     exit(); // just exit if template was found and loaded
+                } else {
+                    throw new Error( "Expected to find template " . $template_for_url[$url_path] );
                 }
             }
-            
-            switch($url_path) {
-                case 'metrics':
-                    // load the file if exists
-                    $load = locate_template( 'template-metrics.php', true );
-                    if ($load) {
-                        exit(); // just exit if template was found and loaded
-                    }
-                    break;
-                case 'settings':
-                    // load the file if exists
-                    $load = locate_template( 'template-settings.php', true );
-                    if ($load) {
-                        exit(); // just exit if template was found and loaded
-                    }
-                    break;
-                case 'notifications':
-                    // load the file if exists
-                    $load = locate_template( 'template-notifications.php', true );
-                    if ($load) {
-                        exit(); // just exit if template was found and loaded
-                    }
-                    break;
-                case 'about':
-                    // load the file if exists
-                    $load = locate_template( 'template-about.php', true );
-                    if ($load) {
-                        exit(); // just exit if template was found and loaded
-                    }
-                    break;
-                case 'workers':
-                    // load the file if exists
-                    $load = locate_template( 'template-workers.php', true );
-                    if ($load) {
-                        exit(); // just exit if template was found and loaded
-                    }
-                    break;
-            }
+
         });
-    
+
 
     } // End __construct()
 
