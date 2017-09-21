@@ -41,17 +41,56 @@ dt_print_breadcrumbs(
     
             <div class="large-9 medium-12 small-12 cell ">
         
-                <section id="" class="medium-12 cell">
             
                     <div class="bordered-box" id="profile" data-magellan-target="profile">
                         <button class="float-right" onclick=""><i class="fi-pencil"></i> Edit</button>
                         <span class="section-header">Profile</span>
-                        
-                        <?php
-                        
-                        
-                        
-                        ?>
+    
+                        <div class="grid-x grid-margin-x">
+                            
+                            <div class="medium-6 cell">
+                                test
+                            </div>
+                            <div class="medium-6 cell">
+                                test
+                            </div>
+                            
+        
+                                        <?php
+                    
+                                        // query to get new notifications
+                                        $notifications = Disciple_Tools_Notifications::get_notifications( ['user_id' => get_current_user_id() ] );
+                    
+                                        // display new notifications
+                                        if ($notifications['status'] == true ) {
+                                            foreach($notifications['result'] as $notification) {
+                                                ?>
+                                                <div class="cell hover">
+                                                    <div class="grid-x grid-margin-x grid-padding-y" style="border-top: 1px solid #ccc;">
+                                                        <div class="small-1 cell"><img src="http://via.placeholder.com/50x50" width="50px" height="50px" /></div>
+                                                        <div class="auto cell">
+                                                            <?php echo $notification['notification_note']; ?>
+                                                            <br>
+                                                            <span class="grey"><?php echo $notification['pretty_time']; ?></span>
+                                                        </div>
+                                                        <div class="small-1 cell">
+                                                            <?php if( $notification['is_new'] ) : ?>
+                                                                <a id="mark-viewed-<?php echo $notification['id']; ?>" class="mark-viewed" onclick="mark_viewed(<?php echo $notification['id']; ?>);">
+                                                                    <span class="badge " style="vertical-align: middle; float:right;">&nbsp;</span>
+                                                                </a>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php
+                                            }
+                                        }
+                    
+                                        ?>
+                            
+                            
+    
+                        </div>
                         
                     </div>
                     
@@ -67,7 +106,6 @@ dt_print_breadcrumbs(
                         
                     </div>
                     
-                </section>
     
             </div>
     

@@ -24,7 +24,6 @@ dt_print_breadcrumbs(
     
             <div class="large-8 medium-12 small-12 cell ">
         
-                <section id="" class="medium-12 cell">
             
                     <div class="bordered-box">
                         
@@ -93,7 +92,6 @@ dt_print_breadcrumbs(
                     
                     </div>
         
-                </section>
     
             </div>
     
