@@ -99,7 +99,10 @@ function contact_details_status( $id, $verified, $invalid ){
                 class="tiny button">
             Return to Active
         </button>
-        <button class=" float-right" onclick="edit_fields()"><i class="fi-pencil"></i> Edit</button>
+        <button class="float-right" onclick="edit_fields()">
+            <i class="fi-pencil"></i>
+            <span id="edit-button-label">Edit</span>
+        </button>
     </div>
 
     <div class="reveal" id="close-contact-modal" data-reveal>
