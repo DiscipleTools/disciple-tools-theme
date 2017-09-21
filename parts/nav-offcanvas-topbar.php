@@ -21,8 +21,8 @@
         <a href="<?php echo home_url( '/notifications' ); ?>">
             <img title="<?php _e( "Notifications" ); ?>" src="<?php echo get_template_directory_uri() . "/assets/images/bell.svg" ?>">
         </a>
-        <a href="<?php echo home_url( '/settings') ?>">
-            <img title="<?php _e( "settings" ); ?>" src="<?php echo get_template_directory_uri() . "/assets/images/gear.svg" ?>">
+        <a href="<?php echo home_url( '/' ) . 'settings/'; ?>">
+            <img title="<?php _e( "Settings" ); ?>" src="<?php echo get_template_directory_uri() . "/assets/images/gear.svg" ?>">
         </a>
     </div>
 </div>
