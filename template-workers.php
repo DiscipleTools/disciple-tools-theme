@@ -37,6 +37,34 @@ dt_print_breadcrumbs(
                 <section id="" class="medium-12 cell">
             
                     <div class="bordered-box">
+    
+                        <ul class="tabs" data-tabs id="team-tabs">
+                            <li class="tabs-title is-active"><a href="#team-panel1" aria-selected="true">Team</a></li>
+                        </ul>
+    
+                        <div class="tabs-content" data-tabs-content="team-tabs">
+                            <div class="tabs-panel is-active" id="team-panel1">
+            
+                                <h2>Team</h2>
+                                <p>Team Name: Team 1</p>
+                                <div class="callout" >
+                                    <img src="http://placehold.it/150x150/1779ba/ffffff" />
+                                    <span>Chris Wynn</span>
+                                    <button class="button float-right">Send Message</button>
+                                </div>
+                                <div class="callout" >
+                                    <img src="http://placehold.it/150x150/1779ba/ffffff" />
+                                    <span>Chris Wynn</span>
+                                    <button class="button float-right">Send Message</button>
+                                </div>
+                                <div class="callout" >
+                                    <img src="http://placehold.it/150x150/1779ba/ffffff" />
+                                    <span>Chris Wynn</span>
+                                    <button class="button float-right">Send Message</button>
+                                </div>
+        
+                            </div>
+                        </div>
             
                     </div>
         
