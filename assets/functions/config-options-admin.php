@@ -421,39 +421,39 @@ final class Disciple_Tools_Theme_Admin {
         switch ( $section ) {
             case 'theme_main':
 
-                $settings_fields['theme_profile_page'] = array(
-                    'name' => __( 'Profile Page', 'disciple_tools' ),
-                    'type' => 'text',
-                    'default' => 'Profile',
-                    'section' => 'theme_main',
-                    'description' => '',
-                );
-                $settings_fields['theme_reports_page'] = array(
-                    'name' => __( 'Reports Page', 'disciple_tools' ),
-                    'type' => 'text',
-                    'default' => 'Reports',
-                    'section' => 'theme_main',
-                    'description' => '',
-                );
-                $settings_fields['theme_about_us_page'] = array(
-                    'name' => __( 'About Us Page', 'disciple_tools' ),
-                    'type' => 'text',
-                    'default' => 'About Us',
-                    'section' => 'theme_main',
-                    'description' => '',
-                );
+//                $settings_fields['theme_profile_page'] = array(
+//                    'name' => __( 'Profile Page', 'disciple_tools' ),
+//                    'type' => 'text',
+//                    'default' => 'Profile',
+//                    'section' => 'theme_main',
+//                    'description' => '',
+//                );
+//                $settings_fields['theme_reports_page'] = array(
+//                    'name' => __( 'Reports Page', 'disciple_tools' ),
+//                    'type' => 'text',
+//                    'default' => 'Reports',
+//                    'section' => 'theme_main',
+//                    'description' => '',
+//                );
+//                $settings_fields['theme_about_us_page'] = array(
+//                    'name' => __( 'About Us Page', 'disciple_tools' ),
+//                    'type' => 'text',
+//                    'default' => 'About Us',
+//                    'section' => 'theme_main',
+//                    'description' => '',
+//                );
 
                 break;
 
             case 'theme_second':
 
-                $settings_fields['theme_field'] = array(
-                    'name' => __( 'Field', 'disciple_tools' ),
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'theme_second',
-                    'description' => '',
-                );
+//                $settings_fields['theme_field'] = array(
+//                    'name' => __( 'Field', 'disciple_tools' ),
+//                    'type' => 'text',
+//                    'default' => '',
+//                    'section' => 'theme_second',
+//                    'description' => '',
+//                );
 
 
                 break;

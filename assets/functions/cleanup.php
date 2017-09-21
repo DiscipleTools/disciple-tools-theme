@@ -1,32 +1,42 @@
 <?php
 
 // Fire all our initial functions at the start
-add_action( 'after_setup_theme','disciple_tools_start', 16 );
+add_action( 'after_setup_theme','dt_start', 16 );
 
-function disciple_tools_start() {
+function dt_start() {
 
     // launching operation cleanup
-    add_action( 'init', 'disciple_tools_head_cleanup' );
+    add_action( 'init', 'dt_head_cleanup' );
 
     // remove pesky injected css for recent comments widget
-    add_filter( 'wp_head', 'disciple_tools_remove_wp_widget_recent_comments_style', 1 );
+    add_filter( 'wp_head', 'dt_remove_wp_widget_recent_comments_style', 1 );
 
     // clean up comment styles in the head
-    add_action( 'wp_head', 'disciple_tools_remove_recent_comments_style', 1 );
+    add_action( 'wp_head', 'dt_remove_recent_comments_style', 1 );
 
     // clean up gallery output in wp
-    add_filter( 'gallery_style', 'disciple_tools_gallery_style' );
-
-    // adding sidebars to Wordpress
-    add_action( 'widgets_init', 'disciple_tools_register_sidebars' );
+    add_filter( 'gallery_style', 'dt_gallery_style' );
 
     // cleaning up excerpt
-    add_filter( 'excerpt_more', 'disciple_tools_excerpt_more' );
+    add_filter( 'excerpt_more', 'dt_excerpt_more' );
+    
+    // Removes WP sticky class in favor or foundations sticky class
+    add_filter( 'post_class','remove_sticky_class' );
+    
+    // sets the theme to "light"
+    add_filter( 'get_user_option_admin_color', 'dt_change_admin_color' );
+    remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' ); // Remove options for admin area color scheme
+    
+    // Cleanup admin menus
+    add_action( 'admin_menu', 'dt_remove_post_admin_menus' );
+    
+    // Disable emoji
+    add_action( 'init', 'disable_wp_emoji' );
 
 } /* end joints start */
 
 //The default wordpress head is a mess. Let's clean it up by removing all the junk we don't need.
-function disciple_tools_head_cleanup() {
+function dt_head_cleanup() {
     // Remove category feeds
      remove_action( 'wp_head', 'feed_links_extra', 3 );
     // Remove post and comment feeds
@@ -38,24 +48,24 @@ function disciple_tools_head_cleanup() {
     // Remove index link
     remove_action( 'wp_head', 'index_rel_link' );
     // Remove previous link
-    remove_action( 'wp_head', 'parent_post_rel_link', 10, 0 );
+    remove_action( 'wp_head', 'parent_post_rel_link', 10 );
     // Remove start link
-    remove_action( 'wp_head', 'start_post_rel_link', 10, 0 );
+    remove_action( 'wp_head', 'start_post_rel_link', 10 );
     // Remove links for adjacent posts
-    remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
+    remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10 );
     // Remove WP version
     remove_action( 'wp_head', 'wp_generator' );
 } /* end Joints head cleanup */
 
 // Remove injected CSS for recent comments widget
-function disciple_tools_remove_wp_widget_recent_comments_style() {
+function dt_remove_wp_widget_recent_comments_style() {
     if ( has_filter( 'wp_head', 'wp_widget_recent_comments_style' ) ) {
         remove_filter( 'wp_head', 'wp_widget_recent_comments_style' );
     }
 }
 
 // Remove injected CSS from recent comments widget
-function disciple_tools_remove_recent_comments_style() {
+function dt_remove_recent_comments_style() {
     global $wp_widget_factory;
     if (isset( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'] )) {
         remove_action( 'wp_head', array($wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style') );
@@ -63,12 +73,12 @@ function disciple_tools_remove_recent_comments_style() {
 }
 
 // Remove injected CSS from gallery
-function disciple_tools_gallery_style( $css ) {
+function dt_gallery_style( $css ) {
     return preg_replace( "!<style type='text/css'>(.*?)</style>!s", '', $css );
 }
 
 // This removes the annoying […] to a Read More link
-function disciple_tools_excerpt_more( $more ) {
+function dt_excerpt_more( $more ) {
     global $post;
     // edit here if you like
     return '<a class="excerpt-read-more" href="'. get_permalink( $post->ID ) . '" title="'. __( 'Read', 'disciple_tools' ) . esc_html( get_the_title( $post->ID ) ).'">'. __( '... Read more &raquo;', 'disciple_tools' ) .'</a>';
@@ -83,10 +93,10 @@ function remove_sticky_class( $classes ) {
 
     return $classes;
 }
-add_filter( 'post_class','remove_sticky_class' );
+
 
 //This is a modified the_author_posts_link() which just returns the link. This is necessary to allow usage of the usual l10n process with printf()
-function disciple_tools_get_the_author_posts_link() {
+function dt_get_the_author_posts_link() {
     global $authordata;
     if ( !is_object( $authordata ) ) {
         return false;
@@ -100,7 +110,9 @@ function disciple_tools_get_the_author_posts_link() {
     return $link;
 }
 
-// Todo dashboard removal not installed yet.
+/**
+ * Cleans up the admin dashboard defaults
+ */
 function remove_dashboard_meta () {
 
     remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'normal' );
@@ -126,4 +138,56 @@ function remove_dashboard_meta () {
 
     // Removing plugin dashboard boxes
     remove_meta_box( 'yoast_db_widget', 'dashboard', 'normal' );         // Yoast's SEO Plugin Widget
+}
+
+/*
+ * Sets the admin area color scheme to lightness
+ */
+function dt_change_admin_color( $result ) {
+    return 'light';
+}
+
+
+/**
+ * Removes Post WP Admin menu item
+ *
+ * @note Removing the posts menu is to clean the admin menu and because it is unnecissary to the disciple tools system.
+ */
+function dt_remove_post_admin_menus(){
+    remove_menu_page( 'edit.php' ); //Posts (Not using posts as a content channel for Disciple Tools, so that no data is automatically exposed by switching themes or plugin.
+}
+
+
+/**
+ * Disable default emoji features of Wordpress
+ */
+function disable_wp_emoji() {
+    
+    // all actions related to emojis
+    remove_action( 'admin_print_styles', 'print_emoji_styles' );
+    remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+    remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+    remove_action( 'wp_print_styles', 'print_emoji_styles' );
+    remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+    remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+    remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+    
+    // filter to remove TinyMCE emojis
+    add_filter( 'tiny_mce_plugins', 'disable_emoji_tinymce' );
+}
+
+
+/**
+ * Disables emoji support in the tinymce.
+ *
+ * @param $plugins
+ *
+ * @return array
+ */
+function disable_emoji_tinymce( $plugins ) {
+    if ( is_array( $plugins ) ) {
+        return array_diff( $plugins, array( 'wpemoji' ) );
+    } else {
+        return array();
+    }
 }
