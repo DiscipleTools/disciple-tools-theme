@@ -5,7 +5,7 @@
  */
 ?>
 
-<div class="title-bar" data-responsive-toggle="top-bar-menu" data-hide-for="medium">
+<div class="title-bar show-for-small-only" data-responsive-toggle="top-bar-menu">
     <div class="title-bar-left">
         <button class="menu-icon" type="button" data-open="off-canvas">
             <img src="<?php echo get_template_directory_uri() . "/assets/images/hamburger.svg" ?>">
