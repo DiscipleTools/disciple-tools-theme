@@ -29,8 +29,10 @@ function contact_details_status( $id, $verified, $invalid ){
 
         </select>
 
-
-        <button class=" float-right" id="edit-details"><i class="fi-pencil"></i> Edit</button>
+        <button class=" float-right" id="edit-details">
+            <i class="fi-pencil"></i>
+            <span id="edit-button-label">Edit</span>
+        </button>
     </div>
 
     <div class="display-fields grid-x">

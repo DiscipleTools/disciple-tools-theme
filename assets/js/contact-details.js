@@ -430,11 +430,15 @@ function display_activity_comment(section) {
   }
 }
 
-
+let editingAll = false
 
 function edit_fields() {
+  let editDetailsToggle = $('#edit-button-label')
   jQuery(".display-fields").toggle()
   jQuery(".edit-fields").toggle()
+  editingAll = !editingAll
+  editDetailsToggle.text( editingAll ? "Back": "Edit")
+
 }
 
 function handelAjaxError(err) {

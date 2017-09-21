@@ -63,10 +63,13 @@ jQuery(document).ready(function($) {
   /**
    * Group details Info
    */
+  let editDetailsToggle = $('#edit-button-label')
   function toggleEditAll() {
     $(`.details-list`).toggle()
     $(`.details-edit`).toggle()
     editingAll = !editingAll
+    editDetailsToggle.text( editingAll ? "Save": "Edit")
+
   }
   $('#edit-details').on('click', function () {
     toggleEditAll()
