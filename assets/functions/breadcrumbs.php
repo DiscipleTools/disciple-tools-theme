@@ -74,8 +74,8 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
                     </a>
                 </button>
             </div>
-        <?php endif;
-        if ( $share_button ): ?>
+        <?php endif; ?>
+        <?php if ( $share_button ): ?>
             <div class="cell shrink">
                 <button data-open="share-contact-modal" class="center-items">
                     <img src="<?php echo get_template_directory_uri() . "/assets/images/share.svg" ?>">
