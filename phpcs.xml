@@ -24,6 +24,10 @@
   <file>.</file>
 
   <exclude-pattern>*/dependencies/*</exclude-pattern>
+  <exclude-pattern>*/vendor/*</exclude-pattern>
+
+  <!-- TODO: remove these exclude-pattern elements, we want to test the entire
+       codebase! -->
 
   <arg name="extensions" value="php,inc,lib"/>
   <arg value="n"/>
@@ -32,6 +36,135 @@
 
   <!-- To get a list of all available standards, run phpcs -i. To get a list of
        the sniffs in a standard, run phpcs -e \-\-standard=STANDARD -->
+
+  <!-- For whatever reason, to get the WordPress rules to work, you have to
+       include all of WordPress, which includes a bunch of other rules not in
+       the WordPress namespaces. -->
+  <rule ref="WordPress">
+
+    <!-- TODO: enable these -->
+    <exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
+    <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+    <exclude name="WordPress.VIP.PostsPerPage.posts_per_page_nopaging" />
+    <exclude name="WordPress.VIP.PostsPerPage.posts_per_page_numberposts" />
+    <exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
+    <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_get_user_meta" />
+    <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_add_user_meta" />
+
+    <!-- We currently don't want these rules that WordPress imports: -->
+
+    <exclude name="Generic.Classes.OpeningBraceSameLine.BraceOnNewLine" />
+    <exclude name="Generic.Classes.OpeningBraceSameLine.SpaceBeforeBrace" />
+    <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedELSE" />
+    <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedELSEIF" />
+    <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedIF" />
+    <exclude name="Generic.Commenting.DocComment.Empty" />
+    <exclude name="Generic.Commenting.DocComment.LongNotCapital" />
+    <exclude name="Generic.Commenting.DocComment.MissingShort" />
+    <exclude name="Generic.Commenting.DocComment.ShortNotCapital" />
+    <exclude name="Generic.Commenting.DocComment.SpacingAfter" />
+    <exclude name="Generic.Commenting.DocComment.SpacingBeforeTags" />
+    <exclude name="Generic.Files.EndFileNewline.NotFound" />
+    <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine" />
+    <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.ContentAfterBrace" />
+    <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.SpaceBeforeBrace" />
+    <exclude name="Generic.PHP.ForbiddenFunctions.FoundWithAlternative" />
+    <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
+    <exclude name="PSR2.ControlStructures.SwitchDeclaration.BodyOnNextLineCASE" />
+    <exclude name="PSR2.ControlStructures.SwitchDeclaration.BreakIndent" />
+    <exclude name="PSR2.ControlStructures.SwitchDeclaration.SpaceBeforeColonCASE" />
+    <exclude name="PSR2.Files.ClosingTag.NotAllowed" />
+    <exclude name="Squiz.Commenting.BlockComment.CloserSameLine" />
+    <exclude name="Squiz.Commenting.BlockComment.NoCapital" />
+    <exclude name="Squiz.Commenting.BlockComment.NoEmptyLineBefore" />
+    <exclude name="Squiz.Commenting.BlockComment.NoNewLine" />
+    <exclude name="Squiz.Commenting.BlockComment.WrongEnd" />
+    <exclude name="Squiz.Commenting.ClassComment.Missing" />
+    <exclude name="Squiz.Commenting.ClassComment.SpacingAfter" />
+    <exclude name="Squiz.Commenting.ClassComment.WrongStyle" />
+    <exclude name="Squiz.Commenting.DocCommentAlignment.NoSpaceAfterStar" />
+    <exclude name="Squiz.Commenting.DocCommentAlignment.SpaceBeforeStar" />
+    <exclude name="Squiz.Commenting.FileComment.EmptyAuthorTag" />
+    <exclude name="Squiz.Commenting.FileComment.Missing" />
+    <exclude name="Squiz.Commenting.FileComment.MissingPackageTag" />
+    <exclude name="Squiz.Commenting.FileComment.SpacingAfterComment" />
+    <exclude name="Squiz.Commenting.FileComment.SpacingAfterOpen" />
+    <exclude name="Squiz.Commenting.FileComment.WrongStyle" />
+    <exclude name="Squiz.Commenting.FunctionComment.ExtraParamComment" />
+    <exclude name="Squiz.Commenting.FunctionComment.IncorrectTypeHint" />
+    <exclude name="Squiz.Commenting.FunctionComment.InvalidNoReturn" />
+    <exclude name="Squiz.Commenting.FunctionComment.InvalidReturnVoid" />
+    <exclude name="Squiz.Commenting.FunctionComment.Missing" />
+    <exclude name="Squiz.Commenting.FunctionComment.MissingParamComment" />
+    <exclude name="Squiz.Commenting.FunctionComment.MissingParamName" />
+    <exclude name="Squiz.Commenting.FunctionComment.MissingParamTag" />
+    <exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
+    <exclude name="Squiz.Commenting.FunctionComment.ParamNameNoMatch" />
+    <exclude name="Squiz.Commenting.FunctionComment.SpacingAfter" />
+    <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType" />
+    <exclude name="Squiz.Commenting.FunctionComment.WrongStyle" />
+    <exclude name="Squiz.Commenting.FunctionCommentThrowTag.Missing" />
+    <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
+    <exclude name="Squiz.Commenting.InlineComment.NoSpaceBefore" />
+    <exclude name="Squiz.Commenting.InlineComment.SpacingAfter" />
+    <exclude name="Squiz.Commenting.InlineComment.SpacingBefore" />
+    <exclude name="Squiz.Commenting.InlineComment.WrongStyle" />
+    <exclude name="Squiz.Commenting.VariableComment.Missing" />
+    <exclude name="Squiz.Commenting.VariableComment.MissingVar" />
+    <exclude name="Squiz.Commenting.VariableComment.WrongStyle" />
+    <exclude name="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace" />
+    <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace" />
+    <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis" />
+    <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword" />
+    <exclude name="Squiz.PHP.DisallowMultipleAssignments.Found" />
+    <exclude name="Squiz.PHP.EmbeddedPhp.ContentAfterEnd" />
+    <exclude name="Squiz.PHP.EmbeddedPhp.ContentAfterOpen" />
+    <exclude name="Squiz.PHP.EmbeddedPhp.ContentBeforeEnd" />
+    <exclude name="Squiz.PHP.EmbeddedPhp.ContentBeforeOpen" />
+    <exclude name="Squiz.PHP.EmbeddedPhp.NoSemicolon" />
+    <exclude name="Squiz.PHP.EmbeddedPhp.SpacingBeforeClose" />
+    <exclude name="Squiz.Strings.ConcatenationSpacing.PaddingFound" />
+    <exclude name="Squiz.Strings.DoubleQuoteUsage.NotRequired" />
+    <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines" />
+    <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine" />
+    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine" />
+    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeKeyFound" />
+    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.CloseBraceNewLine" />
+    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceAfterArrayOpener" />
+    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceBeforeArrayCloser" />
+    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.SpaceAfterKeyword" />
+    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.SpaceBeforeArrayCloser" />
+    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.SpaceInEmptyArray" />
+    <exclude name="WordPress.Arrays.ArrayIndentation.CloseBraceNotAligned" />
+    <exclude name="WordPress.Arrays.ArrayIndentation.ItemNotAligned" />
+    <exclude name="WordPress.Arrays.ArrayIndentation.MultiLineArrayItemNotAligned" />
+    <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions.NoSpacesAroundArrayKeys" />
+    <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions.SpacesAroundArrayKeys" />
+    <exclude name="WordPress.Arrays.CommaAfterArrayItem.CommaAfterLast" />
+    <exclude name="WordPress.Arrays.CommaAfterArrayItem.NoComma" />
+    <exclude name="WordPress.Arrays.CommaAfterArrayItem.NoSpaceAfterComma" />
+    <exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma" />
+    <exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceBeforeComma" />
+    <exclude name="WordPress.PHP.YodaConditions.NotYoda" />
+    <exclude name="WordPress.WhiteSpace.CastStructureSpacing.NoSpaceBeforeOpenParenthesis" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.BlankLineAfterEnd" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceAfterCloseParenthesis" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceAfterOpenParenthesis" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceBeforeCloseParenthesis" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceBeforeOpenParenthesis" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterCloseParenthesis" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterOpenParenthesis" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterStructureOpen" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeCloseParenthesis" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeOpenParenthesis" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBetweenStructureColon" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.OpenBraceNotSameLine" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.SpaceBeforeFunctionOpenParenthesis" />
+    <exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceAfter" />
+    <exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore" />
+    <exclude name="WordPress.WhiteSpace.OperatorSpacing.SpacingAfter" />
+
+  </rule>
 
   <!-- Keeping these ones: -->
   <rule ref="Generic.ControlStructures.InlineControlStructure"/>
@@ -72,6 +205,11 @@
   </rule>
   <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
   <rule ref="PEAR.NamingConventions.ValidClassName"/>
+  <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+    <properties>
+      <property name="prefixes" type="array" value="dt,Disciple_Tools" />
+    </properties>
+  </rule>
 
   <!-- Maybe these rules will be enabled in the future: -->
   <!-- <rule ref="Generic.Files.LineLength"/> -->

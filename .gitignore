@@ -1,7 +1,7 @@
-# Created by .ignore support plugin (hsz.mobi)
 .sass-cache/
 node_modules/
 .env
+/vendor
 
 config.codekit
 .idea
