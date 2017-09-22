@@ -40,9 +40,9 @@ function site_scripts() {
      * End jQuery force new version
      */
 
-    dt_theme_enqueue_script( 'lodash', 'vendor/lodash/lodash.min.js', array() );
+    dt_theme_enqueue_script( 'lodash', 'dependencies/lodash/lodash.min.js', array() );
 
-    dt_theme_enqueue_script( 'typeahead', 'vendor/typeahead/typeahead.bundle.min.js', array( 'jquery' ), true );
+    dt_theme_enqueue_script( 'typeahead', 'dependencies/typeahead/typeahead.bundle.min.js', array( 'jquery' ), true );
 
     dt_theme_enqueue_script( 'site-js', 'build/js/scripts.min.js', array( 'jquery' ), true );
 
@@ -112,8 +112,8 @@ function site_scripts() {
     }
 
     if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )) {
-        dt_theme_enqueue_script( 'data-tables', 'vendor/DataTables/datatables.min.js',  array( 'jquery' ) );
-        dt_theme_enqueue_style( 'data-tables', 'vendor/DataTables/datatables.min.css', array() );
+        dt_theme_enqueue_script( 'data-tables', 'dependencies/DataTables/datatables.min.js',  array( 'jquery' ) );
+        dt_theme_enqueue_style( 'data-tables', 'dependencies/DataTables/datatables.min.css', array() );
         dt_theme_enqueue_script( 'list-js', 'assets/js/list.js', array( 'jquery', 'lodash', 'data-tables', 'site-js' ), true );
         $post_type = null;
         if (is_post_type_archive( "contacts" )) {

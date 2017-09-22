@@ -23,7 +23,7 @@
 
   <file>.</file>
 
-  <exclude-pattern>*/vendor/*</exclude-pattern>
+  <exclude-pattern>*/dependencies/*</exclude-pattern>
 
   <arg name="extensions" value="php,inc,lib"/>
   <arg value="n"/>
