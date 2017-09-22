@@ -137,8 +137,8 @@ dt_print_breadcrumbs(
                 
                 <?php
                 // notifications query
-                $notification_options = dt_get_notification_options();
-                if($notification_options) : // check if notifications are not empty
+                $notification_options = dt_get_user_notification_options();
+                $site_notification_defaults = dt_get_site_notification_defaults();
                 ?>
                 
                 <!-- Begin Notification-->
@@ -158,106 +158,122 @@ dt_print_breadcrumbs(
                         <tr>
                             <td>Newly Assigned Contact</td>
                             <td>
-                                <div class="switch">
-                                    <input class="switch-input" id="assignedWeb" type="checkbox" name="assignedWeb" <?php ($notification_options['new']['web']) ? print 'checked' : print ''; ?> disabled>
-                                    <label class="switch-paddle" for="assignedWeb">
-                                        <span class="show-for-sr">New Assignments</span>
-                                    </label>
-                                </div>
+                                <?php if ( $site_notification_defaults['new_web'] ) { print 'required'; } else {  ?>
+                                    <div class="switch">
+                                        <input class="switch-input" id="new_web" type="checkbox" name="new_web" <?php ($notification_options['new_web']) ? print 'checked' : print ''; ?> >
+                                        <label class="switch-paddle inactive" for="new_web">
+                                            <span class="show-for-sr">Newly Assigned Contact</span>
+                                        </label>
+                                    </div>
+                                <?php } // end else ?>
                             </td>
                             <td>
-                                <div class="switch">
-                                    <input class="switch-input" id="assignedEmail" type="checkbox" name="assignedEmail" <?php ($notification_options['new']['email']) ? print 'checked' : print ''; ?> disabled>
-                                    <label class="switch-paddle" for="assignedEmail">
-                                        <span class="show-for-sr">New Assignments</span>
-                                    </label>
-                                </div>
+                                <?php if ( $site_notification_defaults['new_email'] ) { print 'required'; } else {  ?>
+                                    <div class="switch">
+                                        <input class="switch-input" id="new_email" type="checkbox" name="new_email" <?php ($notification_options['new_email']) ? print 'checked' : print ''; ?> >
+                                        <label class="switch-paddle" for="new_email">
+                                            <span class="show-for-sr">Newly Assigned Contact</span>
+                                        </label>
+                                    </div>
+                                <?php } // end else ?>
                             </td>
                         </tr>
                         <tr>
                             <td>@Mentions</td>
                             <td>
-                                <div class="switch">
-                                    <input class="switch-input" id="mentionWeb" type="checkbox" name="mentionWeb" <?php ($notification_options['mentions']['web']) ? print 'checked' : print ''; ?> disabled>
-                                    <label class="switch-paddle" for="mentionWeb">
-                                        <span class="show-for-sr">Mentions on Web</span>
-                                    </label>
-                                </div>
+                                <?php if ( $site_notification_defaults['mentions_web'] ) { print 'required'; } else {  ?>
+                                    <div class="switch">
+                                        <input class="switch-input" id="mentions_web" type="checkbox" name="mentions_web" <?php ($notification_options['mentions_web']) ? print 'checked' : print ''; ?> >
+                                        <label class="switch-paddle" for="mentions_web">
+                                            <span class="show-for-sr">@Mentions</span>
+                                        </label>
+                                    </div>
+                                <?php } // end else ?>
                             </td>
                             <td>
+                                <?php if ( $site_notification_defaults['mentions_email'] ) { print 'required'; } else {  ?>
                                 <div class="switch">
-                                    <input class="switch-input" id="mentionEmail" type="checkbox" name="mentionEmail" <?php ($notification_options['mentions']['email']) ? print 'checked' : print ''; ?>>
-                                    <label class="switch-paddle" for="mentionEmail">
-                                        <span class="show-for-sr">Mentions on Email</span>
+                                    <input class="switch-input" id="mentions_email" type="checkbox" name="mentions_email" <?php ($notification_options['mentions_email']) ? print 'checked' : print ''; ?> >
+                                    <label class="switch-paddle" for="mentions_email">
+                                        <span class="show-for-sr">@Mentions</span>
                                     </label>
                                 </div>
+                                <?php } // end else ?>
                             </td>
                         </tr>
                         <tr>
                             <td>Update Needed</td>
                             <td>
+                                <?php if ( $site_notification_defaults['updates_web'] ) { print 'required'; } else {  ?>
                                 <div class="switch">
-                                    <input class="switch-input" id="updateWeb" type="checkbox" name="updateWeb" <?php ($notification_options['updates']['web']) ? print 'checked' : print ''; ?> disabled>
-                                    <label class="switch-paddle" for="updateWeb">
-                                        <span class="show-for-sr">Web Mentions</span>
+                                    <input class="switch-input" id="updates_web" type="checkbox" name="updates_web" <?php ($notification_options['updates_web']) ? print 'checked' : print ''; ?> >
+                                    <label class="switch-paddle" for="updates_web">
+                                        <span class="show-for-sr">Update Needed</span>
                                     </label>
                                 </div>
+                                <?php } // end else ?>
                             </td>
                             <td>
-                                <div class="switch">
-                                    <input class="switch-input" id="updateEmail" type="checkbox" name="updateEmail" <?php ($notification_options['updates']['email']) ? print 'checked' : print ''; ?> >
-                                    <label class="switch-paddle" for="updateEmail">
-                                        <span class="show-for-sr">Web Mentions</span>
-                                    </label>
-                                </div>
+                                <?php if ( $site_notification_defaults['updates_email'] ) { print 'required'; } else {  ?>
+                                    <div class="switch">
+                                        <input class="switch-input" id="updates_email" type="checkbox" name="updates_email" <?php ($notification_options['updates_email']) ? print 'checked' : print ''; ?> >
+                                        <label class="switch-paddle" for="updateEmail">
+                                            <span class="show-for-sr">Update Needed</span>
+                                        </label>
+                                    </div>
+                                <?php } // end else ?>
                             </td>
                         </tr>
                         <tr>
-                            <td>Contact info changed</td>
+                            <td>Contact Info Changed</td>
                             <td>
-                                <div class="switch">
-                                    <input class="switch-input" id="changedWeb" type="checkbox" name="changedWeb" <?php ($notification_options['changes']['web']) ? print 'checked' : print ''; ?>>
-                                    <label class="switch-paddle" for="changedWeb">
-                                        <span class="show-for-sr">Web Mentions</span>
-                                    </label>
-                                </div>
+                                <?php if ( $site_notification_defaults['changes_web'] ) { print 'required'; } else {  ?>
+                                    <div class="switch">
+                                        <input class="switch-input" id="changes_web" type="checkbox" name="changes_web" <?php ($notification_options['changes_web']) ? print 'checked' : print ''; ?> >
+                                        <label class="switch-paddle" for="changes_web">
+                                            <span class="show-for-sr">Contact Info Changed</span>
+                                        </label>
+                                    </div>
+                                <?php } // end else ?>
                             </td>
                             <td>
-                                <div class="switch">
-                                    <input class="switch-input" id="changedEmail" type="checkbox" name="changedEmail" <?php ($notification_options['changes']['email']) ? print 'checked' : print ''; ?>>
-                                    <label class="switch-paddle" for="changedEmail">
-                                        <span class="show-for-sr">Web Mentions</span>
-                                    </label>
-                                </div>
+                                <?php if ( $site_notification_defaults['changes_email'] ) { print 'required'; } else {  ?>
+                                    <div class="switch">
+                                        <input class="switch-input" id="changes_email" type="checkbox" name="changes_email" <?php ($notification_options['changes_email']) ? print 'checked' : print ''; ?> >
+                                        <label class="switch-paddle" for="changes_email">
+                                            <span class="show-for-sr">Contact Info Changed</span>
+                                        </label>
+                                    </div>
+                                <?php } // end else ?>
                             </td>
                         </tr>
                         <tr>
-                            <td>Milestones</td>
+                            <td>Contact Milestones</td>
                             <td>
-                                <div class="switch">
-                                    <input class="switch-input" id="milestoneWeb" type="checkbox" name="milestoneWeb" <?php ($notification_options['milestones']['web']) ? print 'checked' : print ''; ?>>
-                                    <label class="switch-paddle" for="milestoneWeb">
-                                        <span class="show-for-sr">Milestones</span>
-                                    </label>
-                                </div>
+                                <?php if ( $site_notification_defaults['milestones_web'] ) { print 'required'; } else {  ?>
+                                    <div class="switch">
+                                        <input class="switch-input" id="milestones_web" type="checkbox" name="milestones_web" <?php ($notification_options['milestones_web']) ? print 'checked' : print ''; ?> >
+                                        <label class="switch-paddle" for="milestones_web">
+                                            <span class="show-for-sr">Milestones</span>
+                                        </label>
+                                    </div>
+                                <?php } // end else ?>
                             </td>
                             <td>
-                                <div class="switch">
-                                    <input class="switch-input" id="milestoneEmail" type="checkbox" name="milestoneEmail" <?php ($notification_options['milestones']['email']) ? print 'checked' : print ''; ?>>
-                                    <label class="switch-paddle" for="milestoneEmail">
-                                        <span class="show-for-sr">Milestones</span>
-                                    </label>
-                                </div>
+                                <?php if ( $site_notification_defaults['milestones_email'] ) { print 'required'; } else {  ?>
+                                    <div class="switch">
+                                        <input class="switch-input" id="milestones_email" type="checkbox" name="milestones_email" <?php ($notification_options['milestones_email']) ? print 'checked' : print ''; ?> >
+                                        <label class="switch-paddle" for="milestones_email">
+                                            <span class="show-for-sr">Milestones</span>
+                                        </label>
+                                    </div>
+                                <?php } // end else ?>
                             </td>
                         </tr>
                         
-                        
-                        
-        
                         </tbody>
                     </table>
                     
-                    <?php endif; // notifications options  ?>
                     
                 </div> <!-- End Notifications -->
     
