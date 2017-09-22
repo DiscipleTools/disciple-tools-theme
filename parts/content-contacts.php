@@ -7,6 +7,9 @@ declare(strict_types=1);
     <div class="js-sort-dropdown" hidden>
         <ul class="dropdown menu" data-dropdown-menu>
             <li>
+                <a href="<?php echo home_url( '/' ) . "/contacts/new" ?>"><?php _e( "Create new contact" ); ?></a>
+            </li>
+            <li>
                 <a href="#"><?php _e( "Sort" ); ?></a>
                 <ul class="menu">
                     <li><a href="#" class="js-sort-by" data-column-index="7" data-order="desc">
