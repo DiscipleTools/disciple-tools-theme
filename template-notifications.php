@@ -8,11 +8,8 @@ Template Name: Notifications
 
 <?php
 dt_print_breadcrumbs(
-    [
-        [ home_url( '/' ), __( "Dashboard" ) ],
-        [ home_url( '/' ) . "notifications", __( "Notifications" ) ],
-    ],
-    get_the_title(),
+    null,
+    __( "Notifications" ),
     false
 ); ?>
     
