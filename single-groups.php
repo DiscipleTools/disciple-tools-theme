@@ -1,11 +1,18 @@
 <?php
 declare(strict_types=1);
+
+(function() {
+?>
+
+<?php
+global $post;
+
 $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
 if( !Disciple_Tools_Contacts::can_view( 'groups', get_the_ID() )){
     return wp_redirect( "not-found" );
 }
 $shared_with = Disciple_Tools_Contacts::get_shared_with_on_contact( get_the_id() );
-$users = Disciple_Tools_Users::get_assignable_users_compact( );
+$users = Disciple_Tools_Users::get_assignable_users_compact();
 get_header();?>
 
 <?php
@@ -42,10 +49,10 @@ dt_print_breadcrumbs(
                         foreach( $group["members"] as $member){
                             $ids[] = $member->ID;
                             ?>
-                            <li class="<?php echo $member->ID ?>">
-                                <a href="<?php echo $member->permalink ?>"><?php echo esc_html( $member->post_title )?></a>
+                            <li class="<?php echo esc_attr( $member->ID ); ?>">
+                                <a href="<?php echo esc_attr( $member->permalink ); ?>"><?php echo esc_html( $member->post_title )?></a>
                                 <button class="details-remove-button members-edit"
-                                        data-field="members" data-id="<?php echo $member->ID ?>"
+                                        data-field="members" data-id="<?php echo esc_attr( $member->ID ); ?>"
                                         data-name="<?php echo esc_html( $member->post_title ) ?>"
                                 >Remove</button>
                             </li>
@@ -67,69 +74,69 @@ dt_print_breadcrumbs(
                     <div style="display:flex;flex-wrap:wrap">
                         <div class="group-progress-button-wrapper">
                             <button  class="group-progress-button" id="church_fellowship">
-                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/heart.svg' ?>">
+                                <img src="<?php echo esc_attr( get_template_directory_uri() . '/assets/images/groups/heart.svg' ); ?>">
                             </button>
-                            <p><?php _e( 'Fellowship', 'disciple_tools' )?> </p>
+                            <p><?php esc_html_e( 'Fellowship', 'disciple_tools' )?> </p>
                         </div>
                         <div class="group-progress-button-wrapper">
                             <button class="group-progress-button" id="church_giving">
-                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/giving.svg' ?>">
+                                <img src="<?php echo esc_attr( get_template_directory_uri() . '/assets/images/groups/giving.svg' ); ?>">
                             </button>
-                            <p><?php _e( 'Giving', 'disciple_tools' )?></p>
+                            <p><?php esc_html_e( 'Giving', 'disciple_tools' )?></p>
                         </div>
                         <div class="group-progress-button-wrapper">
                             <button class="group-progress-button" id="church_communion">
-                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/communion.svg' ?>">
+                                <img src="<?php echo esc_attr( get_template_directory_uri() . '/assets/images/groups/communion.svg' ); ?>">
                             </button>
-                            <p><?php _e( 'Communion', 'disciple_tools' )?></p>
+                            <p><?php esc_html_e( 'Communion', 'disciple_tools' )?></p>
                         </div>
                         <div class="group-progress-button-wrapper">
                             <button class="group-progress-button" id="church_baptism">
-                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/baptism.svg' ?>">
+                                <img src="<?php echo esc_attr( get_template_directory_uri() . '/assets/images/groups/baptism.svg' ); ?>">
                             </button>
-                            <p><?php _e( 'Baptism', 'disciple_tools' )?></p>
+                            <p><?php esc_html_e( 'Baptism', 'disciple_tools' )?></p>
 
                         </div>
                         <div class="group-progress-button-wrapper">
                             <button class="cell auto group-progress-button" id="church_prayer">
-                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/prayer.svg' ?>">
+                                <img src="<?php echo esc_attr( get_template_directory_uri() . '/assets/images/groups/prayer.svg' ); ?>">
                             </button>
-                            <p><?php _e( 'Prayer', 'disciple_tools' )?></p>
+                            <p><?php esc_html_e( 'Prayer', 'disciple_tools' )?></p>
                         </div>
                         <div class="group-progress-button-wrapper">
                             <button class="group-progress-button" id="church_leaders">
-                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/leadership.svg' ?>">
+                                <img src="<?php echo esc_attr( get_template_directory_uri() . '/assets/images/groups/leadership.svg' ); ?>">
                             </button>
-                            <p><?php _e( 'Leaders', 'disciple_tools' )?></p>
+                            <p><?php esc_html_e( 'Leaders', 'disciple_tools' )?></p>
                         </div>
                         <div class="group-progress-button-wrapper">
                             <button class="group-progress-button" id="church_bible">
-                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/word.svg' ?>">
+                                <img src="<?php echo esc_attr( get_template_directory_uri() . '/assets/images/groups/word.svg' ); ?>">
                             </button>
-                            <p><?php _e( 'Word', 'disciple_tools' )?></p>
+                            <p><?php esc_html_e( 'Word', 'disciple_tools' )?></p>
                         </div>
                         <div class="group-progress-button-wrapper">
                             <button class="group-progress-button" id="church_praise">
-                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/praise.svg' ?>">
+                                <img src="<?php echo esc_attr( get_template_directory_uri() . '/assets/images/groups/praise.svg' ); ?>">
                             </button>
-                            <p><?php _e( 'Praise', 'disciple_tools' )?> </p>
+                            <p><?php esc_html_e( 'Praise', 'disciple_tools' )?> </p>
                         </div>
                         <div class="group-progress-button-wrapper">
                             <button class="group-progress-button" id="church_sharing">
-                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/evangelism.svg' ?>">
+                                <img src="<?php echo esc_attr( get_template_directory_uri() . '/assets/images/groups/evangelism.svg' ); ?>">
                             </button>
-                            <p><?php _e( 'Evangelism', 'disciple_tools' )?></p>
+                            <p><?php esc_html_e( 'Evangelism', 'disciple_tools' )?></p>
                         </div>
                         <div class="group-progress-button-wrapper">
                             <button class="group-progress-button" id="church_commitment">
-                                <img src="<?php echo get_template_directory_uri() . '/assets/images/groups/covenant.svg' ?>">
+                                <img src="<?php echo esc_attr( get_template_directory_uri() . '/assets/images/groups/covenant.svg' ); ?>">
                             </button>
-                            <p><?php _e( 'Covenant', 'disciple_tools' )?></p>
+                            <p><?php esc_html_e( 'Covenant', 'disciple_tools' )?></p>
                         </div>
                     </div>
                     <div class="grid-x">
                         <div style="margin-right:auto; margin-left:auto">
-                            <object id="church-svg-wrapper" type="image/svg+xml" data="<?php echo get_template_directory_uri() . '/assets/images/groups/church-wheel.svg' ?>"></object>
+                            <object id="church-svg-wrapper" type="image/svg+xml" data="<?php echo esc_attr( get_template_directory_uri() . '/assets/images/groups/church-wheel.svg' ); ?>"></object>
                         </div>
                     </div>
                 </div>
@@ -165,9 +172,9 @@ dt_print_breadcrumbs(
     <ul id="shared-with-list">
         <?php
         foreach( $shared_with as $user) { ?>
-            <li class="<?php echo $user['user_id'] ?>"> <?php echo $user['display_name'] ?>
+            <li class="<?php echo esc_attr( $user['user_id'] ); ?>"> <?php echo esc_html( $user['display_name'] ); ?>
                 <button class="details-remove-button share"
-                        data-id="<?php echo $user['user_id'] ?>">
+                        data-id="<?php echo esc_attr( $user['user_id'] ); ?>">
                     Unshare
                 </button>
             </li>
@@ -180,7 +187,7 @@ dt_print_breadcrumbs(
                 <option value="0"></option>
                 <?php
                 foreach( $users as $user ){
-                    echo '<option value="' . $user['ID']. '">' . $user['name'] . '</option>';
+                    echo '<option value="' . esc_attr( $user['ID'] ). '">' . esc_html( $user['name'] ) . '</option>';
                 }
                 ?>
             </select>
@@ -206,4 +213,7 @@ dt_print_breadcrumbs(
 
 
 
-<?php get_footer(); ?>
+<?php
+})();
+
+get_footer();

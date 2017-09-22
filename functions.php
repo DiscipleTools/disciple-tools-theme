@@ -9,10 +9,10 @@ declare(strict_types=1);
 /**
  * Php Version Alert
  */
-function admin_notice_required_php_version_dt_theme() {
+function dt_theme_admin_notice_required_php_version() {
     ?>
     <div class="notice notice-error">
-        <p><?php _e( "The Disciple Tools theme requires PHP 7.0 or greater before it will have any effect. Please upgrade your PHP version or uninstall this theme." ); ?></p>
+        <p><?php esc_html_e( "The Disciple Tools theme requires PHP 7.0 or greater before it will have any effect. Please upgrade your PHP version or uninstall this theme." ); ?></p>
     </div>
     <?php
 }
@@ -21,7 +21,7 @@ function admin_notice_required_php_version_dt_theme() {
  * Error handler for PHP version fail
  * @return bool
  */
-function after_switch_theme_switch_back() {
+function dt_theme_after_switch_theme_switch_back() {
     switch_theme( get_option( 'theme_switched' ) );
     return false;
 }
@@ -39,9 +39,9 @@ if (version_compare( phpversion(), '7.0', '<' )) {
      * Feel free to use PHP 7 features in other files, but not in this one.
      */
 
-    add_action( 'admin_notices', 'admin_notice_required_php_version_dt_theme' );
+    add_action( 'admin_notices', 'dt_theme_admin_notice_required_php_version' );
     error_log( 'Disciple Tools theme requires PHP version 7.0 or greater, please upgrade PHP or uninstall this theme' );
-    add_action( 'after_switch_theme', 'after_switch_theme_switch_back' );
+    add_action( 'after_switch_theme', 'dt_theme_after_switch_theme_switch_back' );
     return;
 }
 

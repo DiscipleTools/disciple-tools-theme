@@ -7,7 +7,11 @@
         [ home_url( '/' ) . 'progress', __( "PROGRESS UPDATES" ) ],
     ],
     get_the_title()
-); ?>
+);
+
+(function() {
+    global $post;
+    ?>
 
     <div id="content">
 
@@ -60,9 +64,9 @@
                         $recent_posts = wp_get_recent_posts( $args, ARRAY_A );
 
                         echo '<ul>';
-foreach ($recent_posts as $recent_post) {
-    echo '<li><a href="'. $recent_post['guid'] .'">' . $recent_post['post_title'] . '</a></li>';
-}
+                        foreach ($recent_posts as $recent_post) {
+                            echo '<li><a href="'. esc_attr( $recent_post['guid'] ) .'">' . esc_html( $recent_post['post_title'] ) . '</a></li>';
+                        }
                         echo '</ul>';
 
                         //                    print_r($recent_posts);?>
@@ -98,4 +102,7 @@ foreach ($recent_posts as $recent_post) {
 
     </div> <!-- end #content -->
 
-<?php get_footer(); ?>
+    <?php
+})();
+
+get_footer();

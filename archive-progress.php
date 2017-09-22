@@ -1,7 +1,13 @@
 <?php declare(strict_types=1); ?>
 <?php get_header(); ?>
 
-<?php dt_print_breadcrumbs( null, __( "Progress Updates" ) ); ?>
+<?php
+dt_print_breadcrumbs( null, __( "Progress Updates" ) );
+
+(function() {
+    global $post;
+
+    ?>
 
     <div id="content">
 
@@ -61,7 +67,7 @@
                         echo '<ul>';
                         ?>
                         <?php foreach ($recent_posts as $recent_post): ?>
-                            <li><a href="<?php echo $recent_post['guid'] ?>"><?php echo $recent_post['post_title'] ?></a></li>
+                            <li><a href="<?php echo esc_attr( $recent_post['guid'] ); ?>"><?php echo esc_html( $recent_post['post_title'] ); ?></a></li>
                         <?php endforeach; ?>
                         <?php
                         echo '</ul>';
@@ -99,4 +105,8 @@
 
     </div> <!-- end #content -->
 
-<?php get_footer(); ?>
+    <?php
+
+})();
+
+get_footer();

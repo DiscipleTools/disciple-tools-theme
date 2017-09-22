@@ -1,5 +1,10 @@
 <?php declare(strict_types=1); ?>
-<?php if ((isset( $_POST['dt_groups_noonce'] ) && wp_verify_nonce( $_POST['dt_groups_noonce'], 'update_dt_groups' ))) { dt_save_group( $_POST ); } // Catch and save update info ?>
+<?php if ((isset( $_POST['dt_groups_noonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_groups_noonce'] ) ), 'update_dt_groups' ))) {
+    // TODO:  we need to run wp_unslash and sanitize_text_field on $_POST
+    // before passing it to a function
+    dt_save_group( $_POST ); // Catch and save update info
+}
+?>
 
 <?php get_header(); ?>
 
@@ -52,7 +57,7 @@
 
                         <?php endforeach; ?>
 
-                        <?php  wp_reset_postdata(); // set $post back to original post ?>
+                        <?php wp_reset_postdata(); // set $post back to original post ?>
 
                     <?php endwhile; ?>
 
@@ -72,7 +77,7 @@
 
                         <?php endforeach; ?>
 
-                        <?php  wp_reset_postdata(); // set $post back to original post ?>
+                        <?php wp_reset_postdata(); // set $post back to original post ?>
 
                     <?php endwhile; ?>
 
@@ -91,7 +96,7 @@
 
                         <?php endforeach; ?>
 
-                        <?php  wp_reset_postdata(); // set $post back to original post ?>
+                        <?php wp_reset_postdata(); // set $post back to original post ?>
 
                     <?php endwhile; ?>
 

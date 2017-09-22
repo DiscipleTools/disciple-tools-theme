@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 if ( ! current_user_can( 'create_contacts' ) ) {
-    wp_die( __( "You do not have permission to publish contacts" ), "Permission denied", 403 );
+    wp_die( esc_html__( "You do not have permission to publish contacts" ), "Permission denied", 403 );
 }
 
 get_header();
@@ -24,25 +24,25 @@ dt_print_breadcrumbs(
         <div class="large-8 medium-12 small-12 cell">
             <form class="js-create-contact bordered-box">
                 <label>
-                    <?php _e( "Name of contact" ); ?>
-                    <input name="title" type="text" placeholder="<?php _e( "Name" ); ?>" required aria-describedby="name-help-text">
+                    <?php esc_html_e( "Name of contact" ); ?>
+                    <input name="title" type="text" placeholder="<?php esc_html_e( "Name" ); ?>" required aria-describedby="name-help-text">
                 </label>
-                <p class="help-text" id="name-help-text"><?php _e( "This is required" ); ?></p>
+                <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required" ); ?></p>
 
                 <label>
-                    <?php _e( "Phone number" ); ?>
-                    <input name="phone" type="text" type="tel" placeholder="<?php _e( "Phone number" ); ?>">
+                    <?php esc_html_e( "Phone number" ); ?>
+                    <input name="phone" type="text" type="tel" placeholder="<?php esc_html_e( "Phone number" ); ?>">
                 </label>
 
                 <?php /* TODO: Create Source field */ ?>
 
                 <label>
-                    <?php _e( "Initial comment" ); ?>
-                    <textarea name="initial_comment" placeholder="<?php _e( "Initial comment" ); ?>"></textarea>
+                    <?php esc_html_e( "Initial comment" ); ?>
+                    <textarea name="initial_comment" placeholder="<?php esc_html_e( "Initial comment" ); ?>"></textarea>
                 </label>
 
                 <div style="text-align: center">
-                    <button class="button loader js-create-contact-button" type="submit" disabled><?php _e( "Save and continue editing" ); ?></button>
+                    <button class="button loader js-create-contact-button" type="submit" disabled><?php esc_html_e( "Save and continue editing" ); ?></button>
                 </div>
             </div>
 

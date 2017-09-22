@@ -1,7 +1,13 @@
 <?php
 declare(strict_types=1);
 
+(function() {
+
+?>
+<?php
+
 global $query_string;
+global $post;
 
 $query_args = explode( "&", $query_string );
 $search_query = array();
@@ -92,4 +98,7 @@ $search2 = new WP_Query( $args2 );
 
     </div> <!-- end #content -->
 
-<?php get_footer(); ?>
+<?php
+})();
+get_footer();
+

@@ -28,6 +28,11 @@
 
   <!-- TODO: remove these exclude-pattern elements, we want to test the entire
        codebase! -->
+  <exclude-pattern>parts/*</exclude-pattern>
+  <exclude-pattern>assets/*</exclude-pattern>
+  <exclude-pattern>functions.php</exclude-pattern>
+  <exclude-pattern>single-contacts.php</exclude-pattern>
+  <exclude-pattern>template-settings.php</exclude-pattern>
 
   <arg name="extensions" value="php,inc,lib"/>
   <arg value="n"/>

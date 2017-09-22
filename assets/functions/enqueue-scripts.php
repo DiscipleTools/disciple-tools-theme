@@ -19,6 +19,8 @@ function dt_theme_enqueue_style( string $handle, string $rel_src, array $deps = 
 function site_scripts() {
     global $wp_styles; // Call global $wp_styles variable to add conditional wrapper around ie stylesheet the WordPress way
 
+    wp_enqueue_style( 'foundation-css', 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' );
+
     /**
      * Force new version of jQuery.
      * Forcing newest version of jquery and jquery ui because of the themes use of controlgroups and checkboxradio widget. Once Wordpress core updates to 1.12, then
@@ -63,7 +65,7 @@ function site_scripts() {
             'nonce' => wp_create_nonce( 'wp_rest' ),
         )
     );
-    
+
     if (is_singular( "contacts" )){
         dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper' ) );
         wp_localize_script(
