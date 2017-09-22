@@ -156,6 +156,7 @@ class Disciple_Tools_Theme {
                 'notifications' => 'template-notifications.php',
                 'about' => 'template-about.php',
                 'workers' => 'template-workers.php',
+                'contacts/new' => 'template-contacts-new.php',
             );
             $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
 
