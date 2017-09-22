@@ -518,7 +518,7 @@ jQuery(document).ready(function($) {
   $('.group-progress-button').on('click', function () {
     let fieldId = $(this).attr('id')
     $(this).css('opacity', ".5");
-    let field = group[fieldId]['key'] === "1" ? "0" : "1"
+    let field = _.get(group, `[${fieldId}]['key']`) === "1" ? "0" : "1"
     API.save_field_api('group', groupId, {[fieldId]: field})
       .then(groupData=>{
         group = groupData
