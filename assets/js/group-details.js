@@ -25,34 +25,6 @@ jQuery(document).ready(function($) {
     })
   }
 
-  function filterTypeahead(array, existing = []){
-    return _.differenceBy(array, existing.map(l=>{
-      return {ID:l.ID, name:l.display_name}
-    }), "ID")
-  }
-
-  function defaultFilter(q, sync, async, local, existing) {
-    if (q === '') {
-      sync(filterTypeahead(local.all(), existing));
-    }
-    else {
-      local.search(q, sync, async);
-    }
-  }
-  let searchAnyPieceOfWord = function(d) {
-    var tokens = [];
-    //the available string is 'name' in your datum
-    var stringSize = d.name.length;
-    //multiple combinations for every available size
-    //(eg. dog = d, o, g, do, og, dog)
-    for (var size = 1; size <= stringSize; size++) {
-      for (var i = 0; i + size <= stringSize; i++) {
-        tokens.push(d.name.substr(i, size));
-      }
-    }
-    return tokens;
-  }
-
 
   let group = {}
   let groupId = $('#group-id').text()
@@ -154,7 +126,6 @@ jQuery(document).ready(function($) {
    * Assigned To
    */
   $('.assigned_to.details-list').on('click', e=>{
-    console.log(e)
     toggleEdit('assigned_to')
     assigned_to_typeahead.focus()
   })
@@ -168,38 +139,45 @@ jQuery(document).ready(function($) {
       url: wpApiSettings.root + 'dt/v1/users/',
       prepare : API.typeaheadPrefetchPrepare,
       transform: function (data) {
-        return API.filterTypeahead(data)
+        return API.filterTypeahead(data, group.assigned_to ? [{ID:group.assigned_to.ID}] : [])
       },
-      cache:false
     },
     remote: {
       url: wpApiSettings.root + 'dt/v1/users/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare,
       transform: function (data) {
-        return API.filterTypeahead(data)
+        return API.filterTypeahead(data, group.assigned_to ? [{ID:group.assigned_to.ID}] : [])
       }
-    }
+    },
+    initialize: false,
   });
 
   let assigned_to_typeahead = $('.assigned_to .typeahead')
-  assigned_to_typeahead.typeahead({
-    highlight: true,
-    minLength: 0,
-    autoselect: true,
-  },
-  {
-    name: 'users',
-    source: function (q, sync, async) {
-      return API.defaultFilter(q, sync, async, users, [])
+  function loadAssignedToTypeahead() {
+
+    assigned_to_typeahead.typeahead({
+      highlight: true,
+      minLength: 0,
+      autoselect: true,
     },
-    display: 'name'
-  })
-  .bind('typeahead:select', function (ev, sug) {
-    console.log(sug)
+    {
+      name: 'users',
+      source: function (q, sync, async) {
+        return API.defaultFilter(q, sync, async, users, group.assigned_to ? [{ID:group.assigned_to.ID}] : [])
+      },
+      display: 'name'
+    })
+  }
+  assigned_to_typeahead.bind('typeahead:select', function (ev, sug) {
     API.save_field_api('group', groupId, {assigned_to: 'user-' + sug.ID}).then(function () {
       assigned_to_typeahead.typeahead('val', '')
       jQuery('.current-assigned').text(sug.name)
+      group.assigned_to.ID = sug.ID
+      assigned_to_typeahead.typeahead('destroy')
+      users.initialize()
+      loadAssignedToTypeahead()
+
     }).catch(err=>{
       console.trace("error")
       console.log(err)
@@ -208,13 +186,13 @@ jQuery(document).ready(function($) {
   }).bind('blur', ()=>{
     toggleEdit('assigned_to')
   })
-
+  loadAssignedToTypeahead()
 
   /**
    * Locations
    */
   let locations = new Bloodhound({
-    datumTokenizer: searchAnyPieceOfWord,
+    datumTokenizer: API.searchAnyPieceOfWord,
     queryTokenizer: Bloodhound.tokenizers.ngram,
     identify: function (obj) {
       return obj.ID
@@ -223,16 +201,15 @@ jQuery(document).ready(function($) {
       url: wpApiSettings.root + 'dt/v1/locations-compact/',
       prepare : API.typeaheadPrefetchPrepare,
       transform: function(data){
-        return filterTypeahead(data, group.locations || [])
+        return API.filterTypeahead(data, group.locations || [])
       },
-      cache: false
     },
     remote: {
       url: wpApiSettings.root + 'dt/v1/locations-compact/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare,
       transform: function(data){
-        return filterTypeahead(data, group.locations || [])
+        return API.filterTypeahead(data, group.locations || [])
       }
     },
     initialize: false,
@@ -249,7 +226,7 @@ jQuery(document).ready(function($) {
     {
       name: 'locations',
       source: function (q, sync, async) {
-        return defaultFilter(q, sync, async, locations, group.locations)
+        return API.defaultFilter(q, sync, async, locations, group.locations)
       },
       display: 'name'
     })
@@ -260,6 +237,7 @@ jQuery(document).ready(function($) {
     add_typeahead_item(groupId, 'locations', sug.ID, sug.name)
     $("#no-location").remove()
     locationsTypeahead.typeahead('destroy')
+    locations.initialize()
     loadLocationsTypeahead()
   })
   loadLocationsTypeahead()
@@ -269,9 +247,7 @@ jQuery(document).ready(function($) {
    * Addresses
    */
   var button = $('.address.details-edit.add-button')
-  console.log(button)
   button.on('click', e=>{
-    console.log(e)
     if ($('#new-address').length === 0 ) {
       let newInput = `<li>
         <textarea id="new-address"></textarea>
@@ -310,7 +286,7 @@ jQuery(document).ready(function($) {
     $('.members-edit').toggle()
   })
   let members = new Bloodhound({
-    datumTokenizer: searchAnyPieceOfWord,
+    datumTokenizer: API.searchAnyPieceOfWord,
     queryTokenizer: Bloodhound.tokenizers.ngram,
     identify: function (obj) {
       return obj.ID
@@ -319,16 +295,15 @@ jQuery(document).ready(function($) {
       url: wpApiSettings.root + 'dt-hooks/v1/contacts/compact',
       transform: function(data){
         loadMembersTypeahead()
-        return filterTypeahead(data, group.members || [])
+        return API.filterTypeahead(data, group.members || [])
       },
       prepare : API.typeaheadPrefetchPrepare,
-      cache: false
     },
     remote: {
       url: wpApiSettings.root + 'dt-hooks/v1/contacts/compact/?s=%QUERY',
       wildcard: '%QUERY',
       transform: function(data){
-        return filterTypeahead(data, group.members || [])
+        return API.filterTypeahead(data, group.members || [])
       },
       prepare : API.typeaheadRemotePrepare,
     },
@@ -339,18 +314,19 @@ jQuery(document).ready(function($) {
   let membersTypeahead = $('#members .typeahead')
   function loadMembersTypeahead() {
     membersTypeahead.typeahead('destroy')
+    members.initialize()
     membersTypeahead.typeahead({
-        highlight: true,
-        minLength: 0,
-        autoselect: true,
+      highlight: true,
+      minLength: 0,
+      autoselect: true,
+    },
+    {
+      name: 'members',
+      source: function (q, sync, async) {
+        return API.defaultFilter(q, sync, async, members, group.members)
       },
-      {
-        name: 'members',
-        source: function (q, sync, async) {
-          return defaultFilter(q, sync, async, members, group.members)
-        },
-        display: 'name'
-      })
+      display: 'name'
+    })
   }
   membersTypeahead.bind('typeahead:select', function (ev, sug) {
     membersTypeahead.typeahead('val', '')
@@ -367,7 +343,6 @@ jQuery(document).ready(function($) {
    */
 
   API.get_post( 'group', groupId).then(function (groupData) {
-    console.log(groupData)
     group = groupData
     if (groupData.end_date){
       endDatePicker.datepicker('setDate', groupData.end_date)
@@ -380,6 +355,7 @@ jQuery(document).ready(function($) {
     }
     locations.initialize()
     members.initialize()
+    users.initialize()
     fillOutChurchHealthMetrics()
   })
 

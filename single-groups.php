@@ -135,13 +135,13 @@ dt_print_breadcrumbs(
                 </div>
             </section>
 
-            <section id="groups" class="medium-6 cell">
-                <div class="bordered-box">
-                    <label class="section-header">Groups</label>
-                    <strong>Parent Group</strong>
-                    <strong>Child Groups</strong>
-                </div>
-            </section>
+<!--            <section id="groups" class="medium-6 cell">-->
+<!--                <div class="bordered-box">-->
+<!--                    <label class="section-header">Groups</label>-->
+<!--                    <strong>Parent Group</strong>-->
+<!--                    <strong>Child Groups</strong>-->
+<!--                </div>-->
+<!--            </section>-->
 
 
         </main> <!-- end #main -->
