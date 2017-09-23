@@ -9,8 +9,7 @@ function contact_details_status( $id, $verified, $invalid ){
     $buttons .= '<img id="'. $id .'-invalid" class="details-status" style="display:' . $invalid . '" src="'.get_template_directory_uri() . '/assets/images/broken.svg" />';
     return $buttons;
 }
-//var_dump($contact->fields["reason_paused"]);
-//var_dump($contact->fields["overall_status"]);
+
 ?>
 
 <?php if (isset( $contact->fields["requires_update"] ) && $contact->fields["requires_update"]["key"] === "yes"){ ?>
@@ -99,7 +98,7 @@ function contact_details_status( $id, $verified, $invalid ){
                 class="tiny button">
             Return to Active
         </button>
-        <button class="float-right" onclick="edit_fields()">
+        <button class="float-right" id="edit-details">
             <i class="fi-pencil"></i>
             <span id="edit-button-label">Edit</span>
         </button>
@@ -158,8 +157,10 @@ function contact_details_status( $id, $verified, $invalid ){
 
             <div class="medium-4 cell">
                 <strong><?php echo $channel_list["phone"]["label"] ?></strong>
-                <i class="fa fa-plus"></i>
-                <ul>
+                <button id="add-new-phone" class="details-edit">
+                    <img src="<?php echo get_template_directory_uri() . '/assets/images/small-add.svg' ?>"/>
+                </button>
+                <ul class="phone details-list">
                     <?php
                     foreach($contact->fields[ "contact_phone" ] ?? [] as $field => $value){
                         $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
@@ -169,6 +170,24 @@ function contact_details_status( $id, $verified, $invalid ){
                         '</li>';
                     }?>
                 </ul>
+                <ul id="phone-list" class="details-edit">
+                <?php
+                if ( isset( $contact->fields["contact_phone"] )){
+                    foreach($contact->fields[ "contact_phone" ] ?? [] as $value){
+                        $verified = isset( $value["verified"] ) && $value["verified"] === true;
+                        $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
+                        $html = '<li>
+                        <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["value"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">';
+                        $html .= '<button class="details-status-button verify" data-verified="'.$verified.'" data-id="' . esc_attr( $value["key"] ) . '">' . ($verified ? 'Unverify' : "Verify") . '</button>';
+                        $html .= '<button class="details-status-button invalid" data-invalid="'.$invalid.'" data-id="' . esc_attr( $value["key"] ) . '">' .($invalid ? 'Uninvalidate' : "Invalidate") .'</button>';
+                        $html .= '</li>';
+                        echo $html;
+                    }
+                }?>
+            </ul>
+
+            </div>
+            <div class="medium-4 cell">
                 <strong><?php echo $channel_list["email"]["label"] ?></strong>
                 <ul>
                     <?php
@@ -205,6 +224,7 @@ function contact_details_status( $id, $verified, $invalid ){
 
             </div>
             <div class="medium-4 cell">
+                <strong><?php _e('Social Media', 'disciple_tools' ) ?></strong>
                 <?php
                 foreach($contact->fields as $field_key => $values){
                     if ( strpos( $field_key, "contact_" ) === 0 &&

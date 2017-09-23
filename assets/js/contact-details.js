@@ -342,26 +342,60 @@ jQuery(document).ready(function($) {
   /**
    * Get the contact
    */
-  // jQuery.ajax({
-  //   type:"GET",
-  //   contentType: "application/json; charset=utf-8",
-  //   dataType: "json",
-  //   url: wpApiSettings.root + 'dt-hooks/v1/contact/'+ id,
-  //   success: function(data) {
-  //     contact = data
-  //     console.log(contact)
-  //     assigned_to_typeahead.typeahead('val', _.get(contact, "fields.assigned_to.display"))
-  //   },
-  //   error: function(err) {
-  //     console.log("error")
-  //     console.log(err)
-  //     jQuery("#errors").append(err.responseText)
-  //   },
-  // })
+  console.log("getting")
+  API.get_post('contact', contactId).then(function(data) {
+    contact = data
+    console.log(contact)
+  }).catch(err=> {
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
+
+  })
 
 
   jQuery('#add-comment-button').on('click', function () {
     post_comment(contactId)
+  })
+
+
+  let editDetailsToggle = $('#edit-button-label')
+  function toggleEditAll() {
+    $(`.details-list`).toggle()
+    $(`.details-edit`).toggle()
+    editingAll = !editingAll
+    editDetailsToggle.text( editingAll ? "Back": "Edit")
+  }
+  $('#edit-details').on('click', function () {
+    toggleEditAll()
+  })
+
+  $(document).on('click', '.details-status-button.verify', function () {
+    let id = $(this).data('id')
+    let verified = $(this).data('verified')
+    API.update_contact_method_detail('contact', contactId, id, {"verified":!verified}).then(()=>{
+      $(this).data('verified', !verified)
+      if (verified){
+        jQuery(`#${id}-verified`).hide()
+      } else {
+        jQuery(`#${id}-verified`).show()
+
+      }
+      jQuery(this).html(verified ? "Verify" : "Unverify")
+    })
+  })
+  $(document).on('click', '.details-status-button.invalid', function () {
+    let id = $(this).data('id')
+    let invalid = $(this).data('invalid')
+    API.update_contact_method_detail('contact', contactId, id, {"invalid":!invalid}).then(()=>{
+      $(this).data('invalid', !invalid)
+      if (invalid){
+        jQuery(`#${id}-invalid`).hide()
+      } else  {
+        jQuery(`#${id}-invalid`).show()
+      }
+      jQuery(this).html(invalid? "Invalidate" : "Uninvalidate")
+    })
   })
 
 })
@@ -431,6 +465,8 @@ function display_activity_comment(section) {
 }
 
 let editingAll = false
+
+
 
 function edit_fields() {
   let editDetailsToggle = $('#edit-button-label')
