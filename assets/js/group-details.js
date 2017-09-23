@@ -213,7 +213,6 @@ jQuery(document).ready(function($) {
       }
     },
     initialize: false,
-    local : []
   });
 
   let locationsTypeahead = $('.locations .typeahead')

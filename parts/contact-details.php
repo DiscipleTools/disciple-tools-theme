@@ -155,6 +155,7 @@ function contact_details_status( $id, $verified, $invalid ){
     <div class="display-fields">
         <div class="grid-x">
 
+            <!--Phone-->
             <div class="medium-4 cell">
                 <strong><?php echo $channel_list["phone"]["label"] ?></strong>
                 <button id="add-new-phone" class="details-edit">
@@ -184,43 +185,31 @@ function contact_details_status( $id, $verified, $invalid ){
                         echo $html;
                     }
                 }?>
-            </ul>
+                </ul>
 
             </div>
+            <!-- Locations -->
             <div class="medium-4 cell">
-                <strong><?php echo $channel_list["email"]["label"] ?></strong>
-                <ul>
-                    <?php
-                    foreach($contact->fields[ "contact_email" ] ?? [] as $value){
-                        $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
-                        $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                        echo  '<li>' . esc_html( $value["value"] ) .
-                        contact_details_status( $value["key"], $verified, $invalid ) .
-                        '</li>';
-                    }
-                    ?>
-                </ul>
-            </div>
-            <div class="medium-4 cell">
-                <strong>Assigned To</strong>
-                <ul>
-                    <li class="current-assigned">
-                    <?php
-                    if ( isset( $contact->fields["assigned_to"] ) ){
-                        echo esc_html( $contact->fields["assigned_to"]["display"] );
-                    } else {
-                        echo "None Assigned";
-                    }
-                    ?>
-                    </li>
-                </ul>
                 <strong>Locations</strong>
                 <ul class="locations-list">
                     <?php
-                    foreach($contact->fields[ "locations" ] ?? [] as $value){
-                        echo '<li class="'. $value->ID .'"><a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a></li>';
-                    }?>
+                    foreach($contact->fields["locations" ] ?? [] as $value){
+                        echo '<li class="'. $value->ID .'">
+                        <a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a>
+                        <button class="details-remove-button details-edit" 
+                                data-field="locations" data-id="'. $value->ID . '" 
+                                data-name="'. $value->post_title .'"
+                        >Remove</button>
+                    </li>';
+                    }
+                    if (sizeof( $contact->fields["locations"] ) === 0){
+                        echo '<li id="no-location">No location set</li>';
+                    }
+                    ?>
                 </ul>
+                <div class="locations details-edit">
+                    <input class="typeahead" type="text" placeholder="Select a new location">
+                </div>
 
             </div>
             <div class="medium-4 cell">
@@ -250,6 +239,62 @@ function contact_details_status( $id, $verified, $invalid ){
                 }
                 ?>
             </div>
+            <!-- email -->
+            <div class="medium-4 cell">
+                <strong><?php echo $channel_list["email"]["label"] ?></strong>
+                <button id="add-new-email" class="details-edit">
+                    <img src="<?php echo get_template_directory_uri() . '/assets/images/small-add.svg' ?>"/>
+                </button>
+                <ul class="email details-list">
+                    <?php
+                    foreach($contact->fields[ "contact_email" ] ?? [] as $field => $value){
+                        $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
+                        $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
+                        echo  '<li>' . esc_html( $value["value"] ) .
+                            contact_details_status( $value["key"], $verified, $invalid ) .
+                            '</li>';
+                    }?>
+                </ul>
+                <ul id="email-list" class="details-edit">
+                    <?php
+                    if ( isset( $contact->fields["contact_email"] )){
+                        foreach($contact->fields[ "contact_email" ] ?? [] as $value){
+                            $verified = isset( $value["verified"] ) && $value["verified"] === true;
+                            $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
+                            $html = '<li>
+                        <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["value"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">';
+                            $html .= '<button class="details-status-button verify" data-verified="'.$verified.'" data-id="' . esc_attr( $value["key"] ) . '">' . ($verified ? 'Unverify' : "Verify") . '</button>';
+                            $html .= '<button class="details-status-button invalid" data-invalid="'.$invalid.'" data-id="' . esc_attr( $value["key"] ) . '">' .($invalid ? 'Uninvalidate' : "Invalidate") .'</button>';
+                            $html .= '</li>';
+                            echo $html;
+                        }
+                    }?>
+                </ul>
+            </div>
+
+
+
+
+            <div class="medium-4 cell">
+                <strong>Assigned to
+                    <span class="assigned_to details-edit">:
+                </span> <span class="assigned_to details-edit current-assigned">:</span> </strong>
+                <ul class="details-list assigned_to">
+                    <li class="current-assigned">
+                        <?php
+                        if ( isset( $contact->fields["assigned_to"] ) ){
+                            echo esc_html( $contact->fields["assigned_to"]["display"] );
+                        } else {
+                            echo "None Assigned";
+                        }
+                        ?>
+                    </li>
+                </ul>
+                <div class="assigned_to details-edit">
+                    <input class="typeahead" type="text" placeholder="Select a new user">
+                </div>
+            </div>
+
         </div>
 
         <div class="grid-x">

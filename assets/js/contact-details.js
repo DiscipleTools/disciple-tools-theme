@@ -254,90 +254,107 @@ jQuery(document).ready(function($) {
       url: wpApiSettings.root + 'dt/v1/users/',
       prepare : API.typeaheadPrefetchPrepare,
       transform: function (data) {
-        return API.filterTypeahead(data)
+        return API.filterTypeahead(data, _.get(contact, "fields.assigned_to") ? [{ID:contact.fields.assigned_to.ID}] : [])
       },
-      cache:false
     },
     remote: {
       url: wpApiSettings.root + 'dt/v1/users/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare,
       transform: function (data) {
-        return API.filterTypeahead(data)
+        return API.filterTypeahead(data, _.get(contact, "fields.assigned_to") ? [{ID:contact.fields.assigned_to.ID}] : [])
       }
-    }
+    },
+    initialize: false,
   });
 
   let assigned_to_typeahead = $('.assigned_to .typeahead')
-  assigned_to_typeahead.typeahead({
-    highlight: true,
-    minLength: 0,
-    autoselect: true,
-  },
-  {
-    name: 'users',
-    source: function (q, sync, async) {
-      return API.defaultFilter(q, sync, async, users, [])
-    },
-    display: 'name'
-  })
-  .bind('typeahead:select', function (ev, sug) {
-    API.save_field_api('contact', contactId, {assigned_to: 'user-' + sug.ID}).then(()=> {
+  function loadAssignedToTypeahead() {
+
+    assigned_to_typeahead.typeahead({
+        highlight: true,
+        minLength: 0,
+        autoselect: true,
+      },
+      {
+        name: 'users',
+        source: function (q, sync, async) {
+          return API.defaultFilter(q, sync, async, users, _.get(contact, "fields.assigned_to") ? [{ID:contact.fields.assigned_to.ID}] : [])
+        },
+        display: 'name'
+      })
+  }
+  assigned_to_typeahead.bind('typeahead:select', function (ev, sug) {
+    API.save_field_api('contact', contactId, {assigned_to: 'user-' + sug.ID}).then(function () {
       assigned_to_typeahead.typeahead('val', '')
-      $('.current-assigned').text(sug.name)
+      jQuery('.current-assigned').text(sug.name)
+      contact.fields.assigned_to.ID = sug.ID
+      assigned_to_typeahead.typeahead('destroy')
+      users.initialize()
+      loadAssignedToTypeahead()
+
     }).catch(err=>{
       console.trace("error")
       console.log(err)
       jQuery("#errors").append(err.responseText)
     })
+  }).bind('blur', ()=>{
+    // toggleEdit('assigned_to')
   })
+  loadAssignedToTypeahead()
 
   /**
    * Locations
    */
-  var locations = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('post_title'),
+  let locations = new Bloodhound({
+    datumTokenizer: API.searchAnyPieceOfWord,
     queryTokenizer: Bloodhound.tokenizers.ngram,
     identify: function (obj) {
-      return obj.post_title
+      return obj.ID
     },
     prefetch: {
-      url: wpApiSettings.root + 'dt/v1/locations/',
-      prepare : API.typeaheadPrefetchPrepare
+      url: wpApiSettings.root + 'dt/v1/locations-compact/',
+      prepare : API.typeaheadPrefetchPrepare,
+      transform: function(data){
+        return API.filterTypeahead(data, _.get(contact, "fields.locations") || [])
+      },
     },
     remote: {
-      url: wpApiSettings.root + 'dt/v1/locations/?s=%QUERY',
+      url: wpApiSettings.root + 'dt/v1/locations-compact/?s=%QUERY',
       wildcard: '%QUERY',
-      prepare : API.typeaheadRemotePrepare
-    }
+      prepare : API.typeaheadRemotePrepare,
+      transform: function(data){
+        return API.filterTypeahead(data, _.get(contact, "fields.locations") || [])
+      }
+    },
+    initialize: false,
   });
 
-
-  function defaultLocations(q, sync) {
-    if (q === '') {
-      sync(locations.all());
-    }
-    else {
-      locations.search(q, sync);
-    }
+  let locationsTypeahead = $('.locations .typeahead')
+  function loadLocationsTypeahead() {
+    locationsTypeahead.typeahead({
+        highlight: true,
+        minLength: 0,
+        autoselect: true,
+      },
+      {
+        name: 'locations',
+        source: function (q, sync, async) {
+          return API.defaultFilter(q, sync, async, locations, _.get(contact, "fields.locations"))
+        },
+        display: 'name'
+      })
   }
-
-  let locationsTypeahead = $('#locations .typeahead')
-  locationsTypeahead.typeahead({
-    highlight: true,
-    minLength: 0,
-    autoselect: true,
-  },
-  {
-    name: 'locations',
-    source: defaultLocations,
-    display: 'post_title'
-  })
-  .bind('typeahead:select', function (ev, sug) {
+  locationsTypeahead.bind('typeahead:select', function (ev, sug) {
     locationsTypeahead.typeahead('val', '')
-    locationsTypeahead.blur()
-    add_typeahead_item(contactId, 'locations', sug.ID)
+    contact.fields.locations.push(sug)
+    add_typeahead_item(contactId, 'locations', sug.ID, sug.name)
+    $("#no-location").remove()
+    locationsTypeahead.typeahead('destroy')
+    locations.initialize()
+    loadLocationsTypeahead()
   })
+  loadLocationsTypeahead()
 
   /**
    * Get the contact
@@ -346,6 +363,11 @@ jQuery(document).ready(function($) {
   API.get_post('contact', contactId).then(function(data) {
     contact = data
     console.log(contact)
+    locations.initialize()
+    users.initialize()
+    if (_.get(contact, "fields.assigned_to")){
+      $('.current-assigned').text(_.get(contact, "fields.assigned_to.display"))
+    }
   }).catch(err=> {
       console.log("error")
       console.log(err)
@@ -397,6 +419,24 @@ jQuery(document).ready(function($) {
       jQuery(this).html(invalid? "Invalidate" : "Uninvalidate")
     })
   })
+  $(document).on('click', '.details-remove-button', function () {
+    let fieldId = $(this).data('field')
+    let itemId = $(this).data('id')
+
+    if (fieldId && itemId){
+      API.remove_item_from_field('contact', contactId, fieldId, itemId).then(()=>{
+        $(`.${fieldId}-list .${itemId}`).remove()
+
+        //add the item back to the locations list
+        if (fieldId === 'locations'){
+          locations.add([{ID:itemId, name: $(this).data('name')}])
+        }
+      }).catch(err=>{
+        console.log(err)
+      })
+    }
+  })
+
 
 })
 
@@ -589,9 +629,11 @@ function add_typeahead_item(contactId, fieldId, val) {
   API.add_item_to_field('contact', contactId, {[fieldId]: val}).then(addedItem=>{
     jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
     <a href="${addedItem.permalink}">${addedItem.post_title}</a>
-    <button class="details-remove-button connections-edit" onclick="remove_item(${contactId}, '${fieldId}', ${addedItem.ID})">Remove</button>
-    </li>`)
-    jQuery(".connections-edit").show()
+    <button class="details-remove-button details-edit"
+              data-field="locations" data-id="${val}"
+              data-name="${name}"  
+              style="display: inline-block">Remove</button>
+      </li>`)
   })
 }
 
