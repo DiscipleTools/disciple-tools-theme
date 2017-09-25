@@ -227,9 +227,9 @@ function contact_details_status( $id, $verified, $invalid ){
                     <?php
                     foreach($contact->fields["locations" ] ?? [] as $value){
                         echo '<li class="'. $value->ID .'">
-                        <a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a>
-                        <button class="details-remove-button connection details-edit" 
-                                data-field="locations" data-id="'. $value->ID . '" 
+                        <a href="' . esc_url( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a>
+                        <button class="details-remove-button connection details-edit"
+                                data-field="locations" data-id="'. $value->ID . '"
                                 data-name="'. $value->post_title .'"
                         >Remove</button>
                     </li>';
@@ -310,8 +310,8 @@ function contact_details_status( $id, $verified, $invalid ){
                                 $html .=  "<input id='{$value["key"]}' class='details-edit social-input' value='" . esc_html( $value["value"] ) . "'>";
 
                                 $html .=
-                                "<ul class='dropdown menu' data-click-open='true' 
-                                     data-dropdown-menu data-disable-hover='true' 
+                                "<ul class='dropdown menu' data-click-open='true'
+                                     data-dropdown-menu data-disable-hover='true'
                                      style='display:inline-block'>
                                     <li><button><i class='fi-pencil' style='padding:3px 3px'></button></i>
                                         <ul class='menu'>
