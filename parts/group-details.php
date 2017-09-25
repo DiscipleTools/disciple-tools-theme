@@ -35,7 +35,7 @@ function contact_details_status( $id, $verified, $invalid ){
         </button>
     </div>
 
-    <div class="display-fields grid-x">
+    <div class="display-fields grid-x grid-margin-x">
         <div class="medium-4 cell">
             <strong>Address</strong>
             <button class="address details-edit add-button">

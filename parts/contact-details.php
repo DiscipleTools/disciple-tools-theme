@@ -153,7 +153,7 @@ function contact_details_status( $id, $verified, $invalid ){
     </div>
 
     <div class="display-fields">
-        <div class="grid-x">
+        <div class="grid-x grid-margin-x">
 
             <!--Phone-->
             <div class="medium-4 cell">
@@ -212,32 +212,84 @@ function contact_details_status( $id, $verified, $invalid ){
                 </div>
 
             </div>
+            <!-- Social Media -->
             <div class="medium-4 cell">
-                <strong><?php _e('Social Media', 'disciple_tools' ) ?></strong>
+                <strong><?php _e( 'Social Media', 'disciple_tools' ) ?></strong>
                 <?php
+                $html = "<ul class='social details-list'>";
                 foreach($contact->fields as $field_key => $values){
                     if ( strpos( $field_key, "contact_" ) === 0 &&
                         strpos( $field_key, "contact_phone" ) === false &&
                         strpos( $field_key, "contact_email" ) === false) {
                         $channel =   explode( '_', $field_key )[1];
                         if ( isset( $channel_list[$channel] ) ) {
-                            if ( $values && sizeof( $values ) > 0 ) {
-                                echo "<strong>" . $channel_list[$channel]["label"] . "</strong>";
-                            }
-                            $html = "<ul>";
+//                            if ( $values && sizeof( $values ) > 0 ) {
+//                                echo "<strong>" . $channel_list[$channel]["label"] . "</strong>";
+//                            }
                             foreach ($values as $value) {
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                                echo  '<li>' . esc_html( $value["value"] ) .
+                                $html .=  '<li>';
+                                if ( $values && sizeof( $values ) > 0 ) {
+                                    $html .= "<span>" . $channel_list[$channel]["label"] . ": </span>";
+                                }
+                                $html .=  esc_html( $value["value"] ) .
                                     contact_details_status( $value["key"], $verified, $invalid ) .
                                     '</li>';
                             }
-                            $html .= "</ul>";
-                            echo $html;
                         }
                     }
                 }
+                $html .= "</ul>";
+                echo $html;
+
+
                 ?>
+                <ul class="social details-edit">
+                <?php
+                $html ='';
+                foreach($contact->fields as $field_key => $values){
+                    if ( strpos( $field_key, "contact_" ) === 0 &&
+                        strpos( $field_key, "contact_phone" ) === false &&
+                        strpos( $field_key, "contact_email" ) === false) {
+                        $channel =   explode( '_', $field_key )[1];
+                        if ( isset( $channel_list[$channel] ) ) {
+                            foreach ($values as $value) {
+                                $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
+                                $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
+                                $html .=  '<li>';
+                                if ( $values && sizeof( $values ) > 0 ) {
+                                    $html .= "<span>" . $channel_list[$channel]["label"] . ": </span>";
+                                }
+                                $html .=  "<input id='{$value["key"]}' class='details-edit social-input' value='" . esc_html( $value["value"] ) . "'>" .
+                                    contact_details_status( $value["key"], $verified, $invalid ) .
+                                    '</li>';
+                            }
+                        }
+                    }
+                }
+                echo $html;
+
+                ?>
+
+                </ul>
+                <div class="details-edit">
+                    <label for="social-channels">Add another contact method</label>
+                    <select id="social-channels">
+                        <?php
+                        foreach($channel_list as $key => $channel){
+                            if ($key != "phone" && $key != "email"){
+                                echo '<option value="'. $key .'">' . esc_html( $channel["label"] ) .'</option>';
+                            }
+                        }
+                        ?>
+                    </select>
+                    <input type="text" id="new-social-media" placeholder="facebook.com/user1">
+                    <button id="add-social-media" class="button loader">
+                        Add
+                    </button>
+                </div>
+
             </div>
             <!-- email -->
             <div class="medium-4 cell">
@@ -274,7 +326,7 @@ function contact_details_status( $id, $verified, $invalid ){
 
 
 
-
+            <!-- assigned to -->
             <div class="medium-4 cell">
                 <strong>Assigned to
                     <span class="assigned_to details-edit">:

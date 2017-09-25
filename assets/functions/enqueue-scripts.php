@@ -67,12 +67,13 @@ function site_scripts() {
     );
 
     if (is_singular( "contacts" )){
-        dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper' ) );
+        dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper' ), true );
         wp_localize_script(
-            'contact-details', 'wpApiSettings', array(
+            'contact-details', 'contactsDetailsWpApiSettings', array(
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
+                'channels' => Disciple_Tools_Contacts::get_channel_list()
             )
         );
     }
@@ -98,7 +99,7 @@ function site_scripts() {
             'current_user_id' => get_current_user_id(),
         )
     );
-    
+
     $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
     if ( $url_path === 'settings' ) {
         dt_theme_enqueue_script( 'dt-settings', 'assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash', 'typeahead' ),  true );

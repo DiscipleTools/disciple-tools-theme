@@ -1,8 +1,8 @@
-/* global jQuery:false, wpApiSettings:false */
+/* global jQuery:false, contactsDetailsWpApiSettings:false */
 
 function save_seeker_milestones(contactId, fieldKey, fieldValue){
-  var data = {}
-  var field = jQuery("#" + fieldKey)
+  let data = {}
+  let field = jQuery("#" + fieldKey)
   field.addClass("submitting-select-button")
   if (field.hasClass("selected-select-button")){
     fieldValue = "no"
@@ -24,18 +24,18 @@ function save_seeker_milestones(contactId, fieldKey, fieldValue){
   })
 }
 function save_quick_action(contactId, fieldKey){
-  var data = {}
-  var numberIndicator = jQuery("." + fieldKey +  " span")
-  var newNumber = parseInt(numberIndicator.first().text()) + 1
+  let data = {}
+  let numberIndicator = jQuery("." + fieldKey +  " span")
+  let newNumber = parseInt(numberIndicator.first().text()) + 1
   data[fieldKey] = newNumber
   jQuery.ajax({
     type: "POST",
     data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + '/quick_action_button',
+    url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + '/quick_action_button',
     beforeSend: function (xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      xhr.setRequestHeader('X-WP-Nonce', contactsDetailsWpApiSettings.nonce);
     }
   }).then(data=>{
       console.log("updated " + fieldKey + " to: " + newNumber)
@@ -64,7 +64,7 @@ function post_comment(contactId) {
   jQuery("#add-comment-button").toggleClass('loading')
   let comment = jQuery("#comment-input").val()
   console.log(comment);
-  var data = {}
+  let data = {}
   data["comment"] = comment
   API.post_comment('contact', contactId, comment).then(data=>{
     console.log(`added comment ${comment}`)
@@ -80,7 +80,7 @@ function post_comment(contactId) {
   })
 }
 
-var commentTemplate = _.template(`
+let commentTemplate = _.template(`
   <div class="activity-block">
     <div><span><strong><%- name %></strong></span> <span class="comment-date"> <%- date %> </span></div>
     <div class="activity-text">
@@ -101,6 +101,7 @@ let activity = []
 let contact = {}
 jQuery(document).ready(function($) {
 
+  console.log(contactsDetailsWpApiSettings)
 
   let contactId = $("#contact-id").text()
   $( document ).ajaxComplete(function(event, xhr, settings) {
@@ -132,13 +133,13 @@ jQuery(document).ready(function($) {
   })
 
   let searchAnyPieceOfWord = function(d) {
-    var tokens = [];
+    let tokens = [];
     //the available string is 'name' in your datum
-    var stringSize = d.name.length;
+    let stringSize = d.name.length;
     //multiple combinations for every available size
     //(eg. dog = d, o, g, do, og, dog)
-    for (var size = 1; size <= stringSize; size++) {
-      for (var i = 0; i + size <= stringSize; i++) {
+    for (let size = 1; size <= stringSize; size++) {
+      for (let i = 0; i + size <= stringSize; i++) {
         tokens.push(d.name.substr(i, size));
       }
     }
@@ -149,19 +150,19 @@ jQuery(document).ready(function($) {
   /**
    * Groups
    */
-  var groups = new Bloodhound({
+  let groups = new Bloodhound({
     datumTokenizer: searchAnyPieceOfWord,
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     identify: function (obj) {
       return obj.name
     },
     prefetch: {
-      url: wpApiSettings.root + 'dt-hooks/v1/groups-compact/',
+      url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/groups-compact/',
       cache:false,
       prepare : API.typeaheadPrefetchPrepare
     },
     remote: {
-      url: wpApiSettings.root + 'dt-hooks/v1/groups-compact/?s=%QUERY',
+      url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/groups-compact/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare
     }
@@ -196,18 +197,18 @@ jQuery(document).ready(function($) {
   /**
    * Baptized by, Baptized, Coaching, Coached By
    */
-  var contacts = new Bloodhound({
+  let contacts = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('post_title'),
     queryTokenizer: Bloodhound.tokenizers.ngram,
     identify: function (obj) {
       return obj.post_title
     },
     prefetch: {
-      url: wpApiSettings.root + 'dt-hooks/v1/contacts/',
+      url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/contacts/',
       prepare : API.typeaheadPrefetchPrepare
     },
     remote: {
-      url: wpApiSettings.root + 'dt-hooks/v1/contacts/?s=%QUERY',
+      url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/contacts/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare
     }
@@ -251,14 +252,14 @@ jQuery(document).ready(function($) {
       return obj.ID
     },
     prefetch: {
-      url: wpApiSettings.root + 'dt/v1/users/',
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/users/',
       prepare : API.typeaheadPrefetchPrepare,
       transform: function (data) {
         return API.filterTypeahead(data, _.get(contact, "fields.assigned_to") ? [{ID:contact.fields.assigned_to.ID}] : [])
       },
     },
     remote: {
-      url: wpApiSettings.root + 'dt/v1/users/?s=%QUERY',
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/users/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare,
       transform: function (data) {
@@ -313,14 +314,14 @@ jQuery(document).ready(function($) {
       return obj.ID
     },
     prefetch: {
-      url: wpApiSettings.root + 'dt/v1/locations-compact/',
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/locations-compact/',
       prepare : API.typeaheadPrefetchPrepare,
       transform: function(data){
         return API.filterTypeahead(data, _.get(contact, "fields.locations") || [])
       },
     },
     remote: {
-      url: wpApiSettings.root + 'dt/v1/locations-compact/?s=%QUERY',
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/locations-compact/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare,
       transform: function(data){
@@ -437,20 +438,50 @@ jQuery(document).ready(function($) {
     }
   })
 
+  $(document).on('change', '.details-edit.input', function () {
+    let id = $(this).attr('id')
+    let value = $(this).val();
+    console.log(id)
+    console.log(value)
+    API.save_field_api('contact', contactId, {[id]: value})
 
+  })
+
+  let addSocial = $("#add-social-media")
+  addSocial.on('click', function () {
+    let channel_type = $('#social-channels').val()
+    let text = $('#new-social-media').val()
+    addSocial.toggleClass('loading')
+    API.add_item_to_field('contact', contactId, {['new-'+channel_type]: text}).then(()=>{
+      addSocial.toggleClass('loading')
+      let label = _.get(contactsDetailsWpApiSettings, `channels[${channel_type}].label`) || channel_type
+      $('.social.details-edit').append(
+        `<li>
+          <span>${label}</span>
+          <input id="${channel_type}"
+                 value="${text}" style="display: inline-block"   
+                 class="details-edit social-input" >
+        </li>`)
+      $('.social.details-list').append(
+        `<li>
+          <span>${label}</span>
+          ${text}
+        </li>`)
+    })
+  })
 })
 
 
 
 function formatDate(date) {
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-  var ampm = hours >= 12 ? 'pm' : 'am';
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let ampm = hours >= 12 ? 'pm' : 'am';
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
   minutes = minutes < 10 ? '0'+minutes : minutes;
-  var strTime = hours + ':' + minutes + ' ' + ampm;
-  var month = date.getMonth()+1
+  let strTime = hours + ':' + minutes + ' ' + ampm;
+  let month = date.getMonth()+1
   month = month < 10 ? "0"+month.toString() : month
   return date.getFullYear() + "/" + date.getDate() + "/" + month + "  " + strTime;
 }
@@ -550,7 +581,7 @@ function new_contact_input_added(contactId, inputId){
 
 function add_contact_input(contactId, inputId, listId){
   if (jQuery(`#${inputId}`).length === 0 ){
-    var newInput = `<li><input id="${inputId}" onchange="new_contact_input_added(${contactId},'${inputId}')"\>`
+    let newInput = `<li><input id="${inputId}" onchange="new_contact_input_added(${contactId},'${inputId}')"\>`
     jQuery(`#${listId}`).append(newInput)
   }
 }
@@ -582,7 +613,7 @@ function close_contact(contactId){
   let reasonClosed = jQuery('#reason-closed-options')
   let data = {overall_status:"closed", "reason_closed":reasonClosed.val()}
   API.save_field_api('contact', contactId, data).then(()=>{
-    let closedLabel = wpApiSettings.contacts_custom_fields_settings.overall_status.default.closed;
+    let closedLabel = contactsDetailsWpApiSettings.contacts_custom_fields_settings.overall_status.default.closed;
     jQuery('#overall-status').text(closedLabel)
     jQuery("#confirm-close").toggleClass('loading')
     jQuery('#close-contact-modal').foundation('close')
@@ -597,7 +628,7 @@ function pause_contact(contactId){
   let reasonPaused = jQuery('#reason-paused-options')
   let data = {overall_status:"paused", "reason_paused":reasonPaused.val()}
   API.save_field_api('contact', contactId, data).then(()=>{
-    let pausedLabel = wpApiSettings.contacts_custom_fields_settings.overall_status.default.paused;
+    let pausedLabel = contactsDetailsWpApiSettings.contacts_custom_fields_settings.overall_status.default.paused;
     jQuery('#overall-status').text(pausedLabel)
     jQuery('#reason').text(`(${reasonPaused.find('option:selected').text()})`)
     jQuery('#pause-contact-modal').foundation('close')
@@ -610,7 +641,7 @@ function pause_contact(contactId){
 function make_active(contactId) {
   let data = {overall_status:"active"}
   API.save_field_api('contact', contactId, data).then(()=>{
-    let activeLabel = wpApiSettings.contacts_custom_fields_settings.overall_status.default.active;
+    let activeLabel = contactsDetailsWpApiSettings.contacts_custom_fields_settings.overall_status.default.active;
     jQuery('#return-active').toggle()
     jQuery('#overall-status').text(activeLabel || "Active")
     jQuery('#reason').text(``)
@@ -646,9 +677,9 @@ function details_accept_contact(contactId, accept){
     data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: wpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + "/accept",
+    url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + "/accept",
     beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      xhr.setRequestHeader('X-WP-Nonce', contactsDetailsWpApiSettings.nonce);
     }
   }).then(function (data) {
     jQuery('#accept-contact').hide()
