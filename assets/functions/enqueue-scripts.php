@@ -73,7 +73,8 @@ function site_scripts() {
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
-                'channels' => Disciple_Tools_Contacts::get_channel_list()
+                'channels' => Disciple_Tools_Contacts::get_channel_list(),
+                'template_dir' => get_template_directory_uri()
             )
         );
     }

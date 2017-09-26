@@ -196,7 +196,7 @@ function contact_details_status( $id, $verified, $invalid ){
                     foreach($contact->fields["locations" ] ?? [] as $value){
                         echo '<li class="'. $value->ID .'">
                         <a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a>
-                        <button class="details-remove-button details-edit" 
+                        <button class="details-remove-button connection details-edit" 
                                 data-field="locations" data-id="'. $value->ID . '" 
                                 data-name="'. $value->post_title .'"
                         >Remove</button>
@@ -229,11 +229,11 @@ function contact_details_status( $id, $verified, $invalid ){
                             foreach ($values as $value) {
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                                $html .=  '<li>';
+                                $html .=  "<li class='{$value['key']}'>";
                                 if ( $values && sizeof( $values ) > 0 ) {
                                     $html .= "<span>" . $channel_list[$channel]["label"] . ": </span>";
                                 }
-                                $html .=  esc_html( $value["value"] ) .
+                                $html .=  "<span class='social-text'>" . esc_html( $value["value"] ) . '</span>' .
                                     contact_details_status( $value["key"], $verified, $invalid ) .
                                     '</li>';
                             }
@@ -255,15 +255,28 @@ function contact_details_status( $id, $verified, $invalid ){
                         $channel =   explode( '_', $field_key )[1];
                         if ( isset( $channel_list[$channel] ) ) {
                             foreach ($values as $value) {
-                                $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
-                                $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                                $html .=  '<li>';
+                                $verified = isset( $value["verified"] ) && $value["verified"] === true;
+                                $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
+                                $html .=  "<li class='{$value['key']}'>";
                                 if ( $values && sizeof( $values ) > 0 ) {
                                     $html .= "<span>" . $channel_list[$channel]["label"] . ": </span>";
                                 }
-                                $html .=  "<input id='{$value["key"]}' class='details-edit social-input' value='" . esc_html( $value["value"] ) . "'>" .
-                                    contact_details_status( $value["key"], $verified, $invalid ) .
-                                    '</li>';
+                                $html .=  "<input id='{$value["key"]}' class='details-edit social-input' value='" . esc_html( $value["value"] ) . "'>";
+
+                                $html .=
+                                "<ul class='dropdown menu' data-click-open='true' 
+                                     data-dropdown-menu data-disable-hover='true' 
+                                     style='display:inline-block'>
+                                    <li><button><i class='fi-pencil' style='padding:3px 3px'></button></i>
+                                        <ul class='menu'>
+                                            <li><button class='details-remove-button social' data-id='{$value['key']}' data-field >Remove<button></li>
+                                            <li><button class='details-status-button verify' data-verified='$verified' data-id='" . esc_attr( $value["key"] ) . "'>" . ($verified ? 'Unverify' : 'Verify') . "</button></li>
+                                            <li><button class='details-status-button invalid' data-verified='$invalid' data-id='" . esc_attr( $value["key"] ) . "'>" . ($invalid ? 'Uninvalidate' : 'Invalidate') . "</button></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                ".
+                                '</li>';
                             }
                         }
                     }

@@ -420,7 +420,7 @@ jQuery(document).ready(function($) {
       jQuery(this).html(invalid? "Invalidate" : "Uninvalidate")
     })
   })
-  $(document).on('click', '.details-remove-button', function () {
+  $(document).on('click', '.details-remove-button.connection', function () {
     let fieldId = $(this).data('field')
     let itemId = $(this).data('id')
 
@@ -437,38 +437,72 @@ jQuery(document).ready(function($) {
       })
     }
   })
+  $(document).on('click', '.details-remove-button.social', function () {
+    let fieldId = $(this).data('id')
+    if (fieldId){
+      API.remove_field('contact', contactId, fieldId).then(()=>{
 
-  $(document).on('change', '.details-edit.input', function () {
+        $(`ul.social .${fieldId}`).remove()
+
+      }).catch(err=>{
+        console.log(err)
+      })
+    }
+  })
+
+  $(document).on('change', '.details-edit.social-input', function () {
     let id = $(this).attr('id')
     let value = $(this).val();
     console.log(id)
     console.log(value)
-    API.save_field_api('contact', contactId, {[id]: value})
+    API.save_field_api('contact', contactId, {[id]: value}).then(()=>{
+      $(`.social.details-list .${id} .social-text`).text(value)
+    })
 
   })
 
   let addSocial = $("#add-social-media")
   addSocial.on('click', function () {
     let channel_type = $('#social-channels').val()
-    let text = $('#new-social-media').val()
+    let inputForNewValue = $('#new-social-media')
+    let text = inputForNewValue.val()
     addSocial.toggleClass('loading')
-    API.add_item_to_field('contact', contactId, {['new-'+channel_type]: text}).then(()=>{
+    API.add_item_to_field('contact', contactId, {['new-'+channel_type]: text}).then((newId)=>{
+      console.log(newId);
       addSocial.toggleClass('loading')
       let label = _.get(contactsDetailsWpApiSettings, `channels[${channel_type}].label`) || channel_type
       $('.social.details-edit').append(
-        `<li>
+        `<li class="${newId}">
           <span>${label}</span>
-          <input id="${channel_type}"
+          <input id="${newId}"
                  value="${text}" style="display: inline-block"   
                  class="details-edit social-input" >
+          <ul class='dropdown menu' data-click-open='true' 
+              data-dropdown-menu data-disable-hover='true' 
+              style='display:inline-block'>
+            <li><button><i class='fi-pencil' style='padding:3px 3px'></button></i>
+              <ul class='menu'>
+                  <li><button class='details-remove-button social' data-id='${newId}' data-field >Remove<button></li>
+                  <li><button class='details-status-button verify' data-verified='0' data-id='${newId}'>Verify</button></li>
+                  <li><button class='details-status-button invalid' data-verified='0' data-id='${newId}'>Invalidate</button></li>
+              </ul>
+            </li>
+          </ul>
+                
         </li>`)
+      $(`.${newId} .dropdown.menu`).foundation()
+
       $('.social.details-list').append(
-        `<li>
+        `<li class="${newId}">
           <span>${label}</span>
-          ${text}
+          <span class="social-text">${text}</span>
+          <img id="${newId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
+          <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
         </li>`)
+      inputForNewValue.val('')
     })
   })
+
 })
 
 
@@ -660,7 +694,7 @@ function add_typeahead_item(contactId, fieldId, val) {
   API.add_item_to_field('contact', contactId, {[fieldId]: val}).then(addedItem=>{
     jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
     <a href="${addedItem.permalink}">${addedItem.post_title}</a>
-    <button class="details-remove-button details-edit"
+    <button class="details-remove-button connection details-edit"
               data-field="locations" data-id="${val}"
               data-name="${name}"  
               style="display: inline-block">Remove</button>
