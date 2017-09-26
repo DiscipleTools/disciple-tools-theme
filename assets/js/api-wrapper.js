@@ -63,6 +63,19 @@ let API = {
       }
     })
   },
+  remove_field: function(type, postId, fieldKey) {
+    let data = {key: fieldKey}
+    return jQuery.ajax({
+      type: "DELETE",
+      data: JSON.stringify(data),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/field`,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      }
+    })
+  },
   post_comment: function(type, postId, comment) {
     return jQuery.ajax({
       type: "POST",

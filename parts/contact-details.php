@@ -9,8 +9,7 @@ function contact_details_status( $id, $verified, $invalid ){
     $buttons .= '<img id="'. $id .'-invalid" class="details-status" style="display:' . $invalid . '" src="'.get_template_directory_uri() . '/assets/images/broken.svg" />';
     return $buttons;
 }
-//var_dump($contact->fields["reason_paused"]);
-//var_dump($contact->fields["overall_status"]);
+
 ?>
 
 <?php if (isset( $contact->fields["requires_update"] ) && $contact->fields["requires_update"]["key"] === "yes"){ ?>
@@ -99,7 +98,7 @@ function contact_details_status( $id, $verified, $invalid ){
                 class="tiny button">
             Return to Active
         </button>
-        <button class="float-right" onclick="edit_fields()">
+        <button class="float-right" id="edit-details">
             <i class="fi-pencil"></i>
             <span id="edit-button-label">Edit</span>
         </button>
@@ -154,12 +153,16 @@ function contact_details_status( $id, $verified, $invalid ){
     </div>
 
     <div class="display-fields">
-        <div class="grid-x">
+        <div class="grid-x grid-margin-x">
 
+            <!--Phone-->
+            <!--Email-->
             <div class="medium-4 cell">
                 <strong><?php echo $channel_list["phone"]["label"] ?></strong>
-                <i class="fa fa-plus"></i>
-                <ul>
+                <button id="add-new-phone" class="details-edit">
+                    <img src="<?php echo get_template_directory_uri() . '/assets/images/small-add.svg' ?>"/>
+                </button>
+                <ul class="phone details-list">
                     <?php
                     foreach($contact->fields[ "contact_phone" ] ?? [] as $field => $value){
                         $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
@@ -169,66 +172,182 @@ function contact_details_status( $id, $verified, $invalid ){
                         '</li>';
                     }?>
                 </ul>
+                <ul id="phone-list" class="details-edit">
+                <?php
+                if ( isset( $contact->fields["contact_phone"] )){
+                    foreach($contact->fields[ "contact_phone" ] ?? [] as $value){
+                        $verified = isset( $value["verified"] ) && $value["verified"] === true;
+                        $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
+                        $html = '<li>
+                        <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["value"] ) . '" class="contact-input">';
+                        $html .= '<button class="details-status-button verify" data-verified="'.$verified.'" data-id="' . esc_attr( $value["key"] ) . '">' . ($verified ? 'Unverify' : "Verify") . '</button>';
+                        $html .= '<button class="details-status-button invalid" data-invalid="'.$invalid.'" data-id="' . esc_attr( $value["key"] ) . '">' .($invalid ? 'Uninvalidate' : "Invalidate") .'</button>';
+                        $html .= '</li>';
+                        echo $html;
+                    }
+                }?>
+                </ul>
+
                 <strong><?php echo $channel_list["email"]["label"] ?></strong>
-                <ul>
+                <button id="add-new-email" class="details-edit">
+                    <img src="<?php echo get_template_directory_uri() . '/assets/images/small-add.svg' ?>"/>
+                </button>
+                <ul class="email details-list">
                     <?php
-                    foreach($contact->fields[ "contact_email" ] ?? [] as $value){
+                    foreach($contact->fields[ "contact_email" ] ?? [] as $field => $value){
                         $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                         $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                         echo  '<li>' . esc_html( $value["value"] ) .
-                        contact_details_status( $value["key"], $verified, $invalid ) .
-                        '</li>';
-                    }
-                    ?>
+                            contact_details_status( $value["key"], $verified, $invalid ) .
+                            '</li>';
+                    }?>
                 </ul>
-            </div>
-            <div class="medium-4 cell">
-                <strong>Assigned To</strong>
-                <ul>
-                    <li class="current-assigned">
+                <ul id="email-list" class="details-edit">
                     <?php
-                    if ( isset( $contact->fields["assigned_to"] ) ){
-                        echo esc_html( $contact->fields["assigned_to"]["display"] );
-                    } else {
-                        echo "None Assigned";
-                    }
-                    ?>
-                    </li>
-                </ul>
-                <strong>Locations</strong>
-                <ul class="locations-list">
-                    <?php
-                    foreach($contact->fields[ "locations" ] ?? [] as $value){
-                        echo '<li class="'. $value->ID .'"><a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a></li>';
+                    if ( isset( $contact->fields["contact_email"] )){
+                        foreach($contact->fields[ "contact_email" ] ?? [] as $value){
+                            $verified = isset( $value["verified"] ) && $value["verified"] === true;
+                            $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
+                            $html = '<li>
+                        <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["value"] ) . '" class="contact-input">';
+                            $html .= '<button class="details-status-button verify" data-verified="'.$verified.'" data-id="' . esc_attr( $value["key"] ) . '">' . ($verified ? 'Unverify' : "Verify") . '</button>';
+                            $html .= '<button class="details-status-button invalid" data-invalid="'.$invalid.'" data-id="' . esc_attr( $value["key"] ) . '">' .($invalid ? 'Uninvalidate' : "Invalidate") .'</button>';
+                            $html .= '</li>';
+                            echo $html;
+                        }
                     }?>
                 </ul>
 
             </div>
+            <!-- Locations -->
+            <!-- Assigned To -->
             <div class="medium-4 cell">
+                <strong>Locations</strong>
+                <ul class="locations-list">
+                    <?php
+                    foreach($contact->fields["locations" ] ?? [] as $value){
+                        echo '<li class="'. $value->ID .'">
+                        <a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a>
+                        <button class="details-remove-button connection details-edit" 
+                                data-field="locations" data-id="'. $value->ID . '" 
+                                data-name="'. $value->post_title .'"
+                        >Remove</button>
+                    </li>';
+                    }
+                    if (sizeof( $contact->fields["locations"] ) === 0){
+                        echo '<li id="no-location">No location set</li>';
+                    }
+                    ?>
+                </ul>
+                <div class="locations details-edit">
+                    <input class="typeahead" type="text" placeholder="Select a new location">
+                </div>
+
+                <strong>Assigned to
+                    <span class="assigned_to details-edit">:
+                </span> <span class="assigned_to details-edit current-assigned">:</span> </strong>
+                <ul class="details-list assigned_to">
+                    <li class="current-assigned">
+                        <?php
+                        if ( isset( $contact->fields["assigned_to"] ) ){
+                            echo esc_html( $contact->fields["assigned_to"]["display"] );
+                        } else {
+                            echo "None Assigned";
+                        }
+                        ?>
+                    </li>
+                </ul>
+                <div class="assigned_to details-edit">
+                    <input class="typeahead" type="text" placeholder="Select a new user">
+                </div>
+            </div>
+            <!-- Social Media -->
+            <div class="medium-4 cell">
+                <strong><?php _e( 'Social Media', 'disciple_tools' ) ?></strong>
                 <?php
+                $html = "<ul class='social details-list'>";
                 foreach($contact->fields as $field_key => $values){
                     if ( strpos( $field_key, "contact_" ) === 0 &&
                         strpos( $field_key, "contact_phone" ) === false &&
                         strpos( $field_key, "contact_email" ) === false) {
                         $channel =   explode( '_', $field_key )[1];
                         if ( isset( $channel_list[$channel] ) ) {
-                            if ( $values && sizeof( $values ) > 0 ) {
-                                echo "<strong>" . $channel_list[$channel]["label"] . "</strong>";
-                            }
-                            $html = "<ul>";
                             foreach ($values as $value) {
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                                echo  '<li>' . esc_html( $value["value"] ) .
+                                $html .=  "<li class='{$value['key']}'>";
+                                if ( $values && sizeof( $values ) > 0 ) {
+                                    $html .= "<span>" . $channel_list[$channel]["label"] . ": </span>";
+                                }
+                                $html .=  "<span class='social-text'>" . esc_html( $value["value"] ) . '</span>' .
                                     contact_details_status( $value["key"], $verified, $invalid ) .
                                     '</li>';
                             }
-                            $html .= "</ul>";
-                            echo $html;
                         }
                     }
                 }
+                $html .= "</ul>";
+                echo $html;
+
+
                 ?>
+                <ul class="social details-edit">
+                <?php
+                $html ='';
+                foreach($contact->fields as $field_key => $values){
+                    if ( strpos( $field_key, "contact_" ) === 0 &&
+                        strpos( $field_key, "contact_phone" ) === false &&
+                        strpos( $field_key, "contact_email" ) === false) {
+                        $channel =   explode( '_', $field_key )[1];
+                        if ( isset( $channel_list[$channel] ) ) {
+                            foreach ($values as $value) {
+                                $verified = isset( $value["verified"] ) && $value["verified"] === true;
+                                $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
+                                $html .=  "<li class='{$value['key']}'>";
+                                if ( $values && sizeof( $values ) > 0 ) {
+                                    $html .= "<span>" . $channel_list[$channel]["label"] . ": </span>";
+                                }
+                                $html .=  "<input id='{$value["key"]}' class='details-edit social-input' value='" . esc_html( $value["value"] ) . "'>";
+
+                                $html .=
+                                "<ul class='dropdown menu' data-click-open='true' 
+                                     data-dropdown-menu data-disable-hover='true' 
+                                     style='display:inline-block'>
+                                    <li><button><i class='fi-pencil' style='padding:3px 3px'></button></i>
+                                        <ul class='menu'>
+                                            <li><button class='details-remove-button social' data-id='{$value['key']}' data-field >Remove<button></li>
+                                            <li><button class='details-status-button verify' data-verified='$verified' data-id='" . esc_attr( $value["key"] ) . "'>" . ($verified ? 'Unverify' : 'Verify') . "</button></li>
+                                            <li><button class='details-status-button invalid' data-verified='$invalid' data-id='" . esc_attr( $value["key"] ) . "'>" . ($invalid ? 'Uninvalidate' : 'Invalidate') . "</button></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                ".
+                                '</li>';
+                            }
+                        }
+                    }
+                }
+                echo $html;
+
+                ?>
+
+                </ul>
+                <div class="details-edit">
+                    <label for="social-channels">Add another contact method</label>
+                    <select id="social-channels">
+                        <?php
+                        foreach($channel_list as $key => $channel){
+                            if ($key != "phone" && $key != "email"){
+                                echo '<option value="'. $key .'">' . esc_html( $channel["label"] ) .'</option>';
+                            }
+                        }
+                        ?>
+                    </select>
+                    <input type="text" id="new-social-media" placeholder="facebook.com/user1">
+                    <button id="add-social-media" class="button loader">
+                        Add
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -262,37 +381,6 @@ function contact_details_status( $id, $verified, $invalid ){
             <!-- Contact information. Phone, email, etc -->
             <div class="medium-6 cell">
                 <?php
-                foreach( $channel_list as $channel_key => $channel_value ){
-                    $field_key = "contact_" . $channel_key;
-                    $new_input_id = "new-" . $channel_key;
-                    $list_id = $channel_key . "-list";
-                    ?>
-                    <strong><?php echo $channel_value["label"] ?></strong>
-                    <button onclick="add_contact_input(<?php echo get_the_ID() ?>, '<?php echo $new_input_id?>', '<?php echo $list_id?>' )">
-                        <img src="<?php echo get_template_directory_uri() . '/assets/images/small-add.svg' ?>"/>
-                    </button>
-                    <ul id="<?php echo $list_id?>">
-                        <?php
-                        if ( isset( $contact->fields[$field_key] )){
-                            foreach($contact->fields[ $field_key ] ?? [] as $value){
-                                $verified = isset( $value["verified"] ) && $value["verified"] === true;
-                                $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
-                                $html = '<li>
-                        <input id="' . esc_attr( $value["key"] ) . '" value="' . esc_attr( $value["value"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">';
-                                if ( !$verified ){
-                                    $html .= '<button class="details-status-button verify" id="' . esc_attr( $value["key"] ) . '-verify" onclick="verify_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Verify</button>';
-                                }
-                                if ( !$invalid ){
-                                    $html .= '<button class="details-status-button invalid" id="' . esc_attr( $value["key"] ) . '-invalidate" onclick="invalidate_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Invalidate</button>';
-                                }
-                                $html .= '</li>';
-                                echo $html;
-                            }
-                        }?>
-                    </ul>
-
-                    <?php
-                }
 
                 if ( isset( $contact->fields["address"] ) ){
                     $type_label = "Address";
@@ -319,45 +407,13 @@ function contact_details_status( $id, $verified, $invalid ){
                             $html .= '<textarea id="' . esc_attr( $value["key"] ) . '" onchange="save_field('. esc_attr( get_the_ID() ) . ', \'' . esc_attr( $value["key"] ) . '\')">'
                                 . esc_html( $value["value"] ) .
                                 '</textarea>
-                    </li>';
+                            </li>';
                             echo $html;
                         }?>
                     </ul>
                     <?php
                 }
                 ?>
-            </div>
-            <!-- Contact Fields. Assigned to, location, etc -->
-            <div class="medium-6 cell">
-                <strong>Assigned To:
-                    <span class="current-assigned">
-                        <?php
-                        if ( isset( $contact->fields["assigned_to"] ) ){
-                            echo esc_html( $contact->fields["assigned_to"]["display"] );
-                        } else {
-                            echo "None Assigned";
-                        }
-                        ?>
-                    </span>
-                </strong>
-                <div class="assigned_to">
-                    <input class="typeahead" type="text" placeholder="Select a new user">
-                </div>
-                <strong>Locations</strong>
-                <ul class="locations-list">
-                <?php
-                $location_ids = [];
-                foreach($contact->fields[ "locations" ] ?? [] as $value){
-                    $location_ids[] = $value->ID;
-                    echo '<li class="'. $value->ID .'">
-                    <a href="' . esc_attr( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a>
-                    <button class="details-remove-button" onclick="remove_item(' . get_the_ID() . ', \'locations\', ' . $value->ID . ')">Remove</button>
-                    </li>';
-                }?>
-                </ul>
-                <div id="locations">
-                    <input class="typeahead" type="text" placeholder="Select a location">
-                </div>
             </div>
         </div>
     </div>
