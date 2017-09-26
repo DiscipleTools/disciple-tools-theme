@@ -101,8 +101,6 @@ let activity = []
 let contact = {}
 jQuery(document).ready(function($) {
 
-  console.log(contactsDetailsWpApiSettings)
-
   let contactId = $("#contact-id").text()
   $( document ).ajaxComplete(function(event, xhr, settings) {
     if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
@@ -132,26 +130,13 @@ jQuery(document).ready(function($) {
     display_activity_comment("all")
   })
 
-  let searchAnyPieceOfWord = function(d) {
-    let tokens = [];
-    //the available string is 'name' in your datum
-    let stringSize = d.name.length;
-    //multiple combinations for every available size
-    //(eg. dog = d, o, g, do, og, dog)
-    for (let size = 1; size <= stringSize; size++) {
-      for (let i = 0; i + size <= stringSize; i++) {
-        tokens.push(d.name.substr(i, size));
-      }
-    }
-    return tokens;
-  }
 
   // https://typeahead.js.org/examples/
   /**
    * Groups
    */
   let groups = new Bloodhound({
-    datumTokenizer: searchAnyPieceOfWord,
+    datumTokenizer: API.searchAnyPieceOfWord,
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     identify: function (obj) {
       return obj.name
@@ -360,10 +345,9 @@ jQuery(document).ready(function($) {
   /**
    * Get the contact
    */
-  console.log("getting")
+
   API.get_post('contact', contactId).then(function(data) {
     contact = data
-    console.log(contact)
     locations.initialize()
     users.initialize()
     if (_.get(contact, "fields.assigned_to")){
@@ -453,8 +437,6 @@ jQuery(document).ready(function($) {
   $(document).on('change', '.details-edit.social-input', function () {
     let id = $(this).attr('id')
     let value = $(this).val();
-    console.log(id)
-    console.log(value)
     API.save_field_api('contact', contactId, {[id]: value}).then(()=>{
       $(`.social.details-list .${id} .social-text`).text(value)
     })
@@ -501,6 +483,14 @@ jQuery(document).ready(function($) {
         </li>`)
       inputForNewValue.val('')
     })
+  })
+
+  $(document).on('change', '.contact-input', function () {
+    let fieldId = $(this).attr('id');
+    API.save_field_api('contact', contactId, {[fieldId]:$(this).val()})
+      .catch(err=>{
+        handelAjaxError(err)
+      })
   })
 
 })
@@ -572,21 +562,10 @@ function display_activity_comment(section) {
 let editingAll = false
 
 
-
-function edit_fields() {
-  let editDetailsToggle = $('#edit-button-label')
-  jQuery(".display-fields").toggle()
-  jQuery(".edit-fields").toggle()
-  editingAll = !editingAll
-  editDetailsToggle.text( editingAll ? "Back": "Edit")
-
-}
-
 function handelAjaxError(err) {
     console.trace("error")
     console.log(err)
     jQuery("#errors").append(err.responseText)
-
 }
 
 function save_field(contactId, fieldKey, inputId){
@@ -619,21 +598,6 @@ function add_contact_input(contactId, inputId, listId){
     jQuery(`#${listId}`).append(newInput)
   }
 }
-
-function verify_contact_method(contactId, fieldId) {
-  API.update_contact_method_detail('contacts', contactId, fieldId, {"verified":true}).then(()=>{
-    jQuery(`#${fieldId}-verified`).show()
-    jQuery(`#${fieldId}-verify`).hide()
-  })
-}
-
-function invalidate_contact_method(contactId, fieldId) {
-  API.update_contact_method_detail('contacts', contactId, fieldId, {"invalid":true}).then(()=>{
-    jQuery(`#${fieldId}-invalid`).show()
-    jQuery(`#${fieldId}-invalidate`).hide()
-  })
-}
-
 
 function remove_item(contactId, fieldId, itemId){
   API.remove_item_from_field('contact', contactId, fieldId, itemId).then(()=>{
