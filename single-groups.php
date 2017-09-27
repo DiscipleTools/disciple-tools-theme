@@ -50,7 +50,7 @@ dt_print_breadcrumbs(
                             $ids[] = $member->ID;
                             ?>
                             <li class="<?php echo esc_attr( $member->ID ); ?>">
-                                <a href="<?php echo esc_attr( $member->permalink ); ?>"><?php echo esc_html( $member->post_title )?></a>
+                                <a href="<?php echo esc_url( $member->permalink ); ?>"><?php echo esc_html( $member->post_title )?></a>
                                 <button class="details-remove-button members-edit"
                                         data-field="members" data-id="<?php echo esc_attr( $member->ID ); ?>"
                                         data-name="<?php echo esc_html( $member->post_title ) ?>"

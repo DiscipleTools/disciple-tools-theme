@@ -78,7 +78,7 @@ dt_print_breadcrumbs( null, __( "Resources" ) );
                 echo '<ul>';
                 ?>
                 <?php foreach ($recent_posts as $recent_post): ?>
-                    <li><a href="<?php echo esc_attr( $recent_post['guid'] ); ?>"><?php echo esc_html( $recent_post['post_title'] ); ?></a></li>
+                    <li><a href="<?php echo esc_url( $recent_post['guid'] ); ?>"><?php echo esc_html( $recent_post['post_title'] ); ?></a></li>
                 <?php endforeach; ?>
                 <?php
                 echo '</ul>';

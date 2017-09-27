@@ -65,7 +65,7 @@
 
                         echo '<ul>';
                         foreach ($recent_posts as $recent_post) {
-                            echo '<li><a href="'. esc_attr( $recent_post['guid'] ) .'">' . esc_html( $recent_post['post_title'] ) . '</a></li>';
+                            echo '<li><a href="'. esc_url( $recent_post['guid'] ) .'">' . esc_html( $recent_post['post_title'] ) . '</a></li>';
                         }
                         echo '</ul>';
 

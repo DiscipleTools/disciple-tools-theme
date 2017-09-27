@@ -41,7 +41,7 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
                     <ul class="breadcrumbs">
 
                         <?php foreach ($links as $link) : ?>
-                            <li><a href="<?php echo esc_attr( $link[0] ); ?>"><?php echo esc_html( $link[1] ); ?></a></li>
+                            <li><a href="<?php echo esc_url( $link[0] ); ?>"><?php echo esc_html( $link[1] ); ?></a></li>
                         <?php endforeach; ?>
                         <li>
                             <span class="show-for-sr"><?php _e( "Current:" ); ?> </span> <?php echo esc_html( $current ); ?>

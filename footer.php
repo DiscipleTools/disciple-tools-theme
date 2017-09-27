@@ -12,10 +12,10 @@
                                     &copy; <?php echo esc_html( date( 'Y' ) ); ?>
                                     <?php bloginfo( 'name' ); ?>.
                                     <?php if( user_can( get_current_user_id(), 'read' )) : ?>
-                                        <a href="<?php echo esc_attr( home_url().'/wp-admin' ); ?>">Admin Panel</a>
+                                        <a href="<?php echo esc_url( home_url().'/wp-admin' ); ?>">Admin Panel</a>
                                     <?php endif; ?>
-                                    | <a href="<?php echo esc_attr( home_url( '/' ) ); ?>about">About Us</a>
-                                    | <a href="<?php echo esc_attr( wp_logout_url() ); ?>">Logout</a></p>
+                                    | <a href="<?php echo esc_url( home_url( '/' ) ); ?>about">About Us</a>
+                                    | <a href="<?php echo esc_url( wp_logout_url() ); ?>">Logout</a></p>
                             </div>
                         </div>
                     </div> <!-- end #inner-footer -->
