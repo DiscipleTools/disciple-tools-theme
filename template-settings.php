@@ -24,7 +24,7 @@ dt_print_breadcrumbs(
             
             <section id="" class="medium-12 cell sticky" data-sticky data-margin-top="6.5">
                 
-                <div class="bordered-box hide-for-small-only">
+                <div class="bordered-box">
                     
                     <ul class="menu vertical expanded" data-smooth-scroll data-offset="100">
                         <li><a href="#profile">Profile</a></li>
@@ -33,7 +33,9 @@ dt_print_breadcrumbs(
                     </ul>
                 
                 </div>
-            
+                
+                <br>
+                
             </section>
         
         
@@ -45,16 +47,13 @@ dt_print_breadcrumbs(
             <div class="bordered-box" id="profile" data-magellan-target="profile">
                 
                 <?php
+                // TODO: Section in progress.
                 /**
                  * Build all user data for the profile section
                  */
                 $dt_user = get_userdata( get_current_user_id() );
                 $dt_usermeta = get_user_meta( get_current_user_id() );
                 $dt_user_fields = dt_build_user_fields_display( $dt_usermeta );
-                
-                print '<pre>';
-                //                print_r( dt_build_user_fields_display( $dt_usermeta ) );
-                print '</pre>';
                 
                 ?>
                 
@@ -65,32 +64,32 @@ dt_print_breadcrumbs(
                 
                 <div class="grid-x grid-margin-x grid-padding-x grid-padding-y ">
                     
-                    <div class="medium-4 cell">
+                    <div class="small-12 medium-4 cell">
                         
                         <p><?php echo get_avatar( get_current_user_id(), '150' ); ?></p>
                         
                         <strong>Name</strong>
                         <ul>
-                            <li>Username: <?php echo esc_attr( $dt_user->user_login ); ?></li>
-                            <li>First Name: <?php echo esc_attr( $dt_user->first_name ); ?></li>
-                            <li>Last Name: <?php echo esc_attr( $dt_user->last_name ); ?></li>
-                            <li>Nickname: <?php echo esc_attr( $dt_user->nickname ); ?></li>
+                            <li>Username: <?php echo esc_html( $dt_user->user_login ); ?></li>
+                            <li>First Name: <?php echo esc_html( $dt_user->first_name ); ?></li>
+                            <li>Last Name: <?php echo esc_html( $dt_user->last_name ); ?></li>
+                            <li>Nickname: <?php echo esc_html( $dt_user->nickname ); ?></li>
                         </ul>
                         
                         <p></p>
                         
                         <strong>Biography</strong>
-                        <p><?php echo esc_attr( $dt_user->user_description ); ?></p>
+                        <p><?php echo esc_html( $dt_user->user_description ); ?></p>
                     
                     </div>
-                    <div class="medium-4 cell">
+                    <div class="small-12 medium-4 cell">
                         
                         <p><strong>Email</strong></p>
                         <ul>
                             <?php
                             foreach( $dt_user_fields as $field ) {
                                 if( $field[ 'type' ] == 'email' && !empty( $field[ 'value' ] ) ) {
-                                    echo '<li><a href="mailto:'.esc_attr( $field[ 'value' ] ).'" target="_blank">' . esc_attr( $field[ 'value' ] ) . '</a> (' . esc_attr( $field[ 'label' ] ) . ')</li>';
+                                    echo '<li><a href="mailto:'.esc_html( $field[ 'value' ] ).'" target="_blank">' . esc_html( $field[ 'value' ] ) . '</a> (' . esc_html( $field[ 'label' ] ) . ')</li>';
                                 }
                             }
                             ?>
@@ -101,7 +100,7 @@ dt_print_breadcrumbs(
                             <?php
                             foreach( $dt_user_fields as $field ) {
                                 if( $field[ 'type' ] == 'phone' && !empty( $field[ 'value' ] ) ) {
-                                    echo '<li>' . esc_attr( $field[ 'value' ] ) . ' (' . esc_attr( $field[ 'label' ] ) . ')</li>';
+                                    echo '<li>' . esc_html( $field[ 'value' ] ) . ' (' . esc_html( $field[ 'label' ] ) . ')</li>';
                                 }
                             }
                             ?>
@@ -112,7 +111,7 @@ dt_print_breadcrumbs(
                             <?php
                             foreach( $dt_user_fields as $field ) {
                                 if( $field[ 'type' ] == 'address' && !empty( $field[ 'value' ] ) ) {
-                                    echo '<li>' . esc_attr( $field[ 'value' ] ) . ' (' . esc_attr( $field[ 'label' ] ) . ')</li>';
+                                    echo '<li>' . esc_html( $field[ 'value' ] ) . ' (' . esc_html( $field[ 'label' ] ) . ')</li>';
                                 }
                             }
                             ?>
@@ -123,7 +122,7 @@ dt_print_breadcrumbs(
                             <?php
                             foreach( $dt_user_fields as $field ) {
                                 if( $field[ 'type' ] == 'social' && !empty( $field[ 'value' ] ) ) {
-                                    echo '<li>' . esc_attr( $field[ 'value' ] ) . ' (' . esc_attr( $field[ 'label' ] ) . ')</li>';
+                                    echo '<li>' . esc_html( $field[ 'value' ] ) . ' (' . esc_html( $field[ 'label' ] ) . ')</li>';
                                 }
                             }
                             ?>
@@ -134,7 +133,7 @@ dt_print_breadcrumbs(
                         <?php
                         foreach( $dt_user_fields as $field ) {
                             if( $field[ 'type' ] == 'other' && !empty( $field[ 'value' ] ) ) {
-                                echo '<li>' . esc_attr( $field[ 'value' ] ) . ' (' . esc_attr( $field[ 'label' ] ) . ')</li>';
+                                echo '<li>' . esc_html( $field[ 'value' ] ) . ' (' . esc_html( $field[ 'label' ] ) . ')</li>';
                             }
                         }
                         ?>
@@ -142,23 +141,36 @@ dt_print_breadcrumbs(
                     
                     
                     </div>
-                    <div class="medium-4 cell">
+                    <div class="small-12 medium-4 cell">
                         
                         <p><strong>Locations</strong></p>
                         <?php
-                        // get locations connected to user
-                        
-                        // loop those locations
-                        
+                        $dt_user_locations_list = dt_get_user_locations_list( get_current_user_id() );
+                        if( $dt_user_locations_list ) {
+                            echo '<ul>';
+                            foreach( $dt_user_locations_list as $locations_list ) {
+                                echo '<li><a href="'. esc_url( $locations_list->guid ).'">' . esc_html( $locations_list->post_title ) . '</a></li>';
+                            }
+                            echo '</ul>';
+                        }
                         ?>
                         
                         
                         <p><strong>Teams</strong></p>
                         <?php
-                        // get teams and members connected to user
-    
-                        // loop those teams and members
-    
+                        $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id() );
+                        if( $dt_user_team_members_list ) {
+                            foreach( $dt_user_team_members_list as $team_list ) {
+                                echo $team_list[ 'team_name' ];
+                                if( !empty( $team_list[ 'team_members' ] ) ) {
+                                    echo '<ul>';
+                                    foreach( $team_list[ 'team_members' ] as $member ) {
+                                        echo '<li><a href="' . esc_url( $member[ 'user_url' ] ) . '">' . esc_html( $member[ 'display_name' ] ) . '</a></li>';
+                                    }
+                                    echo '</ul>';
+                                }
+                            }
+                        }
                         ?>
                     
                     </div>
