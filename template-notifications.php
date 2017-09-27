@@ -18,17 +18,17 @@ global $post;
 ?>
 
 <div id="content">
-    
+
     <div id="inner-content" class="grid-x grid-margin-x">
-        
+
         <div class="large-2 medium-12 small-12 cell "></div>
-        
+
         <div class="large-8 medium-12 small-12 cell ">
-            
-            
+
+
             <div class="bordered-box">
-                
-                
+
+
                 <div class="grid-x">
                     <div class="cell">
                         <div class="grid-x grid-margin-x " style="border-bottom: 1px solid #ccc;">
@@ -44,7 +44,7 @@ global $post;
                             <div class="small-4 medium-5 cell" style="text-align:right;">
                                     <span class="hide-for-small-only">
                                         <a onclick="mark_all_viewed()">Mark All as Read</a>  -
-                                        <a href="<?php echo esc_attr( home_url( '/' ) ); ?>settings/">Settings</a>
+                                        <a href="<?php echo esc_url( home_url( '/' ) ); ?>settings/">Settings</a>
                                     </span>
                                 <span class="show-for-small-only">
                                         <a onclick="mark_all_viewed()">Mark All</a>
@@ -52,12 +52,12 @@ global $post;
                             </div>
                         </div>
                     </div>
-                    
+
                     <?php
-                    
+
                     // query to get new notifications
                     $dt_notifications = Disciple_Tools_Notifications::get_notifications( [ 'user_id' => get_current_user_id() ] );
-                    
+
                     // display new notifications
                     if( $dt_notifications[ 'status' ] == true ) {
                         foreach( $dt_notifications[ 'result' ] as $notification ) {
@@ -86,31 +86,31 @@ global $post;
                             <?php
                         }
                     }
-                    
+
                     ?>
                     <?php
                     // TODO Add infinite scroll or a click loader for the next 50 records.
                     // TODO Add notification bubble to top bar
-                    
+
                     ?>
                     <div class="cell">
                         <div class="grid-x grid-margin-x grid-padding-y">
                             <div class="cell" style="text-align:center;">
-                            
-                            
+
+
                             </div>
                         </div>
                     </div>
-                
+
                 </div>
-            
+
             </div>
-        
-        
+
+
         </div>
-        
+
         <div class="large-2 medium-12 small-12 cell "></div>
-    
+
     </div> <!-- end #inner-content -->
 
 </div> <!-- end #content -->
