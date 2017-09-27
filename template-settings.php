@@ -70,10 +70,14 @@ dt_print_breadcrumbs(
                         <p><?php echo get_avatar( get_current_user_id(), '150' ); ?></p>
                         
                         <strong>Name</strong>
-                        <p>Username: <?php echo esc_attr( $dt_user->user_login ); ?></p>
-                        <p>First Name: <?php echo esc_attr( $dt_user->first_name ); ?></p>
-                        <p>Last Name: <?php echo esc_attr( $dt_user->last_name ); ?></p>
-                        <p>Nickname: <?php echo esc_attr( $dt_user->nickname ); ?></p>
+                        <ul>
+                            <li>Username: <?php echo esc_attr( $dt_user->user_login ); ?></li>
+                            <li>First Name: <?php echo esc_attr( $dt_user->first_name ); ?></li>
+                            <li>Last Name: <?php echo esc_attr( $dt_user->last_name ); ?></li>
+                            <li>Nickname: <?php echo esc_attr( $dt_user->nickname ); ?></li>
+                        </ul>
+                        
+                        <p></p>
                         
                         <strong>Biography</strong>
                         <p><?php echo esc_attr( $dt_user->user_description ); ?></p>
@@ -82,41 +86,80 @@ dt_print_breadcrumbs(
                     <div class="medium-4 cell">
                         
                         <p><strong>Email</strong></p>
-                        
-                        <?php dt_list_contact_type( 'email', $dt_user_fields ); ?>
+                        <ul>
+                            <?php
+                            foreach( $dt_user_fields as $field ) {
+                                if( $field[ 'type' ] == 'email' && !empty( $field[ 'value' ] ) ) {
+                                    echo '<li><a href="mailto:'.esc_attr( $field[ 'value' ] ).'" target="_blank">' . esc_attr( $field[ 'value' ] ) . '</a> (' . esc_attr( $field[ 'label' ] ) . ')</li>';
+                                }
+                            }
+                            ?>
+                        </ul>
                         
                         <strong>Phone</strong>
-                        
-                        <?php dt_list_contact_type( 'phone', $dt_user_fields ); ?>
+                        <ul>
+                            <?php
+                            foreach( $dt_user_fields as $field ) {
+                                if( $field[ 'type' ] == 'phone' && !empty( $field[ 'value' ] ) ) {
+                                    echo '<li>' . esc_attr( $field[ 'value' ] ) . ' (' . esc_attr( $field[ 'label' ] ) . ')</li>';
+                                }
+                            }
+                            ?>
+                        </ul>
                         
                         <strong>Address</strong>
-                        
-                        <?php dt_list_contact_type( 'address', $dt_user_fields ); ?>
+                        <ul>
+                            <?php
+                            foreach( $dt_user_fields as $field ) {
+                                if( $field[ 'type' ] == 'address' && !empty( $field[ 'value' ] ) ) {
+                                    echo '<li>' . esc_attr( $field[ 'value' ] ) . ' (' . esc_attr( $field[ 'label' ] ) . ')</li>';
+                                }
+                            }
+                            ?>
+                        </ul>
                         
                         <strong>Social</strong>
-                        
-                        <?php dt_list_contact_type( 'social', $dt_user_fields ); ?>
+                        <ul>
+                            <?php
+                            foreach( $dt_user_fields as $field ) {
+                                if( $field[ 'type' ] == 'social' && !empty( $field[ 'value' ] ) ) {
+                                    echo '<li>' . esc_attr( $field[ 'value' ] ) . ' (' . esc_attr( $field[ 'label' ] ) . ')</li>';
+                                }
+                            }
+                            ?>
+                        </ul>
                         
                         <strong>Other</strong>
-                        
-                        <?php dt_list_contact_type( 'other', $dt_user_fields ); ?>
+                        <ul>
+                        <?php
+                        foreach( $dt_user_fields as $field ) {
+                            if( $field[ 'type' ] == 'other' && !empty( $field[ 'value' ] ) ) {
+                                echo '<li>' . esc_attr( $field[ 'value' ] ) . ' (' . esc_attr( $field[ 'label' ] ) . ')</li>';
+                            }
+                        }
+                        ?>
+                        </ul>
                     
                     
                     </div>
                     <div class="medium-4 cell">
                         
-                        <strong>Contact Record</strong>
-                        <p><a href="#">Connected contact record</a></p>
-                        <strong>Locations</strong>
-                        <p><a href="">Location Name</a></p>
-                        <p><a href="">Location Name</a></p>
-                        <p><a href="">Location Name</a></p>
-                        <p><a href="">Location Name</a></p>
-                        <strong>Teams</strong>
-                        <p><a href="#">Team Name</a></p>
-                        <p><a href="#">Team Name</a></p>
-                        <p><a href="#">Team Name</a></p>
-                        <p><a href="#">Team Name</a></p>
+                        <p><strong>Locations</strong></p>
+                        <?php
+                        // get locations connected to user
+                        
+                        // loop those locations
+                        
+                        ?>
+                        
+                        
+                        <p><strong>Teams</strong></p>
+                        <?php
+                        // get teams and members connected to user
+    
+                        // loop those teams and members
+    
+                        ?>
                     
                     </div>
                 </div>
