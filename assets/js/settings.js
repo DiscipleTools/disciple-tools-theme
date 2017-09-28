@@ -14,3 +14,12 @@ function change_notification_preference( preference_key ){
     url: wpApiSettingsPage.root + 'dt/v1/users/change_notification_preference',
   })
 }
+
+function change_availability( ){
+  return jQuery.ajax({
+    type: "POST",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettingsPage.root + 'dt/v1/users/change_availability',
+  })
+}

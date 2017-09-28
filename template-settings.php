@@ -351,13 +351,12 @@ dt_print_breadcrumbs(
             
             </div> <!-- End Notifications -->
             
-            
+            <?php
+            $dt_availability = dt_get_user_option_availability( get_current_user_id() );
+            ?>
             <div class="bordered-box" id="availability" data-magellan-target="availability">
                 
                 <!-- section header-->
-                <button class="float-right" onclick="" data-open="add-vacation-notification"><i class="fi-plus"></i>
-                    Add
-                </button>
                 <span class="section-header">Availability</span>
                 <hr size="1" style="max-width:100%"/>
                 
@@ -367,7 +366,7 @@ dt_print_breadcrumbs(
                     <strong>Set Away:</strong>
                 </p>
                 <div class="switch large">
-                    <input class="switch-input" id="switch0vac" type="checkbox" name="switch0vac"/>
+                    <input class="switch-input" id="switch0vac" type="checkbox" name="switch0vac" onclick="change_availability();" <?php ( $dt_availability ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?>/>
                     <label class="switch-paddle" for="switch0vac">
                         <span class="show-for-sr">Enable</span>
                         <span class="switch-active" aria-hidden="true">On</span>
