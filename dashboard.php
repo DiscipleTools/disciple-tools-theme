@@ -35,8 +35,6 @@ dt_print_breadcrumbs(
 
             </div>
 
-            <?php get_template_part( 'parts/content', 'required-updates' ); ?>
-
             <div class="row column padding-bottom">
 
                 <div class="bordered-box">
