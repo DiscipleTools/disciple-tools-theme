@@ -375,7 +375,8 @@ dt_print_breadcrumbs(
                 </div>
                 
                 
-                <!-- List of past, present, and future vacations scheduled -->
+                <?php // TODO: Add scheduling and history of availability ?>
+                <!-- List of past, present, and future vacations scheduled
                 <p>
                     <strong>Schedule Away: </strong>
                 </p>
