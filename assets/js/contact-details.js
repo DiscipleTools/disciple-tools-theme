@@ -237,14 +237,14 @@ jQuery(document).ready(function($) {
       return obj.ID
     },
     prefetch: {
-      url: contactsDetailsWpApiSettings.root + 'dt/v1/users/',
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/users/get_users',
       prepare : API.typeaheadPrefetchPrepare,
       transform: function (data) {
         return API.filterTypeahead(data, _.get(contact, "fields.assigned_to") ? [{ID:contact.fields.assigned_to.ID}] : [])
       },
     },
     remote: {
-      url: contactsDetailsWpApiSettings.root + 'dt/v1/users/?s=%QUERY',
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/users/get_users/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare,
       transform: function (data) {

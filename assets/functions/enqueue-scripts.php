@@ -93,7 +93,7 @@ function site_scripts() {
      */
     dt_theme_enqueue_script( 'dt-notifications', 'assets/js/notifications.js', array( 'jquery', 'lodash', 'typeahead' ),  true );
     wp_localize_script(
-        'dt-notifications', 'wpApiSettings', array(
+        'dt-notifications', 'wpApiNotifications', array(
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'current_user_login' => wp_get_current_user()->user_login,
@@ -105,7 +105,7 @@ function site_scripts() {
     if ( $url_path === 'settings' ) {
         dt_theme_enqueue_script( 'dt-settings', 'assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash', 'typeahead' ),  true );
         wp_localize_script(
-            'dt-settings', 'wpApiSettings', array(
+            'dt-settings', 'wpApiSettingsPage', array(
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
