@@ -1,3 +1,16 @@
-/* global jQuery:false, wpApiSettings:false */
+jQuery.ajaxSetup({
+  beforeSend: function(xhr) {
+    xhr.setRequestHeader('X-WP-Nonce', wpApiSettingsPage.nonce);
+  },
+})
 
-
+function change_notification_preference( preference_key ){
+  let data = { "preference_key": preference_key }
+  return jQuery.ajax({
+    type: "POST",
+    data: JSON.stringify(data),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiSettingsPage.root + 'dt/v1/users/change_notification_preference',
+  })
+}
