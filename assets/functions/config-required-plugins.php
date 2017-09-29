@@ -59,7 +59,7 @@ function dt_register_required_plugins() {
             'name'               => 'Disciple Tools',
             'slug'               => 'disciple-tools',
             'source'             => 'https://github.com/DiscipleTools/disciple-tools/archive/master.zip',
-            'required'           => true,
+            'required'           => false, // TODO false only for development. Should be true for production.
             'force_activation'   => true,
             'version'            => '0.1',
             'is_callable'        => 'Disciple_Tools',
