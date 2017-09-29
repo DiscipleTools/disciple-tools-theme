@@ -47,17 +47,21 @@ dt_print_breadcrumbs(
             <div class="bordered-box" id="profile" data-magellan-target="profile">
                 
                 <?php
-                // TODO: Section in progress.
                 /**
                  * Build all user data for the profile section
                  */
+                $dt_user_class = new Disciple_Tools_Users();
                 $dt_user = get_userdata( get_current_user_id() );
+                if( !$dt_user ) {
+                    die('Failed to get user object.');
+                }
                 $dt_usermeta = get_user_meta( get_current_user_id() );
                 $dt_user_fields = dt_build_user_fields_display( $dt_usermeta );
                 
                 ?>
                 
-                <button class="float-right" onclick=""><i class="fi-pencil"></i> Edit</button>
+                <button class="float-right" data-open="edit-profile"><i class="fi-pencil"></i> Edit</button>
+                
                 <span class="section-header">Your Profile</span>
                 <hr size="1" style="max-width:100%"/>
                 
@@ -427,7 +431,8 @@ dt_print_breadcrumbs(
         
         
         </div>
-        
+            
+            <!-- Future development of availability
         <div class="reveal" id="add-away" data-reveal>
             <button class="close-button" data-close aria-label="Close modal" type="button">
                 <span aria-hidden="true">&times;</span>
@@ -462,6 +467,45 @@ dt_print_breadcrumbs(
                 <button class="button">Add New Vacation</button>
             </div>
         
+        </div>
+            End future development of availability -->
+            
+        <div class="reveal" id="edit-profile" data-reveal>
+            <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h2>Edit</h2>
+    
+            <div class="row column medium-12">
+        
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                    <?php
+                    $profile_fields = [1,2,3];
+                    foreach($profile_fields as $field ) {
+                    ?>
+                        <tr>
+                            <td><label for="first_name">First Name</label></td>
+                            <td><input type="text" class="profile-input" id="first_name"  name="first_name" /></td>
+                        </tr>
+                    <?php
+                    } // end foreach
+                    ?>
+                    
+                    </tbody>
+                </table>
+                <div class="alert alert-box" style="display:none;" id="alert"><strong>Oh snap!</strong>
+                </div>
+                <button class="button">Save</button>
+            </div>
+
         </div>
     
     </div> <!-- end #inner-content -->
