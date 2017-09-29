@@ -478,32 +478,51 @@ dt_print_breadcrumbs(
                 
                 <div class="row column medium-12">
                     
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        
-                        <?php
-                        $profile_fields = [ 1, 2, 3 ];
-                        foreach( $profile_fields as $field ) {
-                            ?>
+                    <form method="post"> <!-- TODO: Hook up form to form processor -->
+                    
+                        <table class="table">
+                            
+                            <tr>
+                                <td>User Name</td>
+                                <td> <?php echo esc_html( $dt_user->user_login ); ?> (can not change)</td>
+                            </tr>
                             <tr>
                                 <td><label for="first_name">First Name</label></td>
-                                <td><input type="text" class="profile-input" id="first_name" name="first_name"/></td>
+                                <td><input type="text" class="profile-input" id="first_name" name="first_name" value="<?php echo esc_html( $dt_user->first_name ); ?>"/></td>
                             </tr>
-                            <?php
-                        } // end foreach
-                        ?>
+                            <tr>
+                                <td><label for="last_name">Last Name</label></td>
+                                <td><input type="text" class="profile-input" id="last_name" name="last_name" value="<?php echo esc_html( $dt_user->last_name ); ?>" /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="nickname">Nickname</label></td>
+                                <td><input type="text" class="profile-input" id="nickname" name="nickname" value=" <?php echo esc_html( $dt_user->nickname ); ?>" /></td>
+                            </tr>
+                            
+                            <?php // site defined fields
+                            foreach( $dt_user_fields as $field ) {
+                                ?>
+                                <tr>
+                                    <td><label for="<?php echo esc_attr($field['key']) ?>"><?php echo esc_html($field['label']) ?></label></td>
+                                    <td><input type="text" class="profile-input" id="<?php echo esc_attr($field['key']) ?>" name="<?php echo esc_attr($field['key']) ?>" value="<?php echo esc_html($field['value']) ?>"/></td>
+                                </tr>
+                                <?php
+                            } // end foreach
+                            ?>
+    
+                            <tr>
+                                <td><label for="user_description">Description</label></td>
+                                <td><textarea type="text" class="profile-input" id="user_description" name="user_description" rows="5"><?php echo esc_html( $dt_user->user_description ); ?></textarea></td>
+                            </tr>
+                            
+                        </table>
                         
-                        </tbody>
-                    </table>
-                    <div class="alert alert-box" style="display:none;" id="alert"><strong>Oh snap!</strong>
-                    </div>
-                    <button class="button">Save</button>
+                        <div class="alert alert-box" style="display:none;" id="alert"><strong>Oh snap!</strong>
+                        </div>
+                        
+                        <button class="button" type="submit">Save</button>
+
+                    </form>
                 </div>
             
             </div>
