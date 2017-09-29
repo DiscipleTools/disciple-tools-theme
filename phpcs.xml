@@ -55,6 +55,7 @@
     <exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
     <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_get_user_meta" />
     <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_add_user_meta" />
+    <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_update_user_meta" />
 
     <!-- We currently don't want these rules that WordPress imports: -->
 
