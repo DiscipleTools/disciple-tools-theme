@@ -3,11 +3,13 @@
 Template Name: Settings
 */
 
-
-$dt_user = get_userdata( get_current_user_id() ); // Returns WP_User object
-if( !$dt_user ) {
-    die( 'Failed to get user object.' );
+/* Process $_POST content */
+if( isset( $_POST[ 'user_update_nonce' ] ) ) {
+    Disciple_Tools_Users::update_user_contact_info();
 }
+
+/* Build variables for page */
+$dt_user = wp_get_current_user(); // Returns WP_User object
 $dt_user_meta = get_user_meta( get_current_user_id() ); // Full array of user meta data
 
 $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the site settings in the config area with the fields available in the user meta table.
@@ -28,66 +30,71 @@ dt_print_breadcrumbs(
 ); ?>
 
 <div id="content">
-    
+
     <div id="inner-content" class="grid-x grid-margin-x">
-        
+
         <div class="large-3 medium-12 small-12 cell ">
-            
+
             <section id="" class="medium-12 cell sticky" data-sticky data-margin-top="6.5">
-                
+
                 <div class="bordered-box">
-                    
+
                     <ul class="menu vertical expanded" data-smooth-scroll data-offset="100">
                         <li><a href="#profile">Profile</a></li>
                         <li><a href="#notifications">Notifications</a></li>
                         <li><a href="#availability">Availability</a></li>
                     </ul>
-                
+
                 </div>
-                
+
                 <br>
-            
+
             </section>
-        
-        
+
         </div>
-        
+
         <div class="large-9 medium-12 small-12 cell ">
-            
-            
+
             <div class="bordered-box" id="profile" data-magellan-target="profile">
-                
+
                 <button class="float-right" data-open="edit-profile"><i class="fi-pencil"></i> Edit</button>
-                
+
                 <span class="section-header">Your Profile</span>
                 <hr size="1" style="max-width:100%"/>
-                
-                
+
+
                 <div class="grid-x grid-margin-x grid-padding-x grid-padding-y ">
-                    
+
                     <div class="small-12 medium-4 cell">
-                        
+
                         <p><?php echo get_avatar( get_current_user_id(), '150' ); ?></p>
-                        
-                        <strong>Name</strong>
-                        <ul>
-                            <li>Username: <?php echo esc_html( $dt_user->user_login ); ?></li>
-                            <li>First Name: <?php echo esc_html( $dt_user->first_name ); ?></li>
-                            <li>Last Name: <?php echo esc_html( $dt_user->last_name ); ?></li>
-                            <li>Nickname: <?php echo esc_html( $dt_user->nickname ); ?></li>
-                        </ul>
-                        
-                        <p></p>
-                        
+
+                        <p>
+                            <strong>Username</strong><br>
+                            <?php echo esc_html( $dt_user->user_login ); ?>
+                        </p>
+
+                        <p>
+                            <strong>Name</strong><br>
+                            <?php echo esc_html( $dt_user->first_name ); ?>
+                            &nbsp;<?php echo esc_html( $dt_user->last_name ); ?>
+                        </p>
+
+                        <p>
+                            <strong>Nickname</strong><br>
+                            <?php echo esc_html( $dt_user->nickname ); ?>
+                        </p>
+
                         <strong>Biography</strong>
                         <p><?php echo esc_html( $dt_user->user_description ); ?></p>
-                    
+
                     </div>
                     <div class="small-12 medium-4 cell">
-                        
+
                         <p><strong>Email</strong></p>
                         <ul>
                             <?php
+                            echo '<li><a href="mailto:' . esc_attr( $dt_user->user_email ) . '">' . esc_html( $dt_user->user_email ) . '</a> (System Email)</li>';
                             foreach( $dt_user_fields as $field ) {
                                 if( $field[ 'type' ] == 'email' && !empty( $field[ 'value' ] ) ) {
                                     echo '<li><a href="mailto:' . esc_html( $field[ 'value' ] ) . '" target="_blank">' . esc_html( $field[ 'value' ] ) . '</a> (' . esc_html( $field[ 'label' ] ) . ')</li>';
@@ -95,7 +102,7 @@ dt_print_breadcrumbs(
                             }
                             ?>
                         </ul>
-                        
+
                         <strong>Phone</strong>
                         <ul>
                             <?php
@@ -106,7 +113,7 @@ dt_print_breadcrumbs(
                             }
                             ?>
                         </ul>
-                        
+
                         <strong>Address</strong>
                         <ul>
                             <?php
@@ -117,7 +124,7 @@ dt_print_breadcrumbs(
                             }
                             ?>
                         </ul>
-                        
+
                         <strong>Social</strong>
                         <ul>
                             <?php
@@ -128,7 +135,7 @@ dt_print_breadcrumbs(
                             }
                             ?>
                         </ul>
-                        
+
                         <strong>Other</strong>
                         <ul>
                             <?php
@@ -139,11 +146,11 @@ dt_print_breadcrumbs(
                             }
                             ?>
                         </ul>
-                    
-                    
+
+
                     </div>
                     <div class="small-12 medium-4 cell">
-                        
+
                         <p><strong>Locations</strong></p>
                         <?php
                         $dt_user_locations_list = dt_get_user_locations_list( get_current_user_id() );
@@ -155,8 +162,8 @@ dt_print_breadcrumbs(
                             echo '</ul>';
                         }
                         ?>
-                        
-                        
+
+
                         <p><strong>Teams</strong></p>
                         <?php
                         $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id() );
@@ -173,19 +180,18 @@ dt_print_breadcrumbs(
                             }
                         }
                         ?>
-                    
+
                     </div>
                 </div>
-            
+
             </div> <!-- End Profile -->
-            
-            
-            
+
+
             <!-- Begin Notification-->
             <div class="bordered-box" id="notifications" data-magellan-target="notifications">
                 <span class="section-header">Notifications</span>
                 <hr size="1" style="max-width:100%"/>
-                
+
                 <table class="form-table">
                     <thead>
                     <tr>
@@ -350,20 +356,20 @@ dt_print_breadcrumbs(
                             <?php } // end else ?>
                         </td>
                     </tr>
-                    
+
                     </tbody>
                 </table>
-            
-            
+
+
             </div> <!-- End Notifications -->
-            
+
             <div class="bordered-box" id="availability" data-magellan-target="availability">
-                
+
                 <!-- section header-->
                 <span class="section-header">Availability</span>
                 <hr size="1" style="max-width:100%"/>
-                
-                
+
+
                 <!-- Turn on Vacation Reminders -->
                 <p>
                     <strong>Set Away:</strong>
@@ -377,8 +383,8 @@ dt_print_breadcrumbs(
                         <span class="switch-inactive" aria-hidden="false">Off</span>
                     </label>
                 </div>
-                
-                
+
+
                 <?php // TODO: Add scheduling and history of availability ?>
                 <!-- List of past, present, and future vacations scheduled
                 <p>
@@ -424,24 +430,24 @@ dt_print_breadcrumbs(
                         </td>
                     </tr>
                     </tbody>
-                
+
                 </table>
-            
+
             </div> <!-- End Availability -->
-            
-            
+
+
             </div>
-            
+
             <!-- Future development of availability
         <div class="reveal" id="add-away" data-reveal>
             <button class="close-button" data-close aria-label="Close modal" type="button">
                 <span aria-hidden="true">&times;</span>
             </button>
             <h2>Add</h2>
-            
+
             <div class="row column medium-12">
-                
-                
+
+
                 <table class="table">
                     <thead>
                     <tr>
@@ -466,69 +472,84 @@ dt_print_breadcrumbs(
                 </div>
                 <button class="button">Add New Vacation</button>
             </div>
-        
+
         </div>
             End future development of availability -->
-            
+
             <div class="reveal" id="edit-profile" data-reveal>
                 <button class="close-button" data-close aria-label="Close modal" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h2>Edit</h2>
-                
+
                 <div class="row column medium-12">
-                    
-                    <form method="post"> <!-- TODO: Hook up form to form processor -->
-                    
+
+                    <form method="post">
+
+                        <?php wp_nonce_field( "user_" . $dt_user->ID . "_update", $name = "user_update_nonce", $referer = false, $echo = true ); ?>
+
                         <table class="table">
-                            
+
                             <tr>
                                 <td>User Name</td>
                                 <td> <?php echo esc_html( $dt_user->user_login ); ?> (can not change)</td>
                             </tr>
                             <tr>
                                 <td><label for="first_name">First Name</label></td>
-                                <td><input type="text" class="profile-input" id="first_name" name="first_name" value="<?php echo esc_html( $dt_user->first_name ); ?>"/></td>
+                                <td><input type="text" class="profile-input" id="first_name" name="first_name"
+                                           value="<?php echo esc_html( $dt_user->first_name ); ?>"/></td>
                             </tr>
                             <tr>
                                 <td><label for="last_name">Last Name</label></td>
-                                <td><input type="text" class="profile-input" id="last_name" name="last_name" value="<?php echo esc_html( $dt_user->last_name ); ?>" /></td>
+                                <td><input type="text" class="profile-input" id="last_name" name="last_name"
+                                           value="<?php echo esc_html( $dt_user->last_name ); ?>"/></td>
                             </tr>
                             <tr>
                                 <td><label for="nickname">Nickname</label></td>
-                                <td><input type="text" class="profile-input" id="nickname" name="nickname" value=" <?php echo esc_html( $dt_user->nickname ); ?>" /></td>
+                                <td><input type="text" class="profile-input" id="nickname" name="nickname"
+                                           value=" <?php echo esc_html( $dt_user->nickname ); ?>"/></td>
                             </tr>
-                            
+
                             <?php // site defined fields
                             foreach( $dt_user_fields as $field ) {
                                 ?>
                                 <tr>
-                                    <td><label for="<?php echo esc_attr($field['key']) ?>"><?php echo esc_html($field['label']) ?></label></td>
-                                    <td><input type="text" class="profile-input" id="<?php echo esc_attr($field['key']) ?>" name="<?php echo esc_attr($field['key']) ?>" value="<?php echo esc_html($field['value']) ?>"/></td>
+                                    <td><label
+                                            for="<?php echo esc_attr( $field[ 'key' ] ) ?>"><?php echo esc_html( $field[ 'label' ] ) ?></label>
+                                    </td>
+                                    <td><input type="text"
+                                               class="profile-input"
+                                               id="<?php echo esc_attr( $field[ 'key' ] ) ?>"
+                                               name="<?php echo esc_attr( $field[ 'key' ] ) ?>"
+                                               value="<?php echo esc_html( $field[ 'value' ] ) ?>"/>
+                                    </td>
                                 </tr>
                                 <?php
                             } // end foreach
                             ?>
-    
+
                             <tr>
-                                <td><label for="user_description">Description</label></td>
-                                <td><textarea type="text" class="profile-input" id="user_description" name="user_description" rows="5"><?php echo esc_html( $dt_user->user_description ); ?></textarea></td>
+                                <td><label for="description">Description</label></td>
+                                <td><textarea type="text" class="profile-input" id="description"
+                                              name="description"
+                                              rows="5"><?php echo esc_html( $dt_user->description ); ?></textarea>
+                                </td>
                             </tr>
-                            
+
                         </table>
-                        
+
                         <div class="alert alert-box" style="display:none;" id="alert"><strong>Oh snap!</strong>
                         </div>
-                        
+
                         <button class="button" type="submit">Save</button>
 
                     </form>
                 </div>
-            
+
             </div>
-        
+
         </div> <!-- end #inner-content -->
-    
+
     </div> <!-- end #content -->
-    
+
     <?php get_footer(); ?>
