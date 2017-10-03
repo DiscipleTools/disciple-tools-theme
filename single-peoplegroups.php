@@ -1,6 +1,6 @@
 <?php declare(strict_types=1); ?>
 
-<?php if ((isset( $_POST['dt_groups_noonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_groups_noonce'] ) ), 'update_dt_groups' ))) {
+<?php if ((isset( $_POST['dt_groups_noonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_groups_noonce'] ), 'update_dt_groups' ))) {
 
     // TODO, we need to run sanitize_text_field and wp_unslash on $_POST before
     // passing it to a function
