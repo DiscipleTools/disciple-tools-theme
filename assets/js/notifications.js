@@ -99,7 +99,7 @@ let all = true
 let all_offset
 let new_offset
 let page
-let limit = 5
+let limit = 20
 
 function get_notifications( all, reset) {
 
@@ -154,6 +154,11 @@ function get_notifications( all, reset) {
         jQuery.each( data, function (i, item) {
           jQuery('#notification-list').append(notification_template( data[i].id, data[i].notification_note, data[i].is_new, data[i].pretty_time ))
         })
+      }
+      else {
+        jQuery('#notification-list').empty().html('<div class="cell center">Nothing here! :)</div>')
+        jQuery('#next-all').hide()
+        jQuery('#next-new').hide()
       }
     })
     .fail(function (err) {
