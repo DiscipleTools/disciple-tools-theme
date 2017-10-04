@@ -157,6 +157,8 @@
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceBeforeComma" />
     <exclude name="WordPress.PHP.YodaConditions.NotYoda" />
     <exclude name="WordPress.VIP.DirectDatabaseQuery.SchemaChange" />
+    <exclude name="WordPress.VIP.RestrictedFunctions.custom_role_add_role" />
+    <exclude name="WordPress.VIP.RestrictedFunctions.get_term_by_get_term_by" />
     <exclude name="WordPress.VIP.RestrictedFunctions.switch_to_blog_switch_to_blog" />
     <exclude name="WordPress.WhiteSpace.CastStructureSpacing.NoSpaceBeforeOpenParenthesis" />
     <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.BlankLineAfterEnd" />
