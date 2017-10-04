@@ -35,7 +35,7 @@ function mark_viewed(notification_id){
   })
     .done(function (data) {
       get_new_notification_count()
-      jQuery('#mark-viewed-'+notification_id).hide()
+      jQuery('#new-button-'+notification_id).hide()
     })
     .fail(function (err) {
       console.log("error")
@@ -57,7 +57,7 @@ function mark_all_viewed(){
   })
     .done(function (data) {
       get_new_notification_count()
-      jQuery('.mark-viewed').hide()
+      jQuery('.new-button').hide()
     })
     .fail(function (err) {
       console.log("error")
@@ -66,31 +66,74 @@ function mark_all_viewed(){
     })
 }
 
-/* TODO finish the template */
-let notificationTemplate = _.template(`
-    <div class="cell">
-        <div class="grid-x grid-margin-x grid-padding-y bottom-border">
-            <div class="cell medium-1 hide-for-small-only">
-                <img src="http://via.placeholder.com/50x50?text=icon" width="50px" height="50px"/>
-            </div>
-            <div class="auto cell">
-                 <%- note %>
-            </div>
-            
-            <div class="small-2 medium-1 cell padding-5">
-                 <a class="mark-viewed-<%- id %> button small" style="border-radius:100px; margin: .7em 0 0;">
-                    <i class="fi-check"></i>
-                 </a>
-            </div>
-            
-        </div>                                 
-    </div>`
-)
-
-/* TODO finish the notifications get call and template */
-function get_notifications( limit, offset ) {
+function notification_template( id, note, is_new, pretty_time ) {
   "use strict";
-  let data = { "limit": limit, "offset": offset }
+  let button = ``
+
+  if ( is_new === '1' ) {
+    button = `<a id="new-button-` + id + `" class="new-button button small" style="border-radius:100px; margin: .7em 0 0;"
+                  onclick="mark_viewed( ` + id + ` )">
+                  <i class="fi-check"></i>
+               </a>`
+  }
+
+  return `
+            <div class="cell" id="row-` + id + `">
+              <div class="grid-x grid-margin-x grid-padding-y bottom-border">
+                <div class="cell medium-1 hide-for-small-only">
+                    <img src="http://via.placeholder.com/50x50?text=icon" width="50px" height="50px"/>
+                </div>
+                <div class="auto cell">
+                   ` + note + `<br>
+                   <span class="grey">` + pretty_time + `</span>
+                </div>
+
+                <div class="small-2 medium-1 cell padding-5">
+                    ` + button + `
+                </div>
+              </div>
+            </div>`
+}
+
+let all = true
+let all_offset
+let new_offset
+let page
+let limit = 5
+
+function get_notifications( all, reset) {
+
+  if ( all === true ) {
+    new_offset = 0
+    if (all_offset === 0 || !all_offset) {
+      page = 0
+      all_offset = limit
+    }
+    else if (all_offset === limit) {
+      page = limit
+      all_offset = limit + limit
+    }
+    else {
+      page = all_offset + limit
+      all_offset = all_offset + limit
+    }
+  } else {
+    all_offset = 0
+    if (new_offset === 0 || !new_offset) {
+      page = 0
+      new_offset = limit
+    }
+    else if (new_offset === limit) {
+      page = limit
+      new_offset = limit + limit
+    }
+    else {
+      page = new_offset + limit
+      new_offset = new_offset + limit
+    }
+  }
+
+  let data = { "all": all, "page": page, "limit": limit }
   return jQuery.ajax({
     type: "POST",
     data: JSON.stringify(data),
@@ -103,12 +146,13 @@ function get_notifications( limit, offset ) {
   })
     .done(function ( data ) {
       if( data ) {
+
+        if(reset) {
+          jQuery('#notification-list').empty()
+        }
+
         jQuery.each( data, function (i, item) {
-          jQuery('#notification-list').append(notificationTemplate({
-            note: data[i].notification_note,
-            id: data[i].id,
-            is_new: data[i].is_new
-          }))
+          jQuery('#notification-list').append(notification_template( data[i].id, data[i].notification_note, data[i].is_new, data[i].pretty_time ))
         })
       }
     })
@@ -118,7 +162,19 @@ function get_notifications( limit, offset ) {
       jQuery("#errors").append(err.responseText)
     })
 }
-get_notifications();
 
+function toggle_buttons( state ) {
+  if ( state === 'all' ) {
+    jQuery('#all').attr('class', 'button')
+    jQuery('#new').attr('class', 'button hollow')
+    jQuery('#next-all').show()
+    jQuery('#next-new').hide()
+  } else {
+    jQuery('#all').attr('class', 'button hollow')
+    jQuery('#new').attr('class', 'button')
+    jQuery('#next-all').hide()
+    jQuery('#next-new').show()
+  }
 
+}
 
