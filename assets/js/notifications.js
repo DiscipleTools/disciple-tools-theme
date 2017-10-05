@@ -95,6 +95,7 @@ function notification_template( id, note, is_new, pretty_time ) {
             </div>`
 }
 
+/* Variables for get_notifications */
 let all = true
 let all_offset
 let new_offset
@@ -103,6 +104,7 @@ let limit = 20
 
 function get_notifications( all, reset) {
 
+  /* Processing the offset of the query request */
   if ( all === true ) {
     new_offset = 0
     if (all_offset === 0 || !all_offset) {
@@ -133,32 +135,40 @@ function get_notifications( all, reset) {
     }
   }
 
-  let data = { "all": all, "page": page, "limit": limit }
+  /* query for the data */
+  let data = {"all": all, "page": page, "limit": limit}
   return jQuery.ajax({
     type: "POST",
     data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     url: wpApiNotifications.root + 'dt/v1/notifications/get_notifications',
-    beforeSend: function(xhr) {
+    beforeSend: function (xhr) {
       xhr.setRequestHeader('X-WP-Nonce', wpApiNotifications.nonce);
     }
   })
-    .done(function ( data ) {
-      if( data ) {
+    .done(function (data) { // return notifications if query successful
+      if (data) {
 
-        if(reset) {
+        if (reset) {
           jQuery('#notification-list').empty()
         }
 
-        jQuery.each( data, function (i, item) {
-          jQuery('#notification-list').append(notification_template( data[i].id, data[i].notification_note, data[i].is_new, data[i].pretty_time ))
+        jQuery.each(data, function (i, item) {
+          jQuery('#notification-list').append(notification_template(data[i].id, data[i].notification_note, data[i].is_new, data[i].pretty_time))
         })
       }
-      else {
+      else if (( all === true && (all_offset === 0 || !all_offset ) ) || all === false && (new_offset === 0 || !new_offset)) { // determines if this is the first query (offset 0) and there is nothing returned.
+
         jQuery('#notification-list').empty().html('<div class="cell center">Nothing here! :)</div>')
         jQuery('#next-all').hide()
         jQuery('#next-new').hide()
+
+      } else { // therefore if no data is returned, but this is not the first query, then just remove the option to load more content
+
+        jQuery('#next-all').hide()
+        jQuery('#next-new').hide()
+
       }
     })
     .fail(function (err) {
