@@ -33,7 +33,7 @@ dt_print_breadcrumbs(
 
     <div id="inner-content" class="grid-x grid-margin-x">
 
-        <div class="large-3 medium-12 small-12 cell ">
+        <div class="large-3 medium-3 small-12 cell ">
 
             <section id="" class="medium-12 cell sticky" data-sticky data-margin-top="6.5">
 
@@ -53,7 +53,7 @@ dt_print_breadcrumbs(
 
         </div>
 
-        <div class="large-9 medium-12 small-12 cell ">
+        <div class="large-9 medium-9 small-12 cell ">
 
             <div class="bordered-box" id="profile" data-magellan-target="profile">
 
