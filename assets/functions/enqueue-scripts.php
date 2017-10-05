@@ -113,6 +113,15 @@ function site_scripts() {
             )
         );
     }
+    if ( $url_path === 'metrics' ) {
+        dt_theme_enqueue_script( 'dt-metrics', 'assets/js/metrics.js', array( 'jquery', 'jquery-ui' ),  true );
+        wp_localize_script(
+            'dt-metrics', 'wpApiMetricsPage', array(
+                'root' => esc_url_raw( rest_url() ),
+                'nonce' => wp_create_nonce( 'wp_rest' )
+            )
+        );
+    }
 
     if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )) {
         dt_theme_enqueue_script( 'data-tables', 'dependencies/DataTables/datatables.min.js',  array( 'jquery' ) );
