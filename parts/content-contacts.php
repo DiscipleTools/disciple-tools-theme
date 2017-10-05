@@ -35,7 +35,7 @@ declare(strict_types=1);
             <!--<th><?php _e( "Last modified" ); ?></th>-->
         </tr></thead>
         <tbody>
-            <tr class="js-list-contacts-loading"><td colspan=7><?php _e( "Loading..." ); ?></td></tr>
+            <tr class="js-list-loading"><td colspan=7><?php _e( "Loading..." ); ?></td></tr>
         </tbody>
     </table>
 

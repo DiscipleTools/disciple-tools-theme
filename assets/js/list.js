@@ -94,6 +94,7 @@
             "<div>" + wpApiSettings.txt_error + "</div>" +
             "<div>" + jqXHR.responseText + "</div>"
         );
+        console.error(jqXHR.responseText);
       });
     },
   });
