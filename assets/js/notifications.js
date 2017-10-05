@@ -104,7 +104,7 @@ let limit = 20
 
 function get_notifications( all, reset) {
 
-  /* Processing the offset of the query request */
+  /* Processing the offset of the query request. Using the limit variable to increment the sql offset. */
   if ( all === true ) {
     new_offset = 0
     if (all_offset === 0 || !all_offset) {
