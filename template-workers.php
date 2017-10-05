@@ -217,10 +217,6 @@ dt_print_breadcrumbs(
 
         </div>
 
-        <?php print '<pre>';
-        print_r( get_user_meta( 1 ) );
-        print '</pre>'; ?>
-
     </div> <!-- end #inner-content -->
 
 </div> <!-- end #content -->
