@@ -122,6 +122,7 @@
     <exclude name="Squiz.Commenting.VariableComment.Missing" />
     <exclude name="Squiz.Commenting.VariableComment.MissingVar" />
     <exclude name="Squiz.Commenting.VariableComment.WrongStyle" />
+    <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndFile" />
     <exclude name="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace" />
     <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace" />
     <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis" />
@@ -177,6 +178,7 @@
     <exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceAfter" />
     <exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore" />
     <exclude name="WordPress.WhiteSpace.OperatorSpacing.SpacingAfter" />
+    <exclude name="WordPress.WhiteSpace.OperatorSpacing.SpacingBefore" />
 
   </rule>
 
