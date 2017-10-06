@@ -29,13 +29,13 @@ dt_print_breadcrumbs(
                         <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu>
                             <li>
                                 <!-- // todo: temporary user of show_fake_char function while designing UI/UX-->
-                                <a onclick="show_fake_chart('Critical+Path+Chart');">Critical Path</a>
+                                <a onclick="show_critical_path();">Critical Path</a>
 
                             </li>
                             <li class="top-border">
                                 <a href="#">Pace</a>
                                 <ul class="menu vertical nested">
-                                    <li><a onclick="show_critical_path();">Contacts</a></li>
+                                    <li><a onclick="show_fake_chart('Contacts+Chart');">Contacts</a></li>
                                     <li><a onclick="show_fake_chart('Groups+Chart');">Groups</a></li>
                                 </ul>
                             </li>
@@ -90,6 +90,11 @@ dt_print_breadcrumbs(
                 <section id="" class="medium-12 cell">
 
                     <div class="bordered-box">
+                        <script>
+                            jQuery(document).ready(function() {
+                                show_critical_path()
+                            })
+                        </script>
 
                         <div id="chart"></div><!-- Container for charts -->
 
