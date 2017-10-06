@@ -35,7 +35,7 @@ dt_print_breadcrumbs(
                             <li class="top-border">
                                 <a href="#">Pace</a>
                                 <ul class="menu vertical nested">
-                                    <li><a onclick="show_fake_chart('Contacts+Chart');">Contacts</a></li>
+                                    <li><a onclick="show_critical_path();">Contacts</a></li>
                                     <li><a onclick="show_fake_chart('Groups+Chart');">Groups</a></li>
                                 </ul>
                             </li>
