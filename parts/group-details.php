@@ -1,14 +1,18 @@
 <?php
+(function() {
+?>
+<?php
 $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
 $locations = Disciple_Tools_Locations::get_locations();
 $current_user = wp_get_current_user();
 $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
 
 
-function contact_details_status( $id, $verified, $invalid ){
-    $buttons = '<img id="'. $id .'-verified" class="details-status" style="display:' . $verified . '" src="'.get_template_directory_uri() . '/assets/images/verified.svg"/>';
-    $buttons .= '<img id="'. $id .'-invalid" class="details-status" style="display:' . $invalid . '" src="'.get_template_directory_uri() . '/assets/images/broken.svg" />';
-    return $buttons;
+function dt_contact_details_status( $id, $verified, $invalid ){
+    ?>
+    <img id="<?php echo esc_attr( $id . '-verified' ); ?>" class="details-status" style="display: <?php echo esc_attr( $verified ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . '/assets/images/verified.svg'; ?>"/>
+    <img id="<?php echo esc_attr( $id . '-invalid' ); ?>"  class="details-status" style="display: <?php echo esc_attr( $invalid ); ?>"  src="<?php echo esc_url( get_template_directory_uri() ) . '/assets/images/broken.svg'; ?>" />
+    <?php
 }
 
 ?>
@@ -18,11 +22,11 @@ function contact_details_status( $id, $verified, $invalid ){
     <div class="item-details-header-row">
         <i class="fi-torsos-all large"></i>
         <span class="item-details-header"><?php the_title_attribute(); ?></span>
-        <span id="group-status-label" class="button alert label details-list status">Status: <?php echo $group['group_status']['label'] ?? ''; ?></span>
+        <span id="group-status-label" class="button alert label details-list status">Status: <?php echo esc_html( $group['group_status']['label'] ?? '' ); ?></span>
           <select id="group-status-select" class="status details-edit" style="width:fit-content; display:none">
             <?php foreach( $group_fields["group_status"]["default"] as $status_key => $status_label ) { ?>
-            <option value="<?php echo $status_key; ?>"
-                <?php echo $status_key === $group['group_status']['key'] ? 'selected': '' ?>>
+            <option value="<?php echo esc_attr( $status_key ); ?>"
+                <?php echo esc_attr( $status_key === $group['group_status']['key'] ? 'selected': '' ); ?>>
                 <?php echo esc_html( $status_label ) ?>
             </option>
             <?php } ?>
@@ -39,16 +43,16 @@ function contact_details_status( $id, $verified, $invalid ){
         <div class="medium-4 cell">
             <strong>Address</strong>
             <button class="address details-edit add-button">
-                <img src="<?php echo get_template_directory_uri() . '/assets/images/small-add.svg' ?>"/>
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/assets/images/small-add.svg' ?>"/>
             </button>
             <ul class="address details-list">
                 <?php
                 foreach($group[ "address" ]  ?? [] as $value){
                     $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                     $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                    echo  '<li class="'. $value["key"] .'">' . esc_html( $value["value"] ) .
-                        contact_details_status( $value["key"], $verified, $invalid ) .
-                        '</li>';
+                    echo  '<li class="'. esc_attr( $value["key"] ) .'">' . esc_html( $value["value"] );
+                    dt_contact_details_status( $value["key"], $verified, $invalid );
+                    echo '</li>';
                 }?>
             </ul>
             <?php
@@ -64,18 +68,19 @@ function contact_details_status( $id, $verified, $invalid ){
                     foreach($group[ "address" ] ?? [] as $value){
                         $verified = isset( $value["verified"] ) && $value["verified"] === true;
                         $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
-                        $html = '<li>';
-                        if ( !$verified ){
-                            $html .= '<button class="details-status-button verify" id="' . esc_attr( $value["key"] ) . '-verify" onclick="verify_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Verify</button>';
-                        }
-                        if ( !$invalid ){
-                            $html .= '<button class="details-status-button invalid" id="' . esc_attr( $value["key"] ) . '-invalidate" onclick="invalidate_contact_method(' . get_the_ID() . ', \'' . esc_attr( $value["key"] ) . '\')">Invalidate</button>';
-                        }
-                        $html .= '<textarea id="' . esc_attr( $value["key"] ) . '">'
-                            . esc_html( $value["value"] ) .
-                            '</textarea>
-                </li>';
-                        echo $html;
+                        ?>
+                        <li>
+                        <?php if ( !$verified ): ?>
+                            <button class="details-status-button verify" id="<?php echo esc_attr( $value["key"] ) . '-verify'; ?>" onclick="verify_contact_method(<?php echo intval( get_the_ID() ); ?>, '<?php echo esc_js( $value["key"] ); ?>' )">Verify</button>
+                        <?php endif; ?>
+                        <?php if ( !$invalid ): ?>
+                            <button class="details-status-button invalid" id="<?php echo esc_attr( $value["key"] ) . '-invalidate'; ?>" onclick="invalidate_contact_method(<?php echo intval( get_the_ID() ); ?>, '<?php echo esc_js( $value["key"] ); ?>')">Invalidate</button>
+                        <?php endif; ?>
+                        <textarea id="<?php echo esc_attr( $value["key"] ); ?>">
+                            <?php echo esc_html( $value["value"] ); ?>
+                        </textarea>
+                        </li>
+                        <?php
                     }?>
                 </ul>
                 <?php
@@ -88,13 +93,15 @@ function contact_details_status( $id, $verified, $invalid ){
             <ul class="locations-list">
                 <?php
                 foreach($group[ "locations" ] ?? [] as $value){
-                    echo '<li class="'. $value->ID .'">
-                        <a href="' . esc_url( $value->permalink ) . '">'. esc_html( $value->post_title ) .'</a>
+                    ?>
+                    <li class="<?php echo intval( $value->ID ); ?>">
+                        <a href="<?php echo esc_url( $value->permalink ); ?>"><?php echo esc_html( $value->post_title ); ?></a>
                         <button class="details-remove-button details-edit"
-                                data-field="locations" data-id="'. $value->ID . '"
-                                data-name="'. $value->post_title .'"
+                                data-field="locations" data-id="<?php esc_attr( $value->ID ); ?>"
+                                data-name="<?php echo esc_attr( $value->post_title ); ?>"
                         >Remove</button>
-                    </li>';
+                    </li>
+                    <?php
                 }
                 if (sizeof( $group["locations"] ) === 0){
                     echo '<li id="no-location">No location set</li>';
@@ -107,12 +114,12 @@ function contact_details_status( $id, $verified, $invalid ){
         </div>
         <div class="medium-4 cell">
             <strong>Start Date</strong>
-            <div class="start_date details-list"><?php echo $group["start_date"] ?? "No start date" ?> </div>
+            <div class="start_date details-list"><?php echo esc_html( $group["start_date"] ?? "No start date" ); ?> </div>
             <div class="start_date details-edit"><input type="text" id="start-date-picker"></div>
         </div>
         <div class="medium-4 cell">
             <strong>End Date</strong>
-            <div class="end_date details-list"><?php echo $group["end_date"] ?? "No end date" ?> </div>
+            <div class="end_date details-list"><?php echo esc_html( $group["end_date"] ?? "No end date" ); ?> </div>
             <div class="end_date details-edit"><input type="text" id="end-date-picker"></div>
         </div>
         <div class="medium-4 cell">
@@ -141,3 +148,5 @@ function contact_details_status( $id, $verified, $invalid ){
 
 </section> <!-- end article -->
 
+<?php
+})();
