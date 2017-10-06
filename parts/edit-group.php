@@ -5,7 +5,7 @@
     </header> <!-- end article header -->
 
     <section class="entry-content" itemprop="articleBody">
-        <form method="post" action="<?php echo get_permalink() ?>" id="contact-edit">
+        <form method="post" action="<?php echo esc_url( get_permalink() ); ?>" id="contact-edit">
 
 
             <?php dt_get_group_edit_form();  ?>

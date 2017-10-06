@@ -1,3 +1,6 @@
+<?php
+(function() {
+?>
 <ul class="tabs" data-tabs id="my-contact-tabs">
     <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">My Locations</a></li>
     <li class="tabs-title"><a href="#panel2">Team Locations</a></li>
@@ -47,7 +50,7 @@
                             foreach ( $post->connected as $post ) : setup_postdata( $post );
                                 $i++;
                             endforeach;
-                            echo $i;
+                            echo intval( $i );
                             wp_reset_postdata(); // set $post back to original post
                             ?>
                             )
@@ -151,7 +154,7 @@
                             foreach ( $post->connected as $post ) : setup_postdata( $post );
                                 $i++;
                             endforeach;
-                            echo $i;
+                            echo intval( $i );
                             wp_reset_postdata(); // set $post back to original post
                             ?>
                             )
@@ -196,3 +199,5 @@
         });
     });
 </script>
+<?php
+})();

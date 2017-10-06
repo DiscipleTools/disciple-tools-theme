@@ -1,4 +1,5 @@
 <?php
+(function() {
     $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 ?>
@@ -13,14 +14,17 @@
                 $current_value = $contact->fields[$field];
             } ?>
 
-            <button class="contact-quick-button <?php echo $field ?>"
-                    onclick="save_quick_action(<?php echo get_the_ID() ?>, '<?php echo $field ?>')">
-                <img src="<?php echo get_template_directory_uri() . "/assets/images/" . $val['icon'] ?>">
-                <span class="contact-quick-button-number"><?php echo $current_value ?></span>
-                <p><?php echo $val["name"] ?></p>
+            <button class="contact-quick-button <?php echo esc_attr( $field ) ?>"
+                    onclick="save_quick_action(<?php echo intval( get_the_ID() ); ?>, '<?php echo esc_js( $field ) ?>')">
+                <img src="<?php echo esc_url( get_template_directory_uri() . "/assets/images/" . $val['icon'] ); ?>">
+                <span class="contact-quick-button-number"><?php echo esc_html( $current_value ); ?></span>
+                <p><?php echo esc_html( $val["name"] ); ?></p>
             </button>
         <?php
         }
     }
     ?>
 </div>
+
+<?php
+})();

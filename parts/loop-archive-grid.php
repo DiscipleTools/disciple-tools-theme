@@ -1,5 +1,10 @@
 <?php
+
+(function() {
+?>
+<?php
 // Adjust the amount of rows in the grid
+
 $grid_columns = 4; ?>
 
 <?php if( 0 === ( $wp_query->current_post  )  % $grid_columns ): ?>
@@ -40,3 +45,5 @@ $grid_columns = 4; ?>
 
 <?php endif; ?>
 
+<?php
+})();
