@@ -66,7 +66,6 @@
                             echo '<option value="'. esc_html( $reason_key ) . '" selected>' . esc_html( $reason_value ) . '</option>';
                         } else {
                             echo '<option value="'. esc_html( $reason_key ) . '">' . esc_html( $reason_value ). '</option>';
-
                         }
                     }
                     ?>
@@ -405,6 +404,25 @@
                             ?>
                         </select>
                     </div>
+                    <div class="medium-4 cell">
+                        <strong>Gender:</strong>
+                        <ul class="details-list">
+                            <li><?php echo esc_html( $contact->fields['gender']['label'] ?? "No gender set" ) ?></li>
+                        </ul>
+                        <select id="gender" class="details-edit select-field">
+                            <?php
+                            foreach( $contact_fields["gender"]["default"] as $gender_key => $gender_value ) {
+                                if ( isset( $contact->fields["gender"] ) &&
+                                    $contact->fields["gender"]["key"] === $gender_key){
+                                    echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
+                                } else {
+                                    echo '<option value="'. esc_html( $gender_key ) . '">' . esc_html( $gender_value ). '</option>';
+
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="row show-more-button" style="text-align: center" >
@@ -414,48 +432,6 @@
                 </button>
             </div>
         </div>
-        <div class="edit-fields" style="display: none">
-            <div class="grid-x">
-                <!-- Contact information. Phone, email, etc -->
-                <div class="medium-6 cell">
-                    <?php
-
-                    if ( isset( $contact->fields["address"] ) ){
-                        $type_label = "Address";
-                        $type = "address";
-                        $new_input_id = "new-" . $type;
-                        $list_id = $type . "-list";
-                        ?>
-                        <strong><?php echo esc_html( $type_label ) ?></strong>
-                        <button onclick="add_contact_input(<?php echo esc_html( get_the_ID() )?>, '<?php echo esc_html( $new_input_id )?>', '<?php echo esc_html( $list_id )?>' )">
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
-                        </button>
-                        <ul id="<?php echo esc_html( $list_id )?>">
-                            <?php
-                            foreach($contact->fields[ "address" ] ?? [] as $value){
-                                $verified = isset( $value["verified"] ) && $value["verified"] === true;
-                                $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
-                                ?>
-                                <li>
-                                    <?php
-                                    if ( !$verified ){
-                                        ?><button class="details-status-button verify" id="<?php echo esc_attr( $value["key"] )?>-verify">Verify</button><?php
-                                    }
-                                    if ( !$invalid ){
-                                        ?><button class="details-status-button invalid" id="<?php echo esc_html( $value["key"] )?>-invalidate">Invalidate</button><?php
-                                    }
-                                    ?>
-                                    <textarea id="<?php echo esc_html( $value["key"] )?>">
-                                        <?php echo esc_html( $value["value"] ) ?>
-                                    </textarea>
-                                </li>
-                            <?php }?>
-                        </ul>
-                    <?php } ?>
-                </div>
-            </div>
-        </div>
-
     </section> <!-- end article -->
 
 <?php
