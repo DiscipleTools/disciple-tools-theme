@@ -185,13 +185,13 @@
                             ?>
                             <li>
                                 <input id="<?php echo esc_attr( $value["key"] )?>" value="<?php echo esc_attr( $value["value"] )?>" class="contact-input">
-                                <button class="details-status-button verify" data-verified="<?php echo esc_html( $verified )?>" data-id="<?php esc_attr( $value["key"] ) ?>">
+                                <button class="details-status-button verify" data-verified="<?php echo esc_html( $verified )?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
                                     <?php echo ($verified ? 'Unverify' : "Verify") ?>
                                 </button>
-                                <button class="details-status-button invalid" data-verified="<?php echo esc_html( $invalid ) ?>" data-id="<?php esc_attr( $value["key"] ) ?>">
+                                <button class="details-status-button invalid" data-verified="<?php echo esc_html( $invalid ) ?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
                                     <?php echo ($invalid ? 'Uninvalidate' : "Invalidate") ?>
                                 </button>
-                            <li>
+                            </li>
 
                         <?php }
                     }?>

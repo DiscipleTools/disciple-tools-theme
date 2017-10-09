@@ -380,16 +380,21 @@ jQuery(document).ready(function($) {
   $(document).on('click', '.details-status-button.verify', function () {
     let id = $(this).data('id')
     let verified = $(this).data('verified')
-    API.update_contact_method_detail('contact', contactId, id, {"verified":!verified}).then(()=>{
-      $(this).data('verified', !verified)
-      if (verified){
-        jQuery(`#${id}-verified`).hide()
-      } else {
-        jQuery(`#${id}-verified`).show()
+    if (id){
+      console.log('verify')
+      API.update_contact_method_detail('contact', contactId, id, {"verified":!verified}).then(()=>{
+        $(this).data('verified', !verified)
+        if (verified){
+          jQuery(`#${id}-verified`).hide()
+        } else {
+          jQuery(`#${id}-verified`).show()
 
-      }
-      jQuery(this).html(verified ? "Verify" : "Unverify")
-    })
+        }
+        jQuery(this).html(verified ? "Verify" : "Unverify")
+      }).catch(err=>{
+        console.log(err)
+      })
+    }
   })
   $(document).on('click', '.details-status-button.invalid', function () {
     let id = $(this).data('id')
