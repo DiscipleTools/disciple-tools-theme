@@ -445,7 +445,6 @@ jQuery(document).ready(function($) {
     API.save_field_api('contact', contactId, {[id]: value}).then(()=>{
       $(`.social.details-list .${id} .social-text`).text(value)
     })
-
   })
 
   let addSocial = $("#add-social-media")
@@ -497,6 +496,18 @@ jQuery(document).ready(function($) {
         handelAjaxError(err)
       })
   })
+
+
+  $('.select-field').change(function () {
+    API.save_field_api(
+      'contact',
+      contactId,
+      {[$(this).attr('id')]:$(this).val()}
+    ).catch(err=>{
+      console.log(err)
+    })
+  })
+
 
 })
 

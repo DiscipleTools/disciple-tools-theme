@@ -58,7 +58,7 @@
             </div>
             <div class="medium-6 cell">
                 <strong>Set Unassignable Reason:</strong>
-                <select id="reason_unassignable" onchange="save_field(<?php echo get_the_ID();?>, 'reason_unassignable')">
+                <select id="reason_unassignable" class="select-field">
                     <?php
                     foreach( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_value ) {
                         if ( isset( $contact->fields["reason_unassignable"] ) &&
@@ -385,6 +385,25 @@
                                 </li>
                             <?php } ?>
                         </ul>
+                    </div>
+                    <div class="medium-4 cell">
+                        <strong>Age:</strong>
+                        <ul class="details-list">
+                            <li><?php echo esc_html( $contact->fields['age']['label'] ?? "No age set" ) ?></li>
+                        </ul>
+                        <select id="age" class="details-edit select-field">
+                            <?php
+                            foreach( $contact_fields["age"]["default"] as $age_key => $age_value ) {
+                                if ( isset( $contact->fields["age"] ) &&
+                                    $contact->fields["age"]["key"] === $age_key){
+                                    echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
+                                } else {
+                                    echo '<option value="'. esc_html( $age_key ) . '">' . esc_html( $age_value ). '</option>';
+
+                                }
+                            }
+                            ?>
+                        </select>
                     </div>
                 </div>
             </div>
