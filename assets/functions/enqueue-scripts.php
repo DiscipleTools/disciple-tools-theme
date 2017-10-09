@@ -121,6 +121,7 @@ function site_scripts() {
                 'nonce' => wp_create_nonce( 'wp_rest' )
             )
         );
+        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array( ),  false );
     }
 
     if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )) {
