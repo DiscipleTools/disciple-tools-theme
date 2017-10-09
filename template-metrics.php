@@ -29,7 +29,7 @@ dt_print_breadcrumbs(
                         <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu>
                             <li>
                                 <!-- // todo: temporary user of show_fake_char function while designing UI/UX-->
-                                <a onclick="show_fake_chart('Critical+Path+Chart');">Critical Path</a>
+                                <a onclick="show_critical_path();">Critical Path</a>
 
                             </li>
                             <li class="top-border">
@@ -90,6 +90,11 @@ dt_print_breadcrumbs(
                 <section id="" class="medium-12 cell">
 
                     <div class="bordered-box">
+                        <script>
+                            jQuery(document).ready(function() {
+                                show_critical_path()
+                            })
+                        </script>
 
                         <div id="chart"></div><!-- Container for charts -->
 

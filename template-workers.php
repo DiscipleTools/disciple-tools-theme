@@ -69,7 +69,15 @@ dt_print_breadcrumbs(
                                                 </div>
                                                 <div class="card-section center">
 
-                                                    <a data-open="reveal-<?php echo esc_attr( $member[ 'ID' ] ); ?>"><?php echo esc_html( $member[ 'display_name' ] ) ?></a>
+                                                    <a data-open="reveal-<?php echo esc_attr( $member[ 'ID' ] ); ?>">
+                                                        <?php if( !empty( $dt_user->first_name ) ) {
+                                                            echo esc_html( $dt_user->first_name ) . ' ' . esc_html( $dt_user->last_name );
+} else {
+    echo esc_html( $dt_user->display_name );
+} ?>
+                                                    </a><br>
+
+                                                    <?php ( isset( $dt_user_meta['dt_avalability'] ) && $dt_user_meta['dt_avalability'] == false ) ? print esc_html( '<strong>Not Available</strong>' ) : print esc_html( 'Available' );  ?>
 
                                                 </div>
 
@@ -89,16 +97,11 @@ dt_print_breadcrumbs(
                                                 </h1>
 
                                                 <p><?php echo get_avatar( $member[ 'ID' ], '150' ); ?></p>
+                                                <p><?php ( isset( $dt_user_meta['dt_avalability'] ) && $dt_user_meta['dt_avalability'] == false ) ? print esc_html( '<strong>Not Available</strong>' ) : print esc_html( 'Available' );  ?></p>
 
                                                 <p>
                                                     <strong>Username</strong><br>
                                                     <?php echo esc_html( $dt_user->user_login ); ?>
-                                                </p>
-
-                                                <p>
-                                                    <strong>Name</strong><br>
-                                                    <?php echo esc_html( $dt_user->first_name ); ?>
-                                                    &nbsp;<?php echo esc_html( $dt_user->last_name ); ?>
                                                 </p>
 
                                                 <p>
