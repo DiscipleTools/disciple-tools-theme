@@ -7,6 +7,9 @@
     $locations = Disciple_Tools_Locations::get_locations();
     $current_user = wp_get_current_user();
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
+    $custom_lists = dt_get_option( 'dt_site_custom_lists' );
+    $custom_lists['sources'];
+
     function dt_contact_details_status( $id, $verified, $invalid ){
         ?>
         <img id="<?php echo esc_html( $id ) ?>-verified" class="details-status" style="display:<?php echo esc_html( $verified )?>" src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/verified.svg' )?>" />
@@ -368,63 +371,81 @@
                 </div>
             </div>
 
-            <div class="grid-x">
-                <div id="show-more-content" data-toggler
-                     data-animate="fade-in fade-out" aria-expanded="false" style="display:none;">
-                    <div class="medium-4 cell">
-                        <strong>Address</strong>
-                        <ul>
-                            <?php
-                            foreach($contact->fields[ "address" ]  ?? [] as $value){
-                                $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
-                                $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                                ?>
-                                <li><?php echo esc_html( $value["value"] );
-                                dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
-                                </li>
-                            <?php } ?>
-                        </ul>
-                    </div>
-                    <div class="medium-4 cell">
-                        <strong>Age:</strong>
-                        <ul class="details-list">
-                            <li><?php echo esc_html( $contact->fields['age']['label'] ?? "No age set" ) ?></li>
-                        </ul>
-                        <select id="age" class="details-edit select-field">
-                            <?php
-                            foreach( $contact_fields["age"]["default"] as $age_key => $age_value ) {
-                                if ( isset( $contact->fields["age"] ) &&
-                                    $contact->fields["age"]["key"] === $age_key){
-                                    echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
-                                } else {
-                                    echo '<option value="'. esc_html( $age_key ) . '">' . esc_html( $age_value ). '</option>';
 
-                                }
-                            }
+            <div id="show-more-content" data-toggler class="grid-x"
+                 data-animate="fade-in fade-out" aria-expanded="false" style="display:none;">
+                <div class="medium-4 cell">
+                    <strong>Address</strong>
+                    <ul>
+                        <?php
+                        foreach($contact->fields[ "address" ]  ?? [] as $value){
+                            $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
+                            $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                             ?>
-                        </select>
-                    </div>
-                    <div class="medium-4 cell">
-                        <strong>Gender:</strong>
-                        <ul class="details-list">
-                            <li><?php echo esc_html( $contact->fields['gender']['label'] ?? "No gender set" ) ?></li>
-                        </ul>
-                        <select id="gender" class="details-edit select-field">
-                            <?php
-                            foreach( $contact_fields["gender"]["default"] as $gender_key => $gender_value ) {
-                                if ( isset( $contact->fields["gender"] ) &&
-                                    $contact->fields["gender"]["key"] === $gender_key){
-                                    echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
-                                } else {
-                                    echo '<option value="'. esc_html( $gender_key ) . '">' . esc_html( $gender_value ). '</option>';
+                            <li><?php echo esc_html( $value["value"] );
+                            dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </div>
+                <div class="medium-4 cell">
+                    <strong>Age:</strong>
+                    <ul class="details-list">
+                        <li><?php echo esc_html( $contact->fields['age']['label'] ?? "No age set" ) ?></li>
+                    </ul>
+                    <select id="age" class="details-edit select-field">
+                        <?php
+                        foreach( $contact_fields["age"]["default"] as $age_key => $age_value ) {
+                            if ( isset( $contact->fields["age"] ) &&
+                                $contact->fields["age"]["key"] === $age_key){
+                                echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
+                            } else {
+                                echo '<option value="'. esc_html( $age_key ) . '">' . esc_html( $age_value ). '</option>';
 
-                                }
                             }
-                            ?>
-                        </select>
-                    </div>
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="medium-4 cell">
+                    <strong>Gender:</strong>
+                    <ul class="details-list">
+                        <li><?php echo esc_html( $contact->fields['gender']['label'] ?? "No gender set" ) ?></li>
+                    </ul>
+                    <select id="gender" class="details-edit select-field">
+                        <?php
+                        foreach( $contact_fields["gender"]["default"] as $gender_key => $gender_value ) {
+                            if ( isset( $contact->fields["gender"] ) &&
+                                $contact->fields["gender"]["key"] === $gender_key){
+                                echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
+                            } else {
+                                echo '<option value="'. esc_html( $gender_key ) . '">' . esc_html( $gender_value ). '</option>';
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="medium-4 cell">
+                    <strong>Source:</strong>
+                    <ul class="details-list">
+                        <li><?php echo esc_html( $contact->fields['sources']['label'] ?? "No sources set" ) ?></li>
+                    </ul>
+                    <select id="sources" class="details-edit select-field">
+                        <option value=""></option>
+                        <?php
+                        foreach( $custom_lists["sources"] as $sources_key => $sources_value ) {
+                            if ( isset( $contact->fields["sources"] ) &&
+                                $contact->fields["sources"]["key"] === $sources_key){
+                                echo '<option value="'. esc_html( $sources_key ) . '" selected>' . esc_html( $sources_value["label"] ) . '</option>';
+                            } else {
+                                echo '<option value="'. esc_html( $sources_key ) . '">' . esc_html( $sources_value["label"] ). '</option>';
+                            }
+                        }
+                        ?>
+                    </select>
                 </div>
             </div>
+
             <div class="row show-more-button" style="text-align: center" >
                 <button class="clear" data-toggle="show-more-button show-more-content show-content-button"  href="#">SHOW
                     <span id="show-more-button" data-toggler data-animate="fade-in fade-out">MORE <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' )?>"/></span>
