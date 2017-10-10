@@ -168,8 +168,22 @@ declare( strict_types=1 );
                         <div class="baptism_date">
                             <strong>Baptism Date</strong>
 <!--                            <div class="baptism_date details-list">--><?php //echo esc_html( $group["baptism_date"] ?? "No baptism date" ); ?><!-- </div>-->
-                            <div class="baptism_date"><input type="text" id="baptism-date-picker"></div>
+                            <div class="baptism_date"><input type="text" value="<?php echo esc_html( $contact->fields["baptism_date"] )?>" id="baptism-date-picker"></div>
                         </div>
+
+                        <strong><?php echo esc_html( $contact_fields["bible_mailing"]["name"] ) ?></strong>
+                        <select id="bible_mailing" class="select-field">
+                            <?php
+                            foreach( $contact_fields["bible_mailing"]["default"] as $key => $value ) {
+                                if ( isset( $contact->fields["bible_mailing"] ) &&
+                                    $contact->fields["bible_mailing"]["key"] === $key ){
+                                    echo '<option value="'. esc_html( $key ) . '" selected>' . esc_html( $value ) . '</option>';
+                                } else {
+                                    echo '<option value="'. esc_html( $key ) . '">' . esc_html( $value ). '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
                     </div>
                 </section>
 
