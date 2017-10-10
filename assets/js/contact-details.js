@@ -353,6 +353,9 @@ jQuery(document).ready(function($) {
     if (_.get(contact, "fields.assigned_to")){
       $('.current-assigned').text(_.get(contact, "fields.assigned_to.display"))
     }
+    if (_.get(contact, "fields.baptism_date")){
+      baptismDatePicker.datepicker('setDate', data.fields.baptism_date)
+    }
   }).catch(err=> {
       console.log("error")
       console.log(err)
@@ -508,7 +511,34 @@ jQuery(document).ready(function($) {
     })
   })
 
+  function toggleEdit(field){
+    if (!editingAll){
+      $(`.${field}.details-list`).toggle()
+      $(`.${field}.details-edit`).toggle()
+    }
+  }
 
+  /**
+   * Baptism date
+   */
+  // let baptismDateList = $('.baptism_date.details-list')
+  let baptismDatePicker = $('.baptism_date #baptism-date-picker')
+  baptismDatePicker.datepicker({
+    onSelect: function (date) {
+      API.save_field_api('contact', contactId, {baptism_date:date}).then(function () {
+        // baptismDateList.text(date)
+      })
+    },
+    onClose: function () {
+      // toggleEdit('baptism_date')
+    },
+    changeMonth: true,
+    changeYear: true
+  })
+  // baptismDateList.on('click', e=>{
+  //   toggleEdit('baptism_date')
+  //   baptismDatePicker.focus()
+  // })
 })
 
 

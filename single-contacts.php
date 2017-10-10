@@ -164,6 +164,12 @@ declare( strict_types=1 );
                                 <?php }?>
                             <?php endforeach; ?>
                         </div>
+
+                        <div class="baptism_date">
+                            <strong>Baptism Date</strong>
+<!--                            <div class="baptism_date details-list">--><?php //echo esc_html( $group["baptism_date"] ?? "No baptism date" ); ?><!-- </div>-->
+                            <div class="baptism_date"><input type="text" id="baptism-date-picker"></div>
+                        </div>
                     </div>
                 </section>
 
