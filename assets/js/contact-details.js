@@ -342,6 +342,62 @@ jQuery(document).ready(function($) {
   })
   loadLocationsTypeahead()
 
+
+  /**
+   * People Groups
+   */
+  let peopleGroups = new Bloodhound({
+    datumTokenizer: API.searchAnyPieceOfWord,
+    queryTokenizer: Bloodhound.tokenizers.ngram,
+    identify: function (obj) {
+      return obj.ID
+    },
+    prefetch: {
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/people-groups-compact/',
+      prepare : API.typeaheadPrefetchPrepare,
+      transform: function(data){
+        return API.filterTypeahead(data, _.get(contact, "fields.people_groups") || [])
+      },
+    },
+    remote: {
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/people-groups-compact/?s=%QUERY',
+      wildcard: '%QUERY',
+      prepare : API.typeaheadRemotePrepare,
+      transform: function(data){
+        return API.filterTypeahead(data, _.get(contact, "fields.people_groups") || [])
+      }
+    },
+    initialize: false,
+  });
+
+  let peopleGroupsTypeahead = $('.people-groups .typeahead')
+  function loadPeopleGroupsTypeahead() {
+    peopleGroupsTypeahead.typeahead({
+        highlight: true,
+        minLength: 0,
+        autoselect: true,
+
+      },
+      {
+        name: 'peopleGroups',
+        limit: 30,
+        source: function (q, sync, async) {
+          return API.defaultFilter(q, sync, async, peopleGroups, _.get(contact, "fields.people_groups"))
+        },
+        display: 'name'
+      })
+  }
+  peopleGroupsTypeahead.bind('typeahead:select', function (ev, sug) {
+    peopleGroupsTypeahead.typeahead('val', '')
+    contact.fields["people_groups"].push(sug)
+    add_typeahead_item(contactId, 'people_groups', sug.ID, sug.name)
+    $("#no-people-groups").remove()
+    peopleGroupsTypeahead.typeahead('destroy')
+    peopleGroups.initialize()
+    loadPeopleGroupsTypeahead()
+  })
+  loadPeopleGroupsTypeahead()
+
   /**
    * Get the contact
    */
@@ -350,6 +406,7 @@ jQuery(document).ready(function($) {
     contact = data
     locations.initialize()
     users.initialize()
+    peopleGroups.initialize()
     if (_.get(contact, "fields.assigned_to")){
       $('.current-assigned').text(_.get(contact, "fields.assigned_to.display"))
     }
@@ -502,11 +559,17 @@ jQuery(document).ready(function($) {
 
 
   $('.select-field').change(function () {
+    let id = $(this).attr('id')
+    let val = $(this).val()
     API.save_field_api(
       'contact',
       contactId,
-      {[$(this).attr('id')]:$(this).val()}
-    ).catch(err=>{
+      {[id]:val}
+    ).then(()=>{
+      if (id === "sources"){
+        $('.current-source').text(val)
+      }
+    }).catch(err=>{
       console.log(err)
     })
   })
@@ -705,7 +768,7 @@ function add_typeahead_item(contactId, fieldId, val) {
     jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
     <a href="${addedItem.permalink}">${addedItem.post_title}</a>
     <button class="details-remove-button connection details-edit"
-              data-field="locations" data-id="${val}"
+              data-field="${fieldId}" data-id="${val}"
               data-name="${name}"  
               style="display: inline-block">Remove</button>
       </li>`)

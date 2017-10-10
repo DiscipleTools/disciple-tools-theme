@@ -4,7 +4,6 @@
 
     $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
     $channel_list = Disciple_Tools_Contacts::get_channel_list();
-    $locations = Disciple_Tools_Locations::get_locations();
     $current_user = wp_get_current_user();
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
     $custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -368,6 +367,31 @@
                             Add
                         </button>
                     </div>
+
+
+
+                    <strong>People Groups</strong>
+                    <ul class="people_groups-list">
+                        <?php
+                        foreach($contact->fields["people_groups" ] ?? [] as $value){
+                            ?>
+                            <li class="<?php echo esc_html( $value->ID )?>">
+                                <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
+                                <button class="details-remove-button connection details-edit"
+                                        data-field="people_groups" data-id="<?php echo esc_html( $value->ID ) ?>"
+                                        data-name="<?php echo esc_html( $value->post_title ) ?>">
+                                    Remove
+                                </button>
+                            </li>
+                        <?php }
+                        if (sizeof( $contact->fields["people_groups"] ) === 0){
+                            echo '<li id="no-people-group">No people group set</li>';
+                        }
+                        ?>
+                    </ul>
+                    <div class="people-groups details-edit">
+                        <input class="typeahead" type="text" placeholder="Select a new people group">
+                    </div>
                 </div>
             </div>
 
@@ -426,16 +450,24 @@
                     </select>
                 </div>
                 <div class="medium-4 cell">
-                    <strong>Source:</strong>
+                    <strong>Source</strong>
                     <ul class="details-list">
-                        <li><?php echo esc_html( $contact->fields['sources']['label'] ?? "No sources set" ) ?></li>
+                        <li class="current-source">
+                            <?php
+                            if (isset( $contact->fields['sources'][0] ) && isset( $custom_lists["sources"][$contact->fields['sources'][0]] )){
+                                echo esc_html( $custom_lists["sources"][$contact->fields['sources'][0]]["label"] );
+                            } else {
+                                echo "No source set";
+                            }
+                            ?>
+                        </li>
                     </ul>
                     <select id="sources" class="details-edit select-field">
                         <option value=""></option>
                         <?php
                         foreach( $custom_lists["sources"] as $sources_key => $sources_value ) {
-                            if ( isset( $contact->fields["sources"] ) &&
-                                $contact->fields["sources"]["key"] === $sources_key){
+                            if ( isset( $contact->fields["sources"][0] ) &&
+                                $contact->fields["sources"][0] === $sources_key){
                                 echo '<option value="'. esc_html( $sources_key ) . '" selected>' . esc_html( $sources_value["label"] ) . '</option>';
                             } else {
                                 echo '<option value="'. esc_html( $sources_key ) . '">' . esc_html( $sources_value["label"] ). '</option>';
