@@ -15,6 +15,8 @@ dt_print_breadcrumbs(
     __( "New contact" )
 );
 
+(function() {
+
 ?>
 
 <div id="content">
@@ -34,7 +36,20 @@ dt_print_breadcrumbs(
                     <input name="phone" type="text" type="tel" placeholder="<?php esc_html_e( "Phone number" ); ?>">
                 </label>
 
-                <?php /* TODO: Create Source field */ ?>
+                <label>
+                    <?php esc_html_e( "Source" ); ?>
+                    <select name="sources" required aria-describedby="source-help-text">
+                        <?php foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $source_key => $source ): ?>
+                            <option value="<?php echo esc_attr( $source_key ); ?>">
+                                <?php echo esc_html( $source['label'] ); ?>
+                                <?php if ( $source['description'] ): ?>
+                                    (<?php echo esc_html( $source['description'] ); ?>)
+                                <?php endif; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+                <p class="help-text" id="source-help-text"><?php esc_html_e( "This is required" ); ?></p>
 
                 <label>
                     <?php esc_html_e( "Initial comment" ); ?>
@@ -66,6 +81,7 @@ dt_print_breadcrumbs(
             data: JSON.stringify({
                 title: $(".js-create-contact input[name=title]").val(),
                 phone: $(".js-create-contact input[name=phone]").val(),
+                sources: $(".js-create-contact select[name=sources]").val(),
                 initial_comment: $(".js-create-contact textarea[name=initial_comment]").val(),
             }),
             beforeSend: function(xhr) {
@@ -86,4 +102,7 @@ dt_print_breadcrumbs(
 
 
 <?php
+
+})();
+
 get_footer();
