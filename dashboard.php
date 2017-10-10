@@ -1,13 +1,9 @@
 <?php get_header(); ?>
 
 <?php
-dt_print_breadcrumbs(
-    [
-        [ home_url( '/' ), __( "Dashboard" ) ],
-    ],
-    '',
-    false
-); ?>
+dt_print_breadcrumbs( array(), __( "Dashboard" ), false );
+
+?>
 
 <div id="content">
 
