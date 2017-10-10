@@ -1,3 +1,8 @@
+<?php
+header( 'Location: /contacts' );
+exit();
+// TODO: remove this redirect and recreate the dashboard, or delete this file
+?>
 <?php get_header(); ?>
 
 <?php

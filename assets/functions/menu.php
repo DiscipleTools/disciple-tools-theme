@@ -12,8 +12,8 @@ function disciple_tools_top_nav_desktop() {
 
     if( user_can( get_current_user_id(), 'access_contacts' ) ) {
         // User is multiplier or role of higher position
+        /* <li><a href="<   ?php echo esc_url( home_url( '/' ) ); ?    >">Dashboard</a></li> */
         ?>
-        <li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Dashboard</a></li>
         <li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>">Contacts</a></li>
         <li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>">Groups</a></li>
 
