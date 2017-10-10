@@ -52,6 +52,16 @@ dt_print_breadcrumbs(
                 <p class="help-text" id="source-help-text"><?php esc_html_e( "This is required" ); ?></p>
 
                 <label>
+                    <?php esc_html_e( "Location" ); ?>
+                    <select name="location">
+                        <option value=""><?php esc_html_e( "(Not set)" ); ?></option>
+                        <?php foreach ( Disciple_Tools_Locations::get_locations() as $location_post ): ?>
+                            <option value="<?php echo intval( $location_post->ID ); ?>"><?php echo esc_html( $location_post->post_title ); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+
+                <label>
                     <?php esc_html_e( "Initial comment" ); ?>
                     <textarea name="initial_comment" placeholder="<?php esc_html_e( "Initial comment" ); ?>"></textarea>
                 </label>
@@ -73,6 +83,8 @@ dt_print_breadcrumbs(
         $(".js-create-contact-button")
             .attr("disabled", true)
             .addClass("loading");
+        var location_id = $(".js-create-contact select[name=location]").val();
+        location_id = location_id ? parseInt(location_id) : undefined;
         $.ajax({
             url: wpApiSettings.root + 'dt-hooks/v1/contact/create',
             type: "POST",
@@ -82,6 +94,7 @@ dt_print_breadcrumbs(
                 title: $(".js-create-contact input[name=title]").val(),
                 phone: $(".js-create-contact input[name=phone]").val(),
                 sources: $(".js-create-contact select[name=sources]").val(),
+                location_id: location_id,
                 initial_comment: $(".js-create-contact textarea[name=initial_comment]").val(),
             }),
             beforeSend: function(xhr) {
