@@ -156,7 +156,7 @@ declare( strict_types=1 );
                                     $class = ( isset( $contact->fields[$field] ) && $contact->fields[$field]['key'] === 'yes' ) ?
                                         "selected-select-button" : "empty-select-button";
                                 ?>
-                                    <button onclick="save_seeker_milestones( <?php echo esc_html( get_the_ID() ) ?> , <?php echo esc_html( $field ) ?>)"
+                                    <button onclick="save_seeker_milestones( <?php echo esc_html( get_the_ID() ) ?> , '<?php echo esc_html( $field ) ?>')"
                                             id="<?php echo esc_html( $field ) ?>"
                                             class="<?php echo esc_html( $class ) ?> select-button button ">
                                         <?php echo esc_html( $contact_fields[$field]["name"] ) ?>
