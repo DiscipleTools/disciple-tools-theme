@@ -558,7 +558,11 @@ jQuery(document).ready(function($) {
 
   $(document).on('change', '.contact-input', function () {
     let fieldId = $(this).attr('id');
-    API.save_field_api('contact', contactId, {[fieldId]:$(this).val()})
+    let val = $(this).val()
+    API.save_field_api('contact', contactId, {[fieldId]:val})
+      .then(()=>{
+        $(`.${fieldId}`).text(val)
+      })
       .catch(err=>{
         handelAjaxError(err)
       })
@@ -625,6 +629,90 @@ jQuery(document).ready(function($) {
   //   toggleEdit('baptism_date')
   //   baptismDatePicker.focus()
   // })
+
+
+  $("#add-new-address").click(function () {
+    if ($('#new-address').length === 0 ) {
+      let newInput = `<div class="new-address">
+        <textarea rows="3" id="new-address"></textarea>
+      </div>`
+      $('.details-edit#address-list').append(newInput)
+    }
+  })
+
+  //for a new address field that has not been saved yet
+  $(document).on('change', '#new-address', function (val) {
+    let input = $('#new-address')
+    API.add_item_to_field( 'contact', contactId, {"new-address":input.val()}).then(function (newAddressId) {
+      console.log(newAddressId)
+      if (newAddressId != contactId){
+        //change the it to the created field
+        input.attr('id', newAddressId)
+        $('.details-list.address').append(`
+            <li class="${newAddressId}">${input.val()}
+              <img id="${newAddressId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
+              <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
+            </li>
+        `)
+        $('.new-address').append(`
+          <button class="details-status-button verify" data-verified="false" data-id="${newAddressId}">
+              Verify
+          </button>
+          <button class="details-status-button invalid" data-verified="false" data-id="${newAddressId}">
+              Invalidate
+          </button>
+        `).removeClass('new-address')
+
+      }
+    })
+  })
+  $(document).on('change', '#address-list textarea', function(){
+    let id = $(this).attr('id')
+    if (id && id !== "new-address"){
+      API.save_field_api('contact', contactId, {[id]: $(this).val()}).then(()=>{
+        $(`.address.details-list .${id}`).text($(this).val())
+      })
+
+    }
+  })
+
+
+  $('.add-button').click(function(){
+    let fieldId = $(this).data('id')
+    if (jQuery(`#${fieldId}`).length === 0 ){
+      let newInput = `<li class="new-${fieldId}"><input id="new-${fieldId}" class="new-contact-details" data-id="${fieldId}"\></li>`
+      jQuery(`#${fieldId}-list`).append(newInput)
+    }
+  })
+
+  $(document).on('change', '.new-contact-details', function () {
+    let field = $(this).data('id')
+    let val = $(this).val()
+    API.add_item_to_field( 'contact', contactId, {[`new-${field}`]:val}).then((newId)=>{
+      if (newId != contactId){
+        //change the it to the created field
+        $(this).attr('id', newId)
+        $(`.details-list.${field}`).append(`
+            <li class="${newId}">
+              ${val}
+              <img id="${newId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
+              <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
+            </li>
+        `)
+        $(`.new-${field}`).append(`
+          <button class="details-status-button verify" data-verified="false" data-id="${newId}">
+              Verify
+          </button>
+          <button class="details-status-button invalid" data-verified="false" data-id="${newId}">
+              Invalidate
+          </button>
+        `).removeClass(`new-${field}`)
+        $(this).removeClass(`new-contact-details`).addClass('contact-input')
+
+      }
+    })
+  })
+
 })
 
 
@@ -724,12 +812,7 @@ function new_contact_input_added(contactId, inputId){
   })
 }
 
-function add_contact_input(contactId, inputId, listId){
-  if (jQuery(`#${inputId}`).length === 0 ){
-    let newInput = `<li><input id="${inputId}" onchange="new_contact_input_added(${contactId},'${inputId}')"\>`
-    jQuery(`#${listId}`).append(newInput)
-  }
-}
+
 
 function remove_item(contactId, fieldId, itemId){
   API.remove_item_from_field('contact', contactId, fieldId, itemId).then(()=>{
