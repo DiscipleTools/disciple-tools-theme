@@ -40,11 +40,8 @@ function save_quick_action(contactId, fieldKey){
   }).then(data=>{
       console.log("updated " + fieldKey + " to: " + newNumber)
       if (fieldKey.indexOf("quick_button")>-1){
-        if (data.seeker_path){
-          jQuery("#current_seeker_path").text(data.seeker_path.current)
-          if (data.seeker_path.next){
-            jQuery("#next_seeker_path").text(data.seeker_path.next)
-          }
+        if (_.get(data, "seeker_path.currentKey")){
+          updateCriticalPath(data.seeker_path.currentKey)
         }
       }
   }).catch(err=>{
@@ -56,6 +53,13 @@ function save_quick_action(contactId, fieldKey){
   if (fieldKey.indexOf("quick_button")>-1){
     numberIndicator.text(newNumber)
   }
+}
+
+function updateCriticalPath(key) {
+  $('#seeker_path').val(key)
+  let seekerPathKeys = _.keys(contactsDetailsWpApiSettings.contacts_custom_fields_settings.seeker_path.default)
+  let percentage = (_.indexOf(seekerPathKeys, key) || 0) / (seekerPathKeys.length-1) * 100
+  $('#seeker-progress').css("width", `${percentage}%`)
 }
 
 
@@ -565,9 +569,11 @@ jQuery(document).ready(function($) {
       'contact',
       contactId,
       {[id]:val}
-    ).then(()=>{
+    ).then((a)=>{
       if (id === "sources"){
         $('.current-source').text(val)
+      } else if (id === "seeker_path"){
+        updateCriticalPath(a.fields.seeker_path.key)
       }
     }).catch(err=>{
       console.log(err)

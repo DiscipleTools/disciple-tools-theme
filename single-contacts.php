@@ -125,28 +125,27 @@ declare( strict_types=1 );
                     <div class="bordered-box">
                         <label class="section-header">Progress</label>
                         <strong>Seeker Path</strong>
-                        <div class="row">
-                            <div class="small-6 columns">
-                                <p>Current:
-                                    <span id="current_seeker_path">
-                                        <?php echo esc_html( $contact->fields["seeker_path"]["label"] ?? "" ) ?>
-                                    </span>
-                                </p>
-                            </div>
-                            <div class="small-6 columns">
-                                <p>Next: <span id="next_seeker_path">
-                                <?php
-                                $keys = array_keys( $contact_fields["seeker_path"]["default"] );
-                                $path_index = array_search( $contact->fields["seeker_path"]["key"], $keys ) ?? 0;
-                                if (isset( $keys[$path_index + 1] )) {
-                                    echo esc_html( $contact_fields["seeker_path"]["default"][$keys[$path_index + 1]] );
-                                }
-                                ?>
-                                </span>
-                                </p>
 
-                            </div>
+                        <select class="select-field" id="seeker_path" style="margin-bottom: 0px">
+                        <?php
+
+                        foreach ($contact_fields["seeker_path"]["default"] as $key => $value){
+                            if ( $contact->fields["seeker_path"]["key"] === $key ) {
+                                ?>
+                                <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
+                            <?php } else { ?>
+                                <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
+                            <?php }
+                        };
+                        $keys = array_keys( $contact_fields["seeker_path"]["default"] );
+                        $path_index = array_search( $contact->fields["seeker_path"]["key"], $keys ) ?? 0;
+                        $percentage = $path_index / (sizeof( $keys )-1) *100
+                        ?>
+                        </select>
+                        <div class="progress" role="progressbar" tabindex="0" aria-valuenow="<?php echo 4 ?>" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
+                          <div id="seeker-progress" class="progress-meter" style="width: <?php echo esc_html( $percentage ) ?>%"></div>
                         </div>
+
                         <strong>Faith Milestones</strong>
                         <div class="small button-group" style="display: inline-block">
 
