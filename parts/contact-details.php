@@ -80,7 +80,7 @@
     <section class="bordered-box">
         <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
 
-        <div class=" item-details-header-row">
+        <div class="item-details-header-row">
             <i class="fi-torso large"></i>
             <span class="item-details-header details-list title" ><?php the_title_attribute(); ?></span>
             <input id="title" class="text-field details-edit" value="<?php the_title_attribute(); ?>">
@@ -98,8 +98,8 @@
                     ?>
                 </span>
             </span>
-            <button data-open="pause-contact-modal" class="tiny button">Pause</button>
-            <button data-open="close-contact-modal" class="tiny button">Close</button>
+            <button data-open="pause-contact-modal" class="button">Pause</button>
+            <button data-open="close-contact-modal" class="button">Close</button>
             <button id="return-active" onclick="make_active( <?php echo get_the_ID() ?> )"
                     style="display: <?php echo esc_html( ($contact->fields["overall_status"]["key"] === "paused" || $contact->fields["overall_status"]["key"] === "closed") ? "" : "none" ); ?>"
                     class="tiny button">

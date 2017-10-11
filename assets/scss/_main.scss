@@ -256,6 +256,13 @@ img {
 }
 .item-details-header-row {
     margin-bottom:15px;
+
+    .button {
+        padding: 0.45em 1em;
+    }
+    .label {
+        font-size: .9rem;
+    }
 }
 //contact quick buttons
 .contact-quick-button-number {
@@ -278,7 +285,7 @@ img {
     position: relative;
     flex: 1 1 auto;
     p {
-        font-size: 10px;
+        font-size: 12px;
         word-spacing: 10vw;
         margin-bottom: 0;
     }
