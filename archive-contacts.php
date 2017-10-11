@@ -23,7 +23,7 @@ declare(strict_types=1);
                     <h5><?php esc_html_e( "Views" ); ?></h5>
                     <div class="list-views">
                         <label style="cursor: pointer;">
-                            <input type="radio" name="view" value="my_contacts" class="js-list-view">
+                            <input type="radio" name="view" value="my_contacts" class="js-list-view" checked>
                             <?php esc_html_e( "My contacts" ); ?>
                             <span class="js-list-view-count" data-value="my_contacts" style="float: right">.</span>
                         </label>
@@ -48,7 +48,7 @@ declare(strict_types=1);
                             <span class="js-list-view-count" data-value="contact_unattempted" style="float: right">.</span>
                         </label>
                         <label style="cursor: pointer;">
-                            <input type="radio" name="view" value="all_contacts" class="js-list-view" checked>
+                            <input type="radio" name="view" value="all_contacts" class="js-list-view">
                             <?php esc_html_e( "All contacts" ); ?>
                             <span class="js-list-view-count" data-value="all_contacts" style="float: right">.</span>
                         </label>
