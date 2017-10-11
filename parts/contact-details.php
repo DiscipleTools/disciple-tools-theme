@@ -81,7 +81,9 @@
         <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
 
         <div class=" item-details-header-row">
-            <i class="fi-torso large"></i><span class="item-details-header"><?php the_title_attribute(); ?></span>
+            <i class="fi-torso large"></i>
+            <span class="item-details-header details-list title" ><?php the_title_attribute(); ?></span>
+            <input id="title" class="text-field details-edit" value="<?php the_title_attribute(); ?>">
             <span class="button alert label">
                 Status: <span id="overall-status"><?php echo esc_html( $contact->fields["overall_status"]["label"] ) ?></span>
                 <span id="reason">

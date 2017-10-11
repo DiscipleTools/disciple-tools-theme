@@ -574,6 +574,20 @@ jQuery(document).ready(function($) {
     })
   })
 
+  $('.text-field.details-edit').change(function () {
+    let id = $(this).attr('id')
+    let val = $(this).val()
+    API.save_field_api(
+      'contact',
+      contactId,
+      {[id]:val}
+    ).then(()=>{
+      $(`.${id}`).text(val)
+    }).catch(err=>{
+      console.log(err)
+    })
+  })
+
   function toggleEdit(field){
     if (!editingAll){
       $(`.${field}.details-list`).toggle()
