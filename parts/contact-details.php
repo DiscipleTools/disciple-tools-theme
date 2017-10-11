@@ -401,8 +401,7 @@
             </div>
 
 
-            <div id="show-more-content" data-toggler class="grid-x"
-                 data-animate="fade-in fade-out" aria-expanded="false" style="display:none;">
+            <div id="show-more-content" class="grid-x grid-margin-x show-content" style="display:none;">
                 <div class="medium-4 cell">
                     <strong>Address</strong>
                     <button id="add-new-address" class="details-edit">
@@ -414,7 +413,7 @@
                             $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                             ?>
-                            <li><?php echo esc_html( $value["value"] );
+                            <li class="<?php echo esc_html( $value["key"] ) ?>"><?php echo esc_html( $value["value"] );
                             dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
                             </li>
                         <?php } ?>
@@ -427,9 +426,7 @@
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                             ?>
                             <div>
-                                <textarea rows="3" id="<?php echo esc_attr( $value["key"] )?>" class="contact-input">
-                                    <?php echo esc_attr( $value["value"] )?>
-                                </textarea>
+                                <textarea rows="3" id="<?php echo esc_attr( $value["key"] )?>" class="contact-input"><?php echo esc_attr( $value["value"] )?></textarea>
                                 <button class="details-status-button verify" data-verified="<?php echo esc_html( $verified )?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
                                     <?php echo ($verified ? 'Unverify' : "Verify") ?>
                                 </button>
@@ -513,9 +510,9 @@
             </div>
 
             <div class="row show-more-button" style="text-align: center" >
-                <button class="clear" data-toggle="show-more-button show-more-content show-content-button"  href="#">SHOW
-                    <span id="show-more-button" data-toggler data-animate="fade-in fade-out">MORE <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' )?>"/></span>
-                    <span id="show-content-button" data-toggler data-animate="fade-in fade-out" aria-expanded="false" style="display:none;">LESS <i class="fi-minus"></i></span>
+                <button class="clear show-button"  href="#">Show
+                    <span class="show-content show-more">more <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_down.svg' )?>"/></span>
+                    <span class="show-content" style="display:none;">less <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_up.svg' )?>"></span>
                 </button>
             </div>
         </div>

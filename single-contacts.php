@@ -167,7 +167,7 @@ declare( strict_types=1 );
                         <div class="baptism_date">
                             <strong>Baptism Date</strong>
 <!--                            <div class="baptism_date details-list">--><?php //echo esc_html( $group["baptism_date"] ?? "No baptism date" ); ?><!-- </div>-->
-                            <div class="baptism_date"><input type="text" value="<?php echo esc_html( $contact->fields["baptism_date"] )?>" id="baptism-date-picker"></div>
+                            <div class="baptism_date"><input type="text" value="<?php echo esc_html( $contact->fields["baptism_date"] ?? '' )?>" id="baptism-date-picker"></div>
                         </div>
 
                         <strong><?php echo esc_html( $contact_fields["bible_mailing"]["name"] ) ?></strong>

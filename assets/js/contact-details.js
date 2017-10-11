@@ -435,6 +435,10 @@ jQuery(document).ready(function($) {
     $(`.details-list`).toggle()
     $(`.details-edit`).toggle()
     editingAll = !editingAll
+    if (editingAll){
+      $('.show-content').show()
+      $('.show-more').hide()
+    }
     editDetailsToggle.text( editingAll ? "Back": "Edit")
   }
   $('#edit-details').on('click', function () {
@@ -711,6 +715,10 @@ jQuery(document).ready(function($) {
 
       }
     })
+  })
+
+  $('.show-button').click(function () {
+    $('.show-content').toggle()
   })
 
 })

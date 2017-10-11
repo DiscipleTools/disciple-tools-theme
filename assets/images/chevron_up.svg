@@ -1,0 +1,16 @@
+<svg width="14" height="7" viewBox="0 0 14 7" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>chevron</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(2221 6111)">
+<g id="chevron">
+<g id="Group">
+<g id="Vector">
+<use xlink:href="#path0_fill" transform="matrix(-6.12323e-17 -1 1 -6.12323e-17 -2221 -6104)" fill="#3F729B"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_fill" d="M 1.26353 14.0004L -7.14427e-08 12.9167L 5.07161 7.00021L -7.14427e-08 1.08374L 1.26353 2.97678e-09L 6.79961 6.45917C 7.0668 6.77047 7.0668 7.23077 6.79961 7.54208L 1.26353 14.0004Z"/>
+</defs>
+</svg>
