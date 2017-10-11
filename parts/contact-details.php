@@ -40,7 +40,7 @@
 
     <?php if (current_user_can( "assign_any_contact" )){?>
     <section class="bordered-box">
-        <p class="section-header">Dispatch</p>
+        <p class="section-header">Dispatch Section</p>
         <div class="grid-x grid-margin-x">
             <div class="medium-6 cell">
                 <strong>Assigned To:
@@ -336,7 +336,10 @@
                                         <ul class='dropdown menu' data-click-open='true'
                                              data-dropdown-menu data-disable-hover='true'
                                              style='display:inline-block'>
-                                            <li><button><i class='fi-pencil' style='padding:3px 3px'></button></i>
+                                            <li>
+                                                <button class="social-details-options-button">
+                                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/menu-dots.svg' )?>" style='padding:3px 3px'>
+                                                </button>
                                                 <ul class='menu'>
                                                     <li><button class='details-remove-button social' data-id='<?php echo esc_html( $value['key'] ) ?>' data-field >Remove<button></li>
                                                     <li><button class='details-status-button verify' data-verified='<?php echo esc_html( $verified ) ?>' data-id='<?php echo esc_html( $value["key"] ) ?>'> <?php echo esc_html( ($verified ? 'Unverify' : 'Verify') )?></button></li>

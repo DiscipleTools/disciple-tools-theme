@@ -530,7 +530,10 @@ jQuery(document).ready(function($) {
           <ul class='dropdown menu' data-click-open='true' 
               data-dropdown-menu data-disable-hover='true' 
               style='display:inline-block'>
-            <li><button><i class='fi-pencil' style='padding:3px 3px'></button></i>
+            <li>
+              <button class="social-details-options-button">
+                <img  src="${contactsDetailsWpApiSettings.template_dir}/assets/images/menu-dots.svg" style='padding:3px 3px'>
+              </button>
               <ul class='menu'>
                   <li><button class='details-remove-button social' data-id='${newId}' data-field >Remove<button></li>
                   <li><button class='details-status-button verify' data-verified='0' data-id='${newId}'>Verify</button></li>
