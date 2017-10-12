@@ -4,9 +4,11 @@
 
     $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
     $channel_list = Disciple_Tools_Contacts::get_channel_list();
-    $locations = Disciple_Tools_Locations::get_locations();
     $current_user = wp_get_current_user();
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
+    $custom_lists = dt_get_option( 'dt_site_custom_lists' );
+    $custom_lists['sources'];
+
     function dt_contact_details_status( $id, $verified, $invalid ){
         ?>
         <img id="<?php echo esc_html( $id ) ?>-verified" class="details-status" style="display:<?php echo esc_html( $verified )?>" src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/verified.svg' )?>" />
@@ -38,7 +40,7 @@
 
     <?php if (current_user_can( "assign_any_contact" )){?>
     <section class="bordered-box">
-        <p class="section-header">Dispatch</p>
+        <p class="section-header">Dispatch Section</p>
         <div class="grid-x grid-margin-x">
             <div class="medium-6 cell">
                 <strong>Assigned To:
@@ -58,7 +60,7 @@
             </div>
             <div class="medium-6 cell">
                 <strong>Set Unassignable Reason:</strong>
-                <select id="reason_unassignable" onchange="save_field(<?php echo get_the_ID();?>, 'reason_unassignable')">
+                <select id="reason_unassignable" class="select-field">
                     <?php
                     foreach( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_value ) {
                         if ( isset( $contact->fields["reason_unassignable"] ) &&
@@ -66,7 +68,6 @@
                             echo '<option value="'. esc_html( $reason_key ) . '" selected>' . esc_html( $reason_value ) . '</option>';
                         } else {
                             echo '<option value="'. esc_html( $reason_key ) . '">' . esc_html( $reason_value ). '</option>';
-
                         }
                     }
                     ?>
@@ -79,8 +80,10 @@
     <section class="bordered-box">
         <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
 
-        <div class=" item-details-header-row">
-            <i class="fi-torso large"></i><span class="item-details-header"><?php the_title_attribute(); ?></span>
+        <div class="item-details-header-row">
+            <i class="fi-torso large"></i>
+            <span class="item-details-header details-list title" ><?php the_title_attribute(); ?></span>
+            <input id="title" class="text-field details-edit" value="<?php the_title_attribute(); ?>">
             <span class="button alert label">
                 Status: <span id="overall-status"><?php echo esc_html( $contact->fields["overall_status"]["label"] ) ?></span>
                 <span id="reason">
@@ -95,8 +98,8 @@
                     ?>
                 </span>
             </span>
-            <button data-open="pause-contact-modal" class="tiny button">Pause</button>
-            <button data-open="close-contact-modal" class="tiny button">Close</button>
+            <button data-open="pause-contact-modal" class="button">Pause</button>
+            <button data-open="close-contact-modal" class="button">Close</button>
             <button id="return-active" onclick="make_active( <?php echo get_the_ID() ?> )"
                     style="display: <?php echo esc_html( ($contact->fields["overall_status"]["key"] === "paused" || $contact->fields["overall_status"]["key"] === "closed") ? "" : "none" ); ?>"
                     class="tiny button">
@@ -163,7 +166,7 @@
                 <!--Email-->
                 <div class="medium-4 cell">
                     <strong><?php echo esc_html( $channel_list["phone"]["label"] ) ?></strong>
-                    <button id="add-new-phone" class="details-edit">
+                    <button data-id="phone" class="details-edit add-button">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
                     </button>
                     <ul class="phone details-list">
@@ -172,7 +175,7 @@
                             $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                             ?>
-                            <li><?php echo esc_html( $value["value"] );
+                            <li class="<?php echo esc_html( $value["key"] ) ?>"><?php echo esc_html( $value["value"] );
                             dt_contact_details_status( $value["key"], $verified, $invalid );  ?></li>
                         <?php } ?>
                     </ul>
@@ -188,7 +191,7 @@
                                 <button class="details-status-button verify" data-verified="<?php echo esc_html( $verified )?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
                                     <?php echo ($verified ? 'Unverify' : "Verify") ?>
                                 </button>
-                                <button class="details-status-button invalid" data-verified="<?php echo esc_html( $invalid ) ?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
+                                <button class="details-status-button invalid" data-invalid="<?php echo esc_html( $invalid ) ?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
                                     <?php echo ($invalid ? 'Uninvalidate' : "Invalidate") ?>
                                 </button>
                             </li>
@@ -198,7 +201,7 @@
                     </ul>
 
                     <strong><?php echo esc_html( $channel_list["email"]["label"] ) ?></strong>
-                    <button id="add-new-email" class="details-edit">
+                    <button data-id="email" class="details-edit add-button">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
                     </button>
                     <ul class="email details-list">
@@ -207,7 +210,7 @@
                             $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                             ?>
-                            <li>
+                            <li class="<?php echo esc_html( $value["key"] ) ?>">
                                 <?php echo esc_html( $value["value"] );
                                 dt_contact_details_status( $value["key"], $verified, $invalid ); ?>
                             </li>
@@ -225,7 +228,7 @@
                                     <button class="details-status-button verify" data-verified="<?php echo esc_html( $verified ) ?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
                                         <?php echo esc_html( ($verified ? 'Unverify' : "Verify") ) ?>
                                     </button>
-                                    <button class="details-status-button invalid" data-verified="<?php echo esc_html( $invalid )?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
+                                    <button class="details-status-button invalid" data-invalid="<?php echo esc_html( $invalid )?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
                                         <?php echo esc_html( ($invalid ? 'Uninvalidate' : "Invalidate") ) ?>
                                     </button>
                                 </li>
@@ -333,11 +336,14 @@
                                         <ul class='dropdown menu' data-click-open='true'
                                              data-dropdown-menu data-disable-hover='true'
                                              style='display:inline-block'>
-                                            <li><button><i class='fi-pencil' style='padding:3px 3px'></button></i>
+                                            <li>
+                                                <button class="social-details-options-button">
+                                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/menu-dots.svg' )?>" style='padding:3px 3px'>
+                                                </button>
                                                 <ul class='menu'>
                                                     <li><button class='details-remove-button social' data-id='<?php echo esc_html( $value['key'] ) ?>' data-field >Remove<button></li>
                                                     <li><button class='details-status-button verify' data-verified='<?php echo esc_html( $verified ) ?>' data-id='<?php echo esc_html( $value["key"] ) ?>'> <?php echo esc_html( ($verified ? 'Unverify' : 'Verify') )?></button></li>
-                                                    <li><button class='details-status-button verify' data-verified='<?php echo esc_html( $invalid ) ?>' data-id='<?php echo esc_html( $value["key"] ) ?>'> <?php echo esc_html( ($invalid ? 'Uninvalidate' : 'Invalidate') )?></button></li>
+                                                    <li><button class='details-status-button invalid' data-invalid='<?php echo esc_html( $invalid ) ?>' data-id='<?php echo esc_html( $value["key"] ) ?>'> <?php echo esc_html( ($invalid ? 'Uninvalidate' : 'Invalidate') )?></button></li>
                                                 </ul>
                                             </li>
                                         </ul>
@@ -366,77 +372,150 @@
                             Add
                         </button>
                     </div>
-                </div>
-            </div>
 
-            <div class="grid-x">
-                <div id="show-more-content" data-toggler
-                     data-animate="fade-in fade-out" aria-expanded="false" style="display:none;">
-                    <div class="medium-4 cell">
-                        <strong>Address</strong>
-                        <ul>
-                            <?php
-                            foreach($contact->fields[ "address" ]  ?? [] as $value){
-                                $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
-                                $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                                ?>
-                                <li><?php echo esc_html( $value["value"] );
-                                dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
-                                </li>
-                            <?php } ?>
-                        </ul>
+
+
+                    <strong>People Groups</strong>
+                    <ul class="people_groups-list">
+                        <?php
+                        foreach($contact->fields["people_groups" ] ?? [] as $value){
+                            ?>
+                            <li class="<?php echo esc_html( $value->ID )?>">
+                                <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
+                                <button class="details-remove-button connection details-edit"
+                                        data-field="people_groups" data-id="<?php echo esc_html( $value->ID ) ?>"
+                                        data-name="<?php echo esc_html( $value->post_title ) ?>">
+                                    Remove
+                                </button>
+                            </li>
+                        <?php }
+                        if (sizeof( $contact->fields["people_groups"] ) === 0){
+                            echo '<li id="no-people-group">No people group set</li>';
+                        }
+                        ?>
+                    </ul>
+                    <div class="people-groups details-edit">
+                        <input class="typeahead" type="text" placeholder="Select a new people group">
                     </div>
                 </div>
             </div>
+
+
+            <div id="show-more-content" class="grid-x grid-margin-x show-content" style="display:none;">
+                <div class="medium-4 cell">
+                    <strong>Address</strong>
+                    <button id="add-new-address" class="details-edit">
+                        <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
+                    </button>
+                    <ul class="address details-list">
+                        <?php
+                        foreach($contact->fields[ "address" ]  ?? [] as $value){
+                            $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
+                            $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
+                            ?>
+                            <li class="<?php echo esc_html( $value["key"] ) ?>"><?php echo esc_html( $value["value"] );
+                            dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                    <ul id="address-list" class="details-edit">
+                    <?php
+                    if ( isset( $contact->fields["address"] )){
+                        foreach($contact->fields[ "address" ] ?? [] as $value){
+                            $verified = isset( $value["verified"] ) && $value["verified"] === true;
+                            $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
+                            ?>
+                            <div>
+                                <textarea rows="3" id="<?php echo esc_attr( $value["key"] )?>" class="contact-input"><?php echo esc_attr( $value["value"] )?></textarea>
+                                <button class="details-status-button verify" data-verified="<?php echo esc_html( $verified )?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
+                                    <?php echo ($verified ? 'Unverify' : "Verify") ?>
+                                </button>
+                                <button class="details-status-button invalid" data-invalid="<?php echo esc_html( $invalid ) ?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
+                                    <?php echo ($invalid ? 'Uninvalidate' : "Invalidate") ?>
+                                </button>
+                            </div>
+                            <hr>
+
+                        <?php }
+                    }?>
+                    </ul>
+
+
+
+                </div>
+                <div class="medium-4 cell">
+                    <strong>Age:</strong>
+                    <ul class="details-list">
+                        <li><?php echo esc_html( $contact->fields['age']['label'] ?? "No age set" ) ?></li>
+                    </ul>
+                    <select id="age" class="details-edit select-field">
+                        <?php
+                        foreach( $contact_fields["age"]["default"] as $age_key => $age_value ) {
+                            if ( isset( $contact->fields["age"] ) &&
+                                $contact->fields["age"]["key"] === $age_key){
+                                echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
+                            } else {
+                                echo '<option value="'. esc_html( $age_key ) . '">' . esc_html( $age_value ). '</option>';
+
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="medium-4 cell">
+                    <strong>Gender:</strong>
+                    <ul class="details-list">
+                        <li><?php echo esc_html( $contact->fields['gender']['label'] ?? "No gender set" ) ?></li>
+                    </ul>
+                    <select id="gender" class="details-edit select-field">
+                        <?php
+                        foreach( $contact_fields["gender"]["default"] as $gender_key => $gender_value ) {
+                            if ( isset( $contact->fields["gender"] ) &&
+                                $contact->fields["gender"]["key"] === $gender_key){
+                                echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
+                            } else {
+                                echo '<option value="'. esc_html( $gender_key ) . '">' . esc_html( $gender_value ). '</option>';
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="medium-4 cell">
+                    <strong>Source</strong>
+                    <ul class="details-list">
+                        <li class="current-source">
+                            <?php
+                            if (isset( $contact->fields['sources'][0] ) && isset( $custom_lists["sources"][$contact->fields['sources'][0]] )){
+                                echo esc_html( $custom_lists["sources"][$contact->fields['sources'][0]]["label"] );
+                            } else {
+                                echo "No source set";
+                            }
+                            ?>
+                        </li>
+                    </ul>
+                    <select id="sources" class="details-edit select-field">
+                        <option value=""></option>
+                        <?php
+                        foreach( $custom_lists["sources"] as $sources_key => $sources_value ) {
+                            if ( isset( $contact->fields["sources"][0] ) &&
+                                $contact->fields["sources"][0] === $sources_key){
+                                echo '<option value="'. esc_html( $sources_key ) . '" selected>' . esc_html( $sources_value["label"] ) . '</option>';
+                            } else {
+                                echo '<option value="'. esc_html( $sources_key ) . '">' . esc_html( $sources_value["label"] ). '</option>';
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
+
             <div class="row show-more-button" style="text-align: center" >
-                <button class="clear" data-toggle="show-more-button show-more-content show-content-button"  href="#">SHOW
-                    <span id="show-more-button" data-toggler data-animate="fade-in fade-out">MORE <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' )?>"/></span>
-                    <span id="show-content-button" data-toggler data-animate="fade-in fade-out" aria-expanded="false" style="display:none;">LESS <i class="fi-minus"></i></span>
+                <button class="clear show-button"  href="#">Show
+                    <span class="show-content show-more">more <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_down.svg' )?>"/></span>
+                    <span class="show-content" style="display:none;">less <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_up.svg' )?>"></span>
                 </button>
             </div>
         </div>
-        <div class="edit-fields" style="display: none">
-            <div class="grid-x">
-                <!-- Contact information. Phone, email, etc -->
-                <div class="medium-6 cell">
-                    <?php
-
-                    if ( isset( $contact->fields["address"] ) ){
-                        $type_label = "Address";
-                        $type = "address";
-                        $new_input_id = "new-" . $type;
-                        $list_id = $type . "-list";
-                        ?>
-                        <strong><?php echo esc_html( $type_label ) ?></strong>
-                        <button onclick="add_contact_input(<?php echo esc_html( get_the_ID() )?>, '<?php echo esc_html( $new_input_id )?>', '<?php echo esc_html( $list_id )?>' )">
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
-                        </button>
-                        <ul id="<?php echo esc_html( $list_id )?>">
-                            <?php
-                            foreach($contact->fields[ "address" ] ?? [] as $value){
-                                $verified = isset( $value["verified"] ) && $value["verified"] === true;
-                                $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
-                                ?>
-                                <li>
-                                    <?php
-                                    if ( !$verified ){
-                                        ?><button class="details-status-button verify" id="<?php echo esc_attr( $value["key"] )?>-verify">Verify</button><?php
-                                    }
-                                    if ( !$invalid ){
-                                        ?><button class="details-status-button invalid" id="<?php echo esc_html( $value["key"] )?>-invalidate">Invalidate</button><?php
-                                    }
-                                    ?>
-                                    <textarea id="<?php echo esc_html( $value["key"] )?>">
-                                        <?php echo esc_html( $value["value"] ) ?>
-                                    </textarea>
-                                </li>
-                            <?php }?>
-                        </ul>
-                    <?php } ?>
-                </div>
-            </div>
-        </div>
-
     </section> <!-- end article -->
 
 <?php

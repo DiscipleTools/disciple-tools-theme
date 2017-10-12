@@ -125,28 +125,27 @@ declare( strict_types=1 );
                     <div class="bordered-box">
                         <label class="section-header">Progress</label>
                         <strong>Seeker Path</strong>
-                        <div class="row">
-                            <div class="small-6 columns">
-                                <p>Current:
-                                    <span id="current_seeker_path">
-                                        <?php echo esc_html( $contact->fields["seeker_path"]["label"] ?? "" ) ?>
-                                    </span>
-                                </p>
-                            </div>
-                            <div class="small-6 columns">
-                                <p>Next: <span id="next_seeker_path">
-                                <?php
-                                $keys = array_keys( $contact_fields["seeker_path"]["default"] );
-                                $path_index = array_search( $contact->fields["seeker_path"]["key"], $keys ) ?? 0;
-                                if (isset( $keys[$path_index + 1] )) {
-                                    echo esc_html( $contact_fields["seeker_path"]["default"][$keys[$path_index + 1]] );
-                                }
-                                ?>
-                                </span>
-                                </p>
 
-                            </div>
+                        <select class="select-field" id="seeker_path" style="margin-bottom: 0px">
+                        <?php
+
+                        foreach ($contact_fields["seeker_path"]["default"] as $key => $value){
+                            if ( $contact->fields["seeker_path"]["key"] === $key ) {
+                                ?>
+                                <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
+                            <?php } else { ?>
+                                <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
+                            <?php }
+                        };
+                        $keys = array_keys( $contact_fields["seeker_path"]["default"] );
+                        $path_index = array_search( $contact->fields["seeker_path"]["key"], $keys ) ?? 0;
+                        $percentage = $path_index / (sizeof( $keys )-1) *100
+                        ?>
+                        </select>
+                        <div class="progress" role="progressbar" tabindex="0" aria-valuenow="<?php echo 4 ?>" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
+                          <div id="seeker-progress" class="progress-meter" style="width: <?php echo esc_html( $percentage ) ?>%"></div>
                         </div>
+
                         <strong>Faith Milestones</strong>
                         <div class="small button-group" style="display: inline-block">
 
@@ -156,7 +155,7 @@ declare( strict_types=1 );
                                     $class = ( isset( $contact->fields[$field] ) && $contact->fields[$field]['key'] === 'yes' ) ?
                                         "selected-select-button" : "empty-select-button";
                                 ?>
-                                    <button onclick="save_seeker_milestones( <?php echo esc_html( get_the_ID() ) ?> , <?php echo esc_html( $field ) ?>)"
+                                    <button onclick="save_seeker_milestones( <?php echo esc_html( get_the_ID() ) ?> , '<?php echo esc_html( $field ) ?>')"
                                             id="<?php echo esc_html( $field ) ?>"
                                             class="<?php echo esc_html( $class ) ?> select-button button ">
                                         <?php echo esc_html( $contact_fields[$field]["name"] ) ?>
@@ -164,6 +163,26 @@ declare( strict_types=1 );
                                 <?php }?>
                             <?php endforeach; ?>
                         </div>
+
+                        <div class="baptism_date">
+                            <strong>Baptism Date</strong>
+<!--                            <div class="baptism_date details-list">--><?php //echo esc_html( $group["baptism_date"] ?? "No baptism date" ); ?><!-- </div>-->
+                            <div class="baptism_date"><input type="text" value="<?php echo esc_html( $contact->fields["baptism_date"] ?? '' )?>" id="baptism-date-picker"></div>
+                        </div>
+
+                        <strong><?php echo esc_html( $contact_fields["bible_mailing"]["name"] ) ?></strong>
+                        <select id="bible_mailing" class="select-field">
+                            <?php
+                            foreach( $contact_fields["bible_mailing"]["default"] as $key => $value ) {
+                                if ( isset( $contact->fields["bible_mailing"] ) &&
+                                    $contact->fields["bible_mailing"]["key"] === $key ){
+                                    echo '<option value="'. esc_html( $key ) . '" selected>' . esc_html( $value ) . '</option>';
+                                } else {
+                                    echo '<option value="'. esc_html( $key ) . '">' . esc_html( $value ). '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
                     </div>
                 </section>
 
