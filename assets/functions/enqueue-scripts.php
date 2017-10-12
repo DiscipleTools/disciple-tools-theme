@@ -41,6 +41,9 @@ function site_scripts() {
     /**
      * End jQuery force new version
      */
+    wp_register_script( 'moment', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js', false, '2.19.1' );
+    wp_enqueue_script( 'moment' );
+
 
     dt_theme_enqueue_script( 'lodash', 'dependencies/lodash/lodash.min.js', array() );
 
@@ -67,7 +70,7 @@ function site_scripts() {
     );
 
     if (is_singular( "contacts" )){
-        dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper' ), true );
+        dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ), true );
         wp_localize_script(
             'contact-details', 'contactsDetailsWpApiSettings', array(
                 'root' => esc_url_raw( rest_url() ),
@@ -79,7 +82,7 @@ function site_scripts() {
         );
     }
     if (is_singular( "groups" )){
-        dt_theme_enqueue_script( 'group-details', 'assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper' ) );
+        dt_theme_enqueue_script( 'group-details', 'assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
         wp_localize_script(
             'group-details', 'wpApiSettings', array(
                 'root' => esc_url_raw( rest_url() ),

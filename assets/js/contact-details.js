@@ -74,7 +74,7 @@ function post_comment(contactId) {
     console.log(`added comment ${comment}`)
     jQuery("#comment-input").val("")
     jQuery("#add-comment-button").toggleClass('loading')
-    data.comment.date = new Date(data.comment.comment_date_gmt + "Z")
+    data.comment.date = moment(data.comment.comment_date_gmt + "Z")
     comments.push(data.comment)
     display_activity_comment()
   }).catch(err=>{
@@ -110,7 +110,7 @@ jQuery(document).ready(function($) {
     if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
       API.get_activity('contact', contactId).then(activityData=>{
         activityData.forEach(d=>{
-          d.date = new Date(d.hist_time*1000)
+          d.date = moment.unix(d.hist_time)
         })
         activity = activityData
         display_activity_comment()
@@ -124,11 +124,11 @@ jQuery(document).ready(function($) {
     API.get_activity('contact', contactId)
   ).then(function(commentData, activityData) {
     commentData[0].forEach(comment => {
-      comment.date = new Date(comment.comment_date_gmt + "Z")
+      comment.date = moment(comment.comment_date_gmt + "Z")
     })
     comments = commentData[0]
     activityData[0].forEach(d => {
-      d.date = new Date(d.hist_time * 1000)
+      d.date = moment.unix(d.hist_time)
     })
     activity = activityData[0]
     display_activity_comment("all")
@@ -255,7 +255,7 @@ jQuery(document).ready(function($) {
         return API.filterTypeahead(data, _.get(contact, "fields.assigned_to") ? [{ID:contact.fields.assigned_to.ID}] : [])
       }
     },
-    initialize: false,
+    // initialize: false,
   });
 
   let assigned_to_typeahead = $('.assigned_to .typeahead')
@@ -267,6 +267,7 @@ jQuery(document).ready(function($) {
         autoselect: true,
       },
       {
+        limit: 15,
         name: 'users',
         source: function (q, sync, async) {
           return API.defaultFilter(q, sync, async, users, _.get(contact, "fields.assigned_to") ? [{ID:contact.fields.assigned_to.ID}] : [])
@@ -317,7 +318,7 @@ jQuery(document).ready(function($) {
         return API.filterTypeahead(data, _.get(contact, "fields.locations") || [])
       }
     },
-    initialize: false,
+    // initialize: false,
   });
 
   let locationsTypeahead = $('.locations .typeahead')
@@ -328,6 +329,7 @@ jQuery(document).ready(function($) {
         autoselect: true,
       },
       {
+        limit:15,
         name: 'locations',
         source: function (q, sync, async) {
           return API.defaultFilter(q, sync, async, locations, _.get(contact, "fields.locations"))
@@ -726,16 +728,7 @@ jQuery(document).ready(function($) {
 
 
 function formatDate(date) {
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let ampm = hours >= 12 ? 'pm' : 'am';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? '0'+minutes : minutes;
-  let strTime = hours + ':' + minutes + ' ' + ampm;
-  let month = date.getMonth()+1
-  month = month < 10 ? "0"+month.toString() : month
-  return date.getFullYear() + "/" + date.getDate() + "/" + month + "  " + strTime;
+  return date.format("YYYY/MM/DD hh:mm a")
 }
 
 let current_section = "all"
@@ -766,8 +759,8 @@ function display_activity_comment(section) {
     }
 
 
-    let diff = (first ? first.date.getTime() : new Date().getTime()) - obj.date.getTime()
-    if (!first || (first.name === name && diff < 60 * 60 * 1000) ){
+    let diff = first ? first.date.diff(obj.date, "hours") : 0
+    if (!first || (first.name === name && diff < 1) ){
       array.push(obj)
     } else {
       commentsWrapper.append(commentTemplate({
