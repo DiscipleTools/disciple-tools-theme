@@ -369,7 +369,7 @@ jQuery(document).ready(function($) {
   function refreshActivity() {
     API.get_activity('group', groupId).then(activityData=>{
       activityData.forEach(d=>{
-        d.date = new Date(d.hist_time*1000)
+        d.date = moment.unix(d.hist_time)
       })
       activity = activityData
       display_activity_comment()
@@ -383,7 +383,7 @@ jQuery(document).ready(function($) {
       API.post_comment('group', groupId, input.val()).then(commentData=>{
         commentButton.toggleClass('loading')
         input.val('')
-        commentData.comment.date = new Date(commentData.comment.comment_date_gmt + "Z")
+        commentData.comment.date = moment(commentData.comment.comment_date_gmt + "Z")
         comments.push(commentData.comment)
         display_activity_comment()
       })
@@ -394,11 +394,11 @@ jQuery(document).ready(function($) {
     API.get_activity('group', groupId)
   ).then(function(commentData, activityData){
     commentData[0].forEach(comment=>{
-      comment.date = new Date(comment.comment_date_gmt + "Z")
+      comment.date = moment(comment.comment_date_gmt + "Z")
     })
     comments = commentData[0]
     activityData[0].forEach(d=>{
-      d.date = new Date(d.hist_time*1000)
+      d.date = moment.unix(d.hist_time)
     })
     activity = activityData[0]
     display_activity_comment("all")
@@ -431,8 +431,8 @@ jQuery(document).ready(function($) {
       }
 
 
-      let diff = (first ? first.date.getTime() : new Date().getTime()) - obj.date.getTime()
-      if (!first || (first.name === name && diff < 60 * 60 * 1000) ){
+      let diff = first ? first.date.diff(obj.date, "hours") : 0
+      if (!first || (first.name === name && diff < 1) ){
         array.push(obj)
       } else {
         commentsWrapper.append(commentTemplate({
@@ -468,16 +468,7 @@ jQuery(document).ready(function($) {
   )
 
   function formatDate(date) {
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0'+minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-    var month = date.getMonth()+1
-    month = month < 10 ? "0"+month.toString() : month
-    return date.getFullYear() + "/" + date.getDate() + "/" + month + "  " + strTime;
+    return date.format("YYYY/MM/DD hh:mm a")
   }
 
 
