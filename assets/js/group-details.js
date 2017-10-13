@@ -557,27 +557,30 @@ jQuery(document).ready(function($) {
       metrics.forEach(m=>{
         if (group[`church_${m}`] && ["1", "Yes"].indexOf(group[`church_${m}`]["key"])> -1){
           churchWheel.find(`#${m}`).css("opacity", "1")
+          $(`#church_${m}`).css("opacity", "1")
         } else {
           churchWheel.find(`#${m}`).css("opacity", ".1")
+          $(`#church_${m}`).css("opacity", ".4")
         }
       })
       if (!group["church_commitment"] || group["church_commitment"] === '0'){
         churchWheel.find('#group').css("opacity", "1")
+        $(`#church_commitment`).css("opacity", "1")
       } else {
         churchWheel.find('#group').css("opacity", ".1")
+        $(`#church_commitment`).css("opacity", ".4")
       }
   }
   fillOutChurchHealthMetrics()
 
   $('.group-progress-button').on('click', function () {
     let fieldId = $(this).attr('id')
-    $(this).css('opacity', ".5");
+    $(this).css('opacity', ".6");
     let field = _.get(group, `[${fieldId}]['key']`) === "1" ? "0" : "1"
     API.save_field_api('group', groupId, {[fieldId]: field})
       .then(groupData=>{
         group = groupData
         fillOutChurchHealthMetrics()
-        $(this).css('opacity', "1");
       }).catch(err=>{
         console.log(err)
     })
