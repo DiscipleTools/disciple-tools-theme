@@ -250,34 +250,45 @@ jQuery(document).ready(function($) {
   loadLocationsTypeahead()
 
 
-  /**
-   * Addresses
-   */
-  var button = $('.address.details-edit.add-button')
-  button.on('click', e=>{
+  $("#add-new-address").click(function () {
     if ($('#new-address').length === 0 ) {
-      let newInput = `<li>
-        <textarea id="new-address"></textarea>
-      </li>`
-      $('.details-edit.address-list').append(newInput)
+      let newInput = `<div class="new-address">
+        <textarea rows="3" id="new-address"></textarea>
+      </div>`
+      $('.details-edit#address-list').append(newInput)
     }
   })
+
   //for a new address field that has not been saved yet
   $(document).on('change', '#new-address', function (val) {
     let input = $('#new-address')
-    API.add_item_to_field( 'group', groupId, {"new-address":input.val()}).then(function (data) {
-      if (data != groupId){
+    API.add_item_to_field( 'contact', groupId, {"new-address":input.val()}).then(function (newAddressId) {
+      console.log(newAddressId)
+      if (newAddressId != groupId){
         //change the it to the created field
-        input.attr('id', data)
-        $('.details-list.address').append(`<li class="${data}">${input.val()}</li>`)
-      }
+        input.attr('id', newAddressId)
+        $('.details-list.address').append(`
+            <li class="${newAddressId}">${input.val()}
+              <img id="${newAddressId}-verified" class="details-status" style="display:none" src="${wpApiGroupsSettings.template_dir}/assets/images/verified.svg"/>
+              <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${wpApiGroupsSettings.template_dir}/assets/images/verified.svg"/>
+            </li>
+        `)
+        $('.new-address').append(`
+          <button class="details-status-button verify" data-verified="false" data-id="${newAddressId}">
+              Verify
+          </button>
+          <button class="details-status-button invalid" data-verified="false" data-id="${newAddressId}">
+              Invalidate
+          </button>
+        `).removeClass('new-address')
 
+      }
     })
   })
-  $(document).on('change', '.address-list textarea', function(){
+  $(document).on('change', '#address-list textarea', function(){
     let id = $(this).attr('id')
     if (id && id !== "new-address"){
-      API.save_field_api('group', groupId, {[id]: $(this).val()}).then(()=>{
+      API.save_field_api('contact', groupId, {[id]: $(this).val()}).then(()=>{
         $(`.address.details-list .${id}`).text($(this).val())
       })
 
@@ -571,6 +582,39 @@ jQuery(document).ready(function($) {
     toggleEdit('status')
   })
 
+
+  $(document).on('click', '.details-status-button.verify', function () {
+    let id = $(this).data('id')
+    let verified = $(this).data('verified')
+    if (id){
+      console.log('verify')
+      API.update_contact_method_detail('contact', groupId, id, {"verified":!verified}).then(()=>{
+        $(this).data('verified', !verified)
+        if (verified){
+          jQuery(`#${id}-verified`).hide()
+        } else {
+          jQuery(`#${id}-verified`).show()
+
+        }
+        jQuery(this).html(verified ? "Verify" : "Unverify")
+      }).catch(err=>{
+        console.log(err)
+      })
+    }
+  })
+  $(document).on('click', '.details-status-button.invalid', function () {
+    let id = $(this).data('id')
+    let invalid = $(this).data('invalid')
+    API.update_contact_method_detail('contact', groupId, id, {"invalid":!invalid}).then(()=>{
+      $(this).data('invalid', !invalid)
+      if (invalid){
+        jQuery(`#${id}-invalid`).hide()
+      } else  {
+        jQuery(`#${id}-invalid`).show()
+      }
+      jQuery(this).html(invalid? "Invalidate" : "Uninvalidate")
+    })
+  })
 })
 
 

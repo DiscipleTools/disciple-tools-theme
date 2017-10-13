@@ -42,50 +42,41 @@ function dt_contact_details_status( $id, $verified, $invalid ){
     <div class="display-fields grid-x grid-margin-x">
         <div class="medium-4 cell">
             <strong>Address</strong>
-            <button class="address details-edit add-button">
-                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/assets/images/small-add.svg' ?>"/>
+            <button id="add-new-address" class="details-edit">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
             </button>
             <ul class="address details-list">
                 <?php
                 foreach($group[ "address" ]  ?? [] as $value){
                     $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                     $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                    echo  '<li class="'. esc_attr( $value["key"] ) .'">' . esc_html( $value["value"] );
-                    dt_contact_details_status( $value["key"], $verified, $invalid );
-                    echo '</li>';
-                }?>
+                    ?>
+                    <li class="<?php echo esc_html( $value["key"] ) ?>"><?php echo esc_html( $value["value"] );
+                        dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
+                    </li>
+                <?php } ?>
             </ul>
-            <?php
-            if ( isset( $group["address"] ) ){
-                $type_label = "Address";
-                $type = "address";
-                $new_input_id = "new-" . $type;
-                $list_id = $type . "-list";
-                ?>
-
-                <ul class="details-edit address-list">
-                    <?php
+            <ul id="address-list" class="details-edit">
+                <?php
+                if ( isset( $group["address"] )){
                     foreach($group[ "address" ] ?? [] as $value){
                         $verified = isset( $value["verified"] ) && $value["verified"] === true;
                         $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                         ?>
-                        <li>
-                        <?php if ( !$verified ): ?>
-                            <button class="details-status-button verify" id="<?php echo esc_attr( $value["key"] ) . '-verify'; ?>" onclick="verify_contact_method(<?php echo intval( get_the_ID() ); ?>, '<?php echo esc_js( $value["key"] ); ?>' )">Verify</button>
-                        <?php endif; ?>
-                        <?php if ( !$invalid ): ?>
-                            <button class="details-status-button invalid" id="<?php echo esc_attr( $value["key"] ) . '-invalidate'; ?>" onclick="invalidate_contact_method(<?php echo intval( get_the_ID() ); ?>, '<?php echo esc_js( $value["key"] ); ?>')">Invalidate</button>
-                        <?php endif; ?>
-                        <textarea id="<?php echo esc_attr( $value["key"] ); ?>">
-                            <?php echo esc_html( $value["value"] ); ?>
-                        </textarea>
-                        </li>
-                        <?php
-                    }?>
-                </ul>
-                <?php
-            }
-            ?>
+                        <div>
+                            <textarea rows="3" id="<?php echo esc_attr( $value["key"] )?>" class="contact-input"><?php echo esc_attr( $value["value"] )?></textarea>
+                            <button class="details-status-button verify" data-verified="<?php echo esc_html( $verified )?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
+                                <?php echo ($verified ? 'Unverify' : "Verify") ?>
+                            </button>
+                            <button class="details-status-button invalid" data-invalid="<?php echo esc_html( $invalid ) ?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
+                                <?php echo ($invalid ? 'Uninvalidate' : "Invalidate") ?>
+                            </button>
+                        </div>
+                        <hr>
+
+                    <?php }
+                }?>
+            </ul>
         </div>
 
         <div class="medium-4 cell">
