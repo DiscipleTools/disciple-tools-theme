@@ -89,6 +89,7 @@ function dt_site_scripts() {
                 'group' => Disciple_Tools_Groups::get_group( get_the_ID() ),
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
+                'template_dir' => get_template_directory_uri()
             )
         );
     }

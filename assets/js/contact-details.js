@@ -382,7 +382,7 @@ jQuery(document).ready(function($) {
     },
     {
       name: 'peopleGroups',
-      limit: 30,
+      limit: 15,
       source: function (q, sync, async) {
         return API.defaultFilter(q, sync, async, peopleGroups, _.get(contact, "fields.people_groups"))
       },

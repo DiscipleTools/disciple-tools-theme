@@ -439,10 +439,8 @@
                         <?php }
                     }?>
                     </ul>
-
-
-
                 </div>
+
                 <div class="medium-4 cell">
                     <strong>Age:</strong>
                     <ul class="details-list">

@@ -69,9 +69,9 @@ dt_print_breadcrumbs(
 
             <section id="faith" class="medium-6 cell">
                 <div class="bordered-box">
-                    <label class="section-header">Progress</label>
+                    <label class="section-header" >Progress</label>
 
-                    <div style="display:flex;flex-wrap:wrap">
+                    <div style="display:flex;flex-wrap:wrap;margin-top:10px">
                         <div class="group-progress-button-wrapper">
                             <button  class="group-progress-button" id="church_fellowship">
                                 <img src="<?php echo esc_attr( get_template_directory_uri() . '/assets/images/groups/heart.svg' ); ?>">
