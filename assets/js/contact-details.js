@@ -327,18 +327,18 @@ jQuery(document).ready(function($) {
   let locationsTypeahead = $('.locations .typeahead')
   function loadLocationsTypeahead() {
     locationsTypeahead.typeahead({
-        highlight: true,
-        minLength: 0,
-        autoselect: true,
+      highlight: true,
+      minLength: 0,
+      autoselect: true,
+    },
+    {
+      limit:15,
+      name: 'locations',
+      source: function (q, sync, async) {
+        return API.defaultFilter(q, sync, async, locations, _.get(contact, "fields.locations"))
       },
-      {
-        limit:15,
-        name: 'locations',
-        source: function (q, sync, async) {
-          return API.defaultFilter(q, sync, async, locations, _.get(contact, "fields.locations"))
-        },
-        display: 'name'
-      })
+      display: 'name'
+    })
   }
   locationsTypeahead.bind('typeahead:select', function (ev, sug) {
     locationsTypeahead.typeahead('val', '')
@@ -375,19 +375,19 @@ jQuery(document).ready(function($) {
   let peopleGroupsTypeahead = $('.people-groups .typeahead')
   function loadPeopleGroupsTypeahead() {
     peopleGroupsTypeahead.typeahead({
-        highlight: true,
-        minLength: 0,
-        autoselect: true,
+      highlight: true,
+      minLength: 0,
+      autoselect: true,
 
+    },
+    {
+      name: 'peopleGroups',
+      limit: 30,
+      source: function (q, sync, async) {
+        return API.defaultFilter(q, sync, async, peopleGroups, _.get(contact, "fields.people_groups"))
       },
-      {
-        name: 'peopleGroups',
-        limit: 30,
-        source: function (q, sync, async) {
-          return API.defaultFilter(q, sync, async, peopleGroups, _.get(contact, "fields.people_groups"))
-        },
-        display: 'name'
-      })
+      display: 'name'
+    })
   }
   peopleGroupsTypeahead.bind('typeahead:select', function (ev, sug) {
     peopleGroupsTypeahead.typeahead('val', '')

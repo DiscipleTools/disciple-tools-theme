@@ -102,7 +102,7 @@
             <button data-open="close-contact-modal" class="button">Close</button>
             <button id="return-active" onclick="make_active( <?php echo get_the_ID() ?> )"
                     style="display: <?php echo esc_html( ($contact->fields["overall_status"]["key"] === "paused" || $contact->fields["overall_status"]["key"] === "closed") ? "" : "none" ); ?>"
-                    class="tiny button">
+                    class="button">
                 Return to Active
             </button>
             <button class="float-right" id="edit-details">
