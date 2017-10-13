@@ -4,6 +4,8 @@ Template Name: Settings
 */
 
 /* Process $_POST content */
+// We're not checking the nonce here because update_user_contact_info will
+// @codingStandardsIgnoreLine
 if( isset( $_POST[ 'user_update_nonce' ] ) ) {
     Disciple_Tools_Users::update_user_contact_info();
 }
@@ -169,7 +171,7 @@ dt_print_breadcrumbs(
                         $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id() );
                         if( $dt_user_team_members_list ) {
                             foreach( $dt_user_team_members_list as $team_list ) {
-                                echo $team_list[ 'team_name' ];
+                                echo esc_html( $team_list[ 'team_name' ] );
                                 if( !empty( $team_list[ 'team_members' ] ) ) {
                                     echo '<ul>';
                                     foreach( $team_list[ 'team_members' ] as $member ) {
@@ -204,7 +206,8 @@ dt_print_breadcrumbs(
                     <tr>
                         <td class="tall-4">Newly Assigned Contact</td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'new_web' ] ) {
+                            <?php
+                            if( $dt_site_notification_defaults[ 'new_web' ] ) {
                                 print '<div style="height:2em;">required</div>';
                             } else { ?>
                                 <div class="switch">
@@ -218,7 +221,8 @@ dt_print_breadcrumbs(
                             <?php } // end else ?>
                         </td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'new_email' ] ) {
+                            <?php
+                            if( $dt_site_notification_defaults[ 'new_email' ] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
@@ -235,7 +239,8 @@ dt_print_breadcrumbs(
                     <tr>
                         <td class="tall-4">@Mentions</td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'mentions_web' ] ) {
+                            <?php
+                            if( $dt_site_notification_defaults[ 'mentions_web' ] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
@@ -249,7 +254,8 @@ dt_print_breadcrumbs(
                             <?php } // end else ?>
                         </td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'mentions_email' ] ) {
+                            <?php
+                            if( $dt_site_notification_defaults[ 'mentions_email' ] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
@@ -266,7 +272,8 @@ dt_print_breadcrumbs(
                     <tr>
                         <td class="tall-4">Update Needed</td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'updates_web' ] ) {
+                            <?php
+                            if( $dt_site_notification_defaults[ 'updates_web' ] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
@@ -280,7 +287,8 @@ dt_print_breadcrumbs(
                             <?php } // end else ?>
                         </td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'updates_email' ] ) {
+                            <?php
+                            if( $dt_site_notification_defaults[ 'updates_email' ] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
@@ -297,7 +305,8 @@ dt_print_breadcrumbs(
                     <tr>
                         <td class="tall-4">Contact Info Changed</td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'changes_web' ] ) {
+                            <?php
+                            if( $dt_site_notification_defaults[ 'changes_web' ] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
@@ -311,7 +320,8 @@ dt_print_breadcrumbs(
                             <?php } // end else ?>
                         </td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'changes_email' ] ) {
+                            <?php
+                            if( $dt_site_notification_defaults[ 'changes_email' ] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
@@ -328,7 +338,8 @@ dt_print_breadcrumbs(
                     <tr>
                         <td class="tall-4">Contact Milestones</td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'milestones_web' ] ) {
+                            <?php
+                            if( $dt_site_notification_defaults[ 'milestones_web' ] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
@@ -342,7 +353,8 @@ dt_print_breadcrumbs(
                             <?php } // end else ?>
                         </td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'milestones_email' ] ) {
+                            <?php
+                            if( $dt_site_notification_defaults[ 'milestones_email' ] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
@@ -386,6 +398,8 @@ dt_print_breadcrumbs(
 
 
                 <?php // TODO: Add scheduling and history of availability ?>
+                <?php
+                /*
                 <!-- List of past, present, and future vacations scheduled
                 <p>
                     <strong>Schedule Away: </strong>
@@ -475,6 +489,8 @@ dt_print_breadcrumbs(
 
         </div>
             End future development of availability -->
+        */
+        ?>
 
             <div class="reveal" id="edit-profile" data-reveal>
                 <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -486,7 +502,7 @@ dt_print_breadcrumbs(
 
                     <form method="post">
 
-                        <?php wp_nonce_field( "user_" . $dt_user->ID . "_update", $name = "user_update_nonce", $referer = false, $echo = true ); ?>
+                        <?php wp_nonce_field( "user_" . $dt_user->ID . "_update", "user_update_nonce", false, true ); ?>
 
                         <table class="table">
 

@@ -25,14 +25,7 @@
 
   <exclude-pattern>*/dependencies/*</exclude-pattern>
   <exclude-pattern>*/vendor/*</exclude-pattern>
-
-  <!-- TODO: remove these exclude-pattern elements, we want to test the entire
-       codebase! -->
-  <exclude-pattern>parts/contact-details.php</exclude-pattern>
   <exclude-pattern>assets/functions/class-tgm-plugin-activation.php</exclude-pattern>
-  <exclude-pattern>functions.php</exclude-pattern>
-  <exclude-pattern>single-contacts.php</exclude-pattern>
-  <exclude-pattern>template-settings.php</exclude-pattern>
 
   <arg name="extensions" value="php,inc,lib"/>
   <arg value="n"/>
@@ -122,7 +115,6 @@
     <exclude name="Squiz.Commenting.VariableComment.Missing" />
     <exclude name="Squiz.Commenting.VariableComment.MissingVar" />
     <exclude name="Squiz.Commenting.VariableComment.WrongStyle" />
-    <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndFile" />
     <exclude name="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace" />
     <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace" />
     <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis" />
@@ -137,6 +129,7 @@
     <exclude name="Squiz.Strings.ConcatenationSpacing.PaddingFound" />
     <exclude name="Squiz.Strings.DoubleQuoteUsage.NotRequired" />
     <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines" />
+    <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndFile" />
     <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine" />
     <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine" />
     <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeKeyFound" />
@@ -157,6 +150,7 @@
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma" />
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceBeforeComma" />
     <exclude name="WordPress.PHP.YodaConditions.NotYoda" />
+    <exclude name="WordPress.VIP.AdminBarRemoval.RemovalDetected" />
     <exclude name="WordPress.VIP.DirectDatabaseQuery.SchemaChange" />
     <exclude name="WordPress.VIP.RestrictedFunctions.custom_role_add_role" />
     <exclude name="WordPress.VIP.RestrictedFunctions.get_term_by_get_term_by" />
