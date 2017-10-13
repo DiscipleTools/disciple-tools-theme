@@ -85,7 +85,8 @@ function site_scripts() {
     if (is_singular( "groups" )){
         dt_theme_enqueue_script( 'group-details', 'assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
         wp_localize_script(
-            'group-details', 'wpApiSettings', array(
+            'group-details', 'wpApiGroupsSettings', array(
+                'group' => Disciple_Tools_Groups::get_group( get_the_ID() ),
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
             )

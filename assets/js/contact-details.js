@@ -849,15 +849,15 @@ function add_typeahead_item(contactId, fieldId, val, name) {
 
   API.add_item_to_field('contact', contactId, {[fieldId]: val}).then(addedItem=>{
     list.append(`<li class="${addedItem.ID}">
-    <a href="${addedItem.permalink}">${addedItem.post_title}</a>
+    <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
     <button class="details-remove-button connection details-edit"
-              data-field="${fieldId}" data-id="${val}"
-              data-name="${name}"  
-              style="display: inline-block">Remove</button>
-      </li>`)
+            data-field="${fieldId}" data-id="${val}"
+            data-name="${name}"  
+            style="display: inline-block">Remove</button>
+    </li>`)
     jQuery(`.temp-${fieldId}-${val}`).remove()
   }).catch(err=>{
-    jQuery(`.temp-${fieldId}-${val}`).text(`Could not add ${name}`)
+    jQuery(`.temp-${fieldId}-${val}`).text(`Could not add: ${name}`)
   })
 }
 
