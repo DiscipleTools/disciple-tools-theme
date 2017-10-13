@@ -249,6 +249,53 @@ jQuery(document).ready(function($) {
   })
   loadLocationsTypeahead()
 
+  /**
+   * People Groups
+   */
+  let peopleGroups = new Bloodhound({
+    datumTokenizer: API.searchAnyPieceOfWord,
+    queryTokenizer: Bloodhound.tokenizers.ngram,
+    identify: function (obj) {
+      return obj.ID
+    },
+    prefetch: {
+      url: wpApiGroupsSettings.root + 'dt/v1/people-groups-compact/',
+      prepare : API.typeaheadPrefetchPrepare,
+    },
+    remote: {
+      url: wpApiGroupsSettings.root + 'dt/v1/people-groups-compact/?s=%QUERY',
+      wildcard: '%QUERY',
+      prepare : API.typeaheadRemotePrepare,
+    },
+  });
+
+  let peopleGroupsTypeahead = $('.people-groups .typeahead')
+  function loadPeopleGroupsTypeahead() {
+    peopleGroupsTypeahead.typeahead({
+        highlight: true,
+        minLength: 0,
+        autoselect: true,
+
+      },
+      {
+        name: 'peopleGroups',
+        limit: 15,
+        source: function (q, sync, async) {
+          return API.defaultFilter(q, sync, async, peopleGroups, _.get(group, "people_groups"))
+        },
+        display: 'name'
+      })
+  }
+  peopleGroupsTypeahead.bind('typeahead:select', function (ev, sug) {
+    peopleGroupsTypeahead.typeahead('val', '')
+    group["people_groups"].push(sug)
+    add_typeahead_item(groupId, 'people_groups', sug.ID, sug.name)
+    $("#no-people-group").remove()
+    peopleGroupsTypeahead.typeahead('destroy')
+    peopleGroups.initialize()
+    loadPeopleGroupsTypeahead()
+  })
+  loadPeopleGroupsTypeahead()
 
   $("#add-new-address").click(function () {
     if ($('#new-address').length === 0 ) {
@@ -262,7 +309,7 @@ jQuery(document).ready(function($) {
   //for a new address field that has not been saved yet
   $(document).on('change', '#new-address', function (val) {
     let input = $('#new-address')
-    API.add_item_to_field( 'contact', groupId, {"new-address":input.val()}).then(function (newAddressId) {
+    API.add_item_to_field( 'group', groupId, {"new-address":input.val()}).then(function (newAddressId) {
       console.log(newAddressId)
       if (newAddressId != groupId){
         //change the it to the created field
@@ -288,7 +335,7 @@ jQuery(document).ready(function($) {
   $(document).on('change', '#address-list textarea', function(){
     let id = $(this).attr('id')
     if (id && id !== "new-address"){
-      API.save_field_api('contact', groupId, {[id]: $(this).val()}).then(()=>{
+      API.save_field_api('group', groupId, {[id]: $(this).val()}).then(()=>{
         $(`.address.details-list .${id}`).text($(this).val())
       })
 
