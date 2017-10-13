@@ -1,7 +1,5 @@
 /* global jQuery:false, wpApiGroupsSettings:false */
-
 jQuery(document).ready(function($) {
-
 
   $( document ).ajaxComplete(function(event, xhr, settings) {
     if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
@@ -552,26 +550,29 @@ jQuery(document).ready(function($) {
   ]
 
   function fillOutChurchHealthMetrics() {
-      let svgItem = document.getElementById("church-svg-wrapper").contentDocument
-      let churchWheel = $(svgItem).find('svg')
-      metrics.forEach(m=>{
-        if (group[`church_${m}`] && ["1", "Yes"].indexOf(group[`church_${m}`]["key"])> -1){
-          churchWheel.find(`#${m}`).css("opacity", "1")
-          $(`#church_${m}`).css("opacity", "1")
-        } else {
-          churchWheel.find(`#${m}`).css("opacity", ".1")
-          $(`#church_${m}`).css("opacity", ".4")
-        }
-      })
-      if (!group["church_commitment"] || group["church_commitment"] === '0'){
-        churchWheel.find('#group').css("opacity", "1")
-        $(`#church_commitment`).css("opacity", "1")
+    let svgItem = document.getElementById("church-svg-wrapper").contentDocument
+
+    let churchWheel = $(svgItem).find('svg')
+    metrics.forEach(m=>{
+      if (group[`church_${m}`] && ["1", "Yes"].indexOf(group[`church_${m}`]["key"])> -1){
+        churchWheel.find(`#${m}`).css("opacity", "1")
+        $(`#church_${m}`).css("opacity", "1")
       } else {
-        churchWheel.find('#group').css("opacity", ".1")
-        $(`#church_commitment`).css("opacity", ".4")
+        churchWheel.find(`#${m}`).css("opacity", ".1")
+        $(`#church_${m}`).css("opacity", ".4")
       }
+    })
+    if (!group["church_commitment"] || group["church_commitment"] === '0'){
+      churchWheel.find('#group').css("opacity", "1")
+      $(`#church_commitment`).css("opacity", "1")
+    } else {
+      churchWheel.find('#group').css("opacity", ".1")
+      $(`#church_commitment`).css("opacity", ".4")
+    }
   }
-  fillOutChurchHealthMetrics()
+  $('#church-svg-wrapper').on('load',function () {
+    fillOutChurchHealthMetrics()
+  })
 
   $('.group-progress-button').on('click', function () {
     let fieldId = $(this).attr('id')
