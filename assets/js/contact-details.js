@@ -106,6 +106,7 @@ let contact = {}
 jQuery(document).ready(function($) {
 
   let contactId = $("#contact-id").text()
+  contact = contactsDetailsWpApiSettings.contact
   $( document ).ajaxComplete(function(event, xhr, settings) {
     if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
       API.get_activity('contact', contactId).then(activityData=>{
@@ -143,45 +144,46 @@ jQuery(document).ready(function($) {
     datumTokenizer: API.searchAnyPieceOfWord,
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     identify: function (obj) {
-      return obj.name
+      return obj.ID
     },
     prefetch: {
       url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/groups-compact/',
-      cache:false,
-      prepare : API.typeaheadPrefetchPrepare
+      prepare : API.typeaheadPrefetchPrepare,
     },
     remote: {
       url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/groups-compact/?s=%QUERY',
       wildcard: '%QUERY',
-      prepare : API.typeaheadRemotePrepare
+      prepare : API.typeaheadRemotePrepare,
     }
   })
-  function defaultGroups(q, sync, async) {
-    if (q === '') {
-      sync(groups.all());
-    }
-    else {
-      groups.search(q, sync, async);
-    }
-  }
-
   let groupsTypeahead = $('#groups .typeahead')
-  groupsTypeahead.typeahead({
+  function loadGroupsTypeahead() {
+    groupsTypeahead.typeahead('destroy')
+    groups.initialize()
+    groupsTypeahead.typeahead({
       highlight: true,
       minLength: 0,
       autoselect: true,
     },
     {
+      limit: 15,
       async:false,
       name: 'groups',
-      source: defaultGroups,
+      source: function (q, sync, async) {
+        return API.defaultFilter(q, sync, async, groups, _.get(contact, "fields.groups"))
+      },
       display: 'name'
     })
-    .bind('typeahead:select', function (ev, sug) {
-      groupsTypeahead.typeahead('val', '')
-      groupsTypeahead.blur()
-      add_typeahead_item(contactId, 'groups', sug.ID)
-    })
+  }
+  groupsTypeahead.bind('typeahead:select', function (ev, sug) {
+    groupsTypeahead.typeahead('val', '')
+    contact.fields.groups.push(sug)
+    groupsTypeahead.blur()
+    add_typeahead_item(contactId, 'groups', sug.ID, sug.name)
+
+    loadGroupsTypeahead()
+  })
+  loadGroupsTypeahead()
 
   /**
    * Baptized by, Baptized, Coaching, Coached By
@@ -202,33 +204,39 @@ jQuery(document).ready(function($) {
       prepare : API.typeaheadRemotePrepare
     }
   });
-  function defaultcontacts(q, sync) {
-    if (q === '') {
-      sync(contacts.all());
-    }
-    else {
-      contacts.search(q, sync);
-    }
-  }
 
   //autocomplete for dealing with contacts
   ["baptized_by", "baptized", "coached_by", "coaching"].forEach(field_id=>{
     let typeahead = $(`#${field_id} .typeahead`)
-    typeahead.typeahead({
-        highlight: true,
-        minLength: 0,
-        autoselect: true,
-      },
-      {
-        name: 'contacts',
-        source: defaultcontacts,
-        display: 'post_title'
-      })
-      .bind('typeahead:select', function (ev, sug) {
+    function loadTypeahead(){
+      typeahead.typeahead({
+          highlight: true,
+          minLength: 0,
+          autoselect: true,
+        },
+        {
+          name: 'contacts',
+          limit:15,
+          source: function (q, sync, async) {
+            console.log(field_id)
+            console.log()
+            let existing = _.get(contact, `fields.${field_id}`) || []
+            existing.push({ID:parseInt(contactId)})
+            console.log(existing)
+            return API.defaultFilter(q, sync, async, contacts, existing)
+          },
+          display: 'post_title'
+        })
+    }
+      typeahead.bind('typeahead:select', function (ev, sug) {
         typeahead.typeahead('val', '')
         typeahead.blur()
-        add_typeahead_item(contactId, field_id, sug.ID)
+        contact.fields[field_id].push(sug)
+        add_typeahead_item(contactId, field_id, sug.ID, sug.name||sug.post_title)
+        typeahead.typeahead('destroy')
+        loadTypeahead()
       })
+    loadTypeahead()
   })
 
   /**
@@ -243,19 +251,12 @@ jQuery(document).ready(function($) {
     prefetch: {
       url: contactsDetailsWpApiSettings.root + 'dt/v1/users/get_users',
       prepare : API.typeaheadPrefetchPrepare,
-      transform: function (data) {
-        return API.filterTypeahead(data, _.get(contact, "fields.assigned_to") ? [{ID:contact.fields.assigned_to.ID}] : [])
-      },
     },
     remote: {
       url: contactsDetailsWpApiSettings.root + 'dt/v1/users/get_users/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare,
-      transform: function (data) {
-        return API.filterTypeahead(data, _.get(contact, "fields.assigned_to") ? [{ID:contact.fields.assigned_to.ID}] : [])
-      }
-    },
-    // initialize: false,
+    }
   });
 
   let assigned_to_typeahead = $('.assigned_to .typeahead')
@@ -293,6 +294,9 @@ jQuery(document).ready(function($) {
     // toggleEdit('assigned_to')
   })
   loadAssignedToTypeahead()
+  if (_.get(contact, "fields.assigned_to")){
+    $('.current-assigned').text(_.get(contact, "fields.assigned_to.display"))
+  }
 
   /**
    * Locations
@@ -318,7 +322,6 @@ jQuery(document).ready(function($) {
         return API.filterTypeahead(data, _.get(contact, "fields.locations") || [])
       }
     },
-    // initialize: false,
   });
 
   let locationsTypeahead = $('.locations .typeahead')
@@ -361,19 +364,12 @@ jQuery(document).ready(function($) {
     prefetch: {
       url: contactsDetailsWpApiSettings.root + 'dt/v1/people-groups-compact/',
       prepare : API.typeaheadPrefetchPrepare,
-      transform: function(data){
-        return API.filterTypeahead(data, _.get(contact, "fields.people_groups") || [])
-      },
     },
     remote: {
       url: contactsDetailsWpApiSettings.root + 'dt/v1/people-groups-compact/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare,
-      transform: function(data){
-        return API.filterTypeahead(data, _.get(contact, "fields.people_groups") || [])
-      }
     },
-    initialize: false,
   });
 
   let peopleGroupsTypeahead = $('.people-groups .typeahead')
@@ -397,34 +393,12 @@ jQuery(document).ready(function($) {
     peopleGroupsTypeahead.typeahead('val', '')
     contact.fields["people_groups"].push(sug)
     add_typeahead_item(contactId, 'people_groups', sug.ID, sug.name)
-    $("#no-people-groups").remove()
+    $("#no-people-group").remove()
     peopleGroupsTypeahead.typeahead('destroy')
     peopleGroups.initialize()
     loadPeopleGroupsTypeahead()
   })
   loadPeopleGroupsTypeahead()
-
-  /**
-   * Get the contact
-   */
-
-  API.get_post('contact', contactId).then(function(data) {
-    contact = data
-    locations.initialize()
-    users.initialize()
-    peopleGroups.initialize()
-    if (_.get(contact, "fields.assigned_to")){
-      $('.current-assigned').text(_.get(contact, "fields.assigned_to.display"))
-    }
-    if (_.get(contact, "fields.baptism_date")){
-      baptismDatePicker.datepicker('setDate', data.fields.baptism_date)
-    }
-  }).catch(err=> {
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-
-  })
 
 
   jQuery('#add-comment-button').on('click', function () {
@@ -635,7 +609,6 @@ jQuery(document).ready(function($) {
   //   toggleEdit('baptism_date')
   //   baptismDatePicker.focus()
   // })
-
 
   $("#add-new-address").click(function () {
     if ($('#new-address').length === 0 ) {
@@ -870,15 +843,21 @@ function edit_connections() {
   jQuery(".connections-edit").toggle()
 }
 
-function add_typeahead_item(contactId, fieldId, val) {
+function add_typeahead_item(contactId, fieldId, val, name) {
+  let list = jQuery(`.${fieldId}-list`)
+  list.append(`<li class="temp-${fieldId}-${val}">Adding new Item</li>`)
+
   API.add_item_to_field('contact', contactId, {[fieldId]: val}).then(addedItem=>{
-    jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
+    list.append(`<li class="${addedItem.ID}">
     <a href="${addedItem.permalink}">${addedItem.post_title}</a>
     <button class="details-remove-button connection details-edit"
               data-field="${fieldId}" data-id="${val}"
               data-name="${name}"  
               style="display: inline-block">Remove</button>
       </li>`)
+    jQuery(`.temp-${fieldId}-${val}`).remove()
+  }).catch(err=>{
+    jQuery(`.temp-${fieldId}-${val}`).text(`Could not add ${name}`)
   })
 }
 
