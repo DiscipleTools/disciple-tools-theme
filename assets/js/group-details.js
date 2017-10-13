@@ -1,4 +1,4 @@
-/* global jQuery:false, wpApiSettings:false */
+/* global jQuery:false, wpApiGroupsSettings:false */
 
 jQuery(document).ready(function($) {
 
@@ -9,24 +9,31 @@ jQuery(document).ready(function($) {
     }
   });
 
+  let group = wpApiGroupsSettings.group
+
+
   /**
    * Typeahead functions
    */
 
   function add_typeahead_item(groupId, fieldId, val, name) {
+    let list = $(`.${fieldId}-list`)
+    list.append(`<li class="temp-${fieldId}-${val}">Adding new Item</li>`)
     API.add_item_to_field( 'group', groupId, { [fieldId]: val }).then(function (addedItem){
-      jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
+      list.append(`<li class="${addedItem.ID}">
       <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
       <button class="details-remove-button details-edit"
               data-field="locations" data-id="${val}"
               data-name="${name}"  
               style="display: inline-block">Remove</button>
       </li>`)
+      $(`.temp-${fieldId}-${val}`).remove()
+    }).catch(err=>{
+      $(`.temp-${fieldId}-${val}`).text(`Could not add: ${name}`)
     })
   }
 
 
-  let group = {}
   let groupId = $('#group-id').text()
   let editingAll = false
 
@@ -136,14 +143,14 @@ jQuery(document).ready(function($) {
       return obj.ID
     },
     prefetch: {
-      url: wpApiSettings.root + 'dt/v1/users/',
+      url: wpApiGroupsSettings.root + 'dt/v1/users/get_users/',
       prepare : API.typeaheadPrefetchPrepare,
       transform: function (data) {
         return API.filterTypeahead(data, group.assigned_to ? [{ID:group.assigned_to.ID}] : [])
       },
     },
     remote: {
-      url: wpApiSettings.root + 'dt/v1/users/?s=%QUERY',
+      url: wpApiGroupsSettings.root + 'dt/v1/users/get_users/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare,
       transform: function (data) {
@@ -163,6 +170,7 @@ jQuery(document).ready(function($) {
     },
     {
       name: 'users',
+      limit: 15,
       source: function (q, sync, async) {
         return API.defaultFilter(q, sync, async, users, group.assigned_to ? [{ID:group.assigned_to.ID}] : [])
       },
@@ -198,21 +206,20 @@ jQuery(document).ready(function($) {
       return obj.ID
     },
     prefetch: {
-      url: wpApiSettings.root + 'dt/v1/locations-compact/',
+      url: wpApiGroupsSettings.root + 'dt/v1/locations-compact/',
       prepare : API.typeaheadPrefetchPrepare,
       transform: function(data){
         return API.filterTypeahead(data, group.locations || [])
       },
     },
     remote: {
-      url: wpApiSettings.root + 'dt/v1/locations-compact/?s=%QUERY',
+      url: wpApiGroupsSettings.root + 'dt/v1/locations-compact/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare,
       transform: function(data){
         return API.filterTypeahead(data, group.locations || [])
       }
     },
-    initialize: false,
   });
 
   let locationsTypeahead = $('.locations .typeahead')
@@ -224,6 +231,7 @@ jQuery(document).ready(function($) {
     },
     {
       name: 'locations',
+      limit: 15,
       source: function (q, sync, async) {
         return API.defaultFilter(q, sync, async, locations, group.locations)
       },
@@ -291,7 +299,7 @@ jQuery(document).ready(function($) {
       return obj.ID
     },
     prefetch: {
-      url: wpApiSettings.root + 'dt-hooks/v1/contacts/compact',
+      url: wpApiGroupsSettings.root + 'dt-hooks/v1/contacts/compact',
       transform: function(data){
         loadMembersTypeahead()
         return API.filterTypeahead(data, group.members || [])
@@ -299,7 +307,7 @@ jQuery(document).ready(function($) {
       prepare : API.typeaheadPrefetchPrepare,
     },
     remote: {
-      url: wpApiSettings.root + 'dt-hooks/v1/contacts/compact/?s=%QUERY',
+      url: wpApiGroupsSettings.root + 'dt-hooks/v1/contacts/compact/?s=%QUERY',
       wildcard: '%QUERY',
       transform: function(data){
         return API.filterTypeahead(data, group.members || [])
@@ -321,6 +329,7 @@ jQuery(document).ready(function($) {
     },
     {
       name: 'members',
+      limit: 15,
       source: function (q, sync, async) {
         return API.defaultFilter(q, sync, async, members, group.members)
       },
@@ -338,25 +347,21 @@ jQuery(document).ready(function($) {
 
 
   /**
-   * Get the group fields from the api
+   * Setup group fields
    */
 
-  API.get_post( 'group', groupId).then(function (groupData) {
-    group = groupData
-    if (groupData.end_date){
-      endDatePicker.datepicker('setDate', groupData.end_date)
-    }
-    if (groupData.start_date){
-      startDatePicker.datepicker('setDate', groupData.start_date)
-    }
-    if (groupData.assigned_to){
-      $('.current-assigned').text(_.get(groupData, "assigned_to.display"))
-    }
-    locations.initialize()
-    members.initialize()
-    users.initialize()
-    fillOutChurchHealthMetrics()
-  })
+  if (group.end_date){
+    endDatePicker.datepicker('setDate', group.end_date)
+  }
+  if (group.start_date){
+    startDatePicker.datepicker('setDate', group.start_date)
+  }
+  if (group.assigned_to){
+    $('.current-assigned').text(_.get(group, "assigned_to.display"))
+  }
+  locations.initialize()
+  members.initialize()
+  users.initialize()
 
 
   /**
@@ -504,6 +509,7 @@ jQuery(document).ready(function($) {
         churchWheel.find('#group').css("opacity", ".1")
       }
   }
+  fillOutChurchHealthMetrics()
 
   $('.group-progress-button').on('click', function () {
     let fieldId = $(this).attr('id')

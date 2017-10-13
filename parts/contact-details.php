@@ -102,7 +102,7 @@
             <button data-open="close-contact-modal" class="button">Close</button>
             <button id="return-active" onclick="make_active( <?php echo get_the_ID() ?> )"
                     style="display: <?php echo esc_html( ($contact->fields["overall_status"]["key"] === "paused" || $contact->fields["overall_status"]["key"] === "closed") ? "" : "none" ); ?>"
-                    class="tiny button">
+                    class="button">
                 Return to Active
             </button>
             <button class="float-right" id="edit-details">
@@ -446,7 +446,7 @@
                 <div class="medium-4 cell">
                     <strong>Age:</strong>
                     <ul class="details-list">
-                        <li><?php echo esc_html( $contact->fields['age']['label'] ?? "No age set" ) ?></li>
+                        <li class="current-age"><?php echo esc_html( $contact->fields['age']['label'] ?? "No age set" ) ?></li>
                     </ul>
                     <select id="age" class="details-edit select-field">
                         <?php
@@ -465,7 +465,7 @@
                 <div class="medium-4 cell">
                     <strong>Gender:</strong>
                     <ul class="details-list">
-                        <li><?php echo esc_html( $contact->fields['gender']['label'] ?? "No gender set" ) ?></li>
+                        <li class="current-gender"><?php echo esc_html( $contact->fields['gender']['label'] ?? "No gender set" ) ?></li>
                     </ul>
                     <select id="gender" class="details-edit select-field">
                         <?php
@@ -483,7 +483,7 @@
                 <div class="medium-4 cell">
                     <strong>Source</strong>
                     <ul class="details-list">
-                        <li class="current-source">
+                        <li class="current-sources">
                             <?php
                             if (isset( $contact->fields['sources'][0] ) && isset( $custom_lists["sources"][$contact->fields['sources'][0]] )){
                                 echo esc_html( $custom_lists["sources"][$contact->fields['sources'][0]]["label"] );
