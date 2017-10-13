@@ -557,9 +557,8 @@ jQuery(document).ready(function($) {
       contactId,
       {[id]:val}
     ).then((a)=>{
-      if (id === "sources"){
-        $('.current-source').text(val)
-      } else if (id === "seeker_path"){
+      $(`.current-${id}`).text(_.get(a, `fields.${id}.label`) || val)
+      if (id === "seeker_path"){
         updateCriticalPath(a.fields.seeker_path.key)
       }
     }).catch(err=>{
