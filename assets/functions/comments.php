@@ -2,13 +2,15 @@
 // Comment Layout
 function disciple_tools_comments( $comment, $args, $depth ) {
 
+    // TODO: Investigate whether we have to override a WordPress global
+    // @codingStandardsIgnoreLine
     $GLOBALS['comment'] = $comment; ?>
 
     <li <?php comment_class( 'panel' ); ?>>
         <div class="media-object">
             <div class="float-right">
 
-                <a href="javascript:void(0)" onclick="jQuery('#commentform-hidden-<?php echo get_comment_ID(); ?>').toggle();"><i class="fi-comment"></i></a>
+                <a href="javascript:void(0)" onclick="jQuery('#commentform-hidden-<?php echo intval( get_comment_ID() ); ?>').toggle();"><i class="fi-comment"></i></a>
 
             </div>
 
@@ -19,7 +21,7 @@ function disciple_tools_comments( $comment, $args, $depth ) {
             <div class="media-object-section">
 
                 <div class="comment-text" ><?php comment_text()  ?></div>
-                <div class="commentform-hidden" id="commentform-hidden-<?php echo get_comment_ID(); ?>" style="display:none;">
+                <div class="commentform-hidden" id="commentform-hidden-<?php echo intval( get_comment_ID() ); ?>" style="display:none;">
                     <?php comment_form(
                         array_merge(
                             $args, array(
@@ -52,7 +54,7 @@ function disciple_tools_comments( $comment, $args, $depth ) {
 
                 <?php if ($comment->comment_approved == '0') : ?>
                     <div class="alert alert-info">
-                        <p><?php _e( 'Your comment is awaiting moderation.', 'disciple_tools' ) ?></p>
+                        <p><?php esc_html_e( 'Your comment is awaiting moderation.', 'disciple_tools' ) ?></p>
                     </div>
                 <?php endif; ?>
 

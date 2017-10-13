@@ -29,7 +29,7 @@
   <!-- TODO: remove these exclude-pattern elements, we want to test the entire
        codebase! -->
   <exclude-pattern>parts/contact-details.php</exclude-pattern>
-  <exclude-pattern>assets/*</exclude-pattern>
+  <exclude-pattern>assets/functions/class-tgm-plugin-activation.php</exclude-pattern>
   <exclude-pattern>functions.php</exclude-pattern>
   <exclude-pattern>single-contacts.php</exclude-pattern>
   <exclude-pattern>template-settings.php</exclude-pattern>

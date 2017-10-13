@@ -16,7 +16,7 @@ function dt_theme_enqueue_style( string $handle, string $rel_src, array $deps = 
 }
 
 
-function site_scripts() {
+function dt_site_scripts() {
     global $wp_styles; // Call global $wp_styles variable to add conditional wrapper around ie stylesheet the WordPress way
 
     wp_enqueue_style( 'foundation-css', 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' );
@@ -56,7 +56,7 @@ function site_scripts() {
     dt_theme_enqueue_style( 'site-css', 'build/css/style.min.css', array() );
 
     // Comment reply script for threaded comments
-    if ( is_singular() and comments_open() and (get_option( 'thread_comments' ) == 1)) {
+    if ( is_singular() && comments_open() && (get_option( 'thread_comments' ) == 1)) {
         wp_enqueue_script( 'comment-reply' );
     }
 
@@ -154,4 +154,4 @@ function site_scripts() {
     }
 
 }
-add_action( 'wp_enqueue_scripts', 'site_scripts', 999 );
+add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );
