@@ -562,12 +562,12 @@ jQuery(document).ready(function($) {
         $(`#church_${m}`).css("opacity", ".4")
       }
     })
-    if (!group["church_commitment"] || group["church_commitment"] === '0'){
+    if (!group["church_commitment"] || group["church_commitment"]["key"] === '0'){
       churchWheel.find('#group').css("opacity", "1")
-      $(`#church_commitment`).css("opacity", "1")
+      $(`#church_commitment`).css("opacity", ".4")
     } else {
       churchWheel.find('#group').css("opacity", ".1")
-      $(`#church_commitment`).css("opacity", ".4")
+      $(`#church_commitment`).css("opacity", "1")
     }
   }
   $('#church-svg-wrapper').on('load',function () {
