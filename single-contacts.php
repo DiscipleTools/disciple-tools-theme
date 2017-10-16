@@ -52,7 +52,8 @@ declare( strict_types=1 );
                     <div class="bordered-box">
                         <button class=" float-right" onclick="edit_connections()"><i class="fi-pencil"></i> Edit
                         </button>
-                        <span class="section-header">Groups</span>
+                        <h3 class="section-header">Connections</h3>
+                        <strong>Groups</strong>
                         <ul class="groups-list">
                             <?php
                             $ids = [];
@@ -87,7 +88,7 @@ declare( strict_types=1 );
                             ?>
 
 
-                            <span class="section-header"><?php echo esc_html( $connection_label ) ?></span>
+                            <strong><?php echo esc_html( $connection_label ) ?></strong>
                             <ul class="<?php echo esc_html( $connection ) ?>-list">
                                 <?php
                                 $ids = [];

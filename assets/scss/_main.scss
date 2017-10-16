@@ -230,10 +230,9 @@ img {
     Option buttons
  */
 .button.select-button {
-    border-radius: 30px;
+    border-radius: 5px;
     margin-right: 5px;
-
-
+    margin-bottom: 5px;
 }
 //unselected options
 .empty-select-button {
@@ -356,6 +355,11 @@ img {
 
 .connections-edit {
     display: none;
+}
+
+.display-fields ul {
+    list-style-type: none;
+    margin-left:0;
 }
 
 

@@ -14,6 +14,7 @@ function save_seeker_milestones(contactId, fieldKey, fieldValue){
   data[fieldKey] = fieldValue
   API.save_field_api('contact', contactId, data).then(()=>{
     field.removeClass("submitting-select-button selected-select-button")
+    field.blur()
     field.addClass( fieldValue === "no" ? "empty-select-button" : "selected-select-button")
   }).catch(err=>{
       console.log("error")
