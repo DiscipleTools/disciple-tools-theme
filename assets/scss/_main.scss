@@ -198,7 +198,6 @@ $bordered-box-padding: 1rem;
     border: 1px solid $light-gray;
     background-color: $white;
     padding: $bordered-box-padding;
-    margin-bottom: 1rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.25);
     border-radius: 10px;
 }
@@ -296,9 +295,9 @@ img {
     flex-direction:column;
     @media screen and (min-width : map-get($breakpoints, large )){
         position:fixed;
-        top:119px;
-        width:39%;
+        top:118px;
         bottom:0;
+        margin-left:-10px !important;
     }
 
     .section-selector {

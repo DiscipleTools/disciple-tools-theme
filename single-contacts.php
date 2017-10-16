@@ -28,25 +28,23 @@ declare( strict_types=1 );
     <!-- I'm not sure why this is indented -->
     <div id="content">
 
-        <div id="inner-content" class="grid-x grid-margin-x">
+        <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
 
-            <section class="hide-for-large small-12 cell">
-                <div class="bordered-box">
-                    <?php get_template_part( 'parts/contact', 'quick-buttons' ); ?>
 
-                    <div style="text-align: center">
-                        <a class="button small" href="#comment-activity-section" style="margin-bottom: 0">View
-                            Comments</a>
+            <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell grid-x grid-margin-x grid-margin-y" role="main" style="padding:0">
+
+                <section class="hide-for-large small-12 cell">
+                    <div class="bordered-box">
+                        <?php get_template_part( 'parts/contact', 'quick-buttons' ); ?>
+
+                        <div style="text-align: center">
+                            <a class="button small" href="#comment-activity-section" style="margin-bottom: 0">View
+                                Comments</a>
+                        </div>
                     </div>
-                </div>
-            </section>
-
-            <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell grid-x grid-margin-x" role="main" style="padding:0">
-
-                <section id="contact-details" class="medium-12 cell">
-                    <?php get_template_part( 'parts/contact', 'details' ); ?>
                 </section>
+                <?php get_template_part( 'parts/contact', 'details' ); ?>
 
                 <section id="relationships" class="xlarge-6 large-12 medium-6 cell">
                     <div class="bordered-box">
@@ -240,8 +238,9 @@ declare( strict_types=1 );
 
             </main> <!-- end #main -->
 
-            <aside class="xlarge-5 large-5 medium-12 small-12 cell">
-                <section class="bordered-box comment-activity-section" id="comment-activity-section">
+            <aside class="auto cell grid-x grid-margin-x">
+                <section class="xlarge-5 large-5 medium-12 small-12 cell bordered-box comment-activity-section"
+                         id="comment-activity-section">
                     <?php get_template_part( 'parts/contact', 'quick-buttons' ); ?>
                     <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
                 </section>
