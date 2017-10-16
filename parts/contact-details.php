@@ -43,7 +43,7 @@
         <p class="section-header">Dispatch Section</p>
         <div class="grid-x grid-margin-x">
             <div class="medium-6 cell">
-                <strong>Assigned To:
+                <div class="section-subheader">Assigned To:
                     <span class="current-assigned">
                         <?php
                         if ( isset( $contact->fields["assigned_to"] ) ){
@@ -53,13 +53,13 @@
                         }
                         ?>
                     </span>
-                </strong>
+                </div>
                 <div class="assigned_to">
                     <input class="typeahead" type="text" placeholder="Select a new user">
                 </div>
             </div>
             <div class="medium-6 cell">
-                <strong>Set Unassignable Reason:</strong>
+                <div class="section-subheader">Set Unassignable Reason:</div>
                 <select id="reason_unassignable" class="select-field">
                     <?php
                     foreach( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_value ) {
@@ -164,8 +164,8 @@
 
                 <!--Phone-->
                 <!--Email-->
-                <div class="medium-4 cell">
-                    <strong><?php echo esc_html( $channel_list["phone"]["label"] ) ?></strong>
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader"><?php echo esc_html( $channel_list["phone"]["label"] ) ?></div>
                     <button data-id="phone" class="details-edit add-button">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
                     </button>
@@ -200,7 +200,7 @@
                     }?>
                     </ul>
 
-                    <strong><?php echo esc_html( $channel_list["email"]["label"] ) ?></strong>
+                    <div class="section-subheader"><?php echo esc_html( $channel_list["email"]["label"] ) ?></div>
                     <button data-id="email" class="details-edit add-button">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
                     </button>
@@ -240,8 +240,8 @@
                 </div>
                 <!-- Locations -->
                 <!-- Assigned To -->
-                <div class="medium-4 cell">
-                    <strong>Locations</strong>
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">Locations</div>
                     <ul class="locations-list">
                         <?php
                         foreach($contact->fields["locations" ] ?? [] as $value){
@@ -264,9 +264,9 @@
                         <input class="typeahead" type="text" placeholder="Select a new location">
                     </div>
 
-                    <strong>Assigned to
+                    <div class="section-subheader">Assigned to
                         <span class="assigned_to details-edit">:
-                    </span> <span class="assigned_to details-edit current-assigned">:</span> </strong>
+                    </span> <span class="assigned_to details-edit current-assigned">:</span> </div>
                     <ul class="details-list assigned_to">
                         <li class="current-assigned">
                             <?php
@@ -283,8 +283,8 @@
                     </div>
                 </div>
                 <!-- Social Media -->
-                <div class="medium-4 cell">
-                    <strong><?php echo esc_html( 'Social Media' ) ?></strong>
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader"><?php echo esc_html( 'Social Media' ) ?></div>
                     <ul class='social details-list'>
                     <?php
                     foreach($contact->fields as $field_key => $values){
@@ -375,7 +375,7 @@
 
 
 
-                    <strong>People Groups</strong>
+                    <div class="section-subheader">People Groups</div>
                     <ul class="people_groups-list">
                         <?php
                         foreach($contact->fields["people_groups" ] ?? [] as $value){
@@ -402,8 +402,8 @@
 
 
             <div id="show-more-content" class="grid-x grid-margin-x show-content" style="display:none;">
-                <div class="medium-4 cell">
-                    <strong>Address</strong>
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">Address</div>
                     <button id="add-new-address" class="details-edit">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
                     </button>
@@ -441,8 +441,8 @@
                     </ul>
                 </div>
 
-                <div class="medium-4 cell">
-                    <strong>Age:</strong>
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">Age:</div>
                     <ul class="details-list">
                         <li class="current-age"><?php echo esc_html( $contact->fields['age']['label'] ?? "No age set" ) ?></li>
                     </ul>
@@ -460,8 +460,8 @@
                         ?>
                     </select>
                 </div>
-                <div class="medium-4 cell">
-                    <strong>Gender:</strong>
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">Gender:</div>
                     <ul class="details-list">
                         <li class="current-gender"><?php echo esc_html( $contact->fields['gender']['label'] ?? "No gender set" ) ?></li>
                     </ul>
@@ -478,8 +478,8 @@
                         ?>
                     </select>
                 </div>
-                <div class="medium-4 cell">
-                    <strong>Source</strong>
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">Source</div>
                     <ul class="details-list">
                         <li class="current-sources">
                             <?php
