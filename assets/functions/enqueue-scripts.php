@@ -152,6 +152,7 @@ function dt_site_scripts() {
             'groups_custom_fields_settings' => Disciple_Tools_Groups_Post_type::instance()->get_custom_fields_settings(),
             'template_directory_uri' => get_template_directory_uri(),
             'current_user_login' => wp_get_current_user()->user_login,
+            'current_user_roles' => wp_get_current_user()->roles,
             'current_post_type' => $post_type,
         ) );
     }
