@@ -300,6 +300,13 @@ img {
         width:39%;
         bottom:0;
     }
+
+    .section-selector {
+        text-align: center;
+        .section-button {
+            color: #366184;
+        }
+    }
 }
 
 #add-comment-button {
@@ -731,6 +738,13 @@ COMMENT FORM STYLES
 .nocomments {
     margin: 0 20px 1.1em;
 }
+
+/*********************
+DT comments and activity
+*********************/
+
+.comment-section
+
 
 /*********************
 SIDEBARS & ASIDES
