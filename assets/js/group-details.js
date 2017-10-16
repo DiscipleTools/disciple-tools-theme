@@ -562,12 +562,12 @@ jQuery(document).ready(function($) {
         $(`#church_${m}`).css("opacity", ".4")
       }
     })
-    if (!group["church_commitment"] || group["church_commitment"] === '0'){
+    if (!group["church_commitment"] || group["church_commitment"]["key"] === '0'){
       churchWheel.find('#group').css("opacity", "1")
-      $(`#church_commitment`).css("opacity", "1")
+      $(`#church_commitment`).css("opacity", ".4")
     } else {
       churchWheel.find('#group').css("opacity", ".1")
-      $(`#church_commitment`).css("opacity", ".4")
+      $(`#church_commitment`).css("opacity", "1")
     }
   }
   $('#church-svg-wrapper').on('load',function () {
@@ -656,7 +656,7 @@ jQuery(document).ready(function($) {
   $(document).on('click', '.details-status-button.invalid', function () {
     let id = $(this).data('id')
     let invalid = $(this).data('invalid')
-    API.update_contact_method_detail('contact', groupId, id, {"invalid":!invalid}).then(()=>{
+    API.update_contact_method_detail('group', groupId, id, {"invalid":!invalid}).then(()=>{
       $(this).data('invalid', !invalid)
       if (invalid){
         jQuery(`#${id}-invalid`).hide()
@@ -664,6 +664,20 @@ jQuery(document).ready(function($) {
         jQuery(`#${id}-invalid`).show()
       }
       jQuery(this).html(invalid? "Invalidate" : "Uninvalidate")
+    })
+  })
+
+  $('.text-field.details-edit').change(function () {
+    let id = $(this).attr('id')
+    let val = $(this).val()
+    API.save_field_api(
+      'group',
+      groupId,
+      {[id]:val}
+    ).then(()=>{
+      $(`.${id}`).text(val)
+    }).catch(err=>{
+      console.log(err)
     })
   })
 })

@@ -21,16 +21,16 @@ function dt_contact_details_status( $id, $verified, $invalid ){
 
     <div class="item-details-header-row">
         <i class="fi-torsos-all large"></i>
-        <span class="item-details-header"><?php the_title_attribute(); ?></span>
+        <span class="item-details-header details-list title" ><?php the_title_attribute(); ?></span>
+        <input id="title" class="text-field details-edit" value="<?php the_title_attribute(); ?>">
         <span id="group-status-label" class="button alert label details-list status">Status: <?php echo esc_html( $group['group_status']['label'] ?? '' ); ?></span>
-          <select id="group-status-select" class="status details-edit" style="width:fit-content; display:none">
+        <select id="group-status-select" class="status details-edit" style="width:fit-content; display:none">
             <?php foreach( $group_fields["group_status"]["default"] as $status_key => $status_label ) { ?>
-            <option value="<?php echo esc_attr( $status_key ); ?>"
-                <?php echo esc_attr( $status_key === $group['group_status']['key'] ? 'selected': '' ); ?>>
-                <?php echo esc_html( $status_label ) ?>
-            </option>
+                <option value="<?php echo esc_attr( $status_key ); ?>"
+                    <?php echo esc_attr( $status_key === $group['group_status']['key'] ? 'selected': '' ); ?>>
+                    <?php echo esc_html( $status_label ) ?>
+                </option>
             <?php } ?>
-
         </select>
 
         <button class=" float-right" id="edit-details">

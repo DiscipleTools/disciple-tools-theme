@@ -28,31 +28,30 @@ declare( strict_types=1 );
     <!-- I'm not sure why this is indented -->
     <div id="content">
 
-        <div id="inner-content" class="grid-x grid-margin-x">
+        <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
 
-            <section class="hide-for-large small-12 cell">
-                <div class="bordered-box">
-                    <?php get_template_part( 'parts/contact', 'quick-buttons' ); ?>
 
-                    <div style="text-align: center">
-                        <a class="button small" href="#comment-activity-section" style="margin-bottom: 0">View
-                            Comments</a>
+            <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell grid-x grid-margin-x grid-margin-y" role="main" style="padding:0">
+
+                <section class="hide-for-large small-12 cell">
+                    <div class="bordered-box">
+                        <?php get_template_part( 'parts/contact', 'quick-buttons' ); ?>
+
+                        <div style="text-align: center">
+                            <a class="button small" href="#comment-activity-section" style="margin-bottom: 0">View
+                                Comments</a>
+                        </div>
                     </div>
-                </div>
-            </section>
-
-            <main id="main" class="large-7 medium-12 small-12 cell grid-x grid-margin-x" role="main" style="padding:0">
-
-                <section id="contact-details" class="medium-12 cell">
-                    <?php get_template_part( 'parts/contact', 'details' ); ?>
                 </section>
+                <?php get_template_part( 'parts/contact', 'details' ); ?>
 
-                <section id="relationships" class="medium-6 cell">
+                <section id="relationships" class="xlarge-6 large-12 medium-6 cell">
                     <div class="bordered-box">
                         <button class=" float-right" onclick="edit_connections()"><i class="fi-pencil"></i> Edit
                         </button>
-                        <span class="section-header">Groups</span>
+                        <h3 class="section-header">Connections</h3>
+                        <div class="section-subheader">Groups</div>
                         <ul class="groups-list">
                             <?php
                             $ids = [];
@@ -87,7 +86,7 @@ declare( strict_types=1 );
                             ?>
 
 
-                            <span class="section-header"><?php echo esc_html( $connection_label ) ?></span>
+                            <div class="section-subheader"><?php echo esc_html( $connection_label ) ?></div>
                             <ul class="<?php echo esc_html( $connection ) ?>-list">
                                 <?php
                                 $ids = [];
@@ -121,10 +120,10 @@ declare( strict_types=1 );
                     </div>
                 </section>
 
-                <section id="faith" class="medium-6 cell">
+                <section id="faith" class="xlarge-6 large-12 medium-6 cell">
                     <div class="bordered-box">
                         <label class="section-header">Progress</label>
-                        <strong>Seeker Path</strong>
+                        <div class="section-subheader">Seeker Path</div>
 
                         <select class="select-field" id="seeker_path" style="margin-bottom: 0px">
                         <?php
@@ -146,7 +145,7 @@ declare( strict_types=1 );
                           <div id="seeker-progress" class="progress-meter" style="width: <?php echo esc_html( $percentage ) ?>%"></div>
                         </div>
 
-                        <strong>Faith Milestones</strong>
+                        <div class="section-subheader">Faith Milestones</div>
                         <div class="small button-group" style="display: inline-block">
 
                             <?php foreach ( $contact_fields as $field => $val ): ?>
@@ -165,12 +164,12 @@ declare( strict_types=1 );
                         </div>
 
                         <div class="baptism_date">
-                            <strong>Baptism Date</strong>
+                            <div class="section-subheader">Baptism Date</div>
 <!--                            <div class="baptism_date details-list">--><?php //echo esc_html( $group["baptism_date"] ?? "No baptism date" ); ?><!-- </div>-->
                             <div class="baptism_date"><input type="text" value="<?php echo esc_html( $contact->fields["baptism_date"] ?? '' )?>" id="baptism-date-picker"></div>
                         </div>
 
-                        <strong><?php echo esc_html( $contact_fields["bible_mailing"]["name"] ) ?></strong>
+                        <div class="section-subheader"><?php echo esc_html( $contact_fields["bible_mailing"]["name"] ) ?></div>
                         <select id="bible_mailing" class="select-field">
                             <?php
                             foreach( $contact_fields["bible_mailing"]["default"] as $key => $value ) {
@@ -239,8 +238,9 @@ declare( strict_types=1 );
 
             </main> <!-- end #main -->
 
-            <aside class="large-5 medium-12 small-12 cell">
-                <section class="bordered-box comment-activity-section" id="comment-activity-section">
+            <aside class="auto cell grid-x grid-margin-x">
+                <section class="xlarge-5 large-5 medium-12 small-12 cell bordered-box comment-activity-section"
+                         id="comment-activity-section">
                     <?php get_template_part( 'parts/contact', 'quick-buttons' ); ?>
                     <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
                 </section>

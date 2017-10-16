@@ -30,16 +30,16 @@ dt_print_breadcrumbs(
 
 <div id="content">
 
-    <div id="inner-content" class="grid-x grid-margin-x">
+    <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
         <span id="group-id" style="display: none"><?php echo get_the_ID()?></span>
 
-        <main id="main" class="large-7 medium-12 small-12 cell grid-x grid-margin-x" role="main" style="padding:0">
+        <main id="main" class="large-7 medium-12 small-12 cell grid-x grid-margin-x grid-margin-y" role="main" style="padding:0">
 
-            <section id="contact-details" class="medium-12 cell">
+            <section id="contact-details" class="small-12 cell">
                 <?php get_template_part( 'parts/group', 'details' ); ?>
             </section>
 
-            <section id="relationships" class="medium-6 cell">
+            <section id="relationships" class="xlarge-6 large-12 medium-6 cell">
                 <div class="bordered-box">
                     <span class="section-header">Members</span>
 <!--                    <button class=" float-right" id="members-edit"><i class="fi-pencil"></i> Edit</button>-->
@@ -67,7 +67,7 @@ dt_print_breadcrumbs(
                 </div>
             </section>
 
-            <section id="faith" class="medium-6 cell">
+            <section id="faith" class="xlarge-6 large-12 medium-6 cell">
                 <div class="bordered-box">
                     <label class="section-header" >Progress</label>
 
@@ -153,8 +153,8 @@ dt_print_breadcrumbs(
 
         </main> <!-- end #main -->
 
-        <aside class="large-5 medium-12 small-12 cell">
-            <section class="bordered-box comment-activity-section" id="comment-activity-section">
+        <aside class="auto cell grid-x grid-margin-x">
+            <section class="xlarge-5 large-5 medium-12 small-12 cell bordered-box comment-activity-section" id="comment-activity-section">
                 <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
             </section>
         </aside>

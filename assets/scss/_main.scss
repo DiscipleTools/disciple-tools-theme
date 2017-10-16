@@ -198,7 +198,6 @@ $bordered-box-padding: 1rem;
     border: 1px solid $light-gray;
     background-color: $white;
     padding: $bordered-box-padding;
-    margin-bottom: 1rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.25);
     border-radius: 10px;
 }
@@ -230,10 +229,9 @@ img {
     Option buttons
  */
 .button.select-button {
-    border-radius: 30px;
+    border-radius: 5px;
     margin-right: 5px;
-
-
+    margin-bottom: 5px;
 }
 //unselected options
 .empty-select-button {
@@ -297,9 +295,16 @@ img {
     flex-direction:column;
     @media screen and (min-width : map-get($breakpoints, large )){
         position:fixed;
-        top:119px;
-        width:39%;
+        top:118px;
         bottom:0;
+        margin-left:-10px !important;
+    }
+
+    .section-selector {
+        text-align: center;
+        .section-button {
+            color: #366184;
+        }
     }
 }
 
@@ -358,6 +363,11 @@ img {
     display: none;
 }
 
+.display-fields ul {
+    list-style-type: none;
+    margin-left:0;
+}
+
 
 
 .tabs-panel .outer-container {
@@ -397,7 +407,10 @@ Title for boxed section
     color: #3F729B;
     font-size: 1.5rem;
 }
-
+.section-subheader {
+    font-weight: 700;
+    font-size: 14px;
+}
 
 
 // Post meta
@@ -727,6 +740,13 @@ COMMENT FORM STYLES
 .nocomments {
     margin: 0 20px 1.1em;
 }
+
+/*********************
+DT comments and activity
+*********************/
+
+.comment-section
+
 
 /*********************
 SIDEBARS & ASIDES
@@ -1114,7 +1134,7 @@ div.dataTables_wrapper .datatable-first-line {
 
 #top-bar-menu {
     margin-top:0 !important;
-    padding-bottom: 0;
+    padding: 5px 20px;
 }
 .header {
     z-index: 10;

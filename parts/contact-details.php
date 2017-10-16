@@ -39,133 +39,136 @@
 
 
     <?php if (current_user_can( "assign_any_contact" )){?>
-    <section class="bordered-box">
-        <p class="section-header">Dispatch Section</p>
-        <div class="grid-x grid-margin-x">
-            <div class="medium-6 cell">
-                <strong>Assigned To:
-                    <span class="current-assigned">
+    <section class="small-12 cell">
+        <div class="bordered-box">
+            <p class="section-header">Dispatch Section</p>
+            <div class="grid-x grid-margin-x">
+                <div class="medium-6 cell">
+                    <div class="section-subheader">Assigned To:
+                        <span class="current-assigned">
+                            <?php
+                            if ( isset( $contact->fields["assigned_to"] ) ){
+                                echo esc_html( $contact->fields["assigned_to"]["display"] );
+                            } else {
+                                echo "Nobody";
+                            }
+                            ?>
+                        </span>
+                    </div>
+                    <div class="assigned_to">
+                        <input class="typeahead" type="text" placeholder="Select a new user">
+                    </div>
+                </div>
+                <div class="medium-6 cell">
+                    <div class="section-subheader">Set Unassignable Reason:</div>
+                    <select id="reason_unassignable" class="select-field">
                         <?php
-                        if ( isset( $contact->fields["assigned_to"] ) ){
-                            echo esc_html( $contact->fields["assigned_to"]["display"] );
-                        } else {
-                            echo "Nobody";
+                        foreach( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_value ) {
+                            if ( isset( $contact->fields["reason_unassignable"] ) &&
+                                $contact->fields["reason_unassignable"]["key"] === $reason_key ){
+                                echo '<option value="'. esc_html( $reason_key ) . '" selected>' . esc_html( $reason_value ) . '</option>';
+                            } else {
+                                echo '<option value="'. esc_html( $reason_key ) . '">' . esc_html( $reason_value ). '</option>';
+                            }
                         }
                         ?>
-                    </span>
-                </strong>
-                <div class="assigned_to">
-                    <input class="typeahead" type="text" placeholder="Select a new user">
+                    </select>
                 </div>
-            </div>
-            <div class="medium-6 cell">
-                <strong>Set Unassignable Reason:</strong>
-                <select id="reason_unassignable" class="select-field">
-                    <?php
-                    foreach( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_value ) {
-                        if ( isset( $contact->fields["reason_unassignable"] ) &&
-                            $contact->fields["reason_unassignable"]["key"] === $reason_key ){
-                            echo '<option value="'. esc_html( $reason_key ) . '" selected>' . esc_html( $reason_value ) . '</option>';
-                        } else {
-                            echo '<option value="'. esc_html( $reason_key ) . '">' . esc_html( $reason_value ). '</option>';
-                        }
-                    }
-                    ?>
-                </select>
             </div>
         </div>
     </section>
     <?php } ?>
 
-    <section class="bordered-box">
-        <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
+    <section class="cell">
+        <div class="bordered-box">
+            <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
 
-        <div class="item-details-header-row">
-            <i class="fi-torso large"></i>
-            <span class="item-details-header details-list title" ><?php the_title_attribute(); ?></span>
-            <input id="title" class="text-field details-edit" value="<?php the_title_attribute(); ?>">
-            <span class="button alert label">
-                Status: <span id="overall-status"><?php echo esc_html( $contact->fields["overall_status"]["label"] ) ?></span>
-                <span id="reason">
+            <div class="item-details-header-row">
+                <i class="fi-torso large"></i>
+                <span class="item-details-header details-list title" ><?php the_title_attribute(); ?></span>
+                <input id="title" class="text-field details-edit" value="<?php the_title_attribute(); ?>">
+                <span class="button alert label">
+                    Status: <span id="overall-status"><?php echo esc_html( $contact->fields["overall_status"]["label"] ) ?></span>
+                    <span id="reason">
+                        <?php
+                        if ( $contact->fields["overall_status"]["key"] === "paused" &&
+                            isset( $contact->fields["reason_paused"] )){
+                            echo '(' . esc_html( $contact->fields["reason_paused"]["label"] ) . ')';
+                        } else if ( $contact->fields["overall_status"]["key"] === "closed" &&
+                            isset( $contact->fields["reason_closed"] )){
+                            echo '(' . esc_html( $contact->fields["reason_closed"]["label"] ) . ')';
+                        }
+                        ?>
+                    </span>
+                </span>
+                <button data-open="pause-contact-modal" class="button">Pause</button>
+                <button data-open="close-contact-modal" class="button">Close</button>
+                <button id="return-active" onclick="make_active( <?php echo get_the_ID() ?> )"
+                        style="display: <?php echo esc_html( ($contact->fields["overall_status"]["key"] === "paused" || $contact->fields["overall_status"]["key"] === "closed") ? "" : "none" ); ?>"
+                        class="button">
+                    Return to Active
+                </button>
+                <button class="float-right" id="edit-details">
+                    <i class="fi-pencil"></i>
+                    <span id="edit-button-label">Edit</span>
+                </button>
+            </div>
+
+            <div class="reveal" id="close-contact-modal" data-reveal>
+                <h1>Close Contact</h1>
+                <p class="lead">Why do you want to close this contact?</p>
+
+                <select id="reason-closed-options">
                     <?php
-                    if ( $contact->fields["overall_status"]["key"] === "paused" &&
-                        isset( $contact->fields["reason_paused"] )){
-                        echo '(' . esc_html( $contact->fields["reason_paused"]["label"] ) . ')';
-                    } else if ( $contact->fields["overall_status"]["key"] === "closed" &&
-                        isset( $contact->fields["reason_closed"] )){
-                        echo '(' . esc_html( $contact->fields["reason_closed"]["label"] ) . ')';
+                    foreach( $contact_fields["reason_closed"]["default"] as $reason_key => $reason_label ) {
+                    ?>
+                        <option value="<?php echo esc_attr( $reason_key )?>"> <?php echo esc_html( $reason_label )?></option>
+                    <?php
                     }
                     ?>
-                </span>
-            </span>
-            <button data-open="pause-contact-modal" class="button">Pause</button>
-            <button data-open="close-contact-modal" class="button">Close</button>
-            <button id="return-active" onclick="make_active( <?php echo get_the_ID() ?> )"
-                    style="display: <?php echo esc_html( ($contact->fields["overall_status"]["key"] === "paused" || $contact->fields["overall_status"]["key"] === "closed") ? "" : "none" ); ?>"
-                    class="button">
-                Return to Active
-            </button>
-            <button class="float-right" id="edit-details">
-                <i class="fi-pencil"></i>
-                <span id="edit-button-label">Edit</span>
-            </button>
-        </div>
+                </select>
+                <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                    Cancel
+                </button>
+                <button class="button" type="button" id="confirm-close" onclick="close_contact(<?php echo get_the_ID()?>)">
+                    Confirm
+                </button>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
-        <div class="reveal" id="close-contact-modal" data-reveal>
-            <h1>Close Contact</h1>
-            <p class="lead">Why do you want to close this contact?</p>
+            <div class="reveal" id="pause-contact-modal" data-reveal>
+                <h1>Pause Contact</h1>
+                <p class="lead">Why do you want to pause this contact?</p>
 
-            <select id="reason-closed-options">
-                <?php
-                foreach( $contact_fields["reason_closed"]["default"] as $reason_key => $reason_label ) {
-                ?>
-                    <option value="<?php echo esc_attr( $reason_key )?>"> <?php echo esc_html( $reason_label )?></option>
-                <?php
-                }
-                ?>
-            </select>
-            <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                Cancel
-            </button>
-            <button class="button" type="button" id="confirm-close" onclick="close_contact(<?php echo get_the_ID()?>)">
-                Confirm
-            </button>
-            <button class="close-button" data-close aria-label="Close modal" type="button">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+                <select id="reason-paused-options">
+                    <?php
+                    foreach( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
+                    ?>
+                        <option value="<?php echo esc_attr( $reason_key )?>"> <?php echo esc_html( $reason_label )?></option>
+                    <?php
+                    }
+                    ?>
+                </select>
+                <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                    Cancel
+                </button>
+                <button class="button" type="button" id="confirm-pause" onclick="pause_contact(<?php echo get_the_ID()?>)">
+                    Confirm
+                </button>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
-        <div class="reveal" id="pause-contact-modal" data-reveal>
-            <h1>Pause Contact</h1>
-            <p class="lead">Why do you want to pause this contact?</p>
-
-            <select id="reason-paused-options">
-                <?php
-                foreach( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
-                ?>
-                    <option value="<?php echo esc_attr( $reason_key )?>"> <?php echo esc_html( $reason_label )?></option>
-                <?php
-                }
-                ?>
-            </select>
-            <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                Cancel
-            </button>
-            <button class="button" type="button" id="confirm-pause" onclick="pause_contact(<?php echo get_the_ID()?>)">
-                Confirm
-            </button>
-            <button class="close-button" data-close aria-label="Close modal" type="button">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-
-        <div class="display-fields">
+            <div class="display-fields">
             <div class="grid-x grid-margin-x">
 
                 <!--Phone-->
                 <!--Email-->
-                <div class="medium-4 cell">
-                    <strong><?php echo esc_html( $channel_list["phone"]["label"] ) ?></strong>
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader"><?php echo esc_html( $channel_list["phone"]["label"] ) ?></div>
                     <button data-id="phone" class="details-edit add-button">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
                     </button>
@@ -200,7 +203,7 @@
                     }?>
                     </ul>
 
-                    <strong><?php echo esc_html( $channel_list["email"]["label"] ) ?></strong>
+                    <div class="section-subheader"><?php echo esc_html( $channel_list["email"]["label"] ) ?></div>
                     <button data-id="email" class="details-edit add-button">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
                     </button>
@@ -240,8 +243,8 @@
                 </div>
                 <!-- Locations -->
                 <!-- Assigned To -->
-                <div class="medium-4 cell">
-                    <strong>Locations</strong>
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">Locations</div>
                     <ul class="locations-list">
                         <?php
                         foreach($contact->fields["locations" ] ?? [] as $value){
@@ -264,9 +267,9 @@
                         <input class="typeahead" type="text" placeholder="Select a new location">
                     </div>
 
-                    <strong>Assigned to
+                    <div class="section-subheader">Assigned to
                         <span class="assigned_to details-edit">:
-                    </span> <span class="assigned_to details-edit current-assigned">:</span> </strong>
+                    </span> <span class="assigned_to details-edit current-assigned">:</span> </div>
                     <ul class="details-list assigned_to">
                         <li class="current-assigned">
                             <?php
@@ -283,8 +286,8 @@
                     </div>
                 </div>
                 <!-- Social Media -->
-                <div class="medium-4 cell">
-                    <strong><?php echo esc_html( 'Social Media' ) ?></strong>
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader"><?php echo esc_html( 'Social Media' ) ?></div>
                     <ul class='social details-list'>
                     <?php
                     foreach($contact->fields as $field_key => $values){
@@ -375,7 +378,7 @@
 
 
 
-                    <strong>People Groups</strong>
+                    <div class="section-subheader">People Groups</div>
                     <ul class="people_groups-list">
                         <?php
                         foreach($contact->fields["people_groups" ] ?? [] as $value){
@@ -402,8 +405,8 @@
 
 
             <div id="show-more-content" class="grid-x grid-margin-x show-content" style="display:none;">
-                <div class="medium-4 cell">
-                    <strong>Address</strong>
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">Address</div>
                     <button id="add-new-address" class="details-edit">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
                     </button>
@@ -441,8 +444,8 @@
                     </ul>
                 </div>
 
-                <div class="medium-4 cell">
-                    <strong>Age:</strong>
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">Age:</div>
                     <ul class="details-list">
                         <li class="current-age"><?php echo esc_html( $contact->fields['age']['label'] ?? "No age set" ) ?></li>
                     </ul>
@@ -460,8 +463,8 @@
                         ?>
                     </select>
                 </div>
-                <div class="medium-4 cell">
-                    <strong>Gender:</strong>
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">Gender:</div>
                     <ul class="details-list">
                         <li class="current-gender"><?php echo esc_html( $contact->fields['gender']['label'] ?? "No gender set" ) ?></li>
                     </ul>
@@ -478,8 +481,8 @@
                         ?>
                     </select>
                 </div>
-                <div class="medium-4 cell">
-                    <strong>Source</strong>
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">Source</div>
                     <ul class="details-list">
                         <li class="current-sources">
                             <?php
@@ -514,7 +517,8 @@
                 </button>
             </div>
         </div>
-    </section> <!-- end article -->
+        </div>
+    </section>
 
 <?php
 })();
