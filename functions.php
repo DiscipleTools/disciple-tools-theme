@@ -49,6 +49,13 @@ if (version_compare( phpversion(), '7.0', '<' )) {
  * Globals
  */
 
+/* TODO: I don't think this is necessary, and it may break some things. We
+ * should investigate and possibly remove it. In the meantime, ignore the PHPCS
+ * errors.
+ */
+
+// @codingStandardsIgnoreStart
+
 if ( !defined( 'WP_CONTENT_URL' ) ) {
     define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' );
 }
@@ -72,6 +79,8 @@ if ( !defined( 'WP_LANG_DIR' ) ) {
 if ( !defined( 'DISCIPLE_TOOLS_DIR' ) ) {
     define( 'DISCIPLE_TOOLS_DIR', WP_PLUGIN_DIR . '/disciple-tools' );
 }
+
+// @codingStandardsIgnoreEnd
 
 // Removes the admin bar
 add_filter( 'show_admin_bar', '__return_false' );

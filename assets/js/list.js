@@ -300,6 +300,7 @@
     const $div = $("<div>");
     const ccfs = wpApiSettings.contacts_custom_fields_settings;
     const gcfs = wpApiSettings.groups_custom_fields_settings;
+    const is_dispatcher = _.includes(wpApiSettings.current_user_roles, "dispatcher");
     Object.keys(counts).sort().forEach(function(key) {
       let humanText;
       if (wpApiSettings.current_post_type === 'contacts' && (filterType === 'seeker_path' || filterType === 'overall_status')) {
@@ -311,6 +312,15 @@
       } else {
         humanText = key;
       }
+      const checkbox = $("<input>")
+        .attr("type", "checkbox")
+        .on("change", function() {
+          updateFilterFunctions();
+          dataTable.draw();
+        });
+      if (is_dispatcher && filterType === "overall_status" && key === "unassigned") {
+        checkbox.attr("checked", true);
+      }
       $div.append(
         $("<div>").append(
           $("<label>")
@@ -318,14 +328,7 @@
             .addClass("js-filter-checkbox-label")
             .data("filter-type", filterType)
             .data("filter-value", key)
-            .append(
-              $("<input>")
-              .attr("type", "checkbox")
-              .on("change", function() {
-                updateFilterFunctions();
-                dataTable.draw();
-              })
-            )
+            .append(checkbox)
             .append(document.createTextNode(humanText))
             .append($("<span>")
               .css("float", "right")
@@ -334,6 +337,9 @@
         )
       );
     });
+    if (is_dispatcher) {
+      $(".js-list-filter[data-filter='overall_status']").removeClass("filter--closed");
+    }
     if ($.isEmptyObject(counts)) {
       $div.append(
           document.createTextNode(wpApiSettings.txt_no_filters)

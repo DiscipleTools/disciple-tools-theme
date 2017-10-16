@@ -32,7 +32,7 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
 
     <!-- Breadcrumb Navigation-->
     <div data-sticky-container class="hide-for-small-only">
-        <nav aria-label="<?php _e( "You are here:" ); ?>" role="navigation"
+        <nav aria-label="<?php esc_attr_e( "You are here:" ); ?>" role="navigation"
              data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
              class="second-bar">
 
@@ -44,7 +44,7 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
                             <li><a href="<?php echo esc_url( $link[0] ); ?>"><?php echo esc_html( $link[1] ); ?></a></li>
                         <?php endforeach; ?>
                         <li>
-                            <span class="show-for-sr"><?php _e( "Current:" ); ?> </span> <?php echo esc_html( $current ); ?>
+                            <span class="show-for-sr"><?php esc_html_e( "Current:" ); ?> </span> <?php echo esc_html( $current ); ?>
                         </li>
                     </ul>
                 </div>
@@ -52,8 +52,8 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
                     <div class="cell small-4 align-right grid-x">
                         <div class="cell shrink ">
                             <button data-open="share-contact-modal" class="center-items">
-                                <img src="<?php echo get_template_directory_uri() . "/assets/images/share.svg" ?>">
-                                <span style="margin:0 10px 0 10px"><?php _e( "Share" ); ?></span>
+                                <img src="<?php echo esc_url( get_template_directory_uri() . "/assets/images/share.svg" ) ?>">
+                                <span style="margin:0 10px 0 10px"><?php esc_html_e( "Share" ); ?></span>
                             </button>
                         </div>
                     </div>
@@ -69,8 +69,8 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
             <div class="cell shrink">
                 <button  id="nav-view-comments" class="center-items">
                     <a href="#comment-activity-section" class="center-items" style="color:black">
-                        <img src="<?php echo get_template_directory_uri() . "/assets/images/view-comments.svg" ?>">
-                        <span style="margin:0 10px 0 10px"><?php _e( "Comments" ); ?></span>
+                        <img src="<?php echo esc_url( get_template_directory_uri() . "/assets/images/view-comments.svg" ); ?>">
+                        <span style="margin:0 10px 0 10px"><?php esc_html_e( "Comments" ); ?></span>
                     </a>
                 </button>
             </div>
@@ -78,8 +78,8 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
         <?php if ( $share_button ): ?>
             <div class="cell shrink">
                 <button data-open="share-contact-modal" class="center-items">
-                    <img src="<?php echo get_template_directory_uri() . "/assets/images/share.svg" ?>">
-                    <span style="margin:0 10px 0 10px"><?php _e( "Share" ); ?></span>
+                    <img src="<?php echo esc_url( get_template_directory_uri() . "/assets/images/share.svg" ) ?>">
+                    <span style="margin:0 10px 0 10px"><?php esc_html_e( "Share" ); ?></span>
                 </button>
             </div>
         </div>
