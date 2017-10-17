@@ -7,7 +7,6 @@
     $current_user = wp_get_current_user();
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
     $custom_lists = dt_get_option( 'dt_site_custom_lists' );
-    $custom_lists['sources'];
 
     function dt_contact_details_status( $id, $verified, $invalid ){
         ?>
@@ -482,14 +481,14 @@
                     </select>
                 </div>
                 <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">Source</div>
+                    <div class="section-subheader"><?php esc_html_e( "Source" ); ?></div>
                     <ul class="details-list">
                         <li class="current-sources">
                             <?php
-                            if (isset( $contact->fields['sources'][0] ) && isset( $custom_lists["sources"][$contact->fields['sources'][0]] )){
-                                echo esc_html( $custom_lists["sources"][$contact->fields['sources'][0]]["label"] );
+                            if (isset( $contact->fields["sources"] )) {
+                                echo esc_html( $contact->fields["sources"]["label"] );
                             } else {
-                                echo "No source set";
+                                esc_html_e( "No source set" );
                             }
                             ?>
                         </li>
@@ -498,8 +497,8 @@
                         <option value=""></option>
                         <?php
                         foreach( $custom_lists["sources"] as $sources_key => $sources_value ) {
-                            if ( isset( $contact->fields["sources"][0] ) &&
-                                $contact->fields["sources"][0] === $sources_key){
+                            if ( isset( $contact->fields["sources"] ) &&
+                                $contact->fields["sources"]["key"] === $sources_key){
                                 echo '<option value="'. esc_html( $sources_key ) . '" selected>' . esc_html( $sources_value["label"] ) . '</option>';
                             } else {
                                 echo '<option value="'. esc_html( $sources_key ) . '">' . esc_html( $sources_value["label"] ). '</option>';
