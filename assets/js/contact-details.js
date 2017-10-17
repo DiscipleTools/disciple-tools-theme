@@ -504,7 +504,7 @@ jQuery(document).ready(function($) {
       let label = _.get(contactsDetailsWpApiSettings, `channels[${channel_type}].label`) || channel_type
       $('.social.details-edit').append(
         `<li class="${newId}">
-          <span>${label}</span>
+          <span>${label}:</span>
           <input id="${newId}"
                  value="${text}" style="display: inline-block"   
                  class="details-edit social-input" >

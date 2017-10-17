@@ -303,10 +303,10 @@
                                     <?php
                                     if ( $values && sizeof( $values ) > 0 ) {
                                         ?>
-                                        <span><?php echo esc_html( $channel_list[$channel]["label"] )?></span>
+                                        <span><?php echo esc_html( $channel_list[$channel]["label"] )?>:</span>
                                     <?php } ?>
 
-                                    <span class='social-text'><?php esc_html( $value["value"] ) ?></span>
+                                    <span class='social-text'><?php echo esc_html( $value["value"] ) ?></span>
                                     <?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
                                     </li>
                                     <?php
