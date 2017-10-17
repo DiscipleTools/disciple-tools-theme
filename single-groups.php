@@ -185,11 +185,9 @@ dt_print_breadcrumbs(
         <label>Share this group with the following user:
             <select class="share-with-select" id="share-with">
                 <option value="0"></option>
-                <?php
-                foreach( $users as $user ){
-                    echo '<option value="' . esc_attr( $user['ID'] ). '">' . esc_html( $user['name'] ) . '</option>';
-                }
-                ?>
+                <?php foreach ( $users as $user ) { ?>
+                    <option value="<?php echo esc_html( $user["ID"] ) ?>"><?php echo esc_html( $user['name'] ) ?></option>
+                <?php } ?>
             </select>
         </label>
     </p>

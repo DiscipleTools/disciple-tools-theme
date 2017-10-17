@@ -261,8 +261,8 @@ declare( strict_types=1 );
             <?php
             foreach ( $shared_with as $user ) { ?>
                 <li class="<?php echo esc_html( $user['user_id'] ) ?>"> <?php echo esc_html( $user['display_name'] )?>
-                    <button class="details-remove-button"
-                            onclick="remove_shared(<?php echo esc_html( get_the_ID() ) ?>,  <?php echo esc_html( $user['user_id'] ) ?>)">
+                    <button class="details-remove-button share"
+                            data-id="<?php echo esc_attr( $user['user_id'] ); ?>">
                         Unshare
                     </button>
                 </li>
@@ -273,13 +273,9 @@ declare( strict_types=1 );
             <label>Share this contact with the following user:
                 <select class="share-with-select" id="share-with">
                     <option value="0"></option>
-                    <?php
-                    foreach ( $users as $user ) {
-                        ?>
-                        <option value="<?php esc_html( $user["ID"] ) ?>"><?php echo esc_html( $user['name'] ) ?></option>
-                        <?php
-                    }
-                    ?>
+                    <?php foreach ( $users as $user ) { ?>
+                        <option value="<?php echo esc_html( $user["ID"] ) ?>"><?php echo esc_html( $user['name'] ) ?></option>
+                    <?php } ?>
                 </select>
             </label>
         </p>
@@ -290,8 +286,7 @@ declare( strict_types=1 );
                 Cancel
             </button>
             <button class="button" type="button"
-                    id="confirm-pause"
-                    onclick="add_shared(<?php echo esc_html( get_the_ID() ); ?>, 'share-with')">
+                    id="add-shared-button">
                 Share
             </button>
             <button class="close-button" data-close aria-label="Close modal" type="button">
