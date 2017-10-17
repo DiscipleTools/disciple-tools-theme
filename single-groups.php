@@ -68,7 +68,7 @@ dt_print_breadcrumbs(
             </section>
 
             <section id="faith" class="xlarge-6 large-12 medium-6 cell">
-                <div class="bordered-box">
+                <div class="bordered-box js-progress-bordered-box half-opacity">
                     <label class="section-header" >Progress</label>
 
                     <div style="display:flex;flex-wrap:wrap;margin-top:10px">
