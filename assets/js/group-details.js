@@ -22,7 +22,7 @@ jQuery(document).ready(function($) {
       <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
       <button class="details-remove-button details-edit"
               data-field="locations" data-id="${val}"
-              data-name="${name}"  
+              data-name="${name}"
               style="display: inline-block">Remove</button>
       </li>`)
       $(`.temp-${fieldId}-${val}`).remove()
@@ -517,12 +517,12 @@ jQuery(document).ready(function($) {
   <div class="activity-block">
     <div><span><strong><%- name %></strong></span> <span class="comment-date"> <%- date %> </span></div>
     <div class="activity-text">
-    <% _.forEach(activity, function(a){ 
+    <% _.forEach(activity, function(a){
         if (a.comment){ %>
             <p dir="auto" class="comment-bubble"> <%- a.text %> </p>
-      <% } else { %> 
+      <% } else { %>
             <p class="activity-bubble">  <%- a.text %> </p>
-    <%  } 
+    <%  }
     }); %>
     </div>
   </div>`
@@ -569,10 +569,15 @@ jQuery(document).ready(function($) {
       churchWheel.find('#group').css("opacity", ".1")
       $(`#church_commitment`).css("opacity", "1")
     }
+
+    $(".js-progress-bordered-box").removeClass("half-opacity")
   }
-  $('#church-svg-wrapper').on('load',function () {
+
+  if ($('#church-svg-wrapper')[0].getSVGDocument() == null) {
+    $('#church-svg-wrapper').on('load', function() { fillOutChurchHealthMetrics() })
+  } else {
     fillOutChurchHealthMetrics()
-  })
+  }
 
   $('.group-progress-button').on('click', function () {
     let fieldId = $(this).attr('id')
