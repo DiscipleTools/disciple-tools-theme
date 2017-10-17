@@ -89,6 +89,9 @@ add_filter( 'show_admin_bar', '__return_false' );
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * Class Disciple_Tools_Theme
+ */
 class Disciple_Tools_Theme {
 
     /**
@@ -155,7 +158,7 @@ class Disciple_Tools_Theme {
                 'settings' => 'template-settings.php',
                 'notifications' => 'template-notifications.php',
                 'about' => 'template-about.php',
-                'workers' => 'template-workers.php',
+                'team' => 'template-team.php',
                 'contacts/new' => 'template-contacts-new.php',
                 'groups/new' => 'template-groups-new.php',
             );

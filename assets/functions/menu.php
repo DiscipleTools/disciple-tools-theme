@@ -63,7 +63,16 @@ function disciple_tools_top_nav_mobile() {
 }
 
 // Big thanks to Brett Mason (https://github.com/brettsmason) for the awesome walker
+
+/**
+ * Class DT_Topbar_Menu_Walker
+ */
 class DT_Topbar_Menu_Walker extends Walker_Nav_Menu {
+    /**
+     * @param string $output
+     * @param int    $depth
+     * @param array  $args
+     */
     function start_lvl( &$output, $depth = 0, $args = array() ) {
         $indent = str_repeat( "\t", $depth );
         $output .= "\n$indent<ul class=\"menu\">\n";
@@ -87,7 +96,9 @@ function disciple_tools_off_canvas_nav() {
             <li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>">Contacts</a></li>
             <li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>">Groups</a></li>
             <li><a href="<?php echo esc_url( home_url( '/locations/' ) ); ?>">Locations</a></li>
-            <li><a href="<?php echo esc_url( home_url( '/workers/' ) ); ?>">Workers</a></li>
+            <?php if(dt_get_user_team_members_list( get_current_user_id() )) : ?>
+            <li><a href="<?php echo esc_url( home_url( '/team/' ) ); ?>">Team</a></li>
+            <?php endif; ?>
             <li>&nbsp;</li>
             <li><a href="<?php echo esc_url( home_url( '/metrics/' ) ); ?>">Metrics</a></li>
             <li><a href="<?php echo esc_url( home_url( '/notifications/' ) ); ?>">Notifications</a></li>
