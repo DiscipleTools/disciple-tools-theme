@@ -531,7 +531,7 @@ jQuery(document).ready(function($) {
           <span>${label}</span>
           <span class="social-text">${text}</span>
           <img id="${newId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
-          <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
+          <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/broken.svg"/>
         </li>`)
       inputForNewValue.val('')
     })
@@ -630,7 +630,7 @@ jQuery(document).ready(function($) {
         $('.details-list.address').append(`
             <li class="${newAddressId}">${input.val()}
               <img id="${newAddressId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
-              <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
+              <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/broken.svg"/>
             </li>
         `)
         $('.new-address').append(`
@@ -675,7 +675,7 @@ jQuery(document).ready(function($) {
             <li class="${newId}">
               ${val}
               <img id="${newId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
-              <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
+              <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/broken.svg"/>
             </li>
         `)
         $(`.new-${field}`).append(`

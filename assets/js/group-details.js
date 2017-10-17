@@ -315,7 +315,7 @@ jQuery(document).ready(function($) {
         $('.details-list.address').append(`
             <li class="${newAddressId}">${input.val()}
               <img id="${newAddressId}-verified" class="details-status" style="display:none" src="${wpApiGroupsSettings.template_dir}/assets/images/verified.svg"/>
-              <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${wpApiGroupsSettings.template_dir}/assets/images/verified.svg"/>
+              <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${wpApiGroupsSettings.template_dir}/assets/images/broken.svg"/>
             </li>
         `)
         $('.new-address').append(`
