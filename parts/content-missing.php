@@ -15,7 +15,7 @@
         <footer class="article-footer">
         </footer>
 
-    <?php else: ?>
+    <?php else : ?>
 
         <header class="article-header">
             <h1><?php esc_html_e( 'Oops, Post Not Found!', 'disciple_tools' ); ?></h1>

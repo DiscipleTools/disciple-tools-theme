@@ -120,7 +120,7 @@ class Disciple_Tools_Theme {
      * @static
      * @return Disciple_Tools_Theme instance
      */
-    public static function instance () {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -132,7 +132,7 @@ class Disciple_Tools_Theme {
      * @access  public
      * @since   0.1
      */
-    public function __construct () {
+    public function __construct() {
 
         // Foundations theme configurations
         require_once( get_template_directory().'/assets/functions/theme-support.php' ); // Theme support options
@@ -173,12 +173,12 @@ class Disciple_Tools_Theme {
             );
             $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
 
-            if ( isset( $template_for_url[$url_path] ) ) {
-                $template_filename = locate_template( $template_for_url[$url_path], true );
+            if ( isset( $template_for_url[ $url_path ] ) ) {
+                $template_filename = locate_template( $template_for_url[ $url_path ], true );
                 if ( $template_filename ) {
                     exit(); // just exit if template was found and loaded
                 } else {
-                    throw new Error( "Expected to find template " . $template_for_url[$url_path] );
+                    throw new Error( "Expected to find template " . $template_for_url[ $url_path ] );
                 }
             }
 

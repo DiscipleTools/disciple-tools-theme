@@ -8,7 +8,7 @@ declare(strict_types=1);
 global $post;
 
 $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
-if( !Disciple_Tools_Contacts::can_view( 'groups', get_the_ID() )){
+if ( !Disciple_Tools_Contacts::can_view( 'groups', get_the_ID() )){
     return wp_redirect( "not-found" );
 }
 $shared_with = Disciple_Tools_Contacts::get_shared_with_on_contact( get_the_id() );
@@ -46,7 +46,7 @@ dt_print_breadcrumbs(
                     <ul class="members-list">
                         <?php
                         $ids = [];
-                        foreach( $group["members"] as $member){
+                        foreach ( $group["members"] as $member){
                             $ids[] = $member->ID;
                             ?>
                             <li class="<?php echo esc_attr( $member->ID ); ?>">
@@ -171,7 +171,7 @@ dt_print_breadcrumbs(
 
     <ul id="shared-with-list">
         <?php
-        foreach( $shared_with as $user) { ?>
+        foreach ( $shared_with as $user) { ?>
             <li class="<?php echo esc_attr( $user['user_id'] ); ?>"> <?php echo esc_html( $user['display_name'] ); ?>
                 <button class="details-remove-button share"
                         data-id="<?php echo esc_attr( $user['user_id'] ); ?>">

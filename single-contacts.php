@@ -5,7 +5,7 @@ declare( strict_types=1 );
 
     $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
-    if (!Disciple_Tools_Contacts::can_view( 'contacts', get_the_ID() )) {
+    if ( !Disciple_Tools_Contacts::can_view( 'contacts', get_the_ID() )) {
         return wp_redirect( "not-found" );
     }
     $shared_with = Disciple_Tools_Contacts::get_shared_with_on_contact( get_the_ID() );
@@ -15,8 +15,8 @@ declare( strict_types=1 );
     <?php
     dt_print_breadcrumbs(
         [
-            [home_url( '/' ), __( "Dashboard" )],
-            [home_url( '/' ) . "contacts/", __( "Contacts" )],
+            [ home_url( '/' ), __( "Dashboard" ) ],
+            [ home_url( '/' ) . "contacts/", __( "Contacts" ) ],
         ],
         get_the_title(),
         true,
@@ -90,7 +90,7 @@ declare( strict_types=1 );
                             <ul class="<?php echo esc_html( $connection ) ?>-list">
                                 <?php
                                 $ids = [];
-                                foreach ( $contact->fields[$connection] as $value ) {
+                                foreach ( $contact->fields[ $connection ] as $value ) {
                                     $ids[] = $value->ID;
                                     ?>
                                     <li class="<?php echo esc_html( $value->ID ) ?>">
@@ -138,7 +138,7 @@ declare( strict_types=1 );
                         };
                         $keys = array_keys( $contact_fields["seeker_path"]["default"] );
                         $path_index = array_search( $contact->fields["seeker_path"]["key"], $keys ) ?? 0;
-                        $percentage = $path_index / (sizeof( $keys )-1) *100
+                        $percentage = $path_index / (sizeof( $keys ) -1) *100
                         ?>
                         </select>
                         <div class="progress" role="progressbar" tabindex="0" aria-valuenow="<?php echo 4 ?>" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
@@ -151,13 +151,13 @@ declare( strict_types=1 );
                             <?php foreach ( $contact_fields as $field => $val ): ?>
                                 <?php
                                 if (strpos( $field, "milestone_" ) === 0) {
-                                    $class = ( isset( $contact->fields[$field] ) && $contact->fields[$field]['key'] === 'yes' ) ?
+                                    $class = ( isset( $contact->fields[ $field ] ) && $contact->fields[ $field ]['key'] === 'yes' ) ?
                                         "selected-select-button" : "empty-select-button";
                                 ?>
                                     <button onclick="save_seeker_milestones( <?php echo esc_html( get_the_ID() ) ?> , '<?php echo esc_html( $field ) ?>')"
                                             id="<?php echo esc_html( $field ) ?>"
                                             class="<?php echo esc_html( $class ) ?> select-button button ">
-                                        <?php echo esc_html( $contact_fields[$field]["name"] ) ?>
+                                        <?php echo esc_html( $contact_fields[ $field ]["name"] ) ?>
                                     </button>
                                 <?php }?>
                             <?php endforeach; ?>
@@ -172,7 +172,7 @@ declare( strict_types=1 );
                         <div class="section-subheader"><?php echo esc_html( $contact_fields["bible_mailing"]["name"] ) ?></div>
                         <select id="bible_mailing" class="select-field">
                             <?php
-                            foreach( $contact_fields["bible_mailing"]["default"] as $key => $value ) {
+                            foreach ( $contact_fields["bible_mailing"]["default"] as $key => $value ) {
                                 if ( isset( $contact->fields["bible_mailing"] ) &&
                                     $contact->fields["bible_mailing"]["key"] === $key ){
                                     echo '<option value="'. esc_html( $key ) . '" selected>' . esc_html( $value ) . '</option>';

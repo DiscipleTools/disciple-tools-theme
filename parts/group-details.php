@@ -25,9 +25,9 @@ function dt_contact_details_status( $id, $verified, $invalid ){
         <input id="title" class="text-field details-edit" value="<?php the_title_attribute(); ?>">
         <span id="group-status-label" class="button alert label details-list status">Status: <?php echo esc_html( $group['group_status']['label'] ?? '' ); ?></span>
         <select id="group-status-select" class="status details-edit" style="width:fit-content; display:none">
-            <?php foreach( $group_fields["group_status"]["default"] as $status_key => $status_label ) { ?>
+            <?php foreach ( $group_fields["group_status"]["default"] as $status_key => $status_label ) { ?>
                 <option value="<?php echo esc_attr( $status_key ); ?>"
-                    <?php echo esc_attr( $status_key === $group['group_status']['key'] ? 'selected': '' ); ?>>
+                    <?php echo esc_attr( $status_key === $group['group_status']['key'] ? 'selected' : '' ); ?>>
                     <?php echo esc_html( $status_label ) ?>
                 </option>
             <?php } ?>
@@ -45,7 +45,7 @@ function dt_contact_details_status( $id, $verified, $invalid ){
             <div class="section-subheader">Locations</div>
             <ul class="locations-list">
                 <?php
-                foreach($group[ "locations" ] ?? [] as $value){
+                foreach ($group["locations"] ?? [] as $value){
                     ?>
                     <li class="<?php echo intval( $value->ID ); ?>">
                         <a href="<?php echo esc_url( $value->permalink ); ?>"><?php echo esc_html( $value->post_title ); ?></a>
@@ -68,7 +68,7 @@ function dt_contact_details_status( $id, $verified, $invalid ){
             <div class="section-subheader">People Groups</div>
             <ul class="people_groups-list">
                 <?php
-                foreach($group["people_groups" ] ?? [] as $value){
+                foreach ($group["people_groups"] ?? [] as $value){
                     ?>
                     <li class="<?php echo esc_html( $value->ID )?>">
                         <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
@@ -115,7 +115,7 @@ function dt_contact_details_status( $id, $verified, $invalid ){
             </button>
             <ul class="address details-list">
                 <?php
-                foreach($group[ "address" ]  ?? [] as $value){
+                foreach ($group["address"] ?? [] as $value){
                     $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                     $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                     ?>
@@ -127,7 +127,7 @@ function dt_contact_details_status( $id, $verified, $invalid ){
             <ul id="address-list" class="details-edit">
                 <?php
                 if ( isset( $group["address"] )){
-                    foreach($group[ "address" ] ?? [] as $value){
+                    foreach ($group["address"] ?? [] as $value){
                         $verified = isset( $value["verified"] ) && $value["verified"] === true;
                         $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                         ?>

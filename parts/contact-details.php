@@ -62,7 +62,7 @@
                     <div class="section-subheader">Set Unassignable Reason:</div>
                     <select id="reason_unassignable" class="select-field">
                         <?php
-                        foreach( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_value ) {
+                        foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_value ) {
                             if ( isset( $contact->fields["reason_unassignable"] ) &&
                                 $contact->fields["reason_unassignable"]["key"] === $reason_key ){
                                 echo '<option value="'. esc_html( $reason_key ) . '" selected>' . esc_html( $reason_value ) . '</option>';
@@ -119,7 +119,7 @@
 
                 <select id="reason-closed-options">
                     <?php
-                    foreach( $contact_fields["reason_closed"]["default"] as $reason_key => $reason_label ) {
+                    foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $reason_label ) {
                     ?>
                         <option value="<?php echo esc_attr( $reason_key )?>"> <?php echo esc_html( $reason_label )?></option>
                     <?php
@@ -143,7 +143,7 @@
 
                 <select id="reason-paused-options">
                     <?php
-                    foreach( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
+                    foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
                     ?>
                         <option value="<?php echo esc_attr( $reason_key )?>"> <?php echo esc_html( $reason_label )?></option>
                     <?php
@@ -173,7 +173,7 @@
                     </button>
                     <ul class="phone details-list">
                         <?php
-                        foreach($contact->fields[ "contact_phone" ] ?? [] as $field => $value){
+                        foreach ($contact->fields["contact_phone"] ?? [] as $field => $value){
                             $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                             ?>
@@ -184,7 +184,7 @@
                     <ul id="phone-list" class="details-edit">
                     <?php
                     if ( isset( $contact->fields["contact_phone"] )){
-                        foreach($contact->fields[ "contact_phone" ] ?? [] as $value){
+                        foreach ($contact->fields["contact_phone"] ?? [] as $value){
                             $verified = isset( $value["verified"] ) && $value["verified"] === true;
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                             ?>
@@ -208,7 +208,7 @@
                     </button>
                     <ul class="email details-list">
                         <?php
-                        foreach($contact->fields[ "contact_email" ] ?? [] as $field => $value){
+                        foreach ($contact->fields["contact_email"] ?? [] as $field => $value){
                             $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                             ?>
@@ -221,7 +221,7 @@
                     <ul id="email-list" class="details-edit">
                         <?php
                         if ( isset( $contact->fields["contact_email"] )){
-                            foreach($contact->fields[ "contact_email" ] ?? [] as $value){
+                            foreach ($contact->fields["contact_email"] ?? [] as $value){
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true;
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                                 ?>
@@ -246,7 +246,7 @@
                     <div class="section-subheader">Locations</div>
                     <ul class="locations-list">
                         <?php
-                        foreach($contact->fields["locations" ] ?? [] as $value){
+                        foreach ($contact->fields["locations"] ?? [] as $value){
                             ?>
                             <li class="<?php echo esc_html( $value->ID )?>">
                                 <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
@@ -289,12 +289,12 @@
                     <div class="section-subheader"><?php echo esc_html( 'Social Media' ) ?></div>
                     <ul class='social details-list'>
                     <?php
-                    foreach($contact->fields as $field_key => $values){
+                    foreach ($contact->fields as $field_key => $values){
                         if ( strpos( $field_key, "contact_" ) === 0 &&
                             strpos( $field_key, "contact_phone" ) === false &&
                             strpos( $field_key, "contact_email" ) === false) {
-                            $channel =   explode( '_', $field_key )[1];
-                            if ( isset( $channel_list[$channel] ) ) {
+                            $channel = explode( '_', $field_key )[1];
+                            if ( isset( $channel_list[ $channel ] ) ) {
                                 foreach ($values as $value) {
                                     $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                                     $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
@@ -303,7 +303,7 @@
                                     <?php
                                     if ( $values && sizeof( $values ) > 0 ) {
                                         ?>
-                                        <span><?php echo esc_html( $channel_list[$channel]["label"] )?>:</span>
+                                        <span><?php echo esc_html( $channel_list[ $channel ]["label"] )?>:</span>
                                     <?php } ?>
 
                                     <span class='social-text'><?php echo esc_html( $value["value"] ) ?></span>
@@ -319,12 +319,12 @@
                     <ul class="social details-edit">
                     <?php
 
-                    foreach($contact->fields as $field_key => $values){
+                    foreach ($contact->fields as $field_key => $values){
                         if ( strpos( $field_key, "contact_" ) === 0 &&
                             strpos( $field_key, "contact_phone" ) === false &&
                             strpos( $field_key, "contact_email" ) === false) {
-                            $channel =   explode( '_', $field_key )[1];
-                            if ( isset( $channel_list[$channel] ) ) {
+                            $channel = explode( '_', $field_key )[1];
+                            if ( isset( $channel_list[ $channel ] ) ) {
                                 foreach ($values as $value) {
                                     $verified = isset( $value["verified"] ) && $value["verified"] === true;
                                     $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
@@ -332,7 +332,7 @@
                                     <li class='<?php echo esc_html( $value['key'] ) ?>'>
                                         <?php
                                         if ( $values && sizeof( $values ) > 0 ) {
-                                            ?><span><?php echo esc_html( $channel_list[$channel]["label"] )?></span>
+                                            ?><span><?php echo esc_html( $channel_list[ $channel ]["label"] )?></span>
                                         <?php } ?>
                                         <input id='<?php echo esc_html( $value["key"] ) ?>' class='details-edit social-input' value='<?php echo esc_html( $value["value"] ) ?>'>
                                         <ul class='dropdown menu' data-click-open='true'
@@ -362,7 +362,7 @@
                         <label for="social-channels">Add another contact method</label>
                         <select id="social-channels">
                             <?php
-                            foreach($channel_list as $key => $channel){
+                            foreach ($channel_list as $key => $channel){
                                 if ($key != "phone" && $key != "email"){
                                     ?><option value="<?php echo esc_html( $key ) ?>"> <?php echo esc_html( $channel["label"] ) ?></option><?php
                                 }
@@ -380,7 +380,7 @@
                     <div class="section-subheader">People Groups</div>
                     <ul class="people_groups-list">
                         <?php
-                        foreach($contact->fields["people_groups" ] ?? [] as $value){
+                        foreach ($contact->fields["people_groups"] ?? [] as $value){
                             ?>
                             <li class="<?php echo esc_html( $value->ID )?>">
                                 <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
@@ -411,7 +411,7 @@
                     </button>
                     <ul class="address details-list">
                         <?php
-                        foreach($contact->fields[ "address" ]  ?? [] as $value){
+                        foreach ($contact->fields["address"] ?? [] as $value){
                             $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                             ?>
@@ -423,7 +423,7 @@
                     <ul id="address-list" class="details-edit">
                     <?php
                     if ( isset( $contact->fields["address"] )){
-                        foreach($contact->fields[ "address" ] ?? [] as $value){
+                        foreach ($contact->fields["address"] ?? [] as $value){
                             $verified = isset( $value["verified"] ) && $value["verified"] === true;
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                             ?>
@@ -450,7 +450,7 @@
                     </ul>
                     <select id="age" class="details-edit select-field">
                         <?php
-                        foreach( $contact_fields["age"]["default"] as $age_key => $age_value ) {
+                        foreach ( $contact_fields["age"]["default"] as $age_key => $age_value ) {
                             if ( isset( $contact->fields["age"] ) &&
                                 $contact->fields["age"]["key"] === $age_key){
                                 echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
@@ -469,7 +469,7 @@
                     </ul>
                     <select id="gender" class="details-edit select-field">
                         <?php
-                        foreach( $contact_fields["gender"]["default"] as $gender_key => $gender_value ) {
+                        foreach ( $contact_fields["gender"]["default"] as $gender_key => $gender_value ) {
                             if ( isset( $contact->fields["gender"] ) &&
                                 $contact->fields["gender"]["key"] === $gender_key){
                                 echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
@@ -496,7 +496,7 @@
                     <select id="sources" class="details-edit select-field">
                         <option value=""></option>
                         <?php
-                        foreach( $custom_lists["sources"] as $sources_key => $sources_value ) {
+                        foreach ( $custom_lists["sources"] as $sources_key => $sources_value ) {
                             if ( isset( $contact->fields["sources"] ) &&
                                 $contact->fields["sources"]["key"] === $sources_key){
                                 echo '<option value="'. esc_html( $sources_key ) . '" selected>' . esc_html( $sources_value["label"] ) . '</option>';

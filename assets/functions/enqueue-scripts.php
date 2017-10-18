@@ -61,7 +61,7 @@ function dt_site_scripts() {
     }
 
 
-    dt_theme_enqueue_script( 'api-wrapper', 'assets/js/api-wrapper.js', array( 'jquery', 'lodash') );
+    dt_theme_enqueue_script( 'api-wrapper', 'assets/js/api-wrapper.js', array( 'jquery', 'lodash' ) );
     wp_localize_script(
         'api-wrapper', 'wpApiSettings', array(
             'root' => esc_url_raw( rest_url() ),
@@ -127,7 +127,7 @@ function dt_site_scripts() {
                 'nonce' => wp_create_nonce( 'wp_rest' )
             )
         );
-        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array( ),  false );
+        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(),  false );
     }
 
     if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )) {

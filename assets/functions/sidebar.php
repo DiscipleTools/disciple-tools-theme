@@ -14,8 +14,8 @@ function dt_register_sidebars() {
         'after_title' => '</h4>',
         )
     );
-    
-    
+
+
     // TODO verify DT requires no configurable sidebars
 //
 //    register_sidebar(
@@ -90,6 +90,6 @@ function dt_register_sidebars() {
 	sidebar-sidebar2.php
 
 	*/
- 
- 
+
+
 } // don't remove this bracket!
