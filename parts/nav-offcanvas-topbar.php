@@ -50,7 +50,7 @@
                     </button>
                     <ul class="submenu menu vertical">
                         <li><a href="<?php echo esc_url( home_url( '/' ) ) . 'settings/'; ?>">Settings</a></li>
-                        <?php if( user_can( get_current_user_id(), 'read' ) ) : ?><li><a href="<?php echo esc_url( get_admin_url() ); ?>"><?php esc_html_e( "Admin" ); ?></a></li><?php endif; ?>
+                        <?php if ( user_can( get_current_user_id(), 'read' ) ) : ?><li><a href="<?php echo esc_url( get_admin_url() ); ?>"><?php esc_html_e( "Admin" ); ?></a></li><?php endif; ?>
                         <li><a href="<?php echo esc_url( wp_logout_url() ); ?>">Log Off</a></li>
                     </ul>
                 </li>

@@ -7,11 +7,11 @@
 
 <div class="contact-quick-buttons">
     <?php
-    foreach( $contact_fields as $field => $val ) {
+    foreach ( $contact_fields as $field => $val ) {
         if ( strpos( $field, "quick_button" ) === 0 ) {
             $current_value = 0;
-            if ( isset( $contact->fields[$field] ) ) {
-                $current_value = $contact->fields[$field];
+            if ( isset( $contact->fields[ $field ] ) ) {
+                $current_value = $contact->fields[ $field ];
             } ?>
 
             <button class="contact-quick-button <?php echo esc_attr( $field ) ?>"
