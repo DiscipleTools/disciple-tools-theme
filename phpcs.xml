@@ -142,7 +142,7 @@
     <exclude name="WordPress.Arrays.ArrayIndentation.CloseBraceNotAligned" />
     <exclude name="WordPress.Arrays.ArrayIndentation.ItemNotAligned" />
     <exclude name="WordPress.Arrays.ArrayIndentation.MultiLineArrayItemNotAligned" />
-    <!-- <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions.NoSpacesAroundArrayKeys" /> -->
+    <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions.NoSpacesAroundArrayKeys" />
     <!-- <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions.SpacesAroundArrayKeys" /> -->
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.CommaAfterLast" />
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.NoComma" />
