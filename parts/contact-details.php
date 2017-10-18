@@ -27,11 +27,11 @@
         $contact->fields["overall_status"]["key"] == "assigned" &&
         $contact->fields["assigned_to"]['id'] == $current_user->ID
     ) { ?>
-    <div id="accept-contact" class="callout alert">
+    <div id="accept-contact" class="callout alert small-12 cell">
         <h4 style="display: inline-block">This contact has been assigned to you</h4>
         <span class="float-right">
-            <button onclick="details_accept_contact(<?php echo get_the_ID() ?>, true)" class="button small ">Accept</button>
-            <button onclick="details_accept_contact(<?php echo get_the_ID() ?>, false)" class="button small ">Decline</button>
+            <button onclick="details_accept_contact(<?php echo get_the_ID() ?>, true)" class="button small">Accept</button>
+            <button onclick="details_accept_contact(<?php echo get_the_ID() ?>, false)" class="button small alert">Decline</button>
         </span>
     </div>
     <?php } ?>

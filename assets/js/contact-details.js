@@ -281,7 +281,7 @@ jQuery(document).ready(function($) {
     API.save_field_api('contact', contactId, {assigned_to: 'user-' + sug.ID}).then(function () {
       assigned_to_typeahead.typeahead('val', '')
       jQuery('.current-assigned').text(sug.name)
-      contact.fields.assigned_to.ID = sug.ID
+      _.set(contact, "fields.assigned_to.ID", sug.ID)
       assigned_to_typeahead.typeahead('destroy')
       users.initialize()
       loadAssignedToTypeahead()
@@ -902,10 +902,13 @@ function details_accept_contact(contactId, accept){
     }
   }).then(function (data) {
     jQuery('#accept-contact').hide()
-    if (data['overall_status']){
+    if (data && data['overall_status']){
       jQuery('#overall-status').text(data['overall_status'])
     }
+    if(data && data["assigned_to"]){
+      jQuery('.current-assigned').text(data["assigned_to"])
+    }
   }).catch(err=>{
-    console.log(err)
+    jQuery("#errors").append(err.responseText)
   })
 }

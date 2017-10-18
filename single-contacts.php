@@ -23,7 +23,7 @@ declare( strict_types=1 );
         true
     ); ?>
 
-    <div id="errors"></div>
+
 
     <!-- I'm not sure why this is indented -->
     <div id="content">
@@ -33,7 +33,7 @@ declare( strict_types=1 );
 
 
             <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell grid-x grid-margin-x grid-margin-y" role="main" style="padding:0">
-
+                <div id="errors"></div>
                 <section class="hide-for-large small-12 cell">
                     <div class="bordered-box">
                         <?php get_template_part( 'parts/contact', 'quick-buttons' ); ?>
