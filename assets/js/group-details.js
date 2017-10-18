@@ -46,7 +46,10 @@ jQuery(document).ready(function($) {
     $(`.details-edit`).toggle()
     editingAll = !editingAll
     editDetailsToggle.text( editingAll ? "Save": "Edit")
-
+    if(editingAll){
+      $('.status.details-edit').show()
+      $('.status.details-list').hide()
+    }
   }
   $('#edit-details').on('click', function () {
     toggleEditAll()
@@ -644,7 +647,7 @@ jQuery(document).ready(function($) {
     let verified = $(this).data('verified')
     if (id){
       console.log('verify')
-      API.update_contact_method_detail('contact', groupId, id, {"verified":!verified}).then(()=>{
+      API.update_contact_method_detail('group', groupId, id, {"verified":!verified}).then(()=>{
         $(this).data('verified', !verified)
         if (verified){
           jQuery(`#${id}-verified`).hide()

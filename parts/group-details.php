@@ -42,7 +42,7 @@ function dt_contact_details_status( $id, $verified, $invalid ){
     <div class="display-fields grid-x grid-margin-x">
         <div class="medium-4 cell">
 
-            <strong>Locations</strong>
+            <div class="section-subheader">Locations</div>
             <ul class="locations-list">
                 <?php
                 foreach($group[ "locations" ] ?? [] as $value){
@@ -65,7 +65,7 @@ function dt_contact_details_status( $id, $verified, $invalid ){
                 <input class="typeahead" type="text" placeholder="Select a new location">
             </div>
 
-            <strong>People Groups</strong>
+            <div class="section-subheader">People Groups</div>
             <ul class="people_groups-list">
                 <?php
                 foreach($group["people_groups" ] ?? [] as $value){
@@ -91,9 +91,9 @@ function dt_contact_details_status( $id, $verified, $invalid ){
 
 
         <div class="medium-4 cell">
-            <strong>Assigned to
+            <div class="section-subheader">Assigned to
                 <span class="assigned_to details-edit">:
-                </span> <span class="assigned_to details-edit current-assigned">:</span> </strong>
+                </span> <span class="assigned_to details-edit current-assigned">:</span> </div>
             <ul class="details-list assigned_to">
                 <li class="current-assigned">
                     <?php
@@ -109,7 +109,7 @@ function dt_contact_details_status( $id, $verified, $invalid ){
                 <input class="typeahead" type="text" placeholder="Select a new user">
             </div>
 
-            <strong>Address</strong>
+            <div class="section-subheader">Address</div>
             <button id="add-new-address" class="details-edit">
                 <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
             </button>
@@ -132,13 +132,13 @@ function dt_contact_details_status( $id, $verified, $invalid ){
                         $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                         ?>
                         <div>
-                            <textarea rows="3" id="<?php echo esc_attr( $value["key"] )?>" class="contact-input"><?php echo esc_attr( $value["value"] )?></textarea>
                             <button class="details-status-button verify" data-verified="<?php echo esc_html( $verified )?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
                                 <?php echo ($verified ? 'Unverify' : "Verify") ?>
                             </button>
                             <button class="details-status-button invalid" data-invalid="<?php echo esc_html( $invalid ) ?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
                                 <?php echo ($invalid ? 'Uninvalidate' : "Invalidate") ?>
                             </button>
+                            <textarea rows="3" id="<?php echo esc_attr( $value["key"] )?>" class="contact-input"><?php echo esc_attr( $value["value"] )?></textarea>
                         </div>
                         <hr>
 
@@ -148,10 +148,10 @@ function dt_contact_details_status( $id, $verified, $invalid ){
         </div>
 
         <div class="medium-4 cell">
-            <strong>Start Date</strong>
+            <div class="section-subheader">Start Date</div>
             <div class="start_date details-list"><?php echo esc_html( $group["start_date"] ?? "No start date" ); ?> </div>
             <div class="start_date details-edit"><input type="text" id="start-date-picker"></div>
-            <strong>End Date</strong>
+            <div class="section-subheader">End Date</div>
             <div class="end_date details-list"><?php echo esc_html( $group["end_date"] ?? "No end date" ); ?> </div>
             <div class="end_date details-edit"><input type="text" id="end-date-picker"></div>
         </div>
