@@ -48,6 +48,11 @@ declare(strict_types=1);
                             <span class="js-list-view-count" data-value="contact_unattempted" style="float: right">.</span>
                         </label>
                         <label style="cursor: pointer;">
+                            <input type="radio" name="view" value="contacts_shared_with_me" class="js-list-view">
+                            <?php esc_html_e( "Contacts shared with me" ); ?>
+                            <span class="js-list-view-count" data-value="contacts_shared_with_me" style="float: right">.</span>
+                        </label>
+                        <label style="cursor: pointer;">
                             <input type="radio" name="view" value="all_contacts" class="js-list-view">
                             <?php esc_html_e( "All contacts" ); ?>
                             <span class="js-list-view-count" data-value="all_contacts" style="float: right">.</span>
