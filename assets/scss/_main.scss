@@ -368,6 +368,14 @@ img {
     margin-left:0;
 }
 
+#address-list {
+    textarea {
+        display: inline-block;
+    }
+    ul.dropdown.menu {
+        vertical-align: top;
+    }
+}
 
 
 .tabs-panel .outer-container {

@@ -422,38 +422,6 @@ jQuery(document).ready(function($) {
     toggleEditAll()
   })
 
-  $(document).on('click', '.details-status-button.verify', function () {
-    let id = $(this).data('id')
-    let verified = $(this).data('verified')
-    if (id){
-      console.log('verify')
-      API.update_contact_method_detail('contact', contactId, id, {"verified":!verified}).then(()=>{
-        $(this).data('verified', !verified)
-        if (verified){
-          jQuery(`#${id}-verified`).hide()
-        } else {
-          jQuery(`#${id}-verified`).show()
-
-        }
-        jQuery(this).html(verified ? "Verify" : "Unverify")
-      }).catch(err=>{
-        console.log(err)
-      })
-    }
-  })
-  $(document).on('click', '.details-status-button.invalid', function () {
-    let id = $(this).data('id')
-    let invalid = $(this).data('invalid')
-    API.update_contact_method_detail('contact', contactId, id, {"invalid":!invalid}).then(()=>{
-      $(this).data('invalid', !invalid)
-      if (invalid){
-        jQuery(`#${id}-invalid`).hide()
-      } else  {
-        jQuery(`#${id}-invalid`).show()
-      }
-      jQuery(this).html(invalid? "Invalidate" : "Uninvalidate")
-    })
-  })
   $(document).on('click', '.details-remove-button.connection', function () {
     let fieldId = $(this).data('field')
     let itemId = $(this).data('id')
@@ -471,12 +439,12 @@ jQuery(document).ready(function($) {
       })
     }
   })
-  $(document).on('click', '.details-remove-button.social', function () {
+  $(document).on('click', '.details-remove-button.delete-method', function () {
     let fieldId = $(this).data('id')
     if (fieldId){
       API.remove_field('contact', contactId, fieldId).then(()=>{
 
-        $(`ul.social .${fieldId}`).remove()
+        $(`.${fieldId}`).remove()
 
       }).catch(err=>{
         console.log(err)
@@ -508,21 +476,7 @@ jQuery(document).ready(function($) {
           <input id="${newId}"
                  value="${text}" style="display: inline-block"   
                  class="details-edit social-input" >
-          <ul class='dropdown menu' data-click-open='true' 
-              data-dropdown-menu data-disable-hover='true' 
-              style='display:inline-block'>
-            <li>
-              <button class="social-details-options-button">
-                <img  src="${contactsDetailsWpApiSettings.template_dir}/assets/images/menu-dots.svg" style='padding:3px 3px'>
-              </button>
-              <ul class='menu'>
-                  <li><button class='details-remove-button social' data-id='${newId}' data-field >Remove<button></li>
-                  <li><button class='details-status-button verify' data-verified='0' data-id='${newId}'>Verify</button></li>
-                  <li><button class='details-status-button invalid' data-verified='0' data-id='${newId}'>Invalidate</button></li>
-              </ul>
-            </li>
-          </ul>
-                
+          ${editContactDetailsOptions(newId)}
         </li>`)
       $(`.${newId} .dropdown.menu`).foundation()
 
@@ -633,15 +587,11 @@ jQuery(document).ready(function($) {
               <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/broken.svg"/>
             </li>
         `)
-        $('.new-address').append(`
-          <button class="details-status-button verify" data-verified="false" data-id="${newAddressId}">
-              Verify
-          </button>
-          <button class="details-status-button invalid" data-verified="false" data-id="${newAddressId}">
-              Invalidate
-          </button>
-        `).removeClass('new-address')
-
+        $('.new-address')
+          .append(editContactDetailsOptions(newAddressId))
+          .removeClass('new-address')
+          .addClass(newAddressId)
+          $(`.${newAddressId} .dropdown.menu`).foundation()
       }
     })
   })
@@ -678,19 +628,60 @@ jQuery(document).ready(function($) {
               <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/broken.svg"/>
             </li>
         `)
-        $(`.new-${field}`).append(`
-          <button class="details-status-button verify" data-verified="false" data-id="${newId}">
-              Verify
-          </button>
-          <button class="details-status-button invalid" data-verified="false" data-id="${newId}">
-              Invalidate
-          </button>
-        `).removeClass(`new-${field}`)
+        $(`.new-${field}`)
+          .append(editContactDetailsOptions(newId))
+          .removeClass(`new-${field}`)
+          .addClass(newId)
+        $(`.${newId} .dropdown.menu`).foundation()
         $(this).removeClass(`new-contact-details`).addClass('contact-input')
 
       }
     })
   })
+
+
+  let editContactDetailsOptions = function (field_id) {
+    return `
+      <ul class='dropdown menu' data-click-open='true'
+              data-dropdown-menu data-disable-hover='true'
+              style='display:inline-block'>
+        <li>
+          <button class="social-details-options-button">
+            <img src="${contactsDetailsWpApiSettings.template_dir}/assets/images/menu-dots.svg" style='padding:3px 3px'>
+          </button>
+          <ul class='menu'>
+            <li>
+              <button class='details-status-button field-status verify'
+                      data-status='valid'
+                      data-id='${field_id}'>
+                  Valid
+              </button>
+            </li>
+            <li>
+              <button class='details-status-button field-status invalid'
+                      data-status="invalid"
+                      data-id="${field_id}">
+                  Invalid
+              </button>
+            </li>
+            <li>
+              <button class='details-status-button field-status'
+                      data-status="reset"
+                      data-id='${field_id}'>
+                  Unconfirmed
+              </button>
+            </li>
+            <li>
+              <button class='details-remove-button delete-method'
+                      data-id='${field_id}'>
+                      Delete item
+              <button>
+            </li>
+          </ul>
+          </li>
+      </ul>
+    `
+  }
 
   $('.show-button').click(function () {
     $('.show-content').toggle()
@@ -720,6 +711,23 @@ jQuery(document).ready(function($) {
     let userId = $(this).data('id')
     API.remove_shared('contact', contactId, userId).then(()=>{
       $("#shared-with-list ." + userId).remove()
+    })
+  })
+
+
+  $(document).on('click', '.details-status-button.field-status', function () {
+    let status = $(this).data('status')
+    let id = $(this).data('id')
+    console.log(status, id)
+    let fields = {
+      verified : status === 'valid',
+      invalid : status === "invalid"
+    }
+    API.update_contact_method_detail('contact', contactId, id, fields).then(()=>{
+      $(`#${id}-verified`).toggle(fields.verified)
+      $(`#${id}-invalid`).toggle(fields.invalid)
+    }).catch(err=>{
+      handelAjaxError(err)
     })
   })
 })

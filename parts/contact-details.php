@@ -14,8 +14,50 @@
         <img id="<?php echo esc_html( $id ) ?>-invalid" class="details-status" style="display:<?php echo esc_html( $invalid )?>" src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/broken.svg' )?>" />
         <?php
     }
-
+    function dt_contact_details_edit( $id, $verified, $invalid, $remove = false ){
     ?>
+        <ul class='dropdown menu' data-click-open='true'
+            data-dropdown-menu data-disable-hover='true'
+            style='display:inline-block'>
+            <li>
+                <button class="social-details-options-button">
+                    <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/menu-dots.svg' )?>" style='padding:3px 3px'>
+                </button>
+                <ul class='menu'>
+                    <li>
+                        <button class='details-status-button field-status verify'
+                                data-status='valid'
+                                data-id='<?php echo esc_html( $id ) ?>'>
+                            Valid
+                        </button>
+                    </li>
+                    <li>
+                        <button class='details-status-button field-status invalid'
+                                data-status="invalid"
+                                data-id='<?php echo esc_html( $id ) ?>'>
+                            Invalid
+                        </button>
+                    </li>
+                    <li>
+                        <button class='details-status-button field-status'
+                                data-status="reset"
+                                data-id='<?php echo esc_html( $id ) ?>'>
+                            Unconfirmed
+                        </button>
+                    </li>
+                    <?php if ($remove){ ?>
+                        <li>
+                            <button class='details-remove-button delete-method'
+                                    data-id='<?php echo esc_html( $id ) ?>'
+                                    data-field >
+                                Delete item
+                            <button>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </li>
+        </ul>
+    <?php } ?>
 
     <?php if (isset( $contact->fields["requires_update"] ) && $contact->fields["requires_update"]["key"] === "yes"){ ?>
     <div class="callout alert">
@@ -167,10 +209,11 @@
                 <!--Phone-->
                 <!--Email-->
                 <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader"><?php echo esc_html( $channel_list["phone"]["label"] ) ?></div>
-                    <button data-id="phone" class="details-edit add-button">
-                        <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
-                    </button>
+                    <div class="section-subheader"><?php echo esc_html( $channel_list["phone"]["label"] ) ?>
+                        <button data-id="phone" class="details-edit add-button">
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
+                        </button>
+                    </div>
                     <ul class="phone details-list">
                         <?php
                         foreach ($contact->fields["contact_phone"] ?? [] as $field => $value){
@@ -188,24 +231,22 @@
                             $verified = isset( $value["verified"] ) && $value["verified"] === true;
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                             ?>
-                            <li>
-                                <input id="<?php echo esc_attr( $value["key"] )?>" value="<?php echo esc_attr( $value["value"] )?>" class="contact-input">
-                                <button class="details-status-button verify" data-verified="<?php echo esc_html( $verified )?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
-                                    <?php echo ($verified ? 'Unverify' : "Verify") ?>
-                                </button>
-                                <button class="details-status-button invalid" data-invalid="<?php echo esc_html( $invalid ) ?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
-                                    <?php echo ($invalid ? 'Uninvalidate' : "Invalidate") ?>
-                                </button>
+                            <li class="<?php echo esc_attr( $value["key"] )?>">
+                                <input id="<?php echo esc_attr( $value["key"] )?>"
+                                       value="<?php echo esc_attr( $value["value"] )?>"
+                                       class="contact-input">
+                                <?php dt_contact_details_edit( $value["key"], $verified, $invalid, true ) ?>
                             </li>
 
                         <?php }
                     }?>
                     </ul>
 
-                    <div class="section-subheader"><?php echo esc_html( $channel_list["email"]["label"] ) ?></div>
-                    <button data-id="email" class="details-edit add-button">
-                        <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
-                    </button>
+                    <div class="section-subheader"><?php echo esc_html( $channel_list["email"]["label"] ) ?>
+                        <button data-id="email" class="details-edit add-button">
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
+                        </button>
+                    </div>
                     <ul class="email details-list">
                         <?php
                         foreach ($contact->fields["contact_email"] ?? [] as $field => $value){
@@ -227,12 +268,7 @@
                                 ?>
                                 <li>
                                     <input id="<?php echo esc_attr( $value["key"] )?>" value="<?php echo esc_attr( $value["value"] ) ?>" class="contact-input">
-                                    <button class="details-status-button verify" data-verified="<?php echo esc_html( $verified ) ?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
-                                        <?php echo esc_html( ($verified ? 'Unverify' : "Verify") ) ?>
-                                    </button>
-                                    <button class="details-status-button invalid" data-invalid="<?php echo esc_html( $invalid )?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
-                                        <?php echo esc_html( ($invalid ? 'Uninvalidate' : "Invalidate") ) ?>
-                                    </button>
+                                    <?php dt_contact_details_edit( $value["key"], $verified, $invalid, true ) ?>
                                 </li>
                                 <?php
                             }
@@ -335,20 +371,7 @@
                                             ?><span><?php echo esc_html( $channel_list[ $channel ]["label"] )?></span>
                                         <?php } ?>
                                         <input id='<?php echo esc_html( $value["key"] ) ?>' class='details-edit social-input' value='<?php echo esc_html( $value["value"] ) ?>'>
-                                        <ul class='dropdown menu' data-click-open='true'
-                                             data-dropdown-menu data-disable-hover='true'
-                                             style='display:inline-block'>
-                                            <li>
-                                                <button class="social-details-options-button">
-                                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/menu-dots.svg' )?>" style='padding:3px 3px'>
-                                                </button>
-                                                <ul class='menu'>
-                                                    <li><button class='details-remove-button social' data-id='<?php echo esc_html( $value['key'] ) ?>' data-field >Remove<button></li>
-                                                    <li><button class='details-status-button verify' data-verified='<?php echo esc_html( $verified ) ?>' data-id='<?php echo esc_html( $value["key"] ) ?>'> <?php echo esc_html( ($verified ? 'Unverify' : 'Verify') )?></button></li>
-                                                    <li><button class='details-status-button invalid' data-invalid='<?php echo esc_html( $invalid ) ?>' data-id='<?php echo esc_html( $value["key"] ) ?>'> <?php echo esc_html( ($invalid ? 'Uninvalidate' : 'Invalidate') )?></button></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
+                                        <?php dt_contact_details_edit( $value["key"], $verified, $invalid, true, 'social' ) ?>
                                     </li>
                                     <?php
                                 }
@@ -405,10 +428,11 @@
 
             <div id="show-more-content" class="grid-x grid-margin-x show-content" style="display:none;">
                 <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">Address</div>
-                    <button id="add-new-address" class="details-edit">
-                        <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
-                    </button>
+                    <div class="section-subheader">Address
+                        <button id="add-new-address" class="details-edit">
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
+                        </button>
+                    </div>
                     <ul class="address details-list">
                         <?php
                         foreach ($contact->fields["address"] ?? [] as $value){
@@ -427,14 +451,9 @@
                             $verified = isset( $value["verified"] ) && $value["verified"] === true;
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                             ?>
-                            <div>
+                            <div class="<?php echo esc_attr( $value["key"] )?>">
                                 <textarea rows="3" id="<?php echo esc_attr( $value["key"] )?>" class="contact-input"><?php echo esc_attr( $value["value"] )?></textarea>
-                                <button class="details-status-button verify" data-verified="<?php echo esc_html( $verified )?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
-                                    <?php echo ($verified ? 'Unverify' : "Verify") ?>
-                                </button>
-                                <button class="details-status-button invalid" data-invalid="<?php echo esc_html( $invalid ) ?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
-                                    <?php echo ($invalid ? 'Uninvalidate' : "Invalidate") ?>
-                                </button>
+                                <?php dt_contact_details_edit( $value["key"], $verified, $invalid, true ) ?>
                             </div>
                             <hr>
 
