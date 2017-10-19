@@ -25,14 +25,7 @@
 
   <exclude-pattern>*/dependencies/*</exclude-pattern>
   <exclude-pattern>*/vendor/*</exclude-pattern>
-
-  <!-- TODO: remove these exclude-pattern elements, we want to test the entire
-       codebase! -->
-  <exclude-pattern>parts/contact-details.php</exclude-pattern>
-  <exclude-pattern>assets/*</exclude-pattern>
-  <exclude-pattern>functions.php</exclude-pattern>
-  <exclude-pattern>single-contacts.php</exclude-pattern>
-  <exclude-pattern>template-settings.php</exclude-pattern>
+  <exclude-pattern>assets/functions/class-tgm-plugin-activation.php</exclude-pattern>
 
   <arg name="extensions" value="php,inc,lib"/>
   <arg value="n"/>
@@ -100,7 +93,7 @@
     <exclude name="Squiz.Commenting.FileComment.SpacingAfterComment" />
     <exclude name="Squiz.Commenting.FileComment.SpacingAfterOpen" />
     <exclude name="Squiz.Commenting.FileComment.WrongStyle" />
-    <exclude name="Squiz.Commenting.FunctionComment.ExtraParamComment" />
+    <!-- <exclude name="Squiz.Commenting.FunctionComment.ExtraParamComment" /> -->
     <exclude name="Squiz.Commenting.FunctionComment.IncorrectTypeHint" />
     <exclude name="Squiz.Commenting.FunctionComment.InvalidNoReturn" />
     <exclude name="Squiz.Commenting.FunctionComment.InvalidReturnVoid" />
@@ -122,11 +115,10 @@
     <exclude name="Squiz.Commenting.VariableComment.Missing" />
     <exclude name="Squiz.Commenting.VariableComment.MissingVar" />
     <exclude name="Squiz.Commenting.VariableComment.WrongStyle" />
-    <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndFile" />
     <exclude name="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace" />
     <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace" />
     <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis" />
-    <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword" />
+    <!-- <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword" /> -->
     <exclude name="Squiz.PHP.DisallowMultipleAssignments.Found" />
     <exclude name="Squiz.PHP.EmbeddedPhp.ContentAfterEnd" />
     <exclude name="Squiz.PHP.EmbeddedPhp.ContentAfterOpen" />
@@ -137,48 +129,50 @@
     <exclude name="Squiz.Strings.ConcatenationSpacing.PaddingFound" />
     <exclude name="Squiz.Strings.DoubleQuoteUsage.NotRequired" />
     <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines" />
-    <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine" />
-    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine" />
+    <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndFile" />
+    <!-- <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine" /> -->
+    <!-- <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine" /> -->
     <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeKeyFound" />
-    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.CloseBraceNewLine" />
-    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceAfterArrayOpener" />
-    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceBeforeArrayCloser" />
-    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.SpaceAfterKeyword" />
-    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.SpaceBeforeArrayCloser" />
-    <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.SpaceInEmptyArray" />
+    <!-- <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.CloseBraceNewLine" /> -->
+    <!-- <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceAfterArrayOpener" /> -->
+    <!-- <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceBeforeArrayCloser" /> -->
+    <!-- <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.SpaceAfterKeyword" /> -->
+    <!-- <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.SpaceBeforeArrayCloser" /> -->
+    <!-- <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.SpaceInEmptyArray" /> -->
     <exclude name="WordPress.Arrays.ArrayIndentation.CloseBraceNotAligned" />
     <exclude name="WordPress.Arrays.ArrayIndentation.ItemNotAligned" />
     <exclude name="WordPress.Arrays.ArrayIndentation.MultiLineArrayItemNotAligned" />
     <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions.NoSpacesAroundArrayKeys" />
-    <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions.SpacesAroundArrayKeys" />
+    <!-- <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions.SpacesAroundArrayKeys" /> -->
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.CommaAfterLast" />
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.NoComma" />
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.NoSpaceAfterComma" />
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma" />
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceBeforeComma" />
     <exclude name="WordPress.PHP.YodaConditions.NotYoda" />
+    <exclude name="WordPress.VIP.AdminBarRemoval.RemovalDetected" />
     <exclude name="WordPress.VIP.DirectDatabaseQuery.SchemaChange" />
     <exclude name="WordPress.VIP.RestrictedFunctions.custom_role_add_role" />
     <exclude name="WordPress.VIP.RestrictedFunctions.get_term_by_get_term_by" />
     <exclude name="WordPress.VIP.RestrictedFunctions.switch_to_blog_switch_to_blog" />
-    <exclude name="WordPress.WhiteSpace.CastStructureSpacing.NoSpaceBeforeOpenParenthesis" />
-    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.BlankLineAfterEnd" />
-    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceAfterCloseParenthesis" />
-    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceAfterOpenParenthesis" />
-    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceBeforeCloseParenthesis" />
-    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceBeforeOpenParenthesis" />
+    <!-- <exclude name="WordPress.WhiteSpace.CastStructureSpacing.NoSpaceBeforeOpenParenthesis" /> -->
+    <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.BlankLineAfterEnd" /> -->
+    <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceAfterCloseParenthesis" /> -->
+    <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceAfterOpenParenthesis" /> -->
+    <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceBeforeCloseParenthesis" /> -->
+    <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceBeforeOpenParenthesis" /> -->
     <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterCloseParenthesis" />
     <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterOpenParenthesis" />
-    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterStructureOpen" />
+    <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterStructureOpen" /> -->
     <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeCloseParenthesis" />
-    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeOpenParenthesis" />
+    <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeOpenParenthesis" /> -->
     <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBetweenStructureColon" />
     <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.OpenBraceNotSameLine" />
-    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.SpaceBeforeFunctionOpenParenthesis" />
+    <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.SpaceBeforeFunctionOpenParenthesis" /> -->
     <exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceAfter" />
-    <exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore" />
-    <exclude name="WordPress.WhiteSpace.OperatorSpacing.SpacingAfter" />
-    <exclude name="WordPress.WhiteSpace.OperatorSpacing.SpacingBefore" />
+    <!-- <exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore" /> -->
+    <!-- <exclude name="WordPress.WhiteSpace.OperatorSpacing.SpacingAfter" /> -->
+    <!-- <exclude name="WordPress.WhiteSpace.OperatorSpacing.SpacingBefore" /> -->
 
   </rule>
 

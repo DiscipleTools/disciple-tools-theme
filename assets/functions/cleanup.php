@@ -19,19 +19,19 @@ function dt_start() {
 
     // cleaning up excerpt
     add_filter( 'excerpt_more', 'dt_excerpt_more' );
-    
+
     // Removes WP sticky class in favor or foundations sticky class
-    add_filter( 'post_class','remove_sticky_class' );
-    
+    add_filter( 'post_class','dt_remove_sticky_class' );
+
     // sets the theme to "light"
     add_filter( 'get_user_option_admin_color', 'dt_change_admin_color' );
     remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' ); // Remove options for admin area color scheme
-    
+
     // Cleanup admin menus
     add_action( 'admin_menu', 'dt_remove_post_admin_menus' );
-    
+
     // Disable emoji
-    add_action( 'init', 'disable_wp_emoji' );
+    add_action( 'init', 'dt_disable_wp_emoji' );
 
 } /* end joints start */
 
@@ -68,7 +68,7 @@ function dt_remove_wp_widget_recent_comments_style() {
 function dt_remove_recent_comments_style() {
     global $wp_widget_factory;
     if (isset( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'] )) {
-        remove_action( 'wp_head', array($wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style') );
+        remove_action( 'wp_head', array( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ) );
     }
 }
 
@@ -85,9 +85,9 @@ function dt_excerpt_more( $more ) {
 }
 
 //  Stop WordPress from using the sticky class (which conflicts with Foundation), and style WordPress sticky posts using the .wp-sticky class instead
-function remove_sticky_class( $classes ) {
-    if(in_array( 'sticky', $classes )) {
-        $classes = array_diff( $classes, array("sticky") );
+function dt_remove_sticky_class( $classes ) {
+    if (in_array( 'sticky', $classes )) {
+        $classes = array_diff( $classes, array( "sticky" ) );
         $classes[] = 'wp-sticky';
     }
 
@@ -113,7 +113,7 @@ function dt_get_the_author_posts_link() {
 /**
  * Cleans up the admin dashboard defaults
  */
-function remove_dashboard_meta () {
+function dt_remove_dashboard_meta() {
 
     remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'normal' );
     remove_meta_box( 'dashboard_plugins', 'dashboard', 'normal' );
@@ -161,8 +161,8 @@ function dt_remove_post_admin_menus(){
 /**
  * Disable default emoji features of Wordpress
  */
-function disable_wp_emoji() {
-    
+function dt_disable_wp_emoji() {
+
     // all actions related to emojis
     remove_action( 'admin_print_styles', 'print_emoji_styles' );
     remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
@@ -171,9 +171,9 @@ function disable_wp_emoji() {
     remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
     remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
     remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
-    
+
     // filter to remove TinyMCE emojis
-    add_filter( 'tiny_mce_plugins', 'disable_emoji_tinymce' );
+    add_filter( 'tiny_mce_plugins', 'dt_disable_emoji_tinymce' );
 }
 
 
@@ -184,7 +184,7 @@ function disable_wp_emoji() {
  *
  * @return array
  */
-function disable_emoji_tinymce( $plugins ) {
+function dt_disable_emoji_tinymce( $plugins ) {
     if ( is_array( $plugins ) ) {
         return array_diff( $plugins, array( 'wpemoji' ) );
     } else {

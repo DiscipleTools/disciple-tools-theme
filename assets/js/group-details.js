@@ -1,7 +1,5 @@
-/* global jQuery:false, wpApiSettings:false */
-
+/* global jQuery:false, wpApiGroupsSettings:false */
 jQuery(document).ready(function($) {
-
 
   $( document ).ajaxComplete(function(event, xhr, settings) {
     if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
@@ -9,24 +7,31 @@ jQuery(document).ready(function($) {
     }
   });
 
+  let group = wpApiGroupsSettings.group
+
+
   /**
    * Typeahead functions
    */
 
   function add_typeahead_item(groupId, fieldId, val, name) {
+    let list = $(`.${fieldId}-list`)
+    list.append(`<li class="temp-${fieldId}-${val}">Adding new Item</li>`)
     API.add_item_to_field( 'group', groupId, { [fieldId]: val }).then(function (addedItem){
-      jQuery(`.${fieldId}-list`).append(`<li class="${addedItem.ID}">
+      list.append(`<li class="${addedItem.ID}">
       <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
       <button class="details-remove-button details-edit"
               data-field="locations" data-id="${val}"
-              data-name="${name}"  
+              data-name="${name}"
               style="display: inline-block">Remove</button>
       </li>`)
+      $(`.temp-${fieldId}-${val}`).remove()
+    }).catch(err=>{
+      $(`.temp-${fieldId}-${val}`).text(`Could not add: ${name}`)
     })
   }
 
 
-  let group = {}
   let groupId = $('#group-id').text()
   let editingAll = false
 
@@ -41,7 +46,10 @@ jQuery(document).ready(function($) {
     $(`.details-edit`).toggle()
     editingAll = !editingAll
     editDetailsToggle.text( editingAll ? "Save": "Edit")
-
+    if(editingAll){
+      $('.status.details-edit').show()
+      $('.status.details-list').hide()
+    }
   }
   $('#edit-details').on('click', function () {
     toggleEditAll()
@@ -136,14 +144,14 @@ jQuery(document).ready(function($) {
       return obj.ID
     },
     prefetch: {
-      url: wpApiSettings.root + 'dt/v1/users/',
+      url: wpApiGroupsSettings.root + 'dt/v1/users/get_users/',
       prepare : API.typeaheadPrefetchPrepare,
       transform: function (data) {
         return API.filterTypeahead(data, group.assigned_to ? [{ID:group.assigned_to.ID}] : [])
       },
     },
     remote: {
-      url: wpApiSettings.root + 'dt/v1/users/?s=%QUERY',
+      url: wpApiGroupsSettings.root + 'dt/v1/users/get_users/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare,
       transform: function (data) {
@@ -163,6 +171,7 @@ jQuery(document).ready(function($) {
     },
     {
       name: 'users',
+      limit: 15,
       source: function (q, sync, async) {
         return API.defaultFilter(q, sync, async, users, group.assigned_to ? [{ID:group.assigned_to.ID}] : [])
       },
@@ -198,21 +207,20 @@ jQuery(document).ready(function($) {
       return obj.ID
     },
     prefetch: {
-      url: wpApiSettings.root + 'dt/v1/locations-compact/',
+      url: wpApiGroupsSettings.root + 'dt/v1/locations-compact/',
       prepare : API.typeaheadPrefetchPrepare,
       transform: function(data){
         return API.filterTypeahead(data, group.locations || [])
       },
     },
     remote: {
-      url: wpApiSettings.root + 'dt/v1/locations-compact/?s=%QUERY',
+      url: wpApiGroupsSettings.root + 'dt/v1/locations-compact/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare,
       transform: function(data){
         return API.filterTypeahead(data, group.locations || [])
       }
     },
-    initialize: false,
   });
 
   let locationsTypeahead = $('.locations .typeahead')
@@ -224,6 +232,7 @@ jQuery(document).ready(function($) {
     },
     {
       name: 'locations',
+      limit: 15,
       source: function (q, sync, async) {
         return API.defaultFilter(q, sync, async, locations, group.locations)
       },
@@ -241,32 +250,90 @@ jQuery(document).ready(function($) {
   })
   loadLocationsTypeahead()
 
-
   /**
-   * Addresses
+   * People Groups
    */
-  var button = $('.address.details-edit.add-button')
-  button.on('click', e=>{
+  let peopleGroups = new Bloodhound({
+    datumTokenizer: API.searchAnyPieceOfWord,
+    queryTokenizer: Bloodhound.tokenizers.ngram,
+    identify: function (obj) {
+      return obj.ID
+    },
+    prefetch: {
+      url: wpApiGroupsSettings.root + 'dt/v1/people-groups-compact/',
+      prepare : API.typeaheadPrefetchPrepare,
+    },
+    remote: {
+      url: wpApiGroupsSettings.root + 'dt/v1/people-groups-compact/?s=%QUERY',
+      wildcard: '%QUERY',
+      prepare : API.typeaheadRemotePrepare,
+    },
+  });
+
+  let peopleGroupsTypeahead = $('.people-groups .typeahead')
+  function loadPeopleGroupsTypeahead() {
+    peopleGroupsTypeahead.typeahead({
+        highlight: true,
+        minLength: 0,
+        autoselect: true,
+
+      },
+      {
+        name: 'peopleGroups',
+        limit: 15,
+        source: function (q, sync, async) {
+          return API.defaultFilter(q, sync, async, peopleGroups, _.get(group, "people_groups"))
+        },
+        display: 'name'
+      })
+  }
+  peopleGroupsTypeahead.bind('typeahead:select', function (ev, sug) {
+    peopleGroupsTypeahead.typeahead('val', '')
+    group["people_groups"].push(sug)
+    add_typeahead_item(groupId, 'people_groups', sug.ID, sug.name)
+    $("#no-people-group").remove()
+    peopleGroupsTypeahead.typeahead('destroy')
+    peopleGroups.initialize()
+    loadPeopleGroupsTypeahead()
+  })
+  loadPeopleGroupsTypeahead()
+
+  $("#add-new-address").click(function () {
     if ($('#new-address').length === 0 ) {
-      let newInput = `<li>
-        <textarea id="new-address"></textarea>
-      </li>`
-      $('.details-edit.address-list').append(newInput)
+      let newInput = `<div class="new-address">
+        <textarea rows="3" id="new-address"></textarea>
+      </div>`
+      $('.details-edit#address-list').append(newInput)
     }
   })
+
   //for a new address field that has not been saved yet
   $(document).on('change', '#new-address', function (val) {
     let input = $('#new-address')
-    API.add_item_to_field( 'group', groupId, {"new-address":input.val()}).then(function (data) {
-      if (data != groupId){
+    API.add_item_to_field( 'group', groupId, {"new-address":input.val()}).then(function (newAddressId) {
+      console.log(newAddressId)
+      if (newAddressId != groupId){
         //change the it to the created field
-        input.attr('id', data)
-        $('.details-list.address').append(`<li class="${data}">${input.val()}</li>`)
-      }
+        input.attr('id', newAddressId)
+        $('.details-list.address').append(`
+            <li class="${newAddressId}">${input.val()}
+              <img id="${newAddressId}-verified" class="details-status" style="display:none" src="${wpApiGroupsSettings.template_dir}/assets/images/verified.svg"/>
+              <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${wpApiGroupsSettings.template_dir}/assets/images/broken.svg"/>
+            </li>
+        `)
+        $('.new-address').append(`
+          <button class="details-status-button verify" data-verified="false" data-id="${newAddressId}">
+              Verify
+          </button>
+          <button class="details-status-button invalid" data-verified="false" data-id="${newAddressId}">
+              Invalidate
+          </button>
+        `).removeClass('new-address')
 
+      }
     })
   })
-  $(document).on('change', '.address-list textarea', function(){
+  $(document).on('change', '#address-list textarea', function(){
     let id = $(this).attr('id')
     if (id && id !== "new-address"){
       API.save_field_api('group', groupId, {[id]: $(this).val()}).then(()=>{
@@ -291,7 +358,7 @@ jQuery(document).ready(function($) {
       return obj.ID
     },
     prefetch: {
-      url: wpApiSettings.root + 'dt-hooks/v1/contacts/compact',
+      url: wpApiGroupsSettings.root + 'dt-hooks/v1/contacts/compact',
       transform: function(data){
         loadMembersTypeahead()
         return API.filterTypeahead(data, group.members || [])
@@ -299,7 +366,7 @@ jQuery(document).ready(function($) {
       prepare : API.typeaheadPrefetchPrepare,
     },
     remote: {
-      url: wpApiSettings.root + 'dt-hooks/v1/contacts/compact/?s=%QUERY',
+      url: wpApiGroupsSettings.root + 'dt-hooks/v1/contacts/compact/?s=%QUERY',
       wildcard: '%QUERY',
       transform: function(data){
         return API.filterTypeahead(data, group.members || [])
@@ -321,6 +388,7 @@ jQuery(document).ready(function($) {
     },
     {
       name: 'members',
+      limit: 15,
       source: function (q, sync, async) {
         return API.defaultFilter(q, sync, async, members, group.members)
       },
@@ -338,25 +406,21 @@ jQuery(document).ready(function($) {
 
 
   /**
-   * Get the group fields from the api
+   * Setup group fields
    */
 
-  API.get_post( 'group', groupId).then(function (groupData) {
-    group = groupData
-    if (groupData.end_date){
-      endDatePicker.datepicker('setDate', groupData.end_date)
-    }
-    if (groupData.start_date){
-      startDatePicker.datepicker('setDate', groupData.start_date)
-    }
-    if (groupData.assigned_to){
-      $('.current-assigned').text(_.get(groupData, "assigned_to.display"))
-    }
-    locations.initialize()
-    members.initialize()
-    users.initialize()
-    fillOutChurchHealthMetrics()
-  })
+  if (group.end_date){
+    endDatePicker.datepicker('setDate', group.end_date)
+  }
+  if (group.start_date){
+    startDatePicker.datepicker('setDate', group.start_date)
+  }
+  if (group.assigned_to){
+    $('.current-assigned').text(_.get(group, "assigned_to.display"))
+  }
+  locations.initialize()
+  members.initialize()
+  users.initialize()
 
 
   /**
@@ -369,7 +433,7 @@ jQuery(document).ready(function($) {
   function refreshActivity() {
     API.get_activity('group', groupId).then(activityData=>{
       activityData.forEach(d=>{
-        d.date = new Date(d.hist_time*1000)
+        d.date = moment.unix(d.hist_time)
       })
       activity = activityData
       display_activity_comment()
@@ -383,7 +447,7 @@ jQuery(document).ready(function($) {
       API.post_comment('group', groupId, input.val()).then(commentData=>{
         commentButton.toggleClass('loading')
         input.val('')
-        commentData.comment.date = new Date(commentData.comment.comment_date_gmt + "Z")
+        commentData.comment.date = moment(commentData.comment.comment_date_gmt + "Z")
         comments.push(commentData.comment)
         display_activity_comment()
       })
@@ -394,11 +458,11 @@ jQuery(document).ready(function($) {
     API.get_activity('group', groupId)
   ).then(function(commentData, activityData){
     commentData[0].forEach(comment=>{
-      comment.date = new Date(comment.comment_date_gmt + "Z")
+      comment.date = moment(comment.comment_date_gmt + "Z")
     })
     comments = commentData[0]
     activityData[0].forEach(d=>{
-      d.date = new Date(d.hist_time*1000)
+      d.date = moment.unix(d.hist_time)
     })
     activity = activityData[0]
     display_activity_comment("all")
@@ -431,8 +495,8 @@ jQuery(document).ready(function($) {
       }
 
 
-      let diff = (first ? first.date.getTime() : new Date().getTime()) - obj.date.getTime()
-      if (!first || (first.name === name && diff < 60 * 60 * 1000) ){
+      let diff = first ? first.date.diff(obj.date, "hours") : 0
+      if (!first || (first.name === name && diff < 1) ){
         array.push(obj)
       } else {
         commentsWrapper.append(commentTemplate({
@@ -456,28 +520,19 @@ jQuery(document).ready(function($) {
   <div class="activity-block">
     <div><span><strong><%- name %></strong></span> <span class="comment-date"> <%- date %> </span></div>
     <div class="activity-text">
-    <% _.forEach(activity, function(a){ 
+    <% _.forEach(activity, function(a){
         if (a.comment){ %>
             <p dir="auto" class="comment-bubble"> <%- a.text %> </p>
-      <% } else { %> 
+      <% } else { %>
             <p class="activity-bubble">  <%- a.text %> </p>
-    <%  } 
+    <%  }
     }); %>
     </div>
   </div>`
   )
 
   function formatDate(date) {
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0'+minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-    var month = date.getMonth()+1
-    month = month < 10 ? "0"+month.toString() : month
-    return date.getFullYear() + "/" + date.getDate() + "/" + month + "  " + strTime;
+    return date.format("YYYY/MM/DD hh:mm a")
   }
 
 
@@ -498,31 +553,43 @@ jQuery(document).ready(function($) {
   ]
 
   function fillOutChurchHealthMetrics() {
-      let svgItem = document.getElementById("church-svg-wrapper").contentDocument
-      let churchWheel = $(svgItem).find('svg')
-      metrics.forEach(m=>{
-        if (group[`church_${m}`] && ["1", "Yes"].indexOf(group[`church_${m}`]["key"])> -1){
-          churchWheel.find(`#${m}`).css("opacity", "1")
-        } else {
-          churchWheel.find(`#${m}`).css("opacity", ".1")
-        }
-      })
-      if (!group["church_commitment"] || group["church_commitment"] === '0'){
-        churchWheel.find('#group').css("opacity", "1")
+    let svgItem = document.getElementById("church-svg-wrapper").contentDocument
+
+    let churchWheel = $(svgItem).find('svg')
+    metrics.forEach(m=>{
+      if (group[`church_${m}`] && ["1", "Yes"].indexOf(group[`church_${m}`]["key"])> -1){
+        churchWheel.find(`#${m}`).css("opacity", "1")
+        $(`#church_${m}`).css("opacity", "1")
       } else {
-        churchWheel.find('#group').css("opacity", ".1")
+        churchWheel.find(`#${m}`).css("opacity", ".1")
+        $(`#church_${m}`).css("opacity", ".4")
       }
+    })
+    if (!group["church_commitment"] || group["church_commitment"]["key"] === '0'){
+      churchWheel.find('#group').css("opacity", "1")
+      $(`#church_commitment`).css("opacity", ".4")
+    } else {
+      churchWheel.find('#group').css("opacity", ".1")
+      $(`#church_commitment`).css("opacity", "1")
+    }
+
+    $(".js-progress-bordered-box").removeClass("half-opacity")
+  }
+
+  if ($('#church-svg-wrapper')[0].getSVGDocument() == null) {
+    $('#church-svg-wrapper').on('load', function() { fillOutChurchHealthMetrics() })
+  } else {
+    fillOutChurchHealthMetrics()
   }
 
   $('.group-progress-button').on('click', function () {
     let fieldId = $(this).attr('id')
-    $(this).css('opacity', ".5");
+    $(this).css('opacity', ".6");
     let field = _.get(group, `[${fieldId}]['key']`) === "1" ? "0" : "1"
     API.save_field_api('group', groupId, {[fieldId]: field})
       .then(groupData=>{
         group = groupData
         fillOutChurchHealthMetrics()
-        $(this).css('opacity', "1");
       }).catch(err=>{
         console.log(err)
     })
@@ -574,6 +641,53 @@ jQuery(document).ready(function($) {
     toggleEdit('status')
   })
 
+
+  $(document).on('click', '.details-status-button.verify', function () {
+    let id = $(this).data('id')
+    let verified = $(this).data('verified')
+    if (id){
+      console.log('verify')
+      API.update_contact_method_detail('group', groupId, id, {"verified":!verified}).then(()=>{
+        $(this).data('verified', !verified)
+        if (verified){
+          jQuery(`#${id}-verified`).hide()
+        } else {
+          jQuery(`#${id}-verified`).show()
+
+        }
+        jQuery(this).html(verified ? "Verify" : "Unverify")
+      }).catch(err=>{
+        console.log(err)
+      })
+    }
+  })
+  $(document).on('click', '.details-status-button.invalid', function () {
+    let id = $(this).data('id')
+    let invalid = $(this).data('invalid')
+    API.update_contact_method_detail('group', groupId, id, {"invalid":!invalid}).then(()=>{
+      $(this).data('invalid', !invalid)
+      if (invalid){
+        jQuery(`#${id}-invalid`).hide()
+      } else  {
+        jQuery(`#${id}-invalid`).show()
+      }
+      jQuery(this).html(invalid? "Invalidate" : "Uninvalidate")
+    })
+  })
+
+  $('.text-field.details-edit').change(function () {
+    let id = $(this).attr('id')
+    let val = $(this).val()
+    API.save_field_api(
+      'group',
+      groupId,
+      {[id]:val}
+    ).then(()=>{
+      $(`.${id}`).text(val)
+    }).catch(err=>{
+      console.log(err)
+    })
+  })
 })
 
 

@@ -300,6 +300,7 @@
     const $div = $("<div>");
     const ccfs = wpApiSettings.contacts_custom_fields_settings;
     const gcfs = wpApiSettings.groups_custom_fields_settings;
+    const is_dispatcher = _.includes(wpApiSettings.current_user_roles, "dispatcher");
     Object.keys(counts).sort().forEach(function(key) {
       let humanText;
       if (wpApiSettings.current_post_type === 'contacts' && (filterType === 'seeker_path' || filterType === 'overall_status')) {
@@ -311,6 +312,15 @@
       } else {
         humanText = key;
       }
+      const checkbox = $("<input>")
+        .attr("type", "checkbox")
+        .on("change", function() {
+          updateFilterFunctions();
+          dataTable.draw();
+        });
+      if (is_dispatcher && filterType === "overall_status" && key === "unassigned") {
+        checkbox.attr("checked", true);
+      }
       $div.append(
         $("<div>").append(
           $("<label>")
@@ -318,14 +328,7 @@
             .addClass("js-filter-checkbox-label")
             .data("filter-type", filterType)
             .data("filter-value", key)
-            .append(
-              $("<input>")
-              .attr("type", "checkbox")
-              .on("change", function() {
-                updateFilterFunctions();
-                dataTable.draw();
-              })
-            )
+            .append(checkbox)
             .append(document.createTextNode(humanText))
             .append($("<span>")
               .css("float", "right")
@@ -334,6 +337,9 @@
         )
       );
     });
+    if (is_dispatcher) {
+      $(".js-list-filter[data-filter='overall_status']").removeClass("filter--closed");
+    }
     if ($.isEmptyObject(counts)) {
       $div.append(
           document.createTextNode(wpApiSettings.txt_no_filters)
@@ -347,7 +353,7 @@
 
     let filterTypes;
     if (wpApiSettings.current_post_type === "contacts") {
-      filterTypes = ["overall_status", "locations", "assigned_to", "seeker_path", "requires_update"];
+      filterTypes = ["overall_status", "locations", "assigned_login", "seeker_path", "requires_update"];
     } else if (wpApiSettings.current_post_type === "groups") {
       filterTypes = ["group_status", "locations"];
     }
@@ -355,7 +361,7 @@
     filterFunctions.push(viewFilterFunctions[$(".js-list-view:checked").val()]);
 
     filterTypes.forEach(function(filterType) {
-      const $checkedLabels = $(".js-filter-checkbox-label")
+      const $checkedLabels = assertAtLeastOne($(".js-filter-checkbox-label"))
         .filter(function() { return $(this).data("filter-type") === filterType; })
         .filter(function() { return $(this).find("input[type=checkbox]")[0].checked; });
 
@@ -376,8 +382,8 @@
               return _.includes(contact.locations, $(label).data("filter-value"));
             });
           });
-        } else if (filterType === "assigned_to") {
-          filterFunctions.push(function assigned_to(contact) {
+        } else if (filterType === "assigned_login") {
+          filterFunctions.push(function assigned_login(contact) {
             return _.some($checkedLabels, function(label) {
               return $(label).data("filter-value") === _.get(contact, "assigned_to.user_login");
             });
@@ -436,5 +442,11 @@
     });
   }
 
+  function assertAtLeastOne(collection) {
+    if (! (collection.length > 0)) {
+      throw new Error("Expected length to be greater than zero");
+    }
+    return collection;
+  }
 
 })(window.jQuery, window.wpApiSettings, window.Foundation);

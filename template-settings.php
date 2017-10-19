@@ -4,6 +4,8 @@ Template Name: Settings
 */
 
 /* Process $_POST content */
+// We're not checking the nonce here because update_user_contact_info will
+// @codingStandardsIgnoreLine
 if( isset( $_POST[ 'user_update_nonce' ] ) ) {
     Disciple_Tools_Users::update_user_contact_info();
 }
@@ -95,9 +97,9 @@ dt_print_breadcrumbs(
                         <ul>
                             <?php
                             echo '<li><a href="mailto:' . esc_attr( $dt_user->user_email ) . '">' . esc_html( $dt_user->user_email ) . '</a> (System Email)</li>';
-                            foreach( $dt_user_fields as $field ) {
-                                if( $field[ 'type' ] == 'email' && !empty( $field[ 'value' ] ) ) {
-                                    echo '<li><a href="mailto:' . esc_html( $field[ 'value' ] ) . '" target="_blank">' . esc_html( $field[ 'value' ] ) . '</a> (' . esc_html( $field[ 'label' ] ) . ')</li>';
+                            foreach ( $dt_user_fields as $field ) {
+                                if ( $field['type'] == 'email' && !empty( $field['value'] ) ) {
+                                    echo '<li><a href="mailto:' . esc_html( $field['value'] ) . '" target="_blank">' . esc_html( $field['value'] ) . '</a> (' . esc_html( $field['label'] ) . ')</li>';
                                 }
                             }
                             ?>
@@ -106,9 +108,9 @@ dt_print_breadcrumbs(
                         <strong>Phone</strong>
                         <ul>
                             <?php
-                            foreach( $dt_user_fields as $field ) {
-                                if( $field[ 'type' ] == 'phone' && !empty( $field[ 'value' ] ) ) {
-                                    echo '<li>' . esc_html( $field[ 'value' ] ) . ' (' . esc_html( $field[ 'label' ] ) . ')</li>';
+                            foreach ( $dt_user_fields as $field ) {
+                                if ( $field['type'] == 'phone' && !empty( $field['value'] ) ) {
+                                    echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
                                 }
                             }
                             ?>
@@ -117,9 +119,9 @@ dt_print_breadcrumbs(
                         <strong>Address</strong>
                         <ul>
                             <?php
-                            foreach( $dt_user_fields as $field ) {
-                                if( $field[ 'type' ] == 'address' && !empty( $field[ 'value' ] ) ) {
-                                    echo '<li>' . esc_html( $field[ 'value' ] ) . ' (' . esc_html( $field[ 'label' ] ) . ')</li>';
+                            foreach ( $dt_user_fields as $field ) {
+                                if ( $field['type'] == 'address' && !empty( $field['value'] ) ) {
+                                    echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
                                 }
                             }
                             ?>
@@ -128,9 +130,9 @@ dt_print_breadcrumbs(
                         <strong>Social</strong>
                         <ul>
                             <?php
-                            foreach( $dt_user_fields as $field ) {
-                                if( $field[ 'type' ] == 'social' && !empty( $field[ 'value' ] ) ) {
-                                    echo '<li>' . esc_html( $field[ 'value' ] ) . ' (' . esc_html( $field[ 'label' ] ) . ')</li>';
+                            foreach ( $dt_user_fields as $field ) {
+                                if ( $field['type'] == 'social' && !empty( $field['value'] ) ) {
+                                    echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
                                 }
                             }
                             ?>
@@ -139,9 +141,9 @@ dt_print_breadcrumbs(
                         <strong>Other</strong>
                         <ul>
                             <?php
-                            foreach( $dt_user_fields as $field ) {
-                                if( $field[ 'type' ] == 'other' && !empty( $field[ 'value' ] ) ) {
-                                    echo '<li>' . esc_html( $field[ 'value' ] ) . ' (' . esc_html( $field[ 'label' ] ) . ')</li>';
+                            foreach ( $dt_user_fields as $field ) {
+                                if ( $field['type'] == 'other' && !empty( $field['value'] ) ) {
+                                    echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
                                 }
                             }
                             ?>
@@ -154,9 +156,9 @@ dt_print_breadcrumbs(
                         <p><strong>Locations</strong></p>
                         <?php
                         $dt_user_locations_list = dt_get_user_locations_list( get_current_user_id() );
-                        if( $dt_user_locations_list ) {
+                        if ( $dt_user_locations_list ) {
                             echo '<ul>';
-                            foreach( $dt_user_locations_list as $locations_list ) {
+                            foreach ( $dt_user_locations_list as $locations_list ) {
                                 echo '<li><a href="' . esc_url( $locations_list->guid ) . '">' . esc_html( $locations_list->post_title ) . '</a></li>';
                             }
                             echo '</ul>';
@@ -167,13 +169,13 @@ dt_print_breadcrumbs(
                         <p><strong>Teams</strong></p>
                         <?php
                         $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id() );
-                        if( $dt_user_team_members_list ) {
-                            foreach( $dt_user_team_members_list as $team_list ) {
-                                echo $team_list[ 'team_name' ];
-                                if( !empty( $team_list[ 'team_members' ] ) ) {
+                        if ( $dt_user_team_members_list ) {
+                            foreach ( $dt_user_team_members_list as $team_list ) {
+                                echo esc_html( $team_list['team_name'] );
+                                if ( !empty( $team_list['team_members'] ) ) {
                                     echo '<ul>';
-                                    foreach( $team_list[ 'team_members' ] as $member ) {
-                                        echo '<li><a href="' . esc_url( $member[ 'user_url' ] ) . '">' . esc_html( $member[ 'display_name' ] ) . '</a></li>';
+                                    foreach ( $team_list['team_members'] as $member ) {
+                                        echo '<li><a href="' . esc_url( $member['user_url'] ) . '">' . esc_html( $member['display_name'] ) . '</a></li>';
                                     }
                                     echo '</ul>';
                                 }
@@ -204,13 +206,14 @@ dt_print_breadcrumbs(
                     <tr>
                         <td class="tall-4">Newly Assigned Contact</td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'new_web' ] ) {
+                            <?php
+                            if ( $dt_site_notification_defaults['new_web'] ) {
                                 print '<div style="height:2em;">required</div>';
                             } else { ?>
                                 <div class="switch">
                                     <input class="switch-input" id="new_web" type="checkbox"
                                            name="new_web"
-                                           onclick="switch_preference('new_web');" <?php ( isset( $dt_user_meta[ 'new_web' ] ) && $dt_user_meta[ 'new_web' ][ 0 ] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                           onclick="switch_preference('new_web');" <?php ( isset( $dt_user_meta['new_web'] ) && $dt_user_meta['new_web'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
                                     <label class="switch-paddle inactive" for="new_web">
                                         <span class="show-for-sr">Newly Assigned Contact</span>
                                     </label>
@@ -218,13 +221,14 @@ dt_print_breadcrumbs(
                             <?php } // end else ?>
                         </td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'new_email' ] ) {
+                            <?php
+                            if ( $dt_site_notification_defaults['new_email'] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
                                     <input class="switch-input" id="new_email" type="checkbox"
                                            name="new_email"
-                                           onclick="switch_preference('new_email');" <?php ( isset( $dt_user_meta[ 'new_email' ] ) && $dt_user_meta[ 'new_email' ][ 0 ] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                           onclick="switch_preference('new_email');" <?php ( isset( $dt_user_meta['new_email'] ) && $dt_user_meta['new_email'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
                                     <label class="switch-paddle" for="new_email">
                                         <span class="show-for-sr">Newly Assigned Contact</span>
                                     </label>
@@ -235,13 +239,14 @@ dt_print_breadcrumbs(
                     <tr>
                         <td class="tall-4">@Mentions</td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'mentions_web' ] ) {
+                            <?php
+                            if ( $dt_site_notification_defaults['mentions_web'] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
                                     <input class="switch-input" id="mentions_web" type="checkbox"
                                            name="mentions_web"
-                                           onclick="switch_preference('mentions_web');" <?php ( isset( $dt_user_meta[ 'mentions_web' ] ) && $dt_user_meta[ 'mentions_web' ][ 0 ] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                           onclick="switch_preference('mentions_web');" <?php ( isset( $dt_user_meta['mentions_web'] ) && $dt_user_meta['mentions_web'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
                                     <label class="switch-paddle" for="mentions_web">
                                         <span class="show-for-sr">@Mentions</span>
                                     </label>
@@ -249,13 +254,14 @@ dt_print_breadcrumbs(
                             <?php } // end else ?>
                         </td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'mentions_email' ] ) {
+                            <?php
+                            if ( $dt_site_notification_defaults['mentions_email'] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
                                     <input class="switch-input" id="mentions_email" type="checkbox"
                                            name="mentions_email"
-                                           onclick="switch_preference('mentions_email');" <?php ( isset( $dt_user_meta[ 'mentions_email' ] ) && $dt_user_meta[ 'mentions_email' ][ 0 ] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                           onclick="switch_preference('mentions_email');" <?php ( isset( $dt_user_meta['mentions_email'] ) && $dt_user_meta['mentions_email'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
                                     <label class="switch-paddle" for="mentions_email">
                                         <span class="show-for-sr">@Mentions</span>
                                     </label>
@@ -266,13 +272,14 @@ dt_print_breadcrumbs(
                     <tr>
                         <td class="tall-4">Update Needed</td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'updates_web' ] ) {
+                            <?php
+                            if ( $dt_site_notification_defaults['updates_web'] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
                                     <input class="switch-input" id="updates_web" type="checkbox"
                                            name="updates_web"
-                                           onclick="switch_preference('updates_web');" <?php ( isset( $dt_user_meta[ 'updates_web' ] ) && $dt_user_meta[ 'updates_web' ][ 0 ] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                           onclick="switch_preference('updates_web');" <?php ( isset( $dt_user_meta['updates_web'] ) && $dt_user_meta['updates_web'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
                                     <label class="switch-paddle" for="updates_web">
                                         <span class="show-for-sr">Update Needed</span>
                                     </label>
@@ -280,13 +287,14 @@ dt_print_breadcrumbs(
                             <?php } // end else ?>
                         </td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'updates_email' ] ) {
+                            <?php
+                            if ( $dt_site_notification_defaults['updates_email'] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
                                     <input class="switch-input" id="updates_email" type="checkbox"
                                            name="updates_email"
-                                           onclick="switch_preference('updates_email');" <?php ( isset( $dt_user_meta[ 'updates_email' ] ) && $dt_user_meta[ 'updates_email' ][ 0 ] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                           onclick="switch_preference('updates_email');" <?php ( isset( $dt_user_meta['updates_email'] ) && $dt_user_meta['updates_email'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
                                     <label class="switch-paddle" for="updates_email">
                                         <span class="show-for-sr">Update Needed</span>
                                     </label>
@@ -297,13 +305,14 @@ dt_print_breadcrumbs(
                     <tr>
                         <td class="tall-4">Contact Info Changed</td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'changes_web' ] ) {
+                            <?php
+                            if ( $dt_site_notification_defaults['changes_web'] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
                                     <input class="switch-input" id="changes_web" type="checkbox"
                                            name="changes_web"
-                                           onclick="switch_preference('changes_web');" <?php ( isset( $dt_user_meta[ 'changes_web' ] ) && $dt_user_meta[ 'changes_web' ][ 0 ] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                           onclick="switch_preference('changes_web');" <?php ( isset( $dt_user_meta['changes_web'] ) && $dt_user_meta['changes_web'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
                                     <label class="switch-paddle" for="changes_web">
                                         <span class="show-for-sr">Contact Info Changed</span>
                                     </label>
@@ -311,13 +320,14 @@ dt_print_breadcrumbs(
                             <?php } // end else ?>
                         </td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'changes_email' ] ) {
+                            <?php
+                            if ( $dt_site_notification_defaults['changes_email'] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
                                     <input class="switch-input" id="changes_email" type="checkbox"
                                            name="changes_email"
-                                           onclick="switch_preference('changes_email');" <?php ( isset( $dt_user_meta[ 'changes_email' ] ) && $dt_user_meta[ 'changes_email' ][ 0 ] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                           onclick="switch_preference('changes_email');" <?php ( isset( $dt_user_meta['changes_email'] ) && $dt_user_meta['changes_email'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
                                     <label class="switch-paddle" for="changes_email">
                                         <span class="show-for-sr">Contact Info Changed</span>
                                     </label>
@@ -328,13 +338,14 @@ dt_print_breadcrumbs(
                     <tr>
                         <td class="tall-4">Contact Milestones</td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'milestones_web' ] ) {
+                            <?php
+                            if ( $dt_site_notification_defaults['milestones_web'] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
                                     <input class="switch-input" id="milestones_web" type="checkbox"
                                            name="milestones_web"
-                                           onclick="switch_preference('milestones_web');" <?php ( isset( $dt_user_meta[ 'milestones_web' ] ) && $dt_user_meta[ 'milestones_web' ][ 0 ] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                           onclick="switch_preference('milestones_web');" <?php ( isset( $dt_user_meta['milestones_web'] ) && $dt_user_meta['milestones_web'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
                                     <label class="switch-paddle" for="milestones_web">
                                         <span class="show-for-sr">Milestones</span>
                                     </label>
@@ -342,13 +353,14 @@ dt_print_breadcrumbs(
                             <?php } // end else ?>
                         </td>
                         <td>
-                            <?php if( $dt_site_notification_defaults[ 'milestones_email' ] ) {
+                            <?php
+                            if ( $dt_site_notification_defaults['milestones_email'] ) {
                                 print 'required';
                             } else { ?>
                                 <div class="switch">
                                     <input class="switch-input" id="milestones_email" type="checkbox"
                                            name="milestones_email"
-                                           onclick="switch_preference('milestones_email');" <?php ( isset( $dt_user_meta[ 'milestones_email' ] ) && $dt_user_meta[ 'milestones_email' ][ 0 ] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                           onclick="switch_preference('milestones_email');" <?php ( isset( $dt_user_meta['milestones_email'] ) && $dt_user_meta['milestones_email'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
                                     <label class="switch-paddle" for="milestones_email">
                                         <span class="show-for-sr">Milestones</span>
                                     </label>
@@ -376,7 +388,7 @@ dt_print_breadcrumbs(
                 </p>
                 <div class="switch large">
                     <input class="switch-input" id="switch0vac" type="checkbox" name="switch0vac"
-                           onclick="switch_preference('dt_availability');" <?php ( isset( $dt_user_meta[ 'dt_availability' ] ) && $dt_user_meta[ 'dt_availability' ][ 0 ] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
+                           onclick="switch_preference('dt_availability');" <?php ( isset( $dt_user_meta['dt_availability'] ) && $dt_user_meta['dt_availability'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
                     <label class="switch-paddle" for="switch0vac">
                         <span class="show-for-sr">Enable</span>
                         <span class="switch-active" aria-hidden="true">On</span>
@@ -386,6 +398,8 @@ dt_print_breadcrumbs(
 
 
                 <?php // TODO: Add scheduling and history of availability ?>
+                <?php
+                /*
                 <!-- List of past, present, and future vacations scheduled
                 <p>
                     <strong>Schedule Away: </strong>
@@ -475,6 +489,8 @@ dt_print_breadcrumbs(
 
         </div>
             End future development of availability -->
+        */
+        ?>
 
             <div class="reveal" id="edit-profile" data-reveal>
                 <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -486,7 +502,7 @@ dt_print_breadcrumbs(
 
                     <form method="post">
 
-                        <?php wp_nonce_field( "user_" . $dt_user->ID . "_update", $name = "user_update_nonce", $referer = false, $echo = true ); ?>
+                        <?php wp_nonce_field( "user_" . $dt_user->ID . "_update", "user_update_nonce", false, true ); ?>
 
                         <table class="table">
 
@@ -511,17 +527,17 @@ dt_print_breadcrumbs(
                             </tr>
 
                             <?php // site defined fields
-                            foreach( $dt_user_fields as $field ) {
+                            foreach ( $dt_user_fields as $field ) {
                                 ?>
                                 <tr>
                                     <td><label
-                                            for="<?php echo esc_attr( $field[ 'key' ] ) ?>"><?php echo esc_html( $field[ 'label' ] ) ?></label>
+                                            for="<?php echo esc_attr( $field['key'] ) ?>"><?php echo esc_html( $field['label'] ) ?></label>
                                     </td>
                                     <td><input type="text"
                                                class="profile-input"
-                                               id="<?php echo esc_attr( $field[ 'key' ] ) ?>"
-                                               name="<?php echo esc_attr( $field[ 'key' ] ) ?>"
-                                               value="<?php echo esc_html( $field[ 'value' ] ) ?>"/>
+                                               id="<?php echo esc_attr( $field['key'] ) ?>"
+                                               name="<?php echo esc_attr( $field['key'] ) ?>"
+                                               value="<?php echo esc_html( $field['value'] ) ?>"/>
                                     </td>
                                 </tr>
                                 <?php

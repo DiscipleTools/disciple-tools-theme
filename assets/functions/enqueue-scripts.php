@@ -16,7 +16,7 @@ function dt_theme_enqueue_style( string $handle, string $rel_src, array $deps = 
 }
 
 
-function site_scripts() {
+function dt_site_scripts() {
     global $wp_styles; // Call global $wp_styles variable to add conditional wrapper around ie stylesheet the WordPress way
 
     wp_enqueue_style( 'foundation-css', 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' );
@@ -41,6 +41,9 @@ function site_scripts() {
     /**
      * End jQuery force new version
      */
+    wp_register_script( 'moment', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js', false, '2.19.1' );
+    wp_enqueue_script( 'moment' );
+
 
     dt_theme_enqueue_script( 'lodash', 'dependencies/lodash/lodash.min.js', array() );
 
@@ -53,12 +56,12 @@ function site_scripts() {
     dt_theme_enqueue_style( 'site-css', 'build/css/style.min.css', array() );
 
     // Comment reply script for threaded comments
-    if ( is_singular() and comments_open() and (get_option( 'thread_comments' ) == 1)) {
+    if ( is_singular() && comments_open() && (get_option( 'thread_comments' ) == 1)) {
         wp_enqueue_script( 'comment-reply' );
     }
 
 
-    dt_theme_enqueue_script( 'api-wrapper', 'assets/js/api-wrapper.js', array( 'jquery', 'lodash') );
+    dt_theme_enqueue_script( 'api-wrapper', 'assets/js/api-wrapper.js', array( 'jquery', 'lodash' ) );
     wp_localize_script(
         'api-wrapper', 'wpApiSettings', array(
             'root' => esc_url_raw( rest_url() ),
@@ -67,9 +70,10 @@ function site_scripts() {
     );
 
     if (is_singular( "contacts" )){
-        dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper' ), true );
+        dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ), true );
         wp_localize_script(
             'contact-details', 'contactsDetailsWpApiSettings', array(
+                'contact' => Disciple_Tools_Contacts::get_contact( get_the_ID() ),
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
@@ -79,11 +83,13 @@ function site_scripts() {
         );
     }
     if (is_singular( "groups" )){
-        dt_theme_enqueue_script( 'group-details', 'assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper' ) );
+        dt_theme_enqueue_script( 'group-details', 'assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
         wp_localize_script(
-            'group-details', 'wpApiSettings', array(
+            'group-details', 'wpApiGroupsSettings', array(
+                'group' => Disciple_Tools_Groups::get_group( get_the_ID() ),
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
+                'template_dir' => get_template_directory_uri()
             )
         );
     }
@@ -121,7 +127,7 @@ function site_scripts() {
                 'nonce' => wp_create_nonce( 'wp_rest' )
             )
         );
-        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array( ),  false );
+        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(),  false );
     }
 
     if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )) {
@@ -146,9 +152,10 @@ function site_scripts() {
             'groups_custom_fields_settings' => Disciple_Tools_Groups_Post_type::instance()->get_custom_fields_settings(),
             'template_directory_uri' => get_template_directory_uri(),
             'current_user_login' => wp_get_current_user()->user_login,
+            'current_user_roles' => wp_get_current_user()->roles,
             'current_post_type' => $post_type,
         ) );
     }
 
 }
-add_action( 'wp_enqueue_scripts', 'site_scripts', 999 );
+add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );

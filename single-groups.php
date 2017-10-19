@@ -8,7 +8,7 @@ declare(strict_types=1);
 global $post;
 
 $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
-if( !Disciple_Tools_Contacts::can_view( 'groups', get_the_ID() )){
+if ( !Disciple_Tools_Contacts::can_view( 'groups', get_the_ID() )){
     return wp_redirect( "not-found" );
 }
 $shared_with = Disciple_Tools_Contacts::get_shared_with_on_contact( get_the_id() );
@@ -30,23 +30,23 @@ dt_print_breadcrumbs(
 
 <div id="content">
 
-    <div id="inner-content" class="grid-x grid-margin-x">
+    <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
         <span id="group-id" style="display: none"><?php echo get_the_ID()?></span>
 
-        <main id="main" class="large-7 medium-12 small-12 cell grid-x grid-margin-x" role="main" style="padding:0">
+        <main id="main" class="large-7 medium-12 small-12 cell grid-x grid-margin-x grid-margin-y" role="main" style="padding:0">
 
-            <section id="contact-details" class="medium-12 cell">
+            <section id="contact-details" class="small-12 cell">
                 <?php get_template_part( 'parts/group', 'details' ); ?>
             </section>
 
-            <section id="relationships" class="medium-6 cell">
+            <section id="relationships" class="xlarge-6 large-12 medium-6 cell">
                 <div class="bordered-box">
                     <span class="section-header">Members</span>
 <!--                    <button class=" float-right" id="members-edit"><i class="fi-pencil"></i> Edit</button>-->
                     <ul class="members-list">
                         <?php
                         $ids = [];
-                        foreach( $group["members"] as $member){
+                        foreach ( $group["members"] as $member){
                             $ids[] = $member->ID;
                             ?>
                             <li class="<?php echo esc_attr( $member->ID ); ?>">
@@ -67,11 +67,11 @@ dt_print_breadcrumbs(
                 </div>
             </section>
 
-            <section id="faith" class="medium-6 cell">
-                <div class="bordered-box">
-                    <label class="section-header">Progress</label>
+            <section id="faith" class="xlarge-6 large-12 medium-6 cell">
+                <div class="bordered-box js-progress-bordered-box half-opacity">
+                    <label class="section-header" >Progress</label>
 
-                    <div style="display:flex;flex-wrap:wrap">
+                    <div style="display:flex;flex-wrap:wrap;margin-top:10px">
                         <div class="group-progress-button-wrapper">
                             <button  class="group-progress-button" id="church_fellowship">
                                 <img src="<?php echo esc_attr( get_template_directory_uri() . '/assets/images/groups/heart.svg' ); ?>">
@@ -153,8 +153,8 @@ dt_print_breadcrumbs(
 
         </main> <!-- end #main -->
 
-        <aside class="large-5 medium-12 small-12 cell">
-            <section class="bordered-box comment-activity-section" id="comment-activity-section">
+        <aside class="auto cell grid-x grid-margin-x">
+            <section class="xlarge-5 large-5 medium-12 small-12 cell bordered-box comment-activity-section" id="comment-activity-section">
                 <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
             </section>
         </aside>
@@ -171,7 +171,7 @@ dt_print_breadcrumbs(
 
     <ul id="shared-with-list">
         <?php
-        foreach( $shared_with as $user) { ?>
+        foreach ( $shared_with as $user) { ?>
             <li class="<?php echo esc_attr( $user['user_id'] ); ?>"> <?php echo esc_html( $user['display_name'] ); ?>
                 <button class="details-remove-button share"
                         data-id="<?php echo esc_attr( $user['user_id'] ); ?>">
@@ -185,11 +185,9 @@ dt_print_breadcrumbs(
         <label>Share this group with the following user:
             <select class="share-with-select" id="share-with">
                 <option value="0"></option>
-                <?php
-                foreach( $users as $user ){
-                    echo '<option value="' . esc_attr( $user['ID'] ). '">' . esc_html( $user['name'] ) . '</option>';
-                }
-                ?>
+                <?php foreach ( $users as $user ) { ?>
+                    <option value="<?php echo esc_html( $user["ID"] ) ?>"><?php echo esc_html( $user['name'] ) ?></option>
+                <?php } ?>
             </select>
         </label>
     </p>

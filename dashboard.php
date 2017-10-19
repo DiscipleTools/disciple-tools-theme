@@ -1,5 +1,5 @@
 <?php
-header( 'Location: /contacts' );
+wp_safe_redirect( home_url( '/contacts' ) );
 exit();
 // TODO: remove this redirect and recreate the dashboard, or delete this file
 ?>

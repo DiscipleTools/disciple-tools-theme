@@ -29,18 +29,18 @@ add_filter( 'login_redirect', function( $url, $query, $user ) {
 /*
  * Action and Filters
  */
-add_filter( 'login_headerurl', 'my_login_logo_url', 10 );
-add_filter( 'login_headertitle', 'my_login_logo_url_title', 10 );
+add_filter( 'login_headerurl', 'dt_my_login_logo_url', 10 );
+add_filter( 'login_headertitle', 'dt_my_login_logo_url_title', 10 );
 
 /*
  * Functions
  */
 // Change homepage url
-function my_login_logo_url() {
+function dt_my_login_logo_url() {
     return home_url();
 }
 
 // Change title
-function my_login_logo_url_title() {
+function dt_my_login_logo_url_title() {
     return 'Disciple_Tools';
 }

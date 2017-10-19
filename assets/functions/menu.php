@@ -10,7 +10,7 @@ register_nav_menus(
 // The Top Menu
 function disciple_tools_top_nav_desktop() {
 
-    if( user_can( get_current_user_id(), 'access_contacts' ) ) {
+    if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
         // User is multiplier or role of higher position
         /* <li><a href="<   ?php echo esc_url( home_url( '/' ) ); ?    >">Dashboard</a></li> */
         ?>
@@ -53,7 +53,7 @@ function disciple_tools_top_nav_desktop() {
 
 
 function disciple_tools_top_nav_mobile() {
-    if( user_can( get_current_user_id(), 'access_contacts' ) ) {
+    if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
         ?>
         <li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>"><i class="fi-torsos-all"></i></a></li>
         <li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>"><i class="fi-address-book"></i></a></li>
@@ -82,7 +82,7 @@ class DT_Topbar_Menu_Walker extends Walker_Nav_Menu {
 // The Off Canvas Menu
 function disciple_tools_off_canvas_nav() {
 
-    if( user_can( get_current_user_id(), 'access_contacts' ) ) {
+    if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
         ?>
         <ul class="vertical menu sticky is-stuck is-at-top" data-accordion-menu>
 
@@ -96,7 +96,7 @@ function disciple_tools_off_canvas_nav() {
             <li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>">Contacts</a></li>
             <li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>">Groups</a></li>
             <li><a href="<?php echo esc_url( home_url( '/locations/' ) ); ?>">Locations</a></li>
-            <?php if(dt_get_user_team_members_list( get_current_user_id() )) : ?>
+            <?php if (dt_get_user_team_members_list( get_current_user_id() )) : ?>
             <li><a href="<?php echo esc_url( home_url( '/team/' ) ); ?>">Team</a></li>
             <?php endif; ?>
             <li>&nbsp;</li>
