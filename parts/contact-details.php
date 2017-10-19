@@ -37,7 +37,7 @@
     <?php } ?>
 
 
-    <?php if (current_user_can( "assign_any_contact" )){?>
+    <?php if (current_user_can( "assign_any_contacts" )){?>
     <section class="small-12 cell">
         <div class="bordered-box">
             <p class="section-header">Dispatch Section</p>

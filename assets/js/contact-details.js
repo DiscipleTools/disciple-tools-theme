@@ -1,4 +1,4 @@
-/* global jQuery:false, contactsDetailsWpApiSettings:false */
+/* global jQuery:false, contactsDetailsWpApiSettings:false, moment, _ */
 
 function save_seeker_milestones(contactId, fieldKey, fieldValue){
   let data = {}
@@ -711,7 +711,7 @@ jQuery(document).ready(function($) {
         '</button></li>'
       );
     }).catch(err=>{
-      console.log(err)
+      handelAjaxError(err)
     })
   })
 
