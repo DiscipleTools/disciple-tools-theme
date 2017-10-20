@@ -66,6 +66,9 @@
         && (contact.overall_status === "active" && contact.seeker_path === "none")
       );
     },
+    contacts_shared_with_me(contact) {
+      return contact.shared_with_user;
+    },
     all_contacts(contact) {
       return true;
     },
