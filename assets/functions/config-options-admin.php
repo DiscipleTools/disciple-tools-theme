@@ -36,10 +36,10 @@ final class Disciple_Tools_Theme_Admin {
      */
     public function __construct() {
         // Register the settings with WordPress.
-        add_action( 'admin_init', array( $this, 'register_settings' ) );
+//        add_action( 'admin_init', array( $this, 'register_settings' ) ); // TODO: Disabled Theme Options, but leaving class in place until we are sure we don't need it.
 
         // Register the settings screen within WordPress.
-        add_action( 'admin_menu', array( $this, 'register_settings_screen' ) );
+//        add_action( 'admin_menu', array( $this, 'register_settings_screen' ) );
 
     } // End __construct()
 
