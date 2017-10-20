@@ -60,7 +60,7 @@
 
     <?php if (isset( $contact->fields["requires_update"] ) && $contact->fields["requires_update"]["key"] === "yes"){ ?>
     <div class="callout alert">
-        <h4>This contact needs and update.</h4>
+        <h4>This contact needs an update.</h4>
         <p>It has been a while since this contact seen an update. Please do so.</p>
     </div>
     <?php } ?>
