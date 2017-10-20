@@ -278,7 +278,6 @@ final class Disciple_Tools_Theme_Admin {
      * Validate the given data, assuming it is from a text input field.
      * @access  public
      * @since   6.0.0
-     * @return  void
      */
     public function validate_field_text( $v ) {
         return (string) wp_kses_post( $v );
@@ -288,7 +287,6 @@ final class Disciple_Tools_Theme_Admin {
      * Validate the given data, assuming it is from a textarea field.
      * @access  public
      * @since   6.0.0
-     * @return  void
      */
     public function validate_field_textarea( $v ) {
         // Allow iframe, object and embed tags in textarea fields.
