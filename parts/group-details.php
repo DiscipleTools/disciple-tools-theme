@@ -14,8 +14,49 @@ function dt_contact_details_status( $id, $verified, $invalid ){
     <img id="<?php echo esc_attr( $id . '-invalid' ); ?>"  class="details-status" style="display: <?php echo esc_attr( $invalid ); ?>"  src="<?php echo esc_url( get_template_directory_uri() ) . '/assets/images/broken.svg'; ?>" />
     <?php
 }
-
-?>
+function dt_contact_details_edit( $id, $remove = false ){
+    ?>
+    <ul class='dropdown menu' data-click-open='true'
+        data-dropdown-menu data-disable-hover='true'
+        style='display:inline-block'>
+        <li>
+            <button class="social-details-options-button">
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/menu-dots.svg' )?>" style='padding:3px 3px'>
+            </button>
+            <ul class='menu'>
+                <li>
+                    <button class='details-status-button field-status verify'
+                            data-status='valid'
+                            data-id='<?php echo esc_html( $id ) ?>'>
+                        Valid
+                    </button>
+                </li>
+                <li>
+                    <button class='details-status-button field-status invalid'
+                            data-status="invalid"
+                            data-id='<?php echo esc_html( $id ) ?>'>
+                        Invalid
+                    </button>
+                </li>
+                <li>
+                    <button class='details-status-button field-status'
+                            data-status="reset"
+                            data-id='<?php echo esc_html( $id ) ?>'>
+                        Unconfirmed
+                    </button>
+                </li>
+                <?php if ($remove){ ?>
+                    <li>
+                        <button class='details-remove-button delete-method'
+                                data-id='<?php echo esc_html( $id ) ?>'>
+                            Delete item
+                            <button>
+                    </li>
+                <?php } ?>
+            </ul>
+        </li>
+    </ul>
+<?php } ?>
 
 <section class="bordered-box">
 
@@ -109,10 +150,11 @@ function dt_contact_details_status( $id, $verified, $invalid ){
                 <input class="typeahead" type="text" placeholder="Select a new user">
             </div>
 
-            <div class="section-subheader">Address</div>
-            <button id="add-new-address" class="details-edit">
-                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
-            </button>
+            <div class="section-subheader">Address
+                <button id="add-new-address" class="details-edit">
+                    <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
+                </button>
+            </div>
             <ul class="address details-list">
                 <?php
                 foreach ($group["address"] ?? [] as $value){
@@ -131,14 +173,9 @@ function dt_contact_details_status( $id, $verified, $invalid ){
                         $verified = isset( $value["verified"] ) && $value["verified"] === true;
                         $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                         ?>
-                        <div>
-                            <button class="details-status-button verify" data-verified="<?php echo esc_html( $verified )?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
-                                <?php echo ($verified ? 'Unverify' : "Verify") ?>
-                            </button>
-                            <button class="details-status-button invalid" data-invalid="<?php echo esc_html( $invalid ) ?>" data-id="<?php echo esc_attr( $value["key"] ) ?>">
-                                <?php echo ($invalid ? 'Uninvalidate' : "Invalidate") ?>
-                            </button>
+                        <div class="<?php echo esc_attr( $value["key"] )?>">
                             <textarea rows="3" id="<?php echo esc_attr( $value["key"] )?>" class="contact-input"><?php echo esc_attr( $value["value"] )?></textarea>
+                            <?php dt_contact_details_edit( $value["key"], true ) ?>
                         </div>
                         <hr>
 

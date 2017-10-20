@@ -321,18 +321,69 @@ jQuery(document).ready(function($) {
               <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${wpApiGroupsSettings.template_dir}/assets/images/broken.svg"/>
             </li>
         `)
-        $('.new-address').append(`
-          <button class="details-status-button verify" data-verified="false" data-id="${newAddressId}">
-              Verify
-          </button>
-          <button class="details-status-button invalid" data-verified="false" data-id="${newAddressId}">
-              Invalidate
-          </button>
-        `).removeClass('new-address')
+        $('.new-address')
+          .append(editContactDetailsOptions(newAddressId))
+          .removeClass('new-address')
+          .addClass(newAddressId)
+        $(`.${newAddressId} .dropdown.menu`).foundation()
 
       }
     })
   })
+  let editContactDetailsOptions = function (field_id) {
+    return `
+      <ul class='dropdown menu' data-click-open='true'
+              data-dropdown-menu data-disable-hover='true'
+              style='display:inline-block'>
+        <li>
+          <button class="social-details-options-button">
+            <img src="${wpApiGroupsSettings.template_dir}/assets/images/menu-dots.svg" style='padding:3px 3px'>
+          </button>
+          <ul class='menu'>
+            <li>
+              <button class='details-status-button field-status verify'
+                      data-status='valid'
+                      data-id='${field_id}'>
+                  Valid
+              </button>
+            </li>
+            <li>
+              <button class='details-status-button field-status invalid'
+                      data-status="invalid"
+                      data-id="${field_id}">
+                  Invalid
+              </button>
+            </li>
+            <li>
+              <button class='details-status-button field-status'
+                      data-status="reset"
+                      data-id='${field_id}'>
+                  Unconfirmed
+              </button>
+            </li>
+            <li>
+              <button class='details-remove-button delete-method'
+                      data-id='${field_id}'>
+                      Delete item
+              <button>
+            </li>
+          </ul>
+          </li>
+      </ul>
+    `
+  }
+
+  $(document).on('click', '.details-remove-button.delete-method', function () {
+    let fieldId = $(this).data('id')
+    if (fieldId){
+      API.remove_field('group', groupId, fieldId).then(()=>{
+        $(`.${fieldId}`).remove()
+      }).catch(err=>{
+        console.log(err)
+      })
+    }
+  })
+
   $(document).on('change', '#address-list textarea', function(){
     let id = $(this).attr('id')
     if (id && id !== "new-address"){

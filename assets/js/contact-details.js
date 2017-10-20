@@ -443,9 +443,7 @@ jQuery(document).ready(function($) {
     let fieldId = $(this).data('id')
     if (fieldId){
       API.remove_field('contact', contactId, fieldId).then(()=>{
-
         $(`.${fieldId}`).remove()
-
       }).catch(err=>{
         console.log(err)
       })

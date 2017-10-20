@@ -14,7 +14,7 @@
         <img id="<?php echo esc_html( $id ) ?>-invalid" class="details-status" style="display:<?php echo esc_html( $invalid )?>" src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/broken.svg' )?>" />
         <?php
     }
-    function dt_contact_details_edit( $id, $verified, $invalid, $remove = false ){
+    function dt_contact_details_edit( $id, $remove = false ){
     ?>
         <ul class='dropdown menu' data-click-open='true'
             data-dropdown-menu data-disable-hover='true'
@@ -48,8 +48,7 @@
                     <?php if ($remove){ ?>
                         <li>
                             <button class='details-remove-button delete-method'
-                                    data-id='<?php echo esc_html( $id ) ?>'
-                                    data-field >
+                                    data-id='<?php echo esc_html( $id ) ?>'>
                                 Delete item
                             <button>
                         </li>
@@ -235,7 +234,7 @@
                                 <input id="<?php echo esc_attr( $value["key"] )?>"
                                        value="<?php echo esc_attr( $value["value"] )?>"
                                        class="contact-input">
-                                <?php dt_contact_details_edit( $value["key"], $verified, $invalid, true ) ?>
+                                <?php dt_contact_details_edit( $value["key"], true ) ?>
                             </li>
 
                         <?php }
@@ -268,7 +267,7 @@
                                 ?>
                                 <li>
                                     <input id="<?php echo esc_attr( $value["key"] )?>" value="<?php echo esc_attr( $value["value"] ) ?>" class="contact-input">
-                                    <?php dt_contact_details_edit( $value["key"], $verified, $invalid, true ) ?>
+                                    <?php dt_contact_details_edit( $value["key"], true ) ?>
                                 </li>
                                 <?php
                             }
@@ -371,7 +370,7 @@
                                             ?><span><?php echo esc_html( $channel_list[ $channel ]["label"] )?></span>
                                         <?php } ?>
                                         <input id='<?php echo esc_html( $value["key"] ) ?>' class='details-edit social-input' value='<?php echo esc_html( $value["value"] ) ?>'>
-                                        <?php dt_contact_details_edit( $value["key"], $verified, $invalid, true, 'social' ) ?>
+                                        <?php dt_contact_details_edit( $value["key"], true ) ?>
                                     </li>
                                     <?php
                                 }
@@ -455,7 +454,7 @@
                             ?>
                             <div class="<?php echo esc_attr( $value["key"] )?>">
                                 <textarea rows="3" id="<?php echo esc_attr( $value["key"] )?>" class="contact-input"><?php echo esc_attr( $value["value"] )?></textarea>
-                                <?php dt_contact_details_edit( $value["key"], $verified, $invalid, true ) ?>
+                                <?php dt_contact_details_edit( $value["key"], true ) ?>
                             </div>
                             <hr>
 
