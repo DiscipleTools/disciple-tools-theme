@@ -377,6 +377,12 @@ img {
     }
 }
 
+.new-social-media {
+    display: flex;
+    .button {
+        margin-left:5px;
+    }
+}
 
 .tabs-panel .outer-container {
     padding: 0 !important;
@@ -960,7 +966,7 @@ button.loader{
     }
     &:not(.disabled):after {
         content: '';
-        display: inline-block;
+        //display: inline-block;
         height: 100%;
         width: 0px;
         -moz-transition-delay: 0.5s;

@@ -392,10 +392,12 @@
                             }
                             ?>
                         </select>
-                        <input type="text" id="new-social-media" placeholder="facebook.com/user1">
-                        <button id="add-social-media" class="button loader">
-                            Add
-                        </button>
+                        <div class="new-social-media">
+                            <input type="text" id="new-social-media" placeholder="facebook.com/user1">
+                            <button id="add-social-media" class="button small loader">
+                                Add
+                            </button>
+                        </div>
                     </div>
 
 
