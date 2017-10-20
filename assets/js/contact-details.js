@@ -1,4 +1,4 @@
-/* global jQuery:false, contactsDetailsWpApiSettings:false, moment, _ */
+/* global jQuery:false, contactsDetailsWpApiSettings:false, moment:false, _:false */
 
 function save_seeker_milestones(contactId, fieldKey, fieldValue){
   let data = {}
@@ -278,9 +278,11 @@ jQuery(document).ready(function($) {
       })
   }
   assigned_to_typeahead.bind('typeahead:select', function (ev, sug) {
-    API.save_field_api('contact', contactId, {assigned_to: 'user-' + sug.ID}).then(function () {
+    API.save_field_api('contact', contactId, {assigned_to: 'user-' + sug.ID}).then(function (response) {
       assigned_to_typeahead.typeahead('val', '')
       jQuery('.current-assigned').text(sug.name)
+      $("#overall-status").text(_.get(response, "fields.overall_status.label"))
+      $("#reason").text('')
       _.set(contact, "fields.assigned_to.ID", sug.ID)
       assigned_to_typeahead.typeahead('destroy')
       users.initialize()
