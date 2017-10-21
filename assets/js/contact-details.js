@@ -1,4 +1,4 @@
-/* global jQuery:false, contactsDetailsWpApiSettings:false, moment, _ */
+/* global jQuery:false, contactsDetailsWpApiSettings:false, moment:false, _:false */
 
 function save_seeker_milestones(contactId, fieldKey, fieldValue){
   let data = {}
@@ -278,9 +278,11 @@ jQuery(document).ready(function($) {
       })
   }
   assigned_to_typeahead.bind('typeahead:select', function (ev, sug) {
-    API.save_field_api('contact', contactId, {assigned_to: 'user-' + sug.ID}).then(function () {
+    API.save_field_api('contact', contactId, {assigned_to: 'user-' + sug.ID}).then(function (response) {
       assigned_to_typeahead.typeahead('val', '')
       jQuery('.current-assigned').text(sug.name)
+      $("#overall-status").text(_.get(response, "fields.overall_status.label"))
+      $("#reason").text('')
       _.set(contact, "fields.assigned_to.ID", sug.ID)
       assigned_to_typeahead.typeahead('destroy')
       users.initialize()
@@ -470,7 +472,7 @@ jQuery(document).ready(function($) {
       let label = _.get(contactsDetailsWpApiSettings, `channels[${channel_type}].label`) || channel_type
       $('.social.details-edit').append(
         `<li class="${newId}">
-          <span>${label}:</span>
+          <span>${label}</span>
           <input id="${newId}"
                  value="${text}" style="display: inline-block"   
                  class="details-edit social-input" >
@@ -480,7 +482,7 @@ jQuery(document).ready(function($) {
 
       $('.social.details-list').append(
         `<li class="${newId}">
-          <span>${label}</span>
+          <span>${label}:</span>
           <span class="social-text">${text}</span>
           <img id="${newId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
           <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/broken.svg"/>
