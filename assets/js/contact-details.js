@@ -151,6 +151,9 @@ jQuery(document).ready(function($) {
     activity = activityData
     prepareActivityData(activity)
     display_activity_comment("all")
+  }).catch(err => {
+    console.error(err);
+    jQuery("#errors").append(err.responseText)
   })
 
 
@@ -486,7 +489,9 @@ jQuery(document).ready(function($) {
     let value = $(this).val();
     API.save_field_api('contact', contactId, {[id]: value}).then(()=>{
       $(`.social.details-list .${id} .social-text`).text(value)
-    })
+    }).catch(err => {
+      console.error(err);
+    });
   })
 
   let addSocial = $("#add-social-media")
@@ -518,7 +523,9 @@ jQuery(document).ready(function($) {
         </li>`)
       inputForNewValue.val('')
       $("#no-social").remove()
-    })
+    }).catch(err => {
+      console.error(err);
+    });
   })
 
   $(document).on('change', '.contact-input', function () {
