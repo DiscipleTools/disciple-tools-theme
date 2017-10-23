@@ -575,24 +575,15 @@ jQuery(document).ready(function($) {
   /**
    * Baptism date
    */
-  // let baptismDateList = $('.baptism_date.details-list')
   let baptismDatePicker = $('.baptism_date #baptism-date-picker')
   baptismDatePicker.datepicker({
+    dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
-      API.save_field_api('contact', contactId, {baptism_date:date}).then(function () {
-        // baptismDateList.text(date)
-      })
-    },
-    onClose: function () {
-      // toggleEdit('baptism_date')
+      API.save_field_api('contact', contactId, {baptism_date:date})
     },
     changeMonth: true,
     changeYear: true
   })
-  // baptismDateList.on('click', e=>{
-  //   toggleEdit('baptism_date')
-  //   baptismDatePicker.focus()
-  // })
 
   $("#add-new-address").click(function () {
     if ($('#new-address').length === 0 ) {
