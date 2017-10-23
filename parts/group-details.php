@@ -91,7 +91,7 @@ function dt_contact_details_edit( $id, $remove = false ){
                     <li class="<?php echo intval( $value->ID ); ?>">
                         <a href="<?php echo esc_url( $value->permalink ); ?>"><?php echo esc_html( $value->post_title ); ?></a>
                         <button class="details-remove-button details-edit"
-                                data-field="locations" data-id="<?php esc_attr( $value->ID ); ?>"
+                                data-field="locations" data-id="<?php echo esc_attr( $value->ID ); ?>"
                                 data-name="<?php echo esc_attr( $value->post_title ); ?>"
                         >Remove</button>
                     </li>
