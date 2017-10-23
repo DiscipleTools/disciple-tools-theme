@@ -14,24 +14,24 @@ function disciple_tools_top_nav_desktop() {
         // User is multiplier or role of higher position
         /* <li><a href="<   ?php echo esc_url( home_url( '/' ) ); ?    >">Dashboard</a></li> */
         ?>
-        <li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>">Contacts</a></li>
-        <li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>">Groups</a></li>
+        <li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li>
+        <li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li>
 
         <?php
     } elseif ( user_can( get_current_user_id(), 'read_progress' ) ) {
         ?>
-        <li><a href="<?php echo esc_url( home_url( '/about-us/' ) ); ?>">About Us</a></li>
-        <li><a href="<?php echo esc_url( home_url( '/prayer/' ) ); ?>">Prayer Guide</a></li>
-        <li><a href="<?php echo esc_url( home_url( '/progress/' ) ); ?>">Project Updates</a></li>
-        <li><a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>">Settings</a></li>
+        <li><a href="<?php echo esc_url( home_url( '/about-us/' ) ); ?>"><?php esc_html_e( "About Us" ); ?></a></li>
+        <li><a href="<?php echo esc_url( home_url( '/prayer/' ) ); ?>"><?php esc_html_e( "Prayer Guide" ); ?></a></li>
+        <li><a href="<?php echo esc_url( home_url( '/progress/' ) ); ?>"><?php esc_html_e( "Project Updates" ); ?></a></li>
+        <li><a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a></li>
 
         <?php
     } elseif ( user_can( get_current_user_id(), 'read_prayer' )) {
         /* user is prayer supporter */
         ?>
-        <li><a href="<?php echo esc_url( home_url( '/about-us/' ) ); ?>">About Us</a></li>
-        <li><a href="<?php echo esc_url( home_url( '/prayer/' ) ); ?>">Prayer Guide</a></li>
-        <li><a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>">Settings</a></li>
+        <li><a href="<?php echo esc_url( home_url( '/about-us/' ) ); ?>"><?php esc_html_e( "About Us" ); ?></a></li>
+        <li><a href="<?php echo esc_url( home_url( '/prayer/' ) ); ?>"><?php esc_html_e( "Prayer Guide" ); ?></a></li>
+        <li><a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a></li>
 
         <?php
     } else {
@@ -93,16 +93,16 @@ function disciple_tools_off_canvas_nav() {
     // User is multiplier or role of higher position
 //        <li><a href="<   ?php echo esc_url( home_url( '/' ) ); ?    >">Dashboard</a></li>
         ?>
-            <li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>">Contacts</a></li>
-            <li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>">Groups</a></li>
-            <li><a href="<?php echo esc_url( home_url( '/locations/' ) ); ?>">Locations</a></li>
+            <li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li>
+            <li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li>
+            <li><a href="<?php echo esc_url( home_url( '/locations/' ) ); ?>"><?php esc_html_e( "Locations" ); ?></a></li>
             <?php if (dt_get_user_team_members_list( get_current_user_id() )) : ?>
-            <li><a href="<?php echo esc_url( home_url( '/team/' ) ); ?>">Team</a></li>
+            <li><a href="<?php echo esc_url( home_url( '/team/' ) ); ?>"><?php esc_html_e( "Team" ); ?></a></li>
             <?php endif; ?>
             <li>&nbsp;</li>
-            <li><a href="<?php echo esc_url( home_url( '/metrics/' ) ); ?>">Metrics</a></li>
-            <li><a href="<?php echo esc_url( home_url( '/notifications/' ) ); ?>">Notifications</a></li>
-            <li><a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>">Settings</a></li>
+            <li><a href="<?php echo esc_url( home_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li>
+            <li><a href="<?php echo esc_url( home_url( '/notifications/' ) ); ?>"><?php esc_html_e( "Notifications" ); ?></a></li>
+            <li><a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a></li>
             <li>&nbsp;</li>
 
 
@@ -122,10 +122,10 @@ function disciple_tools_off_canvas_nav() {
         <div class="menu-centered">
                     <ul class="vertical medium-horizontal menu sticky is-stuck is-at-top" data-accordion-menu>
 
-        <li><a href="<?php echo esc_url( home_url( '/about-us/' ) ); ?>">About Us</a></li>
-        <li><a href="<?php echo esc_url( home_url( '/prayer/' ) ); ?>">Prayer Guide</a></li>
-        <li><a href="<?php echo esc_url( home_url( '/project/' ) ); ?>">Project Updates</a></li>
-        <li><a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>">Settings</a></li>
+        <li><a href="<?php echo esc_url( home_url( '/about-us/' ) ); ?>"><?php esc_html_e( "About Us" ); ?></a></li>
+        <li><a href="<?php echo esc_url( home_url( '/prayer/' ) ); ?>"><?php esc_html_e( "Prayer Guide" ); ?></a></li>
+        <li><a href="<?php echo esc_url( home_url( '/project/' ) ); ?>"><?php esc_html_e( "Project Updates" ); ?></a></li>
+        <li><a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a></li>
 
         </ul></div>
         <?php
@@ -138,9 +138,9 @@ function disciple_tools_off_canvas_nav() {
         <div class="menu-centered">
                     <ul class="vertical medium-horizontal menu sticky is-stuck is-at-top" data-accordion-menu>
 
-        <li><a href="<?php echo esc_url( home_url( '/about-us/' ) ); ?>">About Us</a></li>
-        <li><a href="<?php echo esc_url( home_url( '/prayer/' ) ); ?>">Prayer Guide</a></li>
-        <li><a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>">Settings</a></li>
+        <li><a href="<?php echo esc_url( home_url( '/about-us/' ) ); ?>"><?php esc_html_e( "About Us" ); ?></a></li>
+        <li><a href="<?php echo esc_url( home_url( '/prayer/' ) ); ?>"><?php esc_html_e( "Prayer Guide" ); ?></a></li>
+        <li><a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a></li>
 
         </ul></div>
 
