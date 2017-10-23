@@ -595,7 +595,8 @@ jQuery(document).ready(function($) {
         //change the it to the created field
         input.attr('id', newAddressId)
         $('.details-list.address').append(`
-            <li class="${newAddressId}">${input.val()}
+            <li class="${newAddressId} address-row">
+              <div class="address-text">${input.val()}</div>
               <img id="${newAddressId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
               <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/broken.svg"/>
             </li>
@@ -613,7 +614,7 @@ jQuery(document).ready(function($) {
     let id = $(this).attr('id')
     if (id && id !== "new-address"){
       API.save_field_api('contact', contactId, {[id]: $(this).val()}).then(()=>{
-        $(`.address.details-list .${id}`).text($(this).val())
+        $(`.address.details-list .${id} .address-text`).text($(this).val())
       })
     }
   })

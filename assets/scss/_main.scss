@@ -377,6 +377,21 @@ img {
     }
 }
 
+.address.details-list .address-row {
+    border-bottom: 1px solid #cacaca;
+    .address-text {
+        white-space:pre-wrap;
+    }
+    img {
+        display: inline-block;
+        vertical-align: top;
+        margin-top:5px;
+    }
+    div {
+        display: inline-block;
+    }
+}
+
 .new-social-media {
     display: flex;
     .button {
