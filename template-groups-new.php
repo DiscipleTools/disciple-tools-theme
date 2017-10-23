@@ -47,7 +47,7 @@ dt_print_breadcrumbs(
             .attr("disabled", true)
             .addClass("loading");
         $.ajax({
-            url: wpApiSettings.root + 'dt-hooks/v1/group/create',
+            url: wpApiSettings.root + 'dt/v1/group/create',
             type: "POST",
             contentType: "application/json; charset=UTF-8",
             dataType: "json",

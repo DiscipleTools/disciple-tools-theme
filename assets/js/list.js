@@ -75,7 +75,7 @@
   };
 
   $.ajax({
-    url: wpApiSettings.root + "dt-hooks/v1/" + wpApiSettings.current_post_type,
+    url: wpApiSettings.root + "dt/v1/" + wpApiSettings.current_post_type,
     beforeSend: function(xhr) {
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
     },

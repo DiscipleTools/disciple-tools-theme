@@ -7,7 +7,7 @@ let API = {
       type:"GET",
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
@@ -19,7 +19,7 @@ let API = {
       data:JSON.stringify(post_data),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
@@ -31,7 +31,7 @@ let API = {
       data: JSON.stringify(post_data),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root +`dt-hooks/v1/${type}/${postId}/details`,
+      url: wpApiSettings.root +`dt/v1/${type}/${postId}/details`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
@@ -44,7 +44,7 @@ let API = {
       data: JSON.stringify(data),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/details_update`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/details_update`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
@@ -57,7 +57,7 @@ let API = {
       data: JSON.stringify(data),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/details`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/details`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
@@ -70,7 +70,7 @@ let API = {
       data: JSON.stringify(data),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/field`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/field`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
@@ -82,7 +82,7 @@ let API = {
       data: JSON.stringify({comment}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/comment`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/comment`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
@@ -93,7 +93,7 @@ let API = {
       type: "GET",
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/comments`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/comments`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
@@ -104,7 +104,7 @@ let API = {
       type: "GET",
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/activity`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/activity`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
@@ -116,7 +116,7 @@ let API = {
       data: JSON.stringify({user_id:userId}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/add-shared`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/add-shared`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
@@ -128,7 +128,7 @@ let API = {
       data: JSON.stringify({user_id:userId}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/remove-shared`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/remove-shared`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }

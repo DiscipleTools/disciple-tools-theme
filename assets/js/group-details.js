@@ -410,7 +410,7 @@ jQuery(document).ready(function($) {
       return obj.ID
     },
     prefetch: {
-      url: wpApiGroupsSettings.root + 'dt-hooks/v1/contacts/compact',
+      url: wpApiGroupsSettings.root + 'dt/v1/contacts/compact',
       transform: function(data){
         loadMembersTypeahead()
         return API.filterTypeahead(data, group.members || [])
@@ -418,7 +418,7 @@ jQuery(document).ready(function($) {
       prepare : API.typeaheadPrefetchPrepare,
     },
     remote: {
-      url: wpApiGroupsSettings.root + 'dt-hooks/v1/contacts/compact/?s=%QUERY',
+      url: wpApiGroupsSettings.root + 'dt/v1/contacts/compact/?s=%QUERY',
       wildcard: '%QUERY',
       transform: function(data){
         return API.filterTypeahead(data, group.members || [])

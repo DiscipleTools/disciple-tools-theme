@@ -34,7 +34,7 @@ function save_quick_action(contactId, fieldKey){
     data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + '/quick_action_button',
+    url: contactsDetailsWpApiSettings.root + 'dt/v1/contact/' + contactId + '/quick_action_button',
     beforeSend: function (xhr) {
       xhr.setRequestHeader('X-WP-Nonce', contactsDetailsWpApiSettings.nonce);
     }
@@ -165,11 +165,11 @@ jQuery(document).ready(function($) {
       return obj.ID
     },
     prefetch: {
-      url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/groups-compact/',
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/groups-compact/',
       prepare : API.typeaheadPrefetchPrepare,
     },
     remote: {
-      url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/groups-compact/?s=%QUERY',
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/groups-compact/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare,
     }
@@ -213,11 +213,11 @@ jQuery(document).ready(function($) {
       return obj.post_title
     },
     prefetch: {
-      url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/contacts/',
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/contacts/',
       prepare : API.typeaheadPrefetchPrepare
     },
     remote: {
-      url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/contacts/?s=%QUERY',
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/contacts/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare
     }
@@ -936,7 +936,7 @@ function details_accept_contact(contactId, accept){
     data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + "/accept",
+    url: contactsDetailsWpApiSettings.root + 'dt/v1/contact/' + contactId + "/accept",
     beforeSend: function(xhr) {
       xhr.setRequestHeader('X-WP-Nonce', contactsDetailsWpApiSettings.nonce);
     }
