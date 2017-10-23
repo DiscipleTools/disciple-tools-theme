@@ -103,7 +103,7 @@ function dt_contact_details_edit( $id, $remove = false ){
                 ?>
             </ul>
             <div class="locations details-edit">
-                <input class="typeahead" type="text" placeholder="Select a new location">
+                <input class="typeahead" type="text" placeholder="Type to search locations">
             </div>
 
             <div class="section-subheader">People Groups</div>
@@ -126,7 +126,7 @@ function dt_contact_details_edit( $id, $remove = false ){
                 ?>
             </ul>
             <div class="people-groups details-edit">
-                <input class="typeahead" type="text" placeholder="Select a new people group">
+                <input class="typeahead" type="text" placeholder="Type to search people groups">
             </div>
         </div>
 
@@ -147,7 +147,7 @@ function dt_contact_details_edit( $id, $remove = false ){
                 </li>
             </ul>
             <div class="assigned_to details-edit">
-                <input class="typeahead" type="text" placeholder="Select a new user">
+                <input class="typeahead" type="text" placeholder="Type to search users">
             </div>
 
             <div class="section-subheader">Address

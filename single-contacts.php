@@ -70,7 +70,7 @@ declare( strict_types=1 );
                         <div class="connections-edit">
                             <label for="groups">Add Group:</label>
                             <div id="groups">
-                                <input class="typeahead" type="text" placeholder="Select a Group">
+                                <input class="typeahead" type="text" placeholder="Type to search groups">
                             </div>
                         </div>
 
@@ -107,16 +107,12 @@ declare( strict_types=1 );
                                     :</label>
                                 <div id="<?php echo esc_html( $connection ) ?>">
                                     <input class="typeahead" type="text"
-                                           placeholder="Select <?php echo esc_html( $connection_label ) ?>">
+                                           placeholder="Type to search contacts">
                                 </div>
                             </div>
-
-
                             <?php
                         }
                         ?>
-
-
                     </div>
                 </section>
 

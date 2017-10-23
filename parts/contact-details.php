@@ -14,7 +14,7 @@
         <img id="<?php echo esc_html( $id ) ?>-invalid" class="details-status" style="display:<?php echo esc_html( $invalid )?>" src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/broken.svg' )?>" />
         <?php
     }
-    function dt_contact_details_edit( $id, $remove = false ){
+    function dt_contact_details_edit( $id, $field_type, $remove = false ){
     ?>
         <ul class='dropdown menu' data-click-open='true'
             data-dropdown-menu data-disable-hover='true'
@@ -48,6 +48,7 @@
                     <?php if ($remove){ ?>
                         <li>
                             <button class='details-remove-button delete-method'
+                                    data-field='<?php echo esc_html( $field_type ) ?>'
                                     data-id='<?php echo esc_html( $id ) ?>'>
                                 Delete item
                             <button>
@@ -96,7 +97,7 @@
                         </span>
                     </div>
                     <div class="assigned_to">
-                        <input class="typeahead" type="text" placeholder="Select a new user">
+                        <input class="typeahead" type="text" placeholder="Type to search users">
                     </div>
                 </div>
                 <div class="medium-6 cell">
@@ -215,6 +216,9 @@
                     </div>
                     <ul class="phone details-list">
                         <?php
+                        if (sizeof( $contact->fields["contact_phone"] ?? [] ) === 0 ){
+                            ?> <li id="no-phone">No phone set</li> <?php
+                        }
                         foreach ($contact->fields["contact_phone"] ?? [] as $field => $value){
                             $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
@@ -234,7 +238,7 @@
                                 <input id="<?php echo esc_attr( $value["key"] )?>"
                                        value="<?php echo esc_attr( $value["value"] )?>"
                                        class="contact-input">
-                                <?php dt_contact_details_edit( $value["key"], true ) ?>
+                                <?php dt_contact_details_edit( $value["key"], "phone", true ) ?>
                             </li>
 
                         <?php }
@@ -248,6 +252,9 @@
                     </div>
                     <ul class="email details-list">
                         <?php
+                        if (sizeof( $contact->fields["contact_email"] ?? [] ) === 0 ){
+                            ?> <li id="no-email">No email set</li> <?php
+                        }
                         foreach ($contact->fields["contact_email"] ?? [] as $field => $value){
                             $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
@@ -267,7 +274,7 @@
                                 ?>
                                 <li>
                                     <input id="<?php echo esc_attr( $value["key"] )?>" value="<?php echo esc_attr( $value["value"] ) ?>" class="contact-input">
-                                    <?php dt_contact_details_edit( $value["key"], true ) ?>
+                                    <?php dt_contact_details_edit( $value["key"], "email", true ) ?>
                                 </li>
                                 <?php
                             }
@@ -298,7 +305,7 @@
                         ?>
                     </ul>
                     <div class="locations details-edit">
-                        <input class="typeahead" type="text" placeholder="Select a new location">
+                        <input class="typeahead" type="text" placeholder="Type to search locations">
                     </div>
 
                     <div class="section-subheader">Assigned to
@@ -316,7 +323,7 @@
                         </li>
                     </ul>
                     <div class="assigned_to details-edit">
-                        <input class="typeahead" type="text" placeholder="Select a new user">
+                        <input class="typeahead" type="text" placeholder="Type to search users">
                     </div>
                 </div>
                 <!-- Social Media -->
@@ -324,6 +331,7 @@
                     <div class="section-subheader"><?php echo esc_html( 'Social Media' ) ?></div>
                     <ul class='social details-list'>
                     <?php
+                    $number_of_social = 0;
                     foreach ($contact->fields as $field_key => $values){
                         if ( strpos( $field_key, "contact_" ) === 0 &&
                             strpos( $field_key, "contact_phone" ) === false &&
@@ -331,6 +339,7 @@
                             $channel = explode( '_', $field_key )[1];
                             if ( isset( $channel_list[ $channel ] ) ) {
                                 foreach ($values as $value) {
+                                    $number_of_social++;
                                     $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                                     $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                                     ?>
@@ -348,6 +357,9 @@
                                 }
                             }
                         }
+                    }
+                    if ($number_of_social === 0 ){
+                        ?> <li id="no-social">None set</li> <?php
                     }
                     ?>
                     </ul>
@@ -370,7 +382,7 @@
                                             ?><span><?php echo esc_html( $channel_list[ $channel ]["label"] )?></span>
                                         <?php } ?>
                                         <input id='<?php echo esc_html( $value["key"] ) ?>' class='details-edit social-input' value='<?php echo esc_html( $value["value"] ) ?>'>
-                                        <?php dt_contact_details_edit( $value["key"], true ) ?>
+                                        <?php dt_contact_details_edit( $value["key"], "social", true ) ?>
                                     </li>
                                     <?php
                                 }
@@ -421,7 +433,7 @@
                         ?>
                     </ul>
                     <div class="people-groups details-edit">
-                        <input class="typeahead" type="text" placeholder="Select a new people group">
+                        <input class="typeahead" type="text" placeholder="Type to search people groups">
                     </div>
                 </div>
             </div>
@@ -436,6 +448,9 @@
                     </div>
                     <ul class="address details-list">
                         <?php
+                        if (sizeof( $contact->fields["address"] ?? [] ) === 0 ){
+                            ?> <li id="no-address">No address set</li> <?php
+                        }
                         foreach ($contact->fields["address"] ?? [] as $value){
                             $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
@@ -454,7 +469,7 @@
                             ?>
                             <div class="<?php echo esc_attr( $value["key"] )?>">
                                 <textarea rows="3" id="<?php echo esc_attr( $value["key"] )?>" class="contact-input"><?php echo esc_attr( $value["value"] )?></textarea>
-                                <?php dt_contact_details_edit( $value["key"], true ) ?>
+                                <?php dt_contact_details_edit( $value["key"], "address", true ) ?>
                             </div>
                             <hr>
 

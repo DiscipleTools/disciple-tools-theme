@@ -61,7 +61,7 @@ dt_print_breadcrumbs(
                     <div>
                         <label for="members">Add a Member:</label>
                         <div id="members">
-                            <input class="typeahead" type="text" placeholder="Select a Member">
+                            <input class="typeahead" type="text" placeholder="Type to search contacts">
                         </div>
                     </div>
                 </div>
