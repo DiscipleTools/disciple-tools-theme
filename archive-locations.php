@@ -1,204 +1,239 @@
-<?php declare(strict_types=1); ?>
+<?php declare( strict_types = 1 ); ?>
 
 <?php get_header(); ?>
 
 <?php dt_print_breadcrumbs( null, __( "Locations" ) ); ?>
 
 <?php
-(function() {
-//    global $post;
-
-//    $locations = Disciple_Tools_Locations::get_locations();
-//    if ( is_wp_error( $locations ) ) {
-//        wp_die('You do not have permission to see locations.' );
-//    }
-
-//    $marker = Disciple_Tools_Locations::geocode_address('Grand Casablanca, Morocco', 'all_points');
-//    if ( ! $marker ) {
-//        wp_die('no location' );
-//    }
-//    dt_write_log($marker);
-
-//    dt_write_log(Disciple_Tools_Locations::get_4k_location_count( 'all' ));
-
-    // get how many countries
-
-
-    // get how many levels per country
+( function() {
+    $dt_level_0_count = Disciple_Tools_Locations::get_standard_locations_count( 0 );
 
     ?>
 
-<div id="content">
+    <div id="content">
 
-    <div id="inner-content" class="grid-x grid-margin-x">
+        <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
-        <div class="large-3 small-12 cell">
+            <div class="large-3 small-12 cell">
 
-            <section class="bordered-box">
+                <section class="bordered-box">
 
-                <h3>Locations</h3>
+                    <span class="section-header">Locations</span>
+                    <hr>
 
-                <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu>
+                    <?php
+                    // Discover if there are more than on countries installed.
 
-                <?php
-                $args = array(
-                    'post_type' => 'locations',
-                    'meta_key' => 'WorldID',
-                    'nopaging' => true,
-                    'meta_query' => [
-                        [
-                            'key' => 'WorldID',
-                            'value' => '^...$',
-                            'compare' => 'REGEXP',
-                        ]
-                    ]
+                    // Build a form to set the default country, so that the primary country loaded is first loaded.
 
-                );
-                $query = new WP_Query( $args );
+                    if ( $dt_level_0_count > 1 ) :
+                        // get default country selected by user from user profile
 
-                if ( $query->have_posts() ) {
-                    foreach ( $query->posts as $admin0 ) {
-                        echo '<li class="top-border"><a href="#">' . esc_attr( $admin0->post_title ); // level 0 list
+                    ?>
+                    <h5>Default View:</h5>
+                    <form>
+                        <select name="default_country">
+                            <option value="">Default Country</option>
+                        </select>
+                    </form>
 
-                            $world_id_0 = get_post_meta( $admin0->ID, 'WorldID', true );
+                    <?php endif; // if more than one country installed. ?>
 
-                            $args1 = array(
-                                'post_type' => 'locations',
-                                'nopaging' => true,
-                                'meta_query' => [
-                                    [
-                                        'key' => 'WorldID',
-                                        'value' => '^'.$world_id_0.'....$',
-                                        'compare' => 'REGEXP',
-                                    ]
-                                ]
+                    <h5>Browse Locations</h5>
 
-                            );
-                            $query1 = new WP_Query( $args1 );
+                    <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu>
 
-                        if ( $query1->post_count > 0 ) {
-                            echo ' (' . esc_attr( $query1->post_count ) . ' )';
+                        <?php
+                        /************************
+                         * Admin Level 0
+                         */
+                        $dt_admin_0_results = Disciple_Tools_Locations::get_standard_admin0();
+                        if ( is_wp_error( $dt_admin_0_results ) ) {
+                            wp_die( 'Query error getting standard locations: Admin 0' );
                         }
 
-                            echo '</a>';
+                        if ( $dt_admin_0_results->have_posts() ) {
 
-                            echo '<ul class="menu vertical nested">'; // level 1 ul
+                            foreach ( $dt_admin_0_results->posts as $dt_admin_0_record ) {
 
-                        foreach ( $query1->posts as $admin1 ) {
+                                echo '<li class="top-border"><a href="#">' . esc_attr( $dt_admin_0_record->post_title ); // level 0 list
 
-                            echo '<li class="top-border"><a href="#">' . esc_attr( $admin1->post_title ); // level 1 li
+                                /************************
+                                 * Admin Level 1
+                                 */
+                                $world_id_0 = get_post_meta( $dt_admin_0_record->ID, 'WorldID', true );
+                                $dt_admin_1_results = Disciple_Tools_Locations::get_standard_admin1( $world_id_0 );
+                                if ( is_wp_error( $dt_admin_1_results ) ) {
+                                    wp_die( 'Query error getting standard locations: Admin 1' );
+                                }
 
-                                $world_id_1 = get_post_meta( $admin1->ID, 'WorldID', true );
+                                if ( $dt_admin_1_results->post_count > 0 ) {
 
-                                $args2 = array(
-                                    'post_type' => 'locations',
-                                    'nopaging' => true,
-                                    'meta_query' => [
-                                        [
-                                            'key' => 'WorldID',
-                                            'value' => '^'.$world_id_1.'....$',
-                                            'compare' => 'REGEXP',
-                                        ]
-                                    ]
+                                    echo ' (' . esc_attr( $dt_admin_1_results->post_count ) . ' )</a>';
+                                    echo '<ul class="menu vertical nested">'; // level 1 ul
 
-                                );
-                                $query2 = new WP_Query( $args2 );
+                                    foreach ( $dt_admin_1_results->posts as $dt_admin_1_record ) {
 
-                            if ( $query2->post_count > 0 ) {
-                                echo ' ( '. esc_attr( $query2->post_count ) . ' )';
+                                        echo '<li class="top-border"><a href="#">' . esc_attr( $dt_admin_1_record->post_title ); // level 1 li
+
+                                        /***************************
+                                         * Admin Level 2
+                                         */
+                                        $world_id_1 = get_post_meta( $dt_admin_1_record->ID, 'WorldID', true );
+                                        $dt_admin_2_results = Disciple_Tools_Locations::get_standard_admin2( $world_id_1 );
+                                        if ( is_wp_error( $dt_admin_2_results ) ) {
+                                            wp_die( 'Query error getting standard locations: Admin 2' );
+                                        }
+
+                                        if ( $dt_admin_2_results->post_count > 0 ) {
+
+                                            echo ' ( ' . esc_attr( $dt_admin_2_results->post_count ) . ' )</a>';
+                                            echo '<ul class="menu vertical nested">'; // level 2 ul
+
+                                            foreach ( $dt_admin_2_results->posts as $dt_admin_2_record ) {
+                                                echo '<li class="bottom-border"><a href="#">' . esc_attr( $dt_admin_2_record->post_title ) . '</a>';
+
+                                                /****************************
+                                                 * Admin Level 3
+                                                 */
+                                                $world_id_2 = get_post_meta( $dt_admin_2_record->ID, 'WorldID', true );
+                                                $dt_admin_3_results = Disciple_Tools_Locations::get_standard_admin3( $world_id_2 );
+                                                if ( is_wp_error( $dt_admin_3_results ) ) {
+                                                    wp_die( 'Query error getting standard locations: Admin 3' );
+                                                }
+
+                                                if ( $dt_admin_3_results->post_count > 0 ) {
+
+                                                    echo ' ( ' . esc_attr( $dt_admin_3_results->post_count ) . ' )</a>';
+                                                    echo '<ul class="menu vertical nested">'; // level 3 ul
+
+                                                    foreach ( $dt_admin_3_results->posts as $dt_admin_3_record ) {
+                                                        echo '<li class="bottom-border"><a href="#">' . esc_attr( $dt_admin_3_record->post_title ) . '</a>';
+
+                                                        /****************************
+                                                         * Admin Level 4
+                                                         */
+                                                        $world_id_3 = get_post_meta( $dt_admin_3_record->ID, 'WorldID', true );
+                                                        $dt_admin_4_results = Disciple_Tools_Locations::get_standard_admin4( $world_id_3 );
+                                                        if ( is_wp_error( $dt_admin_3_results ) ) {
+                                                            wp_die( 'Query error getting standard locations: Admin 3' );
+                                                        }
+
+                                                        if ( $dt_admin_4_results->post_count > 0 ) {
+
+                                                            echo ' ( ' . esc_attr( $dt_admin_4_results->post_count ) . ' )</a>';
+                                                            echo '<ul class="menu vertical nested">'; // level 3 ul
+
+                                                            foreach ( $dt_admin_4_results->posts as $dt_admin_4_record ) {
+                                                                echo '<li class="bottom-border"><a href="#">' . esc_attr( $dt_admin_4_record->post_title ) . '</a>';
+                                                                // All countries targeted for use do not have useful admin divisions below 4. This is the extent of the nesting supported.
+
+                                                            }
+
+                                                            echo '</ul>'; // end level 3 ul
+
+                                                        } else {
+                                                            echo '</a>';
+                                                        }
+                                                    }
+
+                                                    echo '</ul>'; // end level 3 ul
+
+                                                } else {
+                                                    echo '</a>';
+                                                }
+                                            }
+
+                                            echo '</ul>'; // end level 2 ul
+
+                                        } else {
+                                            echo '</a>';
+                                        }
+
+                                        echo '</li>'; // end level 1 li
+
+                                    }
+                                    echo '</ul>'; // end level 1 list
+
+                                } else {
+                                    echo '</a>';
+                                }
+                                echo '</li>'; // end level 0 list
                             }
-
-                                echo '</a>';
-
-                                echo '<ul class="menu vertical nested">'; // level 2 ul
-
-                            foreach ( $query2->posts as $admin2 ) {
-                                echo '<li class="bottom-border"><a href="#">' . esc_attr( $admin2->post_title ) . '</a>';
-                            }
-
-                                echo '</ul>'; // end level 2 ul
-
-                                    echo '</li>'; // end level 1 li
-
                         }
-                            echo '</ul>'; // end level 1 list
+                        ?>
 
-                        echo '</li>'; // end level 0 list
+                    </ul> <!-- End list-->
 
-                    }
-                }
-                ?>
+                </section>
 
-                </ul> <!-- End list-->
+            </div>
 
-            </section>
+            <div id="main" class="large-9 small-12 cell" role="main">
 
-        </div>
+                <section class="bordered-box">
 
-        <div id="main" class="large-9 small-12 cell" role="main">
+                    <div id="map" style="width:100%;"></div>
 
-            <section class="bordered-box">
+                    
+                    <script type="text/javascript">
 
-                <div id="map" style="width:100%;"></div>
+                        jQuery(document).ready(function () {
 
-                <script type="text/javascript">
+                            jQuery('#map').height(jQuery(window).height() - jQuery('header').height() - 150) // set height for map
 
-                    jQuery(document).ready(function () {
+                            let zoom = 10
+                            let centerLat = 32.5997754
+                            let centerLng = -8.6600586
+                            let center = new google.maps.LatLng(centerLat, centerLng);
+                            let map = new google.maps.Map(document.getElementById('map'), {
+                                zoom: zoom,
+                                center: center,
+                                mapTypeId: 'terrain'
+                            })
+                            var contentString = '<div id="content">' +
+                                '<div id="siteNotice">' +
+                                '</div>' +
+                                '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
+                                '<div id="bodyContent">' +
+                                '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+                                'sandstone rock formation in the southern part of the ' +
+                                'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) ' +
+                                'south west of the nearest large town, Alice Springs; 450&#160;km ' +
+                                '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major ' +
+                                'features of the Uluru - Kata Tjuta National Park. Uluru is ' +
+                                'sacred to the Pitjantjatjara and Yankunytjatjara, the ' +
+                                'Aboriginal people of the area. It has many springs, waterholes, ' +
+                                'rock caves and ancient paintings. Uluru is listed as a World ' +
+                                'Heritage Site.</p>' +
+                                '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
+                                'https://en.wikipedia.org/w/index.php?title=Uluru</a> ' +
+                                '(last visited June 22, 2009).</p>' +
+                                '</div>' +
+                                '</div>';
 
-                        jQuery('#map').height( jQuery(window).height() - jQuery('header').height() - 150 ) // set height for map
+                            var infowindow = new google.maps.InfoWindow({
+                                content: contentString
+                            });
 
-                        let zoom = 10
-                        let centerLat = 32.5997754
-                        let centerLng = -8.6600586
-                        let center = new google.maps.LatLng(centerLat, centerLng);
-                        let map = new google.maps.Map(document.getElementById('map'), {
-                            zoom: zoom,
-                            center: center,
-                            mapTypeId: 'terrain'
-                        })
-                        var contentString = '<div id="content">'+
-                            '<div id="siteNotice">'+
-                            '</div>'+
-                            '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-                            '<div id="bodyContent">'+
-                            '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-                            'sandstone rock formation in the southern part of the '+
-                            'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-                            'south west of the nearest large town, Alice Springs; 450&#160;km '+
-                            '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-                            'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-                            'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-                            'Aboriginal people of the area. It has many springs, waterholes, '+
-                            'rock caves and ancient paintings. Uluru is listed as a World '+
-                            'Heritage Site.</p>'+
-                            '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-                            'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-                            '(last visited June 22, 2009).</p>'+
-                            '</div>'+
-                            '</div>';
-
-                        var infowindow = new google.maps.InfoWindow({
-                            content: contentString
-                        });
-
-                        var marker = new google.maps.Marker({
-                            position: center,
-                            map: map,
-                            icon: {
-                                path: google.maps.SymbolPath.CIRCLE,
-                                scale: 50,
-                                strokeColor: 'red',
-                                strokeWeight: 5,
-                                fillColor: 'red',
-                                fillOpacity: .8
-                            },
-                            label: 'Marker',
+                            var marker = new google.maps.Marker({
+                                position: center,
+                                map: map,
+                                icon: {
+                                    path: google.maps.SymbolPath.CIRCLE,
+                                    scale: 50,
+                                    strokeColor: 'red',
+                                    strokeWeight: 5,
+                                    fillColor: 'red',
+                                    fillOpacity: .8
+                                },
+                                label: 'Marker',
 
 
-                        });
-                        marker.addListener('click', function() {
-                            infowindow.open(map, marker);
-                        });
+                            });
+                            marker.addListener('click', function () {
+                                infowindow.open(map, marker);
+                            });
 
 //                        var infowindow2 = new google.maps.InfoWindow({
 //                            content: contentString
@@ -220,7 +255,6 @@
 //                        marker2.addListener('click', function() {
 //                            infowindow2.open(map, marker2);
 //                        });
-
 
 
 //                        var locations = [
@@ -273,23 +307,21 @@
 //                            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 
 
-
-                    });
-                </script>
-
+                        });
+                    </script>
 
 
-            </section>
+                </section>
 
-        </div> <!-- end #main -->
+            </div> <!-- end #main -->
 
-    </div> <!-- end #inner-content -->
+        </div> <!-- end #inner-content -->
 
-</div> <!-- end #content -->
+    </div> <!-- end #content -->
 
-<?php
+    <?php
 
-})();
+} )();
 
 get_footer();
 
