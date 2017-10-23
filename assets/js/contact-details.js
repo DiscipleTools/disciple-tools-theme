@@ -96,7 +96,7 @@ function prepareActivityData(activityData) {
    name: contactsDetailsWpApiSettings.contact_author_name,
    user_id: currentContact.post_author,
   }
-  activityData.unshift(createdContactActivityItem)
+  activityData.push(createdContactActivityItem)
   activityData.forEach(item => {
     item.date = moment.unix(item.hist_time)
   })
@@ -119,7 +119,7 @@ let commentTemplate = _.template(`
 
 
 let comments = []
-let activity = []
+let activity = [] // not guaranteed to be in any particular order
 let contact = {}
 jQuery(document).ready(function($) {
 
