@@ -85,6 +85,12 @@ function post_comment(contactId) {
   })
 }
 
+function prepareActivityData(activityData) {
+  activityData.forEach(item => {
+    item.date = moment.unix(item.hist_time)
+  })
+}
+
 let commentTemplate = _.template(`
   <div class="activity-block">
     <div><span><strong><%- name %></strong></span> <span class="comment-date"> <%- date %> </span></div>
@@ -111,10 +117,8 @@ jQuery(document).ready(function($) {
   $( document ).ajaxComplete(function(event, xhr, settings) {
     if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
       API.get_activity('contact', contactId).then(activityData=>{
-        activityData.forEach(d=>{
-          d.date = moment.unix(d.hist_time)
-        })
         activity = activityData
+        prepareActivityData(activity)
         display_activity_comment()
       })
     }
@@ -133,10 +137,8 @@ jQuery(document).ready(function($) {
       comment.date = moment(comment.comment_date_gmt + "Z")
     })
     comments = commentData
-    activityData.forEach(d => {
-      d.date = moment.unix(d.hist_time)
-    })
     activity = activityData
+    prepareActivityData(activity)
     display_activity_comment("all")
   })
 
