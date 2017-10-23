@@ -90,9 +90,10 @@ function prepareActivityData(activityData) {
    * stored in the database. It is not stored as an activity in the database,
    * since that we duplicate data with the post's metadata. */
   const currentContact = contactsDetailsWpApiSettings.contact;
+  const createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
   const createdContactActivityItem = {
-   hist_time: moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true).unix(),
-   object_note: contactsDetailsWpApiSettings.txt_created_contact,
+   hist_time: createdDate.unix(),
+   object_note: contactsDetailsWpApiSettings.txt_created_contact.replace("{}", createdDate.local().format("h:mm a")),
    name: contactsDetailsWpApiSettings.contact_author_name,
    user_id: currentContact.post_author,
   }
@@ -774,7 +775,7 @@ jQuery(document).ready(function($) {
 
 
 function formatDate(date) {
-  return date.format("YYYY/MM/DD hh:mm a")
+  return date.format("YYYY-MM-DD h:mm a")
 }
 
 let current_section = "all"
