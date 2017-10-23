@@ -85,16 +85,33 @@ function post_comment(contactId) {
   })
 }
 
+function prepareActivityData(activityData) {
+  /* Insert a "created contact" item in the activity, even though it is not
+   * stored in the database. It is not stored as an activity in the database,
+   * since that we duplicate data with the post's metadata. */
+  const currentContact = contactsDetailsWpApiSettings.contact;
+  const createdContactActivityItem = {
+   hist_time: moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true).unix(),
+   object_note: contactsDetailsWpApiSettings.txt_created_contact,
+   name: contactsDetailsWpApiSettings.contact_author_name,
+   user_id: currentContact.post_author,
+  }
+  activityData.unshift(createdContactActivityItem)
+  activityData.forEach(item => {
+    item.date = moment.unix(item.hist_time)
+  })
+}
+
 let commentTemplate = _.template(`
   <div class="activity-block">
     <div><span><strong><%- name %></strong></span> <span class="comment-date"> <%- date %> </span></div>
     <div class="activity-text">
-    <% _.forEach(activity, function(a){ 
+    <% _.forEach(activity, function(a){
         if (a.comment){ %>
             <p dir="auto" class="comment-bubble"> <%- a.text %> </p>
-      <% } else { %> 
+      <% } else { %>
             <p class="activity-bubble">  <%- a.text %> </p>
-    <%  } 
+    <%  }
     }); %>
     </div>
   </div>`
@@ -111,28 +128,28 @@ jQuery(document).ready(function($) {
   $( document ).ajaxComplete(function(event, xhr, settings) {
     if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
       API.get_activity('contact', contactId).then(activityData=>{
-        activityData.forEach(d=>{
-          d.date = moment.unix(d.hist_time)
-        })
         activity = activityData
+        prepareActivityData(activity)
         display_activity_comment()
       })
     }
   });
 
 
+  // TODO: maybe replace $.when with Promise.all, and make API functions always
+  // return native Promise objects
   $.when(
     API.get_comments('contact', contactId),
     API.get_activity('contact', contactId)
-  ).then(function(commentData, activityData) {
-    commentData[0].forEach(comment => {
+  ).then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
+    const commentData = commentDataStatusJQXHR[0];
+    const activityData = activityDataStatusJQXHR[0];
+    commentData.forEach(comment => {
       comment.date = moment(comment.comment_date_gmt + "Z")
     })
-    comments = commentData[0]
-    activityData[0].forEach(d => {
-      d.date = moment.unix(d.hist_time)
-    })
-    activity = activityData[0]
+    comments = commentData
+    activity = activityData
+    prepareActivityData(activity)
     display_activity_comment("all")
   })
 
@@ -486,7 +503,7 @@ jQuery(document).ready(function($) {
         `<li class="${newId}">
           <span>${label}</span>
           <input id="${newId}"
-                 value="${text}" style="display: inline-block"   
+                 value="${text}" style="display: inline-block"
                  class="details-edit social-input" >
           ${editContactDetailsOptions(newId, "social")}
         </li>`)
@@ -901,7 +918,7 @@ function add_typeahead_item(contactId, fieldId, val, name) {
     <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
     <button class="details-remove-button connection details-edit"
             data-field="${fieldId}" data-id="${val}"
-            data-name="${name}"  
+            data-name="${name}"
             style="display: inline-block">Remove</button>
     </li>`)
     jQuery(`.temp-${fieldId}-${val}`).remove()

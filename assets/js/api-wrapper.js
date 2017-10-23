@@ -2,7 +2,7 @@
 
 
 let API = {
-  get_post: function(type, postId){
+  get_post(type, postId){
     return jQuery.ajax({
       type:"GET",
       contentType: "application/json; charset=utf-8",
@@ -13,7 +13,7 @@ let API = {
       }
     })
   },
-  save_field_api: function(type, postId, post_data){
+  save_field_api(type, postId, post_data){
     return jQuery.ajax({
       type:"POST",
       data:JSON.stringify(post_data),
@@ -25,7 +25,7 @@ let API = {
       }
     })
   },
-  add_item_to_field: function(type, postId, post_data) {
+  add_item_to_field(type, postId, post_data) {
     return jQuery.ajax({
       type: "POST",
       data: JSON.stringify(post_data),
@@ -37,7 +37,7 @@ let API = {
       }
     })
   },
-  update_contact_method_detail: function (type, postId, fieldKey, values) {
+  update_contact_method_detail(type, postId, fieldKey, values) {
     let data = {key: fieldKey, values: values}
     return jQuery.ajax({
       type: "POST",
@@ -50,7 +50,7 @@ let API = {
       }
     })
   },
-  remove_item_from_field: function(type, postId, fieldKey, valueId) {
+  remove_item_from_field(type, postId, fieldKey, valueId) {
     let data = {key: fieldKey, value: valueId}
     return jQuery.ajax({
       type: "DELETE",
@@ -63,7 +63,7 @@ let API = {
       }
     })
   },
-  remove_field: function(type, postId, fieldKey) {
+  remove_field(type, postId, fieldKey) {
     let data = {key: fieldKey}
     return jQuery.ajax({
       type: "DELETE",
@@ -76,7 +76,7 @@ let API = {
       }
     })
   },
-  post_comment: function(type, postId, comment) {
+  post_comment(type, postId, comment) {
     return jQuery.ajax({
       type: "POST",
       data: JSON.stringify({comment}),
@@ -88,7 +88,7 @@ let API = {
       }
     })
   },
-  get_comments: function(type, postId) {
+  get_comments(type, postId) {
     return jQuery.ajax({
       type: "GET",
       contentType: "application/json; charset=utf-8",
@@ -99,7 +99,7 @@ let API = {
       }
     })
   },
-  get_activity: function(type, postId) {
+  get_activity(type, postId) {
     return jQuery.ajax({
       type: "GET",
       contentType: "application/json; charset=utf-8",
