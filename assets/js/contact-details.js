@@ -329,6 +329,8 @@ jQuery(document).ready(function($) {
 
   let locationsTypeahead = $('.locations .typeahead')
   function loadLocationsTypeahead() {
+    locationsTypeahead.typeahead('destroy')
+    locations.initialize()
     locationsTypeahead.typeahead({
       highlight: true,
       minLength: 0,
@@ -348,8 +350,6 @@ jQuery(document).ready(function($) {
     contact.fields.locations.push(sug)
     add_typeahead_item(contactId, 'locations', sug.ID, sug.name)
     $("#no-location").remove()
-    locationsTypeahead.typeahead('destroy')
-    locations.initialize()
     loadLocationsTypeahead()
   })
   loadLocationsTypeahead()
@@ -431,10 +431,17 @@ jQuery(document).ready(function($) {
     if (fieldId && itemId){
       API.remove_item_from_field('contact', contactId, fieldId, itemId).then(()=>{
         $(`.${fieldId}-list .${itemId}`).remove()
-
         //add the item back to the locations list
+        let listItems = $(`.${fieldId}-list li`)
         if (fieldId === 'locations'){
-          locations.add([{ID:itemId, name: $(this).data('name')}])
+          // locations.add([{ID:itemId, name: $(this).data('name')}])
+          if (listItems.length === 0){
+            $(`.${fieldId}-list`).append('<li id="no-location">No location set</li>')
+          }
+        } else if ( fieldId === "people_groups"){
+          if (listItems.length === 0){
+            $(`.${fieldId}-list`).append('<li id="no-location">No people group set</li>')
+          }
         }
       }).catch(err=>{
         console.log(err)
@@ -443,9 +450,14 @@ jQuery(document).ready(function($) {
   })
   $(document).on('click', '.details-remove-button.delete-method', function () {
     let fieldId = $(this).data('id')
+    let fieldType = $(this).data('field')
     if (fieldId){
       API.remove_field('contact', contactId, fieldId).then(()=>{
         $(`.${fieldId}`).remove()
+        let listItems = $(`.${fieldType}-list li`)
+        if (listItems.length === 0){
+          $(`.${fieldType}.details-list`).append(`<li id="no-${fieldType}">No ${fieldType} set</li>`)
+        }
       }).catch(err=>{
         console.log(err)
       })
@@ -476,7 +488,7 @@ jQuery(document).ready(function($) {
           <input id="${newId}"
                  value="${text}" style="display: inline-block"   
                  class="details-edit social-input" >
-          ${editContactDetailsOptions(newId)}
+          ${editContactDetailsOptions(newId, "social")}
         </li>`)
       $(`.${newId} .dropdown.menu`).foundation()
 
@@ -488,6 +500,7 @@ jQuery(document).ready(function($) {
           <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/broken.svg"/>
         </li>`)
       inputForNewValue.val('')
+      $("#no-social").remove()
     })
   })
 
@@ -588,10 +601,11 @@ jQuery(document).ready(function($) {
             </li>
         `)
         $('.new-address')
-          .append(editContactDetailsOptions(newAddressId))
+          .append(editContactDetailsOptions(newAddressId, "address"))
           .removeClass('new-address')
           .addClass(newAddressId)
           $(`.${newAddressId} .dropdown.menu`).foundation()
+        $('#no-address').remove()
       }
     })
   })
@@ -601,7 +615,6 @@ jQuery(document).ready(function($) {
       API.save_field_api('contact', contactId, {[id]: $(this).val()}).then(()=>{
         $(`.address.details-list .${id}`).text($(this).val())
       })
-
     }
   })
 
@@ -629,18 +642,18 @@ jQuery(document).ready(function($) {
             </li>
         `)
         $(`.new-${field}`)
-          .append(editContactDetailsOptions(newId))
+          .append(editContactDetailsOptions(newId, field))
           .removeClass(`new-${field}`)
           .addClass(newId)
         $(`.${newId} .dropdown.menu`).foundation()
         $(this).removeClass(`new-contact-details`).addClass('contact-input')
-
+        $(`#no-${field}`).remove()
       }
     })
   })
 
 
-  let editContactDetailsOptions = function (field_id) {
+  let editContactDetailsOptions = function (field_id, field_type) {
     return `
       <ul class='dropdown menu' data-click-open='true'
               data-dropdown-menu data-disable-hover='true'
@@ -673,6 +686,7 @@ jQuery(document).ready(function($) {
             </li>
             <li>
               <button class='details-remove-button delete-method'
+                      data-field='${field_type}'
                       data-id='${field_id}'>
                       Delete item
               <button>
