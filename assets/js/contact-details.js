@@ -121,18 +121,22 @@ jQuery(document).ready(function($) {
   });
 
 
+  // TODO: maybe replace $.when with Promise.all, and make API functions always
+  // return native Promise objects
   $.when(
     API.get_comments('contact', contactId),
     API.get_activity('contact', contactId)
-  ).then(function(commentData, activityData) {
-    commentData[0].forEach(comment => {
+  ).then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
+    const commentData = commentDataStatusJQXHR[0];
+    const activityData = activityDataStatusJQXHR[0];
+    commentData.forEach(comment => {
       comment.date = moment(comment.comment_date_gmt + "Z")
     })
-    comments = commentData[0]
-    activityData[0].forEach(d => {
+    comments = commentData
+    activityData.forEach(d => {
       d.date = moment.unix(d.hist_time)
     })
-    activity = activityData[0]
+    activity = activityData
     display_activity_comment("all")
   })
 
