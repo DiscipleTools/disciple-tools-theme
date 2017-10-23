@@ -81,7 +81,7 @@ function dt_site_scripts() {
                 'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
                 'channels' => Disciple_Tools_Contacts::get_channel_list(),
                 'template_dir' => get_template_directory_uri(),
-                'txt_created_contact' => __( "Created contact" )
+                'txt_created_contact' => __( "Created contact at {}" )
             )
         );
     }

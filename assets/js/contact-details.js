@@ -90,13 +90,14 @@ function prepareActivityData(activityData) {
    * stored in the database. It is not stored as an activity in the database,
    * since that we duplicate data with the post's metadata. */
   const currentContact = contactsDetailsWpApiSettings.contact;
+  const createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
   const createdContactActivityItem = {
-   hist_time: moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true).unix(),
-   object_note: contactsDetailsWpApiSettings.txt_created_contact,
+   hist_time: createdDate.unix(),
+   object_note: contactsDetailsWpApiSettings.txt_created_contact.replace("{}", createdDate.local().format("h:mm a")),
    name: contactsDetailsWpApiSettings.contact_author_name,
    user_id: currentContact.post_author,
   }
-  activityData.unshift(createdContactActivityItem)
+  activityData.push(createdContactActivityItem)
   activityData.forEach(item => {
     item.date = moment.unix(item.hist_time)
   })
@@ -119,7 +120,7 @@ let commentTemplate = _.template(`
 
 
 let comments = []
-let activity = []
+let activity = [] // not guaranteed to be in any particular order
 let contact = {}
 jQuery(document).ready(function($) {
 
@@ -151,6 +152,9 @@ jQuery(document).ready(function($) {
     activity = activityData
     prepareActivityData(activity)
     display_activity_comment("all")
+  }).catch(err => {
+    console.error(err);
+    jQuery("#errors").append(err.responseText)
   })
 
 
@@ -486,7 +490,9 @@ jQuery(document).ready(function($) {
     let value = $(this).val();
     API.save_field_api('contact', contactId, {[id]: value}).then(()=>{
       $(`.social.details-list .${id} .social-text`).text(value)
-    })
+    }).catch(err => {
+      console.error(err);
+    });
   })
 
   let addSocial = $("#add-social-media")
@@ -518,7 +524,9 @@ jQuery(document).ready(function($) {
         </li>`)
       inputForNewValue.val('')
       $("#no-social").remove()
-    })
+    }).catch(err => {
+      console.error(err);
+    });
   })
 
   $(document).on('change', '.contact-input', function () {
@@ -758,7 +766,7 @@ jQuery(document).ready(function($) {
 
 
 function formatDate(date) {
-  return date.format("YYYY/MM/DD hh:mm a")
+  return date.format("YYYY-MM-DD h:mm a")
 }
 
 let current_section = "all"
