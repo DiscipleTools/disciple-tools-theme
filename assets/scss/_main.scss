@@ -378,7 +378,6 @@ img {
 }
 
 .address.details-list .address-row {
-    border-bottom: 1px solid #cacaca;
     .address-text {
         white-space:pre-wrap;
     }
@@ -397,6 +396,14 @@ img {
     .button {
         margin-left:5px;
     }
+}
+
+.scrollable-dropdown-menu .tt-menu {
+    max-height: 150px;
+    overflow-y: auto;
+}
+.last-typeahead-in-section {
+    margin-bottom:150px;
 }
 
 .tabs-panel .outer-container {
