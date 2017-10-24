@@ -93,7 +93,7 @@ function prepareActivityData(activityData) {
   const createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
   const createdContactActivityItem = {
    hist_time: createdDate.unix(),
-   object_note: contactsDetailsWpApiSettings.txt_created_contact.replace("{}", createdDate.local().format("h:mm a")),
+   object_note: contactsDetailsWpApiSettings.txt_created_contact.replace("{}", formatDate(createdDate.local())),
    name: contactsDetailsWpApiSettings.contact_author_name,
    user_id: currentContact.post_author,
   }

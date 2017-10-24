@@ -490,7 +490,7 @@ jQuery(document).ready(function($) {
     const createdDate = moment.utc(currentGroup.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
     const createdGroupActivityItem = {
       hist_time: createdDate.unix(),
-      object_note: wpApiGroupsSettings.txt_created_group.replace("{}", createdDate.local().format("h:mm a")),
+      object_note: wpApiGroupsSettings.txt_created_group.replace("{}", formatDate(createdDate.local())),
       name: wpApiGroupsSettings.group_author_name,
       user_id: currentGroup.post_author,
     }
