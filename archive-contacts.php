@@ -22,41 +22,47 @@ declare(strict_types=1);
                 <div class="js-filters-modal-content">
                     <h5><?php esc_html_e( "Views" ); ?></h5>
                     <div class="list-views">
-                        <label style="cursor: pointer;">
-                            <input type="radio" name="view" value="my_contacts" class="js-list-view" checked>
-                            <?php esc_html_e( "My contacts" ); ?>
-                            <span class="js-list-view-count" data-value="my_contacts" style="float: right">.</span>
-                        </label>
-                        <label style="cursor: pointer;">
-                            <input type="radio" name="view" value="my_priorities" class="js-list-view" style="margin-left: 20px">
-                            <?php esc_html_e( "My priorities" ); ?>
-                            <span class="js-list-view-count" data-value="my_priorities" style="float: right">.</span>
-                        </label>
-                        <label style="cursor: pointer;">
-                            <input type="radio" name="view" value="update_needed" class="js-list-view" style="margin-left: 40px">
-                            <?php esc_html_e( "Updated needed" ); ?>
-                            <span class="js-list-view-count" data-value="update_needed" style="float: right">.</span>
-                        </label>
-                        <label style="cursor: pointer;">
-                            <input type="radio" name="view" value="meeting_scheduled" class="js-list-view" style="margin-left: 40px">
-                            <?php esc_html_e( "Meeting scheduled" ); ?>
-                            <span class="js-list-view-count" data-value="meeting_scheduled" style="float: right">.</span>
-                        </label>
-                        <label style="cursor: pointer;">
-                            <input type="radio" name="view" value="contact_unattempted" class="js-list-view" style="margin-left: 40px">
-                            <?php esc_html_e( "Contact unattempted" ); ?>
-                            <span class="js-list-view-count" data-value="contact_unattempted" style="float: right">.</span>
-                        </label>
-                        <label style="cursor: pointer;">
-                            <input type="radio" name="view" value="contacts_shared_with_me" class="js-list-view">
-                            <?php esc_html_e( "Contacts shared with me" ); ?>
-                            <span class="js-list-view-count" data-value="contacts_shared_with_me" style="float: right">.</span>
-                        </label>
-                        <label style="cursor: pointer;">
+                        <label class="list-view">
                             <input type="radio" name="view" value="all_contacts" class="js-list-view">
                             <?php esc_html_e( "All contacts" ); ?>
-                            <span class="js-list-view-count" data-value="all_contacts" style="float: right">.</span>
+                            <span class="list-view__count js-list-view-count" data-value="all_contacts">.</span>
                         </label>
+                        <div class="list-views__sub">
+                            <label class="list-view">
+                                <input type="radio" name="view" value="my_contacts" class="js-list-view" checked>
+                                <?php esc_html_e( "My contacts" ); ?>
+                                <span class="list-view__count js-list-view-count" data-value="my_contacts">.</span>
+                            </label>
+                            <div class="list-views__sub">
+                                <label class="list-view">
+                                    <input type="radio" name="view" value="my_priorities" class="js-list-view">
+                                    <?php esc_html_e( "My priorities" ); ?>
+                                    <span class="list-view__count js-list-view-count" data-value="my_priorities">.</span>
+                                </label>
+                                <div class="list-views__sub">
+                                    <label class="list-view">
+                                        <input type="radio" name="view" value="update_needed" class="js-list-view">
+                                        <?php esc_html_e( "Updated needed" ); ?>
+                                        <span class="list-view__count js-list-view-count" data-value="update_needed">.</span>
+                                    </label>
+                                    <label class="list-view">
+                                        <input type="radio" name="view" value="meeting_scheduled" class="js-list-view">
+                                        <?php esc_html_e( "Meeting scheduled" ); ?>
+                                        <span class="list-view__count js-list-view-count" data-value="meeting_scheduled">.</span>
+                                    </label>
+                                    <label class="list-view">
+                                        <input type="radio" name="view" value="contact_unattempted" class="js-list-view">
+                                        <?php esc_html_e( "Contact unattempted" ); ?>
+                                        <span class="list-view__count js-list-view-count" data-value="contact_unattempted">.</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <label class="list-view">
+                                <input type="radio" name="view" value="contacts_shared_with_me" class="js-list-view">
+                                <?php esc_html_e( "Contacts shared with me" ); ?>
+                                <span class="list-view__count js-list-view-count" data-value="contacts_shared_with_me">.</span>
+                            </label>
+                        </div>
                     </div>
 
                     <h5><?php esc_html_e( "Filters" ); ?></h5>

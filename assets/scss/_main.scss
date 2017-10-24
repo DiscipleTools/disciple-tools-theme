@@ -937,6 +937,23 @@ CONTACTS
     color: #2196f3;
 }
 
+.list-views {
+    margin-bottom: 0.5rem;
+}
+
+.list-views__sub {
+    margin-left: 20px;
+}
+
+
+.list-view {
+    cursor: pointer;
+}
+
+.list-view__count {
+    float: right;
+}
+
 .priorities-show-all {
     float: right;
     & > span {
@@ -1183,3 +1200,4 @@ div.dataTables_wrapper .datatable-first-line {
 .half-opacity {
     opacity: 0.5;
 }
+
