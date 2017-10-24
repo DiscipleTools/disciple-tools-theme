@@ -87,12 +87,17 @@ function dt_site_scripts() {
     }
     if (is_singular( "groups" )){
         dt_theme_enqueue_script( 'group-details', 'assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
+        $group = Disciple_Tools_Groups::get_group( get_the_ID() );
+        $group_post = get_post( $group["ID"] );
         wp_localize_script(
             'group-details', 'wpApiGroupsSettings', array(
-                'group' => Disciple_Tools_Groups::get_group( get_the_ID() ),
+                'group' => $group,
+                'group_post' => $group_post,
+                'group_author_name' => get_user_by( 'id', intval( $group_post->post_author ) )->display_name,
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
-                'template_dir' => get_template_directory_uri()
+                'template_dir' => get_template_directory_uri(),
+                'txt_created_group' => __( "Created group at {}" )
             )
         );
     }

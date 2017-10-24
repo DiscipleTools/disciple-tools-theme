@@ -88,7 +88,7 @@ function post_comment(contactId) {
 function prepareActivityData(activityData) {
   /* Insert a "created contact" item in the activity, even though it is not
    * stored in the database. It is not stored as an activity in the database,
-   * since that we duplicate data with the post's metadata. */
+   * to avoid duplicating data with the post's metadata. */
   const currentContact = contactsDetailsWpApiSettings.contact;
   const createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
   const createdContactActivityItem = {
