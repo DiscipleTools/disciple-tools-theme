@@ -13,6 +13,9 @@ if ( ( isset( $_POST['location_nonce'] ) && wp_verify_nonce( sanitize_key( wp_un
 /**
  * Build Queries
  */
+if ( ! class_exists( 'Disciple_Tools_Locations' ) ) {
+    wp_die( 'The Disciple Tools Plugin is require. Please install this.' );
+}
 $dt_level_0_count = Disciple_Tools_Locations::get_standard_locations_count( 0 );
 
 $dt_country_default_id = get_user_meta( get_current_user_id(), 'dt_location_default', true );

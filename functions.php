@@ -184,6 +184,14 @@ class Disciple_Tools_Theme {
 
         });
 
+        // Checker for new version and updater service.
+        require 'versions/plugin-update-checker/plugin-update-checker.php';
+        $my_update_checker = Puc_v4_Factory::buildUpdateChecker(
+            'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-theme/Locations-Page/versions/version-updater.json',
+            __FILE__,
+            'disciple-tools-theme'
+        );
+
 
     } // End __construct()
 
