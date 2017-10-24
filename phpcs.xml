@@ -25,8 +25,8 @@
 
   <exclude-pattern>*/dependencies/*</exclude-pattern>
   <exclude-pattern>*/vendor/*</exclude-pattern>
-  <exclude-pattern>assets/functions/class-tgm-plugin-activation.php</exclude-pattern>
-  <exclude-pattern>versions/plugin-update-checker/*</exclude-pattern>
+  <exclude-pattern>update/class-tgm-plugin-activation.php</exclude-pattern>
+  <exclude-pattern>update/plugin-update-checker/*</exclude-pattern>
 
   <arg name="extensions" value="php,inc,lib"/>
   <arg value="n"/>
