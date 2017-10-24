@@ -5,7 +5,7 @@
 
 Steps to updating:
 1. Update version number in `style.css`.
-1. Create new HTML version information file in `/update/html/`
+1. Create new HTML version information page and copy the URL.
 1. Update `version-updater.json`. (Update in three places)
 1. Update `config-required-plugins.php`. 
 1. Commit to GitHub.
