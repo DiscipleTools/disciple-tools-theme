@@ -377,11 +377,33 @@ img {
     }
 }
 
+.address.details-list .address-row {
+    .address-text {
+        white-space:pre-wrap;
+    }
+    img {
+        display: inline-block;
+        vertical-align: top;
+        margin-top:5px;
+    }
+    div {
+        display: inline-block;
+    }
+}
+
 .new-social-media {
     display: flex;
     .button {
         margin-left:5px;
     }
+}
+
+.scrollable-dropdown-menu .tt-menu {
+    max-height: 150px;
+    overflow-y: auto;
+}
+.last-typeahead-in-section {
+    margin-bottom:150px;
 }
 
 .tabs-panel .outer-container {
@@ -915,6 +937,23 @@ CONTACTS
     color: #2196f3;
 }
 
+.list-views {
+    margin-bottom: 0.5rem;
+}
+
+.list-views__sub {
+    margin-left: 20px;
+}
+
+
+.list-view {
+    cursor: pointer;
+}
+
+.list-view__count {
+    float: right;
+}
+
 .priorities-show-all {
     float: right;
     & > span {
@@ -1161,3 +1200,4 @@ div.dataTables_wrapper .datatable-first-line {
 .half-opacity {
     opacity: 0.5;
 }
+

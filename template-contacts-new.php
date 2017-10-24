@@ -86,7 +86,7 @@ dt_print_breadcrumbs(
         var location_id = $(".js-create-contact select[name=location]").val();
         location_id = location_id ? parseInt(location_id) : undefined;
         $.ajax({
-            url: wpApiSettings.root + 'dt-hooks/v1/contact/create',
+            url: wpApiSettings.root + 'dt/v1/contact/create',
             type: "POST",
             contentType: "application/json; charset=UTF-8",
             dataType: "json",

@@ -92,26 +92,34 @@ function dt_site_scripts() {
     );
 
     if (is_singular( "contacts" )){
-        dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ), true );
+        dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
+        $contact = Disciple_Tools_Contacts::get_contact( get_the_ID() );
         wp_localize_script(
             'contact-details', 'contactsDetailsWpApiSettings', array(
-                'contact' => Disciple_Tools_Contacts::get_contact( get_the_ID() ),
+                'contact' => $contact,
+                'contact_author_name' => get_user_by( 'id', intval( $contact->post_author ) )->display_name,
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
                 'channels' => Disciple_Tools_Contacts::get_channel_list(),
-                'template_dir' => get_template_directory_uri()
+                'template_dir' => get_template_directory_uri(),
+                'txt_created_contact' => __( "Created contact at {}" )
             )
         );
     }
     if (is_singular( "groups" )){
         dt_theme_enqueue_script( 'group-details', 'assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
+        $group = Disciple_Tools_Groups::get_group( get_the_ID() );
+        $group_post = get_post( $group["ID"] );
         wp_localize_script(
             'group-details', 'wpApiGroupsSettings', array(
-                'group' => Disciple_Tools_Groups::get_group( get_the_ID() ),
+                'group' => $group,
+                'group_post' => $group_post,
+                'group_author_name' => get_user_by( 'id', intval( $group_post->post_author ) )->display_name,
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
-                'template_dir' => get_template_directory_uri()
+                'template_dir' => get_template_directory_uri(),
+                'txt_created_group' => __( "Created group at {}" )
             )
         );
     }

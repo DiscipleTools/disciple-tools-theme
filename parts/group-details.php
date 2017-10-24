@@ -91,7 +91,7 @@ function dt_contact_details_edit( $id, $remove = false ){
                     <li class="<?php echo intval( $value->ID ); ?>">
                         <a href="<?php echo esc_url( $value->permalink ); ?>"><?php echo esc_html( $value->post_title ); ?></a>
                         <button class="details-remove-button details-edit"
-                                data-field="locations" data-id="<?php esc_attr( $value->ID ); ?>"
+                                data-field="locations" data-id="<?php echo esc_attr( $value->ID ); ?>"
                                 data-name="<?php echo esc_attr( $value->post_title ); ?>"
                         >Remove</button>
                     </li>
@@ -157,12 +157,16 @@ function dt_contact_details_edit( $id, $remove = false ){
             </div>
             <ul class="address details-list">
                 <?php
+                if (sizeof( $group["address"] ?? [] ) === 0 ){
+                    ?> <li id="no-address">No address set</li> <?php
+                }
                 foreach ($group["address"] ?? [] as $value){
                     $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                     $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                     ?>
-                    <li class="<?php echo esc_html( $value["key"] ) ?>"><?php echo esc_html( $value["value"] );
-                        dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
+                    <li class="<?php echo esc_html( $value["key"] ) ?> address-row">
+                        <div class="address-text"><?php echo esc_html( $value["value"] );?></div>
+                        <?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
                     </li>
                 <?php } ?>
             </ul>

@@ -67,7 +67,10 @@
       );
     },
     contacts_shared_with_me(contact) {
-      return contact.shared_with_user;
+      return (
+        contact.shared_with_user
+        && _.get(contact, 'assigned_to.user_login') !== current_username
+      );
     },
     all_contacts(contact) {
       return true;
@@ -75,7 +78,7 @@
   };
 
   $.ajax({
-    url: wpApiSettings.root + "dt-hooks/v1/" + wpApiSettings.current_post_type,
+    url: wpApiSettings.root + "dt/v1/" + wpApiSettings.current_post_type,
     beforeSend: function(xhr) {
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
     },

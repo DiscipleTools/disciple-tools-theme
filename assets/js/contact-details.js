@@ -34,7 +34,7 @@ function save_quick_action(contactId, fieldKey){
     data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + '/quick_action_button',
+    url: contactsDetailsWpApiSettings.root + 'dt/v1/contact/' + contactId + '/quick_action_button',
     beforeSend: function (xhr) {
       xhr.setRequestHeader('X-WP-Nonce', contactsDetailsWpApiSettings.nonce);
     }
@@ -85,16 +85,34 @@ function post_comment(contactId) {
   })
 }
 
+function prepareActivityData(activityData) {
+  /* Insert a "created contact" item in the activity, even though it is not
+   * stored in the database. It is not stored as an activity in the database,
+   * to avoid duplicating data with the post's metadata. */
+  const currentContact = contactsDetailsWpApiSettings.contact;
+  const createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
+  const createdContactActivityItem = {
+   hist_time: createdDate.unix(),
+   object_note: contactsDetailsWpApiSettings.txt_created_contact.replace("{}", formatDate(createdDate.local())),
+   name: contactsDetailsWpApiSettings.contact_author_name,
+   user_id: currentContact.post_author,
+  }
+  activityData.push(createdContactActivityItem)
+  activityData.forEach(item => {
+    item.date = moment.unix(item.hist_time)
+  })
+}
+
 let commentTemplate = _.template(`
   <div class="activity-block">
     <div><span><strong><%- name %></strong></span> <span class="comment-date"> <%- date %> </span></div>
     <div class="activity-text">
-    <% _.forEach(activity, function(a){ 
+    <% _.forEach(activity, function(a){
         if (a.comment){ %>
             <p dir="auto" class="comment-bubble"> <%- a.text %> </p>
-      <% } else { %> 
+      <% } else { %>
             <p class="activity-bubble">  <%- a.text %> </p>
-    <%  } 
+    <%  }
     }); %>
     </div>
   </div>`
@@ -102,7 +120,7 @@ let commentTemplate = _.template(`
 
 
 let comments = []
-let activity = []
+let activity = [] // not guaranteed to be in any particular order
 let contact = {}
 jQuery(document).ready(function($) {
 
@@ -111,29 +129,32 @@ jQuery(document).ready(function($) {
   $( document ).ajaxComplete(function(event, xhr, settings) {
     if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
       API.get_activity('contact', contactId).then(activityData=>{
-        activityData.forEach(d=>{
-          d.date = moment.unix(d.hist_time)
-        })
         activity = activityData
+        prepareActivityData(activity)
         display_activity_comment()
       })
     }
   });
 
 
+  // TODO: maybe replace $.when with Promise.all, and make API functions always
+  // return native Promise objects
   $.when(
     API.get_comments('contact', contactId),
     API.get_activity('contact', contactId)
-  ).then(function(commentData, activityData) {
-    commentData[0].forEach(comment => {
+  ).then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
+    const commentData = commentDataStatusJQXHR[0];
+    const activityData = activityDataStatusJQXHR[0];
+    commentData.forEach(comment => {
       comment.date = moment(comment.comment_date_gmt + "Z")
     })
-    comments = commentData[0]
-    activityData[0].forEach(d => {
-      d.date = moment.unix(d.hist_time)
-    })
-    activity = activityData[0]
+    comments = commentData
+    activity = activityData
+    prepareActivityData(activity)
     display_activity_comment("all")
+  }).catch(err => {
+    console.error(err);
+    jQuery("#errors").append(err.responseText)
   })
 
 
@@ -148,11 +169,11 @@ jQuery(document).ready(function($) {
       return obj.ID
     },
     prefetch: {
-      url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/groups-compact/',
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/groups-compact/',
       prepare : API.typeaheadPrefetchPrepare,
     },
     remote: {
-      url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/groups-compact/?s=%QUERY',
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/groups-compact/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare,
     }
@@ -196,11 +217,11 @@ jQuery(document).ready(function($) {
       return obj.post_title
     },
     prefetch: {
-      url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/contacts/',
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/contacts/',
       prepare : API.typeaheadPrefetchPrepare
     },
     remote: {
-      url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/contacts/?s=%QUERY',
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/contacts/?s=%QUERY',
       wildcard: '%QUERY',
       prepare : API.typeaheadRemotePrepare
     }
@@ -418,7 +439,7 @@ jQuery(document).ready(function($) {
       $('.show-content').show()
       $('.show-more').hide()
     }
-    editDetailsToggle.text( editingAll ? "Back": "Edit")
+    editDetailsToggle.text( editingAll ? "Save": "Edit")
   }
   $('#edit-details').on('click', function () {
     toggleEditAll()
@@ -469,7 +490,9 @@ jQuery(document).ready(function($) {
     let value = $(this).val();
     API.save_field_api('contact', contactId, {[id]: value}).then(()=>{
       $(`.social.details-list .${id} .social-text`).text(value)
-    })
+    }).catch(err => {
+      console.error(err);
+    });
   })
 
   let addSocial = $("#add-social-media")
@@ -486,7 +509,7 @@ jQuery(document).ready(function($) {
         `<li class="${newId}">
           <span>${label}</span>
           <input id="${newId}"
-                 value="${text}" style="display: inline-block"   
+                 value="${text}" style="display: inline-block"
                  class="details-edit social-input" >
           ${editContactDetailsOptions(newId, "social")}
         </li>`)
@@ -501,7 +524,9 @@ jQuery(document).ready(function($) {
         </li>`)
       inputForNewValue.val('')
       $("#no-social").remove()
-    })
+    }).catch(err => {
+      console.error(err);
+    });
   })
 
   $(document).on('change', '.contact-input', function () {
@@ -558,24 +583,15 @@ jQuery(document).ready(function($) {
   /**
    * Baptism date
    */
-  // let baptismDateList = $('.baptism_date.details-list')
   let baptismDatePicker = $('.baptism_date #baptism-date-picker')
   baptismDatePicker.datepicker({
+    dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
-      API.save_field_api('contact', contactId, {baptism_date:date}).then(function () {
-        // baptismDateList.text(date)
-      })
-    },
-    onClose: function () {
-      // toggleEdit('baptism_date')
+      API.save_field_api('contact', contactId, {baptism_date:date})
     },
     changeMonth: true,
     changeYear: true
   })
-  // baptismDateList.on('click', e=>{
-  //   toggleEdit('baptism_date')
-  //   baptismDatePicker.focus()
-  // })
 
   $("#add-new-address").click(function () {
     if ($('#new-address').length === 0 ) {
@@ -595,7 +611,8 @@ jQuery(document).ready(function($) {
         //change the it to the created field
         input.attr('id', newAddressId)
         $('.details-list.address').append(`
-            <li class="${newAddressId}">${input.val()}
+            <li class="${newAddressId} address-row">
+              <div class="address-text">${input.val()}</div>
               <img id="${newAddressId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
               <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/broken.svg"/>
             </li>
@@ -613,7 +630,7 @@ jQuery(document).ready(function($) {
     let id = $(this).attr('id')
     if (id && id !== "new-address"){
       API.save_field_api('contact', contactId, {[id]: $(this).val()}).then(()=>{
-        $(`.address.details-list .${id}`).text($(this).val())
+        $(`.address.details-list .${id} .address-text`).text($(this).val())
       })
     }
   })
@@ -749,7 +766,7 @@ jQuery(document).ready(function($) {
 
 
 function formatDate(date) {
-  return date.format("YYYY/MM/DD hh:mm a")
+  return date.format("YYYY-MM-DD h:mm a")
 }
 
 let current_section = "all"
@@ -900,7 +917,7 @@ function add_typeahead_item(contactId, fieldId, val, name) {
     <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
     <button class="details-remove-button connection details-edit"
             data-field="${fieldId}" data-id="${val}"
-            data-name="${name}"  
+            data-name="${name}"
             style="display: inline-block">Remove</button>
     </li>`)
     jQuery(`.temp-${fieldId}-${val}`).remove()
@@ -918,7 +935,7 @@ function details_accept_contact(contactId, accept){
     data: JSON.stringify(data),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: contactsDetailsWpApiSettings.root + 'dt-hooks/v1/contact/' + contactId + "/accept",
+    url: contactsDetailsWpApiSettings.root + 'dt/v1/contact/' + contactId + "/accept",
     beforeSend: function(xhr) {
       xhr.setRequestHeader('X-WP-Nonce', contactsDetailsWpApiSettings.nonce);
     }

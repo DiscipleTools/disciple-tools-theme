@@ -2,109 +2,109 @@
 
 
 let API = {
-  get_post: function(type, postId){
+  get_post(type, postId){
     return jQuery.ajax({
       type:"GET",
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
     })
   },
-  save_field_api: function(type, postId, post_data){
+  save_field_api(type, postId, post_data){
     return jQuery.ajax({
       type:"POST",
       data:JSON.stringify(post_data),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
     })
   },
-  add_item_to_field: function(type, postId, post_data) {
+  add_item_to_field(type, postId, post_data) {
     return jQuery.ajax({
       type: "POST",
       data: JSON.stringify(post_data),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root +`dt-hooks/v1/${type}/${postId}/details`,
+      url: wpApiSettings.root +`dt/v1/${type}/${postId}/details`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
     })
   },
-  update_contact_method_detail: function (type, postId, fieldKey, values) {
+  update_contact_method_detail(type, postId, fieldKey, values) {
     let data = {key: fieldKey, values: values}
     return jQuery.ajax({
       type: "POST",
       data: JSON.stringify(data),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/details_update`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/details_update`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
     })
   },
-  remove_item_from_field: function(type, postId, fieldKey, valueId) {
+  remove_item_from_field(type, postId, fieldKey, valueId) {
     let data = {key: fieldKey, value: valueId}
     return jQuery.ajax({
       type: "DELETE",
       data: JSON.stringify(data),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/details`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/details`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
     })
   },
-  remove_field: function(type, postId, fieldKey) {
+  remove_field(type, postId, fieldKey) {
     let data = {key: fieldKey}
     return jQuery.ajax({
       type: "DELETE",
       data: JSON.stringify(data),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/field`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/field`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
     })
   },
-  post_comment: function(type, postId, comment) {
+  post_comment(type, postId, comment) {
     return jQuery.ajax({
       type: "POST",
       data: JSON.stringify({comment}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/comment`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/comment`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
     })
   },
-  get_comments: function(type, postId) {
+  get_comments(type, postId) {
     return jQuery.ajax({
       type: "GET",
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/comments`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/comments`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
     })
   },
-  get_activity: function(type, postId) {
+  get_activity(type, postId) {
     return jQuery.ajax({
       type: "GET",
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/activity`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/activity`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
@@ -116,7 +116,7 @@ let API = {
       data: JSON.stringify({user_id:userId}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/add-shared`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/add-shared`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
@@ -128,7 +128,7 @@ let API = {
       data: JSON.stringify({user_id:userId}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt-hooks/v1/${type}/${postId}/remove-shared`,
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/remove-shared`,
       beforeSend: function(xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }

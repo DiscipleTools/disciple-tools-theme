@@ -455,8 +455,8 @@
                             $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                             ?>
-                            <li class="<?php echo esc_html( $value["key"] ) ?>"><?php echo esc_html( $value["value"] );
-                            dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
+                            <li class="<?php echo esc_html( $value["key"] ) ?> address-row">
+                                <div class="address-text"><?php echo esc_html( $value["value"] );?></div><?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
                             </li>
                         <?php } ?>
                     </ul>
@@ -468,7 +468,7 @@
                             $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                             ?>
                             <div class="<?php echo esc_attr( $value["key"] )?>">
-                                <textarea rows="3" id="<?php echo esc_attr( $value["key"] )?>" class="contact-input"><?php echo esc_attr( $value["value"] )?></textarea>
+                                <textarea rows="3" id="<?php echo esc_attr( $value["key"] )?>"><?php echo esc_attr( $value["value"] )?></textarea>
                                 <?php dt_contact_details_edit( $value["key"], "address", true ) ?>
                             </div>
                             <hr>

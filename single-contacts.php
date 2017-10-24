@@ -47,7 +47,7 @@ declare( strict_types=1 );
                 <?php get_template_part( 'parts/contact', 'details' ); ?>
 
                 <section id="relationships" class="xlarge-6 large-12 medium-6 cell">
-                    <div class="bordered-box">
+                    <div class="bordered-box last-typeahead-in-section">
                         <button class=" float-right" onclick="edit_connections()"><i class="fi-pencil"></i> Edit
                         </button>
                         <h3 class="section-header">Connections</h3>
@@ -105,7 +105,7 @@ declare( strict_types=1 );
                             <div class="connections-edit">
                                 <label for="<?php echo esc_html( $connection ) ?>">Add <?php echo esc_html( $connection_label ) ?>
                                     :</label>
-                                <div id="<?php echo esc_html( $connection ) ?>">
+                                <div id="<?php echo esc_html( $connection ) ?>" class="scrollable-dropdown-menu">
                                     <input class="typeahead" type="text"
                                            placeholder="Type to search contacts">
                                 </div>
@@ -161,8 +161,7 @@ declare( strict_types=1 );
 
                         <div class="baptism_date">
                             <div class="section-subheader">Baptism Date</div>
-<!--                            <div class="baptism_date details-list">--><?php //echo esc_html( $group["baptism_date"] ?? "No baptism date" ); ?><!-- </div>-->
-                            <div class="baptism_date"><input type="text" value="<?php echo esc_html( $contact->fields["baptism_date"] ?? '' )?>" id="baptism-date-picker"></div>
+                            <div class="baptism_date"><input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact->fields["baptism_date"] ?? '' )?>" id="baptism-date-picker"></div>
                         </div>
 
                         <div class="section-subheader"><?php echo esc_html( $contact_fields["bible_mailing"]["name"] ) ?></div>
