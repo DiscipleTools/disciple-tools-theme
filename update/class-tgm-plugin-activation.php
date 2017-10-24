@@ -745,7 +745,7 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
          */
         public function install_plugins_page() {
             // Store new instance of plugin table in object.
-            $plugin_table = new TGMPA_List_Table;
+            $plugin_table = new TGMPA_List_Table();
 
             // Return early if processing a plugin installation action.
             if ( ( ( 'tgmpa-bulk-install' === $plugin_table->current_action() || 'tgmpa-bulk-update' === $plugin_table->current_action() ) && $plugin_table->process_bulk_actions() ) || $this->do_plugin_install() ) {
@@ -947,14 +947,14 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
             $repo_updates = get_site_transient( 'update_plugins' );
 
             if ( ! is_object( $repo_updates ) ) {
-                $repo_updates = new stdClass;
+                $repo_updates = new stdClass();
             }
 
             foreach ( $plugins as $slug => $plugin ) {
                 $file_path = $plugin['file_path'];
 
                 if ( empty( $repo_updates->response[ $file_path ] ) ) {
-                    $repo_updates->response[ $file_path ] = new stdClass;
+                    $repo_updates->response[ $file_path ] = new stdClass();
                 }
 
                 // We only really need to set package, but let's do all we can in case WP changes something.
@@ -3596,7 +3596,7 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
                             $this->upgrader->strings['skin_update_failed_error'] = __( 'An error occurred while installing %1$s: <strong>%2$s</strong>.', 'tgmpa' );
                             /* translators: 1: plugin name. */
                             $this->upgrader->strings['skin_update_failed'] = __( 'The installation of %1$s failed.', 'tgmpa' );
-            
+
                             if ( $this->tgmpa->is_automatic ) {
                                 // Automatic activation strings.
                                 $this->upgrader->strings['skin_upgrade_start'] = __( 'The installation and activation process is starting. This process may take a while on some hosts, so please be patient.', 'tgmpa' );

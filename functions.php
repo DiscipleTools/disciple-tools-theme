@@ -152,8 +152,8 @@ class Disciple_Tools_Theme {
         require_once( get_template_directory().'/assets/functions/page-front-page.php' );
 
         // Load plugin library that "requires plugins" at activation
-        require_once( get_template_directory().'/assets/functions/config-required-plugins.php' );
-        require_once( get_template_directory().'/assets/functions/class-tgm-plugin-activation.php' );
+        require_once( get_template_directory().'/update/config-required-plugins.php' );
+        require_once( get_template_directory().'/update/class-tgm-plugin-activation.php' );
 
         // WP-Admin page
         require_once( get_template_directory() . '/assets/functions/config-options-admin.php' );
@@ -185,9 +185,12 @@ class Disciple_Tools_Theme {
         });
 
         // Checker for new version and updater service.
-        require 'versions/plugin-update-checker/plugin-update-checker.php';
+
+        if ( ! class_exists( 'Puc_v4_Factory' ) ) {
+            require 'update/plugin-update-checker/plugin-update-checker.php';
+        }
         $my_update_checker = Puc_v4_Factory::buildUpdateChecker(
-            'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-theme/Locations-Page/versions/version-updater.json',
+            'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-theme/master/update/version-updater.json',
             __FILE__,
             'disciple-tools-theme'
         );
