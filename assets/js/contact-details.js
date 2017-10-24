@@ -439,7 +439,7 @@ jQuery(document).ready(function($) {
       $('.show-content').show()
       $('.show-more').hide()
     }
-    editDetailsToggle.text( editingAll ? "Back": "Edit")
+    editDetailsToggle.text( editingAll ? "Save": "Edit")
   }
   $('#edit-details').on('click', function () {
     toggleEditAll()
