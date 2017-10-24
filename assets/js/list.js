@@ -67,7 +67,10 @@
       );
     },
     contacts_shared_with_me(contact) {
-      return contact.shared_with_user;
+      return (
+        contact.shared_with_user
+        && _.get(contact, 'assigned_to.user_login') !== current_username
+      );
     },
     all_contacts(contact) {
       return true;
