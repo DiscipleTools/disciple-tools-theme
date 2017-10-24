@@ -90,28 +90,23 @@ function disciple_tools_off_canvas_nav() {
             <li><hr /></li>
 
         <?php
-    // User is multiplier or role of higher position
-//        <li><a href="<   ?php echo esc_url( home_url( '/' ) ); ?    >">Dashboard</a></li>
+        // User is multiplier or role of higher position
+        // <li><a href="<? php echo esc_url( home_url( '/' ) ); ? >">Dashboard</a></li>
         ?>
             <li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li>
             <li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li>
             <li><a href="<?php echo esc_url( home_url( '/locations/' ) ); ?>"><?php esc_html_e( "Locations" ); ?></a></li>
-            <?php if (dt_get_user_team_members_list( get_current_user_id() )) : ?>
+
+            <?php if (dt_get_user_team_members_list( get_current_user_id() )) : // check if part of team, if not don't show link ?>
             <li><a href="<?php echo esc_url( home_url( '/team/' ) ); ?>"><?php esc_html_e( "Team" ); ?></a></li>
             <?php endif; ?>
+
             <li>&nbsp;</li>
             <li><a href="<?php echo esc_url( home_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li>
             <li><a href="<?php echo esc_url( home_url( '/notifications/' ) ); ?>"><?php esc_html_e( "Notifications" ); ?></a></li>
             <li><a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a></li>
             <li>&nbsp;</li>
 
-
-            <li>
-                <form role="search" method="get" class="search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
-                    <input type="search" class="small" placeholder="<?php echo esc_attr_x( 'Search...', 'disciple_tools' ) ?>" value="<?php echo get_search_query() ?>" name="s" title="<?php echo esc_attr_x( 'Search for:', 'disciple_tools' ) ?>" />
-                    <input type="hidden" class=" button small" value="<?php echo esc_attr_x( 'Search', 'disciple_tools' ) ?>" />
-                </form>
-            </li>
        </ul>
 
 <?php
