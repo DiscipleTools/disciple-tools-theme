@@ -40,7 +40,7 @@ function mark_viewed(notification_id){
                   onclick="mark_unread( ` + notification_id + ` )">
                   <i class="fi-minus hollow"></i>
                </a>`)
-
+      
     })
     .fail(function (err) {
       console.log("error")
@@ -101,14 +101,14 @@ function mark_all_viewed(){
 function notification_template( id, note, is_new, pretty_time ) {
   "use strict";
   let button = ``
-  let label = ``
+  let label = `` // used by the mark_all_viewed()
 
   if ( is_new === '1' ) {
     button = `<a id="new-button-` + id + `" class="new-button button small" style="border-radius:100px; margin: .7em 0 0;"
                   onclick="mark_viewed( ` + id + ` )">
                   <i class="fi-check"></i>
                </a>`;
-    label = `new-cell`
+    label = `new-cell` // used by the mark_all_viewed()
   } else {
     button = `<a id="read-button-` + id + `" class="read-button button hollow small" style="border-radius:100px; margin: .7em 0 0;"
                   onclick="mark_unread( ` + id + ` )">
@@ -126,7 +126,6 @@ function notification_template( id, note, is_new, pretty_time ) {
                    ` + note + `<br>
                    <span class="grey">` + pretty_time + `</span>
                 </div>
-
                 <div class="small-2 medium-1 cell padding-5 ` + label + `" id="toggle-area-` + id + `">
                     ` + button + `
                 </div>
@@ -199,7 +198,7 @@ function get_notifications( all, reset) {
       }
       else if (( all === true && (all_offset === 0 || !all_offset ) ) || all === false && (new_offset === 0 || !new_offset)) { // determines if this is the first query (offset 0) and there is nothing returned.
 
-        jQuery('#notification-list').empty().html('<div class="cell center">Nothing here! :)</div>')
+        jQuery('#notification-list').html('<div class="cell center">Nothing here! :)</div>')
         jQuery('#next-all').hide()
         jQuery('#next-new').hide()
 
