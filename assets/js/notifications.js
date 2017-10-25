@@ -1,3 +1,4 @@
+
 function get_new_notification_count(){
   return jQuery.ajax({
     type: "POST",
@@ -35,7 +36,35 @@ function mark_viewed(notification_id){
   })
     .done(function (data) {
       get_new_notification_count()
-      jQuery('#new-button-'+notification_id).hide()
+      jQuery('#toggle-area-'+notification_id).html(`<a id="read-button-` + notification_id + `" class="read-button button hollow small" style="border-radius:100px; margin: .7em 0 0;"
+                  onclick="mark_unread( ` + notification_id + ` )">
+                  <i class="fi-minus hollow"></i>
+               </a>`)
+
+    })
+    .fail(function (err) {
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
+    })
+}
+
+function mark_unread(notification_id){
+  return jQuery.ajax({
+    type: "POST",
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: wpApiNotifications.root + 'dt/v1/notifications/mark_unread/'+notification_id,
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', wpApiNotifications.nonce);
+    },
+  })
+    .done(function (data) {
+      get_new_notification_count()
+      jQuery('#toggle-area-'+notification_id).html(`<a id="new-button-` + notification_id + `" class="new-button button small" style="border-radius:100px; margin: .7em 0 0;"
+                  onclick="mark_viewed( ` + notification_id + ` )">
+                  <i class="fi-check"></i>
+               </a>`)
     })
     .fail(function (err) {
       console.log("error")
@@ -57,7 +86,10 @@ function mark_all_viewed(){
   })
     .done(function (data) {
       get_new_notification_count()
-      jQuery('.new-button').hide()
+      jQuery('.new-cell').html(`<a id="read-button-` + id + `" class="read-button button hollow small" style="border-radius:100px; margin: .7em 0 0;"
+                  onclick="mark_unread( ` + id + ` )">
+                  <i class="fi-minus hollow"></i>
+               </a>`)
     })
     .fail(function (err) {
       console.log("error")
@@ -69,12 +101,19 @@ function mark_all_viewed(){
 function notification_template( id, note, is_new, pretty_time ) {
   "use strict";
   let button = ``
+  let label = ``
 
   if ( is_new === '1' ) {
     button = `<a id="new-button-` + id + `" class="new-button button small" style="border-radius:100px; margin: .7em 0 0;"
                   onclick="mark_viewed( ` + id + ` )">
                   <i class="fi-check"></i>
-               </a>`
+               </a>`;
+    label = `new-cell`
+  } else {
+    button = `<a id="read-button-` + id + `" class="read-button button hollow small" style="border-radius:100px; margin: .7em 0 0;"
+                  onclick="mark_unread( ` + id + ` )">
+                  <i class="fi-minus hollow"></i>
+               </a>`;
   }
 
   return `
@@ -88,7 +127,7 @@ function notification_template( id, note, is_new, pretty_time ) {
                    <span class="grey">` + pretty_time + `</span>
                 </div>
 
-                <div class="small-2 medium-1 cell padding-5">
+                <div class="small-2 medium-1 cell padding-5 ` + label + `" id="toggle-area-` + id + `">
                     ` + button + `
                 </div>
               </div>

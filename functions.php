@@ -142,6 +142,7 @@ class Disciple_Tools_Theme {
         require_once( get_template_directory().'/assets/functions/comments.php' ); // Makes WordPress comments suck less
         require_once( get_template_directory().'/assets/functions/page-navi.php' ); // Replace 'older/newer' post links with numbered navigation
         require_once( get_template_directory().'/assets/translation/translation.php' ); // Adds support for multiple languages
+
         // Adds Disciple Tools Theme General Functions
         require_once( get_template_directory().'/assets/functions/private-site.php' ); // Sets site to private
         require_once( get_template_directory().'/assets/functions/login.php' ); // Customize the WordPress login menu
@@ -154,10 +155,6 @@ class Disciple_Tools_Theme {
         // Load plugin library that "requires plugins" at activation
         require_once( get_template_directory().'/update/config-required-plugins.php' );
         require_once( get_template_directory().'/update/class-tgm-plugin-activation.php' );
-
-        // WP-Admin page
-        require_once( get_template_directory() . '/assets/functions/config-options-admin.php' );
-        $this->admin_options = Disciple_Tools_Theme_Admin::instance();
 
 
         // Catch `metrics` URL and load metrics template.
@@ -185,7 +182,6 @@ class Disciple_Tools_Theme {
         });
 
         // Checker for new version and updater service.
-
         if ( ! class_exists( 'Puc_v4_Factory' ) ) {
             require 'update/plugin-update-checker/plugin-update-checker.php';
         }
