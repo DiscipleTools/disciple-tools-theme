@@ -118,6 +118,19 @@
                         ?>
                     </select>
                 </div>
+                <div class="medium-6 cell">
+                    <div class="section-subheader">Update Needed</div>
+                    <div class="switch tiny">
+
+                        <input class="switch-input update-needed" id="update-needed" type="checkbox" name="update-needed"
+                            <?php echo esc_html( ( isset( $contact->fields["requires_update"] ) && $contact->fields["requires_update"]["key"] == "yes" ) ? 'checked' : "" ) ?>>
+                        <label class="switch-paddle update-needed" for="update-needed">
+                            <span class="show-for-sr">Update Needed</span>
+                            <span class="switch-active" aria-hidden="true">Yes</span>
+                            <span class="switch-inactive" aria-hidden="false">No</span>
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

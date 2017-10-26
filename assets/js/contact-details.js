@@ -764,9 +764,17 @@ jQuery(document).ready(function($) {
     })
   })
 
+  /**
+   * Update Needed
+   */
   $('.update-needed.close-button').click(function () {
     $('.update-needed.alert').hide()
   })
+  $('.update-needed.switch-input').change(function (a,b) {
+    let updateNeeded = $(this).is(':checked')
+    API.save_field_api( "contact", contactId, {"requires_update":updateNeeded})
+  })
+
 })
 
 
