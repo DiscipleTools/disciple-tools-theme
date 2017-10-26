@@ -1,8 +1,13 @@
 <?php
 
-// Fire all our initial functions at the start
+/**
+ * Fire all our initial functions at the start
+ */
 add_action( 'after_setup_theme','dt_start', 16 );
 
+/**
+ * Loads initial functions
+ */
 function dt_start() {
 
     // launching operation cleanup
@@ -33,9 +38,11 @@ function dt_start() {
     // Disable emoji
     add_action( 'init', 'dt_disable_wp_emoji' );
 
-} /* end joints start */
+}
 
-//The default wordpress head is a mess. Let's clean it up by removing all the junk we don't need.
+/**
+ * The default wordpress head is a mess. Let's clean it up by removing all the junk we don't need.
+ */
 function dt_head_cleanup() {
     // Remove category feeds
      remove_action( 'wp_head', 'feed_links_extra', 3 );
@@ -57,14 +64,18 @@ function dt_head_cleanup() {
     remove_action( 'wp_head', 'wp_generator' );
 } /* end Joints head cleanup */
 
-// Remove injected CSS for recent comments widget
+/**
+ * Remove injected CSS for recent comments widget
+ */
 function dt_remove_wp_widget_recent_comments_style() {
     if ( has_filter( 'wp_head', 'wp_widget_recent_comments_style' ) ) {
         remove_filter( 'wp_head', 'wp_widget_recent_comments_style' );
     }
 }
 
-// Remove injected CSS from recent comments widget
+/**
+ * Remove injected CSS from recent comments widget
+ */
 function dt_remove_recent_comments_style() {
     global $wp_widget_factory;
     if (isset( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'] )) {
@@ -72,19 +83,37 @@ function dt_remove_recent_comments_style() {
     }
 }
 
-// Remove injected CSS from gallery
+/**
+ * Remove injected CSS from gallery
+ *
+ * @param $css
+ *
+ * @return mixed
+ */
 function dt_gallery_style( $css ) {
     return preg_replace( "!<style type='text/css'>(.*?)</style>!s", '', $css );
 }
 
-// This removes the annoying […] to a Read More link
+/**
+ * This removes the annoying […] to a Read More link
+ *
+ * @param $more
+ *
+ * @return string
+ */
 function dt_excerpt_more( $more ) {
     global $post;
     // edit here if you like
     return '<a class="excerpt-read-more" href="'. get_permalink( $post->ID ) . '" title="'. __( 'Read', 'disciple_tools' ) . esc_html( get_the_title( $post->ID ) ).'">'. __( '... Read more &raquo;', 'disciple_tools' ) .'</a>';
 }
 
-//  Stop WordPress from using the sticky class (which conflicts with Foundation), and style WordPress sticky posts using the .wp-sticky class instead
+/**
+ * Stop WordPress from using the sticky class (which conflicts with Foundation), and style WordPress sticky posts using the .wp-sticky class instead
+ *
+ * @param $classes
+ *
+ * @return array
+ */
 function dt_remove_sticky_class( $classes ) {
     if (in_array( 'sticky', $classes )) {
         $classes = array_diff( $classes, array( "sticky" ) );
@@ -95,7 +124,11 @@ function dt_remove_sticky_class( $classes ) {
 }
 
 
-//This is a modified the_author_posts_link() which just returns the link. This is necessary to allow usage of the usual l10n process with printf()
+/**
+ * This is a modified the_author_posts_link() which just returns the link. This is necessary to allow usage of the usual l10n process with printf()
+ *
+ * @return bool|string
+ */
 function dt_get_the_author_posts_link() {
     global $authordata;
     if ( !is_object( $authordata ) ) {
@@ -140,8 +173,12 @@ function dt_remove_dashboard_meta() {
     remove_meta_box( 'yoast_db_widget', 'dashboard', 'normal' );         // Yoast's SEO Plugin Widget
 }
 
-/*
+/**
  * Sets the admin area color scheme to lightness
+ *
+ * @param $result
+ *
+ * @return string
  */
 function dt_change_admin_color( $result ) {
     return 'light';

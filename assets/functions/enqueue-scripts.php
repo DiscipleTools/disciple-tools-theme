@@ -19,7 +19,7 @@ function dt_theme_enqueue_script( string $handle, string $rel_src, array $deps =
 }
 
 /**
- * Load scripts
+ * Load styles
  *
  * @param string $handle
  * @param string $rel_src
@@ -91,6 +91,16 @@ function dt_site_scripts() {
         )
     );
 
+    dt_theme_enqueue_script( 'dt-notifications', 'assets/js/notifications.js', array( 'jquery' ) );
+    wp_localize_script(
+        'dt-notifications', 'wpApiNotifications', array(
+            'root' => esc_url_raw( rest_url() ),
+            'nonce' => wp_create_nonce( 'wp_rest' ),
+            'current_user_login' => wp_get_current_user()->user_login,
+            'current_user_id' => get_current_user_id(),
+        )
+    );
+
     if (is_singular( "contacts" )){
         dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
         $contact = Disciple_Tools_Contacts::get_contact( get_the_ID() );
@@ -124,18 +134,7 @@ function dt_site_scripts() {
         );
     }
 
-    /**
-     * Enqueue for single utility pages
-     */
-    dt_theme_enqueue_script( 'dt-notifications', 'assets/js/notifications.js', array( 'jquery', 'lodash', 'typeahead' ),  true );
-    wp_localize_script(
-        'dt-notifications', 'wpApiNotifications', array(
-            'root' => esc_url_raw( rest_url() ),
-            'nonce' => wp_create_nonce( 'wp_rest' ),
-            'current_user_login' => wp_get_current_user()->user_login,
-            'current_user_id' => get_current_user_id(),
-        )
-    );
+
 
     $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
     if ( 'settings' === $url_path ) {

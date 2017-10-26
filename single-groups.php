@@ -2,18 +2,18 @@
 declare(strict_types=1);
 
 (function() {
-?>
 
-<?php
-global $post;
+    global $post;
 
-$group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
-if ( !Disciple_Tools_Contacts::can_view( 'groups', get_the_ID() )){
-    return wp_redirect( "not-found" );
-}
-$shared_with = Disciple_Tools_Contacts::get_shared_with_on_contact( get_the_id() );
-$users = Disciple_Tools_Users::get_assignable_users_compact();
-get_header();?>
+    Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
+
+    $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
+    if ( !Disciple_Tools_Contacts::can_view( 'groups', get_the_ID() )){
+        return wp_redirect( "not-found" );
+    }
+    $shared_with = Disciple_Tools_Contacts::get_shared_with_on_contact( get_the_id() );
+    $users = Disciple_Tools_Users::get_assignable_users_compact();
+    get_header();?>
 
 <?php
 dt_print_breadcrumbs(

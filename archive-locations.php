@@ -3,6 +3,10 @@
  * Archive Locations
  */
 
+if ( ! class_exists( 'Disciple_Tools_Locations' ) ) {
+    wp_die( 'The Disciple Tools Plugin is require. Please install this.' );
+}
+
 /**
  * Process $_POST content
  */
@@ -11,27 +15,38 @@ if ( ( isset( $_POST['location_nonce'] ) && wp_verify_nonce( sanitize_key( wp_un
 }
 
 /**
- * Build Queries
+ * Build Variables
  */
-if ( ! class_exists( 'Disciple_Tools_Locations' ) ) {
-    wp_die( 'The Disciple Tools Plugin is require. Please install this.' );
-}
+// Get number of countries
 $dt_level_0_count = Disciple_Tools_Locations::get_standard_locations_count( 0 );
-
-$dt_country_default_id = get_user_meta( get_current_user_id(), 'dt_location_default', true );
-$dt_country_default = get_post( $dt_country_default_id );
-$dt_country_default_meta = get_post_meta( $dt_country_default_id );
-
+// Get countries post objects
 $dt_admin_0_results = Disciple_Tools_Locations::get_standard_admin0();
 if ( is_wp_error( $dt_admin_0_results ) ) {
     wp_die( 'Query error getting standard locations: Admin 0' );
 }
+// Get user preference
+$dt_country_default_id = get_user_meta( get_current_user_id(), 'dt_location_default', true );
+if ( empty( $dt_country_default_id ) ) {
+    // if no default user country is set, select first country listed
+    $dt_country_default_id = $dt_admin_0_results->posts[0]->ID;
+}
+// Preferred country details for initializing map
+$dt_country_default = get_post( $dt_country_default_id );
+$dt_country_default_meta = get_post_meta( $dt_country_default_id );
 
 ?>
 
 <?php get_header(); ?>
 
 <?php dt_print_breadcrumbs( null, __( "Locations" ) ); ?>
+
+<?php
+// If no countries in database, stop processing.
+if ( $dt_level_0_count < 1 ) {
+    wp_die( 'You do not have any locations installed. Please, notify your administrator to install locations.' );
+}
+
+?>
 
 <div id="content">
 
@@ -43,7 +58,6 @@ if ( is_wp_error( $dt_admin_0_results ) ) {
 
                 <span class="section-header">Locations</span>
                 <hr>
-
 
                 <h5>Browse Locations</h5>
 
