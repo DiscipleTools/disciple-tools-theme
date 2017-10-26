@@ -119,9 +119,7 @@ function notification_template( id, note, is_new, pretty_time ) {
   return `
             <div class="cell" id="row-` + id + `">
               <div class="grid-x grid-margin-x grid-padding-y bottom-border">
-                <div class="cell medium-1 hide-for-small-only">
-                    <img src="http://via.placeholder.com/50x50?text=icon" width="50px" height="50px"/>
-                </div>
+                
                 <div class="auto cell">
                    ` + note + `<br>
                    <span class="grey">` + pretty_time + `</span>
