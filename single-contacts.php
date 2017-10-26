@@ -3,11 +3,14 @@ declare( strict_types=1 );
 
 ( function () {
 
+    Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
+
     $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
     if ( !Disciple_Tools_Contacts::can_view( 'contacts', get_the_ID() )) {
         return wp_redirect( "not-found" );
     }
+
     $shared_with = Disciple_Tools_Contacts::get_shared_with_on_contact( get_the_ID() );
     $users = Disciple_Tools_Users::get_assignable_users_compact();
     get_header(); ?>
@@ -22,8 +25,6 @@ declare( strict_types=1 );
         true,
         true
     ); ?>
-
-
 
     <!-- I'm not sure why this is indented -->
     <div id="content">
@@ -246,7 +247,6 @@ declare( strict_types=1 );
 
     </div> <!-- end #content -->
 
-
     <div class="reveal" id="share-contact-modal" data-reveal>
 
         <p class="lead">Share settings</p>
@@ -289,7 +289,6 @@ declare( strict_types=1 );
             </button>
         </div>
     </div>
-
 
     <?php
 })();

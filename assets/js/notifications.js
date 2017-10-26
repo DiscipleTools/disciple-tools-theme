@@ -1,4 +1,4 @@
-
+/* Functions to support the notifications system. */
 function get_new_notification_count(){
   return jQuery.ajax({
     type: "POST",
@@ -40,7 +40,7 @@ function mark_viewed(notification_id){
                   onclick="mark_unread( ` + notification_id + ` )">
                   <i class="fi-minus hollow"></i>
                </a>`)
-      
+
     })
     .fail(function (err) {
       console.log("error")

@@ -2,7 +2,6 @@
 /*
 Template Name: Notifications
 */
-dt_write_log( get_the_title( 58 ) );
 
 $dt_user = wp_get_current_user(); // query to get new notifications
 ?>
