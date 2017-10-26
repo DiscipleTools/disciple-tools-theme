@@ -1,6 +1,16 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * Load scripts
+ *
+ * @param string $handle
+ * @param string $rel_src
+ * @param array  $deps
+ * @param bool   $in_footer
+ *
+ * @throws \Error Dt_theme_enqueue_script took $rel_src argument which unexpectedly started with /.
+ */
 function dt_theme_enqueue_script( string $handle, string $rel_src, array $deps = array(), bool $in_footer = false ) {
     if ( $rel_src[0] === "/" ) {
         throw new Error( "dt_theme_enqueue_script took \$rel_src argument which unexpectedly started with /" );
@@ -8,6 +18,16 @@ function dt_theme_enqueue_script( string $handle, string $rel_src, array $deps =
     wp_enqueue_script( $handle, get_template_directory_uri() . "/$rel_src", $deps, filemtime( get_template_directory() . "/$rel_src" ), $in_footer );
 }
 
+/**
+ * Load scripts
+ *
+ * @param string $handle
+ * @param string $rel_src
+ * @param array  $deps
+ * @param string $media
+ *
+ * @throws \Error Dt_theme_enqueue_style took $rel_src argument which unexpectedly started with /.
+ */
 function dt_theme_enqueue_style( string $handle, string $rel_src, array $deps = array(), string $media = 'all' ) {
     if ( $rel_src[0] === "/" ) {
         throw new Error( "dt_theme_enqueue_style took \$rel_src argument which unexpectedly started with /" );
@@ -15,7 +35,9 @@ function dt_theme_enqueue_style( string $handle, string $rel_src, array $deps = 
     wp_enqueue_style( $handle, get_template_directory_uri() . "/$rel_src", $deps, filemtime( get_template_directory() . "/$rel_src" ), $media );
 }
 
-
+/**
+ * Primary site script loader
+ */
 function dt_site_scripts() {
     global $wp_styles; // Call global $wp_styles variable to add conditional wrapper around ie stylesheet the WordPress way
 
@@ -87,12 +109,17 @@ function dt_site_scripts() {
     }
     if (is_singular( "groups" )){
         dt_theme_enqueue_script( 'group-details', 'assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
+        $group = Disciple_Tools_Groups::get_group( get_the_ID() );
+        $group_post = get_post( $group["ID"] );
         wp_localize_script(
             'group-details', 'wpApiGroupsSettings', array(
-                'group' => Disciple_Tools_Groups::get_group( get_the_ID() ),
+                'group' => $group,
+                'group_post' => $group_post,
+                'group_author_name' => get_user_by( 'id', intval( $group_post->post_author ) )->display_name,
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
-                'template_dir' => get_template_directory_uri()
+                'template_dir' => get_template_directory_uri(),
+                'txt_created_group' => __( "Created group at {}" )
             )
         );
     }
@@ -111,7 +138,7 @@ function dt_site_scripts() {
     );
 
     $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
-    if ( $url_path === 'settings' ) {
+    if ( 'settings' === $url_path ) {
         dt_theme_enqueue_script( 'dt-settings', 'assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash', 'typeahead' ),  true );
         wp_localize_script(
             'dt-settings', 'wpApiSettingsPage', array(
@@ -122,7 +149,7 @@ function dt_site_scripts() {
             )
         );
     }
-    if ( $url_path === 'metrics' ) {
+    if ( 'metrics' === $url_path ) {
         dt_theme_enqueue_script( 'dt-metrics', 'assets/js/metrics.js', array( 'jquery', 'jquery-ui' ),  true );
         wp_localize_script(
             'dt-metrics', 'wpApiMetricsPage', array(
@@ -131,6 +158,17 @@ function dt_site_scripts() {
             )
         );
         wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(),  false );
+    }
+    if ( 'locations' === $url_path && ( is_archive() || is_singular( 'locations' ) ) ) {
+        dt_theme_enqueue_script( 'dt-locations', 'assets/js/locations.js', array( 'jquery', 'jquery-ui' ),  true );
+        wp_localize_script(
+            'dt-locations', 'wpApiLocationsPage', array(
+                'root' => esc_url_raw( rest_url() ),
+                'nonce' => wp_create_nonce( 'wp_rest' )
+            )
+        );
+        wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . dt_get_option( 'map_key' ), array(), null, true );
+
     }
 
     if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )) {

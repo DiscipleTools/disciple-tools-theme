@@ -90,12 +90,12 @@ function post_comment(contactId) {
 function prepareActivityData(activityData) {
   /* Insert a "created contact" item in the activity, even though it is not
    * stored in the database. It is not stored as an activity in the database,
-   * since that we duplicate data with the post's metadata. */
+   * to avoid duplicating data with the post's metadata. */
   const currentContact = contactsDetailsWpApiSettings.contact;
   const createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
   const createdContactActivityItem = {
    hist_time: createdDate.unix(),
-   object_note: contactsDetailsWpApiSettings.txt_created_contact.replace("{}", createdDate.local().format("h:mm a")),
+   object_note: contactsDetailsWpApiSettings.txt_created_contact.replace("{}", formatDate(createdDate.local())),
    name: contactsDetailsWpApiSettings.contact_author_name,
    user_id: currentContact.post_author,
   }
@@ -441,7 +441,7 @@ jQuery(document).ready(function($) {
       $('.show-content').show()
       $('.show-more').hide()
     }
-    editDetailsToggle.text( editingAll ? "Back": "Edit")
+    editDetailsToggle.text( editingAll ? "Save": "Edit")
   }
   $('#edit-details').on('click', function () {
     toggleEditAll()

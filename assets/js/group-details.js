@@ -317,7 +317,7 @@ jQuery(document).ready(function($) {
         input.attr('id', newAddressId)
         $('.details-list.address').append(`
           <li class="${newAddressId} address-row">
-            <div class="address-text">${input.val()}</div> 
+            <div class="address-text">${input.val()}</div>
             <img id="${newAddressId}-verified" class="details-status" style="display:none" src="${wpApiGroupsSettings.template_dir}/assets/images/verified.svg"/>
             <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${wpApiGroupsSettings.template_dir}/assets/images/broken.svg"/>
           </li>
@@ -482,12 +482,30 @@ jQuery(document).ready(function($) {
   let comments = []
   let activity = []
 
+  function prepareActivityData(activityData) {
+    /* Insert a "created group" item in the activity, even though it is not
+      * stored in the database. It is not stored as an activity in the
+      * database, to avoid duplicating data with the post's metadata. */
+    const currentGroup = wpApiGroupsSettings.group_post
+    const createdDate = moment.utc(currentGroup.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
+    const createdGroupActivityItem = {
+      hist_time: createdDate.unix(),
+      object_note: wpApiGroupsSettings.txt_created_group.replace("{}", formatDate(createdDate.local())),
+      name: wpApiGroupsSettings.group_author_name,
+      user_id: currentGroup.post_author,
+    }
+    activityData.push(createdGroupActivityItem)
+    activityData.forEach(item => {
+      item.date = moment.unix(item.hist_time)
+    })
+  }
+
+
+
   function refreshActivity() {
     API.get_activity('group', groupId).then(activityData=>{
-      activityData.forEach(d=>{
-        d.date = moment.unix(d.hist_time)
-      })
       activity = activityData
+      prepareActivityData(activity)
       display_activity_comment()
     })
   }
@@ -513,10 +531,8 @@ jQuery(document).ready(function($) {
       comment.date = moment(comment.comment_date_gmt + "Z")
     })
     comments = commentData[0]
-    activityData[0].forEach(d=>{
-      d.date = moment.unix(d.hist_time)
-    })
     activity = activityData[0]
+    prepareActivityData(activity)
     display_activity_comment("all")
   })
 
@@ -584,7 +600,7 @@ jQuery(document).ready(function($) {
   )
 
   function formatDate(date) {
-    return date.format("YYYY/MM/DD hh:mm a")
+    return date.format("YYYY-MM-DD h:mm a")
   }
 
 
