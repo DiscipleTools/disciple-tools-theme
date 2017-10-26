@@ -45,6 +45,7 @@ function save_quick_action(contactId, fieldKey){
           updateCriticalPath(data.seeker_path.currentKey)
         }
       }
+    $('.update-needed.alert').hide()
   }).catch(err=>{
       console.log("error")
       console.log(err)
@@ -78,6 +79,7 @@ function post_comment(contactId) {
     data.comment.date = moment(data.comment.comment_date_gmt + "Z")
     comments.push(data.comment)
     display_activity_comment()
+    $('.update-needed.alert').hide()
   }).catch(err=>{
     console.log("error")
     console.log(err)
@@ -760,6 +762,10 @@ jQuery(document).ready(function($) {
     }).catch(err=>{
       handelAjaxError(err)
     })
+  })
+
+  $('.update-needed.close-button').click(function () {
+    $('.update-needed.alert').hide()
   })
 })
 
