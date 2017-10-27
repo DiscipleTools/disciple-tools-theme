@@ -551,10 +551,16 @@ jQuery(document).ready(function($) {
       'contact',
       contactId,
       {[id]:val}
-    ).then((a)=>{
-      $(`.current-${id}`).text(_.get(a, `fields.${id}.label`) || val)
+    ).then((contactResponse)=>{
+      $(`.current-${id}`).text(_.get(contactResponse, `fields.${id}.label`) || val)
       if (id === "seeker_path"){
-        updateCriticalPath(a.fields.seeker_path.key)
+        updateCriticalPath(contactResponse.fields.seeker_path.key)
+      } else if ( id === "reason_unassignable" ){
+        console.log(contactResponse)
+        $("#overall-status").text(_.get(contactResponse, "fields.overall_status.label"))
+        $("#reason").text(`(${_.get(contactResponse, "fields.reason_unassignable.label")})`)
+        $('.reason-field').hide()
+        $('.reason-field.reason-unassignable').show()
       }
     }).catch(err=>{
       console.log(err)
@@ -885,6 +891,8 @@ function close_contact(contactId){
     jQuery('#close-contact-modal').foundation('close')
     jQuery('#reason').text(`(${reasonClosed.find('option:selected').text()})`)
     jQuery('#return-active').show()
+    jQuery('.reason-field').hide()
+    jQuery('.reason-field.reason-closed').show()
   })
 }
 
@@ -899,6 +907,8 @@ function pause_contact(contactId){
     jQuery('#reason').text(`(${reasonPaused.find('option:selected').text()})`)
     jQuery('#pause-contact-modal').foundation('close')
     jQuery('#return-active').show()
+    jQuery('.reason-field').hide()
+    jQuery('.reason-field.reason-paused').show()
     confirmPauseButton.toggleClass('loading')
   })
 }

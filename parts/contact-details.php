@@ -104,7 +104,7 @@
                     </div>
                 </div>
                 <div class="medium-6 cell">
-                    <div class="section-subheader">Set Unassignable Reason:</div>
+                    <div class="section-subheader">Set Unassignable:</div>
                     <select id="reason_unassignable" class="select-field">
                         <?php
                         foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_value ) {
@@ -154,6 +154,9 @@
                         } else if ( $contact->fields["overall_status"]["key"] === "closed" &&
                             isset( $contact->fields["reason_closed"] )){
                             echo '(' . esc_html( $contact->fields["reason_closed"]["label"] ) . ')';
+                        } else if ( $contact->fields["overall_status"]["key"] === "unassignable" &&
+                            isset( $contact->fields["reason_unassignable"] )){
+                            echo '(' . esc_html( $contact->fields["reason_unassignable"]["label"] ) . ')';
                         }
                         ?>
                     </span>
@@ -203,7 +206,10 @@
                     <?php
                     foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
                     ?>
-                        <option value="<?php echo esc_attr( $reason_key )?>"> <?php echo esc_html( $reason_label )?></option>
+                        <option value="<?php echo esc_attr( $reason_key )?>"
+                            <?php if ( ($contact->fields["reason_paused"]["key"] ?? "") === $reason_key ){echo "selected";} ?>>
+                            <?php echo esc_html( $reason_label )?>
+                        </option>
                     <?php
                     }
                     ?>
@@ -219,354 +225,405 @@
                 </button>
             </div>
 
+            <div class="reason-fields grid-x">
+                <?php $status = $contact->fields["overall_status"]["key"] ?? ""; ?>
+                <!-- change reason paused options-->
+                <div class="medium-6 reason-field reason-paused" style="display:<?php echo ($status === "paused" ? "inline" : "none"); ?>">
+                    <div class="section-subheader"><?php echo esc_html( $contact_fields["reason_paused"]["name"] ) ?></div>
+                    <select class="status-reason" data-field="<?php echo esc_html( "reason_paused" ) ?>" >
+                        <?php
+                        foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
+                        ?>
+                            <option value="<?php echo esc_attr( $reason_key )?>"
+                                <?php if ( ($contact->fields["reason_paused"]["key"] ?? "") === $reason_key ){echo "selected";}?> >
+                                <?php echo esc_html( $reason_label )?>
+                            </option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+                <!-- change reason closed options-->
+                <div class="medium-6 reason-field reason-closed" style="display:<?php echo ($status === "closed" ? "inline" : "none"); ?>">
+                    <div class="section-subheader"><?php echo esc_html( $contact_fields["reason_closed"]["name"] ) ?></div>
+                    <select class="status-reason" data-field="<?php echo esc_html( "reason_closed" ) ?>" >
+                        <?php
+                        foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $reason_label ) {
+                            ?>
+                            <option value="<?php echo esc_attr( $reason_key )?>"
+                                <?php if ( ($contact->fields["reason_closed"]["key"] ?? "") === $reason_key ){echo "selected";}?> >
+                                <?php echo esc_html( $reason_label )?>
+                            </option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+                <!-- change reason unassignable options-->
+                <div class="medium-6 reason-field reason-unassignable" style="display:<?php echo ($status === "unassignable" ? "inline" : "none"); ?>">
+                    <div class="section-subheader"><?php echo esc_html( $contact_fields["reason_unassignable"]["name"] ) ?></div>
+                    <select class="status-reason" data-field="<?php echo esc_html( "reason_unassignable" ) ?>" >
+                        <?php
+                        foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_label ) {
+                            ?>
+                            <option value="<?php echo esc_attr( $reason_key )?>"
+                                <?php if ( ($contact->fields["reason_unassignable"]["key"] ?? "") === $reason_key ){echo "selected";}?> >
+                                <?php echo esc_html( $reason_label )?>
+                            </option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
             <div class="display-fields">
-            <div class="grid-x grid-margin-x">
+                <div class="grid-x grid-margin-x">
 
-                <!--Phone-->
-                <!--Email-->
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader"><?php echo esc_html( $channel_list["phone"]["label"] ) ?>
-                        <button data-id="phone" class="details-edit add-button">
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
-                        </button>
-                    </div>
-                    <ul class="phone details-list">
+                    <!--Phone-->
+                    <!--Email-->
+                    <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                        <div class="section-subheader"><?php echo esc_html( $channel_list["phone"]["label"] ) ?>
+                            <button data-id="phone" class="details-edit add-button">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
+                            </button>
+                        </div>
+                        <ul class="phone details-list">
+                            <?php
+                            if (sizeof( $contact->fields["contact_phone"] ?? [] ) === 0 ){
+                                ?> <li id="no-phone">No phone set</li> <?php
+                            }
+                            foreach ($contact->fields["contact_phone"] ?? [] as $field => $value){
+                                $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
+                                $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
+                                ?>
+                                <li class="<?php echo esc_html( $value["key"] ) ?>"><?php echo esc_html( $value["value"] );
+                                dt_contact_details_status( $value["key"], $verified, $invalid );  ?></li>
+                            <?php } ?>
+                        </ul>
+                        <ul id="phone-list" class="details-edit">
                         <?php
-                        if (sizeof( $contact->fields["contact_phone"] ?? [] ) === 0 ){
-                            ?> <li id="no-phone">No phone set</li> <?php
-                        }
-                        foreach ($contact->fields["contact_phone"] ?? [] as $field => $value){
-                            $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
-                            $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                            ?>
-                            <li class="<?php echo esc_html( $value["key"] ) ?>"><?php echo esc_html( $value["value"] );
-                            dt_contact_details_status( $value["key"], $verified, $invalid );  ?></li>
-                        <?php } ?>
-                    </ul>
-                    <ul id="phone-list" class="details-edit">
-                    <?php
-                    if ( isset( $contact->fields["contact_phone"] )){
-                        foreach ($contact->fields["contact_phone"] ?? [] as $value){
-                            $verified = isset( $value["verified"] ) && $value["verified"] === true;
-                            $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
-                            ?>
-                            <li class="<?php echo esc_attr( $value["key"] )?>">
-                                <input id="<?php echo esc_attr( $value["key"] )?>"
-                                       value="<?php echo esc_attr( $value["value"] )?>"
-                                       class="contact-input">
-                                <?php dt_contact_details_edit( $value["key"], "phone", true ) ?>
-                            </li>
-
-                        <?php }
-                    }?>
-                    </ul>
-
-                    <div class="section-subheader"><?php echo esc_html( $channel_list["email"]["label"] ) ?>
-                        <button data-id="email" class="details-edit add-button">
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
-                        </button>
-                    </div>
-                    <ul class="email details-list">
-                        <?php
-                        if (sizeof( $contact->fields["contact_email"] ?? [] ) === 0 ){
-                            ?> <li id="no-email">No email set</li> <?php
-                        }
-                        foreach ($contact->fields["contact_email"] ?? [] as $field => $value){
-                            $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
-                            $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                            ?>
-                            <li class="<?php echo esc_html( $value["key"] ) ?>">
-                                <?php echo esc_html( $value["value"] );
-                                dt_contact_details_status( $value["key"], $verified, $invalid ); ?>
-                            </li>
-                        <?php }?>
-                    </ul>
-                    <ul id="email-list" class="details-edit">
-                        <?php
-                        if ( isset( $contact->fields["contact_email"] )){
-                            foreach ($contact->fields["contact_email"] ?? [] as $value){
+                        if ( isset( $contact->fields["contact_phone"] )){
+                            foreach ($contact->fields["contact_phone"] ?? [] as $value){
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true;
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                                 ?>
-                                <li>
-                                    <input id="<?php echo esc_attr( $value["key"] )?>" value="<?php echo esc_attr( $value["value"] ) ?>" class="contact-input">
-                                    <?php dt_contact_details_edit( $value["key"], "email", true ) ?>
+                                <li class="<?php echo esc_attr( $value["key"] )?>">
+                                    <input id="<?php echo esc_attr( $value["key"] )?>"
+                                           value="<?php echo esc_attr( $value["value"] )?>"
+                                           class="contact-input">
+                                    <?php dt_contact_details_edit( $value["key"], "phone", true ) ?>
                                 </li>
-                                <?php
-                            }
+
+                            <?php }
                         }?>
-                    </ul>
+                        </ul>
 
-                </div>
-                <!-- Locations -->
-                <!-- Assigned To -->
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">Locations</div>
-                    <ul class="locations-list">
-                        <?php
-                        foreach ($contact->fields["locations"] ?? [] as $value){
-                            ?>
-                            <li class="<?php echo esc_html( $value->ID )?>">
-                                <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
-                                <button class="details-remove-button connection details-edit"
-                                        data-field="locations" data-id="<?php echo esc_html( $value->ID ) ?>"
-                                        data-name="<?php echo esc_html( $value->post_title ) ?>">
-                                    Remove
-                                </button>
-                            </li>
-                        <?php }
-                        if (sizeof( $contact->fields["locations"] ) === 0){
-                            echo '<li id="no-location">No location set</li>';
-                        }
-                        ?>
-                    </ul>
-                    <div class="locations details-edit">
-                        <input class="typeahead" type="text" placeholder="Type to search locations">
-                    </div>
-
-                    <div class="section-subheader">Assigned to
-                        <span class="assigned_to details-edit">:
-                    </span> <span class="assigned_to details-edit current-assigned">:</span> </div>
-                    <ul class="details-list assigned_to">
-                        <li class="current-assigned">
+                        <div class="section-subheader"><?php echo esc_html( $channel_list["email"]["label"] ) ?>
+                            <button data-id="email" class="details-edit add-button">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
+                            </button>
+                        </div>
+                        <ul class="email details-list">
                             <?php
-                            if ( isset( $contact->fields["assigned_to"] ) ){
-                                echo esc_html( $contact->fields["assigned_to"]["display"] );
-                            } else {
-                                echo "None Assigned";
+                            if (sizeof( $contact->fields["contact_email"] ?? [] ) === 0 ){
+                                ?> <li id="no-email">No email set</li> <?php
                             }
-                            ?>
-                        </li>
-                    </ul>
-                    <div class="assigned_to details-edit">
-                        <input class="typeahead" type="text" placeholder="Type to search users">
-                    </div>
-                </div>
-                <!-- Social Media -->
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader"><?php echo esc_html( 'Social Media' ) ?></div>
-                    <ul class='social details-list'>
-                    <?php
-                    $number_of_social = 0;
-                    foreach ($contact->fields as $field_key => $values){
-                        if ( strpos( $field_key, "contact_" ) === 0 &&
-                            strpos( $field_key, "contact_phone" ) === false &&
-                            strpos( $field_key, "contact_email" ) === false) {
-                            $channel = explode( '_', $field_key )[1];
-                            if ( isset( $channel_list[ $channel ] ) ) {
-                                foreach ($values as $value) {
-                                    $number_of_social++;
-                                    $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
-                                    $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                                    ?>
-                                    <li class="<?php echo esc_html( $value['key'] )?>">
-                                    <?php
-                                    if ( $values && sizeof( $values ) > 0 ) {
-                                        ?>
-                                        <span><?php echo esc_html( $channel_list[ $channel ]["label"] )?>:</span>
-                                    <?php } ?>
-
-                                    <span class='social-text'><?php echo esc_html( $value["value"] ) ?></span>
-                                    <?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
-                                    </li>
-                                    <?php
-                                }
-                            }
-                        }
-                    }
-                    if ($number_of_social === 0 ){
-                        ?> <li id="no-social">None set</li> <?php
-                    }
-                    ?>
-                    </ul>
-                    <ul class="social details-edit">
-                    <?php
-
-                    foreach ($contact->fields as $field_key => $values){
-                        if ( strpos( $field_key, "contact_" ) === 0 &&
-                            strpos( $field_key, "contact_phone" ) === false &&
-                            strpos( $field_key, "contact_email" ) === false) {
-                            $channel = explode( '_', $field_key )[1];
-                            if ( isset( $channel_list[ $channel ] ) ) {
-                                foreach ($values as $value) {
+                            foreach ($contact->fields["contact_email"] ?? [] as $field => $value){
+                                $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
+                                $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
+                                ?>
+                                <li class="<?php echo esc_html( $value["key"] ) ?>">
+                                    <?php echo esc_html( $value["value"] );
+                                    dt_contact_details_status( $value["key"], $verified, $invalid ); ?>
+                                </li>
+                            <?php }?>
+                        </ul>
+                        <ul id="email-list" class="details-edit">
+                            <?php
+                            if ( isset( $contact->fields["contact_email"] )){
+                                foreach ($contact->fields["contact_email"] ?? [] as $value){
                                     $verified = isset( $value["verified"] ) && $value["verified"] === true;
                                     $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                                     ?>
-                                    <li class='<?php echo esc_html( $value['key'] ) ?>'>
-                                        <?php
-                                        if ( $values && sizeof( $values ) > 0 ) {
-                                            ?><span><?php echo esc_html( $channel_list[ $channel ]["label"] )?></span>
-                                        <?php } ?>
-                                        <input id='<?php echo esc_html( $value["key"] ) ?>' class='details-edit social-input' value='<?php echo esc_html( $value["value"] ) ?>'>
-                                        <?php dt_contact_details_edit( $value["key"], "social", true ) ?>
+                                    <li>
+                                        <input id="<?php echo esc_attr( $value["key"] )?>" value="<?php echo esc_attr( $value["value"] ) ?>" class="contact-input">
+                                        <?php dt_contact_details_edit( $value["key"], "email", true ) ?>
                                     </li>
                                     <?php
                                 }
+                            }?>
+                        </ul>
+
+                    </div>
+                    <!-- Locations -->
+                    <!-- Assigned To -->
+                    <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                        <div class="section-subheader">Locations</div>
+                        <ul class="locations-list">
+                            <?php
+                            foreach ($contact->fields["locations"] ?? [] as $value){
+                                ?>
+                                <li class="<?php echo esc_html( $value->ID )?>">
+                                    <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
+                                    <button class="details-remove-button connection details-edit"
+                                            data-field="locations" data-id="<?php echo esc_html( $value->ID ) ?>"
+                                            data-name="<?php echo esc_html( $value->post_title ) ?>">
+                                        Remove
+                                    </button>
+                                </li>
+                            <?php }
+                            if (sizeof( $contact->fields["locations"] ) === 0){
+                                echo '<li id="no-location">No location set</li>';
+                            }
+                            ?>
+                        </ul>
+                        <div class="locations details-edit">
+                            <input class="typeahead" type="text" placeholder="Type to search locations">
+                        </div>
+
+                        <div class="section-subheader">Assigned to
+                            <span class="assigned_to details-edit">:
+                        </span> <span class="assigned_to details-edit current-assigned">:</span> </div>
+                        <ul class="details-list assigned_to">
+                            <li class="current-assigned">
+                                <?php
+                                if ( isset( $contact->fields["assigned_to"] ) ){
+                                    echo esc_html( $contact->fields["assigned_to"]["display"] );
+                                } else {
+                                    echo "None Assigned";
+                                }
+                                ?>
+                            </li>
+                        </ul>
+                        <div class="assigned_to details-edit">
+                            <input class="typeahead" type="text" placeholder="Type to search users">
+                        </div>
+                    </div>
+                    <!-- Social Media -->
+                    <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                        <div class="section-subheader"><?php echo esc_html( 'Social Media' ) ?></div>
+                        <ul class='social details-list'>
+                        <?php
+                        $number_of_social = 0;
+                        foreach ($contact->fields as $field_key => $values){
+                            if ( strpos( $field_key, "contact_" ) === 0 &&
+                                strpos( $field_key, "contact_phone" ) === false &&
+                                strpos( $field_key, "contact_email" ) === false) {
+                                $channel = explode( '_', $field_key )[1];
+                                if ( isset( $channel_list[ $channel ] ) ) {
+                                    foreach ($values as $value) {
+                                        $number_of_social++;
+                                        $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
+                                        $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
+                                        ?>
+                                        <li class="<?php echo esc_html( $value['key'] )?>">
+                                        <?php
+                                        if ( $values && sizeof( $values ) > 0 ) {
+                                            ?>
+                                            <span><?php echo esc_html( $channel_list[ $channel ]["label"] )?>:</span>
+                                        <?php } ?>
+
+                                        <span class='social-text'><?php echo esc_html( $value["value"] ) ?></span>
+                                        <?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
+                                        </li>
+                                        <?php
+                                    }
+                                }
                             }
                         }
-                    }
-                    ?>
+                        if ($number_of_social === 0 ){
+                            ?> <li id="no-social">None set</li> <?php
+                        }
+                        ?>
+                        </ul>
+                        <ul class="social details-edit">
+                        <?php
 
-                    </ul>
-                    <div class="details-edit">
-                        <label for="social-channels">Add another contact method</label>
-                        <select id="social-channels">
+                        foreach ($contact->fields as $field_key => $values){
+                            if ( strpos( $field_key, "contact_" ) === 0 &&
+                                strpos( $field_key, "contact_phone" ) === false &&
+                                strpos( $field_key, "contact_email" ) === false) {
+                                $channel = explode( '_', $field_key )[1];
+                                if ( isset( $channel_list[ $channel ] ) ) {
+                                    foreach ($values as $value) {
+                                        $verified = isset( $value["verified"] ) && $value["verified"] === true;
+                                        $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
+                                        ?>
+                                        <li class='<?php echo esc_html( $value['key'] ) ?>'>
+                                            <?php
+                                            if ( $values && sizeof( $values ) > 0 ) {
+                                                ?><span><?php echo esc_html( $channel_list[ $channel ]["label"] )?></span>
+                                            <?php } ?>
+                                            <input id='<?php echo esc_html( $value["key"] ) ?>' class='details-edit social-input' value='<?php echo esc_html( $value["value"] ) ?>'>
+                                            <?php dt_contact_details_edit( $value["key"], "social", true ) ?>
+                                        </li>
+                                        <?php
+                                    }
+                                }
+                            }
+                        }
+                        ?>
+
+                        </ul>
+                        <div class="details-edit">
+                            <label for="social-channels">Add another contact method</label>
+                            <select id="social-channels">
+                                <?php
+                                foreach ($channel_list as $key => $channel){
+                                    if ($key != "phone" && $key != "email"){
+                                        ?><option value="<?php echo esc_html( $key ) ?>"> <?php echo esc_html( $channel["label"] ) ?></option><?php
+                                    }
+                                }
+                                ?>
+                            </select>
+                            <div class="new-social-media">
+                                <input type="text" id="new-social-media" placeholder="facebook.com/user1">
+                                <button id="add-social-media" class="button small loader">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+
+
+
+                        <div class="section-subheader">People Groups</div>
+                        <ul class="people_groups-list">
                             <?php
-                            foreach ($channel_list as $key => $channel){
-                                if ($key != "phone" && $key != "email"){
-                                    ?><option value="<?php echo esc_html( $key ) ?>"> <?php echo esc_html( $channel["label"] ) ?></option><?php
+                            foreach ($contact->fields["people_groups"] ?? [] as $value){
+                                ?>
+                                <li class="<?php echo esc_html( $value->ID )?>">
+                                    <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
+                                    <button class="details-remove-button connection details-edit"
+                                            data-field="people_groups" data-id="<?php echo esc_html( $value->ID ) ?>"
+                                            data-name="<?php echo esc_html( $value->post_title ) ?>">
+                                        Remove
+                                    </button>
+                                </li>
+                            <?php }
+                            if (sizeof( $contact->fields["people_groups"] ) === 0){
+                                echo '<li id="no-people-group">No people group set</li>';
+                            }
+                            ?>
+                        </ul>
+                        <div class="people-groups details-edit">
+                            <input class="typeahead" type="text" placeholder="Type to search people groups">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="show-more-content" class="grid-x grid-margin-x show-content" style="display:none;">
+                    <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                        <div class="section-subheader">Address
+                            <button id="add-new-address" class="details-edit">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
+                            </button>
+                        </div>
+                        <ul class="address details-list">
+                            <?php
+                            if (sizeof( $contact->fields["address"] ?? [] ) === 0 ){
+                                ?> <li id="no-address">No address set</li> <?php
+                            }
+                            foreach ($contact->fields["address"] ?? [] as $value){
+                                $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
+                                $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
+                                ?>
+                                <li class="<?php echo esc_html( $value["key"] ) ?> address-row">
+                                    <div class="address-text"><?php echo esc_html( $value["value"] );?></div><?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                        <ul id="address-list" class="details-edit">
+                        <?php
+                        if ( isset( $contact->fields["address"] )){
+                            foreach ($contact->fields["address"] ?? [] as $value){
+                                $verified = isset( $value["verified"] ) && $value["verified"] === true;
+                                $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
+                                ?>
+                                <div class="<?php echo esc_attr( $value["key"] )?>">
+                                    <textarea rows="3" id="<?php echo esc_attr( $value["key"] )?>"><?php echo esc_attr( $value["value"] )?></textarea>
+                                    <?php dt_contact_details_edit( $value["key"], "address", true ) ?>
+                                </div>
+                                <hr>
+
+                            <?php }
+                        }?>
+                        </ul>
+                    </div>
+
+                    <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                        <div class="section-subheader">Age:</div>
+                        <ul class="details-list">
+                            <li class="current-age"><?php echo esc_html( $contact->fields['age']['label'] ?? "No age set" ) ?></li>
+                        </ul>
+                        <select id="age" class="details-edit select-field">
+                            <?php
+                            foreach ( $contact_fields["age"]["default"] as $age_key => $age_value ) {
+                                if ( isset( $contact->fields["age"] ) &&
+                                    $contact->fields["age"]["key"] === $age_key){
+                                    echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
+                                } else {
+                                    echo '<option value="'. esc_html( $age_key ) . '">' . esc_html( $age_value ). '</option>';
+
                                 }
                             }
                             ?>
                         </select>
-                        <div class="new-social-media">
-                            <input type="text" id="new-social-media" placeholder="facebook.com/user1">
-                            <button id="add-social-media" class="button small loader">
-                                Add
-                            </button>
-                        </div>
                     </div>
-
-
-
-                    <div class="section-subheader">People Groups</div>
-                    <ul class="people_groups-list">
-                        <?php
-                        foreach ($contact->fields["people_groups"] ?? [] as $value){
-                            ?>
-                            <li class="<?php echo esc_html( $value->ID )?>">
-                                <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
-                                <button class="details-remove-button connection details-edit"
-                                        data-field="people_groups" data-id="<?php echo esc_html( $value->ID ) ?>"
-                                        data-name="<?php echo esc_html( $value->post_title ) ?>">
-                                    Remove
-                                </button>
-                            </li>
-                        <?php }
-                        if (sizeof( $contact->fields["people_groups"] ) === 0){
-                            echo '<li id="no-people-group">No people group set</li>';
-                        }
-                        ?>
-                    </ul>
-                    <div class="people-groups details-edit">
-                        <input class="typeahead" type="text" placeholder="Type to search people groups">
-                    </div>
-                </div>
-            </div>
-
-
-            <div id="show-more-content" class="grid-x grid-margin-x show-content" style="display:none;">
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">Address
-                        <button id="add-new-address" class="details-edit">
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
-                        </button>
-                    </div>
-                    <ul class="address details-list">
-                        <?php
-                        if (sizeof( $contact->fields["address"] ?? [] ) === 0 ){
-                            ?> <li id="no-address">No address set</li> <?php
-                        }
-                        foreach ($contact->fields["address"] ?? [] as $value){
-                            $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
-                            $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
-                            ?>
-                            <li class="<?php echo esc_html( $value["key"] ) ?> address-row">
-                                <div class="address-text"><?php echo esc_html( $value["value"] );?></div><?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
-                            </li>
-                        <?php } ?>
-                    </ul>
-                    <ul id="address-list" class="details-edit">
-                    <?php
-                    if ( isset( $contact->fields["address"] )){
-                        foreach ($contact->fields["address"] ?? [] as $value){
-                            $verified = isset( $value["verified"] ) && $value["verified"] === true;
-                            $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
-                            ?>
-                            <div class="<?php echo esc_attr( $value["key"] )?>">
-                                <textarea rows="3" id="<?php echo esc_attr( $value["key"] )?>"><?php echo esc_attr( $value["value"] )?></textarea>
-                                <?php dt_contact_details_edit( $value["key"], "address", true ) ?>
-                            </div>
-                            <hr>
-
-                        <?php }
-                    }?>
-                    </ul>
-                </div>
-
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">Age:</div>
-                    <ul class="details-list">
-                        <li class="current-age"><?php echo esc_html( $contact->fields['age']['label'] ?? "No age set" ) ?></li>
-                    </ul>
-                    <select id="age" class="details-edit select-field">
-                        <?php
-                        foreach ( $contact_fields["age"]["default"] as $age_key => $age_value ) {
-                            if ( isset( $contact->fields["age"] ) &&
-                                $contact->fields["age"]["key"] === $age_key){
-                                echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
-                            } else {
-                                echo '<option value="'. esc_html( $age_key ) . '">' . esc_html( $age_value ). '</option>';
-
-                            }
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">Gender:</div>
-                    <ul class="details-list">
-                        <li class="current-gender"><?php echo esc_html( $contact->fields['gender']['label'] ?? "No gender set" ) ?></li>
-                    </ul>
-                    <select id="gender" class="details-edit select-field">
-                        <?php
-                        foreach ( $contact_fields["gender"]["default"] as $gender_key => $gender_value ) {
-                            if ( isset( $contact->fields["gender"] ) &&
-                                $contact->fields["gender"]["key"] === $gender_key){
-                                echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
-                            } else {
-                                echo '<option value="'. esc_html( $gender_key ) . '">' . esc_html( $gender_value ). '</option>';
-                            }
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader"><?php esc_html_e( "Source" ); ?></div>
-                    <ul class="details-list">
-                        <li class="current-sources">
+                    <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                        <div class="section-subheader">Gender:</div>
+                        <ul class="details-list">
+                            <li class="current-gender"><?php echo esc_html( $contact->fields['gender']['label'] ?? "No gender set" ) ?></li>
+                        </ul>
+                        <select id="gender" class="details-edit select-field">
                             <?php
-                            if (isset( $contact->fields["sources"] )) {
-                                echo esc_html( $contact->fields["sources"]["label"] );
-                            } else {
-                                esc_html_e( "No source set" );
+                            foreach ( $contact_fields["gender"]["default"] as $gender_key => $gender_value ) {
+                                if ( isset( $contact->fields["gender"] ) &&
+                                    $contact->fields["gender"]["key"] === $gender_key){
+                                    echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
+                                } else {
+                                    echo '<option value="'. esc_html( $gender_key ) . '">' . esc_html( $gender_value ). '</option>';
+                                }
                             }
                             ?>
-                        </li>
-                    </ul>
-                    <select id="sources" class="details-edit select-field">
-                        <option value=""></option>
-                        <?php
-                        foreach ( $custom_lists["sources"] as $sources_key => $sources_value ) {
-                            if ( isset( $contact->fields["sources"] ) &&
-                                $contact->fields["sources"]["key"] === $sources_key){
-                                echo '<option value="'. esc_html( $sources_key ) . '" selected>' . esc_html( $sources_value["label"] ) . '</option>';
-                            } else {
-                                echo '<option value="'. esc_html( $sources_key ) . '">' . esc_html( $sources_value["label"] ). '</option>';
+                        </select>
+                    </div>
+                    <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                        <div class="section-subheader"><?php esc_html_e( "Source" ); ?></div>
+                        <ul class="details-list">
+                            <li class="current-sources">
+                                <?php
+                                if (isset( $contact->fields["sources"] )) {
+                                    echo esc_html( $contact->fields["sources"]["label"] );
+                                } else {
+                                    esc_html_e( "No source set" );
+                                }
+                                ?>
+                            </li>
+                        </ul>
+                        <select id="sources" class="details-edit select-field">
+                            <option value=""></option>
+                            <?php
+                            foreach ( $custom_lists["sources"] as $sources_key => $sources_value ) {
+                                if ( isset( $contact->fields["sources"] ) &&
+                                    $contact->fields["sources"]["key"] === $sources_key){
+                                    echo '<option value="'. esc_html( $sources_key ) . '" selected>' . esc_html( $sources_value["label"] ) . '</option>';
+                                } else {
+                                    echo '<option value="'. esc_html( $sources_key ) . '">' . esc_html( $sources_value["label"] ). '</option>';
+                                }
                             }
-                        }
-                        ?>
-                    </select>
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row show-more-button" style="text-align: center" >
+                    <button class="clear show-button"  href="#">Show
+                        <span class="show-content show-more">more <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_down.svg' )?>"/></span>
+                        <span class="show-content" style="display:none;">less <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_up.svg' )?>"></span>
+                    </button>
                 </div>
             </div>
-
-            <div class="row show-more-button" style="text-align: center" >
-                <button class="clear show-button"  href="#">Show
-                    <span class="show-content show-more">more <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_down.svg' )?>"/></span>
-                    <span class="show-content" style="display:none;">less <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_up.svg' )?>"></span>
-                </button>
-            </div>
-        </div>
         </div>
     </section>
 
