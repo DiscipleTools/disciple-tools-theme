@@ -18,7 +18,7 @@ dt_print_breadcrumbs(
 
     <div id="content">
 
-        <div id="inner-content" class="grid-x grid-margin-x">
+        <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
             <div class="large-3 medium-3 small-12 cell ">
 
@@ -26,55 +26,42 @@ dt_print_breadcrumbs(
 
                     <div class="bordered-box">
 
-                        <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu>
-                            <li>
-                                <!-- // todo: temporary user of show_fake_char function while designing UI/UX-->
-                                <a onclick="show_critical_path();">Critical Path</a>
-
+                        <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu data-submenu-toggle="true">
+                            <li >
+                                <a onclick="show_critical_path()">Critical Path</a>
+                                <ul class="menu vertical nested" id="critical-path-menu">
+                                    <li class="top-border">
+                                        <a onclick="show_critical_path_prayer()">Prayer</a>
+                                    </li>
+                                    <li class="top-border">
+                                        <a onclick="show_critical_path_outreach()">Outreach</a>
+                                    </li>
+                                    <li class="top-border">
+                                        <a onclick="show_critical_path_fup()">Follow-up</a>
+                                    </li>
+                                    <li class="top-border">
+                                        <a onclick="show_critical_path_multiplication()">Multiplication</a>
+                                    </li>
+                                </ul>
                             </li>
                             <li class="top-border">
-                                <a href="#">Pace</a>
-                                <ul class="menu vertical nested">
+                                <a onclick="show_contacts()">Contacts</a>
+                            </li>
+                            <li class="top-border">
+                                <a onclick="show_groups()">Groups</a>
+                            </li>
+                            <li class="top-border">
+                                <a onclick="show_workers()">Workers</a>
+                            </li>
+                            <li class="top-border">
+                                <a onclick="show_locations()">Locations</a>
+                            </li>
+                            <li class="top-border">
+                                <a onclick="show_pace()">Pace</a>
+                                <!--<ul class="menu vertical nested">
                                     <li><a onclick="show_fake_chart('Contacts+Chart');">Contacts</a></li>
                                     <li><a onclick="show_fake_chart('Groups+Chart');">Groups</a></li>
-                                </ul>
-                            </li>
-                            <li class="top-border">
-                                <a onclick="show_fake_chart('Workers+Chart');">Workers</a>
-                            </li>
-                            <li class="top-border">
-                                <a href="#">Groups</a>
-                                <ul class="menu vertical nested">
-                                    <li><a onclick="show_fake_chart('Bible+Studies+Chart');">Bible Studies</a></li>
-                                    <li><a onclick="show_fake_chart('Churches+Chart');">Churches</a></li>
-                                    <li><a onclick="show_fake_chart('Generations+Chart');">Generations</a></li>
-                                </ul>
-                            </li>
-                            <li class="top-border">
-                                <a href="#">Contacts</a>
-                                <ul class="menu vertical nested">
-                                    <li><a onclick="show_fake_chart('Seeking+Chart');">Seeking</a></li>
-                                    <li><a onclick="show_fake_chart('Training+Chart');"">Training</a></li>
-                                    <li><a onclick="show_fake_chart('Generations+Chart');">Generations</a></li>
-                                </ul>
-                            </li>
-                            <li class="top-border">
-                                <a href="#">Outreach</a>
-                                <ul class="menu vertical nested">
-                                    <li><a onclick="show_fake_chart('Media+by+Sources+Chart');">Media by Sources</a></li>
-                                    <li><a onclick="show_fake_chart('Generations+Chart');">Generations</a></li>
-                                </ul>
-                            </li>
-                            <li class="top-border">
-                                <a href="#">Prayer</a>
-                                <ul class="menu vertical nested">
-                                    <li><a onclick="show_fake_chart('Prayer+Network+Chart');">Prayer Network</a></li>
-                                    <li><a onclick="show_fake_chart('Prayer+Interactions+Chart');">Prayer Interactions</a></li>
-                                    <li><a onclick="show_fake_chart('Channel+Chart');">by Channels</a></li>
-                                </ul>
-                            </li>
-                            <li class="top-border">
-                                <a onclick="show_fake_chart('Locations+Chart');">Locations</a>
+                                </ul>-->
                             </li>
 
                         </ul>
@@ -90,11 +77,6 @@ dt_print_breadcrumbs(
                 <section id="" class="medium-12 cell">
 
                     <div class="bordered-box">
-                        <script>
-                            jQuery(document).ready(function() {
-                                show_critical_path()
-                            })
-                        </script>
 
                         <div id="chart"></div><!-- Container for charts -->
 
