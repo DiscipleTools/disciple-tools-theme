@@ -308,8 +308,10 @@
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                                 ?>
-                                <li class="<?php echo esc_html( $value["key"] ) ?>"><?php echo esc_html( $value["value"] );
-                                dt_contact_details_status( $value["key"], $verified, $invalid );  ?></li>
+                                <li class="<?php echo esc_html( $value["key"] ) ?>">
+                                    <span class="details-text"><?php echo esc_html( $value["value"] ); ?></span>
+                                    <?php dt_contact_details_status( $value["key"], $verified, $invalid );  ?>
+                                </li>
                             <?php } ?>
                         </ul>
                         <ul id="phone-list" class="details-edit">

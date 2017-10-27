@@ -535,7 +535,7 @@ jQuery(document).ready(function($) {
     let val = $(this).val()
     API.save_field_api('contact', contactId, {[fieldId]:val})
       .then(()=>{
-        $(`.${fieldId}`).text(val)
+        $(`.details-list .${fieldId} .details-text`).text(val)
       })
       .catch(err=>{
         handelAjaxError(err)
