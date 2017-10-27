@@ -304,8 +304,7 @@ jQuery(document).ready(function($) {
     API.save_field_api('contact', contactId, {assigned_to: 'user-' + sug.ID}).then(function (response) {
       assigned_to_typeahead.typeahead('val', '')
       jQuery('.current-assigned').text(sug.name)
-      $("#overall-status").text(_.get(response, "fields.overall_status.label"))
-      $("#reason").text('')
+      setStatus(response)
       _.set(contact, "fields.assigned_to.ID", sug.ID)
       assigned_to_typeahead.typeahead('destroy')
       users.initialize()
@@ -556,11 +555,7 @@ jQuery(document).ready(function($) {
       if (id === "seeker_path"){
         updateCriticalPath(contactResponse.fields.seeker_path.key)
       } else if ( id === "reason_unassignable" ){
-        console.log(contactResponse)
-        $("#overall-status").text(_.get(contactResponse, "fields.overall_status.label"))
-        $("#reason").text(`(${_.get(contactResponse, "fields.reason_unassignable.label")})`)
-        $('.reason-field').hide()
-        $('.reason-field.reason-unassignable').show()
+        setStatus(contactResponse)
       }
     }).catch(err=>{
       console.log(err)
@@ -781,6 +776,15 @@ jQuery(document).ready(function($) {
     API.save_field_api( "contact", contactId, {"requires_update":updateNeeded})
   })
 
+
+  $('.make-active').click(function () {
+    let data = {overall_status:"active"}
+    API.save_field_api('contact', contactId, data).then((contact)=>{
+      setStatus(contact)
+    })
+  })
+
+
 })
 
 
@@ -884,15 +888,10 @@ function close_contact(contactId){
   jQuery("#confirm-close").toggleClass('loading')
   let reasonClosed = jQuery('#reason-closed-options')
   let data = {overall_status:"closed", "reason_closed":reasonClosed.val()}
-  API.save_field_api('contact', contactId, data).then(()=>{
-    let closedLabel = contactsDetailsWpApiSettings.contacts_custom_fields_settings.overall_status.default.closed;
-    jQuery('#overall-status').text(closedLabel)
+  API.save_field_api('contact', contactId, data).then((contactData)=>{
     jQuery("#confirm-close").toggleClass('loading')
     jQuery('#close-contact-modal').foundation('close')
-    jQuery('#reason').text(`(${reasonClosed.find('option:selected').text()})`)
-    jQuery('#return-active').show()
-    jQuery('.reason-field').hide()
-    jQuery('.reason-field.reason-closed').show()
+    setStatus(contactData)
   })
 }
 
@@ -901,27 +900,31 @@ function pause_contact(contactId){
   confirmPauseButton.toggleClass('loading')
   let reasonPaused = jQuery('#reason-paused-options')
   let data = {overall_status:"paused", "reason_paused":reasonPaused.val()}
-  API.save_field_api('contact', contactId, data).then(()=>{
-    let pausedLabel = contactsDetailsWpApiSettings.contacts_custom_fields_settings.overall_status.default.paused;
-    jQuery('#overall-status').text(pausedLabel)
-    jQuery('#reason').text(`(${reasonPaused.find('option:selected').text()})`)
+  API.save_field_api('contact', contactId, data).then((contactData)=>{
     jQuery('#pause-contact-modal').foundation('close')
-    jQuery('#return-active').show()
-    jQuery('.reason-field').hide()
-    jQuery('.reason-field.reason-paused').show()
+    setStatus(contactData)
     confirmPauseButton.toggleClass('loading')
   })
 }
 
+function setStatus(contact) {
+  let status = _.get(contact, "fields.overall_status.key")
+  let reasonLabel = _.get(contact, `fields.reason_${status}.label`)
+  let statusLabel = _.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings.overall_status.default.${status}`)
+  jQuery('#overall-status').text(statusLabel)
+  jQuery('#reason').text(reasonLabel ? `(${reasonLabel})` : '')
 
-function make_active(contactId) {
-  let data = {overall_status:"active"}
-  API.save_field_api('contact', contactId, data).then(()=>{
-    let activeLabel = contactsDetailsWpApiSettings.contacts_custom_fields_settings.overall_status.default.active;
-    jQuery('#return-active').toggle()
-    jQuery('#overall-status').text(activeLabel || "Active")
-    jQuery('#reason').text(``)
-  })
+  jQuery('.trigger-pause').toggle(status !== "paused")
+  jQuery('.trigger-unpause').toggle(status === "paused")
+  jQuery('.trigger-close').toggle(status !== "closed")
+  jQuery('.trigger-unclose').toggle(status === "closed")
+
+  jQuery('.reason-field').hide()
+  if (reasonLabel){
+    jQuery(`.reason-field.reason-${status}`).show()
+  } else {
+    jQuery('.reason-fields').hide()
+  }
 }
 
 /***

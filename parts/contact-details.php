@@ -161,12 +161,24 @@
                         ?>
                     </span>
                 </span>
-                <button data-open="pause-contact-modal" class="button">Pause</button>
-                <button data-open="close-contact-modal" class="button">Close</button>
-                <button id="return-active" onclick="make_active( <?php echo get_the_ID() ?> )"
-                        style="display: <?php echo esc_html( ($contact->fields["overall_status"]["key"] === "paused" || $contact->fields["overall_status"]["key"] === "closed") ? "" : "none" ); ?>"
-                        class="button">
-                    Return to Active
+                <?php $status = $contact->fields["overall_status"]["key"] ?? ""; ?>
+                <button data-open="pause-contact-modal"
+                        class="button trigger-pause"
+                        style="display:<?php echo ($status != "paused" ? "inline" : "none"); ?>">
+                    Pause
+                </button>
+                <button class="button trigger-unpause make-active"
+                        style="display:<?php echo ($status === "paused" ? "inline" : "none"); ?>">
+                    Un-pause
+                </button>
+                <button data-open="close-contact-modal"
+                        class="button trigger-close"
+                        style="display:<?php echo ($status != "closed" ? "inline" : "none"); ?>">
+                    Close
+                </button>
+                <button class="button trigger-unclose make-active"
+                        style="display:<?php echo ($status === "closed" ? "inline" : "none"); ?>">
+                    Re-open
                 </button>
                 <button class="float-right" id="edit-details">
                     <i class="fi-pencil"></i>
@@ -225,10 +237,10 @@
                 </button>
             </div>
 
-            <div class="reason-fields grid-x">
+            <div class="reason-fields grid-x details-edit">
                 <?php $status = $contact->fields["overall_status"]["key"] ?? ""; ?>
                 <!-- change reason paused options-->
-                <div class="medium-6 reason-field reason-paused" style="display:<?php echo ($status === "paused" ? "inline" : "none"); ?>">
+                <div class="medium-6 reason-field reason-paused" style="display:<?php echo ($status === "paused" ? "inherit" : "none"); ?>">
                     <div class="section-subheader"><?php echo esc_html( $contact_fields["reason_paused"]["name"] ) ?></div>
                     <select class="status-reason" data-field="<?php echo esc_html( "reason_paused" ) ?>" >
                         <?php
@@ -244,7 +256,7 @@
                     </select>
                 </div>
                 <!-- change reason closed options-->
-                <div class="medium-6 reason-field reason-closed" style="display:<?php echo ($status === "closed" ? "inline" : "none"); ?>">
+                <div class="medium-6 reason-field reason-closed" style="display:<?php echo ($status === "closed" ? "inherit" : "none"); ?>">
                     <div class="section-subheader"><?php echo esc_html( $contact_fields["reason_closed"]["name"] ) ?></div>
                     <select class="status-reason" data-field="<?php echo esc_html( "reason_closed" ) ?>" >
                         <?php
@@ -260,7 +272,7 @@
                     </select>
                 </div>
                 <!-- change reason unassignable options-->
-                <div class="medium-6 reason-field reason-unassignable" style="display:<?php echo ($status === "unassignable" ? "inline" : "none"); ?>">
+                <div class="medium-6 reason-field reason-unassignable" style="display:<?php echo ($status === "unassignable" ? "inherit" : "none"); ?>">
                     <div class="section-subheader"><?php echo esc_html( $contact_fields["reason_unassignable"]["name"] ) ?></div>
                     <select class="status-reason" data-field="<?php echo esc_html( "reason_unassignable" ) ?>" >
                         <?php
