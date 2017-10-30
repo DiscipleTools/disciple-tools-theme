@@ -80,9 +80,9 @@ function critical_path(){
     type: "GET",
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: wpApiNotifications.root + 'dt/v1/metrics/critical_path_chart_data',
+    url: wpApiMetricsPage.root + 'dt/v1/metrics/critical_path_chart_data',
     beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiNotifications.nonce);
+      xhr.setRequestHeader('X-WP-Nonce', wpApiMetricsPage.nonce);
     },
   })
     .done(function (data) {
@@ -129,9 +129,9 @@ function refresh_critical_path_data(){
     type: "GET",
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: wpApiNotifications.root + 'dt/v1/metrics/refresh_critical_path',
+    url: wpApiMetricsPage.root + 'dt/v1/metrics/refresh_critical_path',
     beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiNotifications.nonce);
+      xhr.setRequestHeader('X-WP-Nonce', wpApiMetricsPage.nonce);
     },
   })
     .done(function (data) {
@@ -153,9 +153,9 @@ function critical_path_prayer(){
     type: "GET",
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: wpApiNotifications.root + 'dt/v1/metrics/critical_path_prayer',
+    url: wpApiMetricsPage.root + 'dt/v1/metrics/critical_path_prayer',
     beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiNotifications.nonce);
+      xhr.setRequestHeader('X-WP-Nonce', wpApiMetricsPage.nonce);
     },
   })
     .done(function (data) {
@@ -190,9 +190,9 @@ function critical_path_outreach(){
     type: "GET",
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: wpApiNotifications.root + 'dt/v1/metrics/critical_path_outreach',
+    url: wpApiMetricsPage.root + 'dt/v1/metrics/critical_path_outreach',
     beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiNotifications.nonce);
+      xhr.setRequestHeader('X-WP-Nonce', wpApiMetricsPage.nonce);
     },
   })
     .done(function (data) {
@@ -227,9 +227,9 @@ function critical_path_fup() {
     type: "GET",
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: wpApiNotifications.root + 'dt/v1/metrics/critical_path_fup',
+    url: wpApiMetricsPage.root + 'dt/v1/metrics/critical_path_fup',
     beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiNotifications.nonce);
+      xhr.setRequestHeader('X-WP-Nonce', wpApiMetricsPage.nonce);
     },
   })
     .done(function (data) {
@@ -264,9 +264,9 @@ function critical_path_multiplication() {
     type: "GET",
     contentType: "application/json; charset=utf-8",
     dataType: "json",
-    url: wpApiNotifications.root + 'dt/v1/metrics/critical_path_multiplication',
+    url: wpApiMetricsPage.root + 'dt/v1/metrics/critical_path_multiplication',
     beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiNotifications.nonce);
+      xhr.setRequestHeader('X-WP-Nonce', wpApiMetricsPage.nonce);
     },
   })
     .done(function (data) {
