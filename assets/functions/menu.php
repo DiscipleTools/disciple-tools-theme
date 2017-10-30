@@ -129,6 +129,9 @@ function disciple_tools_off_canvas_nav()
             <li>
                 <a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a>
             </li>
+            <li>
+                <a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( "Log Off" ); ?></a>
+            </li>
 
         </ul>
 
