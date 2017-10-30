@@ -710,36 +710,19 @@ jQuery(document).ready(function($) {
   })
 
 
-  $(document).on('click', '.details-status-button.verify', function () {
+  $(document).on('click', '.details-status-button.field-status', function () {
+    let status = $(this).data('status')
     let id = $(this).data('id')
-    let verified = $(this).data('verified')
-    if (id){
-      console.log('verify')
-      API.update_contact_method_detail('group', groupId, id, {"verified":!verified}).then(()=>{
-        $(this).data('verified', !verified)
-        if (verified){
-          jQuery(`#${id}-verified`).hide()
-        } else {
-          jQuery(`#${id}-verified`).show()
-
-        }
-        jQuery(this).html(verified ? "Verify" : "Unverify")
-      }).catch(err=>{
-        console.log(err)
-      })
+    console.log(status, id)
+    let fields = {
+      verified : status === 'valid',
+      invalid : status === "invalid"
     }
-  })
-  $(document).on('click', '.details-status-button.invalid', function () {
-    let id = $(this).data('id')
-    let invalid = $(this).data('invalid')
-    API.update_contact_method_detail('group', groupId, id, {"invalid":!invalid}).then(()=>{
-      $(this).data('invalid', !invalid)
-      if (invalid){
-        jQuery(`#${id}-invalid`).hide()
-      } else  {
-        jQuery(`#${id}-invalid`).show()
-      }
-      jQuery(this).html(invalid? "Invalidate" : "Uninvalidate")
+    API.update_contact_method_detail('group', groupId, id, fields).then(()=>{
+      $(`#${id}-verified`).toggle(fields.verified)
+      $(`#${id}-invalid`).toggle(fields.invalid)
+    }).catch(err=>{
+      handelAjaxError(err)
     })
   })
 
