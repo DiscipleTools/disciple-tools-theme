@@ -42,9 +42,6 @@ dt_print_breadcrumbs(
                         <?php foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $source_key => $source ): ?>
                             <option value="<?php echo esc_attr( $source_key ); ?>">
                                 <?php echo esc_html( $source['label'] ); ?>
-                                <?php if ( $source['description'] ): ?>
-                                    (<?php echo esc_html( $source['description'] ); ?>)
-                                <?php endif; ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
