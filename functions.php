@@ -186,7 +186,7 @@ class Disciple_Tools_Theme {
             require 'update/plugin-update-checker/plugin-update-checker.php';
         }
         $my_update_checker = Puc_v4_Factory::buildUpdateChecker(
-            'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-theme/master/update/version-updater.json',
+            'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-theme-version-control.json',
             __FILE__,
             'disciple-tools-theme'
         );
