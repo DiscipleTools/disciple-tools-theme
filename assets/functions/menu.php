@@ -108,9 +108,9 @@ function disciple_tools_off_canvas_nav()
             </li>
 
             <?php if ( Disciple_Tools_Locations::get_standard_locations_count( 0 ) > 0 ) : ?>
-                <li>
-                    <a href="<?php echo esc_url( home_url( '/locations/' ) ); ?>"><?php esc_html_e( "Locations" ); ?></a>
-                </li>
+                <!--<li>
+                    <a href="<?php /*echo esc_url( home_url( '/locations/' ) ); */?>"><?php /*esc_html_e( "Locations" ); */?></a>
+                </li>-->
             <?php endif; ?>
 
             <?php if ( dt_get_user_team_members_list( get_current_user_id() ) ) : // check if part of team, if not don't show link ?>
