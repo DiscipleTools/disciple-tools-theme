@@ -149,6 +149,7 @@ jQuery(document).ready(function($) {
       transform: function (data) {
         return API.filterTypeahead(data, group.assigned_to ? [{ID:group.assigned_to.ID}] : [])
       },
+      cache:false
     },
     remote: {
       url: wpApiGroupsSettings.root + 'dt/v1/users/get_users/?s=%QUERY',
@@ -212,6 +213,7 @@ jQuery(document).ready(function($) {
       transform: function(data){
         return API.filterTypeahead(data, group.locations || [])
       },
+      cache:false
     },
     remote: {
       url: wpApiGroupsSettings.root + 'dt/v1/locations-compact/?s=%QUERY',
@@ -262,6 +264,7 @@ jQuery(document).ready(function($) {
     prefetch: {
       url: wpApiGroupsSettings.root + 'dt/v1/people-groups-compact/',
       prepare : API.typeaheadPrefetchPrepare,
+      cache:false
     },
     remote: {
       url: wpApiGroupsSettings.root + 'dt/v1/people-groups-compact/?s=%QUERY',
@@ -416,6 +419,7 @@ jQuery(document).ready(function($) {
         return API.filterTypeahead(data, group.members || [])
       },
       prepare : API.typeaheadPrefetchPrepare,
+      cache:false
     },
     remote: {
       url: wpApiGroupsSettings.root + 'dt/v1/contacts/compact/?s=%QUERY',

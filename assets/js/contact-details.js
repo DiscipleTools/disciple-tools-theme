@@ -173,6 +173,7 @@ jQuery(document).ready(function($) {
     prefetch: {
       url: contactsDetailsWpApiSettings.root + 'dt/v1/groups-compact/',
       prepare : API.typeaheadPrefetchPrepare,
+      cache:false
     },
     remote: {
       url: contactsDetailsWpApiSettings.root + 'dt/v1/groups-compact/?s=%QUERY',
@@ -220,7 +221,8 @@ jQuery(document).ready(function($) {
     },
     prefetch: {
       url: contactsDetailsWpApiSettings.root + 'dt/v1/contacts/',
-      prepare : API.typeaheadPrefetchPrepare
+      prepare : API.typeaheadPrefetchPrepare,
+      cache:false
     },
     remote: {
       url: contactsDetailsWpApiSettings.root + 'dt/v1/contacts/?s=%QUERY',
@@ -275,6 +277,7 @@ jQuery(document).ready(function($) {
     prefetch: {
       url: contactsDetailsWpApiSettings.root + 'dt/v1/users/get_users',
       prepare : API.typeaheadPrefetchPrepare,
+      cache:false
     },
     remote: {
       url: contactsDetailsWpApiSettings.root + 'dt/v1/users/get_users/?s=%QUERY',
@@ -338,6 +341,7 @@ jQuery(document).ready(function($) {
       transform: function(data){
         return API.filterTypeahead(data, _.get(contact, "fields.locations") || [])
       },
+      cache:false
     },
     remote: {
       url: contactsDetailsWpApiSettings.root + 'dt/v1/locations-compact/?s=%QUERY',
@@ -389,6 +393,7 @@ jQuery(document).ready(function($) {
     prefetch: {
       url: contactsDetailsWpApiSettings.root + 'dt/v1/people-groups-compact/',
       prepare : API.typeaheadPrefetchPrepare,
+      cache:false
     },
     remote: {
       url: contactsDetailsWpApiSettings.root + 'dt/v1/people-groups-compact/?s=%QUERY',
