@@ -7,7 +7,7 @@ declare(strict_types=1);
     <div class="js-sort-dropdown" hidden>
         <ul class="dropdown menu" data-dropdown-menu>
             <li>
-                <a href="<?php echo esc_url( home_url( '/' ) ) . "/groups/new" ?>"><?php esc_html_e( "Create new group" ); ?></a>
+                <a href="<?php echo esc_url( home_url( '/' ) ) . "groups/new" ?>"><?php esc_html_e( "Create new group" ); ?></a>
             </li>
             <li>
                 <a href="#"><?php esc_html_e( "Sort" ); ?></a>
