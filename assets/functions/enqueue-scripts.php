@@ -41,6 +41,9 @@ function dt_theme_enqueue_style( string $handle, string $rel_src, array $deps = 
 function dt_site_scripts() {
     global $wp_styles; // Call global $wp_styles variable to add conditional wrapper around ie stylesheet the WordPress way
 
+    dt_theme_enqueue_script( 'modernizr-custom', 'assets/js/modernizr-custom.js', [], true );
+    dt_theme_enqueue_script( 'check-browser-version', 'assets/js/check-browser-version.js', [ 'modernizr-custom' ], true );
+
     wp_enqueue_style( 'foundation-css', 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' );
 
     /**

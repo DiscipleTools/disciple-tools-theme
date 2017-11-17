@@ -68,3 +68,13 @@
                 <noscript>
                     <header class="header"><?php esc_html_e( "Javascript must be enabled for this site to function correctly." ); ?></header>
                 </noscript>
+
+                <div id="js-missing-required-browser-features-notice" hidden>
+                    <header class="header">
+                        <br><br><br>
+                        <?php esc_html_e( "You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported." ); ?>
+                        <a href="https://whatbrowser.org" rel="nofollow">
+                            <?php esc_html_e( "See what browser you are using." ); ?>
+                        </a>
+                    </header>
+                </div>
