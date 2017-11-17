@@ -64,3 +64,7 @@
                         <?php get_template_part( 'parts/nav', 'offcanvas-topbar' ); ?>
 
                 </header> <!-- end .header -->
+
+                <noscript>
+                    <header class="header"><?php esc_html_e( "Javascript must be enabled for this site to function correctly." ); ?></header>
+                </noscript>
