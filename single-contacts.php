@@ -53,28 +53,23 @@ declare( strict_types=1 );
                         </button>
                         <h3 class="section-header">Connections</h3>
                         <div class="section-subheader">Groups</div>
-                        <ul class="groups-list">
-                            <?php
-                            $ids = [];
-                            foreach ( $contact->fields["groups"] as $value ) {
-                                $ids[] = $value->ID;
-                                ?>
-                                <li class="<?php echo esc_html( $value->ID ) ?>">
-                                    <a href="<?php echo esc_html( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
-                                    <button class="details-remove-button connections-edit"
-                                            onclick="remove_item( <?php echo esc_html( get_the_ID() ) ?>,  'groups', <?php echo esc_html( $value->ID ) ?> )">
-                                        Remove
+                        <var id="groups-result-container" class="result-container"></var>
+                        <form id="groups_t" name="form-groups">
+                            <div class="typeahead__container">
+                                <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-groups"
+                                           name="groups[query]" placeholder="Search"
+                                           autocomplete="off">
+                                </span>
+                                    <span class="typeahead__button">
+                                    <button type="submit">
+                                        <i class="typeahead__search-icon"></i>
                                     </button>
-                                </li>
-                            <?php } ?>
-                        </ul>
-                        <div class="connections-edit">
-                            <label for="groups">Add Group:</label>
-                            <div id="groups">
-                                <input class="typeahead" type="text" placeholder="Type to search groups">
+                                </span>
+                                </div>
                             </div>
-                        </div>
-
+                        </form>
 
                         <?php
                         $connections = [
@@ -85,32 +80,24 @@ declare( strict_types=1 );
                         ];
                         foreach ( $connections as $connection => $connection_label ) {
                             ?>
-
-
                             <div class="section-subheader"><?php echo esc_html( $connection_label ) ?></div>
-                            <ul class="<?php echo esc_html( $connection ) ?>-list">
-                                <?php
-                                $ids = [];
-                                foreach ( $contact->fields[ $connection ] as $value ) {
-                                    $ids[] = $value->ID;
-                                    ?>
-                                    <li class="<?php echo esc_html( $value->ID ) ?>">
-                                        <a href="<?php echo esc_html( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
-                                        <button class="details-remove-button connections-edit"
-                                                onclick="remove_item(<?php echo esc_html( get_the_ID() ) ?>,  '<?php echo esc_html( $connection ) ?>', <?php echo esc_html( $value->ID ) ?>)">
-                                            Remove
+                            <var id="<?php echo $connection ?>-result-container" class="result-container"></var>
+                            <form id="<?php echo $connection ?>_t" name="form-<?php echo $connection ?>">
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
+                                    <span class="typeahead__query">
+                                        <input class="js-typeahead-<?php echo $connection ?>"
+                                               name="<?php echo $connection ?>[query]" placeholder="Search"
+                                               autocomplete="off">
+                                    </span>
+                                        <span class="typeahead__button">
+                                        <button type="submit">
+                                            <i class="typeahead__search-icon"></i>
                                         </button>
-                                    </li>
-                                <?php } ?>
-                            </ul>
-                            <div class="connections-edit">
-                                <label for="<?php echo esc_html( $connection ) ?>">Add <?php echo esc_html( $connection_label ) ?>
-                                    :</label>
-                                <div id="<?php echo esc_html( $connection ) ?>" class="scrollable-dropdown-menu">
-                                    <input class="typeahead" type="text"
-                                           placeholder="Type to search contacts">
+                                    </span>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                             <?php
                         }
                         ?>
@@ -132,7 +119,7 @@ declare( strict_types=1 );
                             <?php } else { ?>
                                 <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
                             <?php }
-                        };
+                        }
                         $keys = array_keys( $contact_fields["seeker_path"]["default"] );
                         $path_index = array_search( $contact->fields["seeker_path"]["key"], $keys ) ?? 0;
                         $percentage = $path_index / (sizeof( $keys ) -1) *100
