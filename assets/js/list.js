@@ -364,7 +364,9 @@
       filterTypes = ["group_status", "locations"];
     }
 
-    filterFunctions.push(viewFilterFunctions[$(".js-list-view:checked").val()]);
+    if ($(".js-list-view").length > 0) {
+      filterFunctions.push(viewFilterFunctions[$(".js-list-view:checked").val()]);
+    }
 
     filterTypes.forEach(function(filterType) {
       const $checkedLabels = assertAtLeastOne($(".js-filter-checkbox-label"))
