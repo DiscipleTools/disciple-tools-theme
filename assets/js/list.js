@@ -412,13 +412,13 @@
       } else if (wpApiSettings.current_post_type === "groups") {
 
         if (filterType === "group_status") {
-          filterFunctions.push(function(group) {
+          filterFunctions.push(function group_status(group) {
             return _.some($checkedLabels, function group_status(label) {
               return $(label).data("filter-value") === group.group_status;
             });
           });
         } else if (filterType === "locations") {
-          filterFunctions.push(function(group) {
+          filterFunctions.push(function locations(group) {
             return _.some($checkedLabels, function locations(label) {
               return _.includes(group.locations, $(label).data("filter-value"));
             });
