@@ -91,6 +91,11 @@ dt_print_breadcrumbs(
                                     <?php echo esc_html( $dt_user->nickname ); ?>
                                 </p>
 
+                                <p>
+                                    <strong><?php esc_html_e( "Roles" ); ?></strong><br>
+                                    <?php echo esc_html( implode( ", ", wp_get_current_user()->roles ) ); ?>
+                                </p>
+
                                 <strong>Biography</strong>
                                 <p><?php echo esc_html( $dt_user->user_description ); ?></p>
 
