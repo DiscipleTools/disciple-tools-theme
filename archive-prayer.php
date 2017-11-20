@@ -22,12 +22,14 @@ dt_print_breadcrumbs( null, __( "Prayer" ) );
             );
             $query1 = new WP_Query( $args );
             ?>
-            <?php if ( $query1->have_posts() ) : while ( $query1->have_posts() ) : $query1->the_post(); ?>
+            <?php if ( $query1->have_posts() ) : ?>
+                <?php /* TODO: check permissions, and maybe move this to the disciple-tools plugin */ ?>
+                <?php while ( $query1->have_posts() ) : $query1->the_post(); ?>
 
-                <!-- To see additional archive styles, visit the /parts directory -->
-                <?php get_template_part( 'parts/loop', 'prayer' ); ?>
+                    <!-- To see additional archive styles, visit the /parts directory -->
+                    <?php get_template_part( 'parts/loop', 'prayer' ); ?>
 
-            <?php endwhile; ?>
+                <?php endwhile; ?>
 
                 <?php disciple_tools_page_navi(); ?>
 
