@@ -1137,6 +1137,25 @@ button.loader{
 }
 
 
+.scrollable-typeahead .typeahead__list {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.typeahead-margin-when-active .typeahead__container.result .typeahead__result {
+    margin-bottom: 300px;
+}
+
+.typeahead__container {
+    margin-bottom: 10px;
+}
+
+.tpeahead__image_button {
+    width: 30px;
+    height: 30px;
+}
+
 /**
 Groups
 **/

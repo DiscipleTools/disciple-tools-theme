@@ -373,17 +373,12 @@
                     <!-- Assigned To -->
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
                         <div class="section-subheader">Locations</div>
-                        <ul class="locations-list">
+                        <ul class="locations-list details-list">
                             <?php
                             foreach ($contact->fields["locations"] ?? [] as $value){
                                 ?>
                                 <li class="<?php echo esc_html( $value->ID )?>">
                                     <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
-                                    <button class="details-remove-button connection details-edit"
-                                            data-field="locations" data-id="<?php echo esc_html( $value->ID ) ?>"
-                                            data-name="<?php echo esc_html( $value->post_title ) ?>">
-                                        Remove
-                                    </button>
                                 </li>
                             <?php }
                             if (sizeof( $contact->fields["locations"] ) === 0){
@@ -391,9 +386,21 @@
                             }
                             ?>
                         </ul>
-                        <div class="locations details-edit">
-                            <input class="typeahead" type="text" placeholder="Type to search locations">
+                        <div class="locations">
+                            <var id="locations-result-container" class="result-container"></var>
+                            <div id="locations_t" name="form-locations" class="scrollable-typeahead">
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-locations"
+                                                   name="locations[query]" placeholder="Search Locations"
+                                                   autocomplete="off">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
 
                         <div class="section-subheader">Assigned to
                             <span class="assigned_to details-edit">:
@@ -409,8 +416,34 @@
                                 ?>
                             </li>
                         </ul>
-                        <div class="assigned_to details-edit">
-                            <input class="typeahead" type="text" placeholder="Type to search users">
+
+                        <div class="assigned_to">
+                            <var id="assigned_to-result-container" class="result-container"></var>
+                            <div id="assigned_to_t" name="form-assigned_to" class="">
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-assigned_to"
+                                                   name="assigned_to[query]" placeholder="Search users"
+                                                   autocomplete="off">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="assigned_to">
+                            <var id="assigned_to-result-container2" class="result-container"></var>
+                            <div id="assigned_to_t2" name="form-assigned_to" class="">
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-assigned_to"
+                                                   name="assigned_to[query]" placeholder="Search users"
+                                                   autocomplete="off">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- Social Media -->
@@ -501,17 +534,12 @@
 
 
                         <div class="section-subheader">People Groups</div>
-                        <ul class="people_groups-list">
+                        <ul class="people_groups-list details-list">
                             <?php
                             foreach ($contact->fields["people_groups"] ?? [] as $value){
                                 ?>
                                 <li class="<?php echo esc_html( $value->ID )?>">
                                     <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
-                                    <button class="details-remove-button connection details-edit"
-                                            data-field="people_groups" data-id="<?php echo esc_html( $value->ID ) ?>"
-                                            data-name="<?php echo esc_html( $value->post_title ) ?>">
-                                        Remove
-                                    </button>
                                 </li>
                             <?php }
                             if (sizeof( $contact->fields["people_groups"] ) === 0){
@@ -519,8 +547,19 @@
                             }
                             ?>
                         </ul>
-                        <div class="people-groups details-edit">
-                            <input class="typeahead" type="text" placeholder="Type to search people groups">
+                        <div class="people_groups">
+                            <var id="people_groups-result-container" class="result-container"></var>
+                            <div id="people_groups_t" name="form-people_groups" class="scrollable-typeahead">
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-people_groups"
+                                                   name="people_groups[query]" placeholder="Search People_groups"
+                                                   autocomplete="off">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

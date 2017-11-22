@@ -48,28 +48,28 @@ declare( strict_types=1 );
                 <?php get_template_part( 'parts/contact', 'details' ); ?>
 
                 <section id="relationships" class="xlarge-6 large-12 medium-6 cell">
-                    <div class="bordered-box last-typeahead-in-section">
-                        <button class=" float-right" onclick="edit_connections()"><i class="fi-pencil"></i> Edit
-                        </button>
+<!--                    <div class="bordered-box last-typeahead-in-section">-->
+                    <div class="bordered-box">
                         <h3 class="section-header">Connections</h3>
                         <div class="section-subheader">Groups</div>
                         <var id="groups-result-container" class="result-container"></var>
-                        <form id="groups_t" name="form-groups">
+                        <div id="groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
                             <div class="typeahead__container">
                                 <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-groups"
-                                           name="groups[query]" placeholder="Search"
-                                           autocomplete="off">
-                                </span>
+                                    <span class="typeahead__query">
+                                        <input class="js-typeahead-groups"
+                                               name="groups[query]" placeholder="Search Groups"
+                                               autocomplete="off">
+                                    </span>
                                     <span class="typeahead__button">
-                                    <button type="submit">
-                                        <i class="typeahead__search-icon"></i>
-                                    </button>
-                                </span>
+                                        <button type="button" class="create-new-group">
+                                            <img class="tpeahead__image_button"
+                                                 src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/add-group.svg' ) ?>"/>
+                                        </button>
+                                    </span>
                                 </div>
                             </div>
-                        </form>
+                        </div>
 
                         <?php
                         $connections = [
@@ -81,23 +81,23 @@ declare( strict_types=1 );
                         foreach ( $connections as $connection => $connection_label ) {
                             ?>
                             <div class="section-subheader"><?php echo esc_html( $connection_label ) ?></div>
-                            <var id="<?php echo $connection ?>-result-container" class="result-container"></var>
-                            <form id="<?php echo $connection ?>_t" name="form-<?php echo $connection ?>">
+                            <var id="<?php echo esc_html( $connection ) ?>-result-container" class="result-container"></var>
+                            <div id="<?php echo esc_html( $connection ) ?>_t" name="form-<?php echo esc_html( $connection ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
                                 <div class="typeahead__container">
                                     <div class="typeahead__field">
-                                    <span class="typeahead__query">
-                                        <input class="js-typeahead-<?php echo $connection ?>"
-                                               name="<?php echo $connection ?>[query]" placeholder="Search"
-                                               autocomplete="off">
-                                    </span>
-                                        <span class="typeahead__button">
-                                        <button type="submit">
-                                            <i class="typeahead__search-icon"></i>
-                                        </button>
-                                    </span>
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-<?php echo esc_html( $connection ) ?>"
+                                                   name="<?php echo esc_html( $connection ) ?>[query]" placeholder="Search Contacts"
+                                                   autocomplete="off">
+                                        </span>
+<!--                                        <span class="typeahead__button">-->
+<!--                                            <button>-->
+<!--                                                <i class="typeahead__search-icon"></i>-->
+<!--                                            </button>-->
+<!--                                        </span>-->
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                             <?php
                         }
                         ?>

@@ -122,7 +122,7 @@ function dt_site_scripts() {
     );
 
     if (is_singular( "contacts" )){
-        dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'api-wrapper', 'moment', 'typeahead-jquery' ) );
+        dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'api-wrapper', 'moment', 'typeahead-jquery', 'typeahead' ) );
         $contact = Disciple_Tools_Contacts::get_contact( get_the_ID() );
         wp_localize_script(
             'contact-details', 'contactsDetailsWpApiSettings', array(
