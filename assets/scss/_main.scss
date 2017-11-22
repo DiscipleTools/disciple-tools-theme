@@ -1149,12 +1149,16 @@ button.loader{
 
 .typeahead__container {
     margin-bottom: 10px;
+    .typeahead__image_button {
+        padding-top: 8px;
+        padding-bottom: 3px;
+        img {
+            width: 20px;
+            height: 20px;
+        }
+    }
 }
 
-.tpeahead__image_button {
-    width: 30px;
-    height: 30px;
-}
 
 /**
 Groups

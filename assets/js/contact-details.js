@@ -161,8 +161,10 @@ jQuery(document).ready(function($) {
     var text = "";
     if (result.length > 0 && result.length < resultCount) {
       text = "Showing <strong>" + result.length + "</strong> of <strong>" + resultCount + '</strong> ' + (query ? 'elements matching "' + query + '"' : '');
+    } else if (result.length > 0 && query) {
+      text = 'Showing <strong>' + result.length + '</strong> items matching "' + query + '"';
     } else if (result.length > 0) {
-      text = 'Showing <strong>' + result.length + '</strong> groups matching "' + query + '"';
+      text = 'Showing <strong>' + result.length + '</strong> items';
     } else {
       text = 'No results matching "' + query + '"';
     }
@@ -340,102 +342,30 @@ jQuery(document).ready(function($) {
   /**
    * Assigned_to
    */
-  // typeaheadTotals.assigned_to = 0;
-  // $.typeahead({
-  //   input: '.js-typeahead-assigned_to',
-  //   minLength: 0,
-  //   searchOnFocus: true,
-  //   // maxItem: 20,
-  //   // template: function (query, item) {
-  //   //   return `<span>${_.escape(item.name)}</span>`
-  //   // },
-  //   source: typeaheadSource('assigned_to', 'dt/v1/users/get_users'),
-  //   display: "name",
-  //   templateValue: "{{name}}",
-  //   dynamic: true,
-  //   hint: true,
-  //   // blurOnTab: false,
-  //   // maxItemPerGroup: 3,
-  //   multiselect: {
-  //     // limit: 1,
-  //     limitTemplate: 'You can\'t select more than 2 teams',
-  //     matchOn: ["ID"],
-  //     data: function () {
-  //       if (_.get(contact, "fields.assigned_to.id")){
-  //         return [{ID:contact.fields.assigned_to.id, name:contact.fields.assigned_to.display}]
-  //       }
-  //     }, callback: {
-  //       onCancel: function (node, item) {
-  //         API.remove_item_from_field('contact', contactId, 'assigned_to', item.ID)
-  //       }
-  //     }
-  //   },
-  //   callback: {
-  //     onClick: function(node, a, item, event){
-  //       API.save_field_api('contact', contactId, {assigned_to: 'user-' + item.ID}).then(function (response) {
-  //         // assigned_to_typeahead.typeahead('val', '')
-  //         // jQuery('.current-assigned').text(sug.name)
-  //         // setStatus(response)
-  //         console.log(response)
-  //         _.set(contact, "fields.assigned_to", response.fields.assigned_to)
-  //       })
-  //     },
-  //     // onResult: function (node, query, result, resultCount) {
-  //     //   resultCount = typeaheadTotals.assigned_to
-  //     //   let text = typeaheadHelpText(resultCount, query, result)
-  //     //   $('#assigned_to-result-container').html(text);
-  //     // },
-  //     onHideLayout: function () {
-  //       $('#assigned_to-result-container').html("");
-  //     },
-  //     onReady: function () {
-  //       // $('.assigned_to').addClass('details-edit')
-  //     }
-  //   },
-  //   debug:true
-  // });
-
-
-
-  let assignedToTypeahead = $.typeahead({
+  typeaheadTotals.assigned_to = 0;
+  $.typeahead({
     input: '.js-typeahead-assigned_to',
     minLength: 0,
-    maxItem: 20,
-    order: "asc",
-    hint: true,
     searchOnFocus: true,
-    blurOnTab: false,
-    multiselect: {
-      // limit: 1,
-      // limitTemplate: 'You can\'t select more than 10 teams',
-      cancelOnBackspace: true,
-      matchOn: ["ID"],
-      data: function () {
-        if (_.get(contact, "fields.assigned_to.id")){
-          return [{ID:contact.fields.assigned_to.id, name:contact.fields.assigned_to.display}]
-        }
-        return []
-      }, callback: {
-        onCancel: function (node, item) {
-          API.remove_item_from_field('contact', contactId, 'assigned_to', item.ID)
-        }
-      }
-    },
-    templateValue: "{{name}}",
-    display: ["name"],
-    // emptyTemplate: 'no result for {{query}}',
+    // maxItem: 20,
+    // template: function (query, item) {
+    //   return `<span>${_.escape(item.name)}</span>`
+    // },
     source: typeaheadSource('assigned_to', 'dt/v1/users/get_users'),
+    display: "name",
+    templateValue: "{{name}}",
+    dynamic: true,
+    hint: true,
+    emptyTemplate: 'No users found "{{query}}"',
     callback: {
-      onClickAfter: function(node, a, item, event){
-        console.log(JSON.stringify(assignedToTypeahead));
-        console.log(assignedToTypeahead);
-        $('.assigned_to .typeahead__label:first').remove()
+      onClick: function(node, a, item, event){
         API.save_field_api('contact', contactId, {assigned_to: 'user-' + item.ID}).then(function (response) {
-          // assigned_to_typeahead.typeahead('val', '')
-          // jQuery('.current-assigned').text(sug.name)
-          // setStatus(response)
-          console.log(response)
           _.set(contact, "fields.assigned_to", response.fields.assigned_to)
+          $('.current-assigned').text(contact.fields.assigned_to.display)
+          setStatus(response)
+          console.log(response)
+          $('.js-typeahead-assigned_to').val(contact.fields.assigned_to.display)
+          $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
         })
       },
       onResult: function (node, query, result, resultCount) {
@@ -444,17 +374,83 @@ jQuery(document).ready(function($) {
         $('#assigned_to-result-container').html(text);
       },
       onHideLayout: function () {
-        $('#assigned_to-result-container').html("");
+        $('.assigned_to-result-container').html("");
       },
       onReady: function () {
-        // $('.assigned_to').addClass('details-edit')
+        $('.details.assigned_to').addClass('details-edit')
+        $('.js-typeahead-assigned_to').val(contact.fields.assigned_to.display)
+        $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
+        $('.assigned_to-result-container').html("");
       }
     },
-    debug: true
+    debug:true
   });
+  $('.search_assigned_to').on('click', function () {
+    let id = $(this).data("id")
+    $(`#${id} .js-typeahead-assigned_to`).val("")
+    $(`#${id} .js-typeahead-assigned_to`).trigger('input.typeahead')
+  })
 
 
-  ["baptized_by", "baptized", "coached_by", "coaching"].forEach(field_id=>{
+
+  // let assignedToTypeahead = $.typeahead({
+  //   input: '.js-typeahead-assigned_to',
+  //   minLength: 0,
+  //   maxItem: 20,
+  //   order: "asc",
+  //   hint: true,
+  //   searchOnFocus: true,
+  //   blurOnTab: false,
+  //   multiselect: {
+  //     // limit: 1,
+  //     // limitTemplate: 'You can\'t select more than 10 teams',
+  //     cancelOnBackspace: true,
+  //     matchOn: ["ID"],
+  //     data: function () {
+  //       if (_.get(contact, "fields.assigned_to.id")){
+  //         return [{ID:contact.fields.assigned_to.id, name:contact.fields.assigned_to.display}]
+  //       }
+  //       return []
+  //     }, callback: {
+  //       onCancel: function (node, item) {
+  //         API.remove_item_from_field('contact', contactId, 'assigned_to', item.ID)
+  //       }
+  //     }
+  //   },
+  //   templateValue: "{{name}}",
+  //   display: ["name"],
+  //   // emptyTemplate: 'no result for {{query}}',
+  //   source: typeaheadSource('assigned_to', 'dt/v1/users/get_users'),
+  //   callback: {
+  //     onClickAfter: function(node, a, item, event){
+  //       console.log(JSON.stringify(assignedToTypeahead));
+  //       console.log(assignedToTypeahead);
+  //       $('.assigned_to .typeahead__label:first').remove()
+  //       API.save_field_api('contact', contactId, {assigned_to: 'user-' + item.ID}).then(function (response) {
+  //         // assigned_to_typeahead.typeahead('val', '')
+  //         // jQuery('.current-assigned').text(sug.name)
+  //         // setStatus(response)
+  //         console.log(response)
+  //         _.set(contact, "fields.assigned_to", response.fields.assigned_to)
+  //       })
+  //     },
+  //     onResult: function (node, query, result, resultCount) {
+  //       resultCount = typeaheadTotals.assigned_to
+  //       let text = typeaheadHelpText(resultCount, query, result)
+  //       $('#assigned_to-result-container').html(text);
+  //     },
+  //     onHideLayout: function () {
+  //       $('#assigned_to-result-container').html("");
+  //     },
+  //     onReady: function () {
+  //       // $('.assigned_to').addClass('details-edit')
+  //     }
+  //   },
+  //   debug: true
+  // });
+
+
+  ;["baptized_by", "baptized", "coached_by", "coaching"].forEach(field_id=>{
     typeaheadTotals[field_id] = 0
     $.typeahead({
       input: `.js-typeahead-${field_id}`,
@@ -500,7 +496,8 @@ jQuery(document).ready(function($) {
           onCancel: function (node, item) {
             API.remove_item_from_field('contact', contactId, field_id, item.ID)
           }
-        }
+        },
+        href: "/contacts/{{ID}}"
       },
       callback: {
         onClick: function(node, a, item, event){
@@ -562,276 +559,9 @@ jQuery(document).ready(function($) {
     jQuery("#errors").append(err.responseText)
   })
 
-
-  // https://typeahead.js.org/examples/
-  /**
-   * Groups
-   */
-  // let groups = new Bloodhound({
-  //   datumTokenizer: API.searchAnyPieceOfWord,
-  //   queryTokenizer: Bloodhound.tokenizers.whitespace,
-  //   identify: function (obj) {
-  //     return obj.ID
-  //   },
-  //   prefetch: {
-  //     url: contactsDetailsWpApiSettings.root + 'dt/v1/groups-compact/',
-  //     prepare : API.typeaheadPrefetchPrepare,
-  //     cache:false
-  //   },
-  //   remote: {
-  //     url: contactsDetailsWpApiSettings.root + 'dt/v1/groups-compact/?s=%QUERY',
-  //     wildcard: '%QUERY',
-  //     prepare : API.typeaheadRemotePrepare,
-  //   }
-  // })
-  // let groupsTypeahead = $('#groups .typeahead')
-  // function loadGroupsTypeahead() {
-  //   groupsTypeahead.typeahead('destroy')
-  //   groups.initialize()
-  //   groupsTypeahead.typeahead({
-  //     highlight: true,
-  //     minLength: 0,
-  //     autoselect: true,
-  //   },
-  //   {
-  //     limit: 15,
-  //     async:false,
-  //     name: 'groups',
-  //     source: function (q, sync, async) {
-  //       return API.defaultFilter(q, sync, async, groups, _.get(contact, "fields.groups"))
-  //     },
-  //     display: 'name'
-  //   })
-  // }
-  // groupsTypeahead.bind('typeahead:select', function (ev, sug) {
-  //   groupsTypeahead.typeahead('val', '')
-  //   contact.fields.groups.push(sug)
-  //   groupsTypeahead.blur()
-  //   add_typeahead_item(contactId, 'groups', sug.ID, sug.name)
-  //
-  //   loadGroupsTypeahead()
-  // })
-  // loadGroupsTypeahead()
-  //
-  // /**
-  //  * Baptized by, Baptized, Coaching, Coached By
-  //  */
-  // let contacts = new Bloodhound({
-  //   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('post_title'),
-  //   queryTokenizer: Bloodhound.tokenizers.ngram,
-  //   identify: function (obj) {
-  //     return obj.post_title
-  //   },
-  //   prefetch: {
-  //     url: contactsDetailsWpApiSettings.root + 'dt/v1/contacts/compact',
-  //     prepare : API.typeaheadPrefetchPrepare,
-  //     cache:false
-  //   },
-  //   remote: {
-  //     url: contactsDetailsWpApiSettings.root + 'dt/v1/contacts/compact?s=%QUERY',
-  //     wildcard: '%QUERY',
-  //     prepare : API.typeaheadRemotePrepare
-  //   }
-  // });
-  //
-  // //autocomplete for dealing with contacts
-  // ["baptized_by", "baptized", "coached_by", "coaching"].forEach(field_id=>{
-  //   let typeahead = $(`#${field_id} .typeahead`)
-  //   function loadTypeahead(){
-  //     typeahead.typeahead({
-  //         highlight: true,
-  //         minLength: 0,
-  //         autoselect: true,
-  //       },
-  //       {
-  //         name: 'contacts',
-  //         limit:15,
-  //         source: function (q, sync, async) {
-  //           console.log(field_id)
-  //           console.log()
-  //           let existing = _.get(contact, `fields.${field_id}`) || []
-  //           existing.push({ID:parseInt(contactId)})
-  //           console.log(existing)
-  //           return API.defaultFilter(q, sync, async, contacts, existing)
-  //         },
-  //         display: 'post_title'
-  //       })
-  //   }
-  //     typeahead.bind('typeahead:select', function (ev, sug) {
-  //       typeahead.typeahead('val', '')
-  //       typeahead.blur()
-  //       contact.fields[field_id].push(sug)
-  //       add_typeahead_item(contactId, field_id, sug.ID, sug.name||sug.post_title)
-  //       typeahead.typeahead('destroy')
-  //       loadTypeahead()
-  //     })
-  //   loadTypeahead()
-  // })
-  //
-  // /**
-  //  * Assigned to
-  //  */
-  // let users = new Bloodhound({
-  //   datumTokenizer: API.searchAnyPieceOfWord,
-  //   queryTokenizer: Bloodhound.tokenizers.ngram,
-  //   identify: function (obj) {
-  //     return obj.ID
-  //   },
-  //   prefetch: {
-  //     url: contactsDetailsWpApiSettings.root + 'dt/v1/users/get_users',
-  //     prepare : API.typeaheadPrefetchPrepare,
-  //     cache:false
-  //   },
-  //   remote: {
-  //     url: contactsDetailsWpApiSettings.root + 'dt/v1/users/get_users/?s=%QUERY',
-  //     wildcard: '%QUERY',
-  //     prepare : API.typeaheadRemotePrepare,
-  //   }
-  // });
-  //
-  // let assigned_to_typeahead = $('.assigned_to .typeahead')
-  // function loadAssignedToTypeahead() {
-  //
-  //   assigned_to_typeahead.typeahead({
-  //       highlight: true,
-  //       minLength: 0,
-  //       autoselect: true,
-  //     },
-  //     {
-  //       limit: 15,
-  //       name: 'users',
-  //       source: function (q, sync, async) {
-  //         return API.defaultFilter(q, sync, async, users, _.get(contact, "fields.assigned_to") ? [{ID:contact.fields.assigned_to.ID}] : [])
-  //       },
-  //       display: 'name'
-  //     })
-  // }
-  // assigned_to_typeahead.bind('typeahead:select', function (ev, sug) {
-  //   API.save_field_api('contact', contactId, {assigned_to: 'user-' + sug.ID}).then(function (response) {
-  //     assigned_to_typeahead.typeahead('val', '')
-  //     jQuery('.current-assigned').text(sug.name)
-  //     setStatus(response)
-  //     _.set(contact, "fields.assigned_to.ID", sug.ID)
-  //     assigned_to_typeahead.typeahead('destroy')
-  //     users.initialize()
-  //     loadAssignedToTypeahead()
-  //
-  //   }).catch(err=>{
-  //     console.trace("error")
-  //     console.log(err)
-  //     jQuery("#errors").append(err.responseText)
-  //   })
-  // }).bind('blur', ()=>{
-  //   // toggleEdit('assigned_to')
-  // })
-  // loadAssignedToTypeahead()
-  // if (_.get(contact, "fields.assigned_to")){
-  //   $('.current-assigned').text(_.get(contact, "fields.assigned_to.display"))
-  // }
-  //
-  // /**
-  //  * Locations
-  //  */
-  // let locations = new Bloodhound({
-  //   datumTokenizer: API.searchAnyPieceOfWord,
-  //   queryTokenizer: Bloodhound.tokenizers.ngram,
-  //   identify: function (obj) {
-  //     return obj.ID
-  //   },
-  //   prefetch: {
-  //     url: contactsDetailsWpApiSettings.root + 'dt/v1/locations-compact/',
-  //     prepare : API.typeaheadPrefetchPrepare,
-  //     transform: function(data){
-  //       return API.filterTypeahead(data, _.get(contact, "fields.locations") || [])
-  //     },
-  //     cache:false
-  //   },
-  //   remote: {
-  //     url: contactsDetailsWpApiSettings.root + 'dt/v1/locations-compact/?s=%QUERY',
-  //     wildcard: '%QUERY',
-  //     prepare : API.typeaheadRemotePrepare,
-  //     transform: function(data){
-  //       return API.filterTypeahead(data, _.get(contact, "fields.locations") || [])
-  //     }
-  //   },
-  // });
-  //
-  // let locationsTypeahead = $('.locations .typeahead')
-  // function loadLocationsTypeahead() {
-  //   locationsTypeahead.typeahead('destroy')
-  //   locations.initialize()
-  //   locationsTypeahead.typeahead({
-  //     highlight: true,
-  //     minLength: 0,
-  //     autoselect: true,
-  //   },
-  //   {
-  //     limit:15,
-  //     name: 'locations',
-  //     source: function (q, sync, async) {
-  //       return API.defaultFilter(q, sync, async, locations, _.get(contact, "fields.locations"))
-  //     },
-  //     display: 'name'
-  //   })
-  // }
-  // locationsTypeahead.bind('typeahead:select', function (ev, sug) {
-  //   locationsTypeahead.typeahead('val', '')
-  //   contact.fields.locations.push(sug)
-  //   add_typeahead_item(contactId, 'locations', sug.ID, sug.name)
-  //   $("#no-location").remove()
-  //   loadLocationsTypeahead()
-  // })
-  // loadLocationsTypeahead()
-  //
-  //
-  /**
-   * People Groups
-   */
-  // let peopleGroups = new Bloodhound({
-  //   datumTokenizer: API.searchAnyPieceOfWord,
-  //   queryTokenizer: Bloodhound.tokenizers.ngram,
-  //   identify: function (obj) {
-  //     return obj.ID
-  //   },
-  //   prefetch: {
-  //     url: contactsDetailsWpApiSettings.root + 'dt/v1/people-groups-compact/',
-  //     prepare : API.typeaheadPrefetchPrepare,
-  //     cache:false
-  //   },
-  //   remote: {
-  //     url: contactsDetailsWpApiSettings.root + 'dt/v1/people-groups-compact/?s=%QUERY',
-  //     wildcard: '%QUERY',
-  //     prepare : API.typeaheadRemotePrepare,
-  //   },
-  // });
-  //
-  // let peopleGroupsTypeahead = $('.people-groups .typeahead')
-  // function loadPeopleGroupsTypeahead() {
-  //   peopleGroupsTypeahead.typeahead({
-  //     highlight: true,
-  //     minLength: 0,
-  //     autoselect: true,
-  //
-  //   },
-  //   {
-  //     name: 'peopleGroups',
-  //     limit: 15,
-  //     source: function (q, sync, async) {
-  //       return API.defaultFilter(q, sync, async, peopleGroups, _.get(contact, "fields.people_groups"))
-  //     },
-  //     display: 'name'
-  //   })
-  // }
-  // peopleGroupsTypeahead.bind('typeahead:select', function (ev, sug) {
-  //   peopleGroupsTypeahead.typeahead('val', '')
-  //   contact.fields["people_groups"].push(sug)
-  //   add_typeahead_item(contactId, 'people_groups', sug.ID, sug.name)
-  //   $("#no-people-group").remove()
-  //   peopleGroupsTypeahead.typeahead('destroy')
-  //   peopleGroups.initialize()
-  //   loadPeopleGroupsTypeahead()
-  // })
-  // loadPeopleGroupsTypeahead()
+  if (_.get(contact, "fields.assigned_to")){
+    $('.current-assigned').text(_.get(contact, "fields.assigned_to.display"))
+  }
 
 
   jQuery('#add-comment-button').on('click', function () {

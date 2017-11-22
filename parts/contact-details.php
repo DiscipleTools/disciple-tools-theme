@@ -88,7 +88,7 @@
             <p class="section-header">Dispatch Section</p>
             <div class="grid-x grid-margin-x">
                 <div class="medium-6 cell">
-                    <div class="section-subheader">Assigned To:
+                    <div class="section-subheader">Assigned to:
                         <span class="current-assigned">
                             <?php
                             if ( isset( $contact->fields["assigned_to"] ) ){
@@ -100,7 +100,25 @@
                         </span>
                     </div>
                     <div class="assigned_to">
-                        <input class="typeahead" type="text" placeholder="Type to search users">
+                        <div class="assigned_to">
+                            <var id="assigned_to-result-container2" class="assigned_to-result-container result-container"></var>
+                            <div id="assigned_to_t2" name="form-assigned_to" class="">
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-assigned_to"
+                                                   name="assigned_to[query]" placeholder="Search users"
+                                                   autocomplete="off">
+                                        </span>
+                                        <span class="typeahead__button">
+                                            <button type="button" class="search_assigned_to typeahead__image_button" data-id="assigned_to_t2">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_down.svg' ) ?>"/>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="medium-6 cell">
@@ -402,9 +420,9 @@
                         </div>
 
 
-                        <div class="section-subheader">Assigned to
-                            <span class="assigned_to details-edit">:
-                        </span> <span class="assigned_to details-edit current-assigned">:</span> </div>
+                        <div class="section-subheader">Assigned to<span class="assigned_to details-edit">:</span>
+                            <span class="assigned_to details-edit current-assigned">:</span>
+                        </div>
                         <ul class="details-list assigned_to">
                             <li class="current-assigned">
                                 <?php
@@ -417,9 +435,9 @@
                             </li>
                         </ul>
 
-                        <div class="assigned_to">
-                            <var id="assigned_to-result-container" class="result-container"></var>
-                            <div id="assigned_to_t" name="form-assigned_to" class="">
+                        <div class="assigned_to details">
+                            <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
+                            <div id="assigned_to_t" name="form-assigned_to">
                                 <div class="typeahead__container">
                                     <div class="typeahead__field">
                                         <span class="typeahead__query">
@@ -427,24 +445,16 @@
                                                    name="assigned_to[query]" placeholder="Search users"
                                                    autocomplete="off">
                                         </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="assigned_to">
-                            <var id="assigned_to-result-container2" class="result-container"></var>
-                            <div id="assigned_to_t2" name="form-assigned_to" class="">
-                                <div class="typeahead__container">
-                                    <div class="typeahead__field">
-                                        <span class="typeahead__query">
-                                            <input class="js-typeahead-assigned_to"
-                                                   name="assigned_to[query]" placeholder="Search users"
-                                                   autocomplete="off">
+                                         <span class="typeahead__button">
+                                            <button type="button" class="search_assigned_to typeahead__image_button" data-id="assigned_to_t">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_down.svg' ) ?>"/>
+                                            </button>
                                         </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                     <!-- Social Media -->
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
