@@ -62,9 +62,8 @@ declare( strict_types=1 );
                                                autocomplete="off">
                                     </span>
                                     <span class="typeahead__button">
-                                        <button type="button" class="create-new-group">
-                                            <img class="tpeahead__image_button"
-                                                 src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/add-group.svg' ) ?>"/>
+                                        <button type="button" class="create-new-group typeahead__image_button">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/add-group.svg' ) ?>"/>
                                         </button>
                                     </span>
                                 </div>
