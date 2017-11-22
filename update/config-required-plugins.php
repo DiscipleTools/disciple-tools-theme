@@ -88,6 +88,12 @@ function dt_register_required_plugins() {
 //            'source'             =>  'https://github.com/WP-API/Basic-Auth/archive/master.zip', // The plugin source.
 //            'required'           => false,
 //        ),
+        array(
+            'name' => 'Host Header Injection Fix',
+            'slug' => 'host-header-injection-fix',
+            'version' => '1.1',
+            'required' => true,
+        ),
     );
 
     /*
