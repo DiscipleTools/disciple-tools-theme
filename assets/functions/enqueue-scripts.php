@@ -122,7 +122,7 @@ function dt_site_scripts() {
     );
 
     if (is_singular( "contacts" )){
-        dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'api-wrapper', 'moment', 'typeahead-jquery', 'typeahead' ) );
+        dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'api-wrapper', 'moment', 'typeahead-jquery' ) );
         $contact = Disciple_Tools_Contacts::get_contact( get_the_ID() );
         wp_localize_script(
             'contact-details', 'contactsDetailsWpApiSettings', array(
@@ -138,7 +138,7 @@ function dt_site_scripts() {
         );
     }
     if (is_singular( "groups" )){
-        dt_theme_enqueue_script( 'group-details', 'assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
+        dt_theme_enqueue_script( 'group-details', 'assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead-jquery', 'api-wrapper', 'moment' ) );
         $group = Disciple_Tools_Groups::get_group( get_the_ID() );
         $group_post = get_post( $group["ID"] );
         wp_localize_script(

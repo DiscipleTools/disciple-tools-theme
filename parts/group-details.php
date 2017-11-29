@@ -102,22 +102,28 @@ function dt_contact_details_edit( $id, $remove = false ){
                 }
                 ?>
             </ul>
-            <div class="locations details-edit">
-                <input class="typeahead" type="text" placeholder="Type to search locations">
+            <div class="locations">
+                <var id="locations-result-container" class="result-container"></var>
+                <div id="locations_t" name="form-locations" class="scrollable-typeahead">
+                    <div class="typeahead__container">
+                        <div class="typeahead__field">
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-locations"
+                                       name="locations[query]" placeholder="Search Locations"
+                                       autocomplete="off">
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="section-subheader">People Groups</div>
-            <ul class="people_groups-list">
+            <ul class="people_groups-list details-list">
                 <?php
                 foreach ($group["people_groups"] ?? [] as $value){
                     ?>
                     <li class="<?php echo esc_html( $value->ID )?>">
                         <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
-                        <button class="details-remove-button connection details-edit"
-                                data-field="people_groups" data-id="<?php echo esc_html( $value->ID ) ?>"
-                                data-name="<?php echo esc_html( $value->post_title ) ?>">
-                            Remove
-                        </button>
                     </li>
                 <?php }
                 if (sizeof( $group["people_groups"] ) === 0){
@@ -125,8 +131,19 @@ function dt_contact_details_edit( $id, $remove = false ){
                 }
                 ?>
             </ul>
-            <div class="people-groups details-edit">
-                <input class="typeahead" type="text" placeholder="Type to search people groups">
+            <div class="people_groups">
+                <var id="people_groups-result-container" class="result-container"></var>
+                <div id="people_groups_t" name="form-people_groups" class="scrollable-typeahead">
+                    <div class="typeahead__container">
+                        <div class="typeahead__field">
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-people_groups"
+                                       name="people_groups[query]" placeholder="Search People_groups"
+                                       autocomplete="off">
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -235,8 +235,13 @@ jQuery(document).ready(function($) {
   });
 
   $(".create-new-group").on('click', ()=>{
-    window.location.href = '/groups/new'
+    // window.location.href = '/groups/new'
+    Typeahead['.js-typeahead-groups'].addMultiselectItemLayout({ID:"9999", name:"fish"})
+    setTimeout(()=>{
+      Typeahead['.js-typeahead-groups'].cancelMultiselectItem(1)
+    }, 2000)
   })
+
 
   /**
    * Locations
@@ -262,13 +267,19 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.remove_item_from_field('contact', contactId, 'locations', item.ID)
+          API.remove_item_from_field('contact', contactId, 'locations', item.ID).then(()=>{
+            $(`.locations-list .${item.ID}`).remove()
+          })
         }
       }
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.add_item_to_field('contact', contactId, {locations: item.ID})
+        API.add_item_to_field('contact', contactId, {locations: item.ID}).then((addedItem)=>{
+          $('.locations-list').append(`<li class="${addedItem.ID}">
+            <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
+          </li>`)
+        })
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.locations
@@ -390,65 +401,6 @@ jQuery(document).ready(function($) {
     $(`#${id} .js-typeahead-assigned_to`).val("")
     $(`#${id} .js-typeahead-assigned_to`).trigger('input.typeahead')
   })
-
-
-
-  // let assignedToTypeahead = $.typeahead({
-  //   input: '.js-typeahead-assigned_to',
-  //   minLength: 0,
-  //   maxItem: 20,
-  //   order: "asc",
-  //   hint: true,
-  //   searchOnFocus: true,
-  //   blurOnTab: false,
-  //   multiselect: {
-  //     // limit: 1,
-  //     // limitTemplate: 'You can\'t select more than 10 teams',
-  //     cancelOnBackspace: true,
-  //     matchOn: ["ID"],
-  //     data: function () {
-  //       if (_.get(contact, "fields.assigned_to.id")){
-  //         return [{ID:contact.fields.assigned_to.id, name:contact.fields.assigned_to.display}]
-  //       }
-  //       return []
-  //     }, callback: {
-  //       onCancel: function (node, item) {
-  //         API.remove_item_from_field('contact', contactId, 'assigned_to', item.ID)
-  //       }
-  //     }
-  //   },
-  //   templateValue: "{{name}}",
-  //   display: ["name"],
-  //   // emptyTemplate: 'no result for {{query}}',
-  //   source: typeaheadSource('assigned_to', 'dt/v1/users/get_users'),
-  //   callback: {
-  //     onClickAfter: function(node, a, item, event){
-  //       console.log(JSON.stringify(assignedToTypeahead));
-  //       console.log(assignedToTypeahead);
-  //       $('.assigned_to .typeahead__label:first').remove()
-  //       API.save_field_api('contact', contactId, {assigned_to: 'user-' + item.ID}).then(function (response) {
-  //         // assigned_to_typeahead.typeahead('val', '')
-  //         // jQuery('.current-assigned').text(sug.name)
-  //         // setStatus(response)
-  //         console.log(response)
-  //         _.set(contact, "fields.assigned_to", response.fields.assigned_to)
-  //       })
-  //     },
-  //     onResult: function (node, query, result, resultCount) {
-  //       resultCount = typeaheadTotals.assigned_to
-  //       let text = typeaheadHelpText(resultCount, query, result)
-  //       $('#assigned_to-result-container').html(text);
-  //     },
-  //     onHideLayout: function () {
-  //       $('#assigned_to-result-container').html("");
-  //     },
-  //     onReady: function () {
-  //       // $('.assigned_to').addClass('details-edit')
-  //     }
-  //   },
-  //   debug: true
-  // });
-
 
   ;["baptized_by", "baptized", "coached_by", "coaching"].forEach(field_id=>{
     typeaheadTotals[field_id] = 0
