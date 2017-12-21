@@ -39,7 +39,7 @@ dt_print_breadcrumbs( array(), __( "Dashboard" ), false );
             <div class="row column padding-bottom">
 
                 <div class="bordered-box">
-                    <p><?php esc_html_e( "Welcome to Disciple.Tools!" ); ?></p>
+                    <p><?php esc_html_e( "Welcome to Disciple.Tools!", "disciple_tools" ); ?></p>
                 </div>
 
             </div>

@@ -2,9 +2,9 @@
 (function() {
 ?>
 <ul class="tabs" data-tabs id="my-contact-tabs">
-    <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">My Locations</a></li>
-    <li class="tabs-title"><a href="#panel2">Team Locations</a></li>
-    <li class="tabs-title"><a href="#panel3">Project Locations</a></li>
+    <li class="tabs-title is-active"><a href="#panel1" aria-selected="true"><?php esc_html_e( 'My Locations', 'disciple_tools' )?></a></li>
+    <li class="tabs-title"><a href="#panel2"><?php esc_html_e( 'Team Locations', 'disciple_tools' )?></a></li>
+    <li class="tabs-title"><a href="#panel3"><?php esc_html_e( 'Project Locations', 'disciple_tools' )?></a></li>
     <li class="float-right"><a href="javascript:void(0)" onclick="jQuery('.search-tools').toggle();" class="maginifying-glass"><i class="fi-magnifying-glass large" ></i></a></li>
 </ul>
 <div class="tabs-content" data-tabs-content="my-contact-tabs">
@@ -16,7 +16,8 @@
                     <input type="text" class="search"  />
                 </div>
                 <div class="medium-6 columns">
-                    <button class="sort button small" data-sort="name">Sort by name</button> <button class="sort button small" data-sort="team">Sort by team</button>
+                    <button class="sort button small" data-sort="name"><?php esc_html_e( 'Sort by name', 'disciple_tools' )?></button> 
+                    <button class="sort button small" data-sort="team"><?php esc_html_e( 'Sort by team', 'disciple_tools' )?></button>
                 </div>
 
             </div>
@@ -80,7 +81,8 @@
                     <input type="text" class="search"  />
                 </div>
                 <div class="medium-6 columns">
-                    <button class="sort button small" data-sort="name">Sort by name</button> <button class="sort button small" data-sort="team">Sort by team</button>
+                    <button class="sort button small" data-sort="name"><?php esc_html_e( 'Sort by name', 'disciple_tools' )?></button> 
+                    <button class="sort button small" data-sort="team"><?php esc_html_e( 'Sort by team', 'disciple_tools' )?></button>
                 </div>
 
             </div>
@@ -121,7 +123,8 @@
                     <input type="text" class="search"  />
                 </div>
                 <div class="medium-6 columns">
-                    <button class="sort button small" data-sort="name">Sort by name</button> <button class="sort button small" data-sort="team">Sort by team</button>
+                    <button class="sort button small" data-sort="name"><?php esc_html_e( 'Sort by name', 'disciple_tools' )?></button> 
+                    <button class="sort button small" data-sort="team"><?php esc_html_e( 'Sort by team', 'disciple_tools' )?></button>
                 </div>
 
             </div>

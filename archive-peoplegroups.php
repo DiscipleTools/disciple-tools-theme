@@ -64,7 +64,7 @@ dt_print_breadcrumbs( null, __( "People Groups" ) );
 
             <section class="bordered-box">
 
-                <h4>Recent People Groups</h4>
+                <h4><?php esc_html_e( 'Recent People Groups', 'disciple_tools' )?></h4>
 
                 <?php $args = array(
                     'numberposts' => 10,
@@ -86,7 +86,7 @@ dt_print_breadcrumbs( null, __( "People Groups" ) );
                 echo '<ul>';
                 ?>
                 <?php foreach ($recent_posts as $recent_post): ?>
-                    <li><a href="<?php echo esc_url( $recent_post['guid'] ) ?>"><?php echo esc_html( $recent_post['post_title'] ) ?></a></li>
+                    <li><a href="<?php echo esc_url( $recent_post['guid'] ) ?>"><?php esc_html_e( $recent_post['post_title'], 'disciple_tools' )?></a></li>
                 <?php endforeach; ?>
                 <?php
                 echo '</ul>';

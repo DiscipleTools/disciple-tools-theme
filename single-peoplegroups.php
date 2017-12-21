@@ -53,7 +53,7 @@
 
                 <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 
-                    <h3>Contacts</h3>
+                    <h3><?php esc_html_e( 'Contacts', 'disciple_tools' )?></h3>
 
                     <?php foreach ( $post->contacts as $post ) : setup_postdata( $post ); ?>
 
@@ -73,7 +73,7 @@
 
                 <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 
-                    <h3>Groups</h3>
+                    <h3><?php esc_html_e( 'Groups', 'disciple_tools' )?></h3>
 
                     <?php foreach ( $post->groups as $post ) : setup_postdata( $post ); ?>
 
@@ -92,7 +92,7 @@
 
                 <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 
-                    <h3>Workers</h3>
+                    <h3><?php esc_html_e( 'Workers', 'disciple_tools' )?></h3>
 
                     <?php foreach ( $post->users as $post ) : setup_postdata( $post ); ?>
 
@@ -110,7 +110,7 @@
 
                 <?php while ( $wp_query->have_posts() ) : $wp_query->the_post(); ?>
 
-                    <h3>Locations</h3>
+                    <h3><?php esc_html_e( 'Locations', 'disciple_tools' )?></h3>
 
                     <?php foreach ( $post->locations as $post ) : setup_postdata( $post ); ?>
 
