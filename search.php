@@ -52,13 +52,13 @@ $search2 = new WP_Query( $args2 );
                 <section class="bordered-box">
 
                     <header>
-                        <p>Results for: <?php echo esc_attr( get_search_query() ); ?></p><hr>
+                        <p><?php esc_html_e( 'Results for', 'disciple_tools' )?>: <?php echo esc_attr( get_search_query(), 'disciple_tools' ); ?></p><hr>
                     </header>
 
 
                     <?php if ( $search1->have_posts() ) : ?>
 
-                        <h3>Contacts</h3>
+                        <h3><?php esc_html_e( 'Contacts', 'disciple_tools' )?></h3>
 
                         <?php while ( $search1->have_posts() ) : $search1->the_post(); ?>
 
@@ -72,7 +72,7 @@ $search2 = new WP_Query( $args2 );
 
                     <?php if ( $search2->have_posts() ) : ?>
 
-                        <h3>Groups</h3>
+                        <h3><?php esc_html_e( 'Groups', 'disciple_tools' )?></h3>
 
                         <?php while ( $search2->have_posts() ) : $search2->the_post(); ?>
 

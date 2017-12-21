@@ -33,7 +33,7 @@ function disciple_tools_page_navi() {
     echo '<nav class="page-navigation"><ul class="pagination">'."";
     if ($start_page >= 2 && $pages_to_show < $max_page) {
         $first_page_text = __( 'First', 'disciple_tools' );
-        echo '<li><a href="'. esc_url( get_pagenum_link() ).'" title="'. esc_attr( $first_page_text ).'">'. esc_html( $first_page_text ).'</a></li>';
+        echo '<li><a href="'. esc_url( get_pagenum_link() ).'" title="'. esc_attr( $first_page_text, 'disciple_tools' ).'">'. esc_html( $first_page_text, 'disciple_tools' ).'</a></li>';
     }
     echo '<li>';
     previous_posts_link( __( 'Previous', 'disciple_tools' ) );
@@ -50,7 +50,7 @@ function disciple_tools_page_navi() {
     echo '</li>';
     if ($end_page < $max_page) {
         $last_page_text = __( 'Last', 'disciple_tools' );
-        echo '<li><a href="'. esc_url( get_pagenum_link( $max_page ) ).'" title="'. esc_attr( $last_page_text ) .'">'. esc_html( $last_page_text ).'</a></li>';
+        echo '<li><a href="'. esc_url( get_pagenum_link( $max_page ) ).'" title="'. esc_attr( $last_page_text, 'disciple_tools' ) .'">'. esc_html( $last_page_text, 'disciple_tools' ).'</a></li>';
     }
     echo '</ul></nav>';
 } /* End page navi */

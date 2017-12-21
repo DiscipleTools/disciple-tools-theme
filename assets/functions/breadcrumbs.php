@@ -41,10 +41,10 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
                     <ul class="breadcrumbs">
 
                         <?php foreach ($links as $link) : ?>
-                            <li><a href="<?php echo esc_url( $link[0] ); ?>"><?php echo esc_html( $link[1] ); ?></a></li>
+                            <li><a href="<?php echo esc_url( $link[0] ); ?>"><?php esc_html_e( $link[1], 'disciple_tools' ); ?></a></li>
                         <?php endforeach; ?>
                         <li>
-                            <span class="show-for-sr"><?php esc_html_e( "Current:" ); ?> </span> <?php echo esc_html( $current ); ?>
+                            <span class="show-for-sr"><?php esc_html_e( "Current:" ); ?> </span> <?php esc_html_e( $current, 'disciple_tools' ); ?>
                         </li>
                     </ul>
                 </div>

@@ -56,10 +56,10 @@ if ( $dt_level_0_count < 1 ) {
 
             <section class="bordered-box">
 
-                <span class="section-header">Locations</span>
+                <span class="section-header"><?php esc_html_e( 'Locations', 'disciple_tools' )?></span>
                 <hr>
 
-                <h5>Browse Locations</h5>
+                <h5><?php esc_html_e( 'Browse Locations', 'disciple_tools' )?></h5>
 
                 <ul id="browse-sidemenu" class="vertical menu accordion-menu" style="display:none;" data-accordion-menu>
 
@@ -71,7 +71,7 @@ if ( $dt_level_0_count < 1 ) {
 
                         foreach ( $dt_admin_0_results->posts as $dt_admin_0_record ) {
 
-                            echo '<li class="top-border"><a href="#">' . esc_attr( $dt_admin_0_record->post_title ); // level 0 list
+                            echo '<li class="top-border"><a href="#">' . esc_attr( $dt_admin_0_record->post_title, 'disciple_tools' ); // level 0 list
 
                             /************************
                              * Admin Level 1
@@ -84,12 +84,12 @@ if ( $dt_level_0_count < 1 ) {
 
                             if ( $dt_admin_1_results->post_count > 0 ) {
 
-                                echo ' (' . esc_attr( $dt_admin_1_results->post_count ) . ' )</a>';
+                                echo ' (' . esc_attr( $dt_admin_1_results->post_count, 'disciple_tools' ) . ' )</a>';
                                 echo '<ul class="menu vertical nested">'; // level 1 ul
 
                                 foreach ( $dt_admin_1_results->posts as $dt_admin_1_record ) {
 
-                                    echo '<li class="top-border"><a href="#">' . esc_attr( $dt_admin_1_record->post_title ); // level 1 li
+                                    echo '<li class="top-border"><a href="#">' . esc_attr( $dt_admin_1_record->post_title, 'disciple_tools' ); // level 1 li
 
                                     /***************************
                                      * Admin Level 2
@@ -102,11 +102,11 @@ if ( $dt_level_0_count < 1 ) {
 
                                     if ( $dt_admin_2_results->post_count > 0 ) {
 
-                                        echo ' ( ' . esc_attr( $dt_admin_2_results->post_count ) . ' )</a>';
+                                        echo ' ( ' . esc_attr( $dt_admin_2_results->post_count, 'disciple_tools' ) . ' )</a>';
                                         echo '<ul class="menu vertical nested">'; // level 2 ul
 
                                         foreach ( $dt_admin_2_results->posts as $dt_admin_2_record ) {
-                                            echo '<li class="bottom-border"><a href="#">' . esc_attr( $dt_admin_2_record->post_title ) . '</a>';
+                                            echo '<li class="bottom-border"><a href="#">' . esc_attr( $dt_admin_2_record->post_title, 'disciple_tools' ) . '</a>';
 
                                             /****************************
                                              * Admin Level 3
@@ -119,11 +119,11 @@ if ( $dt_level_0_count < 1 ) {
 
                                             if ( $dt_admin_3_results->post_count > 0 ) {
 
-                                                echo ' ( ' . esc_attr( $dt_admin_3_results->post_count ) . ' )</a>';
+                                                echo ' ( ' . esc_attr( $dt_admin_3_results->post_count, 'disciple_tools' ) . ' )</a>';
                                                 echo '<ul class="menu vertical nested">'; // level 3 ul
 
                                                 foreach ( $dt_admin_3_results->posts as $dt_admin_3_record ) {
-                                                    echo '<li class="bottom-border"><a href="#">' . esc_attr( $dt_admin_3_record->post_title ) . '</a>';
+                                                    echo '<li class="bottom-border"><a href="#">' . esc_attr( $dt_admin_3_record->post_title, 'disciple_tools' ) . '</a>';
 
                                                     /****************************
                                                      * Admin Level 4
@@ -136,11 +136,11 @@ if ( $dt_level_0_count < 1 ) {
 
                                                     if ( $dt_admin_4_results->post_count > 0 ) {
 
-                                                        echo ' ( ' . esc_attr( $dt_admin_4_results->post_count ) . ' )</a>';
+                                                        echo ' ( ' . esc_attr( $dt_admin_4_results->post_count, 'disciple_tools' ) . ' )</a>';
                                                         echo '<ul class="menu vertical nested">'; // level 3 ul
 
                                                         foreach ( $dt_admin_4_results->posts as $dt_admin_4_record ) {
-                                                            echo '<li class="bottom-border"><a href="#">' . esc_attr( $dt_admin_4_record->post_title ) . '</a>';
+                                                            echo '<li class="bottom-border"><a href="#">' . esc_attr( $dt_admin_4_record->post_title, 'disciple_tools' ) . '</a>';
                                                             // All countries targeted for use do not have useful admin divisions below 4. This is the extent of the nesting supported.
 
                                                         }
@@ -191,18 +191,18 @@ if ( $dt_level_0_count < 1 ) {
                 <?php
                 if ( $dt_level_0_count > 1 ) : // Discover if there are more than on countries installed. ?>
 
-                    <h5>Default View:</h5>
+                    <h5><?php esc_html_e( 'Default View', 'disciple_tools' )?>:</h5>
 
                     <form method="post" id="dt_locations_default_form">
                         <?php wp_nonce_field( 'location_default_nonce', 'location_nonce', false ); ?>
                         <select name="set_locations_default">
                             <?php
                             foreach ( $dt_admin_0_results->posts as $post ) {
-                                echo '<option value="' . esc_attr( $post->ID ) . '"';
+                                echo '<option value="' . esc_attr( $post->ID, 'disciple_tools' ) . '"';
                                 if ( $dt_country_default_id == $post->ID ) {
                                     echo 'selected';
                                 }
-                                echo '>' . esc_html( $post->post_title ) . '</option>';
+                                echo '>' . esc_html( $post->post_title, 'disciple_tools' ) . '</option>';
                             }
                             ?>
                         </select>
@@ -232,12 +232,12 @@ if ( $dt_level_0_count < 1 ) {
                         let $mapDiv = jQuery('#map');
                         $mapDiv.height(jQuery(window).height() - jQuery('header').height() - 150) // set height for map according to screen
 
-                        let centerLat = <?php echo (float) esc_attr( $dt_country_default_meta['lat'][0] ); ?>;
-                        let centerLng = <?php echo (float) esc_attr( $dt_country_default_meta['lng'][0] ); ?>;
+                        let centerLat = <?php echo (float) esc_attr( $dt_country_default_meta['lat'][0], 'disciple_tools' ); ?>;
+                        let centerLng = <?php echo (float) esc_attr( $dt_country_default_meta['lng'][0], 'disciple_tools' ); ?>;
                         let center = new google.maps.LatLng(centerLat, centerLng);
 
-                        let sw = new google.maps.LatLng(<?php echo (float) esc_attr( $dt_country_default_meta['southwest_lat'][0] ); ?>, <?php echo (float) esc_attr( $dt_country_default_meta['southwest_lng'][0] ); ?>);
-                        let ne = new google.maps.LatLng(<?php echo (float) esc_attr( $dt_country_default_meta['northeast_lat'][0] ); ?>, <?php echo (float) esc_attr( $dt_country_default_meta['northeast_lng'][0] ); ?>);
+                        let sw = new google.maps.LatLng(<?php echo (float) esc_attr( $dt_country_default_meta['southwest_lat'][0] ); ?>, <?php echo (float) esc_attr( $dt_country_default_meta['southwest_lng'][0], 'disciple_tools' ); ?>);
+                        let ne = new google.maps.LatLng(<?php echo (float) esc_attr( $dt_country_default_meta['northeast_lat'][0] ); ?>, <?php echo (float) esc_attr( $dt_country_default_meta['northeast_lng'][0], 'disciple_tools' ); ?>);
                         let bounds = new google.maps.LatLngBounds(sw, ne);
 
                         let mapDim = { height: $mapDiv.height(), width: $mapDiv.width() };
