@@ -28,7 +28,7 @@ dt_print_breadcrumbs(
 
                         <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu data-submenu-toggle="true">
                             <li >
-                                <a onclick="show_critical_path()">Critical Path</a>
+                                <a onclick="show_critical_path()"><?php esc_html_e( 'Critical Path', 'disciple_tools' )?></a>
                                 <!--<ul class="menu vertical nested" id="critical-path-menu">
                                     <li class="top-border">
                                         <a onclick="show_critical_path_prayer()">Prayer</a>

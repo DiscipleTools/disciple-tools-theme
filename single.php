@@ -26,7 +26,7 @@
 
             <section class="bordered-box">
 
-                <p>Sidebar</p>
+                <p><?php esc_html_e( 'Sidebar', 'disciple_tools' )?></p>
 
             </section>
 

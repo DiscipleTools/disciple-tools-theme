@@ -228,7 +228,7 @@ class PucReadmeParser {
 
 	function sanitize_text( $text ) { // not fancy
 		$text = strip_tags($text);
-		$text = esc_html($text);
+		$text = esc_html($text, 'disciple_tools');
 		$text = trim($text);
 		return $text;
 	}

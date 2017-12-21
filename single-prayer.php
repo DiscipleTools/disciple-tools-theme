@@ -36,7 +36,7 @@
 
                     <section class="bordered-box">
 
-                        <h4>Recent Posts</h4>
+                        <h4><?php esc_html_e( 'Recent Posts', 'disciple_tools' )?></h4>
 
                         <?php $args = array(
                             'numberposts' => 10,
@@ -57,7 +57,7 @@
 
                         echo '<ul>';
                         foreach ($recent_posts as $recent_post) {
-                            echo '<li><a href="'. esc_url( $recent_post['guid'] ) .'">' . esc_attr( $recent_post['post_title'] ) . '</a></li>';
+                            echo '<li><a href="'. esc_url( $recent_post['guid'] ) .'">' . esc_attr( $recent_post['post_title'], 'disciple_tools' ) . '</a></li>';
                         }
                         echo '</ul>';
 
@@ -67,7 +67,7 @@
 
                     <section class="bordered-box">
 
-                        <p>Archives</p>
+                        <p><?php esc_html_e( 'Archives', 'disciple_tools' )?></p>
 
                         <?php
                         $args = array(

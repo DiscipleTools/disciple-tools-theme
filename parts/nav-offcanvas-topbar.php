@@ -43,16 +43,16 @@
         </div>
         <div class="top-bar-right">
             <ul class="dropdown menu" data-dropdown-menu>
-                <li><a href="<?php echo esc_url( home_url( '/' ) ) . 'settings/'; ?>"><?php echo esc_html( wp_get_current_user()->display_name ); ?></a></li>
+                <li><a href="<?php echo esc_url( home_url( '/' ) ) . 'settings/'; ?>"><?php echo esc_html( wp_get_current_user()->display_name, 'disciple_tools'  ); ?></a></li>
                 <li><a href="<?php echo esc_url( home_url( '/notifications' ) ); ?>"><span class="badge alert notification-count" style="display:none;">&nbsp;</span> Notifications</a></li>
                 <li class="has-submenu center-items">
                     <button>
                         <img src="<?php echo esc_url( get_template_directory_uri() ) . "/assets/images/settings.svg" ?>">
                     </button>
                     <ul class="submenu menu vertical">
-                        <li><a href="<?php echo esc_url( home_url( '/' ) ) . 'settings/'; ?>">Settings</a></li>
+                        <li><a href="<?php echo esc_url( home_url( '/' ) ) . 'settings/'; ?>"><?php esc_html_e( 'Settings', 'disciple_tools' )?></a></li>
                         <?php if ( user_can( get_current_user_id(), 'read' ) ) : ?><li><a href="<?php echo esc_url( get_admin_url() ); ?>"><?php esc_html_e( "Admin" ); ?></a></li><?php endif; ?>
-                        <li><a href="<?php echo esc_url( wp_logout_url() ); ?>">Log Off</a></li>
+                        <li><a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( 'Log Off', 'disciple_tools' )?></a></li>
                     </ul>
                 </li>
             </ul>

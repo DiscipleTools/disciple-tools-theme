@@ -51,7 +51,7 @@ dt_print_breadcrumbs( null, __( "Prayer" ) );
 
             <section class="bordered-box">
 
-                <h4>Recent Posts</h4>
+                <h4><?php esc_html_e( 'Recent Posts', 'disciple_tools' )?></h4>
 
                 <?php $args = array(
                     'numberposts' => 10,
@@ -73,7 +73,7 @@ dt_print_breadcrumbs( null, __( "Prayer" ) );
                 echo '<ul>';
                 ?>
                 <?php foreach ($recent_posts as $recent_post): ?>
-                    <li><a href="<?php echo esc_url( $recent_post['guid'] ); ?>"><?php echo esc_html( $recent_post['post_title'] ); ?></a></li>
+                    <li><a href="<?php echo esc_url( $recent_post['guid'] ); ?>"><?php esc_html_e( $recent_post['post_title'], 'disciple_tools' )?></a></li>
                 <?php endforeach; ?>
                 <?php
                 echo '</ul>';
@@ -84,7 +84,7 @@ dt_print_breadcrumbs( null, __( "Prayer" ) );
 
             <section class="bordered-box">
 
-                <p>Archives</p>
+                <p><?php esc_html_e( 'Archives', 'disciple_tools' )?></p>
 
                 <?php
                 $args = array(

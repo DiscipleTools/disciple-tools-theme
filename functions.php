@@ -12,7 +12,7 @@ declare(strict_types=1);
 function dt_theme_admin_notice_required_php_version() {
     ?>
     <div class="notice notice-error">
-        <p><?php esc_html_e( "The Disciple Tools theme requires PHP 7.0 or greater before it will have any effect. Please upgrade your PHP version or uninstall this theme." ); ?></p>
+        <p><?php esc_html_e( "The Disciple Tools theme requires PHP 7.0 or greater before it will have any effect. Please upgrade your PHP version or uninstall this theme.", "disciple_tools" ); ?></p>
     </div>
     <?php
 }
