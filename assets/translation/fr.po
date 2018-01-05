@@ -1,0 +1,1104 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Project-Id-Version: Disciple Tools\n"
+"POT-Creation-Date: 2018-01-05 05:56-0700\n"
+"PO-Revision-Date: 2018-01-05 06:01-0700\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.5\n"
+"X-Poedit-Basepath: ../..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: style.css\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Last-Translator: \n"
+"Language: fr\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SearchPathExcluded-1: update/plugin-update-checker\n"
+"X-Poedit-SearchPathExcluded-2: update/class-tgm-plugin-activation.php\n"
+
+#: 404.php:12
+msgid "Epic 404 - Article Not Found"
+msgstr "Erreur 404 – Article non trouvé"
+
+#: 404.php:16
+msgid ""
+"The article you were looking for was not found, but maybe try looking again!"
+msgstr "L'article que vous recherchez n'a pas été trouvé , mais ré-essayez !"
+
+#: archive-contacts.php:7 assets/functions/menu.php:18
+#: assets/functions/menu.php:104 parts/content-contacts.php:5 search.php:61
+#: single-contacts.php:22 single-locations.php:52 single-peoplegroups.php:56
+#: template-contacts-new.php:13
+msgid "Contacts"
+msgstr "Contacts"
+
+#: archive-contacts.php:23
+msgid "Views"
+msgstr "Vues"
+
+#: archive-contacts.php:27
+msgid "All contacts"
+msgstr "Tous les contacts"
+
+#: archive-contacts.php:33
+msgid "My contacts"
+msgstr "Mes contacts"
+
+#: archive-contacts.php:39
+msgid "My priorities"
+msgstr "Mes priorités"
+
+#: archive-contacts.php:45
+msgid "Updated needed"
+msgstr "Mise à jour nécessaire"
+
+#: archive-contacts.php:50
+msgid "Meeting scheduled"
+msgstr "Réunion planifiée"
+
+#: archive-contacts.php:55
+msgid "Contact unattempted"
+msgstr "Contact résulte"
+
+#: archive-contacts.php:62
+msgid "Contacts shared with me"
+msgstr "Contacts partagés avec moi"
+
+#: archive-contacts.php:68 archive-groups.php:22
+#: parts/nav-offcanvas-topbar.php:18
+msgid "Filters"
+msgstr "Filtres"
+
+#: archive-contacts.php:70 parts/contact-details.php:398
+#: parts/content-contacts.php:32 parts/group-details.php:138
+msgid "Assigned to"
+msgstr "Assignée à"
+
+#: archive-contacts.php:71 archive-contacts.php:75 archive-contacts.php:79
+#: archive-contacts.php:83 archive-contacts.php:87 archive-groups.php:25
+#: archive-groups.php:29 parts/content-contacts.php:38
+#: parts/content-groups.php:37 parts/content-locations.php:29
+msgid "Loading..."
+msgstr "Chargement..."
+
+#: archive-contacts.php:74 parts/contact-details.php:148
+#: parts/content-contacts.php:30 parts/content-groups.php:30
+#: parts/content-locations.php:10 parts/content-locations.php:23
+msgid "Status"
+msgstr "Étape de validation"
+
+#: archive-contacts.php:78 archive-locations.php:41 archive-locations.php:59
+#: parts/content-locations.php:5 parts/group-details.php:88
+#: single-locations.php:14 single-peoplegroups.php:113
+#: template-settings.php:165 template-team.php:177
+msgid "Locations"
+msgstr "Emplacements"
+
+#: archive-contacts.php:82
+msgid "Seeker path"
+msgstr "Chemin d’accès du demandeur"
+
+#: archive-contacts.php:86
+msgid "Update needed"
+msgstr "Mise à jour nécessaire !"
+
+#: archive-contacts.php:90 archive-groups.php:32
+msgid "Close modal"
+msgstr "Fermer la fenêtre modale"
+
+#: archive-groups.php:8 assets/functions/menu.php:19
+#: assets/functions/menu.php:107 parts/content-groups.php:5
+#: parts/content-locations.php:12 parts/content-locations.php:25 search.php:75
+#: single-contacts.php:56 single-groups.php:22 single-locations.php:72
+#: single-peoplegroups.php:76 template-groups-new.php:13
+msgid "Groups"
+msgstr "GROUPES"
+
+#: archive-groups.php:24
+msgid "Group status"
+msgstr "Le statut de groupe"
+
+#: archive-groups.php:28 parts/content-contacts.php:33
+#: parts/content-groups.php:33 template-contacts-new.php:52
+msgid "Location"
+msgstr "Localisation"
+
+#: archive-locations.php:62
+msgid "Browse Locations"
+msgstr "Parcourir les emplacements"
+
+#: archive-locations.php:194
+msgid "Default View"
+msgstr "Vue par défaut"
+
+#: archive-peoplegroups.php:5 parts/contact-details.php:503
+#: parts/group-details.php:112 single-peoplegroups.php:17
+msgid "People Groups"
+msgstr "Groupes de personnes"
+
+#: archive-peoplegroups.php:67
+msgid "Recent People Groups"
+msgstr "Groupes de personnes récemment"
+
+#: archive-prayer.php:6 single-groups.php:105
+msgid "Prayer"
+msgstr "Prière"
+
+#: archive-prayer.php:54 archive-progress.php:48 archive-resources.php:59
+#: single-prayer.php:39 single-progress.php:47 single-resources.php:50
+msgid "Recent Posts"
+msgstr "Articles récents"
+
+#: archive-prayer.php:87 single-prayer.php:70 single-progress.php:78
+#: single-resources.php:81
+msgid "Archives"
+msgstr "Archives"
+
+#: archive-progress.php:5
+msgid "Progress Updates"
+msgstr "Mises à jour"
+
+#: archive-resources.php:6 single-resources.php:8
+msgid "Resources"
+msgstr "Ressources :"
+
+#: archive.php:42 single.php:29
+msgid "Sidebar"
+msgstr "Barre latérale"
+
+#: assets/functions/breadcrumbs.php:27 dashboard.php:9 single-contacts.php:21
+#: single-groups.php:21 single-locations.php:13 single-peoplegroups.php:16
+#: single-progress.php:6 single-resources.php:7 template-about.php:12
+#: template-contacts-new.php:12 template-groups-new.php:12
+#: template-metrics.php:12 template-settings.php:27 template-team.php:16
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+#: assets/functions/breadcrumbs.php:35
+msgid "You are here:"
+msgstr "Vous êtes ici:"
+
+#: assets/functions/breadcrumbs.php:47
+msgid "Current:"
+msgstr "Slide Courant"
+
+#: assets/functions/breadcrumbs.php:56 assets/functions/breadcrumbs.php:82
+#: single-contacts.php:283 single-groups.php:200
+msgid "Share"
+msgstr "PARTAGER"
+
+#: assets/functions/breadcrumbs.php:73
+msgid "Comments"
+msgstr "commentaires"
+
+#: assets/functions/cleanup.php:107
+msgid "Read"
+msgstr "Lu"
+
+#: assets/functions/cleanup.php:107
+msgid "... Read more &raquo;"
+msgstr "En lire plus &raquo;"
+
+#: assets/functions/cleanup.php:140
+#, php-format
+msgid "Posts by %s"
+msgstr "Posté par %s"
+
+#: assets/functions/comments.php:28
+msgctxt "noun"
+msgid "Comment"
+msgstr "Votre commentaire est en attente de modération."
+
+#: assets/functions/comments.php:45
+msgid "Add Comment"
+msgstr "Ajouter un commentaire"
+
+#: assets/functions/comments.php:57
+msgid "Your comment is awaiting moderation."
+msgstr "Votre commentaire est en attente de modération."
+
+#: assets/functions/enqueue-scripts.php:136
+msgid "Created contact at {}"
+msgstr "Contact créé à {}"
+
+#: assets/functions/enqueue-scripts.php:152
+msgid "Created group at {}"
+msgstr "Groupe créé à {}"
+
+#: assets/functions/enqueue-scripts.php:206
+msgid "An error occurred"
+msgstr "Une erreur est survenue"
+
+#: assets/functions/enqueue-scripts.php:207
+msgid "No filters"
+msgstr "Aucun Filtre"
+
+#: assets/functions/enqueue-scripts.php:208 parts/contact-details.php:129
+msgid "Yes"
+msgstr "Oui"
+
+#: assets/functions/enqueue-scripts.php:209 parts/contact-details.php:130
+msgid "No"
+msgstr "Non"
+
+#: assets/functions/enqueue-scripts.php:210 search.php:44
+msgid "Search"
+msgstr "Chercher"
+
+#: assets/functions/menu.php:6 assets/functions/menu.php:214
+msgid "Footer Links"
+msgstr "Liens pied de page"
+
+#: assets/functions/menu.php:24 assets/functions/menu.php:34
+#: assets/functions/menu.php:147 assets/functions/menu.php:172
+msgid "About Us"
+msgstr "À propos de nous"
+
+#: assets/functions/menu.php:25 assets/functions/menu.php:35
+#: assets/functions/menu.php:150 assets/functions/menu.php:175
+msgid "Prayer Guide"
+msgstr "Guide de prière"
+
+#: assets/functions/menu.php:26 assets/functions/menu.php:153
+msgid "Project Updates"
+msgstr "Mise à jour du projet"
+
+#: assets/functions/menu.php:28 assets/functions/menu.php:36
+#: assets/functions/menu.php:130 assets/functions/menu.php:156
+#: assets/functions/menu.php:178 parts/nav-offcanvas-topbar.php:25
+#: parts/nav-offcanvas-topbar.php:53 template-notifications.php:57
+#: template-settings.php:28
+msgid "Settings"
+msgstr "Paramètres"
+
+#: assets/functions/menu.php:118
+msgid "Team"
+msgstr "Equipe"
+
+#: assets/functions/menu.php:124 template-metrics.php:13
+msgid "Metrics"
+msgstr "Indicateurs"
+
+#: assets/functions/menu.php:127 parts/nav-offcanvas-topbar.php:22
+#: template-notifications.php:14 template-settings.php:46
+#: template-settings.php:206
+msgid "Notifications"
+msgstr "Notifications"
+
+#: assets/functions/menu.php:133 parts/nav-offcanvas-topbar.php:55
+msgid "Log Off"
+msgstr "Déconnection"
+
+#: assets/functions/page-navi.php:35
+msgid "First"
+msgstr "Première"
+
+#: assets/functions/page-navi.php:39
+msgid "Previous"
+msgstr "Précédent"
+
+#: assets/functions/page-navi.php:49
+msgid "Next"
+msgstr "Suivant"
+
+#: assets/functions/page-navi.php:52
+msgid "Last"
+msgstr "Premier"
+
+#: assets/functions/sidebar.php:9
+msgid "General"
+msgstr "Général"
+
+#: assets/functions/sidebar.php:10
+msgid "Main sidebar."
+msgstr "Barre latérale Principale"
+
+#: comments.php:16 comments.php:32
+msgid "Comment navigation"
+msgstr "Navigation des commentaires"
+
+#: comments.php:19 comments.php:35
+msgid "Older Comments"
+msgstr "‫ Ancien Commentaires"
+
+#: comments.php:20 comments.php:36
+msgid "Newer Comments"
+msgstr "Commentaires récents"
+
+#: comments.php:48
+msgid "Comments are closed."
+msgstr "Les commentaires sont fermés."
+
+#: dashboard.php:42
+msgid "Welcome to Disciple.Tools!"
+msgstr "Bienvenue sur Disciple.Tools !"
+
+#: functions.php:15
+msgid ""
+"The Disciple Tools theme requires PHP 7.0 or greater before it will have any "
+"effect. Please upgrade your PHP version or uninstall this theme."
+msgstr ""
+"Le thème de Disciple outils requiert PHP version 7.0 ou supérieure avant il "
+"aura aucun effet. S’il vous plaît mettre à jour votre version PHP, ou le "
+"désinstaller ce thème."
+
+#: header.php:69
+msgid "Javascript must be enabled for this site to function correctly."
+msgstr "JavaScript doit être activé pour ce site de fonctionner correctement."
+
+#: header.php:75
+msgid ""
+"You seem to be using an out-of-date web browser. Without the most up-to-date "
+"version of your browser, this may site may not function correctly. Please "
+"note that Internet Explorer is not supported."
+msgstr ""
+"Vous semblez être en utilisant un navigateur web obsolète. Sans obtenir la "
+"version la plus récente de votre navigateur, cela peut site mai ne "
+"fonctionne pas correctement. Veuillez noter qu’Internet Explorer n’est pas "
+"pris en charge."
+
+#: header.php:77
+msgid "See what browser you are using."
+msgstr "Voir quel navigateur vous utilisez."
+
+#: parts/contact-details.php:31 parts/group-details.php:31
+msgid "Valid"
+msgstr "Valide"
+
+#: parts/contact-details.php:38 parts/group-details.php:38
+msgid "Invalid"
+msgstr "ERREUR : Non-locales ou non valide URL envoyé pour %1$s %2$s"
+
+#: parts/contact-details.php:45 parts/group-details.php:45
+msgid "Unconfirmed"
+msgstr "Non confirmé"
+
+#: parts/contact-details.php:53 parts/group-details.php:52
+msgid "Delete item"
+msgstr "Supprimer l'(les)article(s)"
+
+#: parts/contact-details.php:67
+msgid "This contact needs an update"
+msgstr "Ce contact a besoin d’une mise à jour"
+
+#: parts/contact-details.php:68
+msgid "It has been a while since this contact seen an update. Please do so"
+msgstr ""
+"Il a été un moment depuis ce contact vu une mise à jour. Vous pouvez le faire"
+
+#: parts/contact-details.php:76
+msgid "This contact has been assigned to you"
+msgstr "Ce contact a été affecté"
+
+#: parts/contact-details.php:78
+msgid "Accept"
+msgstr "Acceptez"
+
+#: parts/contact-details.php:79
+msgid "Decline"
+msgstr "Refusé"
+
+#: parts/contact-details.php:88
+msgid "Dispatch Section"
+msgstr "Article de la dépêche"
+
+#: parts/contact-details.php:91
+msgid "Assigned To"
+msgstr "Assigné à"
+
+#: parts/contact-details.php:97
+msgid "Nobody"
+msgstr "Personne"
+
+#: parts/contact-details.php:107
+msgid "Set Unassignable"
+msgstr "Jeu d’incessible"
+
+#: parts/contact-details.php:122 parts/contact-details.php:128
+#: template-settings.php:285 template-settings.php:296
+#: template-settings.php:311
+msgid "Update Needed"
+msgstr "Mise à jour nécessaire !"
+
+#: parts/contact-details.php:168
+msgid "Pause"
+msgstr "Pause"
+
+#: parts/contact-details.php:172
+msgid "Un-pause"
+msgstr "ONU-pause"
+
+#: parts/contact-details.php:177 parts/content-locations.php:15
+msgid "Close"
+msgstr "Fermer"
+
+#: parts/contact-details.php:181
+msgid "Re-open"
+msgstr "Rouvrir"
+
+#: parts/contact-details.php:185 parts/group-details.php:81
+#: template-settings.php:66 template-settings.php:515
+msgid "Edit"
+msgstr "Éditer"
+
+#: parts/contact-details.php:190
+msgid "Close Contact"
+msgstr "Un contact étroit"
+
+#: parts/contact-details.php:191
+msgid "Why do you want to close this contact?"
+msgstr "Pourquoi vouloir fermer ce contact ?"
+
+#: parts/contact-details.php:203 parts/contact-details.php:230
+#: single-contacts.php:280 single-groups.php:197
+msgid "Cancel"
+msgstr "Annuler"
+
+#: parts/contact-details.php:206 parts/contact-details.php:233
+msgid "Confirm"
+msgstr "﻿Confirmer"
+
+#: parts/contact-details.php:214
+msgid "Pause Contact"
+msgstr "Contact de pause"
+
+#: parts/contact-details.php:215
+msgid "Why do you want to pause this contact?"
+msgstr "Pourquoi voulez-vous faire une pause de ce contact ?"
+
+#: parts/contact-details.php:245
+msgid "reason_paused"
+msgstr "reason_paused"
+
+#: parts/contact-details.php:261
+msgid "reason_closed"
+msgstr "reason_closed"
+
+#: parts/contact-details.php:277
+msgid "reason_unassignable"
+msgstr "reason_unassignable"
+
+#: parts/contact-details.php:449
+msgid "None set"
+msgstr "Aucun ensemble"
+
+#: parts/contact-details.php:483
+msgid "Add another contact method"
+msgstr "Ajoutez une autre méthode de contact"
+
+#: parts/contact-details.php:496 parts/loop-activity-comment.php:4
+msgid "Add"
+msgstr "Ajouter :"
+
+#: parts/contact-details.php:531 parts/group-details.php:156
+#: template-settings.php:128 template-team.php:144
+msgid "Address"
+msgstr "Adresse"
+
+#: parts/contact-details.php:569
+msgid "Age"
+msgstr ""
+"Une façon de partager la bonne nouvelle de Dieu est en racontant l’histoire "
+"de Dieu de la création au jugement &#8212; depuis le début de l’humanité "
+"jusqu'à la fin de cet âge."
+
+#: parts/contact-details.php:588
+msgid "Gender"
+msgstr "Sexe"
+
+#: parts/contact-details.php:606 template-contacts-new.php:40
+msgid "Source"
+msgstr "Source"
+
+#: parts/contact-details.php:613
+msgid "No source set"
+msgstr "Aucune source"
+
+#: parts/contact-details.php:635
+msgid "Show"
+msgstr "Afficher"
+
+#: parts/contact-details.php:636
+msgid "more"
+msgstr "En lire plus &raquo;"
+
+#: parts/contact-details.php:637
+msgid "less"
+msgstr ""
+"Trouver la section liste de vérification Coaching dans votre guide de Zúme "
+"et de prendre ce rapide (5 minutes ou moins) d’auto-évaluation :"
+
+#: parts/content-byline.php:2
+msgid "Posted on"
+msgstr "Publié le"
+
+#: parts/content-byline.php:2
+msgid "by"
+msgstr "par"
+
+#: parts/content-contacts.php:10
+msgid "Create new contact"
+msgstr "Créer un nouveau contact"
+
+#: parts/content-contacts.php:13 parts/content-groups.php:13
+msgid "Sort"
+msgstr "Tri"
+
+#: parts/content-contacts.php:16 parts/content-groups.php:16
+msgid "Most recent"
+msgstr "Plus récent"
+
+#: parts/content-contacts.php:19 parts/content-groups.php:19
+msgid "Least recent"
+msgstr "Moins récent(es)"
+
+#: parts/content-contacts.php:29 parts/content-groups.php:29
+#: parts/content-locations.php:9 parts/content-locations.php:22
+#: template-contacts-new.php:30 template-groups-new.php:28
+#: template-settings.php:84
+msgid "Name"
+msgstr "Nom"
+
+#: parts/content-contacts.php:31 single-contacts.php:146
+msgid "Faith Milestones"
+msgstr "Jalons de la foi"
+
+#: parts/content-contacts.php:34
+msgid "Group"
+msgstr "Joignez-vous à mon groupe de formation"
+
+#: parts/content-contacts.php:35 parts/content-groups.php:34
+#: parts/content-locations.php:13 parts/content-locations.php:26
+msgid "Last modified"
+msgstr "Dernière modification"
+
+#: parts/content-groups.php:10
+msgid "Create new group"
+msgstr "Créer un nouveau groupe"
+
+#: parts/content-groups.php:31 parts/content-locations.php:11
+#: parts/content-locations.php:24 single-groups.php:44
+msgid "Members"
+msgstr "Membres"
+
+#: parts/content-groups.php:32
+msgid "Leader"
+msgstr "Dirigeant"
+
+#: parts/content-locations-tabs.php:5
+msgid "My Locations"
+msgstr "Mes lieux"
+
+#: parts/content-locations-tabs.php:6
+msgid "Team Locations"
+msgstr "Emplacements de l’équipe"
+
+#: parts/content-locations-tabs.php:7
+msgid "Project Locations"
+msgstr "Lieux du projet"
+
+#: parts/content-locations-tabs.php:19 parts/content-locations-tabs.php:84
+#: parts/content-locations-tabs.php:126
+msgid "Sort by name"
+msgstr "Trier par nom"
+
+#: parts/content-locations-tabs.php:20 parts/content-locations-tabs.php:85
+#: parts/content-locations-tabs.php:127
+msgid "Sort by team"
+msgstr "trier sur l'équipe"
+
+#: parts/content-locations.php:7
+msgid "Sort by:"
+msgstr "Trier par :"
+
+#: parts/content-missing.php:9
+msgid "No Matches."
+msgstr "Aucune correspondance."
+
+#: parts/content-missing.php:21
+msgid "Oops, Post Not Found!"
+msgstr "Oops, Article introuvable!"
+
+#: parts/content-missing.php:25
+msgid "Uh Oh. Something is missing. Try double checking things."
+msgstr "Uh Oh. Il manque quelque chose. Essayez doubles choses de contrôle."
+
+#: parts/content-missing.php:33
+msgid "This is the error message in the parts/content-missing.php template."
+msgstr "C’est le message d’erreur dans le modèle parts/missing-content.php."
+
+#: parts/group-details.php:68
+msgid "Status: "
+msgstr "Étape de validation"
+
+#: parts/group-details.php:98 parts/group-details.php:122
+#: single-contacts.php:67 single-contacts.php:102 single-groups.php:57
+msgid "Remove"
+msgstr "Supprimer"
+
+#: parts/group-details.php:164
+msgid "No address set"
+msgstr "aucune adresse"
+
+#: parts/group-details.php:195
+msgid "Start Date"
+msgstr "Date de début"
+
+#: parts/group-details.php:198
+msgid "End Date"
+msgstr " Date de fin"
+
+#: parts/loop-activity-comment.php:7
+msgid "ALL"
+msgstr "Toutes les installations sont maintenant terminées."
+
+#: parts/loop-activity-comment.php:8
+msgid "COMMENTS"
+msgstr "Commentaires"
+
+#: parts/loop-activity-comment.php:9
+msgid "ACTIVITY"
+msgstr "ACTIVITÉ"
+
+#: parts/loop-archive-grid.php:31 parts/loop-archive.php:9
+msgid "Read more..."
+msgstr "Lire la suite…"
+
+#: parts/loop-archive.php:13 parts/loop-single-progress.php:14
+#: parts/loop-single.php:15
+msgid "Tags:"
+msgstr "Étiquettes :"
+
+#: parts/loop-single-progress.php:13 parts/loop-single.php:14
+msgid "Pages:"
+msgstr "Pages :"
+
+#. Theme Name of the plugin/theme
+#: parts/nav-offcanvas-topbar.php:13
+msgid "Disciple Tools"
+msgstr "Outils de disciple"
+
+#: parts/nav-offcanvas-topbar.php:54
+msgid "Admin"
+msgstr "Administrateur"
+
+#: search.php:55
+msgid "Results for"
+msgstr "Désolé, rien n'a été trouvé."
+
+#: searchform.php:3
+msgctxt "label"
+msgid "Search for:"
+msgstr "Recherche de vidéos Zume"
+
+#: searchform.php:4
+msgctxt "disciple_tools"
+msgid "Search..."
+msgstr "Rechercher..."
+
+#: searchform.php:4
+msgctxt "disciple_tools"
+msgid "Search for:"
+msgstr "Recherche de vidéos Zume"
+
+#: searchform.php:6
+msgctxt "disciple_tools"
+msgid "Search"
+msgstr "Chercher"
+
+#: sidebar.php:12
+msgid "Please activate some Widgets."
+msgstr "Activez quelques widgets."
+
+#: single-contacts.php:44
+msgid "View Comments"
+msgstr "Voir les commentaires"
+
+#: single-contacts.php:55
+msgid "Connections"
+msgstr "Contacts"
+
+#: single-contacts.php:73
+msgid "Add Group"
+msgstr "﻿Ajouter au groupe"
+
+#: single-contacts.php:123 single-groups.php:73
+msgid "Progress"
+msgstr "Progrès"
+
+#: single-contacts.php:124
+msgid "Seeker Path"
+msgstr "Chemin d’accès du demandeur"
+
+#: single-contacts.php:165
+msgid "Baptism Date"
+msgstr "Date de baptême"
+
+#: single-contacts.php:187 template-settings.php:47 template-settings.php:397
+msgid "Availability"
+msgstr "Disponibilité"
+
+#: single-contacts.php:189
+msgid "Sun"
+msgstr "Dim"
+
+#: single-contacts.php:190
+msgid "Mon"
+msgstr "Lun"
+
+#: single-contacts.php:191
+msgid "Tue"
+msgstr "Mar"
+
+#: single-contacts.php:192
+msgid "Wed"
+msgstr "Mercredi"
+
+#: single-contacts.php:193
+msgid "Thu"
+msgstr "Jeu"
+
+#: single-contacts.php:194
+msgid "Fri"
+msgstr "Vendredi"
+
+#: single-contacts.php:195
+msgid "Sat"
+msgstr "Sam"
+
+#: single-contacts.php:198 single-contacts.php:199 single-contacts.php:200
+#: single-contacts.php:201 single-contacts.php:202 single-contacts.php:203
+#: single-contacts.php:204
+msgid "Morn"
+msgstr "Mat."
+
+#: single-contacts.php:207 single-contacts.php:208 single-contacts.php:209
+#: single-contacts.php:210 single-contacts.php:211 single-contacts.php:212
+#: single-contacts.php:213
+msgid "Lunch"
+msgstr "Déjeuner"
+
+#: single-contacts.php:216 single-contacts.php:217 single-contacts.php:218
+#: single-contacts.php:219 single-contacts.php:220 single-contacts.php:221
+#: single-contacts.php:222
+msgid "Aftr"
+msgstr "Aftr"
+
+#: single-contacts.php:225 single-contacts.php:226 single-contacts.php:227
+#: single-contacts.php:228 single-contacts.php:229 single-contacts.php:230
+#: single-contacts.php:231
+msgid "Night"
+msgstr "Nuit(s)"
+
+#: single-contacts.php:253 single-groups.php:170
+msgid "Share settings"
+msgstr "Paramètres de partage"
+
+#: single-contacts.php:254 single-groups.php:171
+msgid "Already sharing with"
+msgstr "Partage déjà avec"
+
+#: single-contacts.php:261 single-groups.php:178
+msgid "Unshare"
+msgstr "Annuler le partage"
+
+#: single-contacts.php:268
+msgid "Share this contact with the following user"
+msgstr "Partagez ce contact avec l’utilisateur suivant"
+
+#: single-groups.php:63
+msgid "Add a Member"
+msgstr "Ajouter un Membre"
+
+#: single-groups.php:80
+msgid "Fellowship"
+msgstr ""
+"FORMAT de groupe de 3/3 — un groupe de 3/3 est une façon pour les disciples "
+"de Jésus à rencontrer, prier, apprendre, grandir, bourse et pratique "
+"obéissant et partage ce qu’ils ont appris. De cette façon, un groupe de 3/3 "
+"n’est pas seulement un petit groupe mais une église Simple. (80 minutes)"
+
+#: single-groups.php:86
+msgid "Giving"
+msgstr "Donner"
+
+#: single-groups.php:92
+msgid "Communion"
+msgstr "Communion"
+
+#: single-groups.php:98
+msgid "Baptism"
+msgstr "baptême"
+
+#: single-groups.php:111
+msgid "Leaders"
+msgstr ""
+"Vous étiez encouragés à partager Zúme formation en lançant une cellule de "
+"Leadership des futurs leaders de la formation de Zúme."
+
+#: single-groups.php:117
+msgid "Word"
+msgstr "Mot"
+
+#: single-groups.php:123
+msgid "Praise"
+msgstr "Avis"
+
+#: single-groups.php:129
+msgid "Evangelism"
+msgstr "Évangélisation"
+
+#: single-groups.php:135
+msgid "Covenant"
+msgstr "d&apos;anciens États parties au Pacte"
+
+#: single-groups.php:185
+msgid "Share this group with the following user"
+msgstr "Partager ce groupe avec la suite de l’utilisateur"
+
+#: single-locations.php:91
+msgid "Assets"
+msgstr "Les atouts"
+
+#: single-peoplegroups.php:95 template-team.php:17
+msgid "Workers"
+msgstr "Avocates"
+
+#: single-progress.php:7
+msgid "PROGRESS UPDATES"
+msgstr "MISES À JOUR"
+
+#: template-about.php:13
+msgid "About"
+msgstr "Ceux qui vous sentez-vous incertains ?"
+
+#: template-contacts-new.php:5
+msgid "You do not have permission to publish contacts"
+msgstr "Vous n’êtes pas autorisé à publier des contacts"
+
+#: template-contacts-new.php:15
+msgid "New contact"
+msgstr "Nouveau contact"
+
+#: template-contacts-new.php:29
+msgid "Name of contact"
+msgstr "Nom du contact :"
+
+#: template-contacts-new.php:32 template-contacts-new.php:49
+#: template-groups-new.php:30
+msgid "This is required"
+msgstr "C'est obligatoire"
+
+#: template-contacts-new.php:35 template-contacts-new.php:36
+msgid "Phone number"
+msgstr "Numéro de téléphone"
+
+#: template-contacts-new.php:54
+msgid "(Not set)"
+msgstr "Non défini"
+
+#: template-contacts-new.php:62 template-contacts-new.php:63
+msgid "Initial comment"
+msgstr "Premier commentaire"
+
+#: template-contacts-new.php:67 template-groups-new.php:33
+msgid "Save and continue editing"
+msgstr "enregistrer et continuer"
+
+#: template-groups-new.php:5
+msgid "You do not have permission to publish groups"
+msgstr "Vous n’êtes pas autorisé à publier des groupes"
+
+#: template-groups-new.php:15
+msgid "New group"
+msgstr "Nouveau groupe"
+
+#: template-groups-new.php:27
+msgid "Name of group"
+msgstr ""
+"Demandez à Dieu qui veut vous faire partager la liste des 100 outil avec. "
+"Partager le nom de cette personne avec le groupe avant de partir et aller "
+"vers eux avant la prochaine session."
+
+#: template-metrics.php:31
+msgid "Critical Path"
+msgstr "Chemin critique"
+
+#: template-notifications.php:40
+msgid "New"
+msgstr "Ajouter une nouvelle vidéo de Zume"
+
+#: template-notifications.php:45
+msgid "All"
+msgstr "Toutes les installations sont maintenant terminées."
+
+#: template-notifications.php:49
+msgid "Unread"
+msgstr "Non lu"
+
+#: template-notifications.php:55
+msgid "Mark All as Read"
+msgstr "Marquer tous les messages comme lus"
+
+#: template-notifications.php:61
+msgid "Mark All"
+msgstr "Tout sélectionner"
+
+#: template-notifications.php:76 template-notifications.php:79
+msgid "load more notifications"
+msgstr "charger plus de notifications"
+
+#: template-settings.php:45
+msgid "Profile"
+msgstr "Profil"
+
+#: template-settings.php:68
+msgid "Your Profile"
+msgstr "Votre profil"
+
+#: template-settings.php:79 template-team.php:112
+msgid "Username"
+msgstr "Ajouter la règle de nom d’utilisateur"
+
+#: template-settings.php:90 template-settings.php:541 template-team.php:117
+msgid "Nickname"
+msgstr "Pseudo"
+
+#: template-settings.php:95
+msgid "Roles"
+msgstr "Rôles"
+
+#: template-settings.php:99 template-team.php:184
+msgid "Biography"
+msgstr "Biographie"
+
+#: template-settings.php:105 template-settings.php:214 template-team.php:121
+msgid "Email"
+msgstr "Email"
+
+#: template-settings.php:117 template-team.php:133
+msgid "Phone"
+msgstr "Téléphone"
+
+#: template-settings.php:139 template-team.php:155
+msgid "Social"
+msgstr ""
+"Si vous êtes intéressés à servir comme un modérateur de médias sociaux pour "
+"Zúme."
+
+#: template-settings.php:150 template-team.php:166
+msgid "Other"
+msgstr "Autre"
+
+#: template-settings.php:178
+msgid "Teams"
+msgstr "Equipes"
+
+#: template-settings.php:212
+msgid "Type of Notification"
+msgstr "Type de notification"
+
+#: template-settings.php:213
+msgid "Web"
+msgstr "Site Web"
+
+#: template-settings.php:219
+msgid "Newly Assigned Contact"
+msgstr "Venez d’être affecté de Contact"
+
+#: template-settings.php:252 template-settings.php:263
+#: template-settings.php:278
+msgid "@Mentions"
+msgstr "@Mentions"
+
+#: template-settings.php:318 template-settings.php:329
+#: template-settings.php:344
+msgid "Contact Info Changed"
+msgstr "Contact Info a changé"
+
+#: template-settings.php:351
+msgid "Contact Milestones"
+msgstr "Contacter jalons"
+
+#: template-settings.php:362 template-settings.php:377
+msgid "Milestones"
+msgstr "Jalon"
+
+#: template-settings.php:403
+msgid "Set Away"
+msgstr "Ensemble de suite"
+
+#: template-settings.php:409
+msgid "Enable"
+msgstr "Activer"
+
+#: template-settings.php:410
+msgid "On"
+msgstr "Oui"
+
+#: template-settings.php:411
+msgid "Off"
+msgstr "Non"
+
+#: template-settings.php:526
+msgid "User Name"
+msgstr "Nom d'utilisateur"
+
+#: template-settings.php:527
+msgid "can not change"
+msgstr "(ne peut pas changer)"
+
+#: template-settings.php:530
+msgid "First Name"
+msgstr "Prénom"
+
+#: template-settings.php:536
+msgid "Last Name"
+msgstr "Nom"
+
+#: template-settings.php:565
+msgid "Description"
+msgstr "Description"
+
+#: template-settings.php:575
+msgid "Oh snap!"
+msgstr "Désolé"
+
+#: template-settings.php:578
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: template-team.php:83 template-team.php:85 template-team.php:107
+msgid "Not Available"
+msgstr "Version disponible :"
+
+#: template-team.php:107
+msgid "Available"
+msgstr "Mise à jour Requise Indisponible"
+
+#: template-team.php:203
+msgid "Have no other team members on this team"
+msgstr "N’avoir aucun autre membre de l’équipe dans cette équipe"
+
+#: template-team.php:222
+msgid "You are not part of any teams"
+msgstr "Vous n’êtes pas partie de n’importe quelle équipe"
+
+#. Theme URI of the plugin/theme
+msgid "http://disciple.tools"
+msgstr "http://disciple.Tools"
+
+#. Author of the plugin/theme
+msgid "Chasm Solutions & Kingdom.Training"
+msgstr "Solutions de gouffre & Kingdom.Training"
+
+#. Author URI of the plugin/theme
+msgid "http://chasm.solutions"
+msgstr "http://Chasm.solutions"
