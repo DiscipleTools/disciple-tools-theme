@@ -372,7 +372,7 @@
                     <!-- Locations -->
                     <!-- Assigned To -->
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                        <div class="section-subheader">Locations</div>
+                        <div class="section-subheader"><?php esc_html_e( "Locations", 'disciple_tools' ) ?></div>
                         <ul class="locations-list">
                             <?php
                             foreach ($contact->fields["locations"] ?? [] as $value){
@@ -382,7 +382,7 @@
                                     <button class="details-remove-button connection details-edit"
                                             data-field="locations" data-id="<?php echo esc_html( $value->ID ) ?>"
                                             data-name="<?php echo esc_html( $value->post_title ) ?>">
-                                        Remove
+                                        <?php esc_html_e( "Remove", 'disciple_tools' ) ?>
                                     </button>
                                 </li>
                             <?php }
@@ -404,18 +404,18 @@
                                 if ( isset( $contact->fields["assigned_to"] ) ){
                                     echo esc_html( $contact->fields["assigned_to"]["display"] );
                                 } else {
-                                    echo "None Assigned";
+                                    esc_html_e( 'None Assigned', 'disciple_tools' );
                                 }
                                 ?>
                             </li>
                         </ul>
                         <div class="assigned_to details-edit">
-                            <input class="typeahead" type="text" placeholder="Type to search users">
+                            <input class="typeahead" type="text" placeholder="<?php esc_html_e( "Type to search users", 'disciple_tools' ) ?>">
                         </div>
                     </div>
                     <!-- Social Media -->
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                        <div class="section-subheader"><?php echo esc_html( 'Social Media' ) ?>/div>
+                        <div class="section-subheader"><?php esc_html_e( 'Social Media', 'disciple_tools' ) ?></div>
                         <ul class='social details-list'>
                         <?php
                         $number_of_social = 0;
