@@ -60,19 +60,35 @@ function dt_register_required_plugins() {
             'slug'               => 'disciple-tools',
             'source'             => 'https://github.com/DiscipleTools/disciple-tools/archive/master.zip',
             'required'           => false, // TODO false only for development. Should be true for production.
-            'force_activation'   => true,
-            'version'            => '0.1',
+            'version'            => '0.1.3',
             'is_callable'        => 'Disciple_Tools',
         ),
         array(
             'name'                  => 'jwt-authentication-for-wp-rest-api',
             'slug'                  => 'jwt-authentication-for-wp-rest-api',
-            'required'              => true,
+            'required'              => false,
             'version'               => '1.2.3',
-            'force_activation'      => true,
-            'force_deactivation'    => true,
             'is_callable'           => 'Jwt_Auth_Public',
         ),
+        array(
+            'name'                  => 'iThemes Security',
+            'slug'                  => 'better-wp-security',
+            'required'              => false,
+            'version'               => '6.7.0',
+        ),
+        array(
+            'name'                  => 'Updraft Plus',
+            'slug'                  => 'updraftplus',
+            'required'              => false,
+            'version'               => '1.13.12',
+        ),
+        array(
+            'name'                  => 'WP Easy SMTP',
+            'slug'                  => 'wp-easy-smtp',
+            'required'              => false,
+            'version'               => '1.1.1',
+        ),
+
 //        array(
 //            'name'              => 'WP Jump Menu',
 //            'slug'              => 'wp-jump-menu',
