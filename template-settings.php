@@ -77,27 +77,27 @@ dt_print_breadcrumbs(
 
                                 <p>
                                     <strong><?php esc_html_e( 'Username', 'disciple_tools' )?></strong><br>
-                                    <?php esc_html_e( $dt_user->user_login, 'disciple_tools' )?>
+                                    <?php echo esc_html( $dt_user->user_login ); ?>
                                 </p>
 
                                 <p>
                                     <strong><?php esc_html_e( 'Name', 'disciple_tools' )?></strong><br>
-                                    <?php esc_html_e( $dt_user->first_name, 'disciple_tools' )?>
-                                    &nbsp;<?php esc_html_e( $dt_user->last_name, 'disciple_tools' )?>
+                                    <?php echo esc_html( $dt_user->first_name ); ?>
+                                    &nbsp;<?php echo esc_html( $dt_user->last_name ); ?>
                                 </p>
 
                                 <p>
                                     <strong><?php esc_html_e( 'Nickname', 'disciple_tools' )?></strong><br>
-                                    <?php esc_html_e( $dt_user->nickname, 'disciple_tools' )?>
+                                    <?php echo esc_html( $dt_user->nickname ); ?>
                                 </p>
-                                
+
                                 <p>
                                     <strong><?php esc_html_e( "Roles" ); ?></strong><br>
                                     <?php echo esc_html( implode( ", ", wp_get_current_user()->roles ) ); ?>
                                 </p>
 
                                 <strong><?php esc_html_e( 'Biography', 'disciple_tools' )?></strong>
-                                <p><?php esc_html_e( $dt_user->user_description, 'disciple_tools' )?></p>
+                                <p><?php echo esc_html( $dt_user->user_description ); ?></p>
 
                             </div>
                             <div class="small-12 medium-4 cell">
@@ -105,10 +105,10 @@ dt_print_breadcrumbs(
                                 <p><strong><?php esc_html_e( 'Email', 'disciple_tools' )?></strong></p>
                                 <ul>
                                     <?php
-                                    echo '<li><a href="mailto:' . esc_attr( $dt_user->user_email, 'disciple_tools' ) . '">' . esc_html( $dt_user->user_email, 'disciple_tools' ) . '</a> (System Email)</li>';
+                                    echo '<li><a href="mailto:' . esc_attr( $dt_user->user_email ) . '">' . esc_html( $dt_user->user_email ) . '</a> (System Email)</li>';
                                     foreach ( $dt_user_fields as $field ) {
                                         if ( $field['type'] == 'email' && !empty( $field['value'] ) ) {
-                                            echo '<li><a href="mailto:' . esc_html( $field['value'], 'disciple_tools' ) . '" target="_blank">' . esc_html( $field['value'], 'disciple_tools' ) . '</a> (' . esc_html( $field['label'], 'disciple_tools' ) . ')</li>';
+                                            echo '<li><a href="mailto:' . esc_html( $field['value'] ) . '" target="_blank">' . esc_html( $field['value'] ) . '</a> (' . esc_html( $field['label'] ) . ')</li>';
                                         }
                                     }
                                     ?>
@@ -119,7 +119,7 @@ dt_print_breadcrumbs(
                                     <?php
                                     foreach ( $dt_user_fields as $field ) {
                                         if ( $field['type'] == 'phone' && !empty( $field['value'] ) ) {
-                                            echo '<li>' . esc_html( $field['value'], 'disciple_tools' ) . ' (' . esc_html( $field['label'], 'disciple_tools' ) . ')</li>';
+                                            echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
                                         }
                                     }
                                     ?>
@@ -130,7 +130,7 @@ dt_print_breadcrumbs(
                                     <?php
                                     foreach ( $dt_user_fields as $field ) {
                                         if ( $field['type'] == 'address' && !empty( $field['value'] ) ) {
-                                            echo '<li>' . esc_html( $field['value'], 'disciple_tools' ) . ' (' . esc_html( $field['label'], 'disciple_tools' ) . ')</li>';
+                                            echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
                                         }
                                     }
                                     ?>
@@ -141,7 +141,7 @@ dt_print_breadcrumbs(
                                     <?php
                                     foreach ( $dt_user_fields as $field ) {
                                         if ( $field['type'] == 'social' && !empty( $field['value'] ) ) {
-                                            echo '<li>' . esc_html( $field['value'], 'disciple_tools' ) . ' (' . esc_html( $field['label'], 'disciple_tools' ) . ')</li>';
+                                            echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
                                         }
                                     }
                                     ?>
@@ -152,7 +152,7 @@ dt_print_breadcrumbs(
                                     <?php
                                     foreach ( $dt_user_fields as $field ) {
                                         if ( $field['type'] == 'other' && !empty( $field['value'] ) ) {
-                                            echo '<li>' . esc_html( $field['value'], 'disciple_tools' ) . ' (' . esc_html( $field['label'], 'disciple_tools' ) . ')</li>';
+                                            echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
                                         }
                                     }
                                     ?>
@@ -168,7 +168,7 @@ dt_print_breadcrumbs(
                                 if ( $dt_user_locations_list ) {
                                     echo '<ul>';
                                     foreach ( $dt_user_locations_list as $locations_list ) {
-                                        echo '<li><a href="' . esc_url( $locations_list->guid ) . '">' . esc_html( $locations_list->post_title, 'disciple_tools' ) . '</a></li>';
+                                        echo '<li><a href="' . esc_url( $locations_list->guid ) . '">' . esc_html( $locations_list->post_title ) . '</a></li>';
                                     }
                                     echo '</ul>';
                                 }
@@ -180,11 +180,11 @@ dt_print_breadcrumbs(
                                 $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id() );
                                 if ( $dt_user_team_members_list ) {
                                     foreach ( $dt_user_team_members_list as $team_list ) {
-                                        esc_html_e( $team_list['team_name'], 'disciple_tools' );
+                                        echo esc_html( $team_list['team_name'] );
                                         if ( !empty( $team_list['team_members'] ) ) {
                                             echo '<ul>';
                                             foreach ( $team_list['team_members'] as $member ) {
-                                                echo '<li><a href="' . esc_url( $member['user_url'] ) . '">' . esc_html( $member['display_name'], 'disciple_tools' ) . '</a></li>';
+                                                echo '<li><a href="' . esc_url( $member['user_url'] ) . '">' . esc_html( $member['display_name'] ) . '</a></li>';
                                             }
                                             echo '</ul>';
                                         }
@@ -524,37 +524,37 @@ dt_print_breadcrumbs(
 
                                         <tr>
                                             <td><?php esc_html_e( 'User Name', 'disciple_tools' )?></td>
-                                            <td> <?php esc_html_e( $dt_user->user_login, 'disciple_tools' ); ?> (can not change)</td>
+                                            <td> <?php echo esc_html( $dt_user->user_login ); ?> (<?php esc_html_e( 'can not change', "disciple_tools" ) ?>)</td>
                                         </tr>
                                         <tr>
                                             <td><label for="first_name"><?php esc_html_e( 'First Name', 'disciple_tools' )?></label></td>
                                             <td><input type="text" class="profile-input" id="first_name"
                                                        name="first_name"
-                                                       value="<?php esc_html_e( $dt_user->first_name, 'disciple_tools' ); ?>"/></td>
+                                                       value="<?php echo esc_html( $dt_user->first_name ); ?>"/></td>
                                         </tr>
                                         <tr>
                                             <td><label for="last_name"><?php esc_html_e( 'Last Name', 'disciple_tools' )?></label></td>
                                             <td><input type="text" class="profile-input" id="last_name" name="last_name"
-                                                       value="<?php esc_html_e( $dt_user->last_name, 'disciple_tools' ); ?>"/></td>
+                                                       value="<?php echo esc_html( $dt_user->last_name ); ?>"/></td>
                                         </tr>
                                         <tr>
                                             <td><label for="nickname"><?php esc_html_e( 'Nickname', 'disciple_tools' )?></label></td>
                                             <td><input type="text" class="profile-input" id="nickname" name="nickname"
-                                                       value=" <?php esc_html_e( $dt_user->nickname, 'disciple_tools' ); ?>"/></td>
+                                                       value=" <?php echo esc_html( $dt_user->nickname ); ?>"/></td>
                                         </tr>
 
                                         <?php // site defined fields
                                         foreach ( $dt_user_fields as $field ) {
                                             ?>
                                             <tr>
-                                                <td><label
-                                                        for="<?php echo esc_attr( $field['key'], 'disciple_tools' ) ?>"><?php esc_html_e( $field['label'], 'disciple_tools' ) ?></label>
+                                                <td>
+                                                    <label for="<?php echo esc_attr( $field['key'] ) ?>"><?php echo esc_html( $field['label'] ) ?></label>
                                                 </td>
                                                 <td><input type="text"
                                                            class="profile-input"
                                                            id="<?php echo esc_attr( $field['key'], 'disciple_tools' ) ?>"
                                                            name="<?php echo esc_attr( $field['key'], 'disciple_tools' ) ?>"
-                                                           value="<?php esc_html_e( $field['value'], 'disciple_tools' ) ?>"/>
+                                                           value="<?php echo esc_html( $field['value'] ) ?>"/>
                                                 </td>
                                             </tr>
                                             <?php
@@ -565,14 +565,14 @@ dt_print_breadcrumbs(
                                             <td><label for="description"><?php esc_html_e( 'Description', 'disciple_tools' )?></label></td>
                                             <td><textarea type="text" class="profile-input" id="description"
                                                           name="description"
-                                                          rows="5"><?php esc_html_e( $dt_user->description, 'disciple_tools' ); ?></textarea>
+                                                          rows="5"><?php echo esc_html( $dt_user->description ); ?></textarea>
                                             </td>
                                         </tr>
 
                                     </table>
 
                                     <div class="alert alert-box" style="display:none;" id="alert">
-                                    	<strong><?php esc_html_e( 'Oh snap!', 'disciple_tools' )?></strong>
+                                        <strong><?php esc_html_e( 'Oh snap!', 'disciple_tools' ) ?></strong>
                                     </div>
 
                                     <button class="button" type="submit"><?php esc_html_e( 'Save', 'disciple_tools' )?></button>

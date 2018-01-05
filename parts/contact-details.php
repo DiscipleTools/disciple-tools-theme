@@ -10,8 +10,8 @@
 
     function dt_contact_details_status( $id, $verified, $invalid ){
         ?>
-        <img id="<?php esc_html_e( $id, 'disciple_tools' )?>-verified" class="details-status" style="display:<?php esc_html_e( $verified, 'disciple_tools' )?>" src="<?php esc_html_e( get_template_directory_uri() . '/assets/images/verified.svg', 'disciple_tools' )?>" />
-        <img id="<?php esc_html_e( $id, 'disciple_tools'  ) ?>-invalid" class="details-status" style="display:<?php esc_html_e( $invalid, 'disciple_tools' )?>" src="<?php esc_html_e( get_template_directory_uri() . '/assets/images/broken.svg', 'disciple_tools' )?>" />
+        <img id="<?php echo esc_html( $id )?>-verified" class="details-status" style="display:<?php echo esc_html( $verified )?>" src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/verified.svg' )?>" />
+        <img id="<?php echo esc_html( $id ) ?>-invalid" class="details-status" style="display:<?php echo esc_html( $invalid )?>" src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/broken.svg' )?>" />
         <?php
     }
     function dt_contact_details_edit( $id, $field_type, $remove = false ){
@@ -21,35 +21,35 @@
             style='display:inline-block'>
             <li>
                 <button class="social-details-options-button">
-                    <img src="<?php esc_html_e( get_template_directory_uri() . '/assets/images/menu-dots.svg', 'disciple_tools' )?>" style='padding:3px 3px'>
+                    <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/menu-dots.svg' )?>" style='padding:3px 3px'>
                 </button>
                 <ul class='menu'>
                     <li>
                         <button class='details-status-button field-status verify'
                                 data-status='valid'
-                                data-id='<?php esc_html_e( $id, 'disciple_tools' )?>'>
+                                data-id='<?php echo esc_html( $id )?>'>
                             <?php esc_html_e( 'Valid', 'disciple_tools' )?>
                         </button>
                     </li>
                     <li>
                         <button class='details-status-button field-status invalid'
                                 data-status="invalid"
-                                data-id='<?php esc_html_e( $id, 'disciple_tools' )?>'>
+                                data-id='<?php echo esc_html( $id )?>'>
                             <?php esc_html_e( 'Invalid', 'disciple_tools' )?>
                         </button>
                     </li>
                     <li>
                         <button class='details-status-button field-status'
                                 data-status="reset"
-                                data-id='<?php esc_html_e( $id, 'disciple_tools'  ) ?>'>
+                                data-id='<?php echo esc_html( $id ) ?>'>
                             <?php esc_html_e( 'Unconfirmed', 'disciple_tools' )?>
                         </button>
                     </li>
                     <?php if ($remove){ ?>
                         <li>
                             <button class='details-remove-button delete-method'
-                                    data-field='<?php esc_html_e( $field_type, 'disciple_tools'  ) ?>'
-                                    data-id='<?php esc_html_e( $id, 'disciple_tools'  ) ?>'>
+                                    data-field='<?php echo esc_html( $field_type ) ?>'
+                                    data-id='<?php echo esc_html( $id ) ?>'>
                                 <?php esc_html_e( 'Delete item', 'disciple_tools' )?>
                             <button>
                         </li>
@@ -92,7 +92,7 @@
                         <span class="current-assigned">
                             <?php
                             if ( isset( $contact->fields["assigned_to"] ) ){
-                                esc_html_e( $contact->fields["assigned_to"]["display"], 'disciple_tools'  );
+                                echo esc_html( $contact->fields["assigned_to"]["display"] );
                             } else {
                                 esc_html_e( 'Nobody', 'disciple_tools' );
                             }
@@ -110,9 +110,9 @@
                         foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_value ) {
                             if ( isset( $contact->fields["reason_unassignable"] ) &&
                                 $contact->fields["reason_unassignable"]["key"] === $reason_key ){
-                                    echo '<option value="'. esc_html( $reason_key, 'disciple_tools'  ) . '" selected>' . esc_html( $reason_value, 'disciple_tools'  ) . '</option>';
+                                    echo '<option value="'. esc_html( $reason_key ) . '" selected>' . esc_html( $reason_value ) . '</option>';
                             } else {
-                                echo '<option value="'. esc_html( $reason_key, 'disciple_tools'  ) . '">' . esc_html( $reason_value, 'disciple_tools'  ). '</option>';
+                                echo '<option value="'. esc_html( $reason_key ) . '">' . esc_html( $reason_value ). '</option>';
                             }
                         }
                         ?>
@@ -123,7 +123,7 @@
                     <div class="switch tiny">
 
                         <input class="switch-input update-needed" id="update-needed" type="checkbox" name="update-needed"
-                        <?php esc_html_e( ( isset( $contact->fields["requires_update"] ) && $contact->fields["requires_update"]["key"] == "yes" ) ? 'checked' : "", 'disciple_tools'  ) ?>>
+                        <?php echo esc_html( ( isset( $contact->fields["requires_update"] ) && $contact->fields["requires_update"]["key"] == "yes" ) ? 'checked' : "" ) ?>>
                         <label class="switch-paddle update-needed" for="update-needed">
                             <span class="show-for-sr"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></span>
                             <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
@@ -145,18 +145,18 @@
                 <span class="item-details-header details-list title" ><?php the_title_attribute(); ?></span>
                 <input id="title" class="text-field details-edit" value="<?php the_title_attribute(); ?>">
                 <span class="button alert label">
-                    <?php esc_html_e( 'Status', 'disciple_tools' )?>: <span id="overall-status"><?php esc_html_e( $contact->fields["overall_status"]["label"], 'disciple_tools'  ) ?></span>
+                    <?php esc_html_e( 'Status', 'disciple_tools' )?>: <span id="overall-status"><?php echo esc_html( $contact->fields["overall_status"]["label"] ) ?></span>
                     <span id="reason">
                         <?php
                         if ( $contact->fields["overall_status"]["key"] === "paused" &&
                             isset( $contact->fields["reason_paused"] )){
-                                echo '(' . esc_html( $contact->fields["reason_paused"]["label"], 'disciple_tools'  ) . ')';
+                            echo '(' . esc_html( $contact->fields["reason_paused"]["label"] ) . ')';
                         } else if ( $contact->fields["overall_status"]["key"] === "closed" &&
                             isset( $contact->fields["reason_closed"] )){
-                                echo '(' . esc_html( $contact->fields["reason_closed"]["label"], 'disciple_tools'  ) . ')';
+                            echo '(' . esc_html( $contact->fields["reason_closed"]["label"] ) . ')';
                         } else if ( $contact->fields["overall_status"]["key"] === "unassignable" &&
                             isset( $contact->fields["reason_unassignable"] )){
-                                echo '(' . esc_html( $contact->fields["reason_unassignable"]["label"], 'disciple_tools'  ) . ')';
+                            echo '(' . esc_html( $contact->fields["reason_unassignable"]["label"] ) . ')';
                         }
                         ?>
                     </span>
@@ -194,7 +194,7 @@
                     <?php
                     foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $reason_label ) {
                     ?>
-                        <option value="<?php echo esc_attr( $reason_key, 'disciple_tools' )?>"> <?php esc_html_e( $reason_label, 'disciple_tools'  )?></option>
+                        <option value="<?php echo esc_attr( $reason_key )?>"> <?php echo esc_html( $reason_label )?></option>
                     <?php
                     }
                     ?>
@@ -218,9 +218,9 @@
                     <?php
                     foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
                     ?>
-                        <option value="<?php echo esc_attr( $reason_key, 'disciple_tools' )?>"
+                        <option value="<?php echo esc_attr( $reason_key )?>"
                             <?php if ( ($contact->fields["reason_paused"]["key"] ?? "") === $reason_key ){echo "selected";} ?>>
-                            <?php esc_html_e( $reason_label, 'disciple_tools'  )?>
+                            <?php echo esc_html( $reason_label )?>
                         </option>
                     <?php
                     }
@@ -241,14 +241,14 @@
                 <?php $status = $contact->fields["overall_status"]["key"] ?? ""; ?>
                 <!-- change reason paused options-->
                 <div class="medium-6 reason-field reason-paused" style="display:<?php echo ($status === "paused" ? "inherit" : "none"); ?>">
-                    <div class="section-subheader"><?php esc_html_e( $contact_fields["reason_paused"]["name"], 'disciple_tools'  ) ?></div>
-                    <select class="status-reason" data-field="<?php esc_html_e( "reason_paused", 'disciple_tools'  ) ?>" >
+                    <div class="section-subheader"><?php echo esc_html( $contact_fields["reason_paused"]["name"] ) ?></div>
+                    <select class="status-reason" data-field="<?php esc_html_e( "reason_paused", 'disciple_tools' ) ?>" >
                         <?php
                         foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
                         ?>
-                            <option value="<?php echo esc_attr( $reason_key, 'disciple_tools' )?>"
+                            <option value="<?php echo esc_attr( $reason_key )?>"
                                 <?php if ( ($contact->fields["reason_paused"]["key"] ?? "") === $reason_key ){echo "selected";}?> >
-                                <?php esc_html_e( $reason_label, 'disciple_tools'  )?>
+                                <?php echo esc_html( $reason_label )?>
                             </option>
                         <?php
                         }
@@ -257,14 +257,14 @@
                 </div>
                 <!-- change reason closed options-->
                 <div class="medium-6 reason-field reason-closed" style="display:<?php echo ($status === "closed" ? "inherit" : "none"); ?>">
-                    <div class="section-subheader"><?php esc_html_e( $contact_fields["reason_closed"]["name"], 'disciple_tools'  ) ?></div>
-                    <select class="status-reason" data-field="<?php esc_html_e( "reason_closed", 'disciple_tools'  ) ?>" >
+                    <div class="section-subheader"><?php echo esc_html( $contact_fields["reason_closed"]["name"] ) ?></div>
+                    <select class="status-reason" data-field="<?php esc_html_e( "reason_closed", 'disciple_tools' ) ?>" >
                         <?php
                         foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $reason_label ) {
                             ?>
-                            <option value="<?php echo esc_attr( $reason_key, 'disciple_tools' )?>"
+                            <option value="<?php echo esc_attr( $reason_key )?>"
                                 <?php if ( ($contact->fields["reason_closed"]["key"] ?? "") === $reason_key ){echo "selected";}?> >
-                                <?php esc_html_e( $reason_label, 'disciple_tools'  )?>
+                                <?php echo esc_html( $reason_label )?>
                             </option>
                             <?php
                         }
@@ -273,14 +273,14 @@
                 </div>
                 <!-- change reason unassignable options-->
                 <div class="medium-6 reason-field reason-unassignable" style="display:<?php echo ($status === "unassignable" ? "inherit" : "none"); ?>">
-                    <div class="section-subheader"><?php esc_html_e( $contact_fields["reason_unassignable"]["name"], 'disciple_tools'  ) ?></div>
-                    <select class="status-reason" data-field="<?php esc_html_e( "reason_unassignable", 'disciple_tools'  ) ?>" >
+                    <div class="section-subheader"><?php echo esc_html( $contact_fields["reason_unassignable"]["name"] ) ?></div>
+                    <select class="status-reason" data-field="<?php esc_html_e( "reason_unassignable", 'disciple_tools' ) ?>" >
                         <?php
                         foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_label ) {
                             ?>
-                            <option value="<?php echo esc_attr( $reason_key, 'disciple_tools' )?>"
+                            <option value="<?php echo esc_attr( $reason_key )?>"
                                 <?php if ( ($contact->fields["reason_unassignable"]["key"] ?? "") === $reason_key ){echo "selected";}?> >
-                                <?php esc_html_e( $reason_label, 'disciple_tools'  )?>
+                                <?php echo esc_html( $reason_label )?>
                             </option>
                             <?php
                         }
@@ -294,9 +294,9 @@
                     <!--Phone-->
                     <!--Email-->
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                        <div class="section-subheader"><?php esc_html_e( $channel_list["phone"]["label"], 'disciple_tools'  ) ?>
+                        <div class="section-subheader"><?php echo esc_html( $channel_list["phone"]["label"] ) ?>
                             <button data-id="phone" class="details-edit add-button">
-                                <img src="<?php esc_html_e( get_template_directory_uri() . '/assets/images/small-add.svg', 'disciple_tools'  ) ?>"/>
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
                             </button>
                         </div>
                         <ul class="phone details-list">
@@ -308,8 +308,8 @@
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                                 ?>
-                                <li class="<?php esc_html_e( $value["key"], 'disciple_tools'  ) ?>">
-                                    <span class="details-text"><?php esc_html_e( $value["value"], 'disciple_tools'  ); ?></span>
+                                <li class="<?php echo esc_html( $value["key"] ) ?>">
+                                    <span class="details-text"><?php echo esc_html( $value["value"] ); ?></span>
                                     <?php dt_contact_details_status( $value["key"], $verified, $invalid );  ?>
                                 </li>
                             <?php } ?>
@@ -332,9 +332,9 @@
                         }?>
                         </ul>
 
-                        <div class="section-subheader"><?php esc_html_e( $channel_list["email"]["label"], 'disciple_tools'  ) ?>
+                        <div class="section-subheader"><?php echo esc_html( $channel_list["email"]["label"] ) ?>
                             <button data-id="email" class="details-edit add-button">
-                                <img src="<?php esc_html_e( get_template_directory_uri() . '/assets/images/small-add.svg', 'disciple_tools'  ) ?>"/>
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
                             </button>
                         </div>
                         <ul class="email details-list">
@@ -346,8 +346,8 @@
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                                 ?>
-                                <li class="<?php esc_html_e( $value["key"], 'disciple_tools'  ) ?>">
-                                    <?php esc_html_e( $value["value"], 'disciple_tools'  );
+                                <li class="<?php echo esc_html( $value["key"] ) ?>">
+                                    <?php echo esc_html( $value["value"] );
                                     dt_contact_details_status( $value["key"], $verified, $invalid ); ?>
                                 </li>
                             <?php }?>
@@ -377,12 +377,12 @@
                             <?php
                             foreach ($contact->fields["locations"] ?? [] as $value){
                                 ?>
-                                <li class="<?php esc_html_e( $value->ID, 'disciple_tools'  )?>">
-                                    <a href="<?php echo esc_url( $value->permalink ) ?>"><?php esc_html_e( $value->post_title, 'disciple_tools'  ) ?></a>
+                                <li class="<?php echo esc_html( $value->ID )?>">
+                                    <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
                                     <button class="details-remove-button connection details-edit"
-                                            data-field="locations" data-id="<?php esc_html_e( $value->ID, 'disciple_tools'  ) ?>"
-                                            data-name="<?php esc_html_e( $value->post_title, 'disciple_tools'  ) ?>">
-                                        <?php esc_html_e( 'Remove', 'disciple_tools' )?>
+                                            data-field="locations" data-id="<?php echo esc_html( $value->ID ) ?>"
+                                            data-name="<?php echo esc_html( $value->post_title ) ?>">
+                                        Remove
                                     </button>
                                 </li>
                             <?php }
@@ -402,7 +402,7 @@
                             <li class="current-assigned">
                                 <?php
                                 if ( isset( $contact->fields["assigned_to"] ) ){
-                                    esc_html_e( $contact->fields["assigned_to"]["display"], 'disciple_tools'  );
+                                    echo esc_html( $contact->fields["assigned_to"]["display"] );
                                 } else {
                                     echo "None Assigned";
                                 }
@@ -415,7 +415,7 @@
                     </div>
                     <!-- Social Media -->
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                        <div class="section-subheader"><?php esc_html_e( 'Social Media', 'disciple_tools'  ) ?></div>
+                        <div class="section-subheader"><?php echo esc_html( 'Social Media' ) ?>/div>
                         <ul class='social details-list'>
                         <?php
                         $number_of_social = 0;
@@ -430,15 +430,15 @@
                                         $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                                         $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                                         ?>
-                                        <li class="<?php esc_html_e( $value['key'], 'disciple_tools'  )?>">
-                                        <?php
-                                        if ( $values && sizeof( $values ) > 0 ) {
-                                            ?>
-                                            <span><?php esc_html_e( $channel_list[ $channel ]["label"], 'disciple_tools'  )?>:</span>
-                                        <?php } ?>
+                                        <li class="<?php echo esc_html( $value['key'] )?>">
+                                            <?php
+                                            if ( $values && sizeof( $values ) > 0 ) {
+                                                ?>
+                                                <span><?php echo esc_html( $channel_list[ $channel ]["label"] )?>:</span>
+                                            <?php } ?>
 
-                                        <span class='social-text'><?php esc_html_e( $value["value"], 'disciple_tools'  ) ?></span>
-                                        <?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
+                                            <span class='social-text'><?php echo esc_html( $value["value"] ) ?></span>
+                                            <?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
                                         </li>
                                         <?php
                                     }
@@ -463,12 +463,12 @@
                                         $verified = isset( $value["verified"] ) && $value["verified"] === true;
                                         $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                                         ?>
-                                        <li class='<?php esc_html_e( $value['key'], 'disciple_tools'  ) ?>'>
+                                        <li class='<?php echo esc_html( $value['key'] ) ?>'>
                                             <?php
                                             if ( $values && sizeof( $values ) > 0 ) {
-                                                ?><span><?php esc_html_e( $channel_list[ $channel ]["label"], 'disciple_tools'  )?></span>
+                                                ?><span><?php echo esc_html( $channel_list[ $channel ]["label"] )?></span>
                                             <?php } ?>
-                                            <input id='<?php esc_html_e( $value["key"], 'disciple_tools'  ) ?>' class='details-edit social-input' value='<?php esc_html_e( $value["value"], 'disciple_tools'  ) ?>'>
+                                            <input id='<?php echo esc_html( $value["key"] ) ?>' class='details-edit social-input' value='<?php echo esc_html( $value["value"] ) ?>'>
                                             <?php dt_contact_details_edit( $value["key"], "social", true ) ?>
                                         </li>
                                         <?php
@@ -485,7 +485,7 @@
                                 <?php
                                 foreach ($channel_list as $key => $channel){
                                     if ($key != "phone" && $key != "email"){
-                                        ?><option value="<?php esc_html_e( $key, 'disciple_tools'  ) ?>"> <?php esc_html_e( $channel["label"], 'disciple_tools'  ) ?></option><?php
+                                        ?><option value="<?php echo esc_html( $key ) ?>"> <?php echo esc_html( $channel["label"] ) ?></option><?php
                                     }
                                 }
                                 ?>
@@ -493,7 +493,7 @@
                             <div class="new-social-media">
                                 <input type="text" id="new-social-media" placeholder="facebook.com/user1">
                                 <button id="add-social-media" class="button small loader">
-                                   <?php esc_html_e( 'Add', 'disciple_tools' )?> 
+                                    <?php esc_html_e( 'Add', 'disciple_tools' ) ?>
                                 </button>
                             </div>
                         </div>
@@ -505,12 +505,12 @@
                             <?php
                             foreach ($contact->fields["people_groups"] ?? [] as $value){
                                 ?>
-                                <li class="<?php esc_html_e( $value->ID, 'disciple_tools'  )?>">
-                                    <a href="<?php echo esc_url( $value->permalink ) ?>"><?php esc_html_e( $value->post_title, 'disciple_tools'  ) ?></a>
+                                <li class="<?php echo esc_html( $value->ID )?>">
+                                    <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
                                     <button class="details-remove-button connection details-edit"
-                                            data-field="people_groups" data-id="<?php esc_html_e( $value->ID, 'disciple_tools'  ) ?>"
-                                            data-name="<?php esc_html_e( $value->post_title, 'disciple_tools'  ) ?>">
-                                        <?php esc_html_e( 'Remove', 'disciple_tools' )?>
+                                            data-field="people_groups" data-id="<?php echo esc_html( $value->ID ) ?>"
+                                            data-name="<?php echo esc_html( $value->post_title ) ?>">
+                                        Remove
                                     </button>
                                 </li>
                             <?php }
@@ -530,7 +530,7 @@
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
                         <div class="section-subheader"><?php esc_html_e( 'Address', 'disciple_tools' )?>
                             <button id="add-new-address" class="details-edit">
-                                <img src="<?php esc_html_e( get_template_directory_uri() . '/assets/images/small-add.svg', 'disciple_tools'  ) ?>"/>
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
                             </button>
                         </div>
                         <ul class="address details-list">
@@ -542,8 +542,8 @@
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                                 ?>
-                                <li class="<?php esc_html_e( $value["key"], 'disciple_tools'  ) ?> address-row">
-                                    <div class="address-text"><?php esc_html_e( $value["value"], 'disciple_tools'  );?></div><?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
+                                <li class="<?php echo esc_html( $value["key"] ) ?> address-row">
+                                    <div class="address-text"><?php echo esc_html( $value["value"] );?></div><?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
                                 </li>
                             <?php } ?>
                         </ul>
@@ -568,16 +568,16 @@
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
                         <div class="section-subheader"><?php esc_html_e( 'Age', 'disciple_tools' )?>:</div>
                         <ul class="details-list">
-                            <li class="current-age"><?php esc_html_e( $contact->fields['age']['label'] ?? "No age set", 'disciple_tools'  ) ?></li>
+                            <li class="current-age"><?php echo esc_html( $contact->fields['age']['label'] ?? "No age set" ) ?></li>
                         </ul>
                         <select id="age" class="details-edit select-field">
                             <?php
                             foreach ( $contact_fields["age"]["default"] as $age_key => $age_value ) {
                                 if ( isset( $contact->fields["age"] ) &&
                                     $contact->fields["age"]["key"] === $age_key){
-                                        echo '<option value="'. esc_html( $age_key, 'disciple_tools'  ) . '" selected>' . esc_html( $age_value, 'disciple_tools'  ) . '</option>';
+                                    echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
                                 } else {
-                                    echo '<option value="'. esc_html( $age_key, 'disciple_tools'  ) . '">' . esc_html( $age_value, 'disciple_tools'  ). '</option>';
+                                    echo '<option value="'. esc_html( $age_key ) . '">' . esc_html( $age_value ). '</option>';
 
                                 }
                             }
@@ -587,16 +587,16 @@
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
                         <div class="section-subheader"><?php esc_html_e( 'Gender', 'disciple_tools' )?>:</div>
                         <ul class="details-list">
-                            <li class="current-gender"><?php esc_html_e( $contact->fields['gender']['label'] ?? "No gender set", 'disciple_tools'  ) ?></li>
+                            <li class="current-gender"><?php echo esc_html( $contact->fields['gender']['label'] ?? "No gender set" ) ?></li>
                         </ul>
                         <select id="gender" class="details-edit select-field">
                             <?php
                             foreach ( $contact_fields["gender"]["default"] as $gender_key => $gender_value ) {
                                 if ( isset( $contact->fields["gender"] ) &&
                                     $contact->fields["gender"]["key"] === $gender_key){
-                                        echo '<option value="'. esc_html( $gender_key, 'disciple_tools'  ) . '" selected>' . esc_html( $gender_value, 'disciple_tools'  ) . '</option>';
+                                    echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
                                 } else {
-                                    echo '<option value="'. esc_html( $gender_key, 'disciple_tools'  ) . '">' . esc_html( $gender_value, 'disciple_tools'  ). '</option>';
+                                    echo '<option value="'. esc_html( $gender_key ) . '">' . esc_html( $gender_value ). '</option>';
                                 }
                             }
                             ?>
@@ -608,7 +608,7 @@
                             <li class="current-sources">
                                 <?php
                                 if (isset( $contact->fields["sources"] )) {
-                                    esc_html_e( $contact->fields["sources"]["label"], 'disciple_tools'  );
+                                    echo esc_html( $contact->fields["sources"]["label"] );
                                 } else {
                                     esc_html_e( "No source set" );
                                 }
@@ -621,9 +621,9 @@
                             foreach ( $custom_lists["sources"] as $sources_key => $sources_value ) {
                                 if ( isset( $contact->fields["sources"] ) &&
                                     $contact->fields["sources"]["key"] === $sources_key){
-                                        echo '<option value="'. esc_html( $sources_key, 'disciple_tools'  ) . '" selected>' . esc_html( $sources_value["label"], 'disciple_tools'  ) . '</option>';
+                                    echo '<option value="'. esc_html( $sources_key ) . '" selected>' . esc_html( $sources_value["label"] ) . '</option>';
                                 } else {
-                                    echo '<option value="'. esc_html( $sources_key, 'disciple_tools'  ) . '">' . esc_html( $sources_value["label"], 'disciple_tools'  ). '</option>';
+                                    echo '<option value="'. esc_html( $sources_key ) . '">' . esc_html( $sources_value["label"] ). '</option>';
                                 }
                             }
                             ?>
@@ -633,8 +633,8 @@
 
                 <div class="row show-more-button" style="text-align: center" >
                     <button class="clear show-button"  href="#"><?php esc_html_e( 'Show', 'disciple_tools' )?>
-                        <span class="show-content show-more"><?php esc_html_e( 'more', 'disciple_tools' )?> <img src="<?php esc_html_e( get_template_directory_uri() . '/assets/images/chevron_down.svg', 'disciple_tools'  )?>"/></span>
-                        <span class="show-content" style="display:none;"><?php esc_html_e( 'less', 'disciple_tools' )?> <img src="<?php esc_html_e( get_template_directory_uri() . '/assets/images/chevron_up.svg', 'disciple_tools'  )?>"></span>
+                        <span class="show-content show-more"><?php esc_html_e( 'more', 'disciple_tools' )?> <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_down.svg' )?>"/></span>
+                        <span class="show-content" style="display:none;"><?php esc_html_e( 'less', 'disciple_tools' )?> <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_up.svg' )?>"></span>
                     </button>
                 </div>
             </div>

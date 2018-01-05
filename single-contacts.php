@@ -41,7 +41,7 @@ declare( strict_types=1 );
 
                         <div style="text-align: center">
                             <a class="button small" href="#comment-activity-section" style="margin-bottom: 0">
-                            	<?php esc_html_e( 'View Comments', 'disciple_tools' )?>
+                                <?php esc_html_e( 'View Comments', 'disciple_tools' ) ?>
                             </a>
                         </div>
                     </div>
@@ -60,12 +60,10 @@ declare( strict_types=1 );
                             foreach ( $contact->fields["groups"] as $value ) {
                                 $ids[] = $value->ID;
                                 ?>
-                                <li class="<?php esc_html_e( $value->ID, 'disciple_tools' )?>">
-                                    <a href="<?php esc_html_e( $value->permalink, 'disciple_tools' )?>">
-                                    	<?php esc_html_e( $value->post_title, 'disciple_tools' )?>
-                                	</a>
+                                <li class="<?php echo esc_html( $value->ID ) ?>">
+                                    <a href="<?php echo esc_html( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
                                     <button class="details-remove-button connections-edit"
-                                            onclick="remove_item( <?php esc_html_e( get_the_ID(), 'disciple_tools' )?>,  'groups', <?php esc_html_e( $value->ID, 'disciple_tools' )?> )">
+                                            onclick="remove_item( <?php echo esc_html( get_the_ID() ) ?>,  'groups', <?php echo esc_html( $value->ID ) ?> )">
                                         <?php esc_html_e( 'Remove', 'disciple_tools' )?>
                                     </button>
                                 </li>
@@ -90,26 +88,26 @@ declare( strict_types=1 );
                             ?>
 
 
-                            <div class="section-subheader"><?php esc_html_e( $connection_label, 'disciple_tools' )?></div>
-                            <ul class="<?php esc_html_e( $connection, 'disciple_tools' )?>-list">
+                            <div class="section-subheader"><?php echo esc_html( $connection_label ) ?></div>
+                            <ul class="<?php echo esc_html( $connection ) ?>-list">
                                 <?php
                                 $ids = [];
                                 foreach ( $contact->fields[ $connection ] as $value ) {
                                     $ids[] = $value->ID;
                                     ?>
-                                    <li class="<?php esc_html_e( $value->ID, 'disciple_tools' ) ?>">
-                                        <a href="<?php esc_html_e( $value->permalink, 'disciple_tools' ) ?>"><?php esc_html_e( $value->post_title, 'disciple_tools' ) ?></a>
+                                    <li class="<?php echo esc_html( $value->ID ) ?>">
+                                        <a href="<?php echo esc_html( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
                                         <button class="details-remove-button connections-edit"
-                                                onclick="remove_item(<?php esc_html_e( get_the_ID(), 'disciple_tools' )?>,  '<?php esc_html_e( $connection, 'disciple_tools' )?>', <?php esc_html_e( $value->ID, 'disciple_tools' )?>)">
+                                                onclick="remove_item(<?php echo esc_html( get_the_ID() ) ?>,  '<?php echo esc_html( $connection ) ?>', <?php echo esc_html( $value->ID ) ?>)">
                                             <?php esc_html_e( 'Remove', 'disciple_tools' )?>
                                         </button>
                                     </li>
                                 <?php } ?>
                             </ul>
                             <div class="connections-edit">
-                                <label for="<?php esc_html_e( $connection, 'disciple_tools' )?>"><?php esc_html_e( 'Add', 'disciple_tools' )?> <?php esc_html_e( $connection_label, 'disciple_tools' )?>
+                                <label for="<?php echo esc_html( $connection ) ?>">Add <?php echo esc_html( $connection_label ) ?>
                                     :</label>
-                                <div id="<?php esc_html_e( $connection, 'disciple_tools' )?>" class="scrollable-dropdown-menu">
+                                <div id="<?php echo esc_html( $connection ) ?>" class="scrollable-dropdown-menu">
                                     <input class="typeahead" type="text"
                                            placeholder="Type to search contacts">
                                 </div>
@@ -131,9 +129,9 @@ declare( strict_types=1 );
                         foreach ($contact_fields["seeker_path"]["default"] as $key => $value){
                             if ( $contact->fields["seeker_path"]["key"] === $key ) {
                                 ?>
-                                <option value="<?php esc_html_e( $key, 'disciple_tools' )?>" selected><?php esc_html_e( $value, 'disciple_tools' )?></option>
+                                <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
                             <?php } else { ?>
-                                <option value="<?php esc_html_e( $key, 'disciple_tools' )?>"><?php esc_html_e( $value, 'disciple_tools' )?></option>
+                                <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
                             <?php }
                         };
                         $keys = array_keys( $contact_fields["seeker_path"]["default"] );
@@ -142,7 +140,7 @@ declare( strict_types=1 );
                         ?>
                         </select>
                         <div class="progress" role="progressbar" tabindex="0" aria-valuenow="<?php echo 4 ?>" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
-                          <div id="seeker-progress" class="progress-meter" style="width: <?php esc_html_e( $percentage, 'disciple_tools' )?>%"></div>
+                            <div id="seeker-progress" class="progress-meter" style="width: <?php echo esc_html( $percentage ) ?>%"></div>
                         </div>
 
                         <div class="section-subheader"><?php esc_html_e( 'Faith Milestones', 'disciple_tools' )?></div>
@@ -154,10 +152,10 @@ declare( strict_types=1 );
                                     $class = ( isset( $contact->fields[ $field ] ) && $contact->fields[ $field ]['key'] === 'yes' ) ?
                                         "selected-select-button" : "empty-select-button";
                                 ?>
-                                    <button onclick="save_seeker_milestones( <?php esc_html_e( get_the_ID(), 'disciple_tools' )?> , '<?php esc_html_e( $field, 'disciple_tools' )?>')"
-                                            id="<?php esc_html_e( $field, 'disciple_tools' )?>"
-                                            class="<?php esc_html_e( $class, 'disciple_tools' )?> select-button button ">
-                                        <?php esc_html_e( $contact_fields[ $field ]["name"], 'disciple_tools' )?>
+                                    <button onclick="save_seeker_milestones( <?php echo esc_html( get_the_ID() ) ?> , '<?php echo esc_html( $field ) ?>')"
+                                            id="<?php echo esc_html( $field ) ?>"
+                                            class="<?php echo esc_html( $class ) ?> select-button button ">
+                                        <?php echo esc_html( $contact_fields[ $field ]["name"] ) ?>
                                     </button>
                                 <?php }?>
                             <?php endforeach; ?>
@@ -165,18 +163,18 @@ declare( strict_types=1 );
 
                         <div class="baptism_date">
                             <div class="section-subheader"><?php esc_html_e( 'Baptism Date', 'disciple_tools' )?></div>
-                            <div class="baptism_date"><input type="text" data-date-format='yy-mm-dd' value="<?php esc_html_e( $contact->fields["baptism_date"] ?? '', 'disciple_tools' )?>" id="baptism-date-picker"></div>
+                            <div class="baptism_date"><input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact->fields["baptism_date"] ?? '' )?>" id="baptism-date-picker"></div>
                         </div>
 
-                        <div class="section-subheader"><?php esc_html_e( $contact_fields["bible_mailing"]["name"], 'disciple_tools' )?></div>
+                        <div class="section-subheader"><?php echo esc_html( $contact_fields["bible_mailing"]["name"] ) ?></div>
                         <select id="bible_mailing" class="select-field">
                             <?php
                             foreach ( $contact_fields["bible_mailing"]["default"] as $key => $value ) {
                                 if ( isset( $contact->fields["bible_mailing"] ) &&
                                     $contact->fields["bible_mailing"]["key"] === $key ){
-                                        echo '<option value="'. esc_html( $key, 'disciple_tools' ) . '" selected>' . esc_html( $value, 'disciple_tools' ) . '</option>';
+                                    echo '<option value="'. esc_html( $key ) . '" selected>' . esc_html( $value ) . '</option>';
                                 } else {
-                                    echo '<option value="'. esc_html( $key, 'disciple_tools' ) . '">' . esc_html( $value, 'disciple_tools' ). '</option>';
+                                    echo '<option value="'. esc_html( $key ) . '">' . esc_html( $value ). '</option>';
                                 }
                             }
                             ?>
@@ -258,8 +256,8 @@ declare( strict_types=1 );
         <ul id="shared-with-list">
             <?php
             foreach ( $shared_with as $user ) { ?>
-                <li class="<?php esc_html_e( $user['user_id'], 'disciple_tools' )?>"> <?php esc_html_e( $user['display_name'], 'disciple_tools' )?>
-                    <button class="details-remove-button share" data-id="<?php echo esc_attr( $user['user_id'], 'disciple_tools' ); ?>">
+                <li class="<?php echo esc_html( $user['user_id'] ) ?>"> <?php echo esc_html( $user['display_name'] )?>
+                    <button class="details-remove-button share" data-id="<?php echo esc_attr( $user['user_id'] ); ?>">
                         <?php esc_html_e( 'Unshare', 'disciple_tools' )?>
                     </button>
                 </li>
@@ -271,7 +269,7 @@ declare( strict_types=1 );
                 <select class="share-with-select" id="share-with">
                     <option value="0"></option>
                     <?php foreach ( $users as $user ) { ?>
-                        <option value="<?php esc_html_e( $user["ID"], 'disciple_tools' )?>"><?php esc_html_e( $user['name'], 'disciple_tools' )?></option>
+                        <option value="<?php echo esc_html( $user["ID"] ) ?>"><?php echo esc_html( $user['name'] ) ?></option>
                     <?php } ?>
                 </select>
             </label>

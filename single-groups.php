@@ -50,10 +50,10 @@ dt_print_breadcrumbs(
                             $ids[] = $member->ID;
                             ?>
                             <li class="<?php echo esc_attr( $member->ID, 'disciple_tools' ); ?>">
-                                <a href="<?php echo esc_url( $member->permalink ); ?>"><?php esc_html_e( $member->post_title, 'disciple_tools' )?></a>
+                                <a href="<?php echo esc_url( $member->permalink ); ?>"><?php echo esc_html( $member->post_title )?></a>
                                 <button class="details-remove-button members-edit"
                                         data-field="members" data-id="<?php echo esc_attr( $member->ID, 'disciple_tools' ); ?>"
-                                        data-name="<?php esc_html_e( $member->post_title, 'disciple_tools' )?>">
+                                        data-name="<?php echo esc_html( $member->post_title )?>">
                                     <?php esc_html_e( 'Remove', 'disciple_tools' )?>
                                 </button>
                             </li>
@@ -173,7 +173,7 @@ dt_print_breadcrumbs(
     <ul id="shared-with-list">
         <?php
         foreach ( $shared_with as $user) { ?>
-            <li class="<?php echo esc_attr( $user['user_id'], 'disciple_tools' ); ?>"> <?php esc_html_e( $user['display_name'], 'disciple_tools' )?>
+            <li class="<?php echo esc_attr( $user['user_id'], 'disciple_tools' ); ?>"> <?php echo esc_html( $user['display_name'] )?>
                 <button class="details-remove-button share" data-id="<?php echo esc_attr( $user['user_id'], 'disciple_tools' ); ?>">
                     <?php esc_html_e( 'Unshare', 'disciple_tools' )?>
                 </button>
@@ -186,7 +186,7 @@ dt_print_breadcrumbs(
             <select class="share-with-select" id="share-with">
                 <option value="0"></option>
                 <?php foreach ( $users as $user ) { ?>
-                    <option value="<?php esc_html_e( $user["ID"], 'disciple_tools' )?>"><?php esc_html_e( $user['name'], 'disciple_tools' )?></option>
+                    <option value="<?php echo esc_html( $user["ID"] )?>"><?php echo esc_html( $user['name'] )?></option>
                 <?php } ?>
             </select>
         </label>

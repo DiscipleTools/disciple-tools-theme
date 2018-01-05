@@ -41,7 +41,7 @@ dt_print_breadcrumbs(
                     <select name="sources" required aria-describedby="source-help-text">
                         <?php foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $source_key => $source ): ?>
                             <option value="<?php echo esc_attr( $source_key, 'disciple_tools' ); ?>">
-                                <?php esc_html_e( $source['label'], 'disciple_tools' )?>
+                                <?php echo esc_html( $source['label'] )?>
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -53,7 +53,7 @@ dt_print_breadcrumbs(
                     <select name="location">
                         <option value=""><?php esc_html_e( "(Not set)", "disciple_tools" ); ?></option>
                         <?php foreach ( Disciple_Tools_Locations::get_locations() as $location_post ): ?>
-                            <option value="<?php echo intval( $location_post->ID ); ?>"><?php esc_html_e( $location_post->post_title, 'disciple_tools' )?></option>
+                            <option value="<?php echo intval( $location_post->ID ); ?>"><?php echo esc_html( $location_post->post_title )?></option>
                         <?php endforeach; ?>
                     </select>
                 </label>
