@@ -150,8 +150,16 @@
       language: {
         search: "",
         searchPlaceholder: wpApiSettings.txt_search,
+        paginate: {
+          "next": wpApiSettings.txt_next,
+          "previous": wpApiSettings.txt_previous
+        },
+        info: wpApiSettings.txt_info,
+        infoEmpty: wpApiSettings.txt_infoEmpty,
+        infoFiltered: wpApiSettings.txt_infoFiltered,
+        zeroRecords: wpApiSettings.txt_zeroRecords
       },
-      sDom: '<"datatable-first-line"fir<"js-list-toolbar">>tlp<"clearfix">',
+      sDom: '<"  datatable-first-line"fir<"js-list-toolbar">>tlp<"clearfix">',
         /* <"datatable-firstline": div which contains:
          *     f: filtering input
          *     i: information

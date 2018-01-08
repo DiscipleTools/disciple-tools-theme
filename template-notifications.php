@@ -11,7 +11,7 @@ $dt_user = wp_get_current_user(); // query to get new notifications
 <?php
 dt_print_breadcrumbs(
     null,
-    __( "Notifications" ),
+    __( "Notifications", 'disciple_tools' ),
     false
 );
 ?>

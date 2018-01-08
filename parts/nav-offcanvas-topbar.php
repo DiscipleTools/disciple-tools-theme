@@ -44,7 +44,11 @@
         <div class="top-bar-right">
             <ul class="dropdown menu" data-dropdown-menu>
                 <li><a href="<?php echo esc_url( home_url( '/' ) ) . 'settings/'; ?>"><?php echo esc_html( wp_get_current_user()->display_name ); ?></a></li>
-                <li><a href="<?php echo esc_url( home_url( '/notifications' ) ); ?>"><span class="badge alert notification-count" style="display:none;">&nbsp;</span> Notifications</a></li>
+                <li>
+                    <a href="<?php echo esc_url( home_url( '/notifications' ) ); ?>"><span class="badge alert notification-count" style="display:none;">
+                        </span> <?php esc_html_e( "Notifications", "disciple_tools" ) ?>
+                    </a>
+                </li>
                 <li class="has-submenu center-items">
                     <button>
                         <img src="<?php echo esc_url( get_template_directory_uri() ) . "/assets/images/settings.svg" ?>">

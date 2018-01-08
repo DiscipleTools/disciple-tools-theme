@@ -50,7 +50,8 @@ declare( strict_types=1 );
 
                 <section id="relationships" class="xlarge-6 large-12 medium-6 cell">
                     <div class="bordered-box last-typeahead-in-section">
-                        <button class=" float-right" onclick="edit_connections()"><i class="fi-pencil"></i> Edit
+                        <button class=" float-right" onclick="edit_connections()"><i class="fi-pencil"></i>
+                            <?php esc_html_e( "Edit", 'disciple_tools' ) ?>
                         </button>
                         <h3 class="section-header"><?php esc_html_e( 'Connections', 'disciple_tools' )?></h3>
                         <div class="section-subheader"><?php esc_html_e( 'Groups', 'disciple_tools' )?></div>
@@ -79,10 +80,10 @@ declare( strict_types=1 );
 
                         <?php
                         $connections = [
-                            "baptized_by" => "Baptized By",
-                            "baptized" => "Baptized",
-                            "coached_by" => "Coached By",
-                            "coaching" => "Coaching"
+                            "baptized_by" => esc_html__( "Baptized By", 'disciple_tools' ),
+                            "baptized" => esc_html__( "Baptized", 'disciple_tools' ),
+                            "coached_by" => esc_html__( "Coached By", 'disciple_tools' ),
+                            "coaching" => esc_html__( "Coaching", 'disciple_tools' )
                         ];
                         foreach ( $connections as $connection => $connection_label ) {
                             ?>
@@ -105,8 +106,7 @@ declare( strict_types=1 );
                                 <?php } ?>
                             </ul>
                             <div class="connections-edit">
-                                <label for="<?php echo esc_html( $connection ) ?>">Add <?php echo esc_html( $connection_label ) ?>
-                                    :</label>
+                                <label for="<?php echo esc_html( $connection ) ?>"><?php esc_html_e( "Add", 'disciple_tools' ) ?> <?php echo esc_html( $connection_label ) ?>:</label>
                                 <div id="<?php echo esc_html( $connection ) ?>" class="scrollable-dropdown-menu">
                                     <input class="typeahead" type="text"
                                            placeholder="Type to search contacts">

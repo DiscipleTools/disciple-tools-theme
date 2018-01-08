@@ -463,11 +463,11 @@ jQuery(document).ready(function($) {
         if (fieldId === 'locations'){
           // locations.add([{ID:itemId, name: $(this).data('name')}])
           if (listItems.length === 0){
-            $(`.${fieldId}-list`).append('<li id="no-location">No location set</li>')
+            $(`.${fieldId}-list`).append(`<li id="no-location">${contactsDetailsWpApiSettings.translations["no-location-set"]}</li>`)
           }
         } else if ( fieldId === "people_groups"){
           if (listItems.length === 0){
-            $(`.${fieldId}-list`).append('<li id="no-location">No people group set</li>')
+            $(`.${fieldId}-list`).append(`<li id="no-location">${contactsDetailsWpApiSettings.translations["no-ppl-group-set"]}</li>`)
           }
         }
       }).catch(err=>{
@@ -483,7 +483,7 @@ jQuery(document).ready(function($) {
         $(`.${fieldId}`).remove()
         let listItems = $(`.${fieldType}-list li`)
         if (listItems.length === 0){
-          $(`.${fieldType}.details-list`).append(`<li id="no-${fieldType}">No ${fieldType} set</li>`)
+          $(`.${fieldType}.details-list`).append(`<li id="no-${fieldType}">${contactsDetailsWpApiSettings.translations["not-set"][fieldType]}</li>`)
         }
       }).catch(err=>{
         console.log(err)
@@ -692,28 +692,28 @@ jQuery(document).ready(function($) {
               <button class='details-status-button field-status verify'
                       data-status='valid'
                       data-id='${field_id}'>
-                  Valid
+                  ${contactsDetailsWpApiSettings.translations.valid}
               </button>
             </li>
             <li>
               <button class='details-status-button field-status invalid'
                       data-status="invalid"
                       data-id="${field_id}">
-                  Invalid
+                  ${contactsDetailsWpApiSettings.translations.invalid}
               </button>
             </li>
             <li>
               <button class='details-status-button field-status'
                       data-status="reset"
                       data-id='${field_id}'>
-                  Unconfirmed
+                  ${contactsDetailsWpApiSettings.translations.unconfirmed}
               </button>
             </li>
             <li>
               <button class='details-remove-button delete-method'
                       data-field='${field_type}'
                       data-id='${field_id}'>
-                      Delete item
+                      ${contactsDetailsWpApiSettings.translations["delete"]}
               <button>
             </li>
           </ul>

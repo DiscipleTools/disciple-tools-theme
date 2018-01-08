@@ -348,27 +348,27 @@ jQuery(document).ready(function($) {
               <button class='details-status-button field-status verify'
                       data-status='valid'
                       data-id='${field_id}'>
-                  Valid
+                  ${wpApiGroupsSettings.translations.valid}
               </button>
             </li>
             <li>
               <button class='details-status-button field-status invalid'
                       data-status="invalid"
                       data-id="${field_id}">
-                  Invalid
+                  ${wpApiGroupsSettings.translations.invalid}
               </button>
             </li>
             <li>
               <button class='details-status-button field-status'
                       data-status="reset"
                       data-id='${field_id}'>
-                  Unconfirmed
+                  ${wpApiGroupsSettings.translations.unconfirmed}
               </button>
             </li>
             <li>
               <button class='details-remove-button delete-method'
                       data-id='${field_id}'>
-                      Delete item
+                ${wpApiGroupsSettings.translations.delete}
               <button>
             </li>
           </ul>

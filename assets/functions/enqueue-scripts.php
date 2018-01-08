@@ -121,6 +121,22 @@ function dt_site_scripts() {
         )
     );
 
+
+    $translations = [
+        "not-set" => [
+            "location" => __( 'No location set', 'disciple_tools' ),
+            "people-group" => __( 'No people group set', 'disciple_tools' ),
+            "email" => __( 'No email set', 'disciple_tools' ),
+            "phone" => __( 'No phone set', 'disciple_tools' ),
+            "address" => __( 'No address set', 'disciple_tools' ),
+            "social" => __( 'None set', 'disciple_tools' )
+        ],
+        "valid" => __( 'Valid', 'disciple_tools' ),
+        "invalid" => __( 'Invalid', 'disciple_tools' ),
+        "unconfirmed" => __( 'Unconfirmed', 'disciple_tools' ),
+        'delete' => __( 'Delete item', 'disciple_tools' ),
+        'email' => __( 'email' )
+    ];
     if (is_singular( "contacts" )){
         dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
         $contact = Disciple_Tools_Contacts::get_contact( get_the_ID() );
@@ -133,7 +149,8 @@ function dt_site_scripts() {
                 'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
                 'channels' => Disciple_Tools_Contacts::get_channel_list(),
                 'template_dir' => get_template_directory_uri(),
-                'txt_created_contact' => __( "Created contact at {}" )
+                'txt_created_contact' => __( "Created contact at {}" ),
+                'translations' => $translations
             )
         );
     }
@@ -149,7 +166,8 @@ function dt_site_scripts() {
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'template_dir' => get_template_directory_uri(),
-                'txt_created_group' => __( "Created group at {}" )
+                'txt_created_group' => __( "Created group at {}" ),
+                'translations' => $translations
             )
         );
     }
@@ -191,7 +209,7 @@ function dt_site_scripts() {
     }
 
     if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )) {
-        dt_theme_enqueue_script( 'data-tables', 'dependencies/DataTables/datatables.min.js',  array( 'jquery' ) );
+        dt_theme_enqueue_script( 'data-tables', 'dependencies/DataTables/datatables.min.js', array( 'jquery' ) );
         dt_theme_enqueue_style( 'data-tables', 'dependencies/DataTables/datatables.min.css', array() );
         dt_theme_enqueue_script( 'list-js', 'assets/js/list.js', array( 'jquery', 'lodash', 'data-tables', 'site-js' ), true );
         $post_type = null;
@@ -203,11 +221,19 @@ function dt_site_scripts() {
         wp_localize_script( 'list-js', 'wpApiSettings', array(
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
-            'txt_error' => __( 'An error occurred' ),
-            'txt_no_filters' => __( 'No filters' ),
-            'txt_yes' => __( 'Yes' ),
-            'txt_no' => __( 'No' ),
-            'txt_search' => __( 'Search' ),
+            'txt_error' => __( 'An error occurred', 'disciple_tools' ),
+            'txt_no_filters' => __( 'No filters', 'disciple_tools' ),
+            'txt_yes' => __( 'Yes', 'disciple_tools' ),
+            'txt_no' => __( 'No', 'disciple_tools' ),
+            'txt_search' => __( 'Search', 'disciple_tools' ),
+            'txt_first' => __( 'First', 'disciple_tools' ),
+            'txt_last' => __( 'Last', 'disciple_tools' ),
+            'txt_next' => __( 'Next', 'disciple_tools' ),
+            'txt_previous' => __( 'Previous', 'disciple_tools' ),
+            'txt_zeroRecords' => __( 'No matching records found', 'disciple_tools' ),
+            'txt_info' => __( 'Showing _START_ to _END_ of _TOTAL_ entries', 'disciple_tools' ),
+            'txt_infoEmpty' => __( 'Showing 0 to 0 of 0 entries', 'disciple_tools' ),
+            'txt_infoFiltered' => __( '(filtered from _MAX_ total entries)', 'disciple_tools' ),
             'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
             'groups_custom_fields_settings' => Disciple_Tools_Groups_Post_type::instance()->get_custom_fields_settings(),
             'template_directory_uri' => get_template_directory_uri(),
