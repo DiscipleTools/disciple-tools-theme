@@ -2,6 +2,9 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * Class Disciple_Tools_Update_Needed
+ */
 class Disciple_Tools_Update_Needed {
 
     public function __construct() {

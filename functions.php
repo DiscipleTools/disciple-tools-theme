@@ -135,26 +135,23 @@ class Disciple_Tools_Theme {
     public function __construct() {
 
         // Foundations theme configurations
-        require_once( get_template_directory().'/assets/functions/theme-support.php' ); // Theme support options
-        require_once( get_template_directory().'/assets/functions/cleanup.php' ); // WP Head and other cleanup functions
-        require_once( get_template_directory().'/assets/functions/enqueue-scripts.php' ); // Register scripts and stylesheets
-        require_once( get_template_directory().'/assets/functions/sidebar.php' ); // Register sidebars/widget areas
-        require_once( get_template_directory().'/assets/functions/comments.php' ); // Makes WordPress comments suck less
-        require_once( get_template_directory().'/assets/functions/page-navi.php' ); // Replace 'older/newer' post links with numbered navigation
-        require_once( get_template_directory().'/assets/translation/translation.php' ); // Adds support for multiple languages
+        require_once( get_template_directory().'/dt-assets/functions/theme-support.php' ); // Theme support options
+        require_once( get_template_directory().'/dt-assets/functions/cleanup.php' ); // WP Head and other cleanup functions
+        require_once( get_template_directory().'/dt-assets/functions/enqueue-scripts.php' ); // Register scripts and stylesheets
+        require_once( get_template_directory().'/dt-assets/functions/sidebar.php' ); // Register sidebars/widget areas
+        require_once( get_template_directory().'/dt-assets/functions/comments.php' ); // Makes WordPress comments suck less
+        require_once( get_template_directory().'/dt-assets/functions/page-navi.php' ); // Replace 'older/newer' post links with numbered navigation
+        require_once( get_template_directory().'/dt-assets/translation/translation.php' ); // Adds support for multiple languages
 
         // Adds Disciple Tools Theme General Functions
-        require_once( get_template_directory().'/assets/functions/private-site.php' ); // Sets site to private
-        require_once( get_template_directory().'/assets/functions/login.php' ); // Customize the WordPress login menu
-        require_once( get_template_directory().'/assets/functions/menu.php' ); // Register menus and menu walkers
-        require_once( get_template_directory().'/assets/functions/breadcrumbs.php' ); // Breadcrumbs bar
-
-        // Adds Page Specific Scripts
-        require_once( get_template_directory().'/assets/functions/page-front-page.php' );
+        require_once( get_template_directory().'/dt-assets/functions/private-site.php' ); // Sets site to private
+        require_once( get_template_directory().'/dt-assets/functions/login.php' ); // Customize the WordPress login menu
+        require_once( get_template_directory().'/dt-assets/functions/menu.php' ); // Register menus and menu walkers
+        require_once( get_template_directory().'/dt-assets/functions/breadcrumbs.php' ); // Breadcrumbs bar
 
         // Load plugin library that "requires plugins" at activation
-        require_once( get_template_directory().'/update/config-required-plugins.php' );
-        require_once( get_template_directory().'/update/class-tgm-plugin-activation.php' );
+        require_once( get_template_directory().'/dt-update/config-required-plugins.php' );
+        require_once( get_template_directory().'/dt-update/class-tgm-plugin-activation.php' );
 
 
         // Catch `metrics` URL and load metrics template.
@@ -183,9 +180,9 @@ class Disciple_Tools_Theme {
 
         // Checker for new version and updater service.
         if ( ! class_exists( 'Puc_v4_Factory' ) ) {
-            require 'update/plugin-update-checker/plugin-update-checker.php';
+            require( get_template_directory().'/dt-update/plugin-update-checker/plugin-update-checker.php' );
         }
-        $my_update_checker = Puc_v4_Factory::buildUpdateChecker(
+        Puc_v4_Factory::buildUpdateChecker(
             'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-theme-version-control.json',
             __FILE__,
             'disciple-tools-theme'
@@ -213,6 +210,16 @@ function dt_theme() {
 dt_theme();
 
 
+/**
+ * Route Front Page depending on login role
+ */
+function dt_route_front_page() {
+    if (user_can( get_current_user_id(), 'access_contacts' )) {
+        wp_safe_redirect( home_url( '/contacts' ) );
+    } else {
+        wp_safe_redirect( home_url( '/settings' ) );
+    }
+}
 
 
 
@@ -591,46 +598,6 @@ class Disciple_Tools
         require_once( get_template_directory().'/dt-people-groups/people-groups.php' );
         require_once( get_template_directory().'/dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
         $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();
-
-        /**
-         * dt-assetmapping
-         */
-        require_once( get_template_directory().'/dt-assetmapping/assetmapping-post-type.php' );
-        $this->post_types['assetmapping'] = Disciple_Tools_Assetmapping_Post_Type::instance();
-        require_once( get_template_directory().'/dt-assetmapping/assetmapping-template.php' );
-        require_once( get_template_directory().'/dt-assetmapping/assetmapping.php' );
-        require_once( get_template_directory().'/dt-assetmapping/assetmapping-endpoints.php' ); // builds rest endpoints
-        $this->endpoints['assetmapping'] = new Disciple_Tools_Assetmapping_Endpoints();
-
-        /**
-         * dt-resources
-         */
-        require_once( get_template_directory().'/dt-resources/resources-post-type.php' );
-        $this->post_types['resources'] = Disciple_Tools_Resources_Post_Type::instance();
-        require_once( get_template_directory().'/dt-resources/resources-template.php' );
-        require_once( get_template_directory().'/dt-resources/resources.php' );
-        require_once( get_template_directory().'/dt-resources/resources-endpoints.php' ); // builds rest endpoints
-        $this->endpoints['resources'] = new Disciple_Tools_Resources_Endpoints();
-
-        /**
-         * dt-prayer
-         */
-        require_once( get_template_directory().'/dt-prayer/prayer-post-type.php' );
-        $this->post_types['prayer'] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), [ 'menu_icon' => dt_svg_icon() ] );
-        require_once( get_template_directory().'/dt-prayer/prayer-template.php' );
-        require_once( get_template_directory().'/dt-prayer/prayer.php' );
-        require_once( get_template_directory().'/dt-prayer/prayer-endpoints.php' ); // builds rest endpoints
-        $this->endpoints['prayer'] = new Disciple_Tools_Prayer_Endpoints();
-
-        /**
-         * dt-progress
-         */
-        require_once( get_template_directory().'/dt-progress/progress-post-type.php' );
-        $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), [ 'menu_icon' => dt_svg_icon() ] );
-        require_once( get_template_directory().'/dt-progress/progress.php' );
-        require_once( get_template_directory().'/dt-progress/progress-template.php' );
-        require_once( get_template_directory().'/dt-progress/progress-endpoints.php' );
-        $this->endpoints['progress'] = new Disciple_Tools_Progress_Endpoints();
 
         /**
          * dt-metrics
