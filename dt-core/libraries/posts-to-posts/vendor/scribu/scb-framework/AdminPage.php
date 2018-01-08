@@ -185,6 +185,7 @@ abstract class scbAdminPage {
 	 */
 	protected function page_header() {
 		echo "<div class='wrap'>\n";
+        screen_icon( $this->args['screen_icon'] );
 		echo html( 'h2', $this->args['page_title'] );
 	}
 
