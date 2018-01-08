@@ -23,10 +23,10 @@
 
   <file>.</file>
 
-  <exclude-pattern>*/dependencies/*</exclude-pattern>
+  <exclude-pattern>dt-assets/dependencies/*</exclude-pattern>
   <exclude-pattern>*/vendor/*</exclude-pattern>
-  <exclude-pattern>update/class-tgm-plugin-activation.php</exclude-pattern>
-  <exclude-pattern>update/plugin-update-checker/*</exclude-pattern>
+  <exclude-pattern>dt-update/class-tgm-plugin-activation.php</exclude-pattern>
+  <exclude-pattern>dt-update/plugin-update-checker/*</exclude-pattern>
   <exclude-pattern>dt-core/libraries/*</exclude-pattern>
 
   <arg name="extensions" value="php,inc,lib"/>
