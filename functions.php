@@ -729,6 +729,7 @@ class Disciple_Tools
             // Administration
             require_once( get_template_directory().'/dt-core/admin/enqueue-scripts.php' ); // Load admin scripts
             require_once( get_template_directory().'/dt-core/admin/admin-theme-design.php' ); // Configures elements of the admin enviornment
+            require_once( get_template_directory().'/dt-core/admin/three-column-screen-layout.php' ); // Adds multicolumn configuration to screen options
 
             // Settings Menu
             require_once( get_template_directory().'/dt-core/admin/menu/main.php' );
