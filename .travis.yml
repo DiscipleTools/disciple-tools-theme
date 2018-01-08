@@ -22,7 +22,7 @@ script:
   - ./dt-core/test/test_for_syntax_errors.sh
   - ./dt-core/test/test_installation.sh
   - ./dt-core/test/test_phpcs.sh
-  - find assets/ -iname "*.min.js" -or -iname "*.map" -or -iname "*.min.css" -delete && rm -rf build/
+  - find dt-assets/ -iname "*.min.js" -or -iname "*.map" -or -iname "*.min.css" -delete && rm -rf dt-assets/build/
   - gulp
   - git diff --exit-code
   # If the previous command returns a non-zero exit code, that means gulp has
