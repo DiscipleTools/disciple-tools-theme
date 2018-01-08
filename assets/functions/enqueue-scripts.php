@@ -166,7 +166,8 @@ function dt_site_scripts() {
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'template_dir' => get_template_directory_uri(),
-                'txt_created_group' => __( "Created group at {}" )
+                'txt_created_group' => __( "Created group at {}" ),
+                'translations' => $translations
             )
         );
     }
