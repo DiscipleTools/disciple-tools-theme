@@ -302,7 +302,7 @@
                         <ul class="phone details-list">
                             <?php
                             if (sizeof( $contact->fields["contact_phone"] ?? [] ) === 0 ){
-                                ?> <li id="no-phone">No phone set</li> <?php
+                                ?> <li id="no-phone"><?php esc_html_e( "No phone set", 'disciple_tools' ) ?></li> <?php
                             }
                             foreach ($contact->fields["contact_phone"] ?? [] as $field => $value){
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
@@ -340,7 +340,7 @@
                         <ul class="email details-list">
                             <?php
                             if (sizeof( $contact->fields["contact_email"] ?? [] ) === 0 ){
-                                ?> <li id="no-email">No email set</li> <?php
+                                ?> <li id="no-email"><?php esc_html_e( "No email set", 'disciple_tools' ) ?></li> <?php
                             }
                             foreach ($contact->fields["contact_email"] ?? [] as $field => $value){
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
@@ -361,7 +361,7 @@
                                     ?>
                                     <li>
                                         <input id="<?php echo esc_attr( $value["key"], 'disciple_tools' )?>" value="<?php echo esc_attr( $value["value"], 'disciple_tools' ) ?>" class="contact-input">
-                                        <?php dt_contact_details_edit( $value["key"], "email", true ) ?>
+                                        <?php dt_contact_details_edit( $value["key"], esc_html__( "email", 'disciple_tools' ) , true ) ?>
                                     </li>
                                     <?php
                                 }
@@ -387,7 +387,7 @@
                                 </li>
                             <?php }
                             if (sizeof( $contact->fields["locations"] ) === 0){
-                                echo '<li id="no-location">No location set</li>';
+                                ?> <li id="no-location"><?php esc_html_e( "No location set", 'disciple_tools' ) ?></li><?php
                             }
                             ?>
                         </ul>
@@ -515,7 +515,7 @@
                                 </li>
                             <?php }
                             if (sizeof( $contact->fields["people_groups"] ) === 0){
-                                echo '<li id="no-people-group">No people group set</li>';
+                                ?> <li id="no-people-group"><?php esc_html_e( "No people group set", 'disciple_tools' ) ?></li><?php
                             }
                             ?>
                         </ul>
@@ -536,7 +536,7 @@
                         <ul class="address details-list">
                             <?php
                             if (sizeof( $contact->fields["address"] ?? [] ) === 0 ){
-                                ?> <li id="no-address">No address set</li> <?php
+                                ?> <li id="no-address"><?php esc_html_e( "No address set", 'disciple_tools' ) ?></li> <?php
                             }
                             foreach ($contact->fields["address"] ?? [] as $value){
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
@@ -568,7 +568,15 @@
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
                         <div class="section-subheader"><?php esc_html_e( 'Age', 'disciple_tools' )?>:</div>
                         <ul class="details-list">
-                            <li class="current-age"><?php echo esc_html( $contact->fields['age']['label'] ?? "No age set" ) ?></li>
+                            <li class="current-age">
+                                <?php
+                                if ( isset( $contact->fields['age']['label'] ) ){
+                                    echo esc_html( $contact->fields['age']['label'] );
+                                } else {
+                                    esc_html_e( 'No age set', 'disciple_tools' );
+                                }
+                                ?>
+                            </li>
                         </ul>
                         <select id="age" class="details-edit select-field">
                             <?php
@@ -587,7 +595,14 @@
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
                         <div class="section-subheader"><?php esc_html_e( 'Gender', 'disciple_tools' )?>:</div>
                         <ul class="details-list">
-                            <li class="current-gender"><?php echo esc_html( $contact->fields['gender']['label'] ?? "No gender set" ) ?></li>
+                            <li class="current-gender">
+                                <?php
+                                if ( isset( $contact->fields['gender']['label'] ) ){
+                                    echo esc_html( $contact->fields['gender']['label'] );
+                                } else {
+                                    esc_html_e( 'No gender set', 'disciple_tools' );
+                                }
+                                ?>
                         </ul>
                         <select id="gender" class="details-edit select-field">
                             <?php

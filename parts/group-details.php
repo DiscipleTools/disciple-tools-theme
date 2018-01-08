@@ -101,7 +101,7 @@ function dt_contact_details_edit( $id, $remove = false ){
                     <?php
                 }
                 if (sizeof( $group["locations"] ) === 0){
-                    echo '<li id="no-location">No location set</li>';
+                    ?> <li id="no-location"><?php esc_html_e( "No location set", 'disciple_tools' ) ?></li><?php
                 }
                 ?>
             </ul>
@@ -124,7 +124,7 @@ function dt_contact_details_edit( $id, $remove = false ){
                     </li>
                 <?php }
                 if (sizeof( $group["people_groups"] ) === 0){
-                    echo '<li id="no-people-group">No people group set</li>';
+                    ?> <li id="no-people-group"><?php esc_html_e( "No people group set", 'disciple_tools' ) ?></li><?php
                 }
                 ?>
             </ul>
@@ -144,7 +144,7 @@ function dt_contact_details_edit( $id, $remove = false ){
                     if ( isset( $group["assigned_to"] ) ){
                         echo esc_html( $group["assigned_to"]["display"] );
                     } else {
-                        echo "None Assigned";
+                        esc_html_e( "None Assigned", 'disciple_tools' );
                     }
                     ?>
                 </li>
@@ -193,10 +193,22 @@ function dt_contact_details_edit( $id, $remove = false ){
 
         <div class="medium-4 cell">
             <div class="section-subheader"><?php esc_html_e( 'Start Date', 'disciple_tools' )?></div>
-            <div class="start_date details-list"><?php echo esc_html( $group["start_date"] ?? "No start date" ); ?> </div>
+            <div class="start_date details-list"><?php
+            if ( isset( $group["start_date"] ) ) {
+                echo esc_html( $group["start_date"] );
+            } else {
+                esc_html_e( "No start date", 'disciple_tools' );
+            } ?>
+            </div>
             <div class="start_date details-edit"><input type="text" id="start-date-picker"></div>
             <div class="section-subheader"><?php esc_html_e( 'End Date', 'disciple_tools' )?></div>
-            <div class="end_date details-list"><?php echo esc_html( $group["end_date"] ?? "No end date" ); ?> </div>
+            <div class="end_date details-list"><?php
+            if ( isset( $group["end_date"] ) ) {
+                echo esc_html( $group["end_date"] );
+            } else {
+                esc_html_e( "No end date", 'disciple_tools' );
+            } ?>
+            </div>
             <div class="end_date details-edit"><input type="text" id="end-date-picker"></div>
         </div>
 
