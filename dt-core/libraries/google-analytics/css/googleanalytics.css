@@ -1,0 +1,242 @@
+@CHARSET "UTF-8";
+
+.wrap.ga-wrap {
+    margin: 0px auto !important;
+    margin-top: 10px !important;
+    margin-right: 0px !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333333;
+}
+
+.ga_container {
+    margin-top: 25px;
+}
+
+#exTab1, #exTab2 {
+    margin-right: 15px !important;
+}
+
+#exTab1 .tab-content {
+    color: white;
+    background-color: #428bca;
+    padding: 5px 15px;
+}
+
+#exTab2 h3 {
+    color: white;
+    background-color: #428bca;
+    padding: 5px 15px;
+}
+
+/* remove border radius for the tab */
+#exTab1 .nav-pills > li > a {
+    border-radius: 0;
+}
+
+/* change border radius for the tab , apply corners on top*/
+#exTab3 .nav-pills > li > a {
+    border-radius: 4px 4px 0 0;
+}
+
+#exTab3 .tab-content {
+    color: white;
+    background-color: #428bca;
+    padding: 5px 15px;
+}
+
+label.ga_checkbox_label {
+    margin-top: 6px !important;
+}
+
+.form-table th {
+    width: 250px !important;
+}
+
+.wrap.ga-notice {
+    width: 100% !important;
+    margin-left: 0px !important;
+    margin-right: 10px !important;
+}
+
+.ga_warning {
+    font-size: 12px;
+    font-weight: normal;
+    margin-top: 10px;
+}
+
+.ga-boxes-container {
+
+}
+
+.ga-box-row {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    border-spacing: 10px;
+}
+
+.ga-box-column {
+    display: table-cell;
+    -moz-box-shadow: 0 0 5px #e5e5e5;
+    -webkit-box-shadow: 0 0 5px #e5e5e5;
+    box-shadow: 0px 0px 5px #e5e5e5;
+}
+
+.ga-box-dashboard {
+    border: 1px solid #cccccc;
+    border-radius: 0px;
+    padding: 3px;
+    text-align: center;
+}
+
+.ga-box-centered {
+    text-align: center;
+}
+
+.ga-loader-wrapper {
+    float: right;
+    margin-top: 4px;
+    margin-right: 5px;
+}
+
+.ga-loader-wrapper.stats-page {
+    width: 45px;
+    text-align: center;
+    margin: 0 auto;
+    float: none;
+}
+
+.ga-loader {
+    border: 4px solid #f3f3f3; /* Light grey */
+    border-top: 4px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    animation: spin 2s linear infinite;
+    display: none;
+}
+
+.ga-loader.stats-page-loader {
+    width: 45px;
+    height: 45px;
+    border-width: 6px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.ga-chart {
+}
+
+.label-grey {
+    color: #ccc;
+}
+
+.trending-link, .trending-link:hover {
+    color: #47C2B6;
+    text-decoration: none;
+}
+
+.ga-tooltip {
+    position: relative;
+    cursor: not-allowed;
+}
+
+.ga-tooltip input[disabled] {
+    cursor: not-allowed;
+}
+.ga-tooltip .trending-link {
+    color: #ccc;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+.ga-tooltiptext {
+    background-color: #ffe692;
+    border: 1px solid #ffb900;
+    border-radius: 4px;
+    color: #444;
+    font-size: 12px;
+    font-weight: 500;
+    margin-left: 10px;
+    margin-top: 30px;
+    padding: 3px 10px;
+    position: relative;
+    white-space: nowrap;
+    text-align: center;
+    visibility: hidden;
+    width: auto;
+    z-index: 1;
+}
+.ga-tooltiptext-trending {
+    position: absolute;
+    margin-left: 200px;
+    margin-top: 30px;
+}
+
+.ga-tt-abs {
+    display: inline-block;
+    position: absolute;
+    margin-top: 0px;
+}
+
+.ga-tooltip:hover .ga-tooltiptext {
+    visibility: visible;
+}
+
+.ga-trending-h2 {
+    font-size: 1.6em;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.ga-trending-h3 {
+    font-size: 1.3em;
+    margin: 10px 0;
+    font-weight: normal;
+}
+.trending-table-container{
+    max-width: 1000px;
+    text-align:left;
+}
+.weight-normal{
+    font-weight: normal;
+}
+
+.trending-time {
+    width: 100px;
+}
+
+.ga-love-text {
+    display: block;
+    margin-top: 20px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.ga-trending-loader {
+    margin: 50px 25px;
+    display: none;
+    width: 50%;
+    padding: 100px 50px;
+}
+
+.ga-trending-loader-wrapper {
+    float: left;
+    padding: 10px;
+}
+
+.ga-trending-loading-text {
+    color: black;
+    width: 200px;
+    font-size: 12pt;
+    height: 65px;
+    float: left;
+}
