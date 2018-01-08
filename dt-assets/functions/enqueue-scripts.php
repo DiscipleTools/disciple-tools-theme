@@ -41,8 +41,8 @@ function dt_theme_enqueue_style( string $handle, string $rel_src, array $deps = 
 function dt_site_scripts() {
     global $wp_styles; // Call global $wp_styles variable to add conditional wrapper around ie stylesheet the WordPress way
 
-    dt_theme_enqueue_script( 'modernizr-custom', 'assets/js/modernizr-custom.js', [], true );
-    dt_theme_enqueue_script( 'check-browser-version', 'assets/js/check-browser-version.js', [ 'modernizr-custom' ], true );
+    dt_theme_enqueue_script( 'modernizr-custom', 'dt-assets/js/modernizr-custom.js', [], true );
+    dt_theme_enqueue_script( 'check-browser-version', 'dt-assets/js/check-browser-version.js', [ 'modernizr-custom' ], true );
 
     wp_enqueue_style( 'foundation-css', 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' );
 
@@ -70,15 +70,15 @@ function dt_site_scripts() {
     wp_enqueue_script( 'moment' );
 
 
-    dt_theme_enqueue_script( 'lodash', 'dependencies/lodash/lodash.min.js', array() );
+    dt_theme_enqueue_script( 'lodash', 'dt-assets/dependencies/lodash/lodash.min.js', array() );
 
-    dt_theme_enqueue_script( 'typeahead', 'dependencies/typeahead/typeahead.bundle.min.js', array( 'jquery' ), true );
+    dt_theme_enqueue_script( 'typeahead', 'dt-assets/dependencies/typeahead/typeahead.bundle.min.js', array( 'jquery' ), true );
 
-    dt_theme_enqueue_script( 'site-js', 'build/js/scripts.min.js', array( 'jquery' ), true );
+    dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts.min.js', array( 'jquery' ), true );
 
 
     // Register main stylesheet
-    dt_theme_enqueue_style( 'site-css', 'build/css/style.min.css', array() );
+    dt_theme_enqueue_style( 'site-css', 'dt-assets/build/css/style.min.css', array() );
 
     // Comment reply script for threaded comments
     if ( is_singular() && comments_open() && (get_option( 'thread_comments' ) == 1)) {
@@ -103,7 +103,7 @@ function dt_site_scripts() {
     } );
 
 
-    dt_theme_enqueue_script( 'api-wrapper', 'assets/js/api-wrapper.js', array( 'jquery', 'lodash' ) );
+    dt_theme_enqueue_script( 'api-wrapper', 'dt-assets/js/api-wrapper.js', array( 'jquery', 'lodash' ) );
     wp_localize_script(
         'api-wrapper', 'wpApiSettings', array(
             'root' => esc_url_raw( rest_url() ),
@@ -111,7 +111,7 @@ function dt_site_scripts() {
         )
     );
 
-    dt_theme_enqueue_script( 'dt-notifications', 'assets/js/notifications.js', array( 'jquery' ) );
+    dt_theme_enqueue_script( 'dt-notifications', 'dt-assets/js/notifications.js', array( 'jquery' ) );
     wp_localize_script(
         'dt-notifications', 'wpApiNotifications', array(
             'root' => esc_url_raw( rest_url() ),
@@ -138,7 +138,7 @@ function dt_site_scripts() {
         'email' => __( 'email' )
     ];
     if (is_singular( "contacts" )){
-        dt_theme_enqueue_script( 'contact-details', 'assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
+        dt_theme_enqueue_script( 'contact-details', 'dt-assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
         $contact = Disciple_Tools_Contacts::get_contact( get_the_ID() );
         wp_localize_script(
             'contact-details', 'contactsDetailsWpApiSettings', array(
@@ -155,7 +155,7 @@ function dt_site_scripts() {
         );
     }
     if (is_singular( "groups" )){
-        dt_theme_enqueue_script( 'group-details', 'assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
+        dt_theme_enqueue_script( 'group-details', 'dt-assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
         $group = Disciple_Tools_Groups::get_group( get_the_ID() );
         $group_post = get_post( $group["ID"] );
         wp_localize_script(
@@ -176,7 +176,7 @@ function dt_site_scripts() {
 
     $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
     if ( 'settings' === $url_path ) {
-        dt_theme_enqueue_script( 'dt-settings', 'assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash', 'typeahead' ),  true );
+        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash', 'typeahead' ),  true );
         wp_localize_script(
             'dt-settings', 'wpApiSettingsPage', array(
                 'root' => esc_url_raw( rest_url() ),
@@ -187,7 +187,7 @@ function dt_site_scripts() {
         );
     }
     if ( 'metrics' === $url_path ) {
-        dt_theme_enqueue_script( 'dt-metrics', 'assets/js/metrics.js', array( 'jquery', 'jquery-ui' ),  true );
+        dt_theme_enqueue_script( 'dt-metrics', 'dt-assets/js/metrics.js', array( 'jquery', 'jquery-ui' ),  true );
         wp_localize_script(
             'dt-metrics', 'wpApiMetricsPage', array(
                 'root' => esc_url_raw( rest_url() ),
@@ -197,7 +197,7 @@ function dt_site_scripts() {
         wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(),  false );
     }
     if ( 'locations' === $url_path && ( is_archive() || is_singular( 'locations' ) ) ) {
-        dt_theme_enqueue_script( 'dt-locations', 'assets/js/locations.js', array( 'jquery', 'jquery-ui' ),  true );
+        dt_theme_enqueue_script( 'dt-locations', 'dt-assets/js/locations.js', array( 'jquery', 'jquery-ui' ),  true );
         wp_localize_script(
             'dt-locations', 'wpApiLocationsPage', array(
                 'root' => esc_url_raw( rest_url() ),
@@ -209,9 +209,9 @@ function dt_site_scripts() {
     }
 
     if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )) {
-        dt_theme_enqueue_script( 'data-tables', 'dependencies/DataTables/datatables.min.js', array( 'jquery' ) );
-        dt_theme_enqueue_style( 'data-tables', 'dependencies/DataTables/datatables.min.css', array() );
-        dt_theme_enqueue_script( 'list-js', 'assets/js/list.js', array( 'jquery', 'lodash', 'data-tables', 'site-js' ), true );
+        dt_theme_enqueue_script( 'data-tables', 'dt-assets/dependencies/DataTables/datatables.min.js', array( 'jquery' ) );
+        dt_theme_enqueue_style( 'data-tables', 'dt-assets/dependencies/DataTables/datatables.min.css', array() );
+        dt_theme_enqueue_script( 'list-js', 'dt-assets/js/list.js', array( 'jquery', 'lodash', 'data-tables', 'site-js' ), true );
         $post_type = null;
         if (is_post_type_archive( "contacts" )) {
             $post_type = "contacts";

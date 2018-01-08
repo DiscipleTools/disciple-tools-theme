@@ -18,7 +18,7 @@ CSS file.
 @import "../../node_modules/foundation-sites/scss/foundation";
 
 // Import Motion-UI from vendor files
-@import "../../dependencies/motion-ui/src/motion-ui";
+@import "../dependencies/motion-ui/src/motion-ui";
 @include motion-ui-transitions;
 @include motion-ui-animations;
 @include foundation-everything;

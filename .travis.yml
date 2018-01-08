@@ -19,9 +19,9 @@ before_install:
 before_script:
   - composer install
 script:
-  - ./test/test_for_syntax_errors.sh
-  - ./test/test_installation.sh
-  - ./test/test_phpcs.sh
+  - ./dt-core/test/test_for_syntax_errors.sh
+  - ./dt-core/test/test_installation.sh
+  - ./dt-core/test/test_phpcs.sh
   - find assets/ -iname "*.min.js" -or -iname "*.map" -or -iname "*.min.css" -delete && rm -rf build/
   - gulp
   - git diff --exit-code
