@@ -19,7 +19,7 @@ $dt_dra_current_wp_version = get_bloginfo( 'version' );
 
 if ( version_compare( $dt_dra_current_wp_version, '4.7', '>=' ) ) {
     dt_dra_force_auth_error();
-    add_action( 'rest_api_init', "dt_add_api_routes" );
+//    add_action( 'rest_api_init', "dt_add_api_routes" );
     add_action( 'init', 'dt_setup_jwt' );
 } else {
     dt_dra_disable_via_filters();
@@ -89,7 +89,7 @@ function dt_dra_only_allow_logged_in_rest_access( $access )
 function dt_add_api_routes()
 {
     // setup the facebook endpoints
-    Disciple_Tools::instance()->facebook_integration->add_api_routes();
+//    Disciple_Tools::instance()->facebook_integration->add_api_routes();
 }
 
 /**

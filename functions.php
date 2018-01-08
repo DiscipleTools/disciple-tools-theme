@@ -56,29 +56,29 @@ if (version_compare( phpversion(), '7.0', '<' )) {
 
 // @codingStandardsIgnoreStart
 
-if ( !defined( 'WP_CONTENT_URL' ) ) {
-    define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' );
-}
-
-if ( !defined( 'WP_CONTENT_DIR' ) ) {
-    define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
-}
-
-if ( !defined( 'WP_PLUGIN_URL' ) ) {
-    define( 'WP_PLUGIN_URL', WP_CONTENT_URL. '/plugins' );
-}
-
-if ( !defined( 'WP_PLUGIN_DIR' ) ) {
-    define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
-}
-
-if ( !defined( 'WP_LANG_DIR' ) ) {
-    define( 'WP_LANG_DIR', WP_CONTENT_DIR . '/languages' );
-}
-
-if ( !defined( 'DISCIPLE_TOOLS_DIR' ) ) {
-    define( 'DISCIPLE_TOOLS_DIR', WP_PLUGIN_DIR . '/disciple-tools' );
-}
+//if ( !defined( 'WP_CONTENT_URL' ) ) {
+//    define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' );
+//}
+//
+//if ( !defined( 'WP_CONTENT_DIR' ) ) {
+//    define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
+//}
+//
+//if ( !defined( 'WP_PLUGIN_URL' ) ) {
+//    define( 'WP_PLUGIN_URL', WP_CONTENT_URL. '/plugins' );
+//}
+//
+//if ( !defined( 'WP_PLUGIN_DIR' ) ) {
+//    define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
+//}
+//
+//if ( !defined( 'WP_LANG_DIR' ) ) {
+//    define( 'WP_LANG_DIR', WP_CONTENT_DIR . '/languages' );
+//}
+//
+//if ( !defined( 'DISCIPLE_TOOLS_DIR' ) ) {
+//    define( 'DISCIPLE_TOOLS_DIR', WP_PLUGIN_DIR . '/disciple-tools' );
+//}
 
 // @codingStandardsIgnoreEnd
 
@@ -252,7 +252,7 @@ require_once( get_template_directory().'/dt-core/libraries/posts-to-posts/posts-
  */
 function dt_activate( $network_wide )
 {
-    require_once plugin_dir_path( __FILE__ ) . 'dt-core/admin/class-activator.php';
+    require_once get_template_directory(). '/dt-core/admin/class-activator.php';
     Disciple_Tools_Activator::activate( $network_wide );
 }
 register_activation_hook( __FILE__, 'dt_activate' );
@@ -262,7 +262,7 @@ register_activation_hook( __FILE__, 'dt_activate' );
  */
 function dt_deactivate( $network_wide )
 {
-    require_once plugin_dir_path( __FILE__ ) . 'dt-core/admin/class-deactivator.php';
+    require_once get_template_directory(). '/dt-core/admin/class-deactivator.php';
     Disciple_Tools_Deactivator::deactivate( $network_wide );
 }
 register_deactivation_hook( __FILE__, 'dt_deactivate' );
@@ -279,7 +279,7 @@ register_deactivation_hook( __FILE__, 'dt_deactivate' );
  */
 function dt_on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta )
 {
-    require_once plugin_dir_path( __FILE__ ) . 'dt-core/admin/class-activator.php';
+    require_once get_template_directory(). '/dt-core/admin/class-activator.php';
     Disciple_Tools_Activator::on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta );
 }
 add_action( 'wpmu_new_blog', 'dt_on_create_blog', 10, 6 );
@@ -293,7 +293,7 @@ add_action( 'wpmu_new_blog', 'dt_on_create_blog', 10, 6 );
  */
 function dt_on_delete_blog( $tables )
 {
-    require_once plugin_dir_path( __FILE__ ) . 'dt-core/admin/class-activator.php';
+    require_once get_template_directory(). '/dt-core/admin/class-activator.php';
 
     return Disciple_Tools_Activator::on_delete_blog( $tables );
 }
@@ -311,12 +311,12 @@ function dt_plugins_loaded()
      * to do this is through the "plugins_loaded" hook. See
      * @see https://www.sitepoint.com/wordpress-plugin-updates-right-way/
      */
-    require_once( dirname( __FILE__ ) . '/dt-core/admin/class-migration-engine.php' );
-    Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
-
-    /** Similarly, we want to make sure roles are up-to-date. */
-    require_once( dirname( __FILE__ ) . '/dt-core/admin/class-roles.php' );
-    Disciple_Tools_Roles::instance()->set_roles_if_needed();
+//    require_once( get_template_directory(). '/dt-core/admin/class-migration-engine.php' );
+//    Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
+//
+//    /** Similarly, we want to make sure roles are up-to-date. */
+//    require_once( get_template_directory(). '/dt-core/admin/class-roles.php' );
+//    Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
     /**
      * Site options version check
@@ -339,6 +339,7 @@ function disciple_tools()
 {
     return Disciple_Tools::instance();
 }
+disciple_tools();
 
 /**
  * Main Disciple_Tools Class
@@ -491,14 +492,14 @@ class Disciple_Tools
         $this->token = 'disciple_tools';
         $this->version = '0.1.3';
         $this->migration_number = 0;
-        $this->plugin_url = get_template_directory();
+        $this->plugin_url = get_template_directory_uri();
         $this->plugin_path = get_template_directory();
-        $this->plugin_img_url = get_template_directory() . 'dt-core/admin/img/';
-        $this->plugin_img_path = plugin_dir_path( __FILE__ ) . 'dt-core/admin/img/';
-        $this->plugin_js_url = get_template_directory() . 'dt-core/admin/js/';
-        $this->plugin_js_path = plugin_dir_path( __FILE__ ) . 'dt-core/admin/js/';
-        $this->plugin_css_url = get_template_directory() . 'dt-core/admin/css/';
-        $this->plugin_css_path = plugin_dir_path( __FILE__ ) . 'dt-core/admin/css/';
+        $this->plugin_img_url = get_template_directory_uri() . '/dt-core/admin/img/';
+        $this->plugin_img_path = get_template_directory() . '/dt-core/admin/img/';
+        $this->plugin_js_url = get_template_directory_uri() . '/dt-core/admin/js/';
+        $this->plugin_js_path = get_template_directory() . '/dt-core/admin/js/';
+        $this->plugin_css_url = get_template_directory_uri() . '/dt-core/admin/css/';
+        $this->plugin_css_path = get_template_directory() . '/dt-core/admin/css/';
 
         $wpdb->dt_activity_log = $wpdb->prefix . 'dt_activity_log'; // Prepare database table names
         $wpdb->dt_reports = $wpdb->prefix . 'dt_reports';
