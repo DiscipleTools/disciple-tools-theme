@@ -9,31 +9,31 @@
 
 
 if ( !defined( 'WP_CONTENT_URL' ) ) {
-	define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' );
+    define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' );
 }
 if ( !defined( 'WP_CONTENT_DIR' ) ) {
-	define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
+    define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
 }
 if ( !defined( 'WP_PLUGIN_URL' ) ) {
-	define( 'WP_PLUGIN_URL', WP_CONTENT_URL . '/plugins' );
+    define( 'WP_PLUGIN_URL', WP_CONTENT_URL . '/plugins' );
 }
 if ( !defined( 'WP_PLUGIN_DIR' ) ) {
-	define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
+    define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
 }
 if ( !defined( 'GA_NAME' ) ) {
-	define( 'GA_NAME', 'googleanalytics' );
+    define( 'GA_NAME', 'googleanalytics' );
 }
 if ( !defined( 'GA_PLUGIN_DIR' ) ) {
-	define( 'GA_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+    define( 'GA_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 }
 if ( !defined( 'GA_PLUGIN_URL' ) ) {
-	define( 'GA_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+    define( 'GA_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }
 if ( !defined( 'GA_MAIN_FILE_PATH' ) ) {
-	define( 'GA_MAIN_FILE_PATH', __FILE__ );
+    define( 'GA_MAIN_FILE_PATH', __FILE__ );
 }
 if ( !defined( 'GA_SHARETHIS_SCRIPTS_INCLUDED' ) ) {
-	define( 'GA_SHARETHIS_SCRIPTS_INCLUDED', 0 );
+    define( 'GA_SHARETHIS_SCRIPTS_INCLUDED', 0 );
 }
 
 define( 'GOOGLEANALYTICS_VERSION', '2.1.1' );

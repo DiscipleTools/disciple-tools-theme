@@ -9,7 +9,7 @@
  * License: MIT
  */
 
-if( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
+if ( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
     /**
      * Class Disciple_Tools_Async_Task
      */
@@ -77,14 +77,14 @@ if( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
          */
         public function __construct( $auth_level = self::LOGGED_IN )
         {
-            if( empty( $this->action ) ) {
+            if ( empty( $this->action ) ) {
                 throw new Exception( 'Action not defined for class ' . __CLASS__ );
             }
             add_action( $this->action, [ $this, 'launch' ], (int) $this->priority, (int) $this->argument_count );
-            if( $auth_level & self::LOGGED_IN ) {
+            if ( $auth_level & self::LOGGED_IN ) {
                 add_action( "admin_post_wp_async_$this->action", [ $this, 'handle_postback' ] );
             }
-            if( $auth_level & self::LOGGED_OUT ) {
+            if ( $auth_level & self::LOGGED_OUT ) {
                 add_action( "admin_post_nopriv_wp_async_$this->action", [ $this, 'handle_postback' ] );
             }
         }
@@ -100,17 +100,17 @@ if( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
             $data = func_get_args();
             try {
                 $data = $this->prepare_data( $data );
-            } catch( Exception $e ) {
+            } catch ( Exception $e ) {
                 return;
             }
 
-            $data[ 'action' ] = "dt_async_$this->action";
-            $data[ '_nonce' ] = $this->create_async_nonce();
-            $data[ '_wp_nonce' ] = wp_create_nonce();
+            $data['action'] = "dt_async_$this->action";
+            $data['_nonce'] = $this->create_async_nonce();
+            $data['_wp_nonce'] = wp_create_nonce();
 
             $this->_body_data = $data;
 
-            if( !has_action( 'shutdown', [ $this, 'launch_on_shutdown' ] ) ) {
+            if ( !has_action( 'shutdown', [ $this, 'launch_on_shutdown' ] ) ) {
                 add_action( 'shutdown', [ $this, 'launch_on_shutdown' ] );
             }
         }
@@ -131,9 +131,9 @@ if( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
          */
         public function launch_on_shutdown()
         {
-            if( !empty( $this->_body_data ) ) {
+            if ( !empty( $this->_body_data ) ) {
                 $cookies = [];
-                foreach( $_COOKIE as $name => $value ) {
+                foreach ( $_COOKIE as $name => $value ) {
                     $cookies[] = "$name=" . urlencode( is_array( $value ) ? serialize( $value ) : $value );
                 }
 
@@ -165,7 +165,7 @@ if( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
         {
             // @codingStandardsIgnoreLine
             if( isset( $_POST[ '_nonce' ] ) && $this->verify_async_nonce( $_POST[ '_nonce' ] ) ) {
-                if( !is_user_logged_in() ) {
+                if ( !is_user_logged_in() ) {
                     $this->action = "nopriv_$this->action";
                 }
                 $this->run_action();
@@ -210,12 +210,12 @@ if( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
             $i = wp_nonce_tick();
 
             // Nonce generated 0-12 hours ago
-            if( substr( wp_hash( $i . $action . get_class( $this ), 'nonce' ), -12, 10 ) == $nonce ) {
+            if ( substr( wp_hash( $i . $action . get_class( $this ), 'nonce' ), -12, 10 ) == $nonce ) {
                 return 1;
             }
 
             // Nonce generated 12-24 hours ago
-            if( substr( wp_hash( ( $i - 1 ) . $action . get_class( $this ), 'nonce' ), -12, 10 ) == $nonce ) {
+            if ( substr( wp_hash( ( $i - 1 ) . $action . get_class( $this ), 'nonce' ), -12, 10 ) == $nonce ) {
                 return 2;
             }
 
@@ -231,7 +231,7 @@ if( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
         protected function get_nonce_action()
         {
             $action = $this->action;
-            if( substr( $action, 0, 7 ) === 'nopriv_' ) {
+            if ( substr( $action, 0, 7 ) === 'nopriv_' ) {
                 $action = substr( $action, 7 );
             }
             $action = "dt_async_$action";

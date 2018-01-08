@@ -714,9 +714,9 @@ class Disciple_Tools
             require 'dt-core/libraries/plugin-update-checker/plugin-update-checker.php';
         }
         $my_update_checker = Puc_v4_Factory::buildUpdateChecker(
-        'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-plugin-version-control.json',
-        __FILE__,
-        'disciple-tools'
+            'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-plugin-version-control.json',
+            __FILE__,
+            'disciple-tools'
         );
 
         /**
@@ -729,10 +729,6 @@ class Disciple_Tools
             // Administration
             require_once( get_template_directory().'/dt-core/admin/enqueue-scripts.php' ); // Load admin scripts
             require_once( get_template_directory().'/dt-core/admin/admin-theme-design.php' ); // Configures elements of the admin enviornment
-            require_once( get_template_directory().'/dt-core/admin/restrict-record-access-in-admin.php' ); //
-            require_once( get_template_directory().'/dt-core/admin/three-column-screen-layout.php' ); // Adds multicolumn configuration to screen options
-            require_once( get_template_directory().'/dt-core/admin/class-better-author-metabox.php' ); // Allows multiple authors to be selected as post author
-            $this->better_metabox = Disciple_Tools_BetterAuthorMetabox::instance();
 
             // Settings Menu
             require_once( get_template_directory().'/dt-core/admin/menu/main.php' );
