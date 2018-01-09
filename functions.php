@@ -6,25 +6,7 @@ declare( strict_types = 1 );
  * @package Disciple Tools
  */
 
-/**
- * Test for minimum required PHP version
- */
-if ( version_compare( phpversion(), '7.0', '<' ) ) {
-
-    /* We only support PHP >= 7.0, however, we want to support allowing users
-     * to install this theme even on old versions of PHP, without showing a
-     * horrible message, but instead a friendly notice.
-     *
-     * For this to work, this file must be compatible with old PHP versions.
-     * Feel free to use PHP 7 features in other files, but not in this one.
-     */
-
-    add_action( 'admin_notices', 'dt_theme_admin_notice_required_php_version' );
-    error_log( 'Disciple Tools theme requires PHP version 7.0 or greater, please upgrade PHP or uninstall this theme' );
-    add_action( 'after_switch_theme', 'dt_theme_after_switch_theme_switch_back' );
-
-    return;
-}
+require_once( get_template_directory() . '/dt-core/admin/php7-warning.php' ); // Checks for the correct php version and displays warning
 
 /**
  * Activation, Deactivation, and Multisite
@@ -33,8 +15,6 @@ register_activation_hook( __FILE__, 'dt_activate' );
 register_deactivation_hook( __FILE__, 'dt_deactivate' );
 add_action( 'wpmu_new_blog', 'dt_on_create_blog', 10, 6 );
 add_filter( 'wpmu_drop_tables', 'dt_on_delete_blog' );
-
-
 
 /**
  * Adds the Disciple_Tools Class and runs database and roles version checks.
@@ -146,8 +126,8 @@ class Disciple_Tools
         $this->token = 'disciple_tools';
         $this->version = '0.1.3';
         $this->migration_number = 1;
-        $this->plugin_url = get_template_directory_uri();
-        $this->plugin_path = get_template_directory();
+        $this->plugin_url = get_template_directory_uri() . '/';
+        $this->plugin_path = get_template_directory() . '/';
         $this->plugin_img_url = get_template_directory_uri() . '/dt-core/admin/img/';
         $this->plugin_img_path = get_template_directory() . '/dt-core/admin/img/';
         $this->plugin_js_url = get_template_directory_uri() . '/dt-core/admin/js/';
@@ -364,6 +344,11 @@ class Disciple_Tools
         $this->workflows = Disciple_Tools_Workflows::instance();
 
         /**
+         * Load Language Files
+         */
+        add_action( 'init', [$this, 'load_textdomain'] );
+
+        /**
          * Integrations
          */
         require_once( get_template_directory() . '/dt-core/integrations/class-integrations.php' ); // data integration for cron scheduling
@@ -374,20 +359,6 @@ class Disciple_Tools
         }
         require_once( get_template_directory() . '/dt-core/integrations/class-facebook-integration.php' ); // integrations to facebook
         $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
-
-        /**
-         * Language
-         */
-        //        add_action( 'init', [ $this, 'load_plugin_textdomain' ] );
-
-        //        if ( ! class_exists( 'Puc_v4_Factory' ) ) {
-        //            require 'dt-core/libraries/plugin-update-checker/plugin-update-checker.php';
-        //        }
-        //        $my_update_checker = Puc_v4_Factory::buildUpdateChecker(
-        //            'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-plugin-version-control.json',
-        //            __FILE__,
-        //            'disciple-tools'
-        //        );
 
         /**
          * Admin panel
@@ -426,9 +397,6 @@ class Disciple_Tools
             require_once( get_template_directory() . '/dt-people-groups/admin-menu.php' );
             $this->people_groups_admin = Disciple_Tools_People_Groups_Admin_Menu::instance();
 
-            // Assets
-            // Progress
-
             // Notifications
             require_once( get_template_directory() . '/dt-core/admin/tables/notifications-table.php' );
 
@@ -449,10 +417,10 @@ class Disciple_Tools
      * @access public
      * @since  0.1.0
      */
-    //    public function load_plugin_textdomain()
-    //    {
-    //        load_plugin_textdomain( 'disciple_tools', false, dirname( plugin_basename( __FILE__ ) ) . '/dt-core/languages/' );
-    //    } // End load_plugin_textdomain()
+    public function load_textdomain()
+    {
+        load_theme_textdomain( 'disciple_tools', get_template_directory() .'/dt-assets/translation' );
+    } // End load_plugin_textdomain()
 
     /**
      * Log the plugin version number.
@@ -489,6 +457,7 @@ class Disciple_Tools
     } // End __wakeup()
 
 } // End Class
+
 
 /**
  * Multisite: Delete blog db maintenance
