@@ -674,7 +674,7 @@ class Disciple_Tools_Contact_Post_Type
                 $keys = explode( '_', $k );
                 if ( $keys[1] == 'email' ) {
                     $fields[ $k ] = [
-                        'name'        => ucwords( $v['name'] ),
+                        'name'        => __( 'Email', 'disciple_tools' ),
                         'description' => '',
                         'type'        => 'text',
                         'default'     => '',
@@ -686,7 +686,7 @@ class Disciple_Tools_Contact_Post_Type
                 $keys = explode( '_', $k );
                 if ( $keys[1] != 'email' && $keys[1] != 'phone' ) {
                     $fields[ $k ] = [
-                        'name'        => ucwords( $v['name'] ),
+                        'name'        => __( 'Phone', 'disciple_tools' ),
                         'description' => '',
                         'type'        => 'text',
                         'default'     => '',
@@ -699,7 +699,7 @@ class Disciple_Tools_Contact_Post_Type
                 $keys = explode( '_', $k );
                 if ( $keys[0] == 'address_' && sizeof( $keys ) === 2 ) {
                     $fields[ $k ] = [
-                        'name'        => ucwords( $v['name'] ),
+                        'name'        => __( 'Address', 'disciple_tools' ),
                         'description' => '',
                         'type'        => 'text',
                         'default'     => '',
@@ -712,7 +712,7 @@ class Disciple_Tools_Contact_Post_Type
             $addresses = dt_address_metabox()->address_fields( $id );
             foreach ( $addresses as $k => $v ) { // sets all others third
                 $fields[ $k ] = [
-                    'name'        => ucwords( $v['name'] ),
+                    'name'        => __( 'Address', 'disciple_tools' ),
                     'description' => '',
                     'type'        => 'text',
                     'default'     => '',

@@ -83,7 +83,9 @@ class Disciple_Tools_Activity_Log_API {
                 'meta_id'        => '',
                 'meta_key'       => '',
                 'meta_value'     => '',
-                'meta_parent'     => '',
+                'meta_parent'    => '',
+                'old_value'      => '',
+                'field_type'     => ''
             ]
         );
         $user = get_user_by( 'id', get_current_user_id() );
@@ -120,6 +122,8 @@ class Disciple_Tools_Activity_Log_API {
                     AND `meta_key` = %s
                     AND `meta_value` = %s
                     AND `meta_parent` = %s
+                    AND `old_value` = %s
+                    AND `field_type` = %s
 				;",
                 $args['user_caps'],
                 $args['action'],
@@ -133,7 +137,9 @@ class Disciple_Tools_Activity_Log_API {
                 $args['meta_id'],
                 $args['meta_key'],
                 $args['meta_value'],
-                $args['meta_parent']
+                $args['meta_parent'],
+                $args['old_value'],
+                $args['field_type']
             )
         );
 
@@ -158,6 +164,8 @@ class Disciple_Tools_Activity_Log_API {
                 'meta_key'       => $args['meta_key'],
                 'meta_value'       => $args['meta_value'],
                 'meta_parent'       => $args['meta_parent'],
+                'old_value'         => $args['old_value'],
+                'field_type'        => $args['field_type']
             ],
             [ '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%d' ]
         );

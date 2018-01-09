@@ -436,13 +436,14 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     /**
-     * @param int $contact_id
+     * @param int $group_id
      *
      * @return array|null|object|\WP_Error
      */
-    public static function get_activity( int $contact_id )
+    public static function get_activity( int $group_id )
     {
-        return self::get_post_activity( 'groups', $contact_id );
+        $fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( isset( $group_id ), $group_id );
+        return self::get_post_activity( 'groups', $group_id, $fields );
     }
 
     /**
