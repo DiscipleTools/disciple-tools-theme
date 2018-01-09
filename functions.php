@@ -74,7 +74,7 @@ class Disciple_Tools
     public $dt_svg;
     public $admin;
     public $settings;
-    public $facebook_integration;
+//    public $facebook_integration;
     public $metrics;
     public $notifications;
     public $post_types = [];
@@ -174,7 +174,6 @@ class Disciple_Tools
         require_once( get_template_directory() . '/dt-assets/functions/sidebar.php' ); // Register sidebars/widget areas
         require_once( get_template_directory() . '/dt-assets/functions/comments.php' ); // Makes WordPress comments suck less
         require_once( get_template_directory() . '/dt-assets/functions/page-navi.php' ); // Replace 'older/newer' post links with numbered navigation
-        require_once( get_template_directory() . '/dt-assets/translation/translation.php' ); // Adds support for multiple languages
         require_once( get_template_directory() . '/dt-assets/functions/private-site.php' ); // Sets site to private
         require_once( get_template_directory() . '/dt-assets/functions/login.php' ); // Customize the WordPress login menu
         require_once( get_template_directory() . '/dt-assets/functions/menu.php' ); // Register menus and menu walkers
@@ -338,6 +337,11 @@ class Disciple_Tools
         require_once( get_template_directory() . '/dt-core/logging/class-reports-dt.php' ); // contacts and groups report building
 
         /**
+         * Integrations
+         */
+        require_once( get_template_directory() . '/dt-core/integrations/class-integrations.php' ); // data integration for cron scheduling
+
+        /**
          * Workflows
          */
         require_once( get_template_directory() . '/dt-workflows/index.php' );
@@ -346,19 +350,7 @@ class Disciple_Tools
         /**
          * Load Language Files
          */
-        add_action( 'init', [$this, 'load_textdomain'] );
-
-        /**
-         * Integrations
-         */
-        require_once( get_template_directory() . '/dt-core/integrations/class-integrations.php' ); // data integration for cron scheduling
-        if ( ! class_exists( 'Ga_Autoloader' ) ) {
-            require_once( get_template_directory() . '/dt-core/libraries/google-analytics/disciple-tools-analytics.php' );
-            require_once( get_template_directory() . '/dt-core/integrations/class-google-analytics-integration.php' );
-            $this->analytics_integration = DT_Ga_Admin::instance();
-        }
-        require_once( get_template_directory() . '/dt-core/integrations/class-facebook-integration.php' ); // integrations to facebook
-        $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
+        add_action( 'init', [ $this, 'load_textdomain' ] );
 
         /**
          * Admin panel

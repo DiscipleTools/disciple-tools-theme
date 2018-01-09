@@ -54,7 +54,6 @@ final class Disciple_Tools_Config
      */
     public function __construct()
     {
-
         add_action( "admin_menu", [ $this, "add_dt_options_menu" ] );
 
         // check for default options
@@ -72,14 +71,14 @@ final class Disciple_Tools_Config
     public function add_dt_options_menu()
     {
 
-        add_menu_page( __( 'Disciple Tools', 'disciple_tools' ), __( 'Disciple Tools', 'disciple_tools' ), 'manage_dt', 'dt_options', [ $this, 'build_default_page' ], dt_svg_icon(), 75 );
-//        @todo test and enable integrations after mvp
+        add_menu_page( __( 'Disciple Tools', 'disciple_tools' ), __( 'Disciple Tools', 'disciple_tools' ), 'manage_dt', 'dt_options', [ $this, 'build_default_page' ], dt_svg_icon(), 1 );
+//        @todo potentially remove these pages
 //        add_submenu_page( 'dt_options', 'API Keys', 'API Keys', 'manage_dt', 'dt_api_keys', [ $this, 'build_api_key_page' ] );
 //        add_submenu_page( 'dt_options', 'Analytics', 'Analytics', 'manage_dt', 'dt_analytics', [ $this, 'build_analytics_page' ] );
 //        add_submenu_page( 'dt_options', 'Facebook', 'Facebook', 'manage_dt', 'dt_facebook', [ $this, 'build_facebook_page' ] );
-        add_submenu_page( 'dt_options', 'Reports Log', 'Reports Log', 'manage_dt', 'dt_reports_log', [ $this, 'build_reports_log_page' ] );
-        add_submenu_page( 'dt_options', 'Activity', 'Activity', 'manage_dt', 'dt_activity', [ $this, 'build_activity_page' ] );
-        add_submenu_page( 'dt_options', 'Notifications', 'Notifications', 'manage_dt', 'dt_notifications', [ $this, 'build_notifications_page' ] );
+//        add_submenu_page( 'dt_options', 'Reports Log', 'Reports Log', 'manage_dt', 'dt_reports_log', [ $this, 'build_reports_log_page' ] );
+//        add_submenu_page( 'dt_options', 'Activity', 'Activity', 'manage_dt', 'dt_activity', [ $this, 'build_activity_page' ] );
+//        add_submenu_page( 'dt_options', 'Notifications', 'Notifications', 'manage_dt', 'dt_notifications', [ $this, 'build_notifications_page' ] );
 
         do_action( 'dt_admin_menu' );
     }
@@ -180,7 +179,7 @@ final class Disciple_Tools_Config
      */
     public function build_analytics_page()
     {
-        DT_Ga_Admin::options_page_googleanalytics();
+//        DT_Ga_Admin::options_page_googleanalytics();
     }
 
     /**
@@ -188,7 +187,7 @@ final class Disciple_Tools_Config
      */
     public function build_facebook_page()
     {
-        Disciple_Tools_Facebook_Integration::instance()->facebook_settings_page();
+//        Disciple_Tools_Facebook_Integration::instance()->facebook_settings_page();
     }
 
     /**

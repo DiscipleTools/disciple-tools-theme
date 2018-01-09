@@ -190,30 +190,6 @@ function dt_my_connection_types()
         ]
     );
 
-    p2p_register_connection_type(
-        [
-            'name'        => 'assetmapping_to_locations',
-            'from'        => 'assetmapping',
-            'to'          => 'locations',
-            'cardinality' => 'many-to-one',
-            'title'       => [
-                'from' => __( 'Location', 'disciple_tools' ),
-                'to'   => __( 'Assets', 'disciple_tools' ),
-            ],
-            'from_labels' => [
-                'singular_name' => __( 'Assets', 'disciple_tools' ),
-                'search_items'  => __( 'Search assets', 'disciple_tools' ),
-                'not_found'     => __( 'No assets found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Assets', 'disciple_tools' ),
-            ],
-            'to_labels'   => [
-                'singular_name' => __( 'Locations', 'disciple_tools' ),
-                'search_items'  => __( 'Search locations', 'disciple_tools' ),
-                'not_found'     => __( 'No locations found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Location', 'disciple_tools' ),
-            ],
-        ]
-    );
 
     /**
      * This creates the link between members and locations for assignment purposes.
@@ -231,11 +207,8 @@ function dt_my_connection_types()
     );
 
     /**
-     * People Groups addon
-     *
-     * @see disciple-tools.php for the people groups registration
+     * People Groups
      */
-    //    if(isset( get_option( disciple_tools()->token.'-general', false )['add_people_groups'] )) { // TODO need to create the options filter for people groups
     p2p_register_connection_type(
         [
             'name'  => 'team_member_peoplegroups',
@@ -328,39 +301,17 @@ function dt_my_connection_types()
             ],
         ]
     );
-    p2p_register_connection_type(
-        [
-            'name'        => 'assetmapping_to_peoplegroups',
-            'from'        => 'assetmapping',
-            'to'          => 'peoplegroups',
-            'title'       => [
-                'from' => __( 'People Groups', 'disciple_tools' ),
-                'to'   => __( 'Assets', 'disciple_tools' ),
-            ],
-            'from_labels' => [
-                'singular_name' => __( 'Assets', 'disciple_tools' ),
-                'search_items'  => __( 'Search assets', 'disciple_tools' ),
-                'not_found'     => __( 'No assets found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Assets', 'disciple_tools' ),
-            ],
-            'to_labels'   => [
-                'singular_name' => __( 'People Group', 'disciple_tools' ),
-                'search_items'  => __( 'Search People Groups', 'disciple_tools' ),
-                'not_found'     => __( 'No People Groups found.', 'disciple_tools' ),
-                'create'        => __( 'Connect People Group', 'disciple_tools' ),
-            ],
-        ]
-    );
+
     //    } // end options filter for people groups
 
 }
 add_action( 'p2p_init', 'dt_my_connection_types' );
 
+
 /**
  * Sets the new connections to be published automatically.
  *
  * @param  $args
- *
  * @return mixed
  */
 function dt_p2p_published_by_default( $args )
