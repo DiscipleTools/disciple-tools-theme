@@ -525,8 +525,8 @@ jQuery(document).ready(function($) {
         `<li class="${newId}">
           <span>${label}:</span>
           <span class="social-text">${text}</span>
-          <img id="${newId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
-          <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/broken.svg"/>
+          <img id="${newId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
+          <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
         </li>`)
       inputForNewValue.val('')
       $("#no-social").remove()
@@ -621,8 +621,8 @@ jQuery(document).ready(function($) {
         $('.details-list.address').append(`
             <li class="${newAddressId} address-row">
               <div class="address-text">${input.val()}</div>
-              <img id="${newAddressId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
-              <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/broken.svg"/>
+              <img id="${newAddressId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
+              <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
             </li>
         `)
         $('.new-address')
@@ -662,8 +662,8 @@ jQuery(document).ready(function($) {
         $(`.details-list.${field}`).append(`
             <li class="${newId}">
               ${val}
-              <img id="${newId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/verified.svg"/>
-              <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/assets/images/broken.svg"/>
+              <img id="${newId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
+              <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
             </li>
         `)
         $(`.new-${field}`)
@@ -685,7 +685,7 @@ jQuery(document).ready(function($) {
               style='display:inline-block'>
         <li>
           <button class="social-details-options-button">
-            <img src="${contactsDetailsWpApiSettings.template_dir}/assets/images/menu-dots.svg" style='padding:3px 3px'>
+            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/menu-dots.svg" style='padding:3px 3px'>
           </button>
           <ul class='menu'>
             <li>

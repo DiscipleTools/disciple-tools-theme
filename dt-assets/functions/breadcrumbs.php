@@ -52,7 +52,7 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
                     <div class="cell small-4 align-right grid-x">
                         <div class="cell shrink ">
                             <button data-open="share-contact-modal" class="center-items">
-                                <img src="<?php echo esc_url( get_template_directory_uri() . "/assets/images/share.svg" ) ?>">
+                                <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
                                 <span style="margin:0 10px 0 10px"><?php esc_html_e( "Share" ); ?></span>
                             </button>
                         </div>
@@ -69,7 +69,7 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
             <div class="cell shrink">
                 <button  id="nav-view-comments" class="center-items">
                     <a href="#comment-activity-section" class="center-items" style="color:black">
-                        <img src="<?php echo esc_url( get_template_directory_uri() . "/assets/images/view-comments.svg" ); ?>">
+                        <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/view-comments.svg" ); ?>">
                         <span style="margin:0 10px 0 10px"><?php esc_html_e( "Comments" ); ?></span>
                     </a>
                 </button>
@@ -78,7 +78,7 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
         <?php if ( $share_button ): ?>
             <div class="cell shrink">
                 <button data-open="share-contact-modal" class="center-items">
-                    <img src="<?php echo esc_url( get_template_directory_uri() . "/assets/images/share.svg" ) ?>">
+                    <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
                     <span style="margin:0 10px 0 10px"><?php esc_html_e( "Share" ); ?></span>
                 </button>
             </div>

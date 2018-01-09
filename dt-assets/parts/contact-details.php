@@ -10,8 +10,8 @@
 
     function dt_contact_details_status( $id, $verified, $invalid ){
         ?>
-        <img id="<?php echo esc_html( $id )?>-verified" class="details-status" style="display:<?php echo esc_html( $verified )?>" src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/verified.svg' )?>" />
-        <img id="<?php echo esc_html( $id ) ?>-invalid" class="details-status" style="display:<?php echo esc_html( $invalid )?>" src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/broken.svg' )?>" />
+        <img id="<?php echo esc_html( $id )?>-verified" class="details-status" style="display:<?php echo esc_html( $verified )?>" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/verified.svg' )?>" />
+        <img id="<?php echo esc_html( $id ) ?>-invalid" class="details-status" style="display:<?php echo esc_html( $invalid )?>" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" />
         <?php
     }
     function dt_contact_details_edit( $id, $field_type, $remove = false ){
@@ -21,7 +21,7 @@
             style='display:inline-block'>
             <li>
                 <button class="social-details-options-button">
-                    <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/menu-dots.svg' )?>" style='padding:3px 3px'>
+                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/menu-dots.svg' )?>" style='padding:3px 3px'>
                 </button>
                 <ul class='menu'>
                     <li>
@@ -296,7 +296,7 @@
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
                         <div class="section-subheader"><?php echo esc_html( $channel_list["phone"]["label"] ) ?>
                             <button data-id="phone" class="details-edit add-button">
-                                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                             </button>
                         </div>
                         <ul class="phone details-list">
@@ -334,7 +334,7 @@
 
                         <div class="section-subheader"><?php echo esc_html( $channel_list["email"]["label"] ) ?>
                             <button data-id="email" class="details-edit add-button">
-                                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                             </button>
                         </div>
                         <ul class="email details-list">
@@ -530,7 +530,7 @@
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
                         <div class="section-subheader"><?php esc_html_e( 'Address', 'disciple_tools' )?>
                             <button id="add-new-address" class="details-edit">
-                                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                             </button>
                         </div>
                         <ul class="address details-list">
@@ -648,8 +648,8 @@
 
                 <div class="row show-more-button" style="text-align: center" >
                     <button class="clear show-button"  href="#"><?php esc_html_e( 'Show', 'disciple_tools' )?>
-                        <span class="show-content show-more"><?php esc_html_e( 'more', 'disciple_tools' )?> <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_down.svg' )?>"/></span>
-                        <span class="show-content" style="display:none;"><?php esc_html_e( 'less', 'disciple_tools' )?> <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_up.svg' )?>"></span>
+                        <span class="show-content show-more"><?php esc_html_e( 'more', 'disciple_tools' )?> <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' )?>"/></span>
+                        <span class="show-content" style="display:none;"><?php esc_html_e( 'less', 'disciple_tools' )?> <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' )?>"></span>
                     </button>
                 </div>
             </div>

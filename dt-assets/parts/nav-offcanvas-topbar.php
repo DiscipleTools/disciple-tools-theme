@@ -8,21 +8,21 @@
 <div class="title-bar show-for-small-only" data-responsive-toggle="top-bar-menu">
     <div class="title-bar-left">
         <button class="" type="button" data-open="off-canvas">
-            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/assets/images/hamburger.svg" ?>">
+            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/hamburger.svg" ?>">
         </button>
         <div class="title-bar-title"><?php esc_html_e( "Disciple Tools" ); ?></div>
     </div>
     <div class="title-bar-right">
         <?php if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )): ?>
             <button data-open="filters-modal">
-                <img title="<?php esc_html_e( "Filters" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/assets/images/filter.svg" ?>">
+                <img title="<?php esc_html_e( "Filters" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/filter.svg" ?>">
             </button>
         <?php endif; ?>
         <a href="<?php echo esc_url( home_url( '/notifications' ) ); ?>">
-            <img title="<?php esc_html_e( "Notifications" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/assets/images/bell.svg" ?>">
+            <img title="<?php esc_html_e( "Notifications" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
         </a>
         <a href="<?php echo esc_url( home_url( '/' ) ) . 'settings/'; ?>">
-            <img title="<?php esc_html_e( "Settings" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/assets/images/gear.svg" ?>">
+            <img title="<?php esc_html_e( "Settings" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/gear.svg" ?>">
         </a>
     </div>
 </div>
@@ -35,7 +35,7 @@
             <ul class="menu">
                 <li data-toggle="off-canvas" class="center-items">
                     <button>
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . "/assets/images/hamburger.svg" ?>">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/hamburger.svg" ?>">
                     </button>
                 </li>
                 <?php disciple_tools_top_nav_desktop(); ?>
@@ -51,7 +51,7 @@
                 </li>
                 <li class="has-submenu center-items">
                     <button>
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . "/assets/images/settings.svg" ?>">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/settings.svg" ?>">
                     </button>
                     <ul class="submenu menu vertical">
                         <li><a href="<?php echo esc_url( home_url( '/' ) ) . 'settings/'; ?>"><?php esc_html_e( 'Settings', 'disciple_tools' )?></a></li>

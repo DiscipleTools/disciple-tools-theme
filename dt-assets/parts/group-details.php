@@ -10,8 +10,8 @@ $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_s
 
 function dt_contact_details_status( $id, $verified, $invalid ){
     ?>
-    <img id="<?php echo esc_attr( $id . '-verified', 'disciple_tools' ); ?>" class="details-status" style="display: <?php echo esc_attr( $verified, 'disciple_tools' ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . '/assets/images/verified.svg'; ?>"/>
-    <img id="<?php echo esc_attr( $id . '-invalid', 'disciple_tools' ); ?>"  class="details-status" style="display: <?php echo esc_attr( $invalid, 'disciple_tools' ); ?>"  src="<?php echo esc_url( get_template_directory_uri() ) . '/assets/images/broken.svg'; ?>" />
+    <img id="<?php echo esc_attr( $id . '-verified', 'disciple_tools' ); ?>" class="details-status" style="display: <?php echo esc_attr( $verified, 'disciple_tools' ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/verified.svg'; ?>"/>
+    <img id="<?php echo esc_attr( $id . '-invalid', 'disciple_tools' ); ?>"  class="details-status" style="display: <?php echo esc_attr( $invalid, 'disciple_tools' ); ?>"  src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/broken.svg'; ?>" />
     <?php
 }
 function dt_contact_details_edit( $id, $remove = false ){
@@ -21,7 +21,7 @@ function dt_contact_details_edit( $id, $remove = false ){
         style='display:inline-block'>
         <li>
             <button class="social-details-options-button">
-                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/menu-dots.svg' )?>" style='padding:3px 3px'>
+                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/menu-dots.svg' )?>" style='padding:3px 3px'>
             </button>
             <ul class='menu'>
                 <li>
@@ -155,7 +155,7 @@ function dt_contact_details_edit( $id, $remove = false ){
 
             <div class="section-subheader"><?php esc_html_e( 'Address', 'disciple_tools' )?>
                 <button id="add-new-address" class="details-edit">
-                    <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/small-add.svg' ) ?>"/>
+                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                 </button>
             </div>
             <ul class="address details-list">

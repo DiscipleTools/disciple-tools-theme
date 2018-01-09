@@ -14,7 +14,7 @@ These files are collections of functions serving the disciple tools theme.
 1. `config-required-plugins.php`  
    _Configuration file for which plugins to require for the system._
 1. `enqueue-scripts.php`  
-   _Primary file for enqueue js and css file from the `/assets/js/` folder._
+   _Primary file for enqueue js and css file from the `/dt-assets/js/` folder._
 1. `login.php`  
    _Holds configuration information for the logon and registration screens._
 1. `menu.php`  

@@ -2,7 +2,7 @@
  * This is a duplicate script to the critical_path() and refresh_critical_path_data() found in Disciple Tools Theme metrics.js
  * This is only loaded in the wp-admin and we didn't want to make it dependent on the theme being installed.
  * TODO: Find a less WET way of hosting these two functions.
- * @see /wp-content/themes/disciple-tools-theme/assets/js/metrics.js
+ * @see /wp-content/themes/disciple-tools-theme/dt-assets/js/metrics.js
  */
 function critical_path(){
   "use strict";

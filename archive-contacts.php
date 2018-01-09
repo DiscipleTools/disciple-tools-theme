@@ -94,7 +94,7 @@ declare(strict_types=1);
 
             <main id="main" class="large-9 cell padding-bottom" role="main">
 
-                <?php get_template_part( 'parts/content', 'contacts' ); ?>
+                <?php get_template_part( 'dt-assets/parts/content', 'contacts' ); ?>
 
             </main> <!-- end #main -->
 

@@ -1,7 +1,7 @@
 <article id="post-<?php the_ID(); ?>" <?php post_class( '' ); ?> role="article">
     <header class="article-header">
         <h2><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title_attribute(); ?></a></h2>
-        <?php get_template_part( 'parts/content', 'byline' ); ?>
+        <?php get_template_part( 'dt-assets/parts/content', 'byline' ); ?>
     </header> <!-- end article header -->
 
     <section class="entry-content" itemprop="articleBody">

@@ -32,7 +32,7 @@ $grid_columns = 4; ?>
                 </section> <!-- end article section -->
 
                 <footer class="article-footer">
-                    <?php get_template_part( 'parts/content', 'pray' ); ?>
+                    <?php get_template_part( 'dt-assets/parts/content', 'pray' ); ?>
                 </footer>
 
             </article> <!-- end article -->

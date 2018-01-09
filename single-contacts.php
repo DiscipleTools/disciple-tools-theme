@@ -37,7 +37,7 @@ declare( strict_types=1 );
                 <div id="errors"></div>
                 <section class="hide-for-large small-12 cell">
                     <div class="bordered-box">
-                        <?php get_template_part( 'parts/contact', 'quick-buttons' ); ?>
+                        <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
 
                         <div style="text-align: center">
                             <a class="button small" href="#comment-activity-section" style="margin-bottom: 0">
@@ -46,7 +46,7 @@ declare( strict_types=1 );
                         </div>
                     </div>
                 </section>
-                <?php get_template_part( 'parts/contact', 'details' ); ?>
+                <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
 
                 <section id="relationships" class="xlarge-6 large-12 medium-6 cell">
                     <div class="bordered-box last-typeahead-in-section">
@@ -238,8 +238,8 @@ declare( strict_types=1 );
             <aside class="auto cell grid-x grid-margin-x">
                 <section class="xlarge-5 large-5 medium-12 small-12 cell bordered-box comment-activity-section"
                          id="comment-activity-section">
-                    <?php get_template_part( 'parts/contact', 'quick-buttons' ); ?>
-                    <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
+                    <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
+                    <?php get_template_part( 'dt-assets/parts/loop', 'activity-comment' ); ?>
                 </section>
 
             </aside>
