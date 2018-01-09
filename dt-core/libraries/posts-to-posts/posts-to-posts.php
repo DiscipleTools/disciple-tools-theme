@@ -14,6 +14,8 @@ define( 'P2P_PLUGIN_VERSION', '1.6.5' );
 
 define( 'P2P_TEXTDOMAIN', 'disciple_tools' );
 
+define( 'P2P_URL', get_template_directory_uri() . '/dt-core/libraries/posts-to-posts/'); // @added by DT
+
 function _p2p_load() {
     load_plugin_textdomain( P2P_TEXTDOMAIN, '', basename( dirname( __FILE__ ) ) . '/lang' );
 
