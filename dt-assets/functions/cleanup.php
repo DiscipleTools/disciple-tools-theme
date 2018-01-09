@@ -1,5 +1,8 @@
 <?php
 
+// Removes the admin bar
+add_filter( 'show_admin_bar', '__return_false' );
+
 /**
  * Fire all our initial functions at the start
  */

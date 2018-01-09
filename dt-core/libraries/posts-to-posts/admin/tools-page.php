@@ -55,7 +55,7 @@ class P2P_Tools_Page extends scbAdminPage {
 	}
 
 	function page_head() {
-		wp_enqueue_style( 'p2p-tools', plugins_url( 'tools.css', __FILE__ ), array(), P2P_PLUGIN_VERSION );
+		wp_enqueue_style( 'p2p-tools', P2P_URL . 'admin/tools.css', array(), P2P_PLUGIN_VERSION );
 	}
 
 	function page_content() {
