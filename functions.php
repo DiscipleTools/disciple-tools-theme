@@ -312,25 +312,28 @@ add_filter( 'wpmu_drop_tables', 'dt_on_delete_blog' );
  */
 function dt_plugins_loaded()
 {
-    Disciple_Tools::instance();
-
+    disciple_tools();
     /** We want to make sure migrations are run on plugin updates. The only way
      * to do this is through the "plugins_loaded" hook. See
      * @see https://www.sitepoint.com/wordpress-plugin-updates-right-way/
      */
-//    require_once( get_template_directory(). '/dt-core/admin/class-migration-engine.php' );
-//    Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
-//
-//    /** Similarly, we want to make sure roles are up-to-date. */
-//    require_once( get_template_directory(). '/dt-core/admin/class-roles.php' );
-//    Disciple_Tools_Roles::instance()->set_roles_if_needed();
+    try {
+        require_once( get_template_directory(). '/dt-core/admin/class-migration-engine.php' );
+        Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
+    } catch ( Throwable $e ) {
+        // do something with the error.
+    }
+
+    /** Similarly, we want to make sure roles are up-to-date. */
+    require_once( get_template_directory(). '/dt-core/admin/class-roles.php' );
+    Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
     /**
      * Site options version check
      */
 
 }
-add_action( 'plugins_loaded', 'dt_plugins_loaded' );
+add_action( 'after_setup_theme', 'dt_plugins_loaded' );
 
 /**
  * Returns the main instance of Disciple_Tools to prevent the need to use globals.
@@ -346,7 +349,7 @@ function disciple_tools()
 {
     return Disciple_Tools::instance();
 }
-disciple_tools();
+
 
 /**
  * Main Disciple_Tools Class
@@ -454,16 +457,6 @@ class Disciple_Tools
     public $logging = [];
     public $metrics;
     public $notifications;
-
-    /**
-     * The core controller files we're registering.
-     *
-     * @var    array
-     * @access public
-     * @since  0.1.0
-     */
-
-
 
     /**
      * Main Disciple_Tools Instance
