@@ -214,13 +214,145 @@ class Disciple_Tools_Posts
         return wp_new_comment( $comment_data );
     }
 
+    public static function format_connection_message( $p2p_id, $action = 'connected to', $activity ){
+        // Get p2p record
+        $p2p_record = p2p_get_connection( (int) $p2p_id ); // returns object
+
+        if ( !$p2p_record ){
+            if ($activity->field_type === "connection from"){
+                $from_title = get_the_title( $activity->object_id );
+                $to_title = get_the_title( $activity->meta_value );
+            } elseif ( $activity->field_type === "connection to"){
+                $from_title = get_the_title( $activity->meta_value );
+                $to_title = get_the_title( $activity->object_id );
+            } else {
+                return "CONNECTION DESTROYED";
+            }
+        } else {
+            $p2p_from = get_post( $p2p_record->p2p_from, ARRAY_A );
+            $p2p_to = get_post( $p2p_record->p2p_to, ARRAY_A );
+            $from_title = $p2p_from["post_title"];
+            $to_title = $p2p_to["post_title"];
+        }
+        $object_note_from = '';
+        $object_note_to = '';
+
+        // Build variables
+        $p2p_type = $activity->meta_key;
+        if ($p2p_type === "baptizer_to_baptized"){
+            if ($action === "connected to"){
+                $object_note_to = __( 'Baptized ', 'disciple_tools' )  . $from_title;
+                $object_note_from = __( 'Baptized by ', 'disciple_tools' ) . $to_title;
+            } else {
+                $object_note_to = __( 'Did not baptize ', 'disciple_tools' ) . $from_title;
+                $object_note_from = __( 'Not baptized by ', 'disciple_tools' ) . $to_title;
+            }
+        } else if ($p2p_type === "contacts_to_groups"){
+            if ($action == "connected to"){
+                $object_note_to = __( 'Added to group ', 'disciple_tools' ) . $to_title;
+                $object_note_from = __( 'Added to group ', 'disciple_tools' ) . $to_title;
+            } else {
+                $object_note_to = __( 'Removed from group ', 'disciple_tools' ) . $to_title;
+                $object_note_from = __( 'Removed from group ', 'disciple_tools' ) . $to_title;
+            }
+        }
+        else if ($p2p_type === "contacts_to_peoplegroups"){
+            if ($action == "connected to"){
+                $object_note_to = __( 'Added to people group: ', 'disciple_tools' ) . $to_title;
+                $object_note_from = __( 'Added to people group: ', 'disciple_tools' ) . $to_title;
+            } else {
+                $object_note_to = __( 'Removed from people group: ', 'disciple_tools' ) . $to_title;
+                $object_note_from = __( 'Removed from people group: ', 'disciple_tools' ) . $to_title;
+            }
+        }
+        else if ( $p2p_type === "contacts_to_contacts"){
+            if ($action === "connected to"){
+                $object_note_to = __( 'Coaching ', 'disciple_tools' ) . $from_title;
+                $object_note_from = __( 'Coached by ', 'disciple_tools' ) . $to_title;
+            } else {
+                $object_note_to = __( 'No longer coaching ', 'disciple_tools' ) . $from_title;
+                $object_note_from = __( 'No longed coached by ', 'disciple_tools' ) . $to_title;
+            }
+        } else if ( $p2p_type === "contacts_to_locations"){
+            if ($action == "connected to"){
+                $object_note_to = __( 'Added to location ', 'disciple_tools' ) . $to_title;
+                $object_note_from = __( 'Added to location ', 'disciple_tools' ) . $to_title;
+            } else {
+                $object_note_to = __( 'Removed from location ', 'disciple_tools' ) . $to_title;
+                $object_note_from = __( 'Removed from location ', 'disciple_tools' ) . $to_title;
+            }
+        }
+
+        if ( $activity->field_type === "connection from" ){
+            return $object_note_from;
+        } else {
+            return $object_note_to;
+        }
+    }
+
+    public static function format_activity_message( $activity, $fields) {
+        $message = "bla bla bla";
+        if ( $activity->action == "field_update" ){
+            if ( isset( $fields[$activity->meta_key] ) ){
+                if ( $activity->meta_key === "assigned_to"){
+                    $meta_array = explode( '-', $activity->meta_value ); // Separate the type and id
+                    if ( isset( $meta_array[1] ) ) {
+                        $user = get_user_by( "ID", $meta_array[1] );
+                        $message = __( 'Assigned to', 'disciple_tools' ) . ": " . ($user ? $user->display_name : __( "Nobody", 'disciple_tools' ) );
+                    }
+                }
+                if ( $fields[$activity->meta_key]["type"] === "text"){
+                    $message = $fields[$activity->meta_key]["name"] . " " . __( "changed to", 'disciple_tools' ) . ": " .$activity->meta_value;
+                }
+                if ( $fields[$activity->meta_key]["type"] === "key_select" ){
+                    $message = $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$activity->meta_value];
+                }
+                if ($fields[$activity->meta_key]["type"] === "number"){
+                    $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
+                }
+            } else {
+                if (strpos( $activity->meta_key, "_details" ) !== false ) {
+                    $meta_value = unserialize( $activity->meta_value );
+                    $original_key = str_replace( "_details", "", $activity->meta_key );
+                    $original = get_post_meta( $activity->object_id, $original_key, true );
+                    $name = $fields[ $activity->meta_key ]['name'] ?? "";
+                    $object_note = $name . ' "'. $original .'" ';
+                    foreach ($meta_value as $k => $v){
+                        $prev_value = $activity->old_value;
+                        if (is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v){
+                            continue;
+                        }
+                        if ($k === "verified") {
+                            $object_note .= $v ? __( "verified", 'disciple_tools' ) : __( "not verified", 'disciple_tools' );
+                        }
+                        if ($k === "invalid") {
+                            $object_note .= $v ? __( "invalidated", 'disciple_tools' ) : __( "not invalidated", 'disciple_tools' );
+                        }
+                        $object_note .= ', ';
+                    }
+                    $object_note = chop( $object_note, ', ' );
+                    $message = $object_note;
+                } else if ( $activity->meta_key == "title" ){
+                    $message = __( "Name changed to: ", 'disciple_tools' ) . $activity->meta_value;
+                } else {
+                    $message = "Deleted field";
+                }
+            }
+        }
+        if ( $activity->object_subtype === "p2p" ){
+            $message = self::format_connection_message( $activity->meta_id, $activity->action, $activity );
+        }
+
+        return $message;
+    }
+
     /**
      * @param string $post_type
      * @param int    $post_id
      *
      * @return array|null|object|\WP_Error
      */
-    public static function get_post_activity( string $post_type, int $post_id )
+    public static function get_post_activity( string $post_type, int $post_id, array $fields )
     {
         global $wpdb;
         if ( !self::can_view( $post_type, $post_id ) ) {
@@ -238,6 +370,7 @@ class Disciple_Tools_Posts
             $post_id
         ) );
         foreach ( $activity as $a ) {
+            $a->object_note = self::format_activity_message( $a, $fields );
             if ( isset( $a->user_id ) && $a->user_id > 0 ) {
                 $a->name = get_user_by( "id", $a->user_id )->display_name;
             }

@@ -819,32 +819,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_activity( $contact_id )
     {
-        if ( !self::can_view( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read contact activity" ), [ 'status' => 403 ] );
-        }
-
-        global $wpdb;
-
-        $activity = $wpdb->get_results( $wpdb->prepare(
-            "SELECT
-                 *
-            FROM
-                `$wpdb->dt_activity_log`
-            WHERE
-                `object_type` = 'contacts'
-                AND `object_id` = %d
-            ORDER BY
-                `hist_time`",
-            $contact_id
-        ) );
-        foreach ( $activity as $a ) {
-            if ( isset( $a->user_id ) && $a->user_id > 0 ) {
-                $user = get_user_by( "id", $a->user_id );
-                $a->name = $user ? $user->display_name : "Nobody";
-            }
-        }
-
-        return $activity;
+        $fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( true, $contact_id );
+        return self::get_post_activity( "contacts", $contact_id, $fields );
     }
 
     /**

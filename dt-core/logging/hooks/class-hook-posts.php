@@ -158,7 +158,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 $prev_value = $prev[0]->meta_value;
             }
         }
-
+        $field_type = "";
         $object_note = '';
         switch ($parent_post['post_type']) { // get custom fields for post type. Else, skip object note.
             case 'contacts':
@@ -183,6 +183,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             $original_key = str_replace( "_details", "", $meta_key );
             $original = get_post_meta( $object_id, $original_key, true );
             $object_note = $this->_key_name( $original_key, $fields ) . ' "'. $original .'" ';
+            $field_type = "details";
             foreach ($meta_value as $k => $v){
                 if (is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v){
                     continue;
@@ -207,6 +208,11 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 $user = get_user_by( "ID", $meta_array[1] );
                 $object_note = "Assigned to: " . ($user ? $user->display_name : "Nobody");
             }
+        }
+
+
+        if ( !empty( $fields ) && isset( $fields[$meta_key]["type"] ) ){
+            $field_type = $fields[$meta_key]["type"];
         }
 
         if ( !empty( $fields ) && !$object_note) { // Build object note if contact, group, location, else ignore object note
@@ -234,6 +240,8 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_value'        => is_array( $meta_value ) ? serialize( $meta_value ) : $meta_value,
                 'meta_parent'       => $parent_post['post_parent'],
                 'object_note'       => $object_note,
+                'old_value'         => $prev_value,
+                'field_type'        => $field_type
             ]
         );
     }
@@ -284,63 +292,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         $p2p_record = p2p_get_connection( $p2p_id ); // returns object
         $p2p_from = get_post( $p2p_record->p2p_from, ARRAY_A );
         $p2p_to = get_post( $p2p_record->p2p_to, ARRAY_A );
-        $object_note_from = '';
-        $object_note_to = '';
-
-        // Build variables
         $p2p_type = $p2p_record->p2p_type;
-        if ($p2p_type === "baptizer_to_baptized"){
-            if ($action === "connected to"){
-                $object_note_to = $p2p_to['post_title'] . ' baptized ' . $p2p_from['post_title'];
-                $object_note_from = $p2p_from['post_title'] . ' was baptized by ' . $p2p_to['post_title'];
-            } else {
-                $object_note_to = $p2p_to['post_title'] . ' did not baptize ' . $p2p_from['post_title'];
-                $object_note_from = $p2p_from['post_title'] . ' was not baptized by ' . $p2p_to['post_title'];
-            }
-        } else if ($p2p_type === "contacts_to_groups"){
-            if ($action == "connected to"){
-                $object_note_to = $p2p_from['post_title'] . ' added to group ' . $p2p_to['post_title'];
-                $object_note_from = $p2p_from['post_title'] . ' added to group ' . $p2p_to['post_title'];
-            } else {
-                $object_note_to = $p2p_from['post_title'] . ' removed from group ' . $p2p_to['post_title'];
-                $object_note_from = $p2p_from['post_title'] . ' removed from group ' . $p2p_to['post_title'];
-            }
-        }
-        else if ($p2p_type === "contacts_to_peoplegroups"){
-            if ($action == "connected to"){
-                $object_note_to = $p2p_from['post_title'] . ' added to people group: ' . $p2p_to['post_title'];
-                $object_note_from = $p2p_from['post_title'] . ' added to people group: ' . $p2p_to['post_title'];
-            } else {
-                $object_note_to = $p2p_from['post_title'] . ' removed from people group: ' . $p2p_to['post_title'];
-                $object_note_from = $p2p_from['post_title'] . ' removed from people group: ' . $p2p_to['post_title'];
-            }
-        }
-        else if ( $p2p_type === "contacts_to_contacts"){
-            if ($action === "connected to"){
-                $object_note_to = $p2p_to['post_title'] . ' is coaching ' . $p2p_from['post_title'];
-                $object_note_from = $p2p_from['post_title'] . ' is coached by ' . $p2p_to['post_title'];
-            } else {
-                $object_note_to = $p2p_to['post_title'] . ' no longer coaching ' . $p2p_from['post_title'];
-                $object_note_from = $p2p_from['post_title'] . ' no longed coached by ' . $p2p_to['post_title'];
-            }
-        } else if ( $p2p_type === "contacts_to_locations"){
-            if ($action == "connected to"){
-                $object_note_to = $p2p_from['post_title'] . ' in location ' . $p2p_to['post_title'];
-                $object_note_from = $p2p_from['post_title'] . ' in location ' . $p2p_to['post_title'];
-            } else {
-                $object_note_to = $p2p_from['post_title'] . ' no longer in location ' . $p2p_to['post_title'];
-                $object_note_from = $p2p_from['post_title'] . ' no longer in location ' . $p2p_to['post_title'];
-            }
-        }
-
-
-        if (empty( $object_note_from )){
-            $object_note_from = $p2p_from['post_title'] . ' was ' . $action . ' ' . $p2p_to['post_title'];
-        }
-        if (empty( $object_note_to )){
-            $object_note_to = $p2p_to['post_title'] . ' was ' . $action . ' ' . $p2p_from['post_title'];
-        }
-
 
         // Log for both records
         dt_activity_insert(
@@ -354,7 +306,8 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_key'          => $p2p_type,
                 'meta_value'        => $p2p_to['ID'], // i.e. the opposite record of the object in the p2p
                 'meta_parent'        => '',
-                'object_note'       => $object_note_from,
+                'object_note'       => '',
+                'field_type'        => "connection from"
             ]
         );
 
@@ -369,7 +322,8 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_key'          => $p2p_type,
                 'meta_value'        => $p2p_from['ID'], // i.e. the opposite record of the object in the p2p
                 'meta_parent'        => '',
-                'object_note'       => $object_note_to,
+                'object_note'       => '',
+                'field_type'        => "connection to",
             ]
         );
 
