@@ -321,7 +321,7 @@ function dt_plugins_loaded()
         require_once( get_template_directory(). '/dt-core/admin/class-migration-engine.php' );
         Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
     } catch ( Throwable $e ) {
-        // do something with the error.
+        new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
     }
 
     /** Similarly, we want to make sure roles are up-to-date. */
