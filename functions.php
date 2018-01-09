@@ -222,8 +222,6 @@ function dt_route_front_page() {
 }
 
 
-
-
 function dt_admin_notice_required_php_version()
 {
     ?>
