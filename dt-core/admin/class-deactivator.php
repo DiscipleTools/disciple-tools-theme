@@ -26,7 +26,7 @@ class Disciple_Tools_Deactivator
      *
      * @since 0.1.0
      */
-    public static function deactivate( $network_wide )
+    public static function deactivate()
     {
 
         // Reset roles and capabilities
@@ -38,6 +38,9 @@ class Disciple_Tools_Deactivator
         if ( get_option( 'delete_activity_db' ) ) {
             self::_remove_tables();
         }
+
+        /** Remove report cron jobs */
+        Disciple_Tools_Reports_Cron::unschedule_report_events();
     }
 
     /**

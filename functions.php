@@ -13,8 +13,6 @@ require_once( get_template_directory() . '/dt-core/admin/php7-warning.php' ); //
  */
 register_activation_hook( __FILE__, 'dt_activate' );
 register_deactivation_hook( __FILE__, 'dt_deactivate' );
-add_action( 'wpmu_new_blog', 'dt_on_create_blog', 10, 6 );
-add_filter( 'wpmu_drop_tables', 'dt_on_delete_blog' );
 
 /**
  * Adds the Disciple_Tools Class and runs database and roles version checks.
@@ -74,7 +72,6 @@ class Disciple_Tools
     public $dt_svg;
     public $admin;
     public $settings;
-//    public $facebook_integration;
     public $metrics;
     public $notifications;
     public $post_types = [];
@@ -393,8 +390,8 @@ class Disciple_Tools
             require_once( get_template_directory() . '/dt-core/admin/tables/notifications-table.php' );
 
             // Logging
-            require_once( get_template_directory() . '/dt-core/logging/class-activity-list-table.php' ); // contacts and groups report building
-            require_once( get_template_directory() . '/dt-core/logging/class-reports-list-table.php' ); // contacts and groups report building
+            require_once( get_template_directory() . '/dt-core/admin/menu/class-activity-list-table.php' ); // contacts and groups report building
+            require_once( get_template_directory() . '/dt-core/admin/menu/class-reports-list-table.php' ); // contacts and groups report building
 
             // Metaboxes
             require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-activity.php' );
@@ -452,75 +449,21 @@ class Disciple_Tools
 
 
 /**
- * Multisite: Delete blog db maintenance
- *
- * @param $tables
- *
- * @return array
- */
-function dt_on_delete_blog( $tables )
-{
-    require_once get_template_directory() . '/dt-core/admin/class-activator.php';
-
-    return Disciple_Tools_Activator::on_delete_blog( $tables );
-}
-
-/**
- * Multisite: Create new blog db maintainance
- *
- * @param $blog_id
- * @param $user_id
- * @param $domain
- * @param $path
- * @param $site_id
- * @param $meta
- */
-function dt_on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta )
-{
-    require_once get_template_directory() . '/dt-core/admin/class-activator.php';
-    Disciple_Tools_Activator::on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta );
-}
-
-/**
  * Deactivation Hook
  */
-function dt_deactivate( $network_wide )
+function dt_deactivate()
 {
     require_once get_template_directory() . '/dt-core/admin/class-deactivator.php';
-    Disciple_Tools_Deactivator::deactivate( $network_wide );
+    Disciple_Tools_Deactivator::deactivate();
 }
 
 /**
  * Activation Hook
  */
-function dt_activate( $network_wide )
+function dt_activate()
 {
     require_once get_template_directory() . '/dt-core/admin/class-activator.php';
-    Disciple_Tools_Activator::activate( $network_wide );
-}
-
-/**
- * Php Version Alert
- */
-function dt_theme_admin_notice_required_php_version()
-{
-    ?>
-    <div class="notice notice-error">
-        <p><?php esc_html_e( "The Disciple Tools theme requires PHP 7.0 or greater before it will have any effect. Please upgrade your PHP version or uninstall this theme.", "disciple_tools" ); ?></p>
-    </div>
-    <?php
-}
-
-/**
- * Error handler for PHP version fail
- *
- * @return bool
- */
-function dt_theme_after_switch_theme_switch_back()
-{
-    switch_theme( get_option( 'theme_switched' ) );
-
-    return false;
+    Disciple_Tools_Activator::activate();
 }
 
 /**

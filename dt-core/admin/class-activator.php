@@ -22,7 +22,7 @@ class Disciple_Tools_Activator
      *
      * @since 0.1.0
      */
-    public static function activate( $network_wide )
+    public static function activate()
     {
         global $wpdb;
         $disciple_tools = disciple_tools();
@@ -53,54 +53,17 @@ class Disciple_Tools_Activator
         dt_get_option( 'base_user' );
         dt_get_option( 'map_key' );
 
-        /** Activate database creation for Disciple Tools Activity logs */
-        if ( is_multisite() && $network_wide ) {
-            // Get all blogs in the network and activate plugin on each one
-            $blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
-            foreach ( $blog_ids as $blog_id ) {
-                switch_to_blog( $blog_id );
-                Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
-                restore_current_blog();
-            }
-        } else {
+        /** Register Cron Jobs for Daily Reports */
+        Disciple_Tools_Reports_Cron::register_daily_report_events();
+
+        /** Activate database creation */
+        try {
             Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
+        } catch ( Throwable $exception ) {
+            new WP_Error( 'migration_error', 'Migration tool threw an error in the theme activation' );
         }
         // Disciple_Tools_Migration_Engine::migrate is also run on updates, see
-        // the code in disciple-tools.php
-    }
-
-    /**
-     * Creating tables whenever a new blog is created
-     *
-     * @param $blog_id
-     * @param $user_id
-     * @param $domain
-     * @param $path
-     * @param $site_id
-     * @param $meta
-     */
-    public static function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta )
-    {
-        if ( is_plugin_active_for_network( 'disciple-tools/disciple-tools.php' ) ) {
-            switch_to_blog( $blog_id );
-            Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
-            restore_current_blog();
-        }
-    }
-
-    /**
-     * @param $tables
-     *
-     * @return array
-     */
-    public static function on_delete_blog( $tables )
-    {
-        global $wpdb;
-        $tables[] = $wpdb->prefix . 'dt_activity_log';
-        $tables[] = $wpdb->prefix . 'dt_reports';
-        $tables[] = $wpdb->prefix . 'dt_reportmeta';
-
-        return $tables;
+        // the code in functions.php
     }
 
 }
