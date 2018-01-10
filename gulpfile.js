@@ -54,18 +54,18 @@ const SOURCE = {
     FOUNDATION + '/dist/js/plugins/foundation.tooltip.js',
 
     // Place custom JS here, files will be concantonated, minified if ran with --production
-    'assets/js/footer-scripts.js',
+    'dt-assets/js/footer-scripts.js',
   ],
 
   // Scss files will be concantonated, minified if ran with --production
-  styles: 'assets/scss/**/*.scss',
+  styles: 'dt-assets/scss/**/*.scss',
 
   php: '**/*.php'
 };
 
 const BUILD_DIRS = {
-  styles: 'build/css/',
-  scripts: 'build/js/',
+  styles: 'dt-assets/build/css/',
+  scripts: 'dt-assets/build/js/',
 };
 
 // GULP FUNCTIONS
@@ -120,7 +120,7 @@ gulp.task('browsersync', ['default'], function() {
     SOURCE.styles,
     SOURCE.scripts,
     SOURCE.php,
-    'assets/**/*.js', // Some .js aren't in SOURCE.scripts
+    'dt-assets/**/*.js', // Some .js aren't in SOURCE.scripts
   ];
 
   browserSync.init(files, {

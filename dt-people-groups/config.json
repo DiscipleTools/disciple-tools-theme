@@ -1,0 +1,10 @@
+{
+  "ArcGIS": {
+    "Name": "ArcGIS REST Services Directory",
+    "Home": "http://api.imb.org/arcgis/rest/services"
+  },
+  "Joshua Project": {
+    "Name": "Joshua Project",
+    "Home": "https://joshuaproject.net/api/v2/countries?api_key=vinskxSNWQKH&limit=300"
+  }
+}

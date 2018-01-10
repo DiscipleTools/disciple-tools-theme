@@ -1,0 +1,46 @@
+/**
+ * This style sheet is only loaded for admin pages and is used to configure the appearance of admin area.
+ *
+ * @package Disciple_Tools
+ * @since 0.1.0
+ */
+/* These edits remove unwanted features of the contacts edit screen */
+div#edit-slug-box.hide-if-no-js {
+  display: none; }
+
+/* Removes Permalink preview link. */
+/*div#minor-publishing {display:none;} */
+/* Removes contents of the Publish Metabox. */
+div#message p a {
+  display: none; }
+
+/* Removes the link to view to the post type on the portal page. */
+div.edit-title-left {
+  float: left;
+  max-width: 33%;
+  font-weight: 600;
+  font-size: 1.05em;
+  padding-top: 5px; }
+
+div.edit-field-right {
+  float: right;
+  width: 25em;
+  max-width: 65%;
+  padding-right: 10px; }
+
+.edit-input {
+  width: 100%; }
+
+div.edit-row {
+  width: 100%;
+  padding: 10px;
+  clear: both;
+  display: table; }
+
+@media screen and (max-width: 600px) {
+  div.edit-title-left {
+    max-width: 100%; }
+  div.edit-field-right {
+    max-width: 100%; }
+  div.edit-row {
+    width: 100%; } }
