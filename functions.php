@@ -375,23 +375,18 @@ class Disciple_Tools
         if ( is_admin() ) {
 
             // Administration
-            require_once( get_template_directory() . '/dt-core/admin/enqueue-scripts.php' ); // Load admin scripts
+            require_once( get_template_directory() . '/dt-core/admin/admin-enqueue-scripts.php' ); // Load admin scripts
             require_once( get_template_directory() . '/dt-core/admin/admin-theme-design.php' ); // Configures elements of the admin enviornment
-            require_once( get_template_directory() . '/dt-core/admin/three-column-screen-layout.php' ); // Adds multicolumn configuration to screen options
+            require_once( get_template_directory() . '/dt-core/admin/config-dashboard.php' );
+            $this->config_dashboard = Disciple_Tools_Dashboard::instance();
 
             // Settings Menu
             require_once( get_template_directory() . '/dt-core/admin/menu/main.php' );
             $this->config_menu = Disciple_Tools_Config::instance();
 
-            // Dashboard
-            require_once( get_template_directory() . '/dt-core/admin/config-dashboard.php' );
-            $this->config_dashboard = Disciple_Tools_Dashboard::instance();
-
             // Contacts
             require_once( get_template_directory() . '/dt-contacts/contacts-config.php' );
             $this->config_contacts = Disciple_Tools_Config_Contacts::instance();
-
-            // Groups
             require_once( get_template_directory() . '/dt-groups/groups-config.php' );
             $this->config_groups = Disciple_Tools_Groups_Config::instance();
 
@@ -404,12 +399,10 @@ class Disciple_Tools
             require_once( get_template_directory() . '/dt-people-groups/admin-menu.php' );
             $this->people_groups_admin = Disciple_Tools_People_Groups_Admin_Menu::instance();
 
-            // Notifications
-            require_once( get_template_directory() . '/dt-core/admin/tables/notifications-table.php' );
-
-            // Logging
-            require_once( get_template_directory() . '/dt-core/admin/menu/class-activity-list-table.php' ); // contacts and groups report building
-            require_once( get_template_directory() . '/dt-core/admin/menu/class-reports-list-table.php' ); // contacts and groups report building
+            // Tables
+            require_once( get_template_directory() . '/dt-core/admin/menu/tables/notifications-table.php' );
+            require_once( get_template_directory() . '/dt-core/admin/menu/tables/activity-list-table.php' ); // contacts and groups report building
+            require_once( get_template_directory() . '/dt-core/admin/menu/tables/reports-list-table.php' ); // contacts and groups report building
 
             // Metaboxes
             require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-activity.php' );
