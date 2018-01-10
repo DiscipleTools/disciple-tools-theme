@@ -6,6 +6,19 @@ declare( strict_types = 1 );
  * @package Disciple Tools
  * @class Disciple_Tools
  */
+
+/**
+ * @todo remove this protection prior to 0.1.4 release.
+ * Temporary conflict protection for version 0.1.3 release.
+ * This function disables the deprecated Disciple Tools plugin, if still activated
+ */
+include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+if(is_plugin_active('disciple-tools/disciple-tools.php')) {
+    deactivate_plugins( '/disciple-tools/disciple-tools.php', true );
+
+}
+/* End temporary conflict protection */
+
 // If this file is called directly, abort.
 if ( !defined( 'ABSPATH' ) ) {
     exit;

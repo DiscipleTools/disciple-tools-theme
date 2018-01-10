@@ -56,31 +56,16 @@ function dt_register_required_plugins() {
             'is_callable'        => 'dt_demo',
         ),
         array(
-            'name'               => 'Disciple Tools',
-            'slug'               => 'disciple-tools',
-            'source'             => 'https://github.com/DiscipleTools/disciple-tools/archive/master.zip',
-            'required'           => false, // TODO false only for development. Should be true for production.
-            'version'            => '0.1.3',
-            'is_callable'        => 'Disciple_Tools',
-        ),
-        array(
-            'name'                  => 'jwt-authentication-for-wp-rest-api',
-            'slug'                  => 'jwt-authentication-for-wp-rest-api',
-            'required'              => false,
-            'version'               => '1.2.3',
-            'is_callable'           => 'Jwt_Auth_Public',
-        ),
-        array(
             'name'                  => 'iThemes Security',
             'slug'                  => 'better-wp-security',
             'required'              => false,
-            'version'               => '6.7.0',
+            'version'               => '6.8.0',
         ),
         array(
             'name'                  => 'Updraft Plus',
             'slug'                  => 'updraftplus',
             'required'              => false,
-            'version'               => '1.13.12',
+            'version'               => '1.14.2',
         ),
         array(
             'name'                  => 'WP Easy SMTP',
@@ -88,28 +73,19 @@ function dt_register_required_plugins() {
             'required'              => false,
             'version'               => '1.1.1',
         ),
-
-//        array(
-//            'name'              => 'WP Jump Menu',
-//            'slug'              => 'wp-jump-menu',
-//            'required'          => true,
-//            'version'            => '3.6',
-//            'force_activation'  => true,
-//            'force_deactivation' => false,
-//            'is_callable'       => 'WpJumpMenu',
-//        ),
-//        array(
-//            'name'               => 'JSON Basic Authentication',
-//            'slug'               => 'Basic-Auth',
-//            'source'             =>  'https://github.com/WP-API/Basic-Auth/archive/master.zip', // The plugin source.
-//            'required'           => false,
-//        ),
         array(
             'name' => 'Host Header Injection Fix',
             'slug' => 'host-header-injection-fix',
             'version' => '1.1',
             'required' => true,
         ),
+        //        array(
+        //            'name'                  => 'jwt-authentication-for-wp-rest-api',
+        //            'slug'                  => 'jwt-authentication-for-wp-rest-api',
+        //            'required'              => false,
+        //            'version'               => '1.2.3',
+        //            'is_callable'           => 'Jwt_Auth_Public',
+        //        ),
     );
 
     /*
@@ -125,7 +101,7 @@ function dt_register_required_plugins() {
         'capability'   => 'manage_options',    // Capability needed to view plugin install page, should be a capability associated with the parent menu used.
         'has_notices'  => true,                    // Show admin notices or not.
         'dismissable'  => true,                    // If false, a user cannot dismiss the nag message.
-        'dismiss_msg'  => 'For the Disciple_Tools system to work correction, these additional plugins must be installed.',                      // If 'dismissable' is false, this message will be output at top of nag.
+        'dismiss_msg'  => 'These are recommended plugins for to complement your disciple tools system.',                      // If 'dismissable' is false, this message will be output at top of nag.
         'is_automatic' => true,                   // Automatically activate plugins after installation or not.
         'message'      => '',                      // Message to output right before the plugins table.
 
