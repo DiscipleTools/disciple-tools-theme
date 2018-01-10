@@ -117,6 +117,8 @@ class Disciple_Tools_Notifications
                     AND `notification_note` = %s
                     AND `date_notified` = %s
                     AND `is_new` = %s
+                    AND `field_key` = %s
+                    AND `field_value` = %s
 				;",
                 $args['user_id'],
                 $args['source_user_id'],
@@ -126,7 +128,9 @@ class Disciple_Tools_Notifications
                 $args['notification_action'],
                 $args['notification_note'],
                 $args['date_notified'],
-                $args['is_new']
+                $args['is_new'],
+                $args['field_key'],
+                $args['field_value']
             )
         );
 
@@ -150,8 +154,10 @@ class Disciple_Tools_Notifications
                 'notification_note'   => $args['notification_note'],
                 'date_notified'       => $args['date_notified'],
                 'is_new'              => $args['is_new'],
+                'field_key'           => $args['field_key'],
+                'field_value'         => $args['field_value'],
             ],
-            [ '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%d' ]
+            [ '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s' ]
         );
 
         // Fire action after insert.
@@ -334,6 +340,7 @@ class Disciple_Tools_Notifications
             // user friendly timestamp
             foreach ( $result as $key => $value ) {
                 $result[ $key ]['pretty_time'] = self::pretty_timestamp( $value['date_notified'] );
+                $result[ $key ]["notification_note"] = self::get_notification_message( $value );
             }
 
             return [
@@ -484,4 +491,80 @@ class Disciple_Tools_Notifications
     }
 
 
+
+    public static function get_notification_message( $notification ){
+        $object_id = $notification["post_id"];
+        $notification_note = $notification["notification_note"];
+        if ( $notification["notification_name"] === "assigned_to" ) {
+            $notification_note = __( 'You have been assigned ', 'disciple_tools' ) . '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . strip_tags( get_the_title( $object_id ) ) . '</a>';
+
+        } elseif ( $notification["notification_name"] ==="share" ){
+            $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '" >' . strip_tags( get_the_title( $object_id ) ) . '</a>';
+            $notification_note = $link . ' ' . __( 'was shared with you.', 'disciple_tools' );
+        } elseif ( $notification["notification_name"] ==="milestone" ){
+            $meta_key = $notification["field_key"] ?? '';
+            $meta_value = $notification["field_value"] ?? '';
+
+            switch ( $meta_key ) {
+                case 'milestone_belief':
+                    $element = __( '"Belief" Milestone', 'disciple_tools' );
+                    break;
+                case 'milestone_can_share':
+                    $element = __( '"Can Share" Milestone', 'disciple_tools' );
+                    break;
+                case 'milestone_sharing':
+                    $element = __( '"Actively Sharing" Milestone', 'disciple_tools' );
+                    break;
+                case 'milestone_baptized':
+                    $element = __( '"Baptized" Milestone', 'disciple_tools' );
+                    break;
+                case 'milestone_baptizing':
+                    $element = __( '"Baptizing" Milestone', 'disciple_tools' );
+                    break;
+                case 'milestone_in_group':
+                    $element = __( '"Is in a group" Milestone', 'disciple_tools' );
+                    break;
+                case 'milestone_planting':
+                    $element = __( '"Planting a group" Milestone', 'disciple_tools' );
+                    break;
+                default:
+                    $element = __( 'A Milestone', 'disciple_tools' );
+                    break;
+            }
+            if ( $meta_value === "added" ){
+                $element .= ' ' . __( 'has been added to', 'disciple_tools' );
+            } elseif ( $meta_value === "removed") {
+                $element .= ' ' . __( 'has been removed from', 'disciple_tools' );
+            } else {
+                $element .= ' ' . __( 'was changed for', 'disciple_tools' );
+            }
+            $source_user = get_userdata( $notification["source_user_id"] );
+
+            $link = '<a href="' . home_url( '/' ) .
+                get_post_type( $object_id ) . '/' . $object_id . '">' .
+                strip_tags( get_the_title( $object_id ) ) . '</a>';
+            $notification_note = $element . ' ' . $link  . ' ' . __( 'by', 'disciple_tools' ) . ' ' .
+                '<strong>' . $source_user->display_name . '</strong>';
+
+        } elseif ( $notification["notification_name"] ==="requires_update" ) {
+            $link              = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . strip_tags( get_the_title( $object_id ) ) . '</a>';
+            $notification_note = __( 'An update is requested on: ', 'disciple_tools' ) . $link;
+        } elseif ( $notification["notification_name"] ==="contact_info_update" ){
+            $meta_key = $notification["field_key"] ?? 'contact';
+            if ( strpos( $meta_key, "address" ) === 0 ) {
+                $element = __( 'Address details on ', 'disciple_tools' );
+            } elseif ( strpos( $meta_key, "contact" ) === 0 ) {
+                $element = __( 'Contact details on ', 'disciple_tools' );
+            } else {
+                $element = __( 'Contact details on ', 'disciple_tools' );
+            }
+            $source_user = get_userdata( $notification["source_user_id"] );
+            $link = '<a href="' . home_url( '/' ) .
+            get_post_type( $object_id ) . '/' . $object_id . '">' .
+            strip_tags( get_the_title( $object_id ) ) . '</a>';
+            $notification_note = $element  . $link . __( '  were modified by ', 'disciple_tools' ) .
+            '<strong>' . $source_user->display_name . '</strong>';
+        }
+        return $notification_note;
+    }
 }

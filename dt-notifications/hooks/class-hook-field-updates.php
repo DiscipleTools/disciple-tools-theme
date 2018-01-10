@@ -271,7 +271,9 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                             $notification_name,
                             $notification_action = 'alert',
                             $notification_note,
-                            $date_notified = current_time( 'mysql' )
+                            $date_notified = current_time( 'mysql' ),
+                            $field_key = $original_meta_key,
+                            $field_value = ''
                         );
 
                         dt_write_log( '@changes_web' ); // todo remove after dev
@@ -368,7 +370,9 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                             $notification_name,
                             $notification_action = 'alert',
                             $notification_note,
-                            $date_notified = current_time( 'mysql' )
+                            $date_notified = current_time( 'mysql' ),
+                            $field_key = $original_meta_key,
+                            $field_value = $value
                         );
 
                         dt_write_log( '@milestones_web' ); // todo remove after dev
@@ -409,8 +413,10 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
      * @param string $notification_action
      * @param string $notification_note
      * @param        $date_notified
+     * @param string $field_key
+     * @param string $field_value
      */
-    protected function add_notification( int $user_id, int $source_user_id, int $post_id, int $secondary_item_id, string $notification_name, string $notification_action, string $notification_note, $date_notified )
+    protected function add_notification( int $user_id, int $source_user_id, int $post_id, int $secondary_item_id, string $notification_name, string $notification_action, string $notification_note, $date_notified, string $field_key = '', string $field_value = '' )
     {
 
         dt_notification_insert(
@@ -424,6 +430,8 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                 'notification_note'   => $notification_note,
                 'date_notified'       => $date_notified,
                 'is_new'              => 1,
+                'field_key'           => $field_key,
+                'field_value'         => $field_value,
             ]
         );
     }
