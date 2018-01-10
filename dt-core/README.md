@@ -17,14 +17,24 @@ a google analytics library.)_
 1. `wp-background-process.php` _(Part of the WP Background Processing)
 
 
-## Update System
+# Update
+
+
+## Version System
+For a full description on the plugin-update-checker library see `dt-core/libraries/plugin-update-checker/README.md`
 
 Steps to updating:
-1. Update version number in `disciple-tools.php`.
-1. Update `version-updater.json`.
+1. Update version number in `style.css`.
+1. Update `version-updater.json`. (Update in three places)
+1. Update `config-required-plugins.php`. 
 1. Commit to GitHub.
-1. Download master .zip from Github, rename .zip as `disciple-tools.zip`.
-1. Create a new release in GitHub with the new version number and attach `disciple-tools.zip` to release.
+1. Download master .zip from Github, rename .zip as `disciple-tools-theme.zip`.
+1. Create a new release in GitHub with the new version number and attach `disciple-tools-theme.zip` to release.
+
+## TGMP Required Plugins
+This is a plugin monitor that checks for suggested and required plugins and their version number.
+1. `config-required-plugins.php`
+2. `/libraries/class-tgm-plugin-activation.php`
 
 
 ## Background Processing

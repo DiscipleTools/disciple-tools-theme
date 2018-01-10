@@ -1,10 +1,15 @@
 <?php
 declare( strict_types = 1 );
 /**
- * Disciple Tools Themes Function.php
+ * Disciple Tools Functions.php
  *
  * @package Disciple Tools
+ * @class Disciple_Tools
  */
+// If this file is called directly, abort.
+if ( !defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly
 
 require_once( get_template_directory() . '/dt-core/admin/php7-warning.php' ); // Checks for the correct php version and displays warning
 
@@ -204,10 +209,10 @@ class Disciple_Tools
         /**
          * Versioning System
          */
-        require_once( get_template_directory() . '/dt-update/config-required-plugins.php' );
-        require_once( get_template_directory() . '/dt-update/class-tgm-plugin-activation.php' );
+        require_once( get_template_directory() . '/dt-core/config-required-plugins.php' );
+        require_once( get_template_directory() . '/dt-core/libraries/class-tgm-plugin-activation.php' );
         if ( ! class_exists( 'Puc_v4_Factory' ) ) {
-            require( get_template_directory() . '/dt-update/plugin-update-checker/plugin-update-checker.php' );
+            require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
         }
         Puc_v4_Factory::buildUpdateChecker(
             'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-theme-version-control.json',
