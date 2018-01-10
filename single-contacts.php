@@ -182,57 +182,6 @@ declare( strict_types=1 );
                     </div>
                 </section>
 
-                <section id="availability" class="medium-6 cell" style="display: none">
-                    <div class="bordered-box">
-                        <label class="section-header"><?php esc_html_e( 'Availability', 'disciple_tools' )?></label>
-                        <div class="row" style="display: flex; justify-content: center">
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Sun', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Mon', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Tue', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Wed', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Thu', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Fri', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Sat', 'disciple_tools' )?></div>
-                        </div>
-                        <div class="row" style="display: flex; justify-content: center">
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Morn', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Morn', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Morn', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Morn', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Morn', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Morn', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Morn', 'disciple_tools' )?></div>
-                        </div>
-                        <div class="row" style="display: flex; justify-content: center">
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Lunch', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Lunch', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Lunch', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Lunch', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Lunch', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Lunch', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Lunch', 'disciple_tools' )?></div>
-                        </div>
-                        <div class="row" style="display: flex; justify-content: center">
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Aftr', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Aftr', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Aftr', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Aftr', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Aftr', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Aftr', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Aftr', 'disciple_tools' )?></div>
-                        </div>
-                        <div class="row" style="display: flex; justify-content: center">
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Night', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Night', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Night', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Night', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Night', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Night', 'disciple_tools' )?></div>
-                            <div style="flex: 0 1 13%"><?php esc_html_e( 'Night', 'disciple_tools' )?></div>
-                        </div>
-                    </div>
-                </section>
-
             </main> <!-- end #main -->
 
             <aside class="auto cell grid-x grid-margin-x">
