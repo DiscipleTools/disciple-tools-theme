@@ -241,45 +241,45 @@ class Disciple_Tools_Posts
         $p2p_type = $activity->meta_key;
         if ($p2p_type === "baptizer_to_baptized"){
             if ($action === "connected to"){
-                $object_note_to = __( 'Baptized ', 'disciple_tools' )  . $from_title;
-                $object_note_from = __( 'Baptized by ', 'disciple_tools' ) . $to_title;
+                $object_note_to = __( 'Baptized', 'disciple_tools' ) . ' ' . $from_title;
+                $object_note_from = __( 'Baptized by', 'disciple_tools' ) . ' ' . $to_title;
             } else {
-                $object_note_to = __( 'Did not baptize ', 'disciple_tools' ) . $from_title;
-                $object_note_from = __( 'Not baptized by ', 'disciple_tools' ) . $to_title;
+                $object_note_to = __( 'Did not baptize', 'disciple_tools' ) . ' ' . $from_title;
+                $object_note_from = __( 'Not baptized by', 'disciple_tools' ) . ' ' . $to_title;
             }
         } else if ($p2p_type === "contacts_to_groups"){
             if ($action == "connected to"){
-                $object_note_to = __( 'Added to group ', 'disciple_tools' ) . $to_title;
-                $object_note_from = __( 'Added to group ', 'disciple_tools' ) . $to_title;
+                $object_note_to = __( 'Added to group', 'disciple_tools' ) . ' ' . $to_title;
+                $object_note_from = __( 'Added to group', 'disciple_tools' ) . ' ' . $to_title;
             } else {
-                $object_note_to = __( 'Removed from group ', 'disciple_tools' ) . $to_title;
-                $object_note_from = __( 'Removed from group ', 'disciple_tools' ) . $to_title;
+                $object_note_to = __( 'Removed from group', 'disciple_tools' ) . ' ' . $to_title;
+                $object_note_from = __( 'Removed from group', 'disciple_tools' ) . ' ' . $to_title;
             }
         }
         else if ($p2p_type === "contacts_to_peoplegroups"){
             if ($action == "connected to"){
-                $object_note_to = __( 'Added to people group: ', 'disciple_tools' ) . $to_title;
-                $object_note_from = __( 'Added to people group: ', 'disciple_tools' ) . $to_title;
+                $object_note_to = __( 'Added to people group:', 'disciple_tools' ) . ' ' . $to_title;
+                $object_note_from = __( 'Added to people group:', 'disciple_tools' ) . ' ' . $to_title;
             } else {
-                $object_note_to = __( 'Removed from people group: ', 'disciple_tools' ) . $to_title;
-                $object_note_from = __( 'Removed from people group: ', 'disciple_tools' ) . $to_title;
+                $object_note_to = __( 'Removed from people group:', 'disciple_tools' ) . ' ' . $to_title;
+                $object_note_from = __( 'Removed from people group:', 'disciple_tools' ) . ' ' . $to_title;
             }
         }
         else if ( $p2p_type === "contacts_to_contacts"){
             if ($action === "connected to"){
-                $object_note_to = __( 'Coaching ', 'disciple_tools' ) . $from_title;
-                $object_note_from = __( 'Coached by ', 'disciple_tools' ) . $to_title;
+                $object_note_to = __( 'Coaching', 'disciple_tools' ) . ' ' . $from_title;
+                $object_note_from = __( 'Coached by', 'disciple_tools' ) . ' ' . $to_title;
             } else {
-                $object_note_to = __( 'No longer coaching ', 'disciple_tools' ) . $from_title;
-                $object_note_from = __( 'No longed coached by ', 'disciple_tools' ) . $to_title;
+                $object_note_to = __( 'No longer coaching', 'disciple_tools' ) . ' ' . $from_title;
+                $object_note_from = __( 'No longed coached by', 'disciple_tools' ) . ' ' . $to_title;
             }
         } else if ( $p2p_type === "contacts_to_locations"){
             if ($action == "connected to"){
-                $object_note_to = __( 'Added to location ', 'disciple_tools' ) . $to_title;
-                $object_note_from = __( 'Added to location ', 'disciple_tools' ) . $to_title;
+                $object_note_to = __( 'Added to location', 'disciple_tools' ) . ' ' . $to_title;
+                $object_note_from = __( 'Added to location', 'disciple_tools' ) . ' ' . $to_title;
             } else {
-                $object_note_to = __( 'Removed from location ', 'disciple_tools' ) . $to_title;
-                $object_note_from = __( 'Removed from location ', 'disciple_tools' ) . $to_title;
+                $object_note_to = __( 'Removed from location', 'disciple_tools' ) . ' ' . $to_title;
+                $object_note_from = __( 'Removed from location', 'disciple_tools' ) . ' ' . $to_title;
             }
         }
 
@@ -337,7 +337,7 @@ class Disciple_Tools_Posts
                     $object_note = chop( $object_note, ', ' );
                     $message = $object_note;
                 } else if ( $activity->meta_key == "title" ){
-                    $message = __( "Name changed to: ", 'disciple_tools' ) . $activity->meta_value;
+                    $message = __( "Name changed to:", 'disciple_tools' ) . ' ' . $activity->meta_value;
                 } else {
                     $message = "Deleted field";
                 }

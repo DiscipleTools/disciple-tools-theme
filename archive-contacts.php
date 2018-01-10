@@ -42,7 +42,7 @@ declare(strict_types=1);
                                 <div class="list-views__sub">
                                     <label class="list-view">
                                         <input type="radio" name="view" value="update_needed" class="js-list-view">
-                                        <?php esc_html_e( "Updated needed", "disciple_tools" ); ?>
+                                        <?php esc_html_e( "Update needed", "disciple_tools" ); ?>
                                         <span class="list-view__count js-list-view-count" data-value="update_needed">.</span>
                                     </label>
                                     <label class="list-view">

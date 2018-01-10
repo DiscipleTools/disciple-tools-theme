@@ -619,12 +619,12 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'unassigned'   => __( 'Unassigned', 'disciple_tools' ),
-                'assigned'     => __( "Assigned", 'disciple_tools' ),
-                'active'       => __( 'Active', 'disciple_tools' ),
-                'paused'       => __( 'Paused', 'disciple_tools' ),
-                'closed'       => __( 'Closed', 'disciple_tools' ),
-                'unassignable' => __( 'Unassignable', 'disciple_tools' ),
+                'unassigned'   => _x( 'Unassigned', 'Contact Status', 'disciple_tools' ),
+                'assigned'     => _X( "Assigned", 'Contact Status', 'disciple_tools' ),
+                'active'       => _X( 'Active', 'Contact Status', 'disciple_tools' ),
+                'paused'       => _x( 'Paused', 'Contact Status', 'disciple_tools' ),
+                'closed'       => _x( 'Closed', 'Contact Status', 'disciple_tools' ),
+                'unassignable' => _X( 'Unassignable', 'Contact Status', 'disciple_tools' ),
             ],
             'section'     => 'status',
         ];
