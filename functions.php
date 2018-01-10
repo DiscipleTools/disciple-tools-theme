@@ -13,7 +13,7 @@ declare( strict_types = 1 );
  * This function disables the deprecated Disciple Tools plugin, if still activated
  */
 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-if(is_plugin_active('disciple-tools/disciple-tools.php')) {
+if (is_plugin_active( 'disciple-tools/disciple-tools.php' )) {
     deactivate_plugins( '/disciple-tools/disciple-tools.php', true );
 
 }
