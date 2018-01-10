@@ -291,7 +291,7 @@ class Disciple_Tools_Posts
     }
 
     public static function format_activity_message( $activity, $fields) {
-        $message = "bla bla bla";
+        $message = "";
         if ( $activity->action == "field_update" ){
             if ( isset( $fields[$activity->meta_key] ) ){
                 if ( $activity->meta_key === "assigned_to"){
@@ -305,7 +305,11 @@ class Disciple_Tools_Posts
                     $message = $fields[$activity->meta_key]["name"] . " " . __( "changed to", 'disciple_tools' ) . ": " .$activity->meta_value;
                 }
                 if ( $fields[$activity->meta_key]["type"] === "key_select" ){
-                    $message = $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$activity->meta_value];
+                    if ( isset( $fields[$activity->meta_key]["default"][$activity->meta_value] ) ){
+                        $message = $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$activity->meta_value] ?? $activity->meta_value ;
+                    } else {
+                        $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value ;
+                    }
                 }
                 if ($fields[$activity->meta_key]["type"] === "number"){
                     $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
