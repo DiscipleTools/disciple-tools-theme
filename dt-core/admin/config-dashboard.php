@@ -109,7 +109,7 @@ final class Disciple_Tools_Dashboard
         remove_meta_box( 'dashboard_right_now', 'dashboard', 'normal' );
 
         remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
-        remove_meta_box( 'dashboard_activity', 'dashboard', 'normal');
+        remove_meta_box( 'dashboard_activity', 'dashboard', 'normal' );
 
         // Remove_meta_box('dashboard_right_now', 'dashboard', 'core');    // Right Now Widget
         remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' ); // Comments Widget
