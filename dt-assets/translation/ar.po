@@ -1,0 +1,3463 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Disciple Tools\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-11 05:39-0700\n"
+"PO-Revision-Date: 2018-01-11 05:53-0700\n"
+"Last-Translator: chrischasm <chris@chasm.solutions>\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100 >= 3 "
+"&& n%100<=10 ? 3 : n%100 >= 11 && n%100<=99 ? 4 : 5;\n"
+"X-Generator: Poedit 2.0.5\n"
+"X-Poedit-Basepath: ../..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: style.css\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: 404.php:12
+msgid "Epic 404 - Article Not Found"
+msgstr "ياللهول المقال عير موجود"
+
+#: 404.php:16
+msgid ""
+"The article you were looking for was not found, but maybe try looking again!"
+msgstr ""
+"لم يتم العثور على المقال الذي كنت تبحث عنه ، ولكن ربما حاول البحث مرة أخرى!"
+
+#: archive-contacts.php:7 dt-assets/functions/menu.php:18
+#: dt-assets/functions/menu.php:104 dt-assets/parts/content-contacts.php:5
+#: dt-core/config-p2p.php:121 dt-core/config-p2p.php:130
+#: dt-core/config-p2p.php:230 dt-core/config-p2p.php:239 single-contacts.php:22
+#: single-locations.php:52 single-peoplegroups.php:56
+#: template-contacts-new.php:13
+msgid "Contacts"
+msgstr "اتصالات"
+
+#: archive-contacts.php:23
+msgid "Views"
+msgstr "مشاهدات"
+
+#: archive-contacts.php:27
+msgid "All contacts"
+msgstr "كل الاتصالات"
+
+#: archive-contacts.php:33
+#, fuzzy
+msgid "My contacts"
+msgstr "جهات الاتصال الخاصة بي"
+
+#: archive-contacts.php:39
+#, fuzzy
+msgid "My priorities"
+msgstr "أولوياتى"
+
+#: archive-contacts.php:45 archive-contacts.php:86
+#, fuzzy
+msgid "Update needed"
+msgstr "التحديث مطلوب"
+
+#: archive-contacts.php:50
+#, fuzzy
+msgid "Meeting scheduled"
+msgstr "تخطيط وقت الاجتماع"
+
+#: archive-contacts.php:55
+#, fuzzy
+msgid "Contact unattempted"
+msgstr "الاتصال أوناتيمبتيد"
+
+#: archive-contacts.php:62
+#, fuzzy
+msgid "Contacts shared with me"
+msgstr "المشتركة معي"
+
+#: archive-contacts.php:68 archive-groups.php:22
+#: dt-assets/parts/nav-offcanvas-topbar.php:18
+msgid "Filters"
+msgstr "الأقسام"
+
+#: archive-contacts.php:70 dt-assets/parts/contact-details.php:398
+#: dt-assets/parts/content-contacts.php:32
+#: dt-assets/parts/group-details.php:138 dt-core/posts.php:301
+#, fuzzy
+msgid "Assigned to"
+msgstr "مسندة إلى"
+
+#: archive-contacts.php:71 archive-contacts.php:75 archive-contacts.php:79
+#: archive-contacts.php:83 archive-contacts.php:87 archive-groups.php:25
+#: archive-groups.php:29 dt-assets/parts/content-contacts.php:38
+#: dt-assets/parts/content-groups.php:37
+#: dt-assets/parts/content-locations.php:29
+msgid "Loading..."
+msgstr "تحميل..."
+
+#: archive-contacts.php:74 dt-assets/parts/contact-details.php:148
+#: dt-assets/parts/content-contacts.php:30
+#: dt-assets/parts/content-groups.php:30
+#: dt-assets/parts/content-locations.php:10
+#: dt-assets/parts/content-locations.php:23
+#: dt-contacts/contacts-post-type.php:273
+#: dt-core/libraries/class-tgm-plugin-activation.php:2645
+msgid "Status"
+msgstr "الحالة"
+
+#: archive-contacts.php:78 archive-locations.php:41 archive-locations.php:59
+#: dt-assets/parts/contact-details.php:375
+#: dt-assets/parts/content-locations.php:5 dt-assets/parts/group-details.php:88
+#: dt-core/config-p2p.php:124 dt-core/config-p2p.php:154
+#: dt-core/config-p2p.php:204 dt-core/config-p2p.php:281
+#: dt-core/config-p2p.php:285 dt-locations/locations-post-type.php:95
+#: single-locations.php:14 single-peoplegroups.php:113
+#: template-settings.php:165 template-team.php:177
+msgid "Locations"
+msgstr "المنطقة"
+
+#: archive-contacts.php:82
+#, fuzzy
+msgid "Seeker path"
+msgstr "الباحث عن مسار"
+
+#: archive-contacts.php:90 archive-groups.php:32
+#, fuzzy
+msgid "Close modal"
+msgstr "إغلاق النافذة الداخلية"
+
+#: archive-groups.php:8 dt-assets/functions/menu.php:19
+#: dt-assets/functions/menu.php:107 dt-assets/parts/content-groups.php:5
+#: dt-assets/parts/content-locations.php:12
+#: dt-assets/parts/content-locations.php:25
+#: dt-core/admin/user-groups/user-groups-taxonomies.php:276
+#: dt-core/config-p2p.php:89 dt-core/config-p2p.php:93
+#: dt-core/config-p2p.php:151 dt-core/config-p2p.php:160
+#: dt-core/config-p2p.php:259 dt-core/config-p2p.php:268
+#: dt-groups/groups-post-type.php:101 single-contacts.php:57
+#: single-groups.php:22 single-locations.php:72 single-peoplegroups.php:76
+#: template-groups-new.php:13
+msgid "Groups"
+msgstr "المجموعات"
+
+#: archive-groups.php:24
+#, fuzzy
+msgid "Group status"
+msgstr "المجموعة العمرية"
+
+#: archive-groups.php:28 dt-assets/parts/content-contacts.php:33
+#: dt-assets/parts/content-groups.php:33 dt-core/config-p2p.php:120
+#: dt-core/config-p2p.php:150 dt-groups/groups-post-type.php:233
+#: dt-locations/locations-post-type.php:94 template-contacts-new.php:52
+msgid "Location"
+msgstr "الموقع"
+
+#: archive-locations.php:62
+#, fuzzy
+msgid "Browse Locations"
+msgstr "استعراض المواقع"
+
+#: archive-locations.php:194
+msgid "Default View"
+msgstr "العرض الافتراضي"
+
+#: comments.php:16 comments.php:32
+msgid "Comment navigation"
+msgstr "تصفّح التعليقات"
+
+#: comments.php:19 comments.php:35
+msgid "Older Comments"
+msgstr "تعليقات اقدم"
+
+#: comments.php:20 comments.php:36
+msgid "Newer Comments"
+msgstr "تعليقات جديدة"
+
+#: comments.php:48
+msgid "Comments are closed."
+msgstr "التعليقات مغلقة"
+
+#: dt-assets/functions/breadcrumbs.php:27 single-contacts.php:21
+#: single-groups.php:21 single-locations.php:13 single-peoplegroups.php:16
+#: template-about.php:12 template-contacts-new.php:12
+#: template-groups-new.php:12 template-metrics.php:12 template-settings.php:27
+#: template-team.php:16
+msgid "Dashboard"
+msgstr "لوحة التحكم"
+
+#: dt-assets/functions/breadcrumbs.php:35
+msgid "You are here:"
+msgstr "أنت هنا:"
+
+#: dt-assets/functions/breadcrumbs.php:47
+#, fuzzy
+msgid "Current:"
+msgstr "الشريحة الحالية"
+
+#: dt-assets/functions/breadcrumbs.php:56
+#: dt-assets/functions/breadcrumbs.php:82 single-contacts.php:232
+#: single-groups.php:200
+#, fuzzy
+msgid "Share"
+msgstr "مشاركة"
+
+#: dt-assets/functions/breadcrumbs.php:73
+msgid "Comments"
+msgstr "المنشورات والتعليقات"
+
+#: dt-assets/functions/cleanup.php:110
+msgid "Read"
+msgstr "اقرأ"
+
+#: dt-assets/functions/cleanup.php:110
+msgid "... Read more &raquo;"
+msgstr "المزيد &raquo;"
+
+#: dt-assets/functions/cleanup.php:143
+#, php-format
+msgid "Posts by %s"
+msgstr "مقالات بواسطة %s"
+
+#: dt-assets/functions/comments.php:28
+#, fuzzy
+msgctxt "noun"
+msgid "Comment"
+msgstr "تعليقك بأنتظار الموافقة بالنشر."
+
+#: dt-assets/functions/comments.php:45
+msgid "Add Comment"
+msgstr "إضافة تعليق"
+
+#: dt-assets/functions/comments.php:57
+msgid "Your comment is awaiting moderation."
+msgstr "تعليقك بأنتظار الموافقة بالنشر."
+
+#: dt-assets/functions/enqueue-scripts.php:127
+#: dt-assets/parts/contact-details.php:390
+#: dt-assets/parts/group-details.php:104
+#, fuzzy
+msgid "No location set"
+msgstr "بدون موقع"
+
+#: dt-assets/functions/enqueue-scripts.php:128
+#: dt-assets/parts/contact-details.php:518
+#: dt-assets/parts/group-details.php:127
+msgid "No people group set"
+msgstr "لا يوجد شخص في المجموعة مجموعة"
+
+#: dt-assets/functions/enqueue-scripts.php:129
+#: dt-assets/parts/contact-details.php:343
+#, fuzzy
+msgid "No email set"
+msgstr "لم يتم تعيين بريد إلكتروني"
+
+#: dt-assets/functions/enqueue-scripts.php:130
+#: dt-assets/parts/contact-details.php:305
+#, fuzzy
+msgid "No phone set"
+msgstr "لا أمتلك هاتفاً (فيونا) صادرته"
+
+#: dt-assets/functions/enqueue-scripts.php:131
+#: dt-assets/parts/contact-details.php:539
+#: dt-assets/parts/group-details.php:164
+#, fuzzy
+msgid "No address set"
+msgstr "لا يوجد عنوان"
+
+#: dt-assets/functions/enqueue-scripts.php:132
+#: dt-assets/parts/contact-details.php:449
+#, fuzzy
+msgid "None set"
+msgstr "بدون"
+
+#: dt-assets/functions/enqueue-scripts.php:134
+#: dt-assets/parts/contact-details.php:31 dt-assets/parts/group-details.php:31
+msgid "Valid"
+msgstr "عنوان البريد الإلكتروني الذي تم إدخاله غير صالح."
+
+#: dt-assets/functions/enqueue-scripts.php:135
+#: dt-assets/parts/contact-details.php:38 dt-assets/parts/group-details.php:38
+msgid "Invalid"
+msgstr "غير متاح"
+
+#: dt-assets/functions/enqueue-scripts.php:136
+#: dt-assets/parts/contact-details.php:45 dt-assets/parts/group-details.php:45
+msgid "Unconfirmed"
+msgstr "غير مؤكد"
+
+#: dt-assets/functions/enqueue-scripts.php:137
+#: dt-assets/parts/contact-details.php:53 dt-assets/parts/group-details.php:52
+msgid "Delete item"
+msgstr "حذف البند"
+
+#: dt-assets/functions/enqueue-scripts.php:138
+#: dt-assets/parts/contact-details.php:364
+#, fuzzy
+msgid "email"
+msgstr "البريد الالكتروني"
+
+#: dt-assets/functions/enqueue-scripts.php:152
+#, fuzzy
+msgid "Created contact at {}"
+msgstr "جهة الاتصال التي تم إنشاؤها في {}"
+
+#: dt-assets/functions/enqueue-scripts.php:169
+#, fuzzy
+msgid "Created group at {}"
+msgstr "المجموعة التي تم إنشاؤها في {}"
+
+#: dt-assets/functions/enqueue-scripts.php:224
+msgid "An error occurred"
+msgstr "حدث خطأ"
+
+#: dt-assets/functions/enqueue-scripts.php:225
+msgid "No filters"
+msgstr "لا توجد تصفيات."
+
+#: dt-assets/functions/enqueue-scripts.php:226
+#: dt-assets/parts/contact-details.php:129
+#: dt-contacts/contacts-post-type.php:652
+#: dt-contacts/contacts-post-type.php:730
+#: dt-contacts/contacts-post-type.php:737
+#: dt-contacts/contacts-post-type.php:744
+#: dt-contacts/contacts-post-type.php:751
+#: dt-contacts/contacts-post-type.php:758
+#: dt-contacts/contacts-post-type.php:765
+#: dt-contacts/contacts-post-type.php:772
+#: dt-contacts/contacts-post-type.php:779
+#: dt-contacts/contacts-post-type.php:786
+#: dt-contacts/contacts-post-type.php:885
+#: dt-contacts/contacts-post-type.php:956 dt-groups/groups-post-type.php:640
+#: dt-groups/groups-post-type.php:648 dt-groups/groups-post-type.php:655
+#: dt-groups/groups-post-type.php:662 dt-groups/groups-post-type.php:669
+#: dt-groups/groups-post-type.php:676 dt-groups/groups-post-type.php:683
+#: dt-groups/groups-post-type.php:690 dt-groups/groups-post-type.php:697
+#: dt-groups/groups-post-type.php:704 dt-groups/groups-post-type.php:711
+msgid "Yes"
+msgstr "نعم"
+
+#: dt-assets/functions/enqueue-scripts.php:227
+#: dt-assets/parts/contact-details.php:130
+#: dt-contacts/contacts-post-type.php:652
+#: dt-contacts/contacts-post-type.php:730
+#: dt-contacts/contacts-post-type.php:737
+#: dt-contacts/contacts-post-type.php:744
+#: dt-contacts/contacts-post-type.php:751
+#: dt-contacts/contacts-post-type.php:758
+#: dt-contacts/contacts-post-type.php:765
+#: dt-contacts/contacts-post-type.php:772
+#: dt-contacts/contacts-post-type.php:779
+#: dt-contacts/contacts-post-type.php:786
+#: dt-contacts/contacts-post-type.php:885
+#: dt-contacts/contacts-post-type.php:956 dt-groups/groups-post-type.php:640
+#: dt-groups/groups-post-type.php:648 dt-groups/groups-post-type.php:655
+#: dt-groups/groups-post-type.php:662 dt-groups/groups-post-type.php:669
+#: dt-groups/groups-post-type.php:676 dt-groups/groups-post-type.php:683
+#: dt-groups/groups-post-type.php:690 dt-groups/groups-post-type.php:697
+#: dt-groups/groups-post-type.php:704 dt-groups/groups-post-type.php:711
+msgid "No"
+msgstr "لا"
+
+#: dt-assets/functions/enqueue-scripts.php:228
+#: dt-core/libraries/posts-to-posts/admin/box.php:140
+msgid "Search"
+msgstr "بحث"
+
+#: dt-assets/functions/enqueue-scripts.php:229
+#: dt-assets/functions/page-navi.php:35
+msgid "First"
+msgstr "الأول"
+
+#: dt-assets/functions/enqueue-scripts.php:230
+#: dt-assets/functions/page-navi.php:52
+msgid "Last"
+msgstr "الأخير"
+
+#: dt-assets/functions/enqueue-scripts.php:231
+#: dt-assets/functions/page-navi.php:49
+msgid "Next"
+msgstr "التالى"
+
+#: dt-assets/functions/enqueue-scripts.php:232
+#: dt-assets/functions/page-navi.php:39
+msgid "Previous"
+msgstr "السابق"
+
+#: dt-assets/functions/enqueue-scripts.php:233
+msgid "No matching records found"
+msgstr "لم يتم العثور على سجلات مطابقة"
+
+#: dt-assets/functions/enqueue-scripts.php:234
+msgctxt "just copy as they are: _START_ _END_ and _TOTAL_"
+msgid "Showing _START_ to _END_ of _TOTAL_ entries"
+msgstr "عرض _START_إلى _END_ من _TOTAL_ الإدخالات"
+
+#: dt-assets/functions/enqueue-scripts.php:235
+msgid "Showing 0 to 0 of 0 entries"
+msgstr "عرض 0 إلى 0 من 0 إدخالات"
+
+#: dt-assets/functions/enqueue-scripts.php:236
+msgctxt "just copy `_MAX_`"
+msgid "(filtered from _MAX_ total entries)"
+msgstr "(تمت تصفيتها من _MAX_ إجمالي الإدخالات)"
+
+#: dt-assets/functions/menu.php:6 dt-assets/functions/menu.php:214
+msgid "Footer Links"
+msgstr "قائمة  التذييل"
+
+#: dt-assets/functions/menu.php:24 dt-assets/functions/menu.php:34
+#: dt-assets/functions/menu.php:147 dt-assets/functions/menu.php:172
+msgid "About Us"
+msgstr "عنا"
+
+#: dt-assets/functions/menu.php:25 dt-assets/functions/menu.php:35
+#: dt-assets/functions/menu.php:150 dt-assets/functions/menu.php:175
+msgid "Prayer Guide"
+msgstr "دليل الصلاة"
+
+#: dt-assets/functions/menu.php:26 dt-assets/functions/menu.php:153
+#, fuzzy
+msgid "Project Updates"
+msgstr "تحديثات المشروع"
+
+#: dt-assets/functions/menu.php:28 dt-assets/functions/menu.php:36
+#: dt-assets/functions/menu.php:130 dt-assets/functions/menu.php:156
+#: dt-assets/functions/menu.php:178 dt-assets/parts/nav-offcanvas-topbar.php:25
+#: dt-assets/parts/nav-offcanvas-topbar.php:57
+#: dt-core/libraries/posts-to-posts/vendor/scribu/scb-framework/AdminPage.php:519
+#: template-notifications.php:57 template-settings.php:28
+msgid "Settings"
+msgstr "الإعدادات"
+
+#: dt-assets/functions/menu.php:118
+#: dt-core/admin/user-groups/user-groups-taxonomies.php:29
+msgid "Team"
+msgstr "الفريق"
+
+#: dt-assets/functions/menu.php:124 template-metrics.php:13
+msgid "Metrics"
+msgstr "القياسات"
+
+#: dt-assets/functions/menu.php:127 dt-assets/parts/nav-offcanvas-topbar.php:22
+#: dt-assets/parts/nav-offcanvas-topbar.php:49 template-notifications.php:14
+#: template-settings.php:46 template-settings.php:206
+msgid "Notifications"
+msgstr "الأشعارات"
+
+#: dt-assets/functions/menu.php:133 dt-assets/parts/nav-offcanvas-topbar.php:59
+msgid "Log Off"
+msgstr "تسجيل الخروج"
+
+#: dt-assets/functions/sidebar.php:9
+#, fuzzy
+msgid "General"
+msgstr ""
+"لا حاليا. وهذا سيتغير بالتأكيد عندما نبدأ في الحصول على المواد في لغات أخرى. "
+"في بعض الأماكن، والوصول إلى الإنترنت أو حتى أجهزة الكمبيوتر محدودة. في أماكن "
+"أخرى نظام على شبكة الإنترنت غير عملي لأسباب أمنية. وفي بلدان أخرى، لن يكون "
+"هناك متطوعون كافيون لتشغيل نظام قائم على الويب. في الولايات المتحدة "
+"الأمريكية، عادة ما تكون هناك مجالات عمل لهذه القيود. ثقافيا في الولايات "
+"المتحدة هناك ميل للناس لمشاهدة أشرطة الفيديو للترفيه أو الفضول. ويؤدي ذلك "
+"إلى عرض مقاطع الفيديو خارج السياق. في هذه الحالة، هناك رغبة قوية في أن يتم "
+"التدريب في مجموعات، مع نية التطبيق، ومع المساءلة. ونريد أيضا أن نتعقب أين "
+"توجد ثغرات في التنفيذ جغرافيا وتحتاج إلى النهج القائم على شبكة الإنترنت "
+"للقيام بذلك. الأميركيون سيئة سيئة في تقديم التقارير، ونحن نريد أن نضمن أن "
+"هناك حقا لا يوجد مكان اليسار حيث لا يتم إجراء التلاميذ ضرب في الولايات "
+"المتحدة الأمريكية. لذلك نحن نختار، على الأقل في الوقت الحاضر، لجعله غير مريح "
+"وصعبة لاستهلاك أشرطة الفيديو في غير هذه الطريقة المقصود. نطلب منك ألا تحاول "
+"قصر هذه النية. يمكنك عرض الأسئلة الشائعة حول “ما هو محتوى التدريب؟” لفكرة "
+"عامة عن المحتوى."
+
+#: dt-assets/functions/sidebar.php:10
+#, fuzzy
+msgid "Main sidebar."
+msgstr "الشريط الجانبي الرئيسي"
+
+#: dt-assets/parts/contact-details.php:67
+#, fuzzy
+msgid "This contact needs an update"
+msgstr "هذا الاتصال يحتاج تحديث"
+
+#: dt-assets/parts/contact-details.php:68
+#, fuzzy
+msgid "It has been a while since this contact seen an update. Please do so"
+msgstr "لقد كان الوقت منذ هذا الاتصال لأنه ينظر إلى تحديث. الرجاء القيام بذلك"
+
+#: dt-assets/parts/contact-details.php:76
+msgid "This contact has been assigned to you"
+msgstr "قد تم تعيينها لك."
+
+#: dt-assets/parts/contact-details.php:78
+msgid "Accept"
+msgstr "قبول"
+
+#: dt-assets/parts/contact-details.php:79
+msgid "Decline"
+msgstr "الغاء"
+
+#: dt-assets/parts/contact-details.php:88
+#, fuzzy
+msgid "Dispatch Section"
+msgstr "إرسال المقطع"
+
+#: dt-assets/parts/contact-details.php:91
+#: dt-contacts/contacts-post-type.php:611 dt-groups/groups-post-type.php:628
+msgid "Assigned To"
+msgstr "مسندة إلى"
+
+#: dt-assets/parts/contact-details.php:97 dt-core/posts.php:301
+msgid "Nobody"
+msgstr "انا فقط"
+
+#: dt-assets/parts/contact-details.php:107
+#, fuzzy
+msgid "Set Unassignable"
+msgstr "مجموعة أوناسيجنابل"
+
+#: dt-assets/parts/contact-details.php:122
+#: dt-assets/parts/contact-details.php:128 template-settings.php:285
+#: template-settings.php:296 template-settings.php:311
+msgid "Update Needed"
+msgstr "التحديث مطلوب"
+
+#: dt-assets/parts/contact-details.php:168
+msgid "Pause"
+msgstr "ايقاف"
+
+#: dt-assets/parts/contact-details.php:172
+#, fuzzy
+msgid "Un-pause"
+msgstr "ايقاف"
+
+#: dt-assets/parts/contact-details.php:177
+#: dt-assets/parts/content-locations.php:15
+msgid "Close"
+msgstr "غلق"
+
+#: dt-assets/parts/contact-details.php:181
+msgid "Re-open"
+msgstr "إعادة الفتح"
+
+#: dt-assets/parts/contact-details.php:185 dt-assets/parts/group-details.php:81
+#: dt-core/admin/multi-role/functions-admin.php:38
+#: dt-core/admin/user-groups/class-user-taxonomy.php:601 single-contacts.php:54
+#: template-settings.php:66 template-settings.php:515
+msgid "Edit"
+msgstr "(تعديل)"
+
+#: dt-assets/parts/contact-details.php:190
+#, fuzzy
+msgid "Close Contact"
+msgstr "التماس مباشر"
+
+#: dt-assets/parts/contact-details.php:191
+#, fuzzy
+msgid "Why do you want to close this contact?"
+msgstr "لماذا تريد إغلاق جهة الاتصال هذه؟"
+
+#: dt-assets/parts/contact-details.php:203
+#: dt-assets/parts/contact-details.php:230 single-contacts.php:229
+#: single-groups.php:197
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: dt-assets/parts/contact-details.php:206
+#: dt-assets/parts/contact-details.php:233
+msgid "Confirm"
+msgstr "تأكيد"
+
+#: dt-assets/parts/contact-details.php:214
+#, fuzzy
+msgid "Pause Contact"
+msgstr "إيقاف الاتصال"
+
+#: dt-assets/parts/contact-details.php:215
+#, fuzzy
+msgid "Why do you want to pause this contact?"
+msgstr "لماذا تريد أن توقف هذا الاتصال؟"
+
+#: dt-assets/parts/contact-details.php:245
+#, fuzzy
+msgid "reason_paused"
+msgstr "السبب"
+
+#: dt-assets/parts/contact-details.php:261
+#, fuzzy
+msgid "reason_closed"
+msgstr "السبب في إغلاق"
+
+#: dt-assets/parts/contact-details.php:277
+#, fuzzy
+msgid "reason_unassignable"
+msgstr "reason_unassignable"
+
+#: dt-assets/parts/contact-details.php:385 dt-assets/parts/group-details.php:98
+#: dt-assets/parts/group-details.php:122 single-contacts.php:68
+#: single-contacts.php:103 single-groups.php:57
+msgid "Remove"
+msgstr "مسح"
+
+#: dt-assets/parts/contact-details.php:407
+#: dt-assets/parts/group-details.php:147
+msgid "None Assigned"
+msgstr "بلا تعيين"
+
+#: dt-assets/parts/contact-details.php:413
+#, fuzzy
+msgid "Type to search users"
+msgstr "جستجو کاربران"
+
+#: dt-assets/parts/contact-details.php:418
+msgid "Social Media"
+msgstr "التواصل الاجتماعى"
+
+#: dt-assets/parts/contact-details.php:483
+#, fuzzy
+msgid "Add another contact method"
+msgstr "إضافة أسلوب اتصال آخر"
+
+#: dt-assets/parts/contact-details.php:496
+#: dt-assets/parts/loop-activity-comment.php:4 single-contacts.php:109
+#, fuzzy
+msgid "Add"
+msgstr "الإضافات:"
+
+#: dt-assets/parts/contact-details.php:503
+#: dt-assets/parts/group-details.php:112 dt-core/config-p2p.php:219
+#: dt-core/config-p2p.php:229 dt-core/config-p2p.php:258
+#: dt-core/config-p2p.php:262 dt-core/config-p2p.php:282
+#: dt-core/config-p2p.php:291 dt-people-groups/people-groups-post-type.php:97
+#: single-peoplegroups.php:17
+msgid "People Groups"
+msgstr "جماعات الناس"
+
+#: dt-assets/parts/contact-details.php:531
+#: dt-assets/parts/group-details.php:156 dt-contacts/contacts-post-type.php:268
+#: dt-contacts/contacts-post-type.php:702
+#: dt-contacts/contacts-post-type.php:715 dt-groups/groups-post-type.php:304
+#: dt-locations/locations-post-type.php:239 template-settings.php:128
+#: template-team.php:144
+msgid "Address"
+msgstr "عنوان"
+
+#: dt-assets/parts/contact-details.php:569
+#: dt-contacts/contacts-post-type.php:823
+msgid "Age"
+msgstr ""
+"طريقة واحدة لتبادل \"الأخبار الجيدة\" الله تحكي الله من إنشاء للحكم &#8212; "
+"من بداية البشرية وصولاً إلى نهاية هذا العصر."
+
+#: dt-assets/parts/contact-details.php:576
+#, fuzzy
+msgid "No age set"
+msgstr "لم يتم تعيين العمر"
+
+#: dt-assets/parts/contact-details.php:596
+#: dt-contacts/contacts-post-type.php:812
+msgid "Gender"
+msgstr "الجنس"
+
+#: dt-assets/parts/contact-details.php:603
+#, fuzzy
+msgid "No gender set"
+msgstr "لم يتم تعيين نوع الجنس"
+
+#: dt-assets/parts/contact-details.php:621
+#: dt-contacts/contacts-post-type.php:895
+#: dt-core/admin/menu/tables/reports-list-table.php:55
+#: dt-core/libraries/class-tgm-plugin-activation.php:2639
+#: template-contacts-new.php:40
+msgid "Source"
+msgstr "مصدر"
+
+#: dt-assets/parts/contact-details.php:628
+#, fuzzy
+msgid "No source set"
+msgstr "لا المصدر"
+
+#: dt-assets/parts/contact-details.php:650
+msgid "Show"
+msgstr "تبين"
+
+#: dt-assets/parts/contact-details.php:651
+#, fuzzy
+msgid "more"
+msgstr "المزيد &raquo;"
+
+#: dt-assets/parts/contact-details.php:652
+#, fuzzy
+msgid "less"
+msgstr ""
+"العثور على مقطع \"التدريب القائمة المرجعية\" في دليل Zúme الخاص بك، واتخاذ "
+"هذا سريعة (5 دقائق أو أقل) التقييم الذاتي:"
+
+#: dt-assets/parts/content-byline.php:2
+msgid "Posted on"
+msgstr "تاريخ النشر"
+
+#: dt-assets/parts/content-byline.php:2 dt-notifications/notifications.php:546
+msgid "by"
+msgstr "بواسطة"
+
+#: dt-assets/parts/content-contacts.php:10
+#, fuzzy
+msgid "Create new contact"
+msgstr "جهة اتصال جديدة"
+
+#: dt-assets/parts/content-contacts.php:13
+#: dt-assets/parts/content-groups.php:13
+msgid "Sort"
+msgstr "فرز"
+
+#: dt-assets/parts/content-contacts.php:16
+#: dt-assets/parts/content-groups.php:16
+msgid "Most recent"
+msgstr "الأحدث"
+
+#: dt-assets/parts/content-contacts.php:19
+#: dt-assets/parts/content-groups.php:19
+#, fuzzy
+msgid "Least recent"
+msgstr "الأخيرة على الأقل"
+
+#: dt-assets/parts/content-contacts.php:29
+#: dt-assets/parts/content-groups.php:29
+#: dt-assets/parts/content-locations.php:9
+#: dt-assets/parts/content-locations.php:22
+#: dt-core/admin/user-groups/class-user-taxonomy.php:491
+#: dt-core/admin/user-groups/class-user-taxonomy.php:562
+#: dt-core/libraries/posts-to-posts/admin/tools-page.php:64
+#: template-contacts-new.php:30 template-groups-new.php:28
+#: template-settings.php:84
+msgid "Name"
+msgstr "الإسم"
+
+#: dt-assets/parts/content-contacts.php:31 single-contacts.php:146
+msgid "Faith Milestones"
+msgstr "معالم الإيمان"
+
+#: dt-assets/parts/content-contacts.php:34 dt-core/config-p2p.php:179
+#: dt-core/config-p2p.php:185 dt-groups/groups-post-type.php:100
+msgid "Group"
+msgstr "مجموعة"
+
+#: dt-assets/parts/content-contacts.php:35
+#: dt-assets/parts/content-groups.php:34
+#: dt-assets/parts/content-locations.php:13
+#: dt-assets/parts/content-locations.php:26
+msgid "Last modified"
+msgstr "التعديل الأخير"
+
+#: dt-assets/parts/content-groups.php:10
+msgid "Create new group"
+msgstr "إنشاء مجموعة جديدة"
+
+#: dt-assets/parts/content-groups.php:31
+#: dt-assets/parts/content-locations.php:11
+#: dt-assets/parts/content-locations.php:24 dt-core/config-p2p.php:90
+#: single-groups.php:44
+msgid "Members"
+msgstr "الأعضاء"
+
+#: dt-assets/parts/content-groups.php:32 dt-core/config-p2p.php:106
+msgid "Leader"
+msgstr "المدير"
+
+#: dt-assets/parts/content-locations-tabs.php:5
+msgid "My Locations"
+msgstr "مواقعي"
+
+#: dt-assets/parts/content-locations-tabs.php:6
+#, fuzzy
+msgid "Team Locations"
+msgstr "مواقع الفريق"
+
+#: dt-assets/parts/content-locations-tabs.php:7
+#, fuzzy
+msgid "Project Locations"
+msgstr "مواقع المشاريع"
+
+#: dt-assets/parts/content-locations-tabs.php:19
+#: dt-assets/parts/content-locations-tabs.php:84
+#: dt-assets/parts/content-locations-tabs.php:126
+msgid "Sort by name"
+msgstr "رتب حسب الإسم"
+
+#: dt-assets/parts/content-locations-tabs.php:20
+#: dt-assets/parts/content-locations-tabs.php:85
+#: dt-assets/parts/content-locations-tabs.php:127
+#, fuzzy
+msgid "Sort by team"
+msgstr "فرز حسب الفريق"
+
+#: dt-assets/parts/content-locations.php:7
+msgid "Sort by:"
+msgstr "ترتيب علي حسب:"
+
+#: dt-assets/parts/content-missing.php:9
+#, fuzzy
+msgid "No Matches."
+msgstr "لا آخر"
+
+#: dt-assets/parts/content-missing.php:21
+msgid "Oops, Post Not Found!"
+msgstr "عفوا، اضافة  غير موجودة!"
+
+#: dt-assets/parts/content-missing.php:25
+msgid "Uh Oh. Something is missing. Try double checking things."
+msgstr "شيئا ما مفقود. حاول مضاعفة فحص الأشياء."
+
+#: dt-assets/parts/content-missing.php:33
+msgid "This is the error message in the parts/content-missing.php template."
+msgstr ""
+"الصفحة مما و. الجو الجنود من على, للجزر الأرض النفط لمّ بـ, إذ ضرب دارت "
+"مقاطعة والنرويج. يبق "
+
+#: dt-assets/parts/group-details.php:68
+#, fuzzy
+msgid "Status: "
+msgstr "الحالة"
+
+#: dt-assets/parts/group-details.php:195 dt-groups/groups-post-type.php:716
+msgid "Start Date"
+msgstr "تاريخ البداية"
+
+#: dt-assets/parts/group-details.php:200
+#, fuzzy
+msgid "No start date"
+msgstr "تاريخ البداية"
+
+#: dt-assets/parts/group-details.php:204 dt-groups/groups-post-type.php:723
+msgid "End Date"
+msgstr "تاريخ الانتهاء"
+
+#: dt-assets/parts/group-details.php:209
+#, fuzzy
+msgid "No end date"
+msgstr "تاريخ الانتهاء"
+
+#: dt-assets/parts/loop-activity-comment.php:7
+#, fuzzy
+msgid "ALL"
+msgstr "الكل"
+
+#: dt-assets/parts/loop-activity-comment.php:8
+msgid "COMMENTS"
+msgstr "تعليقات"
+
+#: dt-assets/parts/loop-activity-comment.php:9
+msgid "ACTIVITY"
+msgstr "النشاط"
+
+#: dt-assets/parts/loop-archive-grid.php:31 dt-assets/parts/loop-archive.php:9
+msgid "Read more..."
+msgstr "اقرأ المزيد..."
+
+#: dt-assets/parts/loop-archive.php:13
+#: dt-assets/parts/loop-single-progress.php:14
+#: dt-assets/parts/loop-single.php:15
+msgid "Tags:"
+msgstr "العلامات:"
+
+#: dt-assets/parts/loop-single-progress.php:13
+#: dt-assets/parts/loop-single.php:14
+msgid "Pages:"
+msgstr "الصفحات:"
+
+#. Theme Name of the plugin/theme
+#: dt-assets/parts/nav-offcanvas-topbar.php:13 dt-core/admin/menu/main.php:74
+msgid "Disciple Tools"
+msgstr "أدوات الضبط"
+
+#: dt-assets/parts/nav-offcanvas-topbar.php:58
+msgid "Admin"
+msgstr "المشرف العام"
+
+#: dt-contacts/contacts-post-type.php:104
+msgctxt "singular of contact"
+msgid "Contact"
+msgstr "اتصل بي المدرب"
+
+#: dt-contacts/contacts-post-type.php:105
+msgctxt "plural of contact"
+msgid "Contacts"
+msgstr "اتصالات"
+
+#: dt-contacts/contacts-post-type.php:134
+msgctxt "Contacts"
+msgid "Add New"
+msgstr "اضف جديد"
+
+#: dt-contacts/contacts-post-type.php:135
+#: dt-core/admin/user-groups/class-user-taxonomy.php:682
+#: dt-core/class-taxonomy.php:120 dt-groups/groups-post-type.php:135
+#: dt-locations/locations-post-type.php:132
+#: dt-people-groups/people-groups-post-type.php:134
+#, php-format
+msgid "Add New %s"
+msgstr "إضافة جديده %s"
+
+#: dt-contacts/contacts-post-type.php:136
+#: dt-core/admin/user-groups/class-user-taxonomy.php:679
+#: dt-core/class-taxonomy.php:118 dt-groups/groups-post-type.php:136
+#: dt-locations/locations-post-type.php:133
+#: dt-people-groups/people-groups-post-type.php:135
+#, php-format
+msgid "Edit %s"
+msgstr "تعديل %s"
+
+#: dt-contacts/contacts-post-type.php:137
+#: dt-core/admin/user-groups/class-user-taxonomy.php:681
+#: dt-core/class-taxonomy.php:119 dt-groups/groups-post-type.php:137
+#: dt-locations/locations-post-type.php:134
+#: dt-people-groups/people-groups-post-type.php:136
+#, php-format
+msgid "Update %s"
+msgstr "تحديث  %s"
+
+#: dt-contacts/contacts-post-type.php:138 dt-groups/groups-post-type.php:138
+#: dt-locations/locations-post-type.php:135
+#: dt-people-groups/people-groups-post-type.php:137
+#, php-format
+msgid "New %s"
+msgstr "جديد %s"
+
+#: dt-contacts/contacts-post-type.php:139
+#: dt-core/admin/user-groups/class-user-taxonomy.php:676
+#: dt-core/class-taxonomy.php:115 dt-groups/groups-post-type.php:139
+#: dt-locations/locations-post-type.php:136
+#: dt-people-groups/people-groups-post-type.php:138
+#, php-format
+msgid "All %s"
+msgstr "كل %s"
+
+#: dt-contacts/contacts-post-type.php:140
+#: dt-contacts/contacts-post-type.php:141
+#: dt-core/admin/user-groups/class-user-taxonomy.php:680
+#: dt-groups/groups-post-type.php:140 dt-groups/groups-post-type.php:141
+#: dt-locations/locations-post-type.php:137
+#: dt-locations/locations-post-type.php:138
+#: dt-people-groups/people-groups-post-type.php:139
+#: dt-people-groups/people-groups-post-type.php:140
+#, php-format
+msgid "View %s"
+msgstr "رؤية %s"
+
+#: dt-contacts/contacts-post-type.php:142 dt-groups/groups-post-type.php:142
+#: dt-locations/locations-post-type.php:139
+#: dt-people-groups/people-groups-post-type.php:141
+msgid "Search %a"
+msgstr "بحث %a"
+
+#: dt-contacts/contacts-post-type.php:143 dt-groups/groups-post-type.php:143
+#: dt-locations/locations-post-type.php:140
+#: dt-people-groups/people-groups-post-type.php:142
+#, php-format
+msgid "No %s Found"
+msgstr "لم يتمّ العثور على %s"
+
+#: dt-contacts/contacts-post-type.php:144 dt-groups/groups-post-type.php:144
+#: dt-locations/locations-post-type.php:141
+#: dt-people-groups/people-groups-post-type.php:143
+#, php-format
+msgid "No %s Found In Trash"
+msgstr "لم يتم العثور على %s في المهملات"
+
+#: dt-contacts/contacts-post-type.php:147 dt-groups/groups-post-type.php:147
+#: dt-locations/locations-post-type.php:144
+#: dt-people-groups/people-groups-post-type.php:146
+msgid "Featured Image"
+msgstr "الصورة البارزة"
+
+#: dt-contacts/contacts-post-type.php:148 dt-groups/groups-post-type.php:148
+#: dt-locations/locations-post-type.php:145
+#: dt-people-groups/people-groups-post-type.php:147
+msgid "Set featured image"
+msgstr "تعيين صورة بارزة"
+
+#: dt-contacts/contacts-post-type.php:149 dt-groups/groups-post-type.php:149
+#: dt-locations/locations-post-type.php:146
+#: dt-people-groups/people-groups-post-type.php:148
+msgid "Remove featured image"
+msgstr "احذف الصورة البارزة"
+
+#: dt-contacts/contacts-post-type.php:150 dt-groups/groups-post-type.php:150
+#: dt-locations/locations-post-type.php:147
+#: dt-people-groups/people-groups-post-type.php:149
+msgid "Use as featured image"
+msgstr "استخدم كصورة مميزة"
+
+#: dt-contacts/contacts-post-type.php:151
+#, php-format
+msgid "Placed into %s"
+msgstr "وضع في %s"
+
+#: dt-contacts/contacts-post-type.php:152 dt-groups/groups-post-type.php:152
+#: dt-locations/locations-post-type.php:149
+#: dt-people-groups/people-groups-post-type.php:151
+#, php-format
+msgid "Uploaded to this %s"
+msgstr "تم التحميل إلى هذا  %s"
+
+#: dt-contacts/contacts-post-type.php:153 dt-groups/groups-post-type.php:153
+#: dt-locations/locations-post-type.php:150
+#: dt-people-groups/people-groups-post-type.php:152
+#, php-format
+msgid "%s list"
+msgstr "%s قائمة"
+
+#: dt-contacts/contacts-post-type.php:154 dt-groups/groups-post-type.php:154
+#: dt-locations/locations-post-type.php:151
+#: dt-people-groups/people-groups-post-type.php:153
+#, php-format
+msgid "%s list navigation"
+msgstr "عرض قائمة %s"
+
+#: dt-contacts/contacts-post-type.php:155 dt-groups/groups-post-type.php:155
+#: dt-locations/locations-post-type.php:152
+#: dt-people-groups/people-groups-post-type.php:154
+#, php-format
+msgid "Filter %s list"
+msgstr "فلترة %s القائمة"
+
+#: dt-contacts/contacts-post-type.php:175 dt-core/config-p2p.php:22
+#: dt-core/config-p2p.php:28 dt-core/config-p2p.php:47
+#: dt-core/config-p2p.php:53
+msgid "Contact"
+msgstr "اتصل بي المدرب"
+
+#: dt-contacts/contacts-post-type.php:176
+msgid "Contacts generated by the media to movement effort"
+msgstr "جهات اتصال إنشاؤها بواسطة وسائل الإعلام لجهود الحركة"
+
+#: dt-contacts/contacts-post-type.php:234
+#, php-format
+msgid "%3$s updated. %1$sView %4$s%2$s"
+msgstr "%3$s تم التحديث. %1$sمعاينة %4$s%2$s."
+
+#: dt-contacts/contacts-post-type.php:235
+msgid "Contact updated."
+msgstr "تحديث جهة الاتصال."
+
+#: dt-contacts/contacts-post-type.php:236
+msgid "Contact deleted."
+msgstr "حذف جهة الاتصال."
+
+#: dt-contacts/contacts-post-type.php:237 dt-groups/groups-post-type.php:274
+#: dt-locations/locations-post-type.php:286
+#: dt-people-groups/people-groups-post-type.php:278
+#, php-format
+msgid "%s updated."
+msgstr "%s تم التحديث."
+
+#. translators: %s: date and time of the revision
+#: dt-contacts/contacts-post-type.php:239 dt-groups/groups-post-type.php:275
+#: dt-locations/locations-post-type.php:288
+#: dt-people-groups/people-groups-post-type.php:280
+#, php-format
+msgid "%1$s restored to revision from %2$s"
+msgstr "تم استعادة %1$s إلى المراجعة من %2$s"
+
+#: dt-contacts/contacts-post-type.php:240 dt-groups/groups-post-type.php:276
+#: dt-locations/locations-post-type.php:289
+#: dt-people-groups/people-groups-post-type.php:281
+#, php-format
+msgid "%1$s published. %3$sView %2$s%4$s"
+msgstr "%1$s نشرت. %3$sمعاينة %2$s%4$s."
+
+#: dt-contacts/contacts-post-type.php:241 dt-groups/groups-post-type.php:277
+#: dt-locations/locations-post-type.php:290
+#: dt-people-groups/people-groups-post-type.php:282
+#, php-format
+msgid "%s saved."
+msgstr "%s تم الحفظ."
+
+#: dt-contacts/contacts-post-type.php:242 dt-groups/groups-post-type.php:278
+#: dt-locations/locations-post-type.php:291
+#: dt-people-groups/people-groups-post-type.php:283
+#, php-format
+msgid "%1$s submitted. %2$sPreview %3$s%4$s"
+msgstr "‫%1$s مقدم.%2$s معاينة %3$s%4$s"
+
+#: dt-contacts/contacts-post-type.php:244
+#, php-format
+msgid "%1$s scheduled for: %3$s. %4$sPreview %2$s%5$s"
+msgstr "‫%1$s scheduled for: %3$s. %4$sPreview %2$s%5$s"
+
+#. translators: Publish box date format, see http://php.net/date
+#: dt-contacts/contacts-post-type.php:248 dt-groups/groups-post-type.php:284
+#: dt-locations/locations-post-type.php:296
+#: dt-people-groups/people-groups-post-type.php:289
+msgid "M j, Y @ G:i"
+msgstr "M j, Y @ G:i"
+
+#: dt-contacts/contacts-post-type.php:252 dt-groups/groups-post-type.php:288
+#: dt-locations/locations-post-type.php:301
+#: dt-people-groups/people-groups-post-type.php:294
+#, php-format
+msgid "%1$s draft updated. %2$sPreview %3$s%4$s"
+msgstr "‫%1$s draft updated. %2$sPreview %3$s%4$s"
+
+#: dt-contacts/contacts-post-type.php:267
+msgid "Contact Details"
+msgstr "بيانات الاتصال"
+
+#: dt-contacts/contacts-post-type.php:269 dt-groups/groups-post-type.php:306
+#: dt-locations/locations-post-type.php:318
+#, fuzzy
+msgid "Activity"
+msgstr "النشاط"
+
+#: dt-contacts/contacts-post-type.php:270 template-settings.php:362
+#: template-settings.php:377
+msgid "Milestones"
+msgstr "المراحل الرئيسية"
+
+#: dt-contacts/contacts-post-type.php:271
+msgid "Misc"
+msgstr "متفرقات"
+
+#: dt-contacts/contacts-post-type.php:272
+msgid "Sharing"
+msgstr ""
+"تبادل الشهادة الخاصة بك — اقتحام مجموعات من اثنين أو ثلاثة وممارسات تقاسم "
+"الشهادة الخاصة بك مع الآخرين. (45 دقيقة)"
+
+#: dt-contacts/contacts-post-type.php:618
+msgid "Overall Status"
+msgstr "الوضع العام"
+
+#: dt-contacts/contacts-post-type.php:622
+msgctxt "Contact Status"
+msgid "Unassigned"
+msgstr "غیر معينة"
+
+#: dt-contacts/contacts-post-type.php:625
+msgctxt "Contact Status"
+msgid "Paused"
+msgstr "توقف"
+
+#: dt-contacts/contacts-post-type.php:626
+msgctxt "Contact Status"
+msgid "Closed"
+msgstr "المغلق"
+
+#: dt-contacts/contacts-post-type.php:634 single-contacts.php:124
+msgid "Seeker Path"
+msgstr "الباحث عن مسار"
+
+#: dt-contacts/contacts-post-type.php:638
+msgid "No Action"
+msgstr "بدون إجراء"
+
+#: dt-contacts/contacts-post-type.php:639
+msgid "Contact Attempted"
+msgstr "اتصل بي المدرب"
+
+#: dt-contacts/contacts-post-type.php:640
+#: dt-contacts/contacts-post-type.php:920
+msgid "Contact Established"
+msgstr "إنشاء جهة اتصال"
+
+#: dt-contacts/contacts-post-type.php:641
+msgid "First Meeting Scheduled"
+msgstr "الاجتماع الأول"
+
+#: dt-contacts/contacts-post-type.php:642
+msgid "First Meeting Complete"
+msgstr "الجلسة الأولى كاملة"
+
+#: dt-contacts/contacts-post-type.php:643
+msgid "Ongoing Meetings"
+msgstr "الاجتماعات الجارية"
+
+#: dt-contacts/contacts-post-type.php:644
+msgid "Being Coached"
+msgstr "- مدرب كرة سلة"
+
+#: dt-contacts/contacts-post-type.php:649
+#: dt-core/libraries/class-tgm-plugin-activation.php:2421
+msgid "Requires Update"
+msgstr "يتطلب التحديث"
+
+#: dt-contacts/contacts-post-type.php:677
+#: dt-contacts/contacts-post-type.php:1107 template-settings.php:105
+#: template-settings.php:214 template-team.php:121
+msgid "Email"
+msgstr "البريد الالكتروني"
+
+#: dt-contacts/contacts-post-type.php:689
+#: dt-contacts/contacts-post-type.php:1097 template-settings.php:117
+#: template-team.php:133
+msgid "Phone"
+msgstr "رقم الهاتف"
+
+#: dt-contacts/contacts-post-type.php:727
+msgid "Has Bible"
+msgstr "الكتاب المقدس"
+
+#: dt-contacts/contacts-post-type.php:734
+msgid "Reading Bible"
+msgstr "قراءة الكتاب المقدس"
+
+#: dt-contacts/contacts-post-type.php:741
+msgid "States Belief"
+msgstr "العقيدة"
+
+#: dt-contacts/contacts-post-type.php:748
+msgid "Can Share Gospel/Testimony"
+msgstr "يمكن مشاركة الإنجيل/شهادة"
+
+#: dt-contacts/contacts-post-type.php:755
+msgid "Sharing Gospel/Testimony"
+msgstr "الإنجيل"
+
+#: dt-contacts/contacts-post-type.php:762 dt-core/config-p2p.php:44
+#: dt-core/posts.php:244 single-contacts.php:84
+msgid "Baptized"
+msgstr "تذكير هام &#8212; وقد كنت قد عمد؟"
+
+#: dt-contacts/contacts-post-type.php:769
+msgid "Baptizing"
+msgstr ""
+"معمودية-يسوع قال، \"اذهب وجعل التوابع من جميع الأمم، يعمد لهم باسم الأب "
+"والابن والروح القدس...\" تعلم كيفية وضع ذلك موضع التنفيذ."
+
+#: dt-contacts/contacts-post-type.php:776
+msgid "In Church/Group"
+msgstr "في الكنيسة/المجموعة"
+
+#: dt-contacts/contacts-post-type.php:783
+msgid "Starting Churches"
+msgstr "بدأت الكنائس"
+
+#: dt-contacts/contacts-post-type.php:791 single-contacts.php:165
+msgid "Baptism Date"
+msgstr "معمودية"
+
+#: dt-contacts/contacts-post-type.php:800
+msgid "Bible Mailing"
+msgstr "البريدية الكتاب المقدس"
+
+#: dt-contacts/contacts-post-type.php:804
+#: dt-core/admin/multi-role/functions-admin.php:174
+msgid "None"
+msgstr "بدون"
+
+#: dt-contacts/contacts-post-type.php:805
+msgid "Requested"
+msgstr "مطلوب"
+
+#: dt-contacts/contacts-post-type.php:806
+msgid "Bible mailed"
+msgstr "الكتاب المقدس بالبريد"
+
+#: dt-contacts/contacts-post-type.php:807
+msgid "Received"
+msgstr "تم الاستلام"
+
+#: dt-contacts/contacts-post-type.php:817
+msgid "Male"
+msgstr "ذكر"
+
+#: dt-contacts/contacts-post-type.php:818
+msgid "Female"
+msgstr "أنثى"
+
+#: dt-contacts/contacts-post-type.php:828
+msgid "Under 18 years old"
+msgstr "دون سن 18"
+
+#: dt-contacts/contacts-post-type.php:829
+msgid "18-25 years old"
+msgstr "18-25 سنة"
+
+#: dt-contacts/contacts-post-type.php:830
+msgid "26-40 years old"
+msgstr "40سنة"
+
+#: dt-contacts/contacts-post-type.php:831
+msgid "Over 40 years old"
+msgstr "المرشّحون فوق سن الأربعين"
+
+#: dt-contacts/contacts-post-type.php:837
+msgid "Reason Unassaginable"
+msgstr "أوناساجينابل السبب"
+
+#: dt-contacts/contacts-post-type.php:842
+msgid "Insufficient Contact Information"
+msgstr "الاتصال بنا - معلومات"
+
+#: dt-contacts/contacts-post-type.php:843
+msgid "Unknown Location"
+msgstr "موقع غير معروف"
+
+#: dt-contacts/contacts-post-type.php:844
+msgid "Only wants media"
+msgstr "يريد فقط وسائل الإعلام"
+
+#: dt-contacts/contacts-post-type.php:845
+msgid "Outside Area"
+msgstr "خارج المنطقة"
+
+#: dt-contacts/contacts-post-type.php:846
+msgid "Needs Review"
+msgstr "ملفات الترجمة@ option: check trans- unit state"
+
+#: dt-contacts/contacts-post-type.php:852
+msgid "Reason Paused"
+msgstr "السبب"
+
+#: dt-contacts/contacts-post-type.php:857
+msgid "On Vacation"
+msgstr "\"في إجازة\""
+
+#: dt-contacts/contacts-post-type.php:858
+msgid "Not Responding"
+msgstr "-احقنها بالأدينوزين"
+
+#: dt-contacts/contacts-post-type.php:864
+msgid "Reason Closed"
+msgstr "السبب في إغلاق"
+
+#: dt-contacts/contacts-post-type.php:869
+msgid "Duplicate"
+msgstr "تكرار"
+
+#: dt-contacts/contacts-post-type.php:870
+msgid "Hostile"
+msgstr "معادون؟"
+
+#: dt-contacts/contacts-post-type.php:871
+msgid "Playing Games"
+msgstr "لعب الألعاب"
+
+#: dt-contacts/contacts-post-type.php:872
+msgid "Insufficient Contact Info"
+msgstr "معلومات الاتصال غير كافية"
+
+#: dt-contacts/contacts-post-type.php:873
+msgid "Already In Church/Connected with Others"
+msgstr "الفعل في الكنيسة/الاتصال مع الآخرين"
+
+#: dt-contacts/contacts-post-type.php:874
+msgid "No Longer Interested"
+msgstr "لم أعد مهتماً"
+
+#: dt-contacts/contacts-post-type.php:875
+msgid "Just wanted a book"
+msgstr "مجرد كتاب"
+
+#: dt-contacts/contacts-post-type.php:876
+#, fuzzy
+msgid "Unknown"
+msgstr "غير معروف"
+
+#: dt-contacts/contacts-post-type.php:882
+msgid "Accepted"
+msgstr "مقبول"
+
+#: dt-contacts/contacts-post-type.php:904
+msgid "No Answer"
+msgstr ""
+"بحث لأعلى--استخدام مارك 5:1-20 كمرور القراءة المجموعة الخاصة بك والإجابة على "
+"الأسئلة 1-4 خلال المقطع \"بحث لأعلى\"."
+
+#: dt-contacts/contacts-post-type.php:912
+msgid "Phone Off"
+msgstr "وأغلقنا الجوال"
+
+#: dt-contacts/contacts-post-type.php:928
+msgid "Meeting Scheduled"
+msgstr "تخطيط وقت الاجتماع"
+
+#: dt-contacts/contacts-post-type.php:936
+msgid "Meeting Complete"
+msgstr "اكتمال"
+
+#: dt-contacts/contacts-post-type.php:944
+msgid "Meeting No-show"
+msgstr "رقم الإجتماع"
+
+#: dt-contacts/contacts-post-type.php:953
+msgid "Is a User"
+msgstr "اسم المستخدم"
+
+#: dt-contacts/contacts-post-type.php:960
+msgid "Corresponds to user"
+msgstr "يتوافق مع المستخدم"
+
+#: dt-contacts/contacts-post-type.php:1099
+#: dt-contacts/contacts-post-type.php:1109 dt-core/config-p2p.php:137
+#: dt-core/config-p2p.php:246 dt-core/config-p2p.php:298
+msgid "Primary"
+msgstr "ابتدائي"
+
+#: dt-contacts/contacts-post-type.php:1100
+msgid "Mobile"
+msgstr "رقم الهاتف"
+
+#: dt-contacts/contacts-post-type.php:1101
+#: dt-contacts/contacts-post-type.php:1110
+#: dt-core/admin/metaboxes/box-address.php:110
+msgid "Work"
+msgstr "تنمو كتلميذ عن طريق وضع الخاص بك الإيمان العمل"
+
+#: dt-contacts/contacts-post-type.php:1102
+#: dt-core/admin/metaboxes/box-address.php:109
+msgid "Home"
+msgstr "الرئيسية"
+
+#: dt-contacts/contacts-post-type.php:1103
+#: dt-contacts/contacts-post-type.php:1111
+#: dt-contacts/contacts-post-type.php:1139
+#: dt-contacts/contacts-post-type.php:1141
+#: dt-core/admin/metaboxes/box-address.php:111 template-settings.php:150
+#: template-team.php:166
+msgid "Other"
+msgstr "ستتم إزالة هذا الدور لهذا المستخدم في جميع نطاقات المستخدمين الأخرين."
+
+#: dt-contacts/contacts-post-type.php:1115
+#: dt-contacts/contacts-post-type.php:1117
+msgid "Facebook"
+msgstr "صفحة الفيس بوك"
+
+#: dt-contacts/contacts-post-type.php:1121
+#: dt-contacts/contacts-post-type.php:1123
+msgid "Twitter"
+msgstr "تويتر"
+
+#: dt-contacts/contacts-post-type.php:1127
+#: dt-contacts/contacts-post-type.php:1129
+msgid "Instagram"
+msgstr "Instagram"
+
+#: dt-contacts/contacts-post-type.php:1133
+#: dt-contacts/contacts-post-type.php:1135
+msgid "Skype"
+msgstr "سكايب"
+
+#: dt-contacts/contacts-post-type.php:1217
+msgid "Enter the contact name here"
+msgstr "أدخل الاسم"
+
+#: dt-contacts/contacts.php:73
+#, php-format
+msgid "Key %s was an unexpected pagination key"
+msgstr "لم أكن أنوي البقاء هذه الوظيفة كانت مفاجئة %s"
+
+#: dt-contacts/contacts.php:119
+msgid "You may not publish a contact"
+msgstr "أنت لا يجوز نشر جهة اتصال"
+
+#: dt-contacts/contacts.php:124
+msgid "Contact needs a title"
+msgstr "يحتاج الاتصال العنوان"
+
+#: dt-contacts/contacts.php:145 dt-contacts/contacts.php:259
+msgid "These fields do not exist"
+msgstr "لا توجد هذه الحقول"
+
+#: dt-contacts/contacts.php:178
+msgid "You may not assign a new contact to this user"
+msgstr "إذا وافقتِ على هذه العملية"
+
+#: dt-contacts/contacts.php:246 dt-contacts/contacts.php:488
+#: dt-contacts/contacts.php:546 dt-contacts/contacts.php:575
+#: dt-contacts/contacts.php:604 dt-contacts/contacts.php:1081
+#: dt-contacts/contacts.php:1125 dt-core/posts.php:200 dt-core/posts.php:510
+#: dt-core/posts.php:551 dt-core/posts.php:597 dt-groups/groups.php:205
+#: dt-groups/groups.php:240 dt-groups/groups.php:333 dt-groups/groups.php:375
+msgid "You do not have permission for this"
+msgstr "لا تملك الصلاحيات"
+
+#: dt-contacts/contacts.php:255
+msgid "Contact does not exist"
+msgstr "جهة الاتصال غير موجود"
+
+#: dt-contacts/contacts.php:623 dt-contacts/contacts.php:1108
+#: dt-metrics/metrics.php:93 dt-metrics/metrics.php:148
+#: dt-metrics/metrics.php:191 dt-metrics/metrics.php:238
+#: dt-metrics/metrics.php:293
+msgid "No permissions to read contact"
+msgstr "ليس لديك أذونات لقراءة الاتصال"
+
+#: dt-contacts/contacts.php:778
+msgid "No contact found with ID"
+msgstr "لم يتم العثور على جهة اتصال"
+
+#: dt-contacts/contacts.php:840 dt-contacts/contacts.php:867
+msgid "You do not have access to these contacts"
+msgstr "ليس لديك حق الوصول إلى جهات الاتصال هذه"
+
+#: dt-contacts/contacts.php:930
+#, fuzzy
+msgid "You do not have permission"
+msgstr "لا تملك الصلاحيات"
+
+#: dt-core/admin/admin-theme-design.php:44
+#, php-format
+msgid "Welcome, %1$s"
+msgstr "مرحباً مجدا  , %1$s"
+
+#: dt-core/admin/class-roles.php:95
+msgid "Strategist"
+msgstr "مهارات التخطيط الاستراتيجي"
+
+#: dt-core/admin/class-roles.php:217
+msgid "Dispatcher"
+msgstr "المرسل"
+
+#: dt-core/admin/class-roles.php:306
+msgid "Marketer"
+msgstr "تسويق"
+
+#: dt-core/admin/class-roles.php:323
+msgid "Marketer Leader"
+msgstr "زعيم المسوق"
+
+#: dt-core/admin/class-roles.php:449
+msgid "DT Admin"
+msgstr "المشرف DT"
+
+#: dt-core/admin/class-roles.php:531
+msgid "Multiplier"
+msgstr "مضاعف"
+
+#: dt-core/admin/class-roles.php:548
+msgid "Project Supporter"
+msgstr "مؤيد المشروع"
+
+#: dt-core/admin/class-roles.php:560
+msgid "Prayer Supporter"
+msgstr "مؤيد الصلاة"
+
+#: dt-core/admin/class-roles.php:571
+msgid "Registered"
+msgstr "مسجل"
+
+#: dt-core/admin/class-roles.php:722
+msgid "Subscriber"
+msgstr "الاشتراك"
+
+#: dt-core/admin/class-roles.php:752
+msgid "Editor"
+msgstr "المحرر"
+
+#: dt-core/admin/class-roles.php:782
+#: dt-core/admin/menu/tables/activity-list-table.php:67
+msgid "Author"
+msgstr "الكاتب"
+
+#: dt-core/admin/class-roles.php:795
+msgid "Contributor"
+msgstr "المساهمة"
+
+#: dt-core/admin/config-site-defaults.php:48
+msgid "You may only set your permalink settings to \"Post name\""
+msgstr "يمكنك تعيين إعدادات الرابط الثابت فقط على “نشر اسم”"
+
+#: dt-core/admin/menu/main.php:76
+msgid "Import/Export"
+msgstr "استيراد / تصدير"
+
+#: dt-core/admin/menu/main.php:77
+msgid "Extensions"
+msgstr "الاضافات"
+
+#: dt-core/admin/menu/main.php:78
+#, fuzzy
+msgid "De-Duplication"
+msgstr "إزالة الازدواجية"
+
+#: dt-core/admin/menu/tables/activity-list-table.php:55
+#: dt-core/admin/menu/tables/reports-list-table.php:54
+msgid "Date"
+msgstr "التاريخ"
+
+#: dt-core/admin/menu/tables/activity-list-table.php:56
+msgid "ID"
+msgstr "الهوية"
+
+#: dt-core/admin/menu/tables/activity-list-table.php:58
+#: dt-core/admin/user-groups/user-groups-taxonomies.php:47
+#: dt-core/libraries/class-tgm-plugin-activation.php:2640
+msgid "Type"
+msgstr "اكتب"
+
+#: dt-core/admin/menu/tables/activity-list-table.php:59
+msgid "SubType"
+msgstr "نُميْط (في تصنيف الأحياء)"
+
+#: dt-core/admin/menu/tables/activity-list-table.php:60
+msgid "Action"
+msgstr "الفعل"
+
+#: dt-core/admin/menu/tables/activity-list-table.php:61
+#: dt-core/admin/user-groups/class-user-taxonomy.php:493
+#: dt-core/admin/user-groups/class-user-taxonomy.php:564
+#: template-settings.php:565
+msgid "Description"
+msgstr "وصف"
+
+#: dt-core/admin/menu/tables/activity-list-table.php:62
+msgid "Note"
+msgstr "ملحوظة"
+
+#: dt-core/admin/menu/tables/activity-list-table.php:63
+msgid "Meta ID"
+msgstr "معرف ميتا."
+
+#: dt-core/admin/menu/tables/activity-list-table.php:64
+msgid "Meta Key"
+msgstr "مفتاح الميتا"
+
+#: dt-core/admin/menu/tables/activity-list-table.php:65
+msgid "Meta Value"
+msgstr "قيمةMeta"
+
+#: dt-core/admin/menu/tables/activity-list-table.php:66
+msgid "Meta Parent"
+msgstr "الأبوين"
+
+#: dt-core/admin/menu/tables/reports-list-table.php:56
+msgid "SubSource"
+msgstr "سوبسورسي"
+
+#: dt-core/admin/menu/tables/reports-list-table.php:57
+msgid "Records"
+msgstr "عضو مسجل"
+
+#: dt-core/admin/metaboxes/box-address.php:118
+#: dt-core/admin/metaboxes/box-address.php:126
+msgid "Main"
+msgstr "الرئيسية"
+
+#: dt-core/admin/metaboxes/box-address.php:119
+msgid "Alternate"
+msgstr "البديل"
+
+#: dt-core/admin/multi-role/class-user-edit.php:84
+#: dt-core/admin/multi-role/functions-admin.php:145 template-settings.php:95
+msgid "Roles"
+msgstr "الأدوار"
+
+#: dt-core/admin/multi-role/class-user-edit.php:89
+msgid "User Roles"
+msgstr "أدوار المستخدمين"
+
+#: dt-core/admin/multi-role/functions-admin.php:39
+msgid "OK"
+msgstr "OK"
+
+#: dt-core/admin/multi-role/functions-admin.php:40
+#, php-format
+msgid "Grant %s capability"
+msgstr "رفض القدرة ٪s%s"
+
+#: dt-core/admin/multi-role/functions-admin.php:41
+#, php-format
+msgid "Deny %s capability"
+msgstr "رفض القدرة ٪s%s"
+
+#: dt-core/admin/multi-role/functions-admin.php:42
+msgid ""
+"Are you sure you want to delete this role? This is a permanent action and "
+"cannot be undone."
+msgstr ""
+"هل أنت متأكد من أنك تريد حذف هذا الدور؟ وهذا هو عمل دائمة ولا يمكن التراجع "
+"عنها."
+
+#: dt-core/admin/php7-warning.php:39
+msgid ""
+"The Disciple Tools theme requires PHP 7.0 or greater before it will have any "
+"effect. Please upgrade your PHP version or uninstall this theme."
+msgstr ""
+"يتطلب \"أدوات الضبط\" المكونات في بي 7.0 أو أكبر قبل أنه سيكون لها أي تأثير. "
+"الرجاء ترقية إصدار بي إتش بي أو إلغاء تثبيت هذا البرنامج المساعد."
+
+#: dt-core/admin/restrict-rest-api.php:80
+msgid "Only authenticated users can access the REST API."
+msgstr "يمكن للمستخدمين المجهولين الوصول للدورية"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:373
+#: dt-core/admin/user-groups/class-user-taxonomy.php:495
+#: dt-core/admin/user-groups/class-user-taxonomy.php:566
+#: dt-core/admin/user-groups/class-user-taxonomy.php:966
+#: dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/side-user.php:16
+msgid "Users"
+msgstr "ستتم إزالة هذا الدور لهذا المستخدم في جميع نطاقات المستخدمين الأخرين."
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:437
+msgid "Relationships"
+msgstr ""
+"يجري جيدين لهذه العلاقات هو الخطوة الأولى في ضرب التلاميذ. ابدأ بوضع قائمة."
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:487
+#: dt-core/admin/user-groups/class-user-taxonomy.php:558
+msgid "Select All"
+msgstr "اختر الكل"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:593
+msgid "View"
+msgstr "عرض"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:674
+#: dt-core/class-taxonomy.php:114
+#, php-format
+msgid "Search %s"
+msgstr "بحث %s"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:675
+#, php-format
+msgid "Popular %s"
+msgstr "الأشهر %s"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:677
+#: dt-core/class-taxonomy.php:116
+#, php-format
+msgid "Parent %s"
+msgstr "الأصل %s"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:678
+#: dt-core/class-taxonomy.php:117
+#, php-format
+msgid "Parent %s:"
+msgstr "أصل %s:"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:683
+#: dt-core/class-taxonomy.php:121
+#, php-format
+msgid "New %s Name"
+msgstr "جديد  %s اسم"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:684
+#, php-format
+msgid "Separate %s with commas"
+msgstr "منفصل %s بفواصل"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:685
+#, php-format
+msgid "Add or remove %s"
+msgstr "إضافة أو إزالة %s"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:686
+#, php-format
+msgid "Choose from most used %s"
+msgstr "إختر من الأكثر إستخدامًا %s"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:687
+#, php-format
+msgid "No %s found"
+msgstr "لا يوجد %s"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:688
+#: dt-core/admin/user-groups/class-user-taxonomy.php:689
+#, php-format
+msgid "No %s"
+msgstr "لا %s"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:755
+#, php-format
+msgid "Add to %1$s %2$s"
+msgstr "%1$s%2$s"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:756
+#, php-format
+msgid "Remove from %1$s %2$s"
+msgstr "إزالة من %1$s %2$s"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:914
+#, php-format
+msgid "%s user added."
+msgid_plural "%s users added."
+msgstr[0] "وأضاف المستخدم %s."
+msgstr[1] "وأضاف المستخدم %s."
+msgstr[2] "وأضاف المستخدم %s."
+msgstr[3] "وأضاف المستخدم %s."
+msgstr[4] "وأضاف المستخدم %s."
+msgstr[5] "وأضاف المستخدم %s."
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:915
+#, php-format
+msgid "%s user removed."
+msgid_plural "%s users removed."
+msgstr[0] "إزالة المستخدم %s."
+msgstr[1] "إزالة المستخدم %s."
+msgstr[2] "إزالة المستخدم %s."
+msgstr[3] "إزالة المستخدم %s."
+msgstr[4] "إزالة المستخدم %s."
+msgstr[5] "إزالة المستخدم %s."
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:924
+#, fuzzy
+msgid "Dismiss this notice."
+msgstr "تجاهل هذا الإشعار"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:971
+msgctxt "user"
+msgid "Add New"
+msgstr "اضف جديد"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:976
+msgctxt "user"
+msgid "Add Existing"
+msgstr "اضافة موجودة مسبقا"
+
+#: dt-core/admin/user-groups/class-user-taxonomy.php:981
+#, php-format
+msgid "Viewing users of %1$s: %2$s"
+msgstr "عرض المستخدمين من%1$s: %2$s"
+
+#: dt-core/admin/user-groups/user-groups-taxonomies.php:30
+#: template-settings.php:178
+msgid "Teams"
+msgstr "فرق"
+
+#: dt-core/admin/user-groups/user-groups-taxonomies.php:48
+msgid "Types"
+msgstr "الأنواع"
+
+#: dt-core/class-taxonomy.php:81
+msgid "Category"
+msgstr "‫‫إختر القسم"
+
+#: dt-core/class-taxonomy.php:84 dt-core/class-taxonomy.php:122
+msgid "Categories"
+msgstr "‫الأقسام  "
+
+#: dt-core/class-taxonomy.php:112
+msgctxt "taxonomy general name"
+msgid "Categories"
+msgstr "‫الأقسام  "
+
+#: dt-core/class-taxonomy.php:113
+msgctxt "taxonomy singular name"
+msgid "Category"
+msgstr "‫‫إختر القسم"
+
+#: dt-core/config-p2p.php:18 dt-core/posts.php:271
+msgid "Coached by"
+msgstr "،و قام بتدريبهم والدها كورت هنفورد"
+
+#: dt-core/config-p2p.php:19 dt-core/posts.php:270 single-contacts.php:86
+msgid "Coaching"
+msgstr "هذه مرتك الأولى ؟"
+
+#: dt-core/config-p2p.php:23 dt-core/config-p2p.php:29
+#: dt-core/config-p2p.php:48 dt-core/config-p2p.php:54
+#: dt-core/config-p2p.php:131 dt-core/config-p2p.php:240
+msgid "Search contacts"
+msgstr "البحث في جهات الاتصال..."
+
+#: dt-core/config-p2p.php:24 dt-core/config-p2p.php:30
+#: dt-core/config-p2p.php:49 dt-core/config-p2p.php:55
+#: dt-core/config-p2p.php:132 dt-core/config-p2p.php:241
+msgid "No contacts found."
+msgstr "لا يوجد جهات اتصال"
+
+#: dt-core/config-p2p.php:25
+msgid "Connect Disciple "
+msgstr "ربط التلميذ"
+
+#: dt-core/config-p2p.php:31
+msgid "Connect Coach"
+msgstr "مدرب"
+
+#: dt-core/config-p2p.php:43 dt-core/posts.php:245
+#, fuzzy
+msgid "Baptized by"
+msgstr "تذكير هام &#8212; وقد كنت قد عمد؟"
+
+#: dt-core/config-p2p.php:50
+msgid "Add Baptism"
+msgstr "معمودية"
+
+#: dt-core/config-p2p.php:56
+msgid "Add Baptizer"
+msgstr "بابتيز"
+
+#: dt-core/config-p2p.php:60
+msgid "Month"
+msgstr ""
+"‫Hi {{recipient.name}},\n"
+"‬\n"
+"‏‫\t\n"
+"‬\n"
+"‫مكّن كرسي دار ان, عدد فبعد أوزار الشهير في, وتم المحيط عالمية الدّفاع تم. بها "
+"في جورج بالحرب الخارجية, دار شعار ويكيبيديا و. انذار اكتوبر والفلبين ما الا. "
+"يرتبط وإقامة الإقتصادية بين ما.\n"
+"‬\n"
+"‏‫\n"
+"‬\n"
+"‏‫{{three_month_plan}}\n"
+"‬\n"
+"‏‫\n"
+"‬\n"
+"‏‫Zúme. Multiplying disciples. It’s who we are. It’s what we do."
+
+#: dt-core/config-p2p.php:66
+msgid "Day"
+msgstr "يوم"
+
+#: dt-core/config-p2p.php:72
+msgid "Year"
+msgstr "سنة"
+
+#: dt-core/config-p2p.php:94 dt-core/config-p2p.php:161
+#: dt-core/config-p2p.php:180 dt-core/config-p2p.php:186
+#: dt-core/config-p2p.php:269
+msgid "Search groups"
+msgstr "بحث في المجموعات"
+
+#: dt-core/config-p2p.php:95 dt-core/config-p2p.php:162
+#: dt-core/config-p2p.php:181 dt-core/config-p2p.php:187
+#: dt-core/config-p2p.php:270
+msgid "No groups found."
+msgstr "لا توجد مجموعات."
+
+#: dt-core/config-p2p.php:96
+msgid "Connect Group "
+msgstr "فريق الاتصال"
+
+#: dt-core/config-p2p.php:99
+msgid "Member"
+msgstr "عضو"
+
+#: dt-core/config-p2p.php:100
+msgid "Search members"
+msgstr "البحث في الأعضاء"
+
+#: dt-core/config-p2p.php:101
+msgid "No members found."
+msgstr "لا يوجد عضو."
+
+#: dt-core/config-p2p.php:102
+msgid "Connect Member"
+msgstr "الاتصال الأعضاء"
+
+#: dt-core/config-p2p.php:125 dt-core/config-p2p.php:155
+#: dt-core/config-p2p.php:286
+msgid "Search locations"
+msgstr "الحث عن موقع جغرافي"
+
+#: dt-core/config-p2p.php:126 dt-core/config-p2p.php:156
+#: dt-core/config-p2p.php:287
+msgid "No locations found."
+msgstr "لاتوجد مواقع."
+
+#: dt-core/config-p2p.php:127 dt-core/config-p2p.php:157
+#: dt-core/config-p2p.php:288
+msgid "Connect Location"
+msgstr "الموقع"
+
+#: dt-core/config-p2p.php:133 dt-core/config-p2p.php:242
+msgid "Create Contact"
+msgstr "إنشاء جهة اتصال"
+
+#: dt-core/config-p2p.php:163 dt-core/config-p2p.php:271
+msgid "Create Group"
+msgstr "إنشاء مجموعة"
+
+#: dt-core/config-p2p.php:175
+msgid "Planted by"
+msgstr "زرعت بواسطة"
+
+#: dt-core/config-p2p.php:176
+msgid "Planting"
+msgstr "زراعة"
+
+#: dt-core/config-p2p.php:182
+msgid "Connect Child Group"
+msgstr "ربط مجموعة الأطفال"
+
+#: dt-core/config-p2p.php:188
+msgid "Connect Parent Group"
+msgstr "المجموعة الأصل"
+
+#: dt-core/config-p2p.php:203 dt-core/config-p2p.php:218
+msgid "Team Members"
+msgstr "أعضاء فريق العمل"
+
+#: dt-core/config-p2p.php:233 dt-people-groups/people-groups-post-type.php:96
+msgid "People Group"
+msgstr "مجموعة أشخاص"
+
+#: dt-core/config-p2p.php:234 dt-core/config-p2p.php:292
+msgid "Search People Groups"
+msgstr "البحث عن مجموعات الناس"
+
+#: dt-core/config-p2p.php:235 dt-core/config-p2p.php:264
+#: dt-core/config-p2p.php:293
+msgid "No people groups found."
+msgstr "لا توجد مجموعات الناس العثور عليها."
+
+#: dt-core/config-p2p.php:236 dt-core/config-p2p.php:265
+msgid "Connect People Groups"
+msgstr "الاتصال جماعات الناس"
+
+#: dt-core/config-p2p.php:263
+#, fuzzy
+msgid "Search people groups"
+msgstr "البحث عن مجموعات الناس"
+
+#: dt-core/config-p2p.php:294
+msgid "Create People Groups"
+msgstr "إنشاء مجموعات الناس"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:334
+msgid "Install Required Plugins"
+msgstr "تثبيت مطلوب الإضافات"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:335
+msgid "Install Plugins"
+msgstr "تثبيت الإضافات"
+
+#. translators: %s: plugin name.
+#: dt-core/libraries/class-tgm-plugin-activation.php:337
+#, php-format
+msgid "Installing Plugin: %s"
+msgstr "تثبيت البرنامج المساعد: %s"
+
+#. translators: %s: plugin name.
+#: dt-core/libraries/class-tgm-plugin-activation.php:339
+#, php-format
+msgid "Updating Plugin: %s"
+msgstr "تحديث الاضافات : %s"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:340
+msgid "Something went wrong with the plugin API."
+msgstr "حدث خطأ مع API المساعد."
+
+#. translators: 1: plugin name(s).
+#: dt-core/libraries/class-tgm-plugin-activation.php:343
+#, php-format
+msgid "This theme requires the following plugin: %1$s."
+msgid_plural "This theme requires the following plugins: %1$s."
+msgstr[0] "هذا القالب يوصى بتركيب الإضافة التالية: %1$s."
+msgstr[1] "هذا القالب يوصى بتركيب الإضافة التالية: %1$s."
+msgstr[2] "هذا القالب يوصى بتركيب الإضافة التالية: %1$s."
+msgstr[3] "هذا القالب يوصى بتركيب الإضافة التالية: %1$s."
+msgstr[4] "هذا القالب يوصى بتركيب الإضافة التالية: %1$s."
+msgstr[5] "هذا القالب يوصى بتركيب الإضافة التالية: %1$s."
+
+#. translators: 1: plugin name(s).
+#: dt-core/libraries/class-tgm-plugin-activation.php:349
+#, php-format
+msgid "This theme recommends the following plugin: %1$s."
+msgid_plural "This theme recommends the following plugins: %1$s."
+msgstr[0] "هذا القالب يوصي بتركيب الإضافة التالية: %1$s."
+msgstr[1] "هذا القالب يوصي بتركيب الإضافة التالية: %1$s."
+msgstr[2] "هذا القالب يوصي بتركيب الإضافة التالية: %1$s."
+msgstr[3] "هذا القالب يوصي بتركيب الإضافة التالية: %1$s."
+msgstr[4] "هذا القالب يوصي بتركيب الإضافة التالية: %1$s."
+msgstr[5] "هذا القالب يوصي بتركيب الإضافة التالية: %1$s."
+
+#. translators: 1: plugin name(s).
+#: dt-core/libraries/class-tgm-plugin-activation.php:355
+#, php-format
+msgid ""
+"The following plugin needs to be updated to its latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgid_plural ""
+"The following plugins need to be updated to their latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgstr[0] ""
+"يحتاج البرنامج المساعد التالية ليتم تحديثه إلى الإصدار الأحدث لضمان أقصى قدر "
+"من التوافق مع هذا القالب :%1$s."
+msgstr[1] ""
+"يحتاج البرنامج المساعد التالية ليتم تحديثه إلى الإصدار الأحدث لضمان أقصى قدر "
+"من التوافق مع هذا القالب :%1$s."
+msgstr[2] ""
+"يحتاج البرنامج المساعد التالية ليتم تحديثه إلى الإصدار الأحدث لضمان أقصى قدر "
+"من التوافق مع هذا القالب :%1$s."
+msgstr[3] ""
+"يحتاج البرنامج المساعد التالية ليتم تحديثه إلى الإصدار الأحدث لضمان أقصى قدر "
+"من التوافق مع هذا القالب :%1$s."
+msgstr[4] ""
+"يحتاج البرنامج المساعد التالية ليتم تحديثه إلى الإصدار الأحدث لضمان أقصى قدر "
+"من التوافق مع هذا القالب :%1$s."
+msgstr[5] ""
+"يحتاج البرنامج المساعد التالية ليتم تحديثه إلى الإصدار الأحدث لضمان أقصى قدر "
+"من التوافق مع هذا القالب :%1$s."
+
+#. translators: 1: plugin name(s).
+#: dt-core/libraries/class-tgm-plugin-activation.php:361
+#, php-format
+msgid "There is an update available for: %1$s."
+msgid_plural "There are updates available for the following plugins: %1$s."
+msgstr[0] "هناك تحديث متوفر لل:%1$s ."
+msgstr[1] "‫هناك تحديث متوفر لل:%1$s "
+msgstr[2] "‫هناك تحديث متوفر لل:%1$s "
+msgstr[3] "‫هناك تحديث متوفر لل:%1$s "
+msgstr[4] "‫هناك تحديث متوفر لل:%1$s "
+msgstr[5] "‫هناك تحديث متوفر لل:%1$s "
+
+#. translators: 1: plugin name(s).
+#: dt-core/libraries/class-tgm-plugin-activation.php:367
+#, php-format
+msgid "The following required plugin is currently inactive: %1$s."
+msgid_plural "The following required plugins are currently inactive: %1$s."
+msgstr[0] "الإضافة المطلوبة التالية غير نشطة حاليا:%1$s."
+msgstr[1] "الإضافة المطلوبة التالية غير نشطة حاليا:%1$s."
+msgstr[2] "الإضافة المطلوبة التالية غير نشطة حاليا:%1$s."
+msgstr[3] "الإضافة المطلوبة التالية غير نشطة حاليا:%1$s."
+msgstr[4] "الإضافة المطلوبة التالية غير نشطة حاليا:%1$s."
+msgstr[5] "الإضافة المطلوبة التالية غير نشطة حاليا:%1$s."
+
+#. translators: 1: plugin name(s).
+#: dt-core/libraries/class-tgm-plugin-activation.php:373
+#, php-format
+msgid "The following recommended plugin is currently inactive: %1$s."
+msgid_plural "The following recommended plugins are currently inactive: %1$s."
+msgstr[0] "البرنامج المساعد الموصى بها التالية غير نشط حاليا:%1$s."
+msgstr[1] "البرنامج المساعد الموصى بها التالية غير نشط حاليا:%1$s."
+msgstr[2] "البرنامج المساعد الموصى بها التالية غير نشط حاليا:%1$s."
+msgstr[3] "البرنامج المساعد الموصى بها التالية غير نشط حاليا:%1$s."
+msgstr[4] "البرنامج المساعد الموصى بها التالية غير نشط حاليا:%1$s."
+msgstr[5] "البرنامج المساعد الموصى بها التالية غير نشط حاليا:%1$s."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:378
+msgid "Begin installing plugin"
+msgid_plural "Begin installing plugins"
+msgstr[0] "بدأ تنصيب الاضافة"
+msgstr[1] "بدأ تنصيب الاضافة"
+msgstr[2] "بدأ تنصيب الاضافة"
+msgstr[3] "بدأ تنصيب الاضافة"
+msgstr[4] "بدأ تنصيب الاضافة"
+msgstr[5] "بدأ تنصيب الاضافة"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:383
+msgid "Begin updating plugin"
+msgid_plural "Begin updating plugins"
+msgstr[0] "البدء بتحديث الإضافة"
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:388
+msgid "Begin activating plugin"
+msgid_plural "Begin activating plugins"
+msgstr[0] "البدء بتفعيل الإضافة"
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:392
+msgid "Return to Required Plugins Installer"
+msgstr "العودة إلى مثبت الإضافات المطلوبة"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:393
+#: dt-core/libraries/class-tgm-plugin-activation.php:920
+#: dt-core/libraries/class-tgm-plugin-activation.php:2624
+#: dt-core/libraries/class-tgm-plugin-activation.php:3674
+msgid "Return to the Dashboard"
+msgstr "العودة إلى لوحة التحكم الرئيسية"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:394
+#: dt-core/libraries/class-tgm-plugin-activation.php:3251
+msgid "Plugin activated successfully."
+msgstr "تم تنشيط المكون الإضافي بنجاح."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:395
+#: dt-core/libraries/class-tgm-plugin-activation.php:3043
+msgid "The following plugin was activated successfully:"
+msgid_plural "The following plugins were activated successfully:"
+msgstr[0] "تم تنشيط الاضافة التالية بنجاح:"
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#. translators: 1: plugin name.
+#: dt-core/libraries/class-tgm-plugin-activation.php:397
+#, php-format
+msgid "No action taken. Plugin %1$s was already active."
+msgstr "لم يتم اتخاذ أي إجراء. المكون الإضافي %1$s نشط بالفعل."
+
+#. translators: 1: plugin name.
+#: dt-core/libraries/class-tgm-plugin-activation.php:399
+#, php-format
+msgid ""
+"Plugin not activated. A higher version of %s is needed for this theme. "
+"Please update the plugin."
+msgstr ""
+"لم يتم تنشيط المكون الإضافي. هناك حاجة إلى إصدار أعلى من %s لهذا الموضوع. "
+"الرجاء تحديث المكون الإضافي."
+
+#. translators: 1: dashboard link.
+#: dt-core/libraries/class-tgm-plugin-activation.php:401
+#, php-format
+msgid "All plugins installed and activated successfully. %1$s"
+msgstr "تم تثبيت جميع المكونات الإضافية وتنشيطها بنجاح. %1$s"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:402
+msgid "Dismiss this notice"
+msgstr "تجاهل هذا الإشعار"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:403
+msgid ""
+"There are one or more required or recommended plugins to install, update or "
+"activate."
+msgstr ""
+"هناك واحد أو أكثر من الإضافات المطلوبة أو الموصى بها لتثبيت أو تحديث أو "
+"تنشيط."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:404
+msgid "Please contact the administrator of this site for help."
+msgstr "يرجى الاتصال بمسؤول هذا الموقع للحصول على المساعدة."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:607
+msgid "This plugin needs to be updated to be compatible with your theme."
+msgstr "هذا البرنامج المساعد يحتاج إلى تحديث لتكون متوافقة مع القالب الخاص بك."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:608
+msgid "Update Required"
+msgstr "مطلوب التحديث"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:725
+msgid "Set the parent_slug config variable instead."
+msgstr "ضع the parent_slug config variable instead."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:1027
+msgid ""
+"The remote plugin package does not contain a folder with the desired slug "
+"and renaming did not work."
+msgstr "الإضافة لم تحتوي على المجلد المطلوب لذا فشل تعديل فشل‬."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:1027
+#: dt-core/libraries/class-tgm-plugin-activation.php:1030
+msgid ""
+"Please contact the plugin provider and ask them to package their plugin "
+"according to the WordPress guidelines."
+msgstr ""
+"يرجى الاتصال بمزود الاضافة والمطالبة بحزمة اضافة وفقا للمبادئ التوجيهية "
+"للووردبريس."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:1030
+msgid ""
+"The remote plugin package consists of more than one file, but the files are "
+"not packaged in a folder."
+msgstr ""
+"حزمه البرنامج المساعد البعيد يتكون من أكثر من ملف واحد ، ولكن لا يتم حزم "
+"الملفات في مجلد."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:1214
+#: dt-core/libraries/class-tgm-plugin-activation.php:3039
+msgctxt "plugin A *and* plugin B"
+msgid "and"
+msgstr "و"
+
+#. translators: %s: version number
+#: dt-core/libraries/class-tgm-plugin-activation.php:2073
+#, php-format
+msgid "TGMPA v%s"
+msgstr "‏TGMPA v%s"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2364
+msgid "Required"
+msgstr "مطلوب"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2367
+msgid "Recommended"
+msgstr "المفضل"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2383
+msgid "WordPress Repository"
+msgstr "مستودع وردبريس"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2386
+msgid "External Source"
+msgstr "مصدر خارجي"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2389
+msgid "Pre-Packaged"
+msgstr "معباه مسبقا"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2406
+msgid "Not Installed"
+msgstr "غير مثبت"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2410
+msgid "Installed But Not Activated"
+msgstr "مثبت لكن غير مفعل"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2412
+msgid "Active"
+msgstr "نشيط"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2418
+msgid "Required Update not Available"
+msgstr "التحديث المطلوب غير متوفر"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2424
+msgid "Update recommended"
+msgstr "يوصى بالتحديث"
+
+#. translators: 1: install status, 2: update status
+#: dt-core/libraries/class-tgm-plugin-activation.php:2433
+#, php-format
+msgctxt "Install/Update Status"
+msgid "%1$s, %2$s"
+msgstr "%1$s, %2$s"
+
+#. translators: 1: number of plugins.
+#: dt-core/libraries/class-tgm-plugin-activation.php:2479
+#, php-format
+msgctxt "plugins"
+msgid "All <span class=\"count\">(%s)</span>"
+msgid_plural "All <span class=\"count\">(%s)</span>"
+msgstr[0] "الكل <span class=\"count\">(%s)</span>"
+msgstr[1] "الكل <span class=\"count\">(%s)</span>"
+msgstr[2] "الكل <span class=\"count\">(%s)</span>"
+msgstr[3] "الكل <span class=\"count\">(%s)</span>"
+msgstr[4] "الكل <span class=\"count\">(%s)</span>"
+msgstr[5] "الكل <span class=\"count\">(%s)</span>"
+
+#. translators: 1: number of plugins.
+#: dt-core/libraries/class-tgm-plugin-activation.php:2483
+#, php-format
+msgid "To Install <span class=\"count\">(%s)</span>"
+msgid_plural "To Install <span class=\"count\">(%s)</span>"
+msgstr[0] "تنزيل حزمة التثبيت من <span class=“count”>(%s)</span>"
+msgstr[1] "تنزيل حزمة التثبيت من <span class=“count”>(%s)</span>"
+msgstr[2] "تنزيل حزمة التثبيت من <span class=“count”>(%s)</span>"
+msgstr[3] "تنزيل حزمة التثبيت من <span class=“count”>(%s)</span>"
+msgstr[4] "تنزيل حزمة التثبيت من <span class=“count”>(%s)</span>"
+msgstr[5] "تنزيل حزمة التثبيت من <span class=“count”>(%s)</span>"
+
+#. translators: 1: number of plugins.
+#: dt-core/libraries/class-tgm-plugin-activation.php:2487
+#, php-format
+msgid "Update Available <span class=\"count\">(%s)</span>"
+msgid_plural "Update Available <span class=\"count\">(%s)</span>"
+msgstr[0] "تحديث متوفر <span class=“count”>(%s)</span>"
+msgstr[1] "تحديث متوفر <span class=“count”>(%s)</span>"
+msgstr[2] "تحديث متوفر <span class=“count”>(%s)</span>"
+msgstr[3] "تحديث متوفر <span class=“count”>(%s)</span>"
+msgstr[4] "تحديث متوفر <span class=“count”>(%s)</span>"
+msgstr[5] "تحديث متوفر <span class=“count”>(%s)</span>"
+
+#. translators: 1: number of plugins.
+#: dt-core/libraries/class-tgm-plugin-activation.php:2491
+#, php-format
+msgid "To Activate <span class=\"count\">(%s)</span>"
+msgid_plural "To Activate <span class=\"count\">(%s)</span>"
+msgstr[0] "تفعيل <span class=“count”>(%s)</span>"
+msgstr[1] "تفعيل <span class=“count”>(%s)</span>"
+msgstr[2] "تفعيل <span class=“count”>(%s)</span>"
+msgstr[3] "تفعيل <span class=“count”>(%s)</span>"
+msgstr[4] "تفعيل <span class=“count”>(%s)</span>"
+msgstr[5] "تفعيل <span class=“count”>(%s)</span>"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2573
+msgctxt "as in: \"version nr unknown\""
+msgid "unknown"
+msgstr "غير معروف"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2581
+msgid "Installed version:"
+msgstr "النسخة المثبت."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2589
+msgid "Minimum required version:"
+msgstr "الحد الأدنى المطلوب للنسخة:"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2601
+msgid "Available version:"
+msgstr "الإصدار المتاح:"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2624
+msgid "No plugins to install, update or activate."
+msgstr "بدون پلاگین برای نصب، به روز رسانی و یا فعال"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2638
+msgid "Plugin"
+msgstr "اضافة مساعدة"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2644
+msgid "Version"
+msgstr "الإصدار"
+
+#. translators: %2$s: plugin name in screen reader markup
+#: dt-core/libraries/class-tgm-plugin-activation.php:2694
+#, php-format
+msgid "Install %2$s"
+msgstr "تثبيت %2$s"
+
+#. translators: %2$s: plugin name in screen reader markup
+#: dt-core/libraries/class-tgm-plugin-activation.php:2699
+#, php-format
+msgid "Update %2$s"
+msgstr "تحديث %2$s"
+
+#. translators: %2$s: plugin name in screen reader markup
+#: dt-core/libraries/class-tgm-plugin-activation.php:2705
+#, php-format
+msgid "Activate %2$s"
+msgstr "تفعيل %2$s"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2775
+msgid "Upgrade message from the plugin author:"
+msgstr "ترقية الرسالة من مؤلف المكون الإضافي:"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2808
+msgid "Install"
+msgstr "تثبيت"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2814
+msgid "Update"
+msgstr "تحديث"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2817
+msgid "Activate"
+msgstr "تفعيل"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2848
+msgid "No plugins were selected to be installed. No action taken."
+msgstr "لم يتم تحديد أي مكونات إضافية ليتم تثبيتها. لم يتم اتخاذ أي إجراء."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2850
+msgid "No plugins were selected to be updated. No action taken."
+msgstr "لم يتم تحديد إضافات للتحديث ، لن يتم اتخاذ أى إجراء."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2891
+msgid "No plugins are available to be installed at this time."
+msgstr "در حال حاضر هیچ پلاگین برای نصب وجود ندارد"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2893
+msgid "No plugins are available to be updated at this time."
+msgstr "هیچ پلاگین در حال حاضر در دسترس نیست."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:2999
+msgid "No plugins were selected to be activated. No action taken."
+msgstr "لم يتم تحديد أي إضافات للتفعيل. لم يتم إتخاذ أي إجراء."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:3025
+msgid "No plugins are available to be activated at this time."
+msgstr "هیچ پلاگین در این زمان فعال نیست"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:3250
+msgid "Plugin activation failed."
+msgstr "فعال سازی پلاگین خراب شد"
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: dt-core/libraries/class-tgm-plugin-activation.php:3592
+#, php-format
+msgid "Updating Plugin %1$s (%2$d/%3$d)"
+msgstr "جاري تحديث %1$s (%2$d/%3$d)"
+
+#. translators: 1: plugin name, 2: error message.
+#: dt-core/libraries/class-tgm-plugin-activation.php:3595
+#, php-format
+msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+msgstr "حدث خطا اثناء تثبيت %1$s: <strong>%2$s</strong>."
+
+#. translators: 1: plugin name.
+#: dt-core/libraries/class-tgm-plugin-activation.php:3597
+#, php-format
+msgid "The installation of %1$s failed."
+msgstr "فشل تثبيت %1$s."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:3601
+msgid ""
+"The installation and activation process is starting. This process may take a "
+"while on some hosts, so please be patient."
+msgstr ""
+"بدء عمليه التثبيت والتنشيط. قد تستغرق هذه العملية بعض الوقت علي بعض "
+"المضيفين ، لذا يرجى الصبر."
+
+#. translators: 1: plugin name.
+#: dt-core/libraries/class-tgm-plugin-activation.php:3603
+#: dt-core/libraries/class-tgm-plugin-activation.php:3611
+#, php-format
+msgid "%1$s done."
+msgstr "‫%1$s القيام به."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:3604
+msgid "All installations and activations have been completed."
+msgstr "تم إكمال كافة عمليات التثبيت والتنشيط."
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: dt-core/libraries/class-tgm-plugin-activation.php:3606
+#, php-format
+msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+msgstr "تثبيت وتفعيل الإضافة %1$s (%2$d/%3$d)"
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:3609
+msgid ""
+"The installation process is starting. This process may take a while on some "
+"hosts, so please be patient."
+msgstr ""
+"روند نصب شروع شده است. این فرآیند ممکن است در برخی از میزبانها طول بکشد، "
+"بنابراین لطفا صبور باشید."
+
+#: dt-core/libraries/class-tgm-plugin-activation.php:3612
+msgid "All installations have been completed."
+msgstr "تم اكتمال جميع عمليات التثبيت"
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: dt-core/libraries/class-tgm-plugin-activation.php:3614
+#, php-format
+msgid "Installing Plugin %1$s (%2$d/%3$d)"
+msgstr "تثبيت الإضافة %1$s (%2$d/%3$d)"
+
+#: dt-core/libraries/plugin-update-checker/Puc/v4p2/Plugin/UpdateChecker.php:391
+msgid "Check for updates"
+msgstr "التحقق من التحديثات"
+
+#: dt-core/libraries/plugin-update-checker/Puc/v4p2/Plugin/UpdateChecker.php:438
+#, php-format
+msgctxt "the plugin title"
+msgid "The %s plugin is up to date."
+msgstr "البرنامج المساعد %s حتى الآن."
+
+#: dt-core/libraries/plugin-update-checker/Puc/v4p2/Plugin/UpdateChecker.php:440
+#, php-format
+msgctxt "the plugin title"
+msgid "A new version of the %s plugin is available."
+msgstr "يتوفر إصدار جديد من هذا المكون الإضافي. %s"
+
+#: dt-core/libraries/plugin-update-checker/Puc/v4p2/Plugin/UpdateChecker.php:442
+#, php-format
+msgid "Unknown update checker status \"%s\""
+msgstr "حالة المدقق غير معروف\"%s\""
+
+#: dt-core/libraries/plugin-update-checker/Puc/v4p2/Vcs/PluginUpdateChecker.php:85
+msgid "There is no changelog available."
+msgstr "لا يوجد تغيير متاح."
+
+#: dt-core/libraries/posts-to-posts/admin/box.php:48
+msgid "Are you sure you want to delete all connections?"
+msgstr "هل أنت متأكد من حذف ذلك ؟!"
+
+#: dt-core/libraries/posts-to-posts/admin/box.php:230
+#, fuzzy
+msgid "previous"
+msgstr "السابق"
+
+#: dt-core/libraries/posts-to-posts/admin/box.php:231
+#, fuzzy
+msgid "next"
+msgstr "التالى"
+
+#: dt-core/libraries/posts-to-posts/admin/box.php:232
+msgid "of"
+msgstr "من"
+
+#: dt-core/libraries/posts-to-posts/admin/dropdown-user.php:32
+msgid "Filter"
+msgstr "تصفية "
+
+#: dt-core/libraries/posts-to-posts/admin/factory.php:88
+msgid " (from)"
+msgstr "تم استعادة %1$s إلى المراجعة من %2$s"
+
+#: dt-core/libraries/posts-to-posts/admin/factory.php:89
+#, fuzzy
+msgid " (to)"
+msgstr "الى"
+
+#: dt-core/libraries/posts-to-posts/admin/field-delete.php:7
+msgid "Delete all connections"
+msgstr "حذف كافة الاتصالات"
+
+#: dt-core/libraries/posts-to-posts/admin/field-delete.php:16
+msgid "Delete connection"
+msgstr "احذف الاتصال"
+
+#: dt-core/libraries/posts-to-posts/admin/tools-page.php:7
+msgid "Connection Types"
+msgstr "أنواعها"
+
+#: dt-core/libraries/posts-to-posts/admin/tools-page.php:41
+#, php-format
+msgid "<em>%s</em> is not a registered connection type."
+msgstr "<إم> </ إم> ليس نوع اتصال مسجل.%s"
+
+#: dt-core/libraries/posts-to-posts/admin/tools-page.php:50
+#, php-format
+msgid "Converted %1$s connections from <em>%2$s</em> to <em>%3$s</em>."
+msgstr "تحويل اتصالات1 من %1$s<em>%3$s</em> إلى <em>%2$s</em>."
+
+#: dt-core/libraries/posts-to-posts/admin/tools-page.php:65
+msgid "Information"
+msgstr "معلومات"
+
+#: dt-core/libraries/posts-to-posts/admin/tools-page.php:66
+#: single-contacts.php:56
+msgid "Connections"
+msgstr "التوصيلات"
+
+#: dt-core/libraries/posts-to-posts/admin/tools-page.php:74
+msgid "No connection types registered."
+msgstr "لا أنواع الاتصال المسجلة."
+
+#: dt-core/libraries/posts-to-posts/admin/tools-page.php:76
+#, php-format
+msgid "To register a connection type, see <a href=\"%s\">the wiki</a>."
+msgstr "تسجيل نوع اتصال، راجع <a href=\"%s\">الويكي</a>."
+
+#: dt-core/libraries/posts-to-posts/admin/tools-page.php:93
+msgid "Convert to registered connection type:"
+msgstr "نوع الاتصال:"
+
+#: dt-core/libraries/posts-to-posts/admin/tools-page.php:129
+msgid "Go"
+msgstr ""
+"يسوع قال، \"اذهب وجعل التوابع من جميع الأمم، يعمد لهم باسم الأب والابن "
+"والروح القدس...\""
+
+#: dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/connection-type.php:91
+msgid "Create connections"
+msgstr "إنشاء اتصالات"
+
+#: dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/connection-type.php:109
+#, php-format
+msgid "Connected %s"
+msgstr "متصل %s"
+
+#: dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/side-user.php:25
+msgid "User"
+msgstr "عضو"
+
+#: dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/side-user.php:26
+msgid "Search Users"
+msgstr "جستجو کاربران"
+
+#: dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/side-user.php:27
+msgid "No users found."
+msgstr "لا يوجد مستخدمون."
+
+#: dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/widget.php:19
+msgid "Posts 2 Posts"
+msgstr "المشاركات 2 المشاركات"
+
+#: dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/widget.php:20
+msgid "A list of posts connected to the current post"
+msgstr "قائمة بالمشاركات المرتبطة بالوظيفة الحالية"
+
+#: dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/widget.php:37
+msgid "Title:"
+msgstr "عنوان:"
+
+#: dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/widget.php:44
+msgid "Connection type:"
+msgstr "نوع الاتصال:"
+
+#: dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/widget.php:49
+msgid "Connection listing:"
+msgstr "قائمة الاتصال:"
+
+#: dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/widget.php:55
+msgid "connected"
+msgstr ""
+"النظر في تسجيل على الإنترنت للتذكير، الموارد، والتدريب، وأن تصبح متصلاً مع "
+"الآخرين الذين يستخدمون نفس النوع من نهج وزارة. يمكنك القيام بذلك في "
+"ZumeProject.com."
+
+#: dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/widget.php:56
+msgid "related"
+msgstr "ذات صلة"
+
+#: dt-core/libraries/posts-to-posts/vendor/scribu/scb-framework/AdminPage.php:261
+msgid "Settings <strong>saved</strong>."
+msgstr "<strong>تم الحفظ</strong> الإعدادات."
+
+#: dt-core/logging/hooks/class-hook-posts.php:22
+msgid "(no title)"
+msgstr "(بدون عنوان)"
+
+#: dt-core/posts.php:247
+#, fuzzy
+msgid "Did not baptize"
+msgstr "عدم تعميد"
+
+#: dt-core/posts.php:248
+#, fuzzy
+msgid "Not baptized by"
+msgstr "لا عمد بواسطة"
+
+#: dt-core/posts.php:252 dt-core/posts.php:253
+#, fuzzy
+msgid "Added to group"
+msgstr "إضافة إلى مجموعة"
+
+#: dt-core/posts.php:255 dt-core/posts.php:256
+#, fuzzy
+msgid "Removed from group"
+msgstr "إزالة من المجموعة"
+
+#: dt-core/posts.php:261 dt-core/posts.php:262
+#, fuzzy
+msgid "Added to people group:"
+msgstr "إضافة إلى مجموعة أشخاص:"
+
+#: dt-core/posts.php:264 dt-core/posts.php:265
+#, fuzzy
+msgid "Removed from people group:"
+msgstr "إزالة من المجموعة الناس:"
+
+#: dt-core/posts.php:273
+#, fuzzy
+msgid "No longer coaching"
+msgstr "لم يعد التدريب"
+
+#: dt-core/posts.php:274
+#, fuzzy
+msgid "No longed coached by"
+msgstr "لا يتوق يدربه"
+
+#: dt-core/posts.php:278 dt-core/posts.php:279
+#, fuzzy
+msgid "Added to location"
+msgstr "إضافة إلى الموقع"
+
+#: dt-core/posts.php:281 dt-core/posts.php:282
+msgid "Removed from location"
+msgstr "إزالة من الموقع"
+
+#: dt-core/posts.php:305
+#, fuzzy
+msgid "changed to"
+msgstr "تغيّر إلى"
+
+#: dt-core/posts.php:330
+msgid "verified"
+msgstr "المُحقـَّق"
+
+#: dt-core/posts.php:330
+#, fuzzy
+msgid "not verified"
+msgstr "ليس معرف"
+
+#: dt-core/posts.php:333
+#, fuzzy
+msgid "invalidated"
+msgstr "يلغي الصلاحية أو المفعول"
+
+#: dt-core/posts.php:333
+#, fuzzy
+msgid "not invalidated"
+msgstr "لا يبطل"
+
+#: dt-core/posts.php:340
+#, fuzzy
+msgid "Name changed to:"
+msgstr "تغيير الاسم إلى:"
+
+#: dt-core/posts.php:363 dt-core/posts.php:397 dt-groups/groups.php:67
+msgid "No permissions to read group"
+msgstr "ليس لديك أذونات لقراءة مجموعة"
+
+#: dt-core/posts.php:415 dt-core/posts.php:461
+#, php-format
+msgid "You do not have access to these %s"
+msgstr "ليس لديك حق الوصول إلى هذه %s"
+
+#: dt-core/posts.php:559
+msgid "Record not deleted."
+msgstr "عدم حذف السجل."
+
+#: dt-core/posts.php:651
+msgid "Post already shared with user."
+msgstr "جرى بالفعل تبادل التقرير مع الكيانات"
+
+#: dt-groups/groups-post-type.php:134
+msgctxt "groups"
+msgid "Add New"
+msgstr "اضف جديد"
+
+#: dt-groups/groups-post-type.php:151 dt-locations/locations-post-type.php:148
+#: dt-people-groups/people-groups-post-type.php:150
+#, php-format
+msgid "Insert %s"
+msgstr "إدراج  %s"
+
+#: dt-groups/groups-post-type.php:169
+msgctxt "single post url slug"
+msgid "Group"
+msgstr "مجموعة"
+
+#: dt-groups/groups-post-type.php:170
+msgctxt "post archive url slug"
+msgid "Groups"
+msgstr "المجموعات"
+
+#: dt-groups/groups-post-type.php:271
+msgid "%3$s updated. %1$sView %4$s%$2s"
+msgstr "%3$s تحديث. %1 سفييو %4$ $s % $2s"
+
+#: dt-groups/groups-post-type.php:272 dt-locations/locations-post-type.php:284
+#: dt-people-groups/people-groups-post-type.php:276
+msgid "Custom field updated."
+msgstr "تم تعديل الحقل المخصص."
+
+#: dt-groups/groups-post-type.php:273 dt-locations/locations-post-type.php:285
+#: dt-people-groups/people-groups-post-type.php:277
+msgid "Custom field deleted."
+msgstr "تم حذف الحقل المخصص."
+
+#: dt-groups/groups-post-type.php:280
+msgid "%1$s scheduled for: %3$s. %4$sPreview %$2s%5$s"
+msgstr "عقده %1$s: %3 س. %4$ $ % $2s سبريفيو % 5 s $"
+
+#: dt-groups/groups-post-type.php:303
+msgid "Group Details"
+msgstr "تفاصيل المجموعة"
+
+#: dt-groups/groups-post-type.php:305
+msgid "Info"
+msgstr "معلومات"
+
+#: dt-groups/groups-post-type.php:612
+msgid "Group Status"
+msgstr "المجموعة العمرية"
+
+#: dt-groups/groups-post-type.php:616
+msgid "No value"
+msgstr "بدون قيمة"
+
+#: dt-groups/groups-post-type.php:617
+msgid "Active Pre-Group (Faithfully Sharing)"
+msgstr "نشط قبل المجموعة (مشاركة بأمانة)"
+
+#: dt-groups/groups-post-type.php:618
+msgid "Active Group (Consistently Meeting)"
+msgstr "لشكر تكون المجموعة الأكثر نشاطا في هذه الأيام."
+
+#: dt-groups/groups-post-type.php:619
+msgid "Active Church (3+ Baptized)"
+msgstr "كنيسة نشطة (عمد 3 +)"
+
+#: dt-groups/groups-post-type.php:620
+msgid "Inactive Church"
+msgstr "الكنيسة غير نشط"
+
+#: dt-groups/groups-post-type.php:621
+msgid "Inactive Group"
+msgstr "فريق غير نشط"
+
+#: dt-groups/groups-post-type.php:622
+msgid "Inactive Pre-Group"
+msgstr "المجموعة السابقة غير نشط"
+
+#: dt-groups/groups-post-type.php:637
+msgid "Is a Church"
+msgstr "ما هو الفرق بين هذه الصورة وما تم وصفه في الفيديو ككنيسة \"بسيطة\"؟"
+
+#: dt-groups/groups-post-type.php:645 single-groups.php:98
+msgid "Baptism"
+msgstr "معمودية"
+
+#: dt-groups/groups-post-type.php:652
+msgid "Bible Study"
+msgstr "دراسة الكتاب المقدس"
+
+#: dt-groups/groups-post-type.php:659 single-groups.php:92
+msgid "Communion"
+msgstr "\"القربان المقدس\"."
+
+#: dt-groups/groups-post-type.php:666 single-groups.php:80
+msgid "Fellowship"
+msgstr ""
+"تنسيق مجموعة 3/3 – مجموعة 3/3 وسيلة لاتباع المسيح الوفاء، الصلاة، تعلم، "
+"وتنمو، والزمالة وممارسة طاعة وتقاسم ما تعلموه. وبهذه الطريقة، مجموعة 3/3 "
+"ليست مجرد مجموعة صغيرة ولكن كنيسة بسيطة. (80 دقيقة)"
+
+#: dt-groups/groups-post-type.php:673 single-groups.php:86
+msgid "Giving"
+msgstr "التبرع"
+
+#: dt-groups/groups-post-type.php:680 single-groups.php:105
+msgid "Prayer"
+msgstr "طلب المساعدة"
+
+#: dt-groups/groups-post-type.php:687 single-groups.php:123
+msgid "Praise"
+msgstr "مدح"
+
+#: dt-groups/groups-post-type.php:694
+msgid "Sharing the Gospel"
+msgstr "تقاسم الإنجيل"
+
+#: dt-groups/groups-post-type.php:701 single-groups.php:111
+msgid "Leaders"
+msgstr ""
+"كنت شجعت على حصة تدريبية Zúme بإطلاق \"خلية القيادة\" لقادة المستقبل في "
+"التدريب Zúme."
+
+#: dt-groups/groups-post-type.php:708
+msgid "Church Commitment"
+msgstr "الالتزام"
+
+#: dt-groups/groups-post-type.php:763
+msgid "Enter the group here"
+msgstr "أدخل مجموعة هنا"
+
+#: dt-groups/groups.php:161
+msgid "No group found with ID"
+msgstr "لم يتم العثور على أية مجموعة بهذا الرقم التعريفي."
+
+#: dt-groups/groups.php:214
+msgid "Group does not exist"
+msgstr "المجموعة غير موجودة"
+
+#: dt-groups/groups.php:218
+msgid "One or more fields do not exist"
+msgstr "واحد أو أكثر من الحقول غير موجودة"
+
+#: dt-groups/groups.php:404
+msgid "You do not have have permission for this"
+msgstr "لا تملك الصلاحيات"
+
+#: dt-groups/groups.php:498
+msgid "You may not public a group"
+msgstr "لا يجوز لك الجمهور مجموعة"
+
+#: dt-groups/groups.php:502
+msgid "Group needs a title"
+msgstr "الفريق يحتاج إلى عنوان"
+
+#: dt-locations/admin-menu.php:68
+msgid "Import"
+msgstr "استيراد"
+
+#: dt-locations/admin-menu.php:80 dt-people-groups/admin-menu.php:81
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+"لا تملك الصلاحيات المناسبة للدخول على هذه الصفحة، الرجاء التواصل مع إدارة "
+"خبرة.كوم لطلب الدعم عبر صفحة اتصل بنا."
+
+#: dt-locations/admin-menu.php:199
+msgid "Nonce could not be verified"
+msgstr "ولم يمكن التحقق من الرقم الاعتباطي"
+
+#: dt-locations/admin-menu.php:342 dt-locations/admin-menu.php:380
+msgid "Nonce could not be validated"
+msgstr "لم يمكن التحقق من صحة الشهادة"
+
+#: dt-locations/admin-tab-global.php:95
+msgid "Expected countries-dropdown to be set"
+msgstr "البلدان القائمة المنسدلة المتوقعة تعيين"
+
+#: dt-locations/admin-tab-usa.php:68
+msgid "Expected states-dropdown to be defined"
+msgstr "الدول القائمة المنسدلة المتوقعة تعريف"
+
+#: dt-locations/locations-post-type.php:129
+msgctxt "post type general name"
+msgid "Locations"
+msgstr "المنطقة"
+
+#: dt-locations/locations-post-type.php:130
+msgctxt "post type singular name"
+msgid "Location"
+msgstr "الموقع"
+
+#: dt-locations/locations-post-type.php:131
+msgctxt "Locations"
+msgid "Add New"
+msgstr "اضف جديد"
+
+#: dt-locations/locations-post-type.php:240
+msgid "Parent"
+msgstr "الأبوين"
+
+#: dt-locations/locations-post-type.php:241
+msgid "Level"
+msgstr "المستوى"
+
+#: dt-locations/locations-post-type.php:242
+#: dt-locations/locations-post-type.php:317
+msgid "Map"
+msgstr "الخريطة"
+
+#: dt-locations/locations-post-type.php:283
+#, php-format
+msgid "%1$s updated. %2$s View %3$s %4$s"
+msgstr "‫s تحديث.  عرض %3$s %4$s%2$s%1$s"
+
+#: dt-locations/locations-post-type.php:293
+#, php-format
+msgid "%1$s scheduled for: %2$s. %3$sPreview %4$s %5$s"
+msgstr "‫%1$s المقرر ل: %2$s. %3$s معاينة %4$s %5$s"
+
+#: dt-locations/locations-post-type.php:316
+msgid "Geo-Code"
+msgstr "التعليمات البرمجية لتوقعات البيئة العالمية"
+
+#: dt-locations/locations-post-type.php:503
+msgid "Enter the location title here"
+msgstr "أدخل عنوان المكان"
+
+#: dt-locations/locations.php:28 dt-locations/locations.php:49
+msgid "No permissions to read locations"
+msgstr "ليس لديك أذونات لقراءة المواقع"
+
+#: dt-notifications/notifications.php:499
+#, fuzzy
+msgid "You have been assigned "
+msgstr "تم تعيينك"
+
+#: dt-notifications/notifications.php:503
+#, fuzzy
+msgid "was shared with you."
+msgstr "آپ کے ساتھ شئیر کیا گیا"
+
+#: dt-notifications/notifications.php:510
+#, fuzzy
+msgid "\"Belief\" Milestone"
+msgstr "المعلم \"المعتقد\""
+
+#: dt-notifications/notifications.php:513
+#, fuzzy
+msgid "\"Can Share\" Milestone"
+msgstr "المعلم \"مشاركة\""
+
+#: dt-notifications/notifications.php:516
+msgid "\"Actively Sharing\" Milestone"
+msgstr "المعلم \"المشاركة بفعالية\""
+
+#: dt-notifications/notifications.php:519
+#, fuzzy
+msgid "\"Baptized\" Milestone"
+msgstr "\"تعمد\" معلما"
+
+#: dt-notifications/notifications.php:522
+msgid "\"Baptizing\" Milestone"
+msgstr "\"يعمد\" معلما"
+
+#: dt-notifications/notifications.php:525
+#, fuzzy
+msgid "\"Is in a group\" Milestone"
+msgstr "\"هو في مجموعة\" معلما"
+
+#: dt-notifications/notifications.php:528
+#, fuzzy
+msgid "\"Planting a group\" Milestone"
+msgstr "\"زرع مجموعة\" معلما"
+
+#: dt-notifications/notifications.php:531
+#, fuzzy
+msgid "A Milestone"
+msgstr "ثم يحدث حدث هام"
+
+#: dt-notifications/notifications.php:535
+#, fuzzy
+msgid "has been added to"
+msgstr "وقد أضيفت إلى"
+
+#: dt-notifications/notifications.php:537
+#, fuzzy
+msgid "has been removed from"
+msgstr "تمت ازالته"
+
+#: dt-notifications/notifications.php:539
+#, fuzzy
+msgid "was changed for"
+msgstr "تم تغيير ل"
+
+#: dt-notifications/notifications.php:551
+msgid "An update is requested on: "
+msgstr "مطلوب تحديث على:"
+
+#: dt-notifications/notifications.php:555
+#, fuzzy
+msgid "Address details on "
+msgstr "تفاصيل العنوان"
+
+#: dt-notifications/notifications.php:557
+#: dt-notifications/notifications.php:559
+#, fuzzy
+msgid "Contact details on "
+msgstr "بيانات الاتصال"
+
+#: dt-notifications/notifications.php:565
+#, fuzzy
+msgid "  were modified by "
+msgstr "عُدّل بواسطة"
+
+#: dt-people-groups/admin-menu.php:69
+msgid "Add New"
+msgstr "اضف جديد"
+
+#: dt-people-groups/admin-tab-import.php:195
+msgid "Nonce did not validate"
+msgstr "عدم التحقق من صحة الرقم الاعتباطي"
+
+#: dt-people-groups/people-groups-post-type.php:131
+msgctxt "People Groups"
+msgid "People Groups"
+msgstr "جماعات الناس"
+
+#: dt-people-groups/people-groups-post-type.php:132
+msgctxt "People Group"
+msgid "People Group"
+msgstr "مجموعة أشخاص"
+
+#: dt-people-groups/people-groups-post-type.php:133
+msgctxt "People Groups"
+msgid "Add New"
+msgstr "اضف جديد"
+
+#: dt-people-groups/people-groups-post-type.php:270
+#, php-format
+msgid "%1$s updated. %2$sView %3$s %4$s"
+msgstr " تحديث مسودة معاينة%3$s %4$s %2$s%1$s "
+
+#: dt-people-groups/people-groups-post-type.php:285
+msgid "%1$s scheduled for: %3$s. %5$sPreview %2$s%3$6$s"
+msgstr "عقده %1$s: %3$s. %5$ سبريفيو %2$s % 3$ 6$ s"
+
+#: dt-people-groups/people-groups-post-type.php:310
+msgid "Joshua Project Info"
+msgstr "معلومات المشروع جوشوا"
+
+#: dt-people-groups/people-groups-post-type.php:514
+msgid "Enter the People Group title here"
+msgstr "ادخل العنوان هنا"
+
+#: dt-users/users.php:41
+msgid "No permissions to assign"
+msgstr "ليس لديك أذونات لتعيين"
+
+#: functions.php:445 functions.php:456
+msgid "Cheatin' huh?"
+msgstr "Cheatin&#8217; huh?"
+
+#: header.php:69
+msgid "Javascript must be enabled for this site to function correctly."
+msgstr "يجب تمكين جافا سكريبت لهذا الموقع بشكل صحيح."
+
+#: header.php:75
+#, fuzzy
+msgid ""
+"You seem to be using an out-of-date web browser. Without the most up-to-date "
+"version of your browser, this may site may not function correctly. Please "
+"note that Internet Explorer is not supported."
+msgstr ""
+"يبدو أنك باستخدام أحد مستعرضات ويب قديمة. دون إصدار أحدث من المستعرض الخاص "
+"بك، قد هذا الموقع أيار لا تعمل بشكل صحيح. يرجى ملاحظة أن برنامج Internet "
+"Explorer غير معتمد."
+
+#: header.php:77
+#, fuzzy
+msgid "See what browser you are using."
+msgstr "انظر المستعرض الذي تستخدمه."
+
+#: single-contacts.php:44
+msgid "View Comments"
+msgstr "اعرض التعليقات"
+
+#: single-contacts.php:74
+msgid "Add Group"
+msgstr "إضافة مجموعة"
+
+#: single-contacts.php:83
+#, fuzzy
+msgid "Baptized By"
+msgstr "تذكير هام &#8212; وقد كنت قد عمد؟"
+
+#: single-contacts.php:85
+#, fuzzy
+msgid "Coached By"
+msgstr "،و قام بتدريبهم والدها كورت هنفورد"
+
+#: single-contacts.php:123 single-groups.php:73
+#, fuzzy
+msgid "Progress"
+msgstr "التحقق من التقدم المحرز في ترجمة اللغة هنا."
+
+#: single-contacts.php:202 single-groups.php:170
+#, fuzzy
+msgid "Share settings"
+msgstr "إعدادات المشاركة"
+
+#: single-contacts.php:203 single-groups.php:171
+#, fuzzy
+msgid "Already sharing with"
+msgstr "فعلا مشاركة مع"
+
+#: single-contacts.php:210 single-groups.php:178
+msgid "Unshare"
+msgstr "الغاء اعادة المشاركة"
+
+#: single-contacts.php:217
+#, fuzzy
+msgid "Share this contact with the following user"
+msgstr "مشاركة هذا الاتصال مع المستخدم التالي"
+
+#: single-groups.php:63
+#, fuzzy
+msgid "Add a Member"
+msgstr "عضواَ ؟"
+
+#: single-groups.php:117
+msgid "Word"
+msgstr "كلمة"
+
+#: single-groups.php:129
+#, fuzzy
+msgid "Evangelism"
+msgstr "تبشير"
+
+#: single-groups.php:135
+#, fuzzy
+msgid "Covenant"
+msgstr "ميثاق"
+
+#: single-groups.php:185
+#, fuzzy
+msgid "Share this group with the following user"
+msgstr "مشاركة هذه المجموعة مع المستخدم التالي"
+
+#: single-locations.php:91
+msgid "Assets"
+msgstr "الأصول"
+
+#: single-peoplegroups.php:95 template-team.php:17
+msgid "Workers"
+msgstr "العمال"
+
+#: template-about.php:13
+msgid "About"
+msgstr "حول"
+
+#: template-contacts-new.php:5
+#, fuzzy
+msgid "You do not have permission to publish contacts"
+msgstr "لا تملك صلاحيات لنشر %s"
+
+#: template-contacts-new.php:15
+#, fuzzy
+msgid "New contact"
+msgstr "جديد مراسَل واحد"
+
+#: template-contacts-new.php:29
+#, fuzzy
+msgid "Name of contact"
+msgstr "اسم الموظف المكلّف بالاتصالات"
+
+#: template-contacts-new.php:32 template-contacts-new.php:49
+#: template-groups-new.php:30
+msgid "This is required"
+msgstr "هل هو مطلوب؟"
+
+#: template-contacts-new.php:35 template-contacts-new.php:36
+#, fuzzy
+msgid "Phone number"
+msgstr "رقم الهاتف"
+
+#: template-contacts-new.php:54
+#, fuzzy
+msgid "(Not set)"
+msgstr "ضع the parent_slug config variable instead."
+
+#: template-contacts-new.php:62 template-contacts-new.php:63
+#, fuzzy
+msgid "Initial comment"
+msgstr "التعليق الأولى"
+
+#: template-contacts-new.php:67 template-groups-new.php:33
+#, fuzzy
+msgid "Save and continue editing"
+msgstr "حفظ ومتابعة التحرير"
+
+#: template-groups-new.php:5
+#, fuzzy
+msgid "You do not have permission to publish groups"
+msgstr "ليس لديك الإذن لنشر مجموعات"
+
+#: template-groups-new.php:15
+#, fuzzy
+msgid "New group"
+msgstr "مجموعة جديدة"
+
+#: template-groups-new.php:27
+#, fuzzy
+msgid "Name of group"
+msgstr ""
+"اسأل الله الذي يريد لك لمشاركة قائمة أداة 100 مع. حصة اسم هذا الشخص مع "
+"الفريق قبل أن تذهب والوصول إليها قبل انعقاد الدورة المقبلة."
+
+#: template-metrics.php:31
+#, fuzzy
+msgid "Critical Path"
+msgstr "حرج المسار"
+
+#: template-notifications.php:40
+#, fuzzy
+msgid "New"
+msgstr "بدء مجموعة جديدة"
+
+#: template-notifications.php:45
+msgid "All"
+msgstr "الكل"
+
+#: template-notifications.php:49
+msgid "Unread"
+msgstr "غير مقروءة"
+
+#: template-notifications.php:55
+#, fuzzy
+msgid "Mark All as Read"
+msgstr "اشر عليها بانها قرات"
+
+#: template-notifications.php:61
+#, fuzzy
+msgid "Mark All"
+msgstr "علامة"
+
+#: template-notifications.php:76 template-notifications.php:79
+#, fuzzy
+msgid "load more notifications"
+msgstr "تحميل المزيد من الإشعارات"
+
+#: template-settings.php:45
+msgid "Profile"
+msgstr "الملف الشخصي"
+
+#: template-settings.php:47 template-settings.php:397
+msgid "Availability"
+msgstr "الاتاحة"
+
+#: template-settings.php:68
+msgid "Your Profile"
+msgstr "الوصول إلى ملف التعريف الخاص بك"
+
+#: template-settings.php:79 template-team.php:112
+msgid "Username"
+msgstr "اسم المستخدم"
+
+#: template-settings.php:90 template-settings.php:541 template-team.php:117
+msgid "Nickname"
+msgstr "الإسم المستعار"
+
+#: template-settings.php:99 template-team.php:184
+msgid "Biography"
+msgstr "نبذة شخصية"
+
+#: template-settings.php:139 template-team.php:155
+msgid "Social"
+msgstr "مواقع التواصل الاجتماعي"
+
+#: template-settings.php:212
+#, fuzzy
+msgid "Type of Notification"
+msgstr "نوع من الإعلام:"
+
+#: template-settings.php:213
+msgid "Web"
+msgstr "موقع ويب"
+
+#: template-settings.php:219
+msgid "Newly Assigned Contact"
+msgstr "مسندة إلى"
+
+#: template-settings.php:252 template-settings.php:263
+#: template-settings.php:278
+#, fuzzy
+msgid "@Mentions"
+msgstr "منشنز"
+
+#: template-settings.php:318 template-settings.php:329
+#: template-settings.php:344
+msgid "Contact Info Changed"
+msgstr "تغيير معلومات جهة الاتصال"
+
+#: template-settings.php:351
+#, fuzzy
+msgid "Contact Milestones"
+msgstr "معالم الاتصال"
+
+#: template-settings.php:403
+#, fuzzy
+msgid "Set Away"
+msgstr "."
+
+#: template-settings.php:409
+msgid "Enable"
+msgstr "تمكين"
+
+#: template-settings.php:410
+msgid "On"
+msgstr "اظهار"
+
+#: template-settings.php:411
+msgid "Off"
+msgstr "معطل"
+
+#: template-settings.php:526
+msgid "User Name"
+msgstr "اسم المستخدم"
+
+#: template-settings.php:527
+#, fuzzy
+msgid "can not change"
+msgstr "(metenejesh tebedel)"
+
+#: template-settings.php:530
+msgid "First Name"
+msgstr "اسمك"
+
+#: template-settings.php:536
+msgid "Last Name"
+msgstr "الكنية ( اللقب )"
+
+#: template-settings.php:575
+msgid "Oh snap!"
+msgstr "سهلة!"
+
+#: template-settings.php:578
+msgid "Save"
+msgstr "حفظ"
+
+#: template-team.php:83 template-team.php:85 template-team.php:107
+#, fuzzy
+msgid "Not Available"
+msgstr "لا يوجد تغيير متاح."
+
+#: template-team.php:107
+#, fuzzy
+msgid "Available"
+msgstr "لا يوجد تغيير متاح."
+
+#: template-team.php:203
+#, fuzzy
+msgid "Have no other team members on this team"
+msgstr "يكون لا أعضاء آخرين في الفريق في هذا الفريق"
+
+#: template-team.php:222
+msgid "You are not part of any teams"
+msgstr "لم تكن جزءا من أي فرق"
+
+#. Theme URI of the plugin/theme
+#, fuzzy
+msgid "http://disciple.tools"
+msgstr "http://disciple.tools"
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/DiscipleTools/disciple-tools"
+msgstr "https://github.com/DiscipleTools/disciple-tools"
+
+#. Description of the plugin/theme
+#, fuzzy
+msgid ""
+"Disciple Tools is a coalition management system for disciple making "
+"movements."
+msgstr "أدوات الضبط نظام إدارة تحالف للتلميذ مما يجعل الحركات."
+
+#. Author URI of the plugin/theme
+msgid "https://github.com/DiscipleTools"
+msgstr "‫http://github.com/ChasmSolutions"
