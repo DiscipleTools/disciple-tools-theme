@@ -49,7 +49,7 @@ The goal of the project is to create a disciple-making DRM that is incredibly si
 > Note: You can find the "Activate" link for the plugin both on the screen on which you installed it, and on the "Installed Plugins" screen under the "Plugins" admin menu.
 
 ### Step 5
-- In the navigartion bar, go to "Appearance" then "Themes"
+- In the navigation bar, go to "Appearance" then "Themes"
 
 ### Step 6
 - At the top of the "Add New" themes screen, select the "Upload Theme" button at the top of the page.

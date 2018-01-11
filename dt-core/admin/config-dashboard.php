@@ -72,7 +72,7 @@ final class Disciple_Tools_Dashboard
      */
     public function add_widgets()
     {
-        add_meta_box( 'funnel_stats_widget', 'Funnel Stats', [ $this, 'funnel_stats_widget' ], 'dashboard', 'side', 'high' );
+        add_meta_box( 'funnel_stats_widget', 'Funnel Stats', [ $this, 'funnel_stats_widget' ], 'dashboard', 'normal', 'high' );
         add_filter( 'dashboard_recent_posts_query_args', [ $this, 'add_page_to_dashboard_activity' ] );
     }
 
@@ -108,8 +108,8 @@ final class Disciple_Tools_Dashboard
         remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'side' );
         remove_meta_box( 'dashboard_right_now', 'dashboard', 'normal' );
 
-        //remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
-        //remove_meta_box( 'dashboard_activity', 'dashboard', 'normal');
+        remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
+        remove_meta_box( 'dashboard_activity', 'dashboard', 'normal' );
 
         // Remove_meta_box('dashboard_right_now', 'dashboard', 'core');    // Right Now Widget
         remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' ); // Comments Widget

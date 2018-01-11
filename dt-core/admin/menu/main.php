@@ -71,11 +71,14 @@ final class Disciple_Tools_Config
     public function add_dt_options_menu()
     {
 
-        add_menu_page( __( 'Disciple Tools', 'disciple_tools' ), __( 'Disciple Tools', 'disciple_tools' ), 'manage_dt', 'dt_options', [ $this, 'build_default_page' ], dt_svg_icon(), 2 );
-//        @todo potentially remove these pages
+        add_menu_page( __( 'Disciple Tools', 'disciple_tools' ), __( 'Disciple Tools', 'disciple_tools' ), 'manage_dt', 'dt_options', [ $this, 'build_default_page' ], dt_svg_icon(), 59 );
+
+        add_submenu_page( 'dt_options', __( 'Import/Export', 'disciple_tools' ), __( 'Import/Export', 'disciple_tools' ), 'manage_dt', 'import_export', [ $this, 'build_import_export_page' ] );
+        add_submenu_page( 'dt_options', __( 'Extensions', 'disciple_tools' ), __( 'Extensions', 'disciple_tools' ), 'manage_dt', 'extensions', [ $this, 'build_extensions_page' ] );
+        add_submenu_page( 'dt_options', __( 'De-Duplication', 'disciple_tools' ), __( 'De-Duplication', 'disciple_tools' ), 'manage_dt', 'de_duplication', [ $this, 'build_extensions_page' ] );
+
+        //        @todo potentially remove these pages
 //        add_submenu_page( 'dt_options', 'API Keys', 'API Keys', 'manage_dt', 'dt_api_keys', [ $this, 'build_api_key_page' ] );
-//        add_submenu_page( 'dt_options', 'Analytics', 'Analytics', 'manage_dt', 'dt_analytics', [ $this, 'build_analytics_page' ] );
-//        add_submenu_page( 'dt_options', 'Facebook', 'Facebook', 'manage_dt', 'dt_facebook', [ $this, 'build_facebook_page' ] );
 //        add_submenu_page( 'dt_options', 'Reports Log', 'Reports Log', 'manage_dt', 'dt_reports_log', [ $this, 'build_reports_log_page' ] );
 //        add_submenu_page( 'dt_options', 'Activity', 'Activity', 'manage_dt', 'dt_activity', [ $this, 'build_activity_page' ] );
 //        add_submenu_page( 'dt_options', 'Notifications', 'Notifications', 'manage_dt', 'dt_notifications', [ $this, 'build_notifications_page' ] );
@@ -101,7 +104,7 @@ final class Disciple_Tools_Config
         $tab = isset( $_GET["tab"] ) ? sanitize_text_field( wp_unslash( $_GET["tab"] ) ) : 'general';
 
         echo '<div class="wrap">
-            <h2>DISCIPLE TOOLS OPTIONS</h2>
+            <h2>DISCIPLE TOOLS : CONFIGURATION</h2>
             <h2 class="nav-tab-wrapper">';
 
         echo '<a href="admin.php?page=dt_options&tab=general" class="nav-tab ';
@@ -115,12 +118,6 @@ final class Disciple_Tools_Config
             echo 'nav-tab-active';
         }
         echo '">Custom Lists</a>';
-
-        echo '<a href="admin.php?page=dt_options&tab=import-export" class="nav-tab ';
-        if ( $tab == 'import-export' ) {
-            echo 'nav-tab-active';
-        }
-        echo '">Import/Export</a>';
 
         echo '<a href="admin.php?page=dt_options&tab=setup-checklist" class="nav-tab ';
         if ( $tab == 'setup-checklist' ) {
@@ -140,11 +137,6 @@ final class Disciple_Tools_Config
             case 'general':
                 require_once( 'tab-general.php' );
                 $object = new Disciple_Tools_General_Tab();
-                $object->content(); // prints
-                break;
-            case 'import-export':
-                require_once( 'tab-import-export.php' );
-                $object = new Disciple_Tools_Import_Export_Tab();
                 $object->content(); // prints
                 break;
             case 'custom-lists':
@@ -167,31 +159,109 @@ final class Disciple_Tools_Config
     }
 
     /**
-     * Builds menu page API key
+     * Builds default options page with the tab bar and tab page content
+     *
+     * @since 0.1.0
      */
-    public function build_api_key_page()
+    public function build_import_export_page()
     {
-        Disciple_Tools_Api_Keys::instance()->api_keys_page();
+
+        if ( !current_user_can( 'manage_dt' ) ) {
+            wp_die( 'You do not have sufficient permissions to access this page.' );
+        }
+
+        /**
+         * Begin Header & Tab Bar
+         */
+        $tab = isset( $_GET["tab"] ) ? sanitize_text_field( wp_unslash( $_GET["tab"] ) ) : 'general';
+
+        echo '<div class="wrap">
+            <h2>DISCIPLE TOOLS : IMPORT/EXPORT</h2>
+            <h2 class="nav-tab-wrapper">';
+
+        // tab labels
+        echo '<a href="admin.php?page=import_export&tab=general" class="nav-tab ';
+        if ( $tab == 'general' || !isset( $tab ) ) {
+            echo 'nav-tab-active';
+        }
+        echo '">General</a>';
+
+
+
+        echo '</h2>';
+        // End Tab Bar
+
+        /**
+         * Begin Page Content
+         */
+        switch ( $tab ) {
+
+            case 'general':
+                require_once( 'tab-import-export.php' );
+                $object = new Disciple_Tools_Import_Export_Tab();
+                $object->content(); // prints
+                break;
+
+
+            default:
+                break;
+        }
+
+        echo '</div>'; // end div class wrap
+
     }
 
     /**
-     * Builds menu page Analytics page
+     * Builds default options page with the tab bar and tab page content
+     *
+     * @since 0.1.0
      */
-    public function build_analytics_page()
+    public function build_extensions_page()
     {
-//        DT_Ga_Admin::options_page_googleanalytics();
-    }
 
-    /**
-     * Builds menu page Facebook integrations
-     */
-    public function build_facebook_page()
-    {
-//        Disciple_Tools_Facebook_Integration::instance()->facebook_settings_page();
+        if ( !current_user_can( 'manage_dt' ) ) {
+            wp_die( 'You do not have sufficient permissions to access this page.' );
+        }
+
+        /**
+         * Begin Header & Tab Bar
+         */
+        $tab = isset( $_GET["tab"] ) ? sanitize_text_field( wp_unslash( $_GET["tab"] ) ) : 'general';
+
+        echo '<div class="wrap">
+            <h2>DISCIPLE TOOLS : EXTENSIONS</h2>
+            <h2 class="nav-tab-wrapper">';
+
+        // tab labels
+        echo '<a href="admin.php?page=extensions&tab=general" class="nav-tab ';
+        if ( $tab == 'general' || !isset( $tab ) ) {
+            echo 'nav-tab-active';
+        }
+        echo '">General</a>';
+
+        echo '</h2>';
+        // End Tab Bar
+
+        /**
+         * Begin Page Content
+         */
+        switch ( $tab ) {
+
+            case 'general':
+                require_once( 'tab-extensions.php' );
+                Disciple_Tools_Extensions_Tab::content();
+                break;
+            default:
+                break;
+        }
+
+        echo '</div>'; // end div class wrap
+
     }
 
     /**
      * Builds menu page notifications page
+     * @todo possibly remove this function
      */
     public function build_notifications_page()
     {
@@ -201,6 +271,7 @@ final class Disciple_Tools_Config
     /**
      * Display the list table page
      *
+     * @todo possibly remove this function
      * @return void
      */
     public function build_reports_log_page()
@@ -218,22 +289,6 @@ final class Disciple_Tools_Config
         <?php
     }
 
-    /**
-     * Display the list table page
-     *
-     * @return void
-     */
-    public function build_activity_page()
-    {
-        $list_table = new Disciple_Tools_Activity_List_Table();
-        $list_table->prepare_items();
-        ?>
-        <div class="wrap">
-            <div id="icon-users" class="icon32"></div>
-            <h2>Disciple Tools Activity Report</h2>
-            <?php $list_table->display(); ?>
-        </div>
-        <?php
-    }
+
 
 }
