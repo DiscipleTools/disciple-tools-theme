@@ -33,7 +33,7 @@ dt_print_breadcrumbs(
 
                     <div class="bordered-box">
 
-                        <span class="section-header"><?php echo esc_html( $team_list['team_name'] ); ?></span>
+                        <span class="section-header"><?php echo esc_html( $team_list['team_name'] )?></span>
 
                         <hr size="1" style="max-width:100%"/>
 
@@ -60,7 +60,7 @@ dt_print_breadcrumbs(
                                         <div class="cell small-3">
 
                                             <!-- Card -->
-                                            <div class="card" data-open="reveal-<?php echo esc_html( $member['ID'] ); ?>">
+                                            <div class="card" data-open="reveal-<?php echo esc_html( $member['ID'] )?>">
 
                                                 <div class="card-image">
 
@@ -69,22 +69,27 @@ dt_print_breadcrumbs(
                                                 </div>
                                                 <div class="card-section center">
 
-                                                    <a data-open="reveal-<?php echo esc_attr( $member['ID'] ); ?>">
-                                                        <?php if ( !empty( $dt_user->first_name ) ) {
+                                                    <a data-open="reveal-<?php echo esc_attr( $member['ID'], 'disciple_tools' ); ?>">
+                                                        <?php
+                                                        if ( !empty( $dt_user->first_name ) ) {
                                                             echo esc_html( $dt_user->first_name ) . ' ' . esc_html( $dt_user->last_name );
-} else {
-    echo esc_html( $dt_user->display_name );
-} ?>
+                                                        } else {
+                                                            echo esc_html( $dt_user->display_name );
+                                                        } ?>
                                                     </a><br>
 
-                                                    <?php ( isset( $dt_user_meta['dt_avalability'] ) && $dt_user_meta['dt_avalability'] == false ) ? print esc_html( '<strong>Not Available</strong>' ) : print esc_html( 'Available' );  ?>
-
+                                                    <?php
+                                                    if ( isset( $dt_user_meta['dt_avalability'] ) && $dt_user_meta['dt_avalability'] == false ){
+                                                    ?> <strong><?php esc_html_e( 'Not Available', 'disciple_tools' ) ?></strong>
+                                                    <?php } else { ?>
+                                                    <strong><?php esc_html_e( 'Not Available', 'disciple_tools' ) ?></strong>
+                                                    <?php } ?>
                                                 </div>
 
                                             </div>
 
                                             <!-- Reveal -->
-                                            <div class="reveal" id="reveal-<?php echo  esc_html( $member['ID'] ); ?>" data-reveal>
+                                            <div class="reveal" id="reveal-<?php echo esc_html( $member['ID'] ); ?>" data-reveal>
 
                                                 <h1>
                                                 <?php
@@ -97,22 +102,26 @@ dt_print_breadcrumbs(
                                                 </h1>
 
                                                 <p><?php echo get_avatar( $member['ID'], '150' ); ?></p>
-                                                <p><?php ( isset( $dt_user_meta['dt_avalability'] ) && $dt_user_meta['dt_avalability'] == false ) ? print esc_html( '<strong>Not Available</strong>' ) : print esc_html( 'Available' );  ?></p>
-
                                                 <p>
-                                                    <strong>Username</strong><br>
-                                                    <?php echo esc_html( $dt_user->user_login ); ?>
+                                                    <strong>
+                                                    <?php ( isset( $dt_user_meta['dt_avalability'] ) && $dt_user_meta['dt_avalability'] == false ) ? esc_html_e( 'Not Available', 'disciple_tools' ) : esc_html_e( 'Available', 'disciple_tools' );  ?>
+                                                    </strong>
                                                 </p>
 
                                                 <p>
-                                                    <strong>Nickname</strong><br>
-                                                    <?php echo esc_html( $dt_user->nickname ); ?>
+                                                    <strong><?php esc_html_e( 'Username', 'disciple_tools' )?></strong><br>
+                                                    <?php echo esc_html( $dt_user->user_login )?>
                                                 </p>
 
-                                                <p><strong>Email</strong></p>
+                                                <p>
+                                                    <strong><?php esc_html_e( 'Nickname', 'disciple_tools' )?></strong><br>
+                                                    <?php echo esc_html( $dt_user->nickname )?>
+                                                </p>
+
+                                                <p><strong><?php esc_html_e( 'Email', 'disciple_tools' )?></strong></p>
                                                 <ul>
                                                     <?php
-                                                    echo '<li><a href="mailto:' . esc_attr( $dt_user->user_email ) . '">' . esc_html( $dt_user->user_email ) . '</a> (System Email)</li>';
+                                                    echo '<li><a href="mailto:' . esc_attr( $dt_user->user_email, 'disciple_tools' ) . '">' . esc_html( $dt_user->user_email ) . '</a> (System Email)</li>';
                                                     foreach ( $dt_user_fields as $field ) {
                                                         if ( $field['type'] == 'email' && !empty( $field['value'] ) ) {
                                                             echo '<li><a href="mailto:' . esc_html( $field['value'] ) . '" target="_blank">' . esc_html( $field['value'] ) . '</a> (' . esc_html( $field['label'] ) . ')</li>';
@@ -121,7 +130,7 @@ dt_print_breadcrumbs(
                                                     ?>
                                                 </ul>
 
-                                                <strong>Phone</strong>
+                                                <strong><?php esc_html_e( 'Phone', 'disciple_tools' )?></strong>
                                                 <ul>
                                                     <?php
                                                     foreach ( $dt_user_fields as $field ) {
@@ -132,7 +141,7 @@ dt_print_breadcrumbs(
                                                     ?>
                                                 </ul>
 
-                                                <strong>Address</strong>
+                                                <strong><?php esc_html_e( 'Address', 'disciple_tools' )?></strong>
                                                 <ul>
                                                     <?php
                                                     foreach ( $dt_user_fields as $field ) {
@@ -143,7 +152,7 @@ dt_print_breadcrumbs(
                                                     ?>
                                                 </ul>
 
-                                                <strong>Social</strong>
+                                                <strong><?php esc_html_e( 'Social', 'disciple_tools' )?></strong>
                                                 <ul>
                                                     <?php
                                                     foreach ( $dt_user_fields as $field ) {
@@ -154,7 +163,7 @@ dt_print_breadcrumbs(
                                                     ?>
                                                 </ul>
 
-                                                <strong>Other</strong>
+                                                <strong><?php esc_html_e( 'Other', 'disciple_tools' )?></strong>
                                                 <ul>
                                                     <?php
                                                     foreach ( $dt_user_fields as $field ) {
@@ -165,14 +174,14 @@ dt_print_breadcrumbs(
                                                     ?>
                                                 </ul>
 
-                                                <strong>Locations</strong>
+                                                <strong><?php esc_html_e( 'Locations', 'disciple_tools' )?></strong>
                                                 <ul>
                                                     <?php foreach ( $dt_locations as $location ) {
                                                         echo '<li>' .  esc_html( $location->post_title ) . '</li>';
 } ?>
                                                 </ul>
 
-                                                <strong>Biography</strong>
+                                                <strong><?php esc_html_e( 'Biography', 'disciple_tools' )?></strong>
                                                 <p><?php echo esc_html( $dt_user->user_description ); ?></p>
 
                                                 <button class="close-button" data-close aria-label="Close modal"
@@ -191,7 +200,7 @@ dt_print_breadcrumbs(
 
                                 <div class="grid-x grid-margin-x grid-margin-y align-center-middle">
 
-                                    Have no other team members on this team.
+                                    <?php esc_html_e( 'Have no other team members on this team', 'disciple_tools' )?>.
 
                                 </div>
 
@@ -210,7 +219,7 @@ dt_print_breadcrumbs(
 
                     <div class="grid-x grid-margin-x grid-margin-y align-center-middle">
 
-                        You are not part of any teams.
+                        <?php esc_html_e( 'You are not part of any teams', 'disciple_tools' )?>.
 
                     </div>
 

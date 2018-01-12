@@ -6,4 +6,4 @@ node_modules/
 config.codekit
 .idea
 
-
+.DS_Store

@@ -28,8 +28,8 @@ dt_print_breadcrumbs(
 
                         <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu data-submenu-toggle="true">
                             <li >
-                                <a onclick="show_critical_path()">Critical Path</a>
-                                <ul class="menu vertical nested" id="critical-path-menu">
+                                <a onclick="show_critical_path()"><?php esc_html_e( 'Critical Path', 'disciple_tools' )?></a>
+                                <!--<ul class="menu vertical nested" id="critical-path-menu">
                                     <li class="top-border">
                                         <a onclick="show_critical_path_prayer()">Prayer</a>
                                     </li>
@@ -42,9 +42,9 @@ dt_print_breadcrumbs(
                                     <li class="top-border">
                                         <a onclick="show_critical_path_multiplication()">Multiplication</a>
                                     </li>
-                                </ul>
+                                </ul>-->
                             </li>
-                            <li class="top-border">
+                            <!--<li class="top-border">
                                 <a onclick="show_contacts()">Contacts</a>
                             </li>
                             <li class="top-border">
@@ -58,11 +58,11 @@ dt_print_breadcrumbs(
                             </li>
                             <li class="top-border">
                                 <a onclick="show_pace()">Pace</a>
-                                <!--<ul class="menu vertical nested">
+                                <ul class="menu vertical nested">
                                     <li><a onclick="show_fake_chart('Contacts+Chart');">Contacts</a></li>
                                     <li><a onclick="show_fake_chart('Groups+Chart');">Groups</a></li>
-                                </ul>-->
-                            </li>
+                                </ul>
+                            </li>-->
 
                         </ul>
 

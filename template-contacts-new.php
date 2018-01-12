@@ -26,45 +26,45 @@ dt_print_breadcrumbs(
         <div class="large-8 medium-12 small-12 cell">
             <form class="js-create-contact bordered-box">
                 <label>
-                    <?php esc_html_e( "Name of contact" ); ?>
-                    <input name="title" type="text" placeholder="<?php esc_html_e( "Name" ); ?>" required aria-describedby="name-help-text">
+                    <?php esc_html_e( "Name of contact", "disciple_tools" ); ?>
+                    <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
                 </label>
-                <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required" ); ?></p>
+                <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
 
                 <label>
-                    <?php esc_html_e( "Phone number" ); ?>
-                    <input name="phone" type="text" type="tel" placeholder="<?php esc_html_e( "Phone number" ); ?>">
+                    <?php esc_html_e( "Phone number", "disciple_tools" ); ?>
+                    <input name="phone" type="text" type="tel" placeholder="<?php esc_html_e( "Phone number", "disciple_tools" ); ?>">
                 </label>
 
                 <label>
-                    <?php esc_html_e( "Source" ); ?>
+                    <?php esc_html_e( "Source", "disciple_tools" ); ?>
                     <select name="sources" required aria-describedby="source-help-text">
                         <?php foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $source_key => $source ): ?>
-                            <option value="<?php echo esc_attr( $source_key ); ?>">
-                                <?php echo esc_html( $source['label'] ); ?>
+                            <option value="<?php echo esc_attr( $source_key, 'disciple_tools' ); ?>">
+                                <?php echo esc_html( $source['label'] )?>
                             </option>
                         <?php endforeach; ?>
                     </select>
                 </label>
-                <p class="help-text" id="source-help-text"><?php esc_html_e( "This is required" ); ?></p>
+                <p class="help-text" id="source-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
 
                 <label>
-                    <?php esc_html_e( "Location" ); ?>
+                    <?php esc_html_e( "Location", "disciple_tools" ); ?>
                     <select name="location">
-                        <option value=""><?php esc_html_e( "(Not set)" ); ?></option>
+                        <option value=""><?php esc_html_e( "(Not set)", "disciple_tools" ); ?></option>
                         <?php foreach ( Disciple_Tools_Locations::get_locations() as $location_post ): ?>
-                            <option value="<?php echo intval( $location_post->ID ); ?>"><?php echo esc_html( $location_post->post_title ); ?></option>
+                            <option value="<?php echo intval( $location_post->ID ); ?>"><?php echo esc_html( $location_post->post_title )?></option>
                         <?php endforeach; ?>
                     </select>
                 </label>
 
                 <label>
-                    <?php esc_html_e( "Initial comment" ); ?>
-                    <textarea name="initial_comment" placeholder="<?php esc_html_e( "Initial comment" ); ?>"></textarea>
+                    <?php esc_html_e( "Initial comment", "disciple_tools" ); ?>
+                    <textarea name="initial_comment" placeholder="<?php esc_html_e( "Initial comment", "disciple_tools" ); ?>"></textarea>
                 </label>
 
                 <div style="text-align: center">
-                    <button class="button loader js-create-contact-button" type="submit" disabled><?php esc_html_e( "Save and continue editing" ); ?></button>
+                    <button class="button loader js-create-contact-button" type="submit" disabled><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
                 </div>
             </div>
 

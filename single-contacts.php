@@ -37,15 +37,16 @@ declare( strict_types=1 );
                 <div id="errors"></div>
                 <section class="hide-for-large small-12 cell">
                     <div class="bordered-box">
-                        <?php get_template_part( 'parts/contact', 'quick-buttons' ); ?>
+                        <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
 
                         <div style="text-align: center">
-                            <a class="button small" href="#comment-activity-section" style="margin-bottom: 0">View
-                                Comments</a>
+                            <a class="button small" href="#comment-activity-section" style="margin-bottom: 0">
+                                <?php esc_html_e( 'View Comments', 'disciple_tools' ) ?>
+                            </a>
                         </div>
                     </div>
                 </section>
-                <?php get_template_part( 'parts/contact', 'details' ); ?>
+                <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
 
                 <section id="relationships" class="xlarge-6 large-12 medium-6 cell">
 <!--                    <div class="bordered-box last-typeahead-in-section">-->
@@ -72,10 +73,10 @@ declare( strict_types=1 );
 
                         <?php
                         $connections = [
-                            "baptized_by" => "Baptized By",
-                            "baptized" => "Baptized",
-                            "coached_by" => "Coached By",
-                            "coaching" => "Coaching"
+                            "baptized_by" => esc_html__( "Baptized By", 'disciple_tools' ),
+                            "baptized" => esc_html__( "Baptized", 'disciple_tools' ),
+                            "coached_by" => esc_html__( "Coached By", 'disciple_tools' ),
+                            "coaching" => esc_html__( "Coaching", 'disciple_tools' )
                         ];
                         foreach ( $connections as $connection => $connection_label ) {
                             ?>
@@ -105,8 +106,8 @@ declare( strict_types=1 );
 
                 <section id="faith" class="xlarge-6 large-12 medium-6 cell">
                     <div class="bordered-box">
-                        <label class="section-header">Progress</label>
-                        <div class="section-subheader">Seeker Path</div>
+                        <label class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?></label>
+                        <div class="section-subheader"><?php esc_html_e( 'Seeker Path', 'disciple_tools' )?></div>
 
                         <select class="select-field" id="seeker_path" style="margin-bottom: 0px">
                         <?php
@@ -125,10 +126,10 @@ declare( strict_types=1 );
                         ?>
                         </select>
                         <div class="progress" role="progressbar" tabindex="0" aria-valuenow="<?php echo 4 ?>" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
-                          <div id="seeker-progress" class="progress-meter" style="width: <?php echo esc_html( $percentage ) ?>%"></div>
+                            <div id="seeker-progress" class="progress-meter" style="width: <?php echo esc_html( $percentage ) ?>%"></div>
                         </div>
 
-                        <div class="section-subheader">Faith Milestones</div>
+                        <div class="section-subheader"><?php esc_html_e( 'Faith Milestones', 'disciple_tools' )?></div>
                         <div class="small button-group" style="display: inline-block">
 
                             <?php foreach ( $contact_fields as $field => $val ): ?>
@@ -147,7 +148,7 @@ declare( strict_types=1 );
                         </div>
 
                         <div class="baptism_date">
-                            <div class="section-subheader">Baptism Date</div>
+                            <div class="section-subheader"><?php esc_html_e( 'Baptism Date', 'disciple_tools' )?></div>
                             <div class="baptism_date"><input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact->fields["baptism_date"] ?? '' )?>" id="baptism-date-picker"></div>
                         </div>
 
@@ -167,64 +168,13 @@ declare( strict_types=1 );
                     </div>
                 </section>
 
-                <section id="availability" class="medium-6 cell" style="display: none">
-                    <div class="bordered-box">
-                        <label class="section-header">Availability</label>
-                        <div class="row" style="display: flex; justify-content: center">
-                            <div style="flex: 0 1 13%">Sun</div>
-                            <div style="flex: 0 1 13%">Mon</div>
-                            <div style="flex: 0 1 13%">Tue</div>
-                            <div style="flex: 0 1 13%">Wed</div>
-                            <div style="flex: 0 1 13%">Thu</div>
-                            <div style="flex: 0 1 13%">Fri</div>
-                            <div style="flex: 0 1 13%">Sat</div>
-                        </div>
-                        <div class="row" style="display: flex; justify-content: center">
-                            <div style="flex: 0 1 13%">Morn</div>
-                            <div style="flex: 0 1 13%">Morn</div>
-                            <div style="flex: 0 1 13%">Morn</div>
-                            <div style="flex: 0 1 13%">Morn</div>
-                            <div style="flex: 0 1 13%">Morn</div>
-                            <div style="flex: 0 1 13%">Morn</div>
-                            <div style="flex: 0 1 13%">Morn</div>
-                        </div>
-                        <div class="row" style="display: flex; justify-content: center">
-                            <div style="flex: 0 1 13%">Lunch</div>
-                            <div style="flex: 0 1 13%">Lunch</div>
-                            <div style="flex: 0 1 13%">Lunch</div>
-                            <div style="flex: 0 1 13%">Lunch</div>
-                            <div style="flex: 0 1 13%">Lunch</div>
-                            <div style="flex: 0 1 13%">Lunch</div>
-                            <div style="flex: 0 1 13%">Lunch</div>
-                        </div>
-                        <div class="row" style="display: flex; justify-content: center">
-                            <div style="flex: 0 1 13%">Aftr</div>
-                            <div style="flex: 0 1 13%">Aftr</div>
-                            <div style="flex: 0 1 13%">Aftr</div>
-                            <div style="flex: 0 1 13%">Aftr</div>
-                            <div style="flex: 0 1 13%">Aftr</div>
-                            <div style="flex: 0 1 13%">Aftr</div>
-                            <div style="flex: 0 1 13%">Aftr</div>
-                        </div>
-                        <div class="row" style="display: flex; justify-content: center">
-                            <div style="flex: 0 1 13%">Night</div>
-                            <div style="flex: 0 1 13%">Night</div>
-                            <div style="flex: 0 1 13%">Night</div>
-                            <div style="flex: 0 1 13%">Night</div>
-                            <div style="flex: 0 1 13%">Night</div>
-                            <div style="flex: 0 1 13%">Night</div>
-                            <div style="flex: 0 1 13%">Night</div>
-                        </div>
-                    </div>
-                </section>
-
             </main> <!-- end #main -->
 
             <aside class="auto cell grid-x grid-margin-x">
                 <section class="xlarge-5 large-5 medium-12 small-12 cell bordered-box comment-activity-section"
                          id="comment-activity-section">
-                    <?php get_template_part( 'parts/contact', 'quick-buttons' ); ?>
-                    <?php get_template_part( 'parts/loop', 'activity-comment' ); ?>
+                    <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
+                    <?php get_template_part( 'dt-assets/parts/loop', 'activity-comment' ); ?>
                 </section>
 
             </aside>
@@ -235,23 +185,22 @@ declare( strict_types=1 );
 
     <div class="reveal" id="share-contact-modal" data-reveal>
 
-        <p class="lead">Share settings</p>
-        <h6>Already sharing with</h6>
+        <p class="lead"><?php esc_html_e( 'Share settings', 'disciple_tools' )?></p>
+        <h6><?php esc_html_e( 'Already sharing with', 'disciple_tools' )?></h6>
 
         <ul id="shared-with-list">
             <?php
             foreach ( $shared_with as $user ) { ?>
                 <li class="<?php echo esc_html( $user['user_id'] ) ?>"> <?php echo esc_html( $user['display_name'] )?>
-                    <button class="details-remove-button share"
-                            data-id="<?php echo esc_attr( $user['user_id'] ); ?>">
-                        Unshare
+                    <button class="details-remove-button share" data-id="<?php echo esc_attr( $user['user_id'] ); ?>">
+                        <?php esc_html_e( 'Unshare', 'disciple_tools' )?>
                     </button>
                 </li>
             <?php } ?>
         </ul>
 
         <p>
-            <label>Share this contact with the following user:
+            <label><?php esc_html_e( 'Share this contact with the following user', 'disciple_tools' )?>:
                 <select class="share-with-select" id="share-with">
                     <option value="0"></option>
                     <?php foreach ( $users as $user ) { ?>
@@ -262,13 +211,11 @@ declare( strict_types=1 );
         </p>
 
         <div class="grid-x">
-            <button class="button button-cancel clear"
-                    data-close aria-label="Close reveal" type="button">
-                Cancel
+            <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
             </button>
-            <button class="button" type="button"
-                    id="add-shared-button">
-                Share
+            <button class="button" type="button" id="add-shared-button">
+                <?php esc_html_e( 'Share', 'disciple_tools' )?>
             </button>
             <button class="close-button" data-close aria-label="Close modal" type="button">
                 <span aria-hidden="true">&times;</span>

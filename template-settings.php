@@ -16,7 +16,7 @@ $dt_user_meta = get_user_meta( get_current_user_id() ); // Full array of user me
 
 $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the site settings in the config area with the fields available in the user meta table.
 $dt_site_notification_defaults = dt_get_site_notification_defaults(); // Array of site default settings
-
+$dt_available_languges = get_available_languages( get_template_directory() .'/dt-assets/translation' )
 ?>
 
 <?php get_header(); ?>
@@ -42,9 +42,9 @@ dt_print_breadcrumbs(
                 <div class="bordered-box">
 
                     <ul class="menu vertical expanded" data-smooth-scroll data-offset="100">
-                        <li><a href="#profile">Profile</a></li>
-                        <li><a href="#notifications">Notifications</a></li>
-                        <li><a href="#availability">Availability</a></li>
+                        <li><a href="#profile"><?php esc_html_e( 'Profile', 'disciple_tools' )?></a></li>
+                        <li><a href="#notifications"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></a></li>
+                        <li><a href="#availability"><?php esc_html_e( 'Availability', 'disciple_tools' )?></a></li>
                     </ul>
 
                 </div>
@@ -63,9 +63,9 @@ dt_print_breadcrumbs(
 
                     <div class="bordered-box cell" id="profile" data-magellan-target="profile">
 
-                        <button class="float-right" data-open="edit-profile"><i class="fi-pencil"></i> Edit</button>
+                        <button class="float-right" data-open="edit-profile"><i class="fi-pencil"></i> <?php esc_html_e( 'Edit', 'disciple_tools' )?></button>
 
-                        <span class="section-header">Your Profile</span>
+                        <span class="section-header"><?php esc_html_e( 'Your Profile', 'disciple_tools' )?></span>
                         <hr size="1" style="max-width:100%"/>
 
 
@@ -76,28 +76,33 @@ dt_print_breadcrumbs(
                                 <p><?php echo get_avatar( get_current_user_id(), '150' ); ?></p>
 
                                 <p>
-                                    <strong>Username</strong><br>
+                                    <strong><?php esc_html_e( 'Username', 'disciple_tools' )?></strong><br>
                                     <?php echo esc_html( $dt_user->user_login ); ?>
                                 </p>
 
                                 <p>
-                                    <strong>Name</strong><br>
+                                    <strong><?php esc_html_e( 'Name', 'disciple_tools' )?></strong><br>
                                     <?php echo esc_html( $dt_user->first_name ); ?>
                                     &nbsp;<?php echo esc_html( $dt_user->last_name ); ?>
                                 </p>
 
                                 <p>
-                                    <strong>Nickname</strong><br>
+                                    <strong><?php esc_html_e( 'Nickname', 'disciple_tools' )?></strong><br>
                                     <?php echo esc_html( $dt_user->nickname ); ?>
                                 </p>
 
-                                <strong>Biography</strong>
+                                <p>
+                                    <strong><?php esc_html_e( "Roles" ); ?></strong><br>
+                                    <?php echo esc_html( implode( ", ", wp_get_current_user()->roles ) ); ?>
+                                </p>
+
+                                <strong><?php esc_html_e( 'Biography', 'disciple_tools' )?></strong>
                                 <p><?php echo esc_html( $dt_user->user_description ); ?></p>
 
                             </div>
                             <div class="small-12 medium-4 cell">
 
-                                <p><strong>Email</strong></p>
+                                <p><strong><?php esc_html_e( 'Email', 'disciple_tools' )?></strong></p>
                                 <ul>
                                     <?php
                                     echo '<li><a href="mailto:' . esc_attr( $dt_user->user_email ) . '">' . esc_html( $dt_user->user_email ) . '</a> (System Email)</li>';
@@ -109,7 +114,7 @@ dt_print_breadcrumbs(
                                     ?>
                                 </ul>
 
-                                <strong>Phone</strong>
+                                <strong><?php esc_html_e( 'Phone', 'disciple_tools' )?></strong>
                                 <ul>
                                     <?php
                                     foreach ( $dt_user_fields as $field ) {
@@ -120,7 +125,7 @@ dt_print_breadcrumbs(
                                     ?>
                                 </ul>
 
-                                <strong>Address</strong>
+                                <strong><?php esc_html_e( 'Address', 'disciple_tools' )?></strong>
                                 <ul>
                                     <?php
                                     foreach ( $dt_user_fields as $field ) {
@@ -131,7 +136,7 @@ dt_print_breadcrumbs(
                                     ?>
                                 </ul>
 
-                                <strong>Social</strong>
+                                <strong><?php esc_html_e( 'Social', 'disciple_tools' )?></strong>
                                 <ul>
                                     <?php
                                     foreach ( $dt_user_fields as $field ) {
@@ -142,7 +147,7 @@ dt_print_breadcrumbs(
                                     ?>
                                 </ul>
 
-                                <strong>Other</strong>
+                                <strong><?php esc_html_e( 'Other', 'disciple_tools' )?></strong>
                                 <ul>
                                     <?php
                                     foreach ( $dt_user_fields as $field ) {
@@ -152,12 +157,21 @@ dt_print_breadcrumbs(
                                     }
                                     ?>
                                 </ul>
+                                <strong><?php esc_html_e( 'Language', 'disciple_tools' )?></strong>
+                                <br>
+                                <?php
+                                if ( !empty( $dt_user->locale ) ){
+                                    echo esc_html( $dt_user->locale );
+                                } else {
+                                    echo esc_html__( 'English', 'disciple_tools' );
+                                }
+                                ?>
 
 
                             </div>
                             <div class="small-12 medium-4 cell">
 
-                                <p><strong>Locations</strong></p>
+                                <p><strong><?php esc_html_e( 'Locations', 'disciple_tools' )?></strong></p>
                                 <?php
                                 $dt_user_locations_list = dt_get_user_locations_list( get_current_user_id() );
                                 if ( $dt_user_locations_list ) {
@@ -170,7 +184,7 @@ dt_print_breadcrumbs(
                                 ?>
 
 
-                                <p><strong>Teams</strong></p>
+                                <p><strong><?php esc_html_e( 'Teams', 'disciple_tools' )?></strong></p>
                                 <?php
                                 $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id() );
                                 if ( $dt_user_team_members_list ) {
@@ -198,20 +212,20 @@ dt_print_breadcrumbs(
                 <div class="small-12 cell">
 
                     <div class="bordered-box cell" id="notifications" data-magellan-target="notifications">
-                        <span class="section-header">Notifications</span>
+                        <span class="section-header"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></span>
                         <hr size="1" style="max-width:100%"/>
 
                         <table class="form-table">
                             <thead>
                             <tr>
-                                <td>Type of Notification</td>
-                                <td>Web</td>
-                                <td>Email</td>
+                                <td><?php esc_html_e( 'Type of Notification', 'disciple_tools' )?></td>
+                                <td><?php esc_html_e( 'Web', 'disciple_tools' )?></td>
+                                <td><?php esc_html_e( 'Email', 'disciple_tools' )?></td>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td class="tall-4">Newly Assigned Contact</td>
+                                <td class="tall-4"><?php esc_html_e( 'Newly Assigned Contact', 'disciple_tools' )?></td>
                                 <td>
                                     <?php
                                     if ( $dt_site_notification_defaults['new_web'] ) {
@@ -220,7 +234,7 @@ dt_print_breadcrumbs(
                                         <div class="switch">
                                             <input class="switch-input" id="new_web" type="checkbox"
                                                    name="new_web"
-                                                   onclick="switch_preference('new_web');" <?php ( isset( $dt_user_meta['new_web'] ) && $dt_user_meta['new_web'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                                   onclick="switch_preference('new_web');" <?php ( isset( $dt_user_meta['new_web'] ) && $dt_user_meta['new_web'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
                                             <label class="switch-paddle inactive" for="new_web">
                                                 <span class="show-for-sr">Newly Assigned Contact</span>
                                             </label>
@@ -235,7 +249,7 @@ dt_print_breadcrumbs(
                                         <div class="switch">
                                             <input class="switch-input" id="new_email" type="checkbox"
                                                    name="new_email"
-                                                   onclick="switch_preference('new_email');" <?php ( isset( $dt_user_meta['new_email'] ) && $dt_user_meta['new_email'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                                   onclick="switch_preference('new_email');" <?php ( isset( $dt_user_meta['new_email'] ) && $dt_user_meta['new_email'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
                                             <label class="switch-paddle" for="new_email">
                                                 <span class="show-for-sr">Newly Assigned Contact</span>
                                             </label>
@@ -244,7 +258,7 @@ dt_print_breadcrumbs(
                                 </td>
                             </tr>
                             <tr>
-                                <td class="tall-4">@Mentions</td>
+                                <td class="tall-4"><?php esc_html_e( '@Mentions', 'disciple_tools' )?></td>
                                 <td>
                                     <?php
                                     if ( $dt_site_notification_defaults['mentions_web'] ) {
@@ -253,9 +267,9 @@ dt_print_breadcrumbs(
                                         <div class="switch">
                                             <input class="switch-input" id="mentions_web" type="checkbox"
                                                    name="mentions_web"
-                                                   onclick="switch_preference('mentions_web');" <?php ( isset( $dt_user_meta['mentions_web'] ) && $dt_user_meta['mentions_web'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                                   onclick="switch_preference('mentions_web');" <?php ( isset( $dt_user_meta['mentions_web'] ) && $dt_user_meta['mentions_web'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
                                             <label class="switch-paddle" for="mentions_web">
-                                                <span class="show-for-sr">@Mentions</span>
+                                                <span class="show-for-sr"><?php esc_html_e( '@Mentions', 'disciple_tools' )?></span>
                                             </label>
                                         </div>
                                     <?php } // end else ?>
@@ -268,16 +282,16 @@ dt_print_breadcrumbs(
                                         <div class="switch">
                                             <input class="switch-input" id="mentions_email" type="checkbox"
                                                    name="mentions_email"
-                                                   onclick="switch_preference('mentions_email');" <?php ( isset( $dt_user_meta['mentions_email'] ) && $dt_user_meta['mentions_email'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                                   onclick="switch_preference('mentions_email');" <?php ( isset( $dt_user_meta['mentions_email'] ) && $dt_user_meta['mentions_email'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
                                             <label class="switch-paddle" for="mentions_email">
-                                                <span class="show-for-sr">@Mentions</span>
+                                                <span class="show-for-sr"><?php esc_html_e( '@Mentions', 'disciple_tools' )?></span>
                                             </label>
                                         </div>
                                     <?php } // end else ?>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="tall-4">Update Needed</td>
+                                <td class="tall-4"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></td>
                                 <td>
                                     <?php
                                     if ( $dt_site_notification_defaults['updates_web'] ) {
@@ -286,9 +300,9 @@ dt_print_breadcrumbs(
                                         <div class="switch">
                                             <input class="switch-input" id="updates_web" type="checkbox"
                                                    name="updates_web"
-                                                   onclick="switch_preference('updates_web');" <?php ( isset( $dt_user_meta['updates_web'] ) && $dt_user_meta['updates_web'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                                   onclick="switch_preference('updates_web');" <?php ( isset( $dt_user_meta['updates_web'] ) && $dt_user_meta['updates_web'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
                                             <label class="switch-paddle" for="updates_web">
-                                                <span class="show-for-sr">Update Needed</span>
+                                                <span class="show-for-sr"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></span>
                                             </label>
                                         </div>
                                     <?php } // end else ?>
@@ -301,16 +315,16 @@ dt_print_breadcrumbs(
                                         <div class="switch">
                                             <input class="switch-input" id="updates_email" type="checkbox"
                                                    name="updates_email"
-                                                   onclick="switch_preference('updates_email');" <?php ( isset( $dt_user_meta['updates_email'] ) && $dt_user_meta['updates_email'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                                   onclick="switch_preference('updates_email');" <?php ( isset( $dt_user_meta['updates_email'] ) && $dt_user_meta['updates_email'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
                                             <label class="switch-paddle" for="updates_email">
-                                                <span class="show-for-sr">Update Needed</span>
+                                                <span class="show-for-sr"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></span>
                                             </label>
                                         </div>
                                     <?php } // end else ?>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="tall-4">Contact Info Changed</td>
+                                <td class="tall-4"><?php esc_html_e( 'Contact Info Changed', 'disciple_tools' )?></td>
                                 <td>
                                     <?php
                                     if ( $dt_site_notification_defaults['changes_web'] ) {
@@ -319,9 +333,9 @@ dt_print_breadcrumbs(
                                         <div class="switch">
                                             <input class="switch-input" id="changes_web" type="checkbox"
                                                    name="changes_web"
-                                                   onclick="switch_preference('changes_web');" <?php ( isset( $dt_user_meta['changes_web'] ) && $dt_user_meta['changes_web'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                                   onclick="switch_preference('changes_web');" <?php ( isset( $dt_user_meta['changes_web'] ) && $dt_user_meta['changes_web'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
                                             <label class="switch-paddle" for="changes_web">
-                                                <span class="show-for-sr">Contact Info Changed</span>
+                                                <span class="show-for-sr"><?php esc_html_e( 'Contact Info Changed', 'disciple_tools' )?></span>
                                             </label>
                                         </div>
                                     <?php } // end else ?>
@@ -334,16 +348,16 @@ dt_print_breadcrumbs(
                                         <div class="switch">
                                             <input class="switch-input" id="changes_email" type="checkbox"
                                                    name="changes_email"
-                                                   onclick="switch_preference('changes_email');" <?php ( isset( $dt_user_meta['changes_email'] ) && $dt_user_meta['changes_email'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                                   onclick="switch_preference('changes_email');" <?php ( isset( $dt_user_meta['changes_email'] ) && $dt_user_meta['changes_email'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
                                             <label class="switch-paddle" for="changes_email">
-                                                <span class="show-for-sr">Contact Info Changed</span>
+                                                <span class="show-for-sr"><?php esc_html_e( 'Contact Info Changed', 'disciple_tools' )?></span>
                                             </label>
                                         </div>
                                     <?php } // end else ?>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="tall-4">Contact Milestones</td>
+                                <td class="tall-4"><?php esc_html_e( 'Contact Milestones', 'disciple_tools' )?></td>
                                 <td>
                                     <?php
                                     if ( $dt_site_notification_defaults['milestones_web'] ) {
@@ -352,9 +366,9 @@ dt_print_breadcrumbs(
                                         <div class="switch">
                                             <input class="switch-input" id="milestones_web" type="checkbox"
                                                    name="milestones_web"
-                                                   onclick="switch_preference('milestones_web');" <?php ( isset( $dt_user_meta['milestones_web'] ) && $dt_user_meta['milestones_web'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                                   onclick="switch_preference('milestones_web');" <?php ( isset( $dt_user_meta['milestones_web'] ) && $dt_user_meta['milestones_web'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
                                             <label class="switch-paddle" for="milestones_web">
-                                                <span class="show-for-sr">Milestones</span>
+                                                <span class="show-for-sr"><?php esc_html_e( 'Milestones', 'disciple_tools' )?></span>
                                             </label>
                                         </div>
                                     <?php } // end else ?>
@@ -367,9 +381,9 @@ dt_print_breadcrumbs(
                                         <div class="switch">
                                             <input class="switch-input" id="milestones_email" type="checkbox"
                                                    name="milestones_email"
-                                                   onclick="switch_preference('milestones_email');" <?php ( isset( $dt_user_meta['milestones_email'] ) && $dt_user_meta['milestones_email'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> >
+                                                   onclick="switch_preference('milestones_email');" <?php ( isset( $dt_user_meta['milestones_email'] ) && $dt_user_meta['milestones_email'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
                                             <label class="switch-paddle" for="milestones_email">
-                                                <span class="show-for-sr">Milestones</span>
+                                                <span class="show-for-sr"><?php esc_html_e( 'Milestones', 'disciple_tools' )?></span>
                                             </label>
                                         </div>
                                     <?php } // end else ?>
@@ -389,21 +403,21 @@ dt_print_breadcrumbs(
                     <div class="bordered-box cell" id="availability" data-magellan-target="availability">
 
                         <!-- section header-->
-                        <span class="section-header">Availability</span>
+                        <span class="section-header"><?php esc_html_e( 'Availability', 'disciple_tools' )?></span>
                         <hr size="1" style="max-width:100%"/>
 
 
                         <!-- Turn on Vacation Reminders -->
                         <p>
-                            <strong>Set Away:</strong>
+                            <strong><?php esc_html_e( 'Set Away', 'disciple_tools' )?>:</strong>
                         </p>
                         <div class="switch large">
                             <input class="switch-input" id="switch0vac" type="checkbox" name="switch0vac"
-                                   onclick="switch_preference('dt_availability');" <?php ( isset( $dt_user_meta['dt_availability'] ) && $dt_user_meta['dt_availability'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
+                                   onclick="switch_preference('dt_availability');" <?php ( isset( $dt_user_meta['dt_availability'] ) && $dt_user_meta['dt_availability'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> />
                             <label class="switch-paddle" for="switch0vac">
-                                <span class="show-for-sr">Enable</span>
-                                <span class="switch-active" aria-hidden="true">On</span>
-                                <span class="switch-inactive" aria-hidden="false">Off</span>
+                                <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
+                                <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'On', 'disciple_tools' )?></span>
+                                <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'Off', 'disciple_tools' )?></span>
                             </label>
                         </div>
 
@@ -507,7 +521,7 @@ dt_print_breadcrumbs(
                             <button class="close-button" data-close aria-label="Close modal" type="button">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            <h2>Edit</h2>
+                            <h2><?php esc_html_e( 'Edit', 'disciple_tools' )?></h2>
 
                             <div class="row column medium-12">
 
@@ -518,22 +532,22 @@ dt_print_breadcrumbs(
                                     <table class="table">
 
                                         <tr>
-                                            <td>User Name</td>
-                                            <td> <?php echo esc_html( $dt_user->user_login ); ?> (can not change)</td>
+                                            <td><?php esc_html_e( 'User Name', 'disciple_tools' )?></td>
+                                            <td> <?php echo esc_html( $dt_user->user_login ); ?> (<?php esc_html_e( 'can not change', "disciple_tools" ) ?>)</td>
                                         </tr>
                                         <tr>
-                                            <td><label for="first_name">First Name</label></td>
+                                            <td><label for="first_name"><?php esc_html_e( 'First Name', 'disciple_tools' )?></label></td>
                                             <td><input type="text" class="profile-input" id="first_name"
                                                        name="first_name"
                                                        value="<?php echo esc_html( $dt_user->first_name ); ?>"/></td>
                                         </tr>
                                         <tr>
-                                            <td><label for="last_name">Last Name</label></td>
+                                            <td><label for="last_name"><?php esc_html_e( 'Last Name', 'disciple_tools' )?></label></td>
                                             <td><input type="text" class="profile-input" id="last_name" name="last_name"
                                                        value="<?php echo esc_html( $dt_user->last_name ); ?>"/></td>
                                         </tr>
                                         <tr>
-                                            <td><label for="nickname">Nickname</label></td>
+                                            <td><label for="nickname"><?php esc_html_e( 'Nickname', 'disciple_tools' )?></label></td>
                                             <td><input type="text" class="profile-input" id="nickname" name="nickname"
                                                        value=" <?php echo esc_html( $dt_user->nickname ); ?>"/></td>
                                         </tr>
@@ -542,13 +556,13 @@ dt_print_breadcrumbs(
                                         foreach ( $dt_user_fields as $field ) {
                                             ?>
                                             <tr>
-                                                <td><label
-                                                        for="<?php echo esc_attr( $field['key'] ) ?>"><?php echo esc_html( $field['label'] ) ?></label>
+                                                <td>
+                                                    <label for="<?php echo esc_attr( $field['key'] ) ?>"><?php echo esc_html( $field['label'] ) ?></label>
                                                 </td>
                                                 <td><input type="text"
                                                            class="profile-input"
-                                                           id="<?php echo esc_attr( $field['key'] ) ?>"
-                                                           name="<?php echo esc_attr( $field['key'] ) ?>"
+                                                           id="<?php echo esc_attr( $field['key'], 'disciple_tools' ) ?>"
+                                                           name="<?php echo esc_attr( $field['key'], 'disciple_tools' ) ?>"
                                                            value="<?php echo esc_html( $field['value'] ) ?>"/>
                                                 </td>
                                             </tr>
@@ -557,20 +571,35 @@ dt_print_breadcrumbs(
                                         ?>
 
                                         <tr>
-                                            <td><label for="description">Description</label></td>
+                                            <td><label for="description"><?php esc_html_e( 'Description', 'disciple_tools' )?></label></td>
                                             <td><textarea type="text" class="profile-input" id="description"
                                                           name="description"
                                                           rows="5"><?php echo esc_html( $dt_user->description ); ?></textarea>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td><label for="description"><?php esc_html_e( 'Language', 'disciple_tools' )?></label></td>
+                                            <td>
+                                                <?php
+                                                wp_dropdown_languages( array(
+                                                    'name'                        => 'locale',
+                                                    'id'                          => 'locale',
+                                                    'selected'                    => esc_html( $dt_user->locale ),
+                                                    'languages'                   => $dt_available_languges,
+                                                    'show_available_translations' => false,
+                                                    'show_option_site_default'    => false
+                                                ) );
+                                                ?>
+                                            </td>
+                                        </tr>
 
                                     </table>
 
-                                    <div class="alert alert-box" style="display:none;" id="alert"><strong>Oh
-                                            snap!</strong>
+                                    <div class="alert alert-box" style="display:none;" id="alert">
+                                        <strong><?php esc_html_e( 'Oh snap!', 'disciple_tools' ) ?></strong>
                                     </div>
 
-                                    <button class="button" type="submit">Save</button>
+                                    <button class="button" type="submit"><?php esc_html_e( 'Save', 'disciple_tools' )?></button>
 
                                 </form>
                             </div>

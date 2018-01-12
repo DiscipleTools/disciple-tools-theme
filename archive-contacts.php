@@ -20,71 +20,71 @@ declare(strict_types=1);
 
             <div class="reveal js-filters-modal" id="filters-modal" data-reveal>
                 <div class="js-filters-modal-content">
-                    <h5><?php esc_html_e( "Views" ); ?></h5>
+                    <h5><?php esc_html_e( 'Views', "disciple_tools" ); ?></h5>
                     <div class="list-views">
                         <label class="list-view">
                             <input type="radio" name="view" value="all_contacts" class="js-list-view">
-                            <?php esc_html_e( "All contacts" ); ?>
+                            <?php esc_html_e( "All contacts", "disciple_tools" ); ?>
                             <span class="list-view__count js-list-view-count" data-value="all_contacts">.</span>
                         </label>
                         <div class="list-views__sub">
                             <label class="list-view">
                                 <input type="radio" name="view" value="my_contacts" class="js-list-view" checked>
-                                <?php esc_html_e( "My contacts" ); ?>
+                                <?php esc_html_e( "My contacts", "disciple_tools" ); ?>
                                 <span class="list-view__count js-list-view-count" data-value="my_contacts">.</span>
                             </label>
                             <div class="list-views__sub">
                                 <label class="list-view">
                                     <input type="radio" name="view" value="my_priorities" class="js-list-view">
-                                    <?php esc_html_e( "My priorities" ); ?>
+                                    <?php esc_html_e( "My priorities", "disciple_tools" ); ?>
                                     <span class="list-view__count js-list-view-count" data-value="my_priorities">.</span>
                                 </label>
                                 <div class="list-views__sub">
                                     <label class="list-view">
                                         <input type="radio" name="view" value="update_needed" class="js-list-view">
-                                        <?php esc_html_e( "Updated needed" ); ?>
+                                        <?php esc_html_e( "Update needed", "disciple_tools" ); ?>
                                         <span class="list-view__count js-list-view-count" data-value="update_needed">.</span>
                                     </label>
                                     <label class="list-view">
                                         <input type="radio" name="view" value="meeting_scheduled" class="js-list-view">
-                                        <?php esc_html_e( "Meeting scheduled" ); ?>
+                                        <?php esc_html_e( "Meeting scheduled", "disciple_tools" ); ?>
                                         <span class="list-view__count js-list-view-count" data-value="meeting_scheduled">.</span>
                                     </label>
                                     <label class="list-view">
                                         <input type="radio" name="view" value="contact_unattempted" class="js-list-view">
-                                        <?php esc_html_e( "Contact unattempted" ); ?>
+                                        <?php esc_html_e( "Contact unattempted", "disciple_tools" ); ?>
                                         <span class="list-view__count js-list-view-count" data-value="contact_unattempted">.</span>
                                     </label>
                                 </div>
                             </div>
                             <label class="list-view">
                                 <input type="radio" name="view" value="contacts_shared_with_me" class="js-list-view">
-                                <?php esc_html_e( "Contacts shared with me" ); ?>
+                                <?php esc_html_e( "Contacts shared with me", "disciple_tools" ); ?>
                                 <span class="list-view__count js-list-view-count" data-value="contacts_shared_with_me">.</span>
                             </label>
                         </div>
                     </div>
 
-                    <h5><?php esc_html_e( "Filters" ); ?></h5>
+                    <h5><?php esc_html_e( "Filters", "disciple_tools" ); ?></h5>
                     <div class="filter js-list-filter" data-filter="assigned_login">
                         <div class="filter__title js-list-filter-title" tabindex="0"><?php esc_html_e( "Assigned to" ); ?></div>
-                        <p><?php esc_html_e( "Loading..." ); ?></p>
+                        <p><?php esc_html_e( "Loading...", "disciple_tools" ); ?></p>
                     </div>
                     <div class="filter filter--closed js-list-filter" data-filter="overall_status">
                         <div class="filter__title js-list-filter-title" tabindex="0"><?php esc_html_e( "Status" ); ?></div>
-                        <p><?php esc_html_e( "Loading..." ); ?></p>
+                        <p><?php esc_html_e( "Loading...", "disciple_tools" ); ?></p>
                     </div>
                     <div class="filter filter--closed js-list-filter" data-filter="locations">
                         <div class="filter__title js-list-filter-title" tabindex="0"><?php esc_html_e( "Locations" ); ?></div>
-                        <p><?php esc_html_e( "Loading..." ); ?></p>
+                        <p><?php esc_html_e( "Loading...", "disciple_tools" ); ?></p>
                     </div>
                     <div class="filter filter--closed js-list-filter" data-filter="seeker_path">
                         <div class="filter__title js-list-filter-title" tabindex="0"><?php esc_html_e( "Seeker path" ); ?></div>
-                        <p><?php esc_html_e( "Loading..." ); ?></p>
+                        <p><?php esc_html_e( "Loading...", "disciple_tools" ); ?></p>
                     </div>
                     <div class="filter filter--closed js-list-filter" data-filter="requires_update">
                         <div class="filter__title js-list-filter-title" tabindex="0"><?php esc_html_e( "Update needed" ); ?></div>
-                        <p><?php esc_html_e( "Loading..." ); ?></p>
+                        <p><?php esc_html_e( "Loading...", "disciple_tools" ); ?></p>
                     </div>
                 </div>
                 <button class="close-button" data-close aria-label="<?php esc_html_e( "Close modal" ); ?>" type="button">
@@ -94,7 +94,7 @@ declare(strict_types=1);
 
             <main id="main" class="large-9 cell padding-bottom" role="main">
 
-                <?php get_template_part( 'parts/content', 'contacts' ); ?>
+                <?php get_template_part( 'dt-assets/parts/content', 'contacts' ); ?>
 
             </main> <!-- end #main -->
 

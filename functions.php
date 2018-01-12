@@ -1,174 +1,219 @@
 <?php
-declare(strict_types=1);
-
+declare( strict_types = 1 );
 /**
- * Disciple Tools Themes Function.php
- * @package Disciple Tools
- */
-
-/**
- * Php Version Alert
- */
-function dt_theme_admin_notice_required_php_version() {
-    ?>
-    <div class="notice notice-error">
-        <p><?php esc_html_e( "The Disciple Tools theme requires PHP 7.0 or greater before it will have any effect. Please upgrade your PHP version or uninstall this theme." ); ?></p>
-    </div>
-    <?php
-}
-
-/**
- * Error handler for PHP version fail
- * @return bool
- */
-function dt_theme_after_switch_theme_switch_back() {
-    switch_theme( get_option( 'theme_switched' ) );
-    return false;
-}
-
-/**
- * Test for minimum required PHP version
- */
-if (version_compare( phpversion(), '7.0', '<' )) {
-
-    /* We only support PHP >= 7.0, however, we want to support allowing users
-     * to install this theme even on old versions of PHP, without showing a
-     * horrible message, but instead a friendly notice.
-     *
-     * For this to work, this file must be compatible with old PHP versions.
-     * Feel free to use PHP 7 features in other files, but not in this one.
-     */
-
-    add_action( 'admin_notices', 'dt_theme_admin_notice_required_php_version' );
-    error_log( 'Disciple Tools theme requires PHP version 7.0 or greater, please upgrade PHP or uninstall this theme' );
-    add_action( 'after_switch_theme', 'dt_theme_after_switch_theme_switch_back' );
-    return;
-}
-
-/**
- * Globals
- */
-
-/* TODO: I don't think this is necessary, and it may break some things. We
- * should investigate and possibly remove it. In the meantime, ignore the PHPCS
- * errors.
- */
-
-// @codingStandardsIgnoreStart
-
-if ( !defined( 'WP_CONTENT_URL' ) ) {
-    define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' );
-}
-
-if ( !defined( 'WP_CONTENT_DIR' ) ) {
-    define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
-}
-
-if ( !defined( 'WP_PLUGIN_URL' ) ) {
-    define( 'WP_PLUGIN_URL', WP_CONTENT_URL. '/plugins' );
-}
-
-if ( !defined( 'WP_PLUGIN_DIR' ) ) {
-    define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
-}
-
-if ( !defined( 'WP_LANG_DIR' ) ) {
-    define( 'WP_LANG_DIR', WP_CONTENT_DIR . '/languages' );
-}
-
-if ( !defined( 'DISCIPLE_TOOLS_DIR' ) ) {
-    define( 'DISCIPLE_TOOLS_DIR', WP_PLUGIN_DIR . '/disciple-tools' );
-}
-
-// @codingStandardsIgnoreEnd
-
-// Removes the admin bar
-add_filter( 'show_admin_bar', '__return_false' );
-
-
-/**
- * Disciple_Tools_Theme Classes
+ * Disciple Tools Functions.php
  *
- * @class Disciple_Tools_Theme
- * @version    0.1
- * @since 0.1
- * @package    Disciple_Tools_Theme
- * @author Chasm.Solutions & Kingdom.Training
+ * @package Disciple Tools
+ * @class Disciple_Tools
  */
-
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
- * Class Disciple_Tools_Theme
+ * @todo remove this protection prior to 0.1.4 release.
+ * Temporary conflict protection for version 0.1.3 release.
+ * This function disables the deprecated Disciple Tools plugin, if still activated
  */
-class Disciple_Tools_Theme {
+include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+if (is_plugin_active( 'disciple-tools/disciple-tools.php' )) {
+    deactivate_plugins( '/disciple-tools/disciple-tools.php', true );
+
+}
+/* End temporary conflict protection */
+
+// If this file is called directly, abort.
+if ( !defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly
+
+require_once( get_template_directory() . '/dt-core/admin/php7-warning.php' ); // Checks for the correct php version and displays warning
+
+/**
+ * Activation, Deactivation, and Multisite
+ */
+register_activation_hook( __FILE__, 'dt_activate' );
+register_deactivation_hook( __FILE__, 'dt_deactivate' );
+
+/**
+ * Adds the Disciple_Tools Class and runs database and roles version checks.
+ */
+function dt_theme_loaded()
+{
+    disciple_tools();
+    /** We want to make sure migrations are run on plugin updates. The only way
+     * to do this is through the "plugins_loaded" hook. See
+     *
+     * @see https://www.sitepoint.com/wordpress-plugin-updates-right-way/
+     */
+    try {
+        require_once( get_template_directory() . '/dt-core/admin/class-migration-engine.php' );
+        Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
+    } catch ( Throwable $e ) {
+        new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
+    }
+
+    /** Similarly, we want to make sure roles are up-to-date. */
+    require_once( get_template_directory() . '/dt-core/admin/class-roles.php' );
+    Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
     /**
-     * Disciple_Tools_Theme The single instance of Disciple_Tools_Theme.
-     * @var     object
-     * @access  private
-     * @since     0.1
+     * Load Language Files
+     */
+    load_theme_textdomain( 'disciple_tools', get_template_directory() .'/dt-assets/translation' );
+}
+add_action( 'after_setup_theme', 'dt_theme_loaded' );
+
+
+/**
+ * Returns the main instance of Disciple_Tools to prevent the need to use globals.
+ *
+ * @since  0.1.0
+ * @return object Disciple_Tools
+ */
+function disciple_tools()
+{
+    return Disciple_Tools::instance();
+}
+
+/**
+ * Main Disciple_Tools Class
+ *
+ * @class   Disciple_Tools
+ * @since   0.1.0
+ * @package Disciple_Tools
+ */
+class Disciple_Tools
+{
+    /**
+     * Declared variables
+     *
+     * @var    string
+     * @access public
+     * @since  0.1.0
+     */
+    public $token;
+    public $version;
+    public $plugin_url;
+    public $plugin_path;
+    public $dt_svg;
+    public $admin;
+    public $settings;
+    public $metrics;
+    public $notifications;
+    public $post_types = [];
+    public $endpoints = [];
+    public $core = [];
+    public $hooks = [];
+    public $logging = [];
+
+    /**
+     * Disciple_Tools The single instance of Disciple_Tools.
+     *
+     * @var    object
+     * @access private
+     * @since  0.1.0
      */
     private static $_instance = null;
 
     /**
-     * Main Disciple_Tools_Theme Instance
+     * Main Disciple_Tools Instance
+     * Ensures only one instance of Disciple_Tools is loaded or can be loaded.
      *
-     * Ensures only one instance of Disciple_Tools_Admin_Menus is loaded or can be loaded.
-     *
-     * @since 0.1
+     * @since  0.1.0
      * @static
-     * @return Disciple_Tools_Theme instance
+     * @see    disciple_tools()
+     * @return Disciple_Tools instance
      */
-    public static function instance() {
+    public static function instance()
+    {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
+
         return self::$_instance;
     } // End instance()
 
     /**
      * Constructor function.
-     * @access  public
-     * @since   0.1
+     *
+     * @access public
+     * @since  0.1.0
      */
-    public function __construct() {
+    public function __construct()
+    {
+        global $wpdb;
 
-        // Foundations theme configurations
-        require_once( get_template_directory().'/assets/functions/theme-support.php' ); // Theme support options
-        require_once( get_template_directory().'/assets/functions/cleanup.php' ); // WP Head and other cleanup functions
-        require_once( get_template_directory().'/assets/functions/enqueue-scripts.php' ); // Register scripts and stylesheets
-        require_once( get_template_directory().'/assets/functions/sidebar.php' ); // Register sidebars/widget areas
-        require_once( get_template_directory().'/assets/functions/comments.php' ); // Makes WordPress comments suck less
-        require_once( get_template_directory().'/assets/functions/page-navi.php' ); // Replace 'older/newer' post links with numbered navigation
-        require_once( get_template_directory().'/assets/translation/translation.php' ); // Adds support for multiple languages
+        /**
+         * Prepare variables
+         */
+        $this->token = 'disciple_tools';
+        $this->version = '0.1.4';
+        $this->migration_number = 2;
+        $this->plugin_url = get_template_directory_uri() . '/';
+        $this->plugin_path = get_template_directory() . '/';
+        $this->plugin_img_url = get_template_directory_uri() . '/dt-core/admin/img/';
+        $this->plugin_img_path = get_template_directory() . '/dt-core/admin/img/';
+        $this->plugin_js_url = get_template_directory_uri() . '/dt-core/admin/js/';
+        $this->plugin_js_path = get_template_directory() . '/dt-core/admin/js/';
+        $this->plugin_css_url = get_template_directory_uri() . '/dt-core/admin/css/';
+        $this->plugin_css_path = get_template_directory() . '/dt-core/admin/css/';
 
-        // Adds Disciple Tools Theme General Functions
-        require_once( get_template_directory().'/assets/functions/private-site.php' ); // Sets site to private
-        require_once( get_template_directory().'/assets/functions/login.php' ); // Customize the WordPress login menu
-        require_once( get_template_directory().'/assets/functions/menu.php' ); // Register menus and menu walkers
-        require_once( get_template_directory().'/assets/functions/breadcrumbs.php' ); // Breadcrumbs bar
+        $wpdb->dt_activity_log = $wpdb->prefix . 'dt_activity_log'; // Prepare database table names
+        $wpdb->dt_reports = $wpdb->prefix . 'dt_reports';
+        $wpdb->dt_reportmeta = $wpdb->prefix . 'dt_reportmeta';
+        $wpdb->dt_share = $wpdb->prefix . 'dt_share';
+        $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
 
-        // Adds Page Specific Scripts
-        require_once( get_template_directory().'/assets/functions/page-front-page.php' );
+        /**
+         * Load first files
+         */
+        require_once( get_template_directory() . '/dt-core/logging/debug-logger.php' ); // enables dt_write_log for debug output.
+        require_once( get_template_directory() . '/dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin. Required before DT instance
+        require_once( get_template_directory() . '/dt-core/admin/config-site-defaults.php' ); // Force required site configurations
+        require_once( get_template_directory() . '/dt-core/wp-async-request.php' ); // Async Task Processing
 
-        // Load plugin library that "requires plugins" at activation
-        require_once( get_template_directory().'/update/config-required-plugins.php' );
-        require_once( get_template_directory().'/update/class-tgm-plugin-activation.php' );
+        /**
+         * Rest API Support
+         */
+        require_once( get_template_directory() . '/dt-core/integrations/class-api-keys.php' ); // API keys for remote access
+        $this->api_keys = Disciple_Tools_Api_Keys::instance();
+        require_once( get_template_directory() . '/dt-core/admin/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
+        require_once( get_template_directory() . '/dt-core/admin/restrict-xml-rpc-pingback.php' ); // protect against DDOS attacks.
 
+        /**
+         * User Groups & Multi Roles
+         */
+        require_once( get_template_directory() . '/dt-core/admin/user-groups/class-user-taxonomy.php' );
+        require_once( get_template_directory() . '/dt-core/admin/user-groups/user-groups-taxonomies.php' );
+        require_once( get_template_directory() . '/dt-core/admin/multi-role/multi-role.php' );
+        $this->multi = Disciple_Tools_Multi_Roles::instance();
 
-        // Catch `metrics` URL and load metrics template.
-        add_action('init', function() {
-            $template_for_url = array(
-                'metrics' => 'template-metrics.php',
-                'settings' => 'template-settings.php',
-                'notifications' => 'template-notifications.php',
-                'about' => 'template-about.php',
-                'team' => 'template-team.php',
-                'contacts/new' => 'template-contacts-new.php',
-                'groups/new' => 'template-groups-new.php',
-            );
-            $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
+        /**
+         * Theme specific files
+         */
+        require_once( get_template_directory() . '/dt-assets/functions/theme-support.php' ); // Theme support options
+        require_once( get_template_directory() . '/dt-assets/functions/cleanup.php' ); // WP Head and other cleanup functions
+        require_once( get_template_directory() . '/dt-assets/functions/enqueue-scripts.php' ); // Register scripts and stylesheets
+        require_once( get_template_directory() . '/dt-assets/functions/sidebar.php' ); // Register sidebars/widget areas
+        require_once( get_template_directory() . '/dt-assets/functions/comments.php' ); // Makes WordPress comments suck less
+        require_once( get_template_directory() . '/dt-assets/functions/page-navi.php' ); // Replace 'older/newer' post links with numbered navigation
+        require_once( get_template_directory() . '/dt-assets/functions/private-site.php' ); // Sets site to private
+        require_once( get_template_directory() . '/dt-assets/functions/login.php' ); // Customize the WordPress login menu
+        require_once( get_template_directory() . '/dt-assets/functions/menu.php' ); // Register menus and menu walkers
+        require_once( get_template_directory() . '/dt-assets/functions/breadcrumbs.php' ); // Breadcrumbs bar
+
+        /**
+         * URL loader
+         */
+        add_action( 'init', function() {
+            $template_for_url = [
+            'metrics'       => 'template-metrics.php',
+            'settings'      => 'template-settings.php',
+            'notifications' => 'template-notifications.php',
+            'about'         => 'template-about.php',
+            'team'          => 'template-team.php',
+            'contacts/new'  => 'template-contacts-new.php',
+            'groups/new'    => 'template-groups-new.php',
+            ];
+            $url_path = trim( parse_url( add_query_arg( [] ), PHP_URL_PATH ), '/' );
 
             if ( isset( $template_for_url[ $url_path ] ) ) {
                 $template_filename = locate_template( $template_for_url[ $url_path ], true );
@@ -178,36 +223,259 @@ class Disciple_Tools_Theme {
                     throw new Error( "Expected to find template " . $template_for_url[ $url_path ] );
                 }
             }
+        } );
 
-        });
-
-        // Checker for new version and updater service.
+        /**
+         * Versioning System
+         */
+        require_once( get_template_directory() . '/dt-core/config-required-plugins.php' );
+        require_once( get_template_directory() . '/dt-core/libraries/class-tgm-plugin-activation.php' );
         if ( ! class_exists( 'Puc_v4_Factory' ) ) {
-            require 'update/plugin-update-checker/plugin-update-checker.php';
+            require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
         }
-        $my_update_checker = Puc_v4_Factory::buildUpdateChecker(
+        Puc_v4_Factory::buildUpdateChecker(
             'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-theme-version-control.json',
             __FILE__,
             'disciple-tools-theme'
         );
 
+        /**
+         * Data model
+         *
+         * @posttype   Contacts       Post type for contact storage
+         * @posttype   Groups         Post type for groups storage
+         * @posttype   Locations      Post type for location information.
+         * @posttype   People Groups  (optional) Post type for people groups
+         * @posttype   Prayer         Post type for prayer movement updates.
+         * @posttype   Project        Post type for movement project updates. (These updates are intended to be for extended owners of the movement project, and different than the prayer guide published in the prayer post type.)
+         * @taxonomies
+         * @service    Post to Post connections
+         * @service    User groups via taxonomies
+         */
+        require_once( get_template_directory() . '/dt-core/class-taxonomy.php' );
 
+        /**
+         * dt-posts
+         */
+        require_once( get_template_directory() . '/dt-core/posts.php' );
+
+        /**
+         * dt-contacts
+         */
+        require_once( get_template_directory() . '/dt-contacts/contacts-post-type.php' );
+        $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
+        require_once( get_template_directory() . '/dt-contacts/contacts-endpoints.php' );
+        $this->endpoints['contacts'] = Disciple_Tools_Contacts_Endpoints::instance();
+        require_once( get_template_directory() . '/dt-contacts/contacts-template.php' ); // Functions to support theme
+
+        /**
+         * dt-groups
+         */
+        require_once( get_template_directory() . '/dt-groups/groups-post-type.php' );
+        $this->post_types['groups'] = Disciple_Tools_Groups_Post_Type::instance();
+        require_once( get_template_directory() . '/dt-groups/groups-template.php' ); // Functions to support theme
+        require_once( get_template_directory() . '/dt-groups/groups.php' );
+        require_once( get_template_directory() . '/dt-groups/groups-endpoints.php' ); // builds rest endpoints
+        $this->endpoints['groups'] = Disciple_Tools_Groups_Endpoints::instance();
+
+        /**
+         * dt-locations
+         */
+        require_once( get_template_directory() . '/dt-locations/locations-post-type.php' );
+        $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
+        require_once( get_template_directory() . '/dt-locations/class-map.php' ); // Helper
+        require_once( get_template_directory() . '/dt-locations/class-census-geolocation-api.php' );// APIs
+        require_once( get_template_directory() . '/dt-locations/class-google-geolocation-api.php' );
+        require_once( get_template_directory() . '/dt-locations/class-coordinates-db.php' );
+
+        require_once( get_template_directory() . '/dt-locations/locations-template.php' );
+        require_once( get_template_directory() . '/dt-locations/locations.php' ); // serves the locations rest endpoints
+        require_once( get_template_directory() . '/dt-locations/locations-endpoints.php' ); // builds rest endpoints
+        $this->endpoints['locations'] = Disciple_Tools_Locations_Endpoints::instance();
+
+        /**
+         * dt-people-groups
+         */
+        require_once( get_template_directory() . '/dt-people-groups/people-groups-post-type.php' );
+        $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
+        require_once( get_template_directory() . '/dt-people-groups/people-groups-template.php' );
+        require_once( get_template_directory() . '/dt-people-groups/people-groups.php' );
+        require_once( get_template_directory() . '/dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
+        $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();
+
+        /**
+         * dt-metrics
+         */
+        require_once( get_template_directory() . '/dt-metrics/class-counter.php' );
+        $this->counter = Disciple_Tools_Counter::instance();
+        require_once( get_template_directory() . '/dt-metrics/class-goals.php' );
+        require_once( get_template_directory() . '/dt-metrics/metrics-template.php' );
+        require_once( get_template_directory() . '/dt-metrics/metrics.php' );
+        $this->metrics = Disciple_Tools_Metrics::instance();
+        require_once( get_template_directory() . '/dt-metrics/metrics-endpoints.php' );
+        $this->endpoints['metrics'] = new Disciple_Tools_Metrics_Endpoints();
+
+        /**
+         * dt-users
+         */
+        require_once( get_template_directory() . '/dt-users/users.php' );
+        $this->core['users'] = new Disciple_Tools_Users();
+        require_once( get_template_directory() . '/dt-users/users-template.php' );
+        require_once( get_template_directory() . '/dt-users/users-endpoints.php' );
+        $this->endpoints['users'] = new Disciple_Tools_Users_Endpoints();
+
+        /**
+         * dt-notifications
+         */
+        require_once( get_template_directory() . '/dt-notifications/notifications-hooks.php' );
+        $this->hooks['notifications'] = Disciple_Tools_Notification_Hooks::instance();
+        require_once( get_template_directory() . '/dt-notifications/notifications-template.php' );
+        require_once( get_template_directory() . '/dt-notifications/notifications.php' );
+        $this->core['notifications'] = Disciple_Tools_Notifications::instance();
+        require_once( get_template_directory() . '/dt-notifications/notifications-endpoints.php' );
+        $this->endpoints['notifications'] = Disciple_Tools_Notifications_Endpoints::instance();
+        require_once( get_template_directory() . '/dt-notifications/notifications-email.php' ); // sends notification emails through the async task process
+
+        /**
+         * Post-to-Post configuration
+         */
+        require_once( get_template_directory() . '/dt-core/config-p2p.php' ); // Creates the post to post relationship between the post type tables.
+
+        // Custom Metaboxes
+        require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-address.php' ); // todo remove theme dependency on this box. used by both theme and wp-admin
+
+        /**
+         * Logging
+         */
+        require_once( get_template_directory() . '/dt-core/logging/class-activity-api.php' );
+        $this->logging_activity_api = new Disciple_Tools_Activity_Log_API();
+        require_once( get_template_directory() . '/dt-core/logging/class-activity-hooks.php' ); // contacts and groups report building
+        $this->logging_activity_hooks = Disciple_Tools_Activity_Hooks::instance();
+        require_once( get_template_directory() . '/dt-core/logging/class-reports-api.php' );
+        $this->logging_reports_api = new Disciple_Tools_Reports_API();
+        require_once( get_template_directory() . '/dt-core/logging/class-reports-cron.php' ); // Cron scheduling for nightly builds of reports
+        $this->logging_reports_cron = Disciple_Tools_Reports_Cron::instance();
+        require_once( get_template_directory() . '/dt-core/logging/class-reports-dt.php' ); // contacts and groups report building
+
+        /**
+         * Integrations
+         */
+        require_once( get_template_directory() . '/dt-core/integrations/class-integrations.php' ); // data integration for cron scheduling
+
+        /**
+         * Workflows
+         */
+        require_once( get_template_directory() . '/dt-workflows/index.php' );
+        $this->workflows = Disciple_Tools_Workflows::instance();
+
+
+        /**
+         * Admin panel
+         * Contains all those features that only run if in the Admin panel
+         * or those things directly supporting Admin panel features.
+         */
+        if ( is_admin() ) {
+
+            // Administration
+            require_once( get_template_directory() . '/dt-core/admin/admin-enqueue-scripts.php' ); // Load admin scripts
+            require_once( get_template_directory() . '/dt-core/admin/admin-theme-design.php' ); // Configures elements of the admin enviornment
+            require_once( get_template_directory() . '/dt-core/admin/config-dashboard.php' );
+            $this->config_dashboard = Disciple_Tools_Dashboard::instance();
+
+            // Settings Menu
+            require_once( get_template_directory() . '/dt-core/admin/menu/main.php' );
+            $this->config_menu = Disciple_Tools_Config::instance();
+
+            // Contacts
+            require_once( get_template_directory() . '/dt-contacts/contacts-config.php' );
+            $this->config_contacts = Disciple_Tools_Config_Contacts::instance();
+            require_once( get_template_directory() . '/dt-groups/groups-config.php' );
+            $this->config_groups = Disciple_Tools_Groups_Config::instance();
+
+            // Locations
+            require_once( get_template_directory() . '/dt-locations/admin-menu.php' );
+            $this->location_tools = Disciple_Tools_Location_Tools_Menu::instance();
+            require_once( get_template_directory() . '/dt-locations/class-import.php' ); // import class
+
+            // People Groups
+            require_once( get_template_directory() . '/dt-people-groups/admin-menu.php' );
+            $this->people_groups_admin = Disciple_Tools_People_Groups_Admin_Menu::instance();
+
+            // Tables
+            require_once( get_template_directory() . '/dt-core/admin/menu/tables/notifications-table.php' );
+            require_once( get_template_directory() . '/dt-core/admin/menu/tables/activity-list-table.php' ); // contacts and groups report building
+            require_once( get_template_directory() . '/dt-core/admin/menu/tables/reports-list-table.php' ); // contacts and groups report building
+
+            // Metaboxes
+            require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-activity.php' );
+            require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-share-contact.php' );
+        }
+        /* End Admin configuration section */
     } // End __construct()
 
+    /**
+     * Log the plugin version number.
+     *
+     * @access private
+     * @since  0.1.0
+     */
+    public function _log_version_number()
+    {
+        // Log the version number.
+        update_option( $this->token . '-version', $this->version );
+    } // End _log_version_number()
+
+    /**
+     * Cloning is forbidden.
+     *
+     * @access public
+     * @since  0.1.0
+     */
+    public function __clone()
+    {
+        wp_die( esc_html__( "Cheatin' huh?" ), __FUNCTION__ );
+    } // End __clone()
+
+    /**
+     * Unserializing instances of this class is forbidden.
+     *
+     * @access public
+     * @since  0.1.0
+     */
+    public function __wakeup()
+    {
+        wp_die( esc_html__( "Cheatin' huh?" ), __FUNCTION__ );
+    } // End __wakeup()
+
+} // End Class
+
+
+/**
+ * Deactivation Hook
+ */
+function dt_deactivate()
+{
+    require_once get_template_directory() . '/dt-core/admin/class-deactivator.php';
+    Disciple_Tools_Deactivator::deactivate();
 }
 
 /**
- * Gets the instance of the `dt_sample_data` class.  This function is useful for quickly grabbing data
- * used throughout the plugin.
- *
- * @since  0.1
- * @access public
- * @return object
-    */
-function dt_theme() {
-    return Disciple_Tools_Theme::instance();
+ * Activation Hook
+ */
+function dt_activate()
+{
+    require_once get_template_directory() . '/dt-core/admin/class-activator.php';
+    Disciple_Tools_Activator::activate();
 }
 
-// Let's roll!
-//add_action( 'after_setup_theme', 'dt_theme' );
-dt_theme();
+/**
+ * Route Front Page depending on login role
+ */
+function dt_route_front_page()
+{
+    if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
+        wp_safe_redirect( home_url( '/contacts' ) );
+    } else {
+        wp_safe_redirect( home_url( '/settings' ) );
+    }
+}
