@@ -53,8 +53,14 @@ function dt_theme_loaded()
     /** Similarly, we want to make sure roles are up-to-date. */
     require_once( get_template_directory() . '/dt-core/admin/class-roles.php' );
     Disciple_Tools_Roles::instance()->set_roles_if_needed();
+
+    /**
+     * Load Language Files
+     */
+    load_theme_textdomain( 'disciple_tools', get_template_directory() .'/dt-assets/translation' );
 }
 add_action( 'after_setup_theme', 'dt_theme_loaded' );
+
 
 /**
  * Returns the main instance of Disciple_Tools to prevent the need to use globals.
@@ -362,10 +368,6 @@ class Disciple_Tools
         require_once( get_template_directory() . '/dt-workflows/index.php' );
         $this->workflows = Disciple_Tools_Workflows::instance();
 
-        /**
-         * Load Language Files
-         */
-        add_action( 'init', [ $this, 'load_textdomain' ] );
 
         /**
          * Admin panel
@@ -410,17 +412,6 @@ class Disciple_Tools
         }
         /* End Admin configuration section */
     } // End __construct()
-
-    /**
-     * Load the localisation file.
-     *
-     * @access public
-     * @since  0.1.0
-     */
-    public function load_textdomain()
-    {
-        load_theme_textdomain( 'disciple_tools', get_template_directory() .'/dt-assets/translation' );
-    } // End load_plugin_textdomain()
 
     /**
      * Log the plugin version number.

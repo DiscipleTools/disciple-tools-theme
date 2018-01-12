@@ -156,6 +156,11 @@ class Disciple_Tools_Users
         if ( isset( $_POST['nickname'] ) ) {
             $args['nickname'] = sanitize_text_field( wp_unslash( $_POST['nickname'] ) );
         }
+        if ( isset( $_POST['locale'] ) ) {
+            $args['locale'] = sanitize_text_field( wp_unslash( $_POST['locale'] ) );
+        } else {
+            $args['locale'] = "en_US";
+        }
 
         // _user table defaults
         $result = wp_update_user( $args );
@@ -182,7 +187,7 @@ class Disciple_Tools_Users
             }
         }
 
-        return true;
+        return wp_redirect( "/settings" );
     }
 
     /**

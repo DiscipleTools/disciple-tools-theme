@@ -16,7 +16,7 @@ $dt_user_meta = get_user_meta( get_current_user_id() ); // Full array of user me
 
 $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the site settings in the config area with the fields available in the user meta table.
 $dt_site_notification_defaults = dt_get_site_notification_defaults(); // Array of site default settings
-
+$dt_available_languges = get_available_languages( get_template_directory() .'/dt-assets/translation' )
 ?>
 
 <?php get_header(); ?>
@@ -157,6 +157,15 @@ dt_print_breadcrumbs(
                                     }
                                     ?>
                                 </ul>
+                                <strong><?php esc_html_e( 'Language', 'disciple_tools' )?></strong>
+                                <br>
+                                <?php
+                                if ( !empty( $dt_user->locale ) ){
+                                    echo esc_html( $dt_user->locale );
+                                } else {
+                                    echo esc_html__( 'English', 'disciple_tools' );
+                                }
+                                ?>
 
 
                             </div>
@@ -566,6 +575,21 @@ dt_print_breadcrumbs(
                                             <td><textarea type="text" class="profile-input" id="description"
                                                           name="description"
                                                           rows="5"><?php echo esc_html( $dt_user->description ); ?></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="description"><?php esc_html_e( 'Language', 'disciple_tools' )?></label></td>
+                                            <td>
+                                                <?php
+                                                wp_dropdown_languages( array(
+                                                    'name'                        => 'locale',
+                                                    'id'                          => 'locale',
+                                                    'selected'                    => esc_html( $dt_user->locale ),
+                                                    'languages'                   => $dt_available_languges,
+                                                    'show_available_translations' => false,
+                                                    'show_option_site_default'    => false
+                                                ) );
+                                                ?>
                                             </td>
                                         </tr>
 

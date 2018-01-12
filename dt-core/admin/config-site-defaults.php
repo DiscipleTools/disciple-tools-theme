@@ -22,6 +22,8 @@ add_filter( 'duplicate_comment_id', '__return_false' );
 add_filter( 'comment_flood_filter', '__return_false' );
 add_filter( 'pre_comment_approved' , 'dt_filter_handler' , '99', 2 );
 add_filter( 'comment_notification_recipients', 'dt_override_comment_notice_recipients' , 10, 2 );
+add_filter( 'locale', 'dt_localized' );
+add_filter( 'language_attributes','dt_custom_dir_attr' );
 
 /*********************************************************************************************
  * Functions
@@ -438,5 +440,30 @@ function dt_filter_handler( $approved, $commentdata ){
     // inspect $commentdata to determine approval, disapproval, or spam status
     //approve all comments.
     return 1;
+}
+
+/**
+ * Set the locale for the user
+ * @return string
+ */
+function dt_localized()
+{
+    $current_user = wp_get_current_user();
+    $user_language = $current_user->locale;
+    return $user_language;
+}
+function dt_custom_dir_attr( $lang ){
+    if (is_admin()) {
+        return $lang;
+    }
+
+    $current_user = wp_get_current_user();
+    $user_language = $current_user->locale;
+    $dir = _x( 'text direction', 'either rtl or ltr',  'disciple_tools' );
+    if ( $dir === 'text direction' || !$dir || empty( $dir ) ){
+        $dir = "ltr";
+    }
+    $dir_attr = 'dir="' . $dir . '"';
+    return 'lang="' . $user_language .'" ' .$dir_attr;
 }
 
