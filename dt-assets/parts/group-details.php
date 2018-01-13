@@ -86,17 +86,12 @@ function dt_contact_details_edit( $id, $remove = false ){
         <div class="medium-4 cell">
 
             <div class="section-subheader"><?php esc_html_e( 'Locations', 'disciple_tools' )?></div>
-            <ul class="locations-list">
+            <ul class="locations-list details-list">
                 <?php
                 foreach ($group["locations"] ?? [] as $value){
                     ?>
                     <li class="<?php echo intval( $value->ID ); ?>">
                         <a href="<?php echo esc_url( $value->permalink ); ?>"><?php echo esc_html( $value->post_title ); ?></a>
-                        <button class="details-remove-button details-edit"
-                                data-field="locations" data-id="<?php echo esc_attr( $value->ID, 'disciple_tools' ); ?>"
-                                data-name="<?php echo esc_attr( $value->post_title, 'disciple_tools' ); ?>">
-                            <?php esc_html_e( 'Remove', 'disciple_tools' )?>
-                        </button>
                     </li>
                     <?php
                 }
@@ -105,22 +100,28 @@ function dt_contact_details_edit( $id, $remove = false ){
                 }
                 ?>
             </ul>
-            <div class="locations details-edit">
-                <input class="typeahead" type="text" placeholder="Type to search locations">
+            <div class="locations">
+                <var id="locations-result-container" class="result-container"></var>
+                <div id="locations_t" name="form-locations" class="scrollable-typeahead">
+                    <div class="typeahead__container">
+                        <div class="typeahead__field">
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-locations"
+                                       name="locations[query]" placeholder="Search Locations"
+                                       autocomplete="off">
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="section-subheader"><?php esc_html_e( 'People Groups', 'disciple_tools' )?></div>
-            <ul class="people_groups-list">
+            <ul class="people_groups-list details-list">
                 <?php
                 foreach ($group["people_groups"] ?? [] as $value){
                     ?>
                     <li class="<?php echo esc_html( $value->ID )?>">
                         <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
-                        <button class="details-remove-button connection details-edit"
-                                data-field="people_groups" data-id="<?php echo esc_html( $value->ID ) ?>"
-                                data-name="<?php echo esc_html( $value->post_title ) ?>">
-                            <?php esc_html_e( 'Remove', 'disciple_tools' )?>
-                        </button>
                     </li>
                 <?php }
                 if (sizeof( $group["people_groups"] ) === 0){
@@ -128,29 +129,58 @@ function dt_contact_details_edit( $id, $remove = false ){
                 }
                 ?>
             </ul>
-            <div class="people-groups details-edit">
-                <input class="typeahead" type="text" placeholder="Type to search people groups">
+            <div class="people_groups">
+                <var id="people_groups-result-container" class="result-container"></var>
+                <div id="people_groups_t" name="form-people_groups" class="scrollable-typeahead">
+                    <div class="typeahead__container">
+                        <div class="typeahead__field">
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-people_groups"
+                                       name="people_groups[query]" placeholder="Search People_groups"
+                                       autocomplete="off">
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
 
         <div class="medium-4 cell">
             <div class="section-subheader"><?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
-                <span class="assigned_to details-edit">:
-                </span> <span class="assigned_to details-edit current-assigned">:</span> </div>
+                <span class="assigned_to details-edit">:</span>
+                <span class="assigned_to details-edit current-assigned"></span>
+            </div>
             <ul class="details-list assigned_to">
                 <li class="current-assigned">
                     <?php
-                    if ( isset( $group["assigned_to"] ) ){
+                    if ( isset( $groups["assigned_to"] ) ){
                         echo esc_html( $group["assigned_to"]["display"] );
                     } else {
-                        esc_html_e( "None Assigned", 'disciple_tools' );
+                        esc_html_e( 'None Assigned', 'disciple_tools' );
                     }
                     ?>
                 </li>
             </ul>
-            <div class="assigned_to details-edit">
-                <input class="typeahead" type="text" placeholder="Type to search users">
+
+            <div class="assigned_to details">
+                <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
+                <div id="assigned_to_t" name="form-assigned_to">
+                    <div class="typeahead__container">
+                        <div class="typeahead__field">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-assigned_to input-height"
+                                                   name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
+                                                   autocomplete="off">
+                                        </span>
+                            <span class="typeahead__button">
+                                            <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                            </button>
+                                        </span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="section-subheader"><?php esc_html_e( 'Address', 'disciple_tools' )?>

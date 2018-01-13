@@ -72,7 +72,8 @@ function dt_site_scripts() {
 
     dt_theme_enqueue_script( 'lodash', 'dt-core/dependencies/lodash/lodash.min.js', array() );
 
-    dt_theme_enqueue_script( 'typeahead', 'dt-core/dependencies/typeahead/typeahead.bundle.min.js', array( 'jquery' ), true );
+    dt_theme_enqueue_script( 'typeahead-jquery', 'dependencies/jquery-typeahead-2.10.4/jquery.typeahead.min.js', array( 'jquery' ), true );
+    dt_theme_enqueue_style( 'typeahead-jquery-css', 'dependencies/jquery-typeahead-2.10.4/jquery.typeahead.min.css', array() );
 
     dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts.min.js', array( 'jquery' ), true );
 
@@ -138,7 +139,7 @@ function dt_site_scripts() {
         'email' => __( 'email' )
     ];
     if (is_singular( "contacts" )){
-        dt_theme_enqueue_script( 'contact-details', 'dt-assets/js/contact-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
+        dt_theme_enqueue_script( 'contact-details', 'dt-assets/js/contact-details.js', array( 'jquery', 'lodash', 'api-wrapper', 'moment', 'typeahead-jquery' ) );
         $contact = Disciple_Tools_Contacts::get_contact( get_the_ID() );
         wp_localize_script(
             'contact-details', 'contactsDetailsWpApiSettings', array(
@@ -155,7 +156,7 @@ function dt_site_scripts() {
         );
     }
     if (is_singular( "groups" )){
-        dt_theme_enqueue_script( 'group-details', 'dt-assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead', 'api-wrapper', 'moment' ) );
+        dt_theme_enqueue_script( 'group-details', 'dt-assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead-jquery', 'api-wrapper', 'moment' ) );
         $group = Disciple_Tools_Groups::get_group( get_the_ID() );
         $group_post = get_post( $group["ID"] );
         wp_localize_script(

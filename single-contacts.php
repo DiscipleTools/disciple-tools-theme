@@ -49,34 +49,27 @@ declare( strict_types=1 );
                 <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
 
                 <section id="relationships" class="xlarge-6 large-12 medium-6 cell">
-                    <div class="bordered-box last-typeahead-in-section">
-                        <button class=" float-right" onclick="edit_connections()"><i class="fi-pencil"></i>
-                            <?php esc_html_e( "Edit", 'disciple_tools' ) ?>
-                        </button>
-                        <h3 class="section-header"><?php esc_html_e( 'Connections', 'disciple_tools' )?></h3>
-                        <div class="section-subheader"><?php esc_html_e( 'Groups', 'disciple_tools' )?></div>
-                        <ul class="groups-list">
-                            <?php
-                            $ids = [];
-                            foreach ( $contact->fields["groups"] as $value ) {
-                                $ids[] = $value->ID;
-                                ?>
-                                <li class="<?php echo esc_html( $value->ID ) ?>">
-                                    <a href="<?php echo esc_html( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
-                                    <button class="details-remove-button connections-edit"
-                                            onclick="remove_item( <?php echo esc_html( get_the_ID() ) ?>,  'groups', <?php echo esc_html( $value->ID ) ?> )">
-                                        <?php esc_html_e( 'Remove', 'disciple_tools' )?>
-                                    </button>
-                                </li>
-                            <?php } ?>
-                        </ul>
-                        <div class="connections-edit">
-                            <label for="groups"><?php esc_html_e( 'Add Group', 'disciple_tools' )?>:</label>
-                            <div id="groups">
-                                <input class="typeahead" type="text" placeholder="Type to search groups">
+<!--                    <div class="bordered-box last-typeahead-in-section">-->
+                    <div class="bordered-box">
+                        <h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?></h3>
+                        <div class="section-subheader"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></div>
+                        <var id="groups-result-container" class="result-container"></var>
+                        <div id="groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
+                            <div class="typeahead__container">
+                                <div class="typeahead__field">
+                                    <span class="typeahead__query">
+                                        <input class="js-typeahead-groups input-height"
+                                               name="groups[query]" placeholder="<?php esc_html_e( "Search Groups", 'disciple_tools' ) ?>"
+                                               autocomplete="off">
+                                    </span>
+<!--                                    <span class="typeahead__button">-->
+<!--                                        <button type="button" class="create-new-group typeahead__image_button input-height">-->
+<!--                                            <img src="--><?php //echo esc_html( get_template_directory_uri() . '/assets/images/add-group.svg' ) ?><!--"/>-->
+<!--                                        </button>-->
+<!--                                    </span>-->
+                                </div>
                             </div>
                         </div>
-
 
                         <?php
                         $connections = [
@@ -87,29 +80,22 @@ declare( strict_types=1 );
                         ];
                         foreach ( $connections as $connection => $connection_label ) {
                             ?>
-
-
                             <div class="section-subheader"><?php echo esc_html( $connection_label ) ?></div>
-                            <ul class="<?php echo esc_html( $connection ) ?>-list">
-                                <?php
-                                $ids = [];
-                                foreach ( $contact->fields[ $connection ] as $value ) {
-                                    $ids[] = $value->ID;
-                                    ?>
-                                    <li class="<?php echo esc_html( $value->ID ) ?>">
-                                        <a href="<?php echo esc_html( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
-                                        <button class="details-remove-button connections-edit"
-                                                onclick="remove_item(<?php echo esc_html( get_the_ID() ) ?>,  '<?php echo esc_html( $connection ) ?>', <?php echo esc_html( $value->ID ) ?>)">
-                                            <?php esc_html_e( 'Remove', 'disciple_tools' )?>
-                                        </button>
-                                    </li>
-                                <?php } ?>
-                            </ul>
-                            <div class="connections-edit">
-                                <label for="<?php echo esc_html( $connection ) ?>"><?php esc_html_e( "Add", 'disciple_tools' ) ?> <?php echo esc_html( $connection_label ) ?>:</label>
-                                <div id="<?php echo esc_html( $connection ) ?>" class="scrollable-dropdown-menu">
-                                    <input class="typeahead" type="text"
-                                           placeholder="Type to search contacts">
+                            <var id="<?php echo esc_html( $connection ) ?>-result-container" class="result-container"></var>
+                            <div id="<?php echo esc_html( $connection ) ?>_t" name="form-<?php echo esc_html( $connection ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-<?php echo esc_html( $connection ) ?>"
+                                                   name="<?php echo esc_html( $connection ) ?>[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
+                                                   autocomplete="off">
+                                        </span>
+<!--                                        <span class="typeahead__button">-->
+<!--                                            <button>-->
+<!--                                                <i class="typeahead__search-icon"></i>-->
+<!--                                            </button>-->
+<!--                                        </span>-->
+                                    </div>
                                 </div>
                             </div>
                             <?php
@@ -133,7 +119,7 @@ declare( strict_types=1 );
                             <?php } else { ?>
                                 <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
                             <?php }
-                        };
+                        }
                         $keys = array_keys( $contact_fields["seeker_path"]["default"] );
                         $path_index = array_search( $contact->fields["seeker_path"]["key"], $keys ) ?? 0;
                         $percentage = $path_index / (sizeof( $keys ) -1) *100

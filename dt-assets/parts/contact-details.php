@@ -88,7 +88,7 @@
             <p class="section-header"><?php esc_html_e( 'Dispatch Section', 'disciple_tools' )?></p>
             <div class="grid-x grid-margin-x">
                 <div class="medium-6 cell">
-                    <div class="section-subheader"><?php esc_html_e( 'Assigned To', 'disciple_tools' )?>:
+                    <div class="section-subheader"><?php esc_html_e( 'Assigned to', 'disciple_tools' )?>:
                         <span class="current-assigned">
                             <?php
                             if ( isset( $contact->fields["assigned_to"] ) ){
@@ -100,7 +100,25 @@
                         </span>
                     </div>
                     <div class="assigned_to">
-                        <input class="typeahead" type="text" placeholder="Type to search users">
+                        <div class="assigned_to">
+                            <var id="assigned_to-result-container2" class="assigned_to-result-container result-container"></var>
+                            <div id="assigned_to_t2" name="form-assigned_to" class="">
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-assigned_to input-height"
+                                                   name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
+                                                   autocomplete="off">
+                                        </span>
+                                        <span class="typeahead__button">
+                                            <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t2">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="medium-6 cell">
@@ -373,17 +391,12 @@
                     <!-- Assigned To -->
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
                         <div class="section-subheader"><?php esc_html_e( "Locations", 'disciple_tools' ) ?></div>
-                        <ul class="locations-list">
+                        <ul class="locations-list details-list">
                             <?php
                             foreach ($contact->fields["locations"] ?? [] as $value){
                                 ?>
                                 <li class="<?php echo esc_html( $value->ID )?>">
                                     <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
-                                    <button class="details-remove-button connection details-edit"
-                                            data-field="locations" data-id="<?php echo esc_html( $value->ID ) ?>"
-                                            data-name="<?php echo esc_html( $value->post_title ) ?>">
-                                        <?php esc_html_e( "Remove", 'disciple_tools' ) ?>
-                                    </button>
                                 </li>
                             <?php }
                             if (sizeof( $contact->fields["locations"] ) === 0){
@@ -391,13 +404,25 @@
                             }
                             ?>
                         </ul>
-                        <div class="locations details-edit">
-                            <input class="typeahead" type="text" placeholder="Type to search locations">
+                        <div class="locations">
+                            <var id="locations-result-container" class="result-container"></var>
+                            <div id="locations_t" name="form-locations" class="scrollable-typeahead">
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-locations"
+                                                   name="locations[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                                   autocomplete="off">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="section-subheader"><?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
-                            <span class="assigned_to details-edit">:
-                        </span> <span class="assigned_to details-edit current-assigned">:</span> </div>
+                            <span class="assigned_to details-edit">:</span>
+                            <span class="assigned_to details-edit current-assigned"></span>
+                        </div>
                         <ul class="details-list assigned_to">
                             <li class="current-assigned">
                                 <?php
@@ -409,9 +434,27 @@
                                 ?>
                             </li>
                         </ul>
-                        <div class="assigned_to details-edit">
-                            <input class="typeahead" type="text" placeholder="<?php esc_html_e( "Type to search users", 'disciple_tools' ) ?>">
+
+                        <div class="assigned_to details">
+                            <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
+                            <div id="assigned_to_t" name="form-assigned_to">
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-assigned_to input-height"
+                                                   name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
+                                                   autocomplete="off">
+                                        </span>
+                                        <span class="typeahead__button">
+                                            <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                     <!-- Social Media -->
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
@@ -480,7 +523,9 @@
 
                         </ul>
                         <div class="details-edit">
-                            <label for="social-channels"><?php esc_html_e( 'Add another contact method', 'disciple_tools' )?></label>
+                            <label for="social-channels">
+                                <?php esc_html_e( 'Add another contact method', 'disciple_tools' )?>
+                            </label>
                             <select id="social-channels">
                                 <?php
                                 foreach ($channel_list as $key => $channel){
@@ -491,7 +536,8 @@
                                 ?>
                             </select>
                             <div class="new-social-media">
-                                <input type="text" id="new-social-media" placeholder="facebook.com/user1">
+                                <input type="text" id="new-social-media"
+                                       placeholder="facebook.com/user1">
                                 <button id="add-social-media" class="button small loader">
                                     <?php esc_html_e( 'Add', 'disciple_tools' ) ?>
                                 </button>
@@ -501,17 +547,12 @@
 
 
                         <div class="section-subheader"><?php esc_html_e( 'People Groups', 'disciple_tools' )?></div>
-                        <ul class="people_groups-list">
+                        <ul class="people_groups-list details-list">
                             <?php
                             foreach ($contact->fields["people_groups"] ?? [] as $value){
                                 ?>
                                 <li class="<?php echo esc_html( $value->ID )?>">
                                     <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
-                                    <button class="details-remove-button connection details-edit"
-                                            data-field="people_groups" data-id="<?php echo esc_html( $value->ID ) ?>"
-                                            data-name="<?php echo esc_html( $value->post_title ) ?>">
-                                        Remove
-                                    </button>
                                 </li>
                             <?php }
                             if (sizeof( $contact->fields["people_groups"] ) === 0){
@@ -519,8 +560,19 @@
                             }
                             ?>
                         </ul>
-                        <div class="people-groups details-edit">
-                            <input class="typeahead" type="text" placeholder="Type to search people groups">
+                        <div class="people_groups">
+                            <var id="people_groups-result-container" class="result-container"></var>
+                            <div id="people_groups_t" name="form-people_groups" class="scrollable-typeahead">
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-people_groups"
+                                                   name="people_groups[query]" placeholder="<?php esc_html_e( "Search People_groups", 'disciple_tools' ) ?>"
+                                                   autocomplete="off">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

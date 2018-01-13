@@ -73,6 +73,6 @@ class Disciple_Tools_People_Groups
             $list[] = [ "ID" => $post->ID, "name" => $post->post_title ];
         }
 
-        return $list;
+        return [ "total" => $query->found_posts, "posts" => $list ];
     }
 }

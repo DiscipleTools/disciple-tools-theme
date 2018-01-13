@@ -420,6 +420,7 @@ class Disciple_Tools_Posts
         $query_args = [
             'post_type' => $post_type,
             's'         => $search_string,
+            'posts_per_page' => 30,
         ];
         $shared_with_user = [];
         if ( !self::can_view_all( $post_type ) ) {
@@ -447,7 +448,7 @@ class Disciple_Tools_Posts
             }
         }
 
-        return $compact;
+        return [ "total" => $posts->found_posts, "posts" => $compact ];
     }
 
     /**

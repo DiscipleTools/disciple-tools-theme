@@ -8,29 +8,51 @@ jQuery(document).ready(function($) {
   });
 
   let group = wpApiGroupsSettings.group
+  let typeaheadTotals = {}
+
 
 
   /**
    * Typeahead functions
    */
 
-  function add_typeahead_item(groupId, fieldId, val, name) {
-    let list = $(`.${fieldId}-list`)
-    list.append(`<li class="temp-${fieldId}-${val}">Adding new Item</li>`)
-    API.add_item_to_field( 'group', groupId, { [fieldId]: val }).then(function (addedItem){
-      list.append(`<li class="${addedItem.ID}">
-      <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
-      <button class="details-remove-button details-edit"
-              data-field="locations" data-id="${val}"
-              data-name="${name}"
-              style="display: inline-block">Remove</button>
-      </li>`)
-      $(`.temp-${fieldId}-${val}`).remove()
-    }).catch(err=>{
-      $(`.temp-${fieldId}-${val}`).text(`Could not add: ${name}`)
-    })
+  let typeaheadSource = function (field, url) {
+    return {
+      contacts: {
+        display: "name",
+        ajax: {
+          url: wpApiGroupsSettings.root + url,
+          data: {
+            s: "{{query}}"
+          },
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+          },
+          callback: {
+            done: function (data) {
+              console.log(data)
+              typeaheadTotals[field] = data.total
+              return data.posts
+            }
+          }
+        }
+      }
+    }
   }
 
+  let typeaheadHelpText = (resultCount, query, result) =>{
+    var text = "";
+    if (result.length > 0 && result.length < resultCount) {
+      text = "Showing <strong>" + result.length + "</strong> of <strong>" + resultCount + '</strong> ' + (query ? 'elements matching "' + query + '"' : '');
+    } else if (result.length > 0 && query) {
+      text = 'Showing <strong>' + result.length + '</strong> items matching "' + query + '"';
+    } else if (result.length > 0) {
+      text = 'Showing <strong>' + result.length + '</strong> items';
+    } else {
+      text = 'No results matching "' + query + '"';
+    }
+    return text
+  }
 
   let groupId = $('#group-id').text()
   let editingAll = false
@@ -131,175 +153,175 @@ jQuery(document).ready(function($) {
   })
 
   /**
-   * Assigned To
+   * Assigned_to
    */
-  $('.assigned_to.details-list').on('click', e=>{
-    toggleEdit('assigned_to')
-    assigned_to_typeahead.focus()
-  })
-  let users = new Bloodhound({
-    datumTokenizer: API.searchAnyPieceOfWord,
-    queryTokenizer: Bloodhound.tokenizers.ngram,
-    identify: function (obj) {
-      return obj.ID
-    },
-    prefetch: {
-      url: wpApiGroupsSettings.root + 'dt/v1/users/get_users/',
-      prepare : API.typeaheadPrefetchPrepare,
-      transform: function (data) {
-        return API.filterTypeahead(data, group.assigned_to ? [{ID:group.assigned_to.ID}] : [])
+  typeaheadTotals.assigned_to = 0;
+  $.typeahead({
+    input: '.js-typeahead-assigned_to',
+    minLength: 0,
+    searchOnFocus: true,
+    // maxItem: 20,
+    // template: function (query, item) {
+    //   return `<span>${_.escape(item.name)}</span>`
+    // },
+    source: typeaheadSource('assigned_to', 'dt/v1/users/get_users'),
+    display: "name",
+    templateValue: "{{name}}",
+    dynamic: true,
+    hint: true,
+    emptyTemplate: 'No users found "{{query}}"',
+    callback: {
+      onClick: function(node, a, item, event){
+        API.save_field_api('group', groupId, {assigned_to: 'user-' + item.ID}).then(function (response) {
+          _.set(group, "assigned_to", response.assigned_to)
+          $('.current-assigned').text(group.assigned_to.display)
+          setStatus(response)
+          console.log(response)
+          $('.js-typeahead-assigned_to').val(group.assigned_to.display)
+          $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
+        })
       },
-      cache:false
-    },
-    remote: {
-      url: wpApiGroupsSettings.root + 'dt/v1/users/get_users/?s=%QUERY',
-      wildcard: '%QUERY',
-      prepare : API.typeaheadRemotePrepare,
-      transform: function (data) {
-        return API.filterTypeahead(data, group.assigned_to ? [{ID:group.assigned_to.ID}] : [])
+      onResult: function (node, query, result, resultCount) {
+        resultCount = typeaheadTotals.assigned_to
+        let text = typeaheadHelpText(resultCount, query, result)
+        $('#assigned_to-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('.assigned_to-result-container').html("");
+      },
+      onReady: function () {
+        $('.details.assigned_to').addClass('details-edit')
+        if (_.get(group,  "assigned_to.display")){
+          $('.js-typeahead-assigned_to').val(group.assigned_to.display)
+        }
+        $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
+        $('.assigned_to-result-container').html("");
       }
     },
-    initialize: false,
+    debug:true
   });
-
-  let assigned_to_typeahead = $('.assigned_to .typeahead')
-  function loadAssignedToTypeahead() {
-
-    assigned_to_typeahead.typeahead({
-      highlight: true,
-      minLength: 0,
-      autoselect: true,
-    },
-    {
-      name: 'users',
-      limit: 15,
-      source: function (q, sync, async) {
-        return API.defaultFilter(q, sync, async, users, group.assigned_to ? [{ID:group.assigned_to.ID}] : [])
-      },
-      display: 'name'
-    })
-  }
-  assigned_to_typeahead.bind('typeahead:select', function (ev, sug) {
-    API.save_field_api('group', groupId, {assigned_to: 'user-' + sug.ID}).then(function () {
-      assigned_to_typeahead.typeahead('val', '')
-      jQuery('.current-assigned').text(sug.name)
-      group.assigned_to.ID = sug.ID
-      assigned_to_typeahead.typeahead('destroy')
-      users.initialize()
-      loadAssignedToTypeahead()
-
-    }).catch(err=>{
-      console.trace("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    })
-  }).bind('blur', ()=>{
-    toggleEdit('assigned_to')
+  $('.search_assigned_to').on('click', function () {
+    let id = $(this).data("id")
+    $(`#${id} .js-typeahead-assigned_to`).val("")
+    $(`#${id} .js-typeahead-assigned_to`).trigger('input.typeahead')
   })
-  loadAssignedToTypeahead()
 
   /**
    * Locations
    */
-  let locations = new Bloodhound({
-    datumTokenizer: API.searchAnyPieceOfWord,
-    queryTokenizer: Bloodhound.tokenizers.ngram,
-    identify: function (obj) {
-      return obj.ID
+  typeaheadTotals.locations = 0;
+  $.typeahead({
+    input: '.js-typeahead-locations',
+    minLength: 0,
+    searchOnFocus: true,
+    maxItem: 20,
+    template: function (query, item) {
+      return `<span>${_.escape(item.name)}</span>`
     },
-    prefetch: {
-      url: wpApiGroupsSettings.root + 'dt/v1/locations-compact/',
-      prepare : API.typeaheadPrefetchPrepare,
-      transform: function(data){
-        return API.filterTypeahead(data, group.locations || [])
-      },
-      cache:false
-    },
-    remote: {
-      url: wpApiGroupsSettings.root + 'dt/v1/locations-compact/?s=%QUERY',
-      wildcard: '%QUERY',
-      prepare : API.typeaheadRemotePrepare,
-      transform: function(data){
-        return API.filterTypeahead(data, group.locations || [])
+    source: typeaheadSource('locations', 'dt/v1/locations-compact/'),
+    display: "name",
+    templateValue: "{{name}}",
+    dynamic: true,
+    multiselect: {
+      matchOn: ["ID"],
+      data: function () {
+        return group.locations.map(g=>{
+          return {ID:g.ID, name:g.post_title}
+        })
+      }, callback: {
+        onCancel: function (node, item) {
+          API.remove_item_from_field('group', groupId, 'locations', item.ID).then(()=>{
+            $(`.locations-list .${item.ID}`).remove()
+            let listItems = $(`.locations-list li`)
+            if (listItems.length === 0){
+              $(`.locations-list.details-list`).append(`<li id="no-location">${wpApiGroupsSettings.translations["not-set"]["location"]}</li>`)
+            }
+          })
+        }
       }
     },
-  });
-
-  let locationsTypeahead = $('.locations .typeahead')
-  function loadLocationsTypeahead() {
-    locationsTypeahead.typeahead({
-      highlight: true,
-      minLength: 0,
-      autoselect: true,
-    },
-    {
-      name: 'locations',
-      limit: 15,
-      source: function (q, sync, async) {
-        return API.defaultFilter(q, sync, async, locations, group.locations)
+    callback: {
+      onClick: function(node, a, item, event){
+        API.add_item_to_field('group', groupId, {locations: item.ID}).then((addedItem)=>{
+          $('.locations-list').append(`<li class="${addedItem.ID}">
+            <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
+          </li>`)
+          $("#no-location").remove()
+        })
       },
-      display: 'name'
-    })
-  }
-  locationsTypeahead.bind('typeahead:select', function (ev, sug) {
-    locationsTypeahead.typeahead('val', '')
-    group.locations.push(sug)
-    add_typeahead_item(groupId, 'locations', sug.ID, sug.name)
-    $("#no-location").remove()
-    locationsTypeahead.typeahead('destroy')
-    locations.initialize()
-    loadLocationsTypeahead()
-  })
-  loadLocationsTypeahead()
+      onResult: function (node, query, result, resultCount) {
+        resultCount = typeaheadTotals.locations
+        let text = typeaheadHelpText(resultCount, query, result)
+        $('#locations-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('#locations-result-container').html("");
+      },
+      onReady: function () {
+        console.log("ready");
+        $('.locations').addClass('details-edit')
+      }
+    }
+  });
 
   /**
-   * People Groups
+   * People_groups
    */
-  let peopleGroups = new Bloodhound({
-    datumTokenizer: API.searchAnyPieceOfWord,
-    queryTokenizer: Bloodhound.tokenizers.ngram,
-    identify: function (obj) {
-      return obj.ID
+  typeaheadTotals.people_groups = 0;
+  $.typeahead({
+    input: '.js-typeahead-people_groups',
+    minLength: 0,
+    searchOnFocus: true,
+    maxItem: 20,
+    template: function (query, item) {
+      return `<span>${_.escape(item.name)}</span>`
     },
-    prefetch: {
-      url: wpApiGroupsSettings.root + 'dt/v1/people-groups-compact/',
-      prepare : API.typeaheadPrefetchPrepare,
-      cache:false
+    source: typeaheadSource('people_groups', 'dt/v1/people-groups-compact/'),
+    display: "name",
+    templateValue: "{{name}}",
+    dynamic: true,
+    multiselect: {
+      matchOn: ["ID"],
+      data: function () {
+        return group.people_groups.map(g=>{
+          return {ID:g.ID, name:g.post_title}
+        })
+      },
+      callback: {
+        onCancel: function (node, item) {
+          API.remove_item_from_field('group', groupId, 'people_groups', item.ID).then(()=>{
+            $(`.people_groups-list .${item.ID}`).remove()
+            let listItems = $(`.people_groups-list li`)
+            if (listItems.length === 0){
+              $(`.people_groups-list.details-list`).append(`<li id="no-people-group">${wpApiGroupsSettings.translations["not-set"]["people-group"]}</li>`)
+            }
+          })
+        }
+      },
     },
-    remote: {
-      url: wpApiGroupsSettings.root + 'dt/v1/people-groups-compact/?s=%QUERY',
-      wildcard: '%QUERY',
-      prepare : API.typeaheadRemotePrepare,
-    },
+    callback: {
+      onClick: function(node, a, item, event){
+        API.add_item_to_field('group', groupId, {people_groups: item.ID}).then((addedItem)=>{
+          $("#no-people-group").remove()
+          $('.people_groups-list').append(`<li class="${addedItem.ID}">
+            <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
+          </li>`)
+        })
+      },
+      onResult: function (node, query, result, resultCount) {
+        resultCount = typeaheadTotals.people_groups
+        let text = typeaheadHelpText(resultCount, query, result)
+        $('#people_groups-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('#people_groups-result-container').html("");
+      },
+      onReady: function () {
+        $('.people_groups').addClass('details-edit')
+      }
+    }
   });
 
-  let peopleGroupsTypeahead = $('.people-groups .typeahead')
-  function loadPeopleGroupsTypeahead() {
-    peopleGroupsTypeahead.typeahead({
-        highlight: true,
-        minLength: 0,
-        autoselect: true,
-
-      },
-      {
-        name: 'peopleGroups',
-        limit: 15,
-        source: function (q, sync, async) {
-          return API.defaultFilter(q, sync, async, peopleGroups, _.get(group, "people_groups"))
-        },
-        display: 'name'
-      })
-  }
-  peopleGroupsTypeahead.bind('typeahead:select', function (ev, sug) {
-    peopleGroupsTypeahead.typeahead('val', '')
-    group["people_groups"].push(sug)
-    add_typeahead_item(groupId, 'people_groups', sug.ID, sug.name)
-    $("#no-people-group").remove()
-    peopleGroupsTypeahead.typeahead('destroy')
-    peopleGroups.initialize()
-    loadPeopleGroupsTypeahead()
-  })
-  loadPeopleGroupsTypeahead()
 
   $("#add-new-address").click(function () {
     if ($('#new-address').length === 0 ) {
@@ -309,6 +331,62 @@ jQuery(document).ready(function($) {
       $('.details-edit#address-list').append(newInput)
     }
   })
+
+  /**
+   * members
+   */
+  typeaheadTotals.members = 0;
+  $.typeahead({
+    input: '.js-typeahead-members',
+    minLength: 0,
+    searchOnFocus: true,
+    maxItem: 20,
+    template: function (query, item) {
+      return `<span>${_.escape(item.name)}</span>`
+    },
+    source: typeaheadSource('members', 'dt/v1/contacts/compact/'),
+    display: "name",
+    templateValue: "{{name}}",
+    dynamic: true,
+    multiselect: {
+      matchOn: ["ID"],
+      data: function () {
+        return group.members.map(g=>{
+          return {ID:g.ID, name:g.post_title}
+        })
+      }, callback: {
+        onCancel: function (node, item) {
+          API.remove_item_from_field('group', groupId, 'members', item.ID).then(()=>{
+            $(`.members-list .${item.ID}`).remove()
+            let listItems = $(`.members-list li`)
+            if (listItems.length === 0){
+              $(`.members-list.details-list`).append(`<li id="no-location">${wpApiGroupsSettings.translations["not-set"]["location"]}</li>`)
+            }
+          })
+        }
+      },
+      href: "/contacts/{{ID}}"
+    },
+    callback: {
+      onClick: function(node, a, item, event){
+        API.add_item_to_field('group', groupId, {members: item.ID}).then((addedItem)=>{
+          $('.members-list').append(`<li class="${addedItem.ID}">
+            <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
+          </li>`)
+          $("#no-location").remove()
+        })
+      },
+      onResult: function (node, query, result, resultCount) {
+        resultCount = typeaheadTotals.members
+        let text = typeaheadHelpText(resultCount, query, result)
+        $('#members-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('#members-result-container').html("");
+      }
+    }
+  });
+
 
   //for a new address field that has not been saved yet
   $(document).on('change', '#new-address', function (val) {
@@ -400,68 +478,6 @@ jQuery(document).ready(function($) {
 
 
   /**
-   * Members
-   */
-
-  $("#members-edit").on('click', function () {
-    $('.members-edit').toggle()
-  })
-  let members = new Bloodhound({
-    datumTokenizer: API.searchAnyPieceOfWord,
-    queryTokenizer: Bloodhound.tokenizers.ngram,
-    identify: function (obj) {
-      return obj.ID
-    },
-    prefetch: {
-      url: wpApiGroupsSettings.root + 'dt/v1/contacts/compact',
-      transform: function(data){
-        loadMembersTypeahead()
-        return API.filterTypeahead(data, group.members || [])
-      },
-      prepare : API.typeaheadPrefetchPrepare,
-      cache:false
-    },
-    remote: {
-      url: wpApiGroupsSettings.root + 'dt/v1/contacts/compact/?s=%QUERY',
-      wildcard: '%QUERY',
-      transform: function(data){
-        return API.filterTypeahead(data, group.members || [])
-      },
-      prepare : API.typeaheadRemotePrepare,
-    },
-    initialize: false,
-    local : []
-  });
-
-  let membersTypeahead = $('#members .typeahead')
-  function loadMembersTypeahead() {
-    membersTypeahead.typeahead('destroy')
-    members.initialize()
-    membersTypeahead.typeahead({
-      highlight: true,
-      minLength: 0,
-      autoselect: true,
-    },
-    {
-      name: 'members',
-      limit: 15,
-      source: function (q, sync, async) {
-        return API.defaultFilter(q, sync, async, members, group.members)
-      },
-      display: 'name'
-    })
-  }
-  membersTypeahead.bind('typeahead:select', function (ev, sug) {
-    membersTypeahead.typeahead('val', '')
-    group.members.push(sug)
-    add_typeahead_item(groupId, 'members', sug.ID, sug.name)
-    loadMembersTypeahead()
-  })
-  loadMembersTypeahead()
-
-
-
-  /**
    * Setup group fields
    */
 
@@ -474,10 +490,6 @@ jQuery(document).ready(function($) {
   if (group.assigned_to){
     $('.current-assigned').text(_.get(group, "assigned_to.display"))
   }
-  locations.initialize()
-  members.initialize()
-  users.initialize()
-
 
   /**
    * Comments and Activity
