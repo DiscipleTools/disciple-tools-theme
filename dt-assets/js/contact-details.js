@@ -158,6 +158,7 @@ jQuery(document).ready(function($) {
   }
 
   let typeaheadHelpText = (resultCount, query, result) =>{
+    console.log(resultCount)
     var text = "";
     if (result.length > 0 && result.length < resultCount) {
       text = "Showing <strong>" + result.length + "</strong> of <strong>" + resultCount + '</strong> ' + (query ? 'elements matching "' + query + '"' : '');
@@ -202,7 +203,9 @@ jQuery(document).ready(function($) {
         }
       },
       href: function(item){
-        return `/groups/${item.ID}`
+        if (item){
+          return `/groups/${item.ID}`
+        }
       }
     },
     callback: {
@@ -235,11 +238,13 @@ jQuery(document).ready(function($) {
   });
 
   $(".create-new-group").on('click', ()=>{
+    // @todo group create modal.
     // window.location.href = '/groups/new'
-    Typeahead['.js-typeahead-groups'].addMultiselectItemLayout({ID:"9999", name:"fish"})
-    setTimeout(()=>{
-      Typeahead['.js-typeahead-groups'].cancelMultiselectItem(1)
-    }, 2000)
+    // console.log("test")
+    // Typeahead['.js-typeahead-groups'].addMultiselectItemLayout({ID:"9999", name:"fish"})
+    // setTimeout(()=>{
+    //   Typeahead['.js-typeahead-groups'].cancelMultiselectItem(0)
+    // }, 2000)
   })
 
 
@@ -269,6 +274,10 @@ jQuery(document).ready(function($) {
         onCancel: function (node, item) {
           API.remove_item_from_field('contact', contactId, 'locations', item.ID).then(()=>{
             $(`.locations-list .${item.ID}`).remove()
+            let listItems = $(`.locations-list li`)
+            if (listItems.length === 0){
+              $(`.locations-list.details-list`).append(`<li id="no-location">${contactsDetailsWpApiSettings.translations["not-set"]["location"]}</li>`)
+            }
           })
         }
       }
@@ -279,6 +288,7 @@ jQuery(document).ready(function($) {
           $('.locations-list').append(`<li class="${addedItem.ID}">
             <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
           </li>`)
+          $("#no-location").remove()
         })
       },
       onResult: function (node, query, result, resultCount) {
@@ -323,6 +333,10 @@ jQuery(document).ready(function($) {
         onCancel: function (node, item) {
           API.remove_item_from_field('contact', contactId, 'people_groups', item.ID).then(()=>{
             $(`.people_groups-list .${item.ID}`).remove()
+            let listItems = $(`.people_groups-list li`)
+            if (listItems.length === 0){
+              $(`.people_groups-list.details-list`).append(`<li id="no-people-group">${contactsDetailsWpApiSettings.translations["not-set"]["people-group"]}</li>`)
+            }
           })
         }
       },
@@ -330,7 +344,7 @@ jQuery(document).ready(function($) {
     callback: {
       onClick: function(node, a, item, event){
         API.add_item_to_field('contact', contactId, {people_groups: item.ID}).then((addedItem)=>{
-          console.log(addedItem)
+          $("#no-people-group").remove()
           $('.people_groups-list').append(`<li class="${addedItem.ID}">
             <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
           </li>`)
@@ -374,7 +388,6 @@ jQuery(document).ready(function($) {
           _.set(contact, "fields.assigned_to", response.fields.assigned_to)
           $('.current-assigned').text(contact.fields.assigned_to.display)
           setStatus(response)
-          console.log(response)
           $('.js-typeahead-assigned_to').val(contact.fields.assigned_to.display)
           $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
         })
@@ -389,7 +402,9 @@ jQuery(document).ready(function($) {
       },
       onReady: function () {
         $('.details.assigned_to').addClass('details-edit')
-        $('.js-typeahead-assigned_to').val(contact.fields.assigned_to.display)
+        if (_.get(contact,  "fields.assigned_to.display")){
+          $('.js-typeahead-assigned_to').val(contact.fields.assigned_to.display)
+        }
         $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
         $('.assigned_to-result-container').html("");
       }
@@ -1015,28 +1030,6 @@ function setStatus(contact) {
   } else {
     jQuery('.reason-fields').hide()
   }
-}
-
-/***
- * Connections
- */
-
-function add_typeahead_item(contactId, fieldId, val, name) {
-  let list = jQuery(`.${fieldId}-list`)
-  list.append(`<li class="temp-${fieldId}-${val}">Adding new Item</li>`)
-
-  API.add_item_to_field('contact', contactId, {[fieldId]: val}).then(addedItem=>{
-    list.append(`<li class="${addedItem.ID}">
-    <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
-    <button class="details-remove-button connection details-edit"
-            data-field="${fieldId}" data-id="${val}"
-            data-name="${name}"
-            style="display: inline-block">Remove</button>
-    </li>`)
-    jQuery(`.temp-${fieldId}-${val}`).remove()
-  }).catch(err=>{
-    jQuery(`.temp-${fieldId}-${val}`).text(`Could not add: ${name}`)
-  })
 }
 
 function details_accept_contact(contactId, accept){

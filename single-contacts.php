@@ -51,22 +51,22 @@ declare( strict_types=1 );
                 <section id="relationships" class="xlarge-6 large-12 medium-6 cell">
 <!--                    <div class="bordered-box last-typeahead-in-section">-->
                     <div class="bordered-box">
-                        <h3 class="section-header">Connections</h3>
-                        <div class="section-subheader">Groups</div>
+                        <h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?></h3>
+                        <div class="section-subheader"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></div>
                         <var id="groups-result-container" class="result-container"></var>
                         <div id="groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
                             <div class="typeahead__container">
                                 <div class="typeahead__field">
                                     <span class="typeahead__query">
-                                        <input class="js-typeahead-groups"
-                                               name="groups[query]" placeholder="Search Groups"
+                                        <input class="js-typeahead-groups input-height"
+                                               name="groups[query]" placeholder="<?php esc_html_e( "Search Groups", 'disciple_tools' ) ?>"
                                                autocomplete="off">
                                     </span>
-                                    <span class="typeahead__button">
-                                        <button type="button" class="create-new-group typeahead__image_button">
-                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/add-group.svg' ) ?>"/>
-                                        </button>
-                                    </span>
+<!--                                    <span class="typeahead__button">-->
+<!--                                        <button type="button" class="create-new-group typeahead__image_button input-height">-->
+<!--                                            <img src="--><?php //echo esc_html( get_template_directory_uri() . '/assets/images/add-group.svg' ) ?><!--"/>-->
+<!--                                        </button>-->
+<!--                                    </span>-->
                                 </div>
                             </div>
                         </div>
@@ -87,7 +87,7 @@ declare( strict_types=1 );
                                     <div class="typeahead__field">
                                         <span class="typeahead__query">
                                             <input class="js-typeahead-<?php echo esc_html( $connection ) ?>"
-                                                   name="<?php echo esc_html( $connection ) ?>[query]" placeholder="Search Contacts"
+                                                   name="<?php echo esc_html( $connection ) ?>[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
                                                    autocomplete="off">
                                         </span>
 <!--                                        <span class="typeahead__button">-->

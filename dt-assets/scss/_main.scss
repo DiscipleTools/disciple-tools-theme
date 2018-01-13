@@ -1224,3 +1224,8 @@ div.dataTables_wrapper .datatable-first-line {
     opacity: 0.5;
 }
 
+//default height for foundation inputs.
+.input-height {
+    $height: ($input-font-size * unitless-calc($input-line-height)) + (get-side($input-padding, 'top') + get-side($input-padding, 'bottom')) - rem-calc(1);
+    height: $height;
+}

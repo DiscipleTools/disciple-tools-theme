@@ -31,7 +31,7 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
     ?>
 
     <!-- Breadcrumb Navigation-->
-    <div data-sticky-container class="hide-for-small-only">
+    <div data-sticky-container class="hide-for-small-only" style="z-index: 50">
         <nav aria-label="<?php esc_attr_e( "You are here:" ); ?>" role="navigation"
              data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
              class="second-bar">

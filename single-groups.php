@@ -42,27 +42,19 @@ dt_print_breadcrumbs(
             <section id="relationships" class="xlarge-6 large-12 medium-6 cell">
                 <div class="bordered-box">
                     <span class="section-header"><?php esc_html_e( 'Members', 'disciple_tools' )?></span>
-<!--                    <button class=" float-right" id="members-edit"><i class="fi-pencil"></i> Edit</button>-->
-                    <ul class="members-list">
-                        <?php
-                        $ids = [];
-                        foreach ( $group["members"] as $member){
-                            $ids[] = $member->ID;
-                            ?>
-                            <li class="<?php echo esc_attr( $member->ID, 'disciple_tools' ); ?>">
-                                <a href="<?php echo esc_url( $member->permalink ); ?>"><?php echo esc_html( $member->post_title )?></a>
-                                <button class="details-remove-button members-edit"
-                                        data-field="members" data-id="<?php echo esc_attr( $member->ID, 'disciple_tools' ); ?>"
-                                        data-name="<?php echo esc_html( $member->post_title )?>">
-                                    <?php esc_html_e( 'Remove', 'disciple_tools' )?>
-                                </button>
-                            </li>
-                        <?php } ?>
-                    </ul>
-                    <div>
-                        <label for="members"><?php esc_html_e( 'Add a Member', 'disciple_tools' )?>:</label>
-                        <div id="members">
-                            <input class="typeahead" type="text" placeholder="Type to search contacts">
+
+                    <div class="members">
+                        <var id="members-result-container" class="result-container"></var>
+                        <div id="members_t" name="form-members" class="scrollable-typeahead">
+                            <div class="typeahead__container">
+                                <div class="typeahead__field">
+                                    <span class="typeahead__query">
+                                        <input class="js-typeahead-members"
+                                               name="members[query]" placeholder="Search Members"
+                                               autocomplete="off">
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

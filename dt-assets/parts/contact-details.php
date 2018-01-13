@@ -106,13 +106,13 @@
                                 <div class="typeahead__container">
                                     <div class="typeahead__field">
                                         <span class="typeahead__query">
-                                            <input class="js-typeahead-assigned_to"
-                                                   name="assigned_to[query]" placeholder="Search users"
+                                            <input class="js-typeahead-assigned_to input-height"
+                                                   name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
                                                    autocomplete="off">
                                         </span>
                                         <span class="typeahead__button">
-                                            <button type="button" class="search_assigned_to typeahead__image_button" data-id="assigned_to_t2">
-                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_down.svg' ) ?>"/>
+                                            <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t2">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                                             </button>
                                         </span>
                                     </div>
@@ -411,7 +411,7 @@
                                     <div class="typeahead__field">
                                         <span class="typeahead__query">
                                             <input class="js-typeahead-locations"
-                                                   name="locations[query]" placeholder="Search Locations"
+                                                   name="locations[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
                                                    autocomplete="off">
                                         </span>
                                     </div>
@@ -421,7 +421,7 @@
 
                         <div class="section-subheader"><?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
                             <span class="assigned_to details-edit">:</span>
-                            <span class="assigned_to details-edit current-assigned">:</span>
+                            <span class="assigned_to details-edit current-assigned"></span>
                         </div>
                         <ul class="details-list assigned_to">
                             <li class="current-assigned">
@@ -441,13 +441,13 @@
                                 <div class="typeahead__container">
                                     <div class="typeahead__field">
                                         <span class="typeahead__query">
-                                            <input class="js-typeahead-assigned_to"
-                                                   name="assigned_to[query]" placeholder="Search users"
+                                            <input class="js-typeahead-assigned_to input-height"
+                                                   name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
                                                    autocomplete="off">
                                         </span>
-                                         <span class="typeahead__button">
-                                            <button type="button" class="search_assigned_to typeahead__image_button" data-id="assigned_to_t">
-                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/chevron_down.svg' ) ?>"/>
+                                        <span class="typeahead__button">
+                                            <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
                                             </button>
                                         </span>
                                     </div>
@@ -567,7 +567,7 @@
                                     <div class="typeahead__field">
                                         <span class="typeahead__query">
                                             <input class="js-typeahead-people_groups"
-                                                   name="people_groups[query]" placeholder="Search People_groups"
+                                                   name="people_groups[query]" placeholder="<?php esc_html_e( "Search People_groups", 'disciple_tools' ) ?>"
                                                    autocomplete="off">
                                         </span>
                                     </div>
