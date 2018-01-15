@@ -31,13 +31,14 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
     ?>
 
     <!-- Breadcrumb Navigation-->
-    <div data-sticky-container class="hide-for-small-only" style="z-index: 50">
+    <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
         <nav aria-label="<?php esc_attr_e( "You are here:" ); ?>" role="navigation"
              data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
              class="second-bar">
 
             <div class="grid-x">
-                <div class="small-offset-4 cell small-4 center-items hide-for-small-only">
+                <div class="cell small-4"></div>
+                <div class="cell small-4 center-items hide-for-small-only">
                     <ul class="breadcrumbs">
 
                         <?php foreach ($links as $link) : ?>

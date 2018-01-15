@@ -166,8 +166,12 @@ class Disciple_Tools_Groups_Post_Type
             'read_private_posts'  => 'view_any_group',
         ];
 
-        $single_slug = apply_filters( 'dt_single_slug', sanitize_title_with_dashes( _x( 'Group', 'single post url slug', 'disciple_tools' ) ) );
-        $archive_slug = apply_filters( 'dt_archive_slug', sanitize_title_with_dashes( _x( 'Groups', 'post archive url slug', 'disciple_tools' ) ) );
+        $rewrite = [
+            'slug'       => 'groups',
+            'with_front' => true,
+            'pages'      => true,
+            'feeds'      => false,
+        ];
 
         $defaults = [
             'labels'                => $labels,
@@ -176,10 +180,10 @@ class Disciple_Tools_Groups_Post_Type
             'show_ui'               => true,
             'show_in_menu'          => true,
             'query_var'             => true,
-            'rewrite'               => [ 'slug' => $single_slug ],
+            'rewrite'               => $rewrite,
             'capability_type'       => 'group',
             'capabilities'          => $capabilities,
-            'has_archive'           => $archive_slug,
+            'has_archive'           => true,
             'hierarchical'          => false,
             'supports'              => [ 'title', 'comments', 'revisions' ],
             'menu_position'         => 5,

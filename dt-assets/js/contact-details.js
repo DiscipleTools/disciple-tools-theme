@@ -915,6 +915,8 @@ jQuery(document).ready(function($) {
     var tabId = $('#comment-activity-tabs').find('.tabs-title.is-active').data('tab');
     display_activity_comment(tabId)
   })
+
+  console.log($('body').css('direction'));
 })
 
 

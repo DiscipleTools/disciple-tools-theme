@@ -1242,3 +1242,33 @@ div.dataTables_wrapper .datatable-first-line {
 }
 
 
+html[dir='rtl'] {
+    .typeahead__label {
+        padding-left: 0;
+        padding-right: 4px;
+        margin-left: 4px;
+        margin-right:0;
+    }
+    .typeahead__label .typeahead__cancel-button {
+        margin-left:0;
+        margin-right:4px;
+        border-left:none;
+        border-right:1px solid #c2e0ff;
+    }
+    .typeahead__cancel-button{
+        left:0;
+        right:auto;
+    }
+
+    .typeahead__container .typeahead__field .typeahead__hint, .typeahead__container .typeahead__field .typeahead__label-container, .typeahead__container .typeahead__field [contenteditable], .typeahead__container .typeahead__field input, .typeahead__container .typeahead__field textarea {
+        padding-right:6px;
+        padding-left: 32px;
+    }
+
+    .float-right {
+        float: left !important;
+    }
+    .float-left {
+        float: right !important;
+    }
+}

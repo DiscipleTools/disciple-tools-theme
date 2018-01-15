@@ -72,8 +72,8 @@ function dt_site_scripts() {
 
     dt_theme_enqueue_script( 'lodash', 'dt-core/dependencies/lodash/lodash.min.js', array() );
 
-    dt_theme_enqueue_script( 'typeahead-jquery', 'dependencies/jquery-typeahead-2.10.4/jquery.typeahead.min.js', array( 'jquery' ), true );
-    dt_theme_enqueue_style( 'typeahead-jquery-css', 'dependencies/jquery-typeahead-2.10.4/jquery.typeahead.min.css', array() );
+    dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/jquery-typeahead-2.10.4/jquery.typeahead.min.js', array( 'jquery' ), true );
+    dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/jquery-typeahead-2.10.4/jquery.typeahead.min.css', array() );
 
     dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts.min.js', array( 'jquery' ), true );
 
