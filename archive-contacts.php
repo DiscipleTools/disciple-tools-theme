@@ -20,7 +20,7 @@ declare(strict_types=1);
 
             <div class="reveal js-filters-modal" id="filters-modal" data-reveal>
                 <div class="js-filters-modal-content">
-                    <h5><?php esc_html_e( 'Views', "disciple_tools" ); ?></h5>
+                    <h5><?php esc_html_e( 'Filters', "disciple_tools" ); ?></h5>
                     <div class="list-views">
                         <label class="list-view">
                             <input type="radio" name="view" value="all_contacts" class="js-list-view">
@@ -65,7 +65,7 @@ declare(strict_types=1);
                         </div>
                     </div>
 
-                    <h5><?php esc_html_e( "Filters", "disciple_tools" ); ?></h5>
+                    <h5><?php esc_html_e( "Sub-filters", "disciple_tools" ); ?></h5>
                     <div class="filter js-list-filter" data-filter="assigned_login">
                         <div class="filter__title js-list-filter-title" tabindex="0"><?php esc_html_e( "Assigned to" ); ?></div>
                         <p><?php esc_html_e( "Loading...", "disciple_tools" ); ?></p>
