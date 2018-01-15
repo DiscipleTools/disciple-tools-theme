@@ -144,7 +144,7 @@ function dt_site_scripts() {
         wp_localize_script(
             'contact-details', 'contactsDetailsWpApiSettings', array(
                 'contact' => $contact,
-                'contact_author_name' => get_user_by( 'id', intval( $contact->post_author ) )->display_name,
+                'contact_author_name' => (int) $contact->post_author > 0 ? get_user_by( 'id', intval( $contact->post_author ) )->display_name : "",
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
@@ -231,7 +231,7 @@ function dt_site_scripts() {
             'txt_last' => __( 'Last', 'disciple_tools' ),
             'txt_next' => __( 'Next', 'disciple_tools' ),
             'txt_previous' => __( 'Previous', 'disciple_tools' ),
-            'txt_zeroRecords' => __( 'No matching records found', 'disciple_tools' ),
+            'txt_zeroRecords' => __( 'No matching records found. Try clearing your filters.', 'disciple_tools' ),
             'txt_info' => _x( 'Showing _START_ to _END_ of _TOTAL_ entries', 'just copy as they are: _START_ _END_ and _TOTAL_', 'disciple_tools' ),
             'txt_infoEmpty' => __( 'Showing 0 to 0 of 0 entries', 'disciple_tools' ),
             'txt_infoFiltered' => _x( '(filtered from _MAX_ total entries)', 'just copy `_MAX_`', 'disciple_tools' ),
