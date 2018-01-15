@@ -67,24 +67,29 @@ function updateCriticalPath(key) {
 
 
 function post_comment(contactId) {
-  jQuery("#add-comment-button").toggleClass('loading')
-  let comment = jQuery("#comment-input").val()
-  console.log(comment);
-  let data = {}
-  data["comment"] = comment
-  API.post_comment('contact', contactId, comment).then(data=>{
-    console.log(`added comment ${comment}`)
-    jQuery("#comment-input").val("")
-    jQuery("#add-comment-button").toggleClass('loading')
-    data.comment.date = moment(data.comment.comment_date_gmt + "Z")
-    comments.push(data.comment)
-    display_activity_comment()
-    $('.update-needed.alert').hide()
-  }).catch(err=>{
-    console.log("error")
-    console.log(err)
-    jQuery("#errors").append(err.responseText)
-  })
+  let commentInput = jQuery("#comment-input")
+  let commentButton = jQuery("#add-comment-button")
+  let comment = commentInput.val()
+  if (comment){
+    commentButton.toggleClass('loading')
+    commentInput.attr("disabled", true)
+    commentButton.attr("disabled", true)
+    API.post_comment('contact', contactId, comment).then(data=>{
+      commentInput.val("")
+      commentButton.toggleClass('loading')
+      data.comment.date = moment(data.comment.comment_date_gmt + "Z")
+      comments.push(data.comment)
+      display_activity_comment()
+      $('.update-needed.alert').hide()
+      commentInput.attr("disabled", false)
+      commentButton.attr("disabled", false)
+    }).catch(err=>{
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
+    })
+
+  }
 }
 
 function prepareActivityData(activityData) {

@@ -566,7 +566,7 @@ class Disciple_Tools_Contacts_Endpoints
     {
         $params = $request->get_params();
         $body = $request->get_json_params();
-        if ( isset( $params['id'] ) ) {
+        if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
             $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"], true );
 
             if ( is_wp_error( $result ) ) {

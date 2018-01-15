@@ -527,16 +527,25 @@ jQuery(document).ready(function($) {
   }
 
   let commentButton = $('#add-comment-button')
+
     .on('click', function () {
-      commentButton.toggleClass('loading')
-      let input = $("#comment-input")
-      API.post_comment('group', groupId, input.val()).then(commentData=>{
+      let commentInput = jQuery("#comment-input")
+      let comment = commentInput.val()
+      if (comment){
         commentButton.toggleClass('loading')
-        input.val('')
-        commentData.comment.date = moment(commentData.comment.comment_date_gmt + "Z")
-        comments.push(commentData.comment)
-        display_activity_comment()
-      })
+        commentInput.attr("disabled", true)
+        commentButton.attr("disabled", true)
+        API.post_comment('group', groupId, comment).then(commentData=>{
+          commentButton.toggleClass('loading')
+          commentInput.val('')
+          commentData.comment.date = moment(commentData.comment.comment_date_gmt + "Z")
+          comments.push(commentData.comment)
+          display_activity_comment()
+          commentInput.attr("disabled", false)
+          commentButton.attr("disabled", false)
+        })
+
+      }
     })
 
   $.when(
