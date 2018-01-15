@@ -64,7 +64,7 @@ declare( strict_types=1 );
                                     </span>
                                     <span class="typeahead__button">
                                         <button type="button" data-open="create-group-modal" class="create-new-group typeahead__image_button input-height">
-                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/add-group.svg' ) ?>"/>
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group.svg' ) ?>"/>
                                         </button>
                                     </span>
                                 </div>
