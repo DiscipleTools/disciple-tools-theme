@@ -157,7 +157,7 @@
         info: wpApiSettings.txt_info,
         infoEmpty: wpApiSettings.txt_infoEmpty,
         infoFiltered: wpApiSettings.txt_infoFiltered,
-        zeroRecords: wpApiSettings.txt_zeroRecords
+        zeroRecords: wpApiSettings.txt_zeroRecords + ' ' + `<a href="#" class="clear-filters">${wpApiSettings.txt_clearFilters}</a>`
       },
       sDom: '<"  datatable-first-line"fir<"js-list-toolbar">>tlp<"clearfix">',
         /* <"datatable-firstline": div which contains:
@@ -309,6 +309,13 @@
       dataTable.draw();
     });
   }
+
+  $(document).on('click', '.clear-filters', function () {
+    $("input[value='all_contacts']").prop("checked", true);
+    clearFilterCheckboxes();
+    updateFilterFunctions();
+    dataTable.draw();
+  })
 
   function createFilterCheckboxes(filterType, counts) {
     const $div = $("<div>");
