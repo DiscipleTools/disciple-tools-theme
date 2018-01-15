@@ -302,8 +302,11 @@ img {
 
     .section-selector {
         text-align: center;
-        .section-button {
-            color: #366184;
+        .section-button.selected {
+            .section-button-text {
+                color: #366184;
+                font-weight: bold;
+            }
         }
     }
 }

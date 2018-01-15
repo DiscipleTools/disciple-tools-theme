@@ -561,6 +561,11 @@ jQuery(document).ready(function($) {
     display_activity_comment("all")
   })
 
+  $('#comment-activity-tabs').on("change.zf.tabs", function () {
+    var tabId = $('#comment-activity-tabs').find('.tabs-title.is-active').data('tab');
+    display_activity_comment(tabId)
+  })
+
   function display_activity_comment(section) {
     current_section = section || current_section
 

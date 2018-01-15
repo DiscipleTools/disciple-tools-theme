@@ -8,11 +8,14 @@
             </button>
         </div>
     </div>
-    <div class="section-selector cell">
-            <button class="section-button" onclick="display_activity_comment('all')"><?php esc_html_e( 'ALL', 'disciple_tools' )?> | </button>
-            <button class="section-button" onclick="display_activity_comment('comments')"><?php esc_html_e( 'COMMENTS', 'disciple_tools' )?> | </button>
-            <button class="section-button" onclick="display_activity_comment('activity')"><?php esc_html_e( 'ACTIVITY', 'disciple_tools' )?></button>
+    <div class="cell">
+        <ul class="tabs" data-tabs id="comment-activity-tabs">
+          <li class="tabs-title is-active" data-tab="all"><a href="#all" aria-selected="true"><?php esc_html_e( "All", 'disciple_tools' ) ?></a></li>
+          <li class="tabs-title" data-tab="comments"><a href="#comments"><?php esc_html_e( "Comments", 'disciple_tools' ) ?></a></li>
+          <li class="tabs-title" data-tab="activity"><a href="#activity"><?php esc_html_e( "Activity", 'disciple_tools' ) ?></a></li>
+        </ul>
     </div>
+
     <div style="overflow-y:scroll" id="comments-wrapper" class="cell">
 
     </div>
