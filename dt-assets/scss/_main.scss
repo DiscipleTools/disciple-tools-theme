@@ -1272,3 +1272,18 @@ html[dir='rtl'] {
         float: right !important;
     }
 }
+
+.dataTables_wrapper {
+    input[type="search"] {
+        background: url("/wp-content/themes/disciple-tools-theme/dt-assets/images/search.svg") no-repeat scroll 7px 10px;
+        padding-left:32px;
+    }
+}
+html[dir='rtl'] {
+    .dataTables_wrapper {
+        input[type="search"] {
+            background-position: right 7px center;
+            padding-right: 32px;
+        }
+    }
+}
