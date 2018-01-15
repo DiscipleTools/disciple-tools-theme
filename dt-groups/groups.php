@@ -513,6 +513,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         ];
 
         $post_id = wp_insert_post( $post );
+
+        if ( isset( $fields["created_from_contact_id"] ) ){
+            self::add_item_to_field( $post_id, "members", $fields["created_from_contact_id"], true );
+        }
         return $post_id;
     }
 

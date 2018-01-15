@@ -212,7 +212,7 @@ jQuery(document).ready(function($) {
       onClick: function(node, a, item, event){
         if(item.ID === "new-item"){
           event.preventDefault();
-          window.location.href = '/groups/new'
+          $('#create-group-modal').foundation('open');
         } else {
           API.add_item_to_field('contact', contactId, {groups: item.ID})
         }
@@ -237,18 +237,34 @@ jQuery(document).ready(function($) {
     }
   });
 
-  $(".create-new-group").on('click', ()=>{
-    // @todo group create modal.
-    // window.location.href = '/groups/new'
-    // console.log("test")
-    // Typeahead['.js-typeahead-groups'].addMultiselectItemLayout({ID:"9999", name:"fish"})
-    // setTimeout(()=>{
-    //   Typeahead['.js-typeahead-groups'].cancelMultiselectItem(0)
-    // }, 2000)
+  //reset new group modal on close.
+  $('#create-group-modal').on("closed.zf.reveal", function () {
+    $(".reveal-after-group-create").hide()
+    $(".hide-after-group-create").show()
+  })
+
+  $(".js-create-group").on("submit", function(e) {
+    e.preventDefault();
+    let title = $(".js-create-group input[name=title]").val()
+    API.create_group(title,contactId)
+      .then((newGroup)=>{
+        $(".reveal-after-group-create").show()
+        $("#new-group-link").html(`<a href="${newGroup.permalink}">${title}</a>`)
+        $(".hide-after-group-create").hide()
+        $('#go-to-group').attr('href', newGroup.permalink);
+        Typeahead['.js-typeahead-groups'].addMultiselectItemLayout({ID:newGroup.post_id.toString(), name:title})
+      })
+      .catch(function(error) {
+        $(".js-create-group-button").removeClass("loading").addClass("alert");
+        $(".js-create-group").append(
+            $("<div>").html(error.responseText)
+        );
+        console.error(error);
+    });
   })
 
 
-  /**
+    /**
    * Locations
    */
   typeaheadTotals.locations = 0;

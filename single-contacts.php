@@ -62,11 +62,11 @@ declare( strict_types=1 );
                                                name="groups[query]" placeholder="<?php esc_html_e( "Search Groups", 'disciple_tools' ) ?>"
                                                autocomplete="off">
                                     </span>
-<!--                                    <span class="typeahead__button">-->
-<!--                                        <button type="button" class="create-new-group typeahead__image_button input-height">-->
-<!--                                            <img src="--><?php //echo esc_html( get_template_directory_uri() . '/assets/images/add-group.svg' ) ?><!--"/>-->
-<!--                                        </button>-->
-<!--                                    </span>-->
+                                    <span class="typeahead__button">
+                                        <button type="button" data-open="create-group-modal" class="create-new-group typeahead__image_button input-height">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/assets/images/add-group.svg' ) ?>"/>
+                                        </button>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -217,6 +217,41 @@ declare( strict_types=1 );
             <button class="button" type="button" id="add-shared-button">
                 <?php esc_html_e( 'Share', 'disciple_tools' )?>
             </button>
+            <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="reveal" id="create-group-modal" data-reveal data-reset-on-close>
+
+        <p class="lead"><?php esc_html_e( 'Create Group', 'disciple_tools' )?></p>
+
+        <form class="js-create-group hide-after-group-create">
+            <label for="title">
+                <?php esc_html_e( "Name of group", "disciple_tools" ); ?>
+            </label>
+            <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
+            <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
+
+            <div style="text-align: center">
+                <button class="button loader js-create-group-button" type="submit"><?php esc_html_e( "Create Group", "disciple_tools" ); ?></button>
+            </div>
+        </form>
+
+        <p class="reveal-after-group-create" style="display: none"><?php esc_html_e( "Group Created", 'disciple_tools' ) ?>: <span id="new-group-link"></span></p>
+
+
+        <div class="grid-x">
+            <button class="button button-cancel clear hide-after-group-create" data-close aria-label="Close reveal" type="button">
+                <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+            </button>
+            <button class="button reveal-after-group-create button-cancel clear" data-close type="button" id="create-group-return" style="display: none">
+                <?php esc_html_e( 'Return to Contact', 'disciple_tools' )?>
+            </button>
+            <a class="button reveal-after-group-create" type="button" id="go-to-group" style="display: none">
+                <?php esc_html_e( 'Edit new Group', 'disciple_tools' )?>
+            </a>
             <button class="close-button" data-close aria-label="Close modal" type="button">
                 <span aria-hidden="true">&times;</span>
             </button>
