@@ -1,7 +1,7 @@
 
 <div class="grid-y">
     <div class="cell grid-x grid-margin-x" id="add-comment-section">
-        <textarea class="auto cell" dir="auto" rows="4" id="comment-input" placeholder="<?php esc_html_e( "Write comment or note here", 'disciple_tools' ) ?>"></textarea>
+        <textarea class="auto cell" dir="auto" rows="4" id="comment-input" placeholder="<?php esc_html_e( "Write your comment or note here", 'disciple_tools' ) ?>"></textarea>
         <div class="shrink cell">
             <button id="add-comment-button" class="button loader">
                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/send.svg' ) ?>"/>

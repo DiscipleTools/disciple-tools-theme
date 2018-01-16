@@ -119,6 +119,10 @@ function dt_site_scripts() {
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'current_user_login' => wp_get_current_user()->user_login,
             'current_user_id' => get_current_user_id(),
+            'translations' => [
+                "no-unread" => __( "You don't have any unread notifications", "disciple_tools" ),
+                "no-notifications" => __( "You don't have any notifications", "disciple_tools" )
+            ]
         )
     );
 
