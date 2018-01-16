@@ -16,7 +16,7 @@
         </ul>
     </div>
 
-    <div style="overflow-y:scroll" id="comments-wrapper" class="cell">
+    <div id="comments-wrapper" class="cell tabs-content">
 
     </div>
 </div>

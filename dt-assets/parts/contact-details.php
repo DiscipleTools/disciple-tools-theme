@@ -69,8 +69,9 @@
     </div>
     <?php } ?>
     <?php if (isset( $contact->fields["overall_status"] ) &&
-        $contact->fields["overall_status"]["key"] == "assigned" &&
-        $contact->fields["assigned_to"]['id'] == $current_user->ID
+              isset( $contact->fields["assigned_to"] ) &&
+              $contact->fields["overall_status"]["key"] == "assigned" &&
+              $contact->fields["assigned_to"]['id'] == $current_user->ID
     ) { ?>
     <div id="accept-contact" class="callout alert small-12 cell">
         <h4 style="display: inline-block"><?php esc_html_e( 'This contact has been assigned to you', 'disciple_tools' )?></h4>
@@ -82,177 +83,17 @@
     <?php } ?>
 
 
-    <?php if (current_user_can( "assign_any_contacts" )){?>
-    <section class="small-12 cell">
-        <div class="bordered-box">
-            <p class="section-header"><?php esc_html_e( 'Dispatch Section', 'disciple_tools' )?></p>
-            <div class="grid-x grid-margin-x">
-                <div class="medium-6 cell">
-                    <div class="section-subheader"><?php esc_html_e( 'Assigned to', 'disciple_tools' )?>:
-                        <span class="current-assigned">
-                            <?php
-                            if ( isset( $contact->fields["assigned_to"] ) ){
-                                echo esc_html( $contact->fields["assigned_to"]["display"] );
-                            } else {
-                                esc_html_e( 'Nobody', 'disciple_tools' );
-                            }
-                            ?>
-                        </span>
-                    </div>
-                    <div class="assigned_to">
-                        <div class="assigned_to">
-                            <var id="assigned_to-result-container2" class="assigned_to-result-container result-container"></var>
-                            <div id="assigned_to_t2" name="form-assigned_to" class="">
-                                <div class="typeahead__container">
-                                    <div class="typeahead__field">
-                                        <span class="typeahead__query">
-                                            <input class="js-typeahead-assigned_to input-height"
-                                                   name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
-                                                   autocomplete="off">
-                                        </span>
-                                        <span class="typeahead__button">
-                                            <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t2">
-                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="medium-6 cell">
-                    <div class="section-subheader"><?php esc_html_e( 'Set Unassignable', 'disciple_tools' )?>:</div>
-                    <select id="reason_unassignable" class="select-field">
-                        <?php
-                        foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_value ) {
-                            if ( isset( $contact->fields["reason_unassignable"] ) &&
-                                $contact->fields["reason_unassignable"]["key"] === $reason_key ){
-                                    echo '<option value="'. esc_html( $reason_key ) . '" selected>' . esc_html( $reason_value ) . '</option>';
-                            } else {
-                                echo '<option value="'. esc_html( $reason_key ) . '">' . esc_html( $reason_value ). '</option>';
-                            }
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="medium-6 cell">
-                    <div class="section-subheader"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></div>
-                    <div class="switch tiny">
-
-                        <input class="switch-input update-needed" id="update-needed" type="checkbox" name="update-needed"
-                        <?php echo esc_html( ( isset( $contact->fields["requires_update"] ) && $contact->fields["requires_update"]["key"] == "yes" ) ? 'checked' : "" ) ?>>
-                        <label class="switch-paddle update-needed" for="update-needed">
-                            <span class="show-for-sr"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></span>
-                            <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
-                            <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <?php } ?>
-
     <section class="cell">
         <div class="bordered-box">
             <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
-
             <div class="item-details-header-row">
-                <i class="fi-torso large"></i>
-                <span class="item-details-header details-list title" ><?php the_title_attribute(); ?></span>
-                <input id="title" class="text-field details-edit" value="<?php the_title_attribute(); ?>">
-                <span class="button alert label">
-                    <?php esc_html_e( 'Status', 'disciple_tools' )?>: <span id="overall-status"><?php echo esc_html( $contact->fields["overall_status"]["label"] ) ?></span>
-                    <span id="reason">
-                        <?php
-                        if ( $contact->fields["overall_status"]["key"] === "paused" &&
-                            isset( $contact->fields["reason_paused"] )){
-                            echo '(' . esc_html( $contact->fields["reason_paused"]["label"] ) . ')';
-                        } else if ( $contact->fields["overall_status"]["key"] === "closed" &&
-                            isset( $contact->fields["reason_closed"] )){
-                            echo '(' . esc_html( $contact->fields["reason_closed"]["label"] ) . ')';
-                        } else if ( $contact->fields["overall_status"]["key"] === "unassignable" &&
-                            isset( $contact->fields["reason_unassignable"] )){
-                            echo '(' . esc_html( $contact->fields["reason_unassignable"]["label"] ) . ')';
-                        }
-                        ?>
-                    </span>
-                </span>
-                <?php $status = $contact->fields["overall_status"]["key"] ?? ""; ?>
-                <button data-open="pause-contact-modal"
-                        class="button trigger-pause"
-                        style="display:<?php echo ($status != "paused" ? "inline" : "none"); ?>">
-                    <?php esc_html_e( 'Pause', 'disciple_tools' )?>
-                </button>
-                <button class="button trigger-unpause make-active"
-                        style="display:<?php echo ($status === "paused" ? "inline" : "none"); ?>">
-                    <?php esc_html_e( 'Un-pause', 'disciple_tools' )?>
-                </button>
-                <button data-open="close-contact-modal"
-                        class="button trigger-close"
-                        style="display:<?php echo ($status != "closed" ? "inline" : "none"); ?>">
-                    <?php esc_html_e( 'Close', 'disciple_tools' )?>
-                </button>
-                <button class="button trigger-unclose make-active"
-                        style="display:<?php echo ($status === "closed" ? "inline" : "none"); ?>">
-                    <?php esc_html_e( 'Re-open', 'disciple_tools' )?>
-                </button>
                 <button class="float-right" id="edit-details">
                     <i class="fi-pencil"></i>
                     <span id="edit-button-label"><?php esc_html_e( 'Edit', 'disciple_tools' )?></span>
                 </button>
-            </div>
-
-            <div class="reveal" id="close-contact-modal" data-reveal>
-                <h1><?php esc_html_e( 'Close Contact', 'disciple_tools' )?></h1>
-                <p class="lead"><?php esc_html_e( 'Why do you want to close this contact?', 'disciple_tools' )?></p>
-
-                <select id="reason-closed-options">
-                    <?php
-                    foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $reason_label ) {
-                    ?>
-                        <option value="<?php echo esc_attr( $reason_key )?>"> <?php echo esc_html( $reason_label )?></option>
-                    <?php
-                    }
-                    ?>
-                </select>
-                <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                    <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
-                </button>
-                <button class="button" type="button" id="confirm-close" onclick="close_contact(<?php echo get_the_ID()?>)">
-                    <?php esc_html_e( 'Confirm', 'disciple_tools' )?>
-                </button>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="reveal" id="pause-contact-modal" data-reveal>
-                <h1><?php esc_html_e( 'Pause Contact', 'disciple_tools' )?></h1>
-                <p class="lead"><?php esc_html_e( 'Why do you want to pause this contact?', 'disciple_tools' )?></p>
-
-                <select id="reason-paused-options">
-                    <?php
-                    foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
-                    ?>
-                        <option value="<?php echo esc_attr( $reason_key )?>"
-                            <?php if ( ($contact->fields["reason_paused"]["key"] ?? "") === $reason_key ){echo "selected";} ?>>
-                            <?php echo esc_html( $reason_label )?>
-                        </option>
-                    <?php
-                    }
-                    ?>
-                </select>
-                <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                    <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
-                </button>
-                <button class="button" type="button" id="confirm-pause" onclick="pause_contact(<?php echo get_the_ID()?>)">
-                    <?php esc_html_e( 'Confirm', 'disciple_tools' )?>
-                </button>
-                <button class="close-button" data-close aria-label="Close modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h3 class="section-header"><?php esc_html_e( "Details", 'disciple_tools' ) ?></h3>
+                <label for="title" class="details-edit section-subheader">Name</label>
+                <input id="title" class="text-field details-edit" value="<?php the_title_attribute(); ?>">
             </div>
 
             <div class="reason-fields grid-x details-edit">

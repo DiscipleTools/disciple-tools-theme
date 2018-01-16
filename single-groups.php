@@ -33,8 +33,8 @@ dt_print_breadcrumbs(
     <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
         <span id="group-id" style="display: none"><?php echo get_the_ID()?></span>
 
-        <main id="main" class="large-7 medium-12 small-12 cell grid-x grid-margin-x grid-margin-y" role="main" style="padding:0">
-
+        <main id="main" class="large-7 medium-12 small-12 cell" role="main" style="padding:0">
+            <div class=" grid-x grid-margin-x grid-margin-y">
             <section id="contact-details" class="small-12 cell">
                 <?php get_template_part( 'dt-assets/parts/group', 'details' ); ?>
             </section>
@@ -143,11 +143,12 @@ dt_print_breadcrumbs(
 <!--                </div>-->
 <!--            </section>-->
 
-
+            </div>
         </main> <!-- end #main -->
 
-        <aside class="auto cell grid-x grid-margin-x">
-            <section class="xlarge-5 large-5 medium-12 small-12 cell bordered-box comment-activity-section" id="comment-activity-section">
+        <aside class="auto cell grid-x">
+            <section class="bordered-box comment-activity-section cell"
+                     id="comment-activity-section">
                 <?php get_template_part( 'dt-assets/parts/loop', 'activity-comment' ); ?>
             </section>
         </aside>

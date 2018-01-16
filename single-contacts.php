@@ -23,88 +23,130 @@ declare( strict_types=1 );
         ],
         get_the_title(),
         true,
-        true
+        true,
+        current_user_can( "assign_any_contacts" ),
+        isset( $contact->fields["requires_update"] ) && $contact->fields["requires_update"]["key"] === "yes"
     ); ?>
 
-    <!-- I'm not sure why this is indented -->
     <div id="content">
 
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
+            <div class="small-12 cell bordered-box grid-x grid-margin-x">
+                <div class="cell shrink center-items">
+                    <i class="fi-torso large"></i>
+                </div>
+                <div class="cell shrink center-items">
+                    <span class="item-details-header title" ><?php the_title_attribute(); ?></span>
+                </div>
+                <div class="shrink cell">
+                    <label for="overall_status"><strong><?php esc_html_e( "Status", 'disciple_tools' ) ?></strong></label>
+                    <select id="overall_status" class="select-field" style="margin-bottom:0px;">
+                    <?php foreach ($contact_fields["overall_status"]["default"] as $key => $value){
+                        if ( $contact->fields["overall_status"]["key"] === $key ) {
+                            ?>
+                            <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
+                        <?php } else { ?>
+                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
+                        <?php } ?>
+                    <?php } ?>
+                    </select>
+                    <span id="reason">
+                        <?php
+                        if ( $contact->fields["overall_status"]["key"] === "paused" &&
+                             isset( $contact->fields["reason_paused"] )){
+                            echo '(' . esc_html( $contact->fields["reason_paused"]["label"] ) . ')';
+                        } else if ( $contact->fields["overall_status"]["key"] === "closed" &&
+                                    isset( $contact->fields["reason_closed"] )){
+                            echo '(' . esc_html( $contact->fields["reason_closed"]["label"] ) . ')';
+                        } else if ( $contact->fields["overall_status"]["key"] === "unassignable" &&
+                                    isset( $contact->fields["reason_unassignable"] )){
+                            echo '(' . esc_html( $contact->fields["reason_unassignable"]["label"] ) . ')';
+                        }
+                        ?>
+                    </span>
 
+                </div>
+                <div class="cell auto center-items show-for-large">
+                    <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
+                </div>
 
-            <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell grid-x grid-margin-x grid-margin-y" role="main" style="padding:0">
+            </div>
+
+            <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell" role="main" style="padding:0">
                 <div id="errors"></div>
-                <section class="hide-for-large small-12 cell">
-                    <div class="bordered-box">
-                        <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
+                <div class="grid-x  grid-margin-x grid-margin-y">
+                    <section class="hide-for-large small-12 cell">
+                        <div class="bordered-box">
+                            <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
 
-                        <div style="text-align: center">
-                            <a class="button small" href="#comment-activity-section" style="margin-bottom: 0">
-                                <?php esc_html_e( 'View Comments', 'disciple_tools' ) ?>
-                            </a>
-                        </div>
-                    </div>
-                </section>
-                <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
-
-                <section id="relationships" class="xlarge-6 large-12 medium-6 cell">
-<!--                    <div class="bordered-box last-typeahead-in-section">-->
-                    <div class="bordered-box">
-                        <h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?></h3>
-                        <div class="section-subheader"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></div>
-                        <var id="groups-result-container" class="result-container"></var>
-                        <div id="groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
-                            <div class="typeahead__container">
-                                <div class="typeahead__field">
-                                    <span class="typeahead__query">
-                                        <input class="js-typeahead-groups input-height"
-                                               name="groups[query]" placeholder="<?php esc_html_e( "Search Groups", 'disciple_tools' ) ?>"
-                                               autocomplete="off">
-                                    </span>
-                                    <span class="typeahead__button">
-                                        <button type="button" data-open="create-group-modal" class="create-new-group typeahead__image_button input-height">
-                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group.svg' ) ?>"/>
-                                        </button>
-                                    </span>
-                                </div>
+                            <div style="text-align: center">
+                                <a class="button small" href="#comment-activity-section" style="margin-bottom: 0">
+                                    <?php esc_html_e( 'View Comments', 'disciple_tools' ) ?>
+                                </a>
                             </div>
                         </div>
+                    </section>
 
-                        <?php
-                        $connections = [
-                            "baptized_by" => esc_html__( "Baptized By", 'disciple_tools' ),
-                            "baptized" => esc_html__( "Baptized", 'disciple_tools' ),
-                            "coached_by" => esc_html__( "Coached By", 'disciple_tools' ),
-                            "coaching" => esc_html__( "Coaching", 'disciple_tools' )
-                        ];
-                        foreach ( $connections as $connection => $connection_label ) {
-                            ?>
-                            <div class="section-subheader"><?php echo esc_html( $connection_label ) ?></div>
-                            <var id="<?php echo esc_html( $connection ) ?>-result-container" class="result-container"></var>
-                            <div id="<?php echo esc_html( $connection ) ?>_t" name="form-<?php echo esc_html( $connection ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
+                    <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
+
+                    <section id="relationships" class="xlarge-6 large-12 medium-6 cell">
+    <!--                    <div class="bordered-box last-typeahead-in-section">-->
+                        <div class="bordered-box">
+                            <h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?></h3>
+                            <div class="section-subheader"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></div>
+                            <var id="groups-result-container" class="result-container"></var>
+                            <div id="groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
                                 <div class="typeahead__container">
                                     <div class="typeahead__field">
                                         <span class="typeahead__query">
-                                            <input class="js-typeahead-<?php echo esc_html( $connection ) ?>"
-                                                   name="<?php echo esc_html( $connection ) ?>[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
+                                            <input class="js-typeahead-groups input-height"
+                                                   name="groups[query]" placeholder="<?php esc_html_e( "Search Groups", 'disciple_tools' ) ?>"
                                                    autocomplete="off">
                                         </span>
-<!--                                        <span class="typeahead__button">-->
-<!--                                            <button>-->
-<!--                                                <i class="typeahead__search-icon"></i>-->
-<!--                                            </button>-->
-<!--                                        </span>-->
+                                        <span class="typeahead__button">
+                                            <button type="button" data-open="create-group-modal" class="create-new-group typeahead__image_button input-height">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group.svg' ) ?>"/>
+                                            </button>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
-                            <?php
-                        }
-                        ?>
-                    </div>
-                </section>
 
-                <section id="faith" class="xlarge-6 large-12 medium-6 cell">
+                            <?php
+                            $connections = [
+                                "baptized_by" => esc_html__( "Baptized By", 'disciple_tools' ),
+                                "baptized" => esc_html__( "Baptized", 'disciple_tools' ),
+                                "coached_by" => esc_html__( "Coached By", 'disciple_tools' ),
+                                "coaching" => esc_html__( "Coaching", 'disciple_tools' )
+                            ];
+                            foreach ( $connections as $connection => $connection_label ) {
+                                ?>
+                                <div class="section-subheader"><?php echo esc_html( $connection_label ) ?></div>
+                                <var id="<?php echo esc_html( $connection ) ?>-result-container" class="result-container"></var>
+                                <div id="<?php echo esc_html( $connection ) ?>_t" name="form-<?php echo esc_html( $connection ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
+                                    <div class="typeahead__container">
+                                        <div class="typeahead__field">
+                                            <span class="typeahead__query">
+                                                <input class="js-typeahead-<?php echo esc_html( $connection ) ?>"
+                                                       name="<?php echo esc_html( $connection ) ?>[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
+                                                       autocomplete="off">
+                                            </span>
+    <!--                                        <span class="typeahead__button">-->
+    <!--                                            <button>-->
+    <!--                                                <i class="typeahead__search-icon"></i>-->
+    <!--                                            </button>-->
+    <!--                                        </span>-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                            ?>
+                        </div>
+                    </section>
+
+                    <section id="faith" class="xlarge-6 large-12 medium-6 cell">
                     <div class="bordered-box">
                         <label class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?></label>
                         <div class="section-subheader"><?php esc_html_e( 'Seeker Path', 'disciple_tools' )?></div>
@@ -167,16 +209,14 @@ declare( strict_types=1 );
                         </select>
                     </div>
                 </section>
-
+                </div>
             </main> <!-- end #main -->
 
-            <aside class="auto cell grid-x grid-margin-x">
-                <section class="xlarge-5 large-5 medium-12 small-12 cell bordered-box comment-activity-section"
+            <aside class="auto cell grid-x">
+                <section class="bordered-box comment-activity-section cell"
                          id="comment-activity-section">
-                    <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
                     <?php get_template_part( 'dt-assets/parts/loop', 'activity-comment' ); ?>
                 </section>
-
             </aside>
 
         </div> <!-- end #inner-content -->
@@ -232,7 +272,7 @@ declare( strict_types=1 );
                 <?php esc_html_e( "Name of group", "disciple_tools" ); ?>
             </label>
             <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
-            <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
+            <p class="help-text" id="name-help-text"><?php esc_html_e( "This iss required", "disciple_tools" ); ?></p>
 
             <div style="text-align: center">
                 <button class="button loader js-create-group-button" type="submit"><?php esc_html_e( "Create Group", "disciple_tools" ); ?></button>
@@ -256,6 +296,83 @@ declare( strict_types=1 );
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
+    </div>
+
+    <div class="reveal" id="closed-contact-modal" data-reveal>
+        <h1><?php esc_html_e( 'Close Contact', 'disciple_tools' )?></h1>
+        <p class="lead"><?php esc_html_e( 'Why do you want to close this contact?', 'disciple_tools' )?></p>
+
+        <select id="reason-closed-options">
+            <?php
+            foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $reason_label ) {
+                ?>
+                <option value="<?php echo esc_attr( $reason_key )?>"> <?php echo esc_html( $reason_label )?></option>
+                <?php
+            }
+            ?>
+        </select>
+        <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+            <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+        </button>
+        <button class="button loader confirm-reason-button" type="button" id="confirm-close" data-field="closed">
+            <?php esc_html_e( 'Confirm', 'disciple_tools' )?>
+        </button>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="reveal" id="paused-contact-modal" data-reveal>
+        <h1><?php esc_html_e( 'Pause Contact', 'disciple_tools' )?></h1>
+        <p class="lead"><?php esc_html_e( 'Why do you want to pause this contact?', 'disciple_tools' )?></p>
+
+        <select id="reason-paused-options">
+            <?php
+            foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
+                ?>
+                <option value="<?php echo esc_attr( $reason_key )?>"
+                    <?php if ( ($contact->fields["reason_paused"]["key"] ?? "") === $reason_key ){echo "selected";} ?>>
+                    <?php echo esc_html( $reason_label )?>
+                </option>
+                <?php
+            }
+            ?>
+        </select>
+        <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+            <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+        </button>
+        <button class="button loader confirm-reason-button" type="button" id="confirm-pause" data-field="paused">
+            <?php esc_html_e( 'Confirm', 'disciple_tools' )?>
+        </button>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="reveal" id="unassignable-contact-modal" data-reveal>
+        <h1><?php esc_html_e( 'Contact Unassignable', 'disciple_tools' )?></h1>
+        <p class="lead"><?php esc_html_e( 'How is this contact unassignable', 'disciple_tools' )?></p>
+
+        <select id="reason-unassignable-options">
+            <?php
+            foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_label ) {
+                ?>
+                <option value="<?php echo esc_attr( $reason_key )?>"
+                    <?php if ( ($contact->fields["unassignable_paused"]["key"] ?? "") === $reason_key ){echo "selected";} ?>>
+                    <?php echo esc_html( $reason_label )?>
+                </option>
+                <?php
+            }
+            ?>
+        </select>
+        <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+            <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+        </button>
+        <button class="button loader confirm-reason-button" type="button" id="confirm-unassignable" data-field="unassignable">
+            <?php esc_html_e( 'Confirm', 'disciple_tools' )?>
+        </button>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 
     <?php
