@@ -199,7 +199,7 @@ final class Disciple_Tools_Config
             case 'general':
                 require_once( 'tab-import-export.php' );
                 $object = new Disciple_Tools_Import_Export_Tab();
-                $object->content(); // prints
+                $object->wizard(); // prints
                 break;
 
 

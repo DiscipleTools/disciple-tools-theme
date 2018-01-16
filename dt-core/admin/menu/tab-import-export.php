@@ -36,6 +36,7 @@ class Disciple_Tools_Import_Export_Tab
         $this->column_count = 0;
         $this->mapped = [];
         $this->insertype = '';
+        $this->results = [];
 
         // persistent variables for the processing timer
         $this->time_start = 0;
@@ -46,14 +47,43 @@ class Disciple_Tools_Import_Export_Tab
     /**
      * Primary page content
      */
-    public function content()
+    public function wizard()
     {
 
-        $this->handle_pages(); // process page data
+        // Routing
+        if ( $this->check_is_post( '_csv_panel', 'post_for_step_2' ) ) {
+            // page 2
+            if ( empty( $_FILES['csv_import']['tmp_name'] ) ) {
+                $this->error = "No file uploaded";
+                $this->step = 1;
+            }
+            else {
+                move_uploaded_file( $_FILES['csv_import']['tmp_name'], $this->filename ); // locally store uploaded file
 
+                if ( ! file_exists( $this->filename ) || ! is_readable( $this->filename ) ) { // validate file
+                    $this->error = "Can not open/read uploaded file.";
+                    $this->step = 1;
+                } else {
+                    $this->insertype = $_POST['post_format']; // capture selected post type
+                    set_transient( $this->otype, $this->insertype, 12 * HOUR_IN_SECONDS );
+                    $this->step = 2;
+                }
+            }
+        } elseif ( $this->check_is_post( '_csv_panel', 'post_for_step_3' ) && $this->check_is_post( 'submitback', 'Back' ) ) {
+            // back button
+            $this->step = 1;
+        } elseif ( $this->check_is_post( '_csv_panel', 'post_for_step_3' ) ) {
+            // page 3
+            $this->step = 3;
+            $process_form = $this->process_form();
+        } else {
+            // page 1
+            $this->step = 1;
+        }
+
+        // Wizard Pages
         switch ( $this->step ) {
             case '1':
-                dt_write_log( 'made it to case 1');
                 ?>
                 <div class="wrap">
                     <h2>
@@ -102,7 +132,6 @@ class Disciple_Tools_Import_Export_Tab
                 break;
 
             case '2':
-                dt_write_log('made it to case 2');
                 $csv = $this->get_header_and_rows();
                 $headers = $csv['headers'];
                 $rows = $csv['rows'];
@@ -140,7 +169,6 @@ class Disciple_Tools_Import_Export_Tab
                                 ?>
                             </tr>
                             </thead>
-                            <!-- Body of table -->
                             <tbody>
                             <?php
                             // rows
@@ -159,7 +187,6 @@ class Disciple_Tools_Import_Export_Tab
                                 }
 
                                 echo '</tr>';
-                                $i++;
                             }
                             ?>
                             </tbody>
@@ -195,16 +222,7 @@ class Disciple_Tools_Import_Export_Tab
                                             <div style="width:250px;float:left;"><b><?php echo esc_attr( $string ) ?></b>
                                             </div>
                                             <select name="field<?php echo $i ?>">
-                                                <?php
-                                                if ( $this->insertype == 'locations' ) {
-                                                    echo "<option value=\"\">Select...</option>
-                                                          <option value=\"post_title\">Title </option>
-                                                          <option value=\"post_content\">Post Content </option>
-                                                          <option value=\"address\">Address </option>
-                                                          <option value=\"parent_title\">Parent Title </option>
-                                                          <option value=\"country\">Country </option>";
-                                                } // end if statement
-                                                ?>
+                                                <?php $this->get_mapping_drop_down( $headers[ $i ] ) ?>
                                             </select>
                                         </div>
 
@@ -215,27 +233,9 @@ class Disciple_Tools_Import_Export_Tab
                             </div>
                         </div>
 
-                        <!-- Type @todo remove unnecissary type form -->
-
-                        <div id="formatdiv" class="postbox" style="max-width:600px; display: none;">
-                            <h3 class="hndle"
-                                style="cursor:auto;padding:10px;"><?php _e( 'Use these settings if "not found\mapped" in the .csv file', 'disciple_tools' ) ?></h3>
-                            <div class="inside">
-                                <div>
-                                    <?php _e( 'Post Status:', 'disciple_tools' ) ?>
-                                    <select name="post_status_user">
-                                        <option value="draft">Draft</option>
-                                        <option value="publish" selected>Publish</option>
-                                        <option value="private">Private</option>
-                                        <option value="pending">Pending</option>
-                                    </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <input type="submit" class="button" name="submitback" value="Back"/>&nbsp;&nbsp;&nbsp;
-                        <input type="submit" class="button" name="submit" value="Next >"/>
+                        <button type="submit" class="button" name="submitback" value="Back">Back</button>
+                        <button type="submit" class="button">Next ></button>
+                        <br>
                         <div style="/*float:right;*/background-color:#FFFFE0;border: 1px solid #E6DB55;padding:10px;">After
                             clicking <b>Next</b>, the import process may take some time to complete. Do not navigate to
                             another page or hit Refresh!
@@ -249,20 +249,19 @@ class Disciple_Tools_Import_Export_Tab
                 break;
 
             case '3':
-                dt_write_log('made it to case 3');
-                $results = $this->insert_csv();
-                if ( is_wp_error( $results ) ) {
-                    print $results->get_error_message();
+               
+
+                if ( is_wp_error( $process_form ) ) {
+                    print $process_form->get_error_message();
                 } else {
                     /** Print Report to Screen */
                     echo '<div class="wrap"><h1>Report</h1><br/>';
                     echo '<div class="updated fade">';
-                    echo sprintf( " Posts <b>imported</b> - <b>%d</b><br><br>", esc_attr( $results['imported'] ) );
-                    echo sprintf( " Posts <b>skipped</b> - <b>%d</b><br><br>", esc_attr( $results['skipped'] ) );
-                    echo sprintf( "Finished in <b>%.2f</b> seconds.", esc_attr( $results['execution_time'] ) );
+                    echo sprintf( " Posts <b>imported</b> - <b>%d</b><br><br>", esc_attr( $process_form['imported'] ) );
+                    echo sprintf( " Posts <b>skipped</b> - <b>%d</b><br><br>", esc_attr( $process_form['skipped'] ) );
+                    echo sprintf( "Finished in <b>%.2f</b> seconds.", esc_attr( $process_form['execution_time'] ) );
                     echo '</div>';
                     echo '</div>'; // end div wrapper
-
                 }
                 break;
 
@@ -273,106 +272,45 @@ class Disciple_Tools_Import_Export_Tab
     }
 
     /**
-     * Handle Pages is the file and page processor
+     * Process Form
+     *
+     * @return array|WP_Error
      */
-    public function handle_pages()
+    public function process_form()
     {
-        dt_write_log( 'HANDLE PAGES' );
-        dt_write_log( '2 - ' . $this->check_is_post( '_csv_panel', 'post_for_step_2' ) );
-        dt_write_log( '3 - ' . $this->check_is_post( '_csv_panel', 'post_for_step_3' ) );
+        $this->insertype = get_transient( $this->otype );
 
-        // page 2
-//        if ( $this->check_is_post( '_csv_panel', 'post_for_step_2' ) ) { // if page 2
-        if ( $this->check_is_post( '_csv_panel', 'post_for_step_2' ) ) { // if page 2
-
-            dt_write_log( 'handle_pages - page 2' );
-
-            if ( empty( $_FILES['csv_import']['tmp_name'] ) ) {
-                dt_write_log( 'No file uploaded' );
-                $this->error = "No file uploaded";
-                $this->step = 1;
-
-            }
-            else {
-
-                move_uploaded_file( $_FILES['csv_import']['tmp_name'], $this->filename ); // locally store uploaded file
-                dt_write_log( 'handle_pages - moved file' );
-                if ( ! file_exists( $this->filename ) || ! is_readable( $this->filename ) ) { // validate file
-
-                    $this->error = "Can not open/read uploaded file.";
-                    $this->step = 1;
-
-                } else {
-
-                    $this->insertype = $_POST['post_format']; // capture selected post type
-                    set_transient( $this->otype, $this->insertype, 12 * HOUR_IN_SECONDS );
-                    $this->step = 2;
-                    dt_write_log( 'handle_pages - set posttype and transient' );
-                }
-            }
-        // back button called from page 2
-        } elseif ( $this->check_is_post( '_csv_panel', 'post_for_step_3' ) && $this->check_is_post( 'submitback', 'Back' ) ) {
-            dt_write_log( 'handle_pages - back button on page 2' );
-            $this->step = 1;
-
-        // page 3
-        } elseif ( $this->check_is_post( '_csv_panel', 'post_for_step_3' ) ) { // if page 3
-            dt_write_log( 'handle_pages - page 3' );
-            $this->step = 3;
-
-        } else { // if neither condition above, then return page 1
-            dt_write_log( 'handle_pages - default to 1' );
-            $this->step = 1;
+        // Check for duplicate mappings and build mappings variable
+        $check_mappings = $this->check_mappings();
+        if( is_wp_error( $check_mappings ) ) {
+            return new WP_Error('confirm_mappings', $check_mappings->get_error_message() );
         }
+
+        // Check required fields
+        $check_required_fields = $this->check_required_fields();
+        if( is_wp_error( $check_required_fields ) ) {
+            return new WP_Error('check_required_fields', $check_required_fields->get_error_message() );
+        }
+
+        // Insert records
+        $insert_records = $this->insert_records();
+        if( is_wp_error( $insert_records ) ) {
+            return new WP_Error('insert_records_fail', $insert_records->get_error_message() );
+        }
+
+        // Clean up temp file
+        $this->remove_temp_file();
+
+        // Return processing results
+        return $insert_records;
     }
 
     /**
-     * @return array|WP_Error
+     * @return array|\WP_Error
      */
-    public function insert_csv()
-    {
-        dt_write_log( 'START CSV' );
-        $this->insertype = get_transient( $this->otype );
+    public function insert_records() {
 
-        $columns = get_transient( $this->onumberfields );
-
-        $alloptions = [];
-
-        for ( $i = 0; $i < $columns; $i++ ) {
-            $val = '';
-            if ( $this->get_post( "field$i", $var ) ) {
-                if ( ! in_array( $val, $alloptions ) ) {
-                    $alloptions[] = $val;
-                } else {
-                    $this->error = "Post field(s) mapped more than once !";
-                    $this->step = 2;
-
-                    return;
-                }
-                $this->mapped[ $i ] = $val;
-            }
-        }
-
-        // Check for title and content
-        $hast = false; // has title
-        $hasc = false; // has content
-
-        foreach ( $this->mapped as $key => $value ) {
-            if ( $value == 'post_title' ) {
-                $hast = true;
-            }
-            if ( $value == 'post_content' ) {
-                $hasc = true;
-            }
-        }
-
-        if ( ! $hasc || ! $hast ) {
-            $this->error = "Mandatory fields Post Title and\or Post Content not mapped!";
-            $this->step = 2;
-
-            return;
-        }
-
+        // Initialize variables
         $this->timer( 'start' ); //starts processing timer
         $i = 0;
         $skipped = 0;
@@ -380,16 +318,20 @@ class Disciple_Tools_Import_Export_Tab
         $length = 999999;
         $delimiter = $this->delimiter;
 
+        // Open file
         ini_set( "auto_detect_line_endings", true ); // adds some fault protection for csv errors.
         $resource = $this->fopen_utf8( $this->filename );
 
+        // Check file for error
         if ( $resource == 0 ) {
             return new WP_Error( 'failed_to_get_file', 'Failed to get the csv file.' );
         }
 
+        // Insert each line as new record
         while ( $keys = fgetcsv( $resource, $length, $delimiter ) ) {
 
-            if ( $i == 0 ) { // skip first line
+            if ( $i == 0 ) {
+                // skip first line
                 $str = implode( "", $keys );
                 trim( $str );
                 if ( mb_strlen( $str ) === 0 ) {
@@ -397,17 +339,20 @@ class Disciple_Tools_Import_Export_Tab
                 }
             }
             else {
+                // Parse mapped data
                 $data = [];
                 foreach ( $this->mapped as $item => $value ) {
                     $data[ $value ] = $keys[ $item ];
                 }
 
-                // Build and Insert new post
+                // Merge and Build Post Args
                 $new_post = [];
                 $this->get_values_from_array( $data, $new_post );
 
+                // Insert Post
                 $id = wp_insert_post( $new_post ); // wp insert statement
 
+                // Clean up and report
                 unset( $new_post );
                 unset( $data );
                 if ( $id ) {
@@ -419,12 +364,12 @@ class Disciple_Tools_Import_Export_Tab
             $i++;
         }
 
+        // Close and Clean up
         fclose( $resource );
         ini_set( "auto_detect_line_endings", false );
         $exec_time = $this->timer( 'stop' );
 
-        $this->remove_temp_file(); // clear out the temp file
-
+        // Return report
         return [
         'imported'       => $imported,
         'skipped'        => $skipped,
@@ -432,64 +377,7 @@ class Disciple_Tools_Import_Export_Tab
         ];
     }
 
-    public function remove_temp_file()
-    {
-        // Delete temporary file
-        if ( file_exists( $this->filename ) ) {
-            @unlink( $this->filename );
-        }
-    }
-
-    /**
-     * Get values from array
-     *
-     * @param $arr_source
-     * @param $arr_dest
-     */
-    public function get_values_from_array( &$arr_source, &$arr_dest )
-    {
-        if ( ! isset( $arr_source['post_status'] ) ) {
-            $post_status = '';
-            $this->get_post( 'post_status_user', $post_status );
-
-            $arr_dest['post_status'] = $post_status;
-        }
-        else {
-            $from_file = $arr_source['post_status'];
-            strtolower( $from_file );
-            trim( $from_file );
-            if ( $from_file != 'publish' || $from_file != 'draft' || $from_file != 'pending' || $from_file != 'private' ) {
-                $post_status = '';
-                $this->get_post( 'post_status_user', $post_status );
-                $arr_dest['post_status'] = $post_status;
-            } else {
-                $arr_dest['post_status'] = $from_file;
-            }
-        }
-
-        if ( isset( $arr_source['post_tags'] ) ) {
-            $arr_dest['tags_input'] = $arr_source['post_tags'];
-        }
-
-        $arr_dest['post_title'] = wp_strip_all_tags( $arr_source['post_title'] );
-        $arr_dest['post_content'] = convert_chars( $arr_source['post_content'] );
-        $arr_dest['post_type'] = $this->insertype;
-
-        if ( isset( $arr_source['post_excerpt'] ) ) {
-            $arr_dest['post_excerpt'] = $arr_source['post_excerpt'];
-        }
-
-        if ( isset( $arr_source['post_slug'] ) ) {
-            $arr_dest['post_name'] = $arr_source['post_slug'];
-        }
-
-        if ( isset( $arr_source['post_date'] ) ) {
-            $timestamp = strtotime( $arr_source['post_date'] );
-            if ( $timestamp !== false ) {
-                $arr_dest['post_date'] = date( 'Y-m-d H:i:s', $timestamp );
-            }
-        }
-    }
+    
 
     /**
      * File opener
@@ -525,23 +413,100 @@ class Disciple_Tools_Import_Export_Tab
     }
 
     /**
-     * Check if the post exists
+     * Get values from array
      *
-     * @param $postvar
-     * @param $postval
-     *
-     * @return bool
+     * @param $arr_source
+     * @param $arr_dest
      */
-    public function check_is_post( $postvar, $postval )
+    public function get_values_from_array( &$arr_source, &$arr_dest )
     {
-        if ( ! isset( $_POST[ $postvar ] ) ) {
-            return false;
-        }
-        if ( ! $_POST[ $postvar ] == $postval ) {
-            return false;
+        // prepare standard fields
+        $arr_dest['post_title'] = wp_strip_all_tags( $arr_source['post_title'] );
+        $arr_dest['post_content'] = '';
+        $arr_dest['post_type'] = $this->insertype;
+        $arr_dest['post_status'] = 'publish';
+
+        if ( isset( $arr_source['post_excerpt'] ) ) {
+            $arr_dest['post_excerpt'] = $arr_source['post_excerpt'];
         }
 
-        return true;
+        if ( isset( $arr_source['post_slug'] ) ) {
+            $arr_dest['post_name'] = $arr_source['post_slug'];
+        }
+
+        if ( isset( $arr_source['post_date'] ) ) {
+            $timestamp = strtotime( $arr_source['post_date'] );
+            if ( $timestamp !== false ) {
+                $arr_dest['post_date'] = date( 'Y-m-d H:i:s', $timestamp );
+            }
+        }
+
+        switch( $this->insertype ) {
+            case 'locations':
+                // lookup post parent id
+                if ( isset( $arr_source['post_parent'] ) ) {
+                    // lookup post parent by title
+                    $parent_id = get_page_by_title( $arr_source['post_parent'] );
+
+                    // save post parent id
+                    $arr_dest['post_parent'] = $parent_id->ID;
+                }
+
+                // geocode address @todo need to finish geocoding
+
+
+
+                // build meta input @todo need to finish meta_input
+                $arr_dest['meta_input'] = [
+
+                ];
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * @param $name
+     */
+    public function get_mapping_drop_down( $name ) {
+
+        switch( $this->insertype ) {
+            case 'locations':
+                $fields = [
+                    [
+                        'key' => 'post_title',
+                        'label' => 'Title',
+                    ],
+                    [
+                        'key' => 'address',
+                        'label' => 'Address',
+                    ],
+                    [
+                        'key' => 'post_parent',
+                        'label' => 'Parent Location',
+                    ],
+                    [
+                        'key' => 'country',
+                        'label' => 'Country',
+                    ]
+                ];
+
+                echo '<option value="">Select...</option>';
+
+                foreach( $fields as $field ) {
+                    echo '<option value="'. $field['key'].'"';
+                    if( $field['key'] == $name ) {
+                        echo ' selected';
+                    }
+                    echo '>'.$field['label'].'</option>';
+                }
+
+                break;
+            default:
+                break;
+        }
+
     }
 
     /**
@@ -554,12 +519,11 @@ class Disciple_Tools_Import_Export_Tab
      */
     public function get_post( $postvar, &$postval )
     {
-        if ( ! isset( $_POST[ $postvar ] ) ) {
+        if ( ! isset( $_POST[ $postvar ] ) )
             return false;
-        }
-        if ( '' == $_POST[ $postvar ] ) {
+        $postval = $_POST[ $postvar ];
+        if ( $postval == '' )
             return false;
-        }
 
         return true;
     }
@@ -615,6 +579,110 @@ class Disciple_Tools_Import_Export_Tab
         'rows'             => $rows,
         'number_of_fields' => $number_of_fields,
         ];
+    }
+
+    /**
+     * Check if the post exists
+     *
+     * @param $postvar
+     * @param $postval
+     *
+     * @return bool
+     */
+    public function check_is_post( $postvar, $postval )
+    {
+        if ( ! isset( $_POST[ $postvar ] ) ) {
+            return false;
+        }
+        if ( $_POST[ $postvar ] == $postval ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check for duplicate mappings and build mappings variable
+     */
+    public function check_mappings() {
+
+        $columns = get_transient( $this->onumberfields );
+
+        $alloptions = [];
+        for ( $i = 0; $i < $columns; $i++ ) {
+            $val = '';
+            if ( $this->get_post( "field$i", $val ) ) {
+                if ( ! in_array( $val, $alloptions ) ) {
+                    $alloptions[] = $val;
+                } else {
+                    $this->error = "Post field(s) mapped more than once !";
+                    $this->step = 2;
+
+                    return new WP_Error('failed_post_fields', 'Post field(s) mapped more than once!');
+                }
+                $this->mapped[ $i ] = $val;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Verify required fields
+     *
+     * @return bool|\WP_Error
+     */
+    public function check_required_fields() {
+
+        // Check for presence of title and content
+        switch( $this->insertype ) {
+
+            case 'locations':
+
+                $title = false;
+                $address = false;
+                $parent = false;
+                $country = false;
+
+                foreach ( $this->mapped as $key => $value ) {
+                    if ( $value == 'post_title' ) {
+                        $title = true;
+                    }
+                    if ( $value == 'address' ) {
+                        $address = true;
+                    }
+                    if ( $value == 'post_parent' ) {
+                        $parent = true;
+                    }
+                    if ( $value == 'country' ) {
+                        $country = true;
+                    }
+                }
+
+                if ( ! $title || ! $address || ! $parent || ! $country ) {
+                    $this->error = "Not all mandatory fields mapped!";
+                    $this->step = 2;
+
+                    return new WP_Error('not_all_mandatory_fields', 'Not all mandatory fields mapped!' );
+                }
+                return true;
+
+                break;
+
+            default:
+                $this->error = "Post type not selected.";
+                $this->step = 1;
+
+                return new WP_Error('post_type_not_selected', 'Post-type not selected.' );
+                break;
+        }
+    }
+
+    public function remove_temp_file()
+    {
+        // Delete temporary file
+        if ( file_exists( $this->filename ) ) {
+            @unlink( $this->filename );
+        }
     }
 
     /**
