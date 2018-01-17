@@ -24,7 +24,6 @@ class Disciple_Tools_Import_CSV
     public function __construct()
     {
 
-
         $this->odelimiter = "dt_import_odelimiter";
         $this->onumberfields = "dt_import_onumberfields";
         $this->otype = "dt_import_otype";
@@ -40,8 +39,6 @@ class Disciple_Tools_Import_CSV
 
         // persistent variables for the processing timer
         $this->time_start = 0;
-
-
     }
 
     /**
@@ -56,9 +53,6 @@ class Disciple_Tools_Import_CSV
 
             // verify nonce
             if ( ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ) ,'import_csv' ) ) {
-                $this->error = "Nonce not verified";
-                $this->step = 1;
-                new WP_Error( 'nonce_error', 'Nonce not verified' );
                 wp_die( 'nonce verification fail' );
             };
 
@@ -71,7 +65,7 @@ class Disciple_Tools_Import_CSV
                 move_uploaded_file( $_FILES['csv_import']['tmp_name'] , $this->filename ); // locally store uploaded file
 
                 if ( ! file_exists( $this->filename ) || ! is_readable( $this->filename ) ) { // validate file
-                    $this->error = "Can not open/read uploaded file.";
+                    $this->error = "Can not open or read uploaded file.";
                     $this->step = 1;
                 } else {
                     if ( isset( $_POST['post_format'] ) ) {
@@ -86,12 +80,8 @@ class Disciple_Tools_Import_CSV
 
             // verify nonce
             if ( ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ) ,'import_csv' ) ) {
-                $this->error = "Nonce not verified";
-                $this->step = 1;
-                new WP_Error( 'nonce_error', 'Nonce not verified' );
                 wp_die( 'nonce verification fail' );
             };
-
             $this->step = 3;
             $process_form = $this->process_form();
         } else {
@@ -162,7 +152,7 @@ class Disciple_Tools_Import_CSV
                     <h2><?php esc_html_e( 'Import CSV Files', 'disciple_tools' ) ?></h2>
                     <?php if ( $this->error !== '' ) : ?>
                         <div class="error">
-                            <?php esc_attr( $this->error ); ?>
+                            <?php echo esc_attr( $this->error ); ?>
                         </div>
                     <?php endif; ?>
                     <h3><?php esc_html_e( 'Step 2 - Map Fields', 'disciple_tools' ) ?></h3>
@@ -242,7 +232,7 @@ class Disciple_Tools_Import_CSV
                                         <div>
                                             <div style="width:250px;float:left;"><b><?php echo esc_attr( $string ) ?></b>
                                             </div>
-                                            <select name="field<?php esc_attr( $i ) ?>">
+                                            <select name="field<?php echo esc_attr( $i ) ?>">
                                                 <?php $this->get_mapping_drop_down( $headers[ $i ] ) ?>
                                             </select>
                                         </div>
@@ -314,6 +304,7 @@ class Disciple_Tools_Import_CSV
             return new WP_Error( 'insert_records_fail', $insert_records->get_error_message() );
         }
 
+
         // Clean up temp file
         $this->remove_temp_file();
 
@@ -340,6 +331,8 @@ class Disciple_Tools_Import_CSV
 
         // Check file for error
         if ( $resource == 0 ) {
+            $this->error = "Loading file error!";
+            $this->step = 2;
             return new WP_Error( 'failed_to_get_file', 'Failed to get the csv file.' );
         }
 
@@ -356,14 +349,24 @@ class Disciple_Tools_Import_CSV
             }
             else {
 
-                $args = $this->prepare_new_post_array( $keys ); // build post args
-                $id = wp_insert_post( $args ); // wp insert statement
 
-                if ( $id ) {
-                    $imported++;
-                } else {
-                    $skipped++;
+                dt_write_log('BEGIN ASYNC');
+
+                // Parse mapped data
+                $args = [];
+                foreach ( $this->mapped as $item => $value ) {
+                    $args[ $value ] = $keys[ $item ];
                 }
+
+                // Add post type
+                $args['post_type'] = $this->insertype;
+
+                // Load and launch async insert
+                $insert_location = new Disciple_Tools_Async_Insert_Location();
+                $insert_location->launch( $args );
+
+                dt_write_log( 'COMPLETED ASYNC');
+
             }
             $i++;
         }
@@ -380,8 +383,6 @@ class Disciple_Tools_Import_CSV
             'execution_time' => $exec_time,
         ];
     }
-
-
 
     /**
      * File opener

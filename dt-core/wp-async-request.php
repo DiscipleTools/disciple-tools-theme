@@ -109,7 +109,6 @@ if ( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
             $data['_wp_nonce'] = wp_create_nonce();
 
             $this->_body_data = $data;
-
             if ( !has_action( 'shutdown', [ $this, 'launch_on_shutdown' ] ) ) {
                 add_action( 'shutdown', [ $this, 'launch_on_shutdown' ] );
             }
@@ -163,6 +162,7 @@ if ( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
          */
         public function handle_postback()
         {
+
             // @codingStandardsIgnoreLine
             if( isset( $_POST[ '_nonce' ] ) && $this->verify_async_nonce( $_POST[ '_nonce' ] ) ) {
                 if ( !is_user_logged_in() ) {
