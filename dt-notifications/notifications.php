@@ -454,6 +454,8 @@ class Disciple_Tools_Notifications
                     'notification_note'   => '<a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '" >' . strip_tags( get_the_title( $post_id ) ) . '</a> was shared with you.',
                     'date_notified'       => current_time( 'mysql' ),
                     'is_new'              => 1,
+                    'field_key'           => "comments",
+                    'field_value'         => ''
                 ]
             );
         }

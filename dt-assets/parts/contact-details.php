@@ -237,7 +237,7 @@
                             foreach ($contact->fields["locations"] ?? [] as $value){
                                 ?>
                                 <li class="<?php echo esc_html( $value->ID )?>">
-                                    <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
+                                    <?php echo esc_html( $value->post_title ) ?>
                                 </li>
                             <?php }
                             if (sizeof( $contact->fields["locations"] ) === 0){

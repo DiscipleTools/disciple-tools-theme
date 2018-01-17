@@ -154,7 +154,6 @@ jQuery(document).ready(function($) {
           },
           callback: {
             done: function (data) {
-              console.log(data)
               typeaheadTotals[field] = data.total
               return data.posts
             }
@@ -557,6 +556,35 @@ jQuery(document).ready(function($) {
     var tabId = $('#comment-activity-tabs').find('.tabs-title.is-active').data('tab');
     display_activity_comment(tabId)
   })
+
+  $('textarea.mention').mentionsInput({
+    onDataRequest:function (mode, query, callback) {
+      API.search_users(query).then(responseData=>{
+        let data = []
+        responseData.forEach(user=>{
+          data.push({id:user.ID, name:user.name, type:'contact'})
+          callback.call(this, data);
+        })
+      })
+    },
+    templates : {
+      mentionItemSyntax : function (data) {
+        return `@${data.value}`
+      }
+    }
+  });
+
+  let getMentionedUsers = (callback)=>{
+    $('textarea.mention').mentionsInput('getMentions', function(data) {
+      callback(data);
+    });
+  }
+
+  let getCommentWithMentions = (callback)=>{
+    $('textarea.mention').mentionsInput('val', function(text) {
+      callback(text);
+    });
+  }
 
   /**
    * Contact details

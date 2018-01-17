@@ -229,7 +229,17 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      * @param string $notification_note
      * @param        $date_notified
      */
-    protected function add_mention_notification( int $mentioned_user_id, int $source_user_id, int $post_id, int $comment_id, string $notification_action, string $notification_note, $date_notified )
+    protected function add_mention_notification(
+        int $mentioned_user_id,
+        int $source_user_id,
+        int $post_id,
+        int $comment_id,
+        string $notification_action,
+        string $notification_note,
+        $date_notified,
+        string $field_key = "comments",
+        string $field_value = ""
+)
     {
 
         dt_notification_insert(
@@ -243,6 +253,8 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                 'notification_note'   => $notification_note,
                 'date_notified'       => $date_notified,
                 'is_new'              => 1,
+                'field_key'           => $field_key,
+                'field_value'         => $field_value
             ]
         );
     }

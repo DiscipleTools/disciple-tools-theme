@@ -72,8 +72,13 @@ function dt_site_scripts() {
 
     dt_theme_enqueue_script( 'lodash', 'dt-core/dependencies/lodash/lodash.min.js', array() );
 
-    dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/jquery-typeahead-2.10.4/jquery.typeahead.min.js', array( 'jquery' ), true );
-    dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/jquery-typeahead-2.10.4/jquery.typeahead.min.css', array() );
+    dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
+    dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
+    dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.js', array( 'jquery' ), true );
+    dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.js', array( 'jquery' ), true );
+    dt_theme_enqueue_style( 'jquery-mentions-css', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.css', array() );
+
+
 
     dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts.min.js', array( 'jquery' ), true );
 
@@ -143,7 +148,7 @@ function dt_site_scripts() {
         'email' => __( 'email' )
     ];
     if (is_singular( "contacts" )){
-        dt_theme_enqueue_script( 'contact-details', 'dt-assets/js/contact-details.js', array( 'jquery', 'lodash', 'api-wrapper', 'moment', 'typeahead-jquery' ) );
+        dt_theme_enqueue_script( 'contact-details', 'dt-assets/js/contact-details.js', array( 'jquery', 'lodash', 'api-wrapper', 'moment', 'typeahead-jquery', 'jquery-mentions', 'jquery-mentions-elastic' ) );
         $contact = Disciple_Tools_Contacts::get_contact( get_the_ID() );
         wp_localize_script(
             'contact-details', 'contactsDetailsWpApiSettings', array(

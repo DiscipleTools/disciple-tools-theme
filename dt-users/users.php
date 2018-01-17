@@ -41,28 +41,19 @@ class Disciple_Tools_Users
             return new WP_Error( __FUNCTION__, __( "No permissions to assign" ), [ 'status' => 403 ] );
         }
 
+
+        $search_string = esc_attr( $search_string );
         $user_query = new WP_User_Query( [
-            'search'         => '*' . esc_attr( $search_string ) . '*',
+            'search'         => '*' . $search_string . '*',
             'search_columns' => [
                 'user_login',
                 'user_nicename',
                 'user_email',
                 'user_url',
             ],
-            'meta_query'     => [
-                'relation' => 'OR',
-                [
-                    'key'     => 'first_name',
-                    'value'   => $search_string,
-                    'compare' => 'LIKE',
-                ],
-                [
-                    'key'     => 'last_name',
-                    'value'   => $search_string,
-                    'compare' => 'LIKE',
-                ],
-            ],
         ] );
+
+//        @todo also searh names. Was not worknig.
         $users = $user_query->get_results();
         $list = [];
 
@@ -71,6 +62,7 @@ class Disciple_Tools_Users
                 $list[] = [
                     "name" => $user->display_name,
                     "ID"   => $user->ID,
+                    "user" => $user->user_login
                 ];
             }
         }

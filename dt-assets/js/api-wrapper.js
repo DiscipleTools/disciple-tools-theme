@@ -147,5 +147,16 @@ let API = {
       }
     })
   },
+  search_users(query){
+    return jQuery.ajax({
+      type: "GET",
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: wpApiSettings.root + `dt/v1/users/get_users?s=${query}`,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      }
+    })
+  }
 
 }
