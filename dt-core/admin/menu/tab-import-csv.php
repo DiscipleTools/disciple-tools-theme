@@ -162,7 +162,7 @@ class Disciple_Tools_Import_CSV
                     <h2><?php esc_html_e( 'Import CSV Files', 'disciple_tools' ) ?></h2>
                     <?php if ( $this->error !== '' ) : ?>
                         <div class="error">
-                            <?php esc_attr_e( $this->error . '' ); ?>
+                            <?php esc_attr( $this->error ); ?>
                         </div>
                     <?php endif; ?>
                     <h3><?php esc_html_e( 'Step 2 - Map Fields', 'disciple_tools' ) ?></h3>
