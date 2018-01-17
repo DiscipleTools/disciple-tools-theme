@@ -41,7 +41,7 @@ class Disciple_Tools_Import_CSV
         // persistent variables for the processing timer
         $this->time_start = 0;
 
-        dt_write_log( $_POST );
+
     }
 
     /**
@@ -53,27 +53,37 @@ class Disciple_Tools_Import_CSV
         // Routing
         if ( $this->check_is_post( '_csv_panel', 'post_for_step_2' ) ) {
             // page 2
+
+            // verify nonce
+            if ( ! wp_verify_nonce('import_csv_page_3' ) ) {
+                $this->error = "Nonce not verified";
+                $this->step = 1;
+                new WP_Error( 'nonce_error', 'Nonce not verified' );
+            };
+
             if ( empty( $_FILES['csv_import']['tmp_name'] ) ) {
                 $this->error = "No file uploaded";
                 $this->step = 1;
             }
             else {
-                move_uploaded_file( $_FILES['csv_import']['tmp_name'], $this->filename ); // locally store uploaded file
+                move_uploaded_file(  $_FILES['csv_import']['tmp_name']  , $this->filename ); // locally store uploaded file
 
                 if ( ! file_exists( $this->filename ) || ! is_readable( $this->filename ) ) { // validate file
                     $this->error = "Can not open/read uploaded file.";
                     $this->step = 1;
                 } else {
-                    $this->insertype = $_POST['post_format']; // capture selected post type
-                    set_transient( $this->otype, $this->insertype, 12 * HOUR_IN_SECONDS );
-                    $this->step = 2;
+                    if( isset( $_POST['post_format'] ) ) {
+                        $this->insertype = sanitize_key( wp_unslash( $_POST['post_format'] ) ); // capture selected post type
+                        set_transient( $this->otype, $this->insertype, 12 * HOUR_IN_SECONDS );
+                        $this->step = 2;
+                    }
                 }
             }
-        } elseif ( $this->check_is_post( '_csv_panel', 'post_for_step_3' ) && $this->check_is_post( 'submitback', 'Back' ) ) {
-            // back button
-            $this->step = 1;
         } elseif ( $this->check_is_post( '_csv_panel', 'post_for_step_3' ) ) {
             // page 3
+
+            // verify nonce
+
             $this->step = 3;
             $process_form = $this->process_form();
         } else {
@@ -97,6 +107,7 @@ class Disciple_Tools_Import_CSV
                     <?php endif; ?>
 
                     <form class="add:the-list: validate" method="post" enctype="multipart/form-data">
+                        <?php wp_nonce_field( 'import_csv_page_2' ); ?>
                         <input name="_csv_panel" type="hidden" value="post_for_step_2"/>
 
                         <!-- File input -->
@@ -104,6 +115,7 @@ class Disciple_Tools_Import_CSV
                             <label for="csv_import">
                                 <?php _e( 'Select a CSV file:', 'disciple_tools' ) ?>
                             </label><br/>
+                            <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
                             <input name="csv_import" id="csv_import" type="file" value=""/>
                         </div>
                         <!-- Type -->
@@ -197,6 +209,7 @@ class Disciple_Tools_Import_CSV
 
                     <!-- MAP FIELDS SECTION -->
                     <form class="add:the-list: validate" method="post" enctype="multipart/form-data">
+                        <?php wp_nonce_field( 'import_csv_page_3' ); ?>
                         <input name="_csv_panel" type="hidden" value="post_for_step_3"/>
 
                         <!-- Type -->
@@ -233,7 +246,7 @@ class Disciple_Tools_Import_CSV
                             </div>
                         </div>
 
-                        <button type="submit" class="button" name="submitback" value="Back">Back</button>
+                        <a class="button" href="<?php echo admin_url( 'admin.php?page=import_export' ); ?>">Back</a>
                         <button type="submit" class="button">Next ></button>
                         <br>
                         <div style="/*float:right;*/background-color:#FFFFE0;border: 1px solid #E6DB55;padding:10px;">After
@@ -249,7 +262,7 @@ class Disciple_Tools_Import_CSV
                 break;
 
             case '3':
-               
+
 
                 if ( is_wp_error( $process_form ) ) {
                     print $process_form->get_error_message();
@@ -282,20 +295,20 @@ class Disciple_Tools_Import_CSV
 
         // Check for duplicate mappings and build mappings variable
         $check_mappings = $this->check_mappings();
-        if( is_wp_error( $check_mappings ) ) {
-            return new WP_Error('confirm_mappings', $check_mappings->get_error_message() );
+        if ( is_wp_error( $check_mappings ) ) {
+            return new WP_Error( 'confirm_mappings', $check_mappings->get_error_message() );
         }
 
         // Check required fields
         $check_required_fields = $this->check_required_fields();
-        if( is_wp_error( $check_required_fields ) ) {
-            return new WP_Error('check_required_fields', $check_required_fields->get_error_message() );
+        if ( is_wp_error( $check_required_fields ) ) {
+            return new WP_Error( 'check_required_fields', $check_required_fields->get_error_message() );
         }
 
         // Insert records
         $insert_records = $this->insert_records();
-        if( is_wp_error( $insert_records ) ) {
-            return new WP_Error('insert_records_fail', $insert_records->get_error_message() );
+        if ( is_wp_error( $insert_records ) ) {
+            return new WP_Error( 'insert_records_fail', $insert_records->get_error_message() );
         }
 
         // Clean up temp file
@@ -365,7 +378,7 @@ class Disciple_Tools_Import_CSV
         ];
     }
 
-    
+
 
     /**
      * File opener
@@ -435,12 +448,12 @@ class Disciple_Tools_Import_CSV
             }
         }
 
-        switch( $this->insertype ) {
+        switch ( $this->insertype ) {
             case 'locations':
                 // lookup post parent id
                 if ( isset( $mapped_from_form['post_parent'] ) ) {
-                    $parent_id = get_page_by_title( $mapped_from_form['post_parent'], OBJECT, 'locations');
-                    if( ! is_null( $parent_id ) ) {
+                    $parent_id = get_page_by_title( $mapped_from_form['post_parent'], OBJECT, 'locations' );
+                    if ( ! is_null( $parent_id ) ) {
                         $args['post_parent'] = $parent_id->ID;
                     }
                 }
@@ -453,7 +466,7 @@ class Disciple_Tools_Import_CSV
                     }
 
                     $results = Disciple_Tools_Google_Geocode_API::query_google_api( $mapped_from_form['address'], 'all_points' );
-                    if( $results ) {
+                    if ( $results ) {
                         $args['meta_input'] = [
                             'lat' => $results['lat'],
                             'lng' => $results['lng'],
@@ -480,7 +493,7 @@ class Disciple_Tools_Import_CSV
      */
     public function get_mapping_drop_down( $name ) {
 
-        switch( $this->insertype ) {
+        switch ( $this->insertype ) {
             case 'locations':
                 $fields = [
                     [
@@ -503,9 +516,9 @@ class Disciple_Tools_Import_CSV
 
                 echo '<option value="">Select...</option>';
 
-                foreach( $fields as $field ) {
+                foreach ( $fields as $field ) {
                     echo '<option value="'. $field['key'].'"';
-                    if( $field['key'] == $name ) {
+                    if ( $field['key'] == $name ) {
                         echo ' selected';
                     }
                     echo '>'.$field['label'].'</option>';
@@ -528,11 +541,13 @@ class Disciple_Tools_Import_CSV
      */
     public function get_post( $postvar, &$postval )
     {
-        if ( ! isset( $_POST[ $postvar ] ) )
+        if ( ! isset( $_POST[ $postvar ] ) ) {
             return false;
+        }
         $postval = $_POST[ $postvar ];
-        if ( $postval == '' )
+        if ( $postval == '' ) {
             return false;
+        }
 
         return true;
     }
@@ -627,7 +642,7 @@ class Disciple_Tools_Import_CSV
                     $this->error = "Post field(s) mapped more than once !";
                     $this->step = 2;
 
-                    return new WP_Error('failed_post_fields', 'Post field(s) mapped more than once!');
+                    return new WP_Error( 'failed_post_fields', 'Post field(s) mapped more than once!' );
                 }
                 $this->mapped[ $i ] = $val;
             }
@@ -643,7 +658,7 @@ class Disciple_Tools_Import_CSV
     public function check_required_fields() {
 
         // Check for presence of title and content
-        switch( $this->insertype ) {
+        switch ( $this->insertype ) {
 
             case 'locations':
 
@@ -671,7 +686,7 @@ class Disciple_Tools_Import_CSV
                     $this->error = "Not all mandatory fields mapped!";
                     $this->step = 2;
 
-                    return new WP_Error('not_all_mandatory_fields', 'Not all mandatory fields mapped!' );
+                    return new WP_Error( 'not_all_mandatory_fields', 'Not all mandatory fields mapped!' );
                 }
                 return true;
 
@@ -681,7 +696,7 @@ class Disciple_Tools_Import_CSV
                 $this->error = "Post type not selected.";
                 $this->step = 1;
 
-                return new WP_Error('post_type_not_selected', 'Post-type not selected.' );
+                return new WP_Error( 'post_type_not_selected', 'Post-type not selected.' );
                 break;
         }
     }
