@@ -350,7 +350,7 @@ class Disciple_Tools_Import_CSV
             else {
 
 
-                dt_write_log('BEGIN ASYNC');
+                dt_write_log( 'BEGIN ASYNC' );
 
                 // Parse mapped data
                 $args = [];
@@ -365,7 +365,7 @@ class Disciple_Tools_Import_CSV
                 $insert_location = new Disciple_Tools_Async_Insert_Location();
                 $insert_location->launch( $args );
 
-                dt_write_log( 'COMPLETED ASYNC');
+                dt_write_log( 'COMPLETED ASYNC' );
 
             }
             $i++;

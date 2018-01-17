@@ -78,7 +78,7 @@ function dt_register_required_plugins() {
         //            'version'               => '1.2.3',
         //            'is_callable'           => 'Jwt_Auth_Public',
         //        ),
-        
+
     );
 
     /*

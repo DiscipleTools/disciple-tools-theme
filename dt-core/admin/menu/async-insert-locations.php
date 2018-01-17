@@ -29,7 +29,7 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
     /**
      * Insert Locations
      */
-    public function insert_location( )
+    public function insert_location()
     {
         /**
          * Nonce validation is done through a custom nonce process inside Disciple_Tools_Async_Task
@@ -39,10 +39,8 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
         // @codingStandardsIgnoreLine
         if( isset( $_POST[ 'action' ] ) && sanitize_key( wp_unslash( $_POST[ 'action' ] ) ) == 'dt_async_insert_location' && isset( $_POST[ '_nonce' ] ) && $this->verify_async_nonce( sanitize_key( wp_unslash( $_POST[ '_nonce' ] ) ) ) ) {
 
-            dt_write_log('insert_location!');
-            dt_write_log($_POST);
-            $mapped_from_form = array_map( 'sanitize_text_field', wp_unslash( $_POST[ 0 ] ) );
-
+            // @codingStandardsIgnoreLine
+            $mapped_from_form = array_map( 'sanitize_text_field', wp_unslash( $_POST[0] ) );
 
             // prepare standard fields
             $args['post_title'] = wp_strip_all_tags( $mapped_from_form['post_title'] );
@@ -105,6 +103,7 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
             }
 
             $id = wp_insert_post( $args ); // wp insert statement
+            dt_write_log( 'Inserted record ' . $id );
 
             //            if ( $id ) {
             //                $imported++;
@@ -129,7 +128,7 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
 /**
  * This hook function listens for the prepared async process on every page load.
  */
-function dt_load_async_insert_location( )
+function dt_load_async_insert_location()
 {
     if ( isset( $_POST['_wp_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wp_nonce'] ) ) ) && isset( $_POST['action'] ) && sanitize_key( wp_unslash( $_POST['action'] ) ) == 'dt_async_insert_location' ) {
         $insert_location = new Disciple_Tools_Async_Insert_Location();
