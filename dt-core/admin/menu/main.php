@@ -74,8 +74,8 @@ final class Disciple_Tools_Config
         add_menu_page( __( 'Disciple Tools', 'disciple_tools' ), __( 'Disciple Tools', 'disciple_tools' ), 'manage_dt', 'dt_options', [ $this, 'build_default_page' ], dt_svg_icon(), 59 );
 
         add_submenu_page( 'dt_options', __( 'Import/Export', 'disciple_tools' ), __( 'Import/Export', 'disciple_tools' ), 'manage_dt', 'import_export', [ $this, 'build_import_export_page' ] );
-        add_submenu_page( 'dt_options', __( 'Extensions', 'disciple_tools' ), __( 'Extensions', 'disciple_tools' ), 'manage_dt', 'extensions', [ $this, 'build_extensions_page' ] );
-        add_submenu_page( 'dt_options', __( 'De-Duplication', 'disciple_tools' ), __( 'De-Duplication', 'disciple_tools' ), 'manage_dt', 'de_duplication', [ $this, 'build_extensions_page' ] );
+//        add_submenu_page( 'dt_options', __( 'Extensions', 'disciple_tools' ), __( 'Extensions', 'disciple_tools' ), 'manage_dt', 'extensions', [ $this, 'build_extensions_page' ] );
+//        add_submenu_page( 'dt_options', __( 'De-Duplication', 'disciple_tools' ), __( 'De-Duplication', 'disciple_tools' ), 'manage_dt', 'de_duplication', [ $this, 'build_extensions_page' ] );
 
         //        @todo potentially remove these pages
 //        add_submenu_page( 'dt_options', 'API Keys', 'API Keys', 'manage_dt', 'dt_api_keys', [ $this, 'build_api_key_page' ] );
@@ -176,7 +176,7 @@ final class Disciple_Tools_Config
         $tab = isset( $_GET["tab"] ) ? sanitize_text_field( wp_unslash( $_GET["tab"] ) ) : 'general';
 
         echo '<div class="wrap">
-            <h2>DISCIPLE TOOLS : IMPORT/EXPORT</h2>
+            <h2>DISCIPLE TOOLS : IMPORT</h2>
             <h2 class="nav-tab-wrapper">';
 
         // tab labels
@@ -185,8 +185,6 @@ final class Disciple_Tools_Config
             echo 'nav-tab-active';
         }
         echo '">General</a>';
-
-
 
         echo '</h2>';
         // End Tab Bar

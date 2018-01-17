@@ -103,14 +103,21 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
             }
 
             $id = wp_insert_post( $args ); // wp insert statement
-            dt_write_log( 'Inserted record ' . $id );
 
-            //            if ( $id ) {
-            //                $imported++;
-            //            } else {
-            //                $skipped++;
-            //            }
+            // Track the number of posts inserted
+            if ( $id ) {
+                $imported = get_transient( 'dt_import_finished_count' );
+                ( $imported ) ? $imported++ : $imported = 1;
+                set_transient( 'dt_import_finished_count', $imported, 1 * HOUR_IN_SECONDS );
 
+                dt_write_log( 'Inserted record ' . $id );
+            } else {
+                $errors = get_transient( 'dt_import_finished_with_errors' );
+                $errors[] = $args['post_title'];
+                set_transient( 'dt_import_finished_with_errors', $errors, 1 * HOUR_IN_SECONDS );
+
+                dt_write_log( 'Failed to insert record ' . $args['post_title'] );
+            }
         }
     }
 

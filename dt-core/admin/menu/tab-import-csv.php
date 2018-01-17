@@ -39,6 +39,9 @@ class Disciple_Tools_Import_CSV
 
         // persistent variables for the processing timer
         $this->time_start = 0;
+
+        add_action( 'admin_footer', [ $this, 'progress_javascript' ] );
+        add_action( 'wp_ajax_check_progress', [ $this, 'check_progress' ] );
     }
 
     /**
@@ -86,6 +89,8 @@ class Disciple_Tools_Import_CSV
             $process_form = $this->process_form();
         } else {
             // page 1
+            set_transient( 'dt_import_finished_count', 0, 1 * HOUR_IN_SECONDS ); // reset the processor transient for the async process
+            set_transient( 'dt_import_finished_with_errors', [], 1 * HOUR_IN_SECONDS );
             $this->step = 1;
         }
 
@@ -260,14 +265,29 @@ class Disciple_Tools_Import_CSV
                 if ( is_wp_error( $process_form ) ) {
                     echo esc_attr( $process_form->get_error_message() );
                 } else {
-                    /** Print Report to Screen */
-                    echo '<div class="wrap"><h1>' . esc_attr__( 'Report', 'disciple_tools' ) . '</h1><br/>';
-                    echo '<div class="updated fade">';
-                    echo sprintf( " Posts <b>imported</b> - <b>%d</b><br><br>", esc_attr( $process_form['imported'] ) );
-                    echo sprintf( " Posts <b>skipped</b> - <b>%d</b><br><br>", esc_attr( $process_form['skipped'] ) );
-                    echo sprintf( "Finished in <b>%.2f</b> seconds.", esc_attr( $process_form['execution_time'] ) );
-                    echo '</div>';
-                    echo '</div>'; // end div wrapper
+                    ?>
+
+                    <div class="wrap"><h1><?php echo esc_attr__( 'Report', 'disciple_tools' ) ?></h1><br/>
+                        <div id="success"></div>
+                        <div id="failed"></div>
+                    </div>
+
+                    <!-- @todo finish building the checker for progress -->
+                    <script>
+                        jQuery(document).ready(function() {
+                            let i = 0;
+                            window.setInterval(function(){
+                                jQuery('#success').html( i );
+                                i++
+
+
+                            }, 2000);
+
+                        });
+                    </script>
+
+                    <?php
+
                 }
                 break;
 
@@ -275,6 +295,36 @@ class Disciple_Tools_Import_CSV
                 wp_die( 'step not recognized' );
                 break;
         }
+    }
+
+ // Write our JS below here
+
+    public function progress_javascript() {
+        // @todo build the javascript checker for progress
+        ?>
+        <script type="text/javascript" >
+            jQuery(document).ready(function($) {
+
+                var data = {
+                    'action': 'check_progress',
+                    'whatever': 1234
+                };
+
+                // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
+                jQuery.post(ajaxurl, data, function(response) {
+                    jQuery('#success').html( response );
+                });
+            });
+        </script>
+        <?php
+    }
+
+    /**
+     * @return string
+     */
+    public function check_progress() {
+        // @todo build the checker for the progress
+        return 'success';
     }
 
     /**
@@ -415,82 +465,6 @@ class Disciple_Tools_Import_CSV
         }
 
         return ( $handle );
-    }
-
-    /**
-     * Get values from array
-     *
-     * @param $keys
-     * @return array
-     */
-    public function prepare_new_post_array( $keys )
-    {
-        // Parse mapped data
-        $mapped_from_form = [];
-        foreach ( $this->mapped as $item => $value ) {
-            $mapped_from_form[ $value ] = $keys[ $item ];
-        }
-
-        // prepare standard fields
-        $args['post_title'] = wp_strip_all_tags( $mapped_from_form['post_title'] );
-        $args['post_content'] = '';
-        $args['post_type'] = $this->insertype;
-        $args['post_status'] = 'publish';
-
-        if ( isset( $mapped_from_form['post_excerpt'] ) ) {
-            $args['post_excerpt'] = $mapped_from_form['post_excerpt'];
-        }
-
-        if ( isset( $mapped_from_form['post_slug'] ) ) {
-            $args['post_name'] = $mapped_from_form['post_slug'];
-        }
-
-        if ( isset( $mapped_from_form['post_date'] ) ) {
-            $timestamp = strtotime( $mapped_from_form['post_date'] );
-            if ( $timestamp !== false ) {
-                $args['post_date'] = date( 'Y-m-d H:i:s', $timestamp );
-            }
-        }
-
-        switch ( $this->insertype ) {
-            case 'locations':
-                // lookup post parent id
-                if ( isset( $mapped_from_form['post_parent'] ) ) {
-                    // @codingStandardsIgnoreLine
-                    $parent_id = get_page_by_title( $mapped_from_form['post_parent'], OBJECT, 'locations' );
-                    if ( ! is_null( $parent_id ) ) {
-                        $args['post_parent'] = $parent_id->ID;
-                    }
-                }
-
-                // geocode address
-                if ( isset( $mapped_from_form['address'] ) ) {
-
-                    if ( isset( $mapped_from_form['country'] ) ) {
-                        $mapped_from_form['address'] .= ', ' . $mapped_from_form['country'];
-                    }
-
-                    $results = Disciple_Tools_Google_Geocode_API::query_google_api( $mapped_from_form['address'], 'all_points' );
-                    if ( $results ) {
-                        $args['meta_input'] = [
-                            'lat' => $results['lat'],
-                            'lng' => $results['lng'],
-                            'northeast_lat' => $results['northeast_lat'],
-                            'northeast_lng' => $results['northeast_lng'],
-                            'southwest_lat' => $results['southwest_lat'],
-                            'southwest_lng' => $results['southwest_lng'],
-                            'location_address' => $results['formatted_address'],
-                            'location' => $results,
-                        ];
-                    }
-                }
-
-                break;
-            default:
-                break;
-        }
-
-        return $args;
     }
 
     /**
