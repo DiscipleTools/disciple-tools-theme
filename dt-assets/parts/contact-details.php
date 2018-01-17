@@ -85,7 +85,6 @@
 
     <section class="cell">
         <div class="bordered-box">
-            <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
             <div class="item-details-header-row">
                 <button class="float-right" id="edit-details">
                     <i class="fi-pencil"></i>

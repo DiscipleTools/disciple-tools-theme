@@ -29,6 +29,9 @@ declare( strict_types=1 );
     ); ?>
 
     <div id="content">
+        <span id="contact-id" style="display: none"><?php echo get_the_ID()?></span>
+        <span id="post-id" style="display: none"><?php echo get_the_ID()?></span>
+        <span id="post-type" style="display: none">contact</span>
 
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 

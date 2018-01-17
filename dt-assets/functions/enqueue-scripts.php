@@ -69,19 +69,9 @@ function dt_site_scripts() {
     wp_register_script( 'moment', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js', false, '2.19.1' );
     wp_enqueue_script( 'moment' );
 
-
     dt_theme_enqueue_script( 'lodash', 'dt-core/dependencies/lodash/lodash.min.js', array() );
 
-    dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
-    dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
-    dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.js', array( 'jquery' ), true );
-    dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.js', array( 'jquery' ), true );
-    dt_theme_enqueue_style( 'jquery-mentions-css', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.css', array() );
-
-
-
     dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts.min.js', array( 'jquery' ), true );
-
 
     // Register main stylesheet
     dt_theme_enqueue_style( 'site-css', 'dt-assets/build/css/style.min.css', array() );
@@ -132,56 +122,85 @@ function dt_site_scripts() {
     );
 
 
-    $translations = [
-        "not-set" => [
-            "location" => __( 'No location set', 'disciple_tools' ),
-            "people-group" => __( 'No people group set', 'disciple_tools' ),
-            "email" => __( 'No email set', 'disciple_tools' ),
-            "phone" => __( 'No phone set', 'disciple_tools' ),
-            "address" => __( 'No address set', 'disciple_tools' ),
-            "social" => __( 'None set', 'disciple_tools' )
-        ],
-        "valid" => __( 'Valid', 'disciple_tools' ),
-        "invalid" => __( 'Invalid', 'disciple_tools' ),
-        "unconfirmed" => __( 'Unconfirmed', 'disciple_tools' ),
-        'delete' => __( 'Delete item', 'disciple_tools' ),
-        'email' => __( 'email' )
-    ];
-    if (is_singular( "contacts" )){
-        dt_theme_enqueue_script( 'contact-details', 'dt-assets/js/contact-details.js', array( 'jquery', 'lodash', 'api-wrapper', 'moment', 'typeahead-jquery', 'jquery-mentions', 'jquery-mentions-elastic' ) );
-        $contact = Disciple_Tools_Contacts::get_contact( get_the_ID() );
-        wp_localize_script(
-            'contact-details', 'contactsDetailsWpApiSettings', array(
-                'contact' => $contact,
-                'contact_author_name' => (int) $contact->post_author > 0 ? get_user_by( 'id', intval( $contact->post_author ) )->display_name : "",
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
-                'channels' => Disciple_Tools_Contacts::get_channel_list(),
-                'template_dir' => get_template_directory_uri(),
-                'txt_created_contact' => __( "Created contact at {}" ),
-                'translations' => $translations
-            )
-        );
-    }
-    if (is_singular( "groups" )){
-        dt_theme_enqueue_script( 'group-details', 'dt-assets/js/group-details.js', array( 'jquery', 'lodash', 'typeahead-jquery', 'api-wrapper', 'moment' ) );
-        $group = Disciple_Tools_Groups::get_group( get_the_ID() );
-        $group_post = get_post( $group["ID"] );
-        wp_localize_script(
-            'group-details', 'wpApiGroupsSettings', array(
-                'group' => $group,
-                'group_post' => $group_post,
-                'group_author_name' => get_user_by( 'id', intval( $group_post->post_author ) )->display_name,
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'template_dir' => get_template_directory_uri(),
-                'txt_created_group' => __( "Created group at {}" ),
-                'translations' => $translations
-            )
-        );
-    }
 
+    if (is_singular( "contacts" ) || is_singular( "groups" ) ) {
+        dt_theme_enqueue_script( 'comments', 'dt-assets/js/comments.js', array( 'jquery', 'lodash', 'api-wrapper', 'moment', 'typeahead-jquery', 'jquery-mentions', 'jquery-mentions-elastic' ) );
+        wp_localize_script(
+            'comments', 'commentsSettings', [
+                "post" => get_post(),
+                'txt_created' => __( "Created contact at {}" ),
+            ]
+        );
+        dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
+        dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
+        dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.js', array( 'jquery' ), true );
+        dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.js', array( 'jquery' ), true );
+        dt_theme_enqueue_style( 'jquery-mentions-css', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.css', array() );
+
+
+        $translations = [
+            "not-set"     => [
+                "location"     => __( 'No location set', 'disciple_tools' ),
+                "people-group" => __( 'No people group set', 'disciple_tools' ),
+                "email"        => __( 'No email set', 'disciple_tools' ),
+                "phone"        => __( 'No phone set', 'disciple_tools' ),
+                "address"      => __( 'No address set', 'disciple_tools' ),
+                "social"       => __( 'None set', 'disciple_tools' )
+            ],
+            "valid"       => __( 'Valid', 'disciple_tools' ),
+            "invalid"     => __( 'Invalid', 'disciple_tools' ),
+            "unconfirmed" => __( 'Unconfirmed', 'disciple_tools' ),
+            'delete'      => __( 'Delete item', 'disciple_tools' ),
+            'email'       => __( 'email' )
+        ];
+        if ( is_singular( "contacts" ) ) {
+            dt_theme_enqueue_script( 'contact-details', 'dt-assets/js/contact-details.js', array(
+                'jquery',
+                'lodash',
+                'api-wrapper',
+                'moment',
+                'typeahead-jquery',
+                'comments'
+            ) );
+            $contact = Disciple_Tools_Contacts::get_contact( get_the_ID() );
+            wp_localize_script(
+                'contact-details', 'detailsWpApiSettings', array(
+                    'contact'                         => $contact,
+                    'contact_author_name'             => (int) $contact->post_author > 0 ? get_user_by( 'id', intval( $contact->post_author ) )->display_name : "",
+                    'root'                            => esc_url_raw( rest_url() ),
+                    'nonce'                           => wp_create_nonce( 'wp_rest' ),
+                    'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
+                    'channels'                        => Disciple_Tools_Contacts::get_channel_list(),
+                    'template_dir'                    => get_template_directory_uri(),
+                    'txt_created'                     => __( "Created contact at {}" ),
+                    'translations'                    => $translations,
+                )
+            );
+        }
+        if ( is_singular( "groups" ) ) {
+            dt_theme_enqueue_script( 'group-details', 'dt-assets/js/group-details.js', array(
+                'jquery',
+                'lodash',
+                'typeahead-jquery',
+                'api-wrapper',
+                'moment'
+            ) );
+            $group      = Disciple_Tools_Groups::get_group( get_the_ID() );
+            $group_post = get_post( $group["ID"] );
+            wp_localize_script(
+                'group-details', 'wpApiGroupsSettings', array(
+                    'group'             => $group,
+                    'group_post'        => $group_post,
+                    'group_author_name' => get_user_by( 'id', intval( $group_post->post_author ) )->display_name,
+                    'root'              => esc_url_raw( rest_url() ),
+                    'nonce'             => wp_create_nonce( 'wp_rest' ),
+                    'template_dir'      => get_template_directory_uri(),
+                    'txt_created'       => __( "Created group at {}" ),
+                    'translations'      => $translations
+                )
+            );
+        }
+    }
 
 
     $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );

@@ -32,6 +32,8 @@ dt_print_breadcrumbs(
 
     <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
         <span id="group-id" style="display: none"><?php echo get_the_ID()?></span>
+        <span id="post-id" style="display: none"><?php echo get_the_ID()?></span>
+        <span id="post-type" style="display: none">group</span>
 
         <main id="main" class="large-7 medium-12 small-12 cell" role="main" style="padding:0">
             <div class=" grid-x grid-margin-x grid-margin-y">

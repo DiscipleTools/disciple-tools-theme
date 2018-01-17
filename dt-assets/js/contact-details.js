@@ -66,68 +66,8 @@ function updateCriticalPath(key) {
 
 
 
-function post_comment(contactId) {
-  let commentInput = jQuery("#comment-input")
-  let commentButton = jQuery("#add-comment-button")
-  let comment = commentInput.val()
-  if (comment){
-    commentButton.toggleClass('loading')
-    commentInput.attr("disabled", true)
-    commentButton.attr("disabled", true)
-    API.post_comment('contact', contactId, comment).then(data=>{
-      commentInput.val("")
-      commentButton.toggleClass('loading')
-      data.comment.date = moment(data.comment.comment_date_gmt + "Z")
-      comments.push(data.comment)
-      display_activity_comment()
-      $('.update-needed.alert').hide()
-      commentInput.attr("disabled", false)
-      commentButton.attr("disabled", false)
-    }).catch(err=>{
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    })
-
-  }
-}
-
-function prepareActivityData(activityData) {
-  /* Insert a "created contact" item in the activity, even though it is not
-   * stored in the database. It is not stored as an activity in the database,
-   * to avoid duplicating data with the post's metadata. */
-  const currentContact = contactsDetailsWpApiSettings.contact;
-  const createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
-  const createdContactActivityItem = {
-   hist_time: createdDate.unix(),
-   object_note: contactsDetailsWpApiSettings.txt_created_contact.replace("{}", formatDate(createdDate.local())),
-   name: contactsDetailsWpApiSettings.contact_author_name,
-   user_id: currentContact.post_author,
-  }
-  activityData.push(createdContactActivityItem)
-  activityData.forEach(item => {
-    item.date = moment.unix(item.hist_time)
-  })
-}
-
-let commentTemplate = _.template(`
-  <div class="activity-block">
-    <div><span><strong><%- name %></strong></span> <span class="comment-date"> <%- date %> </span></div>
-    <div class="activity-text">
-    <% _.forEach(activity, function(a){
-        if (a.comment){ %>
-            <p dir="auto" class="comment-bubble"> <%- a.text %> </p>
-      <% } else { %>
-            <p class="activity-bubble">  <%- a.text %> </p>
-    <%  }
-    }); %>
-    </div>
-  </div>`
-)
 
 
-let comments = []
-let activity = [] // not guaranteed to be in any particular order
 let contact = {}
 let typeaheadTotals = {};
 jQuery(document).ready(function($) {
@@ -516,75 +456,6 @@ jQuery(document).ready(function($) {
     })
   })
 
-
-  /**
-   * Comments and activity
-   */
-  $( document ).ajaxComplete(function(event, xhr, settings) {
-    if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
-      API.get_activity('contact', contactId).then(activityData=>{
-        activity = activityData
-        prepareActivityData(activity)
-        display_activity_comment()
-      })
-    }
-  });
-
-  $.when(
-    API.get_comments('contact', contactId),
-    API.get_activity('contact', contactId)
-  ).then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
-    const commentData = commentDataStatusJQXHR[0];
-    const activityData = activityDataStatusJQXHR[0];
-    commentData.forEach(comment => {
-      comment.date = moment(comment.comment_date_gmt + "Z")
-    })
-    comments = commentData
-    activity = activityData
-    prepareActivityData(activity)
-    display_activity_comment("all")
-  }).catch(err => {
-    console.error(err);
-    jQuery("#errors").append(err.responseText)
-  })
-
-  jQuery('#add-comment-button').on('click', function () {
-    post_comment(contactId)
-  })
-
-  $('#comment-activity-tabs').on("change.zf.tabs", function () {
-    var tabId = $('#comment-activity-tabs').find('.tabs-title.is-active').data('tab');
-    display_activity_comment(tabId)
-  })
-
-  $('textarea.mention').mentionsInput({
-    onDataRequest:function (mode, query, callback) {
-      API.search_users(query).then(responseData=>{
-        let data = []
-        responseData.forEach(user=>{
-          data.push({id:user.ID, name:user.name, type:'contact'})
-          callback.call(this, data);
-        })
-      })
-    },
-    templates : {
-      mentionItemSyntax : function (data) {
-        return `@${data.value}`
-      }
-    }
-  });
-
-  let getMentionedUsers = (callback)=>{
-    $('textarea.mention').mentionsInput('getMentions', function(data) {
-      callback(data);
-    });
-  }
-
-  let getCommentWithMentions = (callback)=>{
-    $('textarea.mention').mentionsInput('val', function(text) {
-      callback(text);
-    });
-  }
 
   /**
    * Contact details
@@ -979,60 +850,6 @@ jQuery(document).ready(function($) {
 
 })
 
-
-
-function formatDate(date) {
-  return date.format("YYYY-MM-DD h:mm a")
-}
-
-let current_section = "all"
-function display_activity_comment(section) {
-  current_section = section || current_section
-
-  let commentsWrapper = $("#comments-wrapper")
-  commentsWrapper.empty()
-  let displayed = []
-  if (current_section === "all"){
-    displayed = _.union(comments, activity)
-  } else if (current_section === "comments"){
-    displayed = comments
-  } else if ( current_section === "activity"){
-    displayed = activity
-  }
-  displayed = _.orderBy(displayed, "date", "desc")
-  let array = []
-
-  displayed.forEach(d=>{
-    let first = _.first(array)
-    let name = d.comment_author || d.name
-    let obj = {
-      name: name,
-      date: d.date,
-      text:d.object_note ||  d.comment_content,
-      comment: !!d.comment_content
-    }
-
-
-    let diff = first ? first.date.diff(obj.date, "hours") : 0
-    if (!first || (first.name === name && diff < 1) ){
-      array.push(obj)
-    } else {
-      commentsWrapper.append(commentTemplate({
-        name: array[0].name,
-        date:formatDate(array[0].date),
-        activity: array
-      }))
-      array = [obj]
-    }
-  })
-  if (array.length > 0){
-    commentsWrapper.append(commentTemplate({
-      name: array[0].name,
-      date:formatDate(array[0].date),
-      activity: array
-    }))
-  }
-}
 
 
 
