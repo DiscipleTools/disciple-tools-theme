@@ -164,7 +164,7 @@ function dt_site_scripts() {
             ) );
             $contact = Disciple_Tools_Contacts::get_contact( get_the_ID() );
             wp_localize_script(
-                'contact-details', 'detailsWpApiSettings', array(
+                'contact-details', 'contactsDetailsWpApiSettings', array(
                     'contact'                         => $contact,
                     'contact_author_name'             => (int) $contact->post_author > 0 ? get_user_by( 'id', intval( $contact->post_author ) )->display_name : "",
                     'root'                            => esc_url_raw( rest_url() ),
