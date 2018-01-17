@@ -396,6 +396,7 @@ class Disciple_Tools
             require_once( get_template_directory() . '/dt-locations/admin-menu.php' );
             $this->location_tools = Disciple_Tools_Location_Tools_Menu::instance();
             require_once( get_template_directory() . '/dt-locations/class-import.php' ); // import class
+            require_once( get_template_directory() . '/dt-locations/geocoding-api.php' );
 
             // People Groups
             require_once( get_template_directory() . '/dt-people-groups/admin-menu.php' );

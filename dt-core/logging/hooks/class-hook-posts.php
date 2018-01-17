@@ -1,6 +1,9 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * Class Disciple_Tools_Hook_Posts
+ */
 class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
     public function __construct() {
@@ -14,6 +17,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         parent::__construct();
     }
+
 
     protected function _draft_or_post_title( $post = 0 ) {
         $title = get_the_title( $post );
@@ -334,7 +338,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         $this->hooks_p2p_created( $p2p_ids[0], $action = 'disconnected from' );
     }
 
-    public function post_meta_deleted( $meta_id, $object_id, $meta_key, $meta_value, $new = false ){
+    public function post_meta_deleted( $meta_id, $object_id, $meta_key, $meta_value = '', $new = false ){
         if ( strpos( $meta_key, "_details" ) === false ){
             $this->hooks_updated_post_meta( $meta_id[0], $object_id, $meta_key, $meta_value, $new, true );
         }

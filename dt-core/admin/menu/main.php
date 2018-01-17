@@ -197,9 +197,9 @@ final class Disciple_Tools_Config
         switch ( $tab ) {
 
             case 'general':
-                require_once( 'tab-import-export.php' );
-                $object = new Disciple_Tools_Import_Export_Tab();
-                $object->content(); // prints
+                require_once( 'tab-import-csv.php' );
+                $object = new Disciple_Tools_Import_CSV();
+                $object->wizard(); // prints
                 break;
 
 
