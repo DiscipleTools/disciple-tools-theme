@@ -67,24 +67,29 @@ function updateCriticalPath(key) {
 
 
 function post_comment(contactId) {
-  jQuery("#add-comment-button").toggleClass('loading')
-  let comment = jQuery("#comment-input").val()
-  console.log(comment);
-  let data = {}
-  data["comment"] = comment
-  API.post_comment('contact', contactId, comment).then(data=>{
-    console.log(`added comment ${comment}`)
-    jQuery("#comment-input").val("")
-    jQuery("#add-comment-button").toggleClass('loading')
-    data.comment.date = moment(data.comment.comment_date_gmt + "Z")
-    comments.push(data.comment)
-    display_activity_comment()
-    $('.update-needed.alert').hide()
-  }).catch(err=>{
-    console.log("error")
-    console.log(err)
-    jQuery("#errors").append(err.responseText)
-  })
+  let commentInput = jQuery("#comment-input")
+  let commentButton = jQuery("#add-comment-button")
+  let comment = commentInput.val()
+  if (comment){
+    commentButton.toggleClass('loading')
+    commentInput.attr("disabled", true)
+    commentButton.attr("disabled", true)
+    API.post_comment('contact', contactId, comment).then(data=>{
+      commentInput.val("")
+      commentButton.toggleClass('loading')
+      data.comment.date = moment(data.comment.comment_date_gmt + "Z")
+      comments.push(data.comment)
+      display_activity_comment()
+      $('.update-needed.alert').hide()
+      commentInput.attr("disabled", false)
+      commentButton.attr("disabled", false)
+    }).catch(err=>{
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
+    })
+
+  }
 }
 
 function prepareActivityData(activityData) {
@@ -124,15 +129,17 @@ let commentTemplate = _.template(`
 let comments = []
 let activity = [] // not guaranteed to be in any particular order
 let contact = {}
+let typeaheadTotals = {};
 jQuery(document).ready(function($) {
   let contactId = $("#contact-id").text()
   contact = contactsDetailsWpApiSettings.contact
-  console.log(contact.fields)
 
 
-  let typeaheadTotals = {};
 
 
+  /**
+   * Typpahead Fuctions
+   */
   let typeaheadSource = function (field, url) {
     return {
       contacts: {
@@ -156,7 +163,6 @@ jQuery(document).ready(function($) {
       }
     }
   }
-
   let typeaheadHelpText = (resultCount, query, result) =>{
     console.log(resultCount)
     var text = "";
@@ -212,7 +218,7 @@ jQuery(document).ready(function($) {
       onClick: function(node, a, item, event){
         if(item.ID === "new-item"){
           event.preventDefault();
-          window.location.href = '/groups/new'
+          $('#create-group-modal').foundation('open');
         } else {
           API.add_item_to_field('contact', contactId, {groups: item.ID})
         }
@@ -237,18 +243,34 @@ jQuery(document).ready(function($) {
     }
   });
 
-  $(".create-new-group").on('click', ()=>{
-    // @todo group create modal.
-    // window.location.href = '/groups/new'
-    // console.log("test")
-    // Typeahead['.js-typeahead-groups'].addMultiselectItemLayout({ID:"9999", name:"fish"})
-    // setTimeout(()=>{
-    //   Typeahead['.js-typeahead-groups'].cancelMultiselectItem(0)
-    // }, 2000)
+  //reset new group modal on close.
+  $('#create-group-modal').on("closed.zf.reveal", function () {
+    $(".reveal-after-group-create").hide()
+    $(".hide-after-group-create").show()
   })
 
+  //create new group
+  $(".js-create-group").on("submit", function(e) {
+    e.preventDefault();
+    let title = $(".js-create-group input[name=title]").val()
+    API.create_group(title,contactId)
+      .then((newGroup)=>{
+        $(".reveal-after-group-create").show()
+        $("#new-group-link").html(`<a href="${newGroup.permalink}">${title}</a>`)
+        $(".hide-after-group-create").hide()
+        $('#go-to-group').attr('href', newGroup.permalink);
+        Typeahead['.js-typeahead-groups'].addMultiselectItemLayout({ID:newGroup.post_id.toString(), name:title})
+      })
+      .catch(function(error) {
+        $(".js-create-group-button").removeClass("loading").addClass("alert");
+        $(".js-create-group").append(
+          $("<div>").html(error.responseText)
+        );
+        console.error(error);
+      });
+  })
 
-  /**
+    /**
    * Locations
    */
   typeaheadTotals.locations = 0;
@@ -416,7 +438,13 @@ jQuery(document).ready(function($) {
     $(`#${id} .js-typeahead-assigned_to`).val("")
     $(`#${id} .js-typeahead-assigned_to`).trigger('input.typeahead')
   })
+  if (_.get(contact, "fields.assigned_to")){
+    $('.current-assigned').text(_.get(contact, "fields.assigned_to.display"))
+  }
 
+  /**
+   * connections to other contacts
+   */
   ;["baptized_by", "baptized", "coached_by", "coaching"].forEach(field_id=>{
     typeaheadTotals[field_id] = 0
     $.typeahead({
@@ -490,11 +518,9 @@ jQuery(document).ready(function($) {
   })
 
 
-
-
-
-
-
+  /**
+   * Comments and activity
+   */
   $( document ).ajaxComplete(function(event, xhr, settings) {
     if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
       API.get_activity('contact', contactId).then(activityData=>{
@@ -505,9 +531,6 @@ jQuery(document).ready(function($) {
     }
   });
 
-
-  // TODO: maybe replace $.when with Promise.all, and make API functions always
-  // return native Promise objects
   $.when(
     API.get_comments('contact', contactId),
     API.get_activity('contact', contactId)
@@ -526,15 +549,18 @@ jQuery(document).ready(function($) {
     jQuery("#errors").append(err.responseText)
   })
 
-  if (_.get(contact, "fields.assigned_to")){
-    $('.current-assigned').text(_.get(contact, "fields.assigned_to.display"))
-  }
-
-
   jQuery('#add-comment-button').on('click', function () {
     post_comment(contactId)
   })
 
+  $('#comment-activity-tabs').on("change.zf.tabs", function () {
+    var tabId = $('#comment-activity-tabs').find('.tabs-title.is-active').data('tab');
+    display_activity_comment(tabId)
+  })
+
+  /**
+   * Contact details
+   */
 
   let editDetailsToggle = $('#edit-button-label')
   function toggleEditAll() {
@@ -647,10 +673,10 @@ jQuery(document).ready(function($) {
       })
   })
 
-
   $('.select-field').change(function () {
     let id = $(this).attr('id')
     let val = $(this).val()
+    console.log(id);
     API.save_field_api(
       'contact',
       contactId,
@@ -661,6 +687,8 @@ jQuery(document).ready(function($) {
         updateCriticalPath(contactResponse.fields.seeker_path.key)
       } else if ( id === "reason_unassignable" ){
         setStatus(contactResponse)
+      } else if ( id === "overall_status"){
+        setStatus(contactResponse, true)
       }
     }).catch(err=>{
       console.log(err)
@@ -681,16 +709,7 @@ jQuery(document).ready(function($) {
     })
   })
 
-  function toggleEdit(field){
-    if (!editingAll){
-      $(`.${field}.details-list`).toggle()
-      $(`.${field}.details-edit`).toggle()
-    }
-  }
-
-  /**
-   * Baptism date
-   */
+  //baptism date
   let baptismDatePicker = $('.baptism_date #baptism-date-picker')
   baptismDatePicker.datepicker({
     dateFormat: 'yy-mm-dd',
@@ -743,7 +762,6 @@ jQuery(document).ready(function($) {
     }
   })
 
-
   $('.add-button').click(function(){
     let fieldId = $(this).data('id')
     if (jQuery(`#${fieldId}`).length === 0 ){
@@ -776,7 +794,6 @@ jQuery(document).ready(function($) {
       }
     })
   })
-
 
   let editContactDetailsOptions = function (field_id, field_type) {
     return `
@@ -826,6 +843,22 @@ jQuery(document).ready(function($) {
     $('.show-content').toggle()
   })
 
+  $(document).on('click', '.details-status-button.field-status', function () {
+    let status = $(this).data('status')
+    let id = $(this).data('id')
+    console.log(status, id)
+    let fields = {
+      verified : status === 'valid',
+      invalid : status === "invalid"
+    }
+    API.update_contact_method_detail('contact', contactId, id, fields).then(()=>{
+      $(`#${id}-verified`).toggle(fields.verified)
+      $(`#${id}-invalid`).toggle(fields.invalid)
+    }).catch(err=>{
+      handelAjaxError(err)
+    })
+  })
+
   /**
    * sharing
    */
@@ -845,7 +878,6 @@ jQuery(document).ready(function($) {
     })
   })
 
-
   $(document).on('click', '.details-remove-button.share', function () {
     let userId = $(this).data('id')
     API.remove_shared('contact', contactId, userId).then(()=>{
@@ -853,22 +885,6 @@ jQuery(document).ready(function($) {
     })
   })
 
-
-  $(document).on('click', '.details-status-button.field-status', function () {
-    let status = $(this).data('status')
-    let id = $(this).data('id')
-    console.log(status, id)
-    let fields = {
-      verified : status === 'valid',
-      invalid : status === "invalid"
-    }
-    API.update_contact_method_detail('contact', contactId, id, fields).then(()=>{
-      $(`#${id}-verified`).toggle(fields.verified)
-      $(`#${id}-invalid`).toggle(fields.invalid)
-    }).catch(err=>{
-      handelAjaxError(err)
-    })
-  })
 
   /**
    * Update Needed
@@ -881,11 +897,54 @@ jQuery(document).ready(function($) {
     API.save_field_api( "contact", contactId, {"requires_update":updateNeeded})
   })
 
-
+  /**
+   * Status
+   */
   $('.make-active').click(function () {
     let data = {overall_status:"active"}
     API.save_field_api('contact', contactId, data).then((contact)=>{
       setStatus(contact)
+    })
+  })
+
+  function setStatus(contact, openModal) {
+    let status = _.get(contact, "fields.overall_status.key")
+    let reasonLabel = _.get(contact, `fields.reason_${status}.label`)
+    let statusLabel = _.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings.overall_status.default.${status}`)
+    $('#overall-status').val(status)
+
+    if (openModal){
+      if (status === "paused"){
+        $('#paused-contact-modal').foundation('open');
+      } else if (status === "closed"){
+        $('#closed-contact-modal').foundation('open');
+      } else if (status === 'unassignable'){
+        $('#unassignable-contact-modal').foundation('open');
+      }
+    }
+
+    $('#reason').text(reasonLabel ? `(${reasonLabel})` : '')
+    //toggle which reason field is show in the edit details pane.
+    $('.reason-field').hide()
+    if (reasonLabel){
+      $(`.reason-field.reason-${status}`).show()
+    } else {
+      $('.reason-fields').hide()
+    }
+  }
+
+  //confirm setting a reason for a status.
+  let confirmButton = $(".confirm-reason-button")
+  confirmButton.on("click", function () {
+    let field = $(this).data('field')
+    let select = $(`#reason-${field}-options`)
+    $(this).toggleClass('loading')
+    let data = {overall_status:field}
+    data[`reason_${field}`] = select.val()
+    API.save_field_api('contact', contactId, data).then(contactData=>{
+      $(this).toggleClass('loading')
+      $(`#${field}-contact-modal`).foundation('close')
+      setStatus(contactData)
     })
   })
 
@@ -947,6 +1006,9 @@ function display_activity_comment(section) {
   }
 }
 
+
+
+
 let editingAll = false
 
 
@@ -956,81 +1018,8 @@ function handelAjaxError(err) {
     jQuery("#errors").append(err.responseText)
 }
 
-function save_field(contactId, fieldKey, inputId){
-  let field = jQuery("#"+ (inputId || fieldKey))
-  let val = field.val()
-  let data = {}
-  data[fieldKey] = val
-  API.save_field_api('contact', contactId, data).catch(err=>{
-    handelAjaxError(err)
-  })
-}
 
 
-function new_contact_input_added(contactId, inputId){
-  let input = jQuery("#"+inputId)
-  API.add_item_to_field('contact', contactId, {[inputId]: input.val()}).then(data=>{
-    if (data != contactId && inputId.indexOf("new-")>-1){
-      input.removeAttr('onchange');
-      input.attr('id', data)
-      input.change(function () {
-        save_field(contactId, data)
-      })
-    }
-  })
-}
-
-
-
-function remove_item(contactId, fieldId, itemId){
-  API.remove_item_from_field('contact', contactId, fieldId, itemId).then(()=>{
-    jQuery(`.${fieldId}-list .${itemId}`).remove()
-  })
-}
-
-
-function close_contact(contactId){
-  jQuery("#confirm-close").toggleClass('loading')
-  let reasonClosed = jQuery('#reason-closed-options')
-  let data = {overall_status:"closed", "reason_closed":reasonClosed.val()}
-  API.save_field_api('contact', contactId, data).then((contactData)=>{
-    jQuery("#confirm-close").toggleClass('loading')
-    jQuery('#close-contact-modal').foundation('close')
-    setStatus(contactData)
-  })
-}
-
-let confirmPauseButton = jQuery("#confirm-pause")
-function pause_contact(contactId){
-  confirmPauseButton.toggleClass('loading')
-  let reasonPaused = jQuery('#reason-paused-options')
-  let data = {overall_status:"paused", "reason_paused":reasonPaused.val()}
-  API.save_field_api('contact', contactId, data).then((contactData)=>{
-    jQuery('#pause-contact-modal').foundation('close')
-    setStatus(contactData)
-    confirmPauseButton.toggleClass('loading')
-  })
-}
-
-function setStatus(contact) {
-  let status = _.get(contact, "fields.overall_status.key")
-  let reasonLabel = _.get(contact, `fields.reason_${status}.label`)
-  let statusLabel = _.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings.overall_status.default.${status}`)
-  jQuery('#overall-status').text(statusLabel)
-  jQuery('#reason').text(reasonLabel ? `(${reasonLabel})` : '')
-
-  jQuery('.trigger-pause').toggle(status !== "paused")
-  jQuery('.trigger-unpause').toggle(status === "paused")
-  jQuery('.trigger-close').toggle(status !== "closed")
-  jQuery('.trigger-unclose').toggle(status === "closed")
-
-  jQuery('.reason-field').hide()
-  if (reasonLabel){
-    jQuery(`.reason-field.reason-${status}`).show()
-  } else {
-    jQuery('.reason-fields').hide()
-  }
-}
 
 function details_accept_contact(contactId, accept){
   console.log(contactId)

@@ -527,16 +527,25 @@ jQuery(document).ready(function($) {
   }
 
   let commentButton = $('#add-comment-button')
+
     .on('click', function () {
-      commentButton.toggleClass('loading')
-      let input = $("#comment-input")
-      API.post_comment('group', groupId, input.val()).then(commentData=>{
+      let commentInput = jQuery("#comment-input")
+      let comment = commentInput.val()
+      if (comment){
         commentButton.toggleClass('loading')
-        input.val('')
-        commentData.comment.date = moment(commentData.comment.comment_date_gmt + "Z")
-        comments.push(commentData.comment)
-        display_activity_comment()
-      })
+        commentInput.attr("disabled", true)
+        commentButton.attr("disabled", true)
+        API.post_comment('group', groupId, comment).then(commentData=>{
+          commentButton.toggleClass('loading')
+          commentInput.val('')
+          commentData.comment.date = moment(commentData.comment.comment_date_gmt + "Z")
+          comments.push(commentData.comment)
+          display_activity_comment()
+          commentInput.attr("disabled", false)
+          commentButton.attr("disabled", false)
+        })
+
+      }
     })
 
   $.when(
@@ -550,6 +559,11 @@ jQuery(document).ready(function($) {
     activity = activityData[0]
     prepareActivityData(activity)
     display_activity_comment("all")
+  })
+
+  $('#comment-activity-tabs').on("change.zf.tabs", function () {
+    var tabId = $('#comment-activity-tabs').find('.tabs-title.is-active').data('tab');
+    display_activity_comment(tabId)
   })
 
   function display_activity_comment(section) {

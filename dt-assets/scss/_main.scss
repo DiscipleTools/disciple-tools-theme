@@ -90,7 +90,7 @@ NAVIGATION STYLES
 
 nav.second-bar {
 
-    padding: 1em .5em .5em .5em;
+    padding: .5em .5em .5em .5em;
     background-color: white;
     .breadcrumbs {
         margin-bottom: 0;
@@ -277,40 +277,50 @@ img {
     display: flex;
     justify-content: space-evenly;
     flex:none;
+    width: 100%;
+    flex-wrap:wrap;
 }
 .contact-quick-button {
     width: min-content;
     position: relative;
-    flex: 1 1 auto;
+    flex: 1 0 100px;
     p {
         font-size: 12px;
-        word-spacing: 10vw;
+        word-spacing: 100vw;
         margin-bottom: 0;
     }
 }
 
 .comment-activity-section {
 
-    display:flex;
-    flex-direction:column;
-    @media screen and (min-width : map-get($breakpoints, large )){
-        position:fixed;
-        top:118px;
-        bottom:0;
-        margin-left:-10px !important;
-    }
+    //display:flex;
+    //flex-direction:column;
+    //@media screen and (min-width : map-get($breakpoints, large )){
+    //    position:fixed;
+    //    top:118px;
+    //    bottom:0;
+    //    margin-left:-10px !important;
+    //}
 
     .section-selector {
         text-align: center;
-        .section-button {
-            color: #366184;
+        .section-button.selected {
+            .section-button-text {
+                color: #366184;
+                font-weight: bold;
+            }
         }
+    }
+    .tabs-title > a {
+        padding: .5rem 1rem;
     }
 }
 
 #add-comment-button {
     margin-bottom: 0;
-    float:right;
+    height: 30px;
+    width: 40px;
+    padding: 0 4px;
 }
 
 .comment-bubble {
@@ -404,6 +414,18 @@ img {
 }
 .last-typeahead-in-section {
     margin-bottom:150px;
+}
+
+.typeahead__field .typeahead__hint, .typeahead__field [contenteditable],
+.typeahead__field input.input-height, .typeahead__field textarea.input-height .typeahead__field button.input-height{
+    $height: ($input-font-size * unitless-calc($input-line-height)) + (get-side($input-padding, 'top') + get-side($input-padding, 'bottom')) - rem-calc(1);
+    min-height: $height;
+}
+
+//default height for foundation inputs.
+.input-height {
+    $height: ($input-font-size * unitless-calc($input-line-height)) + (get-side($input-padding, 'top') + get-side($input-padding, 'bottom')) - rem-calc(1);
+    min-height: $height;
 }
 
 .tabs-panel .outer-container {
@@ -1224,8 +1246,54 @@ div.dataTables_wrapper .datatable-first-line {
     opacity: 0.5;
 }
 
-//default height for foundation inputs.
-.input-height {
-    $height: ($input-font-size * unitless-calc($input-line-height)) + (get-side($input-padding, 'top') + get-side($input-padding, 'bottom')) - rem-calc(1);
-    height: $height;
+
+html[dir='rtl'] {
+    .typeahead__label {
+        padding-left: 0;
+        padding-right: 4px;
+        margin-left: 4px;
+        margin-right:0;
+    }
+    .typeahead__label .typeahead__cancel-button {
+        margin-left:0;
+        margin-right:4px;
+        border-left:none;
+        border-right:1px solid #c2e0ff;
+    }
+    .typeahead__cancel-button{
+        left:0;
+        right:auto;
+    }
+
+    .typeahead__container .typeahead__field .typeahead__hint, .typeahead__container .typeahead__field .typeahead__label-container, .typeahead__container .typeahead__field [contenteditable], .typeahead__container .typeahead__field input, .typeahead__container .typeahead__field textarea {
+        padding-right:6px;
+        padding-left: 32px;
+    }
+
+    .float-right {
+        float: left !important;
+    }
+    .float-left {
+        float: right !important;
+    }
+}
+
+.dataTables_wrapper {
+    input[type="search"] {
+        background: url("/wp-content/themes/disciple-tools-theme/dt-assets/images/search.svg") no-repeat scroll 7px 10px;
+        padding-left:32px;
+    }
+}
+html[dir='rtl'] {
+    .dataTables_wrapper {
+        input[type="search"] {
+            background-position: right 7px center;
+            padding-right: 32px;
+        }
+    }
+}
+
+.empty-notification-message {
+    margin:20px;
+    font-weight: bold;
 }

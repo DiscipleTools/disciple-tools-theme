@@ -72,8 +72,8 @@ function dt_site_scripts() {
 
     dt_theme_enqueue_script( 'lodash', 'dt-core/dependencies/lodash/lodash.min.js', array() );
 
-    dt_theme_enqueue_script( 'typeahead-jquery', 'dependencies/jquery-typeahead-2.10.4/jquery.typeahead.min.js', array( 'jquery' ), true );
-    dt_theme_enqueue_style( 'typeahead-jquery-css', 'dependencies/jquery-typeahead-2.10.4/jquery.typeahead.min.css', array() );
+    dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/jquery-typeahead-2.10.4/jquery.typeahead.min.js', array( 'jquery' ), true );
+    dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/jquery-typeahead-2.10.4/jquery.typeahead.min.css', array() );
 
     dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts.min.js', array( 'jquery' ), true );
 
@@ -119,6 +119,10 @@ function dt_site_scripts() {
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'current_user_login' => wp_get_current_user()->user_login,
             'current_user_id' => get_current_user_id(),
+            'translations' => [
+                "no-unread" => __( "You don't have any unread notifications", "disciple_tools" ),
+                "no-notifications" => __( "You don't have any notifications", "disciple_tools" )
+            ]
         )
     );
 
@@ -144,7 +148,7 @@ function dt_site_scripts() {
         wp_localize_script(
             'contact-details', 'contactsDetailsWpApiSettings', array(
                 'contact' => $contact,
-                'contact_author_name' => get_user_by( 'id', intval( $contact->post_author ) )->display_name,
+                'contact_author_name' => (int) $contact->post_author > 0 ? get_user_by( 'id', intval( $contact->post_author ) )->display_name : "",
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
@@ -231,7 +235,8 @@ function dt_site_scripts() {
             'txt_last' => __( 'Last', 'disciple_tools' ),
             'txt_next' => __( 'Next', 'disciple_tools' ),
             'txt_previous' => __( 'Previous', 'disciple_tools' ),
-            'txt_zeroRecords' => __( 'No matching records found', 'disciple_tools' ),
+            'txt_zeroRecords' => __( 'No matching records found.', 'disciple_tools' ),
+            'txt_clearFilters' => __( 'Click here to clear your filters', 'disciple_tools' ),
             'txt_info' => _x( 'Showing _START_ to _END_ of _TOTAL_ entries', 'just copy as they are: _START_ _END_ and _TOTAL_', 'disciple_tools' ),
             'txt_infoEmpty' => __( 'Showing 0 to 0 of 0 entries', 'disciple_tools' ),
             'txt_infoFiltered' => _x( '(filtered from _MAX_ total entries)', 'just copy `_MAX_`', 'disciple_tools' ),

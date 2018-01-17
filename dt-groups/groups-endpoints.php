@@ -359,7 +359,7 @@ class Disciple_Tools_Groups_Endpoints
     {
         $params = $request->get_params();
         $body = $request->get_json_params();
-        if ( isset( $params['id'] ) ) {
+        if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
             $result = Disciple_Tools_Groups::add_comment( $params['id'], $body["comment"] );
 
             if ( is_wp_error( $result ) ) {

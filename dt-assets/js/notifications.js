@@ -196,12 +196,14 @@ function get_notifications( all, reset) {
       }
       else if (( all === true && (all_offset === 0 || !all_offset ) ) || all === false && (new_offset === 0 || !new_offset)) { // determines if this is the first query (offset 0) and there is nothing returned.
 
-        jQuery('#notification-list').html('<div class="cell center">Nothing here! :)</div>')
+        jQuery('#notification-list').html('<div class="cell center empty-notification-message">${wpApiNotifications.translations["no-notifications"]}</div>')
         jQuery('#next-all').hide()
         jQuery('#next-new').hide()
 
       } else { // therefore if no data is returned, but this is not the first query, then just remove the option to load more content
-
+        if (reset) {
+          jQuery('#notification-list').html(`<div class="cell center empty-notification-message">${wpApiNotifications.translations["no-unread"]}</div>`)
+        }
         jQuery('#next-all').hide()
         jQuery('#next-new').hide()
 

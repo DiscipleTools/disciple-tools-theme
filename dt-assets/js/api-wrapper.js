@@ -135,43 +135,17 @@ let API = {
     })
   },
 
-  typeaheadPrefetchPrepare(options){
-    options.beforeSend = function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-    }
-    return options
-  },
-  typeaheadRemotePrepare(query, options){
-    options.url = options.url.replace("%QUERY", query)
-    options.beforeSend = function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-    }
-    return options
-  },
-  filterTypeahead(array, existing = []){
-    return _.differenceBy(array, existing.map(l=>{
-      return {ID:l.ID, name:l.display_name}
-    }), "ID")
-  },
-  defaultFilter(q, sync, async, local, existing=[]) {
-    if (q === '') {
-      sync(this.filterTypeahead(local.all(), existing));
-    }
-    else {
-      local.search(q, sync, async);
-    }
-  },
-  searchAnyPieceOfWord(d) {
-    var tokens = [];
-    //the available string is 'name' in your datum
-    var stringSize = d.name.length;
-    //multiple combinations for every available size
-    //(eg. dog = d, o, g, do, og, dog)
-    for (var size = 1; size <= stringSize; size++) {
-      for (var i = 0; i + size <= stringSize; i++) {
-        tokens.push(d.name.substr(i, size));
+  create_group(title, created_from_contact_id){
+    return jQuery.ajax({
+      type: "POST",
+      data: JSON.stringify({title, created_from_contact_id}),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: wpApiSettings.root + `dt/v1/group/create`,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
-    }
-    return tokens;
-  }
+    })
+  },
+
 }

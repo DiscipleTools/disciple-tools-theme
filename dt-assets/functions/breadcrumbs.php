@@ -20,7 +20,14 @@ declare(strict_types=1);
  * @return void
  */
 
-function dt_print_breadcrumbs( array $links = null, string $current, bool $share_button = false, bool $comment_button = false ) {
+function dt_print_breadcrumbs(
+    array $links = null,
+    string $current,
+    bool $share_button = false,
+    bool $comment_button = false,
+    bool $show_update_needed = false,
+    bool $update_needed = false
+) {
 
     if ( is_null( $links ) ) {
         $links = [
@@ -31,26 +38,43 @@ function dt_print_breadcrumbs( array $links = null, string $current, bool $share
     ?>
 
     <!-- Breadcrumb Navigation-->
-    <div data-sticky-container class="hide-for-small-only" style="z-index: 50">
+    <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
         <nav aria-label="<?php esc_attr_e( "You are here:" ); ?>" role="navigation"
              data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
              class="second-bar">
 
-            <div class="grid-x">
-                <div class="small-offset-4 cell small-4 center-items hide-for-small-only">
-                    <ul class="breadcrumbs">
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-4 grid-x grid-margin-x">
+                    <div class="cell grid-x grid-margin-x">
+                        <?php if ( $show_update_needed ){ ?>
+                        <div class="section-subheader cell shrink center-items"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></div>
+                        <div class="switch tiny cell shrink" style="margin-bottom: 0px">
 
-                        <?php foreach ($links as $link) : ?>
-                            <li><a href="<?php echo esc_url( $link[0] ); ?>"><?php echo esc_html( $link[1] ); ?></a></li>
-                        <?php endforeach; ?>
-                        <li>
-                            <span class="show-for-sr"><?php esc_html_e( "Current:", 'disciple_tools' ); ?> </span> <?php echo esc_html( $current ); ?>
-                        </li>
-                    </ul>
+                            <input class="switch-input update-needed" id="update-needed" type="checkbox" name="update-needed"
+                            <?php echo  ( $update_needed ? 'checked' : "" ) ?>>
+                            <label class="switch-paddle update-needed" for="update-needed">
+                                <span class="show-for-sr"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></span>
+                                <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
+                                <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
+                            </label>
+                        </div>
+                        <?php } ?>
+                    </div>
+                </div>
+                <div class="cell small-4 center-items hide-for-small-only">
+<!--                    <ul class="breadcrumbs">-->
+<!---->
+<!--                        --><?php //foreach ($links as $link) : ?>
+<!--                            <li><a href="--><?php //echo esc_url( $link[0] ); ?><!--">--><?php //echo esc_html( $link[1] ); ?><!--</a></li>-->
+<!--                        --><?php //endforeach; ?>
+<!--                        <li>-->
+<!--                            <span class="show-for-sr">--><?php //esc_html_e( "Current:", 'disciple_tools' ); ?><!-- </span> --><?php //echo esc_html( $current ); ?>
+<!--                        </li>-->
+<!--                    </ul>-->
                 </div>
                 <?php if ( $share_button ): ?>
-                    <div class="cell small-4 align-right grid-x">
-                        <div class="cell shrink ">
+                    <div class="cell small-4 align-right grid-x grid-margin-x">
+                        <div class="cell shrink center-items ">
                             <button data-open="share-contact-modal" class="center-items">
                                 <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
                                 <span style="margin:0 10px 0 10px"><?php esc_html_e( "Share" ); ?></span>

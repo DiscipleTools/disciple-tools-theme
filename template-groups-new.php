@@ -23,16 +23,16 @@ dt_print_breadcrumbs(
 
         <div class="large-8 medium-12 small-12 cell">
             <form class="js-create-group bordered-box">
-                <label>
+                <label for="title">
                     <?php esc_html_e( "Name of group", "disciple_tools" ); ?>
-                    <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
                 </label>
+                <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
                 <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
 
                 <div style="text-align: center">
                     <button class="button loader js-create-group-button" type="submit" disabled><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
                 </div>
-            </div>
+            </form>
 
         </div>
 
