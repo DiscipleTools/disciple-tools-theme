@@ -55,10 +55,11 @@ class Disciple_Tools_Import_CSV
             // page 2
 
             // verify nonce
-            if ( ! wp_verify_nonce('import_csv_page_3' ) ) {
+            if ( ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ) ,'import_csv' ) ) {
                 $this->error = "Nonce not verified";
                 $this->step = 1;
                 new WP_Error( 'nonce_error', 'Nonce not verified' );
+                wp_die( 'nonce verification fail' );
             };
 
             if ( empty( $_FILES['csv_import']['tmp_name'] ) ) {
@@ -66,13 +67,14 @@ class Disciple_Tools_Import_CSV
                 $this->step = 1;
             }
             else {
-                move_uploaded_file(  $_FILES['csv_import']['tmp_name']  , $this->filename ); // locally store uploaded file
+                // @codingStandardsIgnoreLine
+                move_uploaded_file( $_FILES['csv_import']['tmp_name'] , $this->filename ); // locally store uploaded file
 
                 if ( ! file_exists( $this->filename ) || ! is_readable( $this->filename ) ) { // validate file
                     $this->error = "Can not open/read uploaded file.";
                     $this->step = 1;
                 } else {
-                    if( isset( $_POST['post_format'] ) ) {
+                    if ( isset( $_POST['post_format'] ) ) {
                         $this->insertype = sanitize_key( wp_unslash( $_POST['post_format'] ) ); // capture selected post type
                         set_transient( $this->otype, $this->insertype, 12 * HOUR_IN_SECONDS );
                         $this->step = 2;
@@ -83,6 +85,12 @@ class Disciple_Tools_Import_CSV
             // page 3
 
             // verify nonce
+            if ( ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ) ,'import_csv' ) ) {
+                $this->error = "Nonce not verified";
+                $this->step = 1;
+                new WP_Error( 'nonce_error', 'Nonce not verified' );
+                wp_die( 'nonce verification fail' );
+            };
 
             $this->step = 3;
             $process_form = $this->process_form();
@@ -97,23 +105,23 @@ class Disciple_Tools_Import_CSV
                 ?>
                 <div class="wrap">
                     <h2>
-                        <?php _e( 'Import CSV Files', 'disciple_tools' ) ?>
+                        <?php esc_html_e( 'Import CSV Files', 'disciple_tools' ) ?>
                     </h2>
                     <br/>
                     <?php if ( $this->error !== '' ) : ?>
                         <div class="error">
-                            <?php esc_attr_e( $this->error ); ?>
+                            <?php echo esc_attr( $this->error ); ?>
                         </div>
                     <?php endif; ?>
 
                     <form class="add:the-list: validate" method="post" enctype="multipart/form-data">
-                        <?php wp_nonce_field( 'import_csv_page_2' ); ?>
+                        <?php wp_nonce_field( 'import_csv', '_csv_nonce' ); ?>
                         <input name="_csv_panel" type="hidden" value="post_for_step_2"/>
 
                         <!-- File input -->
                         <div>
                             <label for="csv_import">
-                                <?php _e( 'Select a CSV file:', 'disciple_tools' ) ?>
+                                <?php esc_html_e( 'Select a CSV file:', 'disciple_tools' ) ?>
                             </label><br/>
                             <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
                             <input name="csv_import" id="csv_import" type="file" value=""/>
@@ -122,14 +130,14 @@ class Disciple_Tools_Import_CSV
                         <div>
                             <div id="formatdiv" class="postbox" style="display: block;max-width:350px;">
                                 <h3 class="hndle"
-                                    style="cursor:auto;padding:10px;"><?php _e( 'Select Import Type', 'disciple_tools' ) ?></h3>
+                                    style="cursor:auto;padding:10px;"><?php esc_html_e( 'Select Import Type', 'disciple_tools' ) ?></h3>
                                 <div class="inside">
                                     <div id="post-formats-select">
 
                                         <input id="post-format-page" class="post-format" type="radio" value="locations"
                                                name="post_format" checked>
                                         <label for="post-format-page">
-                                            &nbsp;&nbsp;<?php _e( 'Locations', 'disciple_tools' ) ?>
+                                            &nbsp;&nbsp;<?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
                                         </label>
                                     </div>
                                 </div>
@@ -151,14 +159,14 @@ class Disciple_Tools_Import_CSV
                 ?>
 
                 <div class="wrap">
-                    <h2><?php _e( 'Import CSV Files', 'disciple_tools' ) ?></h2>
+                    <h2><?php esc_html_e( 'Import CSV Files', 'disciple_tools' ) ?></h2>
                     <?php if ( $this->error !== '' ) : ?>
                         <div class="error">
-                            <?php esc_attr_e( $this->error ); ?>
+                            <?php esc_attr_e( $this->error . '' ); ?>
                         </div>
                     <?php endif; ?>
-                    <h3><?php _e( 'Step 2 - Map Fields', 'disciple_tools' ) ?></h3>
-                    <p><?php _e( 'Data preview fields', 'disciple_tools' ) ?></p>
+                    <h3><?php esc_html_e( 'Step 2 - Map Fields', 'disciple_tools' ) ?></h3>
+                    <p><?php esc_html_e( 'Data preview fields', 'disciple_tools' ) ?></p>
 
 
                     <!-- CSV REVIEW SECTION -->
@@ -209,14 +217,14 @@ class Disciple_Tools_Import_CSV
 
                     <!-- MAP FIELDS SECTION -->
                     <form class="add:the-list: validate" method="post" enctype="multipart/form-data">
-                        <?php wp_nonce_field( 'import_csv_page_3' ); ?>
+                        <?php wp_nonce_field( 'import_csv', '_csv_nonce' ); ?>
                         <input name="_csv_panel" type="hidden" value="post_for_step_3"/>
 
                         <!-- Type -->
                         <div id="formatdiv" class="postbox" style="max-width:600px;">
                             <h3 class="hndle" style="cursor:auto;padding:10px;">
                         <span>
-                            <?php _e( 'Map fields from the .csv file to post fields', 'disciple_tools' ) ?>
+                            <?php esc_html_e( 'Map fields from the .csv file to post fields', 'disciple_tools' ) ?>
                         </span>
                             </h3>
                             <div class="inside">
@@ -234,7 +242,7 @@ class Disciple_Tools_Import_CSV
                                         <div>
                                             <div style="width:250px;float:left;"><b><?php echo esc_attr( $string ) ?></b>
                                             </div>
-                                            <select name="field<?php echo $i ?>">
+                                            <select name="field<?php esc_attr( $i ) ?>">
                                                 <?php $this->get_mapping_drop_down( $headers[ $i ] ) ?>
                                             </select>
                                         </div>
@@ -246,29 +254,24 @@ class Disciple_Tools_Import_CSV
                             </div>
                         </div>
 
-                        <a class="button" href="<?php echo admin_url( 'admin.php?page=import_export' ); ?>">Back</a>
-                        <button type="submit" class="button">Next ></button>
+                        <a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=import_export' ) ); ?>">Back</a>
+                        <button type="submit" class="button"><?php esc_attr_e( 'Next', 'disciple_tools' ) ?> ></button>
                         <br>
-                        <div style="/*float:right;*/background-color:#FFFFE0;border: 1px solid #E6DB55;padding:10px;">After
-                            clicking <b>Next</b>, the import process may take some time to complete. Do not navigate to
-                            another page or hit Refresh!
+                        <div style="/*float:right;*/background-color:#FFFFE0;border: 1px solid #E6DB55;padding:10px;"><?php esc_html_e( 'After clicking "Next", the import process may take some time to complete. Do not navigate to another page or hit Refresh!', 'disciple_tools' ) ?>
                         </div>
 
                     </form>
                 </div>
 
-
                 <?php
                 break;
 
             case '3':
-
-
                 if ( is_wp_error( $process_form ) ) {
-                    print $process_form->get_error_message();
+                    echo esc_attr( $process_form->get_error_message() );
                 } else {
                     /** Print Report to Screen */
-                    echo '<div class="wrap"><h1>Report</h1><br/>';
+                    echo '<div class="wrap"><h1>' . esc_attr__( 'Report', 'disciple_tools' ) . '</h1><br/>';
                     echo '<div class="updated fade">';
                     echo sprintf( " Posts <b>imported</b> - <b>%d</b><br><br>", esc_attr( $process_form['imported'] ) );
                     echo sprintf( " Posts <b>skipped</b> - <b>%d</b><br><br>", esc_attr( $process_form['skipped'] ) );
@@ -452,6 +455,7 @@ class Disciple_Tools_Import_CSV
             case 'locations':
                 // lookup post parent id
                 if ( isset( $mapped_from_form['post_parent'] ) ) {
+                    // @codingStandardsIgnoreLine
                     $parent_id = get_page_by_title( $mapped_from_form['post_parent'], OBJECT, 'locations' );
                     if ( ! is_null( $parent_id ) ) {
                         $args['post_parent'] = $parent_id->ID;
@@ -517,11 +521,11 @@ class Disciple_Tools_Import_CSV
                 echo '<option value="">Select...</option>';
 
                 foreach ( $fields as $field ) {
-                    echo '<option value="'. $field['key'].'"';
+                    echo '<option value="' . esc_attr( $field['key'] ) . '"';
                     if ( $field['key'] == $name ) {
                         echo ' selected';
                     }
-                    echo '>'.$field['label'].'</option>';
+                    echo '>'. esc_attr( $field['label'] ) .'</option>';
                 }
 
                 break;
@@ -541,10 +545,10 @@ class Disciple_Tools_Import_CSV
      */
     public function get_post( $postvar, &$postval )
     {
-        if ( ! isset( $_POST[ $postvar ] ) ) {
+        if ( ! isset( $_POST[ $postvar ] ) || ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ) ,'import_csv' ) ) {
             return false;
         }
-        $postval = $_POST[ $postvar ];
+        $postval = sanitize_key( wp_unslash( $_POST[ $postvar ] ) );
         if ( $postval == '' ) {
             return false;
         }
@@ -615,10 +619,10 @@ class Disciple_Tools_Import_CSV
      */
     public function check_is_post( $postvar, $postval )
     {
-        if ( ! isset( $_POST[ $postvar ] ) ) {
+        if ( ! isset( $_POST[ $postvar ] ) || ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ) ,'import_csv' ) ) {
             return false;
         }
-        if ( $_POST[ $postvar ] == $postval ) {
+        if ( $_POST[ $postvar ] == $postval || ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ) ,'import_csv' ) ) {
             return true;
         }
 
