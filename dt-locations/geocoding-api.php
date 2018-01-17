@@ -16,7 +16,7 @@ if ( !defined( 'ABSPATH' ) ) {
  * Class Disciple_Tools_Google_Geolocation
 
  */
-class Disciple_Tools_Google_Geolocation
+class Disciple_Tools_Google_Geocode_API
 {
     public static $key = 'AIzaSyDn0D_ePCkkQF6CYS7UPy7mbzCuJBRQmw8';
 
@@ -43,33 +43,29 @@ class Disciple_Tools_Google_Geolocation
         else {
             switch ( $type ) {
                 case 'validate':
-                    return true;
+                        return true;
                     break;
                 case 'coordinates_only':
-                    $g_lat = $details->results[0]->geometry->location->lat;
-                    $g_lng = $details->results[0]->geometry->location->lng;
-
                     return [
-                        'lng' => $g_lng,
-                        'lat' => $g_lat
+                        'lng' => $details->results[0]->geometry->location->lng,
+                        'lat' => $details->results[0]->geometry->location->lat
                     ];
                     break;
                 case 'core':
-                    $g_lat = $details->results[0]->geometry->location->lat;
-                    $g_lng = $details->results[0]->geometry->location->lng;
-                    $g_formatted_address = $details->results[0]->formatted_address;
-
                     return [
-                        'lng' => $g_lng,
-                        'lat' => $g_lat,
-                        'formatted_address' => $g_formatted_address
+                        'lng' => $details->results[0]->geometry->location->lng,
+                        'lat' => $details->results[0]->geometry->location->lat,
+                        'formatted_address' => $details->results[0]->formatted_address
                     ];
                     break;
                 case 'all_points':
                     return [
-                        'center' => $details->results[0]->geometry->location,
-                        'northeast' => $details->results[0]->geometry->bounds->northeast,
-                        'southwest' => $details->results[0]->geometry->bounds->southwest,
+                        'lat' => $details->results[0]->geometry->location->lat,
+                        'lng' => $details->results[0]->geometry->location->lng,
+                        'northeast_lat' => $details->results[0]->geometry->bounds->northeast->lat,
+                        'northeast_lng' => $details->results[0]->geometry->bounds->northeast->lng,
+                        'southwest_lat' => $details->results[0]->geometry->bounds->southwest->lat,
+                        'southwest_lng' => $details->results[0]->geometry->bounds->southwest->lng,
                         'formatted_address' => $details->results[0]->formatted_address,
                     ];
                     break;

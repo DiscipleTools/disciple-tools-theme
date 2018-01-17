@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Disciple_Tools_Import_Export_Tab
  */
-class Disciple_Tools_Import_Export_Tab
+class Disciple_Tools_Import_CSV
 {
 
     /**
@@ -334,27 +334,15 @@ class Disciple_Tools_Import_Export_Tab
                 // skip first line
                 $str = implode( "", $keys );
                 trim( $str );
-                if ( mb_strlen( $str ) === 0 ) {
+                if ( mb_strlen( $str ) === 0 ) { // if first line empty, skip back and process the next line as first line.
                     continue;
                 }
             }
             else {
-                // Parse mapped data
-                $data = [];
-                foreach ( $this->mapped as $item => $value ) {
-                    $data[ $value ] = $keys[ $item ];
-                }
 
-                // Merge and Build Post Args
-                $new_post = [];
-                $this->get_values_from_array( $data, $new_post );
+                $args = $this->prepare_new_post_array( $keys ); // build post args
+                $id = wp_insert_post( $args ); // wp insert statement
 
-                // Insert Post
-                $id = wp_insert_post( $new_post ); // wp insert statement
-
-                // Clean up and report
-                unset( $new_post );
-                unset( $data );
                 if ( $id ) {
                     $imported++;
                 } else {
@@ -371,9 +359,9 @@ class Disciple_Tools_Import_Export_Tab
 
         // Return report
         return [
-        'imported'       => $imported,
-        'skipped'        => $skipped,
-        'execution_time' => $exec_time,
+            'imported'       => $imported,
+            'skipped'        => $skipped,
+            'execution_time' => $exec_time,
         ];
     }
 
@@ -415,55 +403,76 @@ class Disciple_Tools_Import_Export_Tab
     /**
      * Get values from array
      *
-     * @param $arr_source
-     * @param $arr_dest
+     * @param $keys
+     * @return array
      */
-    public function get_values_from_array( &$arr_source, &$arr_dest )
+    public function prepare_new_post_array( $keys )
     {
+        // Parse mapped data
+        $mapped_from_form = [];
+        foreach ( $this->mapped as $item => $value ) {
+            $mapped_from_form[ $value ] = $keys[ $item ];
+        }
+
         // prepare standard fields
-        $arr_dest['post_title'] = wp_strip_all_tags( $arr_source['post_title'] );
-        $arr_dest['post_content'] = '';
-        $arr_dest['post_type'] = $this->insertype;
-        $arr_dest['post_status'] = 'publish';
+        $args['post_title'] = wp_strip_all_tags( $mapped_from_form['post_title'] );
+        $args['post_content'] = '';
+        $args['post_type'] = $this->insertype;
+        $args['post_status'] = 'publish';
 
-        if ( isset( $arr_source['post_excerpt'] ) ) {
-            $arr_dest['post_excerpt'] = $arr_source['post_excerpt'];
+        if ( isset( $mapped_from_form['post_excerpt'] ) ) {
+            $args['post_excerpt'] = $mapped_from_form['post_excerpt'];
         }
 
-        if ( isset( $arr_source['post_slug'] ) ) {
-            $arr_dest['post_name'] = $arr_source['post_slug'];
+        if ( isset( $mapped_from_form['post_slug'] ) ) {
+            $args['post_name'] = $mapped_from_form['post_slug'];
         }
 
-        if ( isset( $arr_source['post_date'] ) ) {
-            $timestamp = strtotime( $arr_source['post_date'] );
+        if ( isset( $mapped_from_form['post_date'] ) ) {
+            $timestamp = strtotime( $mapped_from_form['post_date'] );
             if ( $timestamp !== false ) {
-                $arr_dest['post_date'] = date( 'Y-m-d H:i:s', $timestamp );
+                $args['post_date'] = date( 'Y-m-d H:i:s', $timestamp );
             }
         }
 
         switch( $this->insertype ) {
             case 'locations':
                 // lookup post parent id
-                if ( isset( $arr_source['post_parent'] ) ) {
-                    // lookup post parent by title
-                    $parent_id = get_page_by_title( $arr_source['post_parent'] );
-
-                    // save post parent id
-                    $arr_dest['post_parent'] = $parent_id->ID;
+                if ( isset( $mapped_from_form['post_parent'] ) ) {
+                    $parent_id = get_page_by_title( $mapped_from_form['post_parent'], OBJECT, 'locations');
+                    if( ! is_null( $parent_id ) ) {
+                        $args['post_parent'] = $parent_id->ID;
+                    }
                 }
 
-                // geocode address @todo need to finish geocoding
+                // geocode address
+                if ( isset( $mapped_from_form['address'] ) ) {
 
+                    if ( isset( $mapped_from_form['country'] ) ) {
+                        $mapped_from_form['address'] .= ', ' . $mapped_from_form['country'];
+                    }
 
+                    $results = Disciple_Tools_Google_Geocode_API::query_google_api( $mapped_from_form['address'], 'all_points' );
+                    if( $results ) {
+                        $args['meta_input'] = [
+                            'lat' => $results['lat'],
+                            'lng' => $results['lng'],
+                            'northeast_lat' => $results['northeast_lat'],
+                            'northeast_lng' => $results['northeast_lng'],
+                            'southwest_lat' => $results['southwest_lat'],
+                            'southwest_lng' => $results['southwest_lng'],
+                            'location_address' => $results['formatted_address'],
+                            'location' => $results,
+                        ];
+                    }
+                }
 
-                // build meta input @todo need to finish meta_input
-                $arr_dest['meta_input'] = [
-
-                ];
                 break;
             default:
                 break;
         }
+
+        return $args;
     }
 
     /**

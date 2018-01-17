@@ -82,7 +82,7 @@ class Disciple_Tools_Activity_Log_API {
                 'object_note'    => '',
                 'meta_id'        => '',
                 'meta_key'       => '',
-                'meta_value'     => '',
+                'meta_value'     => ' ',
                 'meta_parent'    => '',
                 'old_value'      => '',
                 'field_type'     => ''
