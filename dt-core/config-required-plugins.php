@@ -41,9 +41,9 @@ function dt_register_required_plugins() {
         array(
             'name'              => 'Psalm 119',
             'slug'              => 'psalm-119',
-            'required'          => true,
+            'required'          => false,
             'version'            => '1.1',
-            'force_activation'  => true,
+            'force_activation'  => false,
             'force_deactivation' => false,
             'is_callable'       => 'Psalm_119',
         ),
