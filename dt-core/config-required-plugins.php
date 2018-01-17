@@ -38,15 +38,7 @@ function dt_register_required_plugins() {
      */
     $plugins = array(
 
-        array(
-            'name'              => 'Psalm 119',
-            'slug'              => 'psalm-119',
-            'required'          => false,
-            'version'            => '1.1',
-            'force_activation'  => false,
-            'force_deactivation' => false,
-            'is_callable'       => 'Psalm_119',
-        ),
+
         array(
             'name'               => 'Disciple Tools Demo Plugin',
             'slug'               => 'disciple-tools-demo-plugin',
@@ -86,6 +78,7 @@ function dt_register_required_plugins() {
         //            'version'               => '1.2.3',
         //            'is_callable'           => 'Jwt_Auth_Public',
         //        ),
+        
     );
 
     /*
