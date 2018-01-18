@@ -270,6 +270,7 @@ function dt_site_scripts() {
             'current_user_login' => wp_get_current_user()->user_login,
             'current_user_roles' => wp_get_current_user()->roles,
             'current_post_type' => $post_type,
+            'access_all_contacts' => user_can( get_current_user_id(), 'view_any_contacts' )
         ) );
     }
 

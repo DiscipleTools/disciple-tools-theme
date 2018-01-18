@@ -75,6 +75,12 @@
     all_contacts(contact) {
       return true;
     },
+    assignment_needed(contact){
+      return (
+        _.get(contact, 'overall_status') === "unassigned" &&
+        _.get(contact, 'assigned_to.user_login') === current_username
+      )
+    }
   };
 
   $.ajax({
@@ -339,9 +345,6 @@
           updateFilterFunctions();
           dataTable.draw();
         });
-      if (is_dispatcher && filterType === "overall_status" && key === "unassigned") {
-        checkbox.attr("checked", true);
-      }
       $div.append(
         $("<div>").append(
           $("<label>")

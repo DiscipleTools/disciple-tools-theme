@@ -103,6 +103,7 @@ class Disciple_Tools
     public $core = [];
     public $hooks = [];
     public $logging = [];
+    public $user_local;
 
     /**
      * Disciple_Tools The single instance of Disciple_Tools.
@@ -155,6 +156,7 @@ class Disciple_Tools
         $this->plugin_js_path = get_template_directory() . '/dt-core/admin/js/';
         $this->plugin_css_url = get_template_directory_uri() . '/dt-core/admin/css/';
         $this->plugin_css_path = get_template_directory() . '/dt-core/admin/css/';
+        $this->user_local = get_user_locale();
 
         $wpdb->dt_activity_log = $wpdb->prefix . 'dt_activity_log'; // Prepare database table names
         $wpdb->dt_reports = $wpdb->prefix . 'dt_reports';
@@ -223,6 +225,14 @@ class Disciple_Tools
                     throw new Error( "Expected to find template " . $template_for_url[ $url_path ] );
                 }
             }
+        } );
+        /**
+         * Set the locale for the user
+         * must be loaded after most files
+         * @return string
+         */
+        add_filter( 'locale', function (){
+            return $this->user_local;
         } );
 
         /**

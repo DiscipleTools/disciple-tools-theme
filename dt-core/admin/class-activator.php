@@ -33,19 +33,6 @@ class Disciple_Tools_Activator
         $roles = Disciple_Tools_Roles::instance();
         $roles->set_roles();
 
-        /** Setup key for JWT authentication */
-        if ( !defined( 'JWT_AUTH_SECRET_KEY' ) ) {
-            if ( get_option( "my_jwt_key" ) ) {
-                // @codingStandardsIgnoreLine
-                define( 'JWT_AUTH_SECRET_KEY', get_option( "my_jwt_key" ) );
-            } else {
-                $iv = password_hash( random_bytes( 16 ), PASSWORD_DEFAULT );
-                // @codingStandardsIgnoreLine
-                update_option( 'my_jwt_key', $iv );
-                // @codingStandardsIgnoreLine
-                define( 'JWT_AUTH_SECRET_KEY', $iv );
-            }
-        }
 
         /** Initialize default dt site options */
         dt_get_option( 'dt_site_options' );
