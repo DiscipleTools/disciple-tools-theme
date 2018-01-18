@@ -320,10 +320,14 @@ class Disciple_Tools_Roles
         remove_role( 'contributor' );
         remove_role( 'editor' );
         remove_role( 'author' );
+        //Remove old or un-implement roles so they don't confuse people
+        remove_role( 'multiplier_leader' );
+        remove_role( 'marketer_leader' );
+        remove_role( 'prayer_supporter' );
+        remove_role( 'project_supporter' );
 
         // Get the administrator role.
         $role = get_role( 'administrator' );
-
         // If the administrator role exists, add required capabilities for the plugin.
         if ( !empty( $role ) ) {
 
@@ -411,8 +415,8 @@ class Disciple_Tools_Roles
         remove_role( 'dt_admin' );
         remove_role( 'strategist' );
         remove_role( 'multiplier' );
-        remove_role( 'multiplier_leader' );
         remove_role( 'marketer' );
+        remove_role( 'multiplier_leader' );
         remove_role( 'marketer_leader' );
         remove_role( 'prayer_supporter' );
         remove_role( 'project_supporter' );
