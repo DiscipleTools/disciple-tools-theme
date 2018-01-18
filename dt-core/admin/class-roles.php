@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 7;
+    private static $target_roles_version_number = 8;
 
     /**
      * The single instance of Disciple_Tools_Roles
