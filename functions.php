@@ -385,7 +385,7 @@ class Disciple_Tools
             // Settings Menu
             require_once( get_template_directory() . '/dt-core/admin/menu/main.php' ); // main registers all the menu pages and tabs
             $this->config_menu = Disciple_Tools_Config::instance();
-            require_once( get_template_directory() . '/dt-core/admin/menu/locations-async-insert.php' ); // required to load for async listening
+            require_once( get_template_directory() . '/dt-core/admin/utilities/locations-async-insert.php' ); // required to load for async listening
 
 
             // Contacts
