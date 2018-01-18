@@ -7,4 +7,4 @@ config.codekit
 .idea
 
 .DS_Store
-dt-core/admin/menu/myfile.csv
+dt-core/admin/utilities/locations_temp.csv

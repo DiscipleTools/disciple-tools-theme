@@ -57,7 +57,7 @@ class Disciple_Tools_Location_Tools_Menu
     public function __construct()
     {
         $this->path = plugin_dir_path( __DIR__ );
-        add_action( 'admin_menu', [ $this, 'load_admin_menu_item' ] );
+//        add_action( 'admin_menu', [ $this, 'load_admin_menu_item' ] );
     } // End __construct()
 
     /**

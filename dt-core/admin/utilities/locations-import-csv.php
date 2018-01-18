@@ -37,10 +37,6 @@ class Disciple_Tools_Import_CSV
         $this->insertype = '';
         $this->results = [];
         $this->count_rows = 0;
-
-        // persistent variables for the processing timer
-        $this->time_start = 0;
-
     }
 
     /**
@@ -106,50 +102,81 @@ class Disciple_Tools_Import_CSV
         switch ( $this->step ) {
             case '1':
                 ?>
+                <h2>
+                    <?php esc_html_e( 'Import CSV Files', 'disciple_tools' ) ?>
+                </h2>
                 <div class="wrap">
-                    <h2>
-                        <?php esc_html_e( 'Import CSV Files', 'disciple_tools' ) ?>
-                    </h2>
-                    <br/>
-                    <?php if ( $this->error !== '' ) : ?>
-                        <div class="error">
-                            <?php echo esc_attr( $this->error ); ?>
-                        </div>
-                    <?php endif; ?>
+                    <div id="poststuff">
+                        <div id="post-body" class="metabox-holder columns-2">
+                            <div id="post-body-content">
 
-                    <form class="add:the-list: validate" method="post" enctype="multipart/form-data">
-                        <?php wp_nonce_field( 'import_csv', '_csv_nonce' ); ?>
-                        <input name="_csv_panel" type="hidden" value="post_for_step_2"/>
 
-                        <!-- File input -->
-                        <div>
-                            <label for="csv_import">
-                                <?php esc_html_e( 'Select a CSV file:', 'disciple_tools' ) ?>
-                            </label><br/>
-                            <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
-                            <input name="csv_import" id="csv_import" type="file" value=""/>
-                        </div>
-                        <!-- Type -->
-                        <div>
-                            <div id="formatdiv" class="postbox" style="display: block;max-width:350px;">
-                                <h3 class="hndle"
-                                    style="cursor:auto;padding:10px;"><?php esc_html_e( 'Select Import Type', 'disciple_tools' ) ?></h3>
-                                <div class="inside">
-                                    <div id="post-formats-select">
+                                <?php if ( $this->error !== '' ) : ?>
+                                    <div class="error">
+                                        <?php echo esc_attr( $this->error ); ?>
+                                    </div>
+                                <?php endif; ?>
 
-                                        <input id="post-format-page" class="post-format" type="radio" value="locations"
-                                               name="post_format" checked>
-                                        <label for="post-format-page">
-                                            &nbsp;&nbsp;<?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
-                                        </label>
+                                <form class="add:the-list: validate" method="post" enctype="multipart/form-data">
+                                    <?php wp_nonce_field( 'import_csv', '_csv_nonce' ); ?>
+                                    <input name="_csv_panel" type="hidden" value="post_for_step_2"/>
+
+                                    <!-- File input -->
+                                    <div>
+                                        <div id="formatdiv" class="postbox">
+                                            <h3 class="hndle"
+                                                style="cursor:auto;padding:10px;"><?php esc_html_e( 'Select File', 'disciple_tools' ) ?></h3>
+                                            <div class="inside">
+                                                <div id="post-formats-select">
+                                                    <div>
+                                                        <label for="csv_import">
+                                                            <?php esc_html_e( 'Select a CSV file:', 'disciple_tools' ) ?>
+                                                        </label><br/>
+                                                        <input type="hidden" name="MAX_FILE_SIZE" value="30000"/>
+                                                        <input name="csv_import" id="csv_import" type="file" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Type -->
+                                    <div>
+                                        <div id="formatdiv" class="postbox">
+                                            <h3 class="hndle"
+                                                style="cursor:auto;padding:10px;"><?php esc_html_e( 'Select Import Type', 'disciple_tools' ) ?></h3>
+                                            <div class="inside">
+                                                <div id="post-formats-select">
+
+                                                    <input id="post-format-page" class="post-format" type="radio"
+                                                           value="locations"
+                                                           name="post_format" checked>
+                                                    <label for="post-format-page">
+                                                        &nbsp;&nbsp;<?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="submit">
+                                        <button type="submit" class="button">Next ></button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="postbox-container-1" class="postbox-container">
+                                <div class="postbox" id="formatdiv">
+                                    <h3 class="hndle"
+                                        style="cursor:auto;padding:10px;">Templates</h3>
+                                    <div class="inside">
+                                        Locations Template<br>
+                                        <a href="<?php echo esc_url( get_template_directory_uri() ) . '/dt-core/admin/utilities/locations-template.csv' ?>" target="_blank" rel="noopener noreferrer">Locations Import Template</a>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="submit">
-                            <button type="submit" class="button" >Next ></button>
-                        </div>
-                    </form>
+
+                        </div><!--poststuff end -->
+                    </div><!-- wrap end -->
                 </div>
                 <?php
                 break;
@@ -278,8 +305,16 @@ class Disciple_Tools_Import_CSV
                     ?>
 
                     <div class="wrap"><h1><?php echo esc_attr__( 'Report', 'disciple_tools' ) ?></h1><br/>
-                        <strong>Completed <span id="success">0</span> out of <?php echo esc_attr( get_transient( 'dt_import_csv_rows_count' ) ) ?> so far!</strong><br>
-                        <div id="failed"></div> <br>
+                        <div id="formatdiv" class="postbox" style="display: block;max-width:350px;">
+                            <h3 class="hndle"
+                                style="cursor:auto;padding:10px;"><?php esc_html_e( 'Status', 'disciple_tools' ) ?></h3>
+                            <div class="inside">
+                                <div id="post-formats-select">
+                                    <p id="status"><strong>Completed <span id="success">0</span> out of <?php echo esc_attr( get_transient( 'dt_import_csv_rows_count' ) ) ?> so far!</strong></p><br>
+                                    <div id="failed"></div> <br>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <script>
@@ -290,6 +325,7 @@ class Disciple_Tools_Import_CSV
                             let nonce = '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ) ?>';
 
                             let loop = window.setInterval(function(){
+                                <?php // this REST API point is loaded from locations-endpoints.php ?>
                                 jQuery.ajax({
                                     url : url,
                                     type : 'GET',
@@ -311,6 +347,7 @@ class Disciple_Tools_Import_CSV
                                         // clear loop
                                         if( data.count >= expectedRows ) {
                                             clearInterval(loop);
+                                            jQuery('#status').html('<strong>Done! ' + data.count + ' records installed!</strong>')
                                         }
 
                                     })
@@ -372,15 +409,12 @@ class Disciple_Tools_Import_CSV
     }
 
     /**
-     * @return array|\WP_Error
+     * @return bool|\WP_Error
      */
     public function insert_records() {
 
         // Initialize variables
-        $this->timer( 'start' ); //starts processing timer
         $i = 0;
-        $skipped = 0;
-        $imported = 0;
         $length = 999999;
         $delimiter = $this->delimiter;
 
@@ -408,8 +442,6 @@ class Disciple_Tools_Import_CSV
             }
             else {
 
-                dt_write_log( 'BEGIN ASYNC' );
-
                 // Parse mapped data
                 $args = [];
                 foreach ( $this->mapped as $item => $value ) {
@@ -423,8 +455,6 @@ class Disciple_Tools_Import_CSV
                 $insert_location = new Disciple_Tools_Async_Insert_Location();
                 $insert_location->launch( $args );
 
-                dt_write_log( 'COMPLETED ASYNC' );
-
             }
             $i++;
         }
@@ -432,14 +462,9 @@ class Disciple_Tools_Import_CSV
         // Close and Clean up
         fclose( $resource );
         ini_set( "auto_detect_line_endings", false );
-        $exec_time = $this->timer( 'stop' );
 
         // Return report
-        return [
-            'imported'       => $imported,
-            'skipped'        => $skipped,
-            'execution_time' => $exec_time,
-        ];
+        return true;
     }
 
     /**
@@ -498,6 +523,14 @@ class Disciple_Tools_Import_CSV
                     [
                         'key' => 'country',
                         'label' => 'Country',
+                    ],
+                    [
+                        'key' => 'reference_id',
+                        'label' => 'Reference ID',
+                    ],
+                    [
+                        'key' => 'ignore',
+                        'label' => '--Ignore--',
                     ]
                 ];
 
@@ -709,30 +742,6 @@ class Disciple_Tools_Import_CSV
         // Delete temporary file
         if ( file_exists( $this->filename ) ) {
             @unlink( $this->filename );
-        }
-    }
-
-    /**
-     * Timer
-     *
-     * @param $switch `use 'start' to start timer, use 'stop' to stop timer, and use no value to reset timer.`
-     *
-     * @return int|mixed
-     */
-    public function timer( $switch )
-    {
-        switch ( $switch ) {
-            case 'start':
-                return $this->time_start = microtime( true );
-                break;
-
-            case 'stop':
-                return microtime( true ) - $this->time_start;
-                break;
-
-            default:
-                return $this->time_start = 0;
-                break;
         }
     }
 

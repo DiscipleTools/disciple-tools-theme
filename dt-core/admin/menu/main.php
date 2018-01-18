@@ -173,18 +173,18 @@ final class Disciple_Tools_Config
         /**
          * Begin Header & Tab Bar
          */
-        $tab = isset( $_GET["tab"] ) ? sanitize_text_field( wp_unslash( $_GET["tab"] ) ) : 'general';
+        $tab = isset( $_GET["tab"] ) ? sanitize_text_field( wp_unslash( $_GET["tab"] ) ) : 'import';
 
         echo '<div class="wrap">
-            <h2>DISCIPLE TOOLS : IMPORT</h2>
+            <h2>DISCIPLE TOOLS : IMPORT/EXPORT</h2>
             <h2 class="nav-tab-wrapper">';
 
         // tab labels
-        echo '<a href="admin.php?page=import_export&tab=general" class="nav-tab ';
-        if ( $tab == 'general' || !isset( $tab ) ) {
+        echo '<a href="admin.php?page=import_export&tab=import" class="nav-tab ';
+        if ( $tab == 'import' || !isset( $tab ) ) {
             echo 'nav-tab-active';
         }
-        echo '">General</a>';
+        echo '">Import</a>';
 
         echo '</h2>';
         // End Tab Bar
@@ -194,7 +194,7 @@ final class Disciple_Tools_Config
          */
         switch ( $tab ) {
 
-            case 'general':
+            case 'import':
                 require_once( get_template_directory() . '/dt-core/admin/utilities/locations-import-csv.php' );
                 $object = new Disciple_Tools_Import_CSV();
                 $object->wizard(); // prints

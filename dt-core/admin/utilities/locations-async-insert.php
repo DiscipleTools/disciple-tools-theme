@@ -97,6 +97,12 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
                         }
                     }
 
+                    if ( isset( $mapped_from_form['reference_id'] ) ) {
+                        $args['meta_input'] = [
+                            'reference_id' => $mapped_from_form['reference_id'],
+                        ];
+                    }
+
                     break;
                 default:
                     break;
@@ -109,14 +115,10 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
                 $imported = get_transient( 'dt_import_finished_count' );
                 ( $imported ) ? $imported++ : $imported = 1;
                 set_transient( 'dt_import_finished_count', $imported, 1 * HOUR_IN_SECONDS );
-
-                dt_write_log( 'Inserted record ' . $id );
             } else {
                 $errors = get_transient( 'dt_import_finished_with_errors' );
                 $errors[] = $args['post_title'];
                 set_transient( 'dt_import_finished_with_errors', $errors, 1 * HOUR_IN_SECONDS );
-
-                dt_write_log( 'Failed to insert record ' . $args['post_title'] );
             }
         }
     }
