@@ -73,7 +73,7 @@ final class Disciple_Tools_Config
 
         add_menu_page( __( 'Disciple Tools', 'disciple_tools' ), __( 'Disciple Tools', 'disciple_tools' ), 'manage_dt', 'dt_options', [ $this, 'build_default_page' ], dt_svg_icon(), 59 );
 
-        add_submenu_page( 'dt_options', __( 'Import/Export', 'disciple_tools' ), __( 'Import/Export', 'disciple_tools' ), 'manage_dt', 'import_export', [ $this, 'build_import_export_page' ] );
+        add_submenu_page( 'dt_options', __( 'Import', 'disciple_tools' ), __( 'Import', 'disciple_tools' ), 'manage_dt', 'import_export', [ $this, 'build_import_export_page' ] );
 //        add_submenu_page( 'dt_options', __( 'Extensions', 'disciple_tools' ), __( 'Extensions', 'disciple_tools' ), 'manage_dt', 'extensions', [ $this, 'build_extensions_page' ] );
 //        add_submenu_page( 'dt_options', __( 'De-Duplication', 'disciple_tools' ), __( 'De-Duplication', 'disciple_tools' ), 'manage_dt', 'de_duplication', [ $this, 'build_extensions_page' ] );
 
