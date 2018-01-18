@@ -56,8 +56,7 @@ The goal of the project is to create a disciple-making DRM that is incredibly si
 - Use the file upload tool to upload the theme .zip file you saved in Step #1.
 
 ### Step 7
-- When you activate the theme, WordPress will prompt you to install 3 plugins:
-- "Psalm 119" and "JWT Authentication for WP-API" are required, install them.
+- When you activate the theme, WordPress will prompt you to install 1 plugins:
 - "Disciple Tools - Demo" allows you to add/remove sample data to your database so that you can explore the disciple-tools CRM more effectively. Installing it is recommended but not required.
 
 Done! You now have a complete disciple-making CRM for your movement.

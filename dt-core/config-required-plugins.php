@@ -71,14 +71,6 @@ function dt_register_required_plugins() {
             'version' => '1.1',
             'required' => true,
         ),
-        //        array(
-        //            'name'                  => 'jwt-authentication-for-wp-rest-api',
-        //            'slug'                  => 'jwt-authentication-for-wp-rest-api',
-        //            'required'              => false,
-        //            'version'               => '1.2.3',
-        //            'is_callable'           => 'Jwt_Auth_Public',
-        //        ),
-
     );
 
     /*
