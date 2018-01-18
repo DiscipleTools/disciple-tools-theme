@@ -105,6 +105,34 @@ class Disciple_Tools_Locations_Endpoints
                 'callback' => [ $this, 'get_locations_compact' ],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/' . $base . '/import_check', [
+                'methods'  => WP_REST_Server::READABLE,
+                'callback' => [ $this, 'import_check' ],
+            ]
+        );
+    }
+
+    /**
+     * This import check is run at the end of the location import utility
+     * @see /dt-core/utilities/locations-import-csv.php
+     * @return array|\WP_Error
+     */
+    public function import_check() {
+        $count = get_transient( 'dt_import_finished_count' );
+        $errors = get_transient( 'dt_import_finished_with_errors' );
+
+        if ( empty( $count ) ) {
+            $count = 0;
+        }
+        if ( empty( $errors ) ) {
+            $errors = [];
+        }
+
+        return [
+        'count' => $count,
+        'errors' => $errors,
+        ];
     }
 
     /**

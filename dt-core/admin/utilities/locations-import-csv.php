@@ -30,18 +30,17 @@ class Disciple_Tools_Import_CSV
 
         $this->step = 1;
         $this->error = '';
-        $this->filename = dirname( __FILE__ ) . '/myfile.csv'; // create temp file
+        $this->filename = dirname( __FILE__ ) . '/locations_temp.csv'; // create temp file
         $this->delimiter = ',';
         $this->column_count = 0;
         $this->mapped = [];
         $this->insertype = '';
         $this->results = [];
+        $this->count_rows = 0;
 
         // persistent variables for the processing timer
         $this->time_start = 0;
 
-        add_action( 'admin_footer', [ $this, 'progress_javascript' ] );
-        add_action( 'wp_ajax_check_progress', [ $this, 'check_progress' ] );
     }
 
     /**
@@ -73,8 +72,17 @@ class Disciple_Tools_Import_CSV
                 } else {
                     if ( isset( $_POST['post_format'] ) ) {
                         $this->insertype = sanitize_key( wp_unslash( $_POST['post_format'] ) ); // capture selected post type
-                        set_transient( $this->otype, $this->insertype, 12 * HOUR_IN_SECONDS );
+                        set_transient( $this->otype, $this->insertype, 1 * HOUR_IN_SECONDS );
                         $this->step = 2;
+
+                        // check for file limit
+                        $rows_count = $this->count_rows();
+                        if ( $rows_count > 2000 ) {
+                            $this->error = "Cannot load more than 2000 items at a time. Please split your csv into smaller chunks.";
+                            $this->step = 1;
+                        } elseif ( $rows_count > 500 ) {
+                            $this->error = "Loading more than 500 records at a time is not recommended. Please, consider splitting your csv file.";
+                        }
                     }
                 }
             }
@@ -163,7 +171,7 @@ class Disciple_Tools_Import_CSV
                     <h3><?php esc_html_e( 'Step 2 - Map Fields', 'disciple_tools' ) ?></h3>
                     <p><?php esc_html_e( 'Data preview fields', 'disciple_tools' ) ?></p>
 
-
+                    <?php if ( $csv ) : ?>
                     <!-- CSV REVIEW SECTION -->
                     <div style="overflow:auto;">
                         <table class="widefat">
@@ -249,6 +257,8 @@ class Disciple_Tools_Import_CSV
                             </div>
                         </div>
 
+                        <?php endif; ?>
+
                         <a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=import_export' ) ); ?>">Back</a>
                         <button type="submit" class="button"><?php esc_attr_e( 'Next', 'disciple_tools' ) ?> ></button>
                         <br>
@@ -268,22 +278,52 @@ class Disciple_Tools_Import_CSV
                     ?>
 
                     <div class="wrap"><h1><?php echo esc_attr__( 'Report', 'disciple_tools' ) ?></h1><br/>
-                        <div id="success"></div>
-                        <div id="failed"></div>
+                        <strong>Completed <span id="success">0</span> out of <?php echo esc_attr( get_transient( 'dt_import_csv_rows_count' ) ) ?> so far!</strong><br>
+                        <div id="failed"></div> <br>
                     </div>
 
-                    <!-- @todo finish building the checker for progress -->
                     <script>
-                        jQuery(document).ready(function() {
+                        function check_import(){
                             let i = 0;
-                            window.setInterval(function(){
-                                jQuery('#success').html( i );
-                                i++
+                            let expectedRows = <?php echo esc_attr( get_transient( 'dt_import_csv_rows_count' ) ) ?>;
+                            let url = '<?php echo esc_url_raw( get_rest_url( null, '/dt/v1/locations/import_check' ) ) ?>';
+                            let nonce = '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ) ?>';
 
+                            let loop = window.setInterval(function(){
+                                jQuery.ajax({
+                                    url : url,
+                                    type : 'GET',
+                                    contentType: "application/json; charset=utf-8",
+                                    data : {
+                                        action : 'check_progress',
+                                    },
+                                    beforeSend: function(xhr) {
+                                        xhr.setRequestHeader('X-WP-Nonce', nonce);
+                                    },
+                                })
+                                    .done(function (data) {
+                                        jQuery('#success').html( data.count );
 
+                                        data.errors.forEach(function( item, index ) {
+                                            jQuery('#failed').append( item + '<br>' )
+                                        })
+
+                                        // clear loop
+                                        if( data.count >= expectedRows ) {
+                                            clearInterval(loop);
+                                        }
+
+                                    })
+                                    .fail(function (err) {
+                                        console.log("error")
+                                        console.log(err)
+                                        jQuery("#errors").append(err.responseText)
+                                    })
                             }, 2000);
 
-                        });
+                        }
+                        check_import()
+
                     </script>
 
                     <?php
@@ -295,36 +335,6 @@ class Disciple_Tools_Import_CSV
                 wp_die( 'step not recognized' );
                 break;
         }
-    }
-
- // Write our JS below here
-
-    public function progress_javascript() {
-        // @todo build the javascript checker for progress
-        ?>
-        <script type="text/javascript" >
-            jQuery(document).ready(function($) {
-
-                var data = {
-                    'action': 'check_progress',
-                    'whatever': 1234
-                };
-
-                // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
-                jQuery.post(ajaxurl, data, function(response) {
-                    jQuery('#success').html( response );
-                });
-            });
-        </script>
-        <?php
-    }
-
-    /**
-     * @return string
-     */
-    public function check_progress() {
-        // @todo build the checker for the progress
-        return 'success';
     }
 
     /**
@@ -354,7 +364,6 @@ class Disciple_Tools_Import_CSV
             return new WP_Error( 'insert_records_fail', $insert_records->get_error_message() );
         }
 
-
         // Clean up temp file
         $this->remove_temp_file();
 
@@ -382,7 +391,7 @@ class Disciple_Tools_Import_CSV
         // Check file for error
         if ( $resource == 0 ) {
             $this->error = "Loading file error!";
-            $this->step = 2;
+            $this->step = 1;
             return new WP_Error( 'failed_to_get_file', 'Failed to get the csv file.' );
         }
 
@@ -398,7 +407,6 @@ class Disciple_Tools_Import_CSV
                 }
             }
             else {
-
 
                 dt_write_log( 'BEGIN ASYNC' );
 
@@ -546,6 +554,7 @@ class Disciple_Tools_Import_CSV
         $length = 9999999;
         $delimiter = $this->delimiter;
         $resource = $this->fopen_utf8( $this->filename );
+
         if ( $resource == 0 ) {
             return false;
         }
@@ -573,6 +582,7 @@ class Disciple_Tools_Import_CSV
         // close header counter script
         fclose( $resource );
 
+        // get number of columns
         $number_of_fields = count( $headers );
 
         set_transient( $this->onumberfields, $number_of_fields, 12 * HOUR_IN_SECONDS );
@@ -582,6 +592,20 @@ class Disciple_Tools_Import_CSV
         'rows'             => $rows,
         'number_of_fields' => $number_of_fields,
         ];
+    }
+
+    /**
+     * @return int
+     */
+    public function count_rows() {
+        // get number of rows
+        $csv = file( $this->filename, FILE_SKIP_EMPTY_LINES );
+        $rows_count = count( $csv ) - 1;
+
+        set_transient( 'dt_import_csv_rows_count', $rows_count, 1 * HOUR_IN_SECONDS );
+        $this->count_rows = $rows_count;
+
+        return $rows_count;
     }
 
     /**
