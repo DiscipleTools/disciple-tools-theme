@@ -94,158 +94,34 @@ class Disciple_Tools_Roles
         add_role(
             'strategist', __( 'Strategist' ),
             [
-                /* Standard Capabilities */
-                'list_users'                 => true,
-                'delete_others_posts'        => true,
-                'delete_pages'               => true,
-                'delete_posts'               => true,
-                'delete_private_pages'       => true,
-                'delete_private_posts'       => true,
-                'delete_published_pages'     => true,
-                'delete_published_posts'     => true,
-                'edit_others_pages'          => true,
-                'edit_others_posts'          => true,
-                'edit_pages'                 => true,
-                'edit_posts'                 => true,
-                'edit_private_pages'         => true,
-                'edit_private_posts'         => true,
-                'edit_published_pages'       => true,
-                'edit_published_posts'       => true,
-                'manage_categories'          => true,
-                'manage_links'               => true,
-                'moderate_comments'          => true,
-                'publish_pages'              => true,
-                'publish_posts'              => true,
-                'read'                       => true,
-                'read_private_pages'         => true,
-                'read_private_posts'         => true,
-                'upload_files'               => true,
-                'level_0'                    => true,
-                /* Manage DT Options */
-                'manage_dt'                  => true,
-                /* See all contacts */
-                'manage_contacts'            => true,
-                /* Add custom caps for contacts */
-                'edit_contact'               => true,
-                'read_contact'               => true,
-                'delete_contact'             => true,
-                'delete_others_contacts'     => true,
-                'delete_contacts'            => true,
-                'edit_contacts'              => true,
-                'edit_team_contacts'         => true,
-                'edit_others_contacts'       => true,
-                'publish_contacts'           => true,
-                'read_private_contacts'      => true,
-                /* Add custom caps for groups */
-                'edit_group'                 => true,
-                'read_group'                 => true,
-                'delete_group'               => true,
-                'delete_others_groups'       => true,
-                'delete_groups'              => true,
-                'edit_groups'                => true,
-                'edit_others_groups'         => true,
-                'publish_groups'             => true,
-                'read_private_groups'        => true,
-                /* Add custom caps for prayer updates */
-                'read_prayer'                => true,
-                'edit_prayer'                => true,
-                'delete_prayer'              => true,
-                'delete_others_prayers'      => true,
-                'delete_prayers'             => true,
-                'edit_prayers'               => true,
-                'edit_others_prayers'        => true,
-                'publish_prayers'            => true,
-                'read_private_prayers'       => true,
-                /* Add custom caps for locations */
-                'read_location'              => true,
-                'edit_location'              => true,
-                'delete_location'            => true,
-                'delete_others_locations'    => true,
-                'delete_locations'           => true,
-                'edit_locations'             => true,
-                'edit_others_locations'      => true,
-                'publish_locations'          => true,
-                'read_private_locations'     => true,
-                /* Add custom caps for progresss */
-                'read_progress'              => true,
-                'edit_progress'              => true,
-                'delete_progress'            => true,
-                'delete_others_progresss'    => true,
-                'delete_progresss'           => true,
-                'edit_progresss'             => true,
-                'edit_others_progresss'      => true,
-                'publish_progresss'          => true,
-                'read_private_progresss'     => true,
-                /* Add custom caps for assets */
-                'read_assetmapping'          => true,
-                'edit_assetmapping'          => true,
-                'delete_assetmapping'        => true,
-                'delete_others_assetmapping' => true,
-                'delete_assetmappings'       => true,
-                'edit_assetmappings'         => true,
-                'edit_others_assetmapping'   => true,
-                'publish_assetmapping'       => true,
-                'read_private_assetmappings' => true,
-                /* Add custom caps for resources */
-                'read_resource'              => true,
-                'edit_resource'              => true,
-                'delete_resource'            => true,
-                'delete_others_resource'     => true,
-                'delete_resources'           => true,
-                'edit_resources'             => true,
-                'edit_others_resource'       => true,
-                'publish_resource'           => true,
-                'read_private_resources'     => true,
-                /* Add custom caps for people groups */
-                'read_peoplegroup'           => true,
-                'edit_peoplegroup'           => true,
-                'delete_peoplegroup'         => true,
-                'delete_others_peoplegroup'  => true,
-                'delete_peoplegroups'        => true,
-                'edit_peoplegroups'          => true,
-                'edit_others_peoplegroup'    => true,
-                'publish_peoplegroup'        => true,
-                'read_private_peoplegroups'  => true,
+                'read'                      => true, //access to admin
+                'manage_dt'                 => true, // key capability for wp-admin dt administration
 
+                'access_contacts'        => true,
+                'create_contacts'        => true,
+                'update_shared_contacts' => true,
+
+                'access_groups' => true,
+                'create_groups' => true,
+
+                'read_location' => true
             ]
         );
-
+//
         if ( get_role( 'dispatcher' ) ) {
             remove_role( 'dispatcher' );
         }
         add_role(
             'dispatcher', __( 'Dispatcher' ),
             [
-                /* Standard Capabilities */
-                //'list_users' => false,
-                //'delete_others_posts' => true,
-                //'delete_pages' => true,
-                //'delete_posts' => true,
-                //'delete_private_pages' => true,
-                //'delete_private_posts' => true,
-                //'delete_published_pages' => true,
-                //'delete_published_posts' => true,
-                //'edit_others_pages' => true,
-                //'edit_others_posts' => true,
-                //'edit_pages' => false,
-                //'edit_posts' => true,
-                //'edit_private_pages' => true,
-                //'edit_private_posts' => true,
-                //'edit_published_pages' => true,
-                //'edit_published_posts' => true,
-                //'manage_categories' => true,
-                //'manage_links' => true,
-                //'moderate_comments' => true,
-                //'publish_pages' => true,
-                //'publish_posts' => true,
-                //'read_private_pages' => true,
-                //'read_private_posts' => true,
-                //'upload_files' => true,
-                'read'                      => true,
-                'level_0'                   => true,
+                'read'                      => true, //access to admin
 
                 /* Manage DT Options */
-                'manage_dt'                 => true,
+                'manage_dt'                 => true, // key capability for wp-admin dt administration
+//                'edit_users'                => true,
+//                'create_users'              => true,
+//                'delete_users'              => true,
+//                'list_users'                => true,
 
                 /* Add custom caps for contacts */
                 'access_contacts'           => true,
@@ -256,6 +132,18 @@ class Disciple_Tools_Roles
                 'update_any_contacts'       => true,  //update any contacts
                 'delete_any_contacts'       => true,  //delete any contacts
 
+                /* Add wp-admin caps for contacts */
+                'edit_contact'               => true,
+                'read_contact'               => true,
+                'delete_contact'             => true,
+                'delete_others_contacts'     => true,
+                'delete_contacts'            => true,
+                'edit_contacts'              => true,
+                'edit_team_contacts'         => true,
+                'edit_others_contacts'       => true,
+                'publish_contacts'           => true,
+                'read_private_contacts'      => true,
+
                 /* Add custom caps for groups */
                 'access_groups'             => true,
                 'create_groups'             => true,
@@ -264,36 +152,37 @@ class Disciple_Tools_Roles
                 'update_any_groups'         => true,  //update any groups
                 'delete_any_groups'         => true,  //delete any groups
 
-                /* Add custom caps for locations */
-                'read_location'              => true,
-                'edit_location'              => true,
-                'delete_location'            => true,
-                'delete_others_locations'    => true,
-                'delete_locations'           => true,
-                'edit_locations'             => true,
-                'edit_others_locations'      => true,
-                'publish_locations'          => true,
-                'read_private_locations'     => true,
+                /* Add wp-admin caps for groups */
+                'edit_group'                 => true,
+                'read_group'                 => true,
+                'delete_group'               => true,
+                'delete_others_groups'       => true,
+                'delete_groups'              => true,
+                'edit_groups'                => true,
+                'edit_others_groups'         => true,
+                'publish_groups'             => true,
+                'read_private_groups'        => true,
 
-                /* Add custom caps for resources */
-                'read_resource'             => true,
-                'edit_resource'             => true,
-                'delete_resource'           => true,
-                'delete_others_resource'    => true,
-                'delete_resources'          => true,
-                'edit_resources'            => true,
-                'edit_others_resource'      => true,
-                'publish_resource'          => true,
-                'read_private_resources'    => true,
+                /* Add custom caps for locations */
+                'read_location'             => true,
+                'edit_location'             => true,
+                'delete_location'           => true,
+                'delete_others_locations'   => true,
+                'delete_locations'          => true,
+                'edit_locations'            => true,
+                'edit_others_locations'     => true,
+                'publish_locations'         => true,
+                'read_private_locations'    => true,
+
                 /* Add custom caps for people groups */
                 'read_peoplegroup'          => true,
                 'edit_peoplegroup'          => true,
                 'delete_peoplegroup'        => true,
-                'delete_others_peoplegroup' => true,
+                'delete_others_peoplegroups' => true,
                 'delete_peoplegroups'       => true,
                 'edit_peoplegroups'         => true,
-                'edit_others_peoplegroup'   => true,
-                'publish_peoplegroup'       => true,
+                'edit_others_peoplegroups'   => true,
+                'publish_peoplegroups'       => true,
                 'read_private_peoplegroups' => true,
 
             ]
@@ -315,141 +204,15 @@ class Disciple_Tools_Roles
                 'read_location' => true
             ]
         );
-
-        if ( get_role( 'marketer_leader' ) ) {
-            remove_role( 'marketer_leader' );
-        }
-        add_role(
-            'marketer_leader', __( 'Marketer Leader' ),
-            [
-                /* Standard Capabilities */
-                'list_users'                 => true,
-                'delete_others_posts'        => true,
-                'delete_pages'               => true,
-                'delete_posts'               => true,
-                'delete_private_pages'       => true,
-                'delete_private_posts'       => true,
-                'delete_published_pages'     => true,
-                'delete_published_posts'     => true,
-                'edit_others_pages'          => true,
-                'edit_others_posts'          => true,
-                'edit_pages'                 => true,
-                'edit_posts'                 => true,
-                'edit_private_pages'         => true,
-                'edit_private_posts'         => true,
-                'edit_published_pages'       => true,
-                'edit_published_posts'       => true,
-                'manage_categories'          => true,
-                'manage_links'               => true,
-                'moderate_comments'          => true,
-                'publish_pages'              => true,
-                'publish_posts'              => true,
-                'read'                       => true,
-                'read_private_pages'         => true,
-                'read_private_posts'         => true,
-                'upload_files'               => true,
-                'level_0'                    => true,
-                /* See all contacts */
-                'manage_contacts'            => true,
-                /* Add custom caps for contacts */
-                'edit_contact'               => true,
-                'read_contact'               => true,
-                'delete_contact'             => true,
-                'delete_others_contacts'     => true,
-                'delete_contacts'            => true,
-                'edit_contacts'              => true,
-                'edit_team_contacts'         => true,
-                'edit_others_contacts'       => true,
-                'publish_contacts'           => true,
-                'read_private_contacts'      => true,
-                /* Add custom caps for groups */
-                'edit_group'                 => true,
-                'read_group'                 => true,
-                'delete_group'               => true,
-                'delete_others_groups'       => true,
-                'delete_groups'              => true,
-                'edit_groups'                => true,
-                'edit_others_groups'         => true,
-                'publish_groups'             => true,
-                'read_private_groups'        => true,
-                /* Add custom caps for prayer updates */
-                'read_prayer'                => true,
-                'edit_prayer'                => true,
-                'delete_prayer'              => true,
-                'delete_others_prayers'      => true,
-                'delete_prayers'             => true,
-                'edit_prayers'               => true,
-                'edit_others_prayers'        => true,
-                'publish_prayers'            => true,
-                'read_private_prayers'       => true,
-                /* Add custom caps for locations */
-                'read_location'              => true,
-                'edit_location'              => true,
-                'delete_location'            => true,
-                'delete_others_locations'    => true,
-                'delete_locations'           => true,
-                'edit_locations'             => true,
-                'edit_others_locations'      => true,
-                'publish_locations'          => true,
-                'read_private_locations'     => true,
-                /* Add custom caps for progresss */
-                'read_progress'              => true,
-                'edit_progress'              => true,
-                'delete_progress'            => true,
-                'delete_others_progresss'    => true,
-                'delete_progresss'           => true,
-                'edit_progresss'             => true,
-                'edit_others_progresss'      => true,
-                'publish_progresss'          => true,
-                'read_private_progresss'     => true,
-                /* Add custom caps for assets */
-                'read_assetmapping'          => true,
-                'edit_assetmapping'          => true,
-                'delete_assetmapping'        => true,
-                'delete_others_assetmapping' => true,
-                'delete_assetmappings'       => true,
-                'edit_assetmappings'         => true,
-                'edit_others_assetmapping'   => true,
-                'publish_assetmapping'       => true,
-                'read_private_assetmappings' => true,
-                /* Add custom caps for resources */
-                'read_resource'              => true,
-                'edit_resource'              => true,
-                'delete_resource'            => true,
-                'delete_others_resource'     => true,
-                'delete_resources'           => true,
-                'edit_resources'             => true,
-                'edit_others_resource'       => true,
-                'publish_resource'           => true,
-                'read_private_resources'     => true,
-                /* Add custom caps for people groups */
-                'read_peoplegroup'           => true,
-                'edit_peoplegroup'           => true,
-                'delete_peoplegroup'         => true,
-                'delete_others_peoplegroup'  => true,
-                'delete_peoplegroups'        => true,
-                'edit_peoplegroups'          => true,
-                'edit_others_peoplegroup'    => true,
-                'publish_peoplegroup'        => true,
-                'read_private_peoplegroups'  => true,
-                'access_contacts'        => true,
-                'create_contacts'        => true,
-                'update_shared_contacts' => true,
-
-                'access_groups' => true,
-                'create_groups' => true,
-
-            ]
-        );
-
+//
+//
         if ( get_role( 'dt_admin' ) ) {
             remove_role( 'dt_admin' );
         }
         add_role(
             'dt_admin', __( 'DT Admin' ),
             [
-                'read'                      => true,
-                'level_0'                   => true,
+                'read'                      => true, //access to admin
 
                 /* Manage DT Options */
                 'manage_dt'                 => true, // key capability for wp-admin dt administration
@@ -457,7 +220,6 @@ class Disciple_Tools_Roles
                 'create_users'              => true,
                 'delete_users'              => true,
                 'list_users'                => true,
-                'moderate_comments'         => true,
 
                 /* Add custom caps for contacts */
                 'access_contacts'           => true,
@@ -541,29 +303,6 @@ class Disciple_Tools_Roles
             ]
         );
 
-        if ( get_role( 'project_supporter' ) ) {
-            remove_role( 'project_supporter' );
-        }
-        add_role(
-            'project_supporter', __( 'Project Supporter' ),
-            [
-                'project_supporter' => true,
-                'read_prayer'       => true,
-                'read_progress'     => true,
-            ]
-        );
-
-        if ( get_role( 'prayer_supporter' ) ) {
-            remove_role( 'prayer_supporter' );
-        }
-        add_role(
-            'prayer_supporter', __( 'Prayer Supporter' ),
-            [
-                'prayer_supporter' => true,
-                'read_prayer'      => true,
-            ]
-        );
-
         if ( get_role( 'registered' ) ) {
             remove_role( 'registered' );
         }
@@ -577,7 +316,7 @@ class Disciple_Tools_Roles
         /**
          * Default user role set to registered in /includes/drm-filters.php
          */
-        //        remove_role( 'subscriber' ); // TODO: Removed these features because of multisite compatible
+        remove_role( 'subscriber' ); // TODO: Removed these features because of multisite compatible
         remove_role( 'contributor' );
         remove_role( 'editor' );
         remove_role( 'author' );
@@ -633,27 +372,6 @@ class Disciple_Tools_Roles
             $role->add_cap( 'publish_groups' );
             $role->add_cap( 'read_private_groups' );
 
-            /* Add Prayer permissions*/
-            $role->add_cap( 'edit_prayer' );
-            $role->add_cap( 'read_prayer' );
-            $role->add_cap( 'delete_prayer' );
-            $role->add_cap( 'delete_others_prayers' );
-            $role->add_cap( 'delete_prayers' );
-            $role->add_cap( 'edit_prayers' );
-            $role->add_cap( 'edit_others_prayers' );
-            $role->add_cap( 'publish_prayers' );
-            $role->add_cap( 'read_private_prayers' );
-
-            /* Add Progress permissions */
-            $role->add_cap( 'edit_progress' );
-            $role->add_cap( 'read_progress' );
-            $role->add_cap( 'delete_progress' );
-            $role->add_cap( 'delete_others_progresss' );
-            $role->add_cap( 'delete_progresss' );
-            $role->add_cap( 'edit_progresss' );
-            $role->add_cap( 'edit_others_progresss' );
-            $role->add_cap( 'publish_progresss' );
-            $role->add_cap( 'read_private_progresss' );
 
             /* Add Location permissions */
             $role->add_cap( 'edit_location' );
@@ -665,28 +383,6 @@ class Disciple_Tools_Roles
             $role->add_cap( 'edit_others_locations' );
             $role->add_cap( 'publish_locations' );
             $role->add_cap( 'read_private_locations' );
-
-            /* Add Asset permissions */
-            $role->add_cap( 'edit_assetmapping' );
-            $role->add_cap( 'read_assetmapping' );
-            $role->add_cap( 'delete_assetmapping' );
-            $role->add_cap( 'delete_others_assetmappings' );
-            $role->add_cap( 'delete_assetmappings' );
-            $role->add_cap( 'edit_assetmappings' );
-            $role->add_cap( 'edit_others_assetmappings' );
-            $role->add_cap( 'publish_assetmappings' );
-            $role->add_cap( 'read_private_assetmappings' );
-
-            /* Add Resource permissions */
-            $role->add_cap( 'edit_resource' );
-            $role->add_cap( 'read_resource' );
-            $role->add_cap( 'delete_resource' );
-            $role->add_cap( 'delete_others_resources' );
-            $role->add_cap( 'delete_resources' );
-            $role->add_cap( 'edit_resources' );
-            $role->add_cap( 'edit_others_resources' );
-            $role->add_cap( 'publish_resources' );
-            $role->add_cap( 'read_private_resources' );
 
             /* Add People Group permissions */
             $role->add_cap( 'edit_peoplegroup' );
@@ -712,9 +408,12 @@ class Disciple_Tools_Roles
         delete_option( 'run_once' );
 
         remove_role( 'dispatcher' );
+        remove_role( 'dt_admin' );
+        remove_role( 'strategist' );
         remove_role( 'multiplier' );
         remove_role( 'multiplier_leader' );
         remove_role( 'marketer' );
+        remove_role( 'marketer_leader' );
         remove_role( 'prayer_supporter' );
         remove_role( 'project_supporter' );
 

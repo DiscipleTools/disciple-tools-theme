@@ -157,13 +157,13 @@ class Disciple_Tools_Groups_Post_Type
         $capabilities = [
             'edit_post'           => 'access_groups',
             'read_post'           => 'access_groups',
-            'delete_post'         => 'delete_any_group',
-            'delete_others_posts' => 'delete_any_group',
-            'delete_posts'        => 'delete_any_group',
+            'delete_post'         => 'delete_any_groups',
+            'delete_others_posts' => 'delete_any_groups',
+            'delete_posts'        => 'delete_any_groups',
             'edit_posts'          => 'access_groups',
-            'edit_others_posts'   => 'update_any_group',
+            'edit_others_posts'   => 'update_any_groups',
             'publish_posts'       => 'create_groups',
-            'read_private_posts'  => 'view_any_group',
+            'read_private_posts'  => 'view_any_groups',
         ];
 
         $rewrite = [

@@ -163,13 +163,13 @@ class Disciple_Tools_Contact_Post_Type
         $capabilities = [
             'edit_post'           => 'access_contacts',
             'read_post'           => 'access_contacts',
-            'delete_post'         => 'delete_any_contact',
-            'delete_others_posts' => 'delete_any_contact',
-            'delete_posts'        => 'delete_any_contact',
+            'delete_post'         => 'delete_any_contacts',
+            'delete_others_posts' => 'delete_any_contacts',
+            'delete_posts'        => 'delete_any_contacts',
             'edit_posts'          => 'access_contacts',
-            'edit_others_posts'   => 'update_any_contact',
+            'edit_others_posts'   => 'update_any_contacts',
             'publish_posts'       => 'create_contacts',
-            'read_private_posts'  => 'view_any_contact',
+            'read_private_posts'  => 'view_any_contacts',
         ];
         $defaults = [
             'label'                 => __( 'Contact', 'disciple_tools' ),
