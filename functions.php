@@ -293,11 +293,6 @@ class Disciple_Tools
          */
         require_once( get_template_directory() . '/dt-locations/locations-post-type.php' );
         $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
-        require_once( get_template_directory() . '/dt-locations/class-map.php' ); // Helper
-        require_once( get_template_directory() . '/dt-locations/class-census-geolocation-api.php' );// APIs
-        require_once( get_template_directory() . '/dt-locations/class-google-geolocation-api.php' );
-        require_once( get_template_directory() . '/dt-locations/class-coordinates-db.php' );
-
         require_once( get_template_directory() . '/dt-locations/locations-template.php' );
         require_once( get_template_directory() . '/dt-locations/locations.php' ); // serves the locations rest endpoints
         require_once( get_template_directory() . '/dt-locations/locations-endpoints.php' ); // builds rest endpoints
@@ -405,9 +400,6 @@ class Disciple_Tools
             $this->config_groups = Disciple_Tools_Groups_Config::instance();
 
             // Locations
-            require_once( get_template_directory() . '/dt-locations/admin-menu.php' );
-            $this->location_tools = Disciple_Tools_Location_Tools_Menu::instance();
-            require_once( get_template_directory() . '/dt-locations/class-import.php' ); // import class
             require_once( get_template_directory() . '/dt-locations/geocoding-api.php' );
 
             // People Groups

@@ -589,23 +589,16 @@ class Disciple_Tools_Location_Post_Type
 
         global $post;
 
-        $query_object = Disciple_Tools_Google_Geolocation::query_google_api( $location_address );
-
-        $location = [];
-        $location['lat'] = $query_object->results[0]->geometry->location->lat;
-        $location['lng'] = $query_object->results[0]->geometry->location->lng;
-        $location['northeast_lat'] = $query_object->results[0]->geometry->bounds->northeast->lat;
-        $location['northeast_lng'] = $query_object->results[0]->geometry->bounds->northeast->lng;
-        $location['southwest_lat'] = $query_object->results[0]->geometry->bounds->southwest->lat;
-        $location['southwest_lng'] = $query_object->results[0]->geometry->bounds->southwest->lng;
-
-        update_post_meta( $post->ID, 'location', $location );
-        update_post_meta( $post->ID, 'lat', $location['lat'] );
-        update_post_meta( $post->ID, 'lng', $location['lng'] );
-        update_post_meta( $post->ID, 'northeast_lat', $location['northeast_lat'] );
-        update_post_meta( $post->ID, 'northeast_lng', $location['northeast_lng'] );
-        update_post_meta( $post->ID, 'southwest_lat', $location['southwest_lat'] );
-        update_post_meta( $post->ID, 'southwest_lng', $location['southwest_lng'] );
+        $location = Disciple_Tools_Google_Geocode_API::query_google_api( $location_address, 'all_points' );
+        if ( $location ) {
+            update_post_meta( $post->ID, 'location', $location );
+            update_post_meta( $post->ID, 'lat', $location['lat'] );
+            update_post_meta( $post->ID, 'lng', $location['lng'] );
+            update_post_meta( $post->ID, 'northeast_lat', $location['northeast_lat'] );
+            update_post_meta( $post->ID, 'northeast_lng', $location['northeast_lng'] );
+            update_post_meta( $post->ID, 'southwest_lat', $location['southwest_lat'] );
+            update_post_meta( $post->ID, 'southwest_lng', $location['southwest_lng'] );
+        }
 
         return get_post_meta( $post->ID );
     }
@@ -738,7 +731,7 @@ class Disciple_Tools_Location_Post_Type
     }
 
     public function geocode_metabox() {
-        global $post;
+        global $post, $pagenow;
         $post_meta = get_post_meta( $post->ID );
 
         echo '<input type="hidden" name="dt_locations_noonce" id="dt_locations_noonce" value="' . esc_attr( wp_create_nonce( 'update_location_info' ) ) . '" />';
@@ -751,22 +744,13 @@ class Disciple_Tools_Location_Post_Type
                            required/>
                 </td>
             </tr>
-<!--            <tr>-->
-<!--                <td><label for="parent_location">Parent Location: </label></td>-->
-<!--                <td><select name="parent_location" id="parent_location">-->
-<!--                        <option>Select</option>-->
-<!--                        --><?php
-//                        $results = new WP_Query( [ 'post_type' => 'locations', 'orderby' => 'post_title', 'order' => 'ASC' ] );
-//                        foreach ( $results->posts as $result ) {
-//                            echo '<option value="' . $result->ID . '">' . $result->post_title . '</option>';
-//                        }
-//                        ?>
-<!--                    </select>-->
-<!--                </td>-->
-<!--            </tr>-->
             <tr>
                 <td></td>
-                <td><button type="submit" class="button small right">Update</button></td>
+                <td>
+                    <?php if ( ! $pagenow == 'post-new.php?post_type=locations' ) : ?>
+                    <button type="submit" class="button small right">Update</button>
+                    <?php endif; ?>
+                </td>
             </tr>
 
         </table>

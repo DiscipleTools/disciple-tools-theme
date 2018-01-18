@@ -98,9 +98,7 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
                     }
 
                     if ( isset( $mapped_from_form['reference_id'] ) ) {
-                        $args['meta_input'] = [
-                            'reference_id' => $mapped_from_form['reference_id'],
-                        ];
+                        $args['meta_input']['reference_id'] = $mapped_from_form['reference_id'];
                     }
 
                     break;
