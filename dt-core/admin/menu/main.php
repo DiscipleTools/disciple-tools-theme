@@ -195,7 +195,7 @@ final class Disciple_Tools_Config
         switch ( $tab ) {
 
             case 'general':
-                require_once( '../utilities/locations-import-csv.php' );
+                require_once( get_template_directory() . '/dt-core/admin/utilities/locations-import-csv.php' );
                 $object = new Disciple_Tools_Import_CSV();
                 $object->wizard(); // prints
                 break;
