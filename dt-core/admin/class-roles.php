@@ -107,7 +107,7 @@ class Disciple_Tools_Roles
                 'read_location' => true
             ]
         );
-//
+
         if ( get_role( 'dispatcher' ) ) {
             remove_role( 'dispatcher' );
         }
@@ -118,10 +118,10 @@ class Disciple_Tools_Roles
 
                 /* Manage DT Options */
                 'manage_dt'                 => true, // key capability for wp-admin dt administration
-//                'edit_users'                => true,
-//                'create_users'              => true,
-//                'delete_users'              => true,
-//                'list_users'                => true,
+                //'edit_users'                => true,
+                //'create_users'              => true,
+                //'delete_users'              => true,
+                //'list_users'                => true,
 
                 /* Add custom caps for contacts */
                 'access_contacts'           => true,
@@ -204,8 +204,7 @@ class Disciple_Tools_Roles
                 'read_location' => true
             ]
         );
-//
-//
+
         if ( get_role( 'dt_admin' ) ) {
             remove_role( 'dt_admin' );
         }
@@ -504,7 +503,7 @@ class Disciple_Tools_Roles
         );
 
         add_filter(
-            'pre_option_default_role', function( $default_role ) {
+            'pre_option_default_role', function() {
                 return 'subscriber';
             }
         );
