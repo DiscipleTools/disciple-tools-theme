@@ -376,7 +376,10 @@ class Disciple_Tools_Posts
         foreach ( $activity as $a ) {
             $a->object_note = self::format_activity_message( $a, $fields );
             if ( isset( $a->user_id ) && $a->user_id > 0 ) {
-                $a->name = get_user_by( "id", $a->user_id )->display_name;
+                $user = get_user_by( "id", $a->user_id );
+                if ( $user ){
+                    $a->name =$user->display_name;
+                }
             }
         }
 
