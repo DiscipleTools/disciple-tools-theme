@@ -157,7 +157,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         }
         if ( !empty( $prev )){
             if ( is_array( $meta_value )){
-                $prev_value = unserialize( $prev[0]->meta_value );
+                $prev_value = maybe_unserialize( $prev[0]->meta_value );
             } else {
                 $prev_value = $prev[0]->meta_value;
             }

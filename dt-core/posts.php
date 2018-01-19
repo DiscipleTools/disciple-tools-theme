@@ -316,7 +316,7 @@ class Disciple_Tools_Posts
                 }
             } else {
                 if (strpos( $activity->meta_key, "_details" ) !== false ) {
-                    $meta_value = unserialize( $activity->meta_value );
+                    $meta_value = maybe_unserialize( $activity->meta_value );
                     $original_key = str_replace( "_details", "", $activity->meta_key );
                     $original = get_post_meta( $activity->object_id, $original_key, true );
                     $name = $fields[ $activity->meta_key ]['name'] ?? "";

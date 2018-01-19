@@ -118,7 +118,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
                         $details = [];
                         if ( isset( $meta_fields[ $key . '_details' ][0] ) ) {
-                            $details = unserialize( $meta_fields[ $key . '_details' ][0] );
+                            $details = maybe_unserialize( $meta_fields[ $key . '_details' ][0] );
                         }
                         $details["value"] = $value[0];
                         $details["key"] = $key;
