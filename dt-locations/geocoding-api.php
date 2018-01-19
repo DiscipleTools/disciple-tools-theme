@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Disciple_Tools_Google_Geolocation
+ * Disciple_Tools_Google_Geocode_API
  *
- * @class   Disciple_Tools_Google_Geolocation
+ * @class   Disciple_Tools_Google_Geocode_API
  * @version 0.1.0
- * @package Disciple_Tools_Google_Geolocation
+ * @package Disciple_Tools_Google_Geocode_API
  */
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly
 
 /**
- * Class Disciple_Tools_Google_Geolocation
+ * Class Disciple_Tools_Google_Geocode_API
 
  */
 class Disciple_Tools_Google_Geocode_API

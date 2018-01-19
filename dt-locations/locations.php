@@ -63,271 +63,6 @@ class Disciple_Tools_Locations
     }
 
     /**
-     * Gets a count for the different levels of 4K locations
-     *
-     * @param int|string $level  Default is to 999, which is 'all' standard location records.
-     *
-     * @return int|null
-     */
-    public static function get_standard_locations_count( int $level = 999 )
-    {
-        switch ( $level ) {
-
-            case 0:
-                $args = [
-                    'post_type'  => 'locations',
-                    'meta_key'   => 'WorldID',
-                    'nopaging'   => true,
-                    'meta_query' => [
-                        [
-                            'key'     => 'WorldID',
-                            'value'   => '^...$',
-                            'compare' => 'REGEXP',
-                        ],
-                    ],
-
-                ];
-                $result = new WP_Query( $args );
-                return $result->post_count;
-                break;
-            case 1:
-                $args = [
-                    'post_type'  => 'locations',
-                    'meta_key'   => 'WorldID',
-                    'nopaging'   => true,
-                    'meta_query' => [
-                        [
-                            'key'     => 'WorldID',
-                            'value'   => '^.......$',
-                            'compare' => 'REGEXP',
-                        ],
-                    ],
-
-                ];
-                $result = new WP_Query( $args );
-                return $result->post_count;
-                break;
-            case 2:
-                $args = [
-                    'post_type'  => 'locations',
-                    'meta_key'   => 'WorldID',
-                    'nopaging'   => true,
-                    'meta_query' => [
-                        [
-                            'key'     => 'WorldID',
-                            'value'   => '^...........$',
-                            'compare' => 'REGEXP',
-                        ],
-                    ],
-
-                ];
-                $result = new WP_Query( $args );
-                return $result->post_count;
-                break;
-            case 3:
-                $args = [
-                    'post_type'  => 'locations',
-                    'meta_key'   => 'WorldID',
-                    'nopaging'   => true,
-                    'meta_query' => [
-                        [
-                            'key'     => 'WorldID',
-                            'value'   => '^...............$',
-                            'compare' => 'REGEXP',
-                        ],
-                    ],
-
-                ];
-                $result = new WP_Query( $args );
-                return $result->post_count;
-                break;
-            case 4:
-                $args = [
-                    'post_type'  => 'locations',
-                    'meta_key'   => 'WorldID',
-                    'nopaging'   => true,
-                    'meta_query' => [
-                        [
-                            'key'     => 'WorldID',
-                            'value'   => '^...................$',
-                            'compare' => 'REGEXP',
-                        ],
-                    ],
-
-                ];
-                $result = new WP_Query( $args );
-                return $result->post_count;
-                break;
-            default:
-                $args = [
-                    'post_type'  => 'locations',
-                    'meta_key'   => 'WorldID',
-                    'nopaging'   => true,
-                ];
-                $result = new WP_Query( $args );
-
-                return $result->post_count;
-                break;
-        }
-    }
-
-    /**
-     * Returns standard countries present in the system.
-     *
-     * @return \WP_Query
-     */
-    public static function get_standard_admin0() {
-        $args = [
-            'post_type'  => 'locations',
-            'meta_key'   => 'WorldID',
-            'nopaging'   => true,
-            'meta_query' => [
-                [
-                    'key'     => 'WorldID',
-                    'value'   => '^...$',
-                    'compare' => 'REGEXP',
-                ],
-            ],
-
-        ];
-        return new WP_Query( $args );
-    }
-
-    /**
-     * Returns standard locations from administrative level 1 (i.e. states)
-     *
-     * @param $world_id
-     *
-     * @return bool|\WP_Query|WP_Error
-     */
-    public static function get_standard_admin1( $world_id ) {
-
-        if ( empty( $world_id ) ) {
-            return false;
-        }
-
-        $world_id = strtoupper( substr( trim( $world_id ), 0, 3 ) );
-
-        if ( ! preg_match( '/^[A-Z][A-Z][A-Z]/', $world_id ) ) {
-            return new WP_Error( 'failed_query_pattern', 'Failed to match pattern required for world_id.' );
-        }
-
-        $args = [
-            'post_type'  => 'locations',
-            'nopaging'   => true,
-            'meta_query' => [
-                [
-                    'key'     => 'WorldID',
-                    'value'   => '^' . $world_id . '....$',
-                    'compare' => 'REGEXP',
-                ],
-            ],
-
-        ];
-        return new WP_Query( $args );
-    }
-
-    /**
-     * @param $world_id
-     *
-     * @return bool|\WP_Query|WP_Error
-     */
-    public static function get_standard_admin2( $world_id ) {
-
-        if ( empty( $world_id ) ) {
-            return new WP_Error( 'failed_to_provide_world_id', 'Failed to provide valid world_id.' );
-        }
-
-        $world_id = strtoupper( substr( trim( $world_id ), 0, 7 ) );
-
-        if ( ! preg_match( '/^[A-Z][A-Z][A-Z].[A-Z][A-Z][A-Z]/', $world_id ) ) {
-            return new WP_Error( 'failed_query_pattern', 'Failed to match pattern required for world_id.' );
-        }
-
-        $args = [
-            'post_type'  => 'locations',
-            'nopaging'   => true,
-            'meta_query' => [
-                [
-                    'key'     => 'WorldID',
-                    'value'   => '^' . $world_id . '....$',
-                    'compare' => 'REGEXP',
-                ],
-            ],
-
-        ];
-        return new WP_Query( $args );
-    }
-
-    /**
-     * Get all standard Admin level 3 records
-     *
-     * @param $world_id         (Required) XXX-XXX-XXX pattern world_id to find XXX-XXX-XXX-XXX next level records
-     *
-     * @return bool|\WP_Query|WP_Error
-     */
-    public static function get_standard_admin3( $world_id ) {
-
-        if ( empty( $world_id ) ) {
-            return new WP_Error( 'failed_to_provide_world_id', 'Failed to provide valid world_id.' );
-        }
-
-        $world_id = strtoupper( substr( trim( $world_id ), 0, 11 ) );
-
-        if ( ! preg_match( '/^[A-Z][A-Z][A-Z].[A-Z][A-Z][A-Z].[A-Z][A-Z][A-Z]/', $world_id ) ) {
-            return new WP_Error( 'failed_query_pattern', 'Failed to match pattern required for world_id.' );
-        }
-
-        $args = [
-            'post_type'  => 'locations',
-            'nopaging'   => true,
-            'meta_query' => [
-                [
-                    'key'     => 'WorldID',
-                    'value'   => '^' . $world_id . '....$',
-                    'compare' => 'REGEXP',
-                ],
-            ],
-
-        ];
-        return new WP_Query( $args );
-    }
-
-    /**
-     * Get all standard Admin level 4 records
-     *
-     * @param $world_id         (Required) XXX-XXX-XXX pattern world_id to find XXX-XXX-XXX-XXX next level records
-     *
-     * @return bool|\WP_Query|WP_Error
-     */
-    public static function get_standard_admin4( $world_id ) {
-
-        if ( empty( $world_id ) ) {
-            return new WP_Error( 'failed_to_provide_world_id', 'Failed to provide valid world_id.' );
-        }
-
-        $world_id = strtoupper( substr( trim( $world_id ), 0, 15 ) );
-
-        if ( ! preg_match( '/^[A-Z][A-Z][A-Z].[A-Z][A-Z][A-Z].[A-Z][A-Z][A-Z].[A-Z][A-Z][A-Z]/', $world_id ) ) {
-            return new WP_Error( 'failed_query_pattern', 'Failed to match pattern required for world_id.' );
-        }
-
-        $args = [
-            'post_type'  => 'locations',
-            'nopaging'   => true,
-            'meta_query' => [
-                [
-                    'key'     => 'WorldID',
-                    'value'   => '^' . $world_id . '....$',
-                    'compare' => 'REGEXP',
-                ],
-            ],
-
-        ];
-        return new WP_Query( $args );
-    }
-
-    /**
      * Returns the tract geoid from an address
      * Zume Project USA
      *
@@ -338,7 +73,7 @@ class Disciple_Tools_Locations
     public static function geocode_address( $address, $type = 'full_object' )
     {
 
-        $google_result = Disciple_Tools_Google_Geolocation::query_google_api( $address, $type ); // get google api info
+        $google_result = Disciple_Tools_Google_Geocode_API::query_google_api( $address, $type ); // get google api info
         if ( $google_result == 'ZERO_RESULTS' ) {
             return [
                 'status' => false,
@@ -363,7 +98,7 @@ class Disciple_Tools_Locations
     public static function get_tract_by_address( $address )
     {
 
-        $google_result = Disciple_Tools_Google_Geolocation::query_google_api( $address, $type = 'core' ); // get google api info
+        $google_result = Disciple_Tools_Google_Geocode_API::query_google_api( $address, $type = 'core' ); // get google api info
         if ( $google_result == 'ZERO_RESULTS' ) {
             return [
                 'status' => 'ZERO_RESULTS',
@@ -397,7 +132,7 @@ class Disciple_Tools_Locations
     {
 
         // Google API
-        $google_result = Disciple_Tools_Google_Geolocation::query_google_api( $address, $type = 'core' ); // get google api info
+        $google_result = Disciple_Tools_Google_Geocode_API::query_google_api( $address, $type = 'core' ); // get google api info
         if ( $google_result == 'ZERO_RESULTS' ) {
             return [
                 'status'  => 'ZERO_RESULTS',
