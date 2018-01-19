@@ -321,18 +321,22 @@ class Disciple_Tools_Posts
                     $original = get_post_meta( $activity->object_id, $original_key, true );
                     $name = $fields[ $activity->meta_key ]['name'] ?? "";
                     $object_note = $name . ' "'. $original .'" ';
-                    foreach ($meta_value as $k => $v){
-                        $prev_value = $activity->old_value;
-                        if (is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v){
-                            continue;
+                    if ( is_array( $meta_value ) ){
+                        foreach ($meta_value as $k => $v){
+                            $prev_value = $activity->old_value;
+                            if (is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v){
+                                continue;
+                            }
+                            if ($k === "verified") {
+                                $object_note .= $v ? __( "verified", 'disciple_tools' ) : __( "not verified", 'disciple_tools' );
+                            }
+                            if ($k === "invalid") {
+                                $object_note .= $v ? __( "invalidated", 'disciple_tools' ) : __( "not invalidated", 'disciple_tools' );
+                            }
+                            $object_note .= ', ';
                         }
-                        if ($k === "verified") {
-                            $object_note .= $v ? __( "verified", 'disciple_tools' ) : __( "not verified", 'disciple_tools' );
-                        }
-                        if ($k === "invalid") {
-                            $object_note .= $v ? __( "invalidated", 'disciple_tools' ) : __( "not invalidated", 'disciple_tools' );
-                        }
-                        $object_note .= ', ';
+                    } else {
+                        $object_note = $meta_value;
                     }
                     $object_note = chop( $object_note, ', ' );
                     $message = $object_note;
