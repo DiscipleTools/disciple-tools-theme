@@ -295,6 +295,39 @@
                             </div>
                         </div>
 
+                        <div class="section-subheader">
+                            <?php esc_html_e( 'Sub-assigned to', 'disciple_tools' )?>
+                        </div>
+                        <ul class="details-list subassigned-list">
+                            <?php
+                            foreach ($contact->fields["subassigned"] ?? [] as $value){
+                                ?>
+                                <li class="<?php echo esc_html( $value->ID )?>">
+                                    <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
+                                </li>
+                            <?php }
+                            if (sizeof( $contact->fields["subassigned"] ) === 0){
+                                ?> <li id="no-subassigned"><?php esc_html_e( "No subassigned set", 'disciple_tools' ) ?></li>
+                            <?php
+                            }
+                            ?>
+                        </ul>
+
+                        <div class="subassigned details">
+                            <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
+                            <div id="subassigned_t" name="form-subassigned">
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-subassigned input-height"
+                                                   name="subassigned[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
+                                                   autocomplete="off">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     <!-- Social Media -->
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
@@ -392,7 +425,7 @@
                             foreach ($contact->fields["people_groups"] ?? [] as $value){
                                 ?>
                                 <li class="<?php echo esc_html( $value->ID )?>">
-                                    <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
+                                    <?php echo esc_html( $value->post_title ) ?>
                                 </li>
                             <?php }
                             if (sizeof( $contact->fields["people_groups"] ) === 0){

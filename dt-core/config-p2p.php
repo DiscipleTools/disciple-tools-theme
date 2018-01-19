@@ -36,6 +36,31 @@ function dt_my_connection_types()
 
     p2p_register_connection_type(
         [
+            'name'        => 'contacts_to_subassigned',
+            'from'        => 'contacts',
+            'to'          => 'contacts',
+            'title'       => [
+                'from' => __( 'Sub-assigned by', 'disciple_tools' ),
+                'to'   => __( 'Sub-assigned', 'disciple_tools' ),
+            ],
+            'from_labels' => [
+                'singular_name' => __( 'Contact', 'disciple_tools' ),
+                'search_items'  => __( 'Search contacts', 'disciple_tools' ),
+                'not_found'     => __( 'No contacts found.', 'disciple_tools' ),
+                'create'        => __( 'Connect Disciple ', 'disciple_tools' ),
+            ],
+            'to_labels'   => [
+                'singular_name' => __( 'Contact', 'disciple_tools' ),
+                'search_items'  => __( 'Search contacts', 'disciple_tools' ),
+                'not_found'     => __( 'No contacts found.', 'disciple_tools' ),
+                'create'        => __( 'Connect Sub-assigned', 'disciple_tools' ),
+            ],
+
+        ]
+    );
+
+    p2p_register_connection_type(
+        [
             'name'        => 'baptizer_to_baptized',
             'from'        => 'contacts',
             'to'          => 'contacts',
