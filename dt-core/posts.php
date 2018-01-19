@@ -342,6 +342,8 @@ class Disciple_Tools_Posts
                     $message = $object_note;
                 } else if ( $activity->meta_key == "title" ){
                     $message = __( "Name changed to:", 'disciple_tools' ) . ' ' . $activity->meta_value;
+                } else if ( $activity->meta_key === "_sample"){
+                    $message = __( "Created from Demo Plugin", "disciple_tools" );
                 } else {
                     $message = "Deleted field";
                 }
