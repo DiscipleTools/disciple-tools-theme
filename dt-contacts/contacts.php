@@ -396,6 +396,19 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             [ 'date' => current_time( 'mysql' ) ]
         );
     }
+    /**
+     * @param $contact_id
+     * @param $coaching
+     *
+     * @return mixed
+     */
+    public static function add_subassigned_to_contact( $contact_id, $subassigned )
+    {
+        return p2p_type( 'contacts_to_subassigned' )->connect(
+            $subassigned, $contact_id,
+            [ 'date' => current_time( 'mysql' ) ]
+        );
+    }
 
     /**
      * @param $contact_id
@@ -473,6 +486,16 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     {
         return p2p_type( 'contacts_to_contacts' )->disconnect( $coaching, $contact_id );
     }
+    /**
+     * @param $contact_id
+     * @param $coaching
+     *
+     * @return mixed
+     */
+    public static function remove_subassigned_from_contact( $contact_id, $subassigned )
+    {
+        return p2p_type( 'contacts_to_subassigned' )->disconnect( $subassigned, $contact_id );
+    }
 
     /**
      * @param int       $contact_id
@@ -518,6 +541,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $connect = self::add_coached_by_to_contact( $contact_id, $value );
         } elseif ( $key === "coaching" ) {
             $connect = self::add_coaching_to_contact( $contact_id, $value );
+        } elseif ( $key === "subassigned" ){
+            $connect = self::add_subassigned_to_contact( $contact_id, $value);
         }
         if ( is_wp_error( $connect ) ) {
             return $connect;
@@ -588,6 +613,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return self::remove_coaching_from_contact( $contact_id, $value );
         } elseif ( $key === "people_groups" ) {
             return self::remove_people_group_from_contact( $contact_id, $value );
+        } elseif ( $key === "subassigned" ) {
+            return self::remove_subassigned_from_contact( $contact_id, $value );
         }
 
         return false;
@@ -719,6 +746,19 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $c->permalink = get_permalink( $c->ID );
             }
             $fields["coached_by"] = $coached_by;
+            $subassigned = get_posts(
+                [
+                    'connected_type'      => 'contacts_to_subassigned',
+                    'connected_direction' => 'to',
+                    'connected_items'     => $contact,
+                    'nopaging'            => true,
+                    'suppress_filters'    => false,
+                ]
+            );
+            foreach ( $subassigned as $c ) {
+                $c->permalink = get_permalink( $c->ID );
+            }
+            $fields["subassigned"] = $subassigned;
 
             $meta_fields = get_post_custom( $contact_id );
             foreach ( $meta_fields as $key => $value ) {

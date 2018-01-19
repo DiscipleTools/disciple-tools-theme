@@ -273,6 +273,14 @@ class Disciple_Tools_Posts
                 $object_note_to = __( 'No longer coaching', 'disciple_tools' ) . ' ' . $from_title;
                 $object_note_from = __( 'No longed coached by', 'disciple_tools' ) . ' ' . $to_title;
             }
+        } else if ( $p2p_type === "contacts_to_subassigned"){
+            if ($action === "connected to"){
+                $object_note_to = __( 'Sub-assigned', 'disciple_tools' ) . ' ' . $from_title;
+                $object_note_from = __( 'Sub-assigned on', 'disciple_tools' ) . ' ' . $to_title;
+            } else {
+                $object_note_to = __( 'Removed sub-assigned', 'disciple_tools' ) . ' ' . $from_title;
+                $object_note_from = __( 'No longed sub-assigned on', 'disciple_tools' ) . ' ' . $to_title;
+            }
         } else if ( $p2p_type === "contacts_to_locations"){
             if ($action == "connected to"){
                 $object_note_to = __( 'Added to location', 'disciple_tools' ) . ' ' . $to_title;
@@ -280,6 +288,14 @@ class Disciple_Tools_Posts
             } else {
                 $object_note_to = __( 'Removed from location', 'disciple_tools' ) . ' ' . $to_title;
                 $object_note_from = __( 'Removed from location', 'disciple_tools' ) . ' ' . $to_title;
+            }
+        } else {
+            if ($action == "connected to"){
+                $object_note_to = __( 'Connected to', 'disciple_tools' ) . ' ' . $to_title;
+                $object_note_from = __( 'Connected on', 'disciple_tools' ) . ' ' . $to_title;
+            } else {
+                $object_note_to = __( 'Removed from', 'disciple_tools' ) . ' ' . $to_title;
+                $object_note_from = __( 'Removed from', 'disciple_tools' ) . ' ' . $to_title;
             }
         }
 

@@ -247,7 +247,7 @@ jQuery(document).ready(function($) {
       onClick: function(node, a, item, event){
         API.add_item_to_field('contact', contactId, {locations: item.ID}).then((addedItem)=>{
           $('.locations-list').append(`<li class="${addedItem.ID}">
-            <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
+            ${_.escape(addedItem.post_title)}
           </li>`)
           $("#no-location").remove()
         })
@@ -307,7 +307,7 @@ jQuery(document).ready(function($) {
         API.add_item_to_field('contact', contactId, {people_groups: item.ID}).then((addedItem)=>{
           $("#no-people-group").remove()
           $('.people_groups-list').append(`<li class="${addedItem.ID}">
-            <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
+            ${_.escape(addedItem.post_title)}
           </li>`)
         })
       },
@@ -384,7 +384,7 @@ jQuery(document).ready(function($) {
   /**
    * connections to other contacts
    */
-  ;["baptized_by", "baptized", "coached_by", "coaching"].forEach(field_id=>{
+  ;["baptized_by", "baptized", "coached_by", "coaching", "subassigned"].forEach(field_id=>{
     typeaheadTotals[field_id] = 0
     $.typeahead({
       input: `.js-typeahead-${field_id}`,
@@ -423,19 +423,34 @@ jQuery(document).ready(function($) {
       multiselect: {
         matchOn: ["ID"],
         data: function () {
-          return contact.fields[field_id].map(g=>{
+          return (contact.fields[field_id] || [] ).map(g=>{
             return {ID:g.ID, name:g.post_title}
           })
         }, callback: {
           onCancel: function (node, item) {
-            API.remove_item_from_field('contact', contactId, field_id, item.ID)
+            API.remove_item_from_field('contact', contactId, field_id, item.ID).then(()=>{
+              if(field_id === "subassigned"){
+                $(`.${field_id}-list .${item.ID}`).remove()
+                let listItems = $(`.${field_id}-list li`)
+                if (listItems.length === 0){
+                  $(`.${field_id}-list.details-list`).append(`<li id="no-${field_id}">${contactsDetailsWpApiSettings.translations["not-set"][field_id]}</li>`)
+                }
+
+              }
+            })
           }
         },
         href: "/contacts/{{ID}}"
       },
       callback: {
         onClick: function(node, a, item, event){
-          API.add_item_to_field('contact', contactId, {[field_id]: item.ID})
+          API.add_item_to_field('contact', contactId, {[field_id]: item.ID}).then((addedItem)=>{
+            if (field_id === "subassigned")
+            $(`#no-${field_id}`).remove()
+            $(`.${field_id}-list`).append(`<li class="${addedItem.ID}">
+              <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
+            </li>`)
+          })
         },
         onResult: function (node, query, result, resultCount) {
           resultCount = typeaheadTotals[field_id]
@@ -451,6 +466,11 @@ jQuery(document).ready(function($) {
         },
         onHideLayout: function () {
           $(`#${field_id}-result-container`).html("");
+        },
+        onReady: function () {
+          if (field_id === "subassigned"){
+            $('.subassigned').addClass('details-edit')
+          }
         }
       }
     })
