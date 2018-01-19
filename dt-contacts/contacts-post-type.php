@@ -604,7 +604,6 @@ class Disciple_Tools_Contact_Post_Type
         global $post;
         $fields = [];
 
-        // Status Section
         $fields['assigned_to'] = [
             'name'        => __( 'Assigned To', 'disciple_tools' ),
             'description' => '',
@@ -612,6 +611,14 @@ class Disciple_Tools_Contact_Post_Type
             'default'     => $this->assigned_to_field(),
             'section'     => 'status',
         ];
+        $fields['subassigned'] = [
+            'name'        => __( 'Sub-assigned', 'disciple_tools' ),
+            'description' => '',
+            'type'        => 'custom',
+            'default'     => $this->assigned_to_field(),
+            'section'     => 'status',
+        ];
+        // Status Section
         $fields['overall_status'] = [
             'name'        => __( 'Overall Status', 'disciple_tools' ),
             'description' => '',
