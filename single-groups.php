@@ -8,6 +8,7 @@ declare(strict_types=1);
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
 
     $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
+    $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
     if ( !Disciple_Tools_Contacts::can_view( 'groups', get_the_ID() )){
         return wp_redirect( "not-found" );
     }
@@ -64,8 +65,26 @@ dt_print_breadcrumbs(
 
             <section id="faith" class="xlarge-6 large-12 medium-6 cell">
                 <div class="bordered-box js-progress-bordered-box half-opacity">
-                    <label class="section-header" ><?php esc_html_e( 'Progress', 'disciple_tools' )?></label>
 
+
+                    <label class="section-header" ><?php esc_html_e( 'Progress', 'disciple_tools' )?></label>
+                    <div class="section-subheader"><?php esc_html_e( 'Group Type', 'disciple_tools' )?></div>
+
+                    <select class="select-field" id="group_type">
+                    <?php
+
+                    foreach ($group_fields["group_type"]["default"] as $key => $value){
+                        if ( $group["group_type"]["key"] === $key ) {
+                            ?>
+                            <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
+                        <?php } else { ?>
+                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
+                        <?php }
+                    }
+                    ?>
+                    </select>
+
+                    <div class="section-subheader "><?php esc_html_e( 'Health Metrics', 'disciple_tools' )?></div>
                     <div style="display:flex;flex-wrap:wrap;margin-top:10px">
                         <div class="group-progress-button-wrapper">
                             <button  class="group-progress-button" id="church_fellowship">

@@ -191,7 +191,6 @@ function dt_site_scripts() {
             wp_localize_script(
                 'group-details', 'wpApiGroupsSettings', array(
                     'group'             => $group,
-                    'group_post'        => $group_post,
                     'group_author_name' => get_user_by( 'id', intval( $group_post->post_author ) )->display_name,
                     'root'              => esc_url_raw( rest_url() ),
                     'nonce'             => wp_create_nonce( 'wp_rest' ),
