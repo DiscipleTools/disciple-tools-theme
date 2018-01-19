@@ -9,7 +9,7 @@ class Disciple_Tools_Migration_0001 extends Disciple_Tools_Migration {
 
     public function down() {
         global $wpdb;
-        $wpdb->query( "ALTER TABLE `{$wpdb->prefix}dt_activity_log` DROP COLUMN old_key" );
+        $wpdb->query( "ALTER TABLE `{$wpdb->prefix}dt_activity_log` DROP COLUMN old_value" );
         $wpdb->query( "ALTER TABLE `{$wpdb->prefix}dt_activity_log` DROP COLUMN field_type" );
     }
 
@@ -41,7 +41,6 @@ class Disciple_Tools_Migration_0001 extends Disciple_Tools_Migration {
                     `meta_value` VARCHAR(255) NOT NULL DEFAULT '0',
                     `meta_parent` BIGINT(20) NOT NULL DEFAULT '0',
                     `old_value` VARCHAR(255) NOT NULL DEFAULT '',
-                    `old_key` VARCHAR(255) NOT NULL DEFAULT '',
                     `field_type` VARCHAR(255) NOT NULL DEFAULT '',
                     PRIMARY KEY (`histid`)
                 ) $charset_collate;"
