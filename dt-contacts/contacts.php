@@ -542,7 +542,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         } elseif ( $key === "coaching" ) {
             $connect = self::add_coaching_to_contact( $contact_id, $value );
         } elseif ( $key === "subassigned" ){
-            $connect = self::add_subassigned_to_contact( $contact_id, $value);
+            $connect = self::add_subassigned_to_contact( $contact_id, $value );
         }
         if ( is_wp_error( $connect ) ) {
             return $connect;

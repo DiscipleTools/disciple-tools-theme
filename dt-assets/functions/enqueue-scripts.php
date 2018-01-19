@@ -146,7 +146,7 @@ function dt_site_scripts() {
                 "phone"        => __( 'No phone set', 'disciple_tools' ),
                 "address"      => __( 'No address set', 'disciple_tools' ),
                 "social"       => __( 'None set', 'disciple_tools' ),
-                "subassigned"  => __( 'No sub-assigned set', 'disciple_tools')
+                "subassigned"  => __( 'No sub-assigned set', 'disciple_tools' )
             ],
             "valid"       => __( 'Valid', 'disciple_tools' ),
             "invalid"     => __( 'Invalid', 'disciple_tools' ),
