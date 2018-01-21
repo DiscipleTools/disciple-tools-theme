@@ -48,7 +48,10 @@ function dt_get_user_associations()
     // Get current user ID and build meta_key for current user
     $user_id = get_current_user_id();
     $user_key_value = 'user-' . $user_id;
-    $user_connections[] = [ 'key' => 'assigned_to', 'value' => $user_key_value ];
+    $user_connections[] = [
+    'key' => 'assigned_to',
+    'value' => $user_key_value
+    ];
 
     // Build arrays for current groups connected to user
     $results = $wpdb->get_results( $wpdb->prepare( "SELECT
@@ -56,10 +59,14 @@ function dt_get_user_associations()
         FROM
             `$wpdb->term_relationships`
         WHERE
-            object_id = %d", $user_id ), ARRAY_A );
+            `object_id` = %d ",
+    $user_id ), ARRAY_A );
 
     foreach ( $results as $result ) {
-        $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'group-' . $result['term_taxonomy_id'] ];
+        $user_connections[] = [
+        'key' => 'assigned_to',
+        'value' => 'group-' . $result['term_taxonomy_id']
+        ];
     }
 
     // Return array to the meta_query
@@ -113,7 +120,10 @@ function dt_get_team_contacts( $user_id )
     // Loop
     foreach ( $results as $result ) {
         // create the meta query for the group
-        $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'group-' . $result['term_taxonomy_id'] ];
+        $user_connections[] = [
+        'key' => 'assigned_to',
+        'value' => 'group-' . $result['term_taxonomy_id']
+        ];
 
         // Second Query
         // query a member list for this group
@@ -137,7 +147,10 @@ function dt_get_team_contacts( $user_id )
     $members = array_unique( $members );
 
     foreach ( $members as $member ) {
-        $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'user-' . $member ];
+        $user_connections[] = [
+        'key' => 'assigned_to',
+        'value' => 'user-' . $member
+        ];
     }
 
     // return
@@ -285,7 +298,11 @@ function dt_get_user_locations_list( int $user_id )
     // get connected location ids to user
     $location_ids = $wpdb->get_col(
         $wpdb->prepare(
-        "SELECT p2p_from as location_id FROM  $wpdb->p2p WHERE p2p_to = '%d' AND p2p_type = 'team_member_locations';", $user_id )
+            "SELECT p2p_from as location_id 
+                FROM  $wpdb->p2p 
+                WHERE p2p_to = %d 
+                  AND p2p_type = 'team_member_locations';",
+        $user_id )
     );
 
     // check if null return
@@ -294,7 +311,10 @@ function dt_get_user_locations_list( int $user_id )
     }
 
     // get location posts from connected array
-    $location_posts = new WP_Query( [ 'post__in' => $location_ids, 'post_type' => 'locations' ] );
+    $location_posts = new WP_Query( [
+        'post__in' => $location_ids,
+        'post_type' => 'locations'
+    ] );
 
     return $location_posts->posts;
 }

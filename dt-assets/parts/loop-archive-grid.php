@@ -1,13 +1,13 @@
 <?php
 
-(function() {
+( function() {
 ?>
 <?php
 // Adjust the amount of rows in the grid
 
 $grid_columns = 4; ?>
 
-<?php if ( 0 === ( $wp_query->current_post  ) % $grid_columns ): ?>
+<?php if ( 0 === ( $wp_query->current_post ) % $grid_columns ): ?>
 
     <div class="row archive-grid" data-equalizer> <!--Begin Row:-->
 
@@ -46,4 +46,4 @@ $grid_columns = 4; ?>
 <?php endif; ?>
 
 <?php
-})();
+} )();

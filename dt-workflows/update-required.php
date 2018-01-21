@@ -11,7 +11,7 @@ class Disciple_Tools_Update_Needed {
 //        @todo set the cron on plugin activation
 //        https://codex.wordpress.org/Function_Reference/wp_schedule_event
         if ( !wp_next_scheduled( 'update-required' )){
-            wp_schedule_event( time( 'today midnight' ) , 'daily', 'update-required' );
+            wp_schedule_event( time( 'today midnight' ), 'daily', 'update-required' );
         }
         add_action( 'update-required', [ &$this, 'find_contacts_that_need_an_update' ] );
     }
@@ -23,12 +23,25 @@ class Disciple_Tools_Update_Needed {
             'post_type'  => 'contacts',
             'relation'   => 'AND',
             'meta_query' => [
-                [ 'key' => "overall_status", "value" => "active" ],
-                [ 'key' => "last_modified", "value" => $month_ago,  "compare" => '<='],
+                [
+        'key' => "overall_status",
+        "value" => "active"
+                ],
+                [
+                'key' => "last_modified",
+                "value" => $month_ago,
+                "compare" => '<='
+                ],
                 [
                     'relation' => "OR",
-                    [ 'key' => "requires_update", "value" => 'no'],
-                    [ 'key' => "requires_update", "compare" => 'NOT EXISTS']
+                    [
+                'key' => "requires_update",
+                "value" => 'no'
+                    ],
+                    [
+                    'key' => "requires_update",
+                    "compare" => 'NOT EXISTS'
+                    ]
                 ]
             ],
         ];

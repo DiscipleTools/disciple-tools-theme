@@ -2,7 +2,7 @@
 // Register menus
 register_nav_menus(
     [
-        //		'main-nav' => __( 'The Main Menu', 'disciple_tools' ),   // Main nav in header
+        //      'main-nav' => __( 'The Main Menu', 'disciple_tools' ),   // Main nav in header
         'footer-links' => __( 'Footer Links', 'disciple_tools' ) // Secondary nav in footer
     ]
 );
@@ -44,7 +44,7 @@ function disciple_tools_top_nav_desktop()
     //        'container' => false,                           // Remove nav container
     //        'menu_class' => 'vertical medium-horizontal menu',       // Adding custom nav class
     //        'items_wrap' => '<ul id="%1$s" class="%2$s" data-responsive-menu="accordion medium-dropdown">%3$s</ul>',
-    //        'theme_location' => 'main-nav',        			// Where it's located in the theme
+    //        'theme_location' => 'main-nav',                   // Where it's located in the theme
     //        'depth' => 5,                                   // Limit the depth of the nav
     //        'fallback_cb' => false,                         // Fallback function (see below)
     //        'walker' => new DT_Topbar_Menu_Walker()
@@ -75,7 +75,7 @@ class DT_Topbar_Menu_Walker extends Walker_Nav_Menu
      * @param int    $depth
      * @param array  $args
      */
-    function start_lvl( &$output, $depth = 0, $args = [] )
+    public function start_lvl( &$output, $depth = 0, $args = [] )
     {
         $indent = str_repeat( "\t", $depth );
         $output .= "\n$indent<ul class=\"menu\">\n";
@@ -106,12 +106,6 @@ function disciple_tools_off_canvas_nav()
             <li>
                 <a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a>
             </li>
-
-<!--            --><?php //if ( Disciple_Tools_Locations::get_standard_locations_count( 0 ) > 0 ) : ?>
-<!--                <!--<li>-->
-<!--                    <a href="--><?php ///*echo esc_url( home_url( '/locations/' ) ); */?><!--">--><?php ///*esc_html_e( "Locations" ); */?><!--</a>-->
-<!--                </li>-->-->
-<!--            --><?php //endif; ?>
 
             <?php if ( dt_get_user_team_members_list( get_current_user_id() ) ) : // check if part of team, if not don't show link ?>
                 <li>
@@ -198,7 +192,7 @@ class DT_Off_Canvas_Menu_Walker extends Walker_Nav_Menu
      * @param int    $depth
      * @param array  $args
      */
-    function start_lvl( &$output, $depth = 0, $args = [] )
+    public function start_lvl( &$output, $depth = 0, $args = [] )
     {
         $indent = str_repeat( "\t", $depth );
         $output .= "\n$indent<ul class=\"vertical menu\">\n";

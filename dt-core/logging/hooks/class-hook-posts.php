@@ -167,7 +167,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         switch ($parent_post['post_type']) { // get custom fields for post type. Else, skip object note.
             case 'contacts':
                 $fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( true, $object_id );
-                if (strpos( $meta_key,"quick_button" ) !== false ){
+                if (strpos( $meta_key, "quick_button" ) !== false ){
                     $object_note = $this->_key_name( $meta_key, $fields );
                 }
                 break;
@@ -210,7 +210,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             $meta_array = explode( '-', $meta_value ); // Separate the type and id
             if ( isset( $meta_array[1] ) ) {
                 $user = get_user_by( "ID", $meta_array[1] );
-                $object_note = "Assigned to: " . ($user ? $user->display_name : "Nobody");
+                $object_note = "Assigned to: " . ( $user ? $user->display_name : "Nobody" );
             }
         }
 
@@ -226,7 +226,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 $object_note = $this->_key_name( $meta_key, $fields ) . ' "' . $this->_value_name( $meta_key, $prev_value, $fields ) . '" deleted ';
             } else {
                 $object_note = $this->_key_name( $meta_key, $fields ) . ' changed '  .
-                    (isset( $prev_value ) ? 'from "' . $this->_value_name( $meta_key, $prev_value, $fields ) .'"' : '') .
+                    ( isset( $prev_value ) ? 'from "' . $this->_value_name( $meta_key, $prev_value, $fields ) .'"' : '' ) .
                     ' to "' . $this->_value_name( $meta_key, $meta_value, $fields ) . '"';
 
             }

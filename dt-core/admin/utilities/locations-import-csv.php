@@ -50,7 +50,7 @@ class Disciple_Tools_Import_CSV
             // page 2
 
             // verify nonce
-            if ( ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ) ,'import_csv' ) ) {
+            if ( ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ), 'import_csv' ) ) {
                 wp_die( 'nonce verification fail' );
             };
 
@@ -86,7 +86,7 @@ class Disciple_Tools_Import_CSV
             // page 3
 
             // verify nonce
-            if ( ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ) ,'import_csv' ) ) {
+            if ( ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ), 'import_csv' ) ) {
                 wp_die( 'nonce verification fail' );
             };
             $this->step = 3;
@@ -561,7 +561,7 @@ class Disciple_Tools_Import_CSV
      */
     public function get_post( $postvar, &$postval )
     {
-        if ( ! isset( $_POST[ $postvar ] ) || ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ) ,'import_csv' ) ) {
+        if ( ! isset( $_POST[ $postvar ] ) || ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ), 'import_csv' ) ) {
             return false;
         }
         $postval = sanitize_key( wp_unslash( $_POST[ $postvar ] ) );
@@ -651,10 +651,10 @@ class Disciple_Tools_Import_CSV
      */
     public function check_is_post( $postvar, $postval )
     {
-        if ( ! isset( $_POST[ $postvar ] ) || ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ) ,'import_csv' ) ) {
+        if ( ! isset( $_POST[ $postvar ] ) || ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ), 'import_csv' ) ) {
             return false;
         }
-        if ( $_POST[ $postvar ] == $postval || ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ) ,'import_csv' ) ) {
+        if ( $_POST[ $postvar ] == $postval || ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ), 'import_csv' ) ) {
             return true;
         }
 

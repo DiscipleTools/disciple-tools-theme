@@ -1,5 +1,5 @@
 <?php
-(function() {
+( function() {
 ?>
 <?php
 $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
@@ -249,4 +249,4 @@ function dt_contact_details_edit( $id, $remove = false ){
 </section> <!-- end article -->
 
 <?php
-})();
+} )();

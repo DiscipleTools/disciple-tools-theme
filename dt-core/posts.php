@@ -314,7 +314,7 @@ class Disciple_Tools_Posts
                     $meta_array = explode( '-', $activity->meta_value ); // Separate the type and id
                     if ( isset( $meta_array[1] ) ) {
                         $user = get_user_by( "ID", $meta_array[1] );
-                        $message = __( 'Assigned to', 'disciple_tools' ) . ": " . ($user ? $user->display_name : __( "Nobody", 'disciple_tools' ) );
+                        $message = __( 'Assigned to', 'disciple_tools' ) . ": " . ( $user ? $user->display_name : __( "Nobody", 'disciple_tools' ) );
                     }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "text"){
@@ -322,9 +322,9 @@ class Disciple_Tools_Posts
                 }
                 if ( $fields[$activity->meta_key]["type"] === "key_select" ){
                     if ( isset( $fields[$activity->meta_key]["default"][$activity->meta_value] ) ){
-                        $message = $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$activity->meta_value] ?? $activity->meta_value ;
+                        $message = $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$activity->meta_value] ?? $activity->meta_value;
                     } else {
-                        $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value ;
+                        $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
                     }
                 }
                 if ($fields[$activity->meta_key]["type"] === "number"){
@@ -459,7 +459,10 @@ class Disciple_Tools_Posts
             return $posts;
         }
         foreach ( $posts->posts as $post ) {
-            $compact[] = [ "ID" => $post->ID, "name" => $post->post_title ];
+            $compact[] = [
+            "ID" => $post->ID,
+            "name" => $post->post_title
+            ];
         }
         $post_ids = array_map(
             function( $post ) {
@@ -469,11 +472,17 @@ class Disciple_Tools_Posts
         );
         foreach ( $shared_with_user as $shared ) {
             if ( !in_array( $shared->ID, $post_ids ) ) {
-                $compact[] = [ "ID" => $shared->ID, "name" => $shared->post_title ];
+                $compact[] = [
+                "ID" => $shared->ID,
+                "name" => $shared->post_title
+                ];
             }
         }
 
-        return [ "total" => $posts->found_posts, "posts" => $compact ];
+        return [
+        "total" => $posts->found_posts,
+        "posts" => $compact
+        ];
     }
 
     /**
@@ -578,7 +587,10 @@ class Disciple_Tools_Posts
         }
 
         $table = $wpdb->dt_share;
-        $where = [ 'user_id' => $user_id, 'post_id' => $post_id ];
+        $where = [
+        'user_id' => $user_id,
+        'post_id' => $post_id
+        ];
         $result = $wpdb->delete( $table, $where );
 
         if ( $result == false ) {

@@ -174,7 +174,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         ];
 
 
-        if (isset( $fields["assigned-to"] ) && ( ! get_current_user_id() || $fields["assigned-to"] !== sprintf( "user-%d", get_current_user_id() ))) {
+        if (isset( $fields["assigned-to"] ) && ( ! get_current_user_id() || $fields["assigned-to"] !== sprintf( "user-%d", get_current_user_id() ) )) {
             return new WP_Error( __FUNCTION__, __( "You may not assign a new contact to this user" ), [ 'status' => 403 ] );
         }
 
@@ -260,7 +260,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         if ( isset( $fields['title'] ) ) {
-            wp_update_post( [ 'ID' => $contact_id, 'post_title' => $fields['title'] ] );
+            wp_update_post( [
+                'ID' => $contact_id,
+                'post_title' => $fields['title']
+            ] );
         }
 
         if ( isset( $fields["assigned_to"] ) ) {
@@ -628,7 +631,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function delete_contact_field( int $contact_id, string $key ){
         if ( !self::can_update( 'contacts', $contact_id )){
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 401] );
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 401 ] );
         }
         delete_post_meta( $contact_id, $key .'_details' );
         return delete_post_meta( $contact_id, $key );
@@ -784,7 +787,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     }
                 } elseif ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]["type"] == "key_select" ) {
                     $label = self::$contact_fields[ $key ]["default"][ $value[0] ] ?? current( self::$contact_fields[ $key ]["default"] );
-                    $fields[ $key ] = [ "key" => $value[0], "label" => $label ];
+                    $fields[ $key ] = [
+                    "key" => $value[0],
+                    "label" => $label
+                    ];
                 } elseif ( $key === "assigned_to" ) {
                     if ( $value ) {
                         $meta_array = explode( '-', $value[0] ); // Separate the type and id
@@ -997,7 +1003,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         // Loop
         foreach ( $results as $result ) {
             // create the meta query for the group
-            $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'group-' . $result['term_taxonomy_id'] ];
+            $user_connections[] = [
+            'key' => 'assigned_to',
+            'value' => 'group-' . $result['term_taxonomy_id']
+            ];
 
             // Second Query
             // query a member list for this group
@@ -1025,7 +1034,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $members = array_unique( $members );
 
         foreach ( $members as $member ) {
-            $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'user-' . $member ];
+            $user_connections[] = [
+            'key' => 'assigned_to',
+            'value' => 'user-' . $member
+            ];
         }
 
         $args = [

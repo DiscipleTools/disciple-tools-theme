@@ -127,7 +127,10 @@ if ( !class_exists( 'Disciple_Tools_Three_Column_Screen_Layout' ) ) {
         public function admin_head()
         {
             ob_start();
-            add_screen_option( 'layout_columns', [ 'max' => 24, 'default' => 2 ] );
+            add_screen_option( 'layout_columns', [
+                'max' => 24,
+                'default' => 2
+            ] );
         }
 
         public function admin_footer()

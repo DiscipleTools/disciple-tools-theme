@@ -98,14 +98,14 @@
             <div class="reason-fields grid-x details-edit">
                 <?php $status = $contact->fields["overall_status"]["key"] ?? ""; ?>
                 <!-- change reason paused options-->
-                <div class="medium-6 reason-field reason-paused" style="display:<?php echo ($status === "paused" ? "inherit" : "none"); ?>">
+                <div class="medium-6 reason-field reason-paused" style="display:<?php echo ( $status === "paused" ? "inherit" : "none" ); ?>">
                     <div class="section-subheader"><?php echo esc_html( $contact_fields["reason_paused"]["name"] ) ?></div>
                     <select class="status-reason" data-field="<?php esc_html_e( "reason_paused", 'disciple_tools' ) ?>" >
                         <?php
                         foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
                         ?>
                             <option value="<?php echo esc_attr( $reason_key )?>"
-                                <?php if ( ($contact->fields["reason_paused"]["key"] ?? "") === $reason_key ){echo "selected";}?> >
+                                <?php if ( ( $contact->fields["reason_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";}?> >
                                 <?php echo esc_html( $reason_label )?>
                             </option>
                         <?php
@@ -114,14 +114,14 @@
                     </select>
                 </div>
                 <!-- change reason closed options-->
-                <div class="medium-6 reason-field reason-closed" style="display:<?php echo ($status === "closed" ? "inherit" : "none"); ?>">
+                <div class="medium-6 reason-field reason-closed" style="display:<?php echo ( $status === "closed" ? "inherit" : "none" ); ?>">
                     <div class="section-subheader"><?php echo esc_html( $contact_fields["reason_closed"]["name"] ) ?></div>
                     <select class="status-reason" data-field="<?php esc_html_e( "reason_closed", 'disciple_tools' ) ?>" >
                         <?php
                         foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $reason_label ) {
                             ?>
                             <option value="<?php echo esc_attr( $reason_key )?>"
-                                <?php if ( ($contact->fields["reason_closed"]["key"] ?? "") === $reason_key ){echo "selected";}?> >
+                                <?php if ( ( $contact->fields["reason_closed"]["key"] ?? "" ) === $reason_key ){echo "selected";}?> >
                                 <?php echo esc_html( $reason_label )?>
                             </option>
                             <?php
@@ -130,14 +130,14 @@
                     </select>
                 </div>
                 <!-- change reason unassignable options-->
-                <div class="medium-6 reason-field reason-unassignable" style="display:<?php echo ($status === "unassignable" ? "inherit" : "none"); ?>">
+                <div class="medium-6 reason-field reason-unassignable" style="display:<?php echo ( $status === "unassignable" ? "inherit" : "none" ); ?>">
                     <div class="section-subheader"><?php echo esc_html( $contact_fields["reason_unassignable"]["name"] ) ?></div>
                     <select class="status-reason" data-field="<?php esc_html_e( "reason_unassignable", 'disciple_tools' ) ?>" >
                         <?php
                         foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_label ) {
                             ?>
                             <option value="<?php echo esc_attr( $reason_key )?>"
-                                <?php if ( ($contact->fields["reason_unassignable"]["key"] ?? "") === $reason_key ){echo "selected";}?> >
+                                <?php if ( ( $contact->fields["reason_unassignable"]["key"] ?? "" ) === $reason_key ){echo "selected";}?> >
                                 <?php echo esc_html( $reason_label )?>
                             </option>
                             <?php
@@ -219,7 +219,7 @@
                                     ?>
                                     <li>
                                         <input id="<?php echo esc_attr( $value["key"], 'disciple_tools' )?>" value="<?php echo esc_attr( $value["value"], 'disciple_tools' ) ?>" class="contact-input">
-                                        <?php dt_contact_details_edit( $value["key"], esc_html__( "email", 'disciple_tools' ) , true ) ?>
+                                        <?php dt_contact_details_edit( $value["key"], esc_html__( "email", 'disciple_tools' ), true ) ?>
                                     </li>
                                     <?php
                                 }
@@ -582,6 +582,6 @@
     </section>
 
 <?php
-})();
+} )();
 
 

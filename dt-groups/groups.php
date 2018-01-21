@@ -129,7 +129,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     }
                 } elseif ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]["type"] == "key_select" ) {
                     $label = self::$group_fields[ $key ]["default"][ $value[0] ] ?? current( self::$group_fields[ $key ]["default"] );
-                    $fields[ $key ] = [ "key" => $value[0], "label" => $label ];
+                    $fields[ $key ] = [
+                    "key" => $value[0],
+                    "label" => $label
+                    ];
                 } elseif ( $key === "assigned_to" ) {
                     if ( $value ) {
                         $meta_array = explode( '-', $value[0] ); // Separate the type and id
@@ -215,11 +218,17 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         }
         $bad_fields = self::check_for_invalid_fields( $fields, $group_id );
         if ( !empty( $bad_fields ) ) {
-            return new WP_Error( __FUNCTION__, __( "One or more fields do not exist" ), [ 'bad_fields' => $bad_fields, 'status' => 400 ] );
+            return new WP_Error( __FUNCTION__, __( "One or more fields do not exist" ), [
+                'bad_fields' => $bad_fields,
+                'status' => 400
+            ] );
         }
 
         if ( isset( $fields['title'] ) ) {
-            wp_update_post( [ 'ID' => $group_id, 'post_title' => $fields['title'] ] );
+            wp_update_post( [
+                'ID' => $group_id,
+                'post_title' => $fields['title']
+            ] );
         }
 
         foreach ( $fields as $field_id => $value ) {
@@ -237,7 +246,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function delete_group_field( int $group_id, string $key ){
         if ( !self::can_update( 'groups', $group_id )){
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 401] );
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 401 ] );
         }
         delete_post_meta( $group_id, $key .'_details' );
         return delete_post_meta( $group_id, $key );

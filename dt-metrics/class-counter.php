@@ -166,7 +166,11 @@ class Disciple_Tools_Counter
      */
     public function contacts_meta_counter( $meta_key, $meta_value )
     {
-        $query = new WP_Query( [ 'meta_key' => $meta_key, 'meta_value' => $meta_value, 'post_type' => 'contacts', ] );
+        $query = new WP_Query( [
+            'meta_key' => $meta_key,
+            'meta_value' => $meta_value,
+            'post_type' => 'contacts',
+        ] );
 
         return $query->found_posts;
     }
@@ -183,7 +187,11 @@ class Disciple_Tools_Counter
      */
     public function groups_meta_counter( $meta_key, $meta_value )
     {
-        $query = new WP_Query( [ 'meta_key' => $meta_key, 'meta_value' => $meta_value, 'post_type' => 'groups', ] );
+        $query = new WP_Query( [
+            'meta_key' => $meta_key,
+            'meta_value' => $meta_value,
+            'post_type' => 'groups',
+        ] );
 
         return $query->found_posts;
     }

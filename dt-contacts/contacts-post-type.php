@@ -107,7 +107,7 @@ class Disciple_Tools_Contact_Post_Type
         $this->taxonomies = $taxonomies = [];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
-        //		add_action( 'init', array( $this, 'register_taxonomy' ) );
+        //      add_action( 'init', array( $this, 'register_taxonomy' ) );
         add_action( 'init', [ $this, 'contacts_rewrites_init' ] );
         add_filter( 'post_type_link', [ $this, 'contacts_permalink' ], 1, 3 );
 
@@ -245,7 +245,7 @@ class Disciple_Tools_Contact_Post_Type
             9  => sprintf(
                 __( '%1$s scheduled for: %2$s.', 'disciple_tools' ),
                 $this->singular,
-                '<strong>' . date_i18n( _x( 'M j, Y @ G:i' , 'Publish box date format, see http://php.net/date', 'disciple_tools' ), strtotime( $post->post_date ) ) . '</strong>'
+                '<strong>' . date_i18n( _x( 'M j, Y @ G:i', 'Publish box date format, see http://php.net/date', 'disciple_tools' ), strtotime( $post->post_date ) ) . '</strong>'
             ) . ' ' . $link,
             10  => sprintf( __( '%s draft updated.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
         ];
@@ -482,7 +482,10 @@ class Disciple_Tools_Contact_Post_Type
             $type = $k[1];
             $number_key = dt_address_metabox()->create_channel_metakey( "address" );
             $details_key = $number_key . "_details";
-            $details = [ 'type' => $type, 'verified' => false ];
+            $details = [
+            'type' => $type,
+            'verified' => false
+            ];
             //save the field and the field details
             add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST['new-value-address'] ) ), true );
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );
@@ -494,7 +497,10 @@ class Disciple_Tools_Contact_Post_Type
             $type = $k[1];
             $number_key = $this->create_channel_metakey( $channel, "contact" );
             $details_key = $number_key . "_details";
-            $details = [ 'type' => $type, 'verified' => false ];
+            $details = [
+            'type' => $type,
+            'verified' => false
+            ];
             //save the field and the field details
             add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST['new-value-contact'] ) ), true );
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );
@@ -654,7 +660,10 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Requires Update', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ 'no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        'no' => __( 'No', 'disciple_tools' ),
+        'yes' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'status',
         ];
 
@@ -732,63 +741,90 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Has Bible', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ 'no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        'no' => __( 'No', 'disciple_tools' ),
+        'yes' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'milestone',
         ];
         $fields['milestone_reading_bible'] = [
             'name'        => __( 'Reading Bible', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ 'no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        'no' => __( 'No', 'disciple_tools' ),
+        'yes' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'milestone',
         ];
         $fields['milestone_belief'] = [
             'name'        => __( 'States Belief', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ 'no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        'no' => __( 'No', 'disciple_tools' ),
+        'yes' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'milestone',
         ];
         $fields['milestone_can_share'] = [
             'name'        => __( 'Can Share Gospel/Testimony', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ 'no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        'no' => __( 'No', 'disciple_tools' ),
+        'yes' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'milestone',
         ];
         $fields['milestone_sharing'] = [
             'name'        => __( 'Sharing Gospel/Testimony', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ 'no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        'no' => __( 'No', 'disciple_tools' ),
+        'yes' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'milestone',
         ];
         $fields['milestone_baptized'] = [
             'name'        => __( 'Baptized', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ 'no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        'no' => __( 'No', 'disciple_tools' ),
+        'yes' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'milestone',
         ];
         $fields['milestone_baptizing'] = [
             'name'        => __( 'Baptizing', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ 'no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        'no' => __( 'No', 'disciple_tools' ),
+        'yes' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'milestone',
         ];
         $fields['milestone_in_group'] = [
             'name'        => __( 'In Church/Group', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ 'no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        'no' => __( 'No', 'disciple_tools' ),
+        'yes' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'milestone',
         ];
         $fields['milestone_planting'] = [
             'name'        => __( 'Starting Churches', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ 'no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        'no' => __( 'No', 'disciple_tools' ),
+        'yes' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'milestone',
         ];
 
@@ -887,7 +923,10 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Accepted', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ 'no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        'no' => __( 'No', 'disciple_tools' ),
+        'yes' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'status',
         ];
 
@@ -958,7 +997,10 @@ class Disciple_Tools_Contact_Post_Type
             'name' => __( 'Is a User', 'disciple_tools' ),
             'description' => 'Check this field if the contact contact represents a user.',
             'type' => 'key_select',
-            'default' => [ 'no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' ) ],
+            'default' => [
+        'no' => __( 'No', 'disciple_tools' ),
+        'yes' => __( 'Yes', 'disciple_tools' )
+            ],
             'section' => 'misc'
         ];
         $fields['corresponds_to_user'] = [
@@ -995,10 +1037,11 @@ class Disciple_Tools_Contact_Post_Type
                         `$wpdb->postmeta`
                     WHERE
                         post_id = %d
-                        AND meta_key LIKE 'contact_%'
+                        AND meta_key LIKE %s
                     ORDER BY
                         meta_key DESC",
-                    $id
+                    $id,
+                    $wpdb->esc_like( 'contact_' ) . '%'
                 ),
                 ARRAY_A
             );
@@ -1053,8 +1096,7 @@ class Disciple_Tools_Contact_Post_Type
         }
         echo '</select></th>';
 
-        echo
-        '<td>
+        echo '<td>
                 <input type="text" name="new-value-contact" id="new-value" class="edit-input" />
             </td>
             <td>
@@ -1192,7 +1234,12 @@ class Disciple_Tools_Contact_Post_Type
         }
 
         // Collect user list
-        $args = [ 'role__not_in' => [ 'registered', 'prayer_supporter', 'project_supporter' ], 'fields' => [ 'ID', 'display_name' ], 'exclude' => $exclude_user, 'order' => 'ASC' ];
+        $args = [
+        'role__not_in' => [ 'registered', 'prayer_supporter', 'project_supporter' ],
+        'fields' => [ 'ID', 'display_name' ],
+        'exclude' => $exclude_user,
+        'order' => 'ASC'
+        ];
         $results = get_users( $args );
 
         // Loop user list
@@ -1263,7 +1310,7 @@ class Disciple_Tools_Contact_Post_Type
         }
     }
 
-    function contacts_rewrites_init()
+    public function contacts_rewrites_init()
     {
         add_rewrite_rule( 'contacts/([0-9]+)?$', 'index.php?post_type=contacts&p=$matches[1]', 'top' );
     }

@@ -77,7 +77,10 @@ class Disciple_Tools_Reports_List_Table extends WP_List_Table
      */
     public function get_sortable_columns()
     {
-        return [ 'date' => [ 'date', false ], 'source' => [ 'source', false ] ];
+        return [
+        'date' => [ 'date', false ],
+        'source' => [ 'source', false ]
+        ];
     }
 
     /**

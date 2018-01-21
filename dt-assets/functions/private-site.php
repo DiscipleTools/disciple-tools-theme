@@ -17,7 +17,7 @@ add_action( 'template_redirect', 'disciple_tools_please_log_in', 0 );
 
 # Disable content in feeds if the feed should be private.
 add_filter( 'the_content_feed', 'disciple_tools_private_feed', 95 );
-add_filter( 'the_excerpt_rss',  'disciple_tools_private_feed', 95 );
+add_filter( 'the_excerpt_rss', 'disciple_tools_private_feed', 95 );
 add_filter( 'comment_text_rss', 'disciple_tools_private_feed', 95 );
 
 /**

@@ -477,7 +477,7 @@ class Disciple_Tools_Setup_Steps_Tab
                 </td>
             </tr>
             <?php
-            if ( isset( $_GET["tab"] ) && !($_GET["tab"] == 'setup-checklist') ) { ?>
+            if ( isset( $_GET["tab"] ) && !( $_GET["tab"] == 'setup-checklist' ) ) { ?>
                 <tr><td><a href="<?php echo esc_url( admin_url( 'admin.php?page=dt_options&tab=setup-checklist' ) ) ?>">View Setup Checklist</a></td></tr>
             <?php } ?>
             </tbody>

@@ -20,9 +20,9 @@ add_action( 'permalink_structure_changed', 'dt_permalink_structure_changed_callb
 add_filter( 'duplicate_comment_id', '__return_false' );
 //allow multiple comments in quick succession
 add_filter( 'comment_flood_filter', '__return_false' );
-add_filter( 'pre_comment_approved' , 'dt_filter_handler' , '99', 2 );
-add_filter( 'comment_notification_recipients', 'dt_override_comment_notice_recipients' , 10, 2 );
-add_filter( 'language_attributes','dt_custom_dir_attr' );
+add_filter( 'pre_comment_approved', 'dt_filter_handler', '99', 2 );
+add_filter( 'comment_notification_recipients', 'dt_override_comment_notice_recipients', 10, 2 );
+add_filter( 'language_attributes', 'dt_custom_dir_attr' );
 
 /*********************************************************************************************
  * Functions
@@ -448,7 +448,7 @@ function dt_custom_dir_attr( $lang ){
 
     $current_user = wp_get_current_user();
     $user_language = $current_user->locale;
-    $dir = _x( 'text direction', 'either rtl or ltr',  'disciple_tools' );
+    $dir = _x( 'text direction', 'either rtl or ltr', 'disciple_tools' );
     if ( $dir === 'text direction' || !$dir || empty( $dir ) ){
         $dir = "ltr";
     }

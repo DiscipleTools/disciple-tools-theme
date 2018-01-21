@@ -51,7 +51,7 @@ function dt_print_breadcrumbs(
                         <div class="switch tiny cell shrink" style="margin-bottom: 0px">
 
                             <input class="switch-input update-needed" id="update-needed" type="checkbox" name="update-needed"
-                            <?php echo  ( $update_needed ? 'checked' : "" ) ?>>
+                            <?php echo ( $update_needed ? 'checked' : "" ) ?>>
                             <label class="switch-paddle update-needed" for="update-needed">
                                 <span class="show-for-sr"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></span>
                                 <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>

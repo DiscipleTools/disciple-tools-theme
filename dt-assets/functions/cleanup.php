@@ -6,7 +6,7 @@ add_filter( 'show_admin_bar', '__return_false' );
 /**
  * Fire all our initial functions at the start
  */
-add_action( 'after_setup_theme','dt_start', 16 );
+add_action( 'after_setup_theme', 'dt_start', 16 );
 
 /**
  * Loads initial functions
@@ -29,7 +29,7 @@ function dt_start() {
     add_filter( 'excerpt_more', 'dt_excerpt_more' );
 
     // Removes WP sticky class in favor or foundations sticky class
-    add_filter( 'post_class','dt_remove_sticky_class' );
+    add_filter( 'post_class', 'dt_remove_sticky_class' );
 
     // sets the theme to "light"
     add_filter( 'get_user_option_admin_color', 'dt_change_admin_color' );
@@ -169,9 +169,8 @@ function dt_remove_dashboard_meta() {
 
     // Remove_meta_box('dashboard_quick_press', 'dashboard', 'core');  // Quick Press Widget
     remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'core' );   // Recent Drafts Widget
-    remove_meta_box( 'dashboard_primary', 'dashboard', 'core' );         //
-    remove_meta_box( 'dashboard_secondary', 'dashboard', 'core' );       //
-
+    remove_meta_box( 'dashboard_primary', 'dashboard', 'core' );
+    remove_meta_box( 'dashboard_secondary', 'dashboard', 'core' );
     // Removing plugin dashboard boxes
     remove_meta_box( 'yoast_db_widget', 'dashboard', 'normal' );         // Yoast's SEO Plugin Widget
 }

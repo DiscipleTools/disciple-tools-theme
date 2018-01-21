@@ -18,7 +18,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
     /**
      * Disciple_Tools_Notifications_Table constructor.
      */
-    function __construct()
+    public function __construct()
     {
         global $status, $page;
 
@@ -36,7 +36,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
      *
      * @return mixed|string
      */
-    function column_default( $item, $column_name )
+    public function column_default( $item, $column_name )
     {
         switch ( $column_name ) {
             case 'notification_name':
@@ -86,7 +86,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
      *
      * @return string
      */
-    function column_title( $item )
+    public function column_title( $item )
     {
 
         //Build row actions
@@ -114,7 +114,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
      *
      * @return string
      */
-    function column_cb( $item )
+    public function column_cb( $item )
     {
         return sprintf(
             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
@@ -128,7 +128,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
     /**
      * @return array
      */
-    function get_columns()
+    public function get_columns()
     {
         $columns = [
             'cb'                  => '<input type="checkbox" />', //Render a checkbox instead of text
@@ -148,7 +148,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
     /**
      * @return array
      */
-    function get_sortable_columns()
+    public function get_sortable_columns()
     {
         $sortable_columns = [
             'user_id'             => [ 'user_id', false ],     //true means it's already sorted
@@ -167,7 +167,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
     /**
      * @return array
      */
-    function get_bulk_actions()
+    public function get_bulk_actions()
     {
         $actions = [
             'viewed' => 'Viewed',
@@ -176,7 +176,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
         return $actions;
     }
 
-    function process_bulk_action()
+    public function process_bulk_action()
     {
 
         //Detect when a bulk action is being triggered...
@@ -189,7 +189,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
      * @param null $search
      *
      */
-    function prepare_items( $search = null )
+    public function prepare_items( $search = null )
     {
         global $wpdb; //This is used only if making any database queries
 
@@ -210,11 +210,11 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
         $order = ( !empty( $_REQUEST['order'] ) ) ? sanitize_key( $_REQUEST['order'] ) : 'asc'; //If no order, default to asc
 
         if ( !preg_match( '/^[a-zA-Z_]+$/', $orderby ) ) {
-            throw new Error( "To protect agains SQL injection attacks, only [a-zA-Z_]+ order arguments are accepted" );
+            new WP_Error( "preg_match_error", "To protect agains SQL injection attacks, only [a-zA-Z_]+ order arguments are accepted" );
         }
 
         if ( strtolower( $order ) != "asc" && strtolower( $order ) != "desc" ) {
-            throw new Error( "order argument must be ASC or DESC" );
+            new WP_Error( 'string_to_lower', "order argument must be ASC or DESC" );
         }
 
         if ( empty( $search ) ) {

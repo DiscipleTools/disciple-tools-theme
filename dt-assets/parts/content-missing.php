@@ -1,6 +1,6 @@
 <div id="post-not-found" class="hentry">
 
-	<?php if ( is_search() ) : ?>
+    <?php if ( is_search() ) : ?>
 
         <header class="article-header">
         </header>

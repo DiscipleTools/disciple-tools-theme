@@ -57,9 +57,15 @@ class Disciple_Tools_Locations
         $query = new WP_Query( $query_args );
         $list = [];
         foreach ( $query->posts as $post ) {
-            $list[] = [ "ID" => $post->ID, "name" => $post->post_title ];
+            $list[] = [
+            "ID" => $post->ID,
+            "name" => $post->post_title
+            ];
         }
-        return [ "total" => $query->found_posts, "posts" => $list ];
+        return [
+        "total" => $query->found_posts,
+        "posts" => $list
+        ];
     }
 
     /**

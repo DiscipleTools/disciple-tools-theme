@@ -238,7 +238,7 @@ class Disciple_Tools_Groups_Post_Type
 
         $last_item = [];
 
-        //		if ( isset( $defaults['date'] ) ) { unset( $defaults['date'] ); }
+        //      if ( isset( $defaults['date'] ) ) { unset( $defaults['date'] ); }
 
         if ( count( $defaults ) > 2 ) {
             $last_item = array_slice( $defaults, -1 );
@@ -286,7 +286,7 @@ class Disciple_Tools_Groups_Post_Type
             9  => sprintf(
                 __( '%1$s scheduled for: %2$s.', 'disciple_tools' ),
                 $this->singular,
-                '<strong>' . date_i18n( _x( 'M j, Y @ G:i' , 'Publish box date format, see http://php.net/date', 'disciple_tools' ), strtotime( $post->post_date ) ) . '</strong>'
+                '<strong>' . date_i18n( _x( 'M j, Y @ G:i', 'Publish box date format, see http://php.net/date', 'disciple_tools' ), strtotime( $post->post_date ) ) . '</strong>'
             ) . ' ' . $link,
             10  => sprintf( __( '%s draft updated.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
         ];
@@ -513,7 +513,10 @@ class Disciple_Tools_Groups_Post_Type
             $type = $k[1];
             $number_key = dt_address_metabox()->create_channel_metakey( "address" );
             $details_key = $number_key . "_details";
-            $details = [ 'type' => $type, 'verified' => false ];
+            $details = [
+            'type' => $type,
+            'verified' => false
+            ];
             //save the field and the field details
             add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST['new-value-address'] ) ), true );
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );
@@ -583,7 +586,12 @@ class Disciple_Tools_Groups_Post_Type
         }
 
         // Collect user list
-        $args = [ 'role__not_in' => [ 'registered', 'prayer_supporter', 'project_supporter' ], 'fields' => [ 'ID', 'display_name' ], 'exclude' => $exclude_user, 'order' => 'ASC' ];
+        $args = [
+        'role__not_in' => [ 'registered', 'prayer_supporter', 'project_supporter' ],
+        'fields' => [ 'ID', 'display_name' ],
+        'exclude' => $exclude_user,
+        'order' => 'ASC'
+        ];
         $results = get_users( $args );
 
         // Loop user list
@@ -640,7 +648,10 @@ class Disciple_Tools_Groups_Post_Type
             'name'        => __( 'Is a Church', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ '0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        '0' => __( 'No', 'disciple_tools' ),
+        '1' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'church',
         ];
 
@@ -648,70 +659,100 @@ class Disciple_Tools_Groups_Post_Type
             'name'        => __( 'Baptism', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ '0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        '0' => __( 'No', 'disciple_tools' ),
+        '1' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'church_hidden',
         ];
         $fields['church_bible'] = [
             'name'        => __( 'Bible Study', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ '0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        '0' => __( 'No', 'disciple_tools' ),
+        '1' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'church_hidden',
         ];
         $fields['church_communion'] = [
             'name'        => __( 'Communion', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ '0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        '0' => __( 'No', 'disciple_tools' ),
+        '1' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'church_hidden',
         ];
         $fields['church_fellowship'] = [
             'name'        => __( 'Fellowship', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ '0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        '0' => __( 'No', 'disciple_tools' ),
+        '1' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'church_hidden',
         ];
         $fields['church_giving'] = [
             'name'        => __( 'Giving', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ '0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        '0' => __( 'No', 'disciple_tools' ),
+        '1' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'church_hidden',
         ];
         $fields['church_prayer'] = [
             'name'        => __( 'Prayer', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ '0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        '0' => __( 'No', 'disciple_tools' ),
+        '1' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'church_hidden',
         ];
         $fields['church_praise'] = [
             'name'        => __( 'Praise', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ '0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        '0' => __( 'No', 'disciple_tools' ),
+        '1' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'church_hidden',
         ];
         $fields['church_sharing'] = [
             'name'        => __( 'Sharing the Gospel', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ '0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        '0' => __( 'No', 'disciple_tools' ),
+        '1' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'church_hidden',
         ];
         $fields['church_leaders'] = [
             'name'        => __( 'Leaders', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ '0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        '0' => __( 'No', 'disciple_tools' ),
+        '1' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'church_hidden',
         ];
         $fields['church_commitment'] = [
             'name'        => __( 'Church Commitment', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [ '0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' ) ],
+            'default'     => [
+        '0' => __( 'No', 'disciple_tools' ),
+        '1' => __( 'Yes', 'disciple_tools' )
+            ],
             'section'     => 'church_hidden',
         ];
 
@@ -810,7 +851,7 @@ class Disciple_Tools_Groups_Post_Type
     /**
      *
      */
-    function groups_rewrites_init()
+    public function groups_rewrites_init()
     {
         add_rewrite_rule( 'groups/([0-9]+)?$', 'index.php?post_type=groups&p=$matches[1]', 'top' );
     }

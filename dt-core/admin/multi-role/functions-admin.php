@@ -12,10 +12,10 @@
 
 # Register scripts/styles.
 add_action( 'admin_enqueue_scripts', 'dt_multi_role_admin_register_scripts', 0 );
-add_action( 'admin_enqueue_scripts', 'dt_multi_role_admin_register_styles',  0 );
+add_action( 'admin_enqueue_scripts', 'dt_multi_role_admin_register_styles', 0 );
 
 # Custom manage users columns.
-add_filter( 'manage_users_columns',       'dt_multi_role_manage_users_columns' );
+add_filter( 'manage_users_columns', 'dt_multi_role_manage_users_columns' );
 add_filter( 'manage_users_custom_column', 'dt_multi_role_manage_users_custom_column', 10, 3 );
 
 
@@ -30,15 +30,15 @@ function dt_multi_role_admin_register_scripts() {
 
     $min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-    wp_register_script( 'members-settings',  "js/settings{$min}.js",  [ 'jquery' ], '', true );
+    wp_register_script( 'members-settings', "js/settings{$min}.js", [ 'jquery' ], '', true );
     wp_register_script( 'members-edit-role', "js/edit-role{$min}.js", [ 'postbox', 'wp-util' ], '', true );
 
     // Localize our script with some text we want to pass in.
     $i18n = [
-        'button_role_edit' => esc_html__( 'Edit',                'members' ),
-        'button_role_ok'   => esc_html__( 'OK',                  'members' ),
+        'button_role_edit' => esc_html__( 'Edit', 'members' ),
+        'button_role_ok'   => esc_html__( 'OK', 'members' ),
         'label_grant_cap'  => esc_html__( 'Grant %s capability', 'members' ),
-        'label_deny_cap'   => esc_html__( 'Deny %s capability',  'members' ),
+        'label_deny_cap'   => esc_html__( 'Deny %s capability', 'members' ),
         'ays_delete_role'  => esc_html__( 'Are you sure you want to delete this role? This is a permanent action and cannot be undone.', 'members' )
     ];
 

@@ -258,7 +258,7 @@ class Disciple_Tools_Reports_API
 
         $results = $wpdb->get_results( $wpdb->prepare(
             "SELECT " // @codingStandardsIgnoreLine
-            . " $type(`meta_value`) AS `$meta_key`
+            . " %s AS %s
                 FROM
                     `$wpdb->dt_reports`
                 RIGHT JOIN
@@ -269,6 +269,8 @@ class Disciple_Tools_Reports_API
                     `$wpdb->dt_reports`.report_date LIKE %s
                     AND `$wpdb->dt_reports`.report_source = %s
                     AND `$wpdb->dt_reportmeta`.meta_key = %s",
+            $type . '( `meta_value` )',
+            $meta_key,
             $wpdb->esc_like( $date ) . '%',
             $source,
             $meta_key

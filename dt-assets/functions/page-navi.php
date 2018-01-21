@@ -20,7 +20,7 @@ function disciple_tools_page_navi() {
         $start_page = 1;
     }
     $end_page = $paged + $half_page_end;
-    if (($end_page - $start_page) != $pages_to_show_minus_1) {
+    if (( $end_page - $start_page ) != $pages_to_show_minus_1) {
         $end_page = $start_page + $pages_to_show_minus_1;
     }
     if ($end_page > $max_page) {
