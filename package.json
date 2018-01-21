@@ -1,14 +1,14 @@
 {
   "name": "disciple-tools",
-  "version": "5.0.0",
-  "description": "A WordPress starter theme using Foundation 6",
+  "version": "0.1.0",
+  "description": "A coalition managemen system for Disciple Making Movements",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JeremyEnglert/JointsWP.git"
+    "url": "https://github.com/DiscipleTools/disciple-tools-theme.git"
   },
-  "author": "Jeremy Englert",
-  "license": "GPL-2.0 AND MIT",
-  "homepage": "https://github.com/JeremyEnglert/JointsWP",
+  "author": "Disciple Tools",
+  "license": "GPL-2.0 and later",
+  "homepage": "https://disciple.tools",
   "devDependencies": {
     "babel-preset-es2015": "^6.5.0",
     "browser-sync": "^2.23.3",
