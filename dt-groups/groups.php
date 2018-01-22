@@ -516,7 +516,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             "post_type" => "groups",
             "post_status" => "publish",
             "meta_input" => [
-                "group_status" => "no_value",
+                "group_status" => "active",
+                "group_type" => "pre-group",
                 "assigned_to" => sprintf( "user-%d", get_current_user_id() ),
             ],
         ];

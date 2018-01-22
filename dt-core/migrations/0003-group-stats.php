@@ -28,7 +28,7 @@ class Disciple_Tools_Migration_0003 extends Disciple_Tools_Migration {
                     }
                     if ( $meta_value[0] == "active_pre_group" ||
                          $meta_value[0] == "inactive_pre_group" ||
-                         $meta_value == "no_value" ){
+                         $meta_value[0] == "no_value" ){
                         $type = "pre-group";
                         update_post_meta( $group->ID, "group_type", $type );
                     }

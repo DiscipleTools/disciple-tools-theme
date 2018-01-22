@@ -24,6 +24,10 @@ declare(strict_types=1);
                         <div class="filter__title js-list-filter-title" tabindex="0"><?php esc_html_e( "Group status" ); ?></div>
                         <p><?php esc_html_e( "Loading...", "disciple_tools" ); ?></p>
                     </div>
+                    <div class="filter js-list-filter" data-filter="group_type">
+                        <div class="filter__title js-list-filter-title" tabindex="0"><?php esc_html_e( "Group type" ); ?></div>
+                        <p><?php esc_html_e( "Loading...", "disciple_tools" ); ?></p>
+                    </div>
                     <div class="filter filter--closed js-list-filter" data-filter="locations">
                         <div class="filter__title js-list-filter-title" tabindex="0"><?php esc_html_e( "Location" ); ?></div>
                         <p><?php esc_html_e( "Loading...", "disciple_tools" ); ?></p>

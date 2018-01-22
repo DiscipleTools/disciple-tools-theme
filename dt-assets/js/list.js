@@ -28,6 +28,7 @@
       <td><img src="<%- template_directory_uri %>/dt-assets/images/green_flag.svg" width=10 height=12></td>
       <td><a href="<%- permalink %>"><%- post_title %></a></td>
       <td><span class="group-status group-status--<%- group_status %>"><%- status %></span></td>
+      <td><span class="group-type group-type--<%- group_type %>"><%- type %></span></td>
       <td style="text-align: right"><%- member_count %></td>
       <td><%= leader_links %></td>
       <td><%- locations.join(", ") %></td>
@@ -205,11 +206,12 @@
         columnDefs: [
           { targets: [0], width: "2%" },
           { targets: [1], width: "30%" },
-          { targets: [2], width: "30%" },
-          { targets: [3], width: "5%" },
+          { targets: [2], width: "15%" },
+          { targets: [3], width: "15%" },
+          { targets: [4], width: "5%" },
           {
             // Hide the last modified column, it's only used for sorting
-            targets: [6],
+            targets: [7],
             visible: false,
             searchable: false,
           },
@@ -261,9 +263,11 @@
     }).join(", ");
     const gcfs = wpApiSettings.groups_custom_fields_settings;
     const status = gcfs.group_status.default[group.group_status || "no_value"];
+    const type = gcfs.group_type.default[group.group_type || "no_value"];
     const context = _.assign({}, group, wpApiSettings, {
       leader_links,
       status,
+      type
     });
     return $.parseHTML(template(context));
   }
@@ -286,6 +290,7 @@
       const groups = items;
       _.assign(counts, {
         group_status: _.countBy(_.map(groups, 'group_status')),
+        group_type: _.countBy(_.map(groups, 'group_type')),
         locations: _.countBy(_.flatten(_.map(groups, 'locations'))),
       });
     }
@@ -334,7 +339,7 @@
         humanText = ccfs[filterType].default[key];
       } else if (wpApiSettings.current_post_type === 'contacts' && filterType === 'requires_update') {
         humanText = key === "true" ? wpApiSettings.txt_yes : wpApiSettings.txt_no;
-      } else if (wpApiSettings.current_post_type === 'groups' && filterType === 'group_status') {
+      } else if (wpApiSettings.current_post_type === 'groups' && (filterType === 'group_status' || filterType === 'group_type')) {
         humanText = gcfs[filterType].default[key];
       } else {
         humanText = key;
@@ -379,7 +384,7 @@
     if (wpApiSettings.current_post_type === "contacts") {
       filterTypes = ["overall_status", "locations", "assigned_login", "seeker_path", "requires_update"];
     } else if (wpApiSettings.current_post_type === "groups") {
-      filterTypes = ["group_status", "locations"];
+      filterTypes = ["group_status", "group_type", "locations"];
     }
 
     if ($(".js-list-view").length > 0) {
@@ -435,6 +440,12 @@
           filterFunctions.push(function group_status(group) {
             return _.some($checkedLabels, function group_status(label) {
               return $(label).data("filter-value") === group.group_status;
+            });
+          });
+        } else if (filterType === "group_type") {
+          filterFunctions.push(function group_type(group) {
+            return _.some($checkedLabels, function group_type(label) {
+              return $(label).data("filter-value") === group.group_type;
             });
           });
         } else if (filterType === "locations") {
