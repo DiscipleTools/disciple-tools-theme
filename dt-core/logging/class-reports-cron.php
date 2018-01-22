@@ -93,12 +93,18 @@ class Disciple_Tools_Reports_Cron
             wp_schedule_event( strtotime( 'today midnight' ), 'daily', 'build_disciple_tools_groups_reports' );
         }
 
+        if ( !wp_next_scheduled( 'build_disciple_tools_reports' ) ) { // All other reports
+            // Schedule the event
+            wp_schedule_event( strtotime( 'today midnight' ), 'daily', 'build_disciple_tools_reports' );
+        }
+
     }
 
     public static function unschedule_report_events() {
         $events = [
-        "build_disciple_tools_contacts_reports",
-        "build_disciple_tools_groups_reports",
+            "build_disciple_tools_contacts_reports",
+            "build_disciple_tools_groups_reports",
+            "build_disciple_tools_reports",
         ];
         foreach ( $events as $event ) {
             wp_unschedule_event( wp_next_scheduled( $event ), $event );
