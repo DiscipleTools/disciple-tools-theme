@@ -64,10 +64,7 @@ function dt_contact_details_edit( $id, $remove = false ){
         <i class="fi-torsos-all large"></i>
         <span class="item-details-header details-list title" ><?php the_title_attribute(); ?></span>
         <input id="title" class="text-field details-edit" value="<?php the_title_attribute(); ?>">
-        <span id="group-status-label" class="button alert label details-list status">
-            <?php esc_html_e( "Status: ", 'disciple-tools' )?><?php echo esc_html( $group['group_status']['label'] ?? '' ); ?>
-        </span>
-        <select id="group-status-select" class="status details-edit" style="width:fit-content; display:none">
+        <select id="group_status" class="status select-field" style="width:fit-content;">
             <?php foreach ( $group_fields["group_status"]["default"] as $status_key => $status_label ) { ?>
                 <option value="<?php echo esc_attr( $status_key, 'disciple_tools' ); ?>"
                 <?php echo esc_attr( $status_key === $group['group_status']['key'] ? 'selected' : '', 'disciple_tools' ); ?>>

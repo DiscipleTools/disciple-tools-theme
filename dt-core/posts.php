@@ -326,6 +326,7 @@ class Disciple_Tools_Posts
                     } else {
                         $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
                     }
+                    $tets = "";
                 }
                 if ($fields[$activity->meta_key]["type"] === "number"){
                     $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;

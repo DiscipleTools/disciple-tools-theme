@@ -624,13 +624,19 @@ class Disciple_Tools_Groups_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'no_value'           => __( 'No value', 'disciple_tools' ),
-                'active_pre_group'   => __( 'Active Pre-Group (Faithfully Sharing)', 'disciple_tools' ),
-                'active_group'       => __( 'Active Group (Consistently Meeting)', 'disciple_tools' ),
-                'active_church'      => __( 'Active Church (3+ Baptized)', 'disciple_tools' ),
-                'inactive_church'    => __( 'Inactive Church', 'disciple_tools' ),
-                'inactive_group'     => __( 'Inactive Group', 'disciple_tools' ),
-                'inactive_pre_group' => __( 'Inactive Pre-Group', 'disciple_tools' ),
+                'inactive' => __( 'Inactive', 'disciple_tools' ),
+                'active'   => __( 'Active', 'disciple_tools' ),
+            ],
+            'section'     => 'info',
+        ];
+        $fields['group_type'] = [
+            'name'        => __( 'Group Type', 'disciple_tools' ),
+            'description' => '',
+            'type'        => 'key_select',
+            'default'     => [
+                'pre-group' => __( 'Pre-Group', 'disciple_tools' ),
+                'group'     => __( 'Group', 'disciple_tools' ),
+                'church'    => __( 'Church', 'disciple_tools' ),
             ],
             'section'     => 'info',
         ];

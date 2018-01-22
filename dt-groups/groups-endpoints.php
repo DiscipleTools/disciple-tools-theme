@@ -173,8 +173,9 @@ class Disciple_Tools_Groups_Endpoints
         $rv = [];
         foreach ( $groups as $group ) {
             $meta_fields = get_post_custom( $group->ID );
-            $group_array = $group->to_array();
-            unset( $group_array['contacts'] );
+            $group_array = [];
+            $group_array["ID"] = $group->ID;
+            $group_array["post_title"] = $group->post_title;
             $group_array['permalink'] = get_post_permalink( $group->ID );
             $group_array['locations'] = [];
             foreach ( $group->locations as $location ) {
@@ -191,8 +192,11 @@ class Disciple_Tools_Groups_Endpoints
                 }
                 $group_array['member_count']++;
             }
+//            $group_array['group_type'] = "pre-group";
             foreach ( $meta_fields as $meta_key => $meta_value ) {
                 if ( $meta_key == 'group_status' ) {
+                    $group_array[ $meta_key ] = $meta_value[0];
+                } elseif ( $meta_key == 'group_type' ) {
                     $group_array[ $meta_key ] = $meta_value[0];
                 } elseif ( $meta_key == 'last_modified' ) {
                     $group_array[ $meta_key ] = (int) $meta_value[0];
