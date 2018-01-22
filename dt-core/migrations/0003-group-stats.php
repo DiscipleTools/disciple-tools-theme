@@ -21,15 +21,19 @@ class Disciple_Tools_Migration_0003 extends Disciple_Tools_Migration {
                         $new_status = "inactive";
                         update_post_meta( $group->ID, "group_status", $new_status );
                     }
-                    if ( $meta_value[0] == "active_group" || $meta_value[0] == "inactive_group" ){
+                    if ( $meta_value[0] == "active_group" ||
+                         $meta_value[0] == "inactive_group" ){
                         $type = "group";
                         update_post_meta( $group->ID, "group_type", $type );
                     }
-                    if ( $meta_value[0] == "active_pre_group" || $meta_value[0] == "inactive_pre_group" ){
+                    if ( $meta_value[0] == "active_pre_group" ||
+                         $meta_value[0] == "inactive_pre_group" ||
+                         $meta_value == "no_value" ){
                         $type = "pre-group";
                         update_post_meta( $group->ID, "group_type", $type );
                     }
-                    if ( $meta_value[0] == "active_church" || $meta_value[0] == "inactive_church" ){
+                    if ( $meta_value[0] == "active_church" ||
+                         $meta_value[0] == "inactive_church" ){
                         $type = "church";
                         update_post_meta( $group->ID, "group_type", $type );
                     }
