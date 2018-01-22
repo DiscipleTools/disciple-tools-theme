@@ -89,7 +89,10 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
      */
     public function get_sortable_columns()
     {
-        return [ 'type' => [ 'type', false ], 'date' => [ 'date', false ] ];
+        return [
+        'type' => [ 'type', false ],
+        'date' => [ 'date', false ]
+        ];
     }
 
     /**

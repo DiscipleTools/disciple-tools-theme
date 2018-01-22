@@ -69,8 +69,8 @@ class Disciple_Tools_Counter_Generations extends Disciple_Tools_Counter_Base  {
         ), ARRAY_A );
 
         // Prepare arrays of all people involved in discipleship
-        $p2p_array_from = array_column( $p2p_array , 'p2p_from' );
-        $p2p_array_to = array_column( $p2p_array , 'p2p_to' );
+        $p2p_array_from = array_column( $p2p_array, 'p2p_from' );
+        $p2p_array_to = array_column( $p2p_array, 'p2p_to' );
         $full_p2p_array = array_unique( array_merge( $full_p2p_array, $p2p_array_to, $p2p_array_from ), SORT_REGULAR );
 
         // Run checks on every contact in discipleship

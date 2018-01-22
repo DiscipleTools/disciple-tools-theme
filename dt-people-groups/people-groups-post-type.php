@@ -225,7 +225,7 @@ class Disciple_Tools_People_Groups_Post_Type
      */
     public function register_custom_column_headings( $defaults )
     {
-        //		$new_columns = array( 'image' => __( 'Image', 'disciple_tools' ) );
+        //      $new_columns = array( 'image' => __( 'Image', 'disciple_tools' ) );
         $new_columns = []; // TODO: restore above column once we know what columns we need to show.
 
         $last_item = [];
@@ -280,7 +280,7 @@ class Disciple_Tools_People_Groups_Post_Type
             9  => sprintf(
                 __( '%1$s scheduled for: %2$s.', 'disciple_tools' ),
                 $this->singular,
-                '<strong>' . date_i18n( _x( 'M j, Y @ G:i' , 'Publish box date format, see http://php.net/date', 'disciple_tools' ), strtotime( $post->post_date ) ) . '</strong>'
+                '<strong>' . date_i18n( _x( 'M j, Y @ G:i', 'Publish box date format, see http://php.net/date', 'disciple_tools' ), strtotime( $post->post_date ) ) . '</strong>'
             ) . ' ' . $link,
             10  => sprintf( __( '%s draft updated.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
         ];
@@ -324,8 +324,9 @@ class Disciple_Tools_People_Groups_Post_Type
                 `$wpdb->postmeta`
              WHERE
                 post_id = %s
-                AND meta_key LIKE 'jp_%'",
-            $post->ID
+                AND meta_key LIKE %s ",
+            $post->ID,
+            $wpdb->esc_like( 'jp_' ) . '%'
         ) );
         foreach ( $jp_results as $value ) {
             echo '<tr><td style="max-width: 150px">' . esc_html( substr( $value->meta_key, 3 ) ) . '</td><td style="max-width: 150px">' . esc_html( $value->meta_value ) . '</td></tr>';
@@ -464,7 +465,10 @@ class Disciple_Tools_People_Groups_Post_Type
             $type = $k[1];
             $number_key = dt_address_metabox()->create_channel_metakey( "address" );
             $details_key = $number_key . "_details";
-            $details = [ 'type' => $type, 'verified' => false ];
+            $details = [
+            'type' => $type,
+            'verified' => false
+            ];
             //save the field and the field details
             add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST['new-value-address'] ) ), true );
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );
@@ -550,10 +554,11 @@ class Disciple_Tools_People_Groups_Post_Type
                     `$wpdb->postmeta`
                 WHERE
                     post_id = %s
-                    AND meta_key LIKE 'contact_%'
+                    AND meta_key LIKE %s
                 ORDER BY
                     meta_key DESC",
-                $post->ID
+                $post->ID,
+                $wpdb->esc_like( 'contact_' ) . '%'
             ), ARRAY_A );
         }
         foreach ( $current_fields as $value ) {

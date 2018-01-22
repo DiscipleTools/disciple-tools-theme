@@ -155,10 +155,11 @@ class Disciple_Tools_Metabox_Address
                         `$wpdb->postmeta`
                     WHERE
                         post_id = %d
-                        AND meta_key LIKE 'address_%'
+                        AND meta_key LIKE %s
                     ORDER BY
                         meta_key DESC",
-                    $id
+                    $id,
+                    $wpdb->esc_like( 'address_' ) . '%'
                 ),
                 ARRAY_A
             );

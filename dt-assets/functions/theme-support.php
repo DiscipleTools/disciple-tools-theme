@@ -10,7 +10,7 @@ function disciple_tools_theme_support() {
     set_post_thumbnail_size( 125, 125, true );
 
     // Add RSS Support
-//	add_theme_support( 'automatic-feed-links' );
+//  add_theme_support( 'automatic-feed-links' );
 
     // Add Support for WP Controlled Title Tag
     add_theme_support( 'title-tag' );
@@ -26,9 +26,9 @@ function disciple_tools_theme_support() {
     );
 
     // Adding post format support
-     add_theme_support(
-         'post-formats',
-         array(
+    add_theme_support(
+        'post-formats',
+        array(
             'aside',             // title less blurb
             'gallery',           // gallery of images
             'link',              // quick link to other site
@@ -39,7 +39,7 @@ function disciple_tools_theme_support() {
             'audio',             // audio
             'chat'               // chat transcript
          )
-     );
+    );
 
     // Set the maximum allowed width for any content in the theme, like oEmbeds and images added to posts.
     // @codingStandardsIgnoreLine

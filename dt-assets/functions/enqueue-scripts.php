@@ -77,7 +77,7 @@ function dt_site_scripts() {
     dt_theme_enqueue_style( 'site-css', 'dt-assets/build/css/style.min.css', array() );
 
     // Comment reply script for threaded comments
-    if ( is_singular() && comments_open() && (get_option( 'thread_comments' ) == 1)) {
+    if ( is_singular() && comments_open() && ( get_option( 'thread_comments' ) == 1 )) {
         wp_enqueue_script( 'comment-reply' );
     }
 
@@ -205,7 +205,7 @@ function dt_site_scripts() {
 
     $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
     if ( 'settings' === $url_path ) {
-        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash', 'typeahead' ),  true );
+        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash', 'typeahead' ), true );
         wp_localize_script(
             'dt-settings', 'wpApiSettingsPage', array(
                 'root' => esc_url_raw( rest_url() ),
@@ -216,17 +216,17 @@ function dt_site_scripts() {
         );
     }
     if ( 'metrics' === $url_path ) {
-        dt_theme_enqueue_script( 'dt-metrics', 'dt-assets/js/metrics.js', array( 'jquery', 'jquery-ui' ),  true );
+        dt_theme_enqueue_script( 'dt-metrics', 'dt-assets/js/metrics.js', array( 'jquery', 'jquery-ui' ), true );
         wp_localize_script(
             'dt-metrics', 'wpApiMetricsPage', array(
                 'root' => esc_url_raw( rest_url() ),
                 'nonce' => wp_create_nonce( 'wp_rest' )
             )
         );
-        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(),  false );
+        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(), false );
     }
     if ( 'locations' === $url_path && ( is_archive() || is_singular( 'locations' ) ) ) {
-        dt_theme_enqueue_script( 'dt-locations', 'dt-assets/js/locations.js', array( 'jquery', 'jquery-ui' ),  true );
+        dt_theme_enqueue_script( 'dt-locations', 'dt-assets/js/locations.js', array( 'jquery', 'jquery-ui' ), true );
         wp_localize_script(
             'dt-locations', 'wpApiLocationsPage', array(
                 'root' => esc_url_raw( rest_url() ),

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-(function() {
+( function() {
 
     global $post;
 
@@ -224,6 +224,6 @@ dt_print_breadcrumbs(
 
 
 <?php
-})();
+} )();
 
 get_footer();

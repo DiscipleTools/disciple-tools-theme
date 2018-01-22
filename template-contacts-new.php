@@ -15,7 +15,7 @@ dt_print_breadcrumbs(
     __( "New contact" )
 );
 
-(function() {
+( function() {
 
 ?>
 
@@ -113,6 +113,6 @@ dt_print_breadcrumbs(
 
 <?php
 
-})();
+} )();
 
 get_footer();

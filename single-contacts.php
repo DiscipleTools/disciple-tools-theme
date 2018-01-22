@@ -167,7 +167,7 @@ declare( strict_types=1 );
                         }
                         $keys = array_keys( $contact_fields["seeker_path"]["default"] );
                         $path_index = array_search( $contact->fields["seeker_path"]["key"], $keys ) ?? 0;
-                        $percentage = $path_index / (sizeof( $keys ) -1) *100
+                        $percentage = $path_index / ( sizeof( $keys ) -1 ) *100
                         ?>
                         </select>
                         <div class="progress" role="progressbar" tabindex="0" aria-valuenow="<?php echo 4 ?>" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
@@ -334,7 +334,7 @@ declare( strict_types=1 );
             foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
                 ?>
                 <option value="<?php echo esc_attr( $reason_key )?>"
-                    <?php if ( ($contact->fields["reason_paused"]["key"] ?? "") === $reason_key ){echo "selected";} ?>>
+                    <?php if ( ( $contact->fields["reason_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
                     <?php echo esc_html( $reason_label )?>
                 </option>
                 <?php
@@ -360,7 +360,7 @@ declare( strict_types=1 );
             foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_label ) {
                 ?>
                 <option value="<?php echo esc_attr( $reason_key )?>"
-                    <?php if ( ($contact->fields["unassignable_paused"]["key"] ?? "") === $reason_key ){echo "selected";} ?>>
+                    <?php if ( ( $contact->fields["unassignable_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
                     <?php echo esc_html( $reason_label )?>
                 </option>
                 <?php
@@ -379,6 +379,6 @@ declare( strict_types=1 );
     </div>
 
     <?php
-})();
+} )();
 
 get_footer();

@@ -55,7 +55,7 @@ final class Disciple_Tools_Admin_User_Edit {
         add_action( 'edit_user_profile', [ $this, 'profile_fields' ] );
 
         // Must use `profile_update` to change role. Otherwise, WP will wipe it out.
-        add_action( 'profile_update',  [ $this, 'role_update' ], 0 );
+        add_action( 'profile_update', [ $this, 'role_update' ], 0 );
     }
 
     /**
@@ -137,7 +137,7 @@ final class Disciple_Tools_Admin_User_Edit {
             $old_roles = (array) $user->roles;
 
             // Sanitize the posted roles.
-            $new_roles = array_map( 'dt_multi_role_sanitize_role', array_map( 'sanitize_text_field',  wp_unslash( $_POST['dt_multi_role_user_roles'] ) ) );
+            $new_roles = array_map( 'dt_multi_role_sanitize_role', array_map( 'sanitize_text_field', wp_unslash( $_POST['dt_multi_role_user_roles'] ) ) );
 
             // Loop through the posted roles.
             foreach ( $new_roles as $new_role ) {

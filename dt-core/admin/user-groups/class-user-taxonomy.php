@@ -595,7 +595,12 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
 
             // Edit term
             if ( current_user_can( $tax->cap->assign_terms ) ) {
-                $args = [ 'action' => 'edit', 'taxonomy' => $tax->name, 'tag_ID' => $term->term_id, 'post_type' => 'post' ];
+                $args = [
+                'action' => 'edit',
+                'taxonomy' => $tax->name,
+                'tag_ID' => $term->term_id,
+                'post_type' => 'post'
+                ];
                 $edit_tags = admin_url( 'edit-tags.php' );
                 $url = add_query_arg( $args, $edit_tags );
                 $actions[] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Edit', 'disciple-tools-user-groups' ) . '</a>';
@@ -980,8 +985,10 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                         <span
                             class="subtitle"><?php printf( esc_html__( 'Viewing users of %1$s: %2$s', 'disciple-tools-user-groups' ), esc_html( $this->tax_singular_low ), '<a href="' . esc_url( $url ) . '">' . esc_html( $terms[ $viewing ]->name ) . '</a>' ); ?></span>
                     </h1>
-                    <?php // @codingStandardsIgnoreLine ?>
-                    <?php echo wpautop( $terms[ $viewing ]->description ); ?>
+                    <?php
+                    // @codingStandardsIgnoreLine
+                    echo wpautop( $terms[ $viewing ]->description );
+                    ?>
                 </div>
                 <div class="clear"></div>
 

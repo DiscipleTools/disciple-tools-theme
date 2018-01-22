@@ -294,7 +294,7 @@ class Disciple_Tools_Location_Post_Type
             9  => sprintf(
                 __( '%1$s scheduled for: %2$s.', 'disciple_tools' ),
                 $this->singular,
-                '<strong>' . date_i18n( _x( 'M j, Y @ G:i' , 'Publish box date format, see http://php.net/date', 'disciple_tools' ), strtotime( $post->post_date ) ) . '</strong>'
+                '<strong>' . date_i18n( _x( 'M j, Y @ G:i', 'Publish box date format, see http://php.net/date', 'disciple_tools' ), strtotime( $post->post_date ) ) . '</strong>'
             ) . ' ' . $link,
             10  => sprintf( __( '%s draft updated.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
         ];
@@ -464,7 +464,10 @@ class Disciple_Tools_Location_Post_Type
             $type = $k[1];
             $number_key = dt_address_metabox()->create_channel_metakey( "address" );
             $details_key = $number_key . "_details";
-            $details = [ 'type' => $type, 'verified' => false ];
+            $details = [
+            'type' => $type,
+            'verified' => false
+            ];
             //save the field and the field details
             add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST['new-value-address'] ) ), true );
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );

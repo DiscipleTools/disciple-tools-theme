@@ -85,7 +85,7 @@ class Disciple_Tools_Reports_Integrations {
             $url .= "&until=" . date( 'Y-m-d', strtotime( 'tomorrow' ) );
             $url .= "&access_token=" . $access_token;
 
-            $all_page_data = self::get_facebook_insights_with_paging( $url,  $date_of_last_record, $facebook_page->id );
+            $all_page_data = self::get_facebook_insights_with_paging( $url, $date_of_last_record, $facebook_page->id );
 
             $month_metrics = [];
             foreach ($all_page_data as $metric){

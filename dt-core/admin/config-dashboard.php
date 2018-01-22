@@ -118,9 +118,8 @@ final class Disciple_Tools_Dashboard
 
         // Remove_meta_box('dashboard_quick_press', 'dashboard', 'core');  // Quick Press Widget
         remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'core' );   // Recent Drafts Widget
-        remove_meta_box( 'dashboard_primary', 'dashboard', 'core' );         //
-        remove_meta_box( 'dashboard_secondary', 'dashboard', 'core' );       //
-
+        remove_meta_box( 'dashboard_primary', 'dashboard', 'core' );
+        remove_meta_box( 'dashboard_secondary', 'dashboard', 'core' );
         // Removing plugin dashboard boxes
         remove_meta_box( 'yoast_db_widget', 'dashboard', 'normal' );         // Yoast's SEO Plugin Widget
     }

@@ -367,7 +367,10 @@ class Disciple_Tools_Groups_Endpoints
             } else {
                 $comment = get_comment( $result );
 
-                return new WP_REST_Response( [ "comment_id" => $result, "comment" => $comment ] );
+                return new WP_REST_Response( [
+                    "comment_id" => $result,
+                    "comment" => $comment
+                ] );
             }
         } else {
             return new WP_Error( "post_comment", "Missing a valid group id", [ 'status' => 400 ] );

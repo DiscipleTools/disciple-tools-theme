@@ -83,7 +83,10 @@ class Disciple_Tools_Api_Keys
                 $client_id = wordwrap( strtolower( sanitize_text_field( wp_unslash( $_POST["application"] ) ) ), 1, '-', 0 );
                 $token = bin2hex( random_bytes( 32 ) );
                 if ( !isset( $keys[ $client_id ] ) ) {
-                    $keys[ $client_id ] = [ "client_id" => $client_id, "client_token" => $token ];
+                    $keys[ $client_id ] = [
+                    "client_id" => $client_id,
+                    "client_token" => $token
+                    ];
                     update_option( "dt_api_keys", $keys );
                 } else {
                     $this->admin_notice( "Application already exists", "error" );

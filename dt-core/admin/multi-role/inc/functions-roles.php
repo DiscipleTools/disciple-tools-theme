@@ -449,7 +449,10 @@ function dt_multi_role_get_role_view_url( $view ) {
  * @return string
  */
 function dt_multi_role_get_edit_role_url( $role ) {
-    return add_query_arg( [ 'action' => 'edit', 'role' => $role ], dt_multi_role_get_edit_roles_url() );
+    return add_query_arg( [
+        'action' => 'edit',
+        'role' => $role
+    ], dt_multi_role_get_edit_roles_url() );
 }
 
 /**
@@ -461,7 +464,10 @@ function dt_multi_role_get_edit_role_url( $role ) {
  * @return string
  */
 function dt_multi_role_get_delete_role_url( $role ) {
-    $url = add_query_arg( [ 'action' => 'delete', 'role' => $role ], dt_multi_role_get_edit_roles_url() );
+    $url = add_query_arg( [
+        'action' => 'delete',
+        'role' => $role
+    ], dt_multi_role_get_edit_roles_url() );
 
     return wp_nonce_url( $url, 'delete_role', 'dt_multi_role_delete_role_nonce' );
 }

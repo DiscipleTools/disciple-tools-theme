@@ -36,7 +36,7 @@
             <meta name="msapplication-square310x310logo" content="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/images/favicon/mstile-310x310.png">
         <?php } ?>
 
-<!--		<link rel="pingback" href="--><?php //bloginfo('pingback_url'); ?><!--">-->
+<!--        <link rel="pingback" href="--><?php //bloginfo('pingback_url'); ?><!--">-->
 
         <!-- Start wp_head -->
         <?php wp_head(); ?>

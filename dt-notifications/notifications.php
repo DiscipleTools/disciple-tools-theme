@@ -257,7 +257,13 @@ class Disciple_Tools_Notifications
             ]
         );
 
-        return $wpdb->last_error ? [ 'status' => false, 'message' => $wpdb->last_error ] : [ 'status' => true, 'rows_affected' => $wpdb->rows_affected ];
+        return $wpdb->last_error ? [
+        'status' => false,
+        'message' => $wpdb->last_error
+        ] : [
+        'status' => true,
+        'rows_affected' => $wpdb->rows_affected
+        ];
     }
 
     /**
@@ -281,7 +287,13 @@ class Disciple_Tools_Notifications
             ]
         );
 
-        return $wpdb->last_error ? [ 'status' => false, 'message' => $wpdb->last_error ] : [ 'status' => true, 'rows_affected' => $wpdb->rows_affected ];
+        return $wpdb->last_error ? [
+        'status' => false,
+        'message' => $wpdb->last_error
+        ] : [
+        'status' => true,
+        'rows_affected' => $wpdb->rows_affected
+        ];
     }
 
     /**
@@ -305,7 +317,13 @@ class Disciple_Tools_Notifications
             ]
         );
 
-        return $wpdb->last_error ? [ 'status' => false, 'message' => $wpdb->last_error ] : [ 'status' => true, 'rows_affected' => $wpdb->rows_affected ];
+        return $wpdb->last_error ? [
+        'status' => false,
+        'message' => $wpdb->last_error
+        ] : [
+        'status' => true,
+        'rows_affected' => $wpdb->rows_affected
+        ];
     }
 
     /**

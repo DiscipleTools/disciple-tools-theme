@@ -81,7 +81,7 @@ function dt_dashboard_page_scripts()
 
     if ( is_admin() && 'index.php' === $pagenow ) {
 
-        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(),  false );
+        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(), false );
         wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->plugin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->plugin_js_path . 'dt-shared.js' ), true );
         wp_enqueue_script( 'dt_dashboard_scripts', disciple_tools()->plugin_js_url . 'dt-dashboard.js', [], filemtime( disciple_tools()->plugin_js_path . 'dt-dashboard.js' ), true );
         wp_localize_script(

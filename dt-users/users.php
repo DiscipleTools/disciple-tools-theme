@@ -195,8 +195,14 @@ class Disciple_Tools_Users
                 'post_type'  => 'contacts',
                 'relation'   => 'AND',
                 'meta_query' => [
-                    [ 'key' => "corresponds_to_user", "value" => $user_id ],
-                    [ 'key' => "is_a_user", "value" => "yes" ],
+                    [
+            'key' => "corresponds_to_user",
+            "value" => $user_id
+                    ],
+                    [
+                    'key' => "is_a_user",
+                    "value" => "yes"
+                    ],
                 ],
             ];
             $contacts = new WP_Query( $args );

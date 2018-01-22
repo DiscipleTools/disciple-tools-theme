@@ -1,5 +1,5 @@
 <?php
-(function() {
+( function() {
 ?>
 <ul class="tabs" data-tabs id="my-contact-tabs">
     <li class="tabs-title is-active"><a href="#panel1" aria-selected="true"><?php esc_html_e( 'My Locations', 'disciple_tools' )?></a></li>
@@ -203,4 +203,4 @@
     });
 </script>
 <?php
-})();
+} )();
