@@ -9,7 +9,7 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
 }
 
-if( ! class_exists( 'DT_Extensions_Menu' ) ) {
+if ( ! class_exists( 'DT_Extensions_Menu' ) ) {
     /**
      * Class DT_Extensions_Menu
      */
@@ -33,7 +33,7 @@ if( ! class_exists( 'DT_Extensions_Menu' ) ) {
         }
 
         public function menu() {
-            add_menu_page( __( 'Extensions (DT)', 'disciple_tools' ), __( 'Extensions (DT)', 'disciple_tools' ), 'manage_dt', 'dt_extensions', [$this, 'content'], 'dashicons-admin-generic', 59 );
+            add_menu_page( __( 'Extensions (DT)', 'disciple_tools' ), __( 'Extensions (DT)', 'disciple_tools' ), 'manage_dt', 'dt_extensions', [ $this, 'content' ], 'dashicons-admin-generic', 59 );
         }
 
         /**
