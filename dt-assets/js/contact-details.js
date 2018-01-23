@@ -103,7 +103,6 @@ jQuery(document).ready(function($) {
     }
   }
   let typeaheadHelpText = (resultCount, query, result) =>{
-    console.log(resultCount)
     var text = "";
     if (result.length > 0 && result.length < resultCount) {
       text = "Showing <strong>" + result.length + "</strong> of <strong>" + resultCount + '</strong> ' + (query ? 'elements matching "' + query + '"' : '');
@@ -333,10 +332,6 @@ jQuery(document).ready(function($) {
     input: '.js-typeahead-assigned_to',
     minLength: 0,
     searchOnFocus: true,
-    // maxItem: 20,
-    // template: function (query, item) {
-    //   return `<span>${_.escape(item.name)}</span>`
-    // },
     source: typeaheadSource('assigned_to', 'dt/v1/users/get_users'),
     display: "name",
     templateValue: "{{name}}",
@@ -380,6 +375,17 @@ jQuery(document).ready(function($) {
   if (_.get(contact, "fields.assigned_to")){
     $('.current-assigned').text(_.get(contact, "fields.assigned_to.display"))
   }
+
+  /**
+   * Share
+   */
+  let shareTypeahead = null
+  $('.open-share').on("click", function(){
+    $('#share-contact-modal').foundation('open');
+    if  (!shareTypeahead) {
+      shareTypeahead = TYPEAHEADS.share("contact", contactId)
+    }
+  })
 
   /**
    * connections to other contacts

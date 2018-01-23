@@ -75,7 +75,7 @@ function dt_print_breadcrumbs(
                 <?php if ( $share_button ): ?>
                     <div class="cell small-4 align-right grid-x grid-margin-x">
                         <div class="cell shrink center-items ">
-                            <button data-open="share-contact-modal" class="center-items">
+                            <button class="center-items open-share">
                                 <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
                                 <span style="margin:0 10px 0 10px"><?php esc_html_e( "Share" ); ?></span>
                             </button>
@@ -101,7 +101,7 @@ function dt_print_breadcrumbs(
         <?php endif; ?>
         <?php if ( $share_button ): ?>
             <div class="cell shrink">
-                <button data-open="share-contact-modal" class="center-items">
+                <button class="center-items open-share">
                     <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
                     <span style="margin:0 10px 0 10px"><?php esc_html_e( "Share" ); ?></span>
                 </button>

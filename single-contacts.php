@@ -226,45 +226,8 @@ declare( strict_types=1 );
 
     </div> <!-- end #content -->
 
-    <div class="reveal" id="share-contact-modal" data-reveal>
 
-        <p class="lead"><?php esc_html_e( 'Share settings', 'disciple_tools' )?></p>
-        <h6><?php esc_html_e( 'Already sharing with', 'disciple_tools' )?></h6>
-
-        <ul id="shared-with-list">
-            <?php
-            foreach ( $shared_with as $user ) { ?>
-                <li class="<?php echo esc_html( $user['user_id'] ) ?>"> <?php echo esc_html( $user['display_name'] )?>
-                    <button class="details-remove-button share" data-id="<?php echo esc_attr( $user['user_id'] ); ?>">
-                        <?php esc_html_e( 'Unshare', 'disciple_tools' )?>
-                    </button>
-                </li>
-            <?php } ?>
-        </ul>
-
-        <p>
-            <label><?php esc_html_e( 'Share this contact with the following user', 'disciple_tools' )?>:
-                <select class="share-with-select" id="share-with">
-                    <option value="0"></option>
-                    <?php foreach ( $users as $user ) { ?>
-                        <option value="<?php echo esc_html( $user["ID"] ) ?>"><?php echo esc_html( $user['name'] ) ?></option>
-                    <?php } ?>
-                </select>
-            </label>
-        </p>
-
-        <div class="grid-x">
-            <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
-            </button>
-            <button class="button" type="button" id="add-shared-button">
-                <?php esc_html_e( 'Share', 'disciple_tools' )?>
-            </button>
-            <button class="close-button" data-close aria-label="Close modal" type="button">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </div>
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'share' ); ?>
 
     <div class="reveal" id="create-group-modal" data-reveal data-reset-on-close>
 

@@ -198,6 +198,17 @@ jQuery(document).ready(function($) {
   })
 
   /**
+   * Share
+   */
+  let shareTypeahead = null
+  $('.open-share').on("click", function(){
+    $('#share-contact-modal').foundation('open');
+    if  (!shareTypeahead) {
+      shareTypeahead = TYPEAHEADS.share("group", groupId)
+    }
+  })
+
+  /**
    * Locations
    */
   typeaheadTotals.locations = 0;

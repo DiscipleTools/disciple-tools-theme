@@ -110,6 +110,17 @@ let API = {
       }
     })
   },
+  get_shared(type, postId){
+    return jQuery.ajax({
+      type: "GET",
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/shared-with`,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      }
+    })
+  },
   add_shared(type, postId, userId){
     return jQuery.ajax({
       type: "POST",
@@ -159,4 +170,84 @@ let API = {
     })
   }
 
+}
+
+let TYPEAHEADS = {
+
+  typeaheadSource : function (field, url) {
+    return {
+      contacts: {
+        display: "name",
+        ajax: {
+          url: wpApiSettings.root + url,
+          data: {
+            s: "{{query}}"
+          },
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+          },
+          callback: {
+            done: function (data) {
+              return data.posts
+            }
+          }
+        }
+      }
+    }
+  },
+  typeaheadHelpText : function (resultCount, query, result){
+    var text = "";
+    if (result.length > 0 && result.length < resultCount) {
+      text = "Showing <strong>" + result.length + "</strong> of <strong>" + resultCount + '</strong> ' + (query ? 'elements matching "' + query + '"' : '');
+    } else if (result.length > 0 && query) {
+      text = 'Showing <strong>' + result.length + '</strong> items matching "' + query + '"';
+    } else if (result.length > 0) {
+      text = 'Showing <strong>' + result.length + '</strong> items';
+    } else {
+      text = 'No results matching "' + query + '"';
+    }
+    return text
+  },
+
+  share(type, id){
+    return $.typeahead({
+      input: '.js-typeahead-share',
+      minLength: 0,
+      searchOnFocus: true,
+      source: this.typeaheadSource('share', 'dt/v1/users/get_users'),
+      display: "name",
+      templateValue: "{{name}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["ID"],
+        data: function () {
+          var deferred = $.Deferred();
+          return API.get_shared(type, id).then(sharedResult => {
+            return deferred.resolve(sharedResult.map(g => {
+              return {ID: g.user_id, name: g.display_name}
+            }))
+          })
+        },
+        callback: {
+          onCancel: function (node, item) {
+            API.remove_shared(type, id, item.ID)
+          }
+        },
+      },
+      callback: {
+        onClick: function (node, a, item, event) {
+          API.add_shared(type, id, item.ID)
+        },
+        onResult: function (node, query, result, resultCount) {
+          if (query) {
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $('#share-result-container').html(text);
+          }
+        },
+        onHideLayout: function () {
+          $('#share-result-container').html("");
+        }
+      }
+    });
+  }
 }

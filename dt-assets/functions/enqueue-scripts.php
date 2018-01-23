@@ -99,9 +99,9 @@ function dt_site_scripts() {
     } );
 
 
-    dt_theme_enqueue_script( 'api-wrapper', 'dt-assets/js/api-wrapper.js', array( 'jquery', 'lodash' ) );
+    dt_theme_enqueue_script( 'shared-functions', 'dt-assets/js/shared-functions.js', array( 'jquery', 'lodash' ) );
     wp_localize_script(
-        'api-wrapper', 'wpApiSettings', array(
+        'shared-functions', 'wpApiSettings', array(
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
         )
@@ -124,7 +124,7 @@ function dt_site_scripts() {
 
 
     if (is_singular( "contacts" ) || is_singular( "groups" ) ) {
-        dt_theme_enqueue_script( 'comments', 'dt-assets/js/comments.js', array( 'jquery', 'lodash', 'api-wrapper', 'moment', 'typeahead-jquery', 'jquery-mentions', 'jquery-mentions-elastic' ) );
+        dt_theme_enqueue_script( 'comments', 'dt-assets/js/comments.js', array( 'jquery', 'lodash', 'shared-functions', 'moment', 'typeahead-jquery', 'jquery-mentions', 'jquery-mentions-elastic' ) );
         wp_localize_script(
             'comments', 'commentsSettings', [
                 "post" => get_post(),
@@ -158,7 +158,7 @@ function dt_site_scripts() {
             dt_theme_enqueue_script( 'contact-details', 'dt-assets/js/contact-details.js', array(
                 'jquery',
                 'lodash',
-                'api-wrapper',
+                'shared-functions',
                 'moment',
                 'typeahead-jquery',
                 'comments'
@@ -183,7 +183,7 @@ function dt_site_scripts() {
                 'jquery',
                 'lodash',
                 'typeahead-jquery',
-                'api-wrapper',
+                'shared-functions',
                 'moment'
             ) );
             $group      = Disciple_Tools_Groups::get_group( get_the_ID() );
