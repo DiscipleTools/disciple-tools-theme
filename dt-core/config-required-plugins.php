@@ -39,38 +39,66 @@ function dt_register_required_plugins() {
     $plugins = array(
 
 
+//        array(
+//            'name'                  => 'iThemes Security',
+//            'slug'                  => 'better-wp-security',
+//            'required'              => false,
+//            'version'               => '6.8.0',
+//        ),
+//        array(
+//            'name'                  => 'Updraft Plus',
+//            'slug'                  => 'updraftplus',
+//            'required'              => false,
+//            'version'               => '1.14.2',
+//        ),
+//        array(
+//            'name'                  => 'WP Easy SMTP',
+//            'slug'                  => 'wp-easy-smtp',
+//            'required'              => false,
+//            'version'               => '1.1.1',
+//        ),
+//        array(
+//            'name' => 'Host Header Injection Fix',
+//            'slug' => 'host-header-injection-fix',
+//            'version' => '1.1',
+//            'required' => true,
+//        ),
+//        array(
+//            'name' => 'Disciple Tools - Zume',
+//            'slug' => 'disciple-tools-zume',
+//            'source' => 'https://github.com/DiscipleTools/disciple-tools-zume/archive/master.zip',
+//            'version' => '0.1.0',
+//            'is_callable' => 'dt_zume',
+//        ),
+//        array(
+//            'name' => 'Disciple Tools - Facebook',
+//            'slug' => 'disciple-tools-facebook',
+//            'source' => 'https://github.com/DiscipleTools/disciple-tools-facebook/archive/master.zip',
+//            'version' => '0.1.0',
+//            'is_callable' => 'dt_facebook',
+//        ),
         array(
-            'name'               => 'Disciple Tools Demo Plugin',
-            'slug'               => 'disciple-tools-demo-plugin',
-            'source'             => 'https://github.com/DiscipleTools/disciple-tools-demo-plugin/archive/master.zip',
-            'required'           => false,
-            'version'            => '0.1',
-            'is_callable'        => 'dt_demo',
+            'name' => 'Disciple Tools - Demo',
+            'slug' => 'disciple-tools-demo',
+            'source' => 'https://github.com/DiscipleTools/disciple-tools-demo-content/archive/master.zip',
+            'version' => '0.1.0',
+            'is_callable' => 'dt_demo',
         ),
+//        array(
+//            'name' => 'Disciple Tools - Mailchimp',
+//            'slug' => 'disciple-tools-mailchimp',
+//            'source' => 'https://github.com/DiscipleTools/disciple-tools-mailchimp/archive/master.zip',
+//            'version' => '0.1.0',
+//            'is_callable' => 'dt_mailchimp',
+//        ),
         array(
-            'name'                  => 'iThemes Security',
-            'slug'                  => 'better-wp-security',
-            'required'              => false,
-            'version'               => '6.8.0',
+            'name' => 'Disciple Tools - Webform',
+            'slug' => 'disciple-tools-webform',
+            'source' => 'https://github.com/DiscipleTools/disciple-tools-webform/archive/master.zip',
+            'version' => '0.1.0',
+            'is_callable' => 'dt_webform',
         ),
-        array(
-            'name'                  => 'Updraft Plus',
-            'slug'                  => 'updraftplus',
-            'required'              => false,
-            'version'               => '1.14.2',
-        ),
-        array(
-            'name'                  => 'WP Easy SMTP',
-            'slug'                  => 'wp-easy-smtp',
-            'required'              => false,
-            'version'               => '1.1.1',
-        ),
-        array(
-            'name' => 'Host Header Injection Fix',
-            'slug' => 'host-header-injection-fix',
-            'version' => '1.1',
-            'required' => true,
-        ),
+
     );
 
     /*
