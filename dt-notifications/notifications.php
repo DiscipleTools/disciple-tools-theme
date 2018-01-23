@@ -461,21 +461,24 @@ class Disciple_Tools_Notifications
 
         if ( $user_id != get_current_user_id() ) { // check if share is not to self, else don't notify
 
-            dt_notification_insert(
-                [
-                    'user_id'             => $user_id,
-                    'source_user_id'      => get_current_user_id(),
-                    'post_id'             => $post_id,
-                    'secondary_item_id'   => 0,
-                    'notification_name'   => 'share',
-                    'notification_action' => 'alert',
-                    'notification_note'   => '<a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '" >' . strip_tags( get_the_title( $post_id ) ) . '</a> was shared with you.',
-                    'date_notified'       => current_time( 'mysql' ),
-                    'is_new'              => 1,
-                    'field_key'           => "comments",
-                    'field_value'         => ''
-                ]
-            );
+            $args = [
+                'user_id'             => $user_id,
+                'source_user_id'      => get_current_user_id(),
+                'post_id'             => $post_id,
+                'secondary_item_id'   => 0,
+                'notification_name'   => 'share',
+                'notification_action' => 'alert',
+                'notification_note'   => '<a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '" >' . strip_tags( get_the_title( $post_id ) ) . '</a> was shared with you.',
+                'date_notified'       => current_time( 'mysql' ),
+                'is_new'              => 1,
+                'field_key'           => "comments",
+                'field_value'         => ''
+            ];
+            $message = self::get_notification_message( $args ) . ' Click here to view ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
+
+            dt_notification_insert( $args );
+            $user = get_userdata( $user_id );
+            dt_send_email( $user->user_email, __( "DT contact shared", 'disciple_tools' ), $message );
         }
     }
 

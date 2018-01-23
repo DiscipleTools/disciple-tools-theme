@@ -272,7 +272,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
             $user_id = explode( '-', $fields["assigned_to"] )[1];
             if ( $user_id ){
-                self::add_shared_on_contact( $contact_id, $user_id );
+                self::add_shared( "contacts", $contact_id, $user_id, null, false );
             }
             $fields['accepted'] = 'no';
         }

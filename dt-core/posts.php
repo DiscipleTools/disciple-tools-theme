@@ -632,10 +632,11 @@ class Disciple_Tools_Posts
      * @param int    $post_id
      * @param int    $user_id
      * @param array  $meta
+     * @param bool   $send_notifications
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared( string $post_type, int $post_id, int $user_id, $meta = null )
+    public static function add_shared( string $post_type, int $post_id, int $user_id, $meta = null, bool $send_notifications = true )
     {
         global $wpdb;
 
@@ -689,7 +690,9 @@ class Disciple_Tools_Posts
             );
 
             // Add share notification
-            Disciple_Tools_Notifications::insert_notification_for_share( $user_id, $post_id );
+            if ( $send_notifications ){
+                Disciple_Tools_Notifications::insert_notification_for_share( $user_id, $post_id );
+            }
 
             return $results;
         } else {
