@@ -369,6 +369,13 @@ class Disciple_Tools_Posts
         if ( $activity->object_subtype === "p2p" ){
             $message = self::format_connection_message( $activity->meta_id, $activity->action, $activity );
         }
+        if ( $activity->object_subtype === "share" ){
+            if ($activity->action === "share"){
+                $message = __( "Shared with ", "disciple_tools" ) . ' ' . dt_get_user_display_name( $activity->meta_value );
+            } else if ( $activity->action === "remove" ){
+                $message = __( "Unshared with ", "disciple_tools" ) . ' ' . dt_get_user_display_name( $activity->meta_value );
+            }
+        }
 
         return $message;
     }
@@ -608,7 +615,7 @@ class Disciple_Tools_Posts
                     'object_id'      => $post_id,
                     'meta_id'        => '', // id of the comment
                     'meta_key'       => '',
-                    'meta_value'     => '',
+                    'meta_value'     => $user_id,
                     'meta_parent'    => '',
                     'object_note'    => 'Sharing of ' . get_the_title( $post_id ) . ' was removed for ' . dt_get_user_display_name( $user_id ),
                 ]
@@ -675,10 +682,9 @@ class Disciple_Tools_Posts
                     'object_id'      => $post_id,
                     'meta_id'        => '', // id of the comment
                     'meta_key'       => '',
-                    'meta_value'     => '',
+                    'meta_value'     => $user_id,
                     'meta_parent'    => '',
                     'object_note'    => strip_tags( get_the_title( $post_id ) ) . ' was shared with ' . dt_get_user_display_name( $user_id ),
-
                 ]
             );
 

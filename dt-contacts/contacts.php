@@ -270,6 +270,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             if ( current_user_can( "assign_any_contacts" ) ) {
                 $fields["overall_status"] = 'assigned';
             }
+            $user_id = explode( '-', $fields["assigned_to"] )[1];
+            if ( $user_id ){
+                self::add_shared_on_contact( $contact_id, $user_id );
+            }
             $fields['accepted'] = 'no';
         }
 

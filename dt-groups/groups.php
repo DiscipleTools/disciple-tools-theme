@@ -231,6 +231,13 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             ] );
         }
 
+        if ( isset( $fields["assigned_to"] ) ) {
+            $user_id = explode( '-', $fields["assigned_to"] )[1];
+            if ( $user_id ){
+                self::add_shared_on_group( $group_id, $user_id );
+            }
+        }
+
         foreach ( $fields as $field_id => $value ) {
             update_post_meta( $group_id, $field_id, $value );
         }

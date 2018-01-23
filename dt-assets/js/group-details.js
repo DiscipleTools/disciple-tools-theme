@@ -151,10 +151,6 @@ jQuery(document).ready(function($) {
     input: '.js-typeahead-assigned_to',
     minLength: 0,
     searchOnFocus: true,
-    // maxItem: 20,
-    // template: function (query, item) {
-    //   return `<span>${_.escape(item.name)}</span>`
-    // },
     source: typeaheadSource('assigned_to', 'dt/v1/users/get_users'),
     display: "name",
     templateValue: "{{name}}",
@@ -166,8 +162,6 @@ jQuery(document).ready(function($) {
         API.save_field_api('group', groupId, {assigned_to: 'user-' + item.ID}).then(function (response) {
           _.set(group, "assigned_to", response.assigned_to)
           $('.current-assigned').text(group.assigned_to.display)
-          setStatus(response)
-          console.log(response)
           $('.js-typeahead-assigned_to').val(group.assigned_to.display)
           $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
         })
