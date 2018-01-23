@@ -281,6 +281,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $fields["overall_status"] = 'unassignable';
         }
 
+        if ( isset( $fields["seeker_path"] ) ){
+            self::update_quick_action_buttons( $contact_id, $fields["seeker_path"] );
+        }
+
         foreach ( $fields as $field_id => $value ) {
             // Boolean contact field are stored as yes/no
             if ( $value === true ){
@@ -1086,6 +1090,27 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             "next"    => isset( $option_keys[ $current_index + 1 ] ) ? $seeker_path_options[ $option_keys[ $current_index + 1 ] ] : "",
         ];
 
+    }
+
+    public static function update_quick_action_buttons( $contact_id, $seeker_path ){
+        if ( $seeker_path === "established" ){
+            $quick_button = get_post_meta( $contact_id, "quick_button_contact_established", true );
+            if ( empty( $quick_button ) || $quick_button == "0" ){
+                update_post_meta( $contact_id, "quick_button_contact_established", "1" );
+            }
+        }
+        if ( $seeker_path === "scheduled" ){
+            $quick_button = get_post_meta( $contact_id, "quick_button_meeting_scheduled", true );
+            if ( empty( $quick_button ) || $quick_button == "0" ){
+                update_post_meta( $contact_id, "quick_button_meeting_scheduled", "1" );
+            }
+        }
+        if ( $seeker_path === "met" ){
+            $quick_button = get_post_meta( $contact_id, "quick_button_meeting_complete", true );
+            if ( empty( $quick_button ) || $quick_button == "0" ){
+                update_post_meta( $contact_id, "quick_button_meeting_complete", "1" );
+            }
+        }
     }
 
     /**

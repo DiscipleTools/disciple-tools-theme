@@ -24,6 +24,17 @@ function save_seeker_milestones(contactId, fieldKey, fieldValue){
       field.addClass( fieldValue === "yes" ? "empty-select-button" : "selected-select-button")
   })
 }
+
+let refresh_quick_action_buttons = (contact)=>{
+  Object.keys(contactsDetailsWpApiSettings.contacts_custom_fields_settings).forEach(field=>{
+    if (field.includes("quick_button_")){
+      if ( contact.fields[field] ){
+        jQuery("." + field +  " span").text(contact.fields[field])
+      }
+    }
+  })
+}
+
 function save_quick_action(contactId, fieldKey){
   let data = {}
   let numberIndicator = jQuery("." + fieldKey +  " span")
@@ -601,7 +612,6 @@ jQuery(document).ready(function($) {
   $('.select-field').change(function () {
     let id = $(this).attr('id')
     let val = $(this).val()
-    console.log(id);
     API.save_field_api(
       'contact',
       contactId,
@@ -610,6 +620,7 @@ jQuery(document).ready(function($) {
       $(`.current-${id}`).text(_.get(contactResponse, `fields.${id}.label`) || val)
       if (id === "seeker_path"){
         updateCriticalPath(contactResponse.fields.seeker_path.key)
+        refresh_quick_action_buttons(contactResponse)
       } else if ( id === "reason_unassignable" ){
         setStatus(contactResponse)
       } else if ( id === "overall_status"){
