@@ -53,7 +53,12 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
                         'meta_query' => [
                             [
                                 'key' => 'group_status',
-                                'value' => 'active_church',
+                                'value' => 'active',
+                                'compare' => '=',
+                            ],
+                            [
+                                'key' => 'group_type',
+                                'value' => 'church',
                                 'compare' => '=',
                             ]
                         ],
@@ -74,7 +79,12 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
                         'meta_query' => [
                             [
                                 'key' => 'group_status',
-                                'value' => 'active_group',
+                                'value' => 'active',
+                                'compare' => '=',
+                            ],
+                            [
+                                'key' => 'group_type',
+                                'value' => 'group',
                                 'compare' => '=',
                             ]
                         ],
