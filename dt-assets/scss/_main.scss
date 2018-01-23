@@ -86,6 +86,14 @@ NAVIGATION STYLES
 }
 #top-bar-menu {
     z-index: 999;
+    .dropdown.menu {
+        li {
+            margin: 0 10px;
+        }
+    }
+    img {
+        max-height:24px;
+    }
 }
 
 nav.second-bar {
