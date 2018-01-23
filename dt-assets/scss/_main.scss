@@ -94,6 +94,13 @@ NAVIGATION STYLES
     img {
         max-height:24px;
     }
+    //Make sure the menu bar does not expand while loading
+    .submenu.menu.vertical {
+        display: none;
+    }
+    .submenu.menu.vertical.is-dropdown-submenu.js-dropdown-active {
+        display: block;
+    }
 }
 
 nav.second-bar {
