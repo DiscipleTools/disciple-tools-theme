@@ -7,18 +7,6 @@ declare( strict_types = 1 );
  * @class Disciple_Tools
  */
 
-/**
- * @todo remove this protection prior to 0.1.4 release.
- * Temporary conflict protection for version 0.1.3 release.
- * This function disables the deprecated Disciple Tools plugin, if still activated
- */
-include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-if (is_plugin_active( 'disciple-tools/disciple-tools.php' )) {
-    deactivate_plugins( '/disciple-tools/disciple-tools.php', true );
-
-}
-/* End temporary conflict protection */
-
 // If this file is called directly, abort.
 if ( !defined( 'ABSPATH' ) ) {
     exit;
@@ -167,7 +155,6 @@ class Disciple_Tools
         /**
          * Load first files
          */
-        require_once( get_template_directory() . '/dt-core/logging/debug-logger.php' ); // enables dt_write_log for debug output.
         require_once( get_template_directory() . '/dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin. Required before DT instance
         require_once( get_template_directory() . '/dt-core/admin/config-site-defaults.php' ); // Force required site configurations
         require_once( get_template_directory() . '/dt-core/wp-async-request.php' ); // Async Task Processing
@@ -390,6 +377,7 @@ class Disciple_Tools
             // Settings Menu
             require_once( get_template_directory() . '/dt-core/admin/menu/main.php' ); // main registers all the menu pages and tabs
             $this->config_menu = Disciple_Tools_Config::instance();
+            require_once( get_template_directory() . '/dt-core/admin/menu/extensions-menu.php' ); // main registers all the menu pages and tabs
             require_once( get_template_directory() . '/dt-core/admin/utilities/locations-async-insert.php' ); // required to load for async listening
 
 
@@ -482,5 +470,50 @@ function dt_route_front_page()
         wp_safe_redirect( home_url( '/contacts' ) );
     } else {
         wp_safe_redirect( home_url( '/settings' ) );
+    }
+}
+
+/**
+ * A simple function to assist with development and non-disruptive debugging.
+ * -----------
+ * -----------
+ * REQUIREMENT:
+ * WP Debug logging must be set to true in the wp-config.php file.
+ * Add these definitions above the "That's all, stop editing! Happy blogging." line in wp-config.php
+ * -----------
+ * define( 'WP_DEBUG', true ); // Enable WP_DEBUG mode
+ * define( 'WP_DEBUG_LOG', true ); // Enable Debug logging to the /wp-content/debug.log file
+ * define( 'WP_DEBUG_DISPLAY', false ); // Disable display of errors and warnings
+ * @ini_set( 'display_errors', 0 );
+ * -----------
+ * -----------
+ * EXAMPLE USAGE:
+ * (string)
+ * write_log('THIS IS THE START OF MY CUSTOM DEBUG');
+ * -----------
+ * (array)
+ * $an_array_of_things = ['an', 'array', 'of', 'things'];
+ * write_log($an_array_of_things);
+ * -----------
+ * (object)
+ * $an_object = new An_Object
+ * write_log($an_object);
+ */
+if ( !function_exists( 'dt_write_log' ) ) {
+    /**
+     * A function to assist development only.
+     * This function allows you to post a string, array, or object to the WP_DEBUG log.
+     *
+     * @param $log
+     */
+    function dt_write_log( $log )
+    {
+        if ( true === WP_DEBUG ) {
+            if ( is_array( $log ) || is_object( $log ) ) {
+                error_log( print_r( $log, true ) );
+            } else {
+                error_log( $log );
+            }
+        }
     }
 }
