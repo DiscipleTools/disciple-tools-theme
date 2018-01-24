@@ -646,7 +646,7 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'none'        => __( 'No Action', 'disciple_tools' ),
+                'none'        => __( 'Contact Attempt Needed', 'disciple_tools' ),
                 'attempted'   => __( 'Contact Attempted', 'disciple_tools' ),
                 'established' => __( 'Contact Established', 'disciple_tools' ),
                 'scheduled'   => __( 'First Meeting Scheduled', 'disciple_tools' ),
