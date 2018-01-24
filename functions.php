@@ -350,11 +350,6 @@ class Disciple_Tools
         require_once( get_template_directory() . '/dt-core/logging/class-reports-dt.php' ); // contacts and groups report building
 
         /**
-         * Integrations
-         */
-        require_once( get_template_directory() . '/dt-core/integrations/class-integrations.php' ); // data integration for cron scheduling
-
-        /**
          * Workflows
          */
         require_once( get_template_directory() . '/dt-workflows/index.php' );
