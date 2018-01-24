@@ -35,9 +35,9 @@ dt_print_breadcrumbs(
 
     <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
-        <div class="large-3 medium-3 small-12 cell ">
+        <div class="large-3 medium-3 small-12 cell " data-sticky-container>
 
-            <section id="" class="medium-12 cell sticky" data-sticky data-margin-top="6.5">
+            <section id="" class="small-12 cell sticky" data-sticky data-top-anchor="settings" data-sticky-on="medium" data-margin-top="5">
 
                 <div class="bordered-box">
 
@@ -57,7 +57,7 @@ dt_print_breadcrumbs(
 
         <div class="large-9 medium-9 small-12 cell ">
 
-            <div class="grid-margin-x grid-x grid-margin-y">
+            <div class="grid-margin-x grid-x grid-margin-y" id="settings">
 
                 <div class="small-12 cell">
 
