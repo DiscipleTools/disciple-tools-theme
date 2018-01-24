@@ -238,7 +238,7 @@ declare( strict_types=1 );
                 <?php esc_html_e( "Name of group", "disciple_tools" ); ?>
             </label>
             <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
-            <p class="help-text" id="name-help-text"><?php esc_html_e( "This iss required", "disciple_tools" ); ?></p>
+            <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
 
             <div style="text-align: center">
                 <button class="button loader js-create-group-button" type="submit"><?php esc_html_e( "Create Group", "disciple_tools" ); ?></button>

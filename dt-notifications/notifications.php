@@ -522,8 +522,9 @@ class Disciple_Tools_Notifications
             $notification_note = __( 'You have been assigned ', 'disciple_tools' ) . '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . strip_tags( get_the_title( $object_id ) ) . '</a>';
 
         } elseif ( $notification["notification_name"] ==="share" ){
+            $source_user = get_userdata( $notification["source_user_id"] );
             $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '" >' . strip_tags( get_the_title( $object_id ) ) . '</a>';
-            $notification_note = $link . ' ' . __( 'was shared with you.', 'disciple_tools' );
+            $notification_note = $source_user->display_name . ' ' . sprintf( esc_html_x( 'shared %s with you.', '', 'disciple_tools' ), $link );
         } elseif ( $notification["notification_name"] ==="milestone" ){
             $meta_key = $notification["field_key"] ?? '';
             $meta_value = $notification["field_value"] ?? '';
