@@ -5,11 +5,12 @@ declare( strict_types=1 );
 
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
 
+    if ( !Disciple_Tools_Contacts::can_view( 'contacts', get_the_ID() )) {
+        get_template_part( "403" );
+        die();
+    }
     $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
-    if ( !Disciple_Tools_Contacts::can_view( 'contacts', get_the_ID() )) {
-        return wp_redirect( "not-found" );
-    }
 
     $shared_with = Disciple_Tools_Contacts::get_shared_with_on_contact( get_the_ID() );
     $users = Disciple_Tools_Users::get_assignable_users_compact();

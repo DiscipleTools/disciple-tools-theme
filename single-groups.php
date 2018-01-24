@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 ( function() {
 
-    global $post;
+    if ( !Disciple_Tools_Groups::can_view( 'groups', get_the_ID() )){
+        get_template_part( "403" );
+        die();
+    }
 
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
 
     $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
     $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
-    if ( !Disciple_Tools_Contacts::can_view( 'groups', get_the_ID() )){
-        return wp_redirect( "not-found" );
-    }
     $shared_with = Disciple_Tools_Contacts::get_shared_with_on_contact( get_the_id() );
     $users = Disciple_Tools_Users::get_assignable_users_compact();
     get_header();?>
