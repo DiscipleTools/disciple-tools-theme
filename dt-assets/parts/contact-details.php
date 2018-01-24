@@ -61,9 +61,6 @@
 
     <?php if (isset( $contact->fields["requires_update"] ) && $contact->fields["requires_update"]["key"] === "yes"){ ?>
     <div class="update-needed callout alert small-12 cell">
-        <button class="update-needed close-button" aria-label="Close alert" type="button" data-close>
-            <span aria-hidden="true">&times;</span>
-        </button>
         <h4><?php esc_html_e( 'This contact needs an update', 'disciple_tools' )?>.</h4>
         <p><?php esc_html_e( 'It has been a while since this contact seen an update. Please do so', 'disciple_tools' )?>.</p>
     </div>
