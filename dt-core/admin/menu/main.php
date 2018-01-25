@@ -49,7 +49,7 @@ final class Disciple_Tools_Config
     /**
      * Constructor function.
      *
-     * @access  portal
+     * @access  public
      * @since   0.1.0
      */
     public function __construct()

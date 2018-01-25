@@ -410,7 +410,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function remove_parent_group_from_group( int $group_id, int $post_id )
     {
-        return p2p_type( 'groups_to_groups' )->disconnect( $group_id, $post_id);
+        return p2p_type( 'groups_to_groups' )->disconnect( $group_id, $post_id );
     }
 
     /**
