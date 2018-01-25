@@ -230,7 +230,12 @@ let TYPEAHEADS = {
         },
         callback: {
           onCancel: function (node, item) {
-            API.remove_shared(type, id, item.ID)
+            API.remove_shared(type, id, item.ID).catch(err=>{
+              Typeahead['.js-typeahead-share'].addMultiselectItemLayout(
+                {ID:item.ID, name:item.name}
+              )
+              $('#share-result-container').html(_.get(err, "responseJSON.message"));
+            })
           }
         },
       },

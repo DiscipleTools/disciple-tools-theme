@@ -694,33 +694,6 @@ jQuery(document).ready(function($) {
   })
 
   /**
-   * sharing
-   */
-  $('#add-shared-button').on('click', function () {
-    let select = jQuery(`#share-with`)
-    let name = jQuery(`#share-with option:selected`)
-    API.add_shared('group', groupId, select.val()).then(function (data) {
-      jQuery(`#shared-with-list`).append(
-        '<li class="'+select.val()+'">' +
-        name.text()+
-        '<button class="details-remove-button share" data-id="'+select.val()+'">' +
-        'Unshare' +
-        '</button></li>'
-      );
-    }).catch(err=>{
-      console.log(err)
-    })
-  })
-
-
-  $(document).on('click', '.details-remove-button.share', function () {
-    let userId = $(this).data('id')
-    API.remove_shared('group', groupId, userId).then(()=>{
-      $("#shared-with-list ." + userId).remove()
-    })
-  })
-
-  /**
    * Group Status
    */
 
