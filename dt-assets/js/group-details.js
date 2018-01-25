@@ -3,7 +3,7 @@ jQuery(document).ready(function($) {
 
   let group = wpApiGroupsSettings.group
   let typeaheadTotals = {}
-
+  let masonGrid = $('.grid')
   /**
    * Typeahead functions
    */
@@ -318,6 +318,152 @@ jQuery(document).ready(function($) {
     }
   });
 
+  /**
+   * parent Groups
+   */
+  typeaheadTotals.groups = 0;
+  $.typeahead({
+    input: '.js-typeahead-parent_groups',
+    minLength: 0,
+    searchOnFocus: true,
+    maxItem: 20,
+    template: function (query, item) {
+      if (item.ID == "new-item"){
+        return "Create new Group"
+      }
+      return `<span>${_.escape(item.name)}</span>`
+    },
+    source: typeaheadSource('groups', 'dt/v1/groups-compact/'),
+    display: "name",
+    templateValue: "{{name}}",
+    dynamic: true,
+    multiselect: {
+      matchOn: ["ID"],
+      data: function () {
+        return (group.parent_groups||[]).map(g=>{
+          return {ID:g.ID, name:g.post_title}
+        })
+      }, callback: {
+        onCancel: function (node, item) {
+          API.remove_item_from_field('group', groupId, 'parent_groups', item.ID)
+        }
+      },
+      href: function(item){
+        if (item){
+          return `/groups/${item.ID}`
+        }
+      }
+    },
+    callback: {
+      onClick: function(node, a, item, event){
+        if(item.ID === "new-item"){
+          event.preventDefault();
+          $('#create-group-modal').foundation('open');
+        } else {
+          API.add_item_to_field('group', groupId, {parent_groups: item.ID})
+          masonGrid.masonry('layout')
+        }
+      },
+      onResult: function (node, query, result, resultCount) {
+        resultCount = typeaheadTotals.groups
+        let text = typeaheadHelpText(resultCount, query, result)
+        result.push({
+          ID: "new-item",
+          group:"contacts"
+        })
+        $('#groups-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('#groups-result-container').html("");
+      }
+    }
+  });
+  /**
+   * Child Groups
+   */
+  typeaheadTotals.groups = 0;
+  $.typeahead({
+    input: '.js-typeahead-child_groups',
+    minLength: 0,
+    searchOnFocus: true,
+    maxItem: 20,
+    template: function (query, item) {
+      if (item.ID == "new-item"){
+        return "Create new Group"
+      }
+      return `<span>${_.escape(item.name)}</span>`
+    },
+    source: typeaheadSource('groups', 'dt/v1/groups-compact/'),
+    display: "name",
+    templateValue: "{{name}}",
+    dynamic: true,
+    multiselect: {
+      matchOn: ["ID"],
+      data: function () {
+        return (group.child_groups||[]).map(g=>{
+          return {ID:g.ID, name:g.post_title}
+        })
+      }, callback: {
+        onCancel: function (node, item) {
+          API.remove_item_from_field('group', groupId, 'child_groups', item.ID)
+        }
+      },
+      href: function(item){
+        if (item){
+          return `/groups/${item.ID}`
+        }
+      }
+    },
+    callback: {
+      onClick: function(node, a, item, event){
+        if(item.ID === "new-item"){
+          event.preventDefault();
+          $('#create-group-modal').foundation('open');
+        } else {
+          API.add_item_to_field('group', groupId, {child_groups: item.ID})
+        }
+      },
+      onResult: function (node, query, result, resultCount) {
+        resultCount = typeaheadTotals.groups
+        let text = typeaheadHelpText(resultCount, query, result)
+        result.push({
+          ID: "new-item",
+          group:"contacts"
+        })
+        $('#groups-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('#groups-result-container').html("");
+      }
+    }
+  });
+
+  //reset new group modal on close.
+  $('#create-group-modal').on("closed.zf.reveal", function () {
+    $(".reveal-after-group-create").hide()
+    $(".hide-after-group-create").show()
+  })
+
+  //create new group
+  $(".js-create-group").on("submit", function(e) {
+    e.preventDefault();
+    let title = $(".js-create-group input[name=title]").val()
+    API.create_group(title, null, groupId)
+      .then((newGroup)=>{
+        $(".reveal-after-group-create").show()
+        $("#new-group-link").html(`<a href="${newGroup.permalink}">${title}</a>`)
+        $(".hide-after-group-create").hide()
+        $('#go-to-group').attr('href', newGroup.permalink);
+        Typeahead['.js-typeahead-child_groups'].addMultiselectItemLayout({ID:newGroup.post_id.toString(), name:title})
+      })
+      .catch(function(error) {
+        $(".js-create-group-button").removeClass("loading").addClass("alert");
+        $(".js-create-group").append(
+          $("<div>").html(error.responseText)
+        );
+        console.error(error);
+      });
+  })
 
   $("#add-new-address").click(function () {
     if ($('#new-address').length === 0 ) {
@@ -371,6 +517,7 @@ jQuery(document).ready(function($) {
           </li>`)
           $("#no-location").remove()
         })
+        masonGrid.masonry('layout')
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.members
@@ -620,6 +767,15 @@ jQuery(document).ready(function($) {
       console.log(err)
     })
   })
+
+
+
+  //leave at the end
+  masonGrid.masonry({
+    itemSelector: '.grid-item',
+    percentPosition: true
+  });
+
 })
 
 

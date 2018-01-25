@@ -146,10 +146,10 @@ let API = {
     })
   },
 
-  create_group(title, created_from_contact_id){
+  create_group(title, created_from_contact_id, parent_group_id){
     return jQuery.ajax({
       type: "POST",
-      data: JSON.stringify({title, created_from_contact_id}),
+      data: JSON.stringify({title, created_from_contact_id, parent_group_id}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       url: wpApiSettings.root + `dt/v1/group/create`,

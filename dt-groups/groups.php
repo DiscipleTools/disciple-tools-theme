@@ -111,6 +111,34 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             }
             $fields["members"] = $members;
 
+            $child_groups = get_posts(
+                [
+                    'connected_type'   => 'groups_to_groups',
+                    'connected_direction' => 'to',
+                    'connected_items'  => $group,
+                    'nopaging'         => true,
+                    'suppress_filters' => false,
+                ]
+            );
+            foreach ( $child_groups as $g ) {
+                $g->permalink = get_permalink( $g->ID );
+            }
+            $fields["child_groups"] = $child_groups;
+
+            $parent_groups = get_posts(
+                [
+                    'connected_type'   => 'groups_to_groups',
+                    'connected_direction' => 'from',
+                    'connected_items'  => $group,
+                    'nopaging'         => true,
+                    'suppress_filters' => false,
+                ]
+            );
+            foreach ( $parent_groups as $g ) {
+                $g->permalink = get_permalink( $g->ID );
+            }
+            $fields["parent_groups"] = $parent_groups;
+
             $meta_fields = get_post_custom( $group_id );
             foreach ( $meta_fields as $key => $value ) {
                 if ( strpos( $key, "address" ) === 0 ) {
@@ -303,6 +331,34 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     /**
      * @param int $group_id
+     * @param int $post_id
+     *
+     * @return mixed
+     */
+    public static function add_child_group_to_group( int $group_id, int $post_id )
+    {
+        return p2p_type( 'groups_to_groups' )->connect(
+            $post_id, $group_id,
+            [ 'date' => current_time( 'mysql' ) ]
+        );
+    }
+
+    /**
+     * @param int $group_id
+     * @param int $post_id
+     *
+     * @return mixed
+     */
+    public static function add_parent_group_to_group( int $group_id, int $post_id )
+    {
+        return p2p_type( 'groups_to_groups' )->connect(
+            $group_id, $post_id,
+            [ 'date' => current_time( 'mysql' ) ]
+        );
+    }
+
+    /**
+     * @param int $group_id
      * @param int $location_id
      *
      * @return mixed
@@ -336,6 +392,28 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     /**
+     * @param int $group_id
+     * @param int $post_id
+     *
+     * @return mixed
+     */
+    public static function remove_child_group_from_group( int $group_id, int $post_id )
+    {
+        return p2p_type( 'groups_to_groups' )->disconnect( $post_id, $group_id );
+    }
+
+    /**
+     * @param int $group_id
+     * @param int $post_id
+     *
+     * @return mixed
+     */
+    public static function remove_parent_group_from_group( int $group_id, int $post_id )
+    {
+        return p2p_type( 'groups_to_groups' )->disconnect( $group_id, $post_id);
+    }
+
+    /**
      * @param int    $group_id
      * @param string $key
      * @param string $value
@@ -363,6 +441,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $connect = self::add_member_to_group( $group_id, $value );
         } elseif ( $key === "people_groups" ) {
             $connect = self::add_people_group_to_group( $group_id, $value );
+        } elseif ( $key === "child_groups" ) {
+            $connect = self::add_child_group_to_group( $group_id, $value );
+        } elseif ( $key === "parent_groups" ) {
+            $connect = self::add_parent_group_to_group( $group_id, $value );
         }
         if ( is_wp_error( $connect ) ) {
             return $connect;
@@ -425,6 +507,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return self::remove_member_from_group( $group_id, $value );
         } elseif ( $key === "people_groups" ) {
             return self::remove_people_group_from_group( $group_id, $value );
+        } elseif ( $key === "child_groups" ) {
+            return self::remove_child_group_from_group( $group_id, $value );
+        } elseif ( $key === "parent_groups" ) {
+            return self::remove_parent_group_from_group( $group_id, $value );
         }
 
         return false;
@@ -533,6 +619,9 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
         if ( isset( $fields["created_from_contact_id"] ) ){
             self::add_item_to_field( $post_id, "members", $fields["created_from_contact_id"], true );
+        }
+        if ( isset( $fields["parent_group_id"] )){
+            self::add_child_group_to_group( $fields["parent_group_id"], $post_id );
         }
         return $post_id;
     }
