@@ -598,7 +598,7 @@ class Disciple_Tools_Posts
         $assigned_to_meta = get_post_meta( $post_id, "assigned_to", true );
         if ( !(current_user_can( 'update_any_' . $post_type ) ||
              get_current_user_id() === $user_id ||
-            dt_get_user_id_from_meta( $assigned_to_meta ) === $user_id )
+            dt_get_user_id_from_meta( $assigned_to_meta ) === get_current_user_id() )
         ){
             $name = dt_get_user_display_name( $user_id );
             return new WP_Error( __FUNCTION__, __( "You do not have permission to unshare with" ) . " " . $name , [ 'status' => 403 ] );
