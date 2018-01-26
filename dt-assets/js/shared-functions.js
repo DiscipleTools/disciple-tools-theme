@@ -110,6 +110,28 @@ let API = {
       }
     })
   },
+  get_single_activity(type, postId, activityId) {
+    return jQuery.ajax({
+      type: "GET",
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/activity/${activityId}`,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      }
+    })
+  },
+  revert_activity(type, postId, activityId) {
+    return jQuery.ajax({
+      type: "GET",
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: wpApiSettings.root + `dt/v1/${type}/${postId}/revert/${activityId}`,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      }
+    })
+  },
   get_shared(type, postId){
     return jQuery.ajax({
       type: "GET",

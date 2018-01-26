@@ -27,7 +27,6 @@ jQuery(document).ready(function($) {
         console.log(err)
         jQuery("#errors").append(err.responseText)
       })
-
     }
   }
 
@@ -48,6 +47,19 @@ jQuery(document).ready(function($) {
     activityData.push(createdContactActivityItem)
     activityData.forEach(item => {
       item.date = moment.unix(item.hist_time)
+      let field = item.meta_key
+
+      if (field && field.includes("quick_button_")){
+        if (contactsDetailsWpApiSettings){
+          field = _.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings[${item.meta_key}].name`)
+        }
+        item.action = `<a class="revert-activity dt_tooltip" data-id="${item.histid}">
+          <img class="revert-arrow-img" src="${commentsSettings.template_dir}/dt-assets/images/undo.svg">
+          <span class="tooltiptext">${field || item.meta_key} </span>
+        </a>`
+      } else {
+        item.action = ''
+      }
     })
   }
 
@@ -59,7 +71,7 @@ jQuery(document).ready(function($) {
         if (a.comment){ %>
             <p dir="auto" class="comment-bubble"> <%- a.text %> </p>
       <% } else { %>
-            <p class="activity-bubble">  <%- a.text %> </p>
+            <p class="activity-bubble">  <%- a.text %> <% print(a.action) %> </p>
     <%  }
     }); %>
     </div>
@@ -95,7 +107,8 @@ jQuery(document).ready(function($) {
         name: name,
         date: d.date,
         text:d.object_note ||  d.comment_content,
-        comment: !!d.comment_content
+        comment: !!d.comment_content,
+        action: d.action
       }
 
 
@@ -126,13 +139,17 @@ jQuery(document).ready(function($) {
    */
   $( document ).ajaxComplete(function(event, xhr, settings) {
     if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
-      API.get_activity(postType, postId).then(activityData=>{
+      refreshActivity()
+    }
+  });
+
+  let refreshActivity = ()=>{
+    API.get_activity(postType, postId).then(activityData=>{
         activity = activityData
         prepareActivityData(activity)
         display_activity_comment()
       })
-    }
-  });
+  }
 
   $.when(
     API.get_comments(postType, postId),
@@ -190,6 +207,30 @@ jQuery(document).ready(function($) {
     });
   }
 
+  //
+  $(document).on('click', '.revert-activity', function () {
+    let id = $(this).data('id')
+    $("#revert-modal").foundation('open')
+    $("#confirm-revert").data("id", id)
+    API.get_single_activity(postType, postId, id).then(a => {
+      let field = a.meta_key
+      if (contactsDetailsWpApiSettings){
+        field = _.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings[${a.meta_key}].name`)
+      }
 
+      $(".revert-field").html(field || a.meta_key)
+      $(".revert-current-value").html(a.meta_value)
+      $(".revert-old-value").html(a.old_value || 0)
+    })
+  })
 
-})
+  // confirm going back to the old version on the activity
+  $('#confirm-revert').on("click", function () {
+    let id = $(this).data('id')
+    API.revert_activity(postType, postId, id).then(a => {
+      refreshActivity()
+      $("#revert-modal").foundation('close')
+    })
+  })
+
+});

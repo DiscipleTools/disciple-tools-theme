@@ -403,6 +403,7 @@ class Disciple_Tools_Posts
             $post_type,
             $post_id
         ) );
+        $activity_simple = [];
         foreach ( $activity as $a ) {
             $a->object_note = self::format_activity_message( $a, $fields );
             if ( isset( $a->user_id ) && $a->user_id > 0 ) {
@@ -411,8 +412,49 @@ class Disciple_Tools_Posts
                     $a->name =$user->display_name;
                 }
             }
+            $activity_simple[] = [
+                "meta_key" => $a->meta_key,
+                "name" => $a->name,
+                "object_note" => $a->object_note,
+                "hist_time" => $a->hist_time,
+                "meta_id" => $a->meta_id,
+                "histid" => $a->histid,
+            ];
         }
 
+        return $activity_simple;
+    }
+
+    public static function get_post_single_activity( string $post_type, int $post_id, array $fields, int $activity_id ){
+        global $wpdb;
+        if ( !self::can_view( $post_type, $post_id ) ) {
+            return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
+        }
+        $activity = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                *
+            FROM
+                `$wpdb->dt_activity_log`
+            WHERE
+                `object_type` = %s
+                AND `object_id` = %s
+                AND `histid` = %s",
+            $post_type,
+            $post_id,
+            $activity_id
+        ) );
+        foreach ( $activity as $a ) {
+            $a->object_note = self::format_activity_message( $a, $fields );
+            if ( isset( $a->user_id ) && $a->user_id > 0 ) {
+                $user = get_user_by( "id", $a->user_id );
+                if ( $user ) {
+                    $a->name = $user->display_name;
+                }
+            }
+        }
+        if ( isset( $activity[0] ) ){
+            return $activity[0];
+        }
         return $activity;
     }
 

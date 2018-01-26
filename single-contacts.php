@@ -229,8 +229,8 @@ declare( strict_types=1 );
 
 
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'share' ); ?>
-
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-group' ); ?>
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'revert' ); ?>
 
 
     <div class="reveal" id="closed-contact-modal" data-reveal>

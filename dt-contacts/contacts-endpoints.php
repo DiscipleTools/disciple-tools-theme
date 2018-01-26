@@ -152,6 +152,18 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'get_activity' ],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/activity/(?P<activity_id>\d+)', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_single_activity' ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/revert/(?P<activity_id>\d+)', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'revert_activity' ],
+            ]
+        );
 
         register_rest_route(
             $this->namespace, '/contact/(?P<id>\d+)/accept', [
@@ -628,6 +640,46 @@ class Disciple_Tools_Contacts_Endpoints
             }
         } else {
             return new WP_Error( "get_activity", "Missing a valid contact id", [ 'status' => 400 ] );
+        }
+    }
+
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return array|null|object|\WP_Error|\WP_REST_Response
+     */
+    public function get_single_activity( WP_REST_Request $request )
+    {
+        $params = $request->get_params();
+        if ( isset( $params['id'] ) && isset( $params["activity_id"] ) ) {
+            $result = Disciple_Tools_Contacts::get_single_activity( $params['id'], $params["activity_id"] );
+            if ( is_wp_error( $result ) ) {
+                return $result;
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( "get_activity", "Missing a valid contact id or activity id", [ 'status' => 400 ] );
+        }
+    }
+
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return array|null|object|\WP_Error|\WP_REST_Response
+     */
+    public function revert_activity( WP_REST_Request $request )
+    {
+        $params = $request->get_params();
+        if ( isset( $params['id'] ) && isset( $params["activity_id"] ) ) {
+            $result = Disciple_Tools_Contacts::revert_activity( $params['id'], $params["activity_id"] );
+            if ( is_wp_error( $result ) ) {
+                return $result;
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( "get_activity", "Missing a valid contact id or activity id", [ 'status' => 400 ] );
         }
     }
 

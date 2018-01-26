@@ -878,6 +878,33 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     /**
+     * @param $contact_id
+     * @param $activity_id
+     *
+     * @return array|null|object
+     */
+    public static function get_single_activity( $contact_id, $activity_id )
+    {
+        $fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( true, $contact_id );
+        return self::get_post_single_activity( "contacts", $contact_id, $fields, $activity_id );
+    }
+
+    /**
+     * @param $contact_id
+     * @param $activity_id
+     *
+     * @return bool|int|WP_Error
+     */
+    public static function revert_activity( $contact_id, $activity_id ){
+        if ( !self::can_update( 'contacts', $contact_id ) ) {
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+        }
+        $activity = self::get_single_activity( $contact_id, $activity_id );
+        return update_post_meta( $contact_id, $activity->meta_key, $activity->old_value ?? "" );
+    }
+
+
+    /**
      * Get Contacts assigned to a user
      *
      * @param int   $user_id

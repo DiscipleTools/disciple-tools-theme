@@ -145,6 +145,7 @@ function dt_site_scripts() {
                 'comments', 'commentsSettings', [
                     "post" => get_post(),
                     'txt_created' => __( "Created contact at {}" ),
+                    'template_dir' => get_template_directory_uri(),
                 ]
             );
             dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
