@@ -1,7 +1,7 @@
 <?php
 /**
  * Original Plugin Name: Disable REST API
- * Original Plugin URI: http://www.binarytemplar.com/disable-json-api
+ * Original Plugin URI: http://www.binarytemplar.com/disciple_tools
  * Original Description: Disable the use of the JSON REST API on your website to anonymous users
  * Original Version: 1.3
  * Original Author: Dave McHale
@@ -19,7 +19,6 @@ $dt_dra_current_wp_version = get_bloginfo( 'version' );
 
 if ( version_compare( $dt_dra_current_wp_version, '4.7', '>=' ) ) {
     dt_dra_force_auth_error();
-//    add_action( 'rest_api_init', "dt_add_api_routes" );
 } else {
     dt_dra_disable_via_filters();
 }
@@ -67,26 +66,26 @@ function dt_dra_disable_via_filters()
  */
 function dt_dra_only_allow_logged_in_rest_access( $access )
 {
+    /**
+     * External integrations to a Disciple Tools site can be done through the /dt-public/ route, which is left open to non-logged in external access
+     */
     $is_public = false;
-    $is_jwt = false;
     if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/dt-public/' ) !== false ) {
         $is_public = true;
     }
+    /**
+     * JWT token authentication is also open on the Disciple Tools use of WP REST API
+     */
+    $is_jwt = false;
     if ( $_SERVER['REQUEST_URI'] == "/wp-json/jwt-auth/v1/token" || $_SERVER['REQUEST_URI'] == "/wp-json/jwt-auth/v1/token/validate" ) {
         $is_jwt = true;
     }
+    /**
+     * All other requests to the REST API require a person to be logged in to make a REST Request.
+     */
     if ( !is_user_logged_in() && !$is_public && !$is_jwt ) {
-        return new WP_Error( 'rest_cannot_access', __( 'Only authenticated users can access the REST API.', 'disable-json-api' ), [ 'status' => rest_authorization_required_code() ] );
+        return new WP_Error( 'rest_cannot_access', __( 'Only authenticated users can access the REST API.', 'disciple_tools' ), [ 'status' => rest_authorization_required_code() ] );
     }
 
     return $access;
-}
-
-/**
- * Setup the rest api routes for the plugin
- */
-function dt_add_api_routes()
-{
-    // setup the facebook endpoints
-//    Disciple_Tools::instance()->facebook_integration->add_api_routes();
 }
