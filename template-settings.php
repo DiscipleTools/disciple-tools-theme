@@ -21,16 +21,6 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
 
 <?php get_header(); ?>
 
-<?php
-dt_print_breadcrumbs(
-    [
-        [ home_url( '/' ), __( "Dashboard" ) ],
-        [ home_url( '/' ) . "settings", __( "Settings" ) ],
-    ],
-    get_the_title(),
-    false
-); ?>
-
 <div id="content">
 
     <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">

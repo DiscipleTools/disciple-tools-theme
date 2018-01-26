@@ -6,16 +6,6 @@ Template Name: Metrics
 
 <?php get_header(); ?>
 
-<?php
-dt_print_breadcrumbs(
-    [
-        [ home_url( '/' ), __( "Dashboard" ) ],
-        [ home_url( '/' ) . "metrics", __( "Metrics" ) ],
-    ],
-    get_the_title(),
-    false
-); ?>
-
     <div id="content">
 
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">

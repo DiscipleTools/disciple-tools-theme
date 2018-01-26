@@ -42,46 +42,48 @@ function dt_print_breadcrumbs(
         <nav aria-label="<?php esc_attr_e( "You are here:" ); ?>" role="navigation"
              data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
              class="second-bar">
+            <div class="container-width">
 
-            <div class="grid-x grid-margin-x">
-                <div class="cell small-4 grid-x grid-margin-x">
-                    <div class="cell grid-x grid-margin-x">
-                        <?php if ( $show_update_needed ){ ?>
-                        <div class="section-subheader cell shrink center-items"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></div>
-                        <div class="switch tiny cell shrink" style="margin-bottom: 0px">
+                <div class="grid-x grid-margin-x">
+                    <div class="cell small-4 grid-x grid-margin-x">
+                        <div class="cell grid-x grid-margin-x">
+                            <?php if ( $show_update_needed ){ ?>
+                            <div class="section-subheader cell shrink center-items"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></div>
+                            <div class="switch tiny cell shrink" style="margin-bottom: 0px">
 
-                            <input class="switch-input update-needed" id="update-needed" type="checkbox" name="update-needed"
-                            <?php echo ( $update_needed ? 'checked' : "" ) ?>>
-                            <label class="switch-paddle update-needed" for="update-needed">
-                                <span class="show-for-sr"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></span>
-                                <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
-                                <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
-                            </label>
-                        </div>
-                        <?php } ?>
-                    </div>
-                </div>
-                <div class="cell small-4 center-items hide-for-small-only">
-<!--                    <ul class="breadcrumbs">-->
-<!---->
-<!--                        --><?php //foreach ($links as $link) : ?>
-<!--                            <li><a href="--><?php //echo esc_url( $link[0] ); ?><!--">--><?php //echo esc_html( $link[1] ); ?><!--</a></li>-->
-<!--                        --><?php //endforeach; ?>
-<!--                        <li>-->
-<!--                            <span class="show-for-sr">--><?php //esc_html_e( "Current:", 'disciple_tools' ); ?><!-- </span> --><?php //echo esc_html( $current ); ?>
-<!--                        </li>-->
-<!--                    </ul>-->
-                </div>
-                <?php if ( $share_button ): ?>
-                    <div class="cell small-4 align-right grid-x grid-margin-x">
-                        <div class="cell shrink center-items ">
-                            <button class="center-items open-share">
-                                <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
-                                <span style="margin:0 10px 0 10px"><?php esc_html_e( "Share" ); ?></span>
-                            </button>
+                                <input class="switch-input update-needed" id="update-needed" type="checkbox" name="update-needed"
+                                <?php echo ( $update_needed ? 'checked' : "" ) ?>>
+                                <label class="switch-paddle update-needed" for="update-needed">
+                                    <span class="show-for-sr"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></span>
+                                    <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
+                                    <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
+                                </label>
+                            </div>
+                            <?php } ?>
                         </div>
                     </div>
-                <?php endif; ?>
+                    <div class="cell small-4 center-items hide-for-small-only">
+    <!--                    <ul class="breadcrumbs">-->
+    <!---->
+    <!--                        --><?php //foreach ($links as $link) : ?>
+    <!--                            <li><a href="--><?php //echo esc_url( $link[0] ); ?><!--">--><?php //echo esc_html( $link[1] ); ?><!--</a></li>-->
+    <!--                        --><?php //endforeach; ?>
+    <!--                        <li>-->
+    <!--                            <span class="show-for-sr">--><?php //esc_html_e( "Current:", 'disciple_tools' ); ?><!-- </span> --><?php //echo esc_html( $current ); ?>
+    <!--                        </li>-->
+    <!--                    </ul>-->
+                    </div>
+                    <?php if ( $share_button ): ?>
+                        <div class="cell small-4 align-right grid-x grid-margin-x">
+                            <div class="cell shrink center-items ">
+                                <button class="center-items open-share">
+                                    <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
+                                    <span style="margin:0 10px 0 10px"><?php esc_html_e( "Share" ); ?></span>
+                                </button>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
         </nav>
     </div>

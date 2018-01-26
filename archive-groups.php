@@ -5,8 +5,6 @@ declare(strict_types=1);
 
 <?php get_header(); ?>
 
-<?php dt_print_breadcrumbs( null, __( "Groups" ) ); ?>
-
     <div id="content">
 
         <div id="inner-content" class="grid-x grid-margin-x">

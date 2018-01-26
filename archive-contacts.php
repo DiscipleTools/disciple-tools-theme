@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 <?php get_header(); ?>
 
-<?php dt_print_breadcrumbs( null, __( "Contacts" ) ); ?>
-
 <div id="errors"> </div>
 
     <div id="content">

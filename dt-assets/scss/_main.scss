@@ -1352,3 +1352,16 @@ html[dir='rtl'] {
 .dt_tooltip:hover .tooltiptext {
     visibility: visible;
 }
+
+#content {
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container-width {
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
