@@ -60,23 +60,27 @@
     <?php } ?>
 
     <?php if (isset( $contact->fields["requires_update"] ) && $contact->fields["requires_update"]["key"] === "yes"){ ?>
-    <div class="update-needed callout alert small-12 cell">
-        <h4><?php esc_html_e( 'This contact needs an update', 'disciple_tools' )?>.</h4>
-        <p><?php esc_html_e( 'It has been a while since this contact seen an update. Please do so', 'disciple_tools' )?>.</p>
-    </div>
+
+    <section class="cell update-needed">
+        <div class="bordered-box">
+            <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This contact needs an update', 'disciple_tools' )?>.</h4>
+            <p><?php esc_html_e( 'It has been a while since this contact seen an update. Please do so', 'disciple_tools' )?>.</p>
+
+        </div>
+    </section>
     <?php } ?>
     <?php if (isset( $contact->fields["overall_status"] ) &&
               isset( $contact->fields["assigned_to"] ) &&
               $contact->fields["overall_status"]["key"] == "assigned" &&
               $contact->fields["assigned_to"]['id'] == $current_user->ID
     ) { ?>
-    <div id="accept-contact" class="callout alert small-12 cell">
-        <h4 style="display: inline-block"><?php esc_html_e( 'This contact has been assigned to you', 'disciple_tools' )?></h4>
-        <span class="float-right">
-            <button onclick="details_accept_contact(<?php echo get_the_ID() ?>, true)" class="button small"><?php esc_html_e( 'Accept', 'disciple_tools' )?></button>
-            <button onclick="details_accept_contact(<?php echo get_the_ID() ?>, false)" class="button small alert"><?php esc_html_e( 'Decline', 'disciple_tools' )?></button>
-        </span>
-    </div>
+    <section class="cell accept-contact">
+        <div class="bordered-box">
+            <h4><?php esc_html_e( 'This contact has been assigned to you.', 'disciple_tools' )?></h4>
+            <button class="accept-button button small" onclick="details_accept_contact(<?php echo get_the_ID() ?>, true)"><?php esc_html_e( 'Accept', 'disciple_tools' )?></button>
+            <button class="decline-button button small" onclick="details_accept_contact(<?php echo get_the_ID() ?>, false)"><?php esc_html_e( 'Decline', 'disciple_tools' )?></button>
+        </div>
+    </section>
     <?php } ?>
 
 
