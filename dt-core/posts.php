@@ -414,7 +414,7 @@ class Disciple_Tools_Posts
             }
             $activity_simple[] = [
                 "meta_key" => $a->meta_key,
-                "name" => $a->name,
+                "name" => isset( $a->name ) ? $a->name : "",
                 "object_note" => $a->object_note,
                 "hist_time" => $a->hist_time,
                 "meta_id" => $a->meta_id,
