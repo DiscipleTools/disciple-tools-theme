@@ -358,11 +358,9 @@
                                         <li class="<?php echo esc_html( $value['key'] )?>">
                                             <?php
                                             if ( $values && sizeof( $values ) > 0 ) {
-                                                $test = get_template_directory_uri() . "/dt-assets/images/email.svg";
-                                                $test2 = file_exists( get_template_directory_uri() . "/dt-assets/images/email.svg" );
                                                 if ( file_exists( get_template_directory() . "/dt-assets/images/" . $channel . ".svg" ) ){
                                                     ?>
-                                                       <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/" . $channel . ".svg" ?>">
+                                                       <img src="<?php echo esc_url( get_template_directory_uri()  . "/dt-assets/images/" . $channel . ".svg" )?>">
                                                     <?php
                                                 } else {
                                                     ?>
