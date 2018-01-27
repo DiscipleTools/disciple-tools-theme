@@ -25,7 +25,7 @@ declare(strict_types=1);
 
     <table class="table-remove-top-border js-list">
         <thead><tr>
-            <th data-priority="1"></th>
+            <th data-priority="1" style="background: none"></th>
             <th data-priority="2"><?php esc_html_e( "Name" ); ?></th>
             <th><?php esc_html_e( "Status", "disciple_tools" ); ?></th>
             <th><?php esc_html_e( "Faith Milestones", "disciple_tools" ); ?></th>

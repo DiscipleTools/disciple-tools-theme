@@ -7,7 +7,8 @@
 
   const templates = {
     contacts: _.template(`<tr>
-      <td><img src="<%- template_directory_uri %>/dt-assets/images/star.svg" width=13 height=12></td>
+      <!--<td><img src="<%- template_directory_uri %>/dt-assets/images/star.svg" width=13 height=12></td>-->
+      <td></td>
       <td>
         <a href="<%- permalink %>"><%- post_title %></a>
         <br>
@@ -25,7 +26,8 @@
       <td><%- last_modified %></td>
     </tr>`),
     groups: _.template(`<tr>
-      <td><img src="<%- template_directory_uri %>/dt-assets/images/green_flag.svg" width=10 height=12></td>
+      <!--<td><img src="<%- template_directory_uri %>/dt-assets/images/green_flag.svg" width=10 height=12></td>-->
+      <td></td>
       <td><a href="<%- permalink %>"><%- post_title %></a></td>
       <td><span class="group-status group-status--<%- group_status %>"><%- status %></span></td>
       <td><span class="group-type group-type--<%- group_type %>"><%- type %></span></td>
