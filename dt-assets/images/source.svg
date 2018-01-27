@@ -1,0 +1,16 @@
+<svg width="16" height="14" viewBox="0 0 16 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>round-right</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(-1345 -1475)">
+<g id="round-right">
+<g id="Group">
+<g id="Vector">
+<use xlink:href="#path0_fill" transform="translate(1345 1475)" fill="#333333"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_fill" d="M 2.77228 9.77228L 6.93069 9.77228L 6.93069 14L 15.6634 7L 6.93069 -1.65241e-08L 6.93069 4.22772L 2.77228 4.22772C 1.24752 4.22772 0 5.47525 0 7C 0 8.52475 1.24752 9.77228 2.77228 9.77228Z"/>
+</defs>
+</svg>

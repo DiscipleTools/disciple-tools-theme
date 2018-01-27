@@ -91,8 +91,18 @@ NAVIGATION STYLES
             margin: 0 10px;
         }
     }
-    img {
-        max-height:24px;
+
+    .image-menu-nav {
+        img {
+            height:30px;
+
+        }
+        a {
+            padding: 4px 5px;
+            vertical-align: middle;
+            font-weight: bold;
+        }
+
     }
     //Make sure the menu bar does not expand while loading
     .submenu.menu.vertical {
@@ -100,6 +110,14 @@ NAVIGATION STYLES
     }
     .submenu.menu.vertical.is-dropdown-submenu.js-dropdown-active {
         display: block;
+    }
+
+    .notification-count {
+        display: none;
+        vertical-align: top;
+        position: relative;
+        top:-5px;
+        left:-15px;
     }
 }
 
@@ -388,11 +406,15 @@ img {
     display: none;
 }
 
-.display-fields ul {
-    list-style-type: none;
-    margin-left:0;
+.display-fields {
+    ul {
+        list-style-type: none;
+        margin-left: 0;
+    }
+    img {
+        height: 15px;
+    }
 }
-
 #address-list {
     textarea {
         display: inline-block;
@@ -1393,5 +1415,17 @@ html[dir='rtl'] {
     }
     .button {
         margin: 0 10px;
+    }
+}
+
+#notification-list {
+    .read-button {
+        padding: .85em;
+    }
+    .new-button {
+        padding: .85em;
+    }
+    .unread-notification-row {
+        background-color: rgba(63, 114, 155, 0.19);
     }
 }

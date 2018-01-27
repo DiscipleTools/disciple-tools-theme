@@ -11,7 +11,8 @@ function get_new_notification_count(){
   })
     .done(function (data) {
       if(data > 0) {
-        jQuery('.notification-count').text(data).show()
+        jQuery('.notification-count').text(data).show().css("display", "inline-block")
+
       } else {
         jQuery('.notification-count').hide()
       }
@@ -23,6 +24,19 @@ function get_new_notification_count(){
     })
 }
 get_new_notification_count()
+
+let notificationRead = (notification_id)=>`
+  <a id="read-button-${notification_id}" class="read-button button hollow small" style="border-radius:100px; margin: .7em 0 0;"
+      onclick="mark_unread( ${notification_id} )">
+      <!--<i class="fi-minus hollow"></i>-->
+   </a>
+`
+let notificationNew = (notification_id)=>`
+  <a id="new-button-${notification_id}" class="new-button button small" style="border-radius:100px; margin: .7em 0 0;"
+     onclick="mark_viewed( ${notification_id} )">
+     <!--<i class="fi-check"></i>-->
+  </a>
+`
 
 function mark_viewed(notification_id){
   return jQuery.ajax({
@@ -36,10 +50,8 @@ function mark_viewed(notification_id){
   })
     .done(function (data) {
       get_new_notification_count()
-      jQuery('#toggle-area-'+notification_id).html(`<a id="read-button-` + notification_id + `" class="read-button button hollow small" style="border-radius:100px; margin: .7em 0 0;"
-                  onclick="mark_unread( ` + notification_id + ` )">
-                  <i class="fi-minus hollow"></i>
-               </a>`)
+      jQuery(`#row-${notification_id} .notification-row`).removeClass("unread-notification-row")
+      jQuery('#toggle-area-'+notification_id).html(notificationRead(notification_id))
 
     })
     .fail(function (err) {
@@ -61,10 +73,8 @@ function mark_unread(notification_id){
   })
     .done(function (data) {
       get_new_notification_count()
-      jQuery('#toggle-area-'+notification_id).html(`<a id="new-button-` + notification_id + `" class="new-button button small" style="border-radius:100px; margin: .7em 0 0;"
-                  onclick="mark_viewed( ` + notification_id + ` )">
-                  <i class="fi-check"></i>
-               </a>`)
+      jQuery(`#row-${notification_id} .notification-row`).addClass("unread-notification-row")
+      jQuery('#toggle-area-'+notification_id).html(notificationNew(notification_id))
     })
     .fail(function (err) {
       console.log("error")
@@ -86,10 +96,7 @@ function mark_all_viewed(){
   })
     .done(function (data) {
       get_new_notification_count()
-      jQuery('.new-cell').html(`<a id="read-button-` + id + `" class="read-button button hollow small" style="border-radius:100px; margin: .7em 0 0;"
-                  onclick="mark_unread( ` + id + ` )">
-                  <i class="fi-minus hollow"></i>
-               </a>`)
+      jQuery('.new-cell').html(notificationRead(id))
     })
     .fail(function (err) {
       console.log("error")
@@ -98,34 +105,31 @@ function mark_all_viewed(){
     })
 }
 
+
+
 function notification_template( id, note, is_new, pretty_time ) {
   "use strict";
   let button = ``
   let label = `` // used by the mark_all_viewed()
 
   if ( is_new === '1' ) {
-    button = `<a id="new-button-` + id + `" class="new-button button small" style="border-radius:100px; margin: .7em 0 0;"
-                  onclick="mark_viewed( ` + id + ` )">
-                  <i class="fi-check"></i>
-               </a>`;
+    button = notificationNew(id);
     label = `new-cell` // used by the mark_all_viewed()
   } else {
-    button = `<a id="read-button-` + id + `" class="read-button button hollow small" style="border-radius:100px; margin: .7em 0 0;"
-                  onclick="mark_unread( ` + id + ` )">
-                  <i class="fi-minus hollow"></i>
-               </a>`;
+    button = notificationRead(id);
   }
+  console.log(is_new);
 
   return `
-            <div class="cell" id="row-` + id + `">
-              <div class="grid-x grid-margin-x grid-padding-y bottom-border">
+            <div class="cell" id="row-${id}">
+              <div class="grid-x grid-margin-x grid-padding-y bottom-border notification-row ${is_new ==='1' ? 'unread-notification-row' : ''} ">
                 
                 <div class="auto cell">
-                   ` + note + `<br>
-                   <span class="grey">` + pretty_time + `</span>
+                   ${note}<br>
+                   <span class="grey">${pretty_time}</span>
                 </div>
-                <div class="small-2 medium-1 cell padding-5 ` + label + `" id="toggle-area-` + id + `">
-                    ` + button + `
+                <div class="small-2 medium-1 cell padding-5 ${label}" id="toggle-area-${id}">
+                    ${button}
                 </div>
               </div>
             </div>`

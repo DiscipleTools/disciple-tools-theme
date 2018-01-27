@@ -20,7 +20,7 @@
         <?php endif; ?>
         <a href="<?php echo esc_url( home_url( '/notifications' ) ); ?>">
             <img title="<?php esc_html_e( "Notifications" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
-            <span class="badge alert notification-count" style="display:none;vertical-align: top"></span>
+            <span class="badge alert notification-count" style="display:none"></span>
         </a>
         <a href="<?php echo esc_url( home_url( '/' ) ) . 'settings/'; ?>">
             <img title="<?php esc_html_e( "Settings" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/gear.svg" ?>">
@@ -44,11 +44,16 @@
         </div>
         <div class="top-bar-right">
             <ul class="dropdown menu" data-dropdown-menu>
-                <li><a href="<?php echo esc_url( home_url( '/' ) ) . 'settings/'; ?>"><?php echo esc_html( wp_get_current_user()->display_name ); ?></a></li>
-                <li>
-                    <a href="<?php echo esc_url( home_url( '/notifications' ) ); ?>" style="padding-top:0.5rem;padding-bottom:0">
+                <li class="image-menu-nav">
+                    <a href="<?php echo esc_url( home_url( '/' ) ) . 'settings/'; ?>">
+                        <img title="<?php esc_html_e( "Profile" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/profile.svg" ?>">
+                        <?php echo esc_html( wp_get_current_user()->display_name ); ?>
+                    </a>
+                </li>
+                <li class="image-menu-nav">
+                    <a href="<?php echo esc_url( home_url( '/notifications' ) ); ?>">
                         <img title="<?php esc_html_e( "Notifications" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
-                        <span class="badge alert notification-count" style="display:none;vertical-align: top"></span>
+                        <span class="badge alert notification-count" style="display:none"></span>
                     </a>
                 </li>
                 <li class="has-submenu center-items">

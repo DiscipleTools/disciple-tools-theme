@@ -73,7 +73,7 @@
               $contact->fields["overall_status"]["key"] == "assigned" &&
               $contact->fields["assigned_to"]['id'] == $current_user->ID
     ) { ?>
-    <section class="cell accept-contact">
+    <section class="cell accept-contact" id="accept-contact">
         <div class="bordered-box">
             <h4><?php esc_html_e( 'This contact has been assigned to you.', 'disciple_tools' )?></h4>
             <button class="accept-button button small" onclick="details_accept_contact(<?php echo get_the_ID() ?>, true)"><?php esc_html_e( 'Accept', 'disciple_tools' )?></button>
@@ -152,7 +152,9 @@
                     <!--Phone-->
                     <!--Email-->
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                        <div class="section-subheader"><?php echo esc_html( $channel_list["phone"]["label"] ) ?>
+                        <div class="section-subheader">
+                            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/phone.svg" ?>">
+                            <?php echo esc_html( $channel_list["phone"]["label"] ) ?>
                             <button data-id="phone" class="details-edit add-button">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                             </button>
@@ -190,7 +192,9 @@
                         }?>
                         </ul>
 
-                        <div class="section-subheader"><?php echo esc_html( $channel_list["email"]["label"] ) ?>
+                        <div class="section-subheader">
+                            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/email.svg" ?>">
+                            <?php echo esc_html( $channel_list["email"]["label"] ) ?>
                             <button data-id="email" class="details-edit add-button">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                             </button>
@@ -230,7 +234,10 @@
                     <!-- Locations -->
                     <!-- Assigned To -->
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                        <div class="section-subheader"><?php esc_html_e( "Locations", 'disciple_tools' ) ?></div>
+                        <div class="section-subheader">
+                            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/location.svg" ?>">
+                            <?php esc_html_e( "Locations", 'disciple_tools' ) ?>
+                        </div>
                         <ul class="locations-list details-list">
                             <?php
                             foreach ($contact->fields["locations"] ?? [] as $value){
@@ -259,7 +266,9 @@
                             </div>
                         </div>
 
-                        <div class="section-subheader"><?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
+                        <div class="section-subheader">
+                            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/assigned-to.svg" ?>">
+                            <?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
                             <span class="assigned_to details-edit">:</span>
                             <span class="assigned_to details-edit current-assigned"></span>
                         </div>
@@ -349,8 +358,19 @@
                                         <li class="<?php echo esc_html( $value['key'] )?>">
                                             <?php
                                             if ( $values && sizeof( $values ) > 0 ) {
+                                                $test = get_template_directory_uri() . "/dt-assets/images/email.svg";
+                                                $test2 = file_exists( get_template_directory_uri() . "/dt-assets/images/email.svg" );
+                                                if ( file_exists( get_template_directory() . "/dt-assets/images/" . $channel . ".svg" ) ){
+                                                    ?>
+                                                       <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/" . $channel . ".svg" ?>">
+                                                    <?php
+                                                } else {
+                                                    ?>
+                                                    <span><?php echo esc_html( $channel_list[ $channel ]["label"] )?>:</span>
+                                                    <?php
+                                                }
                                                 ?>
-                                                <span><?php echo esc_html( $channel_list[ $channel ]["label"] )?>:</span>
+
                                             <?php } ?>
 
                                             <span class='social-text'><?php echo esc_html( $value["value"] ) ?></span>
@@ -419,7 +439,10 @@
 
 
 
-                        <div class="section-subheader"><?php esc_html_e( 'People Groups', 'disciple_tools' )?></div>
+                        <div class="section-subheader">
+                            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
+                            <?php esc_html_e( 'People Groups', 'disciple_tools' )?>
+                        </div>
                         <ul class="people_groups-list details-list">
                             <?php
                             foreach ($contact->fields["people_groups"] ?? [] as $value){
@@ -453,7 +476,9 @@
 
                 <div id="show-more-content" class="grid-x grid-margin-x show-content" style="display:none;">
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                        <div class="section-subheader"><?php esc_html_e( 'Address', 'disciple_tools' )?>
+                        <div class="section-subheader">
+                            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/house.svg" ?>">
+                            <?php esc_html_e( 'Address', 'disciple_tools' )?>
                             <button id="add-new-address" class="details-edit">
                                 <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                             </button>
@@ -491,7 +516,10 @@
                     </div>
 
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                        <div class="section-subheader"><?php esc_html_e( 'Age', 'disciple_tools' )?>:</div>
+                        <div class="section-subheader">
+                            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/contact-age.svg" ?>">
+                            <?php esc_html_e( 'Age', 'disciple_tools' )?>
+                        </div>
                         <ul class="details-list">
                             <li class="current-age">
                                 <?php
@@ -518,7 +546,10 @@
                         </select>
                     </div>
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                        <div class="section-subheader"><?php esc_html_e( 'Gender', 'disciple_tools' )?>:</div>
+                        <div class="section-subheader">
+                            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/gender.svg" ?>">
+                            <?php esc_html_e( 'Gender', 'disciple_tools' )?>
+                        </div>
                         <ul class="details-list">
                             <li class="current-gender">
                                 <?php
@@ -543,7 +574,10 @@
                         </select>
                     </div>
                     <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                        <div class="section-subheader"><?php esc_html_e( "Source" ); ?></div>
+                        <div class="section-subheader">
+                            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/source.svg" ?>">
+                            <?php esc_html_e( "Source" ); ?>
+                        </div>
                         <ul class="details-list">
                             <li class="current-sources">
                                 <?php
