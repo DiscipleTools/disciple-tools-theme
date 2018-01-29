@@ -92,6 +92,11 @@ NAVIGATION STYLES
         }
     }
 
+    a {
+        //padding: 10px 1rem 10px 1rem;
+        font-weight:bold;
+    }
+
     .image-menu-nav {
         img {
             height:24px;
@@ -99,7 +104,7 @@ NAVIGATION STYLES
         }
         a {
             padding: 4px 5px;
-            vertical-align: middle;
+            vertical-align: text-bottom;
             font-weight: bold;
         }
 
