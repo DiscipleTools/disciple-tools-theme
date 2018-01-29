@@ -194,6 +194,12 @@ let API = {
 
 }
 
+jQuery( document ).ajaxComplete(function(event, xhr, settings) {
+  if (_.get(xhr, "responseJSON.data.status") === 401){
+    window.location.replace("/login");
+  }
+});
+
 let TYPEAHEADS = {
 
   typeaheadSource : function (field, url) {
