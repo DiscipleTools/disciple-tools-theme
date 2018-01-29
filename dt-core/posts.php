@@ -331,6 +331,9 @@ class Disciple_Tools_Posts
                 if ($fields[$activity->meta_key]["type"] === "number"){
                     $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
                 }
+                if ($fields[$activity->meta_key]["type"] === "date" ){
+                    $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
+                }
             } else {
                 if (strpos( $activity->meta_key, "_details" ) !== false ) {
                     $meta_value = maybe_unserialize( $activity->meta_value );
