@@ -17,6 +17,7 @@ function disciple_tools_top_nav_desktop()
         ?>
         <li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li>
         <li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li>
+        <li><a href="<?php echo esc_url( home_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li>
 
         <?php
     } elseif ( user_can( get_current_user_id(), 'read_progress' ) ) {
