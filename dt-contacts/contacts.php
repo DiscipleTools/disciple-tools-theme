@@ -292,7 +292,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             } elseif ( $value === false ){
                 $value = "no";
             }
-            update_post_meta( $contact_id, $field_id, $value );
+            if ( is_string( $value ) || is_numeric( $value )){
+                update_post_meta( $contact_id, $field_id, $value );
+            } else {
+                return new WP_Error( __FUNCTION__, __( "Unexpected field value" ), [ 'status' => 500, 'field' => $field_id ] );
+            }
         }
 
         if ( !isset( $fields["requires_update"] )){
@@ -900,7 +904,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
         $activity = self::get_single_activity( $contact_id, $activity_id );
-        return update_post_meta( $contact_id, $activity->meta_key, $activity->old_value ?? "" );
+        if ( empty( $activity->old_value ) ){
+            if ( strpos( $activity->meta_key, "quick_button_" ) !== false ){
+                $activity->old_value = 0;
+            }
+        }
+        update_post_meta( $contact_id, $activity->meta_key, $activity->old_value ?? "" );
+        return self::get_contact( $contact_id );
     }
 
 
@@ -1149,6 +1159,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function quick_action_button( int $contact_id, array $field, bool $check_permissions = true )
     {
+
         $response = self::update_contact( $contact_id, $field, true );
         if ( !isset( $response->ID ) || $response->ID != $contact_id ) {
             return $response;

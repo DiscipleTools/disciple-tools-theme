@@ -227,9 +227,12 @@ jQuery(document).ready(function($) {
   // confirm going back to the old version on the activity
   $('#confirm-revert').on("click", function () {
     let id = $(this).data('id')
-    API.revert_activity(postType, postId, id).then(a => {
+    API.revert_activity(postType, postId, id).then(contactResponse => {
       refreshActivity()
       $("#revert-modal").foundation('close')
+      if (typeof refresh_quick_action_buttons === 'function'){
+        refresh_quick_action_buttons(contactResponse)
+      }
     })
   })
 

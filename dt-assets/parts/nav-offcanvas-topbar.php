@@ -30,7 +30,7 @@
 
 <div data-sticky-container class="hide-for-small-only">
     <div class="top-bar" id="top-bar-menu"
-         data-sticky style="width:100%;margin-top:0;height:52px">
+         data-sticky style="width:100%;margin-top:0">
         <div style="margin-bottom:6px;padding-top:6px">
             <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/disciple-tools-logo.svg" ?>"
                  style="margin:0 17px;">

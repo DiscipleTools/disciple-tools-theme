@@ -38,7 +38,7 @@ let refresh_quick_action_buttons = (contact)=>{
 function save_quick_action(contactId, fieldKey){
   let data = {}
   let numberIndicator = jQuery("." + fieldKey +  " span")
-  let newNumber = parseInt(numberIndicator.first().text()) + 1
+  let newNumber = parseInt(numberIndicator.first().text() || "0" ) + 1
   data[fieldKey] = newNumber
   jQuery.ajax({
     type: "POST",
