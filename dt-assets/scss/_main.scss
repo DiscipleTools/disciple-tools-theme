@@ -1434,3 +1434,14 @@ html[dir='rtl'] {
         background-color: rgba(63, 114, 155, 0.19);
     }
 }
+
+.current-filter {
+    font-size: 0.875rem;
+    position: relative;
+    background: #ecf5fc;
+    border: 1px solid #c2e0ff;
+    padding: 4px;
+    border-radius: 2px;
+    margin-right: 4px;
+    margin-bottom: 0.375rem;
+}
