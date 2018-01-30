@@ -24,6 +24,7 @@ jQuery(document).ready(function($) {
         }
         commentInput.attr("disabled", false)
         commentButton.attr("disabled", false)
+        $('textarea.mention').mentionsInput('reset')
       }).catch(err => {
         console.log("error")
         console.log(err)
