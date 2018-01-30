@@ -56,7 +56,7 @@ function save_quick_action(contactId, fieldKey){
           updateCriticalPath(data.seeker_path.currentKey)
         }
       }
-    $('.update-needed.alert').hide()
+    contactUpdated(false)
   }).catch(err=>{
       console.log("error")
       console.log(err)
@@ -75,7 +75,11 @@ function updateCriticalPath(key) {
   $('#seeker-progress').css("width", `${percentage}%`)
 }
 
+function contactUpdated(updateNeeded) {
+  $('.update-needed-notification').hide()
+  $('#update-needed').prop("checked", updateNeeded)
 
+}
 
 
 
@@ -86,7 +90,16 @@ jQuery(document).ready(function($) {
   contact = contactsDetailsWpApiSettings.contact
 
 
-
+  $( document ).ajaxComplete(function(event, xhr, settings) {
+    if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
+      if (_.get(xhr, "responseJSON.ID") && _.get(xhr, "responseJSON.fields")){
+        contact = xhr.responseJSON
+        let updateNeeded = _.get(contact, "fields.requires_update.key") === "yes"
+        console.log("set to: " + updateNeeded)
+        contactUpdated(updateNeeded)
+      }
+    }
+  });
 
   /**
    * Typpahead Fuctions
@@ -799,9 +812,6 @@ jQuery(document).ready(function($) {
   /**
    * Update Needed
    */
-  $('.update-needed.close-button').click(function () {
-    $('.update-needed.alert').hide()
-  })
   $('.update-needed.switch-input').change(function (a,b) {
     let updateNeeded = $(this).is(':checked')
     API.save_field_api( "contact", contactId, {"requires_update":updateNeeded})
