@@ -46,15 +46,14 @@ class Disciple_Tools_Metabox_Activity
      * @param        $id
      * @param string $order
      *
-     * @return array|null|object
-     * @throws \Error Order argument expected to be ASC or DESC.
+     * @return array|null|object|\WP_Error
      */
     public function activity_list_for_id( $id, $order = 'DESC' )
     {
         global $wpdb;
 
         if ( strtolower( $order ) != "desc" && strtolower( $order ) != "asc" ) {
-            throw new Error( "Order argument expected to be ASC or DESC" );
+            return new WP_Error( 'bad_argument_supplied', "Order argument expected to be ASC or DESC" );
         }
 
         // Query activity with the contact id
@@ -80,12 +79,17 @@ class Disciple_Tools_Metabox_Activity
 
     /**
      * Echos the list contents of the activity metabox
-     *
      * @param $id
+     *
+     * @return \WP_Error
      */
     public function activity_meta_box( $id )
     {
         $list = $this->activity_list_for_id( $id );
+        if ( is_wp_error( $list ) ) {
+            echo 'List not available';
+            return new WP_Error( 'bad_argument_supplied', "Order argument expected to be ASC or DESC" );
+        }
 
         ?>
         <table class="widefat striped" width="100%">
@@ -97,11 +101,18 @@ class Disciple_Tools_Metabox_Activity
             </tr>
 
             <?php foreach ( $list as $item ): ?>
-                <?php $user = get_user_by( 'id', $item['user_id'] ); ?>
+                <?php
+                    $user = get_user_by( 'id', $item['user_id'] );
+                if ( $user ) {
+                    $user_name = $user->display_name;
+                } else {
+                    $user_name = __( 'unknown', 'dt_webform' );
+                }
+                ?>
 
                 <tr>
 
-                    <td><?php echo esc_html( $user->display_name ); ?></td>
+                    <td><?php echo esc_html( $user_name ); ?></td>
                     <td><?php echo esc_html( strip_tags( $item['action'] ) ); ?></td>
                     <td><?php echo esc_html( strip_tags( $item['object_note'] ) ); ?></td>
                     <td><?php echo esc_html( date( 'm/d/Y h:i:s', $item['hist_time'] ) ); ?></td>
