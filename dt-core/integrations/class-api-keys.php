@@ -68,13 +68,6 @@ class Disciple_Tools_Api_Keys
      */
     public function api_keys_page()
     {
-
-        if ( !current_user_can( "manage_dt" ) ) {
-            // I'm not sure this check is necessary, but it can't hurt.
-            // Only admins are expected to have the "export" capability.
-            throw new Exception( 'Current user does not have "export" capability' );
-        }
-
         $keys = get_option( "dt_api_keys", [] );
 
         if ( isset( $_POST['api-key-view-field'] ) && wp_verify_nonce( sanitize_key( $_POST['api-key-view-field'] ), 'api-keys-view' ) ) {

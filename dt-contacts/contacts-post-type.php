@@ -422,6 +422,9 @@ class Disciple_Tools_Contact_Post_Type
                             );
                             echo '</td><tr/>' . "\n";
                             break;
+                        case 'number':
+                            echo '<input name="' . esc_attr( $k ) . '" type="hidden" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />';
+                            break;
 
                         default:
                             error_log( "Unrecognised meta box type $type" );
