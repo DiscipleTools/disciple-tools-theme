@@ -129,6 +129,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $phone = $fields["phone"];
             unset( $fields["phone"] );
         }
+        $email = null;
+        if ( isset( $fields["email"] ) ) {
+            $email = $fields["email"];
+            unset( $fields["email"] );
+        }
         $initial_comment = null;
         if ( isset( $fields["initial_comment"] ) ) {
             $initial_comment = $fields["initial_comment"];
@@ -182,6 +187,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         if ( $phone ) {
             $potential_error = self::add_contact_detail( $post_id, "new-phone", $phone, false );
+            if ( is_wp_error( $potential_error ) ) {
+                return $potential_error;
+            }
+        }
+
+        if ( $email ) {
+            $potential_error = self::add_contact_detail( $post_id, "new-email", $email, false );
             if ( is_wp_error( $potential_error ) ) {
                 return $potential_error;
             }
