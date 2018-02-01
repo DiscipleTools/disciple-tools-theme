@@ -1445,3 +1445,10 @@ html[dir='rtl'] {
     margin-right: 4px;
     margin-bottom: 0.375rem;
 }
+
+#content table.dataTable thead .sorting_desc {
+    background-image: url("/wp-content/themes/disciple-tools-theme/dt-assets/images/sort_desc.png")
+}
+#content table.dataTable thead .sorting_asc {
+    background-image: url("/wp-content/themes/disciple-tools-theme/dt-assets/images/sort_asc.png")
+}
