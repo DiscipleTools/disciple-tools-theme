@@ -357,8 +357,12 @@ img {
 #add-comment-button {
     margin-bottom: 0;
     height: 30px;
-    width: 40px;
+    //width: 40px;
     padding: 0 4px;
+}
+
+#add-comment-button-container {
+    margin: auto 0 1rem 0;
 }
 
 .comment-bubble {
