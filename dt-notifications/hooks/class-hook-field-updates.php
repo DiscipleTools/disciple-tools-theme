@@ -45,7 +45,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
     {
 
         // check if $meta_value is empty
-        if ( empty( $meta_value ) ) {
+        if ( empty( $meta_value ) || $meta_key === "_edit_lock") {
             return;
         }
         // Don't fire off notifications when the contact represents a user.

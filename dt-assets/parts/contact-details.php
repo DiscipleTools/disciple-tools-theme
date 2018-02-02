@@ -82,8 +82,8 @@
     </section>
     <?php } ?>
 
-    <?php if (isset( $contact->fields["is_a_user"] ) &&
-              !empty( $contact->fields["is_a_user"] )
+    <?php if (isset( $contact->fields["is_a_user"]["key"] ) &&
+              $contact->fields["is_a_user"]["key"] === "yes"
     ) { ?>
     <section class="cell accept-contact" id="contact-is-user">
         <div class="bordered-box">

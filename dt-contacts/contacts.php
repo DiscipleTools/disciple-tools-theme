@@ -153,6 +153,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $current_roles = wp_get_current_user()->roles;
 
         $defaults = [
+            "is_a_user" => "no",
             "seeker_path"    => "none",
         ];
         if (get_current_user_id()) {
@@ -983,8 +984,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'relation' => "OR",
                     [
                         'key' => 'is_a_user',
-                        'value' => "",
-                        'compare' => '='
+                        'value' => "yes",
+                        'compare' => '!='
                     ],
                     [
                         'key' => 'is_a_user',
