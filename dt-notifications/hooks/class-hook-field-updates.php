@@ -48,6 +48,11 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
         if ( empty( $meta_value ) ) {
             return;
         }
+        // Don't fire off notifications when the contact represents a user.
+        $is_contact_a_user = get_post_meta( $object_id, "is_a_user", true );
+        if ($is_contact_a_user === "yes"){
+            return;
+        }
 
         // Check for specific key or trigger
         if ( !( $meta_key == 'assigned_to'

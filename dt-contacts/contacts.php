@@ -977,6 +977,21 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $query_args = [
             'post_type' => 'contacts',
             'nopaging'  => true,
+            'meta_query' => [
+                'relation' => "AND",
+                [
+                    'relation' => "OR",
+                    [
+                        'key' => 'is_a_user',
+                        'value' => "",
+                        'compare' => '='
+                    ],
+                    [
+                        'key' => 'is_a_user',
+                        'compare' => 'NOT EXISTS'
+                    ]
+                ]
+            ]
         ];
         $contacts_shared_with_user = [];
         if ( !self::can_view_all( 'contacts' ) ) {

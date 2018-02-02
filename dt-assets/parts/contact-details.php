@@ -82,6 +82,16 @@
     </section>
     <?php } ?>
 
+    <?php if (isset( $contact->fields["is_a_user"] ) &&
+              !empty( $contact->fields["is_a_user"] )
+    ) { ?>
+    <section class="cell accept-contact" id="contact-is-user">
+        <div class="bordered-box">
+            <h4><?php esc_html_e( 'This contact represents a user.', 'disciple_tools' )?></h4>
+        </div>
+    </section>
+    <?php } ?>
+
 
     <section class="cell">
         <div class="bordered-box">
