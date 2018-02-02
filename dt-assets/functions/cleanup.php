@@ -183,7 +183,7 @@ function dt_remove_dashboard_meta() {
  * @return string
  */
 function dt_change_admin_color( $result ) {
-    return 'light';
+    return 'midnight';
 }
 
 

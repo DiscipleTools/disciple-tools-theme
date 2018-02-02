@@ -153,6 +153,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $current_roles = wp_get_current_user()->roles;
 
         $defaults = [
+            "is_a_user" => "no",
             "seeker_path"    => "none",
         ];
         if (get_current_user_id()) {
@@ -977,6 +978,21 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $query_args = [
             'post_type' => 'contacts',
             'nopaging'  => true,
+            'meta_query' => [
+                'relation' => "AND",
+                [
+                    'relation' => "OR",
+                    [
+                        'key' => 'is_a_user',
+                        'value' => "yes",
+                        'compare' => '!='
+                    ],
+                    [
+                        'key' => 'is_a_user',
+                        'compare' => 'NOT EXISTS'
+                    ]
+                ]
+            ]
         ];
         $contacts_shared_with_user = [];
         if ( !self::can_view_all( 'contacts' ) ) {

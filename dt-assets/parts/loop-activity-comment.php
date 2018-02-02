@@ -4,9 +4,9 @@
         <div class="auto cell">
             <textarea class="mention" dir="auto" rows="4" id="comment-input" placeholder="<?php esc_html_e( "Write your comment or note here", 'disciple_tools' ) ?>"></textarea>
         </div>
-        <div class="shrink cell">
+        <div class="shrink cell" id="add-comment-button-container">
             <button id="add-comment-button" class="button loader">
-                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/send.svg' ) ?>"/>
+                Submit
             </button>
         </div>
     </div>

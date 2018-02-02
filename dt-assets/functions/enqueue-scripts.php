@@ -218,7 +218,7 @@ function dt_site_scripts() {
 
     $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
     if ( 'settings' === $url_path ) {
-        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash', 'typeahead' ), true );
+        dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash' ), true );
         wp_localize_script(
             'dt-settings', 'wpApiSettingsPage', array(
                 'root' => esc_url_raw( rest_url() ),

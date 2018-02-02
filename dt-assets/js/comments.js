@@ -19,9 +19,12 @@ jQuery(document).ready(function($) {
         data.comment.date = moment(data.comment.comment_date_gmt + "Z")
         comments.push(data.comment)
         display_activity_comment()
-        $('.update-needed.alert').hide()
+        if ( typeof contactUpdated === "function"){
+          contactUpdated(false);
+        }
         commentInput.attr("disabled", false)
         commentButton.attr("disabled", false)
+        $('textarea.mention').mentionsInput('reset')
       }).catch(err => {
         console.log("error")
         console.log(err)

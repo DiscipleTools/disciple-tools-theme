@@ -357,8 +357,12 @@ img {
 #add-comment-button {
     margin-bottom: 0;
     height: 30px;
-    width: 40px;
+    //width: 40px;
     padding: 0 4px;
+}
+
+#add-comment-button-container {
+    margin: auto 0 1rem 0;
 }
 
 .comment-bubble {
@@ -1392,7 +1396,7 @@ html[dir='rtl'] {
     margin-right: auto;
 }
 
-.update-needed .bordered-box{
+.update-needed-notification .bordered-box{
     background-color: #F43636;
     border: none;
     color: white;
@@ -1433,4 +1437,22 @@ html[dir='rtl'] {
     .unread-notification-row {
         background-color: rgba(63, 114, 155, 0.19);
     }
+}
+
+.current-filter {
+    font-size: 0.875rem;
+    position: relative;
+    background: #ecf5fc;
+    border: 1px solid #c2e0ff;
+    padding: 4px;
+    border-radius: 2px;
+    margin-right: 4px;
+    margin-bottom: 0.375rem;
+}
+
+#content table.dataTable thead .sorting_desc {
+    background-image: url("/wp-content/themes/disciple-tools-theme/dt-assets/images/sort_desc.png")
+}
+#content table.dataTable thead .sorting_asc {
+    background-image: url("/wp-content/themes/disciple-tools-theme/dt-assets/images/sort_asc.png")
 }

@@ -274,13 +274,12 @@
     return $.parseHTML(template(context));
   }
 
-  function setUpFilterPane() {
-    if (! $(".js-list").length) {
-      return;
-    }
+
+  function countFilteredItems() {
     const counts = {};
+    let currentView = $(".js-list-view:checked").val()
     if (wpApiSettings.current_post_type === "contacts") {
-      const contacts = items;
+      const contacts = items.filter(viewFilterFunctions[currentView])
       _.assign(counts, {
         assigned_login: _.countBy(_(contacts).map('assigned_to.user_login').filter().value()),
         overall_status: _.countBy(_.map(contacts, 'overall_status')),
@@ -308,6 +307,13 @@
       $(".js-list-filter[data-filter='" + filterType + "']")
         .append(createFilterCheckboxes(filterType, counts[filterType]));
     });
+  }
+
+  function setUpFilterPane() {
+    if (! $(".js-list").length) {
+      return;
+    }
+    countFilteredItems()
     $(".js-list-filter-title").on("click", function() {
       const $title = $(this);
       $title.parents(".js-list-filter").toggleClass("filter--closed");
@@ -316,17 +322,19 @@
         $(this).trigger("click");
       }
     });
-    $(".js-list-view").on("change", function() {
-      clearFilterCheckboxes();
-      updateFilterFunctions();
-      dataTable.draw();
-    });
   }
+  $(".js-list-view").on("change", function() {
+    countFilteredItems()
+    clearFilterCheckboxes();
+    updateFilterFunctions();
+    dataTable.draw();
+  });
 
   $(document).on('click', '.clear-filters', function () {
     $("input[value='all_contacts']").prop("checked", true);
-    clearFilterCheckboxes();
+    countFilteredItems()
     updateFilterFunctions();
+    setUpFilterPane();
     dataTable.draw();
   })
 
@@ -348,6 +356,7 @@
       }
       const checkbox = $("<input>")
         .attr("type", "checkbox")
+        .val(humanText)
         .on("change", function() {
           updateFilterFunctions();
           dataTable.draw();
@@ -392,6 +401,15 @@
     if ($(".js-list-view").length > 0) {
       filterFunctions.push(viewFilterFunctions[$(".js-list-view:checked").val()]);
     }
+
+    let filteredTags = []
+    let filterTags = $("#current-filters")
+    filterTags.empty()
+    $(".js-filter-checkbox-label input:checked").each(function(){
+      filteredTags.push($(this).val())
+      filterTags.append(`<span class="current-filter">${$(this).val()}</span>`)
+    })
+
 
     filterTypes.forEach(function(filterType) {
       const $checkedLabels = assertAtLeastOne($(".js-filter-checkbox-label"))

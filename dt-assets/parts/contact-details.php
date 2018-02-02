@@ -61,7 +61,7 @@
 
     <?php if (isset( $contact->fields["requires_update"] ) && $contact->fields["requires_update"]["key"] === "yes"){ ?>
 
-    <section class="cell update-needed">
+    <section class="cell update-needed-notification">
         <div class="bordered-box">
             <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This contact needs an update', 'disciple_tools' )?>.</h4>
             <p><?php esc_html_e( 'It has been a while since this contact was updated. Please do so', 'disciple_tools' )?>.</p>
@@ -78,6 +78,16 @@
             <h4><?php esc_html_e( 'This contact has been assigned to you.', 'disciple_tools' )?></h4>
             <button class="accept-button button small" onclick="details_accept_contact(<?php echo get_the_ID() ?>, true)"><?php esc_html_e( 'Accept', 'disciple_tools' )?></button>
             <button class="decline-button button small" onclick="details_accept_contact(<?php echo get_the_ID() ?>, false)"><?php esc_html_e( 'Decline', 'disciple_tools' )?></button>
+        </div>
+    </section>
+    <?php } ?>
+
+    <?php if (isset( $contact->fields["is_a_user"]["key"] ) &&
+              $contact->fields["is_a_user"]["key"] === "yes"
+    ) { ?>
+    <section class="cell accept-contact" id="contact-is-user">
+        <div class="bordered-box">
+            <h4><?php esc_html_e( 'This contact represents a user.', 'disciple_tools' )?></h4>
         </div>
     </section>
     <?php } ?>
