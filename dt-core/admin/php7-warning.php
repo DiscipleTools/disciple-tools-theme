@@ -2,7 +2,6 @@
 /**
  * Test for minimum required PHP version
  */
-dt_write_log( phpversion() );
 if ( version_compare( phpversion(), '7.0', '<' ) ) {
 
     /* We only support PHP >= 7.0, however, we want to support allowing users
