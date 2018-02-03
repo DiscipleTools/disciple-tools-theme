@@ -2,6 +2,7 @@
 /**
  * Test for minimum required PHP version
  */
+dt_write_log( phpversion() );
 if ( version_compare( phpversion(), '7.0', '<' ) ) {
 
     /* We only support PHP >= 7.0, however, we want to support allowing users
@@ -12,11 +13,11 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
      * Feel free to use PHP 7 features in other files, but not in this one.
      */
 
-    new WP_Error( 'php_version_fail', 'Disciple Tools theme requires PHP version 7.0 or greater, please upgrade PHP or uninstall this theme' );
+    new WP_Error( 'php_version_fail', 'Disciple Tools theme requires PHP version 7.0 or greater. Your current version is: '.phpversion().' Please upgrade PHP or uninstall this theme' );
     add_action( 'admin_notices', 'dt_theme_admin_notice_required_php_version' );
     add_action( 'after_switch_theme', 'dt_theme_after_switch_theme_switch_back' );
 
-    return;
+//    return;
 }
 /**
  * Error handler for PHP version fail

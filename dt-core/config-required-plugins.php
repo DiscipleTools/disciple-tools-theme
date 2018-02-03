@@ -77,13 +77,13 @@ function dt_register_required_plugins() {
 //            'version' => '0.1.0',
 //            'is_callable' => 'dt_facebook',
 //        ),
-        array(
-            'name' => 'Disciple Tools - Demo',
-            'slug' => 'disciple-tools-demo',
-            'source' => 'https://github.com/DiscipleTools/disciple-tools-demo-content/archive/master.zip',
-            'version' => '0.1.0',
-            'is_callable' => 'dt_demo',
-        ),
+//        array(
+//            'name' => 'Disciple Tools - Demo Content',
+//            'slug' => 'disciple-tools-demo-content',
+//            'source' => 'https://github.com/DiscipleTools/disciple-tools-demo-content/archive/master.zip',
+//            'version' => '0.1.0',
+//            'is_callable' => 'dt_demo',
+//        ),
 //        array(
 //            'name' => 'Disciple Tools - Mailchimp',
 //            'slug' => 'disciple-tools-mailchimp',
@@ -91,13 +91,13 @@ function dt_register_required_plugins() {
 //            'version' => '0.1.0',
 //            'is_callable' => 'dt_mailchimp',
 //        ),
-        array(
-            'name' => 'Disciple Tools - Webform',
-            'slug' => 'disciple-tools-webform',
-            'source' => 'https://github.com/DiscipleTools/disciple-tools-webform/archive/master.zip',
-            'version' => '0.1.0',
-            'is_callable' => 'dt_webform',
-        ),
+//        array(
+//            'name' => 'Disciple Tools - Webform',
+//            'slug' => 'disciple-tools-webform',
+//            'source' => 'https://github.com/DiscipleTools/disciple-tools-webform/archive/master.zip',
+//            'version' => '0.1.0',
+//            'is_callable' => 'dt_webform',
+//        ),
 
     );
 
