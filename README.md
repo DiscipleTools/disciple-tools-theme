@@ -4,22 +4,21 @@
 A disciple relationship management system for discipleship making movements.
 
 ## Description
-Disciple Tools is a disciple relationship management (DRM) system especially designed to support outreach projects using digital marketing to accelerate disciple making movements (DMM).
+Disciple Tools is a disciple relationship management system especially designed to support outreach projects using digital marketing to accelerate disciple making movements (DMM).
 
 ## Purpose
 There needs to exist a simple, low-cost, highly distributable DRM that is tailored to the process of using digital marketing to accelerate disciple making movements. Most DRM solutions are too expensive to be used by small volunteer teams, and they often require significant configuration and development to implement. This project is attempting to make a rapid launch, low cost system that is tailored for movements.
 
 ## Platform
-We are building on the Wordpress platform because of its open-source availability, simplicity of installation, numerous low cost hosting options, multi-lingual support, substantial configurability and customization, giant development community and resources, (soon to be) native REST API, mobile readiness, and healthy market place for distributing themes and plugins.
+We are building on the Wordpress platform because of its open-source availability, simplicity of installation, numerous low cost hosting options, multi-lingual support, substantial configurability and customization, giant development community and resources, native REST API, mobile readiness, and healthy market place for distributing themes and plugins.
 
 ## Wiki
 
-Don't forget, we have a [wiki for Disciple Tools](https://github.com/DiscipleTools/disciple-tools/wiki).
+Don't forget, we have a [wiki for Disciple Tools](https://github.com/DiscipleTools/disciple-tools-theme/wiki).
 
 ## Theme
 
-This repository contains only the WordPress plugin for a Disciple Tools CRM. Another repository contains the theme also needed to run the CRM:
-https://github.com/DiscipleTools/disciple-tools-theme
+This repository contains only the WordPress theme. There are a growing number of plugin extensions to the theme, but the core of the Disciple Tools system is this theme.
 
 ## Support
 
@@ -31,37 +30,25 @@ If you need support, email us at supportXXXdisciple.tools, replacing XXX with th
 The goal of the project is to create a disciple-making DRM that is incredibly simple, cheap, and fast to launch. Below are the simple steps to do that.
 
 ### Step 1
-- Download the plugin .zip file from the Disciple-Tools GitHub release page (https://github.com/DiscipleTools/disciple-tools/releases). Save it to your desktop of anywhere so that you can easily find it in a minute.
 - Download the theme .zip file from the Disciple-Tools-Theme GitHub release page (https://github.com/DiscipleTools/disciple-tools-theme/releases)
 
 ### Step 2
-- Open up your Wordpress site, login to your Admin Dashboard.
-- Then on the admin navigation, go to "Plugins".
+- Open up your Wordpress site. 
+- Login to your Admin Dashboard. `http://{your website}/wp-admin/` 
 
 > Note: You have to be an administrator with the permissions to install plugins.
 
 ### Step 3
-- At the top of the "Add New" plugins screen, select the "Upload Plugin" button at the top of the page.
-- Use the file upload tool to upload the plugin .zip file you saved in Step #1.
+- In the Admin area, go to `Appearance > Themes` in the left navigation. This is where themes are installed.
+- Select the `Add New` button at the top of the screen.
+- Then select the `"Upload Theme` button at the top of the screen.
+- Use the `choose file` button to find the disciple-tools-theme.zip file you saved in step 1, and upload that file and wait for Wordpress to install it.
 
 ### Step 4
-- Once uploaded, "Activate" the plugin.
-> Note: You can find the "Activate" link for the plugin both on the screen on which you installed it, and on the "Installed Plugins" screen under the "Plugins" admin menu.
+- Once uploaded, you will see the new Disciple Tools Theme installed with other themes. Next `Activate` the theme.
 
-### Step 5
-- In the navigation bar, go to "Appearance" then "Themes"
-
-### Step 6
-- At the top of the "Add New" themes screen, select the "Upload Theme" button at the top of the page.
-- Use the file upload tool to upload the theme .zip file you saved in Step #1.
-
-### Step 7
-- When you activate the theme, WordPress will prompt you to install 1 plugins:
-- "Disciple Tools - Demo" allows you to add/remove sample data to your database so that you can explore the disciple-tools CRM more effectively. Installing it is recommended but not required.
-
-Done! You now have a complete disciple-making CRM for your movement.
+Done! You now have a complete coalition management system for your movement.
 You can access it by clicking on the home button at the top of the navigation bar.
-
 
  Blessings!
 
