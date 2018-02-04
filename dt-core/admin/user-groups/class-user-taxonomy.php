@@ -65,7 +65,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
          * @param array  $args
          * @param array  $labels
          */
-        public function __construct( string $taxonomy, string $slug = '', array $args = [], array $labels = [] )
+        public function __construct( string $taxonomy = null, string $slug = null, array $args = [], array $labels = [] )
         {
 
             /**
