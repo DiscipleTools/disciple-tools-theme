@@ -9,7 +9,7 @@ class Disciple_Tools_Migration_0003 extends Disciple_Tools_Migration {
             foreach ( $groups as $group ){
                 $meta_fields = get_post_custom( $group->ID );
 
-                if( count( $meta_fields ) > 0 ) {
+                if ( count( $meta_fields ) > 0 ) {
                     foreach ( $meta_fields as $meta_key => $meta_value ) {
                         if ( $meta_key == 'group_status' ) {
                             if ( $meta_value[0] == "active_pre_group" ||
