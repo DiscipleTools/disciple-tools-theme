@@ -25,9 +25,15 @@ register_deactivation_hook( __FILE__, 'dt_deactivate' );
  */
 function dt_theme_loaded()
 {
+    /** We want to make sure roles are up-to-date. */
+    require_once( get_template_directory() . '/dt-core/admin/class-roles.php' );
+    Disciple_Tools_Roles::instance()->set_roles_if_needed();
+
+
     disciple_tools();
-    /** We want to make sure migrations are run on plugin updates. The only way
-     * to do this is through the "plugins_loaded" hook. See
+
+    /**
+     * We want to make sure migrations are run on updates.
      *
      * @see https://www.sitepoint.com/wordpress-plugin-updates-right-way/
      */
@@ -37,10 +43,6 @@ function dt_theme_loaded()
     } catch ( Throwable $e ) {
         new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
     }
-
-    /** Similarly, we want to make sure roles are up-to-date. */
-    require_once( get_template_directory() . '/dt-core/admin/class-roles.php' );
-    Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
     /**
      * Load Language Files
