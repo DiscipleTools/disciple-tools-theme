@@ -45,7 +45,7 @@ declare( strict_types=1 );
                 </div>
                 <div class="shrink cell">
                     <label for="overall_status"><strong><?php esc_html_e( "Status", 'disciple_tools' ) ?></strong>
-                        <button class="help-button float-right" data-section="overall-status-help-text">
+                        <button class="help-button" data-section="overall-status-help-text">
                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                         </button>
                     </label>
