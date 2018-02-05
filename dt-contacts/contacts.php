@@ -160,8 +160,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $defaults["assigned_to"] = sprintf( "user-%d", get_current_user_id() );
         } else {
             $base_id = dt_get_base_user( true );
-            if ( is_wp_error( $base_id ) ) {
-                $base_id = 1; // if base user is corrupted, set it to admin
+            if ( is_wp_error( $base_id ) ) { // if default editor does not exist, get available administrator
+                $users = get_users( [ 'role' => 'administrator' ] );
+                if ( count( $users ) > 0 ) {
+                    foreach ( $users as $user ) {
+                        $base_id = $user->ID;
+                    }
+                }
             }
             $defaults["assigned_to"] = sprintf( "user-%d", $base_id );
         }
