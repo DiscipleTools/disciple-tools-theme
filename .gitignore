@@ -1,10 +1,7 @@
 .sass-cache/
 node_modules/
+/vendor/*
 .env
-/vendor
-
-config.codekit
 .idea
-
 .DS_Store
-dt-core/admin/utilities/locations_temp.csv
+single-groups.php

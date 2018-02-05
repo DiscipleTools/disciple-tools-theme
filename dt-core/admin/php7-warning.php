@@ -16,7 +16,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
     add_action( 'admin_notices', 'dt_theme_admin_notice_required_php_version' );
     add_action( 'after_switch_theme', 'dt_theme_after_switch_theme_switch_back' );
 
-//    return;
+    return;
 }
 /**
  * Error handler for PHP version fail
@@ -36,7 +36,9 @@ function dt_theme_admin_notice_required_php_version()
 {
     ?>
     <div class="notice notice-error">
-        <p><?php esc_html_e( "The Disciple Tools theme requires PHP 7.0 or greater before it will have any effect. Please upgrade your PHP version or uninstall this theme.", "disciple_tools" ); ?></p>
+        <p><?php esc_html_e( 'Disciple Tools theme requires PHP version 7.0 or greater. Your current version is: ', 'disciple_tools');
+                    echo phpversion();
+                    esc_html_e( ' Please upgrade PHP or uninstall this theme' , "disciple_tools" ); ?></p>
     </div>
     <?php
 }
