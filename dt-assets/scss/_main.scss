@@ -1463,3 +1463,12 @@ html[dir='rtl'] {
     margin-right: 3px;
     margin-left: 3px;
 }
+select#overall_status {
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    option {
+        background-color: white;
+        color: black;
+    }
+}

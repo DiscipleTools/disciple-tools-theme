@@ -49,7 +49,14 @@ declare( strict_types=1 );
                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                         </button>
                     </label>
-                    <select id="overall_status" class="select-field" style="margin-bottom:0px;">
+                    <?php
+                    $active_color = "#FFFFFF";
+                    $current_key = $contact->fields["overall_status"]["key"] ?? "";
+                    if ( isset( $contact_fields["overall_status"]["colors"][ $current_key ] )){
+                        $active_color = $contact_fields["overall_status"]["colors"][$current_key];
+                    }
+                    ?>
+                    <select id="overall_status" class="select-field" style="margin-bottom:0px; background-color: <?php echo esc_html( $active_color ) ?>">
                     <?php foreach ($contact_fields["overall_status"]["default"] as $key => $value){
                         if ( $contact->fields["overall_status"]["key"] === $key ) {
                             ?>

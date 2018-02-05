@@ -638,9 +638,17 @@ class Disciple_Tools_Contact_Post_Type
                 'active'       => _X( 'Active', 'Contact Status', 'disciple_tools' ),
                 'paused'       => _x( 'Paused', 'Contact Status', 'disciple_tools' ),
                 'closed'       => _x( 'Closed', 'Contact Status', 'disciple_tools' ),
-                'unassignable' => _X( 'Unassignable', 'Contact Status', 'disciple_tools' ),
+                'unassignable' => _x( 'Unassignable', 'Contact Status', 'disciple_tools' ),
             ],
             'section'     => 'status',
+            'colors' => [
+                "unassigned" => "#F43636",  //(red)
+                "assigned" => "#FF9800", //(orange)
+                "active" => "#4CAF50", //(green)
+                "paused" => "#FF9800", //(orange)
+                "closed" => "#F43636", //(red)
+                "unassignable" => "#2196F3" //(blue)
+            ]
         ];
 
         //these fields must stay in order of importance
@@ -657,7 +665,7 @@ class Disciple_Tools_Contact_Post_Type
                 'ongoing'     => __( 'Ongoing Meetings', 'disciple_tools' ),
                 'coaching'    => __( 'Being Coached', 'disciple_tools' ),
             ],
-            'section'     => 'status',
+            'section'     => 'status'
         ];
         $fields['requires_update'] = [
             'name'        => __( 'Requires Update', 'disciple_tools' ),

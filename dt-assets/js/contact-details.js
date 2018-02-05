@@ -830,7 +830,8 @@ jQuery(document).ready(function($) {
   function setStatus(contact, openModal) {
     let status = _.get(contact, "fields.overall_status.key")
     let reasonLabel = _.get(contact, `fields.reason_${status}.label`)
-    let statusLabel = _.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings.overall_status.default.${status}`)
+    let statusColor = _.get(contactsDetailsWpApiSettings,
+      `contacts_custom_fields_settings.overall_status.colors.${status}`)
     $('#overall-status').val(status)
 
     if (openModal){
@@ -841,6 +842,10 @@ jQuery(document).ready(function($) {
       } else if (status === 'unassignable'){
         $('#unassignable-contact-modal').foundation('open');
       }
+    }
+
+    if (statusColor){
+      $('#overall_status').css("background-color", statusColor)
     }
 
     $('#reason').text(reasonLabel ? `(${reasonLabel})` : '')
