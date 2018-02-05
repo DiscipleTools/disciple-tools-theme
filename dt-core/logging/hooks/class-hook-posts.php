@@ -235,17 +235,17 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         dt_activity_insert( // insert activity record
             [
                 'action'            => 'field_update',
-                'object_type'       => $parent_post['post_type'],
+                'object_type'       => ( empty( $parent_post['post_type'] ) ) ? 'unknown' : $parent_post['post_type'],
                 'object_subtype'    => $meta_key,
                 'object_id'         => $object_id,
-                'object_name'       => $parent_post['post_title'],
+                'object_name'       => ( empty( $parent_post['post_title'] ) ) ? 'unknown' : $parent_post['post_title'],
                 'meta_id'           => $meta_id,
                 'meta_key'          => $meta_key,
                 'meta_value'        => is_array( $meta_value ) ? serialize( $meta_value ) : $meta_value,
-                'meta_parent'       => $parent_post['post_parent'],
+                'meta_parent'       => ( empty( $parent_post['post_parent'] ) ) ? 'unknown' : $parent_post['post_parent'],
                 'object_note'       => $object_note,
                 'old_value'         => is_array( $prev_value ) ? serialize( $prev_value ) : $prev_value,
-                'field_type'        => $field_type
+                'field_type'        => $field_type,
             ]
         );
     }

@@ -73,9 +73,9 @@ class Disciple_Tools_Activity_Log_API {
             $args,
             [
                 'action'         => '',
-                'object_type'    => '',
+                'object_type'    => 'unknown',
                 'object_subtype' => '',
-                'object_name'    => '',
+                'object_name'    => 'unknown',
                 'object_id'      => '0',
                 'hist_ip'        => $this->_get_ip_address(),
                 'hist_time'      => time(),
