@@ -136,7 +136,7 @@ class Disciple_Tools
          * Prepare variables
          */
         $this->token = 'disciple_tools';
-        $this->version = '0.6.0';
+        $this->version = '0.6.1';
         $this->migration_number = 3;
         $this->plugin_url = get_template_directory_uri() . '/';
         $this->plugin_path = get_template_directory() . '/';
