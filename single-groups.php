@@ -68,7 +68,12 @@ dt_print_breadcrumbs(
 
 
                                 <label class="section-header" ><?php esc_html_e( 'Progress', 'disciple_tools' )?></label>
-                                <div class="section-subheader"><?php esc_html_e( 'Group Type', 'disciple_tools' )?></div>
+                                <div class="section-subheader">
+                                    <?php esc_html_e( 'Group Type', 'disciple_tools' )?>
+<!--                                    <button class="help-button" data-section="group-type-help-text">-->
+<!--                                        <img class="help-icon" src="--><?php //echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?><!--"/>-->
+<!--                                    </button>-->
+                                </div>
 
                                 <select class="select-field" id="group_type">
                                     <?php
@@ -84,7 +89,12 @@ dt_print_breadcrumbs(
                                     ?>
                                 </select>
 
-                                <div class="section-subheader "><?php esc_html_e( 'Health Metrics', 'disciple_tools' )?></div>
+                                <div class="section-subheader ">
+                                    <?php esc_html_e( 'Health Metrics', 'disciple_tools' )?>
+                                    <button class="help-button" data-section="health-metrics-help-text">
+                                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                    </button>
+                                </div>
                                 <div style="display:flex;flex-wrap:wrap;margin-top:10px">
                                     <div class="group-progress-button-wrapper">
                                         <button  class="group-progress-button" id="church_fellowship">
@@ -158,7 +168,11 @@ dt_print_breadcrumbs(
 
                         <section id="groups" class="xlarge-6 large-12 medium-6 cell grid-item">
                             <div class="bordered-box">
-                                <label class="section-header"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></label>
+                                <label class="section-header"><?php esc_html_e( "Groups", 'disciple_tools' ) ?>
+                                    <button class="help-button" data-section="group-connections-help-text">
+                                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                    </button>
+                                </label>
                                 <div class="section-subheader"><?php esc_html_e( "Parent Group", 'disciple_tools' ) ?></div>
                                 <var id="parent_groups-result-container" class="result-container"></var>
                                 <div id="parent_groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
