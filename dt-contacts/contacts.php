@@ -158,7 +158,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         ];
         if (get_current_user_id()) {
             $defaults["assigned_to"] = sprintf( "user-%d", get_current_user_id() );
+        } else {
+            $defaults["assigned_to"] = sprintf( "user-%d", dt_get_base_user( true ) );
         }
+
         if (in_array( "dispatcher", $current_roles, true ) || in_array( "marketer", $current_roles, true )) {
             $defaults["overall_status"] = "unassigned";
         } else if (in_array( "multiplier", $current_roles, true ) ) {
@@ -179,10 +182,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             "meta_input"  => $fields,
         ];
 
-
-        if (isset( $fields["assigned-to"] ) && ( ! get_current_user_id() || $fields["assigned-to"] !== sprintf( "user-%d", get_current_user_id() ) )) {
-            return new WP_Error( __FUNCTION__, __( "You may not assign a new contact to this user" ), [ 'status' => 403 ] );
-        }
+//      @todo this seems to be a share check. But this is a new contact creation. Permission to create, should be handled earlier.
+//        if ( isset( $fields["assigned-to"] ) && ( ! get_current_user_id() || $fields["assigned-to"] !== sprintf( "user-%d", get_current_user_id() ) )) {
+//            return new WP_Error( __FUNCTION__, __( "You may not assign a new contact to this user" ), [ 'status' => 403 ] );
+//        }
 
         $post_id = wp_insert_post( $post );
 
