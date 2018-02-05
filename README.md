@@ -29,6 +29,8 @@ If you need support, email us at supportXXXdisciple.tools, replacing XXXX with t
 ## How to Install
 The goal of the project is to create a disciple-making DRM that is incredibly simple, cheap, and fast to launch. Below are the simple steps to do that.
 
+**Note: You must have php 7 or above. php 5.6 will not work.**
+
 ### Step 1
 - Download the theme .zip file from the Disciple-Tools-Theme GitHub release page (https://github.com/DiscipleTools/disciple-tools-theme/releases)
 
