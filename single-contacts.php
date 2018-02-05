@@ -44,7 +44,11 @@ declare( strict_types=1 );
                     <span class="item-details-header title" ><?php the_title_attribute(); ?></span>
                 </div>
                 <div class="shrink cell">
-                    <label for="overall_status"><strong><?php esc_html_e( "Status", 'disciple_tools' ) ?></strong></label>
+                    <label for="overall_status"><strong><?php esc_html_e( "Status", 'disciple_tools' ) ?></strong>
+                        <button class="help-button float-right" data-section="overall-status-help-text">
+                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                        </button>
+                    </label>
                     <select id="overall_status" class="select-field" style="margin-bottom:0px;">
                     <?php foreach ($contact_fields["overall_status"]["default"] as $key => $value){
                         if ( $contact->fields["overall_status"]["key"] === $key ) {
@@ -152,8 +156,17 @@ declare( strict_types=1 );
 
                     <section id="faith" class="xlarge-6 large-12 medium-6 cell">
                     <div class="bordered-box">
-                        <label class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?></label>
-                        <div class="section-subheader"><?php esc_html_e( 'Seeker Path', 'disciple_tools' )?></div>
+                        <label class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?>
+<!--                            <button class="help-button float-right" data-section="contact-progress-help-text">-->
+<!--                                <img class="help-icon" src="--><?php //echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?><!--"/>-->
+<!--                            </button>-->
+                        </label>
+                        <div class="section-subheader">
+                            <?php esc_html_e( 'Seeker Path', 'disciple_tools' )?>
+                            <button class="help-button" data-section="seeker-path-help-text">
+                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                            </button>
+                        </div>
 
                         <select class="select-field" id="seeker_path" style="margin-bottom: 0px">
                         <?php
@@ -175,7 +188,12 @@ declare( strict_types=1 );
                             <div id="seeker-progress" class="progress-meter" style="width: <?php echo esc_html( $percentage ) ?>%"></div>
                         </div>
 
-                        <div class="section-subheader"><?php esc_html_e( 'Faith Milestones', 'disciple_tools' )?></div>
+                        <div class="section-subheader">
+                            <?php esc_html_e( 'Faith Milestones', 'disciple_tools' )?>
+                            <button class="help-button" data-section="faith-milestones-help-text">
+                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                            </button>
+                        </div>
                         <div class="small button-group" style="display: inline-block">
 
                             <?php foreach ( $contact_fields as $field => $val ): ?>

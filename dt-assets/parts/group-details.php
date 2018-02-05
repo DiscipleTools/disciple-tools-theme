@@ -72,6 +72,9 @@ function dt_contact_details_edit( $id, $remove = false ){
                 </option>
             <?php } ?>
         </select>
+        <button class="help-button" data-section="group-status-help-text">
+            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+        </button>
 
         <button class=" float-right" id="edit-details">
             <i class="fi-pencil"></i>

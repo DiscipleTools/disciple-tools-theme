@@ -199,6 +199,12 @@ jQuery( document ).ajaxComplete(function(event, xhr, settings) {
     window.location.replace("/login");
   }
 });
+jQuery( document ).on("click", ".help-button", function () {
+    jQuery('#help-modal').foundation('open');
+    let section = jQuery(this).data("section")
+    jQuery(".help-section").hide()
+    jQuery(`#${section}`).show()
+})
 
 let TYPEAHEADS = {
 
