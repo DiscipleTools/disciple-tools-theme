@@ -37,7 +37,7 @@ dt_print_breadcrumbs(
         <span id="post-type" style="display: none">group</span>
 
         <main id="main" class="large-7 medium-12 small-12 cell" role="main" style="padding:0">
-            <div class="grid-y grid-margin-y">
+            <div class="cell grid-y grid-margin-y">
                 <section id="contact-details" class="cell small-12">
                     <?php get_template_part( 'dt-assets/parts/group', 'details' ); ?>
                 </section>
