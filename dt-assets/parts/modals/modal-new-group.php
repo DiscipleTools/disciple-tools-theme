@@ -32,7 +32,7 @@
             }
             ?>
         </button>
-        <a class="button reveal-after-group-create" type="button" id="go-to-group" style="display: none">
+        <a class="button reveal-after-group-create" id="go-to-group" style="display: none">
             <?php esc_html_e( 'Edit new Group', 'disciple_tools' )?>
         </a>
         <button class="close-button" data-close aria-label="Close modal" type="button">
