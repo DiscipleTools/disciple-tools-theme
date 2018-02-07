@@ -34,11 +34,11 @@ class Disciple_Tools_People_Groups_Tab_Import
     public function __construct()
     {
         // API Keys
-        $this->jp_api_key = 'vinskxSNWQKH'; // Joshua Project API Key /* TODO: Currently using Chasm JP Key (vinskxSNWQKH). Should we have each project get their own key? */
+        $this->jp_api_key = '0c0a0b16408a'; // Joshua Project API Key /* TODO: Currently using Chasm JP Key (0c0a0b16408a). Should we have each project get their own key? */
 
         // File paths
-        $this->jp_json_path = plugin_dir_path( __FILE__ ) . 'json/';
-        $this->jp_countries_path = plugin_dir_path( __FILE__ ) . 'json/jp_countries.json';
+        $this->jp_json_path = get_template_directory() . '/dt-people-groups/json/';
+        $this->jp_countries_path = get_template_directory() . '/dt-people-groups/json/jp_countries.json';
 
         // REST URLs
         $this->jp_query_countries_all = 'https://joshuaproject.net/api/v2/countries?api_key=' . $this->jp_api_key . '&limit=300';
@@ -85,6 +85,10 @@ class Disciple_Tools_People_Groups_Tab_Import
                 $jp_install_request = sanitize_text_field( wp_unslash( $_POST['jp-countries-dropdown'] ) );
 
                 $jp_install_result = $this->install_jp_country( $jp_install_request );
+
+                if ( is_wp_error( $jp_install_result ) ) {
+                    echo '<div class="notice">Unable to add countries ( ' . esc_html( $jp_install_result->get_error_message() ) . ')</div>';
+                }
             }
 
             if ( isset( $_POST['jp-countries-refresh'] ) ) { // check if file is correctly set
@@ -120,15 +124,15 @@ class Disciple_Tools_People_Groups_Tab_Import
                 </table>';
 
         // Displays success/fail message for the import selection.
-        if ( !empty( $jp_install_result ) ) {
-            echo '<table class="widefat striped">
-                        <tbody>
-                            <tr>
-                                <td>JP Install Request for ' . esc_html( $jp_install_request ) . ': ' . esc_html( $jp_install_result ) . '</td>
-                            </tr>
-                        </tbody>
-                    </table>';
-        }
+//        if ( ! empty( $jp_install_result ) ) {
+//            echo '<table class="widefat striped">
+//                        <tbody>
+//                            <tr>
+//                                <td>JP Install Request for ' . esc_html( $jp_install_request ) . ': ' . esc_html( $jp_install_result ) . '</td>
+//                            </tr>
+//                        </tbody>
+//                    </table>';
+//        }
         // Displays success message for the refresh button
         if ( !empty( $refresh ) ) {
             echo '<table class="widefat striped">
@@ -283,7 +287,7 @@ class Disciple_Tools_People_Groups_Tab_Import
         // get people group data for the country
         $jp_pg_by_country_json = file_get_contents( $this->jp_query_pg_by_country_all . '&ROG3=' . $jp_install_request );
 
-        if ( !$jp_pg_by_country_json ) {
+        if ( ! $jp_pg_by_country_json ) {
             return new WP_Error( 'failed_api_call', 'Failed to get API data from Joshua Project' );
         }
 
