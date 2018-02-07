@@ -485,14 +485,14 @@
 
 		//Search into data list passed as parameter
 		function doSearch(query) {
-			//If the query is not null, undefined, empty and has the minimum chars
-			if (query && query.length && query.length >= settings.minChars) {
+			//If the query is not null, undefined and has the minimum chars
+      if (typeof query === 'string' && query.length >= settings.minChars) {
 				//Call the onDataRequest function and then call the populateDropDrown
 				settings.onDataRequest.call(this, 'search', query, function (responseData) {
 					populateDropdown(query, responseData);
 				});
 			} else { //If the query is null, undefined, empty or has not the minimun chars
-				hideAutoComplete(); //Hide the autocompletelist
+        hideAutoComplete(); //Hide the autocompletelist
 			}
 		}
 

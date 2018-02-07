@@ -1472,3 +1472,7 @@ select#overall_status {
         color: black;
     }
 }
+
+.mentions-input-box textarea.loading-gif {
+    background:url('/wp-content/themes/disciple-tools-theme/dt-assets/images/ajax-loader.gif') no-repeat 99% 6px;
+}

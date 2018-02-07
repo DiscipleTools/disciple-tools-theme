@@ -183,7 +183,9 @@ jQuery(document).ready(function($) {
 
   $('textarea.mention').mentionsInput({
     onDataRequest:function (mode, query, callback) {
+      $('#comment-input').addClass('loading-gif')
       API.search_users(query).then(responseData=>{
+        $('#comment-input').removeClass('loading-gif')
         let data = []
         responseData.forEach(user=>{
           data.push({id:user.ID, name:user.name, type:postType})
@@ -195,7 +197,9 @@ jQuery(document).ready(function($) {
       mentionItemSyntax : function (data) {
         return `@${data.value}`
       }
-    }
+    },
+    showAvatars: false,
+    minChars: 0
   });
 
   let getMentionedUsers = (callback)=>{
