@@ -39,12 +39,12 @@ function dt_register_required_plugins() {
     $plugins = array(
 
 
-//        array(
-//            'name'                  => 'iThemes Security',
-//            'slug'                  => 'better-wp-security',
-//            'required'              => false,
-//            'version'               => '6.8.0',
-//        ),
+        array(
+            'name'                  => 'iThemes Security',
+            'slug'                  => 'better-wp-security',
+            'required'              => false,
+            'version'               => '6.8.0',
+        ),
 //        array(
 //            'name'                  => 'Updraft Plus',
 //            'slug'                  => 'updraftplus',
@@ -57,12 +57,12 @@ function dt_register_required_plugins() {
 //            'required'              => false,
 //            'version'               => '1.1.1',
 //        ),
-//        array(
-//            'name' => 'Host Header Injection Fix',
-//            'slug' => 'host-header-injection-fix',
-//            'version' => '1.1',
-//            'required' => true,
-//        ),
+        array(
+            'name' => 'Host Header Injection Fix',
+            'slug' => 'host-header-injection-fix',
+            'version' => '1.1',
+            'required' => true,
+        ),
 //        array(
 //            'name' => 'Disciple Tools - Zume',
 //            'slug' => 'disciple-tools-zume',
@@ -91,13 +91,13 @@ function dt_register_required_plugins() {
 //            'version' => '0.1.0',
 //            'is_callable' => 'dt_mailchimp',
 //        ),
-//        array(
-//            'name' => 'Disciple Tools - Webform',
-//            'slug' => 'disciple-tools-webform',
-//            'source' => 'https://github.com/DiscipleTools/disciple-tools-webform/archive/master.zip',
-//            'version' => '0.1.0',
-//            'is_callable' => 'dt_webform',
-//        ),
+        array(
+            'name' => 'Disciple Tools - Webform',
+            'slug' => 'disciple-tools-webform',
+            'source' => 'https://github.com/DiscipleTools/disciple-tools-webform/archive/master.zip',
+            'version' => '0.1.3',
+            'is_callable' => 'dt_webform',
+        ),
 
     );
 
