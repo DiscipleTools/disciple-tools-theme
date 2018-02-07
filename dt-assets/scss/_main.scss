@@ -1473,6 +1473,11 @@ select#overall_status {
     }
 }
 
+//add a loading spinner when searching for contacts
 .mentions-input-box textarea.loading-gif {
     background:url('/wp-content/themes/disciple-tools-theme/dt-assets/images/ajax-loader.gif') no-repeat 99% 6px;
+}
+//make sure the blue boxes around the @mentions in the textarea are the right sizes
+.mentions-input-box .mentions strong span {
+    font-weight: 300;
 }
