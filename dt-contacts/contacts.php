@@ -139,6 +139,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $initial_comment = $fields["initial_comment"];
             unset( $fields["initial_comment"] );
         }
+        $notes = null;
+        if ( isset( $fields["notes"] ) && is_array( $fields["notes"] ) ) {
+            $notes = $fields["notes"];
+            unset( $fields["notes"] );
+        }
         $location_id = null;
         if ( isset( $fields["location_id"] ) ) {
             $location_id = $fields["location_id"];
@@ -219,12 +224,27 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 return $potential_error;
             }
         }
-
         if ( $location_id ) {
             // TODO: check permissions: can any user connect a contact to any
             // location he/she pleases?
             self::add_location_to_contact( $post_id, $location_id );
         }
+        if ( $notes ) {
+            if ( ! is_array( $notes ) ) {
+                return new WP_Error( 'notes_not_array', 'Notes must be an array' );
+            }
+            $error = new WP_Error();
+            foreach ( $notes as $note ) {
+                $potential_error = self::add_comment( $post_id, $note, false );
+                if ( is_wp_error( $potential_error ) ) {
+                    $error->add( 'comment_fail', $potential_error->get_error_message() );
+                }
+            }
+            if ( count( $error->get_error_messages() ) > 0 ) {
+                return $error;
+            }
+        }
+
 
         return $post_id;
     }
