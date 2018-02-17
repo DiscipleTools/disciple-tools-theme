@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Disciple Tools\n"
-"POT-Creation-Date: 2018-02-17 12:41+0100\n"
-"PO-Revision-Date: 2018-02-17 12:47+0100\n"
+"POT-Creation-Date: 2018-02-17 12:49+0100\n"
+"PO-Revision-Date: 2018-02-17 12:51+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ar_001\n"
@@ -1935,7 +1935,7 @@ msgid "No contacts found."
 msgstr "لم يتم العثور على المتواصلون."
 
 #: dt-core/config-p2p.php:25 dt-core/config-p2p.php:50
-msgid "Connect Disciple "
+msgid "Connect Disciple"
 msgstr "ربط التلمیذ"
 
 #: dt-core/config-p2p.php:31
@@ -1992,7 +1992,7 @@ msgid "No groups found."
 msgstr "لم يتم العثور على المجموعات."
 
 #: dt-core/config-p2p.php:121
-msgid "Connect Group "
+msgid "Connect Group"
 msgstr "ربط المجموعة"
 
 #: dt-core/config-p2p.php:124
@@ -2856,13 +2856,13 @@ msgstr ""
 #: dt-core/posts.php:377
 #, fuzzy
 #| msgid "was shared with you."
-msgid "Shared with "
+msgid "Shared with"
 msgstr "تمت المشاركة معك."
 
 #: dt-core/posts.php:379
 #, fuzzy
 #| msgid "was shared with you."
-msgid "Unshared with "
+msgid "Unshared with"
 msgstr "تمت المشاركة معك."
 
 #: dt-core/posts.php:396 dt-core/posts.php:434 dt-core/posts.php:475
@@ -3057,7 +3057,9 @@ msgid "DT contact shared"
 msgstr "المتواصلون المشترَكَون معي"
 
 #: dt-notifications/notifications.php:522
-msgid "You have been assigned "
+#, fuzzy
+#| msgid "You have been assigned "
+msgid "You have been assigned"
 msgstr "تم تعيينك "
 
 #: dt-notifications/notifications.php:527
@@ -3179,7 +3181,7 @@ msgstr "غير ممكن"
 #| "any effect. Please upgrade your PHP version or uninstall this theme."
 msgid ""
 "Disciple Tools theme requires PHP version 7.0 or greater. Your current "
-"version is: "
+"version is:"
 msgstr ""
 "قالب موقع نظام التلمذة يتطلب   PHP 7.0 أو أكبر قبل أن يكون له أي تأثير. يرجى "
 "ترقية إصدار PHP الخاص بك أو إلغاء قالب الموقع."
