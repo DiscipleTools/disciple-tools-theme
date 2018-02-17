@@ -22,7 +22,7 @@ function dt_my_connection_types()
                 'singular_name' => __( 'Contact', 'disciple_tools' ),
                 'search_items'  => __( 'Search contacts', 'disciple_tools' ),
                 'not_found'     => __( 'No contacts found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Disciple ', 'disciple_tools' ),
+                'create'        => __( 'Connect Disciple', 'disciple_tools' ),
             ],
             'to_labels'   => [
                 'singular_name' => __( 'Contact', 'disciple_tools' ),
@@ -47,7 +47,7 @@ function dt_my_connection_types()
                 'singular_name' => __( 'Contact', 'disciple_tools' ),
                 'search_items'  => __( 'Search contacts', 'disciple_tools' ),
                 'not_found'     => __( 'No contacts found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Disciple ', 'disciple_tools' ),
+                'create'        => __( 'Connect Disciple', 'disciple_tools' ),
             ],
             'to_labels'   => [
                 'singular_name' => __( 'Contact', 'disciple_tools' ),
@@ -118,7 +118,7 @@ function dt_my_connection_types()
                 'singular_name' => __( 'Groups', 'disciple_tools' ),
                 'search_items'  => __( 'Search groups', 'disciple_tools' ),
                 'not_found'     => __( 'No groups found.', 'disciple_tools' ),
-                'create'        => __( 'Connect Group ', 'disciple_tools' ),
+                'create'        => __( 'Connect Group', 'disciple_tools' ),
             ],
             'from_labels'    => [
                 'singular_name' => __( 'Member', 'disciple_tools' ),

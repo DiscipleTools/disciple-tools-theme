@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Disciple Tools\n"
-"POT-Creation-Date: 2018-02-17 12:30+0100\n"
-"PO-Revision-Date: 2018-02-17 12:36+0100\n"
+"POT-Creation-Date: 2018-02-17 12:41+0100\n"
+"PO-Revision-Date: 2018-02-17 12:47+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ar_001\n"
@@ -3112,22 +3112,20 @@ msgid "was changed for"
 msgstr "تم تغييره ل"
 
 #: dt-notifications/notifications.php:575
-msgid "An update is requested on: "
+msgid "An update is requested on:"
 msgstr "تحديث مطلوب في:"
 
 #: dt-notifications/notifications.php:579
-msgid "Address details on "
+msgid "Address details on"
 msgstr "تفاصيل العنوان في"
 
 #: dt-notifications/notifications.php:581 dt-notifications/notifications.php:583
-msgid "Contact details on "
+msgid "Contact details on"
 msgstr "تفاصيل الاتصال على"
 
 #: dt-notifications/notifications.php:589
-msgid "  were modified by "
-msgstr ""
-"تم التعديل طرف‬\n"
-"‫"
+msgid "were modified by"
+msgstr "تم التعديل طرف‫"
 
 #: dt-people-groups/admin-menu.php:69
 msgid "Add New"

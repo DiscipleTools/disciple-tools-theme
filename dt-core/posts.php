@@ -374,9 +374,9 @@ class Disciple_Tools_Posts
         }
         if ( $activity->object_subtype === "share" ){
             if ($activity->action === "share"){
-                $message = __( "Shared with ", "disciple_tools" ) . ' ' . dt_get_user_display_name( $activity->meta_value );
+                $message = __( "Shared with", "disciple_tools" ) . ' ' . dt_get_user_display_name( $activity->meta_value );
             } else if ( $activity->action === "remove" ){
-                $message = __( "Unshared with ", "disciple_tools" ) . ' ' . dt_get_user_display_name( $activity->meta_value );
+                $message = __( "Unshared with", "disciple_tools" ) . ' ' . dt_get_user_display_name( $activity->meta_value );
             }
         }
 

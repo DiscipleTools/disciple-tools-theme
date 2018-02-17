@@ -519,7 +519,7 @@ class Disciple_Tools_Notifications
         $object_id = $notification["post_id"];
         $notification_note = $notification["notification_note"];
         if ( $notification["notification_name"] === "assigned_to" ) {
-            $notification_note = __( 'You have been assigned ', 'disciple_tools' ) . '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . strip_tags( get_the_title( $object_id ) ) . '</a>';
+            $notification_note = __( 'You have been assigned', 'disciple_tools' ) . ' <a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . strip_tags( get_the_title( $object_id ) ) . '</a>';
 
         } elseif ( $notification["notification_name"] ==="share" ){
             $source_user = get_userdata( $notification["source_user_id"] );
@@ -572,21 +572,21 @@ class Disciple_Tools_Notifications
 
         } elseif ( $notification["notification_name"] ==="requires_update" ) {
             $link              = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . strip_tags( get_the_title( $object_id ) ) . '</a>';
-            $notification_note = __( 'An update is requested on: ', 'disciple_tools' ) . $link;
+            $notification_note = __( 'An update is requested on:', 'disciple_tools' ) . $link;
         } elseif ( $notification["notification_name"] ==="contact_info_update" ){
             $meta_key = $notification["field_key"] ?? 'contact';
             if ( strpos( $meta_key, "address" ) === 0 ) {
-                $element = __( 'Address details on ', 'disciple_tools' );
+                $element = __( 'Address details on', 'disciple_tools' );
             } elseif ( strpos( $meta_key, "contact" ) === 0 ) {
-                $element = __( 'Contact details on ', 'disciple_tools' );
+                $element = __( 'Contact details on', 'disciple_tools' );
             } else {
-                $element = __( 'Contact details on ', 'disciple_tools' );
+                $element = __( 'Contact details on', 'disciple_tools' );
             }
             $source_user = get_userdata( $notification["source_user_id"] );
             $link = '<a href="' . home_url( '/' ) .
             get_post_type( $object_id ) . '/' . $object_id . '">' .
             strip_tags( get_the_title( $object_id ) ) . '</a>';
-            $notification_note = $element  . $link . __( '  were modified by ', 'disciple_tools' ) .
+            $notification_note = $element . ' ' . $link . ' ' . __( 'were modified by', 'disciple_tools' ) .
             '<strong>' . $source_user->display_name . '</strong>';
         }
         return $notification_note;
