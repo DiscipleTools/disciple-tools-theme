@@ -13,6 +13,19 @@ let API = {
       }
     })
   },
+  create_contact(fields){
+    return jQuery.ajax({
+      type: "POST",
+      data: JSON.stringify(fields),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: wpApiSettings.root + `dt/v1/contact/create`,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      }
+    })
+  },
+
   save_field_api(type, postId, post_data){
     return jQuery.ajax({
       type:"POST",

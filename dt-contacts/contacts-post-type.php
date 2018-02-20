@@ -672,8 +672,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'status',
         ];
@@ -753,8 +753,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -763,8 +763,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -773,8 +773,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -783,8 +783,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -793,8 +793,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -803,8 +803,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -813,8 +813,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -823,8 +823,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -833,8 +833,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -935,8 +935,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'status',
         ];

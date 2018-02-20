@@ -89,9 +89,9 @@ dt_print_breadcrumbs(
             dataType: "json",
             data: JSON.stringify({
                 title: $(".js-create-contact input[name=title]").val(),
-                phone: $(".js-create-contact input[name=phone]").val(),
+                phone_numbers: $(".js-create-contact input[name=phone]").val(),
                 sources: $(".js-create-contact select[name=sources]").val(),
-                location_id: location_id,
+                locations: [location_id],
                 initial_comment: $(".js-create-contact textarea[name=initial_comment]").val(),
             }),
             beforeSend: function(xhr) {

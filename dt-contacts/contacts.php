@@ -17,6 +17,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static $contact_fields;
     public static $channel_list;
     public static $address_types;
+    public static $contact_connection_types;
 
     /**
      * Disciple_Tools_Contacts constructor.
@@ -29,6 +30,17 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 self::$contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
                 self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
                 self::$address_types = dt_address_metabox()->get_address_type_list( "contacts" );
+                self::$contact_connection_types = [
+                    "locations",
+                    "groups",
+                    "people_groups",
+                    "baptized_by",
+                    "baptized_by",
+                    "baptized",
+                    "coached_by",
+                    "coaching",
+                    "subassigned"
+                ];
             }
         );
         parent::__construct();
@@ -58,14 +70,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     {
         $allowed_keys = [
             'order',
-        'orderby',
-        'nopaging',
-        'posts_per_page',
-        'posts_per_archive_page',
-        'offset',
+            'orderby',
+            'nopaging',
+            'posts_per_page',
+            'posts_per_archive_page',
+            'offset',
             'paged',
-        'page',
-        'ignore_sticky_posts',
+            'page',
+            'ignore_sticky_posts',
         ];
         $error = new WP_Error();
         foreach ( $query_pagination_args as $key => $value ) {
@@ -124,16 +136,60 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, __( "Contact needs a title" ), [ 'fields' => $fields ] );
         }
 
-        $phone = null;
-        if ( isset( $fields["phone"] ) ) {
-            $phone = $fields["phone"];
-            unset( $fields["phone"] );
+        if ( isset( $fields["assigned_to"] ) &&
+             (is_numeric( $fields["assigned_to"] ) ||
+             strpos( $fields["assigned_to"], "user" ) === false)){
+            $fields["assigned_to"] = "user-" . $fields["assigned_to"];
         }
-        $email = null;
-        if ( isset( $fields["email"] ) ) {
-            $email = $fields["email"];
-            unset( $fields["email"] );
+
+        $phone_numbers = [];
+        if ( isset( $fields["phone_numbers"] ) ) {
+            if (is_array( $fields["phone_numbers"] )){
+                foreach ( $fields["phone_numbers"] as $phone_field ){
+                    if ( isset( $phone_field["value"] )){
+                        $phone_numbers[] = $phone_field;
+                    }
+                }
+            } else {
+                $phone[] = [ "value" => $fields["phone_numbers"] ];
+            }
+            unset( $fields["phone_numbers"] );
         }
+        $emails = [];
+        if ( isset( $fields["emails"] ) ) {
+            if (is_array( $fields["emails"] )){
+                foreach ( $fields["emails"] as $email_field ){
+                    if ( isset( $email_field["value"] )){
+                        $emails[] = $email_field;
+                    }
+                }
+            } else {
+                $email[] = [ "value" => $fields["emails"] ];
+            }
+            unset( $fields["emails"] );
+        }
+        $addresses = [];
+        if ( isset( $fields["addresses"] ) ) {
+            if (is_array( $fields["addresses"] )){
+                foreach ( $fields["addresses"] as $email_field ){
+                    if ( isset( $email_field["value"] )){
+                        $addresses[] = $email_field;
+                    }
+                }
+            } else {
+                $email[] = [ "value" => $fields["addresses"] ];
+            }
+            unset( $fields["addresses"] );
+        }
+
+        $connections = [];
+        foreach ( self::$contact_connection_types as $connection_type ){
+            if ( isset( $fields[$connection_type] )){
+                $connections[$connection_type] = $fields[$connection_type];
+                unset( $fields[$connection_type] );
+            }
+        }
+
         $initial_comment = null;
         if ( isset( $fields["initial_comment"] ) ) {
             $initial_comment = $fields["initial_comment"];
@@ -143,11 +199,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( isset( $fields["notes"] ) && is_array( $fields["notes"] ) ) {
             $notes = $fields["notes"];
             unset( $fields["notes"] );
-        }
-        $location_id = null;
-        if ( isset( $fields["location_id"] ) ) {
-            $location_id = $fields["location_id"];
-            unset( $fields["location_id"] );
         }
 
         $bad_fields = self::check_for_invalid_fields( $fields );
@@ -204,17 +255,29 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $post_id = wp_insert_post( $post );
 
-        if ( $phone ) {
-            $potential_error = self::add_contact_detail( $post_id, "new-phone", $phone, false );
-            if ( is_wp_error( $potential_error ) ) {
-                return $potential_error;
+        if ( $phone_numbers ) {
+            foreach ( $phone_numbers as $phone_number ){
+                $potential_error = self::add_contact_detail( $post_id, "new-phone", $phone_number["value"], false );
+                if ( is_wp_error( $potential_error ) ) {
+                    return $potential_error;
+                }
             }
         }
 
-        if ( $email ) {
-            $potential_error = self::add_contact_detail( $post_id, "new-email", $email, false );
-            if ( is_wp_error( $potential_error ) ) {
-                return $potential_error;
+        if ( $emails ) {
+            foreach ( $emails as $email ){
+                $potential_error = self::add_contact_detail( $post_id, "new-email", $email["value"], false );
+                if ( is_wp_error( $potential_error ) ) {
+                    return $potential_error;
+                }
+            }
+        }
+        if ( $addresses ) {
+            foreach ( $addresses as $address ){
+                $potential_error = self::add_contact_detail( $post_id, "new-address", $address["value"], false );
+                if ( is_wp_error( $potential_error ) ) {
+                    return $potential_error;
+                }
             }
         }
 
@@ -224,11 +287,17 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 return $potential_error;
             }
         }
-        if ( $location_id ) {
-            // TODO: check permissions: can any user connect a contact to any
-            // location he/she pleases?
-            self::add_location_to_contact( $post_id, $location_id );
+
+
+        foreach ( $connections as $connection_type => $connection_values ){
+            foreach ($connection_values as $connection_value ){
+                $potential_error = self::add_contact_detail( $post_id, $connection_type, $connection_value, false );
+                if ( is_wp_error( $potential_error ) ) {
+                    return $potential_error;
+                }
+            }
         }
+
         if ( $notes ) {
             if ( ! is_array( $notes ) ) {
                 return new WP_Error( 'notes_not_array', 'Notes must be an array' );
