@@ -19,10 +19,13 @@ Template Name: Metrics
                         <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu data-submenu-toggle="true">
 
                             <li >
-                                <a href="<?php echo esc_attr( site_url('/metrics/') . '#critical_path' ) ?>" onclick="show_critical_path()"><?php esc_html_e( 'Critical Path', 'disciple_tools' )?></a>
+                                <a href="<?php echo esc_attr( site_url( '/metrics/' ) . '#critical_path' ) ?>" onclick="show_critical_path()"><?php esc_html_e( 'Critical Path', 'disciple_tools' )?></a>
                             </li>
 
-                            <?php echo apply_filters( 'dt_metrics_menu', '' ); ?>
+                            <?php
+                            // @codingStandardsIgnoreLine
+                            echo apply_filters( 'dt_metrics_menu', '' );
+                            ?>
 
                         </ul>
 
