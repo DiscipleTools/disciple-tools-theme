@@ -27,6 +27,7 @@
                     <li>
                         <button class='details-status-button field-status verify'
                                 data-status='valid'
+                                data-field='<?php echo esc_html( $field_type ) ?>'
                                 data-id='<?php echo esc_html( $id )?>'>
                             <?php esc_html_e( 'Valid', 'disciple_tools' )?>
                         </button>
@@ -34,12 +35,15 @@
                     <li>
                         <button class='details-status-button field-status invalid'
                                 data-status="invalid"
+                                data-field='<?php echo esc_html( $field_type ) ?>'
                                 data-id='<?php echo esc_html( $id )?>'>
                             <?php esc_html_e( 'Invalid', 'disciple_tools' )?>
                         </button>
                     </li>
                     <li>
                         <button class='details-status-button field-status'
+                                data-field='<?php echo esc_html( $field_type ) ?>'
+
                                 data-status="reset"
                                 data-id='<?php echo esc_html( $id ) ?>'>
                             <?php esc_html_e( 'Unconfirmed', 'disciple_tools' )?>
@@ -356,6 +360,7 @@
                         $number_of_social = 0;
                         foreach ($contact->fields as $field_key => $values){
                             if ( strpos( $field_key, "contact_" ) === 0 &&
+                                strpos( $field_key, "contact_address" ) === false &&
                                 strpos( $field_key, "contact_phone" ) === false &&
                                 strpos( $field_key, "contact_email" ) === false) {
                                 $channel = explode( '_', $field_key )[1];
@@ -399,7 +404,8 @@
 
                         foreach ($contact->fields as $field_key => $values){
                             if ( strpos( $field_key, "contact_" ) === 0 &&
-                                strpos( $field_key, "contact_phone" ) === false &&
+                                 strpos( $field_key, "contact_address" ) === false &&
+                                 strpos( $field_key, "contact_phone" ) === false &&
                                 strpos( $field_key, "contact_email" ) === false) {
                                 $channel = explode( '_', $field_key )[1];
                                 if ( isset( $channel_list[ $channel ] ) ) {
@@ -413,7 +419,7 @@
                                                 ?><span><?php echo esc_html( $channel_list[ $channel ]["label"] )?></span>
                                             <?php } ?>
                                             <input id='<?php echo esc_html( $value["key"] ) ?>' class='details-edit social-input' value='<?php echo esc_html( $value["value"] ) ?>'>
-                                            <?php dt_contact_details_edit( $value["key"], "social", true ) ?>
+                                            <?php dt_contact_details_edit( $value["key"], $channel, true ) ?>
                                         </li>
                                         <?php
                                     }
@@ -430,7 +436,7 @@
                             <select id="social-channels">
                                 <?php
                                 foreach ($channel_list as $key => $channel){
-                                    if ($key != "phone" && $key != "email"){
+                                    if ($key != "phone" && $key != "email" && $key != "address"){
                                         ?><option value="<?php echo esc_html( $key ) ?>"> <?php echo esc_html( $channel["label"] ) ?></option><?php
                                     }
                                 }
@@ -493,10 +499,10 @@
                         </div>
                         <ul class="address details-list">
                             <?php
-                            if (sizeof( $contact->fields["address"] ?? [] ) === 0 ){
+                            if (sizeof( $contact->fields["contact_address"] ?? [] ) === 0 ){
                                 ?> <li id="no-address"><?php esc_html_e( "No address set", 'disciple_tools' ) ?></li> <?php
                             }
-                            foreach ($contact->fields["address"] ?? [] as $value){
+                            foreach ($contact->fields["contact_address"] ?? [] as $value){
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                                 ?>
@@ -507,8 +513,8 @@
                         </ul>
                         <ul id="address-list" class="details-edit">
                         <?php
-                        if ( isset( $contact->fields["address"] )){
-                            foreach ($contact->fields["address"] ?? [] as $value){
+                        if ( isset( $contact->fields["contact_address"] )){
+                            foreach ($contact->fields["contact_address"] ?? [] as $value){
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true;
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                                 ?>

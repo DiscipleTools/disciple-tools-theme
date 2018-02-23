@@ -99,8 +99,9 @@ jQuery(document).ready(function($) {
         contactUpdated(updateNeeded)
       }
     }
-  });
-
+  }).ajaxError(function (event, xhr) {
+    handelAjaxError(xhr)
+  })
   /**
    * Typpahead Fuctions
    */
@@ -167,7 +168,7 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.remove_item_from_field('contact', contactId, 'groups', item.ID)
+          API.save_field_api('contact', contactId, {groups: {values:[{value:item.ID, delete:true}]}})
         }
       },
       href: function(item){
@@ -182,7 +183,7 @@ jQuery(document).ready(function($) {
           event.preventDefault();
           $('#create-group-modal').foundation('open');
         } else {
-          API.add_item_to_field('contact', contactId, {groups: item.ID})
+          API.save_field_api('contact', contactId, {groups: {values:[{value:item.ID}]}})
         }
         console.log(node)
         console.log(a)
@@ -256,7 +257,7 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.remove_item_from_field('contact', contactId, 'locations', item.ID).then(()=>{
+          API.save_field_api('contact', contactId, {'locations': {values:[{value:item.ID, delete:true}]}}).then(()=>{
             $(`.locations-list .${item.ID}`).remove()
             let listItems = $(`.locations-list li`)
             if (listItems.length === 0){
@@ -268,7 +269,7 @@ jQuery(document).ready(function($) {
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.add_item_to_field('contact', contactId, {locations: item.ID}).then((addedItem)=>{
+        API.save_field_api('contact', contactId, {locations: {values:[{value:item.ID}]}}).then((addedItem)=>{
           $('.locations-list').append(`<li class="${addedItem.ID}">
             ${_.escape(addedItem.post_title)}
           </li>`)
@@ -315,7 +316,7 @@ jQuery(document).ready(function($) {
       },
       callback: {
         onCancel: function (node, item) {
-          API.remove_item_from_field('contact', contactId, 'people_groups', item.ID).then(()=>{
+          API.save_field_api('contact', contactId, {people_groups: {values:[{value:item.ID, delete:true}]}}).then(()=>{
             $(`.people_groups-list .${item.ID}`).remove()
             let listItems = $(`.people_groups-list li`)
             if (listItems.length === 0){
@@ -327,7 +328,7 @@ jQuery(document).ready(function($) {
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.add_item_to_field('contact', contactId, {people_groups: item.ID}).then((addedItem)=>{
+        API.save_field_api('contact', contactId, {people_groups: {values:[{value:item.ID}]}}).then((addedItem)=>{
           $("#no-people-group").remove()
           $('.people_groups-list').append(`<li class="${addedItem.ID}">
             ${_.escape(addedItem.post_title)}
@@ -458,7 +459,7 @@ jQuery(document).ready(function($) {
           })
         }, callback: {
           onCancel: function (node, item) {
-            API.remove_item_from_field('contact', contactId, field_id, item.ID).then(()=>{
+            API.save_field_api('contact', contactId, {[field_id]: {values:[{value:item.ID, delete:true}]}}).then(()=>{
               if(field_id === "subassigned"){
                 $(`.${field_id}-list .${item.ID}`).remove()
                 let listItems = $(`.${field_id}-list li`)
@@ -474,7 +475,7 @@ jQuery(document).ready(function($) {
       },
       callback: {
         onClick: function(node, a, item, event){
-          API.add_item_to_field('contact', contactId, {[field_id]: item.ID}).then((addedItem)=>{
+          API.save_field_api('contact', contactId, {[field_id]: {values:[{"value":item.ID}]}}).then((addedItem)=>{
             if (field_id === "subassigned")
             $(`#no-${field_id}`).remove()
             $(`.${field_id}-list`).append(`<li class="${addedItem.ID}">
@@ -526,35 +527,11 @@ jQuery(document).ready(function($) {
     toggleEditAll()
   })
 
-  $(document).on('click', '.details-remove-button.connection', function () {
-    let fieldId = $(this).data('field')
-    let itemId = $(this).data('id')
-
-    if (fieldId && itemId){
-      API.remove_item_from_field('contact', contactId, fieldId, itemId).then(()=>{
-        $(`.${fieldId}-list .${itemId}`).remove()
-        //add the item back to the locations list
-        let listItems = $(`.${fieldId}-list li`)
-        if (fieldId === 'locations'){
-          // locations.add([{ID:itemId, name: $(this).data('name')}])
-          if (listItems.length === 0){
-            $(`.${fieldId}-list`).append(`<li id="no-location">${contactsDetailsWpApiSettings.translations["no-location-set"]}</li>`)
-          }
-        } else if ( fieldId === "people_groups"){
-          if (listItems.length === 0){
-            $(`.${fieldId}-list`).append(`<li id="no-location">${contactsDetailsWpApiSettings.translations["no-ppl-group-set"]}</li>`)
-          }
-        }
-      }).catch(err=>{
-        console.log(err)
-      })
-    }
-  })
   $(document).on('click', '.details-remove-button.delete-method', function () {
     let fieldId = $(this).data('id')
     let fieldType = $(this).data('field')
     if (fieldId){
-      API.remove_field('contact', contactId, fieldId).then(()=>{
+      API.save_field_api('contact', contactId, {[`contact_${fieldType}`]:[{key:fieldId, delete:true}]}).then(()=>{
         $(`.${fieldId}`).remove()
         let listItems = $(`.${fieldType}-list li`)
         if (listItems.length === 0){
@@ -582,7 +559,8 @@ jQuery(document).ready(function($) {
     let inputForNewValue = $('#new-social-media')
     let text = inputForNewValue.val()
     addSocial.toggleClass('loading')
-    API.add_item_to_field('contact', contactId, {['new-'+channel_type]: text}).then((newId)=>{
+    API.save_field_api('contact', contactId, {['contact_'+channel_type]: [{value:text}]}).then((contact)=>{
+      let newId = _.get(contact, `added_fields.new-${channel_type}`)
       console.log(newId);
       addSocial.toggleClass('loading')
       let label = _.get(contactsDetailsWpApiSettings, `channels[${channel_type}].label`) || channel_type
@@ -678,30 +656,6 @@ jQuery(document).ready(function($) {
     }
   })
 
-  //for a new address field that has not been saved yet
-  $(document).on('change', '#new-address', function (val) {
-    let input = $('#new-address')
-    API.add_item_to_field( 'contact', contactId, {"new-address":input.val()}).then(function (newAddressId) {
-      console.log(newAddressId)
-      if (newAddressId != contactId){
-        //change the it to the created field
-        input.attr('id', newAddressId)
-        $('.details-list.address').append(`
-            <li class="${newAddressId} address-row">
-              <div class="address-text">${input.val()}</div>
-              <img id="${newAddressId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
-              <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
-            </li>
-        `)
-        $('.new-address')
-          .append(editContactDetailsOptions(newAddressId, "address"))
-          .removeClass('new-address')
-          .addClass(newAddressId)
-          $(`.${newAddressId} .dropdown.menu`).foundation()
-        $('#no-address').remove()
-      }
-    })
-  })
   $(document).on('change', '#address-list textarea', function(){
     let id = $(this).attr('id')
     if (id && id !== "new-address"){
@@ -721,14 +675,16 @@ jQuery(document).ready(function($) {
 
   $(document).on('change', '.new-contact-details', function () {
     let field = $(this).data('id')
-    let val = $(this).val()
-    API.add_item_to_field( 'contact', contactId, {[`new-${field}`]:val}).then((newId)=>{
-      if (newId != contactId){
+    let value = $(this).val()
+    API.save_field_api( 'contact', contactId, {["contact_"+field]:[{value}]}).then((contact)=>{
+      console.log(contact);
+      let newId = _.get(_.last(_.get(contact, `fields.contact_${field}`) || []), "key")
+      if (newId && newId != contactId){
         //change the it to the created field
         $(this).attr('id', newId)
         $(`.details-list.${field}`).append(`
             <li class="${newId}">
-              ${val}
+              ${value}
               <img id="${newId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
               <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
             </li>
@@ -795,12 +751,13 @@ jQuery(document).ready(function($) {
   $(document).on('click', '.details-status-button.field-status', function () {
     let status = $(this).data('status')
     let id = $(this).data('id')
-    console.log(status, id)
+    let field = $(this).data('field')
     let fields = {
+      key : id,
       verified : status === 'valid',
       invalid : status === "invalid"
     }
-    API.update_contact_method_detail('contact', contactId, id, fields).then(()=>{
+    API.save_field_api('contact', contactId, {[`contact_${field}`]:[fields]}).then(()=>{
       $(`#${id}-verified`).toggle(fields.verified)
       $(`#${id}-invalid`).toggle(fields.invalid)
     }).catch(err=>{
