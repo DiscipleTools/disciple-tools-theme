@@ -17,42 +17,15 @@ Template Name: Metrics
                     <div class="bordered-box">
 
                         <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu data-submenu-toggle="true">
+
                             <li >
-                                <a onclick="show_critical_path()"><?php esc_html_e( 'Critical Path', 'disciple_tools' )?></a>
-                                <!--<ul class="menu vertical nested" id="critical-path-menu">
-                                    <li class="top-border">
-                                        <a onclick="show_critical_path_prayer()">Prayer</a>
-                                    </li>
-                                    <li class="top-border">
-                                        <a onclick="show_critical_path_outreach()">Outreach</a>
-                                    </li>
-                                    <li class="top-border">
-                                        <a onclick="show_critical_path_fup()">Follow-up</a>
-                                    </li>
-                                    <li class="top-border">
-                                        <a onclick="show_critical_path_multiplication()">Multiplication</a>
-                                    </li>
-                                </ul>-->
+                                <a href="<?php echo esc_attr( site_url( '/metrics/' ) . '#critical_path' ) ?>" onclick="show_critical_path()"><?php esc_html_e( 'Critical Path', 'disciple_tools' )?></a>
                             </li>
-                            <!--<li class="top-border">
-                                <a onclick="show_contacts()">Contacts</a>
-                            </li>
-                            <li class="top-border">
-                                <a onclick="show_groups()">Groups</a>
-                            </li>
-                            <li class="top-border">
-                                <a onclick="show_workers()">Workers</a>
-                            </li>
-                            <li class="top-border">
-                                <a onclick="show_locations()">Locations</a>
-                            </li>
-                            <li class="top-border">
-                                <a onclick="show_pace()">Pace</a>
-                                <ul class="menu vertical nested">
-                                    <li><a onclick="show_fake_chart('Contacts+Chart');">Contacts</a></li>
-                                    <li><a onclick="show_fake_chart('Groups+Chart');">Groups</a></li>
-                                </ul>
-                            </li>-->
+
+                            <?php
+                            // @codingStandardsIgnoreLine
+                            echo apply_filters( 'dt_metrics_menu', '' );
+                            ?>
 
                         </ul>
 
