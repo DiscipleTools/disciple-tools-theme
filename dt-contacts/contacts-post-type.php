@@ -387,7 +387,7 @@ class Disciple_Tools_Contact_Post_Type
                             echo '<p class="description">' . esc_html( $v['description'] ) . '(' . esc_html( $v ) . ')</p>' . "\n";
                             echo '</td><tr/>' . "\n";
                             break;
-                        case 'custom':
+                        case 'user_select':
                             echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . esc_attr( $v['name'] ) . '</label></th><td>';
                             echo wp_kses(
                                 $v['default'],
@@ -616,14 +616,7 @@ class Disciple_Tools_Contact_Post_Type
         $fields['assigned_to'] = [
             'name'        => __( 'Assigned To', 'disciple_tools' ),
             'description' => '',
-            'type'        => 'custom',
-            'default'     => $this->assigned_to_field(),
-            'section'     => 'status',
-        ];
-        $fields['subassigned'] = [
-            'name'        => __( 'Sub-assigned', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'custom',
+            'type'        => 'user_select',
             'default'     => $this->assigned_to_field(),
             'section'     => 'status',
         ];
