@@ -85,7 +85,7 @@ jQuery(document).ready(function($) {
 
   $( document ).ajaxComplete(function(event, xhr, settings) {
     if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
-      if (_.get(xhr, "responseJSON.ID") && _.get(xhr, "responseJSON.fields")){
+      if (_.get(xhr, "responseJSON.ID")){
         contact = xhr.responseJSON
         let updateNeeded = _.get(contact, "requires_update.key") === "yes"
         console.log("set to: " + updateNeeded)
@@ -601,7 +601,7 @@ jQuery(document).ready(function($) {
       contactId,
       {[id]:val}
     ).then((contactResponse)=>{
-      $(`.current-${id}`).text(_.get(contactResponse, `fields.${id}.label`) || val)
+      $(`.current-${id}`).text(_.get(contactResponse, `${id}.label`) || val)
       if (id === "seeker_path"){
         updateCriticalPath(contactResponse.seeker_path.key)
         refresh_quick_action_buttons(contactResponse)
@@ -671,7 +671,7 @@ jQuery(document).ready(function($) {
     let value = $(this).val()
     API.save_field_api( 'contact', contactId, {["contact_"+field]:[{value}]}).then((contact)=>{
       console.log(contact);
-      let newId = _.get(_.last(_.get(contact, `fields.contact_${field}`) || []), "key")
+      let newId = _.get(_.last(_.get(contact, `contact_${field}`) || []), "key")
       if (newId && newId != contactId){
         //change the it to the created field
         $(this).attr('id', newId)
@@ -779,7 +779,7 @@ jQuery(document).ready(function($) {
 
   function setStatus(contact, openModal) {
     let status = _.get(contact, "overall_status.key")
-    let reasonLabel = _.get(contact, `fields.reason_${status}.label`)
+    let reasonLabel = _.get(contact, `reason_${status}.label`)
     let statusColor = _.get(contactsDetailsWpApiSettings,
       `contacts_custom_fields_settings.overall_status.colors.${status}`)
     $('#overall-status').val(status)
