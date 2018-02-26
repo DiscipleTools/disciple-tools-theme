@@ -91,7 +91,7 @@ dt_print_breadcrumbs(
                 title: $(".js-create-contact input[name=title]").val(),
                 contact_phone: [{value:$(".js-create-contact input[name=phone]").val()}],
                 sources: $(".js-create-contact select[name=sources]").val(),
-                locations: [location_id],
+                locations: {values:[{value:location_id}]},
                 initial_comment: $(".js-create-contact textarea[name=initial_comment]").val(),
             }),
             beforeSend: function(xhr) {

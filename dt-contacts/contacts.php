@@ -319,8 +319,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     return new WP_Error( __FUNCTION__, __( "Missing values field on connection:" ) . " " . $connection_type, [ 'status' => 500 ] );
                 }
                 $existing_connections = [];
-                if ( isset( $existing_contact->fields[$connection_type] ) ){
-                    foreach ( $existing_contact->fields[$connection_type] as $connection){
+                if ( isset( $existing_contact[$connection_type] ) ){
+                    foreach ( $existing_contact[$connection_type] as $connection){
                         $existing_connections[] = $connection->ID;
                     }
                 }
@@ -443,6 +443,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             self::update_quick_action_buttons( $contact_id, $fields["seeker_path"] );
         }
 
+        foreach ( $fields as $field_key => $value ){
+            if ( strpos( $field_key, "quick_button" ) !== false ){
+                self::handle_quick_action_button_event( $contact_id, [ $field_key => $value ] );
+            }
+        }
+
         foreach ( $fields as $field_id => $value ) {
             if ( !self::is_key_contact_method_or_connection( $field_id ) ) {
                 // Boolean contact field are stored as yes/no
@@ -466,7 +472,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             self::check_requires_update( $contact_id );
         }
         $contact = self::get_contact( $contact_id, true );
-        $contact->added_fields = $added_fields;
+        $contact["added_fields"] = $added_fields;
         return $contact;
     }
 
@@ -1008,9 +1014,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
             $comments = get_comments( [ 'post_id' => $contact_id ] );
             $fields["comments"] = $comments;
-            $contact->fields = $fields;
+            $fields["ID"] = $contact->ID;
 
-            return $contact;
+            return $fields;
         } else {
             return new WP_Error( __FUNCTION__, __( "No contact found with ID" ), [ 'contact_id' => $contact_id ] );
         }
@@ -1351,33 +1357,27 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return array|int|\WP_Error
      */
-    public static function quick_action_button( int $contact_id, array $field, bool $check_permissions = true )
+    private static function handle_quick_action_button_event( int $contact_id, array $field, bool $check_permissions = true )
     {
+        $update = [];
+        $key = key( $field );
 
-        $response = self::update_contact( $contact_id, $field, true );
-        if ( !isset( $response->ID ) || $response->ID != $contact_id ) {
-            return $response;
+        if ( $key == "quick_button_no_answer" ) {
+            $update["seeker_path"] = "attempted";
+        } elseif ( $key == "quick_button_phone_off" ) {
+            $update["seeker_path"] = "attempted";
+        } elseif ( $key == "quick_button_contact_established" ) {
+            $update["seeker_path"] = "established";
+        } elseif ( $key == "quick_button_meeting_scheduled" ) {
+            $update["seeker_path"] = "scheduled";
+        } elseif ( $key == "quick_button_meeting_complete" ) {
+            $update["seeker_path"] = "met";
+        }
+
+        if ( isset( $update["seeker_path"] ) ) {
+            return self::update_seeker_path( $contact_id, $update["seeker_path"], $check_permissions );
         } else {
-            $update = [];
-            $key = key( $field );
-
-            if ( $key == "quick_button_no_answer" ) {
-                $update["seeker_path"] = "attempted";
-            } elseif ( $key == "quick_button_phone_off" ) {
-                $update["seeker_path"] = "attempted";
-            } elseif ( $key == "quick_button_contact_established" ) {
-                $update["seeker_path"] = "established";
-            } elseif ( $key == "quick_button_meeting_scheduled" ) {
-                $update["seeker_path"] = "scheduled";
-            } elseif ( $key == "quick_button_meeting_complete" ) {
-                $update["seeker_path"] = "met";
-            }
-
-            if ( isset( $update["seeker_path"] ) ) {
-                return self::update_seeker_path( $contact_id, $update["seeker_path"], $check_permissions );
-            } else {
-                return $contact_id;
-            }
+            return $contact_id;
         }
     }
 

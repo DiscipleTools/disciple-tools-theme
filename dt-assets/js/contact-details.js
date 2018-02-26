@@ -28,8 +28,8 @@ function save_seeker_milestones(contactId, fieldKey, fieldValue){
 let refresh_quick_action_buttons = (contact)=>{
   Object.keys(contactsDetailsWpApiSettings.contacts_custom_fields_settings).forEach(field=>{
     if (field.includes("quick_button_")){
-      if ( contact.fields[field] ){
-        jQuery("." + field +  " span").text(contact.fields[field])
+      if ( contact[field] ){
+        jQuery("." + field +  " span").text(contact[field])
       }
     }
   })
@@ -40,22 +40,15 @@ function save_quick_action(contactId, fieldKey){
   let numberIndicator = jQuery("." + fieldKey +  " span")
   let newNumber = parseInt(numberIndicator.first().text() || "0" ) + 1
   data[fieldKey] = newNumber
-  jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: contactsDetailsWpApiSettings.root + 'dt/v1/contact/' + contactId + '/quick_action_button',
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', contactsDetailsWpApiSettings.nonce);
-    }
-  }).then(data=>{
-      console.log("updated " + fieldKey + " to: " + newNumber)
-      if (fieldKey.indexOf("quick_button")>-1){
-        if (_.get(data, "seeker_path.currentKey")){
-          updateCriticalPath(data.seeker_path.currentKey)
-        }
+  API.save_field_api("contact", contactId, data)
+  .then(data=>{
+    console.log(data);
+    console.log("updated " + fieldKey + " to: " + newNumber)
+    if (fieldKey.indexOf("quick_button")>-1){
+      if (_.get(data, "seeker_path.key")){
+        updateCriticalPath(data.seeker_path.key)
       }
+    }
     contactUpdated(false)
   }).catch(err=>{
       console.log("error")
@@ -94,7 +87,7 @@ jQuery(document).ready(function($) {
     if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
       if (_.get(xhr, "responseJSON.ID") && _.get(xhr, "responseJSON.fields")){
         contact = xhr.responseJSON
-        let updateNeeded = _.get(contact, "fields.requires_update.key") === "yes"
+        let updateNeeded = _.get(contact, "requires_update.key") === "yes"
         console.log("set to: " + updateNeeded)
         contactUpdated(updateNeeded)
       }
@@ -163,7 +156,7 @@ jQuery(document).ready(function($) {
     multiselect: {
       matchOn: ["ID"],
       data: function () {
-        return contact.fields.groups.map(g=>{
+        return contact.groups.map(g=>{
           return {ID:g.ID, name:g.post_title}
         })
       }, callback: {
@@ -252,7 +245,7 @@ jQuery(document).ready(function($) {
     multiselect: {
       matchOn: ["ID"],
       data: function () {
-        return contact.fields.locations.map(g=>{
+        return contact.locations.map(g=>{
           return {ID:g.ID, name:g.post_title}
         })
       }, callback: {
@@ -310,7 +303,7 @@ jQuery(document).ready(function($) {
     multiselect: {
       matchOn: ["ID"],
       data: function () {
-        return contact.fields.people_groups.map(g=>{
+        return contact.people_groups.map(g=>{
           return {ID:g.ID, name:g.post_title}
         })
       },
@@ -366,10 +359,10 @@ jQuery(document).ready(function($) {
     callback: {
       onClick: function(node, a, item, event){
         API.save_field_api('contact', contactId, {assigned_to: 'user-' + item.ID}).then(function (response) {
-          _.set(contact, "fields.assigned_to", response.fields.assigned_to)
-          $('.current-assigned').text(contact.fields.assigned_to.display)
+          _.set(contact, "assigned_to", response.assigned_to)
+          $('.current-assigned').text(contact.assigned_to.display)
           setStatus(response)
-          $('.js-typeahead-assigned_to').val(contact.fields.assigned_to.display)
+          $('.js-typeahead-assigned_to').val(contact.assigned_to.display)
           $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
         })
       },
@@ -383,8 +376,8 @@ jQuery(document).ready(function($) {
       },
       onReady: function () {
         $('.details.assigned_to').addClass('details-edit')
-        if (_.get(contact,  "fields.assigned_to.display")){
-          $('.js-typeahead-assigned_to').val(contact.fields.assigned_to.display)
+        if (_.get(contact,  "assigned_to.display")){
+          $('.js-typeahead-assigned_to').val(contact.assigned_to.display)
         }
         $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
         $('.assigned_to-result-container').html("");
@@ -397,8 +390,8 @@ jQuery(document).ready(function($) {
     $(`#${id} .js-typeahead-assigned_to`).val("")
     $(`#${id} .js-typeahead-assigned_to`).trigger('input.typeahead')
   })
-  if (_.get(contact, "fields.assigned_to")){
-    $('.current-assigned').text(_.get(contact, "fields.assigned_to.display"))
+  if (_.get(contact, "assigned_to")){
+    $('.current-assigned').text(_.get(contact, "assigned_to.display"))
   }
 
   /**
@@ -454,7 +447,7 @@ jQuery(document).ready(function($) {
       multiselect: {
         matchOn: ["ID"],
         data: function () {
-          return (contact.fields[field_id] || [] ).map(g=>{
+          return (contact[field_id] || [] ).map(g=>{
             return {ID:g.ID, name:g.post_title}
           })
         }, callback: {
@@ -610,7 +603,7 @@ jQuery(document).ready(function($) {
     ).then((contactResponse)=>{
       $(`.current-${id}`).text(_.get(contactResponse, `fields.${id}.label`) || val)
       if (id === "seeker_path"){
-        updateCriticalPath(contactResponse.fields.seeker_path.key)
+        updateCriticalPath(contactResponse.seeker_path.key)
         refresh_quick_action_buttons(contactResponse)
       } else if ( id === "reason_unassignable" ){
         setStatus(contactResponse)
@@ -785,7 +778,7 @@ jQuery(document).ready(function($) {
   })
 
   function setStatus(contact, openModal) {
-    let status = _.get(contact, "fields.overall_status.key")
+    let status = _.get(contact, "overall_status.key")
     let reasonLabel = _.get(contact, `fields.reason_${status}.label`)
     let statusColor = _.get(contactsDetailsWpApiSettings,
       `contacts_custom_fields_settings.overall_status.colors.${status}`)

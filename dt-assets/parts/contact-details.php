@@ -63,7 +63,7 @@
         </ul>
     <?php } ?>
 
-    <?php if (isset( $contact->fields["requires_update"] ) && $contact->fields["requires_update"]["key"] === "yes"){ ?>
+    <?php if (isset( $contact["requires_update"] ) && $contact["requires_update"]["key"] === "yes"){ ?>
 
     <section class="cell update-needed-notification">
         <div class="bordered-box">
@@ -72,10 +72,10 @@
         </div>
     </section>
     <?php } ?>
-    <?php if (isset( $contact->fields["overall_status"] ) &&
-              isset( $contact->fields["assigned_to"] ) &&
-              $contact->fields["overall_status"]["key"] == "assigned" &&
-              $contact->fields["assigned_to"]['id'] == $current_user->ID
+    <?php if (isset( $contact["overall_status"] ) &&
+              isset( $contact["assigned_to"] ) &&
+              $contact["overall_status"]["key"] == "assigned" &&
+              $contact["assigned_to"]['id'] == $current_user->ID
     ) { ?>
     <section class="cell accept-contact" id="accept-contact">
         <div class="bordered-box">
@@ -86,8 +86,8 @@
     </section>
     <?php } ?>
 
-    <?php if (isset( $contact->fields["is_a_user"]["key"] ) &&
-              $contact->fields["is_a_user"]["key"] === "yes"
+    <?php if (isset( $contact["is_a_user"]["key"] ) &&
+              $contact["is_a_user"]["key"] === "yes"
     ) { ?>
     <section class="cell accept-contact" id="contact-is-user">
         <div class="bordered-box">
@@ -110,7 +110,7 @@
             </div>
 
             <div class="reason-fields grid-x details-edit">
-                <?php $status = $contact->fields["overall_status"]["key"] ?? ""; ?>
+                <?php $status = $contact["overall_status"]["key"] ?? ""; ?>
                 <!-- change reason paused options-->
                 <div class="medium-6 reason-field reason-paused" style="display:<?php echo ( $status === "paused" ? "inherit" : "none" ); ?>">
                     <div class="section-subheader"><?php echo esc_html( $contact_fields["reason_paused"]["name"] ) ?></div>
@@ -119,7 +119,7 @@
                         foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
                         ?>
                             <option value="<?php echo esc_attr( $reason_key )?>"
-                                <?php if ( ( $contact->fields["reason_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";}?> >
+                                <?php if ( ( $contact["reason_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";}?> >
                                 <?php echo esc_html( $reason_label )?>
                             </option>
                         <?php
@@ -135,7 +135,7 @@
                         foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $reason_label ) {
                             ?>
                             <option value="<?php echo esc_attr( $reason_key )?>"
-                                <?php if ( ( $contact->fields["reason_closed"]["key"] ?? "" ) === $reason_key ){echo "selected";}?> >
+                                <?php if ( ( $contact["reason_closed"]["key"] ?? "" ) === $reason_key ){echo "selected";}?> >
                                 <?php echo esc_html( $reason_label )?>
                             </option>
                             <?php
@@ -151,7 +151,7 @@
                         foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_label ) {
                             ?>
                             <option value="<?php echo esc_attr( $reason_key )?>"
-                                <?php if ( ( $contact->fields["reason_unassignable"]["key"] ?? "" ) === $reason_key ){echo "selected";}?> >
+                                <?php if ( ( $contact["reason_unassignable"]["key"] ?? "" ) === $reason_key ){echo "selected";}?> >
                                 <?php echo esc_html( $reason_label )?>
                             </option>
                             <?php
@@ -175,10 +175,10 @@
                         </div>
                         <ul class="phone details-list">
                             <?php
-                            if (sizeof( $contact->fields["contact_phone"] ?? [] ) === 0 ){
+                            if (sizeof( $contact["contact_phone"] ?? [] ) === 0 ){
                                 ?> <li id="no-phone"><?php esc_html_e( "No phone set", 'disciple_tools' ) ?></li> <?php
                             }
-                            foreach ($contact->fields["contact_phone"] ?? [] as $field => $value){
+                            foreach ($contact["contact_phone"] ?? [] as $field => $value){
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                                 ?>
@@ -190,8 +190,8 @@
                         </ul>
                         <ul id="phone-list" class="details-edit">
                         <?php
-                        if ( isset( $contact->fields["contact_phone"] )){
-                            foreach ($contact->fields["contact_phone"] ?? [] as $value){
+                        if ( isset( $contact["contact_phone"] )){
+                            foreach ($contact["contact_phone"] ?? [] as $value){
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true;
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                                 ?>
@@ -215,10 +215,10 @@
                         </div>
                         <ul class="email details-list">
                             <?php
-                            if (sizeof( $contact->fields["contact_email"] ?? [] ) === 0 ){
+                            if (sizeof( $contact["contact_email"] ?? [] ) === 0 ){
                                 ?> <li id="no-email"><?php esc_html_e( "No email set", 'disciple_tools' ) ?></li> <?php
                             }
-                            foreach ($contact->fields["contact_email"] ?? [] as $field => $value){
+                            foreach ($contact["contact_email"] ?? [] as $field => $value){
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                                 ?>
@@ -230,8 +230,8 @@
                         </ul>
                         <ul id="email-list" class="details-edit">
                             <?php
-                            if ( isset( $contact->fields["contact_email"] )){
-                                foreach ($contact->fields["contact_email"] ?? [] as $value){
+                            if ( isset( $contact["contact_email"] )){
+                                foreach ($contact["contact_email"] ?? [] as $value){
                                     $verified = isset( $value["verified"] ) && $value["verified"] === true;
                                     $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                                     ?>
@@ -254,13 +254,13 @@
                         </div>
                         <ul class="locations-list details-list">
                             <?php
-                            foreach ($contact->fields["locations"] ?? [] as $value){
+                            foreach ($contact["locations"] ?? [] as $value){
                                 ?>
                                 <li class="<?php echo esc_html( $value->ID )?>">
                                     <?php echo esc_html( $value->post_title ) ?>
                                 </li>
                             <?php }
-                            if (sizeof( $contact->fields["locations"] ) === 0){
+                            if (sizeof( $contact["locations"] ) === 0){
                                 ?> <li id="no-location"><?php esc_html_e( "No location set", 'disciple_tools' ) ?></li><?php
                             }
                             ?>
@@ -289,8 +289,8 @@
                         <ul class="details-list assigned_to">
                             <li class="current-assigned">
                                 <?php
-                                if ( isset( $contact->fields["assigned_to"] ) ){
-                                    echo esc_html( $contact->fields["assigned_to"]["display"] );
+                                if ( isset( $contact["assigned_to"] ) ){
+                                    echo esc_html( $contact["assigned_to"]["display"] );
                                 } else {
                                     esc_html_e( 'None Assigned', 'disciple_tools' );
                                 }
@@ -323,13 +323,13 @@
                         </div>
                         <ul class="details-list subassigned-list">
                             <?php
-                            foreach ($contact->fields["subassigned"] ?? [] as $value){
+                            foreach ($contact["subassigned"] ?? [] as $value){
                                 ?>
                                 <li class="<?php echo esc_html( $value->ID )?>">
                                     <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
                                 </li>
                             <?php }
-                            if (sizeof( $contact->fields["subassigned"] ) === 0){
+                            if (sizeof( $contact["subassigned"] ) === 0){
                                 ?> <li id="no-subassigned"><?php esc_html_e( "No subassigned set", 'disciple_tools' ) ?></li>
                             <?php
                             }
@@ -358,7 +358,7 @@
                         <ul class='social details-list'>
                         <?php
                         $number_of_social = 0;
-                        foreach ($contact->fields as $field_key => $values){
+                        foreach ($contact as $field_key => $values){
                             if ( strpos( $field_key, "contact_" ) === 0 &&
                                 strpos( $field_key, "contact_address" ) === false &&
                                 strpos( $field_key, "contact_phone" ) === false &&
@@ -402,7 +402,7 @@
                         <ul class="social details-edit">
                         <?php
 
-                        foreach ($contact->fields as $field_key => $values){
+                        foreach ($contact as $field_key => $values){
                             if ( strpos( $field_key, "contact_" ) === 0 &&
                                  strpos( $field_key, "contact_address" ) === false &&
                                  strpos( $field_key, "contact_phone" ) === false &&
@@ -459,13 +459,13 @@
                         </div>
                         <ul class="people_groups-list details-list">
                             <?php
-                            foreach ($contact->fields["people_groups"] ?? [] as $value){
+                            foreach ($contact["people_groups"] ?? [] as $value){
                                 ?>
                                 <li class="<?php echo esc_html( $value->ID )?>">
                                     <?php echo esc_html( $value->post_title ) ?>
                                 </li>
                             <?php }
-                            if (sizeof( $contact->fields["people_groups"] ) === 0){
+                            if (sizeof( $contact["people_groups"] ) === 0){
                                 ?> <li id="no-people-group"><?php esc_html_e( "No people group set", 'disciple_tools' ) ?></li><?php
                             }
                             ?>
@@ -499,10 +499,10 @@
                         </div>
                         <ul class="address details-list">
                             <?php
-                            if (sizeof( $contact->fields["contact_address"] ?? [] ) === 0 ){
+                            if (sizeof( $contact["contact_address"] ?? [] ) === 0 ){
                                 ?> <li id="no-address"><?php esc_html_e( "No address set", 'disciple_tools' ) ?></li> <?php
                             }
-                            foreach ($contact->fields["contact_address"] ?? [] as $value){
+                            foreach ($contact["contact_address"] ?? [] as $value){
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                                 ?>
@@ -513,8 +513,8 @@
                         </ul>
                         <ul id="address-list" class="details-edit">
                         <?php
-                        if ( isset( $contact->fields["contact_address"] )){
-                            foreach ($contact->fields["contact_address"] ?? [] as $value){
+                        if ( isset( $contact["contact_address"] )){
+                            foreach ($contact["contact_address"] ?? [] as $value){
                                 $verified = isset( $value["verified"] ) && $value["verified"] === true;
                                 $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
                                 ?>
@@ -537,8 +537,8 @@
                         <ul class="details-list">
                             <li class="current-age">
                                 <?php
-                                if ( isset( $contact->fields['age']['label'] ) ){
-                                    echo esc_html( $contact->fields['age']['label'] );
+                                if ( isset( $contact['age']['label'] ) ){
+                                    echo esc_html( $contact['age']['label'] );
                                 } else {
                                     esc_html_e( 'No age set', 'disciple_tools' );
                                 }
@@ -548,8 +548,8 @@
                         <select id="age" class="details-edit select-field">
                             <?php
                             foreach ( $contact_fields["age"]["default"] as $age_key => $age_value ) {
-                                if ( isset( $contact->fields["age"] ) &&
-                                    $contact->fields["age"]["key"] === $age_key){
+                                if ( isset( $contact["age"] ) &&
+                                    $contact["age"]["key"] === $age_key){
                                     echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
                                 } else {
                                     echo '<option value="'. esc_html( $age_key ) . '">' . esc_html( $age_value ). '</option>';
@@ -567,8 +567,8 @@
                         <ul class="details-list">
                             <li class="current-gender">
                                 <?php
-                                if ( isset( $contact->fields['gender']['label'] ) ){
-                                    echo esc_html( $contact->fields['gender']['label'] );
+                                if ( isset( $contact['gender']['label'] ) ){
+                                    echo esc_html( $contact['gender']['label'] );
                                 } else {
                                     esc_html_e( 'No gender set', 'disciple_tools' );
                                 }
@@ -577,8 +577,8 @@
                         <select id="gender" class="details-edit select-field">
                             <?php
                             foreach ( $contact_fields["gender"]["default"] as $gender_key => $gender_value ) {
-                                if ( isset( $contact->fields["gender"] ) &&
-                                    $contact->fields["gender"]["key"] === $gender_key){
+                                if ( isset( $contact["gender"] ) &&
+                                    $contact["gender"]["key"] === $gender_key){
                                     echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
                                 } else {
                                     echo '<option value="'. esc_html( $gender_key ) . '">' . esc_html( $gender_value ). '</option>';
@@ -595,8 +595,8 @@
                         <ul class="details-list">
                             <li class="current-sources">
                                 <?php
-                                if (isset( $contact->fields["sources"] )) {
-                                    echo esc_html( $contact->fields["sources"]["label"] );
+                                if (isset( $contact["sources"] )) {
+                                    echo esc_html( $contact["sources"]["label"] );
                                 } else {
                                     esc_html_e( "No source set" );
                                 }
@@ -607,8 +607,8 @@
                             <option value=""></option>
                             <?php
                             foreach ( $custom_lists["sources"] as $sources_key => $sources_value ) {
-                                if ( isset( $contact->fields["sources"] ) &&
-                                    $contact->fields["sources"]["key"] === $sources_key){
+                                if ( isset( $contact["sources"] ) &&
+                                    $contact["sources"]["key"] === $sources_key){
                                     echo '<option value="'. esc_html( $sources_key ) . '" selected>' . esc_html( $sources_value["label"] ) . '</option>';
                                 } else {
                                     echo '<option value="'. esc_html( $sources_key ) . '">' . esc_html( $sources_value["label"] ). '</option>';
