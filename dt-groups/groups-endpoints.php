@@ -211,9 +211,7 @@ class Disciple_Tools_Groups_Endpoints
         $params = $request->get_params();
         $body = $request->get_json_params();
         if ( isset( $params['id'] ) ) {
-            $result = Disciple_Tools_Groups::update_group( $params['id'], $body, true );
-
-            return $result;
+            return Disciple_Tools_Groups::update_group( $params['id'], $body, true );
         } else {
             return new WP_Error( "update_contact", "Missing a valid contact id", [ 'status' => 400 ] );
         }

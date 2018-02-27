@@ -213,7 +213,7 @@ function dt_contact_details_edit( $id, $field_type, $remove = false ){
                         ?>
                         <div class="<?php echo esc_attr( $value["key"], 'disciple_tools' )?>">
                             <textarea rows="3" id="<?php echo esc_attr( $value["key"], 'disciple_tools' )?>" class="contact-input"><?php echo esc_attr( $value["value"], 'disciple_tools' )?></textarea>
-                            <?php dt_contact_details_edit( $value["key"], "address",  true ) ?>
+                            <?php dt_contact_details_edit( $value["key"], "address", true ) ?>
                         </div>
                         <hr>
 
