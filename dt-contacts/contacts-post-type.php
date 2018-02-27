@@ -387,7 +387,7 @@ class Disciple_Tools_Contact_Post_Type
                             echo '<p class="description">' . esc_html( $v['description'] ) . '(' . esc_html( $v ) . ')</p>' . "\n";
                             echo '</td><tr/>' . "\n";
                             break;
-                        case 'custom':
+                        case 'user_select':
                             echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . esc_attr( $v['name'] ) . '</label></th><td>';
                             echo wp_kses(
                                 $v['default'],
@@ -616,14 +616,7 @@ class Disciple_Tools_Contact_Post_Type
         $fields['assigned_to'] = [
             'name'        => __( 'Assigned To', 'disciple_tools' ),
             'description' => '',
-            'type'        => 'custom',
-            'default'     => $this->assigned_to_field(),
-            'section'     => 'status',
-        ];
-        $fields['subassigned'] = [
-            'name'        => __( 'Sub-assigned', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'custom',
+            'type'        => 'user_select',
             'default'     => $this->assigned_to_field(),
             'section'     => 'status',
         ];
@@ -672,8 +665,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'status',
         ];
@@ -681,67 +674,14 @@ class Disciple_Tools_Contact_Post_Type
         $id = $post->ID ?? $post_id;
         if ( $include_current_post && ( $id || ( isset( $post->ID ) && $post->post_status != 'auto-draft' ) ) ) { // if being called for a specific record or new record.
             // Contact Channels Section
-            $methods = $this->contact_fields( $id );
-            foreach ( $methods as $k => $v ) { // sets phone numbers as first
-                $keys = explode( '_', $k );
-                if ( $keys[1] == 'phone' ) {
-                    $fields[ $k ] = [
-                        'name'        => ucwords( $v['name'] ),
-                        'description' => '',
-                        'type'        => 'text',
-                        'default'     => '',
-                        'section'     => 'info',
-                    ];
-                }
-            }
-
-            foreach ( $methods as $k => $v ) { // sets emails as second
-                $keys = explode( '_', $k );
-                if ( $keys[1] == 'email' ) {
-                    $fields[ $k ] = [
-                        'name'        => __( 'Email', 'disciple_tools' ),
-                        'description' => '',
-                        'type'        => 'text',
-                        'default'     => '',
-                        'section'     => 'info',
-                    ];
-                }
-            }
-            foreach ( $methods as $k => $v ) { // sets all others third
-                $keys = explode( '_', $k );
-                if ( $keys[1] != 'email' && $keys[1] != 'phone' ) {
-                    $fields[ $k ] = [
-                        'name'        => __( 'Phone', 'disciple_tools' ),
-                        'description' => '',
-                        'type'        => 'text',
-                        'default'     => '',
-                        'section'     => 'info',
-                    ];
-                }
-            }
-
-            foreach ( $methods as $k => $v ) { // address
-                $keys = explode( '_', $k );
-                if ( $keys[0] == 'address_' && sizeof( $keys ) === 2 ) {
-                    $fields[ $k ] = [
-                        'name'        => __( 'Address', 'disciple_tools' ),
-                        'description' => '',
-                        'type'        => 'text',
-                        'default'     => '',
-                        'section'     => 'info',
-                    ];
-                }
-            }
-
-            // Address
-            $addresses = dt_address_metabox()->address_fields( $id );
-            foreach ( $addresses as $k => $v ) { // sets all others third
+            $methods   = $this->contact_fields( $id );
+            foreach ( $methods as $k => $v ) {
                 $fields[ $k ] = [
-                    'name'        => __( 'Address', 'disciple_tools' ),
+                    'name'        => ucwords( $v['name'] ),
                     'description' => '',
                     'type'        => 'text',
                     'default'     => '',
-                    'section'     => 'address',
+                    'section'     => 'info',
                 ];
             }
         }
@@ -753,8 +693,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -763,8 +703,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -773,8 +713,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -783,8 +723,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -793,8 +733,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -803,8 +743,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -813,8 +753,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -823,8 +763,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -833,8 +773,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'milestone',
         ];
@@ -935,8 +875,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
+                'no' => __( 'No', 'disciple_tools' ),
+                'yes' => __( 'Yes', 'disciple_tools' )
             ],
             'section'     => 'status',
         ];
@@ -1168,6 +1108,10 @@ class Disciple_Tools_Contact_Post_Type
                     "work"    => [ "label" => __( 'Work', 'disciple_tools' ) ],
                     "other"   => [ "label" => __( 'Other', 'disciple_tools' ) ],
                 ],
+            ],
+            "address" => [
+                "label" => __( "Address", 'disciple_tools' ),
+                "types" => dt_address_metabox()->get_address_type_list( "contacts" )
             ],
             "facebook"  => [
                 "label" => __( 'Facebook', 'disciple_tools' ),

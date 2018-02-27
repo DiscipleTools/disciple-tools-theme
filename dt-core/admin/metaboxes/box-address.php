@@ -82,7 +82,7 @@ class Disciple_Tools_Metabox_Address
      */
     public function create_channel_metakey( $channel )
     {
-        return $channel . '_' . $this->unique_hash(); // build key
+        return "contact_". $channel . '_' . $this->unique_hash(); // build key
     }
 
     /**
@@ -159,21 +159,26 @@ class Disciple_Tools_Metabox_Address
                     ORDER BY
                         meta_key DESC",
                     $id,
-                    $wpdb->esc_like( 'address_' ) . '%'
+                    $wpdb->esc_like( 'contact_address_' ) . '%'
                 ),
                 ARRAY_A
             );
         }
 
         foreach ( $current_fields as $value ) {
+            $names = explode( '_', $value['meta_key'] );
+            $tag = null;
+
             if ( strpos( $value["meta_key"], "_details" ) == false ) {
                 $details = get_post_meta( $id, $value['meta_key'] . "_details", true );
-                $name = "";
                 if ( $details && isset( $details["type"] ) ) {
-                    $name = $details["type"];
+                    if ( $names[1] != $details["type"] ) {
+                        $tag = ' (' . ucwords( $details["type"] ) . ')';
+                    }
                 }
                 $fields[ $value['meta_key'] ] = [
-                    'name' => $name,
+                    'name' => ucwords( $names[1] ) . $tag,
+                    'tag'  => $names[1],
                 ];
             }
         }
