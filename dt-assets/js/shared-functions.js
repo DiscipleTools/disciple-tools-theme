@@ -38,57 +38,6 @@ let API = {
       }
     })
   },
-  add_item_to_field(type, postId, post_data) {
-    return jQuery.ajax({
-      type: "POST",
-      data: JSON.stringify(post_data),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiSettings.root +`dt/v1/${type}/${postId}/details`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-      }
-    })
-  },
-  update_contact_method_detail(type, postId, fieldKey, values) {
-    let data = {key: fieldKey, values: values}
-    return jQuery.ajax({
-      type: "POST",
-      data: JSON.stringify(data),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiSettings.root + `dt/v1/${type}/${postId}/details_update`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-      }
-    })
-  },
-  remove_item_from_field(type, postId, fieldKey, valueId) {
-    let data = {key: fieldKey, value: valueId}
-    return jQuery.ajax({
-      type: "DELETE",
-      data: JSON.stringify(data),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiSettings.root + `dt/v1/${type}/${postId}/details`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-      }
-    })
-  },
-  remove_field(type, postId, fieldKey) {
-    let data = {key: fieldKey}
-    return jQuery.ajax({
-      type: "DELETE",
-      data: JSON.stringify(data),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiSettings.root + `dt/v1/${type}/${postId}/field`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-      }
-    })
-  },
   post_comment(type, postId, comment) {
     return jQuery.ajax({
       type: "POST",
@@ -206,12 +155,18 @@ let API = {
   }
 
 }
-
+function handelAjaxError(err) {
+  console.trace("error")
+  console.log(err)
+  jQuery("#errors").append(err.responseText)
+}
 jQuery( document ).ajaxComplete(function(event, xhr, settings) {
   if (_.get(xhr, "responseJSON.data.status") === 401){
     window.location.replace("/login");
   }
-});
+}).ajaxError(function (event, xhr) {
+    handelAjaxError(xhr)
+  })
 jQuery( document ).on("click", ".help-button", function () {
     jQuery('#help-modal').foundation('open');
     let section = jQuery(this).data("section")

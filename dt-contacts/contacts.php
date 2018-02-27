@@ -330,7 +330,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 foreach ($connection_field["values"] as $connection_value ){
                     if ( isset( $connection_value["delete"] ) && $connection_value["delete"] === true ){
                         if ( in_array( $connection_value["value"], $existing_connections )){
-                            $potential_error = self::delete_contact_details( $contact_id, $connection_type, $connection_value["value"], false );
+                            $potential_error = self::remove_contact_connection( $contact_id, $connection_type, $connection_value["value"], false );
                             if ( is_wp_error( $potential_error ) ) {
                                 return $potential_error;
                             }
@@ -342,7 +342,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             if ( is_wp_error( $potential_error ) ) {
                                 return $potential_error;
                             }
-                            $added_fields[$connection_type] = $potential_error;
+                            $fields["added_fields"][$connection_type] = $potential_error;
                         }
                     }
                 }
@@ -350,7 +350,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 if ( isset( $connection_field["force_values"] ) && $connection_field["force_values"] === true ){
                     foreach ($existing_connections as $connection_value ){
                         if ( !in_array( $connection_value, $new_connections )){
-                            $potential_error = self::delete_contact_details( $contact_id, $connection_type, $connection_value, false );
+                            $potential_error = self::remove_contact_connection( $contact_id, $connection_type, $connection_value, false );
                             if ( is_wp_error( $potential_error ) ) {
                                 return $potential_error;
                             }
@@ -390,14 +390,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, __( "Contact does not exist" ) );
         }
 
-        $existing_contact = self::get_contact( $contact_id, false );
-        $added_fields = [];
 
         // don't try to update fields that don't exist
         $bad_fields = self::check_for_invalid_fields( $fields, $contact_id );
         if ( !empty( $bad_fields ) ) {
             return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), [ 'bad_fields' => $bad_fields ] );
         }
+        $existing_contact = self::get_contact( $contact_id, false );
+        $added_fields = [];
 
         if ( isset( $fields['title'] ) ) {
             wp_update_post( [
@@ -472,7 +472,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             self::check_requires_update( $contact_id );
         }
         $contact = self::get_contact( $contact_id, true );
-        $contact["added_fields"] = $added_fields;
+        $contact["added_fields"] = $fields["added_fields"];
         return $contact;
     }
 
@@ -786,15 +786,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     /**
-     * @param     $contact_id
-     * @param     $key
-     * @param     $value
-     * @param     $check_permissions
+     * @param int     $contact_id
+     * @param string  $key
+     * @param string  $value
+     * @param bool    $check_permissions
      *
      * @return bool|mixed|\WP_Error
      */
-    //    @todo rename this to delete connection or lump with delete field
-    public static function delete_contact_details( int $contact_id, string $key, string $value, bool $check_permissions )
+    public static function remove_contact_connection( int $contact_id, string $key, string $value, bool $check_permissions )
     {
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );

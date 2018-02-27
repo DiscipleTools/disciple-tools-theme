@@ -827,20 +827,7 @@ jQuery(document).ready(function($) {
 })
 
 
-
-
-
 let editingAll = false
-
-
-function handelAjaxError(err) {
-    console.trace("error")
-    console.log(err)
-    jQuery("#errors").append(err.responseText)
-}
-
-
-
 
 function details_accept_contact(contactId, accept){
   console.log(contactId)

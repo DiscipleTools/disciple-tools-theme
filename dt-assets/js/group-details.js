@@ -68,28 +68,6 @@ jQuery(document).ready(function($) {
     toggleEditAll()
   })
 
-  $(document)
-    .on('click', '.details-remove-button', function () {
-    let fieldId = $(this).data('field')
-    let itemId = $(this).data('id')
-
-    if (fieldId && itemId){
-      API.remove_item_from_field('group', groupId, fieldId, itemId).then(()=>{
-        $(`.${fieldId}-list .${itemId}`).remove()
-
-        //add the item back to the locations list
-        if (fieldId === 'locations'){
-          locations.add([{ID:itemId, name: $(this).data('name')}])
-        }
-        if (fieldId === "members"){
-          members.add([{ID:itemId, name: $(this).data('name')}])
-        }
-      }).catch(err=>{
-        console.log(err)
-      })
-    }
-  })
-
 
   function toggleEdit(field){
     if (!editingAll){
@@ -226,8 +204,7 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.remove_item_from_field('group', groupId, 'locations', item.ID).then(()=>{
-            $(`.locations-list .${item.ID}`).remove()
+          API.save_field_api('group', groupId, {'locations': {values:[{value:item.ID, delete:true}]}}).then(()=>{            $(`.locations-list .${item.ID}`).remove()
             let listItems = $(`.locations-list li`)
             if (listItems.length === 0){
               $(`.locations-list.details-list`).append(`<li id="no-location">${wpApiGroupsSettings.translations["not-set"]["location"]}</li>`)
@@ -238,7 +215,7 @@ jQuery(document).ready(function($) {
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.add_item_to_field('group', groupId, {locations: item.ID}).then((addedItem)=>{
+        API.save_field_api('group', groupId, {'locations': {values:[{value:item.ID}]}}).then((addedItem)=>{
           $('.locations-list').append(`<li class="${addedItem.ID}">
             <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
           </li>`)
@@ -285,7 +262,7 @@ jQuery(document).ready(function($) {
       },
       callback: {
         onCancel: function (node, item) {
-          API.remove_item_from_field('group', groupId, 'people_groups', item.ID).then(()=>{
+          API.save_field_api('group', groupId, {'people_groups': {values:[{value:item.ID, delete:true}]}}).then(()=>{
             $(`.people_groups-list .${item.ID}`).remove()
             let listItems = $(`.people_groups-list li`)
             if (listItems.length === 0){
@@ -297,7 +274,7 @@ jQuery(document).ready(function($) {
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.add_item_to_field('group', groupId, {people_groups: item.ID}).then((addedItem)=>{
+        API.save_field_api('group', groupId, {'people_groups': {values:[{value:item.ID}]}}).then((addedItem)=>{
           $("#no-people-group").remove()
           $('.people_groups-list').append(`<li class="${addedItem.ID}">
             <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
@@ -345,7 +322,7 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.remove_item_from_field('group', groupId, 'parent_groups', item.ID)
+          API.save_field_api('group', groupId, {'parent_groups': {values:[{value:item.ID, delete:true}]}})
         }
       },
       href: function(item){
@@ -360,7 +337,7 @@ jQuery(document).ready(function($) {
           event.preventDefault();
           $('#create-group-modal').foundation('open');
         } else {
-          API.add_item_to_field('group', groupId, {parent_groups: item.ID})
+          API.save_field_api('group', groupId, {'parent_groups': {values:[{value:item.ID}]}})
           masonGrid.masonry('layout')
         }
       },
@@ -405,8 +382,8 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.remove_item_from_field('group', groupId, 'child_groups', item.ID)
-        }
+            API.save_field_api('group', groupId, {'child_groups': {values:[{value:item.ID, delete:true}]}})
+          }
       },
       href: function(item){
         if (item){
@@ -420,7 +397,7 @@ jQuery(document).ready(function($) {
           event.preventDefault();
           $('#create-group-modal').foundation('open');
         } else {
-          API.add_item_to_field('group', groupId, {child_groups: item.ID})
+          API.save_field_api('group', groupId, {'child_groups': {values:[{value:item.ID}]}})
         }
       },
       onResult: function (node, query, result, resultCount) {
@@ -498,7 +475,7 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.remove_item_from_field('group', groupId, 'members', item.ID).then(()=>{
+          API.save_field_api('group', groupId, {'members': {values:[{value:item.ID, delete:true}]}}).then(()=>{
             $(`.members-list .${item.ID}`).remove()
             let listItems = $(`.members-list li`)
             if (listItems.length === 0){
@@ -511,7 +488,7 @@ jQuery(document).ready(function($) {
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.add_item_to_field('group', groupId, {members: item.ID}).then((addedItem)=>{
+        API.save_field_api('group', groupId, {'members': {values:[{value:item.ID}]}}).then((addedItem)=>{
           $('.members-list').append(`<li class="${addedItem.ID}">
             <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
           </li>`)
@@ -534,8 +511,11 @@ jQuery(document).ready(function($) {
   //for a new address field that has not been saved yet
   $(document).on('change', '#new-address', function (val) {
     let input = $('#new-address')
-    API.add_item_to_field( 'group', groupId, {"new-address":input.val()}).then(function (newAddressId) {
-      console.log(newAddressId)
+    API.save_field_api('group', groupId, {'contact_address': [{value:input.val()}]})
+      .then(function (group) {
+        console.log(group);
+        let newAddressId = _.get(_.last(_.get(group, `contact_address`)), "key")
+        console.log(newAddressId)
       if (newAddressId != groupId){
         //change the it to the created field
         input.attr('id', newAddressId)
@@ -600,9 +580,14 @@ jQuery(document).ready(function($) {
 
   $(document).on('click', '.details-remove-button.delete-method', function () {
     let fieldId = $(this).data('id')
+    let fieldType = $(this).data('field')
     if (fieldId){
-      API.remove_field('group', groupId, fieldId).then(()=>{
+      API.save_field_api('group', groupId, {[`contact_${fieldType}`]:[{key:fieldId, delete:true}]}).then(()=>{
         $(`.${fieldId}`).remove()
+        let listItems = $(`.${fieldType}-list li`)
+        if (listItems.length === 0){
+          $(`.${fieldType}.details-list`).append(`<li id="no-${fieldType}">${wpApiGroupsSettings.translations["not-set"][fieldType]}</li>`)
+        }
       }).catch(err=>{
         console.log(err)
       })
@@ -714,12 +699,14 @@ jQuery(document).ready(function($) {
   $(document).on('click', '.details-status-button.field-status', function () {
     let status = $(this).data('status')
     let id = $(this).data('id')
+    let field = $(this).data('field')
     console.log(status, id)
     let fields = {
+      key: id,
       verified : status === 'valid',
       invalid : status === "invalid"
     }
-    API.update_contact_method_detail('group', groupId, id, fields).then(()=>{
+    API.save_field_api('group', groupId, {[`contact_${field}`]:[fields]}).then(()=>{
       $(`#${id}-verified`).toggle(fields.verified)
       $(`#${id}-invalid`).toggle(fields.invalid)
     }).catch(err=>{
