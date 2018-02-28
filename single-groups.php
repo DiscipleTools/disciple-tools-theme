@@ -206,6 +206,23 @@ dt_print_breadcrumbs(
                                 </div>
                             </div>
                         </section>
+
+
+                        <?php
+                        $sections = apply_filters( 'dt_group_details_additional_section_ids', [] );
+
+                        foreach ( $sections as $section ){
+                            ?>
+                            <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
+                                <div class="bordered-box">
+                                    <?php
+                                    do_action( "dt_group_details_additional_section", $section )
+                                    ?>
+                                </div>
+                            </section>
+                            <?php
+                        }
+                        ?>
                     </div>
                 </div>
             </div>

@@ -162,82 +162,99 @@ declare( strict_types=1 );
                     </section>
 
                     <section id="faith" class="xlarge-6 large-12 medium-6 cell">
-                    <div class="bordered-box">
-                        <label class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?>
-<!--                            <button class="help-button float-right" data-section="contact-progress-help-text">-->
-<!--                                <img class="help-icon" src="--><?php //echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?><!--"/>-->
-<!--                            </button>-->
-                        </label>
-                        <div class="section-subheader">
-                            <?php esc_html_e( 'Seeker Path', 'disciple_tools' )?>
-                            <button class="help-button" data-section="seeker-path-help-text">
-                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                            </button>
-                        </div>
+                        <div class="bordered-box">
+                            <label class="section-header"><?php esc_html_e( 'Progress', 'disciple_tools' )?>
+    <!--                            <button class="help-button float-right" data-section="contact-progress-help-text">-->
+    <!--                                <img class="help-icon" src="--><?php //echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?><!--"/>-->
+    <!--                            </button>-->
+                            </label>
+                            <div class="section-subheader">
+                                <?php esc_html_e( 'Seeker Path', 'disciple_tools' )?>
+                                <button class="help-button" data-section="seeker-path-help-text">
+                                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                </button>
+                            </div>
 
-                        <select class="select-field" id="seeker_path" style="margin-bottom: 0px">
-                        <?php
-
-                        foreach ($contact_fields["seeker_path"]["default"] as $key => $value){
-                            if ( $contact->fields["seeker_path"]["key"] === $key ) {
-                                ?>
-                                <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
-                            <?php } else { ?>
-                                <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
-                            <?php }
-                        }
-                        $keys = array_keys( $contact_fields["seeker_path"]["default"] );
-                        $path_index = array_search( $contact->fields["seeker_path"]["key"], $keys ) ?? 0;
-                        $percentage = $path_index / ( sizeof( $keys ) -1 ) *100
-                        ?>
-                        </select>
-                        <div class="progress" role="progressbar" tabindex="0" aria-valuenow="<?php echo 4 ?>" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
-                            <div id="seeker-progress" class="progress-meter" style="width: <?php echo esc_html( $percentage ) ?>%"></div>
-                        </div>
-
-                        <div class="section-subheader">
-                            <?php esc_html_e( 'Faith Milestones', 'disciple_tools' )?>
-                            <button class="help-button" data-section="faith-milestones-help-text">
-                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                            </button>
-                        </div>
-                        <div class="small button-group" style="display: inline-block">
-
-                            <?php foreach ( $contact_fields as $field => $val ): ?>
-                                <?php
-                                if (strpos( $field, "milestone_" ) === 0) {
-                                    $class = ( isset( $contact->fields[ $field ] ) && $contact->fields[ $field ]['key'] === 'yes' ) ?
-                                        "selected-select-button" : "empty-select-button";
-                                ?>
-                                    <button onclick="save_seeker_milestones( <?php echo esc_html( get_the_ID() ) ?> , '<?php echo esc_html( $field ) ?>')"
-                                            id="<?php echo esc_html( $field ) ?>"
-                                            class="<?php echo esc_html( $class ) ?> select-button button ">
-                                        <?php echo esc_html( $contact_fields[ $field ]["name"] ) ?>
-                                    </button>
-                                <?php }?>
-                            <?php endforeach; ?>
-                        </div>
-
-                        <div class="baptism_date">
-                            <div class="section-subheader"><?php esc_html_e( 'Baptism Date', 'disciple_tools' )?></div>
-                            <div class="baptism_date"><input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact->fields["baptism_date"] ?? '' )?>" id="baptism-date-picker"></div>
-                        </div>
-
-                        <div class="section-subheader"><?php echo esc_html( $contact_fields["bible_mailing"]["name"] ) ?></div>
-                        <select id="bible_mailing" class="select-field">
+                            <select class="select-field" id="seeker_path" style="margin-bottom: 0px">
                             <?php
-                            foreach ( $contact_fields["bible_mailing"]["default"] as $key => $value ) {
-                                if ( isset( $contact->fields["bible_mailing"] ) &&
-                                    $contact->fields["bible_mailing"]["key"] === $key ){
-                                    echo '<option value="'. esc_html( $key ) . '" selected>' . esc_html( $value ) . '</option>';
-                                } else {
-                                    echo '<option value="'. esc_html( $key ) . '">' . esc_html( $value ). '</option>';
-                                }
+
+                            foreach ($contact_fields["seeker_path"]["default"] as $key => $value){
+                                if ( $contact->fields["seeker_path"]["key"] === $key ) {
+                                    ?>
+                                    <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
+                                <?php } else { ?>
+                                    <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
+                                <?php }
                             }
+                            $keys = array_keys( $contact_fields["seeker_path"]["default"] );
+                            $path_index = array_search( $contact->fields["seeker_path"]["key"], $keys ) ?? 0;
+                            $percentage = $path_index / ( sizeof( $keys ) -1 ) *100
                             ?>
-                        </select>
-                    </div>
-                </section>
+                            </select>
+                            <div class="progress" role="progressbar" tabindex="0" aria-valuenow="<?php echo 4 ?>" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
+                                <div id="seeker-progress" class="progress-meter" style="width: <?php echo esc_html( $percentage ) ?>%"></div>
+                            </div>
+
+                            <div class="section-subheader">
+                                <?php esc_html_e( 'Faith Milestones', 'disciple_tools' )?>
+                                <button class="help-button" data-section="faith-milestones-help-text">
+                                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                </button>
+                            </div>
+                            <div class="small button-group" style="display: inline-block">
+
+                                <?php foreach ( $contact_fields as $field => $val ): ?>
+                                    <?php
+                                    if (strpos( $field, "milestone_" ) === 0) {
+                                        $class = ( isset( $contact->fields[ $field ] ) && $contact->fields[ $field ]['key'] === 'yes' ) ?
+                                            "selected-select-button" : "empty-select-button";
+                                    ?>
+                                        <button onclick="save_seeker_milestones( <?php echo esc_html( get_the_ID() ) ?> , '<?php echo esc_html( $field ) ?>')"
+                                                id="<?php echo esc_html( $field ) ?>"
+                                                class="<?php echo esc_html( $class ) ?> select-button button ">
+                                            <?php echo esc_html( $contact_fields[ $field ]["name"] ) ?>
+                                        </button>
+                                    <?php }?>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <div class="baptism_date">
+                                <div class="section-subheader"><?php esc_html_e( 'Baptism Date', 'disciple_tools' )?></div>
+                                <div class="baptism_date"><input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact->fields["baptism_date"] ?? '' )?>" id="baptism-date-picker"></div>
+                            </div>
+
+                            <div class="section-subheader"><?php echo esc_html( $contact_fields["bible_mailing"]["name"] ) ?></div>
+                            <select id="bible_mailing" class="select-field">
+                                <?php
+                                foreach ( $contact_fields["bible_mailing"]["default"] as $key => $value ) {
+                                    if ( isset( $contact->fields["bible_mailing"] ) &&
+                                        $contact->fields["bible_mailing"]["key"] === $key ){
+                                        echo '<option value="'. esc_html( $key ) . '" selected>' . esc_html( $value ) . '</option>';
+                                    } else {
+                                        echo '<option value="'. esc_html( $key ) . '">' . esc_html( $value ). '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </section>
+
+                    <?php
+                    $sections = apply_filters( 'dt_contact_details_additional_section_ids', [] );
+
+                    foreach ( $sections as $section ){
+                    ?>
+                        <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
+                            <div class="bordered-box">
+                                <?php
+                                do_action( "dt_contact_details_additional_section", $section )
+                                ?>
+                            </div>
+                        </section>
+                    <?php
+                    }
+                    ?>
+
                 </div>
             </main> <!-- end #main -->
 
