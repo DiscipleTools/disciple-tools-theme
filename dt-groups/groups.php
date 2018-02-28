@@ -21,6 +21,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     public static $address_types;
     public static $group_fields;
+    public static $group_connection_types;
+    public static $channel_list;
 
     /**
      * Disciple_Tools_Groups constructor.
@@ -32,6 +34,16 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             function() {
                 self::$address_types = dt_address_metabox()->get_address_type_list( "groups" );
                 self::$group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+                self::$group_connection_types = [
+                    "members",
+                    "parent_groups",
+                    "child_groups",
+                    "locations",
+                    "people_groups"
+                ];
+                self::$channel_list = [
+                    "address"
+                ];
             }
         );
         parent::__construct();
@@ -141,7 +153,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
             $meta_fields = get_post_custom( $group_id );
             foreach ( $meta_fields as $key => $value ) {
-                if ( strpos( $key, "address" ) === 0 ) {
+                if ( strpos( $key, "address_" ) !== false) {
                     if ( strpos( $key, "_details" ) === false ) {
 
                         $details = [];
@@ -153,7 +165,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                         if ( isset( $details["type"] ) ) {
                             $details["type_label"] = self::$address_types[ $details["type"] ]["label"];
                         }
-                        $fields["address"][] = $details;
+                        $fields["contact_address"][] = $details;
                     }
                 } elseif ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]["type"] == "key_select" ) {
                     $label = self::$group_fields[ $key ]["default"][ $value[0] ] ?? current( self::$group_fields[ $key ]["default"] );
@@ -193,6 +205,14 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         }
     }
 
+    private static function is_key_contact_method_or_connection( $key ) {
+        $channel_keys = [];
+        foreach ( self::$channel_list as $channel_key ) {
+            $channel_keys[] = "contact_" . $channel_key;
+        }
+        return in_array( $key, self::$group_connection_types ) || in_array( $key, $channel_keys );
+    }
+
     /**
      * Make sure there are no extra or misspelled fields
      * Make sure the field values are the correct format
@@ -210,13 +230,96 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( isset( $post_id ), $post_id );
         $group_fields['title'] = "";
         foreach ( $fields as $field => $value ) {
-            if ( !isset( $group_fields[ $field ] ) ) {
+            if ( !isset( $group_fields[ $field ] ) && !self::is_key_contact_method_or_connection( $field ) ) {
                 $bad_fields[] = $field;
             }
         }
-
         return $bad_fields;
     }
+
+    private static function parse_contact_methods( $group_id, $fields ){
+        // update group details (phone, facebook, etc)
+        foreach ( self::$channel_list as $channel_key ){
+            $details_key = "contact_" . $channel_key;
+            if ( isset( $fields[$details_key] ) && is_array( $fields[$details_key] )){
+                foreach ( $fields[$details_key] as $field ){
+                    if ( isset( $field["delete"] ) && $field["delete"] == true){
+                        if ( !isset( $field["key"] )){
+                            return new WP_Error( __FUNCTION__, __( "missing key on:" ) . " " . $details_key );
+                        }
+                        //delete field
+                        $potential_error = self::delete_group_field( $group_id, $field["key"] );
+                    } else if ( isset( $field["key"] ) ){
+                        //update field
+                        $potential_error = self::update_contact_method( $group_id, $field["key"], $field, false );
+                    } else if ( isset( $field["value"] ) ) {
+                        $field["key"] = "new-".$channel_key;
+                        //create field
+                        $potential_error = self::add_item_to_field( $group_id, $field["key"], $field["value"], false );
+
+                    } else {
+                        return new WP_Error( __FUNCTION__, __( "Is not an array or missing value on:" ) . " " . $details_key );
+                    }
+                    if ( isset( $potential_error ) && is_wp_error( $potential_error ) ) {
+                        return $potential_error;
+                    }
+                }
+            }
+        }
+        return $fields;
+    }
+
+    private static function parse_connections( $group_id, $fields, $existing_group){
+        //update connections (groups, locations, etc)
+        foreach ( self::$group_connection_types as $connection_type ){
+            if ( isset( $fields[$connection_type] ) ){
+                if ( !isset( $fields[$connection_type]["values"] )){
+                    return new WP_Error( __FUNCTION__, __( "Missing values field on connection:" ) . " " . $connection_type, [ 'status' => 500 ] );
+                }
+                $existing_connections = [];
+                if ( isset( $existing_group[$connection_type] ) ){
+                    foreach ( $existing_group[$connection_type] as $connection){
+                        $existing_connections[] = $connection->ID;
+                    }
+                }
+                //check for new connections
+                $connection_field = $fields[$connection_type];
+                $new_connections = [];
+                foreach ($connection_field["values"] as $connection_value ){
+                    if ( isset( $connection_value["delete"] ) && $connection_value["delete"] === true ){
+                        if ( in_array( $connection_value["value"], $existing_connections )){
+                            $potential_error = self::remove_group_connection( $group_id, $connection_type, $connection_value["value"], false );
+                            if ( is_wp_error( $potential_error ) ) {
+                                return $potential_error;
+                            }
+                        }
+                    } else {
+                        $new_connections[] = $connection_value["value"];
+                        if ( !in_array( $connection_value["value"], $existing_connections )){
+                            $potential_error = self::add_item_to_field( $group_id, $connection_type, $connection_value["value"], false );
+                            if ( is_wp_error( $potential_error ) ) {
+                                return $potential_error;
+                            }
+                            $added_fields[$connection_type] = $potential_error;
+                        }
+                    }
+                }
+                //check for deleted connections
+                if ( isset( $connection_field["force_values"] ) && $connection_field["force_values"] === true ){
+                    foreach ($existing_connections as $connection_value ){
+                        if ( !in_array( $connection_value, $new_connections )){
+                            $potential_error = self::remove_group_connection( $group_id, $connection_type, $connection_value, false );
+                            if ( is_wp_error( $potential_error ) ) {
+                                return $potential_error;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $fields;
+    }
+
 
     /**
      * Update an existing Group
@@ -252,11 +355,24 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             ] );
         }
 
+        $existing_group = self::get_group( $group_id, false );
+        $added_fields = [];
+
         if ( isset( $fields['title'] ) ) {
             wp_update_post( [
                 'ID' => $group_id,
                 'post_title' => $fields['title']
             ] );
+        }
+
+        $potential_error = self::parse_contact_methods( $group_id, $fields );
+        if ( is_wp_error( $potential_error )){
+            return $potential_error;
+        }
+
+        $potential_error = self::parse_connections( $group_id, $fields, $existing_group );
+        if ( is_wp_error( $potential_error )){
+            return $potential_error;
         }
 
         if ( isset( $fields["assigned_to"] ) ) {
@@ -267,10 +383,22 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         }
 
         foreach ( $fields as $field_id => $value ) {
-            update_post_meta( $group_id, $field_id, $value );
+            if ( !self::is_key_contact_method_or_connection( $field_id )){
+                if ( is_string( $value ) || is_numeric( $value ) ) {
+                    update_post_meta( $group_id, $field_id, $value );
+                } else {
+                    return new WP_Error( __FUNCTION__, __( "Unexpected field value" ), [
+                        'status' => 500,
+                        'field'  => $field_id
+                    ] );
+                }
+            }
         }
 
-        return self::get_group( $group_id, true );
+        $group = self::get_group( $group_id, true );
+        $group["added_fields"] = $added_fields;
+        return $group;
+
     }
 
     /**
@@ -467,21 +595,35 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return int|\WP_Error
      */
-    public static function update_detail_on_field( int $group_id, string $key, array $values, bool $check_permissions )
+    public static function update_contact_method( int $group_id, string $key, array $values, bool $check_permissions )
     {
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
-        if ( ( strpos( $key, "group_" ) === 0 || strpos( $key, "address_" ) === 0 ) &&
-            strpos( $key, "_details" ) === false
+        if ( ( strpos( $key, "contact_" ) === 0 || strpos( $key, "address_" ) === 0 ) &&
+              strpos( $key, "_details" ) === false
         ) {
+            $old_value = get_post_meta( $group_id, $key, true );
+            //check if it is different to avoid setting saving activity
+            if ( isset( $values["value"] ) && $old_value != $values["value"] ){
+                update_post_meta( $group_id, $key, $values["value"] );
+            }
+            unset( $values["value"] );
+            unset( $values["key"] );
+
             $details_key = $key . "_details";
-            $details = get_post_meta( $group_id, $details_key, true );
-            $details = isset( $details ) ? $details : [];
+            $old_details = get_post_meta( $group_id, $details_key, true );
+            $details = isset( $old_details ) ? $old_details : [];
+            $new_value = false;
             foreach ( $values as $detail_key => $detail_value ) {
+                if ( !isset( $details[$detail_key] ) || $details[$detail_key] !== $detail_value){
+                    $new_value = true;
+                }
                 $details[ $detail_key ] = $detail_value;
             }
-            update_post_meta( $group_id, $details_key, $details );
+            if ($new_value){
+                update_post_meta( $group_id, $details_key, $details );
+            }
         }
 
         return $group_id;
@@ -496,7 +638,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return bool|mixed|\WP_Error
      */
-    public static function remove_item_from_field( int $group_id, string $key, string $value, bool $check_permissions )
+    public static function remove_group_connection( int $group_id, string $key, string $value, bool $check_permissions )
     {
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have have permission for this" ), [ 'status' => 403 ] );
@@ -604,18 +746,40 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, __( "Group needs a title" ), [ 'fields' => $fields ] );
         }
 
+        $defaults = [
+            "group_status" => "active",
+            "group_type" => "pre-group",
+            "assigned_to" => sprintf( "user-%d", get_current_user_id() ),
+        ];
+
+        $fields = array_merge( $defaults, $fields );
+
+        $contact_methods_and_connections = [];
+        foreach ( $fields as $field_key => $field_value ){
+            if ( self::is_key_contact_method_or_connection( $field_key )){
+                $contact_methods_and_connections[$field_key] = $field_value;
+                unset( $fields[$field_key] );
+            }
+        }
+
         $post = [
             "post_title" => $fields["title"],
             "post_type" => "groups",
             "post_status" => "publish",
-            "meta_input" => [
-                "group_status" => "active",
-                "group_type" => "pre-group",
-                "assigned_to" => sprintf( "user-%d", get_current_user_id() ),
-            ],
+            "meta_input" => $fields
         ];
 
         $post_id = wp_insert_post( $post );
+
+        $potential_error = self::parse_contact_methods( $post_id, $contact_methods_and_connections );
+        if ( is_wp_error( $potential_error )){
+            return $potential_error;
+        }
+
+        $potential_error = self::parse_connections( $post_id, $contact_methods_and_connections, null );
+        if ( is_wp_error( $potential_error )){
+            return $potential_error;
+        }
 
         if ( isset( $fields["created_from_contact_id"] ) ){
             self::add_item_to_field( $post_id, "members", $fields["created_from_contact_id"], true );

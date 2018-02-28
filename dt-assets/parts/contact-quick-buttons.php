@@ -18,8 +18,8 @@
     foreach ( $contact_fields as $field => $val ) {
         if ( strpos( $field, "quick_button" ) === 0 ) {
             $current_value = 0;
-            if ( isset( $contact->fields[ $field ] ) ) {
-                $current_value = $contact->fields[ $field ];
+            if ( isset( $contact[ $field ] ) ) {
+                $current_value = $contact[ $field ];
             } ?>
 
             <button class="contact-quick-button <?php echo esc_attr( $field, 'disciple_tools' ) ?>"

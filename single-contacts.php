@@ -26,7 +26,7 @@ declare( strict_types=1 );
         true,
         true,
         current_user_can( "assign_any_contacts" ),
-        isset( $contact->fields["requires_update"] ) && $contact->fields["requires_update"]["key"] === "yes"
+        isset( $contact["requires_update"] ) && $contact["requires_update"]["key"] === "yes"
     ); ?>
 
     <div id="content">
@@ -51,14 +51,14 @@ declare( strict_types=1 );
                     </label>
                     <?php
                     $active_color = "#FFFFFF";
-                    $current_key = $contact->fields["overall_status"]["key"] ?? "";
+                    $current_key = $contact["overall_status"]["key"] ?? "";
                     if ( isset( $contact_fields["overall_status"]["colors"][ $current_key ] )){
                         $active_color = $contact_fields["overall_status"]["colors"][$current_key];
                     }
                     ?>
                     <select id="overall_status" class="select-field" style="margin-bottom:0px; background-color: <?php echo esc_html( $active_color ) ?>">
                     <?php foreach ($contact_fields["overall_status"]["default"] as $key => $value){
-                        if ( $contact->fields["overall_status"]["key"] === $key ) {
+                        if ( $contact["overall_status"]["key"] === $key ) {
                             ?>
                             <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
                         <?php } else { ?>
@@ -68,15 +68,15 @@ declare( strict_types=1 );
                     </select>
                     <span id="reason">
                         <?php
-                        if ( $contact->fields["overall_status"]["key"] === "paused" &&
-                             isset( $contact->fields["reason_paused"] )){
-                            echo '(' . esc_html( $contact->fields["reason_paused"]["label"] ) . ')';
-                        } else if ( $contact->fields["overall_status"]["key"] === "closed" &&
-                                    isset( $contact->fields["reason_closed"] )){
-                            echo '(' . esc_html( $contact->fields["reason_closed"]["label"] ) . ')';
-                        } else if ( $contact->fields["overall_status"]["key"] === "unassignable" &&
-                                    isset( $contact->fields["reason_unassignable"] )){
-                            echo '(' . esc_html( $contact->fields["reason_unassignable"]["label"] ) . ')';
+                        if ( $contact["overall_status"]["key"] === "paused" &&
+                             isset( $contact["reason_paused"] )){
+                            echo '(' . esc_html( $contact["reason_paused"]["label"] ) . ')';
+                        } else if ( $contact["overall_status"]["key"] === "closed" &&
+                                    isset( $contact["reason_closed"] )){
+                            echo '(' . esc_html( $contact["reason_closed"]["label"] ) . ')';
+                        } else if ( $contact["overall_status"]["key"] === "unassignable" &&
+                                    isset( $contact["reason_unassignable"] )){
+                            echo '(' . esc_html( $contact["reason_unassignable"]["label"] ) . ')';
                         }
                         ?>
                     </span>
@@ -179,7 +179,7 @@ declare( strict_types=1 );
                             <?php
 
                             foreach ($contact_fields["seeker_path"]["default"] as $key => $value){
-                                if ( $contact->fields["seeker_path"]["key"] === $key ) {
+                                if ( $contact["seeker_path"]["key"] === $key ) {
                                     ?>
                                     <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
                                 <?php } else { ?>
@@ -187,7 +187,7 @@ declare( strict_types=1 );
                                 <?php }
                             }
                             $keys = array_keys( $contact_fields["seeker_path"]["default"] );
-                            $path_index = array_search( $contact->fields["seeker_path"]["key"], $keys ) ?? 0;
+                            $path_index = array_search( $contact["seeker_path"]["key"], $keys ) ?? 0;
                             $percentage = $path_index / ( sizeof( $keys ) -1 ) *100
                             ?>
                             </select>
@@ -206,7 +206,7 @@ declare( strict_types=1 );
                                 <?php foreach ( $contact_fields as $field => $val ): ?>
                                     <?php
                                     if (strpos( $field, "milestone_" ) === 0) {
-                                        $class = ( isset( $contact->fields[ $field ] ) && $contact->fields[ $field ]['key'] === 'yes' ) ?
+                                        $class = ( isset( $contact[ $field ] ) && $contact[ $field ]['key'] === 'yes' ) ?
                                             "selected-select-button" : "empty-select-button";
                                     ?>
                                         <button onclick="save_seeker_milestones( <?php echo esc_html( get_the_ID() ) ?> , '<?php echo esc_html( $field ) ?>')"
@@ -220,15 +220,15 @@ declare( strict_types=1 );
 
                             <div class="baptism_date">
                                 <div class="section-subheader"><?php esc_html_e( 'Baptism Date', 'disciple_tools' )?></div>
-                                <div class="baptism_date"><input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact->fields["baptism_date"] ?? '' )?>" id="baptism-date-picker"></div>
+                                <div class="baptism_date"><input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"] ?? '' )?>" id="baptism-date-picker"></div>
                             </div>
 
                             <div class="section-subheader"><?php echo esc_html( $contact_fields["bible_mailing"]["name"] ) ?></div>
                             <select id="bible_mailing" class="select-field">
                                 <?php
                                 foreach ( $contact_fields["bible_mailing"]["default"] as $key => $value ) {
-                                    if ( isset( $contact->fields["bible_mailing"] ) &&
-                                        $contact->fields["bible_mailing"]["key"] === $key ){
+                                    if ( isset( $contact["bible_mailing"] ) &&
+                                        $contact["bible_mailing"]["key"] === $key ){
                                         echo '<option value="'. esc_html( $key ) . '" selected>' . esc_html( $value ) . '</option>';
                                     } else {
                                         echo '<option value="'. esc_html( $key ) . '">' . esc_html( $value ). '</option>';
@@ -243,7 +243,7 @@ declare( strict_types=1 );
                     $sections = apply_filters( 'dt_contact_details_additional_section_ids', [] );
 
                     foreach ( $sections as $section ){
-                    ?>
+                        ?>
                         <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
                             <div class="bordered-box">
                                 <?php
@@ -251,10 +251,9 @@ declare( strict_types=1 );
                                 ?>
                             </div>
                         </section>
-                    <?php
+                        <?php
                     }
                     ?>
-
                 </div>
             </main> <!-- end #main -->
 
@@ -308,7 +307,7 @@ declare( strict_types=1 );
             foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
                 ?>
                 <option value="<?php echo esc_attr( $reason_key )?>"
-                    <?php if ( ( $contact->fields["reason_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
+                    <?php if ( ( $contact["reason_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
                     <?php echo esc_html( $reason_label )?>
                 </option>
                 <?php
@@ -334,7 +333,7 @@ declare( strict_types=1 );
             foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_label ) {
                 ?>
                 <option value="<?php echo esc_attr( $reason_key )?>"
-                    <?php if ( ( $contact->fields["unassignable_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
+                    <?php if ( ( $contact["unassignable_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
                     <?php echo esc_html( $reason_label )?>
                 </option>
                 <?php

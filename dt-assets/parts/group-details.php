@@ -3,8 +3,7 @@
 ?>
 <?php
 $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
-$locations = Disciple_Tools_Locations::get_locations();
-$current_user = wp_get_current_user();
+
 $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
 
 
@@ -14,7 +13,7 @@ function dt_contact_details_status( $id, $verified, $invalid ){
     <img id="<?php echo esc_attr( $id . '-invalid', 'disciple_tools' ); ?>"  class="details-status" style="display: <?php echo esc_attr( $invalid, 'disciple_tools' ); ?>"  src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/broken.svg'; ?>" />
     <?php
 }
-function dt_contact_details_edit( $id, $remove = false ){
+function dt_contact_details_edit( $id, $field_type, $remove = false ){
     ?>
     <ul class='dropdown menu' data-click-open='true'
         data-dropdown-menu data-disable-hover='true'
@@ -27,6 +26,7 @@ function dt_contact_details_edit( $id, $remove = false ){
                 <li>
                     <button class='details-status-button field-status verify'
                             data-status='valid'
+                            data-field='<?php echo esc_html( $field_type ) ?>'
                             data-id='<?php echo esc_html( $id ) ?>'>
                         <?php esc_html_e( 'Valid', 'disciple_tools' )?>
                     </button>
@@ -34,6 +34,7 @@ function dt_contact_details_edit( $id, $remove = false ){
                 <li>
                     <button class='details-status-button field-status invalid'
                             data-status="invalid"
+                            data-field='<?php echo esc_html( $field_type ) ?>'
                             data-id='<?php echo esc_html( $id ) ?>'>
                         <?php esc_html_e( 'Invalid', 'disciple_tools' )?>
                     </button>
@@ -41,6 +42,7 @@ function dt_contact_details_edit( $id, $remove = false ){
                 <li>
                     <button class='details-status-button field-status'
                             data-status="reset"
+                            data-field='<?php echo esc_html( $field_type ) ?>'
                             data-id='<?php echo esc_html( $id ) ?>'>
                         <?php esc_html_e( 'Unconfirmed', 'disciple_tools' )?>
                     </button>
@@ -48,6 +50,7 @@ function dt_contact_details_edit( $id, $remove = false ){
                 <?php if ($remove){ ?>
                     <li>
                         <button class='details-remove-button delete-method'
+                                data-field='<?php echo esc_html( $field_type ) ?>'
                                 data-id='<?php echo esc_html( $id ) ?>'>
                             <?php esc_html_e( 'Delete item', 'disciple_tools' )?>
                         </button>
@@ -190,10 +193,10 @@ function dt_contact_details_edit( $id, $remove = false ){
             </div>
             <ul class="address details-list">
                 <?php
-                if (sizeof( $group["address"] ?? [] ) === 0 ){
+                if (sizeof( $group["contact_address"] ?? [] ) === 0 ){
                     ?> <li id="no-address"><?php esc_html_e( 'No address set', 'disciple_tools' )?></li> <?php
                 }
-                foreach ($group["address"] ?? [] as $value){
+                foreach ($group["contact_address"] ?? [] as $value){
                     $verified = isset( $value["verified"] ) && $value["verified"] === true ? "inline" :"none";
                     $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                     ?>
@@ -205,14 +208,12 @@ function dt_contact_details_edit( $id, $remove = false ){
             </ul>
             <ul id="address-list" class="details-edit">
                 <?php
-                if ( isset( $group["address"] )){
-                    foreach ($group["address"] ?? [] as $value){
-                        $verified = isset( $value["verified"] ) && $value["verified"] === true;
-                        $invalid = isset( $value["invalid"] ) && $value["invalid"] === true;
+                if ( isset( $group["contact_address"] )){
+                    foreach ($group["contact_address"] ?? [] as $value){
                         ?>
                         <div class="<?php echo esc_attr( $value["key"], 'disciple_tools' )?>">
                             <textarea rows="3" id="<?php echo esc_attr( $value["key"], 'disciple_tools' )?>" class="contact-input"><?php echo esc_attr( $value["value"], 'disciple_tools' )?></textarea>
-                            <?php dt_contact_details_edit( $value["key"], true ) ?>
+                            <?php dt_contact_details_edit( $value["key"], "address", true ) ?>
                         </div>
                         <hr>
 

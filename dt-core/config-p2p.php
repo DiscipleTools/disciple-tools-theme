@@ -494,3 +494,9 @@ function dt_user_peoplegroup_connections( $user )
 }
 add_action( 'show_user_profile', 'dt_user_peoplegroup_connections', 999 );
 add_action( 'edit_user_profile', 'dt_user_peoplegroup_connections', 999 );
+
+//escape the connection title because p2p doesn't
+function dt_p2p_title_escape( $title, $object = null, $type = null ){
+    return esc_html( $title );
+}
+add_filter( "p2p_connected_title", "dt_p2p_title_escape" );

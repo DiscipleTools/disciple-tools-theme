@@ -80,30 +80,7 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'update_contact' ],
             ]
         );
-        register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/details', [
-                "methods"  => "POST",
-                "callback" => [ $this, 'add_contact_details' ],
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/details_update', [
-                "methods"  => "POST",
-                "callback" => [ $this, 'update_contact_details' ],
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/details', [
-                "methods"  => "DELETE",
-                "callback" => [ $this, 'delete_contact_details' ],
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/field', [
-                "methods"  => "DELETE",
-                "callback" => [ $this, 'delete_contact_field' ],
-            ]
-        );
+
         register_rest_route(
             $this->namespace, '/user/(?P<user_id>\d+)/contacts', [
                 "methods"  => "GET",
@@ -122,18 +99,12 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'get_contacts_compact' ],
             ]
         );
-        register_rest_route(
-            $this->namespace, '/user/(?P<user_id>\d+)/team/contacts', [
-                "methods"  => "GET",
-                "callback" => [ $this, 'get_team_contacts' ],
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/quick_action_button', [
-                "methods"  => "POST",
-                "callback" => [ $this, 'quick_action_button' ],
-            ]
-        );
+//        register_rest_route(
+//            $this->namespace, '/user/(?P<user_id>\d+)/team/contacts', [
+//                "methods"  => "GET",
+//                "callback" => [ $this, 'get_team_contacts' ],
+//            ]
+//        );
         register_rest_route(
             $this->namespace, '/contact/(?P<id>\d+)/comment', [
                 "methods"  => "POST",
@@ -397,98 +368,6 @@ class Disciple_Tools_Contacts_Endpoints
         }
     }
 
-    /**
-     * @param \WP_REST_Request $request
-     *
-     * @return array|mixed|null|string|\WP_Error|\WP_Post|\WP_REST_Response
-     */
-    public function add_contact_details( WP_REST_Request $request )
-    {
-        $params = $request->get_params();
-        $body = $request->get_json_params();
-        if ( isset( $params['id'] ) ) {
-            reset( $body );
-            $field = key( $body );
-            $result = Disciple_Tools_Contacts::add_contact_detail( $params['id'], $field, $body[ $field ], true );
-            if ( is_wp_error( $result ) ) {
-                return $result;
-            } else {
-                return new WP_REST_Response( $result );
-            }
-        } else {
-            return new WP_Error( "add_contact_details", "Missing a valid contact id", [ 'status' => 400 ] );
-        }
-    }
-
-    /**
-     * @param \WP_REST_Request $request
-     *
-     * @return int|\WP_Error|\WP_REST_Response
-     */
-    public function update_contact_details( WP_REST_Request $request )
-    {
-        $params = $request->get_params();
-        $body = $request->get_json_params();
-        if ( isset( $params['id'] ) ) {
-            $field_key = $body["key"];
-            $values = $body["values"];
-
-            $result = Disciple_Tools_Contacts::update_contact_details( $params['id'], $field_key, $values, true );
-
-            return $result;
-        } else {
-            return new WP_Error( "add_contact_details", "Missing a valid contact id", [ 'status' => 400 ] );
-        }
-    }
-
-    /**
-     * @param \WP_REST_Request $request
-     *
-     * @return bool|mixed|\WP_Error|\WP_REST_Response
-     */
-    public function delete_contact_details( WP_REST_Request $request )
-    {
-        $params = $request->get_params();
-        $body = $request->get_json_params();
-        if ( isset( $params['id'] ) ) {
-            $field_key = $body["key"];
-            $value = $body["value"];
-
-            $result = Disciple_Tools_Contacts::delete_contact_details( $params['id'], $field_key, $value, true );
-            if ( is_wp_error( $result ) ) {
-                return $result;
-            } elseif ( $result == 0 ) {
-                return new WP_Error( "delete_contact_details", "Could not update contact", [ 'status' => 400 ] );
-            } else {
-                return new WP_REST_Response( $result );
-            }
-        } else {
-            return new WP_Error( "add_contact_details", "Missing a valid contact id", [ 'status' => 400 ] );
-        }
-    }
-
-    /**
-     * @param \WP_REST_Request $request
-     *
-     * @return \WP_Error|\WP_REST_Response
-     */
-    public function delete_contact_field( WP_REST_Request $request )
-    {
-        $params = $request->get_params();
-        $body = $request->get_json_params();
-        if ( isset( $params['id'] ) ) {
-            $field_key = $body["key"];
-
-            $result = Disciple_Tools_Contacts::delete_contact_field( $params['id'], $field_key );
-            if ( $result == 0 ) {
-                return new WP_Error( "delete_contact_field", "Could not update contact", [ 'status' => 400 ] );
-            } else {
-                return new WP_REST_Response( $result );
-            }
-        } else {
-            return new WP_Error( "delete_contact_field", "Missing a valid contact id", [ 'status' => 403 ] );
-        }
-    }
 
     /**
      * Get Contacts assigned to a user
@@ -554,26 +433,6 @@ class Disciple_Tools_Contacts_Endpoints
         }
     }
 
-    /**
-     * @param \WP_REST_Request $request
-     *
-     * @return array|int|\WP_Error|\WP_REST_Response
-     */
-    public function quick_action_button( WP_REST_Request $request )
-    {
-        $params = $request->get_params();
-        $body = $request->get_json_params();
-        if ( isset( $params['id'] ) ) {
-            $result = Disciple_Tools_Contacts::quick_action_button( $params['id'], $body, true );
-            if ( is_wp_error( $result ) ) {
-                return $result;
-            } else {
-                return new WP_REST_Response( [ "seeker_path" => $result ] );
-            }
-        } else {
-            return new WP_Error( "quick_action_button", "Missing a valid contact id", [ 'status' => 400 ] );
-        }
-    }
 
     /**
      * @param \WP_REST_Request $request
