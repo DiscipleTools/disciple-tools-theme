@@ -38,6 +38,7 @@ function dt_print_breadcrumbs(
     ?>
 
     <!-- Breadcrumb Navigation-->
+    <?php if ( $show_update_needed || $share_button ): ?>
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
         <nav aria-label="<?php esc_attr_e( "You are here:" ); ?>" role="navigation"
              data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
@@ -87,6 +88,8 @@ function dt_print_breadcrumbs(
             </div>
         </nav>
     </div>
+    <?php endif; ?>
+
     <?php if ( $comment_button || $share_button ): ?>
     <nav  role="navigation" style="width:100%;"
           class="second-bar show-for-small-only">
