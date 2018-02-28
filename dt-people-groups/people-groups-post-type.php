@@ -533,7 +533,7 @@ class Disciple_Tools_People_Groups_Post_Type
         //            'section' => 'status'
         //        ];
 
-        return apply_filters( 'dt_custom_fields_settings', $fields, "people_groups");
+        return apply_filters( 'dt_custom_fields_settings', $fields, "people_groups" );
     }
 
     /**
