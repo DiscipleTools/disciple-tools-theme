@@ -785,7 +785,7 @@ jQuery(document).ready(function($) {
     let reasonLabel = _.get(contact, `reason_${status}.label`)
     let statusColor = _.get(contactsDetailsWpApiSettings,
       `contacts_custom_fields_settings.overall_status.colors.${status}`)
-    $('#overall-status').val(status)
+    $('#overall_status').val(status)
 
     if (openModal){
       if (status === "paused"){
