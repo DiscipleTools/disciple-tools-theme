@@ -348,8 +348,17 @@ img {
             }
         }
     }
+
     .tabs-title > a {
         padding: .5rem 1rem;
+    }
+
+    .tabs-content {
+        border: none;
+    }
+
+    .tabs {
+        border: none;
     }
 }
 
@@ -421,6 +430,12 @@ img {
     }
     img {
         height: 15px;
+    }
+
+    .show-more-button {
+        .show-button {
+            border: none;
+        }
     }
 }
 #address-list {
