@@ -81,6 +81,7 @@ let typeaheadTotals = {};
 jQuery(document).ready(function($) {
   let contactId = $("#contact-id").text()
   contact = contactsDetailsWpApiSettings.contact
+  let masonGrid = $('.grid')
 
 
   $( document ).ajaxComplete(function(event, xhr, settings) {
@@ -177,6 +178,7 @@ jQuery(document).ready(function($) {
           $('#create-group-modal').foundation('open');
         } else {
           API.save_field_api('contact', contactId, {groups: {values:[{value:item.ID}]}})
+          masonGrid.masonry('layout')
         }
         console.log(node)
         console.log(a)
@@ -475,6 +477,7 @@ jQuery(document).ready(function($) {
               <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
             </li>`)
           })
+          masonGrid.masonry('layout')
         },
         onResult: function (node, query, result, resultCount) {
           resultCount = typeaheadTotals[field_id]
@@ -823,7 +826,11 @@ jQuery(document).ready(function($) {
     })
   })
 
-
+  //leave at the end
+  masonGrid.masonry({
+    itemSelector: '.grid-item',
+    percentPosition: true
+  });
 })
 
 

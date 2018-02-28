@@ -30,11 +30,11 @@ dt_print_breadcrumbs(
 <div id="errors"> </div>
 
 <div id="content">
+    <span id="group-id" style="display: none"><?php echo get_the_ID()?></span>
+    <span id="post-id" style="display: none"><?php echo get_the_ID()?></span>
+    <span id="post-type" style="display: none">group</span>
 
     <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
-        <span id="group-id" style="display: none"><?php echo get_the_ID()?></span>
-        <span id="post-id" style="display: none"><?php echo get_the_ID()?></span>
-        <span id="post-type" style="display: none">group</span>
 
         <main id="main" class="large-7 medium-12 small-12 cell" role="main" style="padding:0">
             <div class="cell grid-y grid-margin-y" style="display: block">
@@ -209,14 +209,14 @@ dt_print_breadcrumbs(
 
 
                         <?php
-                        $sections = apply_filters( 'dt_group_details_additional_section_ids', [] );
+                        $sections = apply_filters( 'dt_details_additional_section_ids', [], "groups" );
 
                         foreach ( $sections as $section ){
                             ?>
                             <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box">
                                     <?php
-                                    do_action( "dt_group_details_additional_section", $section )
+                                    do_action( "dt_details_additional_section", $section )
                                     ?>
                                 </div>
                             </section>

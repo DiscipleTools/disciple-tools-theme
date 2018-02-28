@@ -794,7 +794,7 @@ class Disciple_Tools_Groups_Post_Type
             }
         }
 
-        return apply_filters( 'dt_custom_fields_settings', $fields );
+        return apply_filters( 'dt_custom_fields_settings', $fields, "groups" );
     } // End get_custom_fields_settings()
 
     /**

@@ -544,7 +544,7 @@ class Disciple_Tools_Location_Post_Type
 
 
 
-        return apply_filters( 'dt_custom_fields_settings', $fields );
+        return apply_filters( 'dt_custom_fields_settings', $fields, "locations" );
     }
 
     /**
