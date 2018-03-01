@@ -83,6 +83,13 @@ NAVIGATION STYLES
     a {
         color:white;
     }
+
+    .active {
+        a {
+            background: $light-gray;
+            color: $black;
+        }
+    }
 }
 #top-bar-menu {
     z-index: 999;
