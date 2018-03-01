@@ -894,6 +894,12 @@ class Disciple_Tools_Contact_Post_Type
             'section'     => 'misc',
         ];
 
+        $fields["source_details"] = [
+            "name" => __( "Source Details", 'disciple_tools' ),
+            'type' => 'text',
+            'default' => ''
+        ];
+
         // contact buttons
         $fields['quick_button_no_answer'] = [
             'name'        => __( 'No Answer', 'disciple_tools' ),
