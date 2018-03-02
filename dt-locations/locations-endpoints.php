@@ -73,33 +73,33 @@ class Disciple_Tools_Locations_Endpoints
         $routes = [
             $base => [
                 'methods' => 'GET',
-                'callback' => [$this, 'get_locations'],
+                'callback' => [ $this, 'get_locations' ],
             ],
             '/locations-compact' => [
                 'methods' => 'GET',
-                'callback' => [$this, 'get_locations_compact'],
+                'callback' => [ $this, 'get_locations_compact' ],
             ],
             "$base/findbyaddress" => [
                 'methods' => WP_REST_Server::CREATABLE,
-                'callback' => [$this, 'find_by_address'],
+                'callback' => [ $this, 'find_by_address' ],
             ],
             "$base/gettractmap" => [
                 'methods' => WP_REST_Server::CREATABLE,
-                'callback' => [$this, 'get_tract_map'],
+                'callback' => [ $this, 'get_tract_map' ],
             ],
             "$base/getmapbygeoid" => [
                 'methods' => WP_REST_Server::CREATABLE,
-                'callback' => [$this, 'get_map_by_geoid'],
+                'callback' => [ $this, 'get_map_by_geoid' ],
             ],
             "$base/import_check" => [
                 'methods' => WP_REST_Server::READABLE,
-                'callback' => [$this, 'import_check'],
+                'callback' => [ $this, 'import_check' ],
             ],
         ];
 
         // Register each route
         foreach ($routes as $route => $args) {
-            register_rest_route($this->namespace, $route, $args);
+            register_rest_route( $this->namespace, $route, $args );
         }
     }
 
