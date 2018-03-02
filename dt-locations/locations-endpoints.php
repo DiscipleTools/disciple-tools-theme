@@ -62,55 +62,45 @@ class Disciple_Tools_Locations_Endpoints
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     } // End __construct()
 
+    /**
+     * Registers all of the routes associated with locations
+     */
     public function add_api_routes()
     {
-        $version = '1';
-        $namespace = 'dt/v' . $version;
-        $base = 'locations';
-        register_rest_route(
-            $namespace, '/' . $base . '/findbyaddress', [
-                [
-                    'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'find_by_address' ],
-                ],
-            ]
-        );
-        register_rest_route(
-            $namespace, '/' . $base . '/gettractmap', [
-                [
-                    'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'get_tract_map' ],
+        $base = '/locations';
 
-                ],
-            ]
-        );
-        register_rest_route(
-            $namespace, '/' . $base . '/getmapbygeoid', [
-                [
-                    'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'get_map_by_geoid' ],
+        // Holds all routes for locations
+        $routes = [
+            $base => [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_locations'],
+            ],
+            '/locations-compact' => [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_locations_compact'],
+            ],
+            "$base/findbyaddress" => [
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => [$this, 'find_by_address'],
+            ],
+            "$base/gettractmap" => [
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => [$this, 'get_tract_map'],
+            ],
+            "$base/getmapbygeoid" => [
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => [$this, 'get_map_by_geoid'],
+            ],
+            "$base/import_check" => [
+                'methods' => WP_REST_Server::READABLE,
+                'callback' => [$this, 'import_check'],
+            ],
+        ];
 
-                ],
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/locations', [
-                'methods'  => 'GET',
-                'callback' => [ $this, 'get_locations' ],
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/locations-compact', [
-                'methods'  => 'GET',
-                'callback' => [ $this, 'get_locations_compact' ],
-            ]
-        );
-        register_rest_route(
-            $this->namespace, '/' . $base . '/import_check', [
-                'methods'  => WP_REST_Server::READABLE,
-                'callback' => [ $this, 'import_check' ],
-            ]
-        );
+        // Register each route
+        foreach ($routes as $route => $args) {
+            register_rest_route($this->namespace, $route, $args);
+        }
     }
 
     /**
