@@ -105,7 +105,7 @@ declare( strict_types=1 );
                             </div>
                         </div>
                     </section>
-                    <section id="contact-details" class="cell small-12">
+                    <section id="contact-details" class="cell small-12 grid-margin-y">
                         <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
                     </section>
                     <div class="cell small-12">
