@@ -472,7 +472,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             self::check_requires_update( $contact_id );
         }
         $contact = self::get_contact( $contact_id, true );
-        $contact["added_fields"] = $fields["added_fields"];
+        if (isset( $fields["added_fields"] )){
+            $contact["added_fields"] = $fields["added_fields"];
+        }
         return $contact;
     }
 
