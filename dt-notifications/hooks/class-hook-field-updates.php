@@ -386,7 +386,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                     // email notification
                     if ( dt_user_notification_is_enabled( 'milestones_email', $user_meta, $user->ID ) ) {
 
-                        $message = 'A milestone was update for '. strip_tags( get_the_title( $object_id ) ) .'. Link to view contact: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
+                        $message = 'A milestone was updated for '. strip_tags( get_the_title( $object_id ) ) .'. Link to view contact: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
 
                         dt_send_email(
                             $user->user_email,
