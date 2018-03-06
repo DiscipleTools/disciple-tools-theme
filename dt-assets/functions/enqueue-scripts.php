@@ -53,7 +53,7 @@ function dt_site_scripts() {
      */
 
     /** jQuery UI custom theme styles. @see http://jqueryui.com/themeroller/  */
-    wp_enqueue_style( 'jquery-ui-site-css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css', array(), '', 'all' );
+    wp_enqueue_style( 'jquery-ui-site-css', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css', array(), '', 'all' );
 
     // comment out the next two lines to load the local copy of jQuery
     wp_deregister_script( 'jquery' );
@@ -61,7 +61,7 @@ function dt_site_scripts() {
     wp_enqueue_script( 'jquery' );
 
     // comment out the next two lines to load the local copy of jQuery
-    wp_register_script( 'jquery-ui', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', false, '1.12.1' );
+    wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', false, '1.12.1' );
     wp_enqueue_script( 'jquery-ui' );
     /**
      * End jQuery force new version
