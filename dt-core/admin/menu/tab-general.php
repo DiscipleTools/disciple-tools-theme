@@ -133,14 +133,8 @@ class Disciple_Tools_General_Tab
             }
 
             foreach ( $site_options['user_notifications'] as $key => $value ) {
-                if ( isset( $_POST[ $key ] ) ) {
-                    $site_options['user_notifications'][ $key ] = true;
-                } else {
-                    $site_options['user_notifications'][ $key ] = false;
-                }
+                $site_options['user_notifications'][ $key ] = isset( $_POST[ $key ] );
             }
-
-
 
             update_option( 'dt_site_options', $site_options, true );
         }
@@ -191,11 +185,7 @@ class Disciple_Tools_General_Tab
             }
 
             foreach ( $site_options['daily_reports'] as $key => $value ) {
-                if ( isset( $_POST[ $key ] ) ) {
-                    $site_options['daily_reports'][ $key ] = true;
-                } else {
-                    $site_options['daily_reports'][ $key ] = false;
-                }
+                $site_options['daily_reports'][ $key ] = isset( $_POST[ $key ] );
             }
 
             update_option( 'dt_site_options', $site_options, true );
@@ -242,11 +232,7 @@ class Disciple_Tools_General_Tab
             }
 
             foreach ( $site_options['extension_modules'] as $key => $value ) {
-                if ( isset( $_POST[ $key ] ) ) {
-                    $site_options['extension_modules'][ $key ] = true;
-                } else {
-                    $site_options['extension_modules'][ $key ] = false;
-                }
+                $site_options['extension_modules'][ $key ] = isset( $_POST[ $key ] );
             }
 
             update_option( 'dt_site_options', $site_options, true );
