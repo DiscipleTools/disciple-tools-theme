@@ -457,14 +457,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 } elseif ( $value === false ) {
                     $value = "no";
                 }
-                if ( is_string( $value ) || is_numeric( $value ) ) {
-                    update_post_meta( $contact_id, $field_id, $value );
-                } else {
-                    return new WP_Error( __FUNCTION__, __( "Unexpected field value" ), [
-                        'status' => 500,
-                        'field'  => $field_id
-                    ] );
-                }
+                update_post_meta( $contact_id, $field_id, $value );
             }
         }
 
