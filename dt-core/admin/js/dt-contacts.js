@@ -4,3 +4,8 @@
  @since 0.1.0
  */
 
+jQuery(document).ready(function() {
+    jQuery('#postbox-container-3').hide();
+    jQuery('#postbox-container-4').hide();
+})
+

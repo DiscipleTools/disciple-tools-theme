@@ -262,13 +262,11 @@ class Disciple_Tools_Contact_Post_Type
      */
     public function meta_box_setup()
     {
-        add_meta_box( $this->post_type . '_details', __( 'Contact Details', 'disciple_tools' ), [ $this, 'load_contact_info_meta_box' ], $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), [ $this, 'load_address_info_meta_box' ], $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'normal', 'low' );
-        add_meta_box( $this->post_type . '_path', __( 'Milestones', 'disciple_tools' ), [ $this, 'load_milestone_meta_box' ], $this->post_type, 'side', 'low' );
-        add_meta_box( $this->post_type . '_misc', __( 'Misc', 'disciple_tools' ), [ $this, 'load_misc_meta_box' ], $this->post_type, 'side', 'low' );
-        add_meta_box( $this->post_type . '_sharing', __( 'Sharing', 'disciple_tools' ), [ $this, 'load_shared_meta_box' ], $this->post_type, 'normal' );
-        add_meta_box( $this->post_type . '_status', __( 'Status', 'disciple_tools' ), [ $this, 'load_status_info_meta_box' ], $this->post_type, 'side' );
+        add_meta_box( $this->post_type . '_status', __( 'Status', 'disciple_tools' ), [ $this, 'load_status_info_meta_box' ], $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_path', __( 'Milestones', 'disciple_tools' ), [ $this, 'load_milestone_meta_box' ], $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_misc', __( 'Misc', 'disciple_tools' ), [ $this, 'load_misc_meta_box' ], $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_sharing', __( 'Sharing', 'disciple_tools' ), [ $this, 'load_shared_meta_box' ], $this->post_type, 'side', 'low' );
+        add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'side', 'low' );
         do_action( "dt_contact_meta_boxes_setup", $this->post_type );
     } // End meta_box_setup()
 
@@ -290,7 +288,7 @@ class Disciple_Tools_Contact_Post_Type
             echo '<tbody>' . "\n";
 
             foreach ( $field_data as $k => $v ) {
-
+                dt_write_log( $v );
                 if ( $v['section'] == $section || $section == 'all' ) {
 
                     $data = $v['default'];
@@ -552,30 +550,6 @@ class Disciple_Tools_Contact_Post_Type
     public function load_milestone_meta_box()
     {
         $this->meta_box_content( 'milestone' ); // prints
-    }
-
-    /**
-     * Meta box for Status Information
-     *
-     * @access public
-     * @since  0.1.0
-     */
-    public function load_contact_info_meta_box()
-    {
-        $this->meta_box_content( 'info' ); // prints
-        $this->add_new_contact_field(); // prints
-    }
-
-    /**
-     * Meta box for Status Information
-     *
-     * @access public
-     * @since  0.1.0
-     */
-    public function load_address_info_meta_box()
-    {
-        $this->meta_box_content( 'address' ); // prints
-        dt_address_metabox()->add_new_address_field(); // prints
     }
 
     /**
@@ -896,8 +870,10 @@ class Disciple_Tools_Contact_Post_Type
 
         $fields["source_details"] = [
             "name" => __( "Source Details", 'disciple_tools' ),
+            'description' => '',
             'type' => 'text',
-            'default' => ''
+            'default' => '',
+            'section'     => 'misc',
         ];
 
         // contact buttons
