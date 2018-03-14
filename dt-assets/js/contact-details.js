@@ -606,21 +606,27 @@ jQuery(document).ready(function($) {
         $(`li#no-${field}`).remove()
       }
     }).catch(handelAjaxError)
-  }).on('click', '.details-status-button.field-status', function () {
-    let status = $(this).data('status')
-    let id = $(this).data('id')
-    let field = $(this).data('field')
-    let fields = {
-      key : id,
-      verified : status === 'valid',
-      invalid : status === "invalid"
+  }).on('click', '.details-status-button.field-status', e => {
+    const $field = $(e.currentTarget)
+    const status = $field.data('status')
+    const id = $field.data('id')
+    const field = $field.data('field')
+    const fields = {
+      key: id,
+      verified: status === 'valid',
+      invalid: status === "invalid"
     }
-    API.save_field_api('contact', contactId, {[`contact_${field}`]:[fields]}).then(()=>{
+
+    API.save_field_api('contact', contactId, { [`contact_${field}`]: [fields] }).then(()=>{
       $(`#${id}-verified`).toggle(fields.verified)
       $(`#${id}-invalid`).toggle(fields.invalid)
-    }).catch(err=>{
-      handelAjaxError(err)
-    })
+    }).catch(handelAjaxError)
+  }).on('change', 'div.reason-field select', e => {
+    const $select = $(e.currentTarget)
+    const field = $select.data('field')
+    const value = $select.val()
+
+    API.save_field_api('contact', contactId, { [field]: value }).catch(handelAjaxError)
   })
 
   $('button#add-social-media').click(e => {
