@@ -1035,9 +1035,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     {
 
         $details = [];
+
         if ( isset( $meta_fields[ $key . '_details' ][0] ) ) {
             $details = maybe_unserialize( $meta_fields[ $key . '_details' ][0] );
+
+            if ( !is_array($details) ) {
+                $details = [];
+            }
         }
+
         $details["value"] = $value;
         $details["key"] = $key;
         if ( isset( $details["type"] ) ) {
