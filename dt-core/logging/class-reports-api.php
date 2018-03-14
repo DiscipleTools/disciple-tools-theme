@@ -538,10 +538,11 @@ class Disciple_Tools_Reports_API
                 WHERE
                     `report_source` = %s
                     AND `report_subsource` = %s
-                    AND report_date = (select max(report_date) from `$wpdb->dt_reports` where `report_source` = %s)",
+                    AND report_date = (select max(report_date) from `$wpdb->dt_reports` where `report_source` = %s AND `report_subsource` = %s)",
                 $source,
                 $subsource,
-                $source
+                $source,
+                $subsource
             )
         );
 
