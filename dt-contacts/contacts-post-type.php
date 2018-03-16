@@ -757,7 +757,7 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Baptism Date', 'disciple_tools' ),
             'description' => '',
             'type'        => 'date',
-            'default'     => date( 'Y-m-d' ),
+            'default'     => '',
             'section'     => 'misc',
         ];
 
