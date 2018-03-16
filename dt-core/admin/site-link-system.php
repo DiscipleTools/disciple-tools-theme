@@ -296,7 +296,7 @@ class DT_Site_Link_System
             <p><?php echo esc_attr__( 'No stored keys. To add a key use the token generator to create a key.' ) ?></p>
         <?php endif; ?>
 
-    <!-- Footer Information -->
+        <!-- Footer Information -->
         <hr />
         <p class="text-small"><?php esc_attr_e( 'Timestamp' ) ?>: <span class="info-color"><?php echo esc_attr( current_time( 'Y-m-dH', 1 ) ) ?></span>  <br><em><?php esc_attr_e( 'Compare this number to linked sites. They should be identical.' ) ?></em></p>
         <p><?php esc_attr_e( 'Current Site' ) ?>: <span class="info-color"><?php echo esc_html( self::get_current_site_base_url() ); ?></span></p>
@@ -311,7 +311,7 @@ class DT_Site_Link_System
         $prefix = self::$token;
         $keys = self::clean_site_records( self::process_form_post() );
         ?>
-    <?php foreach ( $keys as $key => $value ) : ?>
+        <?php foreach ( $keys as $key => $value ) : ?>
         <form method="post" action="">
             <?php wp_nonce_field( $prefix . '_action', $prefix . '_nonce' ); ?>
             <table class="widefat striped">
@@ -374,7 +374,7 @@ class DT_Site_Link_System
                         <span class="text-small">Timestamp: <?php echo esc_attr( current_time( 'Y-m-dH', 1 ) ) ?></span>
 
 
-                <?php if ( isset( $value['id'] ) && ! empty( $value ) ) : ?>
+                        <?php if ( isset( $value['id'] ) && ! empty( $value ) ) : ?>
 
 
                         <span style="float:right">
@@ -405,12 +405,12 @@ class DT_Site_Link_System
                         <p class="text-small"><?php esc_attr_e( 'Timestamp for this server' ) ?>: <span class="info-color"><?php echo esc_attr( current_time( 'Y-m-dH', 1 ) ) ?></span>  <br><em><?php esc_attr_e( 'Compare this number to linked sites. They should be identical.' ) ?></em></p>
                         <p><?php esc_attr_e( 'URL for this server' ) ?>: <span class="info-color"><?php echo esc_html( home_url() ); ?></span></p>
 
-                    <script>
-                        jQuery(document).ready(function() {
-                            check_link_status( '<?php echo esc_attr( self::encrypt_transfer_token( $key ) ); ?>', '<?php echo esc_attr( self::filter_for_target_site( $value ) ); ?>', '<?php echo esc_attr( $value['id'] ); ?>' );
-                        })
-                    </script>
-                <?php endif; ?>
+                        <script>
+                            jQuery(document).ready(function() {
+                                check_link_status( '<?php echo esc_attr( self::encrypt_transfer_token( $key ) ); ?>', '<?php echo esc_attr( self::filter_for_target_site( $value ) ); ?>', '<?php echo esc_attr( $value['id'] ); ?>' );
+                            })
+                        </script>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 </tbody>
@@ -418,7 +418,7 @@ class DT_Site_Link_System
 
         </form>
         <?php break;
-/* Limit to one loop */ endforeach; ?>
+        /* Limit to one loop */ endforeach; ?>
         <br>
         <?php
     }
@@ -522,10 +522,10 @@ class DT_Site_Link_System
                     $site_key = self::generate_key( $token, $site1, $site2 );
 
                     $keys[ $site_key ] = [
-                        'id'    => $id,
-                        'token' => $token,
-                        'site1'   => $site1,
-                        'site2'   => $site2,
+                    'id'    => $id,
+                    'token' => $token,
+                    'site1'   => $site1,
+                    'site2'   => $site2,
                     ];
 
                     update_option( $prefix . '_api_keys', $keys, true );
@@ -675,12 +675,12 @@ class DT_Site_Link_System
         $namespace = 'dt-public/v' . $version;
 
         register_rest_route(
-            $namespace, '/webform/site_link_check', [
-                [
-                    'methods'  => WP_REST_Server::CREATABLE,
-                    'callback' => [ $this, 'site_link_check' ],
-                ],
-            ]
+        $namespace, '/webform/site_link_check', [
+        [
+        'methods'  => WP_REST_Server::CREATABLE,
+        'callback' => [ $this, 'site_link_check' ],
+        ],
+        ]
         );
     }
 
