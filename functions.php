@@ -373,6 +373,8 @@ else {
             require_once( get_template_directory() . '/dt-workflows/index.php' );
             $this->workflows = Disciple_Tools_Workflows::instance();
 
+            require_once( get_template_directory() . '/dt-core/admin/site-link-system.php' );
+
             /**
              * Admin panel
              * Contains all those features that only run if in the Admin panel
