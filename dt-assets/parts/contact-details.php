@@ -597,7 +597,7 @@
                             foreach ($contact["sources"] ?? [] as $value){
                                 ?>
                                 <li class="<?php echo esc_html( $value )?>">
-                                    <?php echo esc_html( $contact_fields["sources"]["default"][$value] ) ?>
+                                    <?php echo esc_html( $contact_fields["sources"]["default"][$value] ?? $value ) ?>
                                 </li>
                             <?php }
                             if ( !isset( $contact["sources"] ) || sizeof( $contact["sources"] ) === 0){

@@ -255,8 +255,9 @@ jQuery(document).ready(function($) {
       matchOn: ["key"],
       data: function () {
         return (contact.sources || []).map(sourceKey=>{
-          console.log(sourceKey);
-          return {key:sourceKey, value:_.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings.sources.default.${sourceKey}`)}
+          return {
+            key:sourceKey,
+            value:_.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings.sources.default.${sourceKey}`) || sourceKey }
         })
       }, callback: {
         onCancel: function (node, item) {
