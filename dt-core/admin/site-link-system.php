@@ -124,7 +124,7 @@ class DT_Site_Link_System
         $prefix = self::$token;
         $keys = self::process_form_post();
         ?>
-        <h1><?php esc_html_e( 'API Keys for' ); ?> <?php echo get_bloginfo('name'); ?></h1>
+        <h1><?php esc_html_e( 'API Keys for' ); ?> <?php echo esc_attr( get_bloginfo( 'name' ) ); ?></h1>
 
 
         <!-- Connect to Other Website -->
@@ -134,7 +134,7 @@ class DT_Site_Link_System
             <table class="widefat striped">
                 <tr>
                     <td width="100px" colspan="2">
-                        <?php esc_attr_e('Get the ID, Token, and URL from the remote site and insert here.') ?>
+                        <?php esc_attr_e( 'Get the ID, Token, and URL from the remote site and insert here.' ) ?>
                     </td>
                 </tr>
                 <tr>
@@ -267,7 +267,7 @@ class DT_Site_Link_System
                         </tr>
                         <tr id="<?php echo esc_attr( $value['id'] ); ?>-message" style="display:none;">
                             <td>
-                                <strong><?php esc_attr_e('Consider Checking:') ?></strong>
+                                <strong><?php esc_attr_e( 'Consider Checking:' ) ?></strong>
                                 <ol>
                                     <li>
                                         <?php echo sprintf( esc_attr__( 'Check if the target site is setup with identical configuration information.' ), esc_attr( current_time( 'Y-m-dH', 1 ) ) ); ?>
@@ -298,8 +298,8 @@ class DT_Site_Link_System
 
     <!-- Footer Information -->
         <hr />
-        <p class="text-small"><?php esc_attr_e( 'Timestamp') ?>: <span class="info-color"><?php echo esc_attr( current_time( 'Y-m-dH', 1 ) ) ?></span>  <br><em><?php esc_attr_e( 'Compare this number to linked sites. They should be identical.') ?></em></p>
-        <p><?php esc_attr_e( 'Current Site') ?>: <span class="info-color"><?php echo esc_html( self::get_current_site_base_url() ); ?></span></p>
+        <p class="text-small"><?php esc_attr_e( 'Timestamp' ) ?>: <span class="info-color"><?php echo esc_attr( current_time( 'Y-m-dH', 1 ) ) ?></span>  <br><em><?php esc_attr_e( 'Compare this number to linked sites. They should be identical.' ) ?></em></p>
+        <p><?php esc_attr_e( 'Current Site' ) ?>: <span class="info-color"><?php echo esc_html( self::get_current_site_base_url() ); ?></span></p>
         <?php
     }
 
@@ -311,7 +311,7 @@ class DT_Site_Link_System
         $prefix = self::$token;
         $keys = self::clean_site_records( self::process_form_post() );
         ?>
-    <?php foreach( $keys as $key => $value ) : ?>
+    <?php foreach ( $keys as $key => $value ) : ?>
         <form method="post" action="">
             <?php wp_nonce_field( $prefix . '_action', $prefix . '_nonce' ); ?>
             <table class="widefat striped">
@@ -389,7 +389,7 @@ class DT_Site_Link_System
                 </tr>
                 <tr id="<?php echo esc_attr( $value['id'] ); ?>-message" style="display:none;">
                     <td>
-                        <strong><?php esc_attr_e('Consider Checking:') ?></strong>
+                        <strong><?php esc_attr_e( 'Consider Checking:' ) ?></strong>
                         <ol>
                             <li>
                                 <?php echo sprintf( esc_attr__( 'Check if the target site is setup with identical configuration information.' ), esc_attr( current_time( 'Y-m-dH', 1 ) ) ); ?>
@@ -402,8 +402,8 @@ class DT_Site_Link_System
                             </li>
                         </ol>
                         <hr />
-                        <p class="text-small"><?php esc_attr_e( 'Timestamp for this server') ?>: <span class="info-color"><?php echo esc_attr( current_time( 'Y-m-dH', 1 ) ) ?></span>  <br><em><?php esc_attr_e( 'Compare this number to linked sites. They should be identical.') ?></em></p>
-                        <p><?php esc_attr_e( 'URL for this server') ?>: <span class="info-color"><?php echo esc_html( home_url() ); ?></span></p>
+                        <p class="text-small"><?php esc_attr_e( 'Timestamp for this server' ) ?>: <span class="info-color"><?php echo esc_attr( current_time( 'Y-m-dH', 1 ) ) ?></span>  <br><em><?php esc_attr_e( 'Compare this number to linked sites. They should be identical.' ) ?></em></p>
+                        <p><?php esc_attr_e( 'URL for this server' ) ?>: <span class="info-color"><?php echo esc_html( home_url() ); ?></span></p>
 
                     <script>
                         jQuery(document).ready(function() {
@@ -417,7 +417,8 @@ class DT_Site_Link_System
             </table>
 
         </form>
-        <?php break; /* Limit to one loop */ endforeach; ?>
+        <?php break;
+/* Limit to one loop */ endforeach; ?>
         <br>
         <?php
     }
@@ -453,6 +454,8 @@ class DT_Site_Link_System
                 case 'create':
                     if ( ! isset( $_POST['id'] )
                     || empty( $_POST['id'] )
+                    || ! isset( $_POST['site1'] )
+                    || empty( $_POST['site1'] )
                     || ! isset( $_POST['site2'] )
                     || empty( $_POST['site2'] ) ) {
 
@@ -462,11 +465,11 @@ class DT_Site_Link_System
 
                     $id = trim( wordwrap( strtolower( sanitize_text_field( wp_unslash( $_POST['id'] ) ) ), 1, '_', 0 ) );
                     $token = self::generate_token( 32 );
-                    $site1 = self::filter_url( $_POST['site1'] );
-                    $site2 = self::filter_url( $_POST['site2'] );
+                    $site1 = self::filter_url( sanitize_text_field( wp_unslash( $_POST['site1'] ) ) );
+                    $site2 = self::filter_url( sanitize_text_field( wp_unslash( $_POST['site2'] ) ) );
 
                     $local_site = self::verify_one_site_is_local( $site1, $site2 );
-                    if (! $local_site ) {
+                    if ( ! $local_site ) {
                         self::admin_notice( 'Local site not found in submission. Either Site1 or Site2 must be this current website', 'error' );
                         return $keys;
                     }
@@ -507,11 +510,11 @@ class DT_Site_Link_System
 
                     $id     = trim( wordwrap( strtolower( sanitize_text_field( wp_unslash( $_POST['id'] ) ) ), 1, '_', 0 ) );
                     $token  = trim( sanitize_key( wp_unslash( $_POST['token'] ) ) );
-                    $site1 = self::filter_url( $_POST['site1'] );
-                    $site2 = self::filter_url( $_POST['site2'] );
+                    $site1 = self::filter_url( sanitize_text_field( wp_unslash( $_POST['site1'] ) ) );
+                    $site2 = self::filter_url( sanitize_text_field( wp_unslash( $_POST['site2'] ) ) );
 
                     $local_site = self::verify_one_site_is_local( $site1, $site2 );
-                    if (! $local_site ) {
+                    if ( ! $local_site ) {
                         self::admin_notice( 'Local site not found in submission. Either Site1 or Site2 must be this current website', 'error' );
                         return $keys;
                     }
@@ -548,8 +551,8 @@ class DT_Site_Link_System
 
     public static function filter_url( $url ) {
         $url = sanitize_text_field( wp_unslash( $url ) );
-        $url = str_replace('http://', '', $url );
-        $url = trim( str_replace('https://', '', $url ) );
+        $url = str_replace( 'http://', '', $url );
+        $url = trim( str_replace( 'https://', '', $url ) );
         return $url;
     }
 
@@ -705,7 +708,7 @@ class DT_Site_Link_System
         $keys = get_option( self::$token . '_api_keys' );
 
         if ( ! isset( $keys[ $site_key ] ) ) {
-            return new WP_Error(__METHOD__, 'No site key found.' );
+            return new WP_Error( __METHOD__, 'No site key found.' );
         }
 
         if ( empty( $keys[ $site_key ]['ip'] ) ) {
@@ -783,13 +786,13 @@ class DT_Site_Link_System
     }
 
     public static function get_local_public_ip_address() {
-        $ip = file_get_contents("http://ipecho.net/plain");
-        if( !empty( $ip ) ) {
+        $ip = file_get_contents( "http://ipecho.net/plain" );
+        if ( !empty( $ip ) ) {
             return $ip;
         }
 
-        $ip = file_get_contents("http://icanhazip.com");
-        if( !empty( $ip ) ) {
+        $ip = file_get_contents( "http://icanhazip.com" );
+        if ( !empty( $ip ) ) {
             return $ip;
         }
         return __( 'Unable to get local IP address' );
