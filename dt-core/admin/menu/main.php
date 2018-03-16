@@ -115,7 +115,7 @@ final class Disciple_Tools_Config
         if ( $tab == 'site-links' ) {
             echo 'nav-tab-active';
         }
-        echo '">'. esc_attr__('Site Links', 'disciple_tools' ) .'</a>';
+        echo '">'. esc_attr__( 'Site Links', 'disciple_tools' ) .'</a>';
 
         echo '</h2>';
 
