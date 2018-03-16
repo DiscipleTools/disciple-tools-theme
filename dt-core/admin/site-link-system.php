@@ -21,7 +21,7 @@
  * Disciple Tools Zume
  * @link    https://github.com/DiscipleTools/disciple-tools-zume
  *
- * @version 1.0
+ * @version 1.1
  *
  * @since 1.0   Initial system launch
  *
@@ -246,7 +246,7 @@ class DT_Site_Link_System
                         </tr>
                         <tr>
                             <td>
-                                <button type="button" class="button-like-link" onclick="jQuery('#delete-<?php echo esc_html( $value['id'] ); ?>').show();">
+                                <button type="button" class="button-like-link-left" style="float:left;" onclick="jQuery('#delete-<?php echo esc_html( $value['id'] ); ?>').show();">
                                     <?php esc_html_e( 'Delete' ) ?>
                                 </button>
                                 <p style="display:none;" id="delete-<?php echo esc_html( $value['id'] ); ?>">
@@ -637,6 +637,16 @@ class DT_Site_Link_System
                 .success-green { color: limegreen;}
                 .fail-red { color: red;}
                 .info-color { color: steelblue; }
+                .button-like-link-left { 
+                    float: left; 
+                    background: none !important;
+                    color: inherit;
+                    border: none;
+                    padding: 0 !important;
+                    font: inherit;
+                    /*border is optional*/
+                    cursor: pointer;
+                    }
             </style>";
     }
 
