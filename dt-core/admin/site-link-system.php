@@ -21,7 +21,7 @@
  * Disciple Tools Zume
  * @link    https://github.com/DiscipleTools/disciple-tools-zume
  *
- * @version 1.1
+ * @version 1.2
  *
  * @since 1.0   Initial system launch
  *
@@ -612,7 +612,7 @@ class DT_Site_Link_System
             data: JSON.stringify({ \"transfer_token\": transfer_token } ),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
-            url: 'https://' + url + '/wp-json/dt-public/v1/webform/site_link_check',
+            url: 'https://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
         })
             .done(function (data) {
                 if( data ) {
@@ -675,7 +675,7 @@ class DT_Site_Link_System
         $namespace = 'dt-public/v' . $version;
 
         register_rest_route(
-            $namespace, '/webform/site_link_check', [
+            $namespace, '/sites/site_link_check', [
             [
             'methods'  => WP_REST_Server::CREATABLE,
             'callback' => [ $this, 'site_link_check' ],
