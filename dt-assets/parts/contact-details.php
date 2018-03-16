@@ -592,30 +592,33 @@
                             <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/source.svg" ?>">
                             <?php esc_html_e( "Source" ); ?>
                         </div>
-                        <ul class="details-list">
-                            <li class="current-sources">
-                                <?php
-                                if (isset( $contact["sources"] )) {
-                                    echo esc_html( $contact["sources"]["label"] );
-                                } else {
-                                    esc_html_e( "No source set" );
-                                }
-                                ?>
-                            </li>
-                        </ul>
-                        <select id="sources" class="details-edit select-field">
-                            <option value=""></option>
+                        <ul class="sources-list details-list">
                             <?php
-                            foreach ( $custom_lists["sources"] as $sources_key => $sources_value ) {
-                                if ( isset( $contact["sources"] ) &&
-                                    $contact["sources"]["key"] === $sources_key){
-                                    echo '<option value="'. esc_html( $sources_key ) . '" selected>' . esc_html( $sources_value["label"] ) . '</option>';
-                                } else {
-                                    echo '<option value="'. esc_html( $sources_key ) . '">' . esc_html( $sources_value["label"] ). '</option>';
-                                }
+                            foreach ($contact["sources"] ?? [] as $value){
+                                ?>
+                                <li class="<?php echo esc_html( $value )?>">
+                                    <?php echo esc_html( $contact_fields["sources"]["default"][$value] ) ?>
+                                </li>
+                            <?php }
+                            if ( !isset( $contact["sources"] ) || sizeof( $contact["sources"] ) === 0){
+                                ?> <li id="no-source"><?php esc_html_e( "No source set", 'disciple_tools' ) ?></li><?php
                             }
                             ?>
-                        </select>
+                        </ul>
+                        <div class="sources">
+                            <var id="sources-result-container" class="result-container"></var>
+                            <div id="sources_t" name="form-sources" class="scrollable-typeahead">
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-sources"
+                                                   name="sources[query]" placeholder="<?php esc_html_e( "Search sources", 'disciple_tools' ) ?>"
+                                                   autocomplete="off">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

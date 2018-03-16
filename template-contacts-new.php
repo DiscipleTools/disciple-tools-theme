@@ -82,22 +82,14 @@ dt_print_breadcrumbs(
             .addClass("loading");
         var location_id = $(".js-create-contact select[name=location]").val();
         location_id = location_id ? parseInt(location_id) : undefined;
-        $.ajax({
-            url: wpApiSettings.root + 'dt/v1/contact/create',
-            type: "POST",
-            contentType: "application/json; charset=UTF-8",
-            dataType: "json",
-            data: JSON.stringify({
-                title: $(".js-create-contact input[name=title]").val(),
-                contact_phone: [{value:$(".js-create-contact input[name=phone]").val()}],
-                sources: $(".js-create-contact select[name=sources]").val(),
-                locations: {values:[{value:location_id}]},
-                initial_comment: $(".js-create-contact textarea[name=initial_comment]").val(),
-            }),
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-            }
-        }).promise().then(function(data) {
+        let source = $(".js-create-contact select[name=sources]").val()
+        API.create_contact({
+            title: $(".js-create-contact input[name=title]").val(),
+            contact_phone: [{value:$(".js-create-contact input[name=phone]").val()}],
+            sources: {values:[{value:source}]},
+            locations: {values:[{value:location_id}]},
+            initial_comment: $(".js-create-contact textarea[name=initial_comment]").val(),
+        }).then(function(data) {
             window.location = data.permalink;
         }).catch(function(error) {
             $(".js-create-contact-button").removeClass("loading").addClass("alert");

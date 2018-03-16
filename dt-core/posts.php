@@ -320,13 +320,28 @@ class Disciple_Tools_Posts
                 if ( $fields[$activity->meta_key]["type"] === "text"){
                     $message = $fields[$activity->meta_key]["name"] . " " . __( "changed to", 'disciple_tools' ) . ": " .$activity->meta_value;
                 }
+                if ( $fields[$activity->meta_key]["type"] === "multi_select" ){
+                    $message = "";
+                    $value = $activity->meta_value;
+                    if ( $activity->meta_value == "value_deleted" ){
+                        $message .= __( "Removed from", 'disciple_tools' );
+                        $value = $activity->old_value;
+                    } else {
+                        $message .= __( "Added to", 'disciple_tools' );
+                    }
+
+                    if ( isset( $fields[$activity->meta_key]["default"][$value] ) ){
+                        $message .= " " . $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$value] ?? $value;
+                    } else {
+                        $message .= " " . $fields[$activity->meta_key]["name"] . ": " . $value;
+                    }
+                }
                 if ( $fields[$activity->meta_key]["type"] === "key_select" ){
                     if ( isset( $fields[$activity->meta_key]["default"][$activity->meta_value] ) ){
                         $message = $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$activity->meta_value] ?? $activity->meta_value;
                     } else {
                         $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
                     }
-                    $tets = "";
                 }
                 if ($fields[$activity->meta_key]["type"] === "number"){
                     $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
