@@ -1039,7 +1039,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( isset( $meta_fields[ $key . '_details' ][0] ) ) {
             $details = maybe_unserialize( $meta_fields[ $key . '_details' ][0] );
 
-            if ( !is_array($details) ) {
+            if ( !is_array( $details ) ) {
                 $details = [];
             }
         }
