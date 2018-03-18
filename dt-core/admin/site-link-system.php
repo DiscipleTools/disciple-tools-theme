@@ -4,9 +4,7 @@
  * This class is designed to be embedded in other Wordpress Disciple Tools projects
  *
  * @class DT_Site_Link_System
- */
-
-/**
+ *
  * VERSION PROCEDURE
  * Because this class is embedded into multiple projects, for now, we are using a versioning system to keep track
  * of the version state in each of the projects. As changes are made to the class, increment the version number.
@@ -20,10 +18,13 @@
  *
  * Disciple Tools Zume
  * @link    https://github.com/DiscipleTools/disciple-tools-zume
- *
- * @version 1.2
+ */
+
+/**
+ * @version 1.4
  *
  * @since 1.0   Initial system launch
+ * @since 1.4   CORS system
  *
  */
 
@@ -37,85 +38,137 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class DT_Site_Link_System
 {
+    /**
+     * SET PREFIX FOR SYSTEM
+     *
+     * This public token sets the prefix throughout the system and allows the system. Changing this could
+     * potentially let you refactor and implement this system again under a different namespace.
+     *
+     * @since 1.0
+     *
+     * @var string
+     */
     public static $token = 'dt';
 
-    private static $_instance = null;
-
     /**
-     * DT_Site_Link_System Instance
-     * Ensures only one instance of DT_Site_Link_System is loaded or can be loaded.
+     * CREATE A TRANSFER TOKEN FOR A SITE
      *
-     * @since 0.1.0
-     * @static
-     * @return DT_Site_Link_System instance
-     */
-    public static function instance()
-    {
-        if ( is_null( self::$_instance ) ) {
-            self::$_instance = new self();
-        }
-        return self::$_instance;
-    } // End instance()
-
-    /**
-     * Constructor function.
-     *
-     * @access  public
-     * @since   0.1.0
-     */
-    public function __construct()
-    {
-        add_action( 'admin_head', [ $this, 'scripts' ], 20 );
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
-    } // End __construct()
-
-    /**
-     * Generate token for api key
-     *
-     * @param int $length
-     *
-     * @return string
-     */
-    public static function generate_token( $length = 32 ) {
-        return bin2hex( random_bytes( $length ) );
-    }
-
-    /**
      * This method encrypts with md5 and the GMT date. So every day, this encryption will change. Using this method
      * requires that both of the servers have their timezone in Settings > General > Timezone correctly set.
      *
+     * @since 1.0
+     *
      * @note Key changes every hour
      *
-     * @param $key
+     * @param $site_key string This is the key to the site array stored in options.
      *
-     * @return string
+     * @return string Returns transfer token for the two sites specified in the site1 and site2 fields.
      */
-    public static function encrypt_transfer_token( $key ) {
-        return md5( $key . current_time( 'Y-m-dH', 1 ) );
+    public static function create_transfer_token_for_site( $site_key ) {
+        return md5( $site_key . current_time( 'Y-m-dH', 1 ) );
     }
 
     /**
-     * Tests transfer token against options values. Decrypts md5 hash created with one_hour_encryption
+     * VERIFY A TRANSFER TOKEN FROM A CONNECTED SITE REST REQUEST
+     *
+     * @since 1.0
      *
      * @param $transfer_token
      *
-     * @return bool|string   False if no match; String with key if success;
+     * @return bool
      */
-    public static function decrypt_transfer_token( $transfer_token ) {
-
-        $keys = get_option( self::$token . '_api_keys' );
-
-        if ( empty( $keys ) ) {
+    public static function verify_transfer_token( $transfer_token ) : bool {
+        if ( ! empty( $transfer_token ) ) {
+            $id_decrypted = self::decrypt_transfer_token( $transfer_token );
+            if ( $id_decrypted ) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
             return false;
         }
+    }
 
-        foreach ( $keys as $key => $array ) {
-            if ( md5( $key . current_time( 'Y-m-dH', 1 ) ) == $transfer_token ) {
-                return $key;
+    /**
+     * ENABLE CROSS-ORIGIN-RESOURCE-SHARING (CORS) FOR LINKED SITES ONLY
+     *
+     * This function can be added to other REST registrations, in addition to the transfer token, this limits the
+     * approved list of Cross Origin requests to those that are linked through the Site Link System.
+     *
+     * NOTE: This is by no means fool proof security measure, since request origins can be falsified, but only acts as
+     * another layer of the larger security strategy and increases compatibility with browser requests cross origin.
+     *
+     * @since 1.4
+     */
+    public static function add_cors_sites() {
+        /**
+         * Cross Origin Resource Sharing (CORS)
+         * This allows the javascript requests to cross domains to get access to resources. This is normally
+         * disabled to prevent hacking and XSS attacts. In order to link sites and pass contacts and other data
+         * this function checks the requesting URL against the approved list of URLs, and if there is a match it adds
+         * permission for CORS for that domain into the header.
+         * @link https://enable-cors.org/
+         *
+         * @link https://github.com/WP-API/WP-API/issues/144
+         * @link https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+         * @link https://stackoverflow.com/questions/8719276/cors-with-php-headers
+         */
+        /**
+         * @link https://gist.github.com/miya0001/d6508b9ba52df5aedc78fca186ff6088
+         */
+
+        $prefix = self::$token;
+        $site = get_option( $prefix . '_api_keys' );
+
+        if ( empty( $site ) ) {
+            return;
+        }
+
+        $approved_urls = [];
+        foreach ( $site as $key => $value ) {
+            $approved_urls[] = 'https://' . self::get_non_local_site( $value['site1'], $value['site2'] );
+        }
+
+        $request_header = get_http_origin();
+
+        foreach ( $approved_urls as $approved_url ) {
+            if ( $request_header == $approved_url ) {
+                add_filter( 'rest_pre_serve_request', function( $value ) {
+                    header( 'Access-Control-Allow-Origin: ' . get_http_origin() );
+                    header( 'Access-Control-Allow-Methods: GET, POST, HEAD, OPTIONS' );
+                    header( 'Access-Control-Allow-Credentials: true' );
+                    header( 'Access-Control-Expose-Headers: Link', false );
+                    return $value;
+                });
             }
         }
-        return false;
     }
+
+    /**
+     * Add this deactivation step into any deactivation hook for the plugin / theme
+     *
+     * @example  DT_Site_Link_System::deactivate()
+     */
+    public static function deactivate() {
+        $prefix = self::$token;
+        delete_option( $prefix . '_api_keys' );
+    }
+
+    /************************************************************************************************************
+     *
+     * ADMIN INTERFACE SECTION
+     *
+     * This section contains the ui for the admin interface. It has two implementations: multiple or single.
+     *
+     * - Multiple allows for multiple connections to be generated and added.
+     * - Single manages a single site link to a home site. It cannot create a site link, but only enter the link info
+     * from another website.
+     *
+     * These metaboxes can be implemented through a static call to the class.
+     * For example: DT_Site_Link_System::metabox_multiple_link()
+     *
+     ************************************************************************************************************/
 
     /**
      * Metabox for creating multiple site links
@@ -124,7 +177,7 @@ class DT_Site_Link_System
         $prefix = self::$token;
         $keys = self::process_form_post();
         ?>
-        <h1><?php esc_html_e( 'API Keys for' ); ?> <?php echo esc_attr( get_bloginfo( 'name' ) ); ?></h1>
+        <h1><?php esc_html_e( 'API Keys for' ); ?> <?php echo esc_html( get_bloginfo( 'name' ) ); ?></h1>
 
 
         <!-- Connect to Other Website -->
@@ -200,7 +253,6 @@ class DT_Site_Link_System
             foreach ( $keys as $key => $value ): ?>
                 <form action="" method="post"><!-- begin form -->
                     <?php wp_nonce_field( $prefix . '_action', $prefix . '_nonce' ); ?>
-                    <input type="hidden" name="id" value="<?php echo esc_html( $value['id'] ); ?>" />
                     <input type="hidden" name="key" value="<?php echo esc_html( $key ); ?>" />
                     <table class="widefat">
                         <thead>
@@ -246,10 +298,10 @@ class DT_Site_Link_System
                         </tr>
                         <tr>
                             <td>
-                                <button type="button" class="button-like-link-left" style="float:left;" onclick="jQuery('#delete-<?php echo esc_html( $value['id'] ); ?>').show();">
+                                <button type="button" class="button-like-link-left" style="float:left;" onclick="jQuery('#delete-<?php echo esc_html( md5( $value['id'] ) ); ?>').show();">
                                     <?php esc_html_e( 'Delete' ) ?>
                                 </button>
-                                <p style="display:none;" id="delete-<?php echo esc_html( $value['id'] ); ?>">
+                                <p style="display:none;" id="delete-<?php echo esc_html( md5( $value['id'] ) ); ?>">
                                     <?php esc_html_e( 'Are you sure you want to delete this record? This is a permanent action.' ) ?><br>
                                     <button type="submit" class="button" name="action" value="delete">
                                         <?php esc_html_e( 'Permanently Delete' ) ?>
@@ -258,14 +310,14 @@ class DT_Site_Link_System
                                 <span style="float:right">
                                     <?php esc_html_e( 'Status:' ) ?>
                                     <strong>
-                                        <span id="<?php echo esc_attr( $value['id'] ); ?>-status">
+                                        <span id="<?php echo esc_attr( md5( $value['id'] ) ); ?>-status">
                                             <?php esc_html_e( 'Checking Status' ) ?>
                                         </span>
                                     </strong>
                                 </span>
                             </td>
                         </tr>
-                        <tr id="<?php echo esc_attr( $value['id'] ); ?>-message" style="display:none;">
+                        <tr id="<?php echo esc_attr( md5( $value['id'] ) ); ?>-message" style="display:none;">
                             <td>
                                 <strong><?php esc_attr_e( 'Consider Checking:' ) ?></strong>
                                 <ol>
@@ -283,7 +335,7 @@ class DT_Site_Link_System
                         </tr>
                         <script>
                             jQuery(document).ready(function() {
-                                check_link_status( '<?php echo esc_attr( self::encrypt_transfer_token( $key ) ); ?>', '<?php echo esc_attr( self::filter_for_target_site( $value ) ); ?>', '<?php echo esc_attr( $value['id'] ); ?>' );
+                                check_link_status( '<?php echo esc_attr( self::create_transfer_token_for_site( $key ) ); ?>', '<?php echo esc_attr( self::filter_for_target_site( $value ) ); ?>', '<?php echo esc_attr( md5( $value['id'] ) ); ?>' );
                             })
                         </script>
                         </tbody>
@@ -380,14 +432,14 @@ class DT_Site_Link_System
                         <span style="float:right">
                                 <?php esc_html_e( 'Status: ' ) ?>
                             <strong>
-                                    <span id="<?php echo esc_attr( $value['id'] ); ?>-status">
+                                    <span id="<?php echo esc_attr( md5( $value['id'] ) ); ?>-status">
                                         <?php esc_html_e( 'Checking Status' ) ?>
                                     </span>
                             </strong>
                         </span>
                     </td>
                 </tr>
-                <tr id="<?php echo esc_attr( $value['id'] ); ?>-message" style="display:none;">
+                <tr id="<?php echo esc_attr( md5( $value['id'] ) ); ?>-message" style="display:none;">
                     <td>
                         <strong><?php esc_attr_e( 'Consider Checking:' ) ?></strong>
                         <ol>
@@ -407,7 +459,7 @@ class DT_Site_Link_System
 
                         <script>
                             jQuery(document).ready(function() {
-                                check_link_status( '<?php echo esc_attr( self::encrypt_transfer_token( $key ) ); ?>', '<?php echo esc_attr( self::filter_for_target_site( $value ) ); ?>', '<?php echo esc_attr( $value['id'] ); ?>' );
+                                check_link_status( '<?php echo esc_attr( self::create_transfer_token_for_site( $key ) ); ?>', '<?php echo esc_attr( self::filter_for_target_site( $value ) ); ?>', '<?php echo esc_attr( md5( $value['id'] ) ); ?>' );
                             })
                         </script>
                         <?php endif; ?>
@@ -423,17 +475,81 @@ class DT_Site_Link_System
         <?php
     }
 
-    public static function filter_for_target_site( $value ) {
-        $local_site = self::get_current_site_base_url();
-        if ( $local_site == $value['site1'] ) {
-            return $value['site2'];
-        } else {
-            return $value['site1'];
+    /**
+     * Add necessary scripts to the header for supporting the admin pages.
+     */
+    public function scripts() {
+        echo "<script type='text/javascript'>
+            
+        function check_link_status( transfer_token, url, id ) {
+            
+        let linked = '" .  esc_attr__( 'Linked' ) . "';
+        let not_linked = '" .  esc_attr__( 'Not Linked' ) . "';
+        let not_found = '" .  esc_attr__( 'Failed to connect with the URL provided.' ) . "';
+        
+        return jQuery.ajax({
+            type: 'POST',
+            data: JSON.stringify({ \"transfer_token\": transfer_token } ),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            url: 'https://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
+        })
+            .done(function (data) {
+                if( data ) {
+                    jQuery('#' + id + '-status').html( linked ).attr('class', 'success-green')
+                } else {
+                    jQuery('#' + id + '-status').html( not_linked ).attr('class', 'fail-red');
+                    jQuery('#' + id + '-message').show();
+                }
+            })
+            .fail(function (err) {
+                jQuery( document ).ajaxError(function( event, request, settings ) {
+                     if( request.status === 0 ) {
+                        jQuery('#' + id + '-status').html( not_found ).attr('class', 'fail-red')
+                     } else {
+                        jQuery('#' + id + '-status').html( JSON.stringify( request.statusText ) ).attr('class', 'fail-red')
+                     }
+                });
+            });
         }
+        </script>";
+        echo "<style>
+                .success-green { color: limegreen;}
+                .fail-red { color: red;}
+                .info-color { color: steelblue; }
+                .button-like-link-left { 
+                    float: left; 
+                    background: none !important;
+                    color: inherit;
+                    border: none;
+                    padding: 0 !important;
+                    font: inherit;
+                    /*border is optional*/
+                    cursor: pointer;
+                    }
+            </style>";
     }
 
     /**
+     * Display an admin notice on the page
+     *
+     * @param $notice , the message to display
+     * @param $type   , the type of message to display
+     *
+     * @access private
+     * @since  0.1.0
+     */
+    public static function admin_notice( $notice, $type )
+    {
+        echo '<div class="notice notice-' . esc_attr( $type ) . ' is-dismissible"><p>';
+        echo esc_html( $notice );
+        echo '</p></div>';
+    }
+
+
+    /**
      * Create, Update, and Delete api keys
+     * This function does all the main processing of post requests for the admin interface for the site keys api
      *
      * @return mixed|\WP_Error
      */
@@ -549,17 +665,29 @@ class DT_Site_Link_System
         return $keys;
     }
 
-    public static function filter_url( $url ) {
-        $url = sanitize_text_field( wp_unslash( $url ) );
-        $url = str_replace( 'http://', '', $url );
-        $url = trim( str_replace( 'https://', '', $url ) );
-        return $url;
-    }
-
+    /**
+     * Generates the site key based on the token, site1, and site2 value.
+     * This guarantees that the key is unique between the two sites.
+     *
+     * @param $token
+     * @param $site1
+     * @param $site2
+     *
+     * @return string
+     */
     public static function generate_key( $token, $site1, $site2 ) {
         return md5( $token . $site1 . $site2 );
     }
 
+    /**
+     * Checks if at least one of the sites begin submitted is the local site. This prevents trying to build a link
+     * between two other sites.
+     *
+     * @param $site1
+     * @param $site2
+     *
+     * @return bool
+     */
     public static function verify_one_site_is_local( $site1, $site2 ) {
         $local_site = self::get_current_site_base_url();
         if ( $local_site == $site1 ) {
@@ -569,6 +697,24 @@ class DT_Site_Link_System
             return true;
         }
         return false;
+    }
+
+    /**
+     * Gets the non local site from the two site fields
+     *
+     * @param $site1
+     * @param $site2
+     *
+     * @return string
+     */
+    public static function get_non_local_site( $site1, $site2 ) {
+        $local_site = self::get_current_site_base_url();
+        if ( $local_site == $site1 ) {
+            return $site2;
+        }
+        else {
+            return $site1;
+        }
     }
 
     /**
@@ -598,76 +744,8 @@ class DT_Site_Link_System
         return $keys;
     }
 
-    public function scripts() {
-        echo "<script type='text/javascript'>
-            
-        function check_link_status( transfer_token, url, id ) {
-            
-        let linked = '" .  esc_attr__( 'Linked' ) . "';
-        let not_linked = '" .  esc_attr__( 'Not Linked' ) . "';
-        let not_found = '" .  esc_attr__( 'Failed to connect with the URL provided.' ) . "';
-        
-        return jQuery.ajax({
-            type: 'POST',
-            data: JSON.stringify({ \"transfer_token\": transfer_token } ),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            url: 'https://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
-        })
-            .done(function (data) {
-                if( data ) {
-                    jQuery('#' + id + '-status').html( linked ).attr('class', 'success-green')
-                } else {
-                    jQuery('#' + id + '-status').html( not_linked ).attr('class', 'fail-red');
-                    jQuery('#' + id + '-message').show();
-                }
-            })
-            .fail(function (err) {
-                jQuery( document ).ajaxError(function( event, request, settings ) {
-                     if( request.status === 0 ) {
-                        jQuery('#' + id + '-status').html( not_found ).attr('class', 'fail-red')
-                     } else {
-                        jQuery('#' + id + '-status').html( JSON.stringify( request.statusText ) ).attr('class', 'fail-red')
-                     }
-                });
-            });
-        }
-        </script>";
-        echo "<style>
-                .success-green { color: limegreen;}
-                .fail-red { color: red;}
-                .info-color { color: steelblue; }
-                .button-like-link-left { 
-                    float: left; 
-                    background: none !important;
-                    color: inherit;
-                    border: none;
-                    padding: 0 !important;
-                    font: inherit;
-                    /*border is optional*/
-                    cursor: pointer;
-                    }
-            </style>";
-    }
-
     /**
-     * Display an admin notice on the page
-     *
-     * @param $notice , the message to display
-     * @param $type   , the type of message to display
-     *
-     * @access private
-     * @since  0.1.0
-     */
-    public static function admin_notice( $notice, $type )
-    {
-        echo '<div class="notice notice-' . esc_attr( $type ) . ' is-dismissible"><p>';
-        echo esc_html( $notice );
-        echo '</p></div>';
-    }
-
-    /**
-     * REST ROUTES
+     * Rest Registration for Site Link Check javascript
      */
     public function add_api_routes()
     {
@@ -682,6 +760,10 @@ class DT_Site_Link_System
             ],
             ]
         );
+
+        // Enable cross origin resource requests (CORS) for approved sites.
+        self::add_cors_sites();
+
     }
 
     /**
@@ -708,59 +790,50 @@ class DT_Site_Link_System
     }
 
     /**
-     * Verify the token and id of a REST request
+     * MISCELLANEOUS SUPPORT FUNCTIONS
      *
-     * @param $site_key
      *
-     * @return bool|\WP_Error
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      */
-    private static function verify_referrer_ip( $site_key ) {
+
+    public static function decrypt_transfer_token( $transfer_token ) {
+
         $keys = get_option( self::$token . '_api_keys' );
 
-        if ( ! isset( $keys[ $site_key ] ) ) {
-            return new WP_Error( __METHOD__, 'No site key found.' );
+        if ( empty( $keys ) ) {
+            return false;
         }
 
-        if ( empty( $keys[ $site_key ]['ip'] ) ) {
-            return true; // no ip address check required
-        }
-
-        if ( ! empty( $keys[ $site_key ]['ip'] ) ) {
-            $required_id = trim( $keys[ $site_key ]['ip'] );
-            $referrer_ip = trim( self::get_real_ip_address() );
-            if ( $required_id == $referrer_ip ) {
-                return true; // ip address check passed
+        foreach ( $keys as $key => $array ) {
+            if ( md5( $key . current_time( 'Y-m-dH', 1 ) ) == $transfer_token ) {
+                return $key;
             }
         }
         return false;
     }
 
-    /**
-     * Verify the token and id of a REST request
-     *
-     * @param $transfer_token
-     *
-     * @return bool
-     */
-    public static function verify_transfer_token( $transfer_token ) : bool {
-        if ( ! empty( $transfer_token ) ) {
-            // check id
-            $id_decrypted = self::decrypt_transfer_token( $transfer_token );
-            if ( $id_decrypted ) {
-                return true;
-            } else {
-                return false;
-            }
+    public static function filter_for_target_site( $value ) {
+        $local_site = self::get_current_site_base_url();
+        if ( $local_site == $value['site1'] ) {
+            return $value['site2'];
         } else {
-            return false;
+            return $value['site1'];
         }
     }
 
-    /**
-     * Checks if site keys exist
-     *
-     * @return bool
-     */
+    public static function filter_url( $url ) {
+        $url = sanitize_text_field( wp_unslash( $url ) );
+        $url = str_replace( 'http://', '', $url );
+        $url = trim( str_replace( 'https://', '', $url ) );
+        return $url;
+    }
+
     public static function verify_sites_keys_are_set() : bool {
         $prefix = self::$token;
         $site = get_option( $prefix . '_api_keys' );
@@ -770,42 +843,8 @@ class DT_Site_Link_System
         return true;
     }
 
-    /**
-     * Gets the real ip address for the referring client
-     * @return string
-     */
-    public static function get_real_ip_address()
-    {
-        $ip = '';
-        if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ))   //check ip from share internet
-        {
-            // @codingStandardsIgnoreLine
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        }
-        elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ))   //to check ip is pass from proxy
-        {
-            // @codingStandardsIgnoreLine
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
-        elseif ( ! empty( $_SERVER['REMOTE_ADDR'] ) )
-        {
-            // @codingStandardsIgnoreLine
-            $ip = $_SERVER['REMOTE_ADDR'];
-        }
-        return $ip;
-    }
-
-    public static function get_local_public_ip_address() {
-        $ip = file_get_contents( "http://ipecho.net/plain" );
-        if ( !empty( $ip ) ) {
-            return $ip;
-        }
-
-        $ip = file_get_contents( "http://icanhazip.com" );
-        if ( !empty( $ip ) ) {
-            return $ip;
-        }
-        return __( 'Unable to get local IP address' );
+    public static function generate_token( $length = 32 ) {
+        return bin2hex( random_bytes( $length ) );
     }
 
     protected static function get_current_site_base_url() {
@@ -814,13 +853,24 @@ class DT_Site_Link_System
         return trim( $url );
     }
 
+
+
     /**
-     * Add this deactivation step into any deactivation hook for the plugin / theme
-     * @example  DT_Site_Link_System::deactivate()
+     * Singleton class to guarantee on once instance of the class
      */
-    public static function deactivate() {
-        $prefix = self::$token;
-        delete_option( $prefix . '_api_keys' );
+    private static $_instance = null;
+    public static function instance()
+    {
+        if ( is_null( self::$_instance ) ) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    }
+
+    public function __construct()
+    {
+        add_action( 'admin_head', [ $this, 'scripts' ], 20 );
+        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 }
 DT_Site_Link_System::instance();
