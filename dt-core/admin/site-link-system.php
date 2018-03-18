@@ -38,6 +38,34 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class DT_Site_Link_System
 {
+    /*****************************************************************************************************************
+     *
+     * PRIMARY INTEGRATION SECTION
+     *
+     * The next section has the main functions intended for integration into other systems
+     *
+     * @variable $token
+     * (This defines the prefix for the site keys used through the entire system.)
+     *
+     * @function get_site_keys()
+     *          (This can be called to get all the site keys installed in the system.)
+     *
+     * @function create_transfer_token_for_site( $site_key )
+     *           (This gets the one hour transfer token to be passed with a REST request.
+     *           It requires the key for the link record that the token is to be made for.)
+     *
+     * @function verify_transfer_token( $transfer_token )
+     *           (This tests the transfer token against the registered sites and returns a true or false response.)
+     *
+     * @function add_cors_sites()
+     *           (This is meant to be added into REST registrations that intend to pass data between sites. This
+     *           modifies the Cross-Origin-Resource-Sharing policy to allow these transfers to approved sites.)
+     *
+     * @function deactivate()
+     *           (This function should be included into the deactivation hook, so that on deactivate the options record
+     *           is removed.)
+     *****************************************************************************************************************/
+
     /**
      * SET PREFIX FOR SYSTEM
      *
@@ -49,6 +77,19 @@ class DT_Site_Link_System
      * @var string
      */
     public static $token = 'dt';
+
+    /**
+     * GET THE ARRAY OF SITE KEYS
+     *
+     * @since 1.4
+     *
+     * @return array Returns array of site keys, or empty array.
+     */
+    public static function get_site_keys() {
+        $prefix = self::$token;
+        $keys = get_option( $prefix . '_api_keys', [] );
+        return $keys;
+    }
 
     /**
      * CREATE A TRANSFER TOKEN FOR A SITE
@@ -118,15 +159,14 @@ class DT_Site_Link_System
          * @link https://gist.github.com/miya0001/d6508b9ba52df5aedc78fca186ff6088
          */
 
-        $prefix = self::$token;
-        $site = get_option( $prefix . '_api_keys' );
+        $keys = self::get_site_keys();
 
-        if ( empty( $site ) ) {
+        if ( empty( $keys ) ) {
             return;
         }
 
         $approved_urls = [];
-        foreach ( $site as $key => $value ) {
+        foreach ( $keys as $key => $value ) {
             $approved_urls[] = 'https://' . self::get_non_local_site( $value['site1'], $value['site2'] );
         }
 
@@ -154,6 +194,7 @@ class DT_Site_Link_System
         $prefix = self::$token;
         delete_option( $prefix . '_api_keys' );
     }
+
 
     /************************************************************************************************************
      *
@@ -555,7 +596,7 @@ class DT_Site_Link_System
      */
     public static function process_form_post() {
         $prefix = self::$token;
-        $keys = get_option( $prefix . '_api_keys', [] );
+        $keys = self::get_site_keys();
 
         if ( isset( $_POST[ $prefix . '_nonce' ] ) && wp_verify_nonce( sanitize_key( $_POST[ $prefix . '_nonce' ] ), $prefix . '_action' ) ) {
 
@@ -789,22 +830,15 @@ class DT_Site_Link_System
         }
     }
 
-    /**
+    /****************************************************************************************************************
      * MISCELLANEOUS SUPPORT FUNCTIONS
      *
      *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     */
+     ****************************************************************************************************************/
 
     public static function decrypt_transfer_token( $transfer_token ) {
 
-        $keys = get_option( self::$token . '_api_keys' );
+        $keys = self::get_site_keys();
 
         if ( empty( $keys ) ) {
             return false;
@@ -835,9 +869,8 @@ class DT_Site_Link_System
     }
 
     public static function verify_sites_keys_are_set() : bool {
-        $prefix = self::$token;
-        $site = get_option( $prefix . '_api_keys' );
-        if ( ! $site || count( $site ) < 1 ) { // if no site is connected, then disable auto_approve
+        $keys = self::get_site_keys();
+        if ( ! $keys || count( $keys ) < 1 ) { // if no site is connected, then disable auto_approve
             return false;
         }
         return true;
@@ -852,8 +885,6 @@ class DT_Site_Link_System
         $url = str_replace( 'https://', '', $url );
         return trim( $url );
     }
-
-
 
     /**
      * Singleton class to guarantee on once instance of the class
