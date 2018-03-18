@@ -21,10 +21,11 @@
  */
 
 /**
- * @version 1.4
+ * @version 1.5
  *
  * @since 1.0   Initial system launch
  * @since 1.4   CORS system
+ * @since 1.5   Fixes to single metabox
  *
  */
 
@@ -233,7 +234,7 @@ class DT_Site_Link_System
                 </tr>
                 <tr>
                     <td width="100px"><label for="id"><?php esc_html_e( 'ID' ) ?></label></td>
-                    <td><input type="text" id="id" name="id" required /> <span class="text-small"><em><?php esc_html_e( '(Case Sensitive)' ) ?></em></span></td>
+                    <td><input type="text" id="id" name="id" required /></td>
                 </tr>
                 <tr>
                     <td><label for="token"><?php esc_html_e( 'Token' ) ?></label></td>
@@ -391,8 +392,8 @@ class DT_Site_Link_System
 
         <!-- Footer Information -->
         <hr />
-        <p class="text-small"><?php esc_attr_e( 'Timestamp' ) ?>: <span class="info-color"><?php echo esc_attr( current_time( 'Y-m-dH', 1 ) ) ?></span>  <br><em><?php esc_attr_e( 'Compare this number to linked sites. They should be identical.' ) ?></em></p>
         <p><?php esc_attr_e( 'Current Site' ) ?>: <span class="info-color"><?php echo esc_html( self::get_current_site_base_url() ); ?></span></p>
+        <p class="text-small"><?php esc_attr_e( 'Timestamp' ) ?>: <span class="info-color"><?php echo esc_attr( current_time( 'Y-m-dH', 1 ) ) ?></span>  <br><em><?php esc_attr_e( 'Compare this number to linked site. It should be identical.' ) ?></em></p>
         <?php
     }
 
@@ -403,8 +404,11 @@ class DT_Site_Link_System
     {
         $prefix = self::$token;
         $keys = self::clean_site_records( self::process_form_post() );
+        foreach ( $keys as $key => $value ) {
+            break; // break after first loop
+        }
         ?>
-        <?php foreach ( $keys as $key => $value ) : ?>
+
         <form method="post" action="">
             <?php wp_nonce_field( $prefix . '_action', $prefix . '_nonce' ); ?>
             <table class="widefat striped">
@@ -422,7 +426,7 @@ class DT_Site_Link_System
                     </td>
                     <td>
                         <input type="text" name="id" id="id"
-                        <?php echo ( isset( $value['id'] ) ) ? 'value="' . esc_attr( $value['id'] ) . '" readonly' : '' ?> /> <span class="text-small"><em><?php esc_html_e( '(Case Sensitive)' ) ?></em></span>
+                        <?php echo ( isset( $value['id'] ) ) ? 'value="' . esc_attr( $value['id'] ) . '" readonly' : '' ?> />
                     </td>
                 </tr>
                 <tr>
@@ -464,15 +468,15 @@ class DT_Site_Link_System
                 <tr>
                     <td colspan="2">
                         <?php esc_html_e( 'Current site' ) ?>: <span class="info-color"><?php echo esc_attr( self::get_current_site_base_url() ) ?></span><br>
-                        <span class="text-small">Timestamp: <?php echo esc_attr( current_time( 'Y-m-dH', 1 ) ) ?></span>
+                        <span class="text-small"><?php esc_attr_e( 'Timestamp' ) ?>: <span class="info-color"><?php echo esc_attr( current_time( 'Y-m-dH', 1 ) ) ?></span>
 
 
-                        <?php if ( isset( $value['id'] ) && ! empty( $value ) ) : ?>
+                            <?php if ( isset( $value['id'] ) && ! empty( $value ) ) : ?>
 
 
-                        <span style="float:right">
+                            <span style="float:right">
                                 <?php esc_html_e( 'Status: ' ) ?>
-                            <strong>
+                                <strong>
                                     <span id="<?php echo esc_attr( md5( $value['id'] ) ); ?>-status">
                                         <?php esc_html_e( 'Checking Status' ) ?>
                                     </span>
@@ -481,7 +485,7 @@ class DT_Site_Link_System
                     </td>
                 </tr>
                 <tr id="<?php echo esc_attr( md5( $value['id'] ) ); ?>-message" style="display:none;">
-                    <td>
+                    <td colspan="2">
                         <strong><?php esc_attr_e( 'Consider Checking:' ) ?></strong>
                         <ol>
                             <li>
@@ -495,8 +499,8 @@ class DT_Site_Link_System
                             </li>
                         </ol>
                         <hr />
-                        <p class="text-small"><?php esc_attr_e( 'Timestamp for this server' ) ?>: <span class="info-color"><?php echo esc_attr( current_time( 'Y-m-dH', 1 ) ) ?></span>  <br><em><?php esc_attr_e( 'Compare this number to linked sites. They should be identical.' ) ?></em></p>
-                        <p><?php esc_attr_e( 'URL for this server' ) ?>: <span class="info-color"><?php echo esc_html( home_url() ); ?></span></p>
+                        <p><?php esc_attr_e( 'Current Site' ) ?>: <span class="info-color"><?php echo esc_html( self::get_current_site_base_url() ); ?></span></p>
+                        <p class="text-small"><?php esc_attr_e( 'Timestamp' ) ?>: <span class="info-color"><?php echo esc_attr( current_time( 'Y-m-dH', 1 ) ) ?></span>  <em><?php esc_attr_e( 'Compare this number to linked site. It should be identical.' ) ?></em></p>
 
                         <script>
                             jQuery(document).ready(function() {
@@ -510,8 +514,7 @@ class DT_Site_Link_System
             </table>
 
         </form>
-        <?php break;
-        /* Limit to one loop */ endforeach; ?>
+
         <br>
         <?php
     }
