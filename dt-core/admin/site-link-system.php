@@ -21,11 +21,12 @@
  */
 
 /**
- * @version 1.5
+ * @version 1.6
  *
  * @since 1.0   Initial system launch
  * @since 1.4   CORS system
  * @since 1.5   Fixes to single metabox
+ * @since 1.6   Opened up 'ID' requirements, changed labels for ID to "Name"
  *
  */
 
@@ -233,7 +234,7 @@ class DT_Site_Link_System
                     </td>
                 </tr>
                 <tr>
-                    <td width="100px"><label for="id"><?php esc_html_e( 'ID' ) ?></label></td>
+                    <td width="100px"><label for="id"><?php esc_html_e( 'Name' ) ?></label></td>
                     <td><input type="text" id="id" name="id" required /></td>
                 </tr>
                 <tr>
@@ -263,7 +264,7 @@ class DT_Site_Link_System
             <h2><?php esc_html_e( 'Generate New Site Key' ) ?></h2>
             <table class="widefat striped">
                 <tr>
-                    <td width="90px"><label for="id"><?php esc_html_e( 'ID' ) ?></label></td>
+                    <td width="90px"><label for="id"><?php esc_html_e( 'Name' ) ?></label></td>
                     <td><input type="text" id="id" name="id" required></td>
                 </tr>
                 <tr>
@@ -320,7 +321,7 @@ class DT_Site_Link_System
                                 <strong><?php esc_html_e( 'Place this information into the target site' ) ?></strong>
                                 <table class="widefat">
                                     <tr>
-                                        <td width="100px"><?php esc_html_e( 'ID' ) ?></td>
+                                        <td width="100px"><?php esc_html_e( 'Name' ) ?></td>
                                         <td><?php echo esc_html( $value['id'] ); ?></td>
                                     </tr>
                                     <tr>
@@ -343,7 +344,7 @@ class DT_Site_Link_System
                                 <button type="button" class="button-like-link-left" style="float:left;" onclick="jQuery('#delete-<?php echo esc_html( md5( $value['id'] ) ); ?>').show();">
                                     <?php esc_html_e( 'Delete' ) ?>
                                 </button>
-                                <p style="display:none;" id="delete-<?php echo esc_html( md5( $value['id'] ) ); ?>">
+                                <p style="display:none;" id="delete-<?php echo esc_html( md5( $value['id'] ) ); ?>"><br>
                                     <?php esc_html_e( 'Are you sure you want to delete this record? This is a permanent action.' ) ?><br>
                                     <button type="submit" class="button" name="action" value="delete">
                                         <?php esc_html_e( 'Permanently Delete' ) ?>
@@ -422,7 +423,7 @@ class DT_Site_Link_System
                 <tbody>
                 <tr>
                     <td width="100px">
-                        <label for="id"><?php esc_html_e( 'ID' ) ?></label>
+                        <label for="id"><?php esc_html_e( 'Name' ) ?></label>
                     </td>
                     <td>
                         <input type="text" name="id" id="id"
@@ -619,11 +620,11 @@ class DT_Site_Link_System
                     || ! isset( $_POST['site2'] )
                     || empty( $_POST['site2'] ) ) {
 
-                        self::admin_notice( 'ID, Site 1, and Site 2 fields required', 'error' );
+                        self::admin_notice( 'Name, Site 1, and Site 2 fields required', 'error' );
                         return $keys;
                     }
 
-                    $id = trim( wordwrap( strtolower( sanitize_text_field( wp_unslash( $_POST['id'] ) ) ), 1, '_', 0 ) );
+                    $id = trim( sanitize_text_field( wp_unslash( $_POST['id'] ) ) );
                     $token = self::generate_token( 32 );
                     $site1 = self::filter_url( sanitize_text_field( wp_unslash( $_POST['site1'] ) ) );
                     $site2 = self::filter_url( sanitize_text_field( wp_unslash( $_POST['site2'] ) ) );
@@ -648,7 +649,7 @@ class DT_Site_Link_System
 
                         return $keys;
                     } else {
-                        self::admin_notice( 'ID already exists.', 'error' );
+                        self::admin_notice( 'Site already exists.', 'error' );
                         return $keys;
                     }
                     break;
@@ -664,18 +665,18 @@ class DT_Site_Link_System
                     || ! isset( $_POST['site2'] )
                     || empty( $_POST['site2'] )
                     ){
-                        self::admin_notice( 'Missing id, token, or site fields.', 'error' );
+                        self::admin_notice( 'Missing label, token, or site fields.', 'error' );
                         return $keys;
                     }
 
-                    $id     = trim( wordwrap( strtolower( sanitize_text_field( wp_unslash( $_POST['id'] ) ) ), 1, '_', 0 ) );
-                    $token  = trim( sanitize_key( wp_unslash( $_POST['token'] ) ) );
+                    $id    = trim( sanitize_text_field( wp_unslash( $_POST['id'] ) ) );
+                    $token = trim( sanitize_key( wp_unslash( $_POST['token'] ) ) );
                     $site1 = self::filter_url( sanitize_text_field( wp_unslash( $_POST['site1'] ) ) );
                     $site2 = self::filter_url( sanitize_text_field( wp_unslash( $_POST['site2'] ) ) );
 
                     $local_site = self::verify_one_site_is_local( $site1, $site2 );
                     if ( ! $local_site ) {
-                        self::admin_notice( 'Local site not found in submission. Either Site1 or Site2 must be this current website', 'error' );
+                        self::admin_notice( 'Local site not found in submission. Either Site 1 or Site 2 must be this current website', 'error' );
                         return $keys;
                     }
 
@@ -695,7 +696,7 @@ class DT_Site_Link_System
 
                 case 'delete':
                     if ( ! isset( $_POST['key'] ) ) {
-                        self::admin_notice( 'Delete: Key not found.', 'error' );
+                        self::admin_notice( 'Delete: Site not found.', 'error' );
                         return $keys;
                     }
                     unset( $keys[ $_POST['key'] ] );
