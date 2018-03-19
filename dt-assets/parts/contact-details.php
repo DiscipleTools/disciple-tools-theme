@@ -411,123 +411,130 @@
             </div>
 
 
-            <div id="show-more-content" class="grid-x grid-margin-x show-content">
-                <!-- Address -->
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
-                        <?php esc_html_e( 'Address', 'disciple_tools' )?>
-                        <button id="add-new-address" class="details-edit">
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
-                        </button>
-                    </div>
-                    <ul class="address">
-                    <?php if ( count( $contact['contact_address'] ?? [] ) === 0 ) { ?>
-                        <li id="no-address"><?php esc_html_e( 'No address set', 'disciple_tools' ) ?></li>
-                    <?php } ?>
-                    <?php foreach ( $contact['contact_address'] ?? [] as $value ) {
-                            $verified = isset( $value['verified'] ) && $value['verified'] === true ? 'inline' : 'none';
-                            $invalid = isset( $value['invalid'] ) && $value['invalid'] === true ? 'inline' : 'none';
-                            ?>
-                            <li class="details-list <?php echo esc_html( $value['key'] ) ?> address-row">
-                                <div class="address-text"><?php echo esc_html( $value['value'] );?></div><?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
-                            </li>
-                            <li class="details-edit has-options <?php echo esc_attr( $value['key'], 'disciple_tools' ) ?>">
-                                <textarea rows="3" id="<?php echo esc_attr( $value['key'], 'disciple_tools' ) ?>">
-                                    <?php echo esc_attr( $value['value'], 'disciple_tools' ) ?>
-                                </textarea>
-                                <?php dt_contact_details_edit( $value['key'], 'address', true ) ?>
-                            </li>
+            <div id="show-more-content" class="show-content">
+                <div class="grid-x grid-margin-x">
+                    <!-- Address -->
+                    <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                        <div class="section-subheader">
+                            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
+                            <?php esc_html_e( 'Address', 'disciple_tools' )?>
+                            <button id="add-new-address" class="details-edit">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
+                            </button>
+                        </div>
+                        <ul class="address">
+                        <?php if ( count( $contact['contact_address'] ?? [] ) === 0 ) { ?>
+                            <li id="no-address"><?php esc_html_e( 'No address set', 'disciple_tools' ) ?></li>
                         <?php } ?>
-                    </ul>
-                </div>
+                        <?php foreach ( $contact['contact_address'] ?? [] as $value ) {
+                                $verified = isset( $value['verified'] ) && $value['verified'] === true ? 'inline' : 'none';
+                                $invalid = isset( $value['invalid'] ) && $value['invalid'] === true ? 'inline' : 'none';
+                                ?>
+                                <li class="details-list <?php echo esc_html( $value['key'] ) ?> address-row">
+                                    <div class="address-text"><?php echo esc_html( $value['value'] );?></div><?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
+                                </li>
+                                <li class="details-edit has-options <?php echo esc_attr( $value['key'], 'disciple_tools' ) ?>">
+                                    <textarea rows="3" id="<?php echo esc_attr( $value['key'], 'disciple_tools' ) ?>">
+                                        <?php echo esc_attr( $value['value'], 'disciple_tools' ) ?>
+                                    </textarea>
+                                    <?php dt_contact_details_edit( $value['key'], 'address', true ) ?>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    </div>
 
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/contact-age.svg" ?>">
-                        <?php esc_html_e( 'Age', 'disciple_tools' )?>
-                    </div>
-                    <ul class="details-list">
-                        <li class="current-age">
+                    <!-- Age -->
+                    <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                        <div class="section-subheader">
+                            <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/contact-age.svg" ?>">
+                            <?php esc_html_e( 'Age', 'disciple_tools' )?>
+                        </div>
+                        <ul class="details-list">
+                            <li class="current-age">
+                                <?php
+                                if ( isset( $contact['age']['label'] ) ){
+                                    echo esc_html( $contact['age']['label'] );
+                                } else {
+                                    esc_html_e( 'No age set', 'disciple_tools' );
+                                }
+                                ?>
+                            </li>
+                        </ul>
+                        <select id="age" class="details-edit select-field">
                             <?php
-                            if ( isset( $contact['age']['label'] ) ){
-                                echo esc_html( $contact['age']['label'] );
-                            } else {
-                                esc_html_e( 'No age set', 'disciple_tools' );
+                            foreach ( $contact_fields["age"]["default"] as $age_key => $age_value ) {
+                                if ( isset( $contact["age"] ) &&
+                                    $contact["age"]["key"] === $age_key){
+                                    echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
+                                } else {
+                                    echo '<option value="'. esc_html( $age_key ) . '">' . esc_html( $age_value ). '</option>';
+                                }
                             }
                             ?>
-                        </li>
-                    </ul>
-                    <select id="age" class="details-edit select-field">
-                        <?php
-                        foreach ( $contact_fields["age"]["default"] as $age_key => $age_value ) {
-                            if ( isset( $contact["age"] ) &&
-                                $contact["age"]["key"] === $age_key){
-                                echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
-                            } else {
-                                echo '<option value="'. esc_html( $age_key ) . '">' . esc_html( $age_value ). '</option>';
-                            }
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/gender.svg' ?>">
-                        <?php esc_html_e( 'Gender', 'disciple_tools' )?>
+                        </select>
                     </div>
-                    <ul class="details-list">
-                        <li class="current-gender">
+
+                    <!-- Gender -->
+                    <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                        <div class="section-subheader">
+                            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/gender.svg' ?>">
+                            <?php esc_html_e( 'Gender', 'disciple_tools' )?>
+                        </div>
+                        <ul class="details-list">
+                            <li class="current-gender">
+                                <?php
+                                if ( isset( $contact['gender']['label'] ) ){
+                                    echo esc_html( $contact['gender']['label'] );
+                                } else {
+                                    esc_html_e( 'No gender set', 'disciple_tools' );
+                                }
+                                ?>
+                        </ul>
+                        <select id="gender" class="details-edit select-field">
                             <?php
-                            if ( isset( $contact['gender']['label'] ) ){
-                                echo esc_html( $contact['gender']['label'] );
-                            } else {
-                                esc_html_e( 'No gender set', 'disciple_tools' );
+                            foreach ( $contact_fields['gender']['default'] as $gender_key => $gender_value ) {
+                                if ( isset( $contact['gender'] ) &&
+                                    $contact['gender']['key'] === $gender_key){
+                                    echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
+                                } else {
+                                    echo '<option value="'. esc_html( $gender_key ) . '">' . esc_html( $gender_value ). '</option>';
+                                }
                             }
                             ?>
-                    </ul>
-                    <select id="gender" class="details-edit select-field">
-                        <?php
-                        foreach ( $contact_fields['gender']['default'] as $gender_key => $gender_value ) {
-                            if ( isset( $contact['gender'] ) &&
-                                $contact['gender']['key'] === $gender_key){
-                                echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
-                            } else {
-                                echo '<option value="'. esc_html( $gender_key ) . '">' . esc_html( $gender_value ). '</option>';
-                            }
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
-                        <?php esc_html_e( 'Source' ); ?>
+                        </select>
                     </div>
-                    <ul class="details-list">
-                        <li class="current-sources">
+
+                    <!-- Source -->
+                    <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                        <div class="section-subheader">
+                            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
+                            <?php esc_html_e( 'Source' ); ?>
+                        </div>
+                        <ul class="details-list">
+                            <li class="current-sources">
+                                <?php
+                                if (isset( $contact['sources'] )) {
+                                    echo esc_html( $contact['sources']['label'] );
+                                } else {
+                                    esc_html_e( 'No source set' );
+                                }
+                                ?>
+                            </li>
+                        </ul>
+                        <select id="sources" class="details-edit select-field">
+                            <option value=""></option>
                             <?php
-                            if (isset( $contact['sources'] )) {
-                                echo esc_html( $contact['sources']['label'] );
-                            } else {
-                                esc_html_e( 'No source set' );
+                            foreach ( $custom_lists['sources'] as $sources_key => $sources_value ) {
+                                if ( isset( $contact['sources'] ) &&
+                                    $contact['sources']['key'] === $sources_key){
+                                    echo '<option value="'. esc_html( $sources_key ) . '" selected>' . esc_html( $sources_value['label'] ) . '</option>';
+                                } else {
+                                    echo '<option value="'. esc_html( $sources_key ) . '">' . esc_html( $sources_value['label'] ). '</option>';
+                                }
                             }
                             ?>
-                        </li>
-                    </ul>
-                    <select id="sources" class="details-edit select-field">
-                        <option value=""></option>
-                        <?php
-                        foreach ( $custom_lists['sources'] as $sources_key => $sources_value ) {
-                            if ( isset( $contact['sources'] ) &&
-                                $contact['sources']['key'] === $sources_key){
-                                echo '<option value="'. esc_html( $sources_key ) . '" selected>' . esc_html( $sources_value['label'] ) . '</option>';
-                            } else {
-                                echo '<option value="'. esc_html( $sources_key ) . '">' . esc_html( $sources_value['label'] ). '</option>';
-                            }
-                        }
-                        ?>
-                    </select>
+                        </select>
+                    </div>
                 </div>
             </div>
 
