@@ -452,9 +452,13 @@ class Disciple_Tools_Import_CSV
                 $args['post_type'] = $this->insertype;
 
                 // Load and launch async insert
-                $insert_location = new Disciple_Tools_Async_Insert_Location();
-                $insert_location->launch( $args );
+                try {
+                    $insert_location = new Disciple_Tools_Async_Insert_Location();
+                    $insert_location->launch( $args );
 
+                } catch ( Exception $e ) {
+                    return new WP_Error( 'async_insert_error', 'Failed to launch async insert process' );
+                }
             }
             $i++;
         }

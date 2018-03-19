@@ -44,14 +44,18 @@ function dt_send_email( $email, $subject, $message )
     $message = sanitize_text_field( $message );
 
     // Send email
-    $send_email = new Disciple_Tools_Notifications_Email();
-    $send_email->launch(
-        [
-            'email'   => $email,
-            'subject' => $subject,
-            'message' => $message,
-        ]
-    );
+    try {
+        $send_email = new Disciple_Tools_Notifications_Email();
+        $send_email->launch(
+            [
+                'email'   => $email,
+                'subject' => $subject,
+                'message' => $message,
+            ]
+        );
+    } catch ( Exception $e ) {
+        return false;
+    }
 
     return true;
 }
@@ -117,8 +121,13 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
 function dt_load_async_email()
 {
     if ( isset( $_POST['_wp_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wp_nonce'] ) ) ) && isset( $_POST['action'] ) && sanitize_key( wp_unslash( $_POST['action'] ) ) == 'dt_async_email_notification' ) {
-        $send_email = new Disciple_Tools_Notifications_Email();
-        $send_email->send_email();
+        try {
+            $send_email = new Disciple_Tools_Notifications_Email();
+            $send_email->send_email();
+        } catch ( Exception $e ) {
+            dt_write_log( __METHOD__ . ': Failed to send email' );
+            return new WP_Error( __METHOD__, 'Failed to send email with Async' );
+        }
     }
 }
 add_action( 'init', 'dt_load_async_email' );
