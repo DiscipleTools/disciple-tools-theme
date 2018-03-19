@@ -373,6 +373,8 @@ else {
             require_once( get_template_directory() . '/dt-workflows/index.php' );
             $this->workflows = Disciple_Tools_Workflows::instance();
 
+            require_once( get_template_directory() . '/dt-core/admin/site-link-system.php' );
+
             /**
              * Admin panel
              * Contains all those features that only run if in the Admin panel
@@ -404,11 +406,6 @@ else {
                 // People Groups
                 require_once( get_template_directory() . '/dt-people-groups/admin-menu.php' );
                 $this->people_groups_admin = Disciple_Tools_People_Groups_Admin_Menu::instance();
-
-                // Tables
-                require_once( get_template_directory() . '/dt-core/admin/menu/tables/notifications-table.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tables/activity-list-table.php' ); // contacts and groups report building
-                require_once( get_template_directory() . '/dt-core/admin/menu/tables/reports-list-table.php' ); // contacts and groups report building
 
                 // Metaboxes
                 require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-activity.php' );
