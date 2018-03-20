@@ -138,8 +138,12 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
 function dt_load_async_insert_location()
 {
     if ( isset( $_POST['_wp_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wp_nonce'] ) ) ) && isset( $_POST['action'] ) && sanitize_key( wp_unslash( $_POST['action'] ) ) == 'dt_async_insert_location' ) {
-        $insert_location = new Disciple_Tools_Async_Insert_Location();
-        $insert_location->insert_location();
+        try {
+            $insert_location = new Disciple_Tools_Async_Insert_Location();
+            $insert_location->insert_location();
+        } catch ( Exception $e ) {
+            dt_write_log( __METHOD__ . ': Failed to update locations' );
+        }
     }
 }
 add_action( 'init', 'dt_load_async_insert_location' );
