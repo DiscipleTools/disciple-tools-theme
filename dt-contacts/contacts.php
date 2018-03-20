@@ -191,9 +191,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         unset( $fields["title"] );
 
         $contact_methods_and_connections = [];
+        $multi_select_fields = [];
         foreach ( $fields as $field_key => $field_value ){
             if ( self::is_key_contact_method_or_connection( $field_key )){
                 $contact_methods_and_connections[$field_key] = $field_value;
+                unset( $fields[$field_key] );
+            }
+            if ( isset( self::$contact_fields[$field_key] ) &&
+                 self::$contact_fields[$field_key]["type"] === "multi_select" ){
+                $multi_select_fields[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
         }
@@ -214,6 +220,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         $potential_error = self::parse_connections( $post_id, $contact_methods_and_connections, null );
+        if ( is_wp_error( $potential_error )){
+            return $potential_error;
+        }
+
+        $potential_error = self::parse_multi_select_fields( $post_id, $multi_select_fields, null );
         if ( is_wp_error( $potential_error )){
             return $potential_error;
         }
@@ -276,6 +287,30 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         return $bad_fields;
+    }
+
+    private static function parse_multi_select_fields( $contact_id, $fields, $existing_contact = null ){
+        foreach ( $fields as $field_key => $field ){
+            if ( isset( self::$contact_fields[$field_key] ) && self::$contact_fields[$field_key]["type"] === "multi_select" ){
+                if ( !isset( $field["values"] )){
+                    return new WP_Error( __FUNCTION__, __( "missing values field on:" ) . " " . $field_key );
+                }
+                if ( isset( $field["force_values"] ) && $field["force_values"] === true ){
+                    delete_post_meta( $contact_id, $field_key );
+                }
+                foreach ( $field["values"] as $value ){
+                    if ( isset( $value["delete"] ) && $value["delete"] == true ){
+                        delete_post_meta( $contact_id, $field_key, $value["value"] );
+                    } else {
+                        $existing_array = isset( $existing_contact[ $field_key ] ) ? $existing_contact[ $field_key ] : [];
+                        if ( !in_array( $value["value"], $existing_array ) ){
+                            add_post_meta( $contact_id, $field_key, $value["value"] );
+                        }
+                    }
+                }
+            }
+        }
+        return $fields;
     }
 
     private static function parse_contact_methods( $contact_id, $fields ){
@@ -416,6 +451,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return $potential_error;
         }
 
+        $potential_error = self::parse_multi_select_fields( $contact_id, $fields );
+        if ( is_wp_error( $potential_error )){
+            return $potential_error;
+        }
+
 
         //make sure the assigned to is in the right format (user-1)
         if ( isset( $fields["assigned_to"] ) &&
@@ -457,7 +497,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 } elseif ( $value === false ) {
                     $value = "no";
                 }
-                update_post_meta( $contact_id, $field_id, $value );
+                $field_type = self::$contact_fields[$field_id]["type"];
+                if ( $field_type === "multi_select" ){
+
+                } else {
+                    update_post_meta( $contact_id, $field_id, $value );
+                }
             }
         }
 
@@ -836,7 +881,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @access public
      * @since  0.1.0
-     * @return WP_Post| WP_Error, On success: the contact, else: the error message
+     * @return array| WP_Error, On success: the contact, else: the error message
      */
     public static function get_contact( int $contact_id, $check_permissions = true )
     {

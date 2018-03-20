@@ -12,8 +12,6 @@ declare( strict_types=1 );
     $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 
-    $shared_with = Disciple_Tools_Contacts::get_shared_with_on_contact( get_the_ID() );
-    $users = Disciple_Tools_Users::get_assignable_users_compact();
     get_header(); ?>
 
     <?php

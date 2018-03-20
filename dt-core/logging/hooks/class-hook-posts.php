@@ -232,6 +232,10 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             }
         }
 
+        if ( $deleted ){
+            $meta_value = "value_deleted";
+        }
+
         dt_activity_insert( // insert activity record
             [
                 'action'            => 'field_update',

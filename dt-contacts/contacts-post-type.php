@@ -861,9 +861,9 @@ class Disciple_Tools_Contact_Post_Type
         }
 
         $fields['sources'] = [
-            'name'        => __( 'Source', 'disciple_tools' ),
+            'name'        => __( 'Sources', 'disciple_tools' ),
             'description' => '',
-            'type'        => 'key_select',
+            'type'        => 'multi_select',
             'default'     => $sources_default,
             'section'     => 'misc',
         ];
