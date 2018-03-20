@@ -78,6 +78,7 @@ function contactUpdated(updateNeeded) {
 
 let contact = {}
 let typeaheadTotals = {};
+
 jQuery(document).ready(function($) {
   let contactId = $("#contact-id").text()
   contact = contactsDetailsWpApiSettings.contact
@@ -93,9 +94,8 @@ jQuery(document).ready(function($) {
         contactUpdated(updateNeeded)
       }
     }
-  }).ajaxError(function (event, xhr) {
-    handelAjaxError(xhr)
-  })
+  }).ajaxError(handelAjaxError)
+
   /**
    * Typpahead Fuctions
    */
@@ -503,235 +503,264 @@ jQuery(document).ready(function($) {
     })
   })
 
-
   /**
    * Contact details
    */
+  const $editDetailsToggle = $('span#edit-button-label')
+  const $body = $('body')
 
-  let editDetailsToggle = $('#edit-button-label')
+  // Add listing by default
+  $body.addClass('listing')
+
   function toggleEditAll() {
-    $(`.details-list`).toggle()
-    $(`.details-edit`).toggle()
     editingAll = !editingAll
-    if (editingAll){
-      $('.show-content').show()
-      $('.show-more').hide()
+
+    if (editingAll) {
+      $('button.show-button').trigger('click')
     }
-    editDetailsToggle.text( editingAll ? "Save": "Edit")
+
+    // Toggle the body class, so we don't have to target individual elements
+    // And the display properties can be handled with css
+    $body.toggleClass('editing').toggleClass('listing')
+
+    $editDetailsToggle.text(editingAll ? 'Save': 'Edit')
   }
-  $('#edit-details').on('click', function () {
+
+  $('button#edit-details').click(() => {
     toggleEditAll()
   })
 
-  $(document).on('click', '.details-remove-button.delete-method', function () {
-    let fieldId = $(this).data('id')
-    let fieldType = $(this).data('field')
-    if (fieldId){
-      API.save_field_api('contact', contactId, {[`contact_${fieldType}`]:[{key:fieldId, delete:true}]}).then(()=>{
+  // Removing an item from the contact details
+  $(document).on('click', 'button.details-remove-button.delete-method', e => {
+    const $button = $(e.currentTarget)
+    const fieldId = $button.data('id')
+    const fieldType = $button.data('field')
+
+    if (fieldId) {
+      API.save_field_api('contact', contactId, { [`contact_${fieldType}`] : [{ key:fieldId, delete:true }] }).then(() => {
         $(`.${fieldId}`).remove()
-        let listItems = $(`.${fieldType}-list li`)
-        if (listItems.length === 0){
+
+        const listItems = $(`.${fieldType}-list li`)
+
+        if (listItems.length === 0) {
           $(`.${fieldType}.details-list`).append(`<li id="no-${fieldType}">${contactsDetailsWpApiSettings.translations["not-set"][fieldType]}</li>`)
         }
-      }).catch(err=>{
-        console.log(err)
-      })
+      }).catch(handelAjaxError)
     }
-  })
+  }).on('change', 'input.social-input', e => { // Adding new social
+    const id = $(e.currentTarget).attr('id')
+    const value = $(e.currentTarget).val()
 
-  $(document).on('change', '.details-edit.social-input', function () {
-    let id = $(this).attr('id')
-    let value = $(this).val();
-    API.save_field_api('contact', contactId, {[id]: value}).then(()=>{
+    API.save_field_api('contact', contactId, { [id]: value }).then(() => {
       $(`.social.details-list .${id} .social-text`).text(value)
-    }).catch(err => {
-      console.error(err);
-    });
-  })
+    }).catch(handelAjaxError);
+  }).on('change', 'input.contact-input', e => {
+    const fieldId = $(e.currentTarget).attr('id')
+    const val = $(e.currentTarget).val()
 
-  let addSocial = $("#add-social-media")
-  addSocial.on('click', function () {
-    let channel_type = $('#social-channels').val()
-    let inputForNewValue = $('#new-social-media')
-    let text = inputForNewValue.val()
-    addSocial.toggleClass('loading')
-    API.save_field_api('contact', contactId, {['contact_'+channel_type]: [{value:text}]}).then((contact)=>{
-      let newId = _.get(contact, `added_fields.new-${channel_type}`)
-      console.log(newId);
-      addSocial.toggleClass('loading')
-      let label = _.get(contactsDetailsWpApiSettings, `channels[${channel_type}].label`) || channel_type
-      $('.social.details-edit').append(
-        `<li class="${newId}">
-          <span>${label}</span>
-          <input id="${newId}"
-                 value="${text}" style="display: inline-block"
-                 class="details-edit social-input" >
-          ${editContactDetailsOptions(newId, "social")}
-        </li>`)
-      $(`.${newId} .dropdown.menu`).foundation()
+    API.save_field_api('contact', contactId, { [fieldId]: val }).then(() => {
+      $(`li.details-list.${fieldId} span.details-text`).text(val)
+    }).catch(handelAjaxError)
+  }).on('change', 'ul.address textarea', e => {
+    const $textarea = $(e.currentTarget)
+    const id = $textarea.attr('id')
+    const text = $textarea.val()
 
-      $('.social.details-list').append(
-        `<li class="${newId}">
-          <span>${label}:</span>
-          <span class="social-text">${text}</span>
-          <img id="${newId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
-          <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
-        </li>`)
-      inputForNewValue.val('')
-      $("#no-social").remove()
-    }).catch(err => {
-      console.error(err);
-    });
-  })
-
-  $(document).on('change', '.contact-input', function () {
-    let fieldId = $(this).attr('id');
-    let val = $(this).val()
-    API.save_field_api('contact', contactId, {[fieldId]:val})
-      .then(()=>{
-        $(`.details-list .${fieldId} .details-text`).text(val)
-      })
-      .catch(err=>{
-        handelAjaxError(err)
-      })
-  })
-
-  $('.select-field').change(function () {
-    let id = $(this).attr('id')
-    let val = $(this).val()
-    API.save_field_api(
-      'contact',
-      contactId,
-      {[id]:val}
-    ).then((contactResponse)=>{
-      $(`.current-${id}`).text(_.get(contactResponse, `${id}.label`) || val)
-      if (id === "seeker_path"){
-        updateCriticalPath(contactResponse.seeker_path.key)
-        refresh_quick_action_buttons(contactResponse)
-      } else if ( id === "reason_unassignable" ){
-        setStatus(contactResponse)
-      } else if ( id === "overall_status"){
-        setStatus(contactResponse, true)
-      }
-    }).catch(err=>{
-      console.log(err)
-    })
-  })
-
-  $('.text-field.details-edit').change(function () {
-    let id = $(this).attr('id')
-    let val = $(this).val()
-    API.save_field_api(
-      'contact',
-      contactId,
-      {[id]:val}
-    ).then(()=>{
-      $(`.${id}`).text(val)
-    }).catch(err=>{
-      console.log(err)
-    })
-  })
-
-  //baptism date
-  let baptismDatePicker = $('.baptism_date #baptism-date-picker')
-  baptismDatePicker.datepicker({
-    dateFormat: 'yy-mm-dd',
-    onSelect: function (date) {
-      API.save_field_api('contact', contactId, {baptism_date:date})
-    },
-    changeMonth: true,
-    changeYear: true
-  })
-
-  $("#add-new-address").click(function () {
-    if ($('#new-address').length === 0 ) {
-      let newInput = `<div class="new-address">
-        <textarea rows="3" id="new-address"></textarea>
-      </div>`
-      $('.details-edit#address-list').append(newInput)
+    if (id && id !== 'new-address') {
+      API.save_field_api('contact', contactId, { [id]: text }).then(() => {
+        $(`ul.address .${id} .address-text`).text(text)
+      }).catch(handelAjaxError)
     }
-  })
+  }).on('change', '.new-contact-details', e => {
+    const $input = $(e.currentTarget)
+    const field = $input.data('id')
+    const value = $input.val()
 
-  $(document).on('change', '#address-list textarea', function(){
-    let id = $(this).attr('id')
-    if (id && id !== "new-address"){
-      API.save_field_api('contact', contactId, {[id]: $(this).val()}).then(()=>{
-        $(`.address.details-list .${id} .address-text`).text($(this).val())
-      })
-    }
-  })
+    API.save_field_api('contact', contactId, { [`contact_${field}`]: [{ value }] }).then(contact => {
+      console.log(contact)
 
-  $('.add-button').click(function(){
-    let fieldId = $(this).data('id')
-    if (jQuery(`#${fieldId}`).length === 0 ){
-      let newInput = `<li class="new-${fieldId}"><input id="new-${fieldId}" class="new-contact-details" data-id="${fieldId}"\></li>`
-      jQuery(`#${fieldId}-list`).append(newInput)
-    }
-  })
+      const newId = _.get(_.last(_.get(contact, `contact_${field}`) || []), 'key')
 
-  $(document).on('change', '.new-contact-details', function () {
-    let field = $(this).data('id')
-    let value = $(this).val()
-    API.save_field_api( 'contact', contactId, {["contact_"+field]:[{value}]}).then((contact)=>{
-      console.log(contact);
-      let newId = _.get(_.last(_.get(contact, `contact_${field}`) || []), "key")
-      if (newId && newId != contactId){
+      if (newId && newId != contactId) {
         //change the it to the created field
-        $(this).attr('id', newId)
-        $(`.details-list.${field}`).append(`
-            <li class="${newId}">
+        $input.attr('id', newId)
+
+        // Append the new list item
+        $(`ul.${field}`).append(`
+            <li class="details-list ${newId}">
               ${value}
               <img id="${newId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
               <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
             </li>
         `)
-        $(`.new-${field}`)
+
+        $(`li.new-${field}`)
           .append(editContactDetailsOptions(newId, field))
           .removeClass(`new-${field}`)
-          .addClass(newId)
-        $(`.${newId} .dropdown.menu`).foundation()
-        $(this).removeClass(`new-contact-details`).addClass('contact-input')
-        $(`#no-${field}`).remove()
+          .addClass(`details-edit has-options ${newId}`)
+
+        $(`li.${newId} .dropdown.menu`).foundation()
+
+        $input.removeClass(`new-contact-details`).addClass('contact-input')
+
+        $(`li#no-${field}`).remove()
       }
-    })
+    }).catch(handelAjaxError)
+  }).on('click', '.details-status-button.field-status', e => {
+    const $field = $(e.currentTarget)
+    const status = $field.data('status')
+    const id = $field.data('id')
+    const field = $field.data('field')
+    const fields = {
+      key: id,
+      verified: status === 'valid',
+      invalid: status === "invalid"
+    }
+
+    API.save_field_api('contact', contactId, { [`contact_${field}`]: [fields] }).then(()=>{
+      $(`#${id}-verified`).toggle(fields.verified)
+      $(`#${id}-invalid`).toggle(fields.invalid)
+    }).catch(handelAjaxError)
+  }).on('change', 'div.reason-field select', e => {
+    const $select = $(e.currentTarget)
+    const field = $select.data('field')
+    const value = $select.val()
+
+    API.save_field_api('contact', contactId, { [field]: value }).catch(handelAjaxError)
   })
 
-  let editContactDetailsOptions = function (field_id, field_type) {
+  $('button#add-social-media').click(e => {
+    const $addSocial = $(e.currentTarget)
+    const channel_type = $('select#social-channels').val()
+    const $inputForNewValue = $('input#new-social-media')
+    const text = $inputForNewValue.val()
+
+    $addSocial.toggleClass('loading')
+
+    API.save_field_api('contact', contactId, { ['contact_'+channel_type]: [{ value: text }] }).then(contact => {
+      const newId = _.get(contact, `added_fields.new-${channel_type}`)
+
+      console.log(newId)
+
+      $addSocial.toggleClass('loading')
+
+      const label = _.get(contactsDetailsWpApiSettings, `channels[${channel_type}].label`) || channel_type
+
+      $('ul.social').append(`
+        <li class="details-edit">${label}:</li>
+        <li class="details-edit has-options">
+          <input id="${newId}"
+            type="text"
+            value="${text}"
+            class="social-input">
+          ${editContactDetailsOptions(newId, "social")}
+        </li>
+        <li class="details-list ${newId}">
+          <span class="social-text">${text}</span>
+          <img id="${newId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
+          <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
+        </li>`)
+
+      $(`.${newId} .dropdown.menu`).foundation()
+      $inputForNewValue.val('')
+
+      $('li#no-social').remove()
+    }).catch(handelAjaxError)
+  })
+
+  $('select.select-field').change(e => {
+    const id = $(e.currentTarget).attr('id')
+    const val = $(e.currentTarget).val()
+
+    API.save_field_api('contact', contactId, { [id]: val }).then(contactResponse => {
+      $(`.current-${id}`).text(_.get(contactResponse, `${id}.label`) || val)
+
+      if (id === 'seeker_path') {
+        updateCriticalPath(contactResponse.seeker_path.key)
+        refresh_quick_action_buttons(contactResponse)
+      } else if (id === 'reason_unassignable') {
+        setStatus(contactResponse)
+      } else if (id === 'overall_status') {
+        setStatus(contactResponse, true)
+      }
+    }).catch(handelAjaxError)
+  })
+
+  $('input.text-field.details-edit').change(e => {
+    const id = $(e.currentTarget).attr('id')
+    const val = $(e.currentTarget).val()
+
+    API.save_field_api('contact', contactId, { [id]: val }).then(() => {
+      $(`.${id}`).text(val)
+    }).catch(handelAjaxError)
+  })
+
+  // Baptism date
+  $('input#baptism-date-picker').datepicker({
+    dateFormat: 'yy-mm-dd',
+    onSelect: function (date) {
+      API.save_field_api('contact', contactId, { baptism_date: date }).catch(handelAjaxError)
+    },
+    changeMonth: true,
+    changeYear: true
+  })
+
+  // Clicking plus sign for new address
+  $('button#add-new-address').click(e => {
+    if ($('textarea#new-address').length === 0) {
+      $('ul.address').append(`
+        <li class="new-address details-edit">
+          <textarea rows="3" class="new-contact-details" data-id="address" id="new-address"></textarea>
+      </li>`)
+    }
+  })
+
+  // Clicking the plus sign next to the field label
+  $('button.add-button').click(e => {
+    const listClass = $(e.currentTarget).data('list-class')
+    const $list = $(`ul.${listClass}`)
+
+    if ($list.find(`li.new-${listClass}`).length === 0) {
+      $list.append(`<li class="details-edit new-${listClass}"><input type="text" id="new-${listClass}" class="new-contact-details" data-id="${listClass}"/></li>`)
+    }
+  })
+
+  const editContactDetailsOptions = (field_id, field_type) => {
     return `
       <ul class='dropdown menu' data-click-open='true'
-              data-dropdown-menu data-disable-hover='true'
-              style='display:inline-block'>
+        data-dropdown-menu data-disable-hover='true'
+        style='display:inline-block'>
         <li>
           <button class="social-details-options-button">
-            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/menu-dots.svg" style='padding:3px 3px'>
+            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/menu-dots.svg">
           </button>
           <ul class='menu'>
             <li>
               <button class='details-status-button field-status verify'
-                      data-status='valid'
-                      data-id='${field_id}'>
-                  ${contactsDetailsWpApiSettings.translations.valid}
+                data-status='valid'
+                data-id='${field_id}'>
+                ${contactsDetailsWpApiSettings.translations.valid}
               </button>
             </li>
             <li>
               <button class='details-status-button field-status invalid'
-                      data-status="invalid"
-                      data-id="${field_id}">
-                  ${contactsDetailsWpApiSettings.translations.invalid}
+                data-status="invalid"
+                data-id="${field_id}">
+                ${contactsDetailsWpApiSettings.translations.invalid}
               </button>
             </li>
             <li>
               <button class='details-status-button field-status'
-                      data-status="reset"
-                      data-id='${field_id}'>
-                  ${contactsDetailsWpApiSettings.translations.unconfirmed}
+                data-status="reset"
+                data-id='${field_id}'>
+                ${contactsDetailsWpApiSettings.translations.unconfirmed}
               </button>
             </li>
             <li>
               <button class='details-remove-button delete-method'
-                      data-field='${field_type}'
-                      data-id='${field_id}'>
-                      ${contactsDetailsWpApiSettings.translations["delete"]}
+                data-field='${field_type}'
+                data-id='${field_id}'>
+                ${contactsDetailsWpApiSettings.translations["delete"]}
               <button>
             </li>
           </ul>
@@ -740,27 +769,10 @@ jQuery(document).ready(function($) {
     `
   }
 
-  $('.show-button').click(function () {
+  $('button.show-button').click(e => {
+    $(e.currentTarget).toggleClass('showing-more')
     $('.show-content').toggle()
   })
-
-  $(document).on('click', '.details-status-button.field-status', function () {
-    let status = $(this).data('status')
-    let id = $(this).data('id')
-    let field = $(this).data('field')
-    let fields = {
-      key : id,
-      verified : status === 'valid',
-      invalid : status === "invalid"
-    }
-    API.save_field_api('contact', contactId, {[`contact_${field}`]:[fields]}).then(()=>{
-      $(`#${id}-verified`).toggle(fields.verified)
-      $(`#${id}-invalid`).toggle(fields.invalid)
-    }).catch(err=>{
-      handelAjaxError(err)
-    })
-  })
-
 
   /**
    * Update Needed

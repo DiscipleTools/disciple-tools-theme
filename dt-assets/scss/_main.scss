@@ -442,17 +442,35 @@ img {
     img {
         height: 15px;
     }
+}
 
-    .show-more-button {
-        .show-button {
-            border: none;
+.show-more-button {
+    text-align: center;
+
+    button {
+        border: none;
+
+        &.showing-more {
+            .show-less {
+                display: inline;
+            }
+
+            .show-more {
+                display: none;
+            }
         }
     }
-}
-#address-list {
-    textarea {
-        display: inline-block;
+
+    .show-less {
+        display: none;
     }
+}
+
+ul.address {
+    textarea {
+        display: block;
+    }
+
     ul.dropdown.menu {
         vertical-align: top;
     }
@@ -1056,6 +1074,49 @@ CONTACTS
 
 .social-details-options-button {
     vertical-align: middle;
+    padding: 0 3px;
+
+    img {
+        height: 22px;
+        padding: 0;
+    }
+}
+
+.single-contacts {
+    &.editing {
+        .details-list {
+            display: none;
+        }
+    }
+
+    &.listing {
+        .details-edit {
+            display: none;
+        }
+    }
+
+    .show-content {
+        display: none;
+
+        ul {
+            margin: 0;
+        }
+    }
+
+    li {
+        list-style-type: none;
+    }
+}
+
+.has-options {
+    position: relative;
+    padding-right: 16px;
+
+    .dropdown {
+        position: absolute;
+        right: 0;
+        top: 6px;
+    }
 }
 
 /**
@@ -1271,16 +1332,16 @@ Groups
     width:65px;
 }
 
-.details-edit {
-    display: none;
+// .details-edit {
+//     display: none;
 
-    textarea {
-        width: 95%;
-    }
-}
-.details-list {
-    margin-bottom: 1rem;
-}
+//     textarea {
+//         width: 95%;
+//     }
+// }
+// .details-list {
+//     margin-bottom: 1rem;
+// }
 
 
 

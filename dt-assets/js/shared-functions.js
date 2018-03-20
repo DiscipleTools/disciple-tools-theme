@@ -153,13 +153,14 @@ let API = {
       }
     })
   }
-
 }
+
 function handelAjaxError(err) {
   console.trace("error")
   console.log(err)
   jQuery("#errors").append(err.responseText)
 }
+
 jQuery( document ).ajaxComplete(function(event, xhr, settings) {
   if (_.get(xhr, "responseJSON.data.status") === 401){
     window.location.replace("/login");
