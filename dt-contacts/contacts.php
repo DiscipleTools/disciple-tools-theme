@@ -500,7 +500,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
                 $field_type = self::$contact_fields[$field_id]["type"] ?? '';
                 if ( $field_type === "multi_select" ){
-
+                    // @todo no specified action
                 } else {
                     update_post_meta( $contact_id, $field_id, $value );
                 }
