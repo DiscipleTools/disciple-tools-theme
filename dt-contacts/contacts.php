@@ -415,6 +415,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
+        $field_keys = array_keys( $fields );
 
         $post = get_post( $contact_id );
         if ( isset( $fields['id'] ) ) {
@@ -513,6 +514,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if (isset( $fields["added_fields"] )){
             $contact["added_fields"] = $fields["added_fields"];
         }
+
+        //hook for signaling that a contact has been updated and which keys have been changed
+        do_action( "dt_contact_updated", $field_keys, $contact );
+
         return $contact;
     }
 
@@ -1046,6 +1051,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     }
                 } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'multi_select' ){
                     $fields[ $key ] = $value;
+                } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'array' ){
+                    $fields[ $key ] = maybe_unserialize( $value[0] );
                 } else {
                     $fields[ $key ] = $value[0];
                 }
