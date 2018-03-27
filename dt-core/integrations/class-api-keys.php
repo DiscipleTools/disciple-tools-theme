@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) {
  * Generate api keys for DT. The api key can be used by external sites or
  * applications where there is no authenticated user.
  */
-class Disciple_Tools_Api_Keys
+class Disciple_Tools_Api_Keys // @todo remove and replace with Site_Link_System
 {
     /**
      * @var object instance. The class instance
