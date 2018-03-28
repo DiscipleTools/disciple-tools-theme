@@ -659,7 +659,8 @@ jQuery(document).ready(function($) {
     $(".js-progress-bordered-box").removeClass("half-opacity")
   }
 
-  if ($('#church-svg-wrapper')[0].getSVGDocument() == null) {
+  //check if we still need to wait for the svg to load.
+  if ($('#church-svg-wrapper')[0].contentDocument == null) {
     $('#church-svg-wrapper').on('load', function() { fillOutChurchHealthMetrics() })
   } else {
     fillOutChurchHealthMetrics()
