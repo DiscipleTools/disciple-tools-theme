@@ -168,7 +168,7 @@ class Disciple_Tools_Groups_Endpoints
                 }
                 $group_array['member_count']++;
             }
-//            $group_array['group_type'] = "pre-group";
+            $group_array['group_status'] = "";
             foreach ( $meta_fields as $meta_key => $meta_value ) {
                 if ( $meta_key == 'group_status' ) {
                     $group_array[ $meta_key ] = $meta_value[0];

@@ -264,8 +264,8 @@
       return '<a href="' + _.escape(leader.permalink) + '">' + _.escape(leader.post_title) + "</a>";
     }).join(", ");
     const gcfs = wpApiSettings.groups_custom_fields_settings;
-    const status = gcfs.group_status.default[group.group_status || "no_value"];
-    const type = gcfs.group_type.default[group.group_type || "no_value"];
+    const status = gcfs.group_status.default[group.group_status || "active"];
+    const type = gcfs.group_type.default[group.group_type || "active"];
     const context = _.assign({}, group, wpApiSettings, {
       leader_links,
       status,
