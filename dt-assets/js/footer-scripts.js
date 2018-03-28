@@ -35,6 +35,6 @@ jQuery(document).ready(function($) {
     $( "#wpadminbar" ).addClass( "add" );
 
   // Adds an active state to the top bar navigation
-  $(`div.top-bar-left ul.menu [href*=${window.location.pathname.split('/')[1]}`).parent().addClass('active');
+  $(`div.top-bar-left ul.menu [href*=${window.location.pathname.split('/')[1]}]`).parent().addClass('active');
 
 });
