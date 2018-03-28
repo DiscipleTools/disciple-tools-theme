@@ -510,13 +510,16 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( !isset( $fields["requires_update"] )){
             self::check_requires_update( $contact_id );
         }
-        $contact = self::get_contact( $contact_id, true );
+//        @todo permission?
+        $contact = self::get_contact( $contact_id, false );
         if (isset( $fields["added_fields"] )){
             $contact["added_fields"] = $fields["added_fields"];
         }
 
         //hook for signaling that a contact has been updated and which keys have been changed
-        do_action( "dt_contact_updated", $field_keys, $contact );
+        if ( !is_wp_error( $contact )){
+            do_action( "dt_contact_updated", $field_keys, $contact );
+        }
 
         return $contact;
     }
