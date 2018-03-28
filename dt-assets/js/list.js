@@ -500,9 +500,9 @@
   }
 
   function assertAtLeastOne(collection) {
-    if (! (collection.length > 0)) {
-      throw new Error("Expected length to be greater than zero");
-    }
+    // if (! (collection.length > 0)) {
+    //   throw new Error("Expected length to be greater than zero");
+    // }
     return collection;
   }
 
