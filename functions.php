@@ -179,8 +179,9 @@ else {
             /**
              * Rest API Support
              */
-            require_once( get_template_directory() . '/dt-core/integrations/class-api-keys.php' ); // API keys for remote access
-            $this->api_keys = Disciple_Tools_Api_Keys::instance();
+            require_once( get_template_directory() . '/dt-core/integrations/class-api-keys.php' ); // API keys for remote access // @todo remove and integrate with Site_Link_System
+            $this->api_keys = Disciple_Tools_Api_Keys::instance(); // @todo remove and integrate with Site_Link_System
+
             require_once( get_template_directory() . '/dt-core/admin/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
             require_once( get_template_directory() . '/dt-core/admin/restrict-xml-rpc-pingback.php' ); // protect against DDOS attacks.
 
