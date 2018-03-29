@@ -101,6 +101,8 @@
           if (data[wpApiSettings.current_post_type].length){
             dataTable.clear()
             dataTable.rows.add(getFormattedRows())
+            countFilteredItems()
+            updateFilterFunctions();
             dataTable.draw()
           }
         }
