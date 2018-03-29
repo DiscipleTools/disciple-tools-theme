@@ -196,7 +196,10 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'query_var'           => true,
                 'menu_position'       => $this->menu_position, /* this is what order you want it to appear in on the left hand side menu */
                 'menu_icon'           => 'dashicons-admin-links', /* the icon for the custom post type menu. uses built-in dashicons (CSS class name) */
-                'rewrite'             => [ 'slug' => $this->post_type, 'with_front' => false ], /* you can specify its url slug */
+                'rewrite'             => [
+                'slug' => $this->post_type,
+                'with_front' => false
+                ], /* you can specify its url slug */
                 'has_archive'         => false, /* you can rename the slug here */
                 'capability_type'     => 'post',
                 'hierarchical'        => false,
@@ -492,7 +495,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             'section'     => 'site',
             ];
 
-            return apply_filters( 'zume_site_link_fields_settings', $fields );
+            // @codingStandardsIgnoreLine
+            return apply_filters( 'site_link_fields_settings', $fields );
         }
 
         public function meta_box_load_management_box()
