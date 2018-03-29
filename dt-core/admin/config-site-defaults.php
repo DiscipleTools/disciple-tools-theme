@@ -15,7 +15,6 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 
 add_action( 'init', 'dt_set_permalink_structure' );
-add_action( 'permalink_structure_changed', 'dt_permalink_structure_changed_callback' );
 //unconditionally allow duplicate comments
 add_filter( 'duplicate_comment_id', '__return_false' );
 //allow multiple comments in quick succession
@@ -39,30 +38,6 @@ function dt_set_permalink_structure()
     flush_rewrite_rules();
 }
 
-/**
- *
- */
-function dt_warn_user_about_permalink_settings()
-{
-    ?>
-    <div class="error notices">
-        <p><?php esc_html_e( 'You may only set your permalink settings to "Post name"' ); ?></p>
-    </div>
-    <?php
-}
-
-/**
- * Notification that 'posttype' is the only permalink structure available.
- *
- * @param $permalink_structure
- */
-function dt_permalink_structure_changed_callback( $permalink_structure )
-{
-    global $wp_rewrite;
-    if ( $permalink_structure !== '/%postname%/' ) {
-        add_action( 'admin_notices', 'dt_warn_user_about_permalink_settings' );
-    }
-}
 
 function dt_override_comment_notice_recipients() {
     return [];
