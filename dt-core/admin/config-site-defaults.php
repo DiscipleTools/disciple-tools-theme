@@ -15,7 +15,7 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 
 add_action( 'init', 'dt_set_permalink_structure' );
-add_action( 'permalink_structure_changed', 'dt_permalink_structure_changed_callback' );
+add_action( 'update_option_permalink_structure', 'dt_permalink_structure_changed_callback' );
 //unconditionally allow duplicate comments
 add_filter( 'duplicate_comment_id', '__return_false' );
 //allow multiple comments in quick succession
