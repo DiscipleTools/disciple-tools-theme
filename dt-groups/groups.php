@@ -62,9 +62,9 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     /**
      * @return array|\WP_Query
      */
-    public static function get_viewable_groups()
+    public static function get_viewable_groups( int $most_recent )
     {
-        return self::get_viewable( 'groups' );
+        return self::get_viewable( 'groups', $most_recent );
     }
 
     /**

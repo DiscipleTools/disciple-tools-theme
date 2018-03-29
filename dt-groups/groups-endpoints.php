@@ -125,16 +125,23 @@ class Disciple_Tools_Groups_Endpoints
     }
 
     /**
+     * @param WP_REST_Request $request
+     *
      * @return array|\WP_Query
      */
-    public function get_viewable_groups()
+    public function get_viewable_groups( WP_REST_Request $request )
     {
-        $groups = Disciple_Tools_Groups::get_viewable_groups();
+        $params = $request->get_params();
+        $most_recent = isset( $params["most_recent"] ) ? $params["most_recent"] : 0;
+        $groups = Disciple_Tools_Groups::get_viewable_groups( $most_recent );
         if ( is_wp_error( $groups ) ) {
             return $groups;
         }
 
-        return $this->add_related_info_to_groups( $groups );
+        return [
+            "groups" => $this->add_related_info_to_groups( $groups["groups"] ),
+            "total" => $groups["total"]
+        ];
     }
 
     /**

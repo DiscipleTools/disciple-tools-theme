@@ -404,12 +404,17 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function get_viewable_contacts( WP_REST_Request $request )
     {
-        $contacts = Disciple_Tools_Contacts::get_viewable_contacts( true );
-        if ( is_wp_error( $contacts ) ) {
-            return $contacts;
+        $params = $request->get_params();
+        $most_recent = isset( $params["most_recent"] ) ? $params["most_recent"] : 0;
+        $result = Disciple_Tools_Contacts::get_viewable_contacts( (int) $most_recent, true );
+        if ( is_wp_error( $result ) ) {
+            return $result;
         }
 
-        return $this->add_related_info_to_contacts( $contacts );
+        return [
+            "contacts" => $this->add_related_info_to_contacts( $result["contacts"] ),
+            "total" => $result["total"]
+        ];
     }
 
     /**

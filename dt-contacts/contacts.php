@@ -1185,6 +1185,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * Get Contacts viewable by a user
      *
+     * @param int   $most_recent date of most recent update
      * @param bool  $check_permissions
      * @param array $query_pagination_args -Pass in pagination and ordering parameters if wanted.
      *
@@ -1192,7 +1193,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @since  0.1.0
      * @return array | WP_Error
      */
-    public static function get_viewable_contacts( bool $check_permissions = true, array $query_pagination_args = [] )
+    public static function get_viewable_contacts( int $most_recent, bool $check_permissions = true, array $query_pagination_args = [] )
     {
         if ( $check_permissions && !self::can_access( 'contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), [ 'status' => 403 ] );
@@ -1201,7 +1202,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $query_args = [
             'post_type' => 'contacts',
-            'nopaging'  => true,
+//            'nopaging'  => true,
             'meta_query' => [
                 'relation' => "AND",
                 [
@@ -1215,8 +1216,17 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         'key' => 'is_a_user',
                         'compare' => 'NOT EXISTS'
                     ]
+                ],
+                [
+                    'key' => "last_modified",
+                    'value' => $most_recent,
+                    'compare' => '>'
                 ]
-            ]
+            ],
+            'orderby' => 'meta_value_num',
+            'meta_key' => "last_modified",
+            'order' => 'ASC',
+            'posts_per_page' => 1000
         ];
         $contacts_shared_with_user = [];
         if ( !self::can_view_all( 'contacts' ) ) {
@@ -1225,7 +1235,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $query_args['meta_key'] = 'assigned_to';
             $query_args['meta_value'] = "user-" . $current_user->ID;
         }
-        $queried_contacts = self::query_with_pagination( $query_args, $query_pagination_args );
+//        $queried_contacts = self::query_with_pagination( $query_args, $query_pagination_args );
+        $queried_contacts = new WP_Query( $query_args );
         if ( is_wp_error( $queried_contacts ) ) {
             return $queried_contacts;
         }
@@ -1243,7 +1254,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
         }
 
-        return $contacts;
+        return [
+            "contacts" => $contacts,
+            "total" => $queried_contacts->found_posts
+        ];
     }
 
     /**

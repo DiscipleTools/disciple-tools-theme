@@ -561,7 +561,7 @@ class Disciple_Tools_Posts
      *
      * @return array|\WP_Error|\WP_Query
      */
-    public static function get_viewable( string $post_type )
+    public static function get_viewable( string $post_type, int $most_recent )
     {
         if ( !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, sprintf( __( "You do not have access to these %s" ), $post_type ), [ 'status' => 403 ] );
@@ -570,7 +570,18 @@ class Disciple_Tools_Posts
 
         $query_args = [
             'post_type' => $post_type,
-            'nopaging'  => true,
+            'meta_query' => [
+                'relation' => "AND",
+                [
+                    'key' => "last_modified",
+                    'value' => $most_recent,
+                    'compare' => '>'
+                ]
+            ],
+            'orderby' => 'meta_value_num',
+            'meta_key' => "last_modified",
+            'order' => 'ASC',
+            'posts_per_page' => 1000,
         ];
         $posts_shared_with_user = [];
         if ( !self::can_view_all( $post_type ) ) {
@@ -597,7 +608,10 @@ class Disciple_Tools_Posts
             }
         }
 
-        return $posts;
+        return [
+            $post_type => $posts,
+            "total" => $queried_posts->found_posts
+        ];
     }
 
     /**

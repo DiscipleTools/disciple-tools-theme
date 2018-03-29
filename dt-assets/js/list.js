@@ -86,33 +86,72 @@
     }
   };
 
-  $.ajax({
-    url: wpApiSettings.root + "dt/v1/" + wpApiSettings.current_post_type,
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-    },
-    success: function(data) {
-      items = data;
-      $(function() {
-        displayRows();
-        setUpFilterPane();
-        updateFilterFunctions();
-        dataTable.draw();
-        $(".js-sort-by").on("click", function() {
-          sortBy(parseInt($(this).data("column-index")), $(this).data("order"));
-        });
+  let gotData = function (data) {
+    items = data;
+    $(function() {
+      displayRows();
+      setUpFilterPane();
+      updateFilterFunctions();
+      dataTable.draw();
+      $(".js-sort-by").on("click", function() {
+        sortBy(parseInt($(this).data("column-index")), $(this).data("order"));
       });
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-      $(function() {
-        $(".js-list-loading > td").html(
+    });
+  }
+
+  if (typeof(Storage) !== "undefined") {
+    let data = localStorage.getItem(wpApiSettings.current_post_type);
+    if (data){
+      console.log(data.length);
+      items = JSON.parse(data)
+    }
+  }
+  gotData(items || [])
+
+
+
+
+
+
+  function getItems() {
+    let most_recent = _.get(_.maxBy(items || [], "last_modified") , 'last_modified') || 0
+    $.ajax({
+      url: wpApiSettings.root + "dt/v1/" + wpApiSettings.current_post_type + '?most_recent=' + most_recent,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      },
+      success: function(data) {
+        items = _.unionBy(data[wpApiSettings.current_post_type], items || [], "ID");
+        dataTable.destroy()
+        countFilteredItems()
+        updateFilterFunctions();
+        setUpFilterPane();
+        displayRows();
+        if (typeof(Storage) !== "undefined") {
+          localStorage.setItem(wpApiSettings.current_post_type, JSON.stringify(items));
+        }
+        let percent = items.length / ( parseInt(data["total"]) + items.length - data[wpApiSettings.current_post_type].length )
+        $(".loading-list-progress .progress-meter").css("width", percent * 100 + '%')
+        $(".loading-list-progress .progress-meter-text").html(percent.toFixed(2) * 100 + '%')
+        if ( data[wpApiSettings.current_post_type].length !== parseInt(data["total"])){
+          $(".loading-list-progress").show()
+          getItems()
+        } else {
+          $(".loading-list-progress").hide()
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        $(function() {
+          $(".js-list-loading > td").html(
             "<div>" + wpApiSettings.txt_error + "</div>" +
             "<div>" + jqXHR.responseText + "</div>"
-        );
-        console.error(jqXHR.responseText);
-      });
-    },
-  });
+          );
+          console.error(jqXHR.responseText);
+        });
+      },
+    });
+  }
+  getItems()
 
   $(function() {
     $(window).resize(function() {
@@ -141,18 +180,22 @@
       return;
     }
     $table.find("> tbody").empty();
+    let rows = ""
     _.forEach(items, function(item, index) {
       if (wpApiSettings.current_post_type === "contacts") {
-        $table.append(buildContactRow(item, index));
+        let row = buildContactRow(item, index);
+        rows += row[0].outerHTML
       } else if (wpApiSettings.current_post_type === "groups") {
-        $table.append(buildGroupRow(item, index));
+        rows += buildGroupRow(item, index)[0].outerHTML
       }
     });
+    $table.append(rows)
     $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
       const item = items[dataIndex];
       return _.every(filterFunctions, function(filterFunction) { return filterFunction(item); });
     });
     const dataTableOptions = {
+      // deferRender: true,
       responsive: true,
       iDisplayLength: 100,
       bLengthChange: false,
@@ -324,19 +367,24 @@
     });
   }
   $(".js-list-view").on("change", function() {
-    countFilteredItems()
-    clearFilterCheckboxes();
-    updateFilterFunctions();
-    dataTable.draw();
+    reset()
   });
 
   $(document).on('click', '.clear-filters', function () {
     $("input[value='all_contacts']").prop("checked", true);
+    reset()
+  })
+
+  function reset() {
+
+    if (!dataTable){
+      displayRows();
+    }
     countFilteredItems()
     updateFilterFunctions();
     setUpFilterPane();
     dataTable.draw();
-  })
+  }
 
   function createFilterCheckboxes(filterType, counts) {
     const $div = $("<div>");

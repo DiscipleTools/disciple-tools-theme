@@ -3,6 +3,11 @@ declare(strict_types=1);
 ?>
 <div class="bordered-box">
     <h5 style="display: inline-block"><?php esc_html_e( "Contacts", "disciple_tools" ); ?></h5>
+    <div class="loading-list-progress progress" role="progressbar" tabindex="0" aria-valuenow="50" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100" style="display: none">
+        <div class="progress-meter" style="width: 50%">
+            <p class="progress-meter-text">25%</p>
+        </div>
+    </div>
     <img style="display: inline-block;height: 25px;margin-left:10px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/funnel.svg' ) ?>"/>
     <div style="display: inline-block" id="current-filters"></div>
     <div class="js-sort-dropdown" hidden>
