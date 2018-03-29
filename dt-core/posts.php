@@ -581,7 +581,7 @@ class Disciple_Tools_Posts
             'orderby' => 'meta_value_num',
             'meta_key' => "last_modified",
             'order' => 'ASC',
-            'posts_per_page' => 1000,
+            'posts_per_page' => 1000 // @codingStandardsIgnoreLine
         ];
         $posts_shared_with_user = [];
         if ( !self::can_view_all( $post_type ) ) {
