@@ -106,8 +106,6 @@
       items = JSON.parse(data)
     }
   }
-  gotData(items || [])
-
 
 
 
@@ -122,11 +120,14 @@
       },
       success: function(data) {
         items = _.unionBy(data[wpApiSettings.current_post_type], items || [], "ID");
-        dataTable.destroy()
-        countFilteredItems()
-        updateFilterFunctions();
-        setUpFilterPane();
-        displayRows();
+        if (dataTable){
+          dataTable.destroy()
+          displayRows();
+          countFilteredItems()
+          updateFilterFunctions();
+        } else {
+          gotData(items)
+        }
         if (typeof(Storage) !== "undefined") {
           localStorage.setItem(wpApiSettings.current_post_type, JSON.stringify(items));
         }
@@ -376,13 +377,12 @@
   })
 
   function reset() {
-
     if (!dataTable){
       displayRows();
     }
     countFilteredItems()
     updateFilterFunctions();
-    setUpFilterPane();
+    // setUpFilterPane();
     dataTable.draw();
   }
 
