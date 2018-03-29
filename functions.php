@@ -374,7 +374,8 @@ else {
             require_once( get_template_directory() . '/dt-workflows/index.php' );
             $this->workflows = Disciple_Tools_Workflows::instance();
 
-            require_once( get_template_directory() . '/dt-core/admin/site-link-system.php' );
+            require_once( get_template_directory() . '/dt-core/admin/site-link-post-type.php' );
+            Site_Link_System::instance( 5, 'dashicons-admin-links' );
 
             /**
              * Admin panel
