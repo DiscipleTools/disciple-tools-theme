@@ -133,7 +133,7 @@
         let percent = items.length / ( parseInt(data["total"]) + items.length - data[wpApiSettings.current_post_type].length )
         $(".loading-list-progress .progress-meter").css("width", percent * 100 + '%')
         $(".loading-list-progress .progress-meter-text").html(percent.toFixed(2) * 100 + '%')
-        if ( data[wpApiSettings.current_post_type].length !== parseInt(data["total"])){
+        if ( data[wpApiSettings.current_post_type].length !== parseInt(data["total"]) && parseInt(data["total"]) !== 0 ){
           $(".loading-list-progress").show()
           getItems()
         } else {
