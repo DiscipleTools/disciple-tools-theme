@@ -1,42 +1,9 @@
 (function($, wpApiSettings, Foundation) {
   "use strict";
-  let items; // contacts or groups
+  let items = []; // contacts or groups
   let filterFunctions = [];
   let dataTable;
   const current_username = wpApiSettings.current_user_login;
-
-  const templates = {
-    contacts: _.template(`<tr>
-      <!--<td><img src="<%- template_directory_uri %>/dt-assets/images/star.svg" width=13 height=12></td>-->
-      <td></td>
-      <td>
-        <a href="<%- permalink %>"><%- post_title %></a>
-        <br>
-        <%- phone_numbers.join(", ") %>
-      </td>
-      <td><span class="status status--<%- overall_status %>"><%- status %></span></td>
-      <td>
-        <span class="milestone milestone--<%- sharing_milestone_key %>"><%- sharing_milestone %></span>
-        <br>
-        <span class="milestone milestone--<%- belief_milestone_key %>"><%- belief_milestone %></span>
-      </td>
-      <td><%- assigned_to ? assigned_to.name : "" %></td>
-      <td><%= locations.join(", ") %></td>
-      <td><%= group_links %></td>
-      <td><%- last_modified %></td>
-    </tr>`),
-    groups: _.template(`<tr>
-      <!--<td><img src="<%- template_directory_uri %>/dt-assets/images/green_flag.svg" width=10 height=12></td>-->
-      <td></td>
-      <td><a href="<%- permalink %>"><%- post_title %></a></td>
-      <td><span class="group-status group-status--<%- group_status %>"><%- status %></span></td>
-      <td><span class="group-type group-type--<%- group_type %>"><%- type %></span></td>
-      <td style="text-align: right"><%- member_count %></td>
-      <td><%= leader_links %></td>
-      <td><%- locations.join(", ") %></td>
-      <td><%- last_modified %></td>
-    </tr>`),
-  };
 
   const viewFilterFunctions = {
     my_contacts(contact) {
@@ -86,8 +53,7 @@
     }
   };
 
-  let gotData = function (data) {
-    items = data;
+  let gotData = function () {
     $(function() {
       displayRows();
       setUpFilterPane();
@@ -106,7 +72,7 @@
       items = JSON.parse(data)
     }
   }
-
+  gotData()
 
 
 
@@ -120,17 +86,10 @@
       },
       success: function(data) {
         items = _.unionBy(data[wpApiSettings.current_post_type], items || [], "ID");
-        if (dataTable){
-          dataTable.destroy()
-          displayRows();
-          countFilteredItems()
-          updateFilterFunctions();
-        } else {
-          gotData(items)
-        }
         if (typeof(Storage) !== "undefined") {
           localStorage.setItem(wpApiSettings.current_post_type, JSON.stringify(items));
         }
+
         let percent = items.length / ( parseInt(data["total"]) + items.length - data[wpApiSettings.current_post_type].length )
         $(".loading-list-progress .progress-meter").css("width", percent * 100 + '%')
         $(".loading-list-progress .progress-meter-text").html(percent.toFixed(2) * 100 + '%')
@@ -139,6 +98,11 @@
           getItems()
         } else {
           $(".loading-list-progress").hide()
+          if (data[wpApiSettings.current_post_type].length){
+            dataTable.clear()
+            dataTable.rows.add(getFormattedRows())
+            dataTable.draw()
+          }
         }
       },
       error: function(jqXHR, textStatus, errorThrown) {
@@ -175,31 +139,35 @@
   }
 
 
+  function getFormattedRows() {
+    let rows = []
+    _.forEach(items, function(item, index) {
+      if (wpApiSettings.current_post_type === "contacts") {
+        rows.push(contactRowArray(item, index))
+      } else if (wpApiSettings.current_post_type === "groups") {
+        rows.push(groupRowArray(item, index))
+      }
+    });
+    return rows
+  }
+
   function displayRows() {
     const $table = $(".js-list");
     if (! $table.length) {
       return;
     }
     $table.find("> tbody").empty();
-    let rows = ""
-    _.forEach(items, function(item, index) {
-      if (wpApiSettings.current_post_type === "contacts") {
-        let row = buildContactRow(item, index);
-        rows += row[0].outerHTML
-      } else if (wpApiSettings.current_post_type === "groups") {
-        rows += buildGroupRow(item, index)[0].outerHTML
-      }
-    });
-    $table.append(rows)
+
     $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
       const item = items[dataIndex];
       return _.every(filterFunctions, function(filterFunction) { return filterFunction(item); });
     });
+
     const dataTableOptions = {
-      // deferRender: true,
       responsive: true,
       iDisplayLength: 100,
       bLengthChange: false,
+      data: getFormattedRows(),
       language: {
         search: "",
         searchPlaceholder: wpApiSettings.txt_search,
@@ -234,30 +202,29 @@
     if (wpApiSettings.current_post_type == "contacts") {
       _.assign(dataTableOptions, {
         columnDefs: [
-          { targets: [0], width: "2%" },
-          { targets: [1], width: "30%", },
-          { targets: [2], width: "5%", },
+          { targets: [0], width: "30%" },
+          { targets: [1], width: "20%", },
+          { targets: [3], width: "20%", },
           {
             // Hide the last modified column, it's only used for sorting
-            targets: [7],
+            targets: [6],
             visible: false,
             searchable: false,
           },
         ],
-        order: [[7, 'desc']],
+        order: [[6, 'desc']],
         autoWidth: false,
       });
     } else if (wpApiSettings.current_post_type === "groups") {
       _.assign(dataTableOptions, {
         columnDefs: [
-          { targets: [0], width: "2%" },
-          { targets: [1], width: "30%" },
+          { targets: [0], width: "30%" },
+          { targets: [1], width: "15%" },
           { targets: [2], width: "15%" },
-          { targets: [3], width: "15%" },
-          { targets: [4], width: "5%" },
+          { targets: [3], width: "5%" },
           {
             // Hide the last modified column, it's only used for sorting
-            targets: [7],
+            targets: [6],
             visible: false,
             searchable: false,
           },
@@ -269,8 +236,7 @@
     dataTable = $table.DataTable(dataTableOptions);
   }
 
-  function buildContactRow(contact, index) {
-    const template = templates[wpApiSettings.current_post_type];
+  function contactRowArray(contact, index) {
     const ccfs = wpApiSettings.contacts_custom_fields_settings;
     const belief_milestone_key = _.find(
       ['baptizing', 'baptized', 'belief'],
@@ -280,43 +246,47 @@
       ['planting', 'in_group', 'sharing', 'can_share'],
       function(key) { return contact["milestone_" + key]; }
     );
-    let status = "";
-    if (contact.overall_status === "active") {
-      status = ccfs.seeker_path.default[contact.seeker_path];
-    } else {
-      status = ccfs.overall_status.default[contact.overall_status];
+
+    let status = ccfs.overall_status.default[contact.overall_status] || contact.overall_status
+    if (contact.overall_status === "active" && ccfs.seeker_path.default[contact.seeker_path]) {
+      status = ccfs.seeker_path.default[contact.seeker_path] || "";
     }
     const group_links = _.map(contact.groups, function(group) {
         return '<a href="' + _.escape(group.permalink) + '">' + _.escape(group.post_title) + "</a>";
       }).join(", ");
-    const context = _.assign({last_modified: 0}, contact, wpApiSettings, {
-      index,
-      status,
-      belief_milestone_key,
-      sharing_milestone_key,
-      belief_milestone: (ccfs["milestone_" + belief_milestone_key] || {}).name || "",
-      sharing_milestone: (ccfs["milestone_" + sharing_milestone_key] || {}).name || "",
-      group_links,
-    });
-    context.assigned_to = context.assigned_to;
-    return $.parseHTML(template(context));
+    return [
+      `<a href="${_.escape(contact.permalink)}">${_.escape(contact.post_title)}</a>
+      <br>
+      ${_.escape(contact.phone_numbers.join(", "))}`,
+      `<span class="status status--${_.escape(contact.overall_status)}">${_.escape(status)}</span>`,
+      `<span class="milestone milestone--${_.escape(sharing_milestone_key)}">${_.escape((ccfs["milestone_" + sharing_milestone_key] || {}).name || "")}</span>
+      <br>
+      <span class="milestone milestone--${_.escape(belief_milestone_key)}">${_.escape((ccfs["milestone_" + sharing_milestone_key] || {}).name || "")}</span>`,
+      _.escape(contact.assigned_to? contact.assigned_to.name :""),
+      _.escape(contact.locations.join("")),
+      _.escape(group_links),
+      _.escape(contact.last_modified)
+    ]
   }
 
-  function buildGroupRow(group, index) {
-    const template = templates[wpApiSettings.current_post_type];
+  function groupRowArray(group) {
     const leader_links = _.map(group.leaders, function(leader) {
       return '<a href="' + _.escape(leader.permalink) + '">' + _.escape(leader.post_title) + "</a>";
     }).join(", ");
     const gcfs = wpApiSettings.groups_custom_fields_settings;
     const status = gcfs.group_status.default[group.group_status || "active"];
     const type = gcfs.group_type.default[group.group_type || "active"];
-    const context = _.assign({}, group, wpApiSettings, {
-      leader_links,
-      status,
-      type
-    });
-    return $.parseHTML(template(context));
+    return [
+      `<a href="${group.permalink}">${_.escape(group.post_title)}</a>`,
+      `<span class="group-status group-status--${_.escape(group.group_status)}">${_.escape(status)}</span>`,
+      `<span class="group-type group-type--${_.escape(group.group_type)}">${_.escape(type)}</span>`,
+      _.escape(group.member_count),
+      _.escape(leader_links),
+      _.escape(group.locations.join("")),
+      _.escape(group.last_modified)
+    ]
   }
+
 
 
   function countFilteredItems() {
