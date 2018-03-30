@@ -140,7 +140,8 @@ class Disciple_Tools_Groups_Endpoints
 
         return [
             "groups" => $this->add_related_info_to_groups( $groups["groups"] ),
-            "total" => $groups["total"]
+            "total" => $groups["total"],
+            "deleted" => $groups["deleted"]
         ];
     }
 

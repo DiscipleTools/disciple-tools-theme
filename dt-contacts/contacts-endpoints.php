@@ -413,7 +413,8 @@ class Disciple_Tools_Contacts_Endpoints
 
         return [
             "contacts" => $this->add_related_info_to_contacts( $result["contacts"] ),
-            "total" => $result["total"]
+            "total" => $result["total"],
+            "deleted" => $result["deleted"]
         ];
     }
 

@@ -608,9 +608,29 @@ class Disciple_Tools_Posts
             }
         }
 
+        $delete_posts = [];
+        if ($most_recent){
+            global $wpdb;
+            $deleted_query = $wpdb->get_results( $wpdb->prepare(
+                "SELECT object_id 
+                FROM `$wpdb->dt_activity_log`
+                WHERE 
+                    ( `action` = 'deleted' || `action` = 'trashed' )
+                    AND `object_subtype` = %s
+                    AND hist_time > %d
+                ",
+                $post_type,
+                $most_recent
+            ), ARRAY_A);
+            foreach ( $deleted_query as $deleted ){
+                $delete_posts[] = $deleted["object_id"] ;
+            }
+        }
+
         return [
             $post_type => $posts,
-            "total" => $queried_posts->found_posts
+            "total" => $queried_posts->found_posts,
+            "deleted" => $delete_posts
         ];
     }
 

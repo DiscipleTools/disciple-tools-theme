@@ -76,9 +76,15 @@
 
 
 
+  function removeDeletedItems(deletedItems) {
+    deletedItems.forEach(deletedId=>{
+      items = _.pullAllBy(items, [{ID:parseInt(deletedId)}], "ID")
+    })
+  }
 
   function getItems() {
     let most_recent = _.get(_.maxBy(items || [], "last_modified") , 'last_modified') || 0
+    console.log(most_recent);
     $.ajax({
       url: wpApiSettings.root + "dt/v1/" + wpApiSettings.current_post_type + '?most_recent=' + most_recent,
       beforeSend: function(xhr) {
@@ -86,6 +92,9 @@
       },
       success: function(data) {
         items = _.unionBy(data[wpApiSettings.current_post_type], items || [], "ID");
+        if (data["deleted"]){
+          removeDeletedItems(data["deleted"])
+        }
         if (typeof(Storage) !== "undefined") {
           localStorage.setItem(wpApiSettings.current_post_type, JSON.stringify(items));
         }
@@ -98,7 +107,7 @@
           getItems()
         } else {
           $(".loading-list-progress").hide()
-          if (data[wpApiSettings.current_post_type].length){
+          if (data[wpApiSettings.current_post_type].length || data["deleted"].length ){
             dataTable.clear()
             dataTable.rows.add(getFormattedRows())
             countFilteredItems()

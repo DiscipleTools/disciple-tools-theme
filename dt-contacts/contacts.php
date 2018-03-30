@@ -1259,9 +1259,28 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
         }
 
+        $delete_contacts = [];
+        if ($most_recent){
+            global $wpdb;
+            $deleted_query = $wpdb->get_results( $wpdb->prepare(
+                "SELECT object_id 
+                FROM `$wpdb->dt_activity_log`
+                WHERE 
+                    ( `action` = 'deleted' || `action` = 'trashed' )
+                    AND `object_subtype` = 'contacts'
+                    AND hist_time > %d
+                ", $most_recent
+            ), ARRAY_A);
+            foreach ( $deleted_query as $deleted ){
+                $delete_contacts[] = $deleted["object_id"] ;
+            }
+        }
+
+
         return [
             "contacts" => $contacts,
-            "total" => $queried_contacts->found_posts
+            "total" => $queried_contacts->found_posts,
+            "deleted" => $delete_contacts
         ];
     }
 
