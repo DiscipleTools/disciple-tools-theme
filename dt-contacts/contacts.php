@@ -127,6 +127,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( $check_permissions && !current_user_can( 'create_contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( "You may not publish a contact" ), [ 'status' => 403 ] );
         }
+        $initial_fields = $fields;
 
         //required fields
         if ( !isset( $fields["title"] ) ) {
@@ -254,7 +255,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         //hook for signaling that a contact has been updated and which keys have been changed
         if ( !is_wp_error( $post_id )){
-            do_action( "dt_contact_created", $post_id, $fields );
+            do_action( "dt_contact_created", $post_id, $initial_fields );
         }
 
         return $post_id;
