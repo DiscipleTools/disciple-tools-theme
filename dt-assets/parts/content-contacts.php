@@ -31,12 +31,12 @@ declare(strict_types=1);
 
     <table class="table-remove-top-border js-list">
         <thead><tr>
-            <th data-priority="2"><?php esc_html_e( "Name" ); ?></th>
-            <th><?php esc_html_e( "Status", "disciple_tools" ); ?></th>
-            <th><?php esc_html_e( "Faith Milestones", "disciple_tools" ); ?></th>
-            <th data-priority="4"><?php esc_html_e( "Assigned to", "disciple_tools" ); ?></th>
-            <th><?php esc_html_e( "Location", "disciple_tools" ); ?></th>
-            <th data-priority="3"><?php esc_html_e( "Group", "disciple_tools" ); ?></th>
+            <th class="all" data-priority="2"><?php esc_html_e( "Name" ); ?></th>
+            <th class="not-mobile"><?php esc_html_e( "Status", "disciple_tools" ); ?></th>
+            <th class="desktop"><?php esc_html_e( "Faith Milestones", "disciple_tools" ); ?></th>
+            <th class="desktop" data-priority="4"><?php esc_html_e( "Assigned to", "disciple_tools" ); ?></th>
+            <th class="not-mobile"><?php esc_html_e( "Location", "disciple_tools" ); ?></th>
+            <th class="not-mobile" data-priority="3"><?php esc_html_e( "Group", "disciple_tools" ); ?></th>
         </tr></thead>
         <tbody>
             <tr class="js-list-loading"><td colspan=7><?php esc_html_e( "Loading...", "disciple_tools" ); ?></td></tr>

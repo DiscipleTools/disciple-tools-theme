@@ -204,7 +204,7 @@
     if (wpApiSettings.current_post_type == "contacts") {
       _.assign(dataTableOptions, {
         columnDefs: [
-          { targets: [0], width: "25%" },
+          { targets: [0], width: "30%" },
           { targets: [1], width: "10%", },
           { targets: [2], width: "20%", },
           { targets: [3], width: "10%", },
