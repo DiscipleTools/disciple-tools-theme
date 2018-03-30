@@ -252,6 +252,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
         }
 
+        //hook for signaling that a contact has been updated and which keys have been changed
+        if ( !is_wp_error( $post_id )){
+            do_action( "dt_contact_created", $post_id, $fields );
+        }
 
         return $post_id;
     }
