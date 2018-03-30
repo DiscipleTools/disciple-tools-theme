@@ -116,25 +116,19 @@ function dt_get_option( string $name )
             break;
 
         case 'dt_site_custom_lists':
-            $custom_lists = dt_get_site_custom_lists();
+            $default_custom_lists = dt_get_site_custom_lists();
 
             if ( !get_option( 'dt_site_custom_lists' ) ) { // options doen't exist, create new.
-                add_option( 'dt_site_custom_lists', $custom_lists, '', true );
-
-                return get_option( 'dt_site_custom_lists' );
+                add_option( 'dt_site_custom_lists', $default_custom_lists, '', true );
             }
-            elseif ( get_option( 'dt_site_custom_lists' )['version'] < $custom_lists['version'] ) { // option exists but version is behind
+            elseif ( get_option( 'dt_site_custom_lists' )['version'] < $default_custom_lists['version'] ) { // option exists but version is behind
                 $upgrade = dt_site_options_upgrade_version( 'dt_site_custom_lists' );
                 if ( !$upgrade ) {
                     return false;
                 }
-
-                return get_option( 'dt_site_custom_lists' );
             }
-            else {
-                return get_option( 'dt_site_custom_lists' );
-            }
-
+            //return apply_filters( "dt_site_custom_lists", get_option( 'dt_site_custom_lists' ) );
+            return get_option( 'dt_site_custom_lists' );
             break;
 
         case 'base_user':
@@ -385,7 +379,13 @@ function dt_get_site_custom_lists( string $list_title = null )
 function dt_site_options_upgrade_version( string $name )
 {
     $site_options_current = get_option( $name );
-    $site_options_defaults = dt_get_site_options_defaults();
+    if ( $name === "dt_site_custom_lists" ){
+        $site_options_defaults = dt_get_site_custom_lists();
+    } else if ( $name === "dt_site_options" ){
+        $site_options_defaults = dt_get_site_options_defaults();
+    } else {
+        return false;
+    }
 
     $new_version_number = $site_options_defaults['version'];
 
