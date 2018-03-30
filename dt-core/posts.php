@@ -623,7 +623,7 @@ class Disciple_Tools_Posts
                 $most_recent
             ), ARRAY_A);
             foreach ( $deleted_query as $deleted ){
-                $delete_posts[] = $deleted["object_id"] ;
+                $delete_posts[] = $deleted["object_id"];
             }
         }
 
