@@ -253,7 +253,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
         }
 
-        //hook for signaling that a contact has been updated and which keys have been changed
+        //hook for signaling that a contact has been created and the initial fields
         if ( !is_wp_error( $post_id )){
             do_action( "dt_contact_created", $post_id, $initial_fields );
         }
@@ -445,6 +445,16 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 'ID' => $contact_id,
                 'post_title' => $fields['title']
             ] );
+            dt_activity_insert( [
+                'action'            => 'field_update',
+                'object_type'       => "contacts",
+                'object_subtype'    => 'title',
+                'object_id'         => $contact_id,
+                'object_name'       => $fields['title'],
+                'meta_key'          => 'title',
+                'meta_value'        => $fields['title'],
+                'old_value'         => $existing_contact['title'],
+            ] );
         }
 
         $potential_error = self::parse_contact_methods( $contact_id, $fields );
@@ -495,6 +505,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
         }
 
+
+        $fields["last_modified"] = time(); //make sure the last modified field is updated.
         foreach ( $fields as $field_id => $value ) {
             if ( !self::is_key_contact_method_or_connection( $field_id ) ) {
                 // Boolean contact field are stored as yes/no
@@ -1069,6 +1081,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $comments = get_comments( [ 'post_id' => $contact_id ] );
             $fields["comments"] = $comments;
             $fields["ID"] = $contact->ID;
+            $fields["title"] = $contact->post_title;
 
             return $fields;
         } else {
