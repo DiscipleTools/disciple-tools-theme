@@ -1285,7 +1285,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 ", $most_recent
             ), ARRAY_A);
             foreach ( $deleted_query as $deleted ){
-                $delete_contacts[] = $deleted["object_id"] ;
+                $delete_contacts[] = $deleted["object_id"];
             }
         }
 
