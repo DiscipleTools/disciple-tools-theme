@@ -590,7 +590,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                                     <li>
                                         <?php echo esc_attr__( 'Check if the server timestamps are identical. Mismatched server times will cause decryption key failures. Your server timestamp' ); ?>
                                         :
-                                        <span class="info-color"><strong><?php echo esc_attr( current_time( 'Y-m-dH', 1 ) ) ?></strong></span>
+                                        <span class="info-color"><strong><?php echo esc_attr( current_time( 'Y-m-d H:i', 1 ) ) ?></strong></span>
                                     </li>
                                 </ol>
                             </td>
@@ -615,7 +615,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             <p><?php esc_attr_e( 'Current Site' ) ?>: <span
                         class="info-color"><?php echo esc_html( self::get_current_site_base_url() ); ?></span></p>
             <p class="text-small"><?php esc_attr_e( 'Timestamp' ) ?>: <span
-                        class="info-color"><?php echo esc_attr( current_time( 'Y-m-dH', 1 ) ) ?></span>
+                        class="info-color"><?php echo esc_attr( current_time( 'Y-m-d H:i', 1 ) ) ?></span>
                 <em>( <?php esc_attr_e( 'Compare this number to linked site. It should be identical.' ) ?> )</em></p>
             <?php
         }
