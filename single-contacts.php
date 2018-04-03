@@ -50,7 +50,7 @@ declare( strict_types=1 );
                         </button>
                     </label>
                     <?php
-                    $active_color = "#FFFFFF";
+                    $active_color = "#366184";
                     $current_key = $contact["overall_status"]["key"] ?? "";
                     if ( isset( $contact_fields["overall_status"]["colors"][ $current_key ] )){
                         $active_color = $contact_fields["overall_status"]["colors"][$current_key];
