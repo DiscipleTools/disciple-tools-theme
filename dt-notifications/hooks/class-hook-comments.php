@@ -88,10 +88,9 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
 
                             $message = strip_tags( $author_name ) . ' mentioned you saying: ' . strip_tags( $comment->comment_content );
                             $message .= 'Click here to reply: ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
-
                             dt_send_email(
                                 $user->user_email,
-                                'Disciple Tools: You were mentioned!',
+                                __( "You were mentioned!", 'disciple_tools' ),
                                 $message
                             );
                         }
@@ -129,7 +128,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
 
                             dt_send_email(
                                 $user->user_email,
-                                'Disciple Tools: You were mentioned!',
+                                __( 'You were mentioned!', 'disciple_tools' ),
                                 $message
                             );
                         }

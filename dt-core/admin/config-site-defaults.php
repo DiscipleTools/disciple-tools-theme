@@ -172,7 +172,13 @@ function dt_get_option( string $name )
                 return get_option( 'dt_map_key' );
             }
             break;
-
+        case 'dt_email_base_subject':
+            $subject_base = get_option( "dt_email_base_subject", "Disciple Tools" );
+            if ( empty( $subject_base )){
+                update_option( "dt_email_base_subject", "Disciple Tools" );
+            }
+            return $subject_base;
+            break;
         default:
             return false;
             break;

@@ -478,7 +478,8 @@ class Disciple_Tools_Notifications
 
             dt_notification_insert( $args );
             $user = get_userdata( $user_id );
-            dt_send_email( $user->user_email, __( "DT contact shared", 'disciple_tools' ), $message );
+            $subject = __( "Contact shared", 'disciple_tools' );
+            dt_send_email( $user->user_email, $subject, $message );
         }
     }
 
