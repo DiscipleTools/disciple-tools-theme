@@ -72,7 +72,7 @@ jQuery(document).ready(function($) {
     <div class="activity-text">
     <% _.forEach(activity, function(a){
         if (a.comment){ %>
-            <p dir="auto" class="comment-bubble"> <%- a.text %> </p>
+            <p dir="auto" class="comment-bubble" style="white-space: pre-line"> <%= a.text %> </p>
       <% } else { %>
             <p class="activity-bubble">  <%- a.text %> <% print(a.action) %> </p>
     <%  }
@@ -147,30 +147,35 @@ jQuery(document).ready(function($) {
   });
 
   let refreshActivity = ()=>{
-    API.get_activity(postType, postId).then(activityData=>{
-        activity = activityData
-        prepareActivityData(activity)
-        display_activity_comment()
-      })
+    get_all();
   }
 
-  $.when(
-    API.get_comments(postType, postId),
-    API.get_activity(postType, postId)
-  ).then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
-    const commentData = commentDataStatusJQXHR[0];
-    const activityData = activityDataStatusJQXHR[0];
-    commentData.forEach(comment => {
-      comment.date = moment(comment.comment_date_gmt + "Z")
+  function get_all() {
+    $.when(
+      API.get_comments(postType, postId),
+      API.get_activity(postType, postId)
+    ).then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
+      const commentData = commentDataStatusJQXHR[0];
+      const activityData = activityDataStatusJQXHR[0];
+      commentData.forEach(comment => {
+        comment.date = moment(comment.comment_date_gmt + "Z")
+        comment.comment_content = _.escape(comment.comment_content)
+        let linkRegex = /\[(.*)\]\((.*)\)/gi
+        comment.comment_content = comment.comment_content.replace(linkRegex, (match, url, text)=>{
+          return `<a href="${url}">${text}</a>`
+        })
+      })
+      comments = commentData
+      activity = activityData
+      prepareActivityData(activity)
+      display_activity_comment("all")
+    }).catch(err => {
+      console.error(err);
+      jQuery("#errors").append(err.responseText)
     })
-    comments = commentData
-    activity = activityData
-    prepareActivityData(activity)
-    display_activity_comment("all")
-  }).catch(err => {
-    console.error(err);
-    jQuery("#errors").append(err.responseText)
-  })
+  }
+  get_all();
+
 
   jQuery('#add-comment-button').on('click', function () {
     post_comment(postId)
