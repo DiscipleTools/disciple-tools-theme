@@ -303,6 +303,7 @@ else {
             require_once( get_template_directory() . '/dt-locations/locations.php' ); // serves the locations rest endpoints
             require_once( get_template_directory() . '/dt-locations/locations-endpoints.php' ); // builds rest endpoints
             $this->endpoints['locations'] = Disciple_Tools_Locations_Endpoints::instance();
+            require_once( get_template_directory() . '/dt-locations/geocoding-api.php' );
 
             /**
              * dt-people-groups
@@ -377,6 +378,7 @@ else {
             require_once( get_template_directory() . '/dt-core/admin/site-link-post-type.php' );
             Site_Link_System::instance( 5, 'dashicons-admin-links' );
 
+
             /**
              * Admin panel
              * Contains all those features that only run if in the Admin panel
@@ -401,9 +403,6 @@ else {
                 $this->config_contacts = Disciple_Tools_Config_Contacts::instance();
                 require_once( get_template_directory() . '/dt-groups/groups-config.php' );
                 $this->config_groups = Disciple_Tools_Groups_Config::instance();
-
-                // Locations
-                require_once( get_template_directory() . '/dt-locations/geocoding-api.php' );
 
                 // People Groups
                 require_once( get_template_directory() . '/dt-people-groups/admin-menu.php' );
