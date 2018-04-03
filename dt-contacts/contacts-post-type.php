@@ -289,7 +289,7 @@ class Disciple_Tools_Contact_Post_Type
 
             foreach ( $field_data as $k => $v ) {
                 dt_write_log( $v );
-                if ( $v['section'] == $section || $section == 'all' ) {
+                if ( ( isset( $v['section'] ) && $v['section'] == $section ) || $section == 'all' ) {
 
                     $data = $v['default'];
 
