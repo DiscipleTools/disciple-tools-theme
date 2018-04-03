@@ -40,6 +40,16 @@ class Disciple_Tools_General_Tab
         echo '</td></tr></tbody></table><br>';
         /* End Box */
 
+        /* Box */
+        echo '<table class="widefat striped">
+                    <thead><th>Email Settings</th></thead>
+                    <tbody><tr><td>';
+
+        $this->process_email_settings();
+        $this->email_settings();
+
+        echo '</td></tr></tbody></table><br>';
+        /* Box */
 
         /* Box */
         echo '<table class="widefat striped">
@@ -282,6 +292,30 @@ class Disciple_Tools_General_Tab
                 if ( is_numeric( $user_id ) ) {
                     update_option( 'dt_base_user', $user_id );
                 }
+            }
+        }
+    }
+
+
+    public function email_settings(){
+        ?>
+        <form method="POST">
+            <input type="hidden" name="email_base_subject_nonce" id="email_base_subject_nonce" value="<?php echo esc_attr( wp_create_nonce( 'email_subject' ) )?>" />
+            <label for="email_subject"><?php esc_html_e( "Configure the first part of the subject line in email sent by DT", 'disciple_tools' ) ?></label>
+            <input name="email_subject" id="email_subject" value="<?php echo esc_html( dt_get_option( "dt_email_base_subject" ) ) ?>" />
+            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Update", 'disciple_tools' ) ?></button></span>
+        </form>
+        <?php
+    }
+
+    /**
+     * Process changes to the email settings
+     */
+    public function process_email_settings() {
+        if ( isset( $_POST['email_base_subject_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['email_base_subject_nonce'] ) ), 'email_subject' ) ) {
+            if ( isset( $_POST['email_subject'] ) ) {
+                $email_subject = sanitize_text_field( wp_unslash( $_POST['email_subject'] ) );
+                update_option( 'dt_email_base_subject', $email_subject );
             }
         }
     }

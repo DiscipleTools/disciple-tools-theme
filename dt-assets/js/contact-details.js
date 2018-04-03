@@ -878,6 +878,8 @@ jQuery(document).ready(function($) {
 
     if (statusColor){
       $('#overall_status').css("background-color", statusColor)
+    } else {
+      $('#overall_status').css("background-color", "#366184")
     }
 
     $('#reason').text(reasonLabel ? `(${reasonLabel})` : '')

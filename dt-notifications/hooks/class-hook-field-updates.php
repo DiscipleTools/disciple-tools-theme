@@ -134,7 +134,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                         dt_send_email(
                             $user->user_email,
-                            'Disciple Tools: You have been assigned a new contact!',
+                            __( 'You have been assigned a new contact!', 'disciple_tools' ),
                             $message
                         );
 
@@ -211,7 +211,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                             dt_send_email(
                                 $user->user_email,
-                                'Disciple Tools: Update requested!',
+                                __( 'Update requested!', 'disciple_tools' ),
                                 $message
                             );
 
@@ -291,7 +291,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                         dt_send_email(
                             $user->user_email,
-                            'Disciple Tools: Changes to your contact added.',
+                            __( 'Changes to your contact added.', 'disciple_tools' ),
                             $message
                         );
 
@@ -390,7 +390,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                         dt_send_email(
                             $user->user_email,
-                            'Disciple Tools: Milestones update on ' . strip_tags( get_the_title( $object_id ) ),
+                            __( 'Milestones update on', 'disciple_tools' ) . " " . strip_tags( get_the_title( $object_id ) ),
                             $message
                         );
 

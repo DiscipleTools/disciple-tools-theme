@@ -198,6 +198,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             }
             $fields["ID"] = $group->ID;
             $fields["name"] = $group->post_title;
+            $fields["title"] = $group->post_title;
 
             return $fields;
         } else {
@@ -339,6 +340,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
 
+        $field_keys = array_keys( $fields );
         $post = get_post( $group_id );
         if ( isset( $fields['id'] ) ) {
             unset( $fields['id'] );
@@ -363,6 +365,16 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 'ID' => $group_id,
                 'post_title' => $fields['title']
             ] );
+            dt_activity_insert( [
+                'action'         => 'field_update',
+                'object_type'    => "groups",
+                'object_subtype' => 'title',
+                'object_id'      => $group_id,
+                'object_name'    => $fields['title'],
+                'meta_key'       => 'title',
+                'meta_value'     => $fields['title'],
+                'old_value'      => $existing_group['title'],
+            ] );
         }
 
         $potential_error = self::parse_contact_methods( $group_id, $fields );
@@ -384,19 +396,20 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
         foreach ( $fields as $field_id => $value ) {
             if ( !self::is_key_contact_method_or_connection( $field_id )){
-                if ( is_string( $value ) || is_numeric( $value ) ) {
+                $field_type = self::$group_fields[$field_id]["type"] ?? '';
+                if ( $field_type ) {
                     update_post_meta( $group_id, $field_id, $value );
-                } else {
-                    return new WP_Error( __FUNCTION__, __( "Unexpected field value" ), [
-                        'status' => 500,
-                        'field'  => $field_id
-                    ] );
                 }
             }
         }
 
         $group = self::get_group( $group_id, true );
         $group["added_fields"] = $added_fields;
+
+        //hook for when a group has been updated
+        if ( !is_wp_error( $group ) ){
+            do_action( "dt_group_updated", $field_keys, $group );
+        }
         return $group;
 
     }
@@ -741,6 +754,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         if ( $check_permissions && ! current_user_can( 'create_groups' ) ) {
             return new WP_Error( __FUNCTION__, __( "You may not public a group" ), [ 'status' => 403 ] );
         }
+        $initial_fields = $fields;
 
         if ( ! isset( $fields ["title"] ) ) {
             return new WP_Error( __FUNCTION__, __( "Group needs a title" ), [ 'fields' => $fields ] );
@@ -786,6 +800,11 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         }
         if ( isset( $fields["parent_group_id"] )){
             self::add_child_group_to_group( $fields["parent_group_id"], $post_id );
+        }
+
+        //hook for signaling that a group has been created and the initial fields
+        if ( !is_wp_error( $post_id )){
+            do_action( "dt_contact_created", $post_id, $initial_fields );
         }
         return $post_id;
     }

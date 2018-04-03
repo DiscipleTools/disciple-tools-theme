@@ -43,6 +43,7 @@ function dt_send_email( $email, $subject, $message )
     $subject = sanitize_text_field( $subject );
     $message = sanitize_text_field( $message );
 
+    $subject = dt_get_option( "dt_email_base_subject" ) . ": " . $subject;
     // Send email
     try {
         $send_email = new Disciple_Tools_Notifications_Email();

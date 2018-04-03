@@ -15,7 +15,11 @@ add_action( 'login_enqueue_scripts', 'disciple_tools_login_css', 10 );
 add_filter( 'login_headerurl', 'disciple_tools_login_url' );
 add_filter( 'login_headertitle', 'disciple_tools_login_title' );
 add_filter( 'login_redirect', function( $url, $query, $user ) {
-    return home_url();
+    if ( $url != admin_url() ){
+        return $url;
+    } else {
+        return home_url();
+    }
 }, 10, 3 );
 
 
