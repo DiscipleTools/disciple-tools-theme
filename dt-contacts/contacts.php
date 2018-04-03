@@ -1650,7 +1650,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
 
-    function get_duplicate_data( $contact_id, $field ){
+    private function get_duplicate_data( $contact_id, $field ){
         $duplicate_data = get_post_meta( $contact_id, "duplicate_data", true );
         if ( empty( $duplicate_data )){
             $duplicate_data = [];
@@ -1661,7 +1661,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return $duplicate_data;
     }
 
-    function save_duplicate_finding( $field, $dups, $contact_id ){
+    private function save_duplicate_finding( $field, $dups, $contact_id ){
         if ( sizeof( $dups ) > 0 ){
             $duplicate_data = $this->get_duplicate_data( $contact_id, $field );
             $message = __( "Possible duplicates on", "disciple_tools" ) . " " . $field . ": 
