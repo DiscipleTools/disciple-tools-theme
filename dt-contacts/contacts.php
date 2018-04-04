@@ -1649,6 +1649,19 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return $contact_ids;
     }
 
+    public function find_contacts_by_title( $title, $exclude_id ){
+        global $wpdb;
+        return $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM $wpdb->posts
+                WHERE post_title
+                LIKE '%s'
+                AND ID != '%s'",
+                '%'. $wpdb->esc_like( $title ) .'%',
+                $exclude_id
+            ), ARRAY_N
+        );
+    }
 
     private function get_duplicate_data( $contact_id, $field ){
         $duplicate_data = get_post_meta( $contact_id, "duplicate_data", true );
@@ -1694,10 +1707,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $fields_to_check = apply_filters( "dt_contact_duplicate_fields_to_check", $fields_to_check );
         foreach ( $fields as $field_id => $field_value ){
             if ( in_array( $field_id, $fields_to_check )){
-                if ( $field_id == "contact_phone" ){
-                    foreach ( $field_value as $number ){
-                        if ( isset( $number["value"] ) ){
-                            $contacts = $this->find_contacts_with( $field_id, $number["value"], $contact_id );
+                if ( $field_id == "title" ){
+                    $contacts = $this->find_contacts_by_title( $field_value, $contact_id );
+                    $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
+                } else {
+                    foreach ( $field_value as $val ){
+                        if ( isset( $val["value"] ) ){
+                            $contacts = $this->find_contacts_with( $field_id, $val["value"], $contact_id );
                             $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
                         }
                     }
