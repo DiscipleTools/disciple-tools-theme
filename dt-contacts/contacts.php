@@ -1765,6 +1765,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         if ( isset( $val["value"] ) ){
                             $contacts = $this->find_contacts_with( $field_id, $val["value"], $contact_id );
                             $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
+                        } else if ( $this->get_field_details( $field_id, $contact_id )["type"] === "array" ){
+                            $contacts = $this->find_contacts_with( $field_id, $val, $contact_id );
+                            $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
                         }
                     }
                 }
