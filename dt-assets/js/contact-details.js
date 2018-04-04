@@ -294,7 +294,7 @@ jQuery(document).ready(function($) {
     }
   });
 
-    /**
+  /**
    * Locations
    */
   typeaheadTotals.locations = 0;
