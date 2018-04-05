@@ -16,7 +16,7 @@ Template Name: Metrics
 
                     <div class="bordered-box">
 
-                        <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu data-submenu-toggle="true">
+                        <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu data-multi-open data-submenu-toggle="true">
 
                             <li >
                                 <a href="<?php echo esc_attr( site_url( '/metrics/' ) . '#critical_path' ) ?>" onclick="show_critical_path()"><?php esc_html_e( 'Critical Path', 'disciple_tools' )?></a>
