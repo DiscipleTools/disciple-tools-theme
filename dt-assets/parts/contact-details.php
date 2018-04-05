@@ -169,6 +169,7 @@
                             <li class="details-edit has-options <?php echo esc_attr( $value['key'], 'disciple_tools' ) ?>">
                                 <input type="text" id="<?php echo esc_attr( $value['key'], 'disciple_tools' ) ?>"
                                     value="<?php echo esc_attr( $value['value'], 'disciple_tools' ) ?>"
+                                    data-type="contact_phone"
                                     class="contact-input">
                                 <?php dt_contact_details_edit( $value['key'], 'phone', true ) ?>
                             </li>
@@ -198,7 +199,11 @@
                                 dt_contact_details_status( $value['key'], $verified, $invalid ); ?>
                             </li>
                             <li class="details-edit has-options">
-                                <input type="email" id="<?php echo esc_attr( $value['key'], 'disciple_tools' ) ?>" value="<?php echo esc_attr( $value['value'], 'disciple_tools' ) ?>" class="contact-input">
+                                <input type="email"
+                                       data-type="contact_email"
+                                       id="<?php echo esc_attr( $value['key'], 'disciple_tools' ) ?>"
+                                       value="<?php echo esc_attr( $value['value'], 'disciple_tools' ) ?>"
+                                       class="contact-input">
                                 <?php dt_contact_details_edit( $value['key'], esc_html__( 'email', 'disciple_tools' ), true ) ?>
                             </li>
                         <?php } ?>

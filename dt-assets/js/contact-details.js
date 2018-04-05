@@ -294,7 +294,7 @@ jQuery(document).ready(function($) {
     }
   });
 
-    /**
+  /**
    * Locations
    */
   typeaheadTotals.locations = 0;
@@ -623,9 +623,10 @@ jQuery(document).ready(function($) {
     }).catch(handelAjaxError);
   }).on('change', 'input.contact-input', e => {
     const fieldId = $(e.currentTarget).attr('id')
+    const fieldType = $(e.currentTarget).data('type')
     const val = $(e.currentTarget).val()
 
-    API.save_field_api('contact', contactId, { [fieldId]: val }).then(() => {
+    API.save_field_api('contact', contactId, { [fieldType] : [{"key":fieldId, value:val}] }).then(() => {
       $(`li.details-list.${fieldId} span.details-text`).text(val)
     }).catch(handelAjaxError)
   }).on('change', 'ul.address textarea', e => {

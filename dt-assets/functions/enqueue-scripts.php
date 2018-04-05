@@ -288,5 +288,10 @@ function dt_site_scripts() {
         ) );
     }
 
+    if ($url_path = "contacts/new"){
+        dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
+        dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
+    }
+
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );

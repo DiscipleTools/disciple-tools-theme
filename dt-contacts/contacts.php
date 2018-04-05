@@ -42,6 +42,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 ];
             }
         );
+        add_action( "dt_contact_created", [ $this, "check_for_duplicates" ], 10, 2 );
+        add_action( "dt_contact_updated", [ $this, "check_for_duplicates" ], 10, 2 );
         parent::__construct();
     }
 
@@ -110,6 +112,47 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function get_channel_list()
     {
         return self::$channel_list;
+    }
+
+
+
+    public function get_field_details( $field, $contact_id ){
+        if ( $field === "title" ){
+            return [
+                "type" => "text",
+                "name" => __( "Name", 'disciple_tools' ),
+            ];
+        }
+        if ( strpos( $field, "contact_" ) === 0 ){
+            $channel = explode( '_', $field );
+            if ( isset( $channel[1] ) && self::$channel_list[ $channel[1] ] ){
+                return [
+                    "type" => "contact_method",
+                    "name" => self::$channel_list[ $channel[1] ]["label"],
+                    "channel" => $channel[1]
+                ];
+            }
+        }
+        if ( in_array( $field, self::$contact_connection_types ) ){
+            return [
+                "type" => "connection",
+                "name" => $field
+            ];
+        }
+
+        if ( $contact_id ){
+            $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( isset( $contact_id ), $contact_id );
+        } else {
+            $contact_fields = self::$contact_fields;
+        }
+        if ( isset( $contact_fields[$field] ) ){
+            return $contact_fields[ $field ];
+        }
+
+        return [
+            "type" => "unknown",
+            "name" => "unknown"
+        ];
     }
 
     /**
@@ -420,7 +463,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
-        $field_keys = array_keys( $fields );
+        $initial_fields = $fields;
 
         $post = get_post( $contact_id );
         if ( isset( $fields['id'] ) ) {
@@ -438,7 +481,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), [ 'bad_fields' => $bad_fields ] );
         }
         $existing_contact = self::get_contact( $contact_id, false );
-        $added_fields = [];
 
         if ( isset( $fields['title'] ) ) {
             wp_update_post( [
@@ -535,7 +577,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         //hook for signaling that a contact has been updated and which keys have been changed
         if ( !is_wp_error( $contact )){
-            do_action( "dt_contact_updated", $field_keys, $contact );
+            do_action( "dt_contact_updated", $contact_id, $initial_fields, $contact );
         }
 
         return $contact;
@@ -1205,13 +1247,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @param int   $most_recent date of most recent update
      * @param bool  $check_permissions
-     * @param array $query_pagination_args -Pass in pagination and ordering parameters if wanted.
      *
      * @access public
      * @since  0.1.0
-     * @return array | WP_Error
+     * @return array | WP_Error | WP_Query
      */
-    public static function get_viewable_contacts( int $most_recent, bool $check_permissions = true, array $query_pagination_args = [] )
+    public static function get_viewable_contacts( int $most_recent, bool $check_permissions = true )
     {
         if ( $check_permissions && !self::can_access( 'contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), [ 'status' => 403 ] );
@@ -1623,5 +1664,114 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function add_shared_on_contact( int $post_id, int $user_id, $meta = null )
     {
         return self::add_shared( 'contacts', $post_id, $user_id, $meta );
+    }
+
+    public function find_contacts_with( $field, $value, $exclude_id = "" ){
+        global $wpdb; //This should allow access to this globally defined var.
+        $contact_ids = $wpdb->get_results(
+            $wpdb->prepare(
+                "
+                        SELECT post_id
+                        FROM {$wpdb->prefix}postmeta
+                        WHERE meta_key
+                        LIKE %s
+                        AND meta_value LIKE %s
+                        AND post_id != %s
+                        ",
+                [
+                    $field .'%',
+                    '%' . $value . '%',
+                    $exclude_id
+                ]
+            ),
+            ARRAY_N
+        );
+        return $contact_ids;
+    }
+
+    public function find_contacts_by_title( $title, $exclude_id ){
+        global $wpdb;
+        return $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM $wpdb->posts
+                WHERE post_title
+                LIKE %s
+                AND ID != %s",
+                '%'. $wpdb->esc_like( $title ) .'%',
+                $exclude_id
+            ), ARRAY_N
+        );
+    }
+
+    private function get_duplicate_data( $contact_id, $field ){
+        $duplicate_data = get_post_meta( $contact_id, "duplicate_data", true );
+        if ( empty( $duplicate_data )){
+            $duplicate_data = [];
+        }
+        if ( !isset( $duplicate_data[$field] ) ){
+            $duplicate_data[$field] = [];
+        }
+        return $duplicate_data;
+    }
+
+    private function save_duplicate_finding( $field, $dups, $contact_id ){
+        if ( sizeof( $dups ) > 0 ){
+            $duplicate_data = $this->get_duplicate_data( $contact_id, $field );
+            $has_unconfirmed_duplicates = 0;
+            $message = "";
+            foreach ( $dups as $row ){
+                $id_of_duplicate = (int) $row[0];
+                if ( $id_of_duplicate != (int) $contact_id ){
+                    if ( !in_array( $id_of_duplicate, $duplicate_data[$field] ) ) {
+                        $duplicate_data[$field][] = $id_of_duplicate;
+                        $post = get_post( $id_of_duplicate );
+                        $has_unconfirmed_duplicates++;
+                        if ( $has_unconfirmed_duplicates <= 5 ){
+                            $message .= "- [" . get_permalink( $id_of_duplicate ) . "](". $post->post_title . ")\n";
+                        }
+                        //uncomment to enable tracking both ways.
+//                        $other_contact_duplicate_data = $this->get_duplicate_data( $id_of_duplicate, $field );
+//                        if ( !in_array( $contact_id, $other_contact_duplicate_data[$field] )){
+//                            self::add_comment( $id_of_duplicate, "Same phone as " . get_permalink( $contact_id ), false );
+//                            $other_contact_duplicate_data[$field][] = $contact_id;
+//                            update_post_meta( $id_of_duplicate, "duplicate_data", $other_contact_duplicate_data );
+//                        }
+                    }
+                }
+            }
+            if ( $has_unconfirmed_duplicates ){
+                $field_details = $this->get_field_details( $field, $contact_id );
+                $message = __( "Possible duplicates on", "disciple_tools" ) . " " . $field_details["name"] . ": 
+                " . $message;
+                if ( $has_unconfirmed_duplicates > 5 ){
+                    $message .= "- " . $has_unconfirmed_duplicates . " " . __( "more duplicates not shown", "disciple_tools" );
+                }
+                self::add_comment( $contact_id, $message, false );
+                update_post_meta( $contact_id, "duplicate_data", $duplicate_data );
+            }
+        }
+    }
+
+    public function check_for_duplicates( $contact_id, $fields ){
+        $fields_to_check = [ "contact_phone", "contact_email", "title" ];
+        $fields_to_check = apply_filters( "dt_contact_duplicate_fields_to_check", $fields_to_check );
+        foreach ( $fields as $field_id => $field_value ){
+            if ( in_array( $field_id, $fields_to_check )){
+                if ( $field_id == "title" ){
+                    $contacts = $this->find_contacts_by_title( $field_value, $contact_id );
+                    $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
+                } else {
+                    foreach ( $field_value as $val ){
+                        if ( isset( $val["value"] ) ){
+                            $contacts = $this->find_contacts_with( $field_id, $val["value"], $contact_id );
+                            $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
+                        } else if ( $this->get_field_details( $field_id, $contact_id )["type"] === "array" ){
+                            $contacts = $this->find_contacts_with( $field_id, $val, $contact_id );
+                            $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
+                        }
+                    }
+                }
+            }
+        }
     }
 }

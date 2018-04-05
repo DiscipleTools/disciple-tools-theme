@@ -943,7 +943,20 @@ class Disciple_Tools_Contact_Post_Type
             'default' => 0,
             'section' => 'misc'
         ];
-
+        $fields["last_modified"] =[
+            'name' => __( 'Last modified', 'disciple_tools' ),
+            'description' => 'The time of the last modification',
+            'type' => 'number',
+            'default' => 0,
+            'section' => 'admin'
+        ];
+        $fields["duplicate_data"] = [
+            "name" => __( 'Duplicates', 'disciple_tools' ),
+            'description' => 'Possible contact duplicates',
+            'type' => 'array',
+            'default' => [],
+            'section' => 'admin'
+        ];
 
         return apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
     } // End get_custom_fields_settings()

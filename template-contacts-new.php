@@ -48,16 +48,20 @@ dt_print_breadcrumbs(
                 </label>
                 <p class="help-text" id="source-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
 
-                <label>
-                    <?php esc_html_e( "Location", "disciple_tools" ); ?>
-                    <select name="location">
-                        <option value=""><?php esc_html_e( "(Not set)", "disciple_tools" ); ?></option>
-                        <?php foreach ( Disciple_Tools_Locations::get_locations() as $location_post ): ?>
-                            <option value="<?php echo intval( $location_post->ID ); ?>"><?php echo esc_html( $location_post->post_title )?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </label>
-
+                <div class="locations">
+                    <var id="locations-result-container" class="result-container"></var>
+                    <div id="locations_t" name="form-locations" class="scrollable-typeahead">
+                        <div class="typeahead__container">
+                            <div class="typeahead__field">
+                                    <span class="typeahead__query">
+                                        <input class="js-typeahead-locations"
+                                               name="locations[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                               autocomplete="off">
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <label>
                     <?php esc_html_e( "Initial comment", "disciple_tools" ); ?>
                     <textarea name="initial_comment" placeholder="<?php esc_html_e( "Initial comment", "disciple_tools" ); ?>"></textarea>
@@ -76,18 +80,17 @@ dt_print_breadcrumbs(
 
 <script>jQuery(function($) {
     $(".js-create-contact-button").removeAttr("disabled");
+    let selectedLocations = []
     $(".js-create-contact").on("submit", function() {
         $(".js-create-contact-button")
             .attr("disabled", true)
             .addClass("loading");
-        var location_id = $(".js-create-contact select[name=location]").val();
-        location_id = location_id ? parseInt(location_id) : undefined;
         let source = $(".js-create-contact select[name=sources]").val()
         API.create_contact({
             title: $(".js-create-contact input[name=title]").val(),
             contact_phone: [{value:$(".js-create-contact input[name=phone]").val()}],
             sources: {values:[{value:source}]},
-            locations: {values:[{value:location_id}]},
+            locations: {values:selectedLocations.map(i=>{return {value:i}})},
             initial_comment: $(".js-create-contact textarea[name=initial_comment]").val(),
         }).then(function(data) {
             window.location = data.permalink;
@@ -100,6 +103,43 @@ dt_print_breadcrumbs(
         });
         return false;
     });
+        /**
+         * Locations
+         */
+        $.typeahead({
+            input: '.js-typeahead-locations',
+            minLength: 0,
+            searchOnFocus: true,
+            maxItem: 20,
+            template: function (query, item) {
+                return `<span>${_.escape(item.name)}</span>`
+            },
+            source: TYPEAHEADS.typeaheadSource('locations', 'dt/v1/locations-compact/'),
+            display: "name",
+            templateValue: "{{name}}",
+            dynamic: true,
+            multiselect: {
+                matchOn: ["ID"],
+                callback: {
+                    onCancel: function (node, item) {
+                        $('#share-result-container').html("");
+                        _.pull(selectedLocations, item.ID)
+                    }
+                },
+            },
+            callback: {
+                onClick: function(node, a, item, event){
+                    selectedLocations.push(item.ID)
+                },
+                onResult: function (node, query, result, resultCount) {
+                    let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+                    $('#locations-result-container').html(text);
+                },
+                onHideLayout: function () {
+                    $('#locations-result-container').html("");
+                },
+            }
+        });
 });</script>
 
 
