@@ -111,13 +111,20 @@ final class Disciple_Tools_Config
         }
         echo '">Custom Lists</a>';
 
-        echo '<a href="admin.php?page=dt_options&tab=site-links" class="nav-tab ';
+        echo '<a href="edit.php?post_type=site_link_system" class="nav-tab ';
         if ( $tab == 'site-links' ) {
             echo 'nav-tab-active';
         }
         echo '">'. esc_attr__( 'Site Links', 'disciple_tools' ) .'</a>';
 
+        echo '<a href="admin.php?page=dt_options&tab=keys" class="nav-tab ';
+        if ( $tab == 'keys' ) {
+            echo 'nav-tab-active';
+        }
+        echo '">Keys</a>';
+
         echo '</h2>';
+
 
         // End Tab Bar
 
@@ -138,7 +145,12 @@ final class Disciple_Tools_Config
                 break;
             case 'site-links':
                 require_once( 'tab-site-links.php' );
-                $object = new Disciple_Tools_Site_Links_Tab();
+//                $object = new Disciple_Tools_Site_Links_Tab();
+//                $object->content(); // prints
+                break;
+            case 'keys':
+                require_once( 'tab-keys.php' );
+                $object = new Disciple_Tools_Keys_Tab();
                 $object->content(); // prints
                 break;
 
