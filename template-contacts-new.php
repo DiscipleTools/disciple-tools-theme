@@ -24,7 +24,7 @@ dt_print_breadcrumbs(
         <div class="large-2 medium-12 small-12 cell"></div>
 
         <div class="large-8 medium-12 small-12 cell">
-            <form class="js-create-contact bordered-box">
+            <form class="js-create-contact bordered-box" style="margin-bottom:200px">
                 <label>
                     <?php esc_html_e( "Name of contact", "disciple_tools" ); ?>
                     <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
@@ -54,7 +54,7 @@ dt_print_breadcrumbs(
                         <div class="typeahead__container">
                             <div class="typeahead__field">
                                     <span class="typeahead__query">
-                                        <input class="js-typeahead-locations"
+                                        <input class="js-typeahead-locations input-height"
                                                name="locations[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
                                                autocomplete="off">
                                     </span>
@@ -103,43 +103,71 @@ dt_print_breadcrumbs(
         });
         return false;
     });
-        /**
-         * Locations
-         */
-        $.typeahead({
-            input: '.js-typeahead-locations',
-            minLength: 0,
-            searchOnFocus: true,
-            maxItem: 20,
-            template: function (query, item) {
-                return `<span>${_.escape(item.name)}</span>`
-            },
-            source: TYPEAHEADS.typeaheadSource('locations', 'dt/v1/locations-compact/'),
-            display: "name",
-            templateValue: "{{name}}",
-            dynamic: true,
-            multiselect: {
-                matchOn: ["ID"],
-                callback: {
-                    onCancel: function (node, item) {
-                        $('#share-result-container').html("");
-                        _.pull(selectedLocations, item.ID)
+
+    /**
+     * Locations
+     */
+    $.typeahead({
+        input: '.js-typeahead-locations',
+        minLength: 0,
+        searchOnFocus: true,
+        maxItem: 20,
+        maxItemPerGroup: 6,
+        template: function (query, item) {
+            return `<span>${_.escape(item.name)}</span>`
+        },
+        source: {
+            contacts: {
+                display: "name",
+                ajax: {
+                    url: wpApiSettings.root + "dt/v1/locations/grouped/",
+                    data: {
+                        s: "{{query}}"
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+                    },
+                    callback: {
+                        done: function (data) {
+                            return data.posts
+                        }
                     }
-                },
-            },
-            callback: {
-                onClick: function(node, a, item, event){
-                    selectedLocations.push(item.ID)
-                },
-                onResult: function (node, query, result, resultCount) {
-                    let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-                    $('#locations-result-container').html(text);
-                },
-                onHideLayout: function () {
-                    $('#locations-result-container').html("");
-                },
+                }
             }
-        });
+        },
+        display: "name",
+        templateValue: "{{name}}",
+        // dynamic: true,
+        dropdownFilter: [{
+            key: 'filter',
+            // template: '<strong>{{region}}</strong> region',
+            all: 'All Regions'
+        }],
+        group: {
+            key: "region",
+        },
+        multiselect: {
+            matchOn: ["ID"],
+            callback: {
+                onCancel: function (node, item) {
+                    $('#share-result-container').html("");
+                    _.pull(selectedLocations, item.ID)
+                }
+            },
+        },
+        callback: {
+            onClick: function(node, a, item, event){
+                selectedLocations.push(item.ID)
+            },
+            onResult: function (node, query, result, resultCount) {
+                let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+                $('#locations-result-container').html(text);
+            },
+            onHideLayout: function () {
+                $('#locations-result-container').html("");
+            },
+        }
+    });
 });</script>
 
 

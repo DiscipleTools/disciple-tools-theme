@@ -79,6 +79,10 @@ class Disciple_Tools_Locations_Endpoints
                 'methods' => 'GET',
                 'callback' => [ $this, 'get_locations_compact' ],
             ],
+            '/locations/grouped' => [
+                'methods' => 'GET',
+                'callback' => [ $this, 'get_all_locations_grouped' ],
+            ],
             "$base/findbyaddress" => [
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [ $this, 'find_by_address' ],
@@ -224,5 +228,14 @@ class Disciple_Tools_Locations_Endpoints
         $locations = Disciple_Tools_Locations::get_locations_compact( $search );
 
         return $locations;
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function get_all_locations_grouped()
+    {
+        return Disciple_Tools_Locations::get_all_locations_grouped();
     }
 }
