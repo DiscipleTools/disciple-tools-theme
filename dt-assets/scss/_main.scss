@@ -510,6 +510,13 @@ ul.address {
     $height: ($input-font-size * unitless-calc($input-line-height)) + (get-side($input-padding, 'top') + get-side($input-padding, 'bottom')) - rem-calc(1);
     min-height: $height;
 }
+.typeahead__dropdown>li>a,.typeahead__list>li>a {
+    display: block;
+    padding: .5rem .75rem;
+    clear: both;
+    color: #333;
+    text-decoration: none;
+}
 
 //default height for foundation inputs.
 .input-height {
