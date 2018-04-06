@@ -162,7 +162,7 @@ function dt_get_option( string $name )
                 // disciple.tools default map key
                 $keys = dt_default_google_api_keys();
                 $count = count( $keys ) - 1;
-                $key = $keys[ rand ( 0 , $count ) ];
+                $key = $keys[ rand( 0, $count ) ];
 
                 $update = update_option( 'dt_map_key', $key, true );
                 if ( ! $update ) {

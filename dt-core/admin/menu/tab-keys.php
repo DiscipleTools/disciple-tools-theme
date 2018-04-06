@@ -75,12 +75,12 @@ class Disciple_Tools_Keys_Tab
                             <?php
                             $default_keys = dt_default_google_api_keys();
                             foreach ( $default_keys as $key => $value ) {
-                                echo '<option value="'.$key.'" ';
+                                echo '<option value="'.esc_attr( $key ).'" ';
                                 if ( array_search( $current_key, $default_keys ) == $key ) {
                                     echo 'selected';
                                 }
                                 $number = $key + 1;
-                                echo '>Starter Key ' . $number . '</option>';
+                                echo '>Starter Key ' . esc_attr( $number ) . '</option>';
                             }
                             ?>
                         </select>
@@ -94,7 +94,7 @@ class Disciple_Tools_Keys_Tab
                         <span style="font-size:.8em;">(clear key and save to remove key)</span>
                     </td>
                     <td>
-                        <input type="text" name="map_key" id="map_key" style="width: 100%;" value="<?php echo $this->is_default_key( $current_key ) ? '': esc_attr( $current_key ) ?>"/>
+                        <input type="text" name="map_key" id="map_key" style="width: 100%;" value="<?php echo $this->is_default_key( $current_key ) ? '' : esc_attr( $current_key ) ?>"/>
                     </td>
                 </tr>
                 <tr>
@@ -111,28 +111,27 @@ class Disciple_Tools_Keys_Tab
 
     public function handle_post()
     {
-        dt_write_log( $_POST );
         if ( isset( $_POST[ 'map_key' . get_current_user_id() ] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[ 'map_key' . get_current_user_id() ] ) ), 'map_key_' . get_current_user_id() . '_nonce' ) ) {
-            if ( empty( $_POST[ 'map_key' ] ) ) {
+            if ( empty( $_POST['map_key'] ) ) {
                 $default_keys = dt_default_google_api_keys();
                 $count = count( $default_keys ) - 1;
 
-                if ( ! empty( $_POST[ 'default_keys'] ) ) {
-                    $submitted_key = sanitize_text_field( wp_unslash( $_POST[ 'default_keys'] ) );
+                if ( ! empty( $_POST['default_keys'] ) ) {
+                    $submitted_key = sanitize_text_field( wp_unslash( $_POST['default_keys'] ) );
 
-                    if( isset( $default_keys[ $submitted_key ] ) ) { // check if set
+                    if ( isset( $default_keys[ $submitted_key ] ) ) { // check if set
                         if ( $default_keys[ $submitted_key ] <= $count ) { // check if it is a valid default key number
                             update_option( 'dt_map_key', $default_keys[ $submitted_key ] );
                         }
                     }
                 } else {
-                    $key = $default_keys[ rand ( 0 , $count ) ];
+                    $key = $default_keys[ rand( 0, $count ) ];
                     update_option( 'dt_map_key', $key );
                 }
             }
             else {
                     dt_write_log( 'not empty map_key' );
-                update_option( 'dt_map_key', trim( sanitize_text_field( wp_unslash( $_POST[ 'map_key' ] ) ) ) );
+                update_option( 'dt_map_key', trim( sanitize_text_field( wp_unslash( $_POST['map_key'] ) ) ) );
                 return;
             }
         }
