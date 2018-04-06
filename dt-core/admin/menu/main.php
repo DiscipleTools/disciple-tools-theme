@@ -117,11 +117,11 @@ final class Disciple_Tools_Config
         }
         echo '">'. esc_attr__( 'Site Links', 'disciple_tools' ) .'</a>';
 
-        echo '<a href="admin.php?page=dt_options&tab=keys" class="nav-tab ';
-        if ( $tab == 'keys' ) {
+        echo '<a href="admin.php?page=dt_options&tab=google_map" class="nav-tab ';
+        if ( $tab == 'google_map' ) {
             echo 'nav-tab-active';
         }
-        echo '">Keys</a>';
+        echo '">Google Map API</a>';
 
         echo '</h2>';
 
@@ -148,7 +148,7 @@ final class Disciple_Tools_Config
 //                $object = new Disciple_Tools_Site_Links_Tab();
 //                $object->content(); // prints
                 break;
-            case 'keys':
+            case 'google_map':
                 require_once( 'tab-keys.php' );
                 $object = new Disciple_Tools_Keys_Tab();
                 $object->content(); // prints
