@@ -1834,13 +1834,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $fields_to_check = [ "contact_phone", "contact_email", "title" ];
         $fields_to_check = apply_filters( "dt_contact_duplicate_fields_to_check", $fields_to_check );
         foreach ( $fields as $field_id => $field_value ){
-            if ( in_array( $field_id, $fields_to_check )){
+            if ( in_array( $field_id, $fields_to_check ) && !empty( $field_value ) ){
                 if ( $field_id == "title" ){
                     $contacts = $this->find_contacts_by_title( $field_value, $contact_id );
                     $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
                 } else {
                     foreach ( $field_value as $val ){
-                        if ( isset( $val["value"] ) ){
+                        if ( !empty( $val["value"] ) ){
                             $contacts = $this->find_contacts_with( $field_id, $val["value"], $contact_id );
                             $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
                         } else if ( $this->get_field_details( $field_id, $contact_id )["type"] === "array" ){
