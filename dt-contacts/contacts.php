@@ -180,7 +180,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         //make sure the assigned to is in the right format (user-1)
         if ( isset( $fields["assigned_to"] ) ) {
             if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
-                $user = get_user_by( "email",  $fields["assigned_to"] );
+                $user = get_user_by( "email", $fields["assigned_to"] );
                 if ( $user ) {
                     $fields["assigned_to"] = $user->ID;
                 } else {
