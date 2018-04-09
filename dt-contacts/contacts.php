@@ -178,10 +178,19 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         //make sure the assigned to is in the right format (user-1)
-        if ( isset( $fields["assigned_to"] ) &&
-             ( is_numeric( $fields["assigned_to"] ) ||
-             strpos( $fields["assigned_to"], "user" ) === false )){
-            $fields["assigned_to"] = "user-" . $fields["assigned_to"];
+        if ( isset( $fields["assigned_to"] ) ) {
+            if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
+                $user = get_user_by( "email",  $fields["assigned_to"] );
+                if ( $user ) {
+                    $fields["assigned_to"] = $user->ID;
+                } else {
+                    return new WP_Error( __FUNCTION__, __( "Unrecognized user" ), $fields["assigned_to"] );
+                }
+            }
+            if ( is_numeric( $fields["assigned_to"] ) ||
+                 strpos( $fields["assigned_to"], "user" ) === false ){
+                $fields["assigned_to"] = "user-" . $fields["assigned_to"];
+            }
         }
 
         $initial_comment = null;
@@ -347,13 +356,17 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     delete_post_meta( $contact_id, $field_key );
                 }
                 foreach ( $field["values"] as $value ){
-                    if ( isset( $value["delete"] ) && $value["delete"] == true ){
-                        delete_post_meta( $contact_id, $field_key, $value["value"] );
-                    } else {
-                        $existing_array = isset( $existing_contact[ $field_key ] ) ? $existing_contact[ $field_key ] : [];
-                        if ( !in_array( $value["value"], $existing_array ) ){
-                            add_post_meta( $contact_id, $field_key, $value["value"] );
+                    if ( isset( $value["value"] )){
+                        if ( isset( $value["delete"] ) && $value["delete"] == true ){
+                            delete_post_meta( $contact_id, $field_key, $value["value"] );
+                        } else {
+                            $existing_array = isset( $existing_contact[ $field_key ] ) ? $existing_contact[ $field_key ] : [];
+                            if ( !in_array( $value["value"], $existing_array ) ){
+                                add_post_meta( $contact_id, $field_key, $value["value"] );
+                            }
                         }
+                    } else {
+                        return new WP_Error( __FUNCTION__, __( "Something wrong on field:" ) . " " . $field_key );
                     }
                 }
             }
@@ -380,7 +393,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     } else if ( isset( $field["value"] ) ) {
                         $field["key"] = "new-".$channel_key;
                         //create field
-                        $potential_error = self::add_contact_detail( $contact_id, $field["key"], $field["value"], false );
+                        $potential_error = self::add_contact_method( $contact_id, $field["key"], $field["value"], $field, false );
 
                     } else {
                         return new WP_Error( __FUNCTION__, __( "Is not an array or missing value on:" ) . " " . $details_key );
@@ -392,6 +405,32 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
         }
         return $fields;
+    }
+
+
+    /**
+     * Cached version of get_page_by_title so that we're not making unnecessary SQL all the time
+     *
+     * @param string $title Page title
+     * @param string $output Optional. Output type; OBJECT*, ARRAY_N, or ARRAY_A.
+     * @param string|array $post_type Optional. Post type; default is 'page'.
+     * @param $connection_type
+     *
+     * @return WP_Post|null WP_Post on success or null on failure
+     * @link http://vip.wordpress.com/documentation/uncached-functions/ Uncached Functions
+     */
+    private static function get_post_by_title_cached( $title, $output = OBJECT, $post_type = 'page', $connection_type ) {
+        $cache_key = $connection_type . '_' . sanitize_key( $title );
+        $page_id = wp_cache_get( $cache_key, 'get_page_by_title' );
+        if ( $page_id === false ) {
+            $page = get_page_by_title( $title, OBJECT, $post_type );
+            $page_id = $page ? $page->ID : 0;
+            wp_cache_set( $cache_key, $page_id, 'get_page_by_title', 3 * HOUR_IN_SECONDS ); // We only store the ID to keep our footprint small
+        }
+        if ( $page_id ){
+            return get_post( $page_id, $output );
+        }
+        return null;
     }
 
     private static function parse_connections( $contact_id, $fields, $existing_contact){
@@ -411,22 +450,35 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $connection_field = $fields[$connection_type];
                 $new_connections = [];
                 foreach ($connection_field["values"] as $connection_value ){
-                    if ( isset( $connection_value["delete"] ) && $connection_value["delete"] === true ){
-                        if ( in_array( $connection_value["value"], $existing_connections )){
-                            $potential_error = self::remove_contact_connection( $contact_id, $connection_type, $connection_value["value"], false );
-                            if ( is_wp_error( $potential_error ) ) {
-                                return $potential_error;
+                    if ( !is_numeric( $connection_value["value"] ) ){
+                        $post_types = self::$contact_connection_types;
+                        $post_types[] = "contacts";
+                        $post = self::get_post_by_title_cached( $connection_value["value"], OBJECT, $post_types, $connection_type );
+                        if ( $post && !is_wp_error( $post ) ){
+                            $connection_value["value"] = $post->ID;
+                        }
+                    }
+
+                    if ( is_numeric( $connection_value["value"] )){
+                        if ( isset( $connection_value["delete"] ) && $connection_value["delete"] === true ){
+                            if ( in_array( $connection_value["value"], $existing_connections )){
+                                $potential_error = self::remove_contact_connection( $contact_id, $connection_type, $connection_value["value"], false );
+                                if ( is_wp_error( $potential_error ) ) {
+                                    return $potential_error;
+                                }
+                            }
+                        } else if ( !empty( $connection_value["value"] )) {
+                            $new_connections[] = $connection_value["value"];
+                            if ( !in_array( $connection_value["value"], $existing_connections )){
+                                $potential_error = self::add_contact_detail( $contact_id, $connection_type, $connection_value["value"], false );
+                                if ( is_wp_error( $potential_error ) ) {
+                                    return $potential_error;
+                                }
+                                $fields["added_fields"][$connection_type] = $potential_error;
                             }
                         }
-                    } else if ( isset( $connection_value["value"] )) {
-                        $new_connections[] = $connection_value["value"];
-                        if ( !in_array( $connection_value["value"], $existing_connections )){
-                            $potential_error = self::add_contact_detail( $contact_id, $connection_type, $connection_value["value"], false );
-                            if ( is_wp_error( $potential_error ) ) {
-                                return $potential_error;
-                            }
-                            $fields["added_fields"][$connection_type] = $potential_error;
-                        }
+                    } else {
+                         return new WP_Error( __FUNCTION__, __( "Cannot determine target on connection:" ) . " " . $connection_type, [ 'status' => 500 ] );
                     }
                 }
                 //check for deleted connections
@@ -849,6 +901,32 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         return new WP_Error( "add_contact_detail", "Field not recognized", [ "status" => 400 ] );
     }
+
+    public static function add_contact_method( int $contact_id, string $key, string $value, array $field, bool $check_permissions ) {
+        if ( $check_permissions && ! self::can_update( 'contacts', $contact_id ) ) {
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+        }
+        if ( strpos( $key, "new-" ) === 0 ) {
+            $type = explode( '-', $key )[1];
+
+            $new_meta_key = '';
+            if ( isset( self::$channel_list[ $type ] ) ) {
+                //check if this is a new field and is in the channel list
+                $new_meta_key = Disciple_Tools_Contact_Post_Type::instance()->create_channel_metakey( $type, "contact" );
+            }
+            update_post_meta( $contact_id, $new_meta_key, $value );
+            $details = [ "verified" => false ];
+            foreach ( $field as $key => $value ){
+                if ( $key != "value" && $key != "key" ){
+                    $details[$key] = $value;
+                }
+            }
+            update_post_meta( $contact_id, $new_meta_key . "_details", $details );
+
+            return $new_meta_key;
+        }
+    }
+
 
     /**
      * @param int    $contact_id
@@ -1766,8 +1844,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             $contacts = $this->find_contacts_with( $field_id, $val["value"], $contact_id );
                             $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
                         } else if ( $this->get_field_details( $field_id, $contact_id )["type"] === "array" ){
-                            $contacts = $this->find_contacts_with( $field_id, $val, $contact_id );
-                            $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
+//                            @todo, specify which field(s) in the array to look for duplicates on
+//                            $contacts = $this->find_contacts_with( $field_id, $val, $contact_id );
+//                            $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
                         }
                     }
                 }
