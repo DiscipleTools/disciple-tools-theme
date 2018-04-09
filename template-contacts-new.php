@@ -35,6 +35,10 @@ dt_print_breadcrumbs(
                     <?php esc_html_e( "Phone number", "disciple_tools" ); ?>
                     <input name="phone" type="text" type="tel" placeholder="<?php esc_html_e( "Phone number", "disciple_tools" ); ?>">
                 </label>
+                <label>
+                    <?php esc_html_e( "Email", "disciple_tools" ); ?>
+                    <input name="email" type="text"  placeholder="<?php esc_html_e( "Email", "disciple_tools" ); ?>">
+                </label>
 
                 <label>
                     <?php esc_html_e( "Source", "disciple_tools" ); ?>
@@ -89,6 +93,7 @@ dt_print_breadcrumbs(
         API.create_contact({
             title: $(".js-create-contact input[name=title]").val(),
             contact_phone: [{value:$(".js-create-contact input[name=phone]").val()}],
+            contact_email: [{value:$(".js-create-contact input[name=email]").val()}],
             sources: {values:[{value:source}]},
             locations: {values:selectedLocations.map(i=>{return {value:i}})},
             initial_comment: $(".js-create-contact textarea[name=initial_comment]").val(),
@@ -112,7 +117,7 @@ dt_print_breadcrumbs(
         minLength: 0,
         searchOnFocus: true,
         maxItem: 20,
-        maxItemPerGroup: 6,
+        // maxItemPerGroup: 6,
         template: function (query, item) {
             return `<span>${_.escape(item.name)}</span>`
         },
