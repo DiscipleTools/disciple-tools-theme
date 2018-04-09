@@ -4,4 +4,4 @@ node_modules/
 .env
 .idea
 .DS_Store
-single-groups.php
+dt-people-groups/json/*
