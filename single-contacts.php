@@ -228,19 +228,7 @@ declare( strict_types=1 );
                                         </div>
                                     </div>
 
-                                    <div class="section-subheader"><?php echo esc_html( $contact_fields["bible_mailing"]["name"] ) ?></div>
-                                    <select id="bible_mailing" class="select-field">
-                                        <?php
-                                        foreach ( $contact_fields["bible_mailing"]["default"] as $key => $value ) {
-                                            if ( isset( $contact["bible_mailing"] ) &&
-                                                $contact["bible_mailing"]["key"] === $key ){
-                                                echo '<option value="'. esc_html( $key ) . '" selected>' . esc_html( $value ) . '</option>';
-                                            } else {
-                                                echo '<option value="'. esc_html( $key ) . '">' . esc_html( $value ). '</option>';
-                                            }
-                                        }
-                                        ?>
-                                    </select>
+
                                 </div>
                             </section>
 
