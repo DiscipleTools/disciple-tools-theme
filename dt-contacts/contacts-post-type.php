@@ -762,18 +762,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
 
         // Misc Information fields
-        $fields['bible_mailing'] = [
-            'name'        => __( 'Bible Mailing', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-                'not-set'   => __( 'None', 'disciple_tools' ),
-                'requested' => __( 'Requested', 'disciple_tools' ),
-                'mailed'    => __( 'Bible mailed', 'disciple_tools' ),
-                'received'  => __( 'Received', 'disciple_tools' ),
-            ],
-            'section'     => 'misc',
-        ];
+
         $fields['gender'] = [
             'name'        => __( 'Gender', 'disciple_tools' ),
             'description' => '',

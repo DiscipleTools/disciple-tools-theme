@@ -101,51 +101,51 @@ class Disciple_Tools_Activity_Log_API {
             }
         }
 
-        // Make sure for non duplicate.
-        $check_duplicate = $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT
-                     `histid`
-                FROM
-                    `$wpdb->dt_activity_log`
-                WHERE
-                    `user_caps` = %s
-                    AND `action` = %s
-                    AND `object_type` = %s
-                    AND `object_subtype` = %s
-                    AND `object_name` = %s
-                    AND `user_id` = %s
-                    AND `hist_ip` = %s
-                    AND `hist_time` = %s
-                    AND `object_note` = %s
-                    AND `meta_id` = %s
-                    AND `meta_key` = %s
-                    AND `meta_value` = %s
-                    AND `meta_parent` = %s
-                    AND `old_value` = %s
-                    AND `field_type` = %s
-				;",
-                $args['user_caps'],
-                $args['action'],
-                $args['object_type'],
-                $args['object_subtype'],
-                $args['object_name'],
-                $args['user_id'],
-                $args['hist_ip'],
-                $args['hist_time'],
-                $args['object_note'],
-                $args['meta_id'],
-                $args['meta_key'],
-                $args['meta_value'],
-                $args['meta_parent'],
-                $args['old_value'],
-                $args['field_type']
-            )
-        );
-
-        if ( $check_duplicate ) {
-            return;
-        }
+//        // Make sure for non duplicate.
+//        $check_duplicate = $wpdb->get_row(
+//            $wpdb->prepare(
+//                "SELECT
+//                     `histid`
+//                FROM
+//                    `$wpdb->dt_activity_log`
+//                WHERE
+//                    `user_caps` = %s
+//                    AND `action` = %s
+//                    AND `object_type` = %s
+//                    AND `object_subtype` = %s
+//                    AND `object_name` = %s
+//                    AND `user_id` = %s
+//                    AND `hist_ip` = %s
+//                    AND `hist_time` = %s
+//                    AND `object_note` = %s
+//                    AND `meta_id` = %s
+//                    AND `meta_key` = %s
+//                    AND `meta_value` = %s
+//                    AND `meta_parent` = %s
+//                    AND `old_value` = %s
+//                    AND `field_type` = %s
+//                ;",
+//                $args['user_caps'],
+//                $args['action'],
+//                $args['object_type'],
+//                $args['object_subtype'],
+//                $args['object_name'],
+//                $args['user_id'],
+//                $args['hist_ip'],
+//                $args['hist_time'],
+//                $args['object_note'],
+//                $args['meta_id'],
+//                $args['meta_key'],
+//                $args['meta_value'],
+//                $args['meta_parent'],
+//                $args['old_value'],
+//                $args['field_type']
+//            )
+//        );
+//
+//        if ( $check_duplicate ) {
+//            return;
+//        }
 
         $wpdb->insert(
             $wpdb->dt_activity_log,
