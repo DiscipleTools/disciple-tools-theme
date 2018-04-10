@@ -124,7 +124,7 @@ class Disciple_Tools_Activity_Log_API {
 //                    AND `meta_parent` = %s
 //                    AND `old_value` = %s
 //                    AND `field_type` = %s
-//				;",
+//                ;",
 //                $args['user_caps'],
 //                $args['action'],
 //                $args['object_type'],
