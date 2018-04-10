@@ -2,19 +2,16 @@
 
     <div id="content">
 
-        <div id="inner-content" class="row">
+        <div id="inner-content" class="grid-x grid-padding-x">
 
-            <main id="main" class="large-8 medium-8 columns" role="main">
+            <div class="cell bordered-box">
+                <header class="article-header">
+                    <h1><?php esc_html_e( 'Permission denied', 'disciple_tools' ); ?></h1>
 
-                <article id="content-not-found">
+                </header> <!-- end article header -->
 
-                    <header class="article-header">
-                        <h1><?php esc_html_e( 'Epic 403 - Permission denied', 'disciple_tools' ); ?></h1>
-
-                    </header> <!-- end article header -->
-
-                    <section class="entry-content">
-                        <p>
+                <section class="entry-content">
+                    <p>
                         <?php
                         $type = "item";
                         if ( is_singular( "contacts" )){
@@ -23,14 +20,15 @@
                             $type = __( "group", "disciple_tools" );
                         }
                         $id = GET_THE_ID();
-                        echo sprintf( esc_html__( 'You don\'t have permission to view the %1$s with id %2$s.', 'disciple_tools' ), esc_html( $type ), esc_html( $id ) ); ?>
-                        </p>
-                    </section> <!-- end article section -->
+                        echo sprintf( esc_html__( 'Sorry, you don\'t have permission to view the %1$s with id %2$s.', 'disciple_tools' ), esc_html( $type ), esc_html( $id ) );
+                        echo '<br>';
+                        echo __('Request permission from your administrator.', 'zume');
+                        // @todo Add a request for permission form here, which could leave a comment on the record, and notify the owner of the record to share the record.
+                        ?>
 
-
-                </article> <!-- end article -->
-
-            </main> <!-- end #main -->
+                    </p>
+                </section> <!-- end article section -->
+            </div>
 
         </div> <!-- end #inner-content -->
 
