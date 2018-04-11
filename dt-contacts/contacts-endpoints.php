@@ -331,7 +331,8 @@ class Disciple_Tools_Contacts_Endpoints
                 }
             }
             $user_id = get_current_user_id();
-            if ( $contact_array["overall_status"] === "assigned" && $contact_array["assigned_to"]["id"] == $user_id){
+            if ( isset( $contact_array["overall_status"] ) && isset( $contact_array["assigned_to"]["id"] ) &&
+                 $contact_array["overall_status"] === "assigned" && $contact_array["assigned_to"]["id"] == $user_id){
                 $contact_array["requires_update"] = true;
             }
             $rv[] = $contact_array;

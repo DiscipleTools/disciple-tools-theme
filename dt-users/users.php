@@ -50,6 +50,7 @@ class Disciple_Tools_Users
                 'user_nicename',
                 'user_email',
                 'user_url',
+                'display_name'
             ],
         ] );
 
