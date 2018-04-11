@@ -235,11 +235,9 @@ jQuery(document).ready(function($) {
   typeaheadTotals.sources = 0;
   let sourcesData = []
   console.log(contact);
-  console.log(contactsDetailsWpApiSettings.contacts_custom_fields_settings.sources.default);
   _.forOwn(contactsDetailsWpApiSettings.contacts_custom_fields_settings.sources.default, (sourceValue, sourceKey)=>{
     sourcesData.push({key:sourceKey, value:sourceValue})
   })
-  console.log(sourcesData);
   $.typeahead({
     input: '.js-typeahead-sources',
     minLength: 0,
@@ -419,9 +417,31 @@ jQuery(document).ready(function($) {
     input: '.js-typeahead-assigned_to',
     minLength: 0,
     searchOnFocus: true,
-    source: typeaheadSource('assigned_to', 'dt/v1/users/get_users'),
-    display: "name",
+    source: {
+      users: {
+        display: ["name", "user"],
+        ajax: {
+          url: contactsDetailsWpApiSettings.root + 'dt/v1/users/get_users',
+          data: {
+            s: "{{query}}"
+          },
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+          },
+          callback: {
+            done: function (data) {
+              typeaheadTotals["assigned_id"] = data.total || data.length
+              return data.posts || data
+            }
+          }
+        }
+      }
+    },
+
     templateValue: "{{name}}",
+    template: function (query, item) {
+      return `<span>${item.name}</span>`
+    },
     dynamic: true,
     hint: true,
     emptyTemplate: 'No users found "{{query}}"',
@@ -452,7 +472,6 @@ jQuery(document).ready(function($) {
         $('.assigned_to-result-container').html("");
       }
     },
-    debug:true
   });
   $('.search_assigned_to').on('click', function () {
     let id = $(this).data("id")
