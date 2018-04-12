@@ -25,6 +25,8 @@ class Disciple_Tools_Google_Geocode_API
     /**
      * Google geocoding service
      *
+     * Supply a `physical address` or for reverse lookup supply `latitude,longitude`
+     *
      * @param $address          string   Can be an address or a geolocation lat, lng
      * @param $type             string      Default is 'full_object', which returns full google response, 'coordinates only' returns array with coordinates_only
      *                          and 'core' returns an array of the core information elements of the google response.
@@ -176,6 +178,8 @@ class Disciple_Tools_Google_Geocode_API
     }
 
     /**
+     * Parse the raw Google API response to get specific information
+     *
      * @param $raw_response (full raw response from Google GeoCoding Lookup.)
      * @param $item (string)
      *              country - (string) long country name
@@ -366,6 +370,14 @@ class Disciple_Tools_Google_Geocode_API
                 break;
 
             case 'political':
+                $political = [];
+                foreach( $raw['address_components'] as $component ) {
+                    $designation = $component['types'][1] ?? '';
+                    if( 'political' == $designation ) {
+                        $political[] = $component;
+                    }
+                }
+                return $political ?: false;
                 break;
 
             case 'full':
@@ -377,5 +389,17 @@ class Disciple_Tools_Google_Geocode_API
                 break;
         }
     }
+
+    public static function check_valid_request_result( $raw_result ) : bool {
+        if ( empty( $raw_result ) || ! isset( $raw_result['status'] ) || ! isset( $raw_result['results'][0] ) ) {
+            return false;
+        }
+
+        if ( 'OK' == $raw_result['status'] && isset( $raw_result['results'][0] ) ) {
+            return true;
+        }
+        return false;
+    }
+
 
 }
