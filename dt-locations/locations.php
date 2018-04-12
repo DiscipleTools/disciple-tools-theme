@@ -14,8 +14,54 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * Class Disciple_Tools_Locations
  */
-class Disciple_Tools_Locations
+class Disciple_Tools_Locations extends Disciple_Tools_Posts
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    public static function create_location( $fields = [], $check_permissions = true )
+    {
+
+        if ( $check_permissions && !current_user_can( 'publish_locations' ) ) {
+            return new WP_Error( __FUNCTION__, __( "You may not publish a contact" ), [ 'status' => 403 ] );
+        }
+
+        $args = wp_parse_args(
+            $fields,
+            [
+                'post_title'        => __('No Title'),
+                'post_parent'       => '',
+                'post_type'         => "locations",
+                "post_status"       => 'publish',
+                'meta_input'        => [
+                    'location'      => [],
+                    'lat'           => '',
+                    'lng'           => '',
+                    'northeast_lat' => '',
+                    'northeast_lng' => '',
+                    'southwest_lat' => '',
+                    'southwest_lng' => '',
+                ],
+            ]
+        );
+
+        $post_id = wp_insert_post( $args );
+
+        // Fire action after insert.
+        do_action( 'dt_create_location', $args );
+
+        return $post_id;
+    }
+
+    public static function update_location( $fields = [], $check_permissions = true ) {
+        // @todo
+    }
+
+    public static function delete_location( $post_id, $check_permissions = true ) {
+        // @todo
+    }
 
     /**
      * Get all locations in database
@@ -36,6 +82,187 @@ class Disciple_Tools_Locations
         $query = new WP_Query( $query_args );
 
         return $query->posts;
+    }
+
+    public static function convert_google_result_to_location_array( $raw_google_result ) {
+        /**
+        [raw] => Array
+        (
+        [results] => Array
+        (
+        [0] => Array
+        (
+        [address_components] => Array
+        (
+        [0] => Array
+        (
+        [long_name] => 9134
+        [short_name] => 9134
+        [types] => Array
+        (
+        [0] => street_number
+        )
+
+        )
+
+        [1] => Array
+        (
+        [long_name] => Woodland Drive
+        [short_name] => Woodland Dr
+        [types] => Array
+        (
+        [0] => route
+        )
+
+        )
+
+        [2] => Array
+        (
+        [long_name] => Northridge
+        [short_name] => Northridge
+        [types] => Array
+        (
+        [0] => neighborhood
+        [1] => political
+        )
+
+        )
+
+        [3] => Array
+        (
+        [long_name] => Littleton
+        [short_name] => Littleton
+        [types] => Array
+        (
+        [0] => locality
+        [1] => political
+        )
+
+        )
+
+        [4] => Array
+        (
+        [long_name] => Douglas County
+        [short_name] => Douglas County
+        [types] => Array
+        (
+        [0] => administrative_area_level_2
+        [1] => political
+        )
+
+        )
+
+        [5] => Array
+        (
+        [long_name] => Colorado
+        [short_name] => CO
+        [types] => Array
+        (
+        [0] => administrative_area_level_1
+        [1] => political
+        )
+
+        )
+
+        [6] => Array
+        (
+        [long_name] => United States
+        [short_name] => US
+        [types] => Array
+        (
+        [0] => country
+        [1] => political
+        )
+
+        )
+
+        [7] => Array
+        (
+        [long_name] => 80126
+        [short_name] => 80126
+        [types] => Array
+        (
+        [0] => postal_code
+        )
+
+        )
+
+        [8] => Array
+        (
+        [long_name] => 2276
+        [short_name] => 2276
+        [types] => Array
+        (
+        [0] => postal_code_suffix
+        )
+
+        )
+
+        )
+
+        [formatted_address] => 9134 Woodland Dr, Littleton, CO 80126, USA
+        [geometry] => Array
+        (
+        [location] => Array
+        (
+        [lat] => 39.550007
+        [lng] => -104.988124
+        )
+
+        [location_type] => ROOFTOP
+        [viewport] => Array
+        (
+        [northeast] => Array
+        (
+        [lat] => 39.551355980291
+        [lng] => -104.98677501971
+        )
+
+        [southwest] => Array
+        (
+        [lat] => 39.548658019708
+        [lng] => -104.98947298029
+        )
+
+        )
+
+        )
+
+        [place_id] => ChIJb7OyjEyCbIcRdsbUSyhASfU
+        [types] => Array
+        (
+        [0] => street_address
+        )
+
+        )
+
+        )
+
+        [status] => OK
+        )
+
+        )
+
+         */
+
+        $locations_array = [
+            'post_title'        => '',
+            'post_parent'       => '',
+            'post_type'         => "locations",
+            "post_status"       => 'publish',
+            'meta_input'        => [
+                'location'      => [],
+                'lat'           => '',
+                'lng'           => '',
+                'northeast_lat' => '',
+                'northeast_lng' => '',
+                'southwest_lat' => '',
+                'southwest_lng' => '',
+            ],
+        ];
+
+
+
     }
 
     /**

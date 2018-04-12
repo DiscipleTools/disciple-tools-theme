@@ -18,7 +18,9 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Google_Geocode_API
 {
-    public static $key = 'AIzaSyDn0D_ePCkkQF6CYS7UPy7mbzCuJBRQmw8';
+    public static function key() {
+        return dt_get_option( 'map_key' );
+    }
 
     /**
      * Google geocoding service
@@ -29,12 +31,12 @@ class Disciple_Tools_Google_Geocode_API
      *
      * @return array|mixed|object|bool
      */
-    public static function query_google_api( $address, $type = 'full_object' )
+    public static function query_google_api( $address, $type = 'raw' )
     {
         $address = str_replace( '   ', ' ', $address );
         $address = str_replace( '  ', ' ', $address );
         $address = urlencode( trim( $address ) );
-        $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&key=' . self::$key;
+        $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&key=' . self::key();
         $details = json_decode( self::url_get_contents( $url_address ), true );
 
         if ( $details['status'] == 'ZERO_RESULTS' ) {
@@ -78,7 +80,7 @@ class Disciple_Tools_Google_Geocode_API
                     ];
                     break;
                 default:
-                    return $details; // full_object returned
+                    return $details; // raw response
                     break;
             }
         }
@@ -138,7 +140,7 @@ class Disciple_Tools_Google_Geocode_API
         $address = str_replace( '   ', ' ', $address );
         $address = str_replace( '  ', ' ', $address );
         $address = urlencode( trim( $address ) );
-        $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&key=' . self::$key;
+        $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&key=' . self::key();
         $details = json_decode( self::url_get_contents( $url_address ) );
 
         if ($details->status == 'ZERO_RESULTS' ) {
@@ -171,6 +173,62 @@ class Disciple_Tools_Google_Geocode_API
             $ip = $_SERVER['REMOTE_ADDR'];
         }
         return $ip;
+    }
+
+
+    public static function parse_raw_result( $item ) {
+        switch( $item ) {
+            case 'country':
+                break;
+            case 'country_short_name':
+                break;
+            case 'admin1':
+                break;
+            case 'admin2':
+                break;
+            case 'admin3':
+                break;
+            case 'locality':
+                break;
+            case 'neighborhood':
+                break;
+            case 'postal_code':
+                break;
+            case 'lnglat':
+                break;
+            case 'lat':
+                break;
+            case 'lng':
+                break;
+            case 'northeast':
+                break;
+            case 'northeast_lng':
+                break;
+            case 'northeast_lat':
+                break;
+            case 'southwest':
+                break;
+            case 'southwest_lng':
+                break;
+            case 'southwest_lat':
+                break;
+            case 'location_type':
+                break;
+            case 'address_components':
+                break;
+            case 'formatted_address':
+                break;
+            case 'geometry':
+                break;
+            case 'bounds':
+                break;
+            case 'viewport':
+                break;
+            case 'place_id':
+                break;
+            case 'political':
+                break;
+        }
     }
 
 }
