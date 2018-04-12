@@ -170,7 +170,7 @@ class Disciple_Tools_Import_CSV
                                         style="cursor:auto;padding:10px;">Templates</h3>
                                     <div class="inside">
                                         Locations Template<br>
-                                        <a href="<?php echo esc_url( get_template_directory_uri() ) . '/dt-core/admin/utilities/locations-template.csv' ?>" target="_blank" rel="noopener noreferrer">Locations Import Template</a>
+                                        <a href="<?php echo esc_url( get_template_directory_uri() ) . '/dt-locations/utilities/locations-template.csv' ?>" target="_blank" rel="noopener noreferrer">Locations Import Template</a>
                                     </div>
                                 </div>
                             </div>

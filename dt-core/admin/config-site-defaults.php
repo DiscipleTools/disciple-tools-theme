@@ -474,4 +474,3 @@ function dt_custom_dir_attr( $lang ){
     $dir_attr = 'dir="' . $dir . '"';
     return 'lang="' . $user_language .'" ' .$dir_attr;
 }
-

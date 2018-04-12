@@ -143,11 +143,6 @@ final class Disciple_Tools_Config
                 $object = new Disciple_Tools_Custom_Lists_Tab();
                 $object->content(); // prints
                 break;
-            case 'site-links':
-                require_once( 'tab-site-links.php' );
-//                $object = new Disciple_Tools_Site_Links_Tab();
-//                $object->content(); // prints
-                break;
             case 'google_map':
                 require_once( 'tab-keys.php' );
                 $object = new Disciple_Tools_Keys_Tab();
@@ -199,11 +194,10 @@ final class Disciple_Tools_Config
         switch ( $tab ) {
 
             case 'import':
-                require_once( get_template_directory() . '/dt-core/admin/utilities/locations-import-csv.php' );
+                require_once( get_template_directory() . '/dt-locations/utilities/locations-import-csv.php' );
                 $object = new Disciple_Tools_Import_CSV();
                 $object->wizard(); // prints
                 break;
-
 
             default:
                 break;
