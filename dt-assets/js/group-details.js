@@ -507,6 +507,65 @@ jQuery(document).ready(function($) {
     }
   });
 
+  /**
+   * leaders
+   */
+  typeaheadTotals.leaders = 0;
+  $.typeahead({
+    input: '.js-typeahead-leaders',
+    minLength: 0,
+    searchOnFocus: true,
+    maxItem: 20,
+    template: function (query, item) {
+      return `<span>${_.escape(item.name)}</span>`
+    },
+    source: typeaheadSource('leaders', 'dt/v1/contacts/compact/'),
+    display: "name",
+    templateValue: "{{name}}",
+    dynamic: true,
+    multiselect: {
+      matchOn: ["ID"],
+      data: function () {
+        return group.leaders.map(g=>{
+          return {ID:g.ID, name:g.post_title}
+        })
+      }, callback: {
+        onCancel: function (node, item) {
+          API.save_field_api('group', groupId, {'leaders': {values:[{value:item.ID, delete:true}]}}).then(()=>{
+            $(`.leaders-list .${item.ID}`).remove()
+            let listItems = $(`.leaders-list li`)
+            if (listItems.length === 0){
+              $(`.leaders-list.details-list`).append(`<li id="no-location">${wpApiGroupsSettings.translations["not-set"]["location"]}</li>`)
+            }
+          })
+        }
+      },
+      href: "/contacts/{{ID}}"
+    },
+    callback: {
+      onClick: function(node, a, item, event){
+        API.save_field_api('group', groupId, {'leaders': {values:[{value:item.ID}]}}).then((addedItem)=>{
+          $('.leaders-list').append(`<li class="${addedItem.ID}">
+            <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
+          </li>`)
+          $("#no-location").remove()
+        })
+        masonGrid.masonry('layout')
+      },
+      onResult: function (node, query, result, resultCount) {
+        resultCount = typeaheadTotals.leaders
+        let text = typeaheadHelpText(resultCount, query, result)
+        $('#leaders-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('#leaders-result-container').html("");
+      },
+      onReady: function () {
+        $('.leaders').addClass('details-edit')
+      }
+    }
+  });
+
 
   //for a new address field that has not been saved yet
   $(document).on('change', '#new-address', function (val) {

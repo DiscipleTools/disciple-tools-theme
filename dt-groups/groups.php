@@ -39,7 +39,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     "parent_groups",
                     "child_groups",
                     "locations",
-                    "people_groups"
+                    "people_groups",
+                    "leaders"
                 ];
                 self::$channel_list = [
                     "address"
@@ -122,6 +123,19 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 $l->permalink = get_permalink( $l->ID );
             }
             $fields["members"] = $members;
+
+            $leaders = get_posts(
+                [
+                    'connected_type'   => 'groups_to_leaders',
+                    'connected_items'  => $group,
+                    'nopaging'         => true,
+                    'suppress_filters' => false,
+                ]
+            );
+            foreach ( $leaders as $l ) {
+                $l->permalink = get_permalink( $l->ID );
+            }
+            $fields["leaders"] = $leaders;
 
             $child_groups = get_posts(
                 [
@@ -497,6 +511,20 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     /**
      * @param int $group_id
+     * @param int $leader_id
+     *
+     * @return mixed
+     */
+    public static function add_leader_to_group( int $group_id, int $leader_id )
+    {
+        return p2p_type( 'groups_to_leaders' )->connect(
+            $group_id, $leader_id,
+            [ 'date' => current_time( 'mysql' ) ]
+        );
+    }
+
+    /**
+     * @param int $group_id
      * @param int $post_id
      *
      * @return mixed
@@ -559,6 +587,17 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     /**
      * @param int $group_id
+     * @param int $leader_id
+     *
+     * @return mixed
+     */
+    public static function remove_leader_from_group( int $group_id, int $leader_id )
+    {
+        return p2p_type( 'groups_to_leaders' )->disconnect( $group_id, $leader_id );
+    }
+
+    /**
+     * @param int $group_id
      * @param int $post_id
      *
      * @return mixed
@@ -607,6 +646,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $connect = self::add_member_to_group( $group_id, $value );
         } elseif ( $key === "people_groups" ) {
             $connect = self::add_people_group_to_group( $group_id, $value );
+        } elseif ( $key === "leaders" ) {
+            $connect = self::add_leader_to_group( $group_id, $value );
         } elseif ( $key === "child_groups" ) {
             $connect = self::add_child_group_to_group( $group_id, $value );
         } elseif ( $key === "parent_groups" ) {
@@ -685,6 +726,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return self::remove_location_from_group( $group_id, $value );
         } elseif ( $key === "members" ) {
             return self::remove_member_from_group( $group_id, $value );
+        } elseif ( $key === "leaders" ) {
+            return self::remove_leader_from_group( $group_id, $value );
         } elseif ( $key === "people_groups" ) {
             return self::remove_people_group_from_group( $group_id, $value );
         } elseif ( $key === "child_groups" ) {
@@ -852,7 +895,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
         //hook for signaling that a group has been created and the initial fields
         if ( !is_wp_error( $post_id )){
-            do_action( "dt_contact_created", $post_id, $initial_fields );
+            do_action( "dt_group_created", $post_id, $initial_fields );
         }
         return $post_id;
     }

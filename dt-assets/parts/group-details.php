@@ -146,6 +146,41 @@ function dt_contact_details_edit( $id, $field_type, $remove = false ){
                     </div>
                 </div>
             </div>
+
+
+            <div class="section-subheader">
+                <?php esc_html_e( 'Leaders', 'disciple_tools' )?>
+            </div>
+            <ul class="details-list leaders-list">
+                <?php
+                foreach ($group["leaders"] ?? [] as $value){
+                    ?>
+                    <li class="<?php echo esc_html( $value->ID )?>">
+                        <a href="<?php echo esc_url( $value->permalink ) ?>"><?php echo esc_html( $value->post_title ) ?></a>
+                    </li>
+                <?php }
+                if (sizeof( $group["leaders"] ) === 0){
+                    ?> <li id="no-leaders"><?php esc_html_e( "No leaders set", 'disciple_tools' ) ?></li>
+                    <?php
+                }
+                ?>
+            </ul>
+
+            <div class="leaders">
+                <var id="leaders-result-container" class="result-container leaders-result-container"></var>
+                <div id="leaders_t" name="form-leaders">
+                    <div class="typeahead__container">
+                        <div class="typeahead__field">
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-leaders input-height"
+                                       name="leaders[query]" placeholder="<?php esc_html_e( "Search Leaders", 'disciple_tools' ) ?>"
+                                       autocomplete="off">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
 

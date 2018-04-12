@@ -289,6 +289,14 @@ class Disciple_Tools_Posts
                 $object_note_to = __( 'Removed from location', 'disciple_tools' ) . ' ' . $to_title;
                 $object_note_from = __( 'Removed from location', 'disciple_tools' ) . ' ' . $to_title;
             }
+        } else if ( $p2p_type === "groups_to_leaders"){
+            if ($action == "connected to"){
+                $object_note_to = __( 'Added to leaders in group', 'disciple_tools' ) . ': ' . $from_title;
+                $object_note_from = $to_title . ' ' . __( 'added to leaders', 'disciple_tools' );
+            } else {
+                $object_note_to = __( 'Removed from leaders in group', 'disciple_tools' ) . ': ' . $from_title;
+                $object_note_from = $to_title . ' ' . __( 'Removed from leaders', 'disciple_tools' );
+            }
         } else {
             if ($action == "connected to"){
                 $object_note_to = __( 'Connected to', 'disciple_tools' ) . ' ' . $to_title;

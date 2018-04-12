@@ -159,6 +159,7 @@ function dt_site_scripts() {
                 "not-set"     => [
                     "source"     => __( 'No source set', 'disciple_tools' ),
                     "location"     => __( 'No location set', 'disciple_tools' ),
+                    "leaders"     => __( 'No leaders set', 'disciple_tools' ),
                     "people-group" => __( 'No people group set', 'disciple_tools' ),
                     "email"        => __( 'No email set', 'disciple_tools' ),
                     "phone"        => __( 'No phone set', 'disciple_tools' ),
