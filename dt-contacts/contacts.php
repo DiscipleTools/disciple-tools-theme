@@ -644,6 +644,30 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
     }
 
+    public static function get_contact_for_user( $user ){
+//        if ( $user->has_cap( 'access_contacts' ) ) {
+        $args = [
+            'post_type'  => 'contacts',
+            'relation'   => 'AND',
+            'meta_query' => [
+                [
+                    'key' => "corresponds_to_user",
+                    "value" => $user->ID
+                ],
+                [
+                    'key' => "is_a_user",
+                    "value" => "yes"
+                ],
+            ],
+        ];
+        $contacts = new WP_Query( $args );
+        if ( isset( $contacts->post->ID ) ){
+            return $contacts->post->ID;
+        } else {
+            return null;
+        }
+    }
+
     /**
      * @param $contact_id
      * @param $location_id
@@ -750,6 +774,20 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function add_subassigned_to_contact( $contact_id, $subassigned )
     {
+        if ( filter_var( $subassigned, FILTER_VALIDATE_EMAIL ) ){
+            $user = get_user_by( "email", $subassigned );
+            if ( $user ){
+                $contact_to_subassign = self::get_contact_for_user( $user );
+                if ( $contact_to_subassign ){
+                    $subassigned = $contact_to_subassign;
+                }
+            }
+        }
+        $user_id = get_post_meta( $subassigned, "corresponds_to_user", true );
+        if ( $user_id ){
+            self::add_shared_on_contact( $contact_id, $user_id );
+        }
+
         return p2p_type( 'contacts_to_subassigned' )->connect(
             $subassigned, $contact_id,
             [ 'date' => current_time( 'mysql' ) ]
