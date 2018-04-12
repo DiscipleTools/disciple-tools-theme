@@ -139,6 +139,13 @@ class Disciple_Tools_Keys_Tab
 
     public function is_default_key( $current_key ): bool
     {
+
+        if ( empty( $current_key ) ) {
+            dt_get_option( 'map_key' );
+            return true;
+        }
+
+
         $default_keys = dt_default_google_api_keys();
         foreach ( $default_keys as $default_key ) {
             if ( $default_key === $current_key ) {
