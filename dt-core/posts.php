@@ -835,4 +835,29 @@ class Disciple_Tools_Posts
         ) );
         return $most_recent_activity[0];
     }
+
+    /**
+     * Cached version of get_page_by_title so that we're not making unnecessary SQL all the time
+     *
+     * @param string $title Page title
+     * @param string $output Optional. Output type; OBJECT*, ARRAY_N, or ARRAY_A.
+     * @param string|array $post_type Optional. Post type; default is 'page'.
+     * @param $connection_type
+     *
+     * @return WP_Post|null WP_Post on success or null on failure
+     * @link http://vip.wordpress.com/documentation/uncached-functions/ Uncached Functions
+     */
+    public static function get_post_by_title_cached( $title, $output = OBJECT, $post_type = 'page', $connection_type ) {
+        $cache_key = $connection_type . '_' . sanitize_key( $title );
+        $page_id = wp_cache_get( $cache_key, 'get_page_by_title' );
+        if ( $page_id === false ) {
+            $page = get_page_by_title( $title, OBJECT, $post_type );
+            $page_id = $page ? $page->ID : 0;
+            wp_cache_set( $cache_key, $page_id, 'get_page_by_title', 3 * HOUR_IN_SECONDS ); // We only store the ID to keep our footprint small
+        }
+        if ( $page_id ){
+            return get_post( $page_id, $output );
+        }
+        return null;
+    }
 }

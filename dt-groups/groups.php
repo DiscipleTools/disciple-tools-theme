@@ -287,22 +287,34 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 $connection_field = $fields[$connection_type];
                 $new_connections = [];
                 foreach ($connection_field["values"] as $connection_value ){
-                    if ( isset( $connection_value["delete"] ) && $connection_value["delete"] === true ){
-                        if ( in_array( $connection_value["value"], $existing_connections )){
-                            $potential_error = self::remove_group_connection( $group_id, $connection_type, $connection_value["value"], false );
-                            if ( is_wp_error( $potential_error ) ) {
-                                return $potential_error;
+                    if ( isset( $connection_value["value"] ) && !is_numeric( $connection_value["value"] ) ){
+                        $post_types = self::$group_connection_types;
+                        $post_types[] = "groups";
+                        $post = self::get_post_by_title_cached( $connection_value["value"], OBJECT, $post_types, $connection_type );
+                        if ( $post && !is_wp_error( $post ) ){
+                            $connection_value["value"] = $post->ID;
+                        }
+                    }
+                    if ( isset( $connection_value["value"] ) && is_numeric( $connection_value["value"] )){
+                        if ( isset( $connection_value["delete"] ) && $connection_value["delete"] === true ){
+                            if ( in_array( $connection_value["value"], $existing_connections )){
+                                $potential_error = self::remove_group_connection( $group_id, $connection_type, $connection_value["value"], false );
+                                if ( is_wp_error( $potential_error ) ) {
+                                    return $potential_error;
+                                }
+                            }
+                        } else {
+                            $new_connections[] = $connection_value["value"];
+                            if ( !in_array( $connection_value["value"], $existing_connections )){
+                                $potential_error = self::add_item_to_field( $group_id, $connection_type, $connection_value["value"], false );
+                                if ( is_wp_error( $potential_error ) ) {
+                                    return $potential_error;
+                                }
+                                $added_fields[$connection_type] = $potential_error;
                             }
                         }
                     } else {
-                        $new_connections[] = $connection_value["value"];
-                        if ( !in_array( $connection_value["value"], $existing_connections )){
-                            $potential_error = self::add_item_to_field( $group_id, $connection_type, $connection_value["value"], false );
-                            if ( is_wp_error( $potential_error ) ) {
-                                return $potential_error;
-                            }
-                            $added_fields[$connection_type] = $potential_error;
-                        }
+                         return new WP_Error( __FUNCTION__, __( "Cannot determine target on connection:" ) . " " . $connection_type, [ 'status' => 500 ] );
                     }
                 }
                 //check for deleted connections
@@ -388,6 +400,19 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         }
 
         if ( isset( $fields["assigned_to"] ) ) {
+            if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
+                $user = get_user_by( "email", $fields["assigned_to"] );
+                if ( $user ) {
+                    $fields["assigned_to"] = $user->ID;
+                } else {
+                    return new WP_Error( __FUNCTION__, __( "Unrecognized user" ), $fields["assigned_to"] );
+                }
+            }
+            //make sure the assigned to is in the right format (user-1)
+            if ( is_numeric( $fields["assigned_to"] ) ||
+                 strpos( $fields["assigned_to"], "user" ) === false ){
+                $fields["assigned_to"] = "user-" . $fields["assigned_to"];
+            }
             $user_id = explode( '-', $fields["assigned_to"] )[1];
             if ( $user_id ){
                 self::add_shared( "groups", $group_id, $user_id, null, false );
@@ -760,6 +785,22 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, __( "Group needs a title" ), [ 'fields' => $fields ] );
         }
 
+        if ( isset( $fields["assigned_to"] ) ) {
+            if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
+                $user = get_user_by( "email", $fields["assigned_to"] );
+                if ( $user ) {
+                    $fields["assigned_to"] = $user->ID;
+                } else {
+                    return new WP_Error( __FUNCTION__, __( "Unrecognized user" ), $fields["assigned_to"] );
+                }
+            }
+            //make sure the assigned to is in the right format (user-1)
+            if ( is_numeric( $fields["assigned_to"] ) ||
+                 strpos( $fields["assigned_to"], "user" ) === false ){
+                $fields["assigned_to"] = "user-" . $fields["assigned_to"];
+            }
+        }
+
         $defaults = [
             "group_status" => "active",
             "group_type" => "pre-group",
@@ -784,6 +825,13 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         ];
 
         $post_id = wp_insert_post( $post );
+
+        if ( isset( $fields["assigned_to"] )){
+            $user_id = explode( '-', $fields["assigned_to"] )[1];
+            if ( $user_id ){
+                self::add_shared( "groups", $post_id, $user_id, null, false );
+            }
+        }
 
         $potential_error = self::parse_contact_methods( $post_id, $contact_methods_and_connections );
         if ( is_wp_error( $potential_error )){
