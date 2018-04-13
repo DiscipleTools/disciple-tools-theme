@@ -123,6 +123,8 @@ final class Disciple_Tools_Config
         }
         echo '">Google Map API</a>';
 
+        do_action('dt_settings_tab_menu');
+
         echo '</h2>';
 
 
@@ -150,6 +152,9 @@ final class Disciple_Tools_Config
                 break;
 
             default:
+
+                do_action('dt_settings_tab_content', $tab );
+
                 break;
         }
 
