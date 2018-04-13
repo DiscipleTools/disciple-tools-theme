@@ -109,7 +109,7 @@ class Disciple_Tools_Locations_Endpoints
 
     /**
      * This import check is run at the end of the location import utility
-     * @see /dt-core/utilities/locations-import-csv.php
+     * @see /dt-core/utilities/tab-import-csv.php
      * @return array|\WP_Error
      */
     public function import_check() {

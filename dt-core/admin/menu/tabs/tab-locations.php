@@ -7,18 +7,51 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * Class Disciple_Tools_General_Tab
  */
-class Disciple_Tools_Locations_Tab
+class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
 {
-    public function content() {
-        // begin columns template
-        Disciple_Tools_Config::template( 'begin' );
+    private static $_instance = null;
+    public static function instance()
+    {
+        if ( is_null( self::$_instance ) ) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    } // End instance()
 
-        self::select_location_levels_to_record();
+    /**
+     * Constructor function.
+     *
+     * @access  public
+     * @since   0.1.0
+     */
+    public function __construct()
+    {
+        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 99, 1 );
+        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
 
-        // begin right column template
-        Disciple_Tools_Config::template( 'right_column' );
-        // end columns template
-        Disciple_Tools_Config::template( 'end' );
+        parent::__construct();
+    } // End __construct()
+
+    public function add_tab( $tab ) {
+        echo '<a href="'. esc_url( admin_url() ).'admin.php?page=dt_options&tab=locations" class="nav-tab ';
+        if ( $tab == 'locations' ) {
+            echo 'nav-tab-active';
+        }
+        echo '">Locations</a>';
+    }
+
+    public function content( $tab ) {
+        if ( 'locations' == $tab ) :
+
+            $this->template( 'begin' );
+
+            $this->select_location_levels_to_record();
+
+            $this->template( 'right_column' );
+
+            $this->template( 'end' );
+
+        endif;
     }
 
     public static function admin_levels_array() {
@@ -34,11 +67,12 @@ class Disciple_Tools_Locations_Tab
         ];
     }
 
-    public static function select_location_levels_to_record()
+    public function select_location_levels_to_record()
     {
-        $list_array = self::admin_levels_array();
+        $list_array = dt_get_location_levels();
+        $list_array = $list_array['location_levels_labels'];
 
-        $settings = get_option( 'dt_zume_selected_location_levels' );
+        $settings = dt_get_option( 'location_levels' );
 
         // Check for post
         if ( isset( $_POST['dt_zume_select_levels_nonce'] ) && ! empty( $_POST['dt_zume_select_levels_nonce'] )
@@ -54,28 +88,18 @@ class Disciple_Tools_Locations_Tab
                 }
             }
 
-            dt_write_log( $settings );
-            update_option( 'dt_zume_selected_location_levels', $settings, false );
+            dt_update_option( 'location_levels', $settings, false );
         }
 
-
+        $this->box( 'top', 'Select Levels for Auto Building Locations', [
+            'col_span' => 2,
+            'row_container' => false
+        ] );
         ?>
+
         <form method="post" action="">
             <?php wp_nonce_field( 'dt_zume_select_levels'. get_current_user_id(), 'dt_zume_select_levels_nonce', false, true ) ?>
-
-            <!-- Box -->
-            <table class="widefat striped">
-                <thead>
-                <tr>
-                    <td colspan="2">
-                        <?php esc_html_e( 'Select Levels for Auto Building Locations' ) ?>
-                    </td>
-                </tr>
-                </thead>
-                <tbody>
-
                 <?php
-
                 foreach ( $list_array as $item => $label ) : ?>
                     <tr>
                         <td>
@@ -91,17 +115,13 @@ class Disciple_Tools_Locations_Tab
 
                 <tr>
                     <td colspan="2">
-                        <button class="button" type="submit"><?php esc_html_e( 'Select Levels for Locations Integration' ) ?></button>
+                        <button class="button" type="submit" style="float:right"><?php esc_html_e( 'Save' ) ?></button>
                     </td>
                 </tr>
-                </tbody>
-            </table>
-            <br>
-            <!-- End Box -->
-
-
-
         </form>
+
         <?php
+        $this->box( 'bottom' );
     }
 }
+Disciple_Tools_Tab_Locations::instance();

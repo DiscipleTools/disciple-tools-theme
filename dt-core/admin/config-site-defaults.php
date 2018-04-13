@@ -211,6 +211,41 @@ function dt_get_option( string $name )
     }
 }
 
+/**
+ * Supports the complex array structure of versioned arrays
+ *
+ * @param      $name
+ * @param      $value
+ * @param bool $autoload
+ *
+ * @return bool
+ */
+function dt_update_option( $name, $value, $autoload = true ) {
+
+    if ( empty( $name ) || empty( $value ) ) {
+        return false;
+    }
+
+    switch ( $name ) {
+        case 'location_levels':
+            if ( ! is_array( $value ) ) {
+                return false;
+            }
+            $levels = maybe_unserialize( get_option( 'dt_location_levels' ) );
+            $levels['location_levels'] = $value;
+
+            $default_levels = dt_get_location_levels();
+            $levels = wp_parse_args( $levels, $default_levels );
+
+            return update_option( 'location_levels', $levels, $autoload );
+
+            break;
+        default:
+            return false;
+            break;
+    }
+}
+
 function dt_default_google_api_keys()
 {
     $default_keys = [
@@ -440,7 +475,6 @@ function dt_get_location_levels() {
         'locality' => 'Locality (ex. city name) (recommended)',
         'neighborhood' => 'Neighborhood',
     ];
-
 
     return $fields;
 }

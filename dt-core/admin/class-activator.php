@@ -39,6 +39,7 @@ class Disciple_Tools_Activator
         dt_get_option( 'dt_site_custom_lists' );
         dt_get_option( 'base_user' );
         dt_get_option( 'map_key' );
+        dt_get_option( 'location_levels' );
 
         /** Register Cron Jobs for Daily Reports */
         Disciple_Tools_Reports_Cron::register_daily_report_events();
