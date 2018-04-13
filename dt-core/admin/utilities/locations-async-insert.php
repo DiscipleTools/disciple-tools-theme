@@ -83,7 +83,7 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
                         }
 
                         $results = Disciple_Tools_Google_Geocode_API::query_google_api( $mapped_from_form['address'], 'all_points' );
-                        if ( $results ) {
+                        if ( $results && isset( $results['lat'] ) ) {
                             $args['meta_input'] = [
                             'lat' => $results['lat'],
                             'lng' => $results['lng'],
