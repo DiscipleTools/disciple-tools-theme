@@ -435,11 +435,21 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $new_connections = [];
                 foreach ($connection_field["values"] as $connection_value ){
                     if ( isset( $connection_value["value"] ) && !is_numeric( $connection_value["value"] ) ){
-                        $post_types = self::$contact_connection_types;
-                        $post_types[] = "contacts";
-                        $post = self::get_post_by_title_cached( $connection_value["value"], OBJECT, $post_types, $connection_type );
-                        if ( $post && !is_wp_error( $post ) ){
-                            $connection_value["value"] = $post->ID;
+                        if ( filter_var( $connection_value["value"], FILTER_VALIDATE_EMAIL ) ){
+                            $user = get_user_by( "email", $connection_value["value"] );
+                            if ( $user ){
+                                $corresponding_contact = self::get_contact_for_user( $user );
+                                if ( $corresponding_contact ){
+                                    $connection_value["value"] = $corresponding_contact;
+                                }
+                            }
+                        } else {
+                            $post_types = self::$contact_connection_types;
+                            $post_types[] = "contacts";
+                            $post = self::get_post_by_title_cached( $connection_value["value"], OBJECT, $post_types, $connection_type );
+                            if ( $post && !is_wp_error( $post ) ){
+                                $connection_value["value"] = $post->ID;
+                            }
                         }
                     }
 
@@ -898,27 +908,16 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $connect = self::add_group_to_contact( $contact_id, $value );
         } elseif ( $key === "people_groups" ) {
             $connect = self::add_people_group_to_contact( $contact_id, $value );
-        } else {
-            if ( filter_var( $value, FILTER_VALIDATE_EMAIL ) ){
-                $user = get_user_by( "email", $value );
-                if ( $user ){
-                    $corresponding_contact = self::get_contact_for_user( $user );
-                    if ( $corresponding_contact ){
-                        $value = $corresponding_contact;
-                    }
-                }
-            }
-            if ( $key === "baptized_by" ) {
-                $connect = self::add_baptized_by_to_contact( $contact_id, $value );
-            } elseif ( $key === "baptized" ) {
-                $connect = self::add_baptized_to_contact( $contact_id, $value );
-            } elseif ( $key === "coached_by" ) {
-                $connect = self::add_coached_by_to_contact( $contact_id, $value );
-            } elseif ( $key === "coaching" ) {
-                $connect = self::add_coaching_to_contact( $contact_id, $value );
-            } elseif ( $key === "subassigned" ){
-                $connect = self::add_subassigned_to_contact( $contact_id, $value );
-            }
+        } else if ( $key === "baptized_by" ) {
+            $connect = self::add_baptized_by_to_contact( $contact_id, $value );
+        } elseif ( $key === "baptized" ) {
+            $connect = self::add_baptized_to_contact( $contact_id, $value );
+        } elseif ( $key === "coached_by" ) {
+            $connect = self::add_coached_by_to_contact( $contact_id, $value );
+        } elseif ( $key === "coaching" ) {
+            $connect = self::add_coaching_to_contact( $contact_id, $value );
+        } elseif ( $key === "subassigned" ){
+            $connect = self::add_subassigned_to_contact( $contact_id, $value );
         }
         if ( is_wp_error( $connect ) ) {
             return $connect;
