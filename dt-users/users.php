@@ -215,6 +215,14 @@ class Disciple_Tools_Users
                     "is_a_user"           => "yes",
                     "corresponds_to_user" => $user_id,
                 ], false );
+            } else {
+                if ( isset( $contacts->post->ID ) ){
+                    if ( $contacts->post->post_title != $user->display_name ){
+                        Disciple_Tools_Contacts::update_contact( $contacts->post->ID, [
+                            "title" => $user->display_name
+                        ], false);
+                    }
+                }
             }
         }
     }

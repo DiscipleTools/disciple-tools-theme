@@ -776,6 +776,14 @@ class Disciple_Tools_Groups_Post_Type
             'default'     => '',
             'section'     => 'info',
         ];
+        $fields["duplicate_data"] = [
+            "name" => __( 'Duplicates', 'disciple_tools' ),
+            'description' => 'Possible group duplicates',
+            'type' => 'array',
+            'default' => [],
+            'section' => 'admin'
+        ];
+
 
         $id = isset( $post->ID ) ? $post->ID : $post_id;
         if ( $include_current_post &&

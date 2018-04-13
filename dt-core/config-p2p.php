@@ -137,6 +137,38 @@ function dt_my_connection_types()
 
     p2p_register_connection_type(
         [
+            'name'           => 'groups_to_leaders',
+            'from'           => 'groups',
+            'to'             => 'contacts',
+            'admin_column'   => 'any',
+            'admin_dropdown' => 'from',
+            'title'          => [
+                'from' => __( 'Group', 'disciple_tools' ),
+                'to'   => __( 'Leaders', 'disciple_tools' ),
+            ],
+            'to_labels'      => [
+                'singular_name' => __( 'Groups', 'disciple_tools' ),
+                'search_items'  => __( 'Search groups', 'disciple_tools' ),
+                'not_found'     => __( 'No groups found.', 'disciple_tools' ),
+                'create'        => __( 'Connect Group', 'disciple_tools' ),
+            ],
+            'from_labels'    => [
+                'singular_name' => __( 'Leaders', 'disciple_tools' ),
+                'search_items'  => __( 'Search leaders', 'disciple_tools' ),
+                'not_found'     => __( 'No leaders found.', 'disciple_tools' ),
+                'create'        => __( 'Connect Leader', 'disciple_tools' ),
+            ],
+            'fields'         => [
+                'leader' => [
+                    'title' => __( 'Leader', 'disciple_tools' ),
+                    'type'  => 'checkbox',
+                ],
+            ],
+        ]
+    );
+
+    p2p_register_connection_type(
+        [
             'name'        => 'contacts_to_locations',
             'from'        => 'contacts',
             'to'          => 'locations',
