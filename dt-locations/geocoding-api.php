@@ -126,10 +126,14 @@ class Disciple_Tools_Google_Geocode_API
         $formatted_address .= empty( $details['zip_code'] ) ? '' : ' ' . $details['zip_code'];
         $formatted_address .= empty( $details['country_name'] ) ? '' : ' ' . $details['country_name'];
 
+        $latlng = $details['latitude'] . ',' . $details['longitude'];
+        $raw = self::query_google_api( $latlng );
+
         return [
             'lng' => $details['longitude'],
             'lat' => $details['latitude'],
             'formatted_address' => $formatted_address,
+            'raw' => $raw
         ];
     }
 
