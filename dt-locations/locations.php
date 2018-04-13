@@ -31,7 +31,7 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
         $args = wp_parse_args(
             $fields,
             [
-                'post_title'        => __('No Title'),
+                'post_title'        => __( 'No Title' ),
                 'post_parent'       => '',
                 'post_type'         => "locations",
                 "post_status"       => 'publish',

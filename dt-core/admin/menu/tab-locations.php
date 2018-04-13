@@ -30,14 +30,15 @@ class Disciple_Tools_Locations_Tab
             'administrative_area_level_3' => 'Admin Level 3',
             'administrative_area_level_4' => 'Admin Level 4',
             'locality' => 'Locality (ex. city name) (recommended)',
-            'neighborhood' => 'Neighborhood' ];
+            'neighborhood' => 'Neighborhood'
+        ];
     }
 
     public static function select_location_levels_to_record()
     {
         $list_array = self::admin_levels_array();
 
-        $settings = get_option('dt_zume_selected_location_levels');
+        $settings = get_option( 'dt_zume_selected_location_levels' );
 
         // Check for post
         if ( isset( $_POST['dt_zume_select_levels_nonce'] ) && ! empty( $_POST['dt_zume_select_levels_nonce'] )
@@ -53,8 +54,8 @@ class Disciple_Tools_Locations_Tab
                 }
             }
 
-            dt_write_log($settings);
-            update_option('dt_zume_selected_location_levels', $settings, false );
+            dt_write_log( $settings );
+            update_option( 'dt_zume_selected_location_levels', $settings, false );
         }
 
 
@@ -75,14 +76,14 @@ class Disciple_Tools_Locations_Tab
 
                 <?php
 
-                foreach( $list_array as $item => $label ) : ?>
+                foreach ( $list_array as $item => $label ) : ?>
                     <tr>
                         <td>
                             <label for="<?php echo esc_attr( $item ) ?>"><?php echo esc_attr( $label ) ?></label>
                         </td>
                         <td>
                             <input type="checkbox" value="1" id="<?php echo esc_attr( $item ) ?>" name="<?php echo esc_html( $item ) ?>"
-                                <?php  isset( $settings[$item] ) && $settings[$item] == 1  ? print esc_html('checked' ) : print '' ?>
+                                <?php isset( $settings[$item] ) && $settings[$item] == 1 ? print esc_html( 'checked' ) : print '' ?>
                             />
                         </td>
                     </tr>

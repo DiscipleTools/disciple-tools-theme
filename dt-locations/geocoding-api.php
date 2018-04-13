@@ -184,7 +184,7 @@ class Disciple_Tools_Google_Geocode_API
     /**
      * Parse the raw Google API response to get specific information
      *
-     * @param $raw_response (full raw response from Google GeoCoding Lookup.)
+     * @param $raw_response   (array)  full raw response from Google GeoCoding Lookup.
      * @param $item (string)
      *              country - (string) long country name
      *              country_short_name - (string) two letter country code
@@ -213,7 +213,6 @@ class Disciple_Tools_Google_Geocode_API
      *              political - (array) returns all address components marked as political entities
      *              full - (array) returns the entire first result of the results array. Basically, $raw_response['results'][0]
      *
-     *
      * @return bool|array|string  returns array or string on success; returns false on fail
      */
     public static function parse_raw_result( array $raw_response, $item ) {
@@ -227,11 +226,11 @@ class Disciple_Tools_Google_Geocode_API
 
         $raw = $raw_response['results'][0];
 
-        switch( $item ) {
+        switch ( $item ) {
 
             case 'country':
-                foreach( $raw['address_components'] as $component ) {
-                    if( 'country' == $component['types'][0] ) {
+                foreach ( $raw['address_components'] as $component ) {
+                    if ( 'country' == $component['types'][0] ) {
                         return $component['long_name'];
                     }
                 }
@@ -239,8 +238,8 @@ class Disciple_Tools_Google_Geocode_API
                 break;
 
             case 'country_short_name':
-                foreach( $raw['address_components'] as $component ) {
-                    if( 'country' == $component['types'][0] ) {
+                foreach ( $raw['address_components'] as $component ) {
+                    if ( 'country' == $component['types'][0] ) {
                         return $component['short_name'];
                     }
                 }
@@ -248,8 +247,8 @@ class Disciple_Tools_Google_Geocode_API
                 break;
 
             case 'admin1':
-                foreach( $raw['address_components'] as $component ) {
-                    if( 'administrative_area_level_1' == $component['types'][0] ) {
+                foreach ( $raw['address_components'] as $component ) {
+                    if ( 'administrative_area_level_1' == $component['types'][0] ) {
                         return $component['long_name'];
                     }
                 }
@@ -257,8 +256,8 @@ class Disciple_Tools_Google_Geocode_API
                 break;
 
             case 'admin2':
-                foreach( $raw['address_components'] as $component ) {
-                    if( 'administrative_area_level_2' == $component['types'][0] ) {
+                foreach ( $raw['address_components'] as $component ) {
+                    if ( 'administrative_area_level_2' == $component['types'][0] ) {
                         return $component['long_name'];
                     }
                 }
@@ -266,8 +265,8 @@ class Disciple_Tools_Google_Geocode_API
                 break;
 
             case 'admin3':
-                foreach( $raw['address_components'] as $component ) {
-                    if( 'administrative_area_level_3' == $component['types'][0] ) {
+                foreach ( $raw['address_components'] as $component ) {
+                    if ( 'administrative_area_level_3' == $component['types'][0] ) {
                         return $component['long_name'];
                     }
                 }
@@ -275,8 +274,8 @@ class Disciple_Tools_Google_Geocode_API
                 break;
 
             case 'locality':
-                foreach( $raw['address_components'] as $component ) {
-                    if( 'locality' == $component['types'][0] ) {
+                foreach ( $raw['address_components'] as $component ) {
+                    if ( 'locality' == $component['types'][0] ) {
                         return $component['long_name'];
                     }
                 }
@@ -284,8 +283,8 @@ class Disciple_Tools_Google_Geocode_API
                 break;
 
             case 'neighborhood':
-                foreach( $raw['address_components'] as $component ) {
-                    if( 'neighborhood' == $component['types'][0] ) {
+                foreach ( $raw['address_components'] as $component ) {
+                    if ( 'neighborhood' == $component['types'][0] ) {
                         return $component['long_name'];
                     }
                 }
@@ -293,8 +292,8 @@ class Disciple_Tools_Google_Geocode_API
                 break;
 
             case 'postal_code':
-                foreach( $raw['address_components'] as $component ) {
-                    if( 'postal_code' == $component['types'][0] ) {
+                foreach ( $raw['address_components'] as $component ) {
+                    if ( 'postal_code' == $component['types'][0] ) {
                         return $component['long_name'];
                     }
                 }
@@ -311,7 +310,7 @@ class Disciple_Tools_Google_Geocode_API
 
             case 'latlng':
                 $location = $raw['geometry']['location'] ?? false;
-                if( ! $location ) {
+                if ( ! $location ) {
                     return false;
                 }
                 return $location['lat'] . ',' . $location['lng'];
@@ -375,9 +374,9 @@ class Disciple_Tools_Google_Geocode_API
 
             case 'political':
                 $political = [];
-                foreach( $raw['address_components'] as $component ) {
+                foreach ( $raw['address_components'] as $component ) {
                     $designation = $component['types'][1] ?? '';
-                    if( 'political' == $designation ) {
+                    if ( 'political' == $designation ) {
                         $political[] = $component;
                     }
                 }

@@ -135,7 +135,7 @@ final class Disciple_Tools_Config
         /**
          * Add tab menu to DT settings
          */
-        do_action('dt_settings_tab_menu', $tab );
+        do_action( 'dt_settings_tab_menu', $tab );
 
         echo '</h2>';
 
@@ -169,11 +169,10 @@ final class Disciple_Tools_Config
                 break;
 
             default:
-
                 /**
                  * Add tab content to match new tab
                  */
-                do_action('dt_settings_tab_content', $tab );
+                do_action( 'dt_settings_tab_content', $tab );
 
                 break;
         }
@@ -270,13 +269,13 @@ final class Disciple_Tools_Config
                         <!-- Main Column -->
                         <?php
                         break;
-                case 'right_column':
-                    ?>
-                    <!-- End Main Column -->
-                    </div><!-- end post-body-content -->
-                    <div id="postbox-container-1" class="postbox-container">
-                    <!-- Right Column -->
-                    <?php
+                    case 'right_column':
+                        ?>
+                        <!-- End Main Column -->
+                        </div><!-- end post-body-content -->
+                        <div id="postbox-container-1" class="postbox-container">
+                        <!-- Right Column -->
+                        <?php
                     break;
                     case 'end':
                         ?>
