@@ -75,7 +75,10 @@ final class Disciple_Tools_Config
 
         add_submenu_page( 'dt_options', __( 'Import', 'disciple_tools' ), __( 'Import', 'disciple_tools' ), 'manage_dt', 'import_export', [ $this, 'build_import_export_page' ] );
 
-        do_action( 'dt_admin_menu' );
+        /**
+         * Add submenu to to the DT Settings menu.
+         */
+        do_action( 'dt_settings_admin_menu' );
     }
 
     /**
@@ -123,7 +126,16 @@ final class Disciple_Tools_Config
         }
         echo '">Google Map API</a>';
 
-        do_action('dt_settings_tab_menu');
+        echo '<a href="admin.php?page=dt_options&tab=locations" class="nav-tab ';
+        if ( $tab == 'locations' ) {
+            echo 'nav-tab-active';
+        }
+        echo '">Locations</a>';
+
+        /**
+         * Add tab menu to DT settings
+         */
+        do_action('dt_settings_tab_menu', $tab );
 
         echo '</h2>';
 
@@ -150,9 +162,17 @@ final class Disciple_Tools_Config
                 $object = new Disciple_Tools_Keys_Tab();
                 $object->content(); // prints
                 break;
+            case 'locations':
+                require_once( 'tab-locations.php' );
+                $object = new Disciple_Tools_Locations_Tab();
+                $object->content(); // prints
+                break;
 
             default:
 
+                /**
+                 * Add tab content to match new tab
+                 */
                 do_action('dt_settings_tab_content', $tab );
 
                 break;
@@ -210,5 +230,64 @@ final class Disciple_Tools_Config
 
         echo '</div>'; // end div class wrap
 
+    }
+
+    public static function template( $section, $columns = 2 ) {
+        switch ( $columns ) {
+
+            case '1':
+                switch ( $section ) {
+                    case 'begin':
+                        ?>
+                        <div class="wrap">
+                        <div id="poststuff">
+                        <div id="post-body" class="metabox-holder columns-1">
+                        <div id="post-body-content">
+                        <!-- Main Column -->
+                        <?php
+                        break;
+
+
+                    case 'end':
+                        ?>
+                        </div><!-- postbox-container 1 -->
+                        </div><!-- post-body meta box container -->
+                        </div><!--poststuff end -->
+                        </div><!-- wrap end -->
+                        <?php
+                        break;
+                }
+                break;
+
+            case '2':
+                switch ( $section ) {
+                    case 'begin':
+                        ?>
+                        <div class="wrap">
+                        <div id="poststuff">
+                        <div id="post-body" class="metabox-holder columns-2">
+                        <div id="post-body-content">
+                        <!-- Main Column -->
+                        <?php
+                        break;
+                case 'right_column':
+                    ?>
+                    <!-- End Main Column -->
+                    </div><!-- end post-body-content -->
+                    <div id="postbox-container-1" class="postbox-container">
+                    <!-- Right Column -->
+                    <?php
+                    break;
+                    case 'end':
+                        ?>
+                        </div><!-- postbox-container 1 -->
+                        </div><!-- post-body meta box container -->
+                        </div><!--poststuff end -->
+                        </div><!-- wrap end -->
+                        <?php
+                        break;
+                }
+                break;
+        }
     }
 }
