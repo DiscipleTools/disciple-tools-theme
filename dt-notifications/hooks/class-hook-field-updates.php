@@ -49,8 +49,8 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
             return;
         }
         // Don't fire off notifications when the contact represents a user.
-        $is_contact_a_user = get_post_meta( $object_id, "is_a_user", true );
-        if ($is_contact_a_user === "yes"){
+        $contact_type = get_post_meta( $object_id, "type", true );
+        if ($contact_type === "user"){
             return;
         }
 

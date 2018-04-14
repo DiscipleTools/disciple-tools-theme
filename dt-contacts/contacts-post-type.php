@@ -919,21 +919,23 @@ class Disciple_Tools_Contact_Post_Type
             'icon'        => "no-show.svg",
         ];
 
-        $fields['is_a_user'] = [
-            'name' => __( 'Is a User', 'disciple_tools' ),
-            'description' => 'Check this field if the contact contact represents a user.',
-            'type' => 'key_select',
-            'default' => [
-        'no' => __( 'No', 'disciple_tools' ),
-        'yes' => __( 'Yes', 'disciple_tools' )
-            ],
-            'section' => 'misc'
-        ];
         $fields['corresponds_to_user'] = [
             'name' => __( 'Corresponds to user', 'disciple_tools' ),
             'description' => 'The id of the user this contact corresponds to',
             'type' => 'number',
             'default' => 0,
+            'section' => 'misc'
+        ];
+        $fields["type"] = [
+            'name' => __( 'Contact type', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => [
+                'media' => __( 'Media', 'disciple_tools' ),
+                'next_gen' => __( 'Next Generation', 'disciple_tools' ),
+                'user' => __( 'User', 'disciple_tools' ),
+                'partner' => __( 'Partner', 'disciple_tools' )
+            ],
             'section' => 'misc'
         ];
         $fields["last_modified"] =[

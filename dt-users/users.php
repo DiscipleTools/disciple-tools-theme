@@ -201,8 +201,8 @@ class Disciple_Tools_Users
             "value" => $user_id
                     ],
                     [
-                    'key' => "is_a_user",
-                    "value" => "yes"
+                    'key' => "type",
+                    "value" => "user"
                     ],
                 ],
             ];
@@ -211,8 +211,8 @@ class Disciple_Tools_Users
                 Disciple_Tools_Contacts::create_contact( [
                     "title"               => $user->display_name,
                     "assigned_to"         => "user-" . $user_id,
+                    "type"                => "user",
                     "overall_status"      => "assigned",
-                    "is_a_user"           => "yes",
                     "corresponds_to_user" => $user_id,
                 ], false );
             } else {
