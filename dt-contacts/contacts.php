@@ -1591,7 +1591,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             ];
         }
         foreach ( $members as $member ) {
-            if ( !$exclude_current_user || ($exclude_current_user && $member != $user_id) ){
+            if ( !$exclude_current_user || ( $exclude_current_user && $member != $user_id ) ){
                 $user_connections[] = [
                 'key' => 'assigned_to',
                 'value' => 'user-' . $member
