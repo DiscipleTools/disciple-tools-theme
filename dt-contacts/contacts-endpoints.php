@@ -290,6 +290,7 @@ class Disciple_Tools_Contacts_Endpoints
             $contact_array = [];
             $contact_array["ID"] = $contact->ID;
             $contact_array["post_title"] = $contact->post_title;
+            $contact_array["is_team_contact"] = $contact->is_team_contact ?? false;
             $contact_array['permalink'] = get_post_permalink( $contact->ID );
             $contact_array['overall_status'] = get_post_meta( $contact->ID, 'overall_status', true );
             $contact_array['locations'] = [];
@@ -365,7 +366,9 @@ class Disciple_Tools_Contacts_Endpoints
         } elseif ( $yes_no === 'no' ) {
             return false;
         } else {
-            throw new Error( "Expected yes or no, instead got $yes_no" );
+            return false;
+//            @todo move error to saving
+//            throw new Error( "Expected yes or no, instead got $yes_no" );
         }
     }
 
