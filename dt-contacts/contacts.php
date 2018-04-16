@@ -212,8 +212,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $current_roles = wp_get_current_user()->roles;
 
         $defaults = [
-            "is_a_user" => "no",
             "seeker_path"    => "none",
+            "type" => "media"
         ];
         if (get_current_user_id()) {
             $defaults["assigned_to"] = sprintf( "user-%d", get_current_user_id() );
@@ -655,8 +655,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     "value" => $user->ID
                 ],
                 [
-                    'key' => "is_a_user",
-                    "value" => "yes"
+                    'key' => "type",
+                    "value" => "user"
                 ],
             ],
         ];
@@ -1375,12 +1375,20 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 [
                     'relation' => "OR",
                     [
-                        'key' => 'is_a_user',
-                        'value' => "yes",
-                        'compare' => '!='
+                        'relation' => "AND",
+                        [
+                            'key' => 'type',
+                            'value' => "user",
+                            'compare' => '!='
+                        ],
+                        [
+                            'key' => 'type',
+                            'value' => "partner",
+                            'compare' => '!='
+                        ],
                     ],
                     [
-                        'key' => 'is_a_user',
+                        'key' => 'type',
                         'compare' => 'NOT EXISTS'
                     ]
                 ],

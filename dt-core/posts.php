@@ -567,9 +567,11 @@ class Disciple_Tools_Posts
     /**
      * @param string $post_type
      *
+     * @param int $most_recent
+     *
      * @return array|\WP_Error|\WP_Query
      */
-    public static function get_viewable( string $post_type, int $most_recent )
+    public static function get_viewable( string $post_type, int $most_recent = 0 )
     {
         if ( !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, sprintf( __( "You do not have access to these %s" ), $post_type ), [ 'status' => 403 ] );

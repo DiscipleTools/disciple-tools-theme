@@ -5,8 +5,8 @@ class Disciple_Tools_Migration_0003 extends Disciple_Tools_Migration {
 
         $groups_instance = new Disciple_Tools_Groups();
         $groups = $groups_instance::get_viewable_groups();
-        if ( count( $groups ) > 0 && ! is_wp_error( $groups ) ) {
-            foreach ( $groups as $group ){
+        if ( !is_wp_error( $groups ) && count( $groups["groups"] ) > 0 ) {
+            foreach ( $groups["groups"] as $group ){
                 $meta_fields = get_post_custom( $group->ID );
 
                 if ( count( $meta_fields ) > 0 ) {

@@ -84,7 +84,7 @@
     </section>
     <?php } ?>
 
-    <?php if ( isset( $contact['is_a_user']['key'] ) && $contact['is_a_user']['key'] === 'yes' ) { ?>
+    <?php if ( isset( $contact['type']['key'] ) && $contact['type']['key'] === 'user' ) { ?>
     <section class="cell accept-contact" id="contact-is-user">
         <div class="bordered-box">
             <h4><?php esc_html_e( 'This contact represents a user.', 'disciple_tools' )?></h4>

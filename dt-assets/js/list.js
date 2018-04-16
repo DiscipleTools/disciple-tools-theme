@@ -300,12 +300,17 @@
   }
 
 
-
+  let users = {}
   function countFilteredItems() {
     const counts = {};
     let currentView = $(".js-list-view:checked").val()
     if (wpApiSettings.current_post_type === "contacts") {
       const contacts = items.filter(viewFilterFunctions[currentView])
+      contacts.forEach(c=>{
+        if (!users[_.get(c, "assigned_to.user_login")]){
+          users[_.get(c, "assigned_to.user_login")] = _.get(c, "assigned_to.name")
+        }
+      })
       _.assign(counts, {
         assigned_login: _.countBy(_(contacts).map('assigned_to.user_login').filter().value()),
         overall_status: _.countBy(_.map(contacts, 'overall_status')),
@@ -379,6 +384,8 @@
         humanText = ccfs[filterType].default[key];
       } else if (wpApiSettings.current_post_type === 'contacts' && filterType === 'requires_update') {
         humanText = key === "true" ? wpApiSettings.txt_yes : wpApiSettings.txt_no;
+      } else if (wpApiSettings.current_post_type === 'contacts' && filterType === 'assigned_login') {
+        humanText = users[key]
       } else if (wpApiSettings.current_post_type === 'groups' && (filterType === 'group_status' || filterType === 'group_type')) {
         humanText = gcfs[filterType].default[key];
       } else {
@@ -386,7 +393,7 @@
       }
       const checkbox = $("<input>")
         .attr("type", "checkbox")
-        .val(humanText)
+        .val(key)
         .on("change", function() {
           updateFilterFunctions();
           dataTable.draw();
