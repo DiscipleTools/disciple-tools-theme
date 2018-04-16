@@ -70,7 +70,6 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
 
     public function select_auto_locations()
     {
-        dt_write_log( $_POST) ;
         if ( isset( $_POST['dt_zume_auto_levels_nonce'] ) && ! empty( $_POST['dt_zume_auto_levels_nonce'] )
             && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_zume_auto_levels_nonce'] ) ), 'dt_zume_auto_levels'. get_current_user_id() ) ) {
 
@@ -135,10 +134,10 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
 
         if ( dt_get_option( 'auto_location' ) ) : // if auto location is not set, hide level configuration
 
-        $this->box( 'top', 'Select Levels for Auto Building Locations', [
-            'col_span' => 2,
-            'row_container' => false
-        ] );
+            $this->box( 'top', 'Select Levels for Auto Building Locations', [
+                'col_span' => 2,
+                'row_container' => false
+            ] );
         ?>
 
         <form method="post" action="">

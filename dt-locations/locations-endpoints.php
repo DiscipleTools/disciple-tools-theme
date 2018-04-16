@@ -95,6 +95,10 @@ class Disciple_Tools_Locations_Endpoints
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [ $this, 'import_check' ],
             ],
+            $base.'/validate_address' => [
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => [ $this, 'validate_address' ],
+            ],
         ];
 
         // Register each route
@@ -120,8 +124,8 @@ class Disciple_Tools_Locations_Endpoints
         }
 
         return [
-        'count' => $count,
-        'errors' => $errors,
+            'count' => $count,
+            'errors' => $errors,
         ];
     }
 
@@ -161,5 +165,29 @@ class Disciple_Tools_Locations_Endpoints
     public function get_all_locations_grouped()
     {
         return Disciple_Tools_Locations::get_all_locations_grouped();
+    }
+
+    /**
+     * Get tract from submitted address
+     *
+     * @param WP_REST_Request $request
+     * @access public
+     * @since 0.1
+     * @return string|WP_Error The contact on success
+     */
+    public function validate_address( WP_REST_Request $request){
+        $params = $request->get_json_params();
+        if ( isset( $params['address'] ) ){
+
+            $result = Disciple_Tools_Google_Geocode_API::query_google_api( $params['address'] );
+
+            if ( $result['status'] == 'OK'){
+                return $result;
+            } else {
+                return new WP_Error( "status_error", 'Zero Results', array( 'status' => 400 ) );
+            }
+        } else {
+            return new WP_Error( "param_error", "Please provide a valid address", array( 'status' => 400 ) );
+        }
     }
 }

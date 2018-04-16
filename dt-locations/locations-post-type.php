@@ -312,7 +312,7 @@ class Disciple_Tools_Location_Post_Type
     public function meta_box_setup()
     {
         add_meta_box( $this->post_type . '_geocode', __( 'Geo-Code', 'disciple_tools' ), [ $this, 'geocode_metabox' ], $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_map', __( 'Map', 'disciple_tools' ), [ $this, 'load_map_meta_box' ], $this->post_type, 'advanced', 'high' );
+        add_meta_box( $this->post_type . '_map', __( 'Map', 'disciple_tools' ), [ $this, 'load_map_meta_box' ], $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'advanced', 'low' );
     } // End meta_box_setup()
 
@@ -340,21 +340,19 @@ class Disciple_Tools_Location_Post_Type
         ?>
         <table class="widefat striped">
             <tr>
-                <td><label for="location_address">Address: </label></td>
-                <td><input type="text" id="location_address" name="location_address"
-                           value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>"
-                           />
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <?php if ( ! $pagenow == 'post-new.php?post_type=locations' ) : ?>
-                        <button type="submit" class="button small right">Update</button>
-                    <?php endif; ?>
-                </td>
-            </tr>
+                <td><label for="search_location_address">Address:</label></td>
+                <td><input type="text" id="search_location_address"
+                           value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>" />
+                    <button type="button" class="button" name="validate_address_button" id="validate_address_button" onclick="validate_address( jQuery('#search_location_address').val() );" >Validate</button>
+                    <button type="submit" name="delete" value="1" class="button">Delete</button>
+                        <br>
+                    <span id="errors"></span>
+                    <p id="possible-results">
 
+                        <input type="hidden" id="location_address" name="location_address" value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>" />
+                    </p>
+                </td>
+            </tr>
         </table>
 
         <?php
@@ -484,8 +482,7 @@ class Disciple_Tools_Location_Post_Type
             }
         }
 
-        $field_data = $this->get_custom_fields_settings();
-        $fields = array_keys( $field_data );
+
 
         // @todo evaluate the value of this next if section. Still needed or used. 4-16-2018
         if ( ( isset( $_POST['new-key-address'] ) && !empty( $_POST['new-key-address'] ) ) && ( isset( $_POST['new-value-address'] ) && !empty( $_POST['new-value-address'] ) ) ) { // catch and prepare new contact fields
@@ -502,30 +499,8 @@ class Disciple_Tools_Location_Post_Type
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );
         }
 
-        // geo code supplied address
-        if ( isset( $_POST['location_address'] ) && ! empty( $_POST['location_address'] ) ) {
-            $address = sanitize_text_field( wp_unslash( $_POST['location_address'] ) );
-            if ( $address != get_post_meta( $post_id, 'location_address', true ) ) {
-                $raw_response = Disciple_Tools_Google_Geocode_API::query_google_api( $address );
-                if( $raw_response ) {
-
-                    update_post_meta( $post_id, 'country', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'country') );
-                    update_post_meta( $post_id, 'admin1', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin1')  );
-                    update_post_meta( $post_id, 'admin2', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin2')  );
-                    update_post_meta( $post_id, 'admin3', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin3')  );
-                    update_post_meta( $post_id, 'admin4', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin4')  );
-                    update_post_meta( $post_id, 'locality', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'locality')  );
-                    update_post_meta( $post_id, 'neighborhood', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'neighborhood')  );
-                    update_post_meta( $post_id, 'raw', $raw_response );
-
-                } else {
-                    add_action( 'admin_notices', function() { ?>
-                        <div class="notice notice-success is-dismissible">
-                        <p><?php _e( 'Sorry, that address could not be found. Please, enter that again', 'disciple_tools' ); ?></p>
-                        </div><?php } );
-                }
-            }
-        } elseif ( isset( $_POST['location_address'] ) && empty( $_POST['location_address'] ) ) {
+        if ( ( isset( $_POST['location_address'] ) && empty( $_POST['location_address'] ) ) || isset( $_POST['delete'] ) ) {
+            delete_post_meta( $post_id, 'location_address' );
             delete_post_meta( $post_id, 'country' );
             delete_post_meta( $post_id, 'admin1' );
             delete_post_meta( $post_id, 'admin2' );
@@ -533,7 +508,39 @@ class Disciple_Tools_Location_Post_Type
             delete_post_meta( $post_id, 'admin4' );
             delete_post_meta( $post_id, 'locality' );
             delete_post_meta( $post_id, 'neighborhood' );
+            delete_post_meta( $post_id, 'raw' );
+            unset( $_POST['location_address'] );
         }
+
+        // geo code supplied address
+        if ( isset( $_POST['location_address'] ) && ! empty( $_POST['location_address'] ) ) {
+            $address = sanitize_text_field( wp_unslash( $_POST['location_address'] ) );
+            if ( $address != get_post_meta( $post_id, 'location_address', true ) ) {
+                $raw_response = Disciple_Tools_Google_Geocode_API::query_google_api( $address );
+                if ( $raw_response ) {
+
+                    update_post_meta( $post_id, 'country', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'country' ) );
+                    update_post_meta( $post_id, 'admin1', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin1' ) );
+                    update_post_meta( $post_id, 'admin2', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin2' ) );
+                    update_post_meta( $post_id, 'admin3', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin3' ) );
+                    update_post_meta( $post_id, 'admin4', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin4' ) );
+                    update_post_meta( $post_id, 'locality', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'locality' ) );
+                    update_post_meta( $post_id, 'neighborhood', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'neighborhood' ) );
+                    update_post_meta( $post_id, 'raw', $raw_response );
+
+                } else {
+                    add_action( 'admin_notices', function() { ?>
+                        <div class="notice notice-success is-dismissible">
+                        <p><?php esc_html_e( 'Sorry, that address could not be found. Please, enter that again', 'disciple_tools' ); ?></p>
+                        </div><?php } );
+                }
+            }
+        }
+
+
+
+        $field_data = $this->get_custom_fields_settings();
+        $fields = array_keys( $field_data );
 
         foreach ( $fields as $f ) {
             if ( !isset( $_POST[ $f ] ) ) {
@@ -683,29 +690,12 @@ class Disciple_Tools_Location_Post_Type
         }
         elseif ( $raw_location ) {
 
-            // check for post submission
-            if ( ( get_post_type() == 'locations' && isset( $_POST['dt_locations_noonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_locations_noonce'] ), 'update_location_info' ) ) ||
-                ( ! ( isset( $post_meta['lat'][0] ) && isset( $post_meta['lng'][0] ) ) ) )
-            {
-                $location_address = '';
-                if ( isset( $post_meta['location_address'][0] ) ) {
-                    $location_address = $post_meta['location_address'][0];
-                } elseif ( isset( $_POST['location_address'] ) ) {
-                    $location_address = sanitize_key( $_POST['location_address'] );
-                } else {
-                    return new WP_Error( 'no_meta_field_found', 'Did not find address in the location_addres meta-field.' );
-                }
-
-                $post_meta = $this->install_google_coordinates( $post, $location_address );
-            }
-
-
-            $lat = (float) $post_meta['lat'][0];
-            $lng = (float) $post_meta['lng'][0];
-            $northeast_lat = (float) $post_meta['northeast_lat'][0];
-            $northeast_lng = (float) $post_meta['northeast_lng'][0];
-            $southwest_lat = (float) $post_meta['southwest_lat'][0];
-            $southwest_lng = (float) $post_meta['southwest_lng'][0];
+            $lat = (float) Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_location, 'lat' );
+            $lng = (float) Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_location, 'lng' );
+            $northeast_lat = (float) Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_location, 'northeast_lat' );
+            $northeast_lng = (float) Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_location, 'northeast_lng' );
+            $southwest_lat = (float) Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_location, 'southwest_lat' );
+            $southwest_lng = (float) Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_location, 'southwest_lng' );
 
             ?>
 
@@ -734,7 +724,7 @@ class Disciple_Tools_Location_Post_Type
 
                     let centerLat = <?php echo esc_attr( $lat ); ?>;
                     let centerLng = <?php echo esc_attr( $lng ); ?>;
-                    let center = new google.maps.LatLng(centerLat, centerLng);
+                    let center = new google.maps.LatLng( centerLat, centerLng );
 
                     let sw = new google.maps.LatLng(<?php echo esc_attr( $southwest_lat ); ?>, <?php echo esc_attr( $southwest_lng ); ?>);
                     let ne = new google.maps.LatLng(<?php echo esc_attr( $northeast_lat ); ?>, <?php echo esc_attr( $northeast_lng ); ?>);

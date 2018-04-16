@@ -198,10 +198,10 @@ function dt_get_option( string $name )
             return $levels['location_levels'];
             break;
         case 'auto_location':
-            $setting = get_option('dt_auto_location' );
+            $setting = get_option( 'dt_auto_location' );
             if ( false === $setting ) {
-                update_option('dt_auto_location', '0', false );
-                $setting = get_option('dt_auto_location' );
+                update_option( 'dt_auto_location', '0', false );
+                $setting = get_option( 'dt_auto_location' );
             }
             return $setting;
             break;
