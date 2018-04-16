@@ -45,6 +45,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
 
             $this->template( 'begin' );
 
+            $this->select_auto_locations();
             $this->select_location_levels_to_record();
 
             $this->template( 'right_column' );
@@ -65,6 +66,47 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
             'locality' => 'Locality (ex. city name) (recommended)',
             'neighborhood' => 'Neighborhood'
         ];
+    }
+
+    public function select_auto_locations()
+    {
+        dt_write_log( $_POST) ;
+        if ( isset( $_POST['dt_zume_auto_levels_nonce'] ) && ! empty( $_POST['dt_zume_auto_levels_nonce'] )
+            && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_zume_auto_levels_nonce'] ) ), 'dt_zume_auto_levels'. get_current_user_id() ) ) {
+
+            $setting = sanitize_text_field( wp_unslash( $_POST['auto_location'] ) );
+            dt_update_option( 'auto_location', $setting, false );
+        }
+
+        $auto_location = dt_get_option( 'auto_location' );
+
+        // Build metabox
+        $this->box( 'top', 'Auto Build Locations', [
+            'col_span' => 2,
+            'row_container' => false
+        ] );
+        ?>
+
+        <form method="post" action="">
+            <?php wp_nonce_field( 'dt_zume_auto_levels'. get_current_user_id(), 'dt_zume_auto_levels_nonce', false, true ) ?>
+            <tr>
+                <td><label>Set Auto Locations</label></td>
+                <td><select name="auto_location">
+                        <option value="0" <?php echo $auto_location ? 'selected' : '' ?>>Build Location Depths Manually</option>
+                        <option value="1" <?php echo $auto_location ? 'selected' : '' ?>>Build Locations Depths Automatically</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button class="button" type="submit" style="float:right"><?php esc_html_e( 'Save' ) ?></button>
+                </td>
+            </tr>
+        </form>
+
+        <?php
+        $this->box( 'bottom' );
+        // end metabox
     }
 
     public function select_location_levels_to_record()
@@ -90,6 +132,8 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
 
             dt_update_option( 'location_levels', $settings, false );
         }
+
+        if ( dt_get_option( 'auto_location' ) ) : // if auto location is not set, hide level configuration
 
         $this->box( 'top', 'Select Levels for Auto Building Locations', [
             'col_span' => 2,
@@ -122,6 +166,8 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
 
         <?php
         $this->box( 'bottom' );
+
+        endif; // hide settings, if auto locations is set to manual
     }
 }
 Disciple_Tools_Tab_Locations::instance();

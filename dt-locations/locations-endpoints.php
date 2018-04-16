@@ -72,30 +72,26 @@ class Disciple_Tools_Locations_Endpoints
         // Holds all routes for locations
         $routes = [
             $base => [
-                'methods' => 'GET',
+                'methods' => WP_REST_Server::READABLE,
                 'callback' => [ $this, 'get_locations' ],
             ],
-            '/locations-compact' => [
-                'methods' => 'GET',
+            '/locations-compact' => [ // @todo remove, redundant and out of pattern
+                'methods' => WP_REST_Server::READABLE,
                 'callback' => [ $this, 'get_locations_compact' ],
             ],
-            '/locations/grouped' => [
-                'methods' => 'GET',
+            $base.'/compact' => [
+                'methods' => WP_REST_Server::READABLE,
+                'callback' => [ $this, 'get_locations_compact' ],
+            ],
+            $base.'/grouped' => [
+                'methods' => WP_REST_Server::READABLE,
                 'callback' => [ $this, 'get_all_locations_grouped' ],
             ],
-            "$base/findbyaddress" => [
-                'methods' => WP_REST_Server::CREATABLE,
-                'callback' => [ $this, 'find_by_address' ],
+            $base.'/import_check' => [
+                'methods' => WP_REST_Server::READABLE,
+                'callback' => [ $this, 'import_check' ],
             ],
-            "$base/gettractmap" => [
-                'methods' => WP_REST_Server::CREATABLE,
-                'callback' => [ $this, 'get_tract_map' ],
-            ],
-            "$base/getmapbygeoid" => [
-                'methods' => WP_REST_Server::CREATABLE,
-                'callback' => [ $this, 'get_map_by_geoid' ],
-            ],
-            "$base/import_check" => [
+            $base.'/import_check' => [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [ $this, 'import_check' ],
             ],
@@ -127,78 +123,6 @@ class Disciple_Tools_Locations_Endpoints
         'count' => $count,
         'errors' => $errors,
         ];
-    }
-
-    /**
-     * Get tract from submitted address
-     *
-     * @param  WP_REST_Request $request
-     *
-     * @access public
-     * @since  0.1.0
-     * @return string|WP_Error The contact on success
-     */
-    public function find_by_address( WP_REST_Request $request )
-    {
-        $params = $request->get_params();
-        if ( isset( $params['address'] ) ) {
-            $result = Disciple_Tools_Locations::get_tract_by_address( $params['address'] );
-            if ( $result["status"] == 'OK' ) {
-                return $result["tract"];
-            } else {
-                return new WP_Error( "tract_status_error", $result["message"], [ 'status' => 400 ] );
-            }
-        } else {
-            return new WP_Error( "tract_param_error", "Please provide a valid address", [ 'status' => 400 ] );
-        }
-    }
-
-    /**
-     * Get tract from submitted address
-     *
-     * @param  WP_REST_Request $request
-     *
-     * @access public
-     * @since  0.1.0
-     * @return string|WP_Error|array The contact on success
-     */
-    public function get_tract_map( WP_REST_Request $request )
-    {
-        $params = $request->get_params();
-        if ( isset( $params['address'] ) ) {
-            $result = Disciple_Tools_Locations::get_tract_map( $params['address'] );
-            if ( $result["status"] == 'OK' ) {
-                return $result;
-            } else {
-                return new WP_Error( "map_status_error", $result["message"], [ 'status' => 400 ] );
-            }
-        } else {
-            return new WP_Error( "map_param_error", "Please provide a valid address", [ 'status' => 400 ] );
-        }
-    }
-
-    /**
-     * Get map by geoid
-     *
-     * @param  WP_REST_Request $request
-     *
-     * @access public
-     * @since  0.1.0
-     * @return string|WP_Error|array The contact on success
-     */
-    public function get_map_by_geoid( WP_REST_Request $request )
-    {
-        $params = $request->get_params();
-        if ( isset( $params['geoid'] ) ) {
-            $result = Disciple_Tools_Locations::get_map_by_geoid( $params );
-            if ( $result["status"] == 'OK' ) {
-                return $result;
-            } else {
-                return new WP_Error( "map_status_error", $result["message"], [ 'status' => 400 ] );
-            }
-        } else {
-            return new WP_Error( "map_param_error", "Please provide a valid address", [ 'status' => 400 ] );
-        }
     }
 
     /**

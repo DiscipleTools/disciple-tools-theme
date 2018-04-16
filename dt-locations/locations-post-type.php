@@ -332,6 +332,34 @@ class Disciple_Tools_Location_Post_Type
         $this->display_location_map();
     }
 
+    public function geocode_metabox() {
+        global $post, $pagenow;
+        $post_meta = get_post_meta( $post->ID );
+
+        echo '<input type="hidden" name="dt_locations_noonce" id="dt_locations_noonce" value="' . esc_attr( wp_create_nonce( 'update_location_info' ) ) . '" />';
+        ?>
+        <table class="widefat striped">
+            <tr>
+                <td><label for="location_address">Address: </label></td>
+                <td><input type="text" id="location_address" name="location_address"
+                           value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>"
+                           />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <?php if ( ! $pagenow == 'post-new.php?post_type=locations' ) : ?>
+                        <button type="submit" class="button small right">Update</button>
+                    <?php endif; ?>
+                </td>
+            </tr>
+
+        </table>
+
+        <?php
+    }
+
 
     /**
      * The contents of our meta box.
@@ -459,6 +487,7 @@ class Disciple_Tools_Location_Post_Type
         $field_data = $this->get_custom_fields_settings();
         $fields = array_keys( $field_data );
 
+        // @todo evaluate the value of this next if section. Still needed or used. 4-16-2018
         if ( ( isset( $_POST['new-key-address'] ) && !empty( $_POST['new-key-address'] ) ) && ( isset( $_POST['new-value-address'] ) && !empty( $_POST['new-value-address'] ) ) ) { // catch and prepare new contact fields
             $k = explode( "_", sanitize_text_field( wp_unslash( $_POST['new-key-address'] ) ) );
             $type = $k[1];
@@ -471,6 +500,39 @@ class Disciple_Tools_Location_Post_Type
             //save the field and the field details
             add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST['new-value-address'] ) ), true );
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );
+        }
+
+        // geo code supplied address
+        if ( isset( $_POST['location_address'] ) && ! empty( $_POST['location_address'] ) ) {
+            $address = sanitize_text_field( wp_unslash( $_POST['location_address'] ) );
+            if ( $address != get_post_meta( $post_id, 'location_address', true ) ) {
+                $raw_response = Disciple_Tools_Google_Geocode_API::query_google_api( $address );
+                if( $raw_response ) {
+
+                    update_post_meta( $post_id, 'country', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'country') );
+                    update_post_meta( $post_id, 'admin1', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin1')  );
+                    update_post_meta( $post_id, 'admin2', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin2')  );
+                    update_post_meta( $post_id, 'admin3', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin3')  );
+                    update_post_meta( $post_id, 'admin4', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin4')  );
+                    update_post_meta( $post_id, 'locality', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'locality')  );
+                    update_post_meta( $post_id, 'neighborhood', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'neighborhood')  );
+                    update_post_meta( $post_id, 'raw', $raw_response );
+
+                } else {
+                    add_action( 'admin_notices', function() { ?>
+                        <div class="notice notice-success is-dismissible">
+                        <p><?php _e( 'Sorry, that address could not be found. Please, enter that again', 'disciple_tools' ); ?></p>
+                        </div><?php } );
+                }
+            }
+        } elseif ( isset( $_POST['location_address'] ) && empty( $_POST['location_address'] ) ) {
+            delete_post_meta( $post_id, 'country' );
+            delete_post_meta( $post_id, 'admin1' );
+            delete_post_meta( $post_id, 'admin2' );
+            delete_post_meta( $post_id, 'admin3' );
+            delete_post_meta( $post_id, 'admin4' );
+            delete_post_meta( $post_id, 'locality' );
+            delete_post_meta( $post_id, 'neighborhood' );
         }
 
         foreach ( $fields as $f ) {
@@ -612,9 +674,14 @@ class Disciple_Tools_Location_Post_Type
     public function display_location_map()
     {
         global $post, $pagenow;
-        $post_meta = get_post_meta( $post->ID );
+        $raw_location = get_post_meta( $post->ID, 'raw', true );
 
-        if ( ! ( 'post-new.php' == $pagenow ) ) { // don't run on the post-new.php page
+        if ( 'post-new.php' == $pagenow || empty( $raw_location ) ) {
+            ?>
+            You must geocode address to see map.
+            <?php
+        }
+        elseif ( $raw_location ) {
 
             // check for post submission
             if ( ( get_post_type() == 'locations' && isset( $_POST['dt_locations_noonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_locations_noonce'] ), 'update_location_info' ) ) ||
@@ -731,34 +798,6 @@ class Disciple_Tools_Location_Post_Type
 
             <?php
         } // endif $pagenow match
-    }
-
-    public function geocode_metabox() {
-        global $post, $pagenow;
-        $post_meta = get_post_meta( $post->ID );
-
-        echo '<input type="hidden" name="dt_locations_noonce" id="dt_locations_noonce" value="' . esc_attr( wp_create_nonce( 'update_location_info' ) ) . '" />';
-        ?>
-        <table class="widefat striped">
-            <tr>
-                <td><label for="location_address">Address: </label></td>
-                <td><input type="text" id="location_address" name="location_address"
-                           value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>"
-                           required/>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <?php if ( ! $pagenow == 'post-new.php?post_type=locations' ) : ?>
-                    <button type="submit" class="button small right">Update</button>
-                    <?php endif; ?>
-                </td>
-            </tr>
-
-        </table>
-
-        <?php
     }
 
 }

@@ -197,6 +197,14 @@ function dt_get_option( string $name )
             }
             return $levels['location_levels'];
             break;
+        case 'auto_location':
+            $setting = get_option('dt_auto_location' );
+            if ( false === $setting ) {
+                update_option('dt_auto_location', '0', false );
+                $setting = get_option('dt_auto_location' );
+            }
+            return $setting;
+            break;
 
         case 'dt_email_base_subject':
             $subject_base = get_option( "dt_email_base_subject", "Disciple Tools" );
@@ -220,9 +228,9 @@ function dt_get_option( string $name )
  *
  * @return bool
  */
-function dt_update_option( $name, $value, $autoload = true ) {
+function dt_update_option( $name, $value, $autoload = false ) {
 
-    if ( empty( $name ) || empty( $value ) ) {
+    if ( empty( $name ) ) {
         return false;
     }
 
@@ -237,9 +245,13 @@ function dt_update_option( $name, $value, $autoload = true ) {
             $default_levels = dt_get_location_levels();
             $levels = wp_parse_args( $levels, $default_levels );
 
-            return update_option( 'location_levels', $levels, $autoload );
+            return update_option( 'dt_location_levels', $levels, $autoload );
 
             break;
+        case 'auto_location':
+            return update_option( 'dt_auto_location', $value, $autoload );
+            break;
+
         default:
             return false;
             break;
@@ -452,9 +464,7 @@ function dt_get_site_custom_lists( string $list_title = null )
 function dt_get_location_levels() {
     $fields = [];
 
-    $fields['version'] = '1';
-
-    $fields['auto_location'] = false;
+    $fields['version'] = 3;
 
     $fields['location_levels'] = [
         'country' => 1,
