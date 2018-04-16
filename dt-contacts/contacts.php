@@ -778,7 +778,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $user_id = get_post_meta( $subassigned, "corresponds_to_user", true );
         if ( $user_id ){
-            self::add_shared_on_contact( $contact_id, $user_id );
+            self::add_shared_on_contact( $contact_id, $user_id, null, false, false );
         }
 
         return p2p_type( 'contacts_to_subassigned' )->connect(
@@ -1478,12 +1478,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * Get Contacts assigned to a user's team
      *
-     * @param int  $user_id
+     * @param int $user_id
      * @param bool $check_permissions
      *
+     * @param bool $exclude_current_user
+     * @param int $most_recent
+     *
+     * @return array | WP_Error
      * @access public
      * @since  0.1.0
-     * @return array | WP_Error
      */
     public static function get_team_contacts( int $user_id, bool $check_permissions = true, $exclude_current_user = false, $most_recent = 0 )
     {
@@ -1581,6 +1584,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             ]
         ];
 
+        if ( sizeof( $members ) === 0 ){
+            return [
+                "members"  => $user_connections,
+                "contacts" => [],
+            ];
+        }
         foreach ( $members as $member ) {
             if ( !$exclude_current_user || ($exclude_current_user && $member != $user_id) ){
                 $user_connections[] = [
@@ -1815,15 +1824,18 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * Adds a share record
      *
-     * @param int   $post_id
-     * @param int   $user_id
+     * @param int $post_id
+     * @param int $user_id
      * @param array $meta
+     *
+     * @param bool $send_notifications
+     * @param bool $check_permissions
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared_on_contact( int $post_id, int $user_id, $meta = null )
+    public static function add_shared_on_contact( int $post_id, int $user_id, $meta = null, $send_notifications = true, $check_permissions = true )
     {
-        return self::add_shared( 'contacts', $post_id, $user_id, $meta );
+        return self::add_shared( 'contacts', $post_id, $user_id, $meta, $send_notifications, $check_permissions );
     }
 
     public function find_contacts_with( $field, $value, $exclude_id = "" ){
