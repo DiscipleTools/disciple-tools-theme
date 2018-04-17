@@ -1170,8 +1170,10 @@ class Disciple_Tools_Contact_Post_Type
             if ( $type == 'user' && isset( $metadata[1] ) ) {
                 $id = $meta_array[1];
                 $value = get_user_by( 'id', $id );
-                echo '<option value="user-' . esc_attr( $id ) . '" selected>' . esc_html( $value->display_name ) . '</option>';
-                echo '<option>---</option>';
+                if ( isset($value->display_name) ) {
+                    echo '<option value="user-' . esc_attr( $id ) . '" selected>' . esc_html( $value->display_name  ) . '</option>';
+                    echo '<option>---</option>';
+                }
 
                 // exclude the current id from the $results list
                 $exclude_user = "'exclude' => $id";
