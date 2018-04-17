@@ -324,7 +324,8 @@ class Disciple_Tools_Location_Post_Type
     public function load_levels_meta_box( $post )
     {
         $raw = get_post_meta( $post->ID, 'raw', true );
-        dt_write_log( $raw );
+        $locations_result = self::query_all_locations();
+//        dt_write_log( $locations_result );
 
         if ( ! $raw ) :
             $dropdown_args = array(
@@ -353,9 +354,20 @@ class Disciple_Tools_Location_Post_Type
             ?>
             <p style="text-align:center">
                 <?php
+                $add_address = '';
                 foreach( $levels as $key => $level ) :
-                    if ( $key != 0 ) {
-                        echo $level['long_name'] . '<br>|<br>';
+                    if ( $key != 0 ) { // removes itself from the list
+
+                        $add_address .= $level['long_name'] .',';
+
+                        $location_id = $this->does_location_exist( $locations_result, $level['long_name'] );
+
+                        if ( $location_id ) {
+                            echo '<a href="'. esc_url( admin_url() . 'post.php?post=' . $location_id . '&action=edit').'" rel="nofollow">'. $level['long_name'] . '</a><br>|<br>';
+                        } else {
+                            $level_address = trim( substr( $add_address, 0, -1 ) );
+                            echo $level['long_name'] . ' <a class="add-parent-location" href="javascript:void(0)" onclick="add_parent_location( \''.$level_address.'\',\''.$level['long_name'].'\',\''.$post->ID.'\')" style="font-size:1.5em; text-decoration:none;">+</a><br>|<br>';
+                        }
                     }
                 endforeach;
                 ?>
@@ -363,6 +375,29 @@ class Disciple_Tools_Location_Post_Type
             </p>
             <?php
         endif;
+    }
+
+    /**
+     * Filters the self::query_all_locations() to find a matching location.
+     *
+     * @param array $locations_result
+     * @param       $address_component
+     *
+     * @return bool|int Returns post_id on success, false on failure.
+     */
+    public function does_location_exist( array $locations_result, $address_component ) {
+        if ( empty( $locations_result ) || ! is_array( $locations_result ) ) {
+            $locations_result = self::query_all_locations();
+        }
+        foreach ( $locations_result as $result ) {
+            if ( ! isset( $result['raw'] ) ) {
+                continue;
+            }
+            if ( $address_component == Disciple_Tools_Google_Geocode_API::parse_raw_result( $result['raw'], 'self') )  {
+                return $result['ID'];
+            }
+        }
+        return false;
     }
 
     /**
@@ -722,6 +757,7 @@ class Disciple_Tools_Location_Post_Type
     public function display_location_map()
     {
         global $post, $pagenow;
+        $geocode = new Disciple_Tools_Google_Geocode_API();
         $raw_location = get_post_meta( $post->ID, 'raw', true );
 
         if ( 'post-new.php' == $pagenow || empty( $raw_location ) ) {
@@ -731,12 +767,12 @@ class Disciple_Tools_Location_Post_Type
         }
         elseif ( $raw_location ) {
 
-            $lat = (float) Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_location, 'lat' );
-            $lng = (float) Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_location, 'lng' );
-            $northeast_lat = (float) Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_location, 'northeast_lat' );
-            $northeast_lng = (float) Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_location, 'northeast_lng' );
-            $southwest_lat = (float) Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_location, 'southwest_lat' );
-            $southwest_lng = (float) Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_location, 'southwest_lng' );
+            $lat = (float) $geocode::parse_raw_result( $raw_location, 'lat' );
+            $lng = (float) $geocode::parse_raw_result( $raw_location, 'lng' );
+            $northeast_lat = (float) $geocode::parse_raw_result( $raw_location, 'northeast_lat' );
+            $northeast_lng = (float) $geocode::parse_raw_result( $raw_location, 'northeast_lng' );
+            $southwest_lat = (float) $geocode::parse_raw_result( $raw_location, 'southwest_lat' );
+            $southwest_lng = (float) $geocode::parse_raw_result( $raw_location, 'southwest_lng' );
 
             ?>
 
@@ -872,7 +908,15 @@ class Disciple_Tools_Location_Post_Type
               $extended_query 
         ",
             ARRAY_A );
-        return $results;
+
+        if ( empty( $results ) ) {
+            return $results;
+        } else {
+            foreach ( $results as $key => $result ) {
+                $results[$key]['raw'] = maybe_unserialize( $result['raw'] );
+            }
+            return $results;
+        }
     }
 
 }

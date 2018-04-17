@@ -99,6 +99,10 @@ class Disciple_Tools_Locations_Endpoints
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [ $this, 'validate_address' ],
             ],
+            $base.'/add_parent_location' => [
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => [ $this, 'add_parent_location' ],
+            ],
         ];
 
         // Register each route
@@ -180,6 +184,23 @@ class Disciple_Tools_Locations_Endpoints
         if ( isset( $params['address'] ) ){
 
             $result = Disciple_Tools_Google_Geocode_API::query_google_api( $params['address'] );
+
+            if ( $result['status'] == 'OK' ){
+                return $result;
+            } else {
+                return new WP_Error( "status_error", 'Zero Results', array( 'status' => 400 ) );
+            }
+        } else {
+            return new WP_Error( "param_error", "Please provide a valid address", array( 'status' => 400 ) );
+        }
+    }
+
+    public function add_parent_location( WP_REST_Request $request ){
+        $params = $request->get_json_params();
+        dt_write_log( $params );
+        if ( isset( $params['address'] ) && isset( $params['post_id'] ) ){
+
+            $result = Disciple_Tools_Locations::insert_parent_location( $params['address'], $params['parent_name'], $params['post_id'] );
 
             if ( $result['status'] == 'OK' ){
                 return $result;

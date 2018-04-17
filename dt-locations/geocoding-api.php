@@ -402,6 +402,24 @@ class Disciple_Tools_Google_Geocode_API
                 return $raw['types'][0] ?? false;
                 break;
 
+            case 'self':
+                /**
+                 * "Self" returns the isolated searched element of any google result.
+                 * If the queried item was a street address like 123 Street Name Blvd., Denver, CO 80126, "self" will return "123"
+                 * If the queried item was "Phoenix, AZ, US", "self" will return "Phoenix".
+                 *
+                 * Using "self" is more reliable than using post title, because the post title can be changed.
+                 */
+                return $raw['address_components'][0]['long_name'];
+                break;
+
+            case 'self_full':
+                /**
+                 * Returns the full array address component.
+                 */
+                return $raw['address_components'][0];
+                break;
+
             case 'full':
                 return $raw;
                 break;

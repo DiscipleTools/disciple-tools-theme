@@ -21,6 +21,29 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
         parent::__construct();
     }
 
+    public static function insert_parent_location( $address, $parent_name, $child_id ) {
+
+        $google_result = Disciple_Tools_Google_Geocode_API::query_google_api( $address );
+        if ( ! $google_result ) {
+            return new WP_Error(__METHOD__, 'Failed to geocode address.' );
+        }
+
+        // lookup $child id
+        // parse child id raw
+
+        // create new parent
+
+        // connect new parent to next level existing parent
+
+        // connect child to new parent
+
+        // return new parent id
+        return [
+            'status' => 'OK',
+            'data' => true,
+        ];
+    }
+
     /**
      * Get all locations in database
      *
