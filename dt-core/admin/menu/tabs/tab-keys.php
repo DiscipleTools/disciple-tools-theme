@@ -14,38 +14,64 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Disciple_Tools_Keys_Tab
  */
-class Disciple_Tools_Keys_Tab
+class Disciple_Tools_Keys_Tab extends Disciple_Tools_Abstract_Menu_Base
 {
+    private static $_instance = null;
+    public static function instance()
+    {
+        if ( is_null( self::$_instance ) ) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    } // End instance()
+
+    /**
+     * Constructor function.
+     *
+     * @access  public
+     * @since   0.1.0
+     */
+    public function __construct()
+    {
+        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 20, 1 );
+        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
+
+        parent::__construct();
+    } // End __construct()
+
+    public function add_tab( $tab ) {
+        echo '<a href="'. esc_url( admin_url() ).'admin.php?page=dt_options&tab=google-map" class="nav-tab ';
+        if ( $tab == 'google-map' ) {
+            echo 'nav-tab-active';
+        }
+        echo '">Google Map API</a>';
+    }
     /**
      * Packages and returns tab page
      *
      * @return void
      */
-    public function content()
+    public function content( $tab )
     {
-        ?>
-        <form method="post">
+        if ( 'google-map' == $tab ) :
+            $this->template( 'begin' );
 
-            <div class="wrap">
-                <div id="poststuff">
-                    <div id="post-body" class="metabox-holder columns-1">
-                        <div id="post-body-content">
+                echo '<form method="post">';
 
-                            <?php $this->google_map_api_key_metabox() ?>
-                            <br>
-                            <?php $this->get_your_own_google_key_metabox(); ?>
+                $this->google_map_api_key_metabox();
 
-                        </div><!-- end post-body-content -->
-                        <div id="postbox-container-1" class="postbox-container">
-                        </div><!-- postbox-container 1 -->
-                        <div id="postbox-container-2" class="postbox-container">
-                        </div><!-- postbox-container 2 -->
-                    </div><!-- post-body meta box container -->
-                </div>
-                <!--poststuff end -->
-            </div><!-- wrap end -->
-        </form>
-        <?php
+                echo '<br>';
+
+                $this->get_your_own_google_key_metabox();
+
+                echo '</form>';
+
+            $this->template( 'right_column' );
+
+            // end columns template
+            $this->template( 'end' );
+
+        endif;
     }
 
     public function google_map_api_key_metabox()
@@ -209,3 +235,4 @@ class Disciple_Tools_Keys_Tab
         <?php
     }
 }
+Disciple_Tools_Keys_Tab::instance();

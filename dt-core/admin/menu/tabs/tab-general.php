@@ -17,88 +17,73 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * Class Disciple_Tools_General_Tab
  */
-class Disciple_Tools_General_Tab
+class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 {
-    /**
-     * Packages and prints tab page
-     */
-    public function content()
+    private static $_instance = null;
+    public static function instance()
     {
-        echo '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
-        echo '<div id="post-body-content">';
-        /* Main Column */
+        if ( is_null( self::$_instance ) ) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    } // End instance()
 
+    public function __construct()
+    {
+        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 5, 1 );
+        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 10, 1 );
 
-        /* Box */
-        echo '<table class="widefat striped">
-                    <thead><th>Base User</th></thead>
-                    <tbody><tr><td>';
+        parent::__construct();
+    }
 
-        $this->process_base_user();
-        $this->base_user();
+    public function add_tab( $tab ) {
+        echo '<a href="'. esc_url( admin_url() ).'admin.php?page=dt_options&tab=general" class="nav-tab ';
+        if ( $tab == 'general' || !isset( $tab ) ) {
+            echo 'nav-tab-active';
+        }
+        echo '">General</a>';
+    }
 
-        echo '</td></tr></tbody></table><br>';
-        /* End Box */
+    public function content( $tab )
+    {
+        if ( 'general' == $tab ) :
 
-        /* Box */
-        echo '<table class="widefat striped">
-                    <thead><th>Email Settings</th></thead>
-                    <tbody><tr><td>';
+            $this->template( 'begin' );
 
-        $this->process_email_settings();
-        $this->email_settings();
+        /* Base User */
+            $this->box( 'top', 'Base User' );
+            $this->process_base_user();
+            $this->base_user();
+            $this->box( 'bottom' );
+            /* End Base User */
 
-        echo '</td></tr></tbody></table><br>';
-        /* Box */
+        /* Email Settings */
+            $this->box( 'top', 'Email Settings' );
+            $this->process_email_settings();
+            $this->email_settings();
+            $this->box( 'bottom' );
+            /* End Email Settings */
 
-        /* Box */
-        echo '<table class="widefat striped">
-                    <thead><th>Site Notifications</th></thead>
-                    <tbody><tr><td>';
+        /* Site Notifications */
+            $this->box( 'top', 'Site Notifications' );
+            $this->process_user_notifications();
+            $this->user_notifications(); // prints content for the notifications box
+            $this->box( 'bottom' );
+            /* Site Notifications */
 
-        $this->process_user_notifications();
-        $this->user_notifications(); // prints content for the notifications box
+        /* Report Settings */
+        // @todo These settings are intended to trigger builds on daily reports. They are hidden until future development. 4/13/2018
+//            $this->box( 'top', 'Reports Settings' );
+//            $this->process_reports();
+//            $this->reports(); // prints
+//            $this->box( 'bottom' );
+            /* End Report Settings */
 
-        echo '</td></tr></tbody></table><br>';
-        /* End Box */
+            $this->template( 'right_column' );
 
-        /* Box */
-        echo '<table class="widefat striped">
-                    <thead><th>Reports Settings</th></thead>
-                    <tbody><tr><td>';
+            $this->template( 'end' );
 
-        $this->process_reports();
-        $this->reports(); // prints
-
-        echo '</td></tr></tbody></table><br>';
-        /* End Box */
-
-        /* Box */
-        echo '<table class="widefat striped">
-                    <thead><th>Extended Modules</th></thead>
-                    <tbody><tr><td>';
-
-        $this->process_extension_modules(); // prints
-        $this->extension_modules(); // prints
-
-        echo '</td></tr></tbody></table>';
-        /* End Box */
-
-        /* End Main Column */
-        echo '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
-        /* Right Column */
-
-        /* Box */
-        echo '<table class="widefat striped">
-                    <thead><th>Instructions</th></thead>
-                    <tbody><tr><td>';
-
-        echo '</td></tr></tbody></table>';
-        /* End Box */
-
-        /* End Right Column*/
-        echo '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
-        echo '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
+        endif;
     }
 
     /**
@@ -319,7 +304,5 @@ class Disciple_Tools_General_Tab
             }
         }
     }
-
-
-
 }
+Disciple_Tools_General_Tab::instance();

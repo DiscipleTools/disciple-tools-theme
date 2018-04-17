@@ -15,12 +15,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Disciple_Tools_Import_Export_Tab
  */
-class Disciple_Tools_Import_CSV
+class Disciple_Tools_Import_CSV_Tab extends Disciple_Tools_Abstract_Menu_Base
 {
+    private static $_instance = null;
+    public static function instance()
+    {
+        if ( is_null( self::$_instance ) ) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    }
 
-    /**
-     * Disciple_Tools_Import_Export_Tab constructor.
-     */
     public function __construct()
     {
 
@@ -37,12 +42,25 @@ class Disciple_Tools_Import_CSV
         $this->insertype = '';
         $this->results = [];
         $this->count_rows = 0;
+
+        add_action( 'dt_submenu_import_tab_menu', [ $this, 'add_tab' ], 99, 1 );
+        add_action( 'dt_submenu_import_tab_content', [ $this, 'content' ], 99, 1 );
+
+        parent::__construct();
+    }
+
+    public function add_tab( $tab ) {
+        echo '<a href="admin.php?page=dt_import_export&tab=import" class="nav-tab ';
+        if ( $tab == 'import' ) {
+            echo 'nav-tab-active';
+        }
+        echo '">'. esc_attr__( 'Import', 'disciple_tools' ) .'</a>';
     }
 
     /**
      * Primary page content
      */
-    public function wizard()
+    public function content()
     {
 
         // Routing
@@ -170,7 +188,7 @@ class Disciple_Tools_Import_CSV
                                         style="cursor:auto;padding:10px;">Templates</h3>
                                     <div class="inside">
                                         Locations Template<br>
-                                        <a href="<?php echo esc_url( get_template_directory_uri() ) . '/dt-core/admin/utilities/locations-template.csv' ?>" target="_blank" rel="noopener noreferrer">Locations Import Template</a>
+                                        <a href="<?php echo esc_url( get_template_directory_uri() ) . '/dt-locations/utilities/locations-template.csv' ?>" target="_blank" rel="noopener noreferrer">Locations Import Template</a>
                                     </div>
                                 </div>
                             </div>
@@ -750,3 +768,4 @@ class Disciple_Tools_Import_CSV
     }
 
 }
+Disciple_Tools_Import_CSV_Tab::instance();

@@ -16,10 +16,6 @@ if ( ! class_exists( 'DT_Extensions_Menu' ) ) {
     class DT_Extensions_Menu
     {
         private static $_instance = null;
-
-        /**
-         * @return \DT_Extensions_Menu|object
-         */
         public static function instance() {
             if ( is_null( self::$_instance ) ) {
                 self::$_instance = new self();
@@ -27,22 +23,37 @@ if ( ! class_exists( 'DT_Extensions_Menu' ) ) {
             return self::$_instance;
         } // End instance()
 
-
         public function __construct() {
             add_action( "admin_menu", array( $this, "menu" ) );
         }
 
         public function menu() {
-            add_menu_page( __( 'Extensions (DT)', 'disciple_tools' ), __( 'Extensions (DT)', 'disciple_tools' ), 'manage_dt', 'dt_extensions', [ $this, 'content' ], 'dashicons-admin-generic', 59 );
+            add_menu_page( __( 'Extensions (DT)', 'disciple_tools' ), __( 'Extensions (DT)', 'disciple_tools' ), 'manage_dt', 'dt_extensions', [ $this, 'page' ], 'dashicons-admin-generic', 59 );
         }
 
         /**
          * @return void
          */
-        public function content() {
-            echo '<div class="wrap"><h1>DISCIPLE TOOLS - EXTENSIONS</h1>';
-            echo 'Under construction';
-            echo '</div>';
+        public function page()
+        {
+            if ( !current_user_can( 'manage_dt' ) ) {
+                wp_die( 'You do not have sufficient permissions to access this page.' );
+            }
+
+            $tab = isset( $_GET["tab"] ) ? sanitize_text_field( wp_unslash( $_GET["tab"] ) ) : 'featured-extensions';
+
+            ?>
+            <div class="wrap">
+                <h2>DISCIPLE TOOLS : EXTENSIONS</h2>
+
+                <h2 class="nav-tab-wrapper">
+                    <?php do_action( 'dt_extensions_tab_menu', $tab ); ?>
+                </h2>
+
+                <?php do_action( 'dt_extensions_tab_content', $tab ); ?>
+
+            </div>
+            <?php
         }
     }
     DT_Extensions_Menu::instance();

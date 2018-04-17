@@ -114,7 +114,7 @@ class Disciple_Tools_Metabox_Activity
 
                     <td><?php echo esc_html( $user_name ); ?></td>
                     <td><?php echo esc_html( strip_tags( $item['action'] ) ); ?></td>
-                    <td><?php echo esc_html( strip_tags( $item['object_note'] ) ); ?></td>
+                    <td style="-ms-word-break: break-all; word-break: break-all; word-break: break-word; -webkit-hyphens: none; -moz-hyphens: none; -ms-hyphens: none; hyphens: none;"><?php echo esc_html( strip_tags( $item['object_note'] ) ); ?></td>
                     <td><?php echo esc_html( date( 'm/d/Y h:i:s', $item['hist_time'] ) ); ?></td>
 
                 </tr>
