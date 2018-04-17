@@ -25,7 +25,7 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
 
         $google_result = Disciple_Tools_Google_Geocode_API::query_google_api( $address );
         if ( ! $google_result ) {
-            return new WP_Error(__METHOD__, 'Failed to geocode address.' );
+            return new WP_Error( __METHOD__, 'Failed to geocode address.' );
         }
 
         // lookup $child id

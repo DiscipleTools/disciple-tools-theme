@@ -451,39 +451,39 @@ class Disciple_Tools_Google_Geocode_API
 
         switch ( $item ) {
             case 'is_country':
-                return $raw['types'][0] == 'country' ;
+                return $raw['types'][0] == 'country';
                 break;
 
             case 'is_admin1':
-                return $raw['types'][0] == 'administrative_area_level_1' ;
+                return $raw['types'][0] == 'administrative_area_level_1';
                 break;
 
             case 'is_admin2':
-                return $raw['types'][0] == 'administrative_area_level_2' ;
+                return $raw['types'][0] == 'administrative_area_level_2';
                 break;
 
             case 'is_admin3':
-                return $raw['types'][0] == 'administrative_area_level_3' ;
+                return $raw['types'][0] == 'administrative_area_level_3';
                 break;
 
             case 'is_admin4':
-                return $raw['types'][0] == 'administrative_area_level_4' ;
+                return $raw['types'][0] == 'administrative_area_level_4';
                 break;
 
             case 'locality':
-                return $raw['types'][0] == 'locality' ;
+                return $raw['types'][0] == 'locality';
                 break;
 
             case 'neighborhood':
-                return $raw['types'][0] == 'locality' ;
+                return $raw['types'][0] == 'locality';
                 break;
 
             case 'route':
-                return $raw['types'][0] == 'locality' ;
+                return $raw['types'][0] == 'locality';
                 break;
 
             case 'street_address':
-                return $raw['types'][0] == 'locality' ;
+                return $raw['types'][0] == 'locality';
                 break;
 
 

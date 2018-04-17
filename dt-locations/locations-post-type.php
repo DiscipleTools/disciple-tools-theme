@@ -113,7 +113,6 @@ class Disciple_Tools_Location_Post_Type
                     add_action( 'manage_posts_custom_column', [ $this, 'register_custom_columns' ], 10, 2 );
                 }
             }
-
         }
     } // End __construct()
 
@@ -318,7 +317,7 @@ class Disciple_Tools_Location_Post_Type
 
     public function load_notes_meta_box()
     {
-        $this->meta_box_content('notes');
+        $this->meta_box_content( 'notes' );
     }
 
     public function load_levels_meta_box( $post )
@@ -333,19 +332,21 @@ class Disciple_Tools_Location_Post_Type
                 'exclude_tree'     => $post->ID,
                 'selected'         => $post->post_parent,
                 'name'             => 'parent_id',
-                'show_option_none' => __('(no parent)'),
+                'show_option_none' => __( '(no parent)' ),
                 'sort_column'      => 'menu_order, post_title',
                 'echo'             => 0,
             );
+            // @codingStandardsIgnoreLine
             $pages = wp_dropdown_pages( $dropdown_args );
             if ( ! empty( $pages ) ) :
                 ?>
-                <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="parent_id"><?php _e( 'Parent' ); ?></label></p>
+                <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="parent_id"><?php esc_html_e( 'Parent' ); ?></label></p>
                 <?php
+                // @codingStandardsIgnoreLine
                 echo $pages;
             endif; // end empty pages check
             ?>
-            <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="menu_order"><?php _e( 'Order' ); ?></label></p>
+            <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="menu_order"><?php esc_html_e( 'Order' ); ?></label></p>
             <input name="menu_order" type="text" size="4" id="menu_order" value="<?php echo esc_attr( $post->menu_order ); ?>" />
             <?php
         else : // end non-geocoded "free location" section
@@ -355,7 +356,7 @@ class Disciple_Tools_Location_Post_Type
             <p style="text-align:center">
                 <?php
                 $add_address = '';
-                foreach( $levels as $key => $level ) :
+                foreach ( $levels as $key => $level ) :
                     if ( $key != 0 ) { // removes itself from the list
 
                         $add_address .= $level['long_name'] .',';
@@ -363,15 +364,15 @@ class Disciple_Tools_Location_Post_Type
                         $location_id = $this->does_location_exist( $locations_result, $level['long_name'] );
 
                         if ( $location_id ) {
-                            echo '<a href="'. esc_url( admin_url() . 'post.php?post=' . $location_id . '&action=edit').'" rel="nofollow">'. $level['long_name'] . '</a><br>|<br>';
+                            echo '<a href="'. esc_url( admin_url() . 'post.php?post=' . esc_attr( $location_id ) . '&action=edit' ).'" rel="nofollow">'. esc_attr( $level['long_name'] ) . '</a><br>|<br>';
                         } else {
                             $level_address = trim( substr( $add_address, 0, -1 ) );
-                            echo $level['long_name'] . ' <a class="add-parent-location" href="javascript:void(0)" onclick="add_parent_location( \''.$level_address.'\',\''.$level['long_name'].'\',\''.$post->ID.'\')" style="font-size:1.5em; text-decoration:none;">+</a><br>|<br>';
+                            echo esc_attr( $level['long_name'] ) . ' <a class="add-parent-location" href="javascript:void(0)" onclick="add_parent_location( \''.esc_attr( $level_address ).'\',\''. esc_attr( $level['long_name'] ).'\',\''. esc_attr( $post->ID ).'\')" style="font-size:1.5em; text-decoration:none;">+</a><br>|<br>';
                         }
                     }
                 endforeach;
                 ?>
-                <strong><?php echo $post->post_title; ?></strong>
+                <strong><?php echo esc_attr( $post->post_title ); ?></strong>
             </p>
             <?php
         endif;
@@ -393,7 +394,7 @@ class Disciple_Tools_Location_Post_Type
             if ( ! isset( $result['raw'] ) ) {
                 continue;
             }
-            if ( $address_component == Disciple_Tools_Google_Geocode_API::parse_raw_result( $result['raw'], 'self') )  {
+            if ( $address_component == Disciple_Tools_Google_Geocode_API::parse_raw_result( $result['raw'], 'self' ) ) {
                 return $result['ID'];
             }
         }
@@ -894,6 +895,7 @@ class Disciple_Tools_Location_Post_Type
             $extended_query = " AND types = '" . $types . "'";
         }
 
+        // @codingStandardsIgnoreStart
         $results = $wpdb->get_results( "
         SELECT a.ID, a.post_title, a.post_parent, b.meta_value as types, c.meta_value as raw
         FROM $wpdb->posts as a
@@ -907,7 +909,8 @@ class Disciple_Tools_Location_Post_Type
               AND post_status = 'publish'
               $extended_query 
         ",
-            ARRAY_A );
+        ARRAY_A );
+        // @codingStandardsIgnoreEnd
 
         if ( empty( $results ) ) {
             return $results;
