@@ -175,13 +175,13 @@ class Disciple_Tools_Locations_Endpoints
      * @since 0.1
      * @return string|WP_Error The contact on success
      */
-    public function validate_address( WP_REST_Request $request){
+    public function validate_address( WP_REST_Request $request ){
         $params = $request->get_json_params();
         if ( isset( $params['address'] ) ){
 
             $result = Disciple_Tools_Google_Geocode_API::query_google_api( $params['address'] );
 
-            if ( $result['status'] == 'OK'){
+            if ( $result['status'] == 'OK' ){
                 return $result;
             } else {
                 return new WP_Error( "status_error", 'Zero Results', array( 'status' => 400 ) );

@@ -5,6 +5,10 @@
  */
 
 jQuery(document).ready(function() {
+    jQuery('#publish').val("Save")
+    jQuery('#submitdiv h2 span').html('Save')
+    jQuery('#misc-publishing-actions').hide()
+
     jQuery('#search_location_address').focus(function () {
         let field = jQuery('#search_location_address')
         if( field.val() === '') {

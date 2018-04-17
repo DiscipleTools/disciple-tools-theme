@@ -107,13 +107,13 @@ class Disciple_Tools_Location_Post_Type
 
             if ( isset( $_GET['post_type'] ) ) {
                 $post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
+
                 if ( $pagenow == 'edit.php' && $this->post_type === $post_type ) {
                     add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
                     add_action( 'manage_posts_custom_column', [ $this, 'register_custom_columns' ], 10, 2 );
                 }
             }
 
-            add_action( 'admin_init', [ $this, 'remove_add_new_submenu' ] );
         }
     } // End __construct()
 
@@ -180,7 +180,7 @@ class Disciple_Tools_Location_Post_Type
             'capabilities'          => $capabilities,
             'has_archive'           => true,
             'hierarchical'          => true,
-            'supports'              => [ 'title', 'comments', 'page-attributes' ],
+            'supports'              => [ 'title' ],
             'menu_position'         => 6,
             'menu_icon'             => 'dashicons-smiley',
             'show_in_rest'          => true,
@@ -193,26 +193,17 @@ class Disciple_Tools_Location_Post_Type
         register_post_type( $this->post_type, $args );
     } // End register_post_type()
 
-    /**
-     * Add custom columns for the "manage" screen of this post type.
-     *
-     * @param $column_name
-     */
     public function register_custom_columns( $column_name, $post_id )
     {
-
+        global $post;
         switch ( $column_name ) {
             case 'location_address':
                 dt_write_log( 'location_address' );
-                echo esc_attr( get_post_meta( $post_id, 'location_address', true ) );
+                echo esc_attr( get_post_meta( $post->ID, 'location_address', true ) );
                 break;
             case 'location_parent':
                 dt_write_log( 'location_parent' );
-                echo esc_attr( get_post_meta( $post_id, 'location_parent', true ) );
-                break;
-            case 'level':
-                dt_write_log( 'level' );
-                echo esc_attr( get_post_meta( $post_id, 'level', true ) );
+                echo esc_attr( 'test' );
                 break;
             case 'map':
                 dt_write_log( 'map' );
@@ -237,8 +228,7 @@ class Disciple_Tools_Location_Post_Type
         $new_columns =
         [
             'location_address' => __( 'Address', 'disciple_tools' ),
-            'location_parent'  => __( 'Parent', 'disciple_tools' ),
-            'level'            => __( 'Level', 'disciple_tools' ),
+            'location_parent' => __( 'Levels', 'disciple_tools' ),
             'map'              => __( 'Map', 'disciple_tools' ),
         ];
 
@@ -313,7 +303,9 @@ class Disciple_Tools_Location_Post_Type
     {
         add_meta_box( $this->post_type . '_geocode', __( 'Geo-Code', 'disciple_tools' ), [ $this, 'geocode_metabox' ], $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_map', __( 'Map', 'disciple_tools' ), [ $this, 'load_map_meta_box' ], $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_notes', __( 'Notes', 'disciple_tools' ), [ $this, 'load_notes_meta_box' ], $this->post_type, 'advanced', 'high' );
         add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'advanced', 'low' );
+        add_meta_box( $this->post_type . '_levels', __( 'Levels', 'disciple_tools' ), [ $this, 'load_levels_meta_box' ], $this->post_type, 'side', 'high' );
     } // End meta_box_setup()
 
     /**
@@ -322,6 +314,55 @@ class Disciple_Tools_Location_Post_Type
     public function load_activity_meta_box()
     {
         dt_activity_metabox()->activity_meta_box( get_the_ID() );
+    }
+
+    public function load_notes_meta_box()
+    {
+        $this->meta_box_content('notes');
+    }
+
+    public function load_levels_meta_box( $post )
+    {
+        $raw = get_post_meta( $post->ID, 'raw', true );
+        dt_write_log( $raw );
+
+        if ( ! $raw ) :
+            $dropdown_args = array(
+                'post_type'        => $post->post_type,
+                'exclude_tree'     => $post->ID,
+                'selected'         => $post->post_parent,
+                'name'             => 'parent_id',
+                'show_option_none' => __('(no parent)'),
+                'sort_column'      => 'menu_order, post_title',
+                'echo'             => 0,
+            );
+            $pages = wp_dropdown_pages( $dropdown_args );
+            if ( ! empty( $pages ) ) :
+                ?>
+                <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="parent_id"><?php _e( 'Parent' ); ?></label></p>
+                <?php
+                echo $pages;
+            endif; // end empty pages check
+            ?>
+            <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="menu_order"><?php _e( 'Order' ); ?></label></p>
+            <input name="menu_order" type="text" size="4" id="menu_order" value="<?php echo esc_attr( $post->menu_order ); ?>" />
+            <?php
+        else : // end non-geocoded "free location" section
+            $levels = Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw, 'political' );
+            $levels = array_reverse( $levels, true );
+            ?>
+            <p style="text-align:center">
+                <?php
+                foreach( $levels as $key => $level ) :
+                    if ( $key != 0 ) {
+                        echo $level['long_name'] . '<br>|<br>';
+                    }
+                endforeach;
+                ?>
+                <strong><?php echo $post->post_title; ?></strong>
+            </p>
+            <?php
+        endif;
     }
 
     /**
@@ -333,29 +374,36 @@ class Disciple_Tools_Location_Post_Type
     }
 
     public function geocode_metabox() {
+
         global $post, $pagenow;
-        $post_meta = get_post_meta( $post->ID );
+        if ( ! ( 'post-new.php' == $pagenow ) ) :
+            $post_meta = get_post_meta( $post->ID );
 
-        echo '<input type="hidden" name="dt_locations_noonce" id="dt_locations_noonce" value="' . esc_attr( wp_create_nonce( 'update_location_info' ) ) . '" />';
-        ?>
-        <table class="widefat striped">
-            <tr>
-                <td><label for="search_location_address">Address:</label></td>
-                <td><input type="text" id="search_location_address"
-                           value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>" />
-                    <button type="button" class="button" name="validate_address_button" id="validate_address_button" onclick="validate_address( jQuery('#search_location_address').val() );" >Validate</button>
-                    <button type="submit" name="delete" value="1" class="button">Delete</button>
-                        <br>
-                    <span id="errors"></span>
-                    <p id="possible-results">
+            echo '<input type="hidden" name="dt_locations_noonce" id="dt_locations_noonce" value="' . esc_attr( wp_create_nonce( 'update_location_info' ) ) . '" />';
+            ?>
+            <table class="widefat striped">
+                <tr>
+                    <td><label for="search_location_address">Address:</label></td>
+                    <td><input type="text" id="search_location_address"
+                               value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>" />
+                        <button type="button" class="button" name="validate_address_button" id="validate_address_button" onclick="validate_address( jQuery('#search_location_address').val() );" >Validate</button>
+                        <button type="submit" name="delete" value="1" class="button">Delete</button>
+                            <br>
+                        <span id="errors"></span>
+                        <p id="possible-results">
 
-                        <input type="hidden" id="location_address" name="location_address" value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>" />
-                    </p>
-                </td>
-            </tr>
-        </table>
-
+                            <input type="hidden" id="location_address" name="location_address"
+                                   value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>" />
+                        </p>
+                    </td>
+                </tr>
+            </table>
+            <?php
+        else :
+            ?>
+        You must save post before geocoding.
         <?php
+            endif;
     }
 
 
@@ -390,7 +438,14 @@ class Disciple_Tools_Location_Post_Type
                     switch ( $type ) {
 
                         case 'text':
-                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label>
+                                    </th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                            echo '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
+                            echo '</td><tr/>' . "\n";
+                            break;
+                        case 'textarea':
+                            echo '<tr valign="top">
+                                    <textarea name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" style="width:100%;" rows="6"  />' . esc_html( $data ) . '</textarea>' . "\n";
                             echo '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
                             echo '</td><tr/>' . "\n";
                             break;
@@ -482,8 +537,6 @@ class Disciple_Tools_Location_Post_Type
             }
         }
 
-
-
         // @todo evaluate the value of this next if section. Still needed or used. 4-16-2018
         if ( ( isset( $_POST['new-key-address'] ) && !empty( $_POST['new-key-address'] ) ) && ( isset( $_POST['new-value-address'] ) && !empty( $_POST['new-value-address'] ) ) ) { // catch and prepare new contact fields
             $k = explode( "_", sanitize_text_field( wp_unslash( $_POST['new-key-address'] ) ) );
@@ -491,41 +544,36 @@ class Disciple_Tools_Location_Post_Type
             $number_key = dt_address_metabox()->create_channel_metakey( "address" );
             $details_key = $number_key . "_details";
             $details = [
-            'type' => $type,
-            'verified' => false
+                'type' => $type,
+                'verified' => false
             ];
             //save the field and the field details
             add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST['new-value-address'] ) ), true );
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );
         }
+        // @todo end potential remove
 
+        // delete current geolocation data
         if ( ( isset( $_POST['location_address'] ) && empty( $_POST['location_address'] ) ) || isset( $_POST['delete'] ) ) {
+
             delete_post_meta( $post_id, 'location_address' );
-            delete_post_meta( $post_id, 'country' );
-            delete_post_meta( $post_id, 'admin1' );
-            delete_post_meta( $post_id, 'admin2' );
-            delete_post_meta( $post_id, 'admin3' );
-            delete_post_meta( $post_id, 'admin4' );
-            delete_post_meta( $post_id, 'locality' );
-            delete_post_meta( $post_id, 'neighborhood' );
+            delete_post_meta( $post_id, 'types' );
             delete_post_meta( $post_id, 'raw' );
             unset( $_POST['location_address'] );
+
         }
 
         // geo code supplied address
         if ( isset( $_POST['location_address'] ) && ! empty( $_POST['location_address'] ) ) {
             $address = sanitize_text_field( wp_unslash( $_POST['location_address'] ) );
             if ( $address != get_post_meta( $post_id, 'location_address', true ) ) {
-                $raw_response = Disciple_Tools_Google_Geocode_API::query_google_api( $address );
+
+                $geocode = new Disciple_Tools_Google_Geocode_API();
+                $raw_response = $geocode::query_google_api( $address );
                 if ( $raw_response ) {
 
-                    update_post_meta( $post_id, 'country', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'country' ) );
-                    update_post_meta( $post_id, 'admin1', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin1' ) );
-                    update_post_meta( $post_id, 'admin2', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin2' ) );
-                    update_post_meta( $post_id, 'admin3', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin3' ) );
-                    update_post_meta( $post_id, 'admin4', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'admin4' ) );
-                    update_post_meta( $post_id, 'locality', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'locality' ) );
-                    update_post_meta( $post_id, 'neighborhood', Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw_response, 'neighborhood' ) );
+                    update_post_meta( $post_id, 'location_address', $geocode::parse_raw_result( $raw_response, 'location_address' ) );
+                    update_post_meta( $post_id, 'types', $geocode::parse_raw_result( $raw_response, 'types' ) );
                     update_post_meta( $post_id, 'raw', $raw_response );
 
                 } else {
@@ -536,8 +584,6 @@ class Disciple_Tools_Location_Post_Type
                 }
             }
         }
-
-
 
         $field_data = $this->get_custom_fields_settings();
         $fields = array_keys( $field_data );
@@ -609,7 +655,13 @@ class Disciple_Tools_Location_Post_Type
             'default'     => '',
             'section'     => 'map',
         ];
-
+        $fields['notes'] = [
+            'name'        => 'Notes ',
+            'description' => '',
+            'type'        => 'textarea',
+            'default'     => '',
+            'section'     => 'notes',
+        ];
 
 
 
@@ -637,17 +689,6 @@ class Disciple_Tools_Location_Post_Type
     {
         $this->register_post_type();
         flush_rewrite_rules();
-    }
-
-    /**
-     * Remove the add new submenu from the locaions menu
-     */
-    public function remove_add_new_submenu()
-    {
-        global $submenu;
-        unset(
-            $submenu['edit.php?post_type=locations'][10]
-        );
     }
 
     /**
@@ -788,6 +829,50 @@ class Disciple_Tools_Location_Post_Type
 
             <?php
         } // endif $pagenow match
+    }
+
+    /**
+     * Returns all location post_types with 5 columns
+     * - ID (int)
+     * - post_title (string)
+     * - post_parent (int)
+     * types      (string) (administrative levels like `country`, `administrative_area_level_1`, `locality`, etc.
+     *              country
+     *              administrative_area_level_1
+     *              administrative_area_level_2
+     *              administrative_area_level_3
+     *              administrative_area_level_4
+     *
+     * - raw        (array) (raw google response
+     *
+     * @param $types (string)
+     *
+     * @return array|null|object
+     */
+    public static function query_all_locations( $types = null ) {
+        global $wpdb;
+
+        $extended_query = '';
+        if ( ! is_null( $types ) ) {
+            $types = trim( esc_sql( $types ) );
+            $extended_query = " AND types = '" . $types . "'";
+        }
+
+        $results = $wpdb->get_results( "
+        SELECT a.ID, a.post_title, a.post_parent, b.meta_value as types, c.meta_value as raw
+        FROM $wpdb->posts as a
+          LEFT JOIN $wpdb->postmeta as b
+          ON a.ID=b.post_id
+             AND b.meta_key = 'types'
+          LEFT JOIN $wpdb->postmeta as c
+          ON a.ID=c.post_id
+            AND c.meta_key = 'raw'
+        WHERE post_type = 'locations'
+              AND post_status = 'publish'
+              $extended_query 
+        ",
+            ARRAY_A );
+        return $results;
     }
 
 }

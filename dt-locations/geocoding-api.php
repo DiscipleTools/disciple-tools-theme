@@ -18,9 +18,12 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Google_Geocode_API
 {
+
     public static function key() {
         return dt_get_option( 'map_key' );
     }
+
+    public function __construct() {}
 
     /**
      * Google geocoding service
@@ -383,9 +386,88 @@ class Disciple_Tools_Google_Geocode_API
                 return $political ?: false;
                 break;
 
+            case 'types':
+                /**
+                 * Will return the location level or type
+                 * - country
+                 * - administrative_area_level_1
+                 * - administrative_area_level_2
+                 * - administrative_area_level_3
+                 * - administrative_area_level_4
+                 * - locality
+                 * - neighborhood
+                 * - route
+                 * - street_address
+                 */
+                return $raw['types'][0] ?? false;
+                break;
+
             case 'full':
                 return $raw;
                 break;
+
+            default:
+                return false;
+                break;
+        }
+    }
+
+    /**
+     *
+     *
+     * @param array $raw_response
+     * @param       $item
+     *
+     * @return bool
+     */
+    public static function test_raw_result( array $raw_response, $item ) : bool {
+
+        if ( empty( $raw_response ) || ! isset( $raw_response['status'] ) || ! isset( $raw_response['results'][0] ) ) {
+            return false;
+        }
+        if ( ! ( 'OK' == $raw_response['status'] ) ) {
+            return false;
+        }
+
+        $raw = $raw_response['results'][0];
+
+        switch ( $item ) {
+            case 'is_country':
+                return $raw['types'][0] == 'country' ;
+                break;
+
+            case 'is_admin1':
+                return $raw['types'][0] == 'administrative_area_level_1' ;
+                break;
+
+            case 'is_admin2':
+                return $raw['types'][0] == 'administrative_area_level_2' ;
+                break;
+
+            case 'is_admin3':
+                return $raw['types'][0] == 'administrative_area_level_3' ;
+                break;
+
+            case 'is_admin4':
+                return $raw['types'][0] == 'administrative_area_level_4' ;
+                break;
+
+            case 'locality':
+                return $raw['types'][0] == 'locality' ;
+                break;
+
+            case 'neighborhood':
+                return $raw['types'][0] == 'locality' ;
+                break;
+
+            case 'route':
+                return $raw['types'][0] == 'locality' ;
+                break;
+
+            case 'street_address':
+                return $raw['types'][0] == 'locality' ;
+                break;
+
 
             default:
                 return false;
