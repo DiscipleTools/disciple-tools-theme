@@ -64,6 +64,11 @@ declare(strict_types=1);
                             <?php esc_html_e( "Contacts shared with me", "disciple_tools" ); ?>
                             <span class="list-view__count js-list-view-count" data-value="contacts_shared_with_me">.</span>
                         </label>
+                        <label class="list-view">
+                            <input type="radio" name="view" value="team_contacts" class="js-list-view">
+                            <?php esc_html_e( "Team contacts", "disciple_tools" ); ?>
+                            <span class="list-view__count js-list-view-count" data-value="team_contacts">.</span>
+                        </label>
                     </div>
 
                     <h5><?php esc_html_e( "Sub-filters", "disciple_tools" ); ?></h5>

@@ -754,11 +754,11 @@ class Disciple_Tools_Posts
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared( string $post_type, int $post_id, int $user_id, $meta = null, bool $send_notifications = true )
+    public static function add_shared( string $post_type, int $post_id, int $user_id, $meta = null, bool $send_notifications = true, $check_permissions = true )
     {
         global $wpdb;
 
-        if ( !self::can_update( $post_type, $post_id ) ) {
+        if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
 

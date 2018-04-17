@@ -42,6 +42,12 @@
         && _.get(contact, 'assigned_to.user_login') !== current_username
       );
     },
+    team_contacts(contact) {
+      return (
+        contact.is_team_contact
+        && _.get(contact, 'assigned_to.user_login') !== current_username
+      );
+    },
     all_contacts(contact) {
       return true;
     },

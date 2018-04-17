@@ -213,7 +213,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $defaults = [
             "seeker_path"    => "none",
-            "type" => "media"
+            "type" => "media",
+            "last_modified" => time(),
         ];
         if (get_current_user_id()) {
             $defaults["assigned_to"] = sprintf( "user-%d", get_current_user_id() );
@@ -777,7 +778,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $user_id = get_post_meta( $subassigned, "corresponds_to_user", true );
         if ( $user_id ){
-            self::add_shared_on_contact( $contact_id, $user_id );
+            self::add_shared_on_contact( $contact_id, $user_id, null, false, false );
         }
 
         return p2p_type( 'contacts_to_subassigned' )->connect(
@@ -1425,7 +1426,17 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         //add shared contacts to the list avoiding duplicates
         foreach ( $contacts_shared_with_user as $shared ) {
             if ( !in_array( $shared->ID, $contact_ids ) ) {
+                $contact_ids[] = $shared->ID;
                 $contacts[] = $shared;
+            }
+        }
+        $team_contacts = self::get_team_contacts( $current_user->ID, true, true, $most_recent );
+        if ( isset( $team_contacts["contacts"] ) ){
+            foreach ( $team_contacts["contacts"] as $team_contact ){
+                if ( !in_array( $team_contact->ID, $contact_ids ) ) {
+                    $team_contact->is_team_contact = true;
+                    $contacts[] = $team_contact;
+                }
             }
         }
 
@@ -1467,14 +1478,17 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * Get Contacts assigned to a user's team
      *
-     * @param int  $user_id
+     * @param int $user_id
      * @param bool $check_permissions
      *
+     * @param bool $exclude_current_user
+     * @param int $most_recent
+     *
+     * @return array | WP_Error
      * @access public
      * @since  0.1.0
-     * @return array | WP_Error
      */
-    public static function get_team_contacts( int $user_id, bool $check_permissions = true )
+    public static function get_team_contacts( int $user_id, bool $check_permissions = true, $exclude_current_user = false, $most_recent = 0 )
     {
         if ( $check_permissions ) {
             $current_user = wp_get_current_user();
@@ -1541,17 +1555,56 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $members = array_unique( $members );
 
-        foreach ( $members as $member ) {
-            $user_connections[] = [
-            'key' => 'assigned_to',
-            'value' => 'user-' . $member
+        $query_args = [
+            'relation' => "AND",
+            [
+                'relation' => "OR",
+                [
+                    'relation' => "AND",
+                    [
+                        'key' => 'type',
+                        'value' => "user",
+                        'compare' => '!='
+                    ],
+                    [
+                        'key' => 'type',
+                        'value' => "partner",
+                        'compare' => '!='
+                    ],
+                ],
+                [
+                    'key' => 'type',
+                    'compare' => 'NOT EXISTS'
+                ]
+            ],
+            [
+                'key' => "last_modified",
+                'value' => $most_recent,
+                'compare' => '>'
+            ]
+        ];
+
+        if ( sizeof( $members ) === 0 ){
+            return [
+                "members"  => $user_connections,
+                "contacts" => [],
             ];
         }
+        foreach ( $members as $member ) {
+            if ( !$exclude_current_user || ( $exclude_current_user && $member != $user_id ) ){
+                $user_connections[] = [
+                'key' => 'assigned_to',
+                'value' => 'user-' . $member
+                ];
+            };
+        }
+        $query_args[] = $user_connections;
+
 
         $args = [
             'post_type'  => 'contacts',
             'nopaging'   => true,
-            'meta_query' => $user_connections,
+            'meta_query' => $query_args,
         ];
         $query2 = new WP_Query( $args );
 
@@ -1771,15 +1824,18 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * Adds a share record
      *
-     * @param int   $post_id
-     * @param int   $user_id
+     * @param int $post_id
+     * @param int $user_id
      * @param array $meta
+     *
+     * @param bool $send_notifications
+     * @param bool $check_permissions
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared_on_contact( int $post_id, int $user_id, $meta = null )
+    public static function add_shared_on_contact( int $post_id, int $user_id, $meta = null, $send_notifications = true, $check_permissions = true )
     {
-        return self::add_shared( 'contacts', $post_id, $user_id, $meta );
+        return self::add_shared( 'contacts', $post_id, $user_id, $meta, $send_notifications, $check_permissions );
     }
 
     public function find_contacts_with( $field, $value, $exclude_id = "" ){
