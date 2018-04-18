@@ -1585,7 +1585,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         if ( !isset( $query["assigned_to"] )){
-            $query["assigned_to"] = ["me"];
+            $query["assigned_to"] = [ "me" ];
         }
 
         $meta_query = "";
@@ -1638,9 +1638,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( !empty( $search )){
             $inner_joins .= "INNER JOIN $wpdb->postmeta AS search ON ( $wpdb->posts.ID = search.post_id ) ";
             $meta_query .= "AND ( ( $wpdb->posts.post_title LIKE '%" . esc_sql( $search ) . "%' ) OR ( search.meta_key LIKE 'contact_%' AND search.meta_value LIKE '%" . esc_sql( $search ) . "%') ) ";
+
         }
 
 
+        // phpcs:disable
         $contacts = $wpdb->get_results(
             $wpdb->prepare("
             SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, post_title, post_type FROM $wpdb->posts  
@@ -1658,6 +1660,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 "contacts"
             ), OBJECT
         );
+        // phpcs:enable
         // LIMIT 0, 100
         $total_rows = $wpdb->get_var( "SELECT found_rows();" );
 
