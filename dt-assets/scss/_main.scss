@@ -1614,14 +1614,14 @@ select#overall_status {
 
 
 
-table.js-list {
-    tbody tr:nth-child(even) {
-        border-bottom: 0;
-        background-color: #f1f1f1;
-    }
-}
 
 @media screen and (max-width : 640px){
+    table.js-list {
+        tbody tr:nth-child(even) {
+            border-bottom: 0;
+            background-color: #f1f1f1;
+        }
+    }
     #content #inner-content {
         margin:0;
 
