@@ -142,11 +142,15 @@ nav.second-bar {
     }
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
-    a.button {
+    .button {
         img {
             height: 17px;
         }
         padding: .4em .75em
+    }
+    input {
+        padding: .4em .75em;
+        max-height: 32px;
     }
 }
 

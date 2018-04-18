@@ -1551,6 +1551,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $include = $query["include"];
             unset( $query["include"] );
         }
+        $search = "";
+        if ( isset( $query["text"] )){
+            $search = $query["text"];
+            unset( $query["text"] );
+        }
 
         $bad_fields = self::check_for_invalid_fields( $query );
         if ( !empty( $bad_fields ) ) {
@@ -1575,10 +1580,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 }
             }
         }
-        if (!empty( $connections_sql )){
+        if ( !empty( $connections_sql )){
             $inner_joins .= "INNER JOIN $wpdb->p2p ON ( p2p_from = $wpdb->posts.ID )";
         }
 
+        if ( !isset( $query["assigned_to"] )){
+            $query["assigned_to"] = ["me"];
+        }
 
         $meta_query = "";
         foreach ( $query as $query_key => $query_value ){
@@ -1622,15 +1630,20 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $includes_query = "";
         foreach ( $include as $i ){
             if ( $i === "shared" ){
-                $inner_joins .= "INNER JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
+                $inner_joins .= "LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
                 $includes_query .= "AND shares.user_id = $current_user->ID ";
             }
+        }
+
+        if ( !empty( $search )){
+            $inner_joins .= "INNER JOIN $wpdb->postmeta AS search ON ( $wpdb->posts.ID = search.post_id ) ";
+            $meta_query .= "AND ( ( $wpdb->posts.post_title LIKE '%" . esc_sql( $search ) . "%' ) OR ( search.meta_key LIKE 'contact_%' AND search.meta_value LIKE '%" . esc_sql( $search ) . "%') ) ";
         }
 
 
         $contacts = $wpdb->get_results(
             $wpdb->prepare("
-            SELECT SQL_CALC_FOUND_ROWS ID, post_title, post_type FROM $wpdb->posts  
+            SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, post_title, post_type FROM $wpdb->posts  
             INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id )
             " . $inner_joins . "
             WHERE 1=1 AND ( 
