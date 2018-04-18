@@ -19,6 +19,7 @@ class Disciple_Tools_Location_Post_Type
      * @var    string
      */
     public $post_type;
+    public $error;
 
     /**
      * The post type singular label.
@@ -94,6 +95,7 @@ class Disciple_Tools_Location_Post_Type
         $this->singular = __( 'Location', 'disciple_tools' );
         $this->plural = __( 'Locations', 'disciple_tools' );
         $this->args = [ 'menu_icon' => dt_svg_icon() ];
+        $this->error = '';
 
         add_action( 'init', [ $this, 'register_post_type' ] );
 
@@ -323,8 +325,7 @@ class Disciple_Tools_Location_Post_Type
     public function load_levels_meta_box( $post )
     {
         $raw = get_post_meta( $post->ID, 'raw', true );
-        $locations_result = self::query_all_locations();
-//        dt_write_log( $locations_result );
+        $locations_result = Disciple_Tools_Locations::query_all_geocoded_locations();
 
         if ( ! $raw ) :
             $dropdown_args = array(
@@ -351,54 +352,61 @@ class Disciple_Tools_Location_Post_Type
             <?php
         else : // end non-geocoded "free location" section
             $levels = Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw, 'political' );
-            $levels = array_reverse( $levels, true );
+            if ( $levels ) :
+                $levels = array_reverse( $levels, true );
+
             ?>
             <p style="text-align:center">
                 <?php
                 $add_address = '';
                 foreach ( $levels as $key => $level ) :
                     if ( $key != 0 ) { // removes itself from the list
-
-                        $add_address .= $level['long_name'] .',';
-
-                        $location_id = $this->does_location_exist( $locations_result, $level['long_name'] );
+                        $location_id = Disciple_Tools_Locations::does_location_exist( $locations_result, $level['long_name'] );
 
                         if ( $location_id ) {
                             echo '<a href="'. esc_url( admin_url() . 'post.php?post=' . esc_attr( $location_id ) . '&action=edit' ).'" rel="nofollow">'. esc_attr( $level['long_name'] ) . '</a><br>|<br>';
                         } else {
-                            $level_address = trim( substr( $add_address, 0, -1 ) );
-                            echo esc_attr( $level['long_name'] ) . ' <a class="add-parent-location" href="javascript:void(0)" onclick="add_parent_location( \''.esc_attr( $level_address ).'\',\''. esc_attr( $level['long_name'] ).'\',\''. esc_attr( $post->ID ).'\')" style="font-size:1.5em; text-decoration:none;">+</a><br>|<br>';
+                            echo esc_attr( $level['long_name'] ) . '<br>|<br>';
                         }
                     }
                 endforeach;
                 ?>
                 <strong><?php echo esc_attr( $post->post_title ); ?></strong>
             </p>
-            <?php
+            <?php if ( user_can(get_current_user_id(), 'manage_dt' ) && dt_get_option('auto_location') ) : ?>
+                <hr>
+                <p style="text-align:center;">
+                    <a class="add-parent-location button" href="javascript:void(0)"
+                       onclick="auto_build_location( '<?php echo esc_attr( $post->ID ); ?>' )" >
+                        Auto Build
+                    </a> <span style="font-size:1.5em; padding-top: 5px;" onclick="jQuery('#auto-build-configuration').toggle();" class="dashicons dashicons-admin-generic"></span>
+                </p>
+                <div id="auto-build-configuration" style="display:none;text-align:center;">
+                    <p><strong>Current Settings:</strong></p>
+                    <p>
+                        <?php
+                        $settings = dt_get_option( 'location_levels' );
+                        if ( $settings ) {
+                            foreach( $settings as $key => $value ) {
+                                if ( 1 == $value ) {
+                                    echo $key . ' <span class="dashicons dashicons-yes"></span><br>';
+                                } else {
+                                    echo '<span style="text-decoration: line-through; color:#cecece;">' . $key . '</span><br>';
+                                }
+                            }
+                        }
+                        ?>
+                    </p>
+                    <p>
+                        <a href="<?php echo esc_url( admin_url() ) . 'admin.php?page=dt_options&tab=locations' ?>">
+                            Change Settings
+                        </a>
+                    </p>
+                </div>
+                <?php
+                endif; // if political
+            endif; // user permission check on auto build
         endif;
-    }
-
-    /**
-     * Filters the self::query_all_locations() to find a matching location.
-     *
-     * @param array $locations_result
-     * @param       $address_component
-     *
-     * @return bool|int Returns post_id on success, false on failure.
-     */
-    public function does_location_exist( array $locations_result, $address_component ) {
-        if ( empty( $locations_result ) || ! is_array( $locations_result ) ) {
-            $locations_result = self::query_all_locations();
-        }
-        foreach ( $locations_result as $result ) {
-            if ( ! isset( $result['raw'] ) ) {
-                continue;
-            }
-            if ( $address_component == Disciple_Tools_Google_Geocode_API::parse_raw_result( $result['raw'], 'self' ) ) {
-                return $result['ID'];
-            }
-        }
-        return false;
     }
 
     /**
@@ -425,7 +433,7 @@ class Disciple_Tools_Location_Post_Type
                         <button type="button" class="button" name="validate_address_button" id="validate_address_button" onclick="validate_address( jQuery('#search_location_address').val() );" >Validate</button>
                         <button type="submit" name="delete" value="1" class="button">Delete</button>
                             <br>
-                        <span id="errors"></span>
+                        <span id="errors"><?php echo  ( ! empty( $this->error ) )  ? $this->error : '' ; ?></span>
                         <p id="possible-results">
 
                             <input type="hidden" id="location_address" name="location_address"
@@ -434,6 +442,7 @@ class Disciple_Tools_Location_Post_Type
                     </td>
                 </tr>
             </table>
+
             <?php
         else :
             ?>
@@ -557,6 +566,7 @@ class Disciple_Tools_Location_Post_Type
      */
     public function meta_box_save( $post_id )
     {
+        dt_write_log( $_POST );
         // Verify
         $key = 'dt_' . $this->post_type . '_noonce';
         if ( ( get_post_type() != $this->post_type ) || !isset( $_POST[ $key ] ) || !wp_verify_nonce( sanitize_key( $_POST[ $key ] ), 'update_location_info' ) ) {
@@ -593,6 +603,7 @@ class Disciple_Tools_Location_Post_Type
         if ( ( isset( $_POST['location_address'] ) && empty( $_POST['location_address'] ) ) || isset( $_POST['delete'] ) ) {
 
             delete_post_meta( $post_id, 'location_address' );
+            delete_post_meta( $post_id, 'base_name' );
             delete_post_meta( $post_id, 'types' );
             delete_post_meta( $post_id, 'raw' );
             unset( $_POST['location_address'] );
@@ -606,17 +617,16 @@ class Disciple_Tools_Location_Post_Type
 
                 $geocode = new Disciple_Tools_Google_Geocode_API();
                 $raw_response = $geocode::query_google_api( $address );
-                if ( $raw_response ) {
+                if ( $geocode::check_valid_request_result( $raw_response ) ) {
 
                     update_post_meta( $post_id, 'location_address', $geocode::parse_raw_result( $raw_response, 'location_address' ) );
+                    update_post_meta( $post_id, 'base_name', $geocode::parse_raw_result( $raw_response, 'base_name' ) );
                     update_post_meta( $post_id, 'types', $geocode::parse_raw_result( $raw_response, 'types' ) );
                     update_post_meta( $post_id, 'raw', $raw_response );
 
                 } else {
-                    add_action( 'admin_notices', function() { ?>
-                        <div class="notice notice-success is-dismissible">
-                        <p><?php esc_html_e( 'Sorry, that address could not be found. Please, enter that again', 'disciple_tools' ); ?></p>
-                        </div><?php } );
+                    dt_write_log( $raw_response );
+                    unset( $_POST['location_address'] );
                 }
             }
         }
@@ -867,59 +877,4 @@ class Disciple_Tools_Location_Post_Type
             <?php
         } // endif $pagenow match
     }
-
-    /**
-     * Returns all location post_types with 5 columns
-     * - ID (int)
-     * - post_title (string)
-     * - post_parent (int)
-     * types      (string) (administrative levels like `country`, `administrative_area_level_1`, `locality`, etc.
-     *              country
-     *              administrative_area_level_1
-     *              administrative_area_level_2
-     *              administrative_area_level_3
-     *              administrative_area_level_4
-     *
-     * - raw        (array) (raw google response
-     *
-     * @param $types (string)
-     *
-     * @return array|null|object
-     */
-    public static function query_all_locations( $types = null ) {
-        global $wpdb;
-
-        $extended_query = '';
-        if ( ! is_null( $types ) ) {
-            $types = trim( esc_sql( $types ) );
-            $extended_query = " AND types = '" . $types . "'";
-        }
-
-        // @codingStandardsIgnoreStart
-        $results = $wpdb->get_results( "
-        SELECT a.ID, a.post_title, a.post_parent, b.meta_value as types, c.meta_value as raw
-        FROM $wpdb->posts as a
-          LEFT JOIN $wpdb->postmeta as b
-          ON a.ID=b.post_id
-             AND b.meta_key = 'types'
-          LEFT JOIN $wpdb->postmeta as c
-          ON a.ID=c.post_id
-            AND c.meta_key = 'raw'
-        WHERE post_type = 'locations'
-              AND post_status = 'publish'
-              $extended_query 
-        ",
-        ARRAY_A );
-        // @codingStandardsIgnoreEnd
-
-        if ( empty( $results ) ) {
-            return $results;
-        } else {
-            foreach ( $results as $key => $result ) {
-                $results[$key]['raw'] = maybe_unserialize( $result['raw'] );
-            }
-            return $results;
-        }
-    }
-
 }

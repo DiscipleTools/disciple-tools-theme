@@ -402,7 +402,7 @@ class Disciple_Tools_Google_Geocode_API
                 return $raw['types'][0] ?? false;
                 break;
 
-            case 'self':
+            case 'base_name':
                 /**
                  * "Self" returns the isolated searched element of any google result.
                  * If the queried item was a street address like 123 Street Name Blvd., Denver, CO 80126, "self" will return "123"
@@ -413,14 +413,14 @@ class Disciple_Tools_Google_Geocode_API
                 return $raw['address_components'][0]['long_name'];
                 break;
 
-            case 'self_full':
+            case 'base_name_full':
                 /**
                  * Returns the full array address component.
                  */
                 return $raw['address_components'][0];
                 break;
 
-            case 'full':
+            case 'full': // useful for running a raw result though the array check at the beginning of the function
                 return $raw;
                 break;
 

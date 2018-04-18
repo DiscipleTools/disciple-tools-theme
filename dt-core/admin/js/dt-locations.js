@@ -73,16 +73,16 @@ function validate_address(address){
         })
 }
 
-function add_parent_location( address, parent_name, post_id ) {
+function auto_build_location( post_id ) {
 
-    let data = {"address": address, "parent_name": parent_name, "post_id": post_id };
+    let data = { "post_id": post_id };
     console.log(data)
     return jQuery.ajax({
         type: "POST",
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: dtLocAPI.root + 'dt/v1/locations/add_parent_location',
+        url: dtLocAPI.root + 'dt/v1/locations/auto_build_location',
         beforeSend: function(xhr) {
             xhr.setRequestHeader('X-WP-Nonce', dtLocAPI.nonce);
         },
