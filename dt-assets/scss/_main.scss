@@ -1611,3 +1611,23 @@ select#overall_status {
 .mentions-input-box .mentions strong span {
     font-weight: 300;
 }
+
+
+
+table.js-list {
+    tbody tr:nth-child(even) {
+        border-bottom: 0;
+        background-color: #f1f1f1;
+    }
+}
+
+@media screen and (max-width : 640px){
+    #content #inner-content {
+        margin:0;
+
+    }
+    .bordered-box.list-box {
+        padding-left:2px;
+        padding-right:2px;
+    }
+}
