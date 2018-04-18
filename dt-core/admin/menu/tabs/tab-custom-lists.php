@@ -15,51 +15,69 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class Disciple_Tools_Custom_Lists_Tab
+ * Class Disciple_Tools_Tab_Custom_Lists
  */
-class Disciple_Tools_Custom_Lists_Tab
+class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 {
+
+    private static $_instance = null;
+    public static function instance()
+    {
+        if ( is_null( self::$_instance ) ) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    } // End instance()
+
+    /**
+     * Constructor function.
+     *
+     * @access  public
+     * @since   0.1.0
+     */
+    public function __construct()
+    {
+        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 10, 1 );
+        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
+
+        parent::__construct();
+    } // End __construct()
+
+    public function add_tab( $tab ) {
+        echo '<a href="'. esc_url( admin_url() ).'admin.php?page=dt_options&tab=custom-lists" class="nav-tab ';
+        if ( $tab == 'custom-lists' ) {
+            echo 'nav-tab-active';
+        }
+        echo '">Custom Lists</a>';
+    }
 
     /**
      * Packages and prints tab page
      */
-    public function content()
+    public function content( $tab )
     {
-        echo '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
-        echo '<div id="post-body-content">';
-        /* Main Column */
+        if ( 'custom-lists' == $tab ) :
 
-        /* Box */
-        echo '<table class="widefat striped"><thead><th>User (Worker) Contact Profile</th></thead><tbody><tr><td>';
-        $this->process_user_profile_box();
-        $this->user_profile_box(); // prints
-        echo '</td></tr></tbody></table><br>';
-        /* End Box */
+            $this->template( 'begin' );
 
-        /* Box */
-        echo '<table class="widefat striped"><thead><th>Sources</th></thead><tbody><tr><td>';
-        $this->process_sources_box();
-        $this->sources_box(); // prints
-        echo '</td></tr></tbody></table><br>';
-        /* End Box */
+            /* Worker Profile */
+            $this->box( 'top', 'User (Worker) Contact Profile' );
+            $this->process_user_profile_box();
+            $this->user_profile_box(); // prints
+            $this->box( 'bottom' );
+            /* end Worker Profile */
 
-        /* End Main Column */
-        echo '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
-        /* Right Column */
+            /* Sources */
+            $this->box( 'top', 'Sources' );
+            $this->process_sources_box();
+            $this->sources_box(); // prints
+            $this->box( 'bottom' );
+            /* end Sources */
+            $this->template( 'right_column' );
 
-        /* Box */
-        echo '<table class="widefat striped">
-                    <thead><th>Instructions</th></thead>
-                    <tbody><tr><td>';
+            $this->template( 'end' );
 
-        echo '</td></tr></tbody></table><br>';
-
-
-        /* End Box */
-
-        /* End Right Column*/
-        echo '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
-        echo '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
+        endif;
     }
 
     /**
@@ -314,5 +332,5 @@ class Disciple_Tools_Custom_Lists_Tab
             update_option( 'dt_site_custom_lists', $site_custom_lists, true );
         }
     }
-
 }
+Disciple_Tools_Tab_Custom_Lists::instance();

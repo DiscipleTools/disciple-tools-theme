@@ -379,6 +379,8 @@ else {
             Site_Link_System::instance( 5, 'dashicons-admin-links' );
 
 
+
+
             /**
              * Admin panel
              * Contains all those features that only run if in the Admin panel
@@ -392,11 +394,22 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/config-dashboard.php' );
                 $this->config_dashboard = Disciple_Tools_Dashboard::instance();
 
-                // Settings Menu
-                require_once( get_template_directory() . '/dt-core/admin/menu/main.php' ); // main registers all the menu pages and tabs
-                $this->config_menu = Disciple_Tools_Config::instance();
-                require_once( get_template_directory() . '/dt-core/admin/menu/extensions-menu.php' ); // main registers all the menu pages and tabs
-                require_once( get_template_directory() . '/dt-core/admin/utilities/locations-async-insert.php' ); // required to load for async listening
+                // Admin Menus
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/abstract-tabs-base.php' ); // main registers all the menu pages and tabs
+                require_once( get_template_directory() . '/dt-core/admin/menu/menu-settings.php' ); // main registers all the menu pages and tabs
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-general.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-lists.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-site-links.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-keys.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-locations.php' );
+
+                require_once( get_template_directory() . '/dt-core/admin/menu/submenu-import.php' );
+                require_once( get_template_directory() . '/dt-locations/utilities/tab-import-csv.php' );
+
+                require_once( get_template_directory() . '/dt-core/admin/menu/menu-extensions.php' ); // main registers all the menu pages and tabs
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-featured-extensions.php' );
+
+                require_once( get_template_directory() . '/dt-locations/utilities/locations-async-insert.php' ); // required to load for async listening
 
                 // Contacts
                 require_once( get_template_directory() . '/dt-contacts/contacts-config.php' );

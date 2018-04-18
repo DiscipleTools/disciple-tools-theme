@@ -192,7 +192,7 @@ jQuery(document).ready(function($) {
     template: function (query, item) {
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: typeaheadSource('locations', 'dt/v1/locations-compact/'),
+    source: typeaheadSource('locations', 'dt/v1/locations/compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,

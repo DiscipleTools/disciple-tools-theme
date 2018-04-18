@@ -174,6 +174,38 @@ function dt_get_option( string $name )
                 return get_option( 'dt_map_key' );
             }
             break;
+
+        case 'location_levels':
+            $default_levels = dt_get_location_levels();
+            $levels = get_option( 'dt_location_levels' );
+            if ( ! $levels || empty( $levels ) ) { // options doesn't exist, create new.
+                $update = update_option( 'dt_location_levels', $default_levels, true );
+                if ( ! $update ) {
+                    return false;
+                }
+                $levels = get_option( 'dt_location_levels' );
+            }
+            elseif ( $levels['version'] < $default_levels['version'] ) { // option exists but version is behind
+
+                unset( $levels['version'] );
+                $location_levels = wp_parse_args( $levels, $default_levels );
+                $update = update_option( 'dt_location_levels', $location_levels, true );
+                if ( ! $update ) {
+                    return false;
+                }
+                $levels = get_option( 'dt_location_levels' );
+            }
+            return $levels['location_levels'];
+            break;
+        case 'auto_location':
+            $setting = get_option( 'dt_auto_location' );
+            if ( false === $setting ) {
+                update_option( 'dt_auto_location', '0', false );
+                $setting = get_option( 'dt_auto_location' );
+            }
+            return $setting;
+            break;
+
         case 'dt_email_base_subject':
             $subject_base = get_option( "dt_email_base_subject", "Disciple Tools" );
             if ( empty( $subject_base )){
@@ -181,6 +213,45 @@ function dt_get_option( string $name )
             }
             return $subject_base;
             break;
+        default:
+            return false;
+            break;
+    }
+}
+
+/**
+ * Supports the complex array structure of versioned arrays
+ *
+ * @param      $name
+ * @param      $value
+ * @param bool $autoload
+ *
+ * @return bool
+ */
+function dt_update_option( $name, $value, $autoload = false ) {
+
+    if ( empty( $name ) ) {
+        return false;
+    }
+
+    switch ( $name ) {
+        case 'location_levels':
+            if ( ! is_array( $value ) ) {
+                return false;
+            }
+            $levels = maybe_unserialize( get_option( 'dt_location_levels' ) );
+            $levels['location_levels'] = $value;
+
+            $default_levels = dt_get_location_levels();
+            $levels = wp_parse_args( $levels, $default_levels );
+
+            return update_option( 'dt_location_levels', $levels, $autoload );
+
+            break;
+        case 'auto_location':
+            return update_option( 'dt_auto_location', $value, $autoload );
+            break;
+
         default:
             return false;
             break;
@@ -208,7 +279,7 @@ function dt_get_site_options_defaults()
 {
     $fields = [];
 
-    $fields['version'] = '1.0';
+    $fields['version'] = '2';
 
     $fields['user_notifications'] = [
         'new_web'          => true,
@@ -390,6 +461,34 @@ function dt_get_site_custom_lists( string $list_title = null )
     }
 }
 
+function dt_get_location_levels() {
+    $fields = [];
+
+    $fields['version'] = 3;
+
+    $fields['location_levels'] = [
+        'country' => 1,
+        'administrative_area_level_1' => 1,
+        'administrative_area_level_2' => 0,
+        'administrative_area_level_3' => 0,
+        'administrative_area_level_4' => 0,
+        'locality' => 0,
+        'neighborhood' => 0,
+    ];
+
+    $fields['location_levels_labels'] = [
+        'country' => 'Country (recommended)',
+        'administrative_area_level_1' => 'Admin Level 1 (ex. state / province) (recommended)',
+        'administrative_area_level_2' => 'Admin Level 2',
+        'administrative_area_level_3' => 'Admin Level 3',
+        'administrative_area_level_4' => 'Admin Level 4',
+        'locality' => 'Locality (ex. city name) (recommended)',
+        'neighborhood' => 'Neighborhood',
+    ];
+
+    return $fields;
+}
+
 /**
  * Processes the current configurations and upgrades the site options to the new version with persistent configuration settings.
  *
@@ -474,4 +573,3 @@ function dt_custom_dir_attr( $lang ){
     $dir_attr = 'dir="' . $dir . '"';
     return 'lang="' . $user_language .'" ' .$dir_attr;
 }
-

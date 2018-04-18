@@ -110,6 +110,16 @@ function dt_location_page_scripts()
             'jquery',
             'jquery-ui-core',
         ], filemtime( disciple_tools()->plugin_js_path . 'dt-locations.js' ), true );
+        wp_localize_script(
+            "dt_locations_scripts", "dtLocAPI", array(
+                'root' => esc_url_raw( rest_url() ),
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'current_user_login' => wp_get_current_user()->user_login,
+                'current_user_id' => get_current_user_id(),
+                'theme_uri' => get_stylesheet_directory_uri(),
+                'images_uri' => Disciple_Tools::instance()->plugin_img_url,
+            )
+        );
         wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->plugin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->plugin_js_path . 'dt-shared.js' ), true );
     }
 }
