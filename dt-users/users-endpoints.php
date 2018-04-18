@@ -40,6 +40,19 @@ class Disciple_Tools_Users_Endpoints
                 'callback' => [ $this, 'switch_preference' ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/users/get_filters', [
+                'methods' => "GET",
+                'callback' => [ $this, 'get_user_filters' ]
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/users/save_filters', [
+                'methods' => "POST",
+                'callback' => [ $this, 'save_user_filters' ]
+            ]
+        );
     }
 
     /**
@@ -77,6 +90,19 @@ class Disciple_Tools_Users_Endpoints
             }
         } else {
             return new WP_Error( "preference_error", "Please provide a valid preference to change for user", [ 'status', 400 ] );
+        }
+    }
+
+
+    public function get_user_filters( WP_REST_Request $request ){
+        return Disciple_Tools_Users::get_user_filters();
+    }
+    public function save_user_filters( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if ( isset( $params["filters"] )){
+            return Disciple_Tools_Users::save_user_filters( $params["filters"] );
+        } else {
+            return new WP_Error( "missing_error", "Missing filters", [ 'status', 400 ] );
         }
     }
 

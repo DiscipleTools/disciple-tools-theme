@@ -285,5 +285,22 @@ class Disciple_Tools_Users
         return $base_user;
     }
 
+    public static function get_user_filters(){
+        $current_user_id = get_current_user_id();
+        $filters = [];
+        if ( $current_user_id ){
+            $filters = maybe_unserialize( get_user_meta( $current_user_id, "saved_filters", true ) );
+
+        }
+        return $filters;
+    }
+
+    public static function save_user_filters( $filters ){
+        $current_user_id = get_current_user_id();
+        if ( $current_user_id ){
+            $filters = update_user_meta( $current_user_id, "saved_filters", $filters );
+        }
+        return $filters;
+    }
 
 }
