@@ -238,59 +238,61 @@ jQuery(document).ready(function($) {
   _.forOwn(contactsDetailsWpApiSettings.contacts_custom_fields_settings.sources.default, (sourceValue, sourceKey)=>{
     sourcesData.push({key:sourceKey, value:sourceValue})
   })
-  $.typeahead({
-    input: '.js-typeahead-sources',
-    minLength: 0,
-    searchOnFocus: true,
-    maxItem: 20,
-    source: {
-      data: sourcesData
-    },
-    display: "value",
-    templateValue: "{{value}}",
-    dynamic: true,
-    multiselect: {
-      matchOn: ["key"],
-      data: function () {
-        return (contact.sources || []).map(sourceKey=>{
-          return {
-            key:sourceKey,
-            value:_.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings.sources.default.${sourceKey}`) || sourceKey }
-        })
-      }, callback: {
-        onCancel: function (node, item) {
-          API.save_field_api('contact', contactId, {'sources': {values:[{value:item.key, delete:true}]}}).then(()=>{
-            $(`.sources-list .${item.ID}`).remove()
-            let listItems = $(`.sources-list li`)
-            if (listItems.length === 0){
-              $(`.sources-list.details-list`).append(`<li id="no-source">${contactsDetailsWpApiSettings.translations["not-set"]["source"]}</li>`)
-            }
+  if (contactsDetailsWpApiSettings.can_view_all){
+    $.typeahead({
+      input: '.js-typeahead-sources',
+      minLength: 0,
+      searchOnFocus: true,
+      maxItem: 20,
+      source: {
+        data: sourcesData
+      },
+      display: "value",
+      templateValue: "{{value}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["key"],
+        data: function () {
+          return (contact.sources || []).map(sourceKey=>{
+            return {
+              key:sourceKey,
+              value:_.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings.sources.default.${sourceKey}`) || sourceKey }
           })
+        }, callback: {
+          onCancel: function (node, item) {
+            API.save_field_api('contact', contactId, {'sources': {values:[{value:item.key, delete:true}]}}).then(()=>{
+              $(`.sources-list .${item.ID}`).remove()
+              let listItems = $(`.sources-list li`)
+              if (listItems.length === 0){
+                $(`.sources-list.details-list`).append(`<li id="no-source">${contactsDetailsWpApiSettings.translations["not-set"]["source"]}</li>`)
+              }
+            })
+          }
+        }
+      },
+      callback: {
+        onClick: function(node, a, item, event){
+          API.save_field_api('contact', contactId, {sources: {values:[{value:item.key}]}}).then((addedItem)=>{
+            $('.sources-list').append(`<li class="${addedItem.ID}">
+              ${_.escape(addedItem.post_title)}
+            </li>`)
+            $("#no-source").remove()
+          })
+        },
+        onResult: function (node, query, result, resultCount) {
+          resultCount = typeaheadTotals.sources
+          let text = typeaheadHelpText(resultCount, query, result)
+          $('#sources-result-container').html(text);
+        },
+        onHideLayout: function () {
+          $('#sources-result-container').html("");
+        },
+        onReady: function () {
+          $('.sources').addClass('details-edit')
         }
       }
-    },
-    callback: {
-      onClick: function(node, a, item, event){
-        API.save_field_api('contact', contactId, {sources: {values:[{value:item.key}]}}).then((addedItem)=>{
-          $('.sources-list').append(`<li class="${addedItem.ID}">
-            ${_.escape(addedItem.post_title)}
-          </li>`)
-          $("#no-source").remove()
-        })
-      },
-      onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.sources
-        let text = typeaheadHelpText(resultCount, query, result)
-        $('#sources-result-container').html(text);
-      },
-      onHideLayout: function () {
-        $('#sources-result-container').html("");
-      },
-      onReady: function () {
-        $('.sources').addClass('details-edit')
-      }
-    }
-  });
+    });
+  }
 
   /**
    * Locations

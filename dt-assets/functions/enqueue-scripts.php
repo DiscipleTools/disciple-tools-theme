@@ -192,6 +192,7 @@ function dt_site_scripts() {
                         'template_dir'                    => get_template_directory_uri(),
                         'txt_created'                     => __( "Created contact at {}" ),
                         'translations'                    => $translations,
+                        'can_view_all'                    => user_can( get_current_user_id(), 'view_any_contacts' )
                     )
                 );
             }
