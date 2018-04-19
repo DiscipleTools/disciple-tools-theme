@@ -344,7 +344,8 @@ class Disciple_Tools_Location_Post_Type
             $pages = wp_dropdown_pages( $dropdown_args );
             if ( ! empty( $pages ) ) : ?>
                 <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="parent_id"><?php esc_html_e( 'Parent' ); ?></label></p>
-                <?php  // @codingStandardsIgnoreLine
+                <?php
+                // @codingStandardsIgnoreLine
                 echo $pages;
             endif; // end empty pages check?>
 
@@ -358,19 +359,15 @@ class Disciple_Tools_Location_Post_Type
          */
         else : // end non-geocoded "free location" section
             $levels = Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw, 'political' );
-
             if ( $levels ) :
-                $levels = array_reverse( $levels, true );
-
-            ?>
+                $levels = array_reverse( $levels, true );?>
 
             <p style="text-align:center">
                 <?php
-                $add_address = '';
                 foreach ( $levels as $key => $level ) :
-                    if ( $key != 0 ) { // removes itself from the list
-                        $location_id = Disciple_Tools_Locations::does_location_exist( $locations_result, $level['long_name'] );
-
+                    dt_write_log( $level );
+                    if ( ! ( 0 == $key ) ) { // removes itself from the list
+                        $location_id = Disciple_Tools_Locations::does_location_exist( $locations_result, $level['long_name'], $level['types'][0] );
                         if ( $location_id ) {
                             echo '<a href="'. esc_url( admin_url() . 'post.php?post=' . esc_attr( $location_id ) . '&action=edit' ).'" rel="nofollow">'. esc_attr( $level['long_name'] ) . '</a><br>|<br>';
                         } else {
@@ -381,7 +378,7 @@ class Disciple_Tools_Location_Post_Type
                 ?>
                 <strong><?php echo esc_attr( $post->post_title ); ?></strong>
             </p>
-            <?php if ( user_can(get_current_user_id(), 'manage_dt' ) && dt_get_option('auto_location') ) : ?>
+            <?php if ( user_can( get_current_user_id(), 'manage_dt' ) && dt_get_option( 'auto_location' ) ) : ?>
                 <hr>
                 <p style="text-align:center;">
                     <a class="add-parent-location button" href="javascript:void(0)"
@@ -395,11 +392,11 @@ class Disciple_Tools_Location_Post_Type
                         <?php
                         $settings = dt_get_option( 'location_levels' );
                         if ( $settings ) {
-                            foreach( $settings as $key => $value ) {
+                            foreach ( $settings as $key => $value ) {
                                 if ( 1 == $value ) {
-                                    echo $key . ' <span class="dashicons dashicons-yes"></span><br>';
+                                    echo esc_attr( $key ) . ' <span class="dashicons dashicons-yes"></span><br>';
                                 } else {
-                                    echo '<span style="text-decoration: line-through; color:#cecece;">' . $key . '</span><br>';
+                                    echo '<span style="text-decoration: line-through; color:#cecece;">' . esc_attr( $key ) . '</span><br>';
                                 }
                             }
                         }
@@ -415,7 +412,6 @@ class Disciple_Tools_Location_Post_Type
                 endif; // if political
             endif; // user permission check on auto build
         endif;
-        dt_write_log($raw);
     }
 
     /**
@@ -442,7 +438,7 @@ class Disciple_Tools_Location_Post_Type
                         <button type="button" class="button" name="validate_address_button" id="validate_address_button" onclick="validate_address( jQuery('#search_location_address').val() );" >Validate</button>
                         <button type="submit" name="delete" value="1" class="button">Delete</button>
                             <br>
-                        <span id="errors"><?php echo  ( ! empty( $this->error ) )  ? $this->error : '' ; ?></span>
+                        <span id="errors"><?php echo ( ! empty( $this->error ) ) ? esc_html( $this->error ) : ''; ?></span>
                         <p id="possible-results">
 
                             <input type="hidden" id="location_address" name="location_address"
@@ -575,7 +571,6 @@ class Disciple_Tools_Location_Post_Type
      */
     public function meta_box_save( $post_id )
     {
-        dt_write_log( $_POST );
         // Verify
         $key = 'dt_' . $this->post_type . '_noonce';
         if ( ( get_post_type() != $this->post_type ) || !isset( $_POST[ $key ] ) || !wp_verify_nonce( sanitize_key( $_POST[ $key ] ), 'update_location_info' ) ) {
