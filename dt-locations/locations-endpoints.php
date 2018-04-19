@@ -99,9 +99,9 @@ class Disciple_Tools_Locations_Endpoints
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [ $this, 'validate_address' ],
             ],
-            $base.'/add_parent_location' => [
+            $base.'/auto_build_location' => [
                 'methods' => WP_REST_Server::CREATABLE,
-                'callback' => [ $this, 'add_parent_location' ],
+                'callback' => [ $this, 'auto_build_location' ],
             ],
         ];
 
@@ -195,12 +195,13 @@ class Disciple_Tools_Locations_Endpoints
         }
     }
 
-    public function add_parent_location( WP_REST_Request $request ){
+    public function auto_build_location( WP_REST_Request $request ){
+        dt_write_log( __METHOD__ );
         $params = $request->get_json_params();
-        dt_write_log( $params );
-        if ( isset( $params['address'] ) && isset( $params['post_id'] ) ){
 
-            $result = Disciple_Tools_Locations::insert_parent_location( $params['address'], $params['parent_name'], $params['post_id'] );
+        if ( isset( $params['post_id'] ) ){
+
+            $result = Disciple_Tools_Locations::auto_build_location( $params['post_id'], 'post_id' );
 
             if ( $result['status'] == 'OK' ){
                 return $result;

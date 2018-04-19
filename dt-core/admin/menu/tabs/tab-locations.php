@@ -47,25 +47,13 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
 
             $this->select_auto_locations();
             $this->select_location_levels_to_record();
+            $this->import_simple_list_of_locations();
 
             $this->template( 'right_column' );
 
             $this->template( 'end' );
 
         endif;
-    }
-
-    public static function admin_levels_array() {
-        // @note Changes here might need to be reflected in the activation() in disciple-tools-zume.php
-        return [
-            'country' => 'Country (recommended)',
-            'administrative_area_level_1' => 'Admin Level 1 (ex. state / province) (recommended)',
-            'administrative_area_level_2' => 'Admin Level 2',
-            'administrative_area_level_3' => 'Admin Level 3',
-            'administrative_area_level_4' => 'Admin Level 4',
-            'locality' => 'Locality (ex. city name) (recommended)',
-            'neighborhood' => 'Neighborhood'
-        ];
     }
 
     public function select_auto_locations()
@@ -167,6 +155,88 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
         $this->box( 'bottom' );
 
         endif; // hide settings, if auto locations is set to manual
+    }
+
+    public function import_simple_list_of_locations() {
+
+        if ( isset( $_POST['dt_import_levels_nonce'] ) && ! empty( $_POST['dt_import_levels_nonce'] )
+            && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_import_levels_nonce'] ) ), 'dt_import_levels'. get_current_user_id() ) ) {
+
+            unset( $_POST['dt_import_levels_nonce'] );
+
+            // parse and sanitize list
+            $list = explode( "\n", $_POST['import-contents'] );
+            $items = array_filter( array_map( 'sanitize_text_field', wp_unslash( $list ) ) );
+
+            $country = sanitize_text_field( wp_unslash( $_POST['country'] ) );
+
+            $geocode = new Disciple_Tools_Google_Geocode_API();
+
+            $results = [];
+            foreach ( $items as $item ) {
+                $raw = $geocode::query_google_api_with_components( $item, [ 'country' => $country ] );
+                if ( $geocode::check_valid_request_result( $raw ) ) {
+                    $results[$item] = Disciple_Tools_Locations::auto_build_location( $raw, 'raw' );
+                }
+            }
+            dt_write_log( Disciple_Tools_Google_Geocode_API::query_google_api_reverse( '36.4091188,10.1423172', $result_type = 'administrative_area_level_1', $type = 'raw' ) );
+        }
+
+
+        $this->box( 'top', 'Import List', [
+            'col_span' => 1,
+            'row_container' => false
+        ] );
+
+        // get country list
+        $countries = [ '00' => 'No Countries Loaded' ];
+        $file = file_get_contents( Disciple_Tools::instance()->plugin_path . 'dt-locations/sources/countries.json' );
+        if ( $file ) {
+            $countries = json_decode( $file );
+        }
+
+        // administrative level list
+        $administrative_levels = dt_get_location_levels();
+        ?>
+
+        <form method="post" action="">
+            <?php wp_nonce_field( 'dt_import_levels'. get_current_user_id(), 'dt_import_levels_nonce', false, true ) ?>
+            <tr>
+                <td>
+                    Auto import a simple list of locations/addresses. One address per line.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Country</label><br>
+                    <select name="country">
+                        <option></option>
+                        <?php
+
+                        foreach ( $countries as $key => $label ) {
+
+                            echo '<option value="'.esc_attr( $key ).'">' . esc_html( $label ) . '</option>';
+                        }
+                        ?>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label>List of Locations</label>
+                    <textarea name="import-contents" rows="10" style="width:100%;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="button" type="submit" style="float:right"><?php esc_html_e( 'Import' ) ?></button>
+                </td>
+            </tr>
+        </form>
+
+        <?php
+        $this->box( 'bottom' );
     }
 }
 Disciple_Tools_Tab_Locations::instance();

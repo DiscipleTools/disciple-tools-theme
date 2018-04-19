@@ -91,6 +91,101 @@ class Disciple_Tools_Google_Geocode_API
         }
     }
 
+    public static function query_google_api_with_components( $address, $components = [] )
+    {
+        $address = str_replace( '   ', ' ', $address );
+        $address = str_replace( '  ', ' ', $address );
+        $address = urlencode( trim( $address ) );
+
+        $components = wp_parse_args( $components, [
+            'country' => '',
+        ]);
+
+        $component_string = '';
+        $i = 0;
+        foreach ( $components as $key => $item ) {
+            if ( ! empty( $components ) ) {
+                if ( ! ( 0 == $i ) ) {
+                    $component_string .= '|';
+                }
+                $component_string .= $key . ':' . $item;
+            }
+        }
+
+        $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&components=' . $component_string . '&key=' . self::key();
+        $details = json_decode( self::url_get_contents( $url_address ), true );
+
+        if ( $details['status'] == 'ZERO_RESULTS' ) {
+            return false;
+        }
+        else {
+            return $details;
+        }
+    }
+
+    /**
+     *
+     * @param        $latlng
+     * @param string $result_type
+     * @param string $type
+     *
+     * @return array|bool|mixed|object
+     */
+    public static function query_google_api_reverse( $latlng, $result_type = 'locality', $type = 'raw' )
+    {
+        $latlng = trim( $latlng );
+        $latlng = str_replace( ' ', '', $latlng );
+
+        $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' . $latlng . '&result_type=' . $result_type . '&key=' . self::key();
+        $details = json_decode( self::url_get_contents( $url_address ), true );
+
+        if ( $details['status'] == 'ZERO_RESULTS' ) {
+            return false;
+        }
+        else {
+            switch ( $type ) {
+                case 'validate':
+                    return true;
+                    break;
+                case 'coordinates_only':
+                    $g_lat = $details['results'][0]['geometry']['location']['lat'];
+                    $g_lng = $details['results'][0]['geometry']['location']['lng'];
+
+                    return [
+                        'lng' => $g_lng,
+                        'lat' => $g_lat,
+                        'raw' => $details,
+                    ];
+                    break;
+                case 'core':
+                    $g_lat = $details['results'][0]['geometry']['location']['lat'];
+                    $g_lng = $details['results'][0]['geometry']['location']['lng'];
+                    $g_formatted_address = $details['results'][0]['formatted_address'];
+
+
+                    return [
+                        'lng' => $g_lng,
+                        'lat' => $g_lat,
+                        'formatted_address' => $g_formatted_address,
+                        'raw' => $details,
+                    ];
+                    break;
+                case 'all_points':
+                    return [
+                        'center' => $details['results'][0]['geometry']['location'],
+                        'northeast' => $details['results'][0]['geometry']['bounds']['northeast'],
+                        'southwest' => $details['results'][0]['geometry']['bounds']['southwest'],
+                        'formatted_address' => $details['results'][0]['formatted_address'],
+                        'raw' => $details,
+                    ];
+                    break;
+                default:
+                    return $details; // raw response
+                    break;
+            }
+        }
+    }
+
     /**
      * @param $url
      *
@@ -402,7 +497,7 @@ class Disciple_Tools_Google_Geocode_API
                 return $raw['types'][0] ?? false;
                 break;
 
-            case 'self':
+            case 'base_name':
                 /**
                  * "Self" returns the isolated searched element of any google result.
                  * If the queried item was a street address like 123 Street Name Blvd., Denver, CO 80126, "self" will return "123"
@@ -413,14 +508,14 @@ class Disciple_Tools_Google_Geocode_API
                 return $raw['address_components'][0]['long_name'];
                 break;
 
-            case 'self_full':
+            case 'base_name_full':
                 /**
                  * Returns the full array address component.
                  */
                 return $raw['address_components'][0];
                 break;
 
-            case 'full':
+            case 'full': // useful for running a raw result though the array check at the beginning of the function
                 return $raw;
                 break;
 
@@ -506,3 +601,30 @@ class Disciple_Tools_Google_Geocode_API
 
 
 }
+/**
+ * NOTES on the result designations
+ * @link https://developers.google.com/maps/documentation/geocoding/intro#geocoding
+ * @link https://developers.google.com/maps/documentation/javascript/geocoding
+ * street_address indicates a precise street address.
+ * route indicates a named route (such as "US 101").
+ * intersection indicates a major intersection, usually of two major roads.
+ * political indicates a political entity. Usually, this type indicates a polygon of some civil administration.
+ * country indicates the national political entity, and is typically the highest order type returned by the Geocoder.
+ * administrative_area_level_1 indicates a first-order civil entity below the country level. Within the United States, these administrative levels are states. Not all nations exhibit these administrative levels. In most cases, administrative_area_level_1 short names will closely match ISO 3166-2 subdivisions and other widely circulated lists; however this is not guaranteed as our geocoding results are based on a variety of signals and location data.
+ * administrative_area_level_2 indicates a second-order civil entity below the country level. Within the United States, these administrative levels are counties. Not all nations exhibit these administrative levels.
+ * administrative_area_level_3 indicates a third-order civil entity below the country level. This type indicates a minor civil division. Not all nations exhibit these administrative levels.
+ * administrative_area_level_4 indicates a fourth-order civil entity below the country level. This type indicates a minor civil division. Not all nations exhibit these administrative levels.
+ * administrative_area_level_5 indicates a fifth-order civil entity below the country level. This type indicates a minor civil division. Not all nations exhibit these administrative levels.
+ * colloquial_area indicates a commonly-used alternative name for the entity.
+ * locality indicates an incorporated city or town political entity.
+ * ward indicates a specific type of Japanese locality, to facilitate distinction between multiple locality components within a Japanese address.
+ * sublocality indicates a first-order civil entity below a locality. For some locations may receive one of the additional types: sublocality_level_1 to sublocality_level_5. Each sublocality level is a civil entity. Larger numbers indicate a smaller geographic area.
+ * neighborhood indicates a named neighborhood
+ * premise indicates a named location, usually a building or collection of buildings with a common name
+ * subpremise indicates a first-order entity below a named location, usually a singular building within a collection of buildings with a common name
+ * postal_code indicates a postal code as used to address postal mail within the country.
+ * natural_feature indicates a prominent natural feature.
+ * airport indicates an airport.
+ * park indicates a named park.
+ * point_of_interest indicates a named point of interest. Typically, these "POI"s are prominent local entities that don't easily fit in another category, such as "Empire State Building" or "Statue of Liberty."
+ */
