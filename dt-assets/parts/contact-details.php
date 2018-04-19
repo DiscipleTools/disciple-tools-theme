@@ -515,7 +515,7 @@
                             <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
                             <?php esc_html_e( 'Source' ); ?>
                         </div>
-                        <ul class="sources-list details-list">
+                        <ul class="sources-list <?php echo esc_html( user_can( get_current_user_id(), 'view_any_contacts' ) ? 'details-list' : '' ) ?>">
                             <?php
                             foreach ($contact['sources'] ?? [] as $value){
                                 ?>
@@ -529,7 +529,8 @@
                             ?>
                         </ul>
                         <div class="sources">
-                            <var id="sources-result-container" class="result-container"></var>
+                        <?php if ( user_can( get_current_user_id(), 'view_any_contacts' ) ) : ?>
+                            <span id="sources-result-container" class="result-container"></span>
                             <div id="sources_t" name="form-sources" class="scrollable-typeahead">
                                 <div class="typeahead__container">
                                     <div class="typeahead__field">
@@ -541,6 +542,7 @@
                                     </div>
                                 </div>
                             </div>
+                        <?php endif ?>
                         </div>
                     </div>
                 </div>

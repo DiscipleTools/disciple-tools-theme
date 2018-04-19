@@ -152,6 +152,30 @@ let API = {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       }
     })
+  },
+  get_filters(){
+    return jQuery.ajax({
+      type: "GET",
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: wpApiSettings.root + `dt/v1/users/get_filters`,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      }
+    })
+  },
+  save_filters( filters ){
+    console.log(filters);
+    return jQuery.ajax({
+      type: "POST",
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      data: JSON.stringify( {filters} ),
+      url: wpApiSettings.root + `dt/v1/users/save_filters`,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      }
+    })
   }
 }
 

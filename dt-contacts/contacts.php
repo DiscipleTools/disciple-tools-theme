@@ -1475,33 +1475,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return self::get_viewable_compact( 'contacts', $search_string );
     }
 
-    /**
-     * Get Contacts assigned to a user's team
-     *
-     * @param int $user_id
-     * @param bool $check_permissions
-     *
-     * @param bool $exclude_current_user
-     * @param int $most_recent
-     *
-     * @return array | WP_Error
-     * @access public
-     * @since  0.1.0
-     */
-    public static function get_team_contacts( int $user_id, bool $check_permissions = true, $exclude_current_user = false, $most_recent = 0 )
-    {
-        if ( $check_permissions ) {
-            $current_user = wp_get_current_user();
-            // TODO: the current permissions required don't make sense
-            if ( !self::can_access( 'contacts' )
-                || ( $user_id != $current_user->ID && !current_user_can( 'edit_team_contacts' ) ) ) {
-                return new WP_Error( __FUNCTION__, __( "You do not have permission" ), [ 'status' => 404 ] );
-            }
-        }
+
+    public static function get_team_members(){
         global $wpdb;
         $user_connections = [];
         $user_connections['relation'] = 'OR';
         $members = [];
+        $user_id = get_current_user_id();
+
 
         // First Query
         // Build arrays for current groups connected to user
@@ -1526,8 +1507,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         foreach ( $results as $result ) {
             // create the meta query for the group
             $user_connections[] = [
-            'key' => 'assigned_to',
-            'value' => 'group-' . $result['term_taxonomy_id']
+                'key' => 'assigned_to',
+                'value' => 'group-' . $result['term_taxonomy_id']
             ];
 
             // Second Query
@@ -1554,6 +1535,187 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         $members = array_unique( $members );
+        return $members;
+    }
+
+    public static function search_viewable_contacts( array $query, bool $check_permissions = true){
+        if ( $check_permissions && !self::can_access( 'contacts' ) ) {
+            return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), [ 'status' => 403 ] );
+        }
+        global $wpdb;
+        $current_user = wp_get_current_user();
+//        $team_members = self::get_team_members();
+
+        $include = [];
+        if ( isset( $query["include"] ) ){
+            $include = $query["include"];
+            unset( $query["include"] );
+        }
+        $search = "";
+        if ( isset( $query["text"] )){
+            $search = $query["text"];
+            unset( $query["text"] );
+        }
+
+        $bad_fields = self::check_for_invalid_fields( $query );
+        if ( !empty( $bad_fields ) ) {
+            return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), [ 'bad_fields' => $bad_fields ] );
+        }
+
+        $inner_joins = "";
+        $connections_sql = "";
+        foreach ( $query as $query_key => $query_value ) {
+            if ( in_array( $query_key, self::$contact_connection_types ) ) {
+                if ( $query_key === "locations" ) {
+                    $location_sql = "";
+                    foreach ( $query_value as $location ) {
+                        $l = get_post( $location );
+                        if ( $l && $l->post_type === "locations" ){
+                            $location_sql .= empty( $location_sql ) ? $l->ID : ( ",".$l->ID );
+                        }
+                    }
+                    if ( !empty( $location_sql ) ){
+                        $connections_sql .= "AND ( p2p_type = 'contacts_to_locations' AND p2p_to in (" . esc_sql( $location_sql ) .") )";
+                    }
+                }
+            }
+        }
+        if ( !empty( $connections_sql )){
+            $inner_joins .= "INNER JOIN $wpdb->p2p ON ( p2p_from = $wpdb->posts.ID )";
+        }
+
+
+        $meta_query = "";
+        $includes_query = "";
+        $share_joins = "";
+        $access_joins = "";
+        $access_query = "";
+        if ( !isset( $query["assigned_to"] ) || in_array( "all", $query["assigned_to"] ) ){
+            $query["assigned_to"] = [ "all" ];
+            if ( !self::can_view_all( 'contacts' ) ){
+                $query["assigned_to"] = [ "me" ];
+                if ( !in_array( "shared", $include )){
+                    $include[] = "shared";
+                }
+            };
+        }
+        foreach ( $include as $i ){
+            if ( $i === "shared" ){
+                $share_joins = "LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
+                $access_query = "shares.user_id = $current_user->ID ";
+            }
+        }
+        if ( in_array( "shared", $query["assigned_to"] ) ){
+            $share_joins = "LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
+            $access_query = ( !empty( $access_query ) ? "OR" : "" ) ." shares.user_id = $current_user->ID ";
+        }
+        foreach ( $query as $query_key => $query_value ){
+            $meta_field_sql = "";
+            if ( !is_array( $query_value )){
+                return new WP_Error( __FUNCTION__, __( "Filter queries must be arrays" ), [ 'status' => 403 ] );
+            }
+            if ( !self::is_key_contact_method_or_connection( $query_key )){
+                if ( $query_key == "assigned_to" ){
+                    foreach ( $query_value as $assigned_to ){
+                        $connector = "OR";
+                        if ( $assigned_to == "me" ){
+                            $assigned_to = "user-" . $current_user->ID;
+                        } else if ( $assigned_to != "all" && $assigned_to != "shared" ) {
+                            if ( self::can_view_all( 'contacts' ) ){
+                                $assigned_to = "user-" . $assigned_to;
+                            } else {
+                                $assigned_to = "user-" . $assigned_to;
+                                if ( !$share_joins ){
+                                    $share_joins = "INNER JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
+                                    $access_query = "shares.user_id = $current_user->ID ";
+                                    $connector = "AND";
+                                }
+                            }
+                        } else {
+                            break;
+                        }
+                        $access_joins = "INNER JOIN $wpdb->postmeta AS assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id ) ";
+                        $access_query .= ( !empty( $access_query ) ? $connector : "" ) . ( $connector == "AND" ? " ( " : "" ) . " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value = '" . esc_sql( $assigned_to ) . "' ) " . ( $connector == "AND" ? " ) " : "" );
+
+                    }
+                } else {
+                    foreach ( $query_value as $value ){
+                        if ( !empty( $meta_field_sql ) ){
+                            $meta_field_sql .= " OR ";
+                        }
+                        $meta_field_sql .= " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value = '" . esc_sql( $value ) . "' ) ";
+                    }
+                }
+                if ( $meta_field_sql ){
+                    $inner_joins .= "INNER JOIN $wpdb->postmeta AS " . esc_sql( $query_key ) . " ON ( $wpdb->posts.ID = " . esc_sql( $query_key ) . ".post_id ) ";
+                    $meta_query .= "AND ( " .$meta_field_sql . ") ";
+                }
+            }
+        }
+
+        if ( !empty( $search )){
+            $inner_joins .= "INNER JOIN $wpdb->postmeta AS search ON ( $wpdb->posts.ID = search.post_id ) ";
+            $meta_query .= "AND ( ( $wpdb->posts.post_title LIKE '%" . esc_sql( $search ) . "%' ) OR ( search.meta_key LIKE 'contact_%' AND search.meta_value LIKE '%" . esc_sql( $search ) . "%') ) ";
+
+        }
+
+        $access_query = $access_query ? ( "AND ( " . $access_query . " ) " ) : "";
+        // phpcs:disable
+
+        $prepared_sql = $wpdb->prepare("
+            SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, post_title, post_type FROM $wpdb->posts  
+            INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id )
+            " . $inner_joins . " " . $share_joins . " " . $access_joins . "
+            WHERE 1=1 AND (
+                ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'media' )
+                OR
+                ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'next_gen' )
+            ) " . $connections_sql . " " . $meta_query . " " . $includes_query . " " . $access_query . "
+            AND $wpdb->posts.post_type = %s
+            AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
+            GROUP BY $wpdb->posts.ID ORDER BY $wpdb->posts.post_date DESC LIMIT 0, 100
+            ",
+            "contacts"
+        );
+        $contacts = $wpdb->get_results( $prepared_sql, OBJECT );
+        // phpcs:enable
+        $total_rows = $wpdb->get_var( "SELECT found_rows();" );
+
+        return [
+            "contacts" => $contacts,
+            "total" => $total_rows,
+        ];
+
+    }
+
+
+    /**
+     * Get Contacts assigned to a user's team
+     *
+     * @param int $user_id
+     * @param bool $check_permissions
+     *
+     * @param bool $exclude_current_user
+     * @param int $most_recent
+     *
+     * @return array | WP_Error
+     * @access public
+     * @since  0.1.0
+     */
+    public static function get_team_contacts( int $user_id, bool $check_permissions = true, $exclude_current_user = false, $most_recent = 0 )
+    {
+        if ( $check_permissions ) {
+            $current_user = wp_get_current_user();
+            // TODO: the current permissions required don't make sense
+            if ( !self::can_access( 'contacts' )
+                || ( $user_id != $current_user->ID && !current_user_can( 'edit_team_contacts' ) ) ) {
+                return new WP_Error( __FUNCTION__, __( "You do not have permission" ), [ 'status' => 404 ] );
+            }
+        }
+        $user_connections = [];
+        $user_connections['relation'] = 'OR';
+
+        $members = self::get_team_members();
 
         $query_args = [
             'relation' => "AND",
@@ -1913,7 +2075,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
             if ( $has_unconfirmed_duplicates ){
                 $field_details = $this->get_field_details( $field, $contact_id );
-                $message = __( "Possible duplicates on", "disciple_tools" ) . " " . $field_details["name"] . ": 
+                $message = __( "Possible duplicates on", "disciple_tools" ) . " " . $field_details["name"] . ":
                 " . $message;
                 if ( $has_unconfirmed_duplicates > 5 ){
                     $message .= "- " . $has_unconfirmed_duplicates . " " . __( "more duplicates not shown", "disciple_tools" );

@@ -94,6 +94,12 @@ class Disciple_Tools_Contacts_Endpoints
             ]
         );
         register_rest_route(
+            $this->namespace, '/contacts/search', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'search_viewable_contacts' ],
+            ]
+        );
+        register_rest_route(
             $this->namespace, '/contacts/compact', [
                 "methods"  => "GET",
                 "callback" => [ $this, 'get_contacts_compact' ],
@@ -419,6 +425,20 @@ class Disciple_Tools_Contacts_Endpoints
             "contacts" => $this->add_related_info_to_contacts( $result["contacts"] ),
             "total" => $result["total"],
             "deleted" => $result["deleted"]
+        ];
+    }
+
+    public function search_viewable_contacts( WP_REST_Request $request )
+    {
+        $params = $request->get_params();
+        $result = Disciple_Tools_Contacts::search_viewable_contacts( $params, true );
+        if ( is_wp_error( $result ) ) {
+            return $result;
+        }
+
+        return [
+            "contacts" => $this->add_related_info_to_contacts( $result["contacts"] ),
+            "total" => $result["total"],
         ];
     }
 

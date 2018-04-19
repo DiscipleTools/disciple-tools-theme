@@ -121,7 +121,8 @@ function dt_site_scripts() {
         )
     );
 
-
+    dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
+    dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
 
     if (is_singular( "contacts" ) || is_singular( "groups" ) ) {
         if ( is_singular( "contacts" )){
@@ -148,8 +149,7 @@ function dt_site_scripts() {
                     'template_dir' => get_template_directory_uri(),
                 ]
             );
-            dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
-            dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
+
             dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.js', array( 'jquery' ), true );
             dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.js', array( 'jquery' ), true );
             dt_theme_enqueue_style( 'jquery-mentions-css', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.css', array() );
@@ -192,6 +192,7 @@ function dt_site_scripts() {
                         'template_dir'                    => get_template_directory_uri(),
                         'txt_created'                     => __( "Created contact at {}" ),
                         'translations'                    => $translations,
+                        'can_view_all'                    => user_can( get_current_user_id(), 'view_any_contacts' )
                     )
                 );
             }
