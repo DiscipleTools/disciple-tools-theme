@@ -1635,7 +1635,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             break;
                         }
                         $access_joins = "INNER JOIN $wpdb->postmeta AS assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id ) ";
-                        $access_query .= ( !empty( $access_query ) ? $connector : "" ) . ($connector == "AND" ? " ( " : "" ) . " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value = '" . esc_sql( $assigned_to ) . "' ) " . ($connector == "AND" ? " ) " : "" );
+                        $access_query .= ( !empty( $access_query ) ? $connector : "" ) . ( $connector == "AND" ? " ( " : "" ) . " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value = '" . esc_sql( $assigned_to ) . "' ) " . ( $connector == "AND" ? " ) " : "" );
 
                     }
                 } else {
@@ -1659,7 +1659,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         }
 
-        $access_query = $access_query ? "AND ( " . $access_query . " ) ": "";
+        $access_query = $access_query ? ( "AND ( " . $access_query . " ) " ) : "";
         // phpcs:disable
 
         $prepared_sql = $wpdb->prepare("
