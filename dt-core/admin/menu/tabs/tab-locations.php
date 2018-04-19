@@ -164,13 +164,22 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
 
             unset( $_POST['dt_import_levels_nonce'] );
 
+            // parse and sanitize list
             $list = explode( "\n", $_POST['import-contents'] );
-            $items = array_map( 'sanitize_text_field', wp_unslash( $list ) );
+            $items = array_filter( array_map( 'sanitize_text_field', wp_unslash( $list ) ) );
 
+            $country = sanitize_text_field( wp_unslash( $_POST['country'] ) );
 
-            dt_write_log( $items );
+            $geocode = new Disciple_Tools_Google_Geocode_API();
 
-
+            $results = [];
+            foreach ( $items as $item ) {
+                $raw = $geocode::query_google_api_with_components( $item, [ 'country' => $country ] );
+                if ( $geocode::check_valid_request_result( $raw ) ) {
+                    $results[$item] = Disciple_Tools_Locations::auto_build_location( $raw, 'raw' );
+                }
+            }
+            dt_write_log( Disciple_Tools_Google_Geocode_API::query_google_api_reverse( '36.4091188,10.1423172', $result_type = 'administrative_area_level_1', $type = 'raw' ) );
         }
 
 
@@ -178,6 +187,16 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
             'col_span' => 1,
             'row_container' => false
         ] );
+
+        // get country list
+        $countries = [ '00' => 'No Countries Loaded' ];
+        $file = file_get_contents( Disciple_Tools::instance()->plugin_path . 'dt-locations/sources/countries.json' );
+        if ( $file ) {
+            $countries = json_decode( $file );
+        }
+
+        // administrative level list
+        $administrative_levels = dt_get_location_levels();
         ?>
 
         <form method="post" action="">
@@ -189,6 +208,23 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
             </tr>
             <tr>
                 <td>
+                    <label>Country</label><br>
+                    <select name="country">
+                        <option></option>
+                        <?php
+
+                        foreach ( $countries as $key => $label ) {
+
+                            echo '<option value="'.esc_attr( $key ).'">' . esc_html( $label ) . '</option>';
+                        }
+                        ?>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label>List of Locations</label>
                     <textarea name="import-contents" rows="10" style="width:100%;"></textarea>
                 </td>
             </tr>

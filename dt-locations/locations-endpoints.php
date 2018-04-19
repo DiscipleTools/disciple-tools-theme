@@ -201,7 +201,7 @@ class Disciple_Tools_Locations_Endpoints
 
         if ( isset( $params['post_id'] ) ){
 
-            $result = Disciple_Tools_Locations::auto_build_location( $params['post_id'] );
+            $result = Disciple_Tools_Locations::auto_build_location( $params['post_id'], 'post_id' );
 
             if ( $result['status'] == 'OK' ){
                 return $result;

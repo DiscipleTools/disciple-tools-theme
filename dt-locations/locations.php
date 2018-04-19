@@ -21,23 +21,112 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
         parent::__construct();
     }
 
-    public static function auto_build_location( $post_id ) {
+    public static function create_location( array $fields = [], $check_permissions = true ) {
+
+        if ( $check_permissions && ! current_user_can( 'publish_locations' ) ) {
+            return new WP_Error( __FUNCTION__, __( "You may not publish a location" ), [ 'status' => 403 ] );
+        }
+
+        $fields = wp_parse_args($fields, [
+            'address' => '',
+            'title' => '',
+            'country' => '',
+            'level' => '',
+            'geocode' => true,
+        ]);
+
+        if ( empty( $fields['title'] ) && empty( $fields['address'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing title or address. Required fields' );
+        }
+
+        $geocode = $fields['geocode'];
+        unset( $fields['geocode'] );
+        if ( $geocode ) {
+            $geocode = new Disciple_Tools_Google_Geocode_API(); // api class
+
+            $location_to_geocode = $fields['address'] ?: $fields['title'];
+
+            if ( ! empty( $fields['country'] ) || ! empty( $fields['level'] ) ) {
+                $raw = $geocode::query_google_api_by_components( trim( $location_to_geocode ) );
+            } else {
+                $raw = $geocode::query_google_api( trim( $location_to_geocode ) );
+            }
+
+
+            if ( ! Disciple_Tools_Google_Geocode_API::check_valid_request_result( $raw ) ) {
+                return new WP_Error( __METHOD__, 'Geocode of '.$location_to_geocode.' failed' );
+            }
+            else {
+                $args = [
+                    'post_title'  => $fields['title'] ?: $geocode::parse_raw_result( $raw, 'base_name' ),
+                    'post_status' => 'publish',
+                    'post_type'   => 'locations',
+                    'meta_input'  => [
+                        'location_address' => $geocode::parse_raw_result( $raw, 'formatted_address' ),
+                        'raw'              => $raw,
+                        'types'            => $geocode::parse_raw_result( $raw, 'types' ),
+                        'base_name'        => $geocode::parse_raw_result( $raw, 'base_name' ),
+                    ]
+                ];
+            }
+        } else {
+            $title = $fields['title'];
+            if ( empty( $title ) ) {
+                $title = $fields['address'];
+            }
+            $args = [
+                'post_title'  => $title,
+                'post_status' => 'publish',
+                'post_type'   => 'locations',
+            ];
+        }
+
+        $this_item_id = wp_insert_post( $args, true );
+
+        if ( is_wp_error( $this_item_id ) ) {
+            return new WP_Error( __METHOD__, 'Failed to create post record in DT.: ' . $this_item_id->get_error_message() );
+        }
+        if ( ! $geocode ) {
+            return $this_item_id; // if no geocode, then return current post id
+        }
+
+        return self::auto_build_location( $this_item_id, 'post_id' );
+    }
+
+    public static function auto_build_location( $data, $type ) {
         dt_write_log( __METHOD__ );
 
+        // verify google geocode data
         $geocode = new Disciple_Tools_Google_Geocode_API(); // api class
         $errors = new WP_Error();
 
-        $post_raw = get_post_meta( $post_id, 'raw', true );
-        if ( ! $post_raw ) {
+        switch ( $type ) {
+            case 'post_id':
+                $post_raw = get_post_meta( intval( $data ), 'raw', true );
+                $post_id = intval( $data );
+                break;
+            case 'raw':
+                if ( $geocode::check_valid_request_result( $data ) ) {
+                    $post_raw = $data;
+                }
+                break;
+            default:
+                $errors->add( __METHOD__, 'Type required' );
+                return $errors;
+                break;
+        }
+
+        if ( ! $geocode::check_valid_request_result( $post_raw ) ) {
             $errors->add( __METHOD__, 'No google geocode installed.' );
         }
 
+        // build locations
         $posts_created = [];
         $parent_id = 0; // cascade parent id down through the levels
         $auto_build_settings = dt_get_option( 'location_levels' ); // auto build settings
         $locations_result = self::query_all_geocoded_locations(); // array of all locations
-        $base_name = $geocode::parse_raw_result( $post_raw, 'base_name' ); // base location name of post
         $components = array_reverse( $geocode::parse_raw_result( $post_raw, 'address_components' ), true );
+        $latlng = $geocode::parse_raw_result( $post_raw, 'latlng' );
 
         foreach ( $components as $key => $component ) {
 
@@ -63,7 +152,7 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
                         }
                         $parent_id = $this_level_id;
                     } else {
-                        $this_level_raw = $geocode::query_google_api( $this_level_name );
+                        $this_level_raw = $geocode::query_google_api_reverse( $latlng, $component['types'][0] );
                         if ( ! $this_level_raw ) {
                             $errors->add( __METHOD__, 'Geocode of '.$this_level_name.' failed' );
                         }
@@ -80,8 +169,6 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
                                     'base_name' => $geocode::parse_raw_result( $this_level_raw, 'base_name' ),
                                 ]
                             ];
-                            dt_write_log( 'About to insert' );
-                            dt_write_log( $args );
                             $this_level_id = wp_insert_post( $args, true );
                             if ( is_wp_error( $this_level_id ) ) {
                                 $errors->add( __METHOD__, 'Failed to create post record in DT.: ' . $this_level_id->get_error_message() );
@@ -99,31 +186,26 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
 
 
        // add parent_id to $post_id
-        if ( $post_id != $parent_id ) {
-            $update_post = [
-                'ID'           => $post_id,
-                'post_parent' => $parent_id,
-            ];
-            $update = wp_update_post( $update_post, true );
-            if ( is_wp_error( $update ) ) {
-                $errors->add( __METHOD__, 'Failed update current post: ' . $update->get_error_message() );
+        if ( ! empty( $post_id ) ) {
+            if ( $post_id != $parent_id ) {
+                $update_post = [
+                    'ID'           => $post_id,
+                    'post_parent' => $parent_id,
+                ];
+                $update = wp_update_post( $update_post, true );
+                if ( is_wp_error( $update ) ) {
+                    $errors->add( __METHOD__, 'Failed update current post: ' . $update->get_error_message() );
+                }
+                $posts_created[] = $update;
             }
         }
 
-        // return new parent id
-        if ( is_wp_error( $update ) ) {
-            return [
-                'status' => 'Fail',
-                'posts_created' => $posts_created,
-                'errors' => $errors,
-            ];
-        } else {
-            return [
-                'status' => 'OK',
-                'posts_created' => $posts_created,
-                'errors' => $errors,
-            ];
-        }
+        return [
+            'status' => 'OK',
+            'posts_created' => $posts_created,
+            'errors' => $errors,
+        ];
+
     }
 
     public static function get_next_level_parent_id( $raw ) {
