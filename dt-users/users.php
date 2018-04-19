@@ -290,7 +290,9 @@ class Disciple_Tools_Users
         $filters = [];
         if ( $current_user_id ){
             $filters = maybe_unserialize( get_user_meta( $current_user_id, "saved_filters", true ) );
-
+            if ( empty( $filters )){
+                $filters = [];
+            }
         }
         return $filters;
     }

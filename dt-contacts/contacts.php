@@ -1584,11 +1584,31 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $inner_joins .= "INNER JOIN $wpdb->p2p ON ( p2p_from = $wpdb->posts.ID )";
         }
 
-        if ( !isset( $query["assigned_to"] )){
-            $query["assigned_to"] = [ "me" ];
-        }
 
         $meta_query = "";
+        $includes_query = "";
+        $share_joins = "";
+        $access_joins = "";
+        $access_query = "";
+        if ( !isset( $query["assigned_to"] ) || in_array( "all", $query["assigned_to"] ) ){
+            $query["assigned_to"] = [ "all" ];
+            if ( !self::can_view_all( 'contacts' ) ){
+                $query["assigned_to"] = [ "me" ];
+                if ( !in_array( "shared", $include )){
+                    $include[] = "shared";
+                }
+            };
+        }
+        foreach ( $include as $i ){
+            if ( $i === "shared" ){
+                $share_joins = "LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
+                $access_query = "shares.user_id = $current_user->ID ";
+            }
+        }
+        if ( in_array( "shared", $query["assigned_to"] ) ){
+            $share_joins = "LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
+            $access_query = ( !empty( $access_query ) ? "OR" : "" ) ." shares.user_id = $current_user->ID ";
+        }
         foreach ( $query as $query_key => $query_value ){
             $meta_field_sql = "";
             if ( !is_array( $query_value )){
@@ -1597,21 +1617,26 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             if ( !self::is_key_contact_method_or_connection( $query_key )){
                 if ( $query_key == "assigned_to" ){
                     foreach ( $query_value as $assigned_to ){
+                        $connector = "OR";
                         if ( $assigned_to == "me" ){
                             $assigned_to = "user-" . $current_user->ID;
-                        } else if ( $assigned_to == "all" ) {
-                            if ( self::can_view_all( 'contacts' ) ) {
-                                break;
+                        } else if ( $assigned_to != "all" && $assigned_to != "shared" ) {
+                            if ( self::can_view_all( 'contacts' ) ){
+                                $assigned_to = "user-" . $assigned_to;
                             } else {
-                                $assigned_to = "user-" . $current_user->ID;
+                                $assigned_to = "user-" . $assigned_to;
+                                if ( !$share_joins ){
+                                    $share_joins = "INNER JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
+                                    $access_query = "shares.user_id = $current_user->ID ";
+                                    $connector = "AND";
+                                }
                             }
                         } else {
-                            $assigned_to = "user-" . $assigned_to;
+                            break;
                         }
-                        if ( !empty( $meta_field_sql ) ){
-                            $meta_field_sql .= " OR ";
-                        }
-                        $meta_field_sql .= " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value = '" . esc_sql( $assigned_to ) . "' ) ";
+                        $access_joins = "INNER JOIN $wpdb->postmeta AS assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id ) ";
+                        $access_query .= ( !empty( $access_query ) ? $connector : "" ) . ($connector == "AND" ? " ( " : "" ) . " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value = '" . esc_sql( $assigned_to ) . "' ) " . ($connector == "AND" ? " ) " : "" );
+
                     }
                 } else {
                     foreach ( $query_value as $value ){
@@ -1622,16 +1647,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     }
                 }
                 if ( $meta_field_sql ){
-                    $inner_joins .= "INNER JOIN $wpdb->postmeta AS " . esc_sql( $query_key ) . " ON ( $wpdb->posts.ID = . " . esc_sql( $query_key ) . ".post_id ) ";
+                    $inner_joins .= "INNER JOIN $wpdb->postmeta AS " . esc_sql( $query_key ) . " ON ( $wpdb->posts.ID = " . esc_sql( $query_key ) . ".post_id ) ";
                     $meta_query .= "AND ( " .$meta_field_sql . ") ";
                 }
-            }
-        }
-        $includes_query = "";
-        foreach ( $include as $i ){
-            if ( $i === "shared" ){
-                $inner_joins .= "LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
-                $includes_query .= "AND shares.user_id = $current_user->ID ";
             }
         }
 
@@ -1641,27 +1659,26 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         }
 
-
+        $access_query = $access_query ? "AND ( " . $access_query . " ) ": "";
         // phpcs:disable
-        $contacts = $wpdb->get_results(
-            $wpdb->prepare("
+
+        $prepared_sql = $wpdb->prepare("
             SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, post_title, post_type FROM $wpdb->posts  
             INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id )
-            " . $inner_joins . "
-            WHERE 1=1 AND ( 
-                ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'media' ) 
-                OR 
-                ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'next_gen' ) 
-            ) " . $connections_sql . " " . $meta_query . " " . $includes_query . "
-            AND $wpdb->posts.post_type = %s 
-            AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private') 
+            " . $inner_joins . " " . $share_joins . " " . $access_joins . "
+            WHERE 1=1 AND (
+                ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'media' )
+                OR
+                ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'next_gen' )
+            ) " . $connections_sql . " " . $meta_query . " " . $includes_query . " " . $access_query . "
+            AND $wpdb->posts.post_type = %s
+            AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
             GROUP BY $wpdb->posts.ID ORDER BY $wpdb->posts.post_date DESC LIMIT 0, 100
             ",
-                "contacts"
-            ), OBJECT
+            "contacts"
         );
+        $contacts = $wpdb->get_results( $prepared_sql, OBJECT );
         // phpcs:enable
-        // LIMIT 0, 100
         $total_rows = $wpdb->get_var( "SELECT found_rows();" );
 
         return [
@@ -2058,7 +2075,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
             if ( $has_unconfirmed_duplicates ){
                 $field_details = $this->get_field_details( $field, $contact_id );
-                $message = __( "Possible duplicates on", "disciple_tools" ) . " " . $field_details["name"] . ": 
+                $message = __( "Possible duplicates on", "disciple_tools" ) . " " . $field_details["name"] . ":
                 " . $message;
                 if ( $has_unconfirmed_duplicates > 5 ){
                     $message .= "- " . $has_unconfirmed_duplicates . " " . __( "more duplicates not shown", "disciple_tools" );
