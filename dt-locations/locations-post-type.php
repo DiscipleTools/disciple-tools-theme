@@ -324,9 +324,12 @@ class Disciple_Tools_Location_Post_Type
 
     public function load_levels_meta_box( $post )
     {
-        $raw = get_post_meta( $post->ID, 'raw', true );
-        $locations_result = Disciple_Tools_Locations::query_all_geocoded_locations();
+        $raw = get_post_meta( $post->ID, 'raw', true ); // raw google result
+        $locations_result = Disciple_Tools_Locations::query_all_geocoded_locations(); // all current locations and their raw results
 
+        /***************************************************************************************************************
+         * Free parenting of non-geocoded locations section
+         */
         if ( ! $raw ) :
             $dropdown_args = array(
                 'post_type'        => $post->post_type,
@@ -339,23 +342,28 @@ class Disciple_Tools_Location_Post_Type
             );
             // @codingStandardsIgnoreLine
             $pages = wp_dropdown_pages( $dropdown_args );
-            if ( ! empty( $pages ) ) :
-                ?>
+            if ( ! empty( $pages ) ) : ?>
                 <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="parent_id"><?php esc_html_e( 'Parent' ); ?></label></p>
-                <?php
-                // @codingStandardsIgnoreLine
+                <?php  // @codingStandardsIgnoreLine
                 echo $pages;
-            endif; // end empty pages check
-            ?>
+            endif; // end empty pages check?>
+
             <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="menu_order"><?php esc_html_e( 'Order' ); ?></label></p>
             <input name="menu_order" type="text" size="4" id="menu_order" value="<?php echo esc_attr( $post->menu_order ); ?>" />
-            <?php
+
+
+        <?php
+        /**************************************************************************************************************
+         * Geocoded section
+         */
         else : // end non-geocoded "free location" section
             $levels = Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw, 'political' );
+
             if ( $levels ) :
                 $levels = array_reverse( $levels, true );
 
             ?>
+
             <p style="text-align:center">
                 <?php
                 $add_address = '';
@@ -407,6 +415,7 @@ class Disciple_Tools_Location_Post_Type
                 endif; // if political
             endif; // user permission check on auto build
         endif;
+        dt_write_log($raw);
     }
 
     /**
