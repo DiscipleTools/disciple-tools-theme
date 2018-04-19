@@ -1663,17 +1663,28 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         // phpcs:disable
 
         $prepared_sql = $wpdb->prepare("
-            SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, post_title, post_type FROM $wpdb->posts  
-            INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id )
+            SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, post_title, post_type FROM $wpdb->posts
+            INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = 'type' )
+            INNER JOIN $wpdb->postmeta as status ON ( $wpdb->posts.ID = status.post_id AND status.meta_key = 'overall_status')
             " . $inner_joins . " " . $share_joins . " " . $access_joins . "
-            WHERE 1=1 AND (
+            WHERE 1=1 
+            AND (
                 ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'media' )
                 OR
                 ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'next_gen' )
             ) " . $connections_sql . " " . $meta_query . " " . $includes_query . " " . $access_query . "
             AND $wpdb->posts.post_type = %s
             AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
-            GROUP BY $wpdb->posts.ID ORDER BY $wpdb->posts.post_date DESC LIMIT 0, 100
+            GROUP BY $wpdb->posts.ID 
+            ORDER BY CASE 
+            WHEN ( status.meta_value = 'unassigned') THEN 1
+            WHEN ( status.meta_value = 'assigned') THEN 2 
+            WHEN ( status.meta_value = 'active') THEN 3 
+            WHEN ( status.meta_value = 'paused') THEN 4 
+            WHEN ( status.meta_value = 'closed') THEN 99 
+            else 10
+            end asc
+            LIMIT 0, 100
             ",
             "contacts"
         );
