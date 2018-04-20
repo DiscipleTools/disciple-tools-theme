@@ -1558,7 +1558,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
         $offset = 0;
         if ( isset( $query["offset"] )){
-            $offset = esc_sql( sanitize_text_field( $query["offset"] ));
+            $offset = esc_sql( sanitize_text_field( $query["offset"] ) );
             unset( $query["offset"] );
         }
 

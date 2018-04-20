@@ -41,21 +41,86 @@ class Disciple_Tools_Users
             return new WP_Error( __FUNCTION__, __( "No permissions to assign" ), [ 'status' => 403 ] );
         }
 
+        global $wpdb;
+        $user_id = get_current_user_id();
+        $users = [];
+        if ( !user_can( get_current_user_id(), 'view_any_contacts' ) ){
+            $user_sql = $wpdb->prepare("
+                SELECT %1\$s
+                FROM $wpdb->dt_share
+                WHERE post_id IN (SELECT DISTINCT(post_id)
+                      FROM $wpdb->postmeta
+                      WHERE meta_key = 'assigned_to'
+                            AND meta_value = CONCAT('user-', %1\$s )
+                            AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_status = 'publish' )
+                      UNION ALL
+                      SELECT post_id
+                      FROM $wpdb->dt_share
+                      WHERE user_id = %1\$s
+                            AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_status = 'publish' ))
+                      AND user_id != %1\$s
+                GROUP BY user_id
+                UNION DISTINCT
+                SELECT REPLACE( meta_value, 'user-', '' ) as user_id
+                FROM $wpdb->postmeta
+                WHERE post_id IN (SELECT DISTINCT(post_id)
+                      FROM $wpdb->postmeta
+                      WHERE meta_key = 'assigned_to'
+                            AND meta_value = CONCAT('user-',%1\$s)
+                            AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_status = 'publish' )
+                      UNION ALL
+                      SELECT post_id
+                      FROM $wpdb->dt_share
+                      WHERE user_id = %1\$s
+                            AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_status = 'publish' ))
+                      AND meta_key = 'assigned_to'
+                GROUP BY user_id;",
+                $user_id,
+                $user_id,
+                $user_id,
+                $user_id,
+                $user_id,
+                $user_id
+            );
 
-        $search_string = esc_attr( $search_string );
-        $user_query = new WP_User_Query( [
-            'search'         => '*' . $search_string . '*',
-            'search_columns' => [
-                'user_login',
-                'user_nicename',
-                'user_email',
-                'user_url',
-                'display_name'
-            ],
-        ] );
+            $users_ids = $wpdb->get_results( $user_sql , ARRAY_N );
 
-//        @todo also searh names. Was not worknig.
-        $users = $user_query->get_results();
+            $dispatchers = $wpdb->get_results("SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 
+            'wp_capabilities' AND meta_value LIKE '%dispatcher%' ");
+
+            $assure_unique = [];
+            foreach ( $dispatchers as $index ){
+                $id = $index->user_id;
+                if ( $id && !in_array( $id, $assure_unique )){
+                    $assure_unique[] = $id;
+                    $users[] = get_user_by( "ID", $id );
+                }
+            }
+            foreach ( $users_ids as $index ){
+                $id = $index[0];
+                if ( $id && !in_array( $id, $assure_unique )){
+                    $assure_unique[] = $id;
+                    $users[] = get_user_by( "ID", $id );
+                }
+            }
+        } else {
+
+
+
+            $search_string = esc_attr( $search_string );
+            $user_query = new WP_User_Query( [
+                'search'         => '*' . $search_string . '*',
+                'search_columns' => [
+                    'user_login',
+                    'user_nicename',
+                    'user_email',
+                    'user_url',
+                    'display_name'
+                ],
+            ] );
+
+            $users = $user_query->get_results();
+        }
         $list = [];
 
         foreach ( $users as $user ) {
