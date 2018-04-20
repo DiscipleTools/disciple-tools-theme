@@ -165,7 +165,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
             unset( $_POST['dt_import_levels_nonce'] );
 
             // parse and sanitize list
-            $list = explode( "\n", $_POST['import-contents'] );
+            $list = explode( "\n", $_POST['import-list'] );
             $items = array_filter( array_map( 'sanitize_text_field', wp_unslash( $list ) ) );
 
             $country = sanitize_text_field( wp_unslash( $_POST['country'] ) );
@@ -179,9 +179,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
                     $results[$item] = Disciple_Tools_Locations::auto_build_location( $raw, 'raw' );
                 }
             }
-            dt_write_log( Disciple_Tools_Google_Geocode_API::query_google_api_reverse( '36.4091188,10.1423172', $result_type = 'administrative_area_level_1', $type = 'raw' ) );
         }
-
 
         $this->box( 'top', 'Import List', [
             'col_span' => 1,
@@ -194,9 +192,6 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
         if ( $file ) {
             $countries = json_decode( $file );
         }
-
-        // administrative level list
-        $administrative_levels = dt_get_location_levels();
         ?>
 
         <form method="post" action="">
@@ -212,7 +207,6 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
                     <select name="country">
                         <option></option>
                         <?php
-
                         foreach ( $countries as $key => $label ) {
 
                             echo '<option value="'.esc_attr( $key ).'">' . esc_html( $label ) . '</option>';
@@ -225,7 +219,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
             <tr>
                 <td>
                     <label>List of Locations</label>
-                    <textarea name="import-contents" rows="10" style="width:100%;"></textarea>
+                    <textarea name="import-list" rows="10" style="width:100%;"></textarea>
                 </td>
             </tr>
             <tr>

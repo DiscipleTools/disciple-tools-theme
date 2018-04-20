@@ -124,14 +124,14 @@ class Disciple_Tools_Google_Geocode_API
     }
 
     /**
-     *
+     * Use Latitude Longitude to find political structures
      * @param        $latlng
      * @param string $result_type
      * @param string $type
      *
      * @return array|bool|mixed|object
      */
-    public static function query_google_api_reverse( $latlng, $result_type = 'locality', $type = 'raw' )
+    public static function query_google_api_reverse( $latlng, $result_type = 'locality' )
     {
         $latlng = trim( $latlng );
         $latlng = str_replace( ' ', '', $latlng );
@@ -143,46 +143,7 @@ class Disciple_Tools_Google_Geocode_API
             return false;
         }
         else {
-            switch ( $type ) {
-                case 'validate':
-                    return true;
-                    break;
-                case 'coordinates_only':
-                    $g_lat = $details['results'][0]['geometry']['location']['lat'];
-                    $g_lng = $details['results'][0]['geometry']['location']['lng'];
-
-                    return [
-                        'lng' => $g_lng,
-                        'lat' => $g_lat,
-                        'raw' => $details,
-                    ];
-                    break;
-                case 'core':
-                    $g_lat = $details['results'][0]['geometry']['location']['lat'];
-                    $g_lng = $details['results'][0]['geometry']['location']['lng'];
-                    $g_formatted_address = $details['results'][0]['formatted_address'];
-
-
-                    return [
-                        'lng' => $g_lng,
-                        'lat' => $g_lat,
-                        'formatted_address' => $g_formatted_address,
-                        'raw' => $details,
-                    ];
-                    break;
-                case 'all_points':
-                    return [
-                        'center' => $details['results'][0]['geometry']['location'],
-                        'northeast' => $details['results'][0]['geometry']['bounds']['northeast'],
-                        'southwest' => $details['results'][0]['geometry']['bounds']['southwest'],
-                        'formatted_address' => $details['results'][0]['formatted_address'],
-                        'raw' => $details,
-                    ];
-                    break;
-                default:
-                    return $details; // raw response
-                    break;
-            }
+            return $details; // raw response
         }
     }
 

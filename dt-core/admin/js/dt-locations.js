@@ -98,3 +98,13 @@ function auto_build_location( post_id ) {
             jQuery("#errors").append(err.responseText);
         })
 }
+
+function import_list() {
+    let country = jQuery('#country').val()
+    let list = jQuery('#import-list').val()
+
+    jQuery.each() {
+        
+    }
+
+}
