@@ -47,7 +47,7 @@
 // 1. Global
 // ---------
 
-$global-font-size: 100%;
+$global-font-size: 15px;
 $global-width: rem-calc(1200);
 $global-lineheight: 1.5;
 $foundation-palette: (
@@ -71,7 +71,7 @@ $white: #fefefe;
 $off-white: #fafafa;
 $body-background: $white;
 $body-font-color: $black;
-$body-font-family: Roboto, 'Helvetica Neue', Helvetica,  Arial,  sans-serif;
+$body-font-family: Helvetica, Arial, sans-serif;
 $body-antialiased: true;
 $global-margin: 1rem;
 $global-padding: 1rem;

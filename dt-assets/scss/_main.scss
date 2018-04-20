@@ -382,6 +382,9 @@ img {
     .tabs {
         border: none;
     }
+    p {
+        line-height: 1.4;
+    }
 }
 
 #add-comment-button {
@@ -997,7 +1000,7 @@ CONTACTS
 **/
 
 .milestone {
-    font-size: 90%;
+    //font-size: 90%;
 }
 
 .status--unassigned   { color: #999999; }
