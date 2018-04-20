@@ -196,12 +196,21 @@ class Disciple_Tools_Locations_Endpoints
     }
 
     public function auto_build_location( WP_REST_Request $request ){
-        dt_write_log( __METHOD__ );
         $params = $request->get_json_params();
 
-        if ( isset( $params['post_id'] ) ){
+        if ( isset( $params['data'] ) && isset( $params['type'] ) ){
 
-            $result = Disciple_Tools_Locations::auto_build_location( $params['post_id'], 'post_id' );
+            if ( !current_user_can( 'publish_locations' ) ) {
+                return new WP_Error( __FUNCTION__, __( "You may not publish a location" ), [ 'status' => 403 ] );
+            }
+
+            $components = $params['components'] ?? [];
+
+            $result = Disciple_Tools_Locations::auto_build_location( $params['data'], $params['type'], $components );
+
+            if ( is_wp_error( $result ) ) {
+                return $result;
+            }
 
             if ( $result['status'] == 'OK' ){
                 return $result;

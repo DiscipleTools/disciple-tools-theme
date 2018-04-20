@@ -99,12 +99,3 @@ function auto_build_location( post_id ) {
         })
 }
 
-function import_list() {
-    let country = jQuery('#country').val()
-    let list = jQuery('#import-list').val()
-
-    jQuery.each() {
-        
-    }
-
-}

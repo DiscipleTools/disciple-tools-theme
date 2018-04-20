@@ -204,7 +204,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
             <tr>
                 <td>
                     <label>Country</label><br>
-                    <select name="country">
+                    <select name="country" id="country">
                         <option></option>
                         <?php
                         foreach ( $countries as $key => $label ) {
@@ -219,12 +219,13 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
             <tr>
                 <td>
                     <label>List of Locations</label>
-                    <textarea name="import-list" rows="10" style="width:100%;"></textarea>
+                    <textarea name="import-list" id="import-list" rows="10" style="width:100%;"></textarea>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <button class="button" type="submit" style="float:right"><?php esc_html_e( 'Import' ) ?></button>
+                    <button class="button" type="button" onclick="import_list()" style="float:right"><?php esc_html_e( 'Import' ) ?></button><br>
+                    <div id="results"></div>
                 </td>
             </tr>
         </form>

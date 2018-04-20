@@ -127,7 +127,6 @@ class Disciple_Tools_Google_Geocode_API
      * Use Latitude Longitude to find political structures
      * @param        $latlng
      * @param string $result_type
-     * @param string $type
      *
      * @return array|bool|mixed|object
      */

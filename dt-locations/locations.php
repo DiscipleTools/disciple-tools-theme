@@ -21,10 +21,11 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
         parent::__construct();
     }
 
-    public static function auto_build_location( $data, $type ) {
+    public static function auto_build_location( $data, $type, $components = [] ) {
         dt_write_log( __METHOD__ );
 
         // verify google geocode data
+        $post_raw = [];
         $geocode = new Disciple_Tools_Google_Geocode_API(); // api class
         $errors = new WP_Error();
 
@@ -38,6 +39,12 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
                     $post_raw = $data;
                 }
                 break;
+            case 'address':
+                $raw = $geocode::query_google_api_with_components( $data, $components );
+                if ( $geocode::check_valid_request_result( $raw ) ) {
+                    $post_raw = $raw;
+                }
+                break;
             default:
                 $errors->add( __METHOD__, 'Type required' );
                 return $errors;
@@ -46,6 +53,7 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
 
         if ( ! $geocode::check_valid_request_result( $post_raw ) ) {
             $errors->add( __METHOD__, 'No google geocode installed.' );
+            return $errors;
         }
 
         // build locations
