@@ -477,12 +477,12 @@ function dt_get_location_levels() {
     ];
 
     $fields['location_levels_labels'] = [
-        'country' => 'Country (recommended)',
-        'administrative_area_level_1' => 'Admin Level 1 (ex. state / province) (recommended)',
+        'country' => 'Country',
+        'administrative_area_level_1' => 'Admin Level 1 (ex. state / province) ',
         'administrative_area_level_2' => 'Admin Level 2',
         'administrative_area_level_3' => 'Admin Level 3',
         'administrative_area_level_4' => 'Admin Level 4',
-        'locality' => 'Locality (ex. city name) (recommended)',
+        'locality' => 'Locality (ex. city name)',
         'neighborhood' => 'Neighborhood',
     ];
 

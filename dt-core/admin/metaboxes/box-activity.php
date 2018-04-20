@@ -65,6 +65,8 @@ class Disciple_Tools_Metabox_Activity
                     `$wpdb->dt_activity_log`
                 WHERE
                     `object_id` = %s
+                    AND `object_id` != ''
+                    AND `object_id` IS NOT NULL
                 ORDER BY "
                 // @codingStandardsIgnoreLine
                 . " `hist_time` $order
