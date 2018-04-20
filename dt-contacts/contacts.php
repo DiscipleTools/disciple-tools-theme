@@ -1553,8 +1553,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
         $search = "";
         if ( isset( $query["text"] )){
-            $search = $query["text"];
+            $search = sanitize_text_field( $query["text"] );
             unset( $query["text"] );
+        }
+        $offset = 0;
+        if ( isset( $query["offset"] )){
+            $offset = esc_sql( sanitize_text_field( $query["offset"] ) );
+            unset( $query["offset"] );
         }
 
         $bad_fields = self::check_for_invalid_fields( $query );
@@ -1684,9 +1689,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             WHEN ( status.meta_value = 'closed') THEN 99 
             else 10
             end asc
-            LIMIT 0, 100
+            LIMIT %d, 100
             ",
-            "contacts"
+            "contacts",
+            $offset
         );
         $contacts = $wpdb->get_results( $prepared_sql, OBJECT );
         // phpcs:enable
