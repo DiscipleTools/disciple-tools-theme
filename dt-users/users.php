@@ -45,7 +45,7 @@ class Disciple_Tools_Users
         $user_id = get_current_user_id();
         $users = [];
         if ( !user_can( get_current_user_id(), 'view_any_contacts' ) ){
-            $user_sql = $wpdb->prepare("
+            $users_ids = $wpdb->get_results( $wpdb->prepare("
                 SELECT %1\$s
                 FROM $wpdb->dt_share
                 WHERE post_id IN (SELECT DISTINCT(post_id)
@@ -81,9 +81,7 @@ class Disciple_Tools_Users
                 $user_id,
                 $user_id,
                 $user_id
-            );
-
-            $users_ids = $wpdb->get_results( $user_sql , ARRAY_N );
+            ), ARRAY_N );
 
             $dispatchers = $wpdb->get_results("SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 
             'wp_capabilities' AND meta_value LIKE '%dispatcher%' ");
