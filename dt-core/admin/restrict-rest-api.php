@@ -66,24 +66,26 @@ function dt_dra_disable_via_filters()
  */
 function dt_dra_only_allow_logged_in_rest_access( $access )
 {
+    $is_public = false;
     /**
      * External integrations to a Disciple Tools site can be done through the /dt-public/ route, which is left open to non-logged in external access
      */
-    $is_public = false;
     if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/dt-public/' ) !== false ) {
         $is_public = true;
     }
     /**
      * JWT token authentication is also open on the Disciple Tools use of WP REST API
      */
-    $is_jwt = false;
     if ( $_SERVER['REQUEST_URI'] == "/wp-json/jwt-auth/v1/token" || $_SERVER['REQUEST_URI'] == "/wp-json/jwt-auth/v1/token/validate" ) {
-        $is_jwt = true;
+        $is_public = true;
     }
+
+    $is_public = apply_filters('dt_allow_rest_access', $is_public );
+
     /**
      * All other requests to the REST API require a person to be logged in to make a REST Request.
      */
-    if ( !is_user_logged_in() && !$is_public && !$is_jwt ) {
+    if ( !is_user_logged_in() && !$is_public ) {
         return new WP_Error( 'rest_cannot_access', __( 'Only authenticated users can access the REST API.', 'disciple_tools' ), [ 'status' => rest_authorization_required_code() ] );
     }
 
