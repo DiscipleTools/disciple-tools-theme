@@ -146,7 +146,11 @@ declare(strict_types=1);
         </div>
 
         <main id="main" class="large-9 cell padding-bottom" role="main">
+<<<<<<< HEAD
             <?php get_template_part( '/dt-assets/parts/content' , 'contacts' ); ?>
+=======
+            <?php get_template_part( '/dt-assets/parts/content', 'contacts' ); ?>
+>>>>>>> 56c6d51cc505204572917ef790ee8e9255a53860
 
         </main> <!-- end #main -->
 
