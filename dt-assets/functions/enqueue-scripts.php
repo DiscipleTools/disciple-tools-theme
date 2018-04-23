@@ -256,11 +256,12 @@ function dt_site_scripts() {
     if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )) {
         dt_theme_enqueue_script( 'data-tables', 'dt-core/dependencies/DataTables/datatables.min.js', array( 'jquery' ) );
         dt_theme_enqueue_style( 'data-tables', 'dt-core/dependencies/DataTables/datatables.min.css', array() );
-        dt_theme_enqueue_script( 'list-js', 'dt-assets/js/list.js', array( 'jquery', 'lodash', 'data-tables', 'site-js' ), true );
         $post_type = null;
         if (is_post_type_archive( "contacts" )) {
             $post_type = "contacts";
+            dt_theme_enqueue_script( 'list-js', 'dt-assets/js/contacts-list.js', array( 'jquery', 'lodash', 'typeahead-jquery', 'site-js' ), true );
         } elseif (is_post_type_archive( "groups" )) {
+            dt_theme_enqueue_script( 'list-js', 'dt-assets/js/list.js', array( 'jquery', 'lodash', 'data-tables', 'site-js' ), true );
             $post_type = "groups";
         }
         wp_localize_script( 'list-js', 'wpApiSettings', array(
@@ -286,7 +287,8 @@ function dt_site_scripts() {
             'current_user_login' => wp_get_current_user()->user_login,
             'current_user_roles' => wp_get_current_user()->roles,
             'current_post_type' => $post_type,
-            'access_all_contacts' => user_can( get_current_user_id(), 'view_any_contacts' )
+            'access_all_contacts' => user_can( get_current_user_id(), 'view_any_contacts' ),
+            'filters' => Disciple_Tools_Users::get_user_filters()
         ) );
     }
 
