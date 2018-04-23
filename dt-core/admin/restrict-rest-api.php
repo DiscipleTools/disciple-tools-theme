@@ -80,7 +80,7 @@ function dt_dra_only_allow_logged_in_rest_access( $access )
         $is_public = true;
     }
 
-    $is_public = apply_filters('dt_allow_rest_access', $is_public );
+    $is_public = apply_filters( 'dt_allow_rest_access', $is_public );
 
     /**
      * All other requests to the REST API require a person to be logged in to make a REST Request.
