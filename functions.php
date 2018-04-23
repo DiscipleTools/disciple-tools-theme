@@ -152,7 +152,7 @@ else {
              */
             $this->token = 'disciple_tools';
             $this->version = '0.7.1';
-            $this->migration_number = 5;
+            $this->migration_number = 6;
             $this->plugin_url = get_template_directory_uri() . '/';
             $this->plugin_path = get_template_directory() . '/';
             $this->plugin_img_url = get_template_directory_uri() . '/dt-core/admin/img/';
