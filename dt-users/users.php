@@ -45,6 +45,10 @@ class Disciple_Tools_Users
         $user_id = get_current_user_id();
         $users = [];
         if ( !user_can( get_current_user_id(), 'view_any_contacts' ) ){
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
             $users_ids = $wpdb->get_results( $wpdb->prepare("
                 SELECT %1\$s
                 FROM $wpdb->dt_share

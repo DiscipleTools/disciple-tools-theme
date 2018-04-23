@@ -1677,6 +1677,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'media' )
                 OR
                 ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'next_gen' )
+                OR ( $wpdb->postmeta.meta_key IS NULL )
             ) " . $connections_sql . " " . $meta_query . " " . $includes_query . " " . $access_query . "
             AND $wpdb->posts.post_type = %s
             AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
