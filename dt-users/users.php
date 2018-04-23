@@ -45,7 +45,6 @@ class Disciple_Tools_Users
         $user_id = get_current_user_id();
         $users = [];
         if ( !user_can( get_current_user_id(), 'view_any_contacts' ) ){
-
             $users_ids = $wpdb->get_results( $wpdb->prepare("
                 SELECT %1\$s
                 FROM $wpdb->dt_share
@@ -58,7 +57,7 @@ class Disciple_Tools_Users
                       SELECT post_id
                       FROM $wpdb->dt_share
                       WHERE user_id = %1\$s
-                            AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_status = 'publish' ))
+                            AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_status = 'publish' ) )
                       AND user_id != %1\$s
                 GROUP BY user_id
                 UNION DISTINCT
@@ -73,7 +72,7 @@ class Disciple_Tools_Users
                       SELECT post_id
                       FROM $wpdb->dt_share
                       WHERE user_id = %1\$s
-                            AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_status = 'publish' ))
+                            AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_status = 'publish' ) )
                       AND meta_key = 'assigned_to'
                 GROUP BY user_id;",
                 $user_id,
@@ -103,8 +102,6 @@ class Disciple_Tools_Users
                 }
             }
         } else {
-
-
 
             $search_string = esc_attr( $search_string );
             $user_query = new WP_User_Query( [

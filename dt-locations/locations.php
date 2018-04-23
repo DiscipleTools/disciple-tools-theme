@@ -21,82 +21,11 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
         parent::__construct();
     }
 
-    public static function create_location( array $fields = [], $check_permissions = true ) {
-
-        if ( $check_permissions && ! current_user_can( 'publish_locations' ) ) {
-            return new WP_Error( __FUNCTION__, __( "You may not publish a location" ), [ 'status' => 403 ] );
-        }
-
-        $fields = wp_parse_args($fields, [
-            'address' => '',
-            'title' => '',
-            'country' => '',
-            'level' => '',
-            'geocode' => true,
-        ]);
-
-        if ( empty( $fields['title'] ) && empty( $fields['address'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing title or address. Required fields' );
-        }
-
-        $geocode = $fields['geocode'];
-        unset( $fields['geocode'] );
-        if ( $geocode ) {
-            $geocode = new Disciple_Tools_Google_Geocode_API(); // api class
-
-            $location_to_geocode = $fields['address'] ?: $fields['title'];
-
-            if ( ! empty( $fields['country'] ) || ! empty( $fields['level'] ) ) {
-                $raw = $geocode::query_google_api_by_components( trim( $location_to_geocode ) );
-            } else {
-                $raw = $geocode::query_google_api( trim( $location_to_geocode ) );
-            }
-
-
-            if ( ! Disciple_Tools_Google_Geocode_API::check_valid_request_result( $raw ) ) {
-                return new WP_Error( __METHOD__, 'Geocode of '.$location_to_geocode.' failed' );
-            }
-            else {
-                $args = [
-                    'post_title'  => $fields['title'] ?: $geocode::parse_raw_result( $raw, 'base_name' ),
-                    'post_status' => 'publish',
-                    'post_type'   => 'locations',
-                    'meta_input'  => [
-                        'location_address' => $geocode::parse_raw_result( $raw, 'formatted_address' ),
-                        'raw'              => $raw,
-                        'types'            => $geocode::parse_raw_result( $raw, 'types' ),
-                        'base_name'        => $geocode::parse_raw_result( $raw, 'base_name' ),
-                    ]
-                ];
-            }
-        } else {
-            $title = $fields['title'];
-            if ( empty( $title ) ) {
-                $title = $fields['address'];
-            }
-            $args = [
-                'post_title'  => $title,
-                'post_status' => 'publish',
-                'post_type'   => 'locations',
-            ];
-        }
-
-        $this_item_id = wp_insert_post( $args, true );
-
-        if ( is_wp_error( $this_item_id ) ) {
-            return new WP_Error( __METHOD__, 'Failed to create post record in DT.: ' . $this_item_id->get_error_message() );
-        }
-        if ( ! $geocode ) {
-            return $this_item_id; // if no geocode, then return current post id
-        }
-
-        return self::auto_build_location( $this_item_id, 'post_id' );
-    }
-
-    public static function auto_build_location( $data, $type ) {
+    public static function auto_build_location( $data, $type, $components = [] ) {
         dt_write_log( __METHOD__ );
 
         // verify google geocode data
+        $post_raw = [];
         $geocode = new Disciple_Tools_Google_Geocode_API(); // api class
         $errors = new WP_Error();
 
@@ -110,6 +39,12 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
                     $post_raw = $data;
                 }
                 break;
+            case 'address':
+                $raw = $geocode::query_google_api_with_components( $data, $components );
+                if ( $geocode::check_valid_request_result( $raw ) ) {
+                    $post_raw = $raw;
+                }
+                break;
             default:
                 $errors->add( __METHOD__, 'Type required' );
                 return $errors;
@@ -118,6 +53,7 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
 
         if ( ! $geocode::check_valid_request_result( $post_raw ) ) {
             $errors->add( __METHOD__, 'No google geocode installed.' );
+            return $errors;
         }
 
         // build locations

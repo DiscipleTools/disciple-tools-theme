@@ -98,3 +98,4 @@ function auto_build_location( post_id ) {
             jQuery("#errors").append(err.responseText);
         })
 }
+
