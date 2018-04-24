@@ -107,6 +107,10 @@ class Disciple_Tools_Locations_Endpoints
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [ $this, 'auto_build_simple_location' ],
             ],
+            $base.'/auto_build_levels_from_post' => [
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => [ $this, 'auto_build_levels_from_post' ],
+            ],
         ];
 
         // Register each route
@@ -242,6 +246,38 @@ class Disciple_Tools_Locations_Endpoints
             ];
             return wp_insert_post( $args, true );
 
+        } else {
+            return new WP_Error( "param_error", "Please provide a valid address", array( 'status' => 400 ) );
+        }
+    }
+
+    public function auto_build_levels_from_post( WP_REST_Request $request ){
+        $params = $request->get_json_params();
+
+        if ( isset( $params['post_id'] ) ){
+
+            if ( !current_user_can( 'publish_locations' ) ) {
+                return new WP_Error( __FUNCTION__, __( "You may not publish a location" ), [ 'status' => 403 ] );
+            }
+
+            $result = Disciple_Tools_Locations::auto_build_location( $params['post_id'], 'post_id' );
+
+            if ( 'OK' == $result['status'] ?? '' ) {
+                $posts_created = $result['posts_created'] ?? [];
+                $formatted_array = [];
+
+                foreach ( $posts_created as $single_post ) {
+                    $item = get_post_meta( $single_post, 'base_name', true );
+                    $formatted_array[] = [
+                        'id' => md5( $item ),
+                        'link' => '<a href="'. esc_url( admin_url() ).'post.php?post='. esc_attr( $single_post ).'&action=edit">'. esc_html( $item ) .'</a>',
+                    ];
+                }
+
+                return $formatted_array;
+            } else {
+                return new WP_Error( "processing_error", "Please provide a valid address", array( 'status' => 400 ) );
+            }
         } else {
             return new WP_Error( "param_error", "Please provide a valid address", array( 'status' => 400 ) );
         }

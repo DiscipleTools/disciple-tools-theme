@@ -124,6 +124,4 @@ function import_simple_list() {
     })
 
     spinner.empty()
-
-
 }

@@ -99,3 +99,29 @@ function auto_build_location( post_id ) {
         })
 }
 
+function auto_build_levels_from_post( post_id ) {
+    let data = { "post_id": post_id }
+    jQuery.ajax({
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: dtLocAPI.root + 'dt/v1/locations/auto_build_levels_from_post',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtLocAPI.nonce);
+        },
+    })
+        .done(function (data) {
+            // check if multiple results
+            jQuery.each(data, function( index, value ) {
+                jQuery('#'+value.id).html( value.link )
+                console.log( value )
+            })
+        })
+        .fail(function (err) {
+            jQuery('#auto-build-results' ).append(err.responseText)
+            console.log("error");
+            console.log(err);
+        })
+}
+

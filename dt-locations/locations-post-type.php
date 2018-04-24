@@ -371,7 +371,7 @@ class Disciple_Tools_Location_Post_Type
                         if ( $location_id ) {
                             echo '<a href="'. esc_url( admin_url() . 'post.php?post=' . esc_attr( $location_id ) . '&action=edit' ).'" rel="nofollow">'. esc_attr( $level['long_name'] ) . '</a><br>|<br>';
                         } else {
-                            echo esc_attr( $level['long_name'] ) . '<br>|<br>';
+                            echo '<span id="'.md5( $level['long_name'] ).'">' . esc_attr( $level['long_name'] ) . '</span><br>|<br>';
                         }
                     }
                 endforeach;
@@ -382,9 +382,10 @@ class Disciple_Tools_Location_Post_Type
                 <hr>
                 <p style="text-align:center;">
                     <a class="add-parent-location button" href="javascript:void(0)"
-                       onclick="auto_build_location( '<?php echo esc_attr( $post->ID ); ?>' )" >
+                       onclick="auto_build_levels_from_post( '<?php echo esc_attr( $post->ID ); ?>' )" >
                         Auto Build
-                    </a> <span style="font-size:1.5em; padding-top: 5px;" onclick="jQuery('#auto-build-configuration').toggle();" class="dashicons dashicons-admin-generic"></span>
+                    </a> <span style="font-size:1.5em; padding-top: 5px;" onclick="jQuery('#auto-build-configuration').toggle();" class="dashicons dashicons-admin-generic"></span><br>
+                    <span id="auto-build-results"></span>
                 </p>
                 <div id="auto-build-configuration" style="display:none;text-align:center;">
                     <p><strong>Current Settings:</strong></p>
