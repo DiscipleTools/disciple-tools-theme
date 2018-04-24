@@ -6,9 +6,12 @@ function add_input_fields() {
 function import_list() {
     let country = jQuery('#country option:checked').val()
     let list = jQuery('#import-list').val()
-    let div = jQuery('#results')
+    let div = jQuery('#results-import-list')
+    let spinner = jQuery('#spinner')
 
-    div.append('<span id="spinner"><img style="height:1.5em;" src="'+ dtOptionAPI.images_uri +'spinner.svg" /></span><br>')
+    jQuery('.dt_import_levels').toggle();
+
+    spinner.append('<img style="height:1.5em;" src="'+ dtOptionAPI.images_uri +'spinner.svg" />');
 
     // create array of items
     let lines = list.split(/\n/);
@@ -30,7 +33,7 @@ function import_list() {
 
     async function delayedLog(item, increment) {
 
-        div.append( '<span id="result_'+increment+'">' + item + '</span><br>')
+        div.prepend( '<span id="result_'+increment+'">' + item + '</span><br>')
 
         let data = { "data": item, "type": 'address', "components": {"country": country } }
         jQuery.ajax({
@@ -71,33 +74,56 @@ function import_list() {
     }
     processArray(texts)
 
-    // jQuery.each(texts, function( index, value ) {
-    //     jQuery('#results').append( '<span id="result'+index+'">' + value + '</span><br>')
-    //
-    //     let data = { "data": value, "type": 'address' }
-    //     jQuery.ajax({
-    //         type: "POST",
-    //         data: JSON.stringify(data),
-    //         contentType: "application/json; charset=utf-8",
-    //         dataType: "json",
-    //         url: dtOptionAPI.root + 'dt/v1/locations/auto_build_location',
-    //         beforeSend: function(xhr) {
-    //             xhr.setRequestHeader('X-WP-Nonce', dtOptionAPI.nonce);
-    //         },
-    //     })
-    //         .done(function (data) {
-    //             // check if multiple results
-    //             jQuery('#result' + index ).append(' &#x2714;')
-    //             console.log( 'success' )
-    //             console.log( data )
-    //         })
-    //         .fail(function (err) {
-    //             jQuery('#result' + index ).append(' Error!')
-    //             console.log("error");
-    //             console.log(err);
-    //             jQuery("#errors").append(err.responseText);
-    //         })
-    // })
+}
+
+function import_simple_list() {
+    let list = jQuery('#import-list').val()
+    let div = jQuery('#results')
+    let spinner = jQuery('#spinner')
+    let form = jQuery('.dt_simple_import_levels')
+
+    form.toggle()
+
+    spinner.append('<img style="height:1.5em;" src="'+ dtOptionAPI.images_uri +'spinner.svg" />');
+
+    // create array of items
+    let lines = list.split(/\n/);
+    let texts = [];
+    for (let i=0; i < lines.length; i++) {
+        // only push this line if it contains a non whitespace character.
+        if (/\S/.test(lines[i])) {
+            texts.push(jQuery.trim(lines[i]));
+        }
+    }
+
+    jQuery.each(texts, function( index, value ) {
+
+        let data = { "title": value }
+        jQuery.ajax({
+            type: "POST",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: dtOptionAPI.root + 'dt/v1/locations/auto_build_simple_location',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', dtOptionAPI.nonce);
+            },
+        })
+            .done(function (data) {
+                // check if multiple results
+                div.prepend( '<span id="result_'+index+'">' + value + ' &#x2714;</span><br>')
+                console.log( 'success ' + value )
+                console.log( data )
+            })
+            .fail(function (err) {
+                jQuery('#result_' + index ).append(' Error!')
+                console.log("error");
+                console.log(err);
+                jQuery("#errors").append(err.responseText);
+            })
+    })
+
+    spinner.empty()
 
 
 }

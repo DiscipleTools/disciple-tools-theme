@@ -158,7 +158,7 @@ function dt_get_option( string $name )
             break;
 
         case 'map_key':
-            Disciple_Tools_Google_Geocode_API::get_map_key();
+            return Disciple_Tools_Google_Geocode_API::get_map_key();
             break;
 
         case 'location_levels':

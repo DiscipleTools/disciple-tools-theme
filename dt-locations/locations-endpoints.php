@@ -103,6 +103,10 @@ class Disciple_Tools_Locations_Endpoints
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [ $this, 'auto_build_location' ],
             ],
+            $base.'/auto_build_simple_location' => [
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => [ $this, 'auto_build_simple_location' ],
+            ],
         ];
 
         // Register each route
@@ -217,6 +221,27 @@ class Disciple_Tools_Locations_Endpoints
             } else {
                 return new WP_Error( "status_error", 'Zero Results', array( 'status' => 400 ) );
             }
+        } else {
+            return new WP_Error( "param_error", "Please provide a valid address", array( 'status' => 400 ) );
+        }
+    }
+
+    public function auto_build_simple_location( WP_REST_Request $request ){
+        $params = $request->get_json_params();
+
+        if ( isset( $params['title'] ) ){
+
+            if ( !current_user_can( 'publish_locations' ) ) {
+                return new WP_Error( __FUNCTION__, __( "You may not publish a location" ), [ 'status' => 403 ] );
+            }
+
+            $args = [
+                'post_title' => sanitize_text_field( wp_unslash( $params['title'] ) ),
+                'post_type' => 'locations',
+                'post_status' => 'publish',
+            ];
+            return wp_insert_post( $args, true );
+
         } else {
             return new WP_Error( "param_error", "Please provide a valid address", array( 'status' => 400 ) );
         }
