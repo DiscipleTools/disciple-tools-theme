@@ -237,7 +237,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         </script>
                         <?php
                     } else {
-                        echo '<span>' . esc_html('Unfinished Configuration' ) . '</span>';
+                        echo '<span>' . esc_html( 'Unfinished Configuration' ) . '</span>';
                     }
                     break;
 
@@ -510,7 +510,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             // Public Info
 
             $fields['token'] = [
-            'name'        => __('Token'),
+            'name'        => __( 'Token' ),
             'description' => 'If you have a token from another site, just clear token above and replace it.',
             'type'        => 'token',
             'default'     => self::generate_token(),
@@ -518,7 +518,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             ];
 
             $fields['site1'] = [
-            'name'        => __('Site 1'),
+            'name'        => __( 'Site 1' ),
             'description' => 'Use just the host name. Example: www.website.com',
             'type'        => 'url',
             'default'     => '',
@@ -526,7 +526,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             ];
 
             $fields['site2'] = [
-            'name'        => __('Site 2'),
+            'name'        => __( 'Site 2' ),
             'description' => 'Use just the host name. Example: www.website.com',
             'type'        => 'url',
             'default'     => '',
@@ -534,10 +534,13 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             ];
 
             $fields['non_wp'] = [
-                'name'        => __('DT Site'),
+                'name'        => __( 'DT Site' ),
                 'description' => 'Is this connection to a Disciple Tools/Wordpress system.',
                 'type'        => 'key_select',
-                'default'     => [ 0 => __('Yes, connected to another DT site (default)'), 1 => __('No, connection for a non-Disciple Tools system.') ],
+                'default'     => [
+            0 => __( 'Yes, connected to another DT site (default)' ),
+            1 => __( 'No, connection for a non-Disciple Tools system.' )
+                ],
                 'section'     => 'non_wp',
             ];
 
@@ -571,7 +574,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         <tr>
                             <td>
 
-                                <?php  if ( ! get_post_meta( $post_id, 'non_wp', true ) ) : ?>
+                                <?php if ( ! get_post_meta( $post_id, 'non_wp', true ) ) : ?>
                                     <span style="float:right">
                                         <?php esc_html_e( 'Status:' ) ?>
                                         <strong>
@@ -592,7 +595,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                                 </p>
                             </td>
                         </tr>
-                        <?php  if ( ! get_post_meta( $post_id, 'non_wp', true ) ) : ?>
+                        <?php if ( ! get_post_meta( $post_id, 'non_wp', true ) ) : ?>
                             <tr id="<?php echo esc_attr( md5( $post_id ) ); ?>-message" style="display:none;">
                                 <td>
                                     <strong><?php esc_attr_e( 'Consider Checking:' ) ?></strong>

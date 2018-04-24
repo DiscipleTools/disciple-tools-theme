@@ -48,8 +48,8 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
             $this->select_auto_locations();
 
             if ( dt_get_option( 'auto_location' ) ) :
-            $this->select_location_levels_to_record();
-            $this->import_simple_list_of_locations();
+                $this->select_location_levels_to_record();
+                $this->import_simple_list_of_locations();
             endif;
 
             $this->template( 'right_column' );
