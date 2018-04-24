@@ -99,7 +99,7 @@ class Disciple_Tools_Keys_Tab extends Disciple_Tools_Abstract_Menu_Base
                     <td>
                         <select name="default_keys" style="width: 100%;" <?php echo $this->is_default_key( $current_key ) ? '' : 'disabled' ?>>
                             <?php
-                            $default_keys = dt_default_google_api_keys();
+                            $default_keys = Disciple_Tools_Google_Geocode_API::default_google_api_keys()();
                             foreach ( $default_keys as $key => $value ) {
                                 echo '<option value="'.esc_attr( $key ).'" ';
                                 if ( array_search( $current_key, $default_keys ) == $key ) {
@@ -139,7 +139,7 @@ class Disciple_Tools_Keys_Tab extends Disciple_Tools_Abstract_Menu_Base
     {
         if ( isset( $_POST[ 'map_key' . get_current_user_id() ] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[ 'map_key' . get_current_user_id() ] ) ), 'map_key_' . get_current_user_id() . '_nonce' ) ) {
             if ( empty( $_POST['map_key'] ) ) {
-                $default_keys = dt_default_google_api_keys();
+                $default_keys = Disciple_Tools_Google_Geocode_API::default_google_api_keys()();
                 $count = count( $default_keys ) - 1;
 
                 if ( ! empty( $_POST['default_keys'] ) ) {
@@ -172,7 +172,7 @@ class Disciple_Tools_Keys_Tab extends Disciple_Tools_Abstract_Menu_Base
         }
 
 
-        $default_keys = dt_default_google_api_keys();
+        $default_keys = Disciple_Tools_Google_Geocode_API::default_google_api_keys()();
         foreach ( $default_keys as $default_key ) {
             if ( $default_key === $current_key ) {
                 return true;
