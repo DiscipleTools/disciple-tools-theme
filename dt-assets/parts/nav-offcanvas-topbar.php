@@ -13,7 +13,7 @@
         <div class="title-bar-title"><?php esc_html_e( "Disciple Tools" ); ?></div>
     </div>
     <div class="title-bar-right">
-        <?php if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )): ?>
+        <?php if ( is_post_type_archive( "groups" ) ): ?>
             <button data-open="filters-modal">
                 <img title="<?php esc_html_e( "Filters" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/filter.svg" ?>">
             </button>
