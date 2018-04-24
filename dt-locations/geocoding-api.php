@@ -1,11 +1,17 @@
 <?php
-
 /**
  * Disciple_Tools_Google_Geocode_API
  *
  * @class   Disciple_Tools_Google_Geocode_API
- * @version 0.1.0
- * @package Disciple_Tools_Google_Geocode_API
+ */
+
+/**
+ * @version 1.3
+ *
+ * @since 1.0 raw query, ip lookup
+ *        1.1 add map_key and rewrite for array in query_google_api
+ *        1.2 add query with components, add refers lookup, add parse_raw_results
+ *        1.3 moved keys and options within class
  */
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -14,16 +20,43 @@ if ( !defined( 'ABSPATH' ) ) {
 
 /**
  * Class Disciple_Tools_Google_Geocode_API
-
  */
+// @codingStandardsIgnoreLine
 class Disciple_Tools_Google_Geocode_API
 {
+    public function __construct() {}
 
     public static function key() {
-        return dt_get_option( 'map_key' );
+        return self::get_map_key();
     }
 
-    public function __construct() {}
+    public static function get_map_key() {
+        if ( ! get_option( 'dt_map_key' ) || empty( get_option( 'dt_map_key' ) ) ) { // options doesn't exist, create new.
+            // disciple.tools default map key
+            $keys = self::default_google_api_keys();
+            $count = count( $keys ) - 1;
+            $key = $keys[ rand( 0, $count ) ];
+
+            $update = update_option( 'dt_map_key', $key, true );
+            if ( ! $update ) {
+                return false;
+            }
+            return get_option( 'dt_map_key' );
+        } else {
+            return get_option( 'dt_map_key' );
+        }
+    }
+
+    public static function default_google_api_keys()
+    {
+        $default_keys = [
+            'AIzaSyBkI5W07GdlhQCqzf3F8VW2E_3mhdzR3s4',
+            'AIzaSyAaaZusK9pa9eLuO0nlllGnbQPyXHfTGxQ',
+            'AIzaSyBQOO1vujzL6BgkpOzYwZB89bJpGAlbBF8',
+        ];
+
+        return $default_keys;
+    }
 
     /**
      * Google geocoding service
