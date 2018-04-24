@@ -6,12 +6,13 @@
  */
 
 /**
- * @version 1.3
+ * @version 1.4
  *
  * @since 1.0 raw query, ip lookup
  *        1.1 add map_key and rewrite for array in query_google_api
  *        1.2 add query with components, add refers lookup, add parse_raw_results
  *        1.3 moved keys and options within class
+ *        1.4 added keys in parse function
  */
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -346,6 +347,15 @@ class Disciple_Tools_Google_Geocode_API
                 return false;
                 break;
 
+            case 'administrative_area_level_1':
+                foreach ( $raw['address_components'] as $component ) {
+                    if ( 'administrative_area_level_1' == $component['types'][0] ) {
+                        return $component['long_name'];
+                    }
+                }
+                return false;
+                break;
+
             case 'admin2':
                 foreach ( $raw['address_components'] as $component ) {
                     if ( 'administrative_area_level_2' == $component['types'][0] ) {
@@ -355,7 +365,25 @@ class Disciple_Tools_Google_Geocode_API
                 return false;
                 break;
 
+            case 'administrative_area_level_2':
+                foreach ( $raw['address_components'] as $component ) {
+                    if ( 'administrative_area_level_2' == $component['types'][0] ) {
+                        return $component['long_name'];
+                    }
+                }
+                return false;
+                break;
+
             case 'admin3':
+                foreach ( $raw['address_components'] as $component ) {
+                    if ( 'administrative_area_level_3' == $component['types'][0] ) {
+                        return $component['long_name'];
+                    }
+                }
+                return false;
+                break;
+
+            case 'administrative_area_level_3':
                 foreach ( $raw['address_components'] as $component ) {
                     if ( 'administrative_area_level_3' == $component['types'][0] ) {
                         return $component['long_name'];

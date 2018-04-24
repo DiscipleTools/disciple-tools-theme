@@ -164,12 +164,13 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
     /**
      * Filters the self::query_all_geocoded_locations() to find a matching location.
      *
-     * @param array $locations_result
-     * @param       $address_component
+     * @param array         $locations_result (collection of all locations in the system)
+     * @param string      $base_name (long name of the address you are looking for)
+     * @param string      $types_name (string for the specific google geo code type. ie. country, locality)
      *
      * @return bool|int Returns post_id on success, false on failure.
      */
-    public static function does_location_exist( array $locations_result, $address_component, $type ) {
+    public static function does_location_exist( array $locations_result, $base_name, $types_name ) {
         if ( empty( $locations_result ) || ! is_array( $locations_result ) ) {
             $locations_result = self::query_all_geocoded_locations();
         }
@@ -177,8 +178,8 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
             if ( ! isset( $result['raw'] ) ) {
                 continue;
             }
-            if ( $address_component == Disciple_Tools_Google_Geocode_API::parse_raw_result( $result['raw'], 'base_name' )
-                && $type == Disciple_Tools_Google_Geocode_API::parse_raw_result( $result['raw'], 'types' )) {
+            if ( $base_name == Disciple_Tools_Google_Geocode_API::parse_raw_result( $result['raw'], 'base_name' )
+                && $types_name == Disciple_Tools_Google_Geocode_API::parse_raw_result( $result['raw'], 'types' ) ) {
                 return $result['ID'];
             }
         }
