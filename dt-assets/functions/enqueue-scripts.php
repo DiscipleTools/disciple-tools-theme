@@ -259,9 +259,9 @@ function dt_site_scripts() {
         $post_type = null;
         if (is_post_type_archive( "contacts" )) {
             $post_type = "contacts";
-            dt_theme_enqueue_script( 'list-js', 'dt-assets/js/contacts-list.js', array( 'jquery', 'lodash', 'typeahead-jquery', 'site-js' ), true );
+            dt_theme_enqueue_script( 'list-js', 'dt-assets/js/contacts-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js' ), true );
         } elseif (is_post_type_archive( "groups" )) {
-            dt_theme_enqueue_script( 'list-js', 'dt-assets/js/list.js', array( 'jquery', 'lodash', 'data-tables', 'site-js' ), true );
+            dt_theme_enqueue_script( 'list-js', 'dt-assets/js/list.js', array( 'jquery', 'lodash', 'shared-functions', 'data-tables', 'site-js' ), true );
             $post_type = "groups";
         }
         wp_localize_script( 'list-js', 'wpApiSettings', array(
