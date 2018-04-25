@@ -57,7 +57,7 @@ class Disciple_Tools_Contacts_Endpoints
     public function add_api_routes()
     {
         register_rest_route(
-            $this->namespace, '/dt-public/create-contact', [
+            $this->namespace, '/dt-public/contact/create', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'public_create_contact' ],
             ]
@@ -78,6 +78,12 @@ class Disciple_Tools_Contacts_Endpoints
             $this->namespace, '/contact/(?P<id>\d+)', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'update_contact' ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/dt-public/contact/update', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'public_update_contact' ],
             ]
         );
 
@@ -198,11 +204,10 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function public_create_contact( WP_REST_Request $request )
     {
-        $query_params = $request->get_query_params();
-        if ( $this->check_api_token( $query_params ) ) {
-            $fields = $request->get_json_params();
-            $result = Disciple_Tools_Contacts::create_contact( $fields, false );
-
+        $params = $request->get_params();
+        $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+        if ( ! is_wp_error( $site_key ) && $site_key && isset( $params["fields"] ) ) {
+            $result = Disciple_Tools_Contacts::create_contact( $params["fields"], false );
             return $result; // Could be permission WP_Error
         } else {
             return new WP_Error(
@@ -280,6 +285,32 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( "update_contact", "Missing a valid contact id", [ 'status' => 400 ] );
         }
     }
+
+    /**
+     * Update a contact from the PUBLIC api.
+     *
+     * @param  WP_REST_Request $request as application/json
+     *
+     * @access public
+     * @since  0.1.0
+     * @return array|WP_Error The new contact Id on success, an error on failure
+     */
+    public function public_update_contact( WP_REST_Request $request )
+    {
+        $params = $request->get_params();
+        $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+        if ( ! is_wp_error( $site_key ) && $site_key && isset( $params["fields"] ) && isset( $params["contact_id"] ) ) {
+            $result = Disciple_Tools_Contacts::update_contact( $params["contact_id"], $params["fields"], false );
+
+            return $result; // Could be permission WP_Error
+        } else {
+            return new WP_Error(
+                "contact_creation_error",
+                "Invalid or missing client_id or client_token", [ 'status' => 401 ]
+            );
+        }
+    }
+
 
     /**
      * @param array $contacts
