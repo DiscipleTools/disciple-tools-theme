@@ -371,7 +371,7 @@ class Disciple_Tools_Location_Post_Type
                         if ( $location_id ) {
                             echo '<a href="'. esc_url( admin_url() . 'post.php?post=' . esc_attr( $location_id ) . '&action=edit' ).'" rel="nofollow">'. esc_attr( $level['long_name'] ) . '</a><br>|<br>';
                         } else {
-                            echo '<span id="'.md5( $level['long_name'] ).'">' . esc_attr( $level['long_name'] ) . '</span><br>|<br>';
+                            echo '<span id="'. esc_attr( md5( $level['long_name'] ) ).'">' . esc_attr( $level['long_name'] ) . '</span><br>|<br>';
                         }
                     }
                 endforeach;
