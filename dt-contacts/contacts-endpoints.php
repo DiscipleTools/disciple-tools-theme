@@ -175,6 +175,12 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'add_shared' ],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/contact/tags', [
+                "methods" => "GET",
+                "callback" => [ $this, 'get_tag_options' ]
+            ]
+        );
     }
 
     /**
@@ -703,5 +709,11 @@ class Disciple_Tools_Contacts_Endpoints
         $contacts = Disciple_Tools_Contacts::get_viewable_contacts_compact( $search );
 
         return $contacts;
+    }
+
+
+    public function get_tag_options( WP_REST_Request $request ){
+        $params = $request->get_params();
+        return Disciple_Tools_Contacts::get_tag_options();
     }
 }
