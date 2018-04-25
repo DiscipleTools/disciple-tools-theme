@@ -405,9 +405,6 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-keys.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-locations.php' );
 
-                require_once( get_template_directory() . '/dt-core/admin/menu/submenu-import.php' );
-                require_once( get_template_directory() . '/dt-locations/utilities/tab-import-csv.php' );
-
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-extensions.php' ); // main registers all the menu pages and tabs
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-featured-extensions.php' );
 

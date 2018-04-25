@@ -46,8 +46,13 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
             $this->template( 'begin' );
 
             $this->select_auto_locations();
-            $this->select_location_levels_to_record();
-            $this->import_simple_list_of_locations();
+
+            if ( dt_get_option( 'auto_location' ) ) :
+                $this->select_location_levels_to_record();
+                $this->import_geocoded_list_of_locations();
+            else :
+                $this->import_simple_list_of_locations();
+            endif;
 
             $this->template( 'right_column' );
 
@@ -79,8 +84,8 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
             <tr>
                 <td><label>Set Auto Locations</label></td>
                 <td><select name="auto_location">
-                        <option value="0" <?php echo $auto_location ? 'selected' : '' ?>>Build Location Depths Manually</option>
-                        <option value="1" <?php echo $auto_location ? 'selected' : '' ?>>Build Locations Depths Automatically</option>
+                        <option value="0" <?php echo $auto_location ? 'selected' : '' ?>>Manually Build Locations</option>
+                        <option value="1" <?php echo $auto_location ? 'selected' : '' ?>>Auto GeoCode and Build Location Levels</option>
                     </select>
                 </td>
             </tr>
@@ -157,7 +162,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
         endif; // hide settings, if auto locations is set to manual
     }
 
-    public function import_simple_list_of_locations() {
+    public function import_geocoded_list_of_locations() {
 
         if ( isset( $_POST['dt_import_levels_nonce'] ) && ! empty( $_POST['dt_import_levels_nonce'] )
             && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_import_levels_nonce'] ) ), 'dt_import_levels'. get_current_user_id() ) ) {
@@ -196,12 +201,12 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
 
         <form method="post" action="">
             <?php wp_nonce_field( 'dt_import_levels'. get_current_user_id(), 'dt_import_levels_nonce', false, true ) ?>
-            <tr>
+            <tr class="dt_import_levels">
                 <td>
                     Auto import a simple list of locations/addresses. One address per line.
                 </td>
             </tr>
-            <tr>
+            <tr class="dt_import_levels">
                 <td>
                     <label>Country</label><br>
                     <select name="country" id="country">
@@ -216,18 +221,67 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
                 </td>
             </tr>
 
-            <tr>
+            <tr class="dt_import_levels">
                 <td>
                     <label>List of Locations</label>
                     <textarea name="import-list" id="import-list" rows="10" style="width:100%;"></textarea>
                 </td>
             </tr>
-            <tr>
+            <tr class="dt_import_levels">
                 <td>
                     <button class="button" type="button" onclick="import_list()" style="float:right"><?php esc_html_e( 'Import' ) ?></button><br>
-                    <div id="results"></div>
                 </td>
             </tr>
+            <tr class="dt_import_levels" style="display: none;">
+                <td>
+                    <div id="spinner"></div><br>
+                    <div id="results-import-list"></div>
+                    <br><br>
+                </td>
+            </tr>
+        </form>
+
+        <?php
+        $this->box( 'bottom' );
+    }
+
+    public function import_simple_list_of_locations() {
+
+        $this->box( 'top', 'Import List', [
+            'col_span' => 1,
+            'row_container' => false
+        ] );
+
+        ?>
+
+        <form method="post" action="">
+            <?php wp_nonce_field( 'dt_simple_import_levels'. get_current_user_id(), 'dt_simple_import_levels_nonce', false, true ) ?>
+            <tr class="dt_simple_import_levels">
+                <td>
+                    <p>Import a list of simple location titles. One location per line.</p>
+                    <em>Note: These will not be geocoded. To import a geocoded list, select "Auto GeoCode and Build Location Levels" in the Auto Build Locations box.</em>
+                </td>
+            </tr>
+            <tr class="dt_simple_import_levels">
+                <td>
+                    <label>List of Locations</label>
+                    <textarea name="import-list" id="import-list" rows="10" style="width:100%;"></textarea>
+                </td>
+            </tr>
+            <tr class="dt_simple_import_levels">
+                <td>
+                    <button class="button" type="button" onclick="import_simple_list()" style="float:right"><?php esc_html_e( 'Import' ) ?></button><br>
+
+                </td>
+            </tr>
+            <tr class="dt_simple_import_levels" style="display: none;">
+                <td>
+                    <div id="spinner"></div><br>
+                    <div id="results"></div>
+                    <br><br>
+                </td>
+            </tr>
+
         </form>
 
         <?php

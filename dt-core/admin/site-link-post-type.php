@@ -9,10 +9,11 @@ if ( !defined( 'ABSPATH' ) ) {
  * All functionality pertaining to project update post types in Site_Link_System.
  * @class Site_Link_System
  *
- * @version 0.1.8
+ * @version 0.1.9
  *
  * @since   0.1.7 Moved to post type
- * @since   0.1.8 Added key_select, readonly
+ *          0.1.8 Added key_select, readonly
+ *          0.1.9 Added non-wordpress link_check endpoint
  */
 if ( ! class_exists( 'Site_Link_System' ) ) {
 
@@ -158,7 +159,6 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         }
 
 
-
         /************************************************************************************************************
          * ADMIN INTERFACE SECTION
          *
@@ -216,7 +216,10 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             switch ( $column_name ) {
                 case 'linked':
-                    if ( $this->is_key_locked( $post->ID ) ) {
+                    if ( get_post_meta( $post->ID, 'non_wp', true ) ) {
+                        echo '<span>' . esc_html( 'Non-DT Site Connection' ) . '</span>';
+                    }
+                    elseif ( $this->is_key_locked( $post->ID ) ) {
                         ?>
 
                         <span >
@@ -234,7 +237,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         </script>
                         <?php
                     } else {
-                        echo '<span >Unfinished Configuration</span>';
+                        echo '<span>' . esc_html( 'Unfinished Configuration' ) . '</span>';
                     }
                     break;
 
@@ -303,8 +306,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
         public function meta_box_setup()
         {
-            add_meta_box( $this->post_type . '_details', 'Manage Site Link', [ $this, 'meta_box_load_management_box' ], $this->post_type, 'normal', 'high' );
-            add_meta_box( $this->post_type . '_instructions', 'Configuration Notes', [ $this, 'meta_box_configuration_box' ], $this->post_type, 'normal', 'high' );
+            add_meta_box( $this->post_type . '_details', __( 'Manage Site Link' ), [ $this, 'meta_box_load_management_box' ], $this->post_type, 'normal', 'high' );
+            add_meta_box( $this->post_type . '_instructions', __( 'Configuration' ), [ $this, 'meta_box_configuration_box' ], $this->post_type, 'normal', 'high' );
         }
 
         public function meta_box_content( $section = 'info' )
@@ -507,7 +510,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             // Public Info
 
             $fields['token'] = [
-            'name'        => 'Token',
+            'name'        => __( 'Token' ),
             'description' => 'If you have a token from another site, just clear token above and replace it.',
             'type'        => 'token',
             'default'     => self::generate_token(),
@@ -515,7 +518,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             ];
 
             $fields['site1'] = [
-            'name'        => 'Site 1',
+            'name'        => __( 'Site 1' ),
             'description' => 'Use just the host name. Example: www.website.com',
             'type'        => 'url',
             'default'     => '',
@@ -523,11 +526,22 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             ];
 
             $fields['site2'] = [
-            'name'        => 'Site 2',
+            'name'        => __( 'Site 2' ),
             'description' => 'Use just the host name. Example: www.website.com',
             'type'        => 'url',
             'default'     => '',
             'section'     => 'site',
+            ];
+
+            $fields['non_wp'] = [
+                'name'        => __( 'DT Site' ),
+                'description' => 'Is this connection to a Disciple Tools/Wordpress system.',
+                'type'        => 'key_select',
+                'default'     => [
+            0 => __( 'Yes, connected to another DT site (default)' ),
+            1 => __( 'No, connection for a non-Disciple Tools system.' )
+                ],
+                'section'     => 'non_wp',
             ];
 
             // @codingStandardsIgnoreLine
@@ -559,14 +573,18 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     <table width="100%">
                         <tr>
                             <td>
-                                <span style="float:right">
-                                    <?php esc_html_e( 'Status:' ) ?>
-                                    <strong>
-                                        <span id="<?php echo esc_attr( md5( $post_id ) ); ?>-status">
-                                            <?php esc_html_e( 'Checking Status' ) ?>
-                                        </span>
-                                    </strong>
-                                </span>
+
+                                <?php if ( ! get_post_meta( $post_id, 'non_wp', true ) ) : ?>
+                                    <span style="float:right">
+                                        <?php esc_html_e( 'Status:' ) ?>
+                                        <strong>
+                                            <span id="<?php echo esc_attr( md5( $post_id ) ); ?>-status">
+                                                <?php esc_html_e( 'Checking Status' ) ?>
+                                            </span>
+                                        </strong>
+                                    </span>
+                                <?php endif; // check for non-wp ?>
+
                                 <p>
                                     <a class="button" onclick="jQuery('#reset-confirmation').toggle();" name="reset">Delete Current Site Configuration</a>
                                 </p>
@@ -577,30 +595,41 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                                 </p>
                             </td>
                         </tr>
-                        <tr id="<?php echo esc_attr( md5( $post_id ) ); ?>-message" style="display:none;">
-                            <td>
-                                <strong><?php esc_attr_e( 'Consider Checking:' ) ?></strong>
-                                <ol>
-                                    <li>
-                                        <?php echo sprintf( esc_attr__( 'Check if the target site is setup with identical configuration information.' ), esc_attr( current_time( 'Y-m-dH', 1 ) ) ); ?>
-                                    </li>
-                                    <li>
-                                        <?php echo esc_attr__( 'Check if HTTPS/SSL is enabled on both sites. Due to the transfer of data between these sites, SSL encryption is required for both sites to protect the data exchange.' ); ?>
-                                    </li>
-                                    <li>
-                                        <?php echo esc_attr__( 'Check if the server timestamps are identical. Mismatched server times will cause decryption key failures. Your server timestamp' ); ?>
-                                        :
-                                        <span class="info-color"><strong><?php echo esc_attr( current_time( 'Y-m-d H:i', 1 ) ) ?></strong></span>
-                                    </li>
-                                </ol>
-                            </td>
-                        </tr>
-                        <script>
-                            jQuery(document).ready(function () {
-                                check_link_status('<?php echo esc_attr( self::create_transfer_token_for_site( $site_key ) ); ?>', '<?php echo esc_attr( $this->get_non_local_site_by_id( $post_id ) ); ?>', '<?php echo esc_attr( md5( $post_id ) ); ?>');
-                            })
-                        </script>
+                        <?php if ( ! get_post_meta( $post_id, 'non_wp', true ) ) : ?>
+                            <tr id="<?php echo esc_attr( md5( $post_id ) ); ?>-message" style="display:none;">
+                                <td>
+                                    <strong><?php esc_attr_e( 'Consider Checking:' ) ?></strong>
+                                    <ol>
+                                        <li>
+                                            <?php echo sprintf( esc_attr__( 'Check if the target site is setup with identical configuration information.' ), esc_attr( current_time( 'Y-m-dH', 1 ) ) ); ?>
+                                        </li>
+                                        <li>
+                                            <?php echo esc_attr__( 'Check if HTTPS/SSL is enabled on both sites. Due to the transfer of data between these sites, SSL encryption is required for both sites to protect the data exchange.' ); ?>
+                                        </li>
+                                        <li>
+                                            <?php echo esc_attr__( 'Check if the server timestamps are identical. Mismatched server times will cause decryption key failures. Your server timestamp' ); ?>
+                                            :
+                                            <span class="info-color"><strong><?php echo esc_attr( current_time( 'Y-m-d H:i', 1 ) ) ?></strong></span>
+                                        </li>
+                                    </ol>
+                                </td>
+                            </tr>
+
+                            <script>
+                                jQuery(document).ready(function () {
+                                    check_link_status('<?php echo esc_attr( self::create_transfer_token_for_site( $site_key ) ); ?>', '<?php echo esc_attr( $this->get_non_local_site_by_id( $post_id ) ); ?>', '<?php echo esc_attr( md5( $post_id ) ); ?>');
+                                })
+                            </script>
+                        <?php endif; // check for non-wp ?>
                     </table>
+
+                    <!-- Footer Information -->
+                    <p><?php esc_attr_e( 'Current Site' ) ?>: <span
+                                class="info-color"><?php echo esc_html( self::get_current_site_base_url() ); ?></span></p>
+                    <p class="text-small"><?php esc_attr_e( 'Timestamp' ) ?>: <span
+                                class="info-color"><?php echo esc_attr( current_time( 'Y-m-d H:i', 1 ) ) ?></span>
+                        <em>( <?php esc_attr_e( 'Compare this number to linked site. It should be identical.' ) ?> )</em></p>
+
                     <?php
 
                 } else {
@@ -610,13 +639,12 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         }
 
         public function meta_box_configuration_box() {
+            $this->meta_box_content( 'non_wp' );
             ?>
-            <!-- Footer Information -->
-            <p><?php esc_attr_e( 'Current Site' ) ?>: <span
-                        class="info-color"><?php echo esc_html( self::get_current_site_base_url() ); ?></span></p>
-            <p class="text-small"><?php esc_attr_e( 'Timestamp' ) ?>: <span
-                        class="info-color"><?php echo esc_attr( current_time( 'Y-m-d H:i', 1 ) ) ?></span>
-                <em>( <?php esc_attr_e( 'Compare this number to linked site. It should be identical.' ) ?> )</em></p>
+            <p id="description">
+                The site link system is built to easily connect Disciple Tools systems together, but can be extended to provide token validation
+                for other system integrations. Please refer to our developer wiki for more information.
+            </p>
             <?php
         }
 
@@ -631,38 +659,38 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         {
             echo "<script type='text/javascript'>
             
-        function check_link_status( transfer_token, url, id ) {
+            function check_link_status( transfer_token, url, id ) {
+                
+            let linked = '" . esc_attr__( 'Linked' ) . "';
+            let not_linked = '" . esc_attr__( 'Not Linked' ) . "';
+            let not_found = '" . esc_attr__( 'Failed to connect with the URL provided.' ) . "';
             
-        let linked = '" . esc_attr__( 'Linked' ) . "';
-        let not_linked = '" . esc_attr__( 'Not Linked' ) . "';
-        let not_found = '" . esc_attr__( 'Failed to connect with the URL provided.' ) . "';
-        
-        return jQuery.ajax({
-            type: 'POST',
-            data: JSON.stringify({ \"transfer_token\": transfer_token } ),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            url: 'https://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
-        })
-            .done(function (data) {
-                if( data ) {
-                    jQuery('#' + id + '-status').html( linked ).attr('class', 'success-green')
-                } else {
-                    jQuery('#' + id + '-status').html( not_linked ).attr('class', 'fail-red');
-                    jQuery('#' + id + '-message').show();
-                }
+            return jQuery.ajax({
+                type: 'POST',
+                data: JSON.stringify({ \"transfer_token\": transfer_token } ),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                url: 'https://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
             })
-            .fail(function (err) {
-                jQuery( document ).ajaxError(function( event, request, settings ) {
-                     if( request.status === 0 ) {
-                        jQuery('#' + id + '-status').html( not_found ).attr('class', 'fail-red')
-                     } else {
-                        jQuery('#' + id + '-status').html( JSON.stringify( request.statusText ) ).attr('class', 'fail-red')
-                     }
+                .done(function (data) {
+                    if( data ) {
+                        jQuery('#' + id + '-status').html( linked ).attr('class', 'success-green')
+                    } else {
+                        jQuery('#' + id + '-status').html( not_linked ).attr('class', 'fail-red');
+                        jQuery('#' + id + '-message').show();
+                    }
+                })
+                .fail(function (err) {
+                    jQuery( document ).ajaxError(function( event, request, settings ) {
+                         if( request.status === 0 ) {
+                            jQuery('#' + id + '-status').html( not_found ).attr('class', 'fail-red')
+                         } else {
+                            jQuery('#' + id + '-status').html( JSON.stringify( request.statusText ) ).attr('class', 'fail-red')
+                         }
+                    });
                 });
-            });
-        }
-        </script>";
+            }
+            </script>";
             echo "<style>
                 .success-green { color: limegreen;}
                 .fail-red { color: red;}
@@ -832,10 +860,10 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             register_rest_route(
                 $namespace, '/sites/site_link_check', [
-                [
-                'methods'  => WP_REST_Server::CREATABLE,
-                'callback' => [ $this, 'site_link_check' ],
-                ],
+                    [
+                        'methods'  => WP_REST_Server::CREATABLE,
+                        'callback' => [ $this, 'site_link_check' ],
+                    ],
                 ]
             );
 

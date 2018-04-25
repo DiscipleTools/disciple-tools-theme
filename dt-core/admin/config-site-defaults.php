@@ -158,21 +158,7 @@ function dt_get_option( string $name )
             break;
 
         case 'map_key':
-            if ( ! get_option( 'dt_map_key' ) || empty( get_option( 'dt_map_key' ) ) ) { // options doesn't exist, create new.
-                // disciple.tools default map key
-                $keys = dt_default_google_api_keys();
-                $count = count( $keys ) - 1;
-                $key = $keys[ rand( 0, $count ) ];
-
-                $update = update_option( 'dt_map_key', $key, true );
-                if ( ! $update ) {
-                    return false;
-                }
-
-                return get_option( 'dt_map_key' );
-            } else {
-                return get_option( 'dt_map_key' );
-            }
+            return Disciple_Tools_Google_Geocode_API::get_map_key();
             break;
 
         case 'location_levels':
@@ -256,17 +242,6 @@ function dt_update_option( $name, $value, $autoload = false ) {
             return false;
             break;
     }
-}
-
-function dt_default_google_api_keys()
-{
-    $default_keys = [
-        'AIzaSyBkI5W07GdlhQCqzf3F8VW2E_3mhdzR3s4',
-        'AIzaSyAaaZusK9pa9eLuO0nlllGnbQPyXHfTGxQ',
-        'AIzaSyBQOO1vujzL6BgkpOzYwZB89bJpGAlbBF8',
-    ];
-
-    return $default_keys;
 }
 
 /**
