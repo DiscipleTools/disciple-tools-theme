@@ -505,6 +505,15 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function add_member_to_group( int $group_id, int $member_id )
     {
+        // share the group with the owner of the contact.
+        $assigned_to = get_post_meta( $member_id, "assigned_to", true );
+        if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
+            $user_id = explode( "-", $assigned_to )[1];
+            if ( $user_id ){
+                self::add_shared_on_group( $group_id, $user_id, null, false, false );
+            }
+        }
+
         return p2p_type( 'contacts_to_groups' )->connect(
             $member_id, $group_id,
             [ 'date' => current_time( 'mysql' ) ]
@@ -801,15 +810,18 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     /**
      * Adds a share record
      *
-     * @param int   $post_id
-     * @param int   $user_id
+     * @param int $post_id
+     * @param int $user_id
      * @param array $meta
+     *
+     * @param bool $send_notifications
+     * @param bool $check_permissions
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared_on_group( int $post_id, int $user_id, $meta = null )
+    public static function add_shared_on_group( int $post_id, int $user_id, $meta = null, bool $send_notifications = true, bool $check_permissions = true )
     {
-        return self::add_shared( 'groups', $post_id, $user_id, $meta );
+        return self::add_shared( 'groups', $post_id, $user_id, $meta, $send_notifications, $check_permissions );
     }
 
     /**

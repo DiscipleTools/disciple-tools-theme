@@ -1,27 +1,40 @@
 (function($, wpApiSettings, Foundation) {
   "use strict";
-  var urlParams = new URLSearchParams(window.location.search);
+  function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    let regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    let results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  };
+  // var urlParams = new URLSearchParams(window.location.search);
   let searchQuery = {assigned_to:['me']};
   const current_username = wpApiSettings.current_user_login;
   let items = []
   let customFilters = []
   let savedFilters = wpApiSettings.filters || {[wpApiSettings.current_post_type]:[]}
+  if (Array.isArray(savedFilters)){
+    savedFilters = {}
+  }
+  if ( !savedFilters[wpApiSettings.current_post_type]){
+    savedFilters[wpApiSettings.current_post_type] = []
+  }
+  console.log(savedFilters);
   let filterToSave = ""
   let currentFilters = $("#current-filters")
   let newFilterLabels = []
 
   let loading_spinner = $(".loading-spinner")
 
-  let viewParam = urlParams.get("view")
+  let viewParam = getUrlParameter("view")
   if ( viewParam ){
     $('[name="view"]').removeAttr('checked');
     if ( viewParam === "saved-filters"){
-      let id = urlParams.get("id");
+      let id = getUrlParameter("id")
       if ( id ){
         $(`input[name=view][value=saved-filters][data-id='${id}']`).prop('checked', true);
       }
     } else if ( viewParam === "custom_filter" ){
-      let filterParams = urlParams.get("filter")
+      let filterParams = getUrlParameter("filter")
       if ( filterParams ){
         searchQuery = JSON.parse( decodeURIComponent( filterParams ));
         addCustomFilter("Custom Filter")
@@ -191,7 +204,7 @@
       status = ccfs.overall_status.default[contact.overall_status];
     }
     const group_links = _.map(contact.groups, function(group) {
-      return '<a href="' + _.escape(group.permalink) + '">' + _.escape(group.post_title) + "</a>";
+      return '<a href="' + _.escape(group.permalink) + '">' + group.post_title + "</a>";
     }).join(", ");
     const context = _.assign({last_modified: 0}, contact, wpApiSettings, {
       index,

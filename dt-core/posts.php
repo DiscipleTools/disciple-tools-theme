@@ -747,10 +747,12 @@ class Disciple_Tools_Posts
      * Adds a share record
      *
      * @param string $post_type
-     * @param int    $post_id
-     * @param int    $user_id
-     * @param array  $meta
-     * @param bool   $send_notifications
+     * @param int $post_id
+     * @param int $user_id
+     * @param array $meta
+     * @param bool $send_notifications
+     *
+     * @param bool $check_permissions
      *
      * @return false|int|WP_Error
      */

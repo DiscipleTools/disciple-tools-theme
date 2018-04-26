@@ -57,7 +57,7 @@ class Disciple_Tools_Contacts_Endpoints
     public function add_api_routes()
     {
         register_rest_route(
-            $this->namespace, '/dt-public/create-contact', [
+            $this->namespace, '/dt-public/contact/create', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'public_create_contact' ],
             ]
@@ -78,6 +78,12 @@ class Disciple_Tools_Contacts_Endpoints
             $this->namespace, '/contact/(?P<id>\d+)', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'update_contact' ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/dt-public/contact/update', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'public_update_contact' ],
             ]
         );
 
@@ -169,6 +175,12 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'add_shared' ],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/contact/tags', [
+                "methods" => "GET",
+                "callback" => [ $this, 'get_tag_options' ]
+            ]
+        );
     }
 
     /**
@@ -198,16 +210,22 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function public_create_contact( WP_REST_Request $request )
     {
-        $query_params = $request->get_query_params();
-        if ( $this->check_api_token( $query_params ) ) {
-            $fields = $request->get_json_params();
-            $result = Disciple_Tools_Contacts::create_contact( $fields, false );
+        $params = $request->get_params();
+        $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+        if ( !$site_key ){
+            return new WP_Error(
+                "contact_creation_error",
+                "Invalid or missing transfer_token", [ 'status' => 401 ]
+            );
+        }
 
+        if ( isset( $params["fields"] ) ) {
+            $result = Disciple_Tools_Contacts::create_contact( $params["fields"], false );
             return $result; // Could be permission WP_Error
         } else {
             return new WP_Error(
                 "contact_creation_error",
-                "Invalid or missing client_id or client_token", [ 'status' => 401 ]
+                "missing fields param", [ 'status' => 401 ]
             );
         }
     }
@@ -280,6 +298,38 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( "update_contact", "Missing a valid contact id", [ 'status' => 400 ] );
         }
     }
+
+    /**
+     * Update a contact from the PUBLIC api.
+     *
+     * @param  WP_REST_Request $request as application/json
+     *
+     * @access public
+     * @since  0.1.0
+     * @return array|WP_Error The new contact Id on success, an error on failure
+     */
+    public function public_update_contact( WP_REST_Request $request )
+    {
+        $params = $request->get_params();
+        $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+        if ( !$site_key ){
+            return new WP_Error(
+                "contact_creation_error",
+                "Invalid or missing transfer_token", [ 'status' => 401 ]
+            );
+        }
+        if ( isset( $params["fields"] ) && isset( $params["contact_id"] ) ) {
+            $result = Disciple_Tools_Contacts::update_contact( $params["contact_id"], $params["fields"], false );
+
+            return $result; // Could be permission WP_Error
+        } else {
+            return new WP_Error(
+                "contact_creation_error",
+                "Invalid or missing fields or contact_id", [ 'status' => 401 ]
+            );
+        }
+    }
+
 
     /**
      * @param array $contacts
@@ -672,5 +722,11 @@ class Disciple_Tools_Contacts_Endpoints
         $contacts = Disciple_Tools_Contacts::get_viewable_contacts_compact( $search );
 
         return $contacts;
+    }
+
+
+    public function get_tag_options( WP_REST_Request $request ){
+        $params = $request->get_params();
+        return Disciple_Tools_Contacts::get_tag_options();
     }
 }
