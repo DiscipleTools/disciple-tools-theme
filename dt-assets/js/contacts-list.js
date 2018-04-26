@@ -204,7 +204,7 @@
       status = ccfs.overall_status.default[contact.overall_status];
     }
     const group_links = _.map(contact.groups, function(group) {
-      return '<a href="' + _.escape(group.permalink) + '">' + _.escape(group.post_title) + "</a>";
+      return '<a href="' + _.escape(group.permalink) + '">' + group.post_title + "</a>";
     }).join(", ");
     const context = _.assign({last_modified: 0}, contact, wpApiSettings, {
       index,
