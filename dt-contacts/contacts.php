@@ -708,6 +708,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function add_group_to_contact( $contact_id, $group_id )
     {
+        // share the group with the owner of the contact.
+        $assigned_to = get_post_meta( $contact_id, "assigned_to", true );
+        if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
+            $user_id = explode( "-", $assigned_to )[1];
+            if ( $user_id ){
+                self::add_shared( "groups", $group_id, $user_id, null, false, false );
+            }
+        }
         return p2p_type( 'contacts_to_groups' )->connect(
             $group_id, $contact_id,
             [ 'date' => current_time( 'mysql' ) ]
