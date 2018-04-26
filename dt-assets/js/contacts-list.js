@@ -11,7 +11,7 @@
   const current_username = wpApiSettings.current_user_login;
   let items = []
   let customFilters = []
-  let savedFilters = wpApiSettings.filters.length > 0 || {[wpApiSettings.current_post_type]:[]}
+  let savedFilters = wpApiSettings.filters || {[wpApiSettings.current_post_type]:[]}
   if (Array.isArray(savedFilters)){
     savedFilters = {}
   }
