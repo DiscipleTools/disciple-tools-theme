@@ -524,8 +524,10 @@ class Disciple_Tools_Notifications
 
         } elseif ( $notification["notification_name"] ==="share" ){
             $source_user = get_userdata( $notification["source_user_id"] );
+            $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
+
             $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '" >' . strip_tags( get_the_title( $object_id ) ) . '</a>';
-            $notification_note = $source_user->display_name . ' ' . sprintf( esc_html_x( 'shared %s with you.', '', 'disciple_tools' ), $link );
+            $notification_note = $display_name . ' ' . sprintf( esc_html_x( 'shared %s with you.', '', 'disciple_tools' ), $link );
         } elseif ( $notification["notification_name"] ==="milestone" ){
             $meta_key = $notification["field_key"] ?? '';
             $meta_value = $notification["field_value"] ?? '';
@@ -564,12 +566,12 @@ class Disciple_Tools_Notifications
                 $element .= ' ' . __( 'was changed for', 'disciple_tools' );
             }
             $source_user = get_userdata( $notification["source_user_id"] );
-
+            $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
             $link = '<a href="' . home_url( '/' ) .
                 get_post_type( $object_id ) . '/' . $object_id . '">' .
                 strip_tags( get_the_title( $object_id ) ) . '</a>';
             $notification_note = $element . ' ' . $link  . ' ' . __( 'by', 'disciple_tools' ) . ' ' .
-                '<strong>' . $source_user->display_name . '</strong>';
+                '<strong>' . $display_name . '</strong>';
 
         } elseif ( $notification["notification_name"] ==="requires_update" ) {
             $link              = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . strip_tags( get_the_title( $object_id ) ) . '</a>';
@@ -584,11 +586,12 @@ class Disciple_Tools_Notifications
                 $element = __( 'Contact details on', 'disciple_tools' );
             }
             $source_user = get_userdata( $notification["source_user_id"] );
+            $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
             $link = '<a href="' . home_url( '/' ) .
             get_post_type( $object_id ) . '/' . $object_id . '">' .
             strip_tags( get_the_title( $object_id ) ) . '</a>';
             $notification_note = $element . ' ' . $link . ' ' . __( 'were modified by', 'disciple_tools' ) .
-            '<strong>' . $source_user->display_name . '</strong>';
+            '<strong>' . $display_name . '</strong>';
         }
         return $notification_note;
     }

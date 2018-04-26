@@ -480,6 +480,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             $new_connections[] = $connection_value["value"];
                             if ( !in_array( $connection_value["value"], $existing_connections )){
                                 $potential_error = self::add_contact_detail( $contact_id, $connection_type, $connection_value["value"], false );
+                                $existing_connections[] = $connection_value["value"];
                                 if ( is_wp_error( $potential_error ) ) {
                                     return $potential_error;
                                 }

@@ -212,13 +212,20 @@ class Disciple_Tools_Contacts_Endpoints
     {
         $params = $request->get_params();
         $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
-        if ( ! is_wp_error( $site_key ) && $site_key && isset( $params["fields"] ) ) {
+        if ( !$site_key ){
+            return new WP_Error(
+                "contact_creation_error",
+                "Invalid or missing transfer_token", [ 'status' => 401 ]
+            );
+        }
+
+        if ( isset( $params["fields"] ) ) {
             $result = Disciple_Tools_Contacts::create_contact( $params["fields"], false );
             return $result; // Could be permission WP_Error
         } else {
             return new WP_Error(
                 "contact_creation_error",
-                "Invalid or missing client_id or client_token", [ 'status' => 401 ]
+                "missing fields param", [ 'status' => 401 ]
             );
         }
     }
@@ -305,14 +312,20 @@ class Disciple_Tools_Contacts_Endpoints
     {
         $params = $request->get_params();
         $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
-        if ( ! is_wp_error( $site_key ) && $site_key && isset( $params["fields"] ) && isset( $params["contact_id"] ) ) {
+        if ( !$site_key ){
+            return new WP_Error(
+                "contact_creation_error",
+                "Invalid or missing transfer_token", [ 'status' => 401 ]
+            );
+        }
+        if ( isset( $params["fields"] ) && isset( $params["contact_id"] ) ) {
             $result = Disciple_Tools_Contacts::update_contact( $params["contact_id"], $params["fields"], false );
 
             return $result; // Could be permission WP_Error
         } else {
             return new WP_Error(
                 "contact_creation_error",
-                "Invalid or missing client_id or client_token", [ 'status' => 401 ]
+                "Invalid or missing fields or contact_id", [ 'status' => 401 ]
             );
         }
     }
