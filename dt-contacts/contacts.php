@@ -1685,12 +1685,38 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         if ( !empty( $search )){
             $inner_joins .= "INNER JOIN $wpdb->postmeta AS search ON ( $wpdb->posts.ID = search.post_id ) ";
-            $meta_query .= "AND ( ( $wpdb->posts.post_title LIKE '%" . esc_sql( $search ) . "%' ) OR ( search.meta_key LIKE 'contact_%' AND search.meta_value LIKE '%" . esc_sql( $search ) . "%') ) ";
+            $meta_query .= "AND ( ( INSTR( $wpdb->posts.post_title ,'" . esc_sql( $search ) . "' ) > 0 ) OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 ) ) ";
 
         }
 
         $access_query = $access_query ? ( "AND ( " . $access_query . " ) " ) : "";
         // phpcs:disable
+
+        $sql = "
+            SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, post_title, post_type FROM $wpdb->posts
+            INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = 'type' )
+            INNER JOIN $wpdb->postmeta as status ON ( $wpdb->posts.ID = status.post_id AND status.meta_key = 'overall_status')
+            " . $inner_joins . " " . $share_joins . " " . $access_joins . "
+            WHERE 1=1 
+            AND (
+                ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'media' )
+                OR
+                ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'next_gen' )
+                OR ( $wpdb->postmeta.meta_key IS NULL )
+            ) " . $connections_sql . " " . $meta_query . " " . $includes_query . " " . $access_query . "
+            AND $wpdb->posts.post_type = %s
+            AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
+            GROUP BY $wpdb->posts.ID 
+            ORDER BY CASE 
+            WHEN ( status.meta_value = 'unassigned') THEN 1
+            WHEN ( status.meta_value = 'assigned') THEN 2 
+            WHEN ( status.meta_value = 'active') THEN 3 
+            WHEN ( status.meta_value = 'paused') THEN 4 
+            WHEN ( status.meta_value = 'closed') THEN 99 
+            else 10
+            end asc
+            LIMIT %d, 100
+            ";
 
         $prepared_sql = $wpdb->prepare("
             SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, post_title, post_type FROM $wpdb->posts
