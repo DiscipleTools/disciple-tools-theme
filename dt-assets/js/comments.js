@@ -40,7 +40,10 @@ jQuery(document).ready(function($) {
      * to avoid duplicating data with the post's metadata. */
     let settings = commentsSettings
     const currentContact = settings.post
-    const createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
+    let createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
+    if (_.get(settings, "post_with_fields.created_on")){
+      createdDate = moment.utc(settings.post_with_fields.created_on)
+    }
     const createdContactActivityItem = {
       hist_time: createdDate.unix(),
       object_note: settings.txt_created.replace("{}", formatDate(createdDate.local())),
@@ -48,6 +51,16 @@ jQuery(document).ready(function($) {
       user_id: currentContact.post_author,
     }
     activityData.push(createdContactActivityItem)
+    if (_.get(settings, "post_with_fields.initial_comments")){
+      const initialComments = {
+        hist_time: createdDate.unix()+1,
+        object_note: settings.post_with_fields.initial_comments,
+        name: settings.contact_author_name,
+        user_id: currentContact.post_author,
+      }
+      activityData.push(initialComments)
+    }
+
     activityData.forEach(item => {
       item.date = moment.unix(item.hist_time)
       let field = item.meta_key
