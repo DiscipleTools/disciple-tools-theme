@@ -10,47 +10,15 @@ register_nav_menus(
 // The Top Menu
 function disciple_tools_top_nav_desktop()
 {
-
     if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-        // User is multiplier or role of higher position
-        /* <li><a href="<   ?php echo esc_url( home_url( '/' ) ); ?    >">Dashboard</a></li> */
-        ?>
-        <li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li>
-        <li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li>
-        <li><a href="<?php echo esc_url( home_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li>
-
-        <?php
-    } elseif ( user_can( get_current_user_id(), 'read_progress' ) ) {
-        ?>
-        <li><a href="<?php echo esc_url( home_url( '/about-us/' ) ); ?>"><?php esc_html_e( "About Us" ); ?></a></li>
-        <li><a href="<?php echo esc_url( home_url( '/prayer/' ) ); ?>"><?php esc_html_e( "Prayer Guide" ); ?></a></li>
-        <li><a href="<?php echo esc_url( home_url( '/progress/' ) ); ?>"><?php esc_html_e( "Project Updates" ); ?></a>
-        </li>
-        <li><a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a></li>
-
-        <?php
-    } elseif ( user_can( get_current_user_id(), 'read_prayer' ) ) {
-        /* user is prayer supporter */
-        ?>
-        <li><a href="<?php echo esc_url( home_url( '/about-us/' ) ); ?>"><?php esc_html_e( "About Us" ); ?></a></li>
-        <li><a href="<?php echo esc_url( home_url( '/prayer/' ) ); ?>"><?php esc_html_e( "Prayer Guide" ); ?></a></li>
-        <li><a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a></li>
-
-        <?php
-    } else {
-        /* redirect to registered page */
+        ?><li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li><?php
     }
-
-    //    wp_nav_menu(array(
-    //        'container' => false,                           // Remove nav container
-    //        'menu_class' => 'vertical medium-horizontal menu',       // Adding custom nav class
-    //        'items_wrap' => '<ul id="%1$s" class="%2$s" data-responsive-menu="accordion medium-dropdown">%3$s</ul>',
-    //        'theme_location' => 'main-nav',                   // Where it's located in the theme
-    //        'depth' => 5,                                   // Limit the depth of the nav
-    //        'fallback_cb' => false,                         // Fallback function (see below)
-    //        'walker' => new DT_Topbar_Menu_Walker()
-    //    ));
-
+    if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
+        ?><li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li><?php
+    }
+    if ( user_can( get_current_user_id(), 'view_any_contacts' ) ) {
+        ?><li><a href="<?php echo esc_url( home_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li><?php
+    }
 }
 
 function disciple_tools_top_nav_mobile()
@@ -92,22 +60,23 @@ function disciple_tools_off_canvas_nav()
         <ul class="vertical menu sticky is-stuck is-at-top" data-accordion-menu>
 
             <li>
-                <span class="title">Disciple Tools</span>
+                <span class="title"><?php esc_html_e( 'Disciple Tools', 'disciple_tools' )  ?></span>
             </li>
             <li>
                 <hr/>
             </li>
 
             <?php
-            // <li><a href="<? php echo esc_url( home_url( '/' ) ); ? >">Dashboard</a></li>
+            if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
+                ?><li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li><?php
+            }
+            if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
+                ?><li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li><?php
+            }
+            if ( user_can( get_current_user_id(), 'view_any_contacts' ) ) {
+                ?><li><a href="<?php echo esc_url( home_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li><?php
+            }
             ?>
-            <li>
-                <a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a>
-            </li>
-            <li>
-                <a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a>
-            </li>
-
             <?php if ( dt_get_user_team_members_list( get_current_user_id() ) ) : // check if part of team, if not don't show link ?>
                 <li>
                     <a href="<?php echo esc_url( home_url( '/team/' ) ); ?>"><?php esc_html_e( "Team" ); ?></a>
@@ -115,9 +84,6 @@ function disciple_tools_off_canvas_nav()
             <?php endif; ?>
 
             <li>&nbsp;<!-- Spacer--></li>
-            <li>
-                <a href="<?php echo esc_url( home_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a>
-            </li>
             <li>
                 <a href="<?php echo esc_url( home_url( '/notifications/' ) ); ?>"><?php esc_html_e( "Notifications" ); ?></a>
             </li>
