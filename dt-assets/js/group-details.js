@@ -132,6 +132,12 @@ jQuery(document).ready(function($) {
     source: typeaheadSource('assigned_to', 'dt/v1/users/get_users'),
     display: "name",
     templateValue: "{{name}}",
+    template: function (query, item) {
+      return `<span class="row">
+        <span class="avatar"><img src="{{avatar}}"/> </span>
+        <span>${item.name}</span>      
+      </span>`
+    },
     dynamic: true,
     hint: true,
     emptyTemplate: 'No users found "{{query}}"',

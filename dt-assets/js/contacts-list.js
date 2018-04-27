@@ -383,7 +383,10 @@
 
     templateValue: "{{name}}",
     template: function (query, item) {
-      return `<span>${item.name}</span>`
+      return `<span class="row">
+        <span class="avatar"><img src="{{avatar}}"/> </span>
+        <span>${item.name}</span>      
+      </span>`
     },
     dynamic: true,
     hint: true,

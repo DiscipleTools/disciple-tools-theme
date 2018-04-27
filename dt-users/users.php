@@ -125,7 +125,7 @@ class Disciple_Tools_Users
                     "name" => $user->display_name,
                     "ID"   => $user->ID,
                     "user" => $user->user_login,
-                    "avatar" => get_avatar_url( $user->ID, [ 'size' => '32' ] )
+                    "avatar" => get_avatar_url( $user->ID, [ 'size' => '16' ] )
                 ];
             }
         }
