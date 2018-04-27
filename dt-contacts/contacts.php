@@ -1946,7 +1946,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
         }
         //setting type to "comment" does not work.
-        $comments = get_comments( [ 'post_id' => $contact_id, "type" => $type ] );
+        $comments = get_comments( [
+            'post_id' => $contact_id,
+            "type" => $type
+        ]);
 
         return $comments;
     }
