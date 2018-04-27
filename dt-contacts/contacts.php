@@ -216,7 +216,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             "type" => "media",
             "last_modified" => time(),
         ];
-        if (get_current_user_id()) {
+        if ( get_current_user_id() ) {
             $defaults["assigned_to"] = sprintf( "user-%d", get_current_user_id() );
         } else {
             $base_id = dt_get_base_user( true );
@@ -272,7 +272,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( isset( $fields["assigned_to"] )) {
             $user_id = explode( '-', $fields["assigned_to"] )[1];
             if ( $user_id ) {
-                self::add_shared( "contacts", $post_id, $user_id, null, false );
+                self::add_shared( "contacts", $post_id, $user_id, null, false, false );
             }
         }
 
