@@ -40,18 +40,20 @@ dt_print_breadcrumbs(
                     <input name="email" type="text"  placeholder="<?php esc_html_e( "Email", "disciple_tools" ); ?>">
                 </label>
 
-                <label>
-                    <?php esc_html_e( "Source", "disciple_tools" ); ?>
-                    <select name="sources" required aria-describedby="source-help-text">
-                        <?php foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $source_key => $source ): ?>
-                            <option value="<?php echo esc_attr( $source_key, 'disciple_tools' ); ?>">
-                                <?php echo esc_html( $source['label'] )?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </label>
-                <p class="help-text" id="source-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
+                <?php if ( current_user_can( 'view_any_contacts' )) :?>
+                    <label>
+                        <?php esc_html_e( "Source", "disciple_tools" ); ?>
+                        <select name="sources" aria-describedby="source-help-text">
+                            <?php foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $source_key => $source ): ?>
+                                <option value="<?php echo esc_attr( $source_key, 'disciple_tools' ); ?>">
+                                    <?php echo esc_html( $source['label'] )?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+                <?php endif; ?>
 
+                <?php esc_html_e( "Location", "disciple_tools" ); ?>
                 <div class="locations">
                     <var id="locations-result-container" class="result-container"></var>
                     <div id="locations_t" name="form-locations" class="scrollable-typeahead">
@@ -94,7 +96,7 @@ dt_print_breadcrumbs(
             title: $(".js-create-contact input[name=title]").val(),
             contact_phone: [{value:$(".js-create-contact input[name=phone]").val()}],
             contact_email: [{value:$(".js-create-contact input[name=email]").val()}],
-            sources: {values:[{value:source}]},
+            sources: {values:[{value:source || "personal"}]},
             locations: {values:selectedLocations.map(i=>{return {value:i}})},
             initial_comment: $(".js-create-contact textarea[name=initial_comment]").val(),
         }).then(function(data) {
