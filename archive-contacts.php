@@ -1,5 +1,7 @@
 <?php
 declare(strict_types=1);
+
+$dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false );
 ?>
 
 <?php get_header(); ?>
@@ -178,6 +180,7 @@ declare(strict_types=1);
                     <li class="tabs-title"><a href="#locations"><?php esc_html_e( "Locations", 'disciple_tools' ) ?></a></li>
                     <li class="tabs-title"><a href="#overall_status"><?php esc_html_e( "Status", 'disciple_tools' ) ?></a></li>
                     <li class="tabs-title"><a href="#seeker_path"><?php esc_html_e( "Seeker Path", 'disciple_tools' ) ?></a></li>
+                    <li class="tabs-title"><a href="#faith_milestones"><?php esc_html_e( "Faith Milestones", 'disciple_tools' ) ?></a></li>
                 </ul>
             </div>
 
@@ -225,6 +228,21 @@ declare(strict_types=1);
                     <div class="tabs-panel" id="seeker_path">
                         <h4><?php esc_html_e( "Seeker Path", 'disciple_tools' ) ?></h4>
                         <div id="seeker_path-options"></div>
+                    </div>
+                    <div class="tabs-panel" id="faith_milestones">
+                        <h4><?php esc_html_e( "Faith Miletones", 'disciple_tools' ) ?></h4>
+                        <div id="faith_milestones-options">
+                            <?php foreach ( $dt_contact_field_options as $dt_field_key => $dt_field_value ) :
+                                if ( strpos( $dt_field_key, "milestone_" ) === 0 ) : ?>
+                                    <div>
+                                        <label style="cursor: pointer;">
+                                            <input type="checkbox" value="<?php echo esc_html( $dt_field_key ) ?>" class="milestone-filter" autocomplete="off">
+                                            <?php echo esc_html( $dt_field_value["name"] ) ?>
+                                        </label>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
                 </div>
 

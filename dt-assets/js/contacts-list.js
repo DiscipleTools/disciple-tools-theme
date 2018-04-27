@@ -325,7 +325,7 @@
       callback: {
         onCancel: function (node, item) {
           $(`#${item.ID}.locations`).remove()
-          newFilterLabels = _.remove(newFilterLabels, l=>l.id===item.ID)
+          _.pullAllBy(newFilterLabels, [{id:item.ID}], "id")
         }
       }
     },
@@ -357,7 +357,7 @@
       callback: {
         onCancel: function (node, item) {
           $(`#${item.ID}.assigned_to`).remove()
-          newFilterLabels = _.remove(newFilterLabels, l=>l.id===item.ID)
+          _.pullAllBy(newFilterLabels, [{id:item.ID}], "id")
         }
       }
     },
@@ -422,7 +422,7 @@
             selectedFilters.append(`<span class="current-filter ${field_key}" id="${optionId}">${optionName}</span>`)
           } else {
             $(`#${$(this).val()}.${field_key}`).remove()
-            newFilterLabels = _.remove(newFilterLabels, l=>l.id===optionId)
+            _.pullAllBy(newFilterLabels, [{id:optionId}], "id")
           }
         });
       $(`#${field_key}-options`).append(
@@ -436,21 +436,42 @@
       );
     }
   })
+  $(".milestone-filter").on("click", function () {
+    let field = $(this).val()
+    let name = _.get(wpApiSettings, `contacts_custom_fields_settings.${field}.name`) || ""
+    if ($(this).is(":checked")){
+      newFilterLabels.push({id:field, name:name, field:"faith_milestones"})
+      selectedFilters.append(`<span class="current-filter faith_milestones" id="${field}">${name}</span>`)
+    } else {
+      $(`#${field}.faith_milestones`).remove()
+      _.pullAllBy(newFilterLabels, [{id:field}], "id")
+    }
+  })
 
+
+  $('#filter-modal').on("open.zf.reveal", function () {
+    console.log("open modal");
+    // @todo reset filter
+  })
 
   //create new filter
   let selectedFilters = $("#selected-filters")
   $("#confirm-filter-contacts").on("click", function () {
 
+    searchQuery = {}
     searchQuery.assigned_to = _.map(_.get(Typeahead['.js-typeahead-assigned_to'], "items"), "ID")
     searchQuery.locations = _.map(_.get(Typeahead['.js-typeahead-locations'], "items"), "ID")
     searchQuery.overall_status = []
     searchQuery.seeker_path = []
+
     $("#overall_status-options input:checked").each(function(){
       searchQuery.overall_status.push($(this).val())
     })
     $("#seeker_path-options input:checked").each(function(){
       searchQuery.seeker_path.push($(this).val())
+    })
+    $("#faith_milestones-options input:checked").each(function(){
+      searchQuery[$(this).val()] = ["yes"]
     })
     addCustomFilter("Custom Filter")
   })
