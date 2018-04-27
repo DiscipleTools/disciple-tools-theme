@@ -6,7 +6,7 @@
         </div>
         <div class="shrink cell" id="add-comment-button-container">
             <button id="add-comment-button" class="button loader">
-                Submit
+                <?php esc_html_e( "Submit", 'disciple_tools' ) ?>
             </button>
         </div>
     </div>
