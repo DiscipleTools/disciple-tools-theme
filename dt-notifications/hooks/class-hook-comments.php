@@ -199,18 +199,20 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      */
     public function match_mention( $comment_content )
     {
-        preg_match_all( '/(?<= |^)@([^@ ]+)/', $comment_content, $matches );
+        preg_match_all( '/\@\[(.*?)\]\((.+?)\)/', $comment_content, $matches );
 
         $user_ids = [];
-        foreach ( $matches[1] as $match ) {
+        foreach ( $matches[2] as $match ) {
 
             // trim punctuation
             $match = preg_replace( '/\W+/', '', $match );
 
             // get user_id by name match
-            $user = get_user_by( 'login', $match );
+            $user = get_user_by( 'id', $match );
             if ( $user ) {
-                $user_ids[] = $user->ID;
+                if ( !in_array( $user->ID, $user_ids ) ){
+                    $user_ids[] = $user->ID;
+                }
             }
         }
 

@@ -8,29 +8,31 @@ jQuery(document).ready(function($) {
   function post_comment(postId) {
     let commentInput = jQuery("#comment-input")
     let commentButton = jQuery("#add-comment-button")
-    let comment = commentInput.val()
-    if (comment) {
-      commentButton.toggleClass('loading')
-      commentInput.attr("disabled", true)
-      commentButton.attr("disabled", true)
-      API.post_comment(postType, postId, comment).then(data => {
-        commentInput.val("")
+    // let comment = commentInput.val()
+    getCommentWithMentions(comment=>{
+      if (comment) {
         commentButton.toggleClass('loading')
-        data.comment.date = moment(data.comment.comment_date_gmt + "Z")
-        comments.push(data.comment)
-        display_activity_comment()
-        if ( typeof contactUpdated === "function"){
-          contactUpdated(false);
-        }
-        commentInput.attr("disabled", false)
-        commentButton.attr("disabled", false)
-        $('textarea.mention').mentionsInput('reset')
-      }).catch(err => {
-        console.log("error")
-        console.log(err)
-        jQuery("#errors").append(err.responseText)
-      })
-    }
+        commentInput.attr("disabled", true)
+        commentButton.attr("disabled", true)
+        API.post_comment(postType, postId, comment).then(data => {
+          commentInput.val("")
+          commentButton.toggleClass('loading')
+          data.comment.date = moment(data.comment.comment_date_gmt + "Z")
+          comments.push(data.comment)
+          display_activity_comment()
+          if ( typeof contactUpdated === "function"){
+            contactUpdated(false);
+          }
+          commentInput.attr("disabled", false)
+          commentButton.attr("disabled", false)
+          $('textarea.mention').mentionsInput('reset')
+        }).catch(err => {
+          console.log("error")
+          console.log(err)
+          jQuery("#errors").append(err.responseText)
+        })
+      }
+    });
   }
 
 
@@ -122,7 +124,7 @@ jQuery(document).ready(function($) {
       let obj = {
         name: name,
         date: d.date,
-        text:d.object_note ||  d.comment_content,
+        text:d.object_note || formatComment(d.comment_content),
         comment: !!d.comment_content,
         action: d.action
       }
@@ -163,6 +165,21 @@ jQuery(document).ready(function($) {
     get_all();
   }
 
+  let formatComment = (comment=>{
+    let mentionRegex = /\@\[(.*?)\]\((.+?)\)/g
+    comment = comment.replace(mentionRegex, (match, text, id)=>{
+      return `<a>@${text}</a>`
+    })
+    let linkRegex = /\[(.*?)\]\((.+?)\)/g
+    comment = comment.replace(linkRegex, (match, text, url)=>{
+      if (text.includes("http") && !url.includes("http")){
+        [url, text] = [text, url]
+      }
+      return `<a href="${url}">${text}</a>`
+    })
+    return comment
+  })
+
   function get_all() {
     $.when(
       API.get_comments(postType, postId),
@@ -173,10 +190,6 @@ jQuery(document).ready(function($) {
       commentData.forEach(comment => {
         comment.date = moment(comment.comment_date_gmt + "Z")
         comment.comment_content = _.escape(comment.comment_content)
-        let linkRegex = /\[(.*)\]\((.*)\)/gi
-        comment.comment_content = comment.comment_content.replace(linkRegex, (match, url, text)=>{
-          return `<a href="${url}">${text}</a>`
-        })
       })
       comments = commentData
       activity = activityData
@@ -206,17 +219,17 @@ jQuery(document).ready(function($) {
         $('#comment-input').removeClass('loading-gif')
         let data = []
         responseData.forEach(user=>{
-          data.push({id:user.ID, name:user.name, type:postType})
+          data.push({id:user.ID, name:user.name, type:postType, avatar:user.avatar})
           callback.call(this, data);
         })
       })
     },
     templates : {
       mentionItemSyntax : function (data) {
-        return `@${data.value}`
+        return `[${data.value}](${data.id})`
       }
     },
-    showAvatars: false,
+    showAvatars: true,
     minChars: 0
   });
 

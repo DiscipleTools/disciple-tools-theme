@@ -2104,7 +2104,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         $post = get_post( $id_of_duplicate );
                         $has_unconfirmed_duplicates++;
                         if ( $has_unconfirmed_duplicates <= 5 ){
-                            $message .= "- [" . get_permalink( $id_of_duplicate ) . "](". $post->post_title . ")\n";
+                            $message .= "- [" . $post->post_title .  "](".  get_permalink( $id_of_duplicate ) . ")\n";
                         }
                         //uncomment to enable tracking both ways.
 //                        $other_contact_duplicate_data = $this->get_duplicate_data( $id_of_duplicate, $field );
