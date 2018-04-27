@@ -1692,32 +1692,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $access_query = $access_query ? ( "AND ( " . $access_query . " ) " ) : "";
         // phpcs:disable
 
-        $sql = "
-            SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, post_title, post_type FROM $wpdb->posts
-            INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = 'type' )
-            INNER JOIN $wpdb->postmeta as status ON ( $wpdb->posts.ID = status.post_id AND status.meta_key = 'overall_status')
-            " . $inner_joins . " " . $share_joins . " " . $access_joins . "
-            WHERE 1=1 
-            AND (
-                ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'media' )
-                OR
-                ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'next_gen' )
-                OR ( $wpdb->postmeta.meta_key IS NULL )
-            ) " . $connections_sql . " " . $meta_query . " " . $includes_query . " " . $access_query . "
-            AND $wpdb->posts.post_type = %s
-            AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
-            GROUP BY $wpdb->posts.ID 
-            ORDER BY CASE 
-            WHEN ( status.meta_value = 'unassigned') THEN 1
-            WHEN ( status.meta_value = 'assigned') THEN 2 
-            WHEN ( status.meta_value = 'active') THEN 3 
-            WHEN ( status.meta_value = 'paused') THEN 4 
-            WHEN ( status.meta_value = 'closed') THEN 99 
-            else 10
-            end asc
-            LIMIT %d, 100
-            ";
-
         $prepared_sql = $wpdb->prepare("
             SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, post_title, post_type FROM $wpdb->posts
             INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = 'type' )
@@ -1929,13 +1903,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     /**
-     * @param int    $contact_id
+     * @param int $contact_id
      * @param string $comment
-     * @param bool   $check_permissions
+     * @param bool $check_permissions
+     *
+     * @param string $type
      *
      * @return false|int|\WP_Error
      */
-    public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true )
+    public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true, $type = "comment" )
     {
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
@@ -1949,7 +1925,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'comment_author'       => $user->display_name,
             'comment_author_url'   => $user->user_url,
             'comment_author_email' => $user->user_email,
-            'comment_type'         => 'comment',
+            'comment_type'         => $type,
         ];
 
         self::check_requires_update( $contact_id );
@@ -1957,17 +1933,19 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     /**
-     * @param int  $contact_id
+     * @param int $contact_id
      * @param bool $check_permissions
+     *
+     * @param string $type
      *
      * @return array|int|\WP_Error
      */
-    public static function get_comments( int $contact_id, bool $check_permissions = true )
+    public static function get_comments( int $contact_id, bool $check_permissions = true, $type = "comment" )
     {
         if ( $check_permissions && !self::can_view( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
         }
-        $comments = get_comments( [ 'post_id' => $contact_id ] );
+        $comments = get_comments( [ 'post_id' => $contact_id, "type"=> $type ] );
 
         return $comments;
     }
@@ -2149,7 +2127,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 if ( $has_unconfirmed_duplicates > 5 ){
                     $message .= "- " . $has_unconfirmed_duplicates . " " . __( "more duplicates not shown", "disciple_tools" );
                 }
-                self::add_comment( $contact_id, $message, false );
+                self::add_comment( $contact_id, $message, false, "duplicate" );
                 update_post_meta( $contact_id, "duplicate_data", $duplicate_data );
             }
         }
