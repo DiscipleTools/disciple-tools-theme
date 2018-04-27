@@ -295,7 +295,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     strtolower( $this->singular ),
                     // translators: Publish box date format, see http://php.net/date
                     '<strong>' . date_i18n( __( 'M j, Y @ G:i' ),
-                        strtotime( $post->post_date ) ) . '</strong>',
+                    strtotime( $post->post_date ) ) . '</strong>',
                     '',
                     ''
                 ),

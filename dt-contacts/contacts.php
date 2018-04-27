@@ -2287,7 +2287,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         return $numbers;
     }
-    
+
     public static function get_tag_options(){
         if ( !self::can_access( "contacts" ) ){
             return new WP_Error( __FUNCTION__, __( "You do not have access to tags" ), [ 'status' => 403 ] );
