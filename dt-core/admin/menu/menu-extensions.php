@@ -28,7 +28,7 @@ if ( ! class_exists( 'DT_Extensions_Menu' ) ) {
         }
 
         public function menu() {
-            add_menu_page( __( 'Extensions (DT)', 'disciple_tools' ), __( 'Extensions (DT)', 'disciple_tools' ), 'manage_dt', 'dt_extensions', [ $this, 'page' ], 'dashicons-admin-generic', 59 );
+            add_menu_page( __( 'Extensions (DT)', 'disciple_tools' ), __( 'Extensions (DT)', 'disciple_tools' ), 'manage_dt', 'dt_extensions', [ $this, 'page' ], dt_svg_icon(), 59 );
         }
 
         /**
