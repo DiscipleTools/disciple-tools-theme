@@ -186,14 +186,21 @@ function dt_change_admin_color( $result ) {
     return 'midnight';
 }
 
-
 /**
  * Removes Post WP Admin menu item
  *
  * @note Removing the posts menu is to clean the admin menu and because it is unnecissary to the disciple tools system.
  */
 function dt_remove_post_admin_menus(){
-    remove_menu_page( 'edit.php' ); //Posts (Not using posts as a content channel for Disciple Tools, so that no data is automatically exposed by switching themes or plugin.
+
+    remove_menu_page( 'edit.php' );                   //Posts
+    remove_menu_page( 'upload.php' );                 //Media
+    remove_menu_page( 'edit.php?post_type=page' );    //Pages
+    remove_menu_page( 'edit-comments.php' );          //Comments
+
+    if ( ! is_admin() ) { // add menu items to hide from all but admin
+        remove_menu_page( 'tools.php' );                  //Tools
+    }
 }
 
 
@@ -214,7 +221,6 @@ function dt_disable_wp_emoji() {
     // filter to remove TinyMCE emojis
     add_filter( 'tiny_mce_plugins', 'dt_disable_emoji_tinymce' );
 }
-
 
 /**
  * Disables emoji support in the tinymce.
