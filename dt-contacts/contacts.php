@@ -1940,12 +1940,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return array|int|\WP_Error
      */
-    public static function get_comments( int $contact_id, bool $check_permissions = true, $type = "comment" )
+    public static function get_comments( int $contact_id, bool $check_permissions = true, $type = "all" )
     {
         if ( $check_permissions && !self::can_view( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
         }
-        $comments = get_comments( [ 'post_id' => $contact_id, "type"=> $type ] );
+        //setting type to "comment" does not work.
+        $comments = get_comments( [ 'post_id' => $contact_id, "type" => $type ] );
 
         return $comments;
     }
