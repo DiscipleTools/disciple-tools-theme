@@ -166,17 +166,19 @@ jQuery(document).ready(function($) {
   }
 
   let formatComment = (comment=>{
-    let mentionRegex = /\@\[(.*?)\]\((.+?)\)/g
-    comment = comment.replace(mentionRegex, (match, text, id)=>{
-      return `<a>@${text}</a>`
-    })
-    let linkRegex = /\[(.*?)\]\((.+?)\)/g
-    comment = comment.replace(linkRegex, (match, text, url)=>{
-      if (text.includes("http") && !url.includes("http")){
-        [url, text] = [text, url]
-      }
-      return `<a href="${url}">${text}</a>`
-    })
+    if(comment){
+      let mentionRegex = /\@\[(.*?)\]\((.+?)\)/g
+      comment = comment.replace(mentionRegex, (match, text, id)=>{
+        return `<a>@${text}</a>`
+      })
+      let linkRegex = /\[(.*?)\]\((.+?)\)/g
+      comment = comment.replace(linkRegex, (match, text, url)=>{
+        if (text.includes("http") && !url.includes("http")){
+          [url, text] = [text, url]
+        }
+        return `<a href="${url}">${text}</a>`
+      })
+    }
     return comment
   })
 
