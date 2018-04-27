@@ -2154,6 +2154,140 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
 
+    /**
+     * Returns numbers for multiplier and dispatcher
+     *
+     * Example Array Return:
+     * [
+            [my_contacts] => 39
+            [update_needed] => 0
+            [contact_attempted] => 1
+            [meeting_scheduled] => 0
+            [shared] => 5
+            [all_contacts] => 43
+            [needs_assigned] => 0
+        ]
+     *
+     * This function will always return this array even if the counts are zero.
+     *
+     * If the current user/supplied user is not a dispatcher role or similar, then it will skip the query and return zeros for
+     * all_contacts and needs assigned array elements.
+     *
+     * @param null $user_id
+     *
+     * @return array|\WP_Error
+     */
+    public static function get_count_of_contacts( $user_id = null ) {
+        global $wpdb;
+        $numbers = [];
+
+        if ( is_null( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+        $personal_counts = $wpdb->get_results( $wpdb->prepare( "
+            SELECT (SELECT count(a.ID)
+            FROM $wpdb->posts as a
+              JOIN $wpdb->postmeta as b
+                ON a.ID=b.post_id
+                   AND b.meta_key = 'assigned_to'
+                   AND b.meta_value = CONCAT( 'user-', %s )
+             WHERE a.post_status = 'publish')
+            as my_contacts,
+            (SELECT count(a.ID)
+             FROM $wpdb->posts as a
+               JOIN $wpdb->postmeta as b
+                 ON a.ID=b.post_id
+                    AND b.meta_key = 'requires_update'
+                    AND b.meta_value = 'yes'
+               JOIN $wpdb->postmeta as c
+                 ON a.ID=c.post_id
+                    AND c.meta_key = 'assigned_to'
+                    AND c.meta_value = CONCAT( 'user-', %s )
+              WHERE a.post_status = 'publish')
+            as update_needed,
+            (SELECT count(a.ID)
+             FROM $wpdb->posts as a
+               JOIN $wpdb->postmeta as b
+                 ON a.ID=b.post_id
+                    AND b.meta_key = 'seeker_path'
+                    AND b.meta_value = 'attempted'
+               JOIN $wpdb->postmeta as c
+                 ON a.ID=c.post_id
+                    AND c.meta_key = 'assigned_to'
+                    AND c.meta_value = CONCAT( 'user-', %s )
+              WHERE a.post_status = 'publish')
+            as contact_attempted,
+            (SELECT count(a.ID)
+             FROM $wpdb->posts as a
+               JOIN $wpdb->postmeta as b
+                 ON a.ID=b.post_id
+                    AND b.meta_key = 'seeker_path'
+                    AND b.meta_value = 'scheduled'
+               JOIN $wpdb->postmeta as c
+                 ON a.ID=c.post_id
+                    AND c.meta_key = 'assigned_to'
+                    AND c.meta_value = CONCAT( 'user-', %s )
+              WHERE a.post_status = 'publish')
+             as meeting_scheduled,
+            (SELECT count(ID)
+             FROM wp_9_posts
+             WHERE ID IN (SELECT post_id
+                          FROM wp_9_dt_share
+                          WHERE user_id = %s)
+                      AND post_status = 'publish' )
+              as shared;
+            ",
+            $user_id,
+            $user_id,
+            $user_id,
+            $user_id,
+            $user_id
+        ), ARRAY_A );
+
+        if ( empty( $personal_counts ) ) {
+            return new WP_Error( __METHOD__, 'No results from the personal count query' );
+        }
+
+        foreach ( $personal_counts[0] as $key => $value ) {
+            $numbers[$key] = $value;
+        }
+
+        if ( user_can( $user_id, 'view_any_contacts' ) ) {
+            $dispatcher_counts = $wpdb->get_results( "
+            SELECT (SELECT count(ID) as all_contacts
+                    FROM wp_9_posts
+                    WHERE post_status = 'publish'
+                      AND post_type = 'contacts')
+                as all_contacts,
+                  (SELECT count(a.ID) as assignment_needed
+                    FROM wp_9_posts as a
+                    JOIN wp_9_postmeta as b
+                      ON a.ID=b.post_id
+                         AND b.meta_key = 'overall_status'
+                         AND b.meta_value = 'unassigned'
+                    WHERE a.post_status = 'publish')
+                as needs_assigned
+              ", ARRAY_A );
+
+            foreach ( $dispatcher_counts[0] as $key => $value ) {
+                $numbers[$key] = $value;
+            }
+        }
+
+        $numbers = wp_parse_args( $numbers, [
+            'my_contacts' => 0,
+            'update_needed' => 0,
+            'contact_attempted' => 0,
+            'meeting_scheduled' => 0,
+            'all_contacts' => 0,
+            'needs_assigned' => 0,
+        ] );
+
+        dt_write_log( $numbers );
+
+        return $numbers;
+    }
+    
     public static function get_tag_options(){
         if ( !self::can_access( "contacts" ) ){
             return new WP_Error( __FUNCTION__, __( "You do not have access to tags" ), [ 'status' => 403 ] );
@@ -2168,4 +2302,5 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         ;");
         return $tags;
     }
+
 }
