@@ -94,7 +94,7 @@ function dt_contact_details_edit( $id, $field_type, $remove = false ){
                 foreach ($group["locations"] ?? [] as $value){
                     ?>
                     <li class="<?php echo intval( $value->ID ); ?>">
-                        <a href="<?php echo esc_url( $value->permalink ); ?>"><?php echo esc_html( $value->post_title ); ?></a>
+                        <?php echo esc_html( $value->post_title ); ?>
                     </li>
                     <?php
                 }

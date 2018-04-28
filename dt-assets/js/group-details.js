@@ -186,6 +186,7 @@ jQuery(document).ready(function($) {
     }
   })
 
+  let locationsList = $('.locations-list')
   /**
    * Locations
    */
@@ -221,10 +222,13 @@ jQuery(document).ready(function($) {
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.save_field_api('group', groupId, {'locations': {values:[{value:item.ID}]}}).then((addedItem)=>{
-          $('.locations-list').append(`<li class="${addedItem.ID}">
-            <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
-          </li>`)
+        API.save_field_api('group', groupId, {'locations': {values:[{value:item.ID}]}}).then((group)=>{
+          locationsList.empty()
+          group.locations.forEach(location=>{
+            locationsList.append(`<li class="${location.ID}">
+              ${_.escape(location.post_title)}
+            </li>`)
+          })
           $("#no-location").remove()
         })
       },
@@ -243,6 +247,7 @@ jQuery(document).ready(function($) {
     }
   });
 
+  let peopleGroupList = $('.people_groups-list')
   /**
    * People_groups
    */
@@ -280,11 +285,14 @@ jQuery(document).ready(function($) {
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.save_field_api('group', groupId, {'people_groups': {values:[{value:item.ID}]}}).then((addedItem)=>{
+        API.save_field_api('group', groupId, {'people_groups': {values:[{value:item.ID}]}}).then((group)=>{
+          peopleGroupList.empty()
+          group.people_groups.forEach(item=>{
+            peopleGroupList.append(`<li class="${item.ID}">
+              ${_.escape(item.post_title)}
+            </li>`)
+          })
           $("#no-people-group").remove()
-          $('.people_groups-list').append(`<li class="${addedItem.ID}">
-            <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
-          </li>`)
         })
       },
       onResult: function (node, query, result, resultCount) {
@@ -513,6 +521,7 @@ jQuery(document).ready(function($) {
     }
   });
 
+  let leaderList = $('.leaders-list')
   /**
    * leaders
    */
@@ -550,11 +559,14 @@ jQuery(document).ready(function($) {
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.save_field_api('group', groupId, {'leaders': {values:[{value:item.ID}]}}).then((addedItem)=>{
-          $('.leaders-list').append(`<li class="${addedItem.ID}">
-            <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
-          </li>`)
-          $("#no-location").remove()
+        API.save_field_api('group', groupId, {'leaders': {values:[{value:item.ID}]}}).then((group)=>{
+          leaderList.empty()
+          group.leaders.forEach(item=>{
+            leaderList.append(`<li class="${item.ID}">
+                <a href="${item.permalink}">${_.escape(item.post_title)}</a>
+              </li>`)
+          })
+          $("#no-leaders").remove()
         })
         masonGrid.masonry('layout')
       },
