@@ -555,7 +555,7 @@ jQuery(document).ready(function($) {
 
     $('#edit-social').append(`<li style="display: flex">
         <input type="text" class="contact-input" data-type="${channel_type}" value="${text}"/>
-        <button class="button delete-button" data-id="new">
+        <button class="button clear delete-button" data-id="new">
           <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
     </li>`)
@@ -599,7 +599,7 @@ jQuery(document).ready(function($) {
     $('#edit-contact_address').append(`
       <li style="display: flex">
         <textarea rows="3" class="contact-input" data-type="contact_address"></textarea>
-        <button class="button delete-button" data-id="new">
+        <button class="button clear delete-button" data-id="new">
           <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
     </li>`)
@@ -612,7 +612,7 @@ jQuery(document).ready(function($) {
 
     $list.append(`<li style="display: flex">
       <input type="text" class="contact-input" data-type="${listClass}"/>
-      <button class="button delete-button new-${listClass}" data-id="new">
+      <button class="button clear delete-button new-${listClass}" data-id="new">
           <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
       </button>
     </li>`)

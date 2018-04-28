@@ -372,7 +372,7 @@
                             </div>
                         </div>
                     </div>
-                <?php else: ?>
+                <?php else : ?>
                     <ul class="sources-list <?php echo esc_html( user_can( get_current_user_id(), 'view_any_contacts' ) ? 'details-list' : '' ) ?>">
                         <?php
                         foreach ($contact['sources'] ?? [] as $value){
