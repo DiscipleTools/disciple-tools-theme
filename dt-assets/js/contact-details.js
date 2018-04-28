@@ -82,6 +82,7 @@ let typeaheadTotals = {};
 jQuery(document).ready(function($) {
   let contactId = $("#contact-id").text()
   contact = contactsDetailsWpApiSettings.contact
+  let editFieldsUpdate = {}
   let masonGrid = $('.grid')
 
 
@@ -95,45 +96,6 @@ jQuery(document).ready(function($) {
       }
     }
   }).ajaxError(handelAjaxError)
-
-  /**
-   * Typpahead Fuctions
-   */
-  let typeaheadSource = function (field, url) {
-    return {
-      contacts: {
-        display: "name",
-        ajax: {
-          url: contactsDetailsWpApiSettings.root + url,
-          data: {
-            s: "{{query}}"
-          },
-          beforeSend: function (xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-          },
-          callback: {
-            done: function (data) {
-              typeaheadTotals[field] = data.total
-              return data.posts
-            }
-          }
-        }
-      }
-    }
-  }
-  let typeaheadHelpText = (resultCount, query, result) =>{
-    var text = "";
-    if (result.length > 0 && result.length < resultCount) {
-      text = "Showing <strong>" + result.length + "</strong> of <strong>" + resultCount + '</strong> ' + (query ? 'elements matching "' + query + '"' : '');
-    } else if (result.length > 0 && query) {
-      text = 'Showing <strong>' + result.length + '</strong> items matching "' + query + '"';
-    } else if (result.length > 0) {
-      text = 'Showing <strong>' + result.length + '</strong> items';
-    } else {
-      text = 'No results matching "' + query + '"';
-    }
-    return text
-  }
 
   /**
    * Groups
@@ -150,7 +112,7 @@ jQuery(document).ready(function($) {
       }
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: typeaheadSource('groups', 'dt/v1/groups-compact/'),
+    source: TYPEAHEADS.typeaheadSource('groups', 'dt/v1/groups-compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -188,7 +150,7 @@ jQuery(document).ready(function($) {
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.groups
-        let text = typeaheadHelpText(resultCount, query, result)
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         result.push({
           ID: "new-item",
           group:"contacts"
@@ -233,183 +195,164 @@ jQuery(document).ready(function($) {
    * Sources
    */
   typeaheadTotals.sources = 0;
-  let sourcesData = []
-  console.log(contact);
-  _.forOwn(contactsDetailsWpApiSettings.contacts_custom_fields_settings.sources.default, (sourceValue, sourceKey)=>{
-    sourcesData.push({key:sourceKey, value:sourceValue})
-  })
-  if (contactsDetailsWpApiSettings.can_view_all){
-    $.typeahead({
-      input: '.js-typeahead-sources',
-      minLength: 0,
-      searchOnFocus: true,
-      maxItem: 20,
-      source: {
-        data: sourcesData
-      },
-      display: "value",
-      templateValue: "{{value}}",
-      dynamic: true,
-      multiselect: {
-        matchOn: ["key"],
-        data: function () {
-          return (contact.sources || []).map(sourceKey=>{
-            return {
-              key:sourceKey,
-              value:_.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings.sources.default.${sourceKey}`) || sourceKey }
-          })
-        }, callback: {
-          onCancel: function (node, item) {
-            API.save_field_api('contact', contactId, {'sources': {values:[{value:item.key, delete:true}]}}).then(()=>{
-              $(`.sources-list .${item.ID}`).remove()
-              let listItems = $(`.sources-list li`)
-              if (listItems.length === 0){
-                $(`.sources-list.details-list`).append(`<li id="no-source">${contactsDetailsWpApiSettings.translations["not-set"]["source"]}</li>`)
+  let leadSourcesTypeahead = ()=>{
+    if (!window.Typeahead['.js-typeahead-sources']){
+
+      let sourcesData = []
+      console.log(contact);
+      _.forOwn(contactsDetailsWpApiSettings.contacts_custom_fields_settings.sources.default, (sourceValue, sourceKey)=>{
+        sourcesData.push({key:sourceKey, value:sourceValue})
+      })
+      if (contactsDetailsWpApiSettings.can_view_all){
+        $.typeahead({
+          input: '.js-typeahead-sources',
+          minLength: 0,
+          searchOnFocus: true,
+          maxItem: 20,
+          source: {
+            data: sourcesData
+          },
+          display: "value",
+          templateValue: "{{value}}",
+          dynamic: true,
+          multiselect: {
+            matchOn: ["key"],
+            data: function () {
+              return (contact.sources || []).map(sourceKey=>{
+                return {
+                  key:sourceKey,
+                  value:_.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings.sources.default.${sourceKey}`) || sourceKey }
+              })
+            }, callback: {
+              onCancel: function (node, item) {
+                _.pullAllBy(editFieldsUpdate.sources.values, [{value:item.key}], "value")
+                editFieldsUpdate.sources.values.push({value:item.key, delete:true})
               }
-            })
+            }
+          },
+          callback: {
+            onClick: function(node, a, item, event){
+              _.pullAllBy(editFieldsUpdate.sources.values, [{value:item.key}], "value")
+              editFieldsUpdate.sources.values.push({value:item.key})
+            },
+            onResult: function (node, query, result, resultCount) {
+              resultCount = typeaheadTotals.sources
+              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              $('#sources-result-container').html(text);
+            },
+            onHideLayout: function () {
+              $('#sources-result-container').html("");
+            },
           }
-        }
-      },
-      callback: {
-        onClick: function(node, a, item, event){
-          API.save_field_api('contact', contactId, {sources: {values:[{value:item.key}]}}).then((addedItem)=>{
-            $('.sources-list').append(`<li class="${addedItem.ID}">
-              ${_.escape(addedItem.post_title)}
-            </li>`)
-            $("#no-source").remove()
-          })
-        },
-        onResult: function (node, query, result, resultCount) {
-          resultCount = typeaheadTotals.sources
-          let text = typeaheadHelpText(resultCount, query, result)
-          $('#sources-result-container').html(text);
-        },
-        onHideLayout: function () {
-          $('#sources-result-container').html("");
-        },
-        onReady: function () {
-          $('.sources').addClass('details-edit')
-        }
+        });
       }
-    });
+    }
   }
 
-  /**
+
+    /**
    * Locations
    */
   typeaheadTotals.locations = 0;
-  $.typeahead({
-    input: '.js-typeahead-locations',
-    minLength: 0,
-    searchOnFocus: true,
-    maxItem: 20,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
-    source: typeaheadSource('locations', 'dt/v1/locations/compact/'),
-    display: "name",
-    templateValue: "{{name}}",
-    dynamic: true,
-    multiselect: {
-      matchOn: ["ID"],
-      data: function () {
-        return contact.locations.map(g=>{
-          return {ID:g.ID, name:g.post_title}
-        })
-      }, callback: {
-        onCancel: function (node, item) {
-          API.save_field_api('contact', contactId, {'locations': {values:[{value:item.ID, delete:true}]}}).then(()=>{
-            $(`.locations-list .${item.ID}`).remove()
-            let listItems = $(`.locations-list li`)
-            if (listItems.length === 0){
-              $(`.locations-list.details-list`).append(`<li id="no-location">${contactsDetailsWpApiSettings.translations["not-set"]["location"]}</li>`)
+  let loadLocationTypeahead = ()=>{
+    if (!window.Typeahead['.js-typeahead-locations']){
+      $.typeahead({
+        input: '.js-typeahead-locations',
+        minLength: 0,
+        searchOnFocus: true,
+        maxItem: 20,
+        template: function (query, item) {
+          return `<span>${_.escape(item.name)}</span>`
+        },
+        source: TYPEAHEADS.typeaheadSource('locations', 'dt/v1/locations/compact/'),
+        display: "name",
+        templateValue: "{{name}}",
+        dynamic: true,
+        multiselect: {
+          matchOn: ["ID"],
+          data: function () {
+            return contact.locations.map(g=>{
+              return {ID:g.ID, name:g.post_title}
+            })
+          }, callback: {
+            onCancel: function (node, item) {
+              _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
+              editFieldsUpdate.locations.values.push({value:item.ID, delete:true})
             }
-          })
+          }
+        },
+        callback: {
+          onClick: function(node, a, item, event){
+            if (!editFieldsUpdate.locations){
+              editFieldsUpdate.locations = { "values": [] }
+            }
+            _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
+            editFieldsUpdate.locations.values.push({value:item.ID})
+          },
+          onResult: function (node, query, result, resultCount) {
+            resultCount = typeaheadTotals.locations
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $('#locations-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('#locations-result-container').html("");
+          },
         }
-      }
-    },
-    callback: {
-      onClick: function(node, a, item, event){
-        API.save_field_api('contact', contactId, {locations: {values:[{value:item.ID}]}}).then((addedItem)=>{
-          $('.locations-list').append(`<li class="${addedItem.ID}">
-            ${_.escape(addedItem.post_title)}
-          </li>`)
-          $("#no-location").remove()
-        })
-      },
-      onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.locations
-        let text = typeaheadHelpText(resultCount, query, result)
-        $('#locations-result-container').html(text);
-      },
-      onHideLayout: function () {
-        $('#locations-result-container').html("");
-      },
-      onReady: function () {
-        console.log("ready");
-        $('.locations').addClass('details-edit')
-      }
+      });
     }
-  });
+  }
 
 
   /**
    * People_groups
    */
   typeaheadTotals.people_groups = 0;
-  $.typeahead({
-    input: '.js-typeahead-people_groups',
-    minLength: 0,
-    searchOnFocus: true,
-    maxItem: 20,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
-    source: typeaheadSource('people_groups', 'dt/v1/people-groups-compact/'),
-    display: "name",
-    templateValue: "{{name}}",
-    dynamic: true,
-    multiselect: {
-      matchOn: ["ID"],
-      data: function () {
-        return contact.people_groups.map(g=>{
-          return {ID:g.ID, name:g.post_title}
-        })
-      },
-      callback: {
-        onCancel: function (node, item) {
-          API.save_field_api('contact', contactId, {people_groups: {values:[{value:item.ID, delete:true}]}}).then(()=>{
-            $(`.people_groups-list .${item.ID}`).remove()
-            let listItems = $(`.people_groups-list li`)
-            if (listItems.length === 0){
-              $(`.people_groups-list.details-list`).append(`<li id="no-people-group">${contactsDetailsWpApiSettings.translations["not-set"]["people-group"]}</li>`)
+  let loadPeopleGroupTypeahead = ()=>{
+    if (!window.Typeahead['.js-typeahead-people_groups']){
+
+      $.typeahead({
+        input: '.js-typeahead-people_groups',
+        minLength: 0,
+        searchOnFocus: true,
+        maxItem: 20,
+        template: function (query, item) {
+          return `<span>${_.escape(item.name)}</span>`
+        },
+        source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups-compact/'),
+        display: "name",
+        templateValue: "{{name}}",
+        dynamic: true,
+        multiselect: {
+          matchOn: ["ID"],
+          data: function () {
+            return contact.people_groups.map(g=>{
+              return {ID:g.ID, name:g.post_title}
+            })
+          },
+          callback: {
+            onCancel: function (node, item) {
+              _.pullAllBy(editFieldsUpdate.people_groups.values, [{value:item.ID}], "value")
+              editFieldsUpdate.people_groups.values.push({value:item.ID, delete:true})
             }
-          })
+          },
+        },
+        callback: {
+          onClick: function(node, a, item, event){
+            _.pullAllBy(editFieldsUpdate.people_groups.values, [{value:item.ID}], "value")
+            editFieldsUpdate.people_groups.values.push({value:item.ID})
+          },
+          onResult: function (node, query, result, resultCount) {
+            resultCount = typeaheadTotals.people_groups
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $('#people_groups-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('#people_groups-result-container').html("");
+          },
         }
-      },
-    },
-    callback: {
-      onClick: function(node, a, item, event){
-        API.save_field_api('contact', contactId, {people_groups: {values:[{value:item.ID}]}}).then((addedItem)=>{
-          $("#no-people-group").remove()
-          $('.people_groups-list').append(`<li class="${addedItem.ID}">
-            ${_.escape(addedItem.post_title)}
-          </li>`)
-        })
-      },
-      onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.people_groups
-        let text = typeaheadHelpText(resultCount, query, result)
-        $('#people_groups-result-container').html(text);
-      },
-      onHideLayout: function () {
-        $('#people_groups-result-container').html("");
-      },
-      onReady: function () {
-        $('.people_groups').addClass('details-edit')
-      }
+      });
     }
-  });
+  }
 
   /**
    * Assigned_to
@@ -462,19 +405,18 @@ jQuery(document).ready(function($) {
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.assigned_to
-        let text = typeaheadHelpText(resultCount, query, result)
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#assigned_to-result-container').html(text);
       },
       onHideLayout: function () {
         $('.assigned_to-result-container').html("");
       },
       onReady: function () {
-        $('.details.assigned_to').addClass('details-edit')
         if (_.get(contact,  "assigned_to.display")){
           $('.js-typeahead-assigned_to').val(contact.assigned_to.display)
         }
-        $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
-        $('.assigned_to-result-container').html("");
+        // $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
+        // $('.assigned_to-result-container').html("");
       }
     },
   });
@@ -587,7 +529,6 @@ jQuery(document).ready(function($) {
         },
         onReady: function () {
           if (field_id === "subassigned"){
-            $('.subassigned').addClass('details-edit')
           }
         }
       }
@@ -597,123 +538,9 @@ jQuery(document).ready(function($) {
   /**
    * Contact details
    */
-  const $editDetailsToggle = $('span#edit-button-label')
-  const $body = $('body')
 
-  // Add listing by default
-  $body.addClass('listing')
 
-  function toggleEditAll() {
-    editingAll = !editingAll
-
-    if (editingAll) {
-      $('button.show-button').trigger('click')
-    }
-
-    // Toggle the body class, so we don't have to target individual elements
-    // And the display properties can be handled with css
-    $body.toggleClass('editing').toggleClass('listing')
-
-    $editDetailsToggle.text(editingAll ? 'Save': 'Edit')
-  }
-
-  $('button#edit-details').click(() => {
-    toggleEditAll()
-  })
-
-  // Removing an item from the contact details
-  $(document).on('click', 'button.details-remove-button.delete-method', e => {
-    const $button = $(e.currentTarget)
-    const fieldId = $button.data('id')
-    const fieldType = $button.data('field')
-
-    if (fieldId) {
-      API.save_field_api('contact', contactId, { [`contact_${fieldType}`] : [{ key:fieldId, delete:true }] }).then(() => {
-        $(`.${fieldId}`).remove()
-
-        const listItems = $(`.${fieldType}-list li`)
-
-        if (listItems.length === 0) {
-          $(`.${fieldType}.details-list`).append(`<li id="no-${fieldType}">${contactsDetailsWpApiSettings.translations["not-set"][fieldType]}</li>`)
-        }
-      }).catch(handelAjaxError)
-    }
-  }).on('change', 'input.social-input', e => { // Adding new social
-    const id = $(e.currentTarget).attr('id')
-    const value = $(e.currentTarget).val()
-
-    API.save_field_api('contact', contactId, { [id]: value }).then(() => {
-      $(`.social.details-list .${id} .social-text`).text(value)
-    }).catch(handelAjaxError);
-  }).on('change', 'input.contact-input', e => {
-    const fieldId = $(e.currentTarget).attr('id')
-    const fieldType = $(e.currentTarget).data('type')
-    const val = $(e.currentTarget).val()
-
-    API.save_field_api('contact', contactId, { [fieldType] : [{"key":fieldId, value:val}] }).then(() => {
-      $(`li.details-list.${fieldId} span.details-text`).text(val)
-    }).catch(handelAjaxError)
-  }).on('change', 'ul.address textarea', e => {
-    const $textarea = $(e.currentTarget)
-    const id = $textarea.attr('id')
-    const text = $textarea.val()
-
-    if (id && id !== 'new-address') {
-      API.save_field_api('contact', contactId, { [id]: text }).then(() => {
-        $(`ul.address .${id} .address-text`).text(text)
-      }).catch(handelAjaxError)
-    }
-  }).on('change', '.new-contact-details', e => {
-    const $input = $(e.currentTarget)
-    const field = $input.data('id')
-    const value = $input.val()
-
-    API.save_field_api('contact', contactId, { [`contact_${field}`]: [{ value }] }).then(contact => {
-      console.log(contact)
-
-      const newId = _.get(_.last(_.get(contact, `contact_${field}`) || []), 'key')
-
-      if (newId && newId != contactId) {
-        //change the it to the created field
-        $input.attr('id', newId)
-
-        // Append the new list item
-        $(`ul.${field}`).append(`
-            <li class="details-list ${newId}">
-              ${value}
-              <img id="${newId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
-              <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
-            </li>
-        `)
-
-        $(`li.new-${field}`)
-          .append(editContactDetailsOptions(newId, field))
-          .removeClass(`new-${field}`)
-          .addClass(`details-edit has-options ${newId}`)
-
-        $(`li.${newId} .dropdown.menu`).foundation()
-
-        $input.removeClass(`new-contact-details`).addClass('contact-input')
-
-        $(`li#no-${field}`).remove()
-      }
-    }).catch(handelAjaxError)
-  }).on('click', '.details-status-button.field-status', e => {
-    const $field = $(e.currentTarget)
-    const status = $field.data('status')
-    const id = $field.data('id')
-    const field = $field.data('field')
-    const fields = {
-      key: id,
-      verified: status === 'valid',
-      invalid: status === "invalid"
-    }
-
-    API.save_field_api('contact', contactId, { [`contact_${field}`]: [fields] }).then(()=>{
-      $(`#${id}-verified`).toggle(fields.verified)
-      $(`#${id}-invalid`).toggle(fields.invalid)
-    }).catch(handelAjaxError)
-  }).on('change', 'div.reason-field select', e => {
+  $(document).on('change', 'div.reason-field select', e => {
     const $select = $(e.currentTarget)
     const field = $select.data('field')
     const value = $select.val()
@@ -722,42 +549,20 @@ jQuery(document).ready(function($) {
   })
 
   $('button#add-social-media').click(e => {
-    const $addSocial = $(e.currentTarget)
-    const channel_type = $('select#social-channels').val()
+    const channel_type = 'contact_' + $('select#social-channels').val()
     const $inputForNewValue = $('input#new-social-media')
     const text = $inputForNewValue.val()
 
-    $addSocial.toggleClass('loading')
-
-    API.save_field_api('contact', contactId, { ['contact_'+channel_type]: [{ value: text }] }).then(contact => {
-      const newId = _.get(contact, `added_fields.new-${channel_type}`)
-
-      console.log(newId)
-
-      $addSocial.toggleClass('loading')
-
-      const label = _.get(contactsDetailsWpApiSettings, `channels[${channel_type}].label`) || channel_type
-
-      $('ul.social').append(`
-        <li class="details-edit">${label}:</li>
-        <li class="details-edit has-options">
-          <input id="${newId}"
-            type="text"
-            value="${text}"
-            class="social-input">
-          ${editContactDetailsOptions(newId, "social")}
-        </li>
-        <li class="details-list ${newId}">
-          <span class="social-text">${text}</span>
-          <img id="${newId}-verified" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
-          <img id="${newId}-invalid" class="details-status" style="display:none" src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
-        </li>`)
-
-      $(`.${newId} .dropdown.menu`).foundation()
-      $inputForNewValue.val('')
-
-      $('li#no-social').remove()
-    }).catch(handelAjaxError)
+    $('#edit-social').append(`<li style="display: flex">
+        <input type="text" class="contact-input" data-type="${channel_type}" value="${text}"/>
+        <button class="button delete-button" data-id="new">
+          <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+        </button>
+    </li>`)
+    if (!editFieldsUpdate[channel_type]){
+      editFieldsUpdate[channel_type] = { values: [] }
+    }
+    editFieldsUpdate[channel_type].values.push({value:text})
   })
 
   $('select.select-field').change(e => {
@@ -778,14 +583,6 @@ jQuery(document).ready(function($) {
     }).catch(handelAjaxError)
   })
 
-  $('input.text-field.details-edit').change(e => {
-    const id = $(e.currentTarget).attr('id')
-    const val = $(e.currentTarget).val()
-
-    API.save_field_api('contact', contactId, { [id]: val }).then(() => {
-      $(`.${id}`).text(val)
-    }).catch(handelAjaxError)
-  })
 
   // Baptism date
   $('input#baptism-date-picker').datepicker({
@@ -799,67 +596,28 @@ jQuery(document).ready(function($) {
 
   // Clicking plus sign for new address
   $('button#add-new-address').click(e => {
-    if ($('textarea#new-address').length === 0) {
-      $('ul.address').append(`
-        <li class="new-address details-edit">
-          <textarea rows="3" class="new-contact-details" data-id="address" id="new-address"></textarea>
-      </li>`)
-    }
+    $('#edit-contact_address').append(`
+      <li style="display: flex">
+        <textarea rows="3" class="contact-input" data-type="contact_address"></textarea>
+        <button class="button delete-button" data-id="new">
+          <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+        </button>
+    </li>`)
   })
 
   // Clicking the plus sign next to the field label
   $('button.add-button').click(e => {
     const listClass = $(e.currentTarget).data('list-class')
-    const $list = $(`ul.${listClass}`)
+    const $list = $(`#edit-${listClass}`)
 
-    if ($list.find(`li.new-${listClass}`).length === 0) {
-      $list.append(`<li class="details-edit new-${listClass}"><input type="text" id="new-${listClass}" class="new-contact-details" data-id="${listClass}"/></li>`)
-    }
+    $list.append(`<li style="display: flex">
+      <input type="text" class="contact-input" data-type="${listClass}"/>
+      <button class="button delete-button new-${listClass}" data-id="new">
+          <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+      </button>
+    </li>`)
   })
 
-  const editContactDetailsOptions = (field_id, field_type) => {
-    return `
-      <ul class='dropdown menu' data-click-open='true'
-        data-dropdown-menu data-disable-hover='true'
-        style='display:inline-block'>
-        <li>
-          <button class="social-details-options-button">
-            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/menu-dots.svg">
-          </button>
-          <ul class='menu'>
-            <li>
-              <button class='details-status-button field-status verify'
-                data-status='valid'
-                data-id='${field_id}'>
-                ${contactsDetailsWpApiSettings.translations.valid}
-              </button>
-            </li>
-            <li>
-              <button class='details-status-button field-status invalid'
-                data-status="invalid"
-                data-id="${field_id}">
-                ${contactsDetailsWpApiSettings.translations.invalid}
-              </button>
-            </li>
-            <li>
-              <button class='details-status-button field-status'
-                data-status="reset"
-                data-id='${field_id}'>
-                ${contactsDetailsWpApiSettings.translations.unconfirmed}
-              </button>
-            </li>
-            <li>
-              <button class='details-remove-button delete-method'
-                data-field='${field_type}'
-                data-id='${field_id}'>
-                ${contactsDetailsWpApiSettings.translations["delete"]}
-              <button>
-            </li>
-          </ul>
-          </li>
-      </ul>
-    `
-  }
 
   $('button.show-button').click(e => {
     $(e.currentTarget).toggleClass('showing-more')
@@ -908,12 +666,11 @@ jQuery(document).ready(function($) {
     }
 
     $('#reason').text(reasonLabel ? `(${reasonLabel})` : '')
-    //toggle which reason field is show in the edit details pane.
-    $('.reason-field').hide()
+
     if (reasonLabel){
-      $(`.reason-field.reason-${status}`).show()
+      $(`#edit-reason`).show()
     } else {
-      $('.reason-fields').hide()
+      $(`#edit-reason`).hide()
     }
   }
 
@@ -930,6 +687,125 @@ jQuery(document).ready(function($) {
       $(`#${field}-contact-modal`).foundation('close')
       setStatus(contactData)
     })
+  })
+
+
+
+  $("#open-edit").on("click", function () {
+
+    editFieldsUpdate = {
+      locations : { values: [] },
+      people_groups : { values: [] },
+      sources : { values: [] }
+    }
+    let phoneHTML = "";
+    (contact.contact_phone|| []).forEach(field=>{
+      phoneHTML += `<li style="display: flex">
+          <input type="tel" id="${field.key}" value="${field.value}" data-type="contact_phone" class="contact-input"/>
+          <button class="button clear delete-button" data-id="${field.key}" data-type="contact_phone" style="color: red">
+            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+          </button>
+      </li>`
+    })
+    $("#edit-contact_phone").html(phoneHTML)
+    let emailHTML = "";
+    (contact.contact_email|| []).forEach(field=>{
+      console.log(field);
+      emailHTML += `<li style="display: flex">
+        <input class="contact-input" type="email" id="${field.key}" value="${field.value}" data-type="contact_email"/>
+        <button class="button clear delete-button" data-id="${field.key}" data-type="contact_email">
+            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+        </button>
+      </li>`
+    })
+    $("#edit-contact_email").html(emailHTML)
+    let addressHTML = "";
+    (contact.contact_address|| []).forEach(field=>{
+      addressHTML += `<li style="display: flex">
+        <textarea class="contact-input" type="text" id="${field.key}" value="${field.value}" data-type="contact_address"/>
+        <button class="button clear delete-button" data-id="${field.key}" data-type="contact_address">
+            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+        </button>
+      </li>`
+    })
+    $("#edit-contact_address").html(addressHTML)
+
+    let html = ""
+    for( let field in contact ){
+      if ( field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field) ){
+        console.log(field);
+        console.log(contact[field]);
+        contact[field].forEach(socialField=>{
+          html += `<li style="display: flex">
+            <input class="contact-input" type="text" id="${socialField.key}" value="${socialField.value}" data-type="${field}"/>
+            <button class="button clear delete-button" data-id="${socialField.key}" data-type="${field}">
+                <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+            </button>
+          </li>`
+        })
+
+      }
+    }
+    $('#edit-social').html(html)
+
+    $('#contact-details-edit').foundation('open');
+    loadLocationTypeahead()
+    loadPeopleGroupTypeahead()
+    leadSourcesTypeahead()
+  })
+
+
+  $('.select-input').on("change", function () {
+    let key = $(this).attr('id')
+    let val = $(this).val()
+    editFieldsUpdate[key] = val
+  })
+
+  $(document).on('change', '.contact-input', function() {
+    let value = $(this).val()
+    let field = $(this).data("type")
+    let key = $(this).attr('id')
+    if (!editFieldsUpdate[field]){
+      editFieldsUpdate[field] = { values: [] }
+    }
+    let existing = _.find(editFieldsUpdate[field].values, {key})
+    if (existing){
+      existing.value = value
+    } else {
+      editFieldsUpdate[field].values.push({ key, value })
+    }
+  }).on('click', '#contact-details-edit .delete-button', function () {
+    let field = $(this).data('type')
+    let key = $(this).data('id')
+    if ( key !== 'new' ){
+      if (!editFieldsUpdate[field]){
+        editFieldsUpdate[field] = { values: [] }
+      }
+      _.pullAllBy(editFieldsUpdate[field].values, [{key}], "key")
+      editFieldsUpdate[field].values.push({key, delete:true})
+    }
+    $(this).parent().remove()
+  }).on('change', '.text-input', function () {
+    let field = $(this).attr('id')
+    editFieldsUpdate[field] = $(this).val()
+  })
+
+  /**
+   * Save contact details updates
+   */
+  $('#save-edit-details').on('click', function () {
+    $(this).toggleClass("loading")
+    console.log(editFieldsUpdate);
+    API.save_field_api( "contact", contactId, editFieldsUpdate).then((updatedContact)=>{
+      contact = updatedContact
+      $(this).toggleClass("loading")
+      location.reload()
+      $(`#contact-details-edit`).foundation('close')
+    }).catch(handelAjaxError)
+  })
+
+  $('#edit-reason').on('click', function () {
+    setStatus(contact, true)
   })
 
   //leave at the end

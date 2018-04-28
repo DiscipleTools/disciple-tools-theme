@@ -37,18 +37,14 @@ declare( strict_types=1 );
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
             <div class="small-12 cell bordered-box grid-x grid-margin-x">
-                <div class="cell shrink center-items">
-                    <i class="fi-torso large"></i>
-                </div>
-                <div class="cell shrink center-items">
-                    <span class="item-details-header title" ><?php the_title_attribute(); ?></span>
-                </div>
-                <div class="shrink cell">
-                    <label for="overall_status"><strong><?php esc_html_e( "Status", 'disciple_tools' ) ?></strong>
+
+                <div class="cell auto">
+                    <div class="section-subheader">
+                        <?php esc_html_e( "Status", 'disciple_tools' ) ?>
                         <button class="help-button" data-section="overall-status-help-text">
                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                         </button>
-                    </label>
+                    </div>
                     <?php
                     $active_color = "#366184";
                     $current_key = $contact["overall_status"]["key"] ?? "";
@@ -66,22 +62,76 @@ declare( strict_types=1 );
                         <?php } ?>
                     <?php } ?>
                     </select>
-                    <span id="reason">
-                        <?php
-                        if ( $contact["overall_status"]["key"] === "paused" &&
-                             isset( $contact["reason_paused"] )){
-                            echo '(' . esc_html( $contact["reason_paused"]["label"] ) . ')';
-                        } else if ( $contact["overall_status"]["key"] === "closed" &&
-                                    isset( $contact["reason_closed"] )){
-                            echo '(' . esc_html( $contact["reason_closed"]["label"] ) . ')';
-                        } else if ( $contact["overall_status"]["key"] === "unassignable" &&
-                                    isset( $contact["reason_unassignable"] )){
-                            echo '(' . esc_html( $contact["reason_unassignable"]["label"] ) . ')';
-                        }
-                        ?>
-                    </span>
+                    <p>
+                        <span id="reason">
+                            <?php
+                            $hide_edit_button = false;
+                            if ( $contact["overall_status"]["key"] === "paused" &&
+                                 isset( $contact["reason_paused"] )){
+                                echo '(' . esc_html( $contact["reason_paused"]["label"] ) . ')';
+                            } else if ( $contact["overall_status"]["key"] === "closed" &&
+                                        isset( $contact["reason_closed"] )){
+                                echo '(' . esc_html( $contact["reason_closed"]["label"] ) . ')';
+                            } else if ( $contact["overall_status"]["key"] === "unassignable" &&
+                                        isset( $contact["reason_unassignable"] )){
+                                echo '(' . esc_html( $contact["reason_unassignable"]["label"] ) . ')';
+                            } else {
+                                $hide_edit_button = true;
+                            }
+                            ?>
+                        </span>
+                        <button id="edit-reason" <?php if ( $hide_edit_button ) : ?> style="display: none"<?php endif; ?> ><i class="fi-pencil"></i></button>
+                    </p>
 
                 </div>
+                <div class="cell auto">
+                    <!-- Assigned To -->
+                    <div class="section-subheader">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
+                        <?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
+                    </div>
+
+                    <div class="assigned_to details">
+                        <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
+                        <div id="assigned_to_t" name="form-assigned_to">
+                            <div class="typeahead__container">
+                                <div class="typeahead__field">
+                                    <span class="typeahead__query">
+                                        <input class="js-typeahead-assigned_to input-height"
+                                               name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
+                                               autocomplete="off">
+                                    </span>
+                                    <span class="typeahead__button">
+                                        <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
+                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<!--                </div>-->
+<!--                <div class="cell shrink">-->
+                    <div class="section-subheader">
+                        <?php esc_html_e( 'Sub-assigned to', 'disciple_tools' )?>
+                    </div>
+                    <div class="subassigned details">
+                        <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
+                        <div id="subassigned_t" name="form-subassigned">
+                            <div class="typeahead__container">
+                                <div class="typeahead__field">
+                                    <span class="typeahead__query">
+                                        <input class="js-typeahead-subassigned input-height"
+                                               name="subassigned[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
+                                               autocomplete="off">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="cell auto center-items show-for-large">
                     <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
                 </div>
@@ -276,8 +326,9 @@ declare( strict_types=1 );
         <select id="reason-closed-options">
             <?php
             foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $reason_label ) {
+                $selected = ( $reason_key === ( $contact["reason_closed"]["key"] ?? "" ) ) ? "selected" : "";
                 ?>
-                <option value="<?php echo esc_attr( $reason_key )?>"> <?php echo esc_html( $reason_label )?></option>
+                <option value="<?php echo esc_attr( $reason_key )?>" <?php echo esc_html( $selected ) ?>> <?php echo esc_html( $reason_label )?></option>
                 <?php
             }
             ?>
@@ -344,6 +395,43 @@ declare( strict_types=1 );
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
+    </div>
+
+    <div class="reveal" id="edit-reason-modal" data-reveal>
+
+
+        <div class="medium-6 cell reason-field">
+            <?php
+            $status = $contact['overall_status']['key'] ?? '';
+            $has_status = isset( $contact_fields["reason_$status"]['name'] );
+            ?>
+            <div class="section-subheader">
+                <?php
+                if ( $has_status ) {
+                    echo esc_html( $contact_fields["reason_$status"]['name'] );
+                }
+                ?>
+            </div>
+            <?php
+            $status_style = !$has_status ? 'display:none;' : '';
+            $reason_field = $has_status ? "reason_$status" : '';
+            ?>
+            <select class="status-reason" style="<?php echo esc_html( $status_style ); ?>" data-field="<?php echo esc_html( $reason_field ) ?>">
+                <?php
+                if ( $has_status ) {
+                    foreach ( $contact_fields["reason_$status"]['default'] as $reason_key => $reason_label ) { ?>
+                        <option value="<?php echo esc_attr( $reason_key ) ?>"
+                            <?php
+                            $selected = $contact["reason_$status"]['key'] ?? '' === $reason_key ? 'selected' : '';
+                            echo esc_html( $selected ); ?>>
+                            <?php echo esc_html( $reason_label, 'disciple_tools' ); ?>
+                        </option>
+                        <?php
+                    }
+                }
+                ?>
+            </select>
+        </div>
     </div>
 
     <?php
