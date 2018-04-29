@@ -809,6 +809,8 @@ jQuery(document).ready(function($) {
   })
 
 
+  let urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi)
+
   let resetDetailsFields = (contact=>{
     $('.title').html(contact.title)
     let contact_methods = ["contact_email", "contact_phone", "contact_address"]
@@ -841,10 +843,18 @@ jQuery(document).ready(function($) {
         let fields = contact[contact_method]
         fields.forEach(field=>{
           socialIsEmpty = false
+          let value = _.escape(field.value)
+          let match = urlRegex.exec(value)
+          if (match){
+            if (!match.includes("http")){
+              value = `https://${value}`
+            }
+            value = `<a href="${value}" target="_blank" >${_.escape(match[1] || value)}</a>`
+          }
           socialHTMLField.append(`<li class="details-list ${_.escape(field.key)}">
             <object data="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/${fieldDesignator}.svg" 
               type="image/jpg">${fieldDesignator}:</object>
-            ${_.escape(field.value)}
+              ${value}
               <img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
               <img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
             </li>
