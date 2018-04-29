@@ -52,9 +52,7 @@
                     <i class="fi-pencil"></i>
                     <span id="open-edit"><?php esc_html_e( 'Edit', 'disciple_tools' )?></span>
                 </button>
-                <div class="grid-x grid-margin-x details-list">
-                    <h3 class="section-header"><?php esc_html_e( 'Details', 'disciple_tools' ) ?></h3>
-                </div>
+                <h3 class="section-header"><?php esc_html_e( 'Details', 'disciple_tools' ) ?></h3>
             </div>
 
             <div class="display-fields grid-x grid-margin-x">
