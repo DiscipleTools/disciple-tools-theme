@@ -37,8 +37,11 @@ declare( strict_types=1 );
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
             <div class="small-12 cell bordered-box grid-x grid-margin-x">
-
-                <div class="cell auto">
+                <div class="cell small-12 medium-4 large-3">
+                    <i class="fi-torso large"></i>
+                    <span class="item-details-header title" ><?php the_title_attribute(); ?></span>
+                </div>
+                <div class="cell small-12 medium-4 large-2">
                     <div class="section-subheader">
                         <?php esc_html_e( "Status", 'disciple_tools' ) ?>
                         <button class="help-button" data-section="overall-status-help-text">
@@ -52,7 +55,7 @@ declare( strict_types=1 );
                         $active_color = $contact_fields["overall_status"]["colors"][$current_key];
                     }
                     ?>
-                    <select id="overall_status" class="select-field" style="margin-bottom:0px; background-color: <?php echo esc_html( $active_color ) ?>">
+                    <select id="overall_status" class="select-field" style="width:fit-content; margin-bottom:0px; background-color: <?php echo esc_html( $active_color ) ?>">
                     <?php foreach ($contact_fields["overall_status"]["default"] as $key => $value){
                         if ( $contact["overall_status"]["key"] === $key ) {
                             ?>
@@ -82,9 +85,9 @@ declare( strict_types=1 );
                         </span>
                         <button id="edit-reason" <?php if ( $hide_edit_button ) : ?> style="display: none"<?php endif; ?> ><i class="fi-pencil"></i></button>
                     </p>
-
                 </div>
-                <div class="cell auto">
+
+                <div class="cell small-12 medium-4 large-3">
                     <!-- Assigned To -->
                     <div class="section-subheader">
                         <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
@@ -110,8 +113,6 @@ declare( strict_types=1 );
                             </div>
                         </div>
                     </div>
-<!--                </div>-->
-<!--                <div class="cell shrink">-->
                     <div class="section-subheader">
                         <?php esc_html_e( 'Sub-assigned to', 'disciple_tools' )?>
                     </div>
@@ -130,13 +131,9 @@ declare( strict_types=1 );
                         </div>
                     </div>
                 </div>
-
-
                 <div class="cell auto center-items show-for-large">
                     <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
                 </div>
-
-
             </div>
 
             <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell" role="main" style="padding:0">

@@ -701,8 +701,8 @@ jQuery(document).ready(function($) {
     let phoneHTML = "";
     (contact.contact_phone|| []).forEach(field=>{
       phoneHTML += `<li style="display: flex">
-          <input type="tel" id="${field.key}" value="${field.value}" data-type="contact_phone" class="contact-input"/>
-          <button class="button clear delete-button" data-id="${field.key}" data-type="contact_phone" style="color: red">
+          <input type="tel" id="${_.escape(field.key)}" value="${field.value}" data-type="contact_phone" class="contact-input"/>
+          <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_phone" style="color: red">
             <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
           </button>
       </li>`
@@ -712,8 +712,8 @@ jQuery(document).ready(function($) {
     (contact.contact_email|| []).forEach(field=>{
       console.log(field);
       emailHTML += `<li style="display: flex">
-        <input class="contact-input" type="email" id="${field.key}" value="${field.value}" data-type="contact_email"/>
-        <button class="button clear delete-button" data-id="${field.key}" data-type="contact_email">
+        <input class="contact-input" type="email" id="${_.escape(field.key)}" value="${field.value}" data-type="contact_email"/>
+        <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_email">
             <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
       </li>`
@@ -722,8 +722,8 @@ jQuery(document).ready(function($) {
     let addressHTML = "";
     (contact.contact_address|| []).forEach(field=>{
       addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${field.key}" value="${field.value}" data-type="contact_address"/>
-        <button class="button clear delete-button" data-id="${field.key}" data-type="contact_address">
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" value="${field.value}" data-type="contact_address"/>
+        <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
             <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
       </li>`
@@ -799,7 +799,7 @@ jQuery(document).ready(function($) {
     API.save_field_api( "contact", contactId, editFieldsUpdate).then((updatedContact)=>{
       contact = updatedContact
       $(this).toggleClass("loading")
-      location.reload()
+      resetDetailsFields(contact)
       $(`#contact-details-edit`).foundation('close')
     }).catch(handelAjaxError)
   })
@@ -807,6 +807,93 @@ jQuery(document).ready(function($) {
   $('#edit-reason').on('click', function () {
     setStatus(contact, true)
   })
+
+
+  let resetDetailsFields = (contact=>{
+    $('.title').html(contact.title)
+    let contact_methods = ["contact_email", "contact_phone", "contact_address"]
+    contact_methods.forEach(contact_method=>{
+      let fieldDesignator = contact_method.replace('contact_', '')
+      let htmlField = $(`ul.${fieldDesignator}`)
+      htmlField.empty()
+      let fields = contact[contact_method]
+      let allEmptyValues = true
+      ;(fields || []).forEach(field=>{
+        if (field.value){
+          allEmptyValues = false
+        }
+        htmlField.append(`<li class="details-list ${_.escape(field.key)}">
+            ${_.escape(field.value)}
+              <img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
+              <img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
+            </li>
+          `)
+      })
+      if (!fields || fields.length === 0 || allEmptyValues){
+        htmlField.append(`<li id="no-${fieldDesignator}">${contactsDetailsWpApiSettings.translations["not-set"][fieldDesignator]}</li>`)
+      }
+    })
+    let socialHTMLField = $(`ul.social`).empty()
+    let socialIsEmpty = true
+    _.forOwn(contact, ( value, contact_method)=>{
+      if ( contact_method.indexOf("contact_") === 0 && !contact_methods.includes( contact_method )){
+        let fieldDesignator = contact_method.replace('contact_', '')
+        let fields = contact[contact_method]
+        fields.forEach(field=>{
+          socialIsEmpty = false
+          socialHTMLField.append(`<li class="details-list ${_.escape(field.key)}">
+            <object data="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/${fieldDesignator}.svg" 
+              type="image/jpg">${fieldDesignator}:</object>
+            ${_.escape(field.value)}
+              <img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
+              <img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
+            </li>
+          `)
+        })
+      }
+    })
+    if ( socialIsEmpty ){
+      socialHTMLField.append(`<li id="no-social">${contactsDetailsWpApiSettings.translations["not-set"]["social"]}</li>`)
+    }
+    let connections = [ "locations", "people_groups" ]
+    connections.forEach(connection=>{
+      let htmlField = $(`.${connection}-list`).empty()
+      if ( !contact[connection] || contact[connection].length === 0 ){
+        htmlField.append(`<li id="no-${connection}">${contactsDetailsWpApiSettings.translations["not-set"][connection]}</li>`)
+      } else {
+        contact[connection].forEach(field=>{
+          console.log(field);
+          htmlField.append(`<li class="details-list ${_.escape(field.key)}">
+            ${_.escape(field.post_title)}
+              <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
+              <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
+            </li>
+          `)
+        })
+      }
+    })
+    let selectsFields = [ "age", "gender" ];
+    selectsFields.forEach(selectField=>{
+      if ( _.get(contact, `${selectField}.label`) ){
+        $(`li.${selectField}`).html(_.escape(_.get(contact, `${selectField}.label`)))
+      } else {
+        $(`li.${selectField}`).html(`${contactsDetailsWpApiSettings.translations["not-set"][selectField]}`)
+      }
+    })
+    //source
+    let sourceHTML = $('.sources-list').empty()
+    if ( contact.sources && contact.sources.length > 0 ){
+      contact.sources.forEach(source=>{
+        sourceHTML.append(`<li>
+          ${_.escape(_.get(contactsDetailsWpApiSettings, "contacts_custom_fields_settings.sources.default." + source))}
+        </li>`)
+      })
+    } else {
+      sourceHTML.append(`<li id="no-source">${contactsDetailsWpApiSettings.translations["not-set"]["source"]}</li>`)
+    }
+
+  })
+  resetDetailsFields(contact)
 
   //leave at the end
   masonGrid.masonry({

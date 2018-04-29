@@ -214,7 +214,7 @@ jQuery(document).ready(function($) {
           API.save_field_api('group', groupId, {'locations': {values:[{value:item.ID, delete:true}]}}).then(()=>{            $(`.locations-list .${item.ID}`).remove()
             let listItems = $(`.locations-list li`)
             if (listItems.length === 0){
-              $(`.locations-list.details-list`).append(`<li id="no-location">${wpApiGroupsSettings.translations["not-set"]["location"]}</li>`)
+              $(`.locations-list.details-list`).append(`<li id="no-locations">${wpApiGroupsSettings.translations["not-set"]["location"]}</li>`)
             }
           })
         }
@@ -229,7 +229,7 @@ jQuery(document).ready(function($) {
               ${_.escape(location.post_title)}
             </li>`)
           })
-          $("#no-location").remove()
+          $("#no-locations").remove()
         })
       },
       onResult: function (node, query, result, resultCount) {
@@ -277,7 +277,7 @@ jQuery(document).ready(function($) {
             $(`.people_groups-list .${item.ID}`).remove()
             let listItems = $(`.people_groups-list li`)
             if (listItems.length === 0){
-              $(`.people_groups-list.details-list`).append(`<li id="no-people-group">${wpApiGroupsSettings.translations["not-set"]["people-group"]}</li>`)
+              $(`.people_groups-list.details-list`).append(`<li id="no-people_groups">${wpApiGroupsSettings.translations["not-set"]["people-group"]}</li>`)
             }
           })
         }
@@ -292,7 +292,7 @@ jQuery(document).ready(function($) {
               ${_.escape(item.post_title)}
             </li>`)
           })
-          $("#no-people-group").remove()
+          $("#no-people_groups").remove()
         })
       },
       onResult: function (node, query, result, resultCount) {
@@ -493,7 +493,7 @@ jQuery(document).ready(function($) {
             $(`.members-list .${item.ID}`).remove()
             let listItems = $(`.members-list li`)
             if (listItems.length === 0){
-              $(`.members-list.details-list`).append(`<li id="no-location">${wpApiGroupsSettings.translations["not-set"]["location"]}</li>`)
+              $(`.members-list.details-list`).append(`<li id="no-locations">${wpApiGroupsSettings.translations["not-set"]["location"]}</li>`)
             }
           })
         }
@@ -506,7 +506,7 @@ jQuery(document).ready(function($) {
           $('.members-list').append(`<li class="${addedItem.ID}">
             <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
           </li>`)
-          $("#no-location").remove()
+          $("#no-locations").remove()
         })
         masonGrid.masonry('layout')
       },
@@ -550,7 +550,7 @@ jQuery(document).ready(function($) {
             $(`.leaders-list .${item.ID}`).remove()
             let listItems = $(`.leaders-list li`)
             if (listItems.length === 0){
-              $(`.leaders-list.details-list`).append(`<li id="no-location">${wpApiGroupsSettings.translations["not-set"]["location"]}</li>`)
+              $(`.leaders-list.details-list`).append(`<li id="no-locations">${wpApiGroupsSettings.translations["not-set"]["location"]}</li>`)
             }
           })
         }

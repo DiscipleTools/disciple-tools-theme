@@ -53,13 +53,7 @@
                     <span id="open-edit"><?php esc_html_e( 'Edit', 'disciple_tools' )?></span>
                 </button>
                 <div class="grid-x grid-margin-x details-list">
-    <!--                <h3 class="section-header">--><?php //esc_html_e( 'Details', 'disciple_tools' ) ?><!--</h3>-->
-                    <div class="cell shrink center-items">
-                        <i class="fi-torso large"></i>
-                    </div>
-                    <div class="cell shrink center-items">
-                        <span class="item-details-header title" ><?php the_title_attribute(); ?></span>
-                    </div>
+                    <h3 class="section-header"><?php esc_html_e( 'Details', 'disciple_tools' ) ?></h3>
                 </div>
             </div>
 
@@ -71,19 +65,6 @@
                         <?php echo esc_html( $channel_list["phone"]["label"] ) ?>
                     </div>
                     <ul class="phone">
-                    <?php if ( count( $contact['contact_phone'] ?? [] ) === 0 ) { ?>
-                        <li id="no-phone"><?php esc_html_e( 'No phone set', 'disciple_tools' ) ?></li>
-                    <?php } ?>
-
-                    <?php foreach ($contact['contact_phone'] ?? [] as $field => $value) {
-                            $verified = isset( $value['verified'] ) && $value['verified'] === true ? 'inline' : 'none';
-                            $invalid = isset( $value['invalid'] ) && $value['invalid'] === true ? 'inline' : 'none';
-                            ?>
-                            <li class="details-list <?php echo esc_html( $value['key'] ) ?>">
-                                <span class="details-text"><?php echo esc_html( $value['value'] ); ?></span>
-                                <?php dt_contact_details_status( $value['key'], $verified, $invalid );  ?>
-                            </li>
-                        <?php } ?>
                     </ul>
                 </div>
                 <div class="xlarge-4 large-6 medium-6 small-12 cell">
@@ -93,98 +74,13 @@
                         <?php echo esc_html( $channel_list['email']['label'] ) ?>
                     </div>
                     <ul class="email">
-                    <?php if ( count( $contact['contact_email'] ?? [] ) === 0 ) { ?>
-                        <li id="no-email"><?php esc_html_e( 'No email set', 'disciple_tools' ) ?></li>
-                    <?php } ?>
-
-                    <?php foreach ( $contact['contact_email'] ?? [] as $field => $value) {
-                            $verified = isset( $value['verified'] ) && $value['verified'] === true ? 'inline' : 'none';
-                            $invalid = isset( $value['invalid'] ) && $value['invalid'] === true ? 'inline' :' none';
-                            ?>
-                            <li class="details-list <?php echo esc_html( $value['key'] ) ?>">
-                                <?php echo esc_html( $value['value'] );
-                                dt_contact_details_status( $value['key'], $verified, $invalid ); ?>
-                            </li>
-                        <?php } ?>
-                    </ul>
-                </div>
-
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <!-- Locations -->
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                        <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
-                    </div>
-                    <ul class="locations-list">
-                    <?php foreach ( $contact['locations'] ?? [] as $value ) { ?>
-                        <li class="<?php echo esc_html( $value->ID )?>">
-                            <?php echo esc_html( $value->post_title ) ?>
-                        </li>
-                    <?php } ?>
-                    <?php if ( count( $contact["locations"] ) === 0 ) { ?>
-                        <li id="no-location"><?php esc_html_e( 'No location set', 'disciple_tools' ) ?></li>
-                    <?php } ?>
                     </ul>
                 </div>
 
                 <!-- Social Media -->
                 <div class="xlarge-4 large-6 medium-6 small-12 cell">
                     <div class="section-subheader"><?php esc_html_e( 'Social Media', 'disciple_tools' ) ?></div>
-                    <ul class="social">
-                    <?php
-                    // Filter only the social contact items that exist in $channel_list
-                    $social_contacts = array_filter( $contact, function ( $value, $key ) use ( $channel_list ) {
-                        return strpos( $key, 'contact_' ) === 0 &&
-                            array_search( $key, [ 'contact_address', 'contact_phone', 'contact_email' ] ) === false &&
-                            isset( $channel_list[ explode( '_', $key )[1] ] );
-                    }, ARRAY_FILTER_USE_BOTH );
-
-                    foreach ($social_contacts as $key => $values) {
-                        $channel = explode( '_', $key )[1];
-
-                        foreach ($values as $value) {
-                            $verified = isset( $value['verified'] ) && $value['verified'] === true ? 'inline' : 'none';
-                            $invalid = isset( $value['invalid'] ) && $value['invalid'] === true ? 'inline' : 'none'; ?>
-                            <li class="details-list <?php echo esc_html( $value['key'] ); ?>">
-                                <?php
-                                if ( file_exists( get_template_directory() . "/dt-assets/images/$channel.svg" ) ) { ?>
-                                    <img src="<?php echo esc_url( get_template_directory_uri() ); ?><?php echo esc_url( "/dt-assets/images/$channel.svg" ); ?>">
-                                <?php } else { ?>
-                                    <span><?php echo esc_html( $channel_list[$channel]['label'] ) ?>:</span>
-                                <?php } ?>
-
-                                <span class="social-text"><?php echo esc_html( $value['value'] ) ?></span>
-                                <?php dt_contact_details_status( $value['key'], $verified, $invalid ) ?>
-                            </li>
-                    <?php
-                        }
-                    }
-
-                    if ( count( $social_contacts ) === 0 ) { ?>
-                        <li id="no-social"><?php esc_html_e( 'None set', 'disciple_tools' )?></li>
-                    <?php } ?>
-                    </ul>
-
-                </div>
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
-                        <?php esc_html_e( 'People Groups', 'disciple_tools' )?>
-                    </div>
-                    <ul class="people_groups-list details-list">
-                        <?php
-                        foreach ($contact["people_groups"] ?? [] as $value){
-                            ?>
-                            <li class="<?php echo esc_html( $value->ID )?>">
-                                <?php echo esc_html( $value->post_title ) ?>
-                            </li>
-                        <?php }
-                        if ( count( $contact["people_groups"] ) === 0 ) {
-                            ?> <li id="no-people-group"><?php esc_html_e( "No people group set", 'disciple_tools' ) ?></li><?php
-                        }
-                        ?>
-                    </ul>
+                    <ul class="social"></ul>
                 </div>
 
                 <!-- Address -->
@@ -193,20 +89,27 @@
                         <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
                         <?php esc_html_e( 'Address', 'disciple_tools' )?>
                     </div>
-                    <ul class="address">
-                    <?php if ( count( $contact['contact_address'] ?? [] ) === 0 ) { ?>
-                        <li id="no-address"><?php esc_html_e( 'No address set', 'disciple_tools' ) ?></li>
-                    <?php } ?>
-                    <?php foreach ( $contact['contact_address'] ?? [] as $value ) {
-                            $verified = isset( $value['verified'] ) && $value['verified'] === true ? 'inline' : 'none';
-                            $invalid = isset( $value['invalid'] ) && $value['invalid'] === true ? 'inline' : 'none';
-                            ?>
-                            <li class="details-list <?php echo esc_html( $value['key'] ) ?> address-row">
-                                <div class="address-text"><?php echo esc_html( $value['value'] );?></div><?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
-                            </li>
-                        <?php } ?>
-                    </ul>
+                    <ul class="address"></ul>
                 </div>
+
+                <!-- Locations -->
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
+                        <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
+                    </div>
+                    <ul class="locations-list"></ul>
+                </div>
+
+                <!-- People Groups -->
+                <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                    <div class="section-subheader">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
+                        <?php esc_html_e( 'People Groups', 'disciple_tools' )?>
+                    </div>
+                    <ul class="people_groups-list details-list"></ul>
+                </div>
+
 
                 <!-- Age -->
                 <div class="xlarge-4 large-6 medium-6 small-12 cell">
@@ -215,9 +118,9 @@
                         <?php esc_html_e( 'Age', 'disciple_tools' )?>
                     </div>
                     <ul class="details-list">
-                        <li class="current-age">
+                        <li class="age">
                             <?php
-                            if ( isset( $contact['age']['label'] ) ){
+                            if ( !empty( $contact['age']['label'] ) ){
                                 echo esc_html( $contact['age']['label'] );
                             } else {
                                 esc_html_e( 'No age set', 'disciple_tools' );
@@ -234,9 +137,9 @@
                         <?php esc_html_e( 'Gender', 'disciple_tools' )?>
                     </div>
                     <ul class="details-list">
-                        <li class="current-gender">
+                        <li class="gender">
                             <?php
-                            if ( isset( $contact['gender']['label'] ) ){
+                            if ( !empty( $contact['gender']['label'] ) ){
                                 echo esc_html( $contact['gender']['label'] );
                             } else {
                                 esc_html_e( 'No gender set', 'disciple_tools' );
