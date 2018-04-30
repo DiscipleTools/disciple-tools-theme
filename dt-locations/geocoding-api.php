@@ -6,13 +6,14 @@
  */
 
 /**
- * @version 1.4
+ * @version 1.5
  *
  * @since 1.0 raw query, ip lookup
  *        1.1 add map_key and rewrite for array in query_google_api
  *        1.2 add query with components, add refers lookup, add parse_raw_results
  *        1.3 moved keys and options within class
  *        1.4 added keys in parse function
+ *        1.5 added error check for ip address lookup
  */
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -202,7 +203,7 @@ class Disciple_Tools_Google_Geocode_API
     /**
      * @param $ip_address
      *
-     * @return array
+     * @return bool|array False on fail, or result array on success
      */
     public static function geocode_ip_address( $ip_address ) {
         if ( is_null( $ip_address ) || empty( $ip_address ) ) {
@@ -212,21 +213,14 @@ class Disciple_Tools_Google_Geocode_API
         $url_address = 'http://freegeoip.net/json/' . $ip_address;
         $details = json_decode( self::url_get_contents( $url_address ), true );
 
-        $formatted_address = '';
-        $formatted_address .= empty( $details['city'] ) ? '' : $details['city'];
-        $formatted_address .= empty( $details['region_name'] ) ? '' : ', ' . $details['region_name'];
-        $formatted_address .= empty( $details['zip_code'] ) ? '' : ' ' . $details['zip_code'];
-        $formatted_address .= empty( $details['country_name'] ) ? '' : ' ' . $details['country_name'];
+        if ( ! $details ) {
+            return false;
+        }
 
         $latlng = $details['latitude'] . ',' . $details['longitude'];
-        $raw = self::query_google_api( $latlng );
+        $raw = self::query_google_api( $latlng, 'core' );
 
-        return [
-            'lng' => $details['longitude'],
-            'lat' => $details['latitude'],
-            'formatted_address' => $formatted_address,
-            'raw' => $raw
-        ];
+        return $raw;
     }
 
     /**
