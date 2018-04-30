@@ -99,7 +99,7 @@ function dt_contact_details_edit( $id, $field_type, $remove = false ){
                     <?php
                 }
                 if (sizeof( $group["locations"] ) === 0){
-                    ?> <li id="no-location"><?php esc_html_e( "No location set", 'disciple_tools' ) ?></li><?php
+                    ?> <li id="no-locations"><?php esc_html_e( "No location set", 'disciple_tools' ) ?></li><?php
                 }
                 ?>
             </ul>
@@ -128,7 +128,7 @@ function dt_contact_details_edit( $id, $field_type, $remove = false ){
                     </li>
                 <?php }
                 if (sizeof( $group["people_groups"] ) === 0){
-                    ?> <li id="no-people-group"><?php esc_html_e( "No people group set", 'disciple_tools' ) ?></li><?php
+                    ?> <li id="no-people_groups"><?php esc_html_e( "No people group set", 'disciple_tools' ) ?></li><?php
                 }
                 ?>
             </ul>

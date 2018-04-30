@@ -2,11 +2,17 @@
 <div class="grid-y">
     <div class="cell grid-x grid-margin-x" id="add-comment-section">
         <div class="auto cell">
-            <textarea class="mention" dir="auto" rows="4" id="comment-input" placeholder="<?php esc_html_e( "Write your comment or note here", 'disciple_tools' ) ?>"></textarea>
+            <textarea class="mention" dir="auto" rows="4" id="comment-input"
+                      placeholder="<?php esc_html_e( "Write your comment or note here", 'disciple_tools' ) ?>"
+                      style="min-height:100px"
+            ></textarea>
         </div>
+    </div>
+    <div class="cell grid-x">
+        <div class="cell auto"></div>
         <div class="shrink cell" id="add-comment-button-container">
             <button id="add-comment-button" class="button loader">
-                <?php esc_html_e( "Submit", 'disciple_tools' ) ?>
+                <?php esc_html_e( "Submit comment", 'disciple_tools' ) ?>
             </button>
         </div>
     </div>
