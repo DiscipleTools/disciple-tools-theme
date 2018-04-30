@@ -343,6 +343,7 @@ img {
     width: min-content;
     position: relative;
     flex: 0 1 100px;
+    margin: 5px 0 10px 0;
     p {
         font-size: 12px;
         word-spacing: 100vw;
@@ -389,9 +390,9 @@ img {
 
 #add-comment-button {
     margin-bottom: 0;
-    height: 30px;
+    //height: 30px;
     //width: 40px;
-    padding: 0 4px;
+    //padding: 0 4px;
 }
 
 #add-comment-button-container {

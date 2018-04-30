@@ -114,6 +114,7 @@ declare( strict_types=1 );
                         </div>
                     </div>
                     <div class="section-subheader">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/subassigned.svg' ?>">
                         <?php esc_html_e( 'Sub-assigned to', 'disciple_tools' )?>
                     </div>
                     <div class="subassigned details">
