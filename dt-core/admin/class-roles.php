@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 8;
+    private static $target_roles_version_number = 9;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -94,17 +94,7 @@ class Disciple_Tools_Roles
         add_role(
             'strategist', __( 'Strategist' ),
             [
-                'read'                      => true, //access to admin
-                'manage_dt'                 => true, // key capability for wp-admin dt administration
-
-                'access_contacts'        => true,
-                'create_contacts'        => true,
-                'update_shared_contacts' => true,
-
-                'access_groups' => true,
-                'create_groups' => true,
-
-                'read_location' => true
+                'view_project_metrics' => true
             ]
         );
 
@@ -118,10 +108,14 @@ class Disciple_Tools_Roles
 
                 /* Manage DT Options */
                 'manage_dt'                 => true, // key capability for wp-admin dt administration
-                //'edit_users'                => true,
-                //'create_users'              => true,
-                //'delete_users'              => true,
-                //'list_users'                => true,
+
+                'view_project_metrics' => true,
+
+                // Manage Users
+                'edit_users'                => true,
+                'create_users'              => true,
+                'delete_users'              => true,
+                'list_users'                => true,
 
                 /* Add custom caps for contacts */
                 'access_contacts'           => true,
@@ -215,6 +209,9 @@ class Disciple_Tools_Roles
 
                 /* Manage DT Options */
                 'manage_dt'                 => true, // key capability for wp-admin dt administration
+                'view_project_metrics'      => true,
+
+                // Manage Users
                 'edit_users'                => true,
                 'create_users'              => true,
                 'delete_users'              => true,
