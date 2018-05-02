@@ -1694,7 +1694,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $prepared_sql = $wpdb->prepare("
             SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, post_title, post_type FROM $wpdb->posts
-            INNER JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = 'type' )
+            LEFT JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = 'type' )
             INNER JOIN $wpdb->postmeta as status ON ( $wpdb->posts.ID = status.post_id AND status.meta_key = 'overall_status')
             " . $inner_joins . " " . $share_joins . " " . $access_joins . "
             WHERE 1=1 
