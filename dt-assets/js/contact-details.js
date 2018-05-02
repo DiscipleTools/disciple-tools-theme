@@ -905,6 +905,34 @@ jQuery(document).ready(function($) {
   })
   resetDetailsFields(contact)
 
+  $('.quick-action-menu').on("click", function () {
+    let fieldKey = $(this).data("id")
+
+    let data = {}
+    let numberIndicator = $(`span.${fieldKey}`)
+    let newNumber = parseInt(numberIndicator.first().text() || "0" ) + 1
+    data[fieldKey] = newNumber
+    API.save_field_api("contact", contactId, data)
+      .then(data=>{
+        console.log(data);
+        console.log("updated " + fieldKey + " to: " + newNumber)
+        if (fieldKey.indexOf("quick_button")>-1){
+          if (_.get(data, "seeker_path.key")){
+            updateCriticalPath(data.seeker_path.key)
+          }
+        }
+        contactUpdated(false)
+      }).catch(err=>{
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").append(err.responseText)
+    })
+
+    if (fieldKey.indexOf("quick_button")>-1){
+      numberIndicator.text(newNumber)
+    }
+  })
+
   //leave at the end
   masonGrid.masonry({
     itemSelector: '.grid-item',

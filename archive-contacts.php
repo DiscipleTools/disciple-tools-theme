@@ -23,7 +23,10 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
                 <span class="hide-for-small-only"><?php esc_html_e( "Filter contacts", 'disciple_tools' ) ?></span>
             </a>
             <input style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="search">
-            <button class="button" style="margin-bottom:0" id="search-contacts"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
+            <button class="button" style="margin-bottom:0" id="search-contacts">
+                <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
+                <?php esc_html_e( "Search", 'disciple_tools' ) ?>
+            </button>
         </div>
     </nav>
 </div>

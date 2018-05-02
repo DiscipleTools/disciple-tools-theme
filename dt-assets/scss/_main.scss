@@ -423,6 +423,7 @@ img {
     border-left: 3px solid gainsboro;
     padding-left: 15px;
     margin: 0;
+    padding-bottom: 2px;
 }
 
 
@@ -1610,6 +1611,9 @@ select#overall_status {
     }
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: #FFFFFF'></polygon></svg>");
     border:none;
+}
+.dropdown.menu>li.is-dropdown-submenu-parent>a.menu-white-dropdown-arrow:after {
+    border-color: #FFF transparent transparent
 }
 
 //add a loading spinner when searching for contacts

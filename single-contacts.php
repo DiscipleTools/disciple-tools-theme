@@ -37,11 +37,11 @@ declare( strict_types=1 );
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
             <div class="small-12 cell bordered-box grid-x grid-margin-x">
-                <div class="cell small-12 medium-4 large-3">
+                <div class="cell small-12 medium-4">
                     <i class="fi-torso large"></i>
                     <span class="item-details-header title" ><?php the_title_attribute(); ?></span>
                 </div>
-                <div class="cell small-12 medium-4 large-2">
+                <div class="cell small-12 medium-2">
                     <div class="section-subheader">
                         <?php esc_html_e( "Status", 'disciple_tools' ) ?>
                         <button class="help-button" data-section="overall-status-help-text">
@@ -87,7 +87,7 @@ declare( strict_types=1 );
                     </p>
                 </div>
 
-                <div class="cell small-12 medium-4 large-3">
+                <div class="cell small-12 medium-3">
                     <!-- Assigned To -->
                     <div class="section-subheader">
                         <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
@@ -113,6 +113,8 @@ declare( strict_types=1 );
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="cell small-12 medium-3">
                     <div class="section-subheader">
                         <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/subassigned.svg' ?>">
                         <?php esc_html_e( 'Sub-assigned to', 'disciple_tools' )?>
@@ -131,9 +133,6 @@ declare( strict_types=1 );
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="cell auto center-items show-for-large">
-                    <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
                 </div>
             </div>
 
