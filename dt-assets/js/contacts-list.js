@@ -6,6 +6,21 @@
     let results = regex.exec(location.search);
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   };
+  function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
   // var urlParams = new URLSearchParams(window.location.search);
   let searchQuery = {assigned_to:['me']};
   const current_username = wpApiSettings.current_user_login;
@@ -18,36 +33,34 @@
   if ( !savedFilters[wpApiSettings.current_post_type]){
     savedFilters[wpApiSettings.current_post_type] = []
   }
-  console.log(savedFilters);
   let filterToSave = ""
   let currentFilters = $("#current-filters")
   let newFilterLabels = []
-
+  let typeaheadTotals = {}
   let loading_spinner = $(".loading-spinner")
 
-  let viewParam = getUrlParameter("view")
-  if ( viewParam ){
-    $('[name="view"]').removeAttr('checked');
-    if ( viewParam === "saved-filters"){
-      let id = getUrlParameter("id")
-      if ( id ){
-        $(`input[name=view][value=saved-filters][data-id='${id}']`).prop('checked', true);
+  //look at the cookie to see what was the last selected view
+  let cachedFilter = JSON.parse(getCookie("last_view")||"{}")
+  if ( cachedFilter && !_.isEmpty(cachedFilter)){
+    if (cachedFilter.type==="saved-filters"){
+      if ( _.find(savedFilters["contacts"], {ID: cachedFilter.ID})){
+        $(`input[name=view][value=saved-filters][data-id='${cachedFilter.ID}']`).prop('checked', true);
       }
-    } else if ( viewParam === "custom_filter" ){
-      let filterParams = getUrlParameter("filter")
-      if ( filterParams ){
-        searchQuery = JSON.parse( decodeURIComponent( filterParams ));
-        addCustomFilter("Custom Filter")
-      }
-    } else {
-      $("input[name=view][value=" + viewParam + "]").prop('checked', true);
+    } else if ( cachedFilter.type==="default" ){
+      $("input[name=view][value=" + cachedFilter.ID + "]").prop('checked', true);
+    } else if ( cachedFilter.type === "custom_filter" ){
+      newFilterLabels = cachedFilter.labels
+      searchQuery = cachedFilter.query
+      addCustomFilter(cachedFilter.name)
     }
   }
+
   getContactForCurrentView()
 
   function get_contacts(query, filter, offset) {
     loading_spinner.addClass("active")
     let data = query || searchQuery
+    document.cookie = `last_view=${JSON.stringify(filter)}`
     if ( offset ){
       data.offset = offset
     }
@@ -56,7 +69,7 @@
       beforeSend: function (xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       },
-      data: query || searchQuery,
+      data: data,
     }).then(data=>{
       if (offset){
         items = _.unionBy(items, data[wpApiSettings.current_post_type] || [], "ID")
@@ -242,6 +255,7 @@
 
   function setupCurrentFilterLabels(query, filter) {
     let html = ""
+
     if (filter && filter.labels){
       filter.labels.forEach(label=>{
         html+= `<span class="current-filter ${label.field}" id="${label.id}">${label.name}</span>`
@@ -258,7 +272,6 @@
           html += `<span class="current-filter search" id="${query[query_key]}">${query[query_key]}</span>`
         }
       }
-
     }
     currentFilters.html(html)
   }
@@ -267,36 +280,44 @@
     let checked = $(".js-list-view:checked")
     let currentView = checked.val()
     let query = {assigned_to:["me"]}
-    let filter = null
+    let filter = {type:"default", ID:currentView, query:{}, labels:[{ id:"me", name:"My Contacts", field: "assigned"}]}
     let viewGetParam = `?view=${currentView}`
     if ( currentView === "all_contacts" ){
       query.assigned_to = ["all"]
+      filter.labels = [{ id:"all", name:"All", field: "assigned"}]
     } else if ( currentView === "contacts_shared_with_me" ){
-      // query.include = ["shared"]
       query.assigned_to = ["shared"]
+      filter.labels = [{ id:"shared", name:"Shared with me", field: "assigned"}]
     }
     if ( currentView === "assignment_needed" ){
       query.overall_status = ["unassigned"]
+      filter.labels = [{ id:"unassigned", name:"Assignment needed", field: "assigned"}]
     } else if ( currentView === "update_needed" ){
+      filter.labels = [{ id:"update_needed", name:"Update needed", field: "requires_update"}]
       query.requires_update = ["yes"]
     } else if ( currentView === "meeting_scheduled" ){
       query.overall_status = ["active"]
       query.seeker_path = ["scheduled"]
+      filter.labels = [{ id:"active", name:"Meeting scheduled", field: "seeker_path"}]
     } else if ( currentView === "contact_unattempted" ){
       query.overall_status = ["active"]
       query.seeker_path = ["none"]
+      filter.labels = [{ id:"all", name:"Contact attempt needed", field: "seeker_path"}]
     } else if ( currentView === "custom_filter"){
       let filterId = checked.data("id")
       filter = _.find(customFilters, {ID:filterId})
+      filter.type = currentView
       query = filter.query
-      viewGetParam += `&filter=${encodeURIComponent(JSON.stringify(query))}`
+      // viewGetParam += `&filter=${encodeURIComponent(JSON.stringify(query))}`
     } else if ( currentView === "saved-filters" ){
       let filterId = checked.data("id")
       filter = _.find(savedFilters[wpApiSettings.current_post_type], {ID:filterId})
+      filter.type = currentView
       query = filter.query
-      viewGetParam += `&id=${filterId}`
+      // viewGetParam += `&id=${filterId}`
     }
-    history.pushState(null, null, viewGetParam);
+    filter.query = query
+    // history.pushState(null, null, viewGetParam);
     searchQuery = JSON.parse(JSON.stringify(query))
     get_contacts(query, filter)
 
@@ -372,11 +393,6 @@
           beforeSend: function (xhr) {
             xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
           },
-          // callback: {
-          //   done: function (data) {
-          //     return data.posts || data
-          //   }
-          // }
         }
       }
     },
@@ -403,6 +419,89 @@
       }
     }
   });
+
+  /**
+   * connections to other contacts
+   */
+  ;["subassigned"].forEach(field_id=>{
+    typeaheadTotals[field_id] = 0
+    $.typeahead({
+      input: `.js-typeahead-${field_id}`,
+      minLength: 0,
+      maxItem: 30,
+      searchOnFocus: true,
+      template: function (query, item) {
+        return `<span>${_.escape(item.name)}</span>`
+      },
+      source: {
+        contacts: {
+          display: "name",
+          ajax: {
+            url: wpApiSettings.root + 'dt/v1/contacts/compact',
+            data: {
+              s: "{{query}}"
+            },
+            beforeSend: function(xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+            },
+            callback: {
+              done: function (data) {
+                typeaheadTotals[field_id] = data.total
+                return data.posts
+              }
+            }
+          }
+        }
+      },
+      display: "name",
+      templateValue: "{{name}}",
+      dynamic: true,
+      multiselect: {
+        matchOn: ["ID"],
+        data: [],
+        callback: {
+          onCancel: function (node, item) {
+            // API.save_field_api('contact', contactId, {[field_id]: {values:[{value:item.ID, delete:true}]}}).then(()=>{
+            //   if(field_id === "subassigned"){
+            //     $(`.${field_id}-list .${item.ID}`).remove()
+            //     let listItems = $(`.${field_id}-list li`)
+            //     if (listItems.length === 0){
+            //       $(`.${field_id}-list.details-list`).append(`<li id="no-${field_id}">${contactsDetailsWpApiSettings.translations["not-set"][field_id]}</li>`)
+            //     }
+            //
+            //   }
+            // })
+          }
+        },
+        href: "/contacts/{{ID}}"
+      },
+      callback: {
+        onClick: function(node, a, item, event){
+          selectedFilters.append(`<span class="current-filter ${field_id}" id="${item.ID}">${item.name}</span>`)
+          newFilterLabels.push({id:item.ID, name:item.name, field:field_id})
+        },
+        onResult: function (node, query, result, resultCount) {
+          resultCount = typeaheadTotals[field_id]
+          var text = "";
+          if (result.length > 0 && result.length < resultCount) {
+            text = "Showing <strong>" + result.length + "</strong> of <strong>" + resultCount + '</strong> ' + (query ? 'elements matching "' + query + '"' : '');
+          } else if (result.length > 0) {
+            text = 'Showing <strong>' + result.length + '</strong> contacts matching "' + query + '"';
+          } else {
+            text = 'No results matching "' + query + '"';
+          }
+          $(`#${field_id}-result-container`).html(text);
+        },
+        onHideLayout: function () {
+          $(`#${field_id}-result-container`).html("");
+        },
+        onReady: function () {
+          if (field_id === "subassigned"){
+          }
+        }
+      }
+    })
+  })
 
 
   //modal options
@@ -450,8 +549,17 @@
 
 
   $('#filter-modal').on("open.zf.reveal", function () {
-    console.log("open modal");
-    // @todo reset filter
+    newFilterLabels=[]
+    $("#filter-modal input:checked").each(function () {
+      $(this).prop('checked', false)
+    })
+    selectedFilters.empty()
+    $(".typeahead__query input").each(function () {
+      let typeahead = Typeahead['.'+$(this).attr("class").split(/\s+/)[0]]
+      typeahead.items = []
+      typeahead.label.container.empty()
+      typeahead.adjustInputSize()
+    })
   })
 
   //create new filter
@@ -460,6 +568,7 @@
 
     searchQuery = {}
     searchQuery.assigned_to = _.map(_.get(Typeahead['.js-typeahead-assigned_to'], "items"), "ID")
+    searchQuery.subassigned = _.map(_.get(Typeahead['.js-typeahead-subassigned'], "items"), "ID")
     searchQuery.locations = _.map(_.get(Typeahead['.js-typeahead-locations'], "items"), "ID")
     searchQuery.overall_status = []
     searchQuery.seeker_path = []
