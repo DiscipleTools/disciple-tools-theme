@@ -38,6 +38,7 @@
   let newFilterLabels = []
   let typeaheadTotals = {}
   let loading_spinner = $(".loading-spinner")
+  let getContactsPromise = null
 
   //look at the cookie to see what was the last selected view
   let cachedFilter = JSON.parse(getCookie("last_view")||"{}")
@@ -64,13 +65,18 @@
     if ( offset ){
       data.offset = offset
     }
-    $.ajax({
+    //abort previous promise if it is not finished.
+    if (getContactsPromise && _.get(getContactsPromise, "readyState") !== 4){
+      getContactsPromise.abort()
+    }
+    getContactsPromise = $.ajax({
       url: wpApiSettings.root + "dt/v1/" + wpApiSettings.current_post_type + "/search",
       beforeSend: function (xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       },
       data: data,
-    }).then(data=>{
+    })
+    getContactsPromise.then((data)=>{
       if (offset){
         items = _.unionBy(items, data[wpApiSettings.current_post_type] || [], "ID")
       } else  {
