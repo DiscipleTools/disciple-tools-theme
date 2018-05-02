@@ -1606,7 +1606,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         }
                     }
                     if ( !empty( $location_sql ) ){
-                        $connections_sql_to .= "AND ( p2p_type = 'contacts_to_locations' AND p2p_to in (" . esc_sql( $location_sql ) .") )";
+                        $connections_sql_to .= "AND ( to_p2p.p2p_type = 'contacts_to_locations' AND to_p2p.p2p_to in (" . esc_sql( $location_sql ) .") )";
                     }
                 }
                 if ( $query_key === "subassigned" ) {
@@ -1624,10 +1624,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
         }
         if ( !empty( $connections_sql_to )){
-            $inner_joins .= " INNER JOIN $wpdb->p2p ON ( p2p_from = $wpdb->posts.ID )";
+            $inner_joins .= " INNER JOIN $wpdb->p2p as to_p2p ON ( to_p2p.p2p_from = $wpdb->posts.ID )";
         }
         if ( !empty( $connections_sql_from )){
-            $inner_joins .= " INNER JOIN $wpdb->p2p as from_p2p ON ( p2p_to = $wpdb->posts.ID )";
+            $inner_joins .= " INNER JOIN $wpdb->p2p as from_p2p ON ( from_p2p.p2p_to = $wpdb->posts.ID )";
         }
 
 

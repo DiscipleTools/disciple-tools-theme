@@ -545,13 +545,18 @@
     $("#filter-modal input:checked").each(function () {
       $(this).prop('checked', false)
     })
-    selectedFilters.empty()
+    selectedFilters.empty();
     $(".typeahead__query input").each(function () {
       let typeahead = Typeahead['.'+$(this).attr("class").split(/\s+/)[0]]
-      typeahead.items = []
-      typeahead.label.container.empty()
-      typeahead.adjustInputSize()
+      for (let i = 0; i < typeahead.items.length; i ){
+        typeahead.cancelMultiselectItem(0)
+      }
     })
+  })
+
+  $('.tabs-panel').on("click", function () {
+    let id = $(this).attr('id')
+    $(`.js-typeahead-${id}`).focus()
   })
 
   //create new filter

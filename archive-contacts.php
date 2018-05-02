@@ -179,7 +179,7 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
         <div class="grid-x grid-margin-x">
             <div class="cell small-4">
                 <ul class="vertical tabs" data-tabs id="example-tabs">
-                    <li class="tabs-title is-active"><a href="#assigned" aria-selected="true"><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?></a></li>
+                    <li class="tabs-title is-active"><a href="#assigned_to" aria-selected="true"><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?></a></li>
                     <li class="tabs-title"><a href="#subassigned"><?php esc_html_e( "Sub-assigned To", 'disciple_tools' ) ?></a></li>
                     <li class="tabs-title"><a href="#locations"><?php esc_html_e( "Locations", 'disciple_tools' ) ?></a></li>
                     <li class="tabs-title"><a href="#overall_status"><?php esc_html_e( "Status", 'disciple_tools' ) ?></a></li>
@@ -191,7 +191,7 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
 
             <div class="cell small-8">
                 <div class="tabs-content" data-tabs-content="example-tabs">
-                    <div class="tabs-panel is-active" id="assigned">
+                    <div class="tabs-panel is-active" id="assigned_to">
                         <h4><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?></h4>
                         <div class="assigned_to details">
                             <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
@@ -199,7 +199,7 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
                                 <div class="typeahead__container">
                                     <div class="typeahead__field">
                                         <span class="typeahead__query">
-                                            <input class="js-typeahead-assigned_to input-height"
+                                            <input class="js-typeahead-assigned_to"
                                                  name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
                                                  autocomplete="off">
                                         </span>
