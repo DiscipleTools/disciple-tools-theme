@@ -33,38 +33,28 @@
   if ( !savedFilters[wpApiSettings.current_post_type]){
     savedFilters[wpApiSettings.current_post_type] = []
   }
-  console.log(savedFilters);
   let filterToSave = ""
   let currentFilters = $("#current-filters")
   let newFilterLabels = []
   let typeaheadTotals = {}
   let loading_spinner = $(".loading-spinner")
 
-  let viewParam = getUrlParameter("view")
-  if ( viewParam ){
-    $('[name="view"]').removeAttr('checked');
-    if ( viewParam === "saved-filters"){
-      let id = getUrlParameter("id")
-      if ( id ){
-        $(`input[name=view][value=saved-filters][data-id='${id}']`).prop('checked', true);
+  //look at the cookie to see what was the last selected view
+  let cachedFilter = JSON.parse(getCookie("last_view")||"{}")
+  if ( cachedFilter && !_.isEmpty(cachedFilter)){
+    if (cachedFilter.type==="saved-filters"){
+      if ( _.find(savedFilters["contacts"], {ID: cachedFilter.ID})){
+        $(`input[name=view][value=saved-filters][data-id='${cachedFilter.ID}']`).prop('checked', true);
       }
-    } else if ( viewParam === "custom_filter" ){
-      let filter = JSON.parse(getCookie("last_view"))
-      if (filter){
-        newFilterLabels = filter.labels
-        searchQuery = filter.query
-        addCustomFilter(filter.name)
-      } else {
-        let filterParams = getUrlParameter("filter")
-        if ( filterParams ){
-          searchQuery = JSON.parse( decodeURIComponent( filterParams ));
-          addCustomFilter("Custom Filter")
-        }
-      }
-    } else {
-      $("input[name=view][value=" + viewParam + "]").prop('checked', true);
+    } else if ( cachedFilter.type==="default" ){
+      $("input[name=view][value=" + cachedFilter.ID + "]").prop('checked', true);
+    } else if ( cachedFilter.type === "custom_filter" ){
+      newFilterLabels = cachedFilter.labels
+      searchQuery = cachedFilter.query
+      addCustomFilter(cachedFilter.name)
     }
   }
+
   getContactForCurrentView()
 
   function get_contacts(query, filter, offset) {
@@ -266,11 +256,6 @@
   function setupCurrentFilterLabels(query, filter) {
     let html = ""
 
-    // if (filter && filter.labels.length === 0){
-    //   _.forOwn(filter.query, (value, key)=>{
-    //     _.get(wpApiSettings, `groups_custom_fields_settings${key}`)
-    //   })
-    // }
     if (filter && filter.labels){
       filter.labels.forEach(label=>{
         html+= `<span class="current-filter ${label.field}" id="${label.id}">${label.name}</span>`
@@ -287,7 +272,6 @@
           html += `<span class="current-filter search" id="${query[query_key]}">${query[query_key]}</span>`
         }
       }
-
     }
     currentFilters.html(html)
   }
@@ -296,36 +280,44 @@
     let checked = $(".js-list-view:checked")
     let currentView = checked.val()
     let query = {assigned_to:["me"]}
-    let filter = null
+    let filter = {type:"default", ID:currentView, query:{}, labels:[{ id:"me", name:"My Contacts", field: "assigned"}]}
     let viewGetParam = `?view=${currentView}`
     if ( currentView === "all_contacts" ){
       query.assigned_to = ["all"]
+      filter.labels = [{ id:"all", name:"All", field: "assigned"}]
     } else if ( currentView === "contacts_shared_with_me" ){
-      // query.include = ["shared"]
       query.assigned_to = ["shared"]
+      filter.labels = [{ id:"shared", name:"Shared with me", field: "assigned"}]
     }
     if ( currentView === "assignment_needed" ){
       query.overall_status = ["unassigned"]
+      filter.labels = [{ id:"unassigned", name:"Assignment needed", field: "assigned"}]
     } else if ( currentView === "update_needed" ){
+      filter.labels = [{ id:"update_needed", name:"Update needed", field: "requires_update"}]
       query.requires_update = ["yes"]
     } else if ( currentView === "meeting_scheduled" ){
       query.overall_status = ["active"]
       query.seeker_path = ["scheduled"]
+      filter.labels = [{ id:"active", name:"Meeting scheduled", field: "seeker_path"}]
     } else if ( currentView === "contact_unattempted" ){
       query.overall_status = ["active"]
       query.seeker_path = ["none"]
+      filter.labels = [{ id:"all", name:"Contact attempt needed", field: "seeker_path"}]
     } else if ( currentView === "custom_filter"){
       let filterId = checked.data("id")
       filter = _.find(customFilters, {ID:filterId})
+      filter.type = currentView
       query = filter.query
-      viewGetParam += `&filter=${encodeURIComponent(JSON.stringify(query))}`
+      // viewGetParam += `&filter=${encodeURIComponent(JSON.stringify(query))}`
     } else if ( currentView === "saved-filters" ){
       let filterId = checked.data("id")
       filter = _.find(savedFilters[wpApiSettings.current_post_type], {ID:filterId})
+      filter.type = currentView
       query = filter.query
-      viewGetParam += `&id=${filterId}`
+      // viewGetParam += `&id=${filterId}`
     }
-    history.pushState(null, null, viewGetParam);
+    filter.query = query
+    // history.pushState(null, null, viewGetParam);
     searchQuery = JSON.parse(JSON.stringify(query))
     get_contacts(query, filter)
 
@@ -557,8 +549,17 @@
 
 
   $('#filter-modal').on("open.zf.reveal", function () {
-    console.log("open modal");
-    // @todo reset filter
+    newFilterLabels=[]
+    $("#filter-modal input:checked").each(function () {
+      $(this).prop('checked', false)
+    })
+    selectedFilters.empty()
+    $(".typeahead__query input").each(function () {
+      let typeahead = Typeahead['.'+$(this).attr("class").split(/\s+/)[0]]
+      typeahead.items = []
+      typeahead.label.container.empty()
+      typeahead.adjustInputSize()
+    })
   })
 
   //create new filter
@@ -581,7 +582,6 @@
     $("#faith_milestones-options input:checked").each(function(){
       searchQuery[$(this).val()] = ["yes"]
     })
-    console.log(searchQuery);
     addCustomFilter("Custom Filter")
   })
 

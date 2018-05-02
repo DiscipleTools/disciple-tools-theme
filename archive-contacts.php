@@ -110,7 +110,7 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
                         </label>
                         <label class="list-view">
                             <input type="radio" name="view" value="contact_unattempted" class="js-list-view" autocomplete="off">
-                            <?php esc_html_e( "Contact unattempted", "disciple_tools" ); ?>
+                            <?php esc_html_e( "Contact attempt needed", "disciple_tools" ); ?>
                             <span class="list-view__count js-list-view-count" data-value="contact_unattempted">.</span>
                         </label>
                     </div>
@@ -198,11 +198,11 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
                             <div id="assigned_to_t" name="form-assigned_to">
                                 <div class="typeahead__container">
                                     <div class="typeahead__field">
-                      <span class="typeahead__query">
-                          <input class="js-typeahead-assigned_to input-height"
-                                 name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
-                                 autocomplete="off">
-                      </span>
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-assigned_to input-height"
+                                                 name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
+                                                 autocomplete="off">
+                                        </span>
                                     </div>
                                 </div>
                             </div>
