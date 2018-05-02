@@ -122,6 +122,9 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
 
                 </div>
                 <h5><?php esc_html_e( 'Custom Filters', "disciple_tools" ); ?></h5>
+                <div style="margin-bottom: 5px">
+                    <a data-open="filter-modal"><img style="display: inline-block; margin-right:12px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add-blue.svg' ) ?>"/><?php esc_html_e( "Add new filter", 'disciple_tools' ) ?></a>
+                </div>
                 <div class="custom-filters">
 
                 </div>
@@ -177,6 +180,7 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
             <div class="cell small-4">
                 <ul class="vertical tabs" data-tabs id="example-tabs">
                     <li class="tabs-title is-active"><a href="#assigned" aria-selected="true"><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?></a></li>
+                    <li class="tabs-title"><a href="#subassigned"><?php esc_html_e( "Sub-assigned To", 'disciple_tools' ) ?></a></li>
                     <li class="tabs-title"><a href="#locations"><?php esc_html_e( "Locations", 'disciple_tools' ) ?></a></li>
                     <li class="tabs-title"><a href="#overall_status"><?php esc_html_e( "Status", 'disciple_tools' ) ?></a></li>
                     <li class="tabs-title"><a href="#seeker_path"><?php esc_html_e( "Seeker Path", 'disciple_tools' ) ?></a></li>
@@ -199,6 +203,23 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
                                  name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
                                  autocomplete="off">
                       </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabs-panel" id="subassigned">
+                        <h4><?php esc_html_e( "Sub-assigned to", 'disciple_tools' ) ?></h4>
+                        <div class="subassigned details">
+                            <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
+                            <div id="subassigned_t" name="form-subassigned">
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
+                                    <span class="typeahead__query">
+                                        <input class="js-typeahead-subassigned input-height"
+                                               name="subassigned[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
+                                               autocomplete="off">
+                                    </span>
                                     </div>
                                 </div>
                             </div>

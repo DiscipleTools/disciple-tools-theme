@@ -1593,7 +1593,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         $inner_joins = "";
-        $connections_sql = "";
+        $connections_sql_to = "";
+        $connections_sql_from = "";
         foreach ( $query as $query_key => $query_value ) {
             if ( in_array( $query_key, self::$contact_connection_types ) ) {
                 if ( $query_key === "locations" ) {
@@ -1605,13 +1606,28 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         }
                     }
                     if ( !empty( $location_sql ) ){
-                        $connections_sql .= "AND ( p2p_type = 'contacts_to_locations' AND p2p_to in (" . esc_sql( $location_sql ) .") )";
+                        $connections_sql_to .= "AND ( p2p_type = 'contacts_to_locations' AND p2p_to in (" . esc_sql( $location_sql ) .") )";
+                    }
+                }
+                if ( $query_key === "subassigned" ) {
+                    $subassigned_sql = "";
+                    foreach ( $query_value as $subassigned ) {
+                        $l = get_post( $subassigned );
+                        if ( $l && $l->post_type === "contacts" ){
+                            $subassigned_sql .= empty( $subassigned_sql ) ? $l->ID : ( ",".$l->ID );
+                        }
+                    }
+                    if ( !empty( $subassigned_sql ) ){
+                        $connections_sql_from .= "AND ( from_p2p.p2p_type = 'contacts_to_subassigned' AND from_p2p.p2p_from in (" . esc_sql( $subassigned_sql ) .") )";
                     }
                 }
             }
         }
-        if ( !empty( $connections_sql )){
-            $inner_joins .= "INNER JOIN $wpdb->p2p ON ( p2p_from = $wpdb->posts.ID )";
+        if ( !empty( $connections_sql_to )){
+            $inner_joins .= " INNER JOIN $wpdb->p2p ON ( p2p_from = $wpdb->posts.ID )";
+        }
+        if ( !empty( $connections_sql_from )){
+            $inner_joins .= " INNER JOIN $wpdb->p2p as from_p2p ON ( p2p_to = $wpdb->posts.ID )";
         }
 
 
@@ -1703,7 +1719,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 OR
                 ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'next_gen' )
                 OR ( $wpdb->postmeta.meta_key IS NULL )
-            ) " . $connections_sql . " " . $meta_query . " " . $includes_query . " " . $access_query . "
+            ) " . $connections_sql_to . " ". $connections_sql_from . " " . $meta_query . " " . $includes_query . " " . $access_query . "
             AND $wpdb->posts.post_type = %s
             AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
             GROUP BY $wpdb->posts.ID 
