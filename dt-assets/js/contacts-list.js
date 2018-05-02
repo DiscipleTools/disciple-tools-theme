@@ -461,16 +461,8 @@
         data: [],
         callback: {
           onCancel: function (node, item) {
-            // API.save_field_api('contact', contactId, {[field_id]: {values:[{value:item.ID, delete:true}]}}).then(()=>{
-            //   if(field_id === "subassigned"){
-            //     $(`.${field_id}-list .${item.ID}`).remove()
-            //     let listItems = $(`.${field_id}-list li`)
-            //     if (listItems.length === 0){
-            //       $(`.${field_id}-list.details-list`).append(`<li id="no-${field_id}">${contactsDetailsWpApiSettings.translations["not-set"][field_id]}</li>`)
-            //     }
-            //
-            //   }
-            // })
+            $(`#${item.ID}.subassigned`).remove()
+            _.pullAllBy(newFilterLabels, [{id:item.ID}], "id")
           }
         },
         href: "/contacts/{{ID}}"
