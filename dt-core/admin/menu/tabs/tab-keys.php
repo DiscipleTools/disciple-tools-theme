@@ -33,6 +33,7 @@ class Disciple_Tools_Keys_Tab extends Disciple_Tools_Abstract_Menu_Base
      */
     public function __construct()
     {
+        add_submenu_page( 'dt_options', __( 'Google Map API', 'disciple_tools' ), __( 'Google Map API', 'disciple_tools' ), 'manage_dt', 'admin.php?page=dt_options&tab=google-map', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 20, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
 
