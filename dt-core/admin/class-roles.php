@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 9;
+    private static $target_roles_version_number = 11;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -110,12 +110,6 @@ class Disciple_Tools_Roles
                 'manage_dt'                 => true, // key capability for wp-admin dt administration
 
                 'view_project_metrics' => true,
-
-                // Manage Users
-                'edit_users'                => true,
-                'create_users'              => true,
-                'delete_users'              => true,
-                'list_users'                => true,
 
                 /* Add custom caps for contacts */
                 'access_contacts'           => true,
@@ -212,6 +206,7 @@ class Disciple_Tools_Roles
                 'view_project_metrics'      => true,
 
                 // Manage Users
+                'promote_users'             => true,
                 'edit_users'                => true,
                 'create_users'              => true,
                 'delete_users'              => true,
