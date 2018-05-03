@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 9;
+    private static $target_roles_version_number = 10;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -112,6 +112,7 @@ class Disciple_Tools_Roles
                 'view_project_metrics' => true,
 
                 // Manage Users
+                'promote_users'             => true,
                 'edit_users'                => true,
                 'create_users'              => true,
                 'delete_users'              => true,
@@ -212,6 +213,7 @@ class Disciple_Tools_Roles
                 'view_project_metrics'      => true,
 
                 // Manage Users
+                'promote_users'             => true,
                 'edit_users'                => true,
                 'create_users'              => true,
                 'delete_users'              => true,
