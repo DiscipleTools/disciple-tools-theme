@@ -2351,8 +2351,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'needs_assigned' => 0,
         ] );
 
-        dt_write_log( $numbers );
-
         return $numbers;
     }
 
