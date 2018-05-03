@@ -21,8 +21,7 @@
     }
     return "";
   }
-  // var urlParams = new URLSearchParams(window.location.search);
-  let searchQuery = {assigned_to:['me']};
+  let currentFilter = {}
   const current_username = wpApiSettings.current_user_login;
   let items = []
   let customFilters = []
@@ -38,32 +37,34 @@
   let newFilterLabels = []
   let typeaheadTotals = {}
   let loading_spinner = $(".loading-spinner")
+  let tableHeaderRow = $('.js-list thead .sortable th')
   let getContactsPromise = null
 
   //look at the cookie to see what was the last selected view
   let cachedFilter = JSON.parse(getCookie("last_view")||"{}")
   if ( cachedFilter && !_.isEmpty(cachedFilter)){
     if (cachedFilter.type==="saved-filters"){
-      if ( _.find(savedFilters["contacts"], {ID: cachedFilter.ID})){
+      if ( _.find(savedFilters[wpApiSettings.current_post_type], {ID: cachedFilter.ID})){
         $(`input[name=view][value=saved-filters][data-id='${cachedFilter.ID}']`).prop('checked', true);
       }
     } else if ( cachedFilter.type==="default" ){
       $("input[name=view][value=" + cachedFilter.ID + "]").prop('checked', true);
     } else if ( cachedFilter.type === "custom_filter" ){
-      newFilterLabels = cachedFilter.labels
-      searchQuery = cachedFilter.query
-      addCustomFilter(cachedFilter.name)
+      addCustomFilter(cachedFilter.name, "default", cachedFilter.query, cachedFilter.labels)
     }
   }
 
-  getContactForCurrentView()
-
-  function get_contacts(query, filter, offset) {
+  function get_contacts( offset = 0, sort ) {
     loading_spinner.addClass("active")
-    let data = query || searchQuery
-    document.cookie = `last_view=${JSON.stringify(filter)}`
+    let data = currentFilter.query
+
+    document.cookie = `last_view=${JSON.stringify(currentFilter)}`
     if ( offset ){
       data.offset = offset
+    }
+    if ( sort ){
+      data.sort = sort
+      data.offset = 0
     }
     //abort previous promise if it is not finished.
     if (getContactsPromise && _.get(getContactsPromise, "readyState") !== 4){
@@ -85,7 +86,7 @@
       $('.filter-result-text').html(`Showing ${items.length} of ${data.total}`)
       $("#current-filters").html(selectedFilters.html())
       displayRows();
-      setupCurrentFilterLabels(query || searchQuery, filter)
+      setupCurrentFilterLabels()
       loading_spinner.removeClass("active")
     })
   }
@@ -110,8 +111,8 @@
           .val("saved-filters")
           .data("id", filter.ID)
           .on("change", function() {
-            getContactForCurrentView()
           });
+        getContactForCurrentView()
         savedFiltersList.append(
           $("<div>").append(
             $("<label>")
@@ -163,6 +164,7 @@
           </span>
       </td>
       <td class="hide-for-small-only"><span class="status status--<%- overall_status %>"><%- status %></span></td>
+      <td class="hide-for-small-only"><span class="status status--<%- seeker_path %>"><%- seeker_path %></span></td>
       <td class="hide-for-small-only">
         <span class="milestone milestone--<%- sharing_milestone_key %>"><%- sharing_milestone %></span>
         <br>
@@ -216,12 +218,13 @@
       ['planting', 'in_group', 'sharing', 'can_share'],
       function(key) { return contact["milestone_" + key]; }
     );
-    let status = "";
-    if (contact.overall_status === "active") {
-      status = ccfs.seeker_path.default[contact.seeker_path];
-    } else {
-      status = ccfs.overall_status.default[contact.overall_status];
-    }
+    let status = ccfs.overall_status.default[contact.overall_status];
+    let seeker_path = ccfs.seeker_path.default[contact.seeker_path];
+    // if (contact.overall_status === "active") {
+    //   status = ccfs.seeker_path.default[contact.seeker_path];
+    // } else {
+    //   status = ccfs.overall_status.default[contact.overall_status];
+    // }
     const group_links = _.map(contact.groups, function(group) {
       return '<a href="' + _.escape(group.permalink) + '">' + group.post_title + "</a>";
     }).join(", ");
@@ -230,6 +233,7 @@
       status,
       belief_milestone_key,
       sharing_milestone_key,
+      seeker_path,
       belief_milestone: (ccfs["milestone_" + belief_milestone_key] || {}).name || "",
       sharing_milestone: (ccfs["milestone_" + sharing_milestone_key] || {}).name || "",
       group_links,
@@ -259,14 +263,15 @@
   });
 
 
-  function setupCurrentFilterLabels(query, filter) {
+  function setupCurrentFilterLabels() {
     let html = ""
-
+    let filter = currentFilter
     if (filter && filter.labels){
       filter.labels.forEach(label=>{
         html+= `<span class="current-filter ${label.field}" id="${label.id}">${label.name}</span>`
       })
     } else {
+      let query = filter.query
       for( let query_key in query ) {
         if (Array.isArray(query[query_key])) {
 
@@ -285,6 +290,13 @@
   function getContactForCurrentView() {
     let checked = $(".js-list-view:checked")
     let currentView = checked.val()
+    //reset sorting in table header
+    tableHeaderRow.removeClass("sorting_asc")
+    tableHeaderRow.removeClass("sorting_desc")
+    $('.js-list thead .sortable th[data-id="overall_status"]').addClass("sorting_asc")
+    tableHeaderRow.data("sort", '')
+    $('.js-list thead .sortable th[data-id="overall_status"]').data("sort", 'asc')
+
     let query = {assigned_to:["me"]}
     let filter = {type:"default", ID:currentView, query:{}, labels:[{ id:"me", name:"My Contacts", field: "assigned"}]}
     let viewGetParam = `?view=${currentView}`
@@ -314,21 +326,21 @@
       filter = _.find(customFilters, {ID:filterId})
       filter.type = currentView
       query = filter.query
-      // viewGetParam += `&filter=${encodeURIComponent(JSON.stringify(query))}`
     } else if ( currentView === "saved-filters" ){
       let filterId = checked.data("id")
       filter = _.find(savedFilters[wpApiSettings.current_post_type], {ID:filterId})
       filter.type = currentView
       query = filter.query
-      // viewGetParam += `&id=${filterId}`
     }
     filter.query = query
-    // history.pushState(null, null, viewGetParam);
-    searchQuery = JSON.parse(JSON.stringify(query))
-    get_contacts(query, filter)
 
+    currentFilter = JSON.parse(JSON.stringify(filter))
+
+    get_contacts()
   }
-
+  if (!getContactsPromise){
+    getContactForCurrentView()
+  }
 
 
   /**
@@ -569,7 +581,7 @@
   let selectedFilters = $("#selected-filters")
   $("#confirm-filter-contacts").on("click", function () {
 
-    searchQuery = {}
+    let searchQuery = {}
     searchQuery.assigned_to = _.map(_.get(Typeahead['.js-typeahead-assigned_to'], "items"), "ID")
     searchQuery.subassigned = _.map(_.get(Typeahead['.js-typeahead-subassigned'], "items"), "ID")
     searchQuery.locations = _.map(_.get(Typeahead['.js-typeahead-locations'], "items"), "ID")
@@ -585,13 +597,15 @@
     $("#faith_milestones-options input:checked").each(function(){
       searchQuery[$(this).val()] = ["yes"]
     })
-    addCustomFilter("Custom Filter")
+    addCustomFilter("Custom Filter", "custom-filter", searchQuery, newFilterLabels)
   })
 
-  function addCustomFilter(name) {
+  function addCustomFilter(name, type, query, labels) {
+    query = query || currentFilter.query
     let ID = new Date().getTime() / 1000
-    let newFilter = {ID:ID, name:name, query:JSON.parse(JSON.stringify(searchQuery)), labels:newFilterLabels}
-    customFilters.push(newFilter)
+
+    currentFilter = {ID, type, name, query:JSON.parse(JSON.stringify(query)), labels:labels}
+    customFilters.push(JSON.parse(JSON.stringify(currentFilter)))
 
     let saveFilter = $(`<span style="float:right" data-filter="${ID}">Save</span>`).on("click", function () {
       $('#save-filter-modal').foundation('open');
@@ -631,16 +645,15 @@
 
   $("#search-contacts").on("click", function () {
     let searchText = $("#search-query").val()
-    console.log(searchText);
-    searchQuery = {text:searchText, assigned_to:["all"]}
-    addCustomFilter(searchText)
-
+    let query = {text:searchText, assigned_to:["all"]}
+    let labels = [{ id:"search", name:searchText, field: "search"}]
+    addCustomFilter(searchText, "search", query, labels)
   })
   $("#search-contacts-mobile").on("click", function () {
     let searchText = $("#search-query-mobile").val()
-    console.log(searchText);
-    searchQuery = {text:searchText, assigned_to:["all"]}
-    get_contacts(searchQuery)
+    let query = {text:searchText, assigned_to:["all"]}
+    let labels = [{ id:"search", name:searchText, field: "search"}]
+    addCustomFilter(searchText, "search", query, labels)
   })
 
 
@@ -659,7 +672,26 @@
   })
 
   $("#load-more").on('click', function () {
-    get_contacts(null, null, items.length)
+    get_contacts( items.length )
+  })
+
+  $('.js-list th').click(function () {
+    let id = $(this).data('id')
+    let sort = $(this).data('sort')
+    tableHeaderRow.removeClass("sorting_asc")
+    tableHeaderRow.removeClass("sorting_desc")
+    tableHeaderRow.data("sort", '')
+    if ( !sort || sort === 'desc' ){
+      $(this).data('sort', 'asc')
+      $(this).addClass("sorting_asc")
+      $(this).removeClass("sorting_desc")
+    } else {
+      $(this).data('sort', 'desc')
+      $(this).removeClass("sorting_asc")
+      $(this).addClass("sorting_desc")
+      id = `-${id}`
+    }
+    get_contacts(0, id)
   })
 
 })(window.jQuery, window.wpApiSettings, window.Foundation);

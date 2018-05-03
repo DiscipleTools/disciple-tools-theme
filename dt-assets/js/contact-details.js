@@ -73,6 +73,31 @@ function contactUpdated(updateNeeded) {
   $('#update-needed').prop("checked", updateNeeded)
 
 }
+function details_accept_contact(contactId, accept){
+  console.log(contactId)
+
+  let data = {accept:accept}
+  jQuery.ajax({
+    type: "POST",
+    data: JSON.stringify(data),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    url: contactsDetailsWpApiSettings.root + 'dt/v1/contact/' + contactId + "/accept",
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', contactsDetailsWpApiSettings.nonce);
+    }
+  }).then(function (data) {
+    jQuery('#accept-contact').hide()
+    if (data && data['overall_status']){
+      jQuery('#overall-status').text(data['overall_status'])
+    }
+    if(data && data["assigned_to"]){
+      jQuery('.current-assigned').text(data["assigned_to"])
+    }
+  }).catch(err=>{
+    jQuery("#errors").append(err.responseText)
+  })
+}
 
 
 
@@ -938,33 +963,7 @@ jQuery(document).ready(function($) {
     itemSelector: '.grid-item',
     percentPosition: true
   });
+  //leave at the end
 })
 
 
-let editingAll = false
-
-function details_accept_contact(contactId, accept){
-  console.log(contactId)
-
-  let data = {accept:accept}
-  jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: contactsDetailsWpApiSettings.root + 'dt/v1/contact/' + contactId + "/accept",
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', contactsDetailsWpApiSettings.nonce);
-    }
-  }).then(function (data) {
-    jQuery('#accept-contact').hide()
-    if (data && data['overall_status']){
-      jQuery('#overall-status').text(data['overall_status'])
-    }
-    if(data && data["assigned_to"]){
-      jQuery('.current-assigned').text(data["assigned_to"])
-    }
-  }).catch(err=>{
-    jQuery("#errors").append(err.responseText)
-  })
-}

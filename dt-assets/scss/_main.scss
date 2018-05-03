@@ -1587,10 +1587,17 @@ html[dir='rtl'] {
     margin-bottom: 0.375rem;
 }
 
-#content table.dataTable thead .sorting_desc {
+#content table thead .sortable th {
+    background-repeat: no-repeat;
+    background-position: center right;
+    padding-right:1.5rem;
+    background-image: url("/wp-content/themes/disciple-tools-theme/dt-assets/images/sort_both.png")
+}
+
+#content table thead .sortable .sorting_desc {
     background-image: url("/wp-content/themes/disciple-tools-theme/dt-assets/images/sort_desc.png")
 }
-#content table.dataTable thead .sorting_asc {
+#content table thead .sortable .sorting_asc {
     background-image: url("/wp-content/themes/disciple-tools-theme/dt-assets/images/sort_asc.png")
 }
 

@@ -279,7 +279,7 @@
       `<span class="status status--${_.escape(contact.overall_status)}">${_.escape(status)}</span>`,
       `<span class="milestone milestone--${_.escape(sharing_milestone_key)}">${_.escape((ccfs["milestone_" + sharing_milestone_key] || {}).name || "")}</span>
       <br>
-      <span class="milestone milestone--${_.escape(belief_milestone_key)}">${_.escape((ccfs["milestone_" + sharing_milestone_key] || {}).name || "")}</span>`,
+      <span class="milestone milestone--${_.escape(belief_milestone_key)}">${_.escape((ccfs["milestone_" + belief_milestone_key] || {}).name || "")}</span>`,
       _.escape(contact.assigned_to? contact.assigned_to.name :""),
       _.escape(contact.locations.join("")),
       group_links,

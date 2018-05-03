@@ -26,14 +26,17 @@ declare(strict_types=1);
     </div>
 
     <table class="table-remove-top-border js-list stack striped">
-        <thead><tr>
-            <th class="all" data-priority="2"><?php esc_html_e( "Name" ); ?></th>
-            <th class="not-mobile"><?php esc_html_e( "Status", "disciple_tools" ); ?></th>
-            <th class="desktop"><?php esc_html_e( "Faith Milestones", "disciple_tools" ); ?></th>
-            <th class="desktop" data-priority="4"><?php esc_html_e( "Assigned to", "disciple_tools" ); ?></th>
-            <th class="not-mobile"><?php esc_html_e( "Location", "disciple_tools" ); ?></th>
-            <th class="not-mobile" data-priority="3"><?php esc_html_e( "Group", "disciple_tools" ); ?></th>
-        </tr></thead>
+        <thead>
+            <tr class="sortable">
+                <th class="all" data-id="name" data-priority="2"><?php esc_html_e( "Name" ); ?></th>
+                <th class="not-mobile" data-id="overall_status" data-sort="asc"><?php esc_html_e( "Status", "disciple_tools" ); ?></th>
+                <th class="not-mobile" data-id="seeker_path"><?php esc_html_e( "Seeker Path", "disciple_tools" ); ?></th>
+                <th class="desktop" data-id="faith_milestones"><?php esc_html_e( "Faith Milestones", "disciple_tools" ); ?></th>
+                <th class="desktop" data-id="assigned_to" data-priority="4"><?php esc_html_e( "Assigned to", "disciple_tools" ); ?></th>
+                <th class="not-mobile" data-id="locations"><?php esc_html_e( "Location", "disciple_tools" ); ?></th>
+                <th class="not-mobile" data-id="groups" data-priority="3"><?php esc_html_e( "Group", "disciple_tools" ); ?></th>
+            </tr>
+        </thead>
         <tbody>
         <tr class="js-list-loading"><td colspan=7><?php esc_html_e( "Loading...", "disciple_tools" ); ?></td></tr>
         </tbody>

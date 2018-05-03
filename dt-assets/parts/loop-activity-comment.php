@@ -17,7 +17,7 @@
             <div class="cell auto">
                 <ul class="dropdown menu" data-dropdown-menu $dropdownmenu-arrow-color="white">
                     <li style="border-radius: 5px">
-                        <a class="button menu-white-dropdown-arrow" href="#"
+                        <a class="button menu-white-dropdown-arrow"
                            style="background-color: #00897B; color: white;">
                             <?php esc_html_e( "Quick actions", 'disciple_tools' ) ?></a>
                         <ul class="menu">

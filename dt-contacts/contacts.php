@@ -1586,6 +1586,17 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $offset = esc_sql( sanitize_text_field( $query["offset"] ) );
             unset( $query["offset"] );
         }
+        $sort = "overall_status";
+        $sort_dir = "asc";
+        if ( isset( $query["sort"] )){
+            $sort = esc_sql( sanitize_text_field( $query["sort"] ) );
+            if ( strpos( $sort, "-") === 0 ){
+                $sort_dir = "desc";
+                $sort = str_replace( "-", "", $sort );
+            }
+            unset( $query["sort"]);
+        }
+
 
         $bad_fields = self::check_for_invalid_fields( $query );
         if ( !empty( $bad_fields ) ) {
@@ -1706,13 +1717,51 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         $access_query = $access_query ? ( "AND ( " . $access_query . " ) " ) : "";
+
+        $sort_sql = "$wpdb->posts.post_date asc";
+        $sort_join = "";
+        if ( $sort === "overall_status" || $sort === "seeker_path" ){
+            $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
+            $keys = array_keys( self::$contact_fields[$sort]["default"] );
+            $sort_sql = "CASE ";
+            foreach( $keys as $index => $key ){
+                $i = $key == "closed" ? 99 : $index;
+                $sort_sql .= "WHEN ( sort.meta_value = '" . esc_sql( $key )  . "' ) THEN $i ";
+            }
+            $sort_sql .= "else 98 end ";
+            $sort_sql .= $sort_dir;
+        } elseif ( $sort === "name" ){
+            $sort_sql = "$wpdb->posts.post_title  " . $sort_dir;
+        } elseif ( $sort === "faith_milestones" ){
+            $all_field_keys = array_keys( self::$contact_fields );
+            $sort_sql = "CASE ";
+            $sort_join = "";
+            foreach ( array_reverse ( $all_field_keys ) as $field_index => $field_key ){
+                if ( strpos( $field_key, "milestone_" ) === 0 ){
+                    $alias = 'faith_' . esc_sql( $field_key );
+                    $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON 
+                    ( $wpdb->posts.ID = $alias.post_id AND $alias.meta_key = '" . esc_sql( $field_key ) . "' AND $alias.meta_value = 'yes') ";
+                    $sort_sql .= "WHEN ( $alias.meta_key = '" . esc_sql( $field_key ) . "' ) THEN $field_index ";
+                }
+            }
+            $sort_sql .= "else 1000 end ";
+            $sort_sql .= $sort_dir;
+        } elseif ( $sort === "assigned_to" ){
+            $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
+            $sort_sql = "sort.meta_value $sort_dir";
+        } elseif ( $sort === "locations" || $sort === "groups" ){
+            $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = 'contacts_to_$sort' ) 
+            LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_to)";
+            $sort_sql = "ISNULL(p2p_post.post_name), p2p_post.post_name $sort_dir";
+        }
+
         // phpcs:disable
 
         $prepared_sql = $wpdb->prepare("
-            SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, post_title, post_type FROM $wpdb->posts
+            SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, $wpdb->posts.post_title, $wpdb->posts.post_type FROM $wpdb->posts
             LEFT JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id AND $wpdb->postmeta.meta_key = 'type' )
-            INNER JOIN $wpdb->postmeta as status ON ( $wpdb->posts.ID = status.post_id AND status.meta_key = 'overall_status')
-            " . $inner_joins . " " . $share_joins . " " . $access_joins . "
+            
+            " . $sort_join . " " . $inner_joins . " " . $share_joins . " " . $access_joins . "
             WHERE 1=1 
             AND (
                 ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'media' )
@@ -1723,14 +1772,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             AND $wpdb->posts.post_type = %s
             AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
             GROUP BY $wpdb->posts.ID 
-            ORDER BY CASE 
-            WHEN ( status.meta_value = 'unassigned') THEN 1
-            WHEN ( status.meta_value = 'assigned') THEN 2 
-            WHEN ( status.meta_value = 'active') THEN 3 
-            WHEN ( status.meta_value = 'paused') THEN 4 
-            WHEN ( status.meta_value = 'closed') THEN 99 
-            else 10
-            end asc
+            ORDER BY " . $sort_sql . "
             LIMIT %d, 100
             ",
             "contacts",
