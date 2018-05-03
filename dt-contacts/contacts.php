@@ -1590,11 +1590,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $sort_dir = "asc";
         if ( isset( $query["sort"] )){
             $sort = esc_sql( sanitize_text_field( $query["sort"] ) );
-            if ( strpos( $sort, "-") === 0 ){
+            if ( strpos( $sort, "-" ) === 0 ){
                 $sort_dir = "desc";
                 $sort = str_replace( "-", "", $sort );
             }
-            unset( $query["sort"]);
+            unset( $query["sort"] );
         }
 
 
@@ -1724,7 +1724,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
             $keys = array_keys( self::$contact_fields[$sort]["default"] );
             $sort_sql = "CASE ";
-            foreach( $keys as $index => $key ){
+            foreach ( $keys as $index => $key ){
                 $i = $key == "closed" ? 99 : $index;
                 $sort_sql .= "WHEN ( sort.meta_value = '" . esc_sql( $key )  . "' ) THEN $i ";
             }
@@ -1736,7 +1736,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $all_field_keys = array_keys( self::$contact_fields );
             $sort_sql = "CASE ";
             $sort_join = "";
-            foreach ( array_reverse ( $all_field_keys ) as $field_index => $field_key ){
+            foreach ( array_reverse( $all_field_keys ) as $field_index => $field_key ){
                 if ( strpos( $field_key, "milestone_" ) === 0 ){
                     $alias = 'faith_' . esc_sql( $field_key );
                     $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON 
