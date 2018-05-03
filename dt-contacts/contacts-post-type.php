@@ -107,12 +107,11 @@ class Disciple_Tools_Contact_Post_Type
         $this->taxonomies = $taxonomies = [];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
-        //      add_action( 'init', array( $this, 'register_taxonomy' ) );
         add_action( 'init', [ $this, 'contacts_rewrites_init' ] );
         add_filter( 'post_type_link', [ $this, 'contacts_permalink' ], 1, 3 );
 
         if ( is_admin() ) {
-            //            global $pagenow;
+            add_action( 'admin_menu', [ $this, 'disable_new_contacts_in_admin_area' ] );
 
             add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
@@ -204,19 +203,6 @@ class Disciple_Tools_Contact_Post_Type
     } // End register_post_type()
 
     /**
-     * Register the "contacts-category" taxonomy.
-     *
-     * @access public
-     * @since  1.3.0
-     * @return void
-     */
-    public function register_taxonomy()
-    {
-        $this->taxonomies['contacts-type'] = new Disciple_Tools_Taxonomy( $post_type = 'contacts', $token = 'contacts-type', $singular = 'Type', $plural = 'Type', $args = [] ); // Leave arguments empty, to use the default arguments.
-        $this->taxonomies['contacts-type']->register();
-    } // End register_taxonomy()
-
-    /**
      * Update messages for the post type admin.
      *
      * @since  0.1.0
@@ -288,7 +274,7 @@ class Disciple_Tools_Contact_Post_Type
             echo '<tbody>' . "\n";
 
             foreach ( $field_data as $k => $v ) {
-                dt_write_log( $v );
+
                 if ( ( isset( $v['section'] ) && $v['section'] == $section ) || $section == 'all' ) {
 
                     $data = $v['default'];
@@ -1267,6 +1253,19 @@ class Disciple_Tools_Contact_Post_Type
     public function contacts_rewrites_init()
     {
         add_rewrite_rule( 'contacts/([0-9]+)?$', 'index.php?post_type=contacts&p=$matches[1]', 'top' );
+    }
+
+    public function disable_new_contacts_in_admin_area() {
+        // Hide sidebar link
+        global $submenu;
+        unset( $submenu['edit.php?post_type=contacts'][10] );
+
+        // Hide link on listing page
+        if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'contacts') {
+            echo '<style type="text/css">
+            .page-title-action { display:none; }
+        </style>';
+        }
     }
 
 } // End Class
