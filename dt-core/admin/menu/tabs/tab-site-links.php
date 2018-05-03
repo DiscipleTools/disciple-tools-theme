@@ -34,7 +34,7 @@ class Disciple_Tools_Site_Links_Tab extends Disciple_Tools_Abstract_Menu_Base
     } // End __construct()
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'Site Link System', 'disciple_tools' ), __( 'Site Link System', 'disciple_tools' ), 'manage_dt', 'admin.php?page=dt_options&tab=site-links', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_options', __( 'Site Link System', 'disciple_tools' ), __( 'Site Link System', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=site-links', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
     }
 
     public function add_tab( $tab ) {
