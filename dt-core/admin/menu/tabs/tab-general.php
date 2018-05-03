@@ -30,7 +30,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
     public function __construct()
     {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 5 );
+//        add_action( 'admin_menu', [ $this, 'add_submenu' ] );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 5, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 10, 1 );
 
@@ -38,7 +38,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'General', 'disciple_tools' ), __( 'General', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=general', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+//        add_submenu_page( 'dt_options', __( 'General', 'disciple_tools' ), __( 'General', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=general', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
     }
 
     public function add_tab( $tab ) {
