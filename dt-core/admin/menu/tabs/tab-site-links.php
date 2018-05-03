@@ -26,12 +26,16 @@ class Disciple_Tools_Site_Links_Tab extends Disciple_Tools_Abstract_Menu_Base
      */
     public function __construct()
     {
-        add_submenu_page( 'dt_options', __( 'Site Link System', 'disciple_tools' ), __( 'Site Link System', 'disciple_tools' ), 'manage_dt', 'admin.php?page=dt_options&tab=site-links', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 50, 1 ); // use the priority setting to control load order
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
 
         parent::__construct();
     } // End __construct()
+
+    public function add_submenu() {
+        add_submenu_page( 'dt_options', __( 'Site Link System', 'disciple_tools' ), __( 'Site Link System', 'disciple_tools' ), 'manage_dt', 'admin.php?page=dt_options&tab=site-links', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+    }
 
     public function add_tab( $tab ) {
         echo '<a href="'. esc_url( admin_url() ).'admin.php?page=dt_options&tab=site-links" class="nav-tab ';

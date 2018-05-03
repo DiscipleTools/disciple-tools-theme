@@ -18,7 +18,6 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Settings_Menu
 {
-
     private static $_instance = null;
     public static function instance()
     {
