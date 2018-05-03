@@ -591,14 +591,16 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                  strpos( $fields["assigned_to"], "user" ) === false ){
                 $fields["assigned_to"] = "user-" . $fields["assigned_to"];
             }
-            if ( current_user_can( "assign_any_contacts" ) ) {
-                $fields["overall_status"] = 'assigned';
+            if ( !isset( $existing_contact["assigned_to"] ) || $fields["assigned_to"] !== $existing_contact["assigned_to"] ){
+                if ( current_user_can( "assign_any_contacts" ) ) {
+                    $fields["overall_status"] = 'assigned';
+                }
+                $user_id = explode( '-', $fields["assigned_to"] )[1];
+                if ( $user_id ){
+                    self::add_shared( "contacts", $contact_id, $user_id, null, false );
+                }
+                $fields['accepted'] = 'no';
             }
-            $user_id = explode( '-', $fields["assigned_to"] )[1];
-            if ( $user_id ){
-                self::add_shared( "contacts", $contact_id, $user_id, null, false );
-            }
-            $fields['accepted'] = 'no';
         }
 
         if ( isset( $fields["reason_unassignable"] ) ){
