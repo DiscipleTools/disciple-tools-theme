@@ -41,7 +41,7 @@ function dt_send_email( $email, $subject, $message )
     // Sanitize
     $email = sanitize_email( $email );
     $subject = sanitize_text_field( $subject );
-    $message = sanitize_text_field( $message );
+    $message = sanitize_textarea_field( $message );
 
     $subject = dt_get_option( "dt_email_base_subject" ) . ": " . $subject;
     // Send email
