@@ -95,7 +95,7 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
         if( isset( $_POST[ 'action' ] ) && sanitize_key( wp_unslash( $_POST[ 'action' ] ) ) == 'dt_async_email_notification' && isset( $_POST[ '_nonce' ] ) && $this->verify_async_nonce( sanitize_key( wp_unslash( $_POST[ '_nonce' ] ) ) ) ) {
 
             // @codingStandardsIgnoreLine
-            wp_mail( sanitize_email( $_POST[ 0 ][ 'email' ] ), sanitize_text_field( $_POST[ 0 ][ 'subject' ] ), sanitize_text_field( $_POST[ 0 ][ 'message' ] ) );
+            wp_mail( sanitize_email( $_POST[ 0 ][ 'email' ] ), sanitize_text_field( $_POST[ 0 ][ 'subject' ] ), sanitize_textarea_field( $_POST[ 0 ][ 'message' ] ) );
 
         }
     }
@@ -109,7 +109,7 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
     {
         $email = sanitize_email( $_POST[0]['email'] );
         $subject = sanitize_text_field( $_POST[0]['subject'] );
-        $message = sanitize_text_field( $_POST[0]['message'] );
+        $message = sanitize_textarea_field( $_POST[0]['message'] );
 
         do_action( "dt_async_$this->action", $email, $subject, $message );
 
