@@ -53,6 +53,12 @@ class Disciple_Tools_Users_Endpoints
                 'callback' => [ $this, 'save_user_filters' ]
             ]
         );
+        register_rest_route(
+            $this->namespace, '/users/change_password', [
+                'methods' => "POST",
+                'callback' => [ $this, 'change_password' ]
+            ]
+        );
     }
 
     /**
@@ -97,10 +103,27 @@ class Disciple_Tools_Users_Endpoints
     public function get_user_filters( WP_REST_Request $request ){
         return Disciple_Tools_Users::get_user_filters();
     }
+
     public function save_user_filters( WP_REST_Request $request ){
         $params = $request->get_params();
         if ( isset( $params["filters"] )){
             return Disciple_Tools_Users::save_user_filters( $params["filters"] );
+        } else {
+            return new WP_Error( "missing_error", "Missing filters", [ 'status', 400 ] );
+        }
+    }
+
+    public function change_password( WP_REST_Request $request ){
+        $params = $request->get_params();
+
+        if ( isset( $params["password"] ) ){
+            $user_id = get_current_user_id();
+            dt_write_log( $params["password"] );
+
+            wp_set_password( $params["password"], $user_id );
+            wp_logout();
+            wp_redirect( '/' );
+            return true;
         } else {
             return new WP_Error( "missing_error", "Missing filters", [ 'status', 400 ] );
         }

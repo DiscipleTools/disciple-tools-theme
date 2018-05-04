@@ -69,6 +69,12 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                     <i class="fi-info primary-color "></i></span> </p>
 
                                 <p>
+                                    <hr>
+                                    <a href="/wp-login.php?action=lostpassword">Change Password</a>
+                                </p>
+
+
+                                <p>
                                     <strong><?php esc_html_e( 'Username', 'disciple_tools' )?></strong><br>
                                     <?php echo esc_html( $dt_user->user_login ); ?>
                                 </p>
@@ -89,19 +95,18 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                     <?php echo esc_html( implode( ", ", wp_get_current_user()->roles ) ); ?>
                                 </p>
 
-                                <strong><?php esc_html_e( 'Biography', 'disciple_tools' )?></strong>
-                                <p><?php echo esc_html( $dt_user->user_description ); ?></p>
+
 
                             </div>
-                            <div class="small-12 medium-4 cell">
+                            <div class="small-12 medium-4 cell" style="border-left: 1px solid lightgrey; padding-left: 1em;">
 
                                 <p><strong><?php esc_html_e( 'Email', 'disciple_tools' )?></strong></p>
                                 <ul>
                                     <?php
-                                    echo '<li><a href="mailto:' . esc_attr( $dt_user->user_email ) . '">' . esc_html( $dt_user->user_email ) . '</a> (System Email)</li>';
+                                    echo '<li><a href="mailto:' . esc_attr( $dt_user->user_email ) . '">' . esc_html( $dt_user->user_email ) . '</a><br><span class="text-small"> (System Email)</span></li>';
                                     foreach ( $dt_user_fields as $field ) {
                                         if ( $field['type'] == 'email' && !empty( $field['value'] ) ) {
-                                            echo '<li><a href="mailto:' . esc_html( $field['value'] ) . '" target="_blank">' . esc_html( $field['value'] ) . '</a> (' . esc_html( $field['label'] ) . ')</li>';
+                                            echo '<li><a href="mailto:' . esc_html( $field['value'] ) . '" target="_blank">' . esc_html( $field['value'] ) . '</a> <br><span class="text-small">(' . esc_html( $field['label'] ) . ')</span></li>';
                                         }
                                     }
                                     ?>
@@ -150,6 +155,10 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                     }
                                     ?>
                                 </ul>
+
+                            </div>
+                            <div class="small-12 medium-4 cell" style="border-left: 1px solid lightgrey; padding-left: 1em;">
+
                                 <strong><?php esc_html_e( 'Language', 'disciple_tools' )?></strong>
                                 <br>
                                 <?php
@@ -159,10 +168,6 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                     echo esc_html__( 'English', 'disciple_tools' );
                                 }
                                 ?>
-
-
-                            </div>
-                            <div class="small-12 medium-4 cell">
 
                                 <p><strong><?php esc_html_e( 'Locations', 'disciple_tools' )?></strong></p>
                                 <?php
@@ -193,6 +198,9 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                     }
                                 }
                                 ?>
+
+                                <strong><?php esc_html_e( 'Biography', 'disciple_tools' )?></strong>
+                                <p><?php echo esc_html( $dt_user->user_description ); ?></p>
 
                             </div>
                         </div>
