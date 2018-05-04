@@ -45,7 +45,7 @@ class Disciple_Tools_Metrics_Project
     }
 
     public function menu( $content ) {
-        $content .= '<li><a href="'. site_url( '/metrics/project' ) .'#dt_overview" onclick="show_zume_project()">' .  esc_html__( 'Project', 'disciple_tools' ) . '</a>
+        $content .= '<li><a href="'. site_url( '/metrics/project/' ) .'#dt_overview" onclick="show_zume_project()">' .  esc_html__( 'Project', 'disciple_tools' ) . '</a>
             <ul class="menu vertical nested is-active">
               <li><a href="'. site_url( '/metrics/project/' ) .'#dt_overview" onclick="show_zume_project()">' .  esc_html__( 'Overview', 'disciple_tools' ) . '</a></li>
               <li><a href="'. site_url( '/metrics/project/' ) .'#dt_contacts" onclick="show_zume_locations()">' .  esc_html__( 'Contacts', 'disciple_tools' ) . '</a></li>
@@ -88,7 +88,7 @@ class Disciple_Tools_Metrics_Project
 
     public function __construct() {
         add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] );
-        add_filter( 'dt_metrics_menu', [ $this, 'menu' ], 10 );
+        add_filter( 'dt_metrics_menu', [ $this, 'menu' ], 1 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 999 );
     }
 }
