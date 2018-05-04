@@ -64,6 +64,9 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                             <div class="small-12 medium-4 cell">
 
                                 <p><?php echo get_avatar( get_current_user_id(), '150' ); ?></p>
+                                <p><span data-tooltip data-click-open="true" class="top" tabindex="1" title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar) for user profiles. If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.' ) ?>">
+                                        <a href="http://gravatar.com" class="small"><?php esc_html_e( 'edit image @ gravatar.com', 'zume' ) ?></a>
+                                    <i class="fi-info primary-color "></i></span> </p>
 
                                 <p>
                                     <strong><?php esc_html_e( 'Username', 'disciple_tools' )?></strong><br>
