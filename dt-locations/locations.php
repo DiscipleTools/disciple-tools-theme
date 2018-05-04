@@ -79,8 +79,6 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
                                 'post_status' => 'publish',
                                 'post_type' => 'locations',
                             ];
-                            dt_write_log( 'About to insert' );
-                            dt_write_log( $update_this_level_post );
                             $update_level = wp_update_post( $update_this_level_post, true );
                             if ( is_wp_error( $update_level ) ) {
                                 $errors->add( __METHOD__, 'Failed update parent on ' . $this_level_id . ' post: ' . $update_level->get_error_message() );

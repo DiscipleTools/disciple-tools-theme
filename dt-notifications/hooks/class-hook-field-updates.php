@@ -123,8 +123,6 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                             $notification_note,
                             $date_notified = current_time( 'mysql' )
                         );
-
-                        dt_write_log( '@new_web' ); // todo remove after dev
                     }
 
                     // email notification
@@ -137,8 +135,6 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                             __( 'You have been assigned a new contact!', 'disciple_tools' ),
                             $message
                         );
-
-                        dt_write_log( '@new_email' ); // todo remove after dev
                     }
                 } else { // if group, do nothing. Option for future development.
                     return;
@@ -200,8 +196,6 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                                 $notification_note,
                                 $date_notified = current_time( 'mysql' )
                             );
-
-                            dt_write_log( '@updates_web' ); // todo remove after dev
                         }
 
                         // email notification
@@ -214,8 +208,6 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                                 __( 'Update requested!', 'disciple_tools' ),
                                 $message
                             );
-
-                            dt_write_log( '@updates_email' ); // todo remove after dev
                         }
                     } else { // if group, do nothing. Option for future development.
                         return;
@@ -280,8 +272,6 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                             $field_key = $original_meta_key,
                             $field_value = ''
                         );
-
-                        dt_write_log( '@changes_web' ); // todo remove after dev
                     }
 
                     // email notification
@@ -294,8 +284,6 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                             __( 'Changes to your contact added.', 'disciple_tools' ),
                             $message
                         );
-
-                        dt_write_log( '@changes_email' ); // todo remove after dev
                     }
                 } else { // if group, do nothing. Option for future development.
                     return;
@@ -379,8 +367,6 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                             $field_key = $original_meta_key,
                             $field_value = $value
                         );
-
-                        dt_write_log( '@milestones_web' ); // todo remove after dev
                     }
 
                     // email notification
@@ -394,7 +380,6 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                             $message
                         );
 
-                        dt_write_log( '@milestones_email' ); // todo remove after dev
                     }
                 } else { // if group, do nothing. Option for future development.
                     return;

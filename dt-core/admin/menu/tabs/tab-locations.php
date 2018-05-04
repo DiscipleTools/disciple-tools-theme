@@ -34,7 +34,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
     } // End __construct()
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'Locations', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), 'manage_dt', 'admin.php?page=dt_options&tab=locations', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_options', __( 'Locations', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=locations', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
     }
 
     public function add_tab( $tab ) {

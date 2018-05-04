@@ -7,5 +7,6 @@
 jQuery(document).ready(function() {
     jQuery('#postbox-container-3').hide();
     jQuery('#postbox-container-4').hide();
+    jQuery('.page-title-action').hide();
 })
 

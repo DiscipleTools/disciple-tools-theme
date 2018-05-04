@@ -9,4 +9,5 @@ jQuery(document).ready(function () {
   jQuery('.datepicker').datepicker({
     dateFormat: 'yy-mm-dd'
   });
+  jQuery('.page-title-action').hide();
 });

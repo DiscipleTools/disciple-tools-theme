@@ -9,13 +9,14 @@ if ( !defined( 'ABSPATH' ) ) {
  * All functionality pertaining to project update post types in Site_Link_System.
  * @class Site_Link_System
  *
- * @version 0.1.10
+ * @version 0.1.12
  *
  * @since   0.1.7 Moved to post type
  *          0.1.8 Added key_select, readonly
  *          0.1.9 Added non-wordpress link_check endpoint
  *          0.1.10 Fixed option rebuild on trashed posts
  *          0.1.11 Updated menu position
+ *          0.1.12 Added filter to post type args
  */
 if ( ! class_exists( 'Site_Link_System' ) ) {
 
@@ -174,10 +175,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
         public function register_post_type()
         {
-            register_post_type( $this->post_type, /* (http://codex.wordpress.org/Function_Reference/register_post_type) */
-                // let's now add all the options for this post type
-                [
-                    'labels'              => [
+            $args = [
+                'labels' => [
                         'name'               => $this->plural, /* This is the Title of the Group */
                         'singular_name'      => $this->singular, /* This is the individual type */
                         'all_items'          => __( 'All' ) . ' ' . $this->plural, /* the all items menu item */
@@ -191,25 +190,29 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         'not_found'          => __( 'Nothing found in the Database.' ), /* This displays if there are no entries yet */
                         'not_found_in_trash' => __( 'Nothing found in Trash' ), /* This displays if there is nothing in the trash */
                         'parent_item_colon'  => ''
-                    ], /* end of arrays */
-                    'public'              => false,
-                    'publicly_queryable'  => false,
-                    'exclude_from_search' => true,
-                    'show_ui'             => true,
-                    'query_var'           => true,
-                    'menu_position'       => $this->menu_position, /* this is what order you want it to appear in on the left hand side menu */
-                    'menu_icon'           => 'dashicons-admin-links', /* the icon for the custom post type menu. uses built-in dashicons (CSS class name) */
-                    'rewrite'             => [
-                        'slug' => $this->post_type,
-                        'with_front' => false
-                    ], /* you can specify its url slug */
-                    'has_archive'         => false, /* you can rename the slug here */
-                    'capability_type'     => 'post',
-                    'hierarchical'        => false,
-                    /* the next one is important, it tells what's enabled in the post editor */
-                    'supports'            => [ 'title' ]
-                ] /* end of options */
-            ); /* end of register post type */
+                ], /* end of arrays */
+
+                'public'              => false,
+                'publicly_queryable'  => false,
+                'exclude_from_search' => true,
+                'show_ui'             => true,
+                'query_var'           => true,
+                'menu_position'       => $this->menu_position, /* this is what order you want it to appear in on the left hand side menu */
+                'menu_icon'           => 'dashicons-admin-links', /* the icon for the custom post type menu. uses built-in dashicons (CSS class name) */
+                'rewrite'             => [
+                    'slug' => $this->post_type,
+                    'with_front' => false
+                ], /* you can specify its url slug */
+                'has_archive'         => false, /* you can rename the slug here */
+                'capability_type'     => 'post',
+                'hierarchical'        => false,
+                /* the next one is important, it tells what's enabled in the post editor */
+                'supports'            => [ 'title' ]
+            ]; /* end of options */
+
+            $args = apply_filters( 'site_link_system_post_type_args', $args );
+
+            register_post_type( $this->post_type, $args );
         }
 
         public function register_custom_columns( $column_name )

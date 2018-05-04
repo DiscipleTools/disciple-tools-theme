@@ -34,7 +34,7 @@ class Disciple_Tools_Settings_Menu
 
     public function add_dt_options_menu()
     {
-        add_menu_page( __( 'Settings (DT)', 'disciple_tools' ), __( 'Settings (DT)', 'disciple_tools' ), 'manage_dt', 'dt_options', [ $this, 'content' ], dt_svg_icon(), 59 );
+        add_menu_page( __( 'General', 'disciple_tools' ), __( 'Settings (DT)', 'disciple_tools' ), 'manage_dt', 'dt_options', [ $this, 'content' ], dt_svg_icon(), 59 );
     }
 
     public function content()

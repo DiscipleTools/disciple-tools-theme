@@ -199,15 +199,15 @@ class Disciple_Tools_Location_Post_Type
         global $post;
         switch ( $column_name ) {
             case 'location_address':
-                dt_write_log( 'location_address' );
+
                 echo esc_attr( get_post_meta( $post->ID, 'location_address', true ) );
                 break;
             case 'location_parent':
-                dt_write_log( 'location_parent' );
+
                 echo esc_attr( 'test' );
                 break;
             case 'map':
-                dt_write_log( 'map' );
+
                 echo esc_attr( get_post_meta( $post_id, 'lat', true ) ) . ', ' . esc_attr( get_post_meta( $post_id, 'lng', true ) );
                 break;
 
@@ -365,7 +365,7 @@ class Disciple_Tools_Location_Post_Type
             <p style="text-align:center">
                 <?php
                 foreach ( $levels as $key => $level ) :
-                    dt_write_log( $level );
+
                     if ( ! ( 0 == $key ) ) { // removes itself from the list
                         $location_id = Disciple_Tools_Locations::does_location_exist( $locations_result, $level['long_name'], $level['types'][0] );
                         if ( $location_id ) {
@@ -630,7 +630,7 @@ class Disciple_Tools_Location_Post_Type
                     update_post_meta( $post_id, 'raw', $raw_response );
 
                 } else {
-                    dt_write_log( $raw_response );
+
                     unset( $_POST['location_address'] );
                 }
             }

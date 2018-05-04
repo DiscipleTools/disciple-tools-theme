@@ -195,12 +195,3 @@ if ( !class_exists( 'Disciple_Tools_Three_Column_Screen_Layout' ) ) {
 
     new Disciple_Tools_Three_Column_Screen_Layout();
 }
-
-
-
-
-
-
-
-
-
