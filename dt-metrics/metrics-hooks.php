@@ -69,12 +69,11 @@ class Disciple_Tools_Metrics_Project
             wp_localize_script(
                 'dt_project_metrics_script', 'dtMetrics', [
                     'root' => esc_url_raw( rest_url() ),
-                    'plugin_uri' => DT_Zume::get_instance()->dir_uri,
+                    'plugin_uri' => Disciple_Tools::instance()->plugin_url,
                     'nonce' => wp_create_nonce( 'wp_rest' ),
                     'current_user_login' => wp_get_current_user()->user_login,
                     'current_user_id' => get_current_user_id(),
                     'map_key' => dt_get_option( 'map_key' ),
-                    'zume_stats' => DT_Zume_Core::get_project_stats(),
                     'translations' => [
                         "zume_project" => __( "Zúme Overview", "dt_zume" ),
                         "zume_groups" => __( "Zúme Groups", "dt_zume" ),

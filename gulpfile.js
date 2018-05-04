@@ -60,6 +60,8 @@ const SOURCE = {
 
     // Place custom JS here, files will be concantonated, minified if ran with --production
     'dt-assets/js/footer-scripts.js',
+      'dt-metrics/metrics-personal.js',
+      'dt-metrics/metrics-project.js',
 
     'node_modules/masonry-layout/dist/masonry.pkgd.js'
   ],
