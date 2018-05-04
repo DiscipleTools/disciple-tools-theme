@@ -735,7 +735,6 @@ jQuery(document).ready(function($) {
     $("#edit-contact_phone").html(phoneHTML)
     let emailHTML = "";
     (contact.contact_email|| []).forEach(field=>{
-      console.log(field);
       emailHTML += `<li style="display: flex">
         <input class="contact-input" type="email" id="${_.escape(field.key)}" value="${field.value}" data-type="contact_email"/>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_email">

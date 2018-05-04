@@ -124,7 +124,7 @@ function dt_site_scripts() {
     dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
     dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
 
-    if (is_singular( "contacts" ) || is_singular( "groups" ) ) {
+    if ( is_singular( "contacts" ) || is_singular( "groups" ) ) {
         if ( is_singular( "contacts" )){
             $post = Disciple_Tools_Contacts::get_contact( get_the_ID() );
         } else {
@@ -160,7 +160,7 @@ function dt_site_scripts() {
             $translations = [
                 "not-set"     => [
                     "source"     => __( 'No source set', 'disciple_tools' ),
-                    "location"     => __( 'No location set', 'disciple_tools' ),
+                    "locations"     => __( 'No location set', 'disciple_tools' ),
                     "leaders"     => __( 'No leaders set', 'disciple_tools' ),
                     "people_groups" => __( 'No people group set', 'disciple_tools' ),
                     "email"        => __( 'No email set', 'disciple_tools' ),

@@ -4,123 +4,33 @@ jQuery(document).ready(function($) {
   let group = wpApiGroupsSettings.group
   let typeaheadTotals = {}
   let masonGrid = $('.grid')
-  /**
-   * Typeahead functions
-   */
-
-  let typeaheadSource = function (field, url) {
-    return {
-      contacts: {
-        display: "name",
-        ajax: {
-          url: wpApiGroupsSettings.root + url,
-          data: {
-            s: "{{query}}"
-          },
-          beforeSend: function (xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-          },
-          callback: {
-            done: function (data) {
-              typeaheadTotals[field] = data.total
-              return data.posts
-            }
-          }
-        }
-      }
-    }
-  }
-
-  let typeaheadHelpText = (resultCount, query, result) =>{
-    var text = "";
-    if (result.length > 0 && result.length < resultCount) {
-      text = "Showing <strong>" + result.length + "</strong> of <strong>" + resultCount + '</strong> ' + (query ? 'elements matching "' + query + '"' : '');
-    } else if (result.length > 0 && query) {
-      text = 'Showing <strong>' + result.length + '</strong> items matching "' + query + '"';
-    } else if (result.length > 0) {
-      text = 'Showing <strong>' + result.length + '</strong> items';
-    } else {
-      text = 'No results matching "' + query + '"';
-    }
-    return text
-  }
-
-  let groupId = $('#group-id').text()
-  let editingAll = false
-
+  let groupId = group.ID
+  let editFieldsUpdate = {}
 
 
   /**
-   * Group details Info
+   * End Date picker
    */
-  let editDetailsToggle = $('#edit-button-label')
-  function toggleEditAll() {
-    $(`.details-list`).toggle()
-    $(`.details-edit`).toggle()
-    editingAll = !editingAll
-    editDetailsToggle.text( editingAll ? "Save": "Edit")
-    if(editingAll){
-      $('.status.details-edit').show()
-      $('.status.details-list').hide()
-    }
-  }
-  $('#edit-details').on('click', function () {
-    toggleEditAll()
-  })
-
-
-  function toggleEdit(field){
-    if (!editingAll){
-      $(`.${field}.details-list`).toggle()
-      $(`.${field}.details-edit`).toggle()
-    }
-  }
-
-
-  /**
-   * End Date
-   */
-  let endDateList = $('.end_date.details-list')
   let endDatePicker = $('.end_date #end-date-picker')
   endDatePicker.datepicker({
     onSelect: function (date) {
-      API.save_field_api('group', groupId, {end_date:date}).then(function () {
-        endDateList.text(date)
-      })
-    },
-    onClose: function () {
-      toggleEdit('end_date')
+      editFieldsUpdate.end_date = date
     },
     changeMonth: true,
     changeYear: true
-  })
-  endDateList.on('click', e=>{
-    toggleEdit('end_date')
-    endDatePicker.focus()
   })
 
   /**
-   * Start date
+   * Start date picker
    */
-  let startDateList = $('.start_date.details-list')
   let startDatePicker = $('.start_date #start-date-picker')
   startDatePicker.datepicker({
     onSelect: function (date) {
-      API.save_field_api('group', groupId, {start_date:date}).then(function () {
-        startDateList.text(date)
-      })
-    },
-    onClose: function () {
-      toggleEdit('start_date')
+      editFieldsUpdate.start_date = date
     },
     changeMonth: true,
     changeYear: true
   })
-  startDateList.on('click', e=>{
-    toggleEdit('start_date')
-    startDatePicker.focus()
-  })
-
   /**
    * Assigned_to
    */
@@ -129,7 +39,7 @@ jQuery(document).ready(function($) {
     input: '.js-typeahead-assigned_to',
     minLength: 0,
     searchOnFocus: true,
-    source: typeaheadSource('assigned_to', 'dt/v1/users/get_users'),
+    source: TYPEAHEADS.typeaheadSource('assigned_to', 'dt/v1/users/get_users'),
     display: "name",
     templateValue: "{{name}}",
     template: function (query, item) {
@@ -143,23 +53,17 @@ jQuery(document).ready(function($) {
     emptyTemplate: 'No users found "{{query}}"',
     callback: {
       onClick: function(node, a, item, event){
-        API.save_field_api('group', groupId, {assigned_to: 'user-' + item.ID}).then(function (response) {
-          _.set(group, "assigned_to", response.assigned_to)
-          $('.current-assigned').text(group.assigned_to.display)
-          $('.js-typeahead-assigned_to').val(group.assigned_to.display)
-          $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
-        })
+        editFieldsUpdate.assigned_to = item.ID
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.assigned_to
-        let text = typeaheadHelpText(resultCount, query, result)
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#assigned_to-result-container').html(text);
       },
       onHideLayout: function () {
         $('.assigned_to-result-container').html("");
       },
       onReady: function () {
-        $('.details.assigned_to').addClass('details-edit')
         if (_.get(group,  "assigned_to.display")){
           $('.js-typeahead-assigned_to').val(group.assigned_to.display)
         }
@@ -199,7 +103,7 @@ jQuery(document).ready(function($) {
     template: function (query, item) {
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: typeaheadSource('locations', 'dt/v1/locations/compact/'),
+    source: TYPEAHEADS.typeaheadSource('locations', 'dt/v1/locations/compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -211,38 +115,23 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.save_field_api('group', groupId, {'locations': {values:[{value:item.ID, delete:true}]}}).then(()=>{            $(`.locations-list .${item.ID}`).remove()
-            let listItems = $(`.locations-list li`)
-            if (listItems.length === 0){
-              $(`.locations-list.details-list`).append(`<li id="no-locations">${wpApiGroupsSettings.translations["not-set"]["location"]}</li>`)
-            }
-          })
+          _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
+          editFieldsUpdate.locations.values.push({value:item.ID, delete:true})
         }
       }
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.save_field_api('group', groupId, {'locations': {values:[{value:item.ID}]}}).then((group)=>{
-          locationsList.empty()
-          group.locations.forEach(location=>{
-            locationsList.append(`<li class="${location.ID}">
-              ${_.escape(location.post_title)}
-            </li>`)
-          })
-          $("#no-locations").remove()
-        })
+        _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
+        editFieldsUpdate.locations.values.push({value:item.ID})
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.locations
-        let text = typeaheadHelpText(resultCount, query, result)
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#locations-result-container').html(text);
       },
       onHideLayout: function () {
         $('#locations-result-container').html("");
-      },
-      onReady: function () {
-        console.log("ready");
-        $('.locations').addClass('details-edit')
       }
     }
   });
@@ -260,7 +149,7 @@ jQuery(document).ready(function($) {
     template: function (query, item) {
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: typeaheadSource('people_groups', 'dt/v1/people-groups-compact/'),
+    source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups-compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -273,38 +162,23 @@ jQuery(document).ready(function($) {
       },
       callback: {
         onCancel: function (node, item) {
-          API.save_field_api('group', groupId, {'people_groups': {values:[{value:item.ID, delete:true}]}}).then(()=>{
-            $(`.people_groups-list .${item.ID}`).remove()
-            let listItems = $(`.people_groups-list li`)
-            if (listItems.length === 0){
-              $(`.people_groups-list.details-list`).append(`<li id="no-people_groups">${wpApiGroupsSettings.translations["not-set"]["people-group"]}</li>`)
-            }
-          })
+          _.pullAllBy(editFieldsUpdate.people_groups.values, [{value:item.ID}], "value")
+          editFieldsUpdate.people_groups.values.push({value:item.ID, delete:true})
         }
       },
     },
     callback: {
       onClick: function(node, a, item, event){
-        API.save_field_api('group', groupId, {'people_groups': {values:[{value:item.ID}]}}).then((group)=>{
-          peopleGroupList.empty()
-          group.people_groups.forEach(item=>{
-            peopleGroupList.append(`<li class="${item.ID}">
-              ${_.escape(item.post_title)}
-            </li>`)
-          })
-          $("#no-people_groups").remove()
-        })
+        _.pullAllBy(editFieldsUpdate.people_groups.values, [{value:item.ID}], "value")
+        editFieldsUpdate.people_groups.values.push({value:item.ID})
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.people_groups
-        let text = typeaheadHelpText(resultCount, query, result)
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#people_groups-result-container').html(text);
       },
       onHideLayout: function () {
         $('#people_groups-result-container').html("");
-      },
-      onReady: function () {
-        $('.people_groups').addClass('details-edit')
       }
     }
   });
@@ -324,7 +198,7 @@ jQuery(document).ready(function($) {
       }
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: typeaheadSource('groups', 'dt/v1/groups-compact/'),
+    source: TYPEAHEADS.typeaheadSource('groups', 'dt/v1/groups-compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -357,7 +231,7 @@ jQuery(document).ready(function($) {
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.groups
-        let text = typeaheadHelpText(resultCount, query, result)
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         result.push({
           ID: "new-item",
           group:"contacts"
@@ -384,7 +258,7 @@ jQuery(document).ready(function($) {
       }
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: typeaheadSource('groups', 'dt/v1/groups-compact/'),
+    source: TYPEAHEADS.typeaheadSource('groups', 'dt/v1/groups-compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -416,7 +290,7 @@ jQuery(document).ready(function($) {
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.groups
-        let text = typeaheadHelpText(resultCount, query, result)
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         result.push({
           ID: "new-item",
           group:"contacts"
@@ -457,12 +331,13 @@ jQuery(document).ready(function($) {
   })
 
   $("#add-new-address").click(function () {
-    if ($('#new-address').length === 0 ) {
-      let newInput = `<div class="new-address">
-        <textarea rows="3" id="new-address"></textarea>
-      </div>`
-      $('.details-edit#address-list').append(newInput)
-    }
+    $('#edit-contact_address').append(`
+      <li style="display: flex">
+        <textarea rows="3" class="contact-input" data-type="contact_address"></textarea>
+        <button class="button clear delete-button" data-id="new">
+          <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/invalid.svg">
+        </button>
+    </li>`)
   })
 
   /**
@@ -477,7 +352,7 @@ jQuery(document).ready(function($) {
     template: function (query, item) {
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: typeaheadSource('members', 'dt/v1/contacts/compact/'),
+    source: TYPEAHEADS.typeaheadSource('members', 'dt/v1/contacts/compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -512,7 +387,7 @@ jQuery(document).ready(function($) {
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.members
-        let text = typeaheadHelpText(resultCount, query, result)
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#members-result-container').html(text);
       },
       onHideLayout: function () {
@@ -521,7 +396,6 @@ jQuery(document).ready(function($) {
     }
   });
 
-  let leaderList = $('.leaders-list')
   /**
    * leaders
    */
@@ -534,7 +408,7 @@ jQuery(document).ready(function($) {
     template: function (query, item) {
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: typeaheadSource('leaders', 'dt/v1/contacts/compact/'),
+    source: TYPEAHEADS.typeaheadSource('leaders', 'dt/v1/contacts/compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -546,140 +420,27 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.save_field_api('group', groupId, {'leaders': {values:[{value:item.ID, delete:true}]}}).then(()=>{
-            $(`.leaders-list .${item.ID}`).remove()
-            let listItems = $(`.leaders-list li`)
-            if (listItems.length === 0){
-              $(`.leaders-list.details-list`).append(`<li id="no-locations">${wpApiGroupsSettings.translations["not-set"]["location"]}</li>`)
-            }
-          })
+          _.pullAllBy(editFieldsUpdate.leaders.values, [{value:item.ID}], "value")
+          editFieldsUpdate.leaders.values.push({value:item.ID, delete:true})
         }
       },
       href: "/contacts/{{ID}}"
     },
     callback: {
-      onClick: function(node, a, item, event){
-        API.save_field_api('group', groupId, {'leaders': {values:[{value:item.ID}]}}).then((group)=>{
-          leaderList.empty()
-          group.leaders.forEach(item=>{
-            leaderList.append(`<li class="${item.ID}">
-                <a href="${item.permalink}">${_.escape(item.post_title)}</a>
-              </li>`)
-          })
-          $("#no-leaders").remove()
-        })
-        masonGrid.masonry('layout')
+      onClick: function(node, a, item, e){
+        _.pullAllBy(editFieldsUpdate.leaders.values, [{value:item.ID}], "value")
+        editFieldsUpdate.leaders.values.push({value:item.ID})
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.leaders
-        let text = typeaheadHelpText(resultCount, query, result)
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#leaders-result-container').html(text);
       },
       onHideLayout: function () {
         $('#leaders-result-container').html("");
-      },
-      onReady: function () {
-        $('.leaders').addClass('details-edit')
       }
     }
   });
-
-
-  //for a new address field that has not been saved yet
-  $(document).on('change', '#new-address', function (val) {
-    let input = $('#new-address')
-    API.save_field_api('group', groupId, {'contact_address': [{value:input.val()}]})
-      .then(function (group) {
-        console.log(group);
-        let newAddressId = _.get(_.last(_.get(group, `contact_address`)), "key")
-        console.log(newAddressId)
-      if (newAddressId != groupId){
-        //change the it to the created field
-        input.attr('id', newAddressId)
-        $('.details-list.address').append(`
-          <li class="${newAddressId} address-row">
-            <div class="address-text">${input.val()}</div>
-            <img id="${newAddressId}-verified" class="details-status" style="display:none" src="${wpApiGroupsSettings.template_dir}/dt-assets/images/verified.svg"/>
-            <img id="${newAddressId}-invalid" class="details-status" style="display:none" src="${wpApiGroupsSettings.template_dir}/dt-assets/images/broken.svg"/>
-          </li>
-        `)
-        $('.new-address')
-          .append(editContactDetailsOptions(newAddressId))
-          .removeClass('new-address')
-          .addClass(newAddressId)
-        $(`.${newAddressId} .dropdown.menu`).foundation()
-
-      }
-    })
-  })
-  let editContactDetailsOptions = function (field_id) {
-    return `
-      <ul class='dropdown menu' data-click-open='true'
-              data-dropdown-menu data-disable-hover='true'
-              style='display:inline-block'>
-        <li>
-          <button class="social-details-options-button">
-            <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/menu-dots.svg" style='padding:3px 3px'>
-          </button>
-          <ul class='menu'>
-            <li>
-              <button class='details-status-button field-status verify'
-                      data-status='valid'
-                      data-id='${field_id}'>
-                  ${wpApiGroupsSettings.translations.valid}
-              </button>
-            </li>
-            <li>
-              <button class='details-status-button field-status invalid'
-                      data-status="invalid"
-                      data-id="${field_id}">
-                  ${wpApiGroupsSettings.translations.invalid}
-              </button>
-            </li>
-            <li>
-              <button class='details-status-button field-status'
-                      data-status="reset"
-                      data-id='${field_id}'>
-                  ${wpApiGroupsSettings.translations.unconfirmed}
-              </button>
-            </li>
-            <li>
-              <button class='details-remove-button delete-method'
-                      data-id='${field_id}'>
-                ${wpApiGroupsSettings.translations.delete}
-              <button>
-            </li>
-          </ul>
-          </li>
-      </ul>
-    `
-  }
-
-  $(document).on('click', '.details-remove-button.delete-method', function () {
-    let fieldId = $(this).data('id')
-    let fieldType = $(this).data('field')
-    if (fieldId){
-      API.save_field_api('group', groupId, {[`contact_${fieldType}`]:[{key:fieldId, delete:true}]}).then(()=>{
-        $(`.${fieldId}`).remove()
-        let listItems = $(`.${fieldType}-list li`)
-        if (listItems.length === 0){
-          $(`.${fieldType}.details-list`).append(`<li id="no-${fieldType}">${wpApiGroupsSettings.translations["not-set"][fieldType]}</li>`)
-        }
-      }).catch(err=>{
-        console.log(err)
-      })
-    }
-  })
-
-  $(document).on('change', '#address-list textarea', function(){
-    let id = $(this).attr('id')
-    if (id && id !== "new-address"){
-      API.save_field_api('group', groupId, {[id]: $(this).val()}).then(()=>{
-        $(`.address.details-list .${id} .address-text`).text($(this).val())
-      })
-
-    }
-  })
 
 
   /**
@@ -695,6 +456,156 @@ jQuery(document).ready(function($) {
   if (group.assigned_to){
     $('.current-assigned').text(_.get(group, "assigned_to.display"))
   }
+
+
+  $("#open-edit").on("click", function () {
+    editFieldsUpdate = {
+      locations : { values: [] },
+      people_groups : { values: [] },
+      leaders : { values: [] },
+    }
+    let addressHTML = "";
+    (group.contact_address|| []).forEach(field=>{
+      addressHTML += `<li style="display: flex">
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" value="${field.value}" data-type="contact_address"/>
+        <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
+            <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/invalid.svg">
+        </button>
+      </li>`
+    })
+    $("#edit-contact_address").html(addressHTML)
+
+
+    $('#group-details-edit').foundation('open');
+    ["locations", "people_groups", "leaders"].forEach(t=>{
+      Typeahead[`.js-typeahead-${t}`].adjustInputSize()
+    })
+  })
+
+
+  /**
+   * Save group details updates
+   */
+  $('#save-edit-details').on('click', function () {
+    $(this).toggleClass("loading")
+      API.save_field_api( "group", groupId, editFieldsUpdate).then((updatedGroup)=>{
+      group = updatedGroup
+      $(this).toggleClass("loading")
+      resetDetailsFields(group)
+      $(`#group-details-edit`).foundation('close')
+    }).catch(handelAjaxError)
+  })
+
+  $(document).on('change', '.contact-input', function() {
+    let value = $(this).val()
+    let field = $(this).data("type")
+    let key = $(this).attr('id')
+    if (!editFieldsUpdate[field]){
+      editFieldsUpdate[field] = { values: [] }
+    }
+    let existing = _.find(editFieldsUpdate[field].values, {key})
+    if (existing){
+      existing.value = value
+    } else {
+      editFieldsUpdate[field].values.push({ key, value })
+    }
+  }).on('click', '#contact-details-edit .delete-button', function () {
+    let field = $(this).data('type')
+    let key = $(this).data('id')
+    if ( key !== 'new' ){
+      if (!editFieldsUpdate[field]){
+        editFieldsUpdate[field] = { values: [] }
+      }
+      _.pullAllBy(editFieldsUpdate[field].values, [{key}], "key")
+      editFieldsUpdate[field].values.push({key, delete:true})
+    }
+    $(this).parent().remove()
+  }).on('change', '.text-input', function () {
+    let field = $(this).attr('id')
+    editFieldsUpdate[field] = $(this).val()
+  })
+
+  let resetDetailsFields = (group=>{
+    $('.title').html(group.title)
+    let contact_methods = ["contact_address"]
+    contact_methods.forEach(contact_method=>{
+      let fieldDesignator = contact_method.replace('contact_', '')
+      let htmlField = $(`ul.${fieldDesignator}`)
+      htmlField.empty()
+      let fields = group[contact_method]
+      let allEmptyValues = true
+      ;(fields || []).forEach(field=>{
+        if (field.value){
+          allEmptyValues = false
+        }
+        htmlField.append(`<li class="details-list ${_.escape(field.key)}">
+            ${_.escape(field.value)}
+              <img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/verified.svg"/>
+              <img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/broken.svg"/>
+            </li>
+          `)
+      })
+      if (!fields || fields.length === 0 || allEmptyValues){
+        htmlField.append(`<li id="no-${fieldDesignator}">${wpApiGroupsSettings.translations["not-set"][fieldDesignator]}</li>`)
+      }
+    })
+
+    let connections = [ "locations", "people_groups", "leaders" ]
+    connections.forEach(connection=>{
+      let htmlField = $(`.${connection}-list`).empty()
+      if ( !group[connection] || group[connection].length === 0 ){
+        htmlField.append(`<li id="no-${connection}">${wpApiGroupsSettings.translations["not-set"][connection]}</li>`)
+      } else {
+        group[connection].forEach(field=>{
+          let title = `${_.escape(field.post_title)}`
+          if ( connection === "leaders" ){
+            title = `<a href="${_.escape(field.permalink)}">${title}</a>`
+          }
+          htmlField.append(`<li class="details-list ${_.escape(field.key)}">
+            ${title}
+              <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/verified.svg"/>
+              <img id="${_.escape(field.ID)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${wpApiGroupsSettings.template_dir}/dt-assets/images/broken.svg"/>
+            </li>
+          `)
+        })
+      }
+    })
+    let assignedHtml = $(`.assigned_to.details-list`).empty()
+    if ( group.assigned_to ){
+      assignedHtml.html(group.assigned_to.display)
+    } else {
+      assignedHtml.html(wpApiGroupsSettings.translations["not-set"]["assigned_to"])
+    }
+
+    let dates = ["start_date", "end_date"]
+    dates.forEach(dateField=>{
+      if ( group[dateField] ){
+        $(`.${dateField}.details-list`).html(group[dateField])
+      } else {
+        $(`.${dateField}.details-list`).html(wpApiGroupsSettings.translations["not-set"][dateField])
+      }
+    })
+
+  })
+  resetDetailsFields(group)
+
+
+  /**
+   * Group Status
+   */
+
+  let selectFiled = $('.select-field')
+  selectFiled.on('change', function () {
+    let id = $(this).attr('id')
+    let val = $(this).val()
+    API.save_field_api(
+      'group',
+      groupId,
+      {[id]:val}
+    ).catch(err=>{
+      console.log(err)
+    })
+  })
 
   /**
    * Church fields
@@ -756,55 +667,9 @@ jQuery(document).ready(function($) {
     })
   })
 
-  /**
-   * Group Status
-   */
-
-  let selectFiled = $('.select-field')
-  selectFiled.on('change', function () {
-    let id = $(this).attr('id')
-    let val = $(this).val()
-    API.save_field_api(
-      'group',
-      groupId,
-      {[id]:val}
-    ).catch(err=>{
-      console.log(err)
-    })
-  })
 
 
-  $(document).on('click', '.details-status-button.field-status', function () {
-    let status = $(this).data('status')
-    let id = $(this).data('id')
-    let field = $(this).data('field')
-    console.log(status, id)
-    let fields = {
-      key: id,
-      verified : status === 'valid',
-      invalid : status === "invalid"
-    }
-    API.save_field_api('group', groupId, {[`contact_${field}`]:[fields]}).then(()=>{
-      $(`#${id}-verified`).toggle(fields.verified)
-      $(`#${id}-invalid`).toggle(fields.invalid)
-    }).catch(err=>{
-      handelAjaxError(err)
-    })
-  })
 
-  $('.text-field.details-edit').change(function () {
-    let id = $(this).attr('id')
-    let val = $(this).val()
-    API.save_field_api(
-      'group',
-      groupId,
-      {[id]:val}
-    ).then(()=>{
-      $(`.${id}`).text(val)
-    }).catch(err=>{
-      console.log(err)
-    })
-  })
 
 
 

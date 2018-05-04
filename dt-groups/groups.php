@@ -254,32 +254,46 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         return $bad_fields;
     }
 
-    private static function parse_contact_methods( $group_id, $fields ){
+    private static function parse_contact_methods( $group_id, $fields, $existing_group = null ){
         // update group details (phone, facebook, etc)
         foreach ( self::$channel_list as $channel_key ){
             $details_key = "contact_" . $channel_key;
-            if ( isset( $fields[$details_key] ) && is_array( $fields[$details_key] )){
-                foreach ( $fields[$details_key] as $field ){
-                    if ( isset( $field["delete"] ) && $field["delete"] == true){
-                        if ( !isset( $field["key"] )){
-                            return new WP_Error( __FUNCTION__, __( "missing key on:" ) . " " . $details_key );
-                        }
-                        //delete field
-                        $potential_error = self::delete_group_field( $group_id, $field["key"] );
-                    } else if ( isset( $field["key"] ) ){
-                        //update field
-                        $potential_error = self::update_contact_method( $group_id, $field["key"], $field, false );
-                    } else if ( isset( $field["value"] ) ) {
-                        $field["key"] = "new-".$channel_key;
-                        //create field
-                        $potential_error = self::add_item_to_field( $group_id, $field["key"], $field["value"], false );
-
-                    } else {
-                        return new WP_Error( __FUNCTION__, __( "Is not an array or missing value on:" ) . " " . $details_key );
-                    }
-                    if ( isset( $potential_error ) && is_wp_error( $potential_error ) ) {
+            $values = [];
+            if ( isset( $fields[$details_key] ) && isset( $fields[$details_key]["values"] ) ){
+                $values = $fields[$details_key]["values"];
+            } else if ( isset( $fields[$details_key] ) && is_array( $fields[$details_key] ) ) {
+                $values = $fields[$details_key];
+            }
+            if ( $existing_group && isset( $fields[$details_key] ) &&
+                 isset( $fields[$details_key]["force_values"] ) &&
+                 $fields[$details_key]["force_values"] === true ){
+                foreach ( $existing_group[$details_key] as $contact_value ){
+                    $potential_error = self::delete_group_field( $group_id, $contact_value["key"], false );
+                    if ( is_wp_error( $potential_error ) ){
                         return $potential_error;
                     }
+                }
+            }
+            foreach ( $values as $field ){
+                if ( isset( $field["delete"] ) && $field["delete"] == true){
+                    if ( !isset( $field["key"] )){
+                        return new WP_Error( __FUNCTION__, __( "missing key on:" ) . " " . $details_key );
+                    }
+                    //delete field
+                    $potential_error = self::delete_group_field( $group_id, $field["key"] );
+                } else if ( isset( $field["key"] ) ){
+                    //update field
+                    $potential_error = self::update_contact_method( $group_id, $field["key"], $field, false );
+                } else if ( isset( $field["value"] ) ) {
+                    $field["key"] = "new-".$channel_key;
+                    //create field
+                    $potential_error = self::add_item_to_field( $group_id, $field["key"], $field["value"], false );
+
+                } else {
+                    return new WP_Error( __FUNCTION__, __( "Is not an array or missing value on:" ) . " " . $details_key );
+                }
+                if ( isset( $potential_error ) && is_wp_error( $potential_error ) ) {
+                    return $potential_error;
                 }
             }
         }
@@ -405,7 +419,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             ] );
         }
 
-        $potential_error = self::parse_contact_methods( $group_id, $fields );
+        $potential_error = self::parse_contact_methods( $group_id, $fields, $existing_group );
         if ( is_wp_error( $potential_error )){
             return $potential_error;
         }
@@ -461,8 +475,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return bool|\WP_Error
      */
-    public static function delete_group_field( int $group_id, string $key ){
-        if ( !self::can_update( 'groups', $group_id )){
+    public static function delete_group_field( int $group_id, string $key, $check_permissions = true ){
+        if ( $check_permissions && !self::can_update( 'groups', $group_id )){
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 401 ] );
         }
         delete_post_meta( $group_id, $key .'_details' );

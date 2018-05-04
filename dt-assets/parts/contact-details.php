@@ -249,11 +249,6 @@
                 </div>
             </div>
 
-            <div class="grix-x">
-                <div class="section-subheader cell">
-
-                </div>
-            </div>
 
             <div class="grix-x">
                 <div class="section-subheader cell">
@@ -354,7 +349,7 @@
                 </div>
                 <div class="locations">
                     <var id="locations-result-container" class="result-container"></var>
-                    <div id="locations_t" name="form-locations" class="scrollable-typeahead">
+                    <div id="locations_t" name="form-locations" class="scrollable-typeahead typeahead-margin-when-active">
                         <div class="typeahead__container">
                             <div class="typeahead__field">
                                 <span class="typeahead__query">

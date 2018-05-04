@@ -198,7 +198,7 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
                         <h4><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?></h4>
                         <div class="assigned_to details">
                             <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
-                            <div id="assigned_to_t" name="form-assigned_to">
+                            <div id="assigned_to_t" name="form-assigned_to" class="scrollable-typeahead typeahead-margin-when-active">
                                 <div class="typeahead__container">
                                     <div class="typeahead__field">
                                         <span class="typeahead__query">
@@ -215,7 +215,7 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
                         <h4><?php esc_html_e( "Sub-assigned to", 'disciple_tools' ) ?></h4>
                         <div class="subassigned details">
                             <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
-                            <div id="subassigned_t" name="form-subassigned">
+                            <div id="subassigned_t" name="form-subassigned" class="scrollable-typeahead typeahead-margin-when-active">
                                 <div class="typeahead__container">
                                     <div class="typeahead__field">
                                     <span class="typeahead__query">
@@ -232,7 +232,7 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
                         <h4><?php esc_html_e( "Locations", 'disciple_tools' ) ?></h4>
                         <div class="locations">
                             <var id="locations-result-container" class="result-container"></var>
-                            <div id="locations_t" name="form-locations" class="scrollable-typeahead">
+                            <div id="locations_t" name="form-locations" class="scrollable-typeahead typeahead-margin-when-active">
                                 <div class="typeahead__container">
                                     <div class="typeahead__field">
                                         <span class="typeahead__query">

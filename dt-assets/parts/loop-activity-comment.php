@@ -15,6 +15,7 @@
         </div>
         <div class="cell grid-x" style="margin-bottom: 20px">
             <div class="cell auto">
+                <?php if ( is_singular( "contacts" ) ) : ?>
                 <ul class="dropdown menu" data-dropdown-menu $dropdownmenu-arrow-color="white">
                     <li style="border-radius: 5px">
                         <a class="button menu-white-dropdown-arrow"
@@ -42,6 +43,7 @@
                         </ul>
                     </li>
                 </ul>
+                <?php endif; ?>
             </div>
             <div class="shrink cell" id="add-comment-button-container">
                 <button id="add-comment-button" class="button loader">
