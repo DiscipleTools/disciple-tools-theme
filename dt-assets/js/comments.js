@@ -83,7 +83,11 @@ jQuery(document).ready(function($) {
 
   let commentTemplate = _.template(`
   <div class="activity-block">
-    <div><span><strong><%- name %></strong></span> <span class="comment-date"> <%- date %> </span></div>
+    <div>
+        <span class="gravatar"><img src="<%- gravatar  %>"/></span>
+        <span><strong><%- name %></strong></span>
+        <span class="comment-date"> <%- date %> </span>
+      </div>
     <div class="activity-text">
     <% _.forEach(activity, function(a){
         if (a.comment){ %>
@@ -121,9 +125,11 @@ jQuery(document).ready(function($) {
     displayed.forEach(d=>{
       let first = _.first(array)
       let name = d.comment_author || d.name
+      let gravatar = d.gravatar || ""
       let obj = {
         name: name,
         date: d.date,
+        gravatar,
         text:d.object_note || formatComment(d.comment_content),
         comment: !!d.comment_content,
         action: d.action
@@ -136,6 +142,7 @@ jQuery(document).ready(function($) {
       } else {
         commentsWrapper.append(commentTemplate({
           name: array[0].name,
+          gravatar: array[0].gravatar,
           date:formatDate(array[0].date),
           activity: array
         }))
@@ -144,6 +151,7 @@ jQuery(document).ready(function($) {
     })
     if (array.length > 0){
       commentsWrapper.append(commentTemplate({
+        gravatar: array[0].gravatar,
         name: array[0].name,
         date:formatDate(array[0].date),
         activity: array

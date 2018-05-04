@@ -419,7 +419,7 @@ class Disciple_Tools_Posts
     {
         global $wpdb;
         if ( !self::can_view( $post_type, $post_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, __( "No permissions to read:" ) . $post_type, [ 'status' => 403 ] );
         }
         $activity = $wpdb->get_results( $wpdb->prepare(
             "SELECT
@@ -439,10 +439,12 @@ class Disciple_Tools_Posts
                 $user = get_user_by( "id", $a->user_id );
                 if ( $user ){
                     $a->name =$user->display_name;
+                    $a->gravatar = get_avatar_url( $user->ID, [ 'size' => '16' ] );
                 }
             }
             $activity_simple[] = [
                 "meta_key" => $a->meta_key,
+                "gravatar" => isset( $a->gravatar ) ? $a->gravatar : "",
                 "name" => isset( $a->name ) ? $a->name : "",
                 "object_note" => $a->object_note,
                 "hist_time" => $a->hist_time,
@@ -521,15 +523,18 @@ class Disciple_Tools_Posts
         $current_user = wp_get_current_user();
         $compact = [];
 
+        $search_string = esc_sql( sanitize_text_field( $search_string ) );
         $query_args = [
             'post_type' => $post_type,
             's'         => $search_string,
             'posts_per_page' => 30,
         ];
         $shared_with_user = [];
+        $users_interacted_with =[];
         if ( !self::can_view_all( $post_type ) ) {
+//            @todo better way to get the contact records for users my contacts are shared with
+            $users_interacted_with = Disciple_Tools_Users::get_assignable_users_compact( $search_string );
             $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID );
-
             $query_args['meta_key'] = 'assigned_to';
             $query_args['meta_value'] = "user-" . $current_user->ID;
         }
@@ -555,6 +560,17 @@ class Disciple_Tools_Posts
                 "ID" => $shared->ID,
                 "name" => $shared->post_title
                 ];
+            }
+        }
+        foreach ( $users_interacted_with as $user ) {
+            $contact = Disciple_Tools_Users::get_contact_for_user( $user["ID"] );
+            if ( $contact ){
+                if ( !in_array( $contact->ID, $post_ids ) ) {
+                    $compact[] = [
+                        "ID" => $contact->ID,
+                        "name" => $user["name"]
+                    ];
+                }
             }
         }
 

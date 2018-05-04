@@ -46,7 +46,7 @@ class Disciple_Tools_Users
         $users = [];
         if ( !user_can( get_current_user_id(), 'view_any_contacts' ) ){
             $users_ids = $wpdb->get_results( $wpdb->prepare("
-                SELECT %1\$s
+                SELECT user_id
                 FROM $wpdb->dt_share
                 WHERE post_id IN (SELECT DISTINCT(post_id)
                       FROM $wpdb->postmeta
@@ -75,7 +75,6 @@ class Disciple_Tools_Users
                             AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_status = 'publish' ) )
                       AND meta_key = 'assigned_to'
                 GROUP BY user_id;",
-                $user_id,
                 $user_id,
                 $user_id,
                 $user_id,
@@ -125,6 +124,7 @@ class Disciple_Tools_Users
                     "name" => $user->display_name,
                     "ID"   => $user->ID,
                     "user" => $user->user_login,
+                    "email" => $user->user_email,
                     "avatar" => get_avatar_url( $user->ID, [ 'size' => '16' ] )
                 ];
             }
@@ -243,6 +243,26 @@ class Disciple_Tools_Users
         }
 
         return wp_redirect( "/settings" );
+    }
+
+
+    public static function get_contact_for_user( $user_id ){
+        $args = [
+            'post_type'  => 'contacts',
+            'relation'   => 'AND',
+            'meta_query' => [
+                [
+        'key' => "corresponds_to_user",
+        "value" => $user_id
+                ],
+                [
+                'key' => "type",
+                "value" => "user"
+                ],
+            ],
+        ];
+        $contacts = new WP_Query( $args );
+        return $contacts->post;
     }
 
     /**
