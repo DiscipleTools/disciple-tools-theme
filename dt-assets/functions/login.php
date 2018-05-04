@@ -1,7 +1,7 @@
 <?php
 // Calling your own login css so you can style it
 function disciple_tools_login_css() {
-    wp_enqueue_style( 'disciple_tools_login_css', get_template_directory_uri() . '/build/css/login.min.css', false );
+    wp_enqueue_style( 'disciple_tools_login_css', get_template_directory_uri() . '/dt-assets/build/css/login.min.css', false );
 }
 
 // changing the logo link from wordpress.org to your site
