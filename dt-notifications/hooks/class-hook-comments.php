@@ -87,7 +87,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                         if ( dt_user_notification_is_enabled( 'mentions_email', $user_meta, $user->ID ) ) {
 
                             $message = strip_tags( $author_name ) . ' mentioned you saying: ' . strip_tags( $comment->comment_content );
-                            $message .= '
+                            $message .= '\r\n\r\n
                              Click here to reply: ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
                             dt_send_email(
                                 $user->user_email,
