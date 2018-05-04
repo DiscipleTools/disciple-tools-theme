@@ -2010,7 +2010,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'post_id' => $contact_id,
             "type" => $type
         ]);
-        foreach( $comments as $comment ){
+        foreach ( $comments as $comment ){
             $comment->gravatar = get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
         }
 
