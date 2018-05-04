@@ -220,6 +220,9 @@ else {
                 'contacts/new'  => 'template-contacts-new.php',
                 'groups/new'    => 'template-groups-new.php',
                 ];
+
+                $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
+
                 $url_path = trim( parse_url( add_query_arg( [] ), PHP_URL_PATH ), '/' );
 
                 if ( isset( $template_for_url[ $url_path ] ) ) {
@@ -327,6 +330,8 @@ else {
             require_once( get_template_directory() . '/dt-metrics/metrics-template.php' );
             require_once( get_template_directory() . '/dt-metrics/metrics.php' );
             $this->metrics = Disciple_Tools_Metrics::instance();
+            require_once( get_template_directory() . '/dt-metrics/metrics-hooks.php' );
+            Disciple_Tools_Metrics_Hooks::instance();
             require_once( get_template_directory() . '/dt-metrics/metrics-endpoints.php' );
             $this->endpoints['metrics'] = new Disciple_Tools_Metrics_Endpoints();
 

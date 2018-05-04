@@ -210,6 +210,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'supports'            => [ 'title' ]
             ]; /* end of options */
 
+            // @codingStandardsIgnoreLine
             $args = apply_filters( 'site_link_system_post_type_args', $args );
 
             register_post_type( $this->post_type, $args );
