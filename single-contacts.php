@@ -3,12 +3,12 @@ declare( strict_types=1 );
 
 ( function () {
 
-    Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
 
     if ( !Disciple_Tools_Contacts::can_view( 'contacts', get_the_ID() )) {
         get_template_part( "403" );
         die();
     }
+    Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
     $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 
