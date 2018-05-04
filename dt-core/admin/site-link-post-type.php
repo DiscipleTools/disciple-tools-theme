@@ -9,7 +9,7 @@ if ( !defined( 'ABSPATH' ) ) {
  * All functionality pertaining to project update post types in Site_Link_System.
  * @class Site_Link_System
  *
- * @version 0.1.12
+ * @version 0.1.13
  *
  * @since   0.1.7 Moved to post type
  *          0.1.8 Added key_select, readonly
@@ -17,6 +17,7 @@ if ( !defined( 'ABSPATH' ) ) {
  *          0.1.10 Fixed option rebuild on trashed posts
  *          0.1.11 Updated menu position
  *          0.1.12 Added filter to post type args
+ *          0.1.13 Added time tolerance for decryption key
  */
 if ( ! class_exists( 'Site_Link_System' ) ) {
 
@@ -933,7 +934,15 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             }
 
             foreach ( $keys as $key => $array ) {
-                if ( md5( $key . current_time( 'Y-m-dH', 1 ) ) == $transfer_token ) {
+                $current_hour = md5( $key . current_time( 'Y-m-dH', 1 ) );
+                $past = date( 'Y-m-dH', strtotime( '-1 hour' ) );
+                $past_hour = md5( $key . $past );
+                $next = date( 'Y-m-dH', strtotime( '+1 hour' ) );
+                $next_hour = md5( $key . $next );
+
+                if ( md5( $key . $current_hour ) == $transfer_token
+                    || md5( $key . $past_hour ) == $transfer_token
+                    || md5( $key . $next_hour ) == $transfer_token ) {
                     return $key;
                 }
             }
