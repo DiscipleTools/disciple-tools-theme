@@ -36,6 +36,18 @@
             <meta name="msapplication-square310x310logo" content="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/images/favicon/mstile-310x310.png">
         <?php } ?>
 
+        <title>
+        <?php
+        if ( is_single() ) {
+            single_post_title( '', true );
+        } else if ( is_archive() ){
+            echo post_type_archive_title();
+        } else {
+            bloginfo( 'name' );
+        }
+        ?>
+        </title>
+
 <!--        <link rel="pingback" href="--><?php //bloginfo('pingback_url'); ?><!--">-->
 
         <!-- Start wp_head -->
