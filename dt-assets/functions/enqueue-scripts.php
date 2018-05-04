@@ -236,8 +236,9 @@ function dt_site_scripts() {
     }
     if ( 'metrics' === $url_path ) {
 
-        if ( )
-        dt_theme_enqueue_script( 'dt-metrics', 'dt-assets/js/metrics.js', array( 'jquery', 'jquery-ui' ), true );
+
+            dt_theme_enqueue_script( 'dt-metrics', 'dt-assets/js/metrics.js', array( 'jquery', 'jquery-ui' ), true );
+
         wp_localize_script(
             'dt-metrics', 'wpApiMetricsPage', array(
                 'root' => esc_url_raw( rest_url() ),
