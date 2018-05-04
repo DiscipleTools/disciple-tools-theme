@@ -235,7 +235,10 @@ function dt_site_scripts() {
         );
     }
     if ( 'metrics' === $url_path ) {
-        dt_theme_enqueue_script( 'dt-metrics', 'dt-assets/js/metrics.js', array( 'jquery', 'jquery-ui' ), true );
+
+
+            dt_theme_enqueue_script( 'dt-metrics', 'dt-assets/js/metrics.js', array( 'jquery', 'jquery-ui' ), true );
+
         wp_localize_script(
             'dt-metrics', 'wpApiMetricsPage', array(
                 'root' => esc_url_raw( rest_url() ),
@@ -243,6 +246,7 @@ function dt_site_scripts() {
             )
         );
         wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(), false );
+
     }
     if ( 'locations' === $url_path && ( is_archive() || is_singular( 'locations' ) ) ) {
         dt_theme_enqueue_script( 'dt-locations', 'dt-assets/js/locations.js', array( 'jquery', 'jquery-ui' ), true );

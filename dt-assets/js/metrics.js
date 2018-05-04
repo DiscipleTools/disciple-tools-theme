@@ -1,11 +1,6 @@
 /* this is for dedicated scripting for metrics */
 
-jQuery(document).ready(function() {
-    if(! window.location.hash || '#critical_path' === window.location.hash  ) {
-        jQuery('#metrics-sidemenu').foundation('toggle', jQuery('#critical-path-menu'));
-        show_critical_path()
-    }
-})
+
 
 function show_critical_path() {
   jQuery('#chart').empty().html('<span class="section-header">Critical Path</span><hr />')

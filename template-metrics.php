@@ -19,7 +19,18 @@ Template Name: Metrics
                         <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu data-multi-open data-submenu-toggle="true">
 
                             <li >
-                                <a href="<?php echo esc_attr( site_url( '/metrics/' ) . '#critical_path' ) ?>" onclick="show_critical_path()"><?php esc_html_e( 'Critical Path', 'disciple_tools' )?></a>
+                                <a href="<?php echo esc_attr( site_url( '/metrics/' ) . '#my_contacts' ) ?>" onclick="show_critical_path()"><?php esc_html_e( 'My Contacts', 'disciple_tools' )?></a>
+                                <?php
+                                // @codingStandardsIgnoreLine
+                                echo apply_filters( 'dt_metrics_menu_my_contacts', '' );
+                                ?>
+                            </li>
+                            <li >
+                                <a href="<?php echo esc_attr( site_url( '/metrics/' ) . '#my_groups' ) ?>" onclick="show_critical_path()"><?php esc_html_e( 'My Groups', 'disciple_tools' )?></a>
+                                <?php
+                                // @codingStandardsIgnoreLine
+                                echo apply_filters( 'dt_metrics_menu_my_groups', '' );
+                                ?>
                             </li>
 
                             <?php
