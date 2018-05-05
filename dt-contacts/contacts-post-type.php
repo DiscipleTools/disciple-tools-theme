@@ -864,14 +864,6 @@ class Disciple_Tools_Contact_Post_Type
             'section'     => 'quick_buttons',
             'icon'        => "no-answer.svg",
         ];
-        $fields['quick_button_phone_off'] = [
-            'name'        => __( 'Phone Off', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'number',
-            'default'     => 0,
-            'section'     => 'quick_buttons',
-            'icon'        => "no-answer.svg",
-        ];
         $fields['quick_button_contact_established'] = [
             'name'        => __( 'Contact Established', 'disciple_tools' ),
             'description' => '',
