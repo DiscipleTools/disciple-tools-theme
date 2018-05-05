@@ -117,6 +117,7 @@ dt_print_breadcrumbs(
     $.typeahead({
         input: '.js-typeahead-locations',
         minLength: 0,
+        accent: true,
         searchOnFocus: true,
         maxItem: 20,
         // maxItemPerGroup: 6,

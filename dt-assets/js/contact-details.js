@@ -129,6 +129,7 @@ jQuery(document).ready(function($) {
   $.typeahead({
     input: '.js-typeahead-groups',
     minLength: 0,
+    accent: true,
     searchOnFocus: true,
     maxItem: 20,
     template: function (query, item) {
@@ -232,6 +233,7 @@ jQuery(document).ready(function($) {
         $.typeahead({
           input: '.js-typeahead-sources',
           minLength: 0,
+          accent: true,
           searchOnFocus: true,
           maxItem: 20,
           source: {
@@ -284,6 +286,7 @@ jQuery(document).ready(function($) {
       $.typeahead({
         input: '.js-typeahead-locations',
         minLength: 0,
+        accent: true,
         searchOnFocus: true,
         maxItem: 20,
         template: function (query, item) {
@@ -338,6 +341,7 @@ jQuery(document).ready(function($) {
       $.typeahead({
         input: '.js-typeahead-people_groups',
         minLength: 0,
+        accent: true,
         searchOnFocus: true,
         maxItem: 20,
         template: function (query, item) {
@@ -386,6 +390,7 @@ jQuery(document).ready(function($) {
   $.typeahead({
     input: '.js-typeahead-assigned_to',
     minLength: 0,
+    accent: true,
     searchOnFocus: true,
     source: {
       users: {
@@ -407,7 +412,6 @@ jQuery(document).ready(function($) {
         }
       }
     },
-
     templateValue: "{{name}}",
     template: function (query, item) {
       return `<span class="row">
@@ -473,6 +477,7 @@ jQuery(document).ready(function($) {
     $.typeahead({
       input: `.js-typeahead-${field_id}`,
       minLength: 0,
+      accent: true,
       maxItem: 30,
       searchOnFocus: true,
       template: function (query, item) {

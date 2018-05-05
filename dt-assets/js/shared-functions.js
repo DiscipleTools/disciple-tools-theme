@@ -239,6 +239,7 @@ let TYPEAHEADS = {
     return $.typeahead({
       input: '.js-typeahead-share',
       minLength: 0,
+      accent: true,
       // searchOnFocus: true,
       source: this.typeaheadSource('share', 'dt/v1/users/get_users'),
       display: "name",

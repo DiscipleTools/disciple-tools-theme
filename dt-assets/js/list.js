@@ -526,6 +526,7 @@
       $.typeahead({
         input: '.js-typeahead-locations',
         minLength: 0,
+        accent: true,
         searchOnFocus: true,
         maxItem: 20,
         template: function (query, item) {
@@ -570,6 +571,7 @@
       $.typeahead({
         input: '.js-typeahead-leaders',
         minLength: 0,
+        accent: true,
         searchOnFocus: true,
         maxItem: 20,
         template: function (query, item) {
@@ -614,6 +616,7 @@
       $.typeahead({
         input: '.js-typeahead-subassigned',
         minLength: 0,
+        accent: true,
         searchOnFocus: true,
         maxItem: 20,
         template: function (query, item) {
@@ -658,6 +661,7 @@
       $.typeahead({
         input: '.js-typeahead-assigned_to',
         minLength: 0,
+        accent: true,
         searchOnFocus: true,
         multiselect: {
           matchOn: ["ID"],
