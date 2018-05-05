@@ -70,6 +70,16 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         return self::get_viewable( 'groups', $most_recent );
     }
 
+
+    public static function search_viewable_groups( array $query, bool $check_permissions = true ){
+        $viewable = self::search_viewable_post( "groups", $query, $check_permissions );
+        return [
+            "groups" => $viewable["posts"],
+            "total" => $viewable["total"]
+        ];
+    }
+
+
     /**
      * @param  int  $group_id
      * @param  bool $check_permissions
@@ -448,7 +458,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 self::add_shared( "groups", $group_id, $user_id, null, false );
             }
         }
-
+        $fields["last_modified"] = time(); //make sure the last modified field is updated.
         foreach ( $fields as $field_id => $value ) {
             if ( !self::is_key_contact_method_or_connection( $field_id )){
                 $field_type = self::$group_fields[$field_id]["type"] ?? '';

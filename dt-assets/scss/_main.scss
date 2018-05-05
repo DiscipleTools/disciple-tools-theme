@@ -1655,3 +1655,46 @@ select#overall_status {
         padding-right:2px;
     }
 }
+
+#filter-modal {
+    .tabs-title > a {
+        padding: 1.25rem 0 1.25rem 10px;
+    }
+    h3 {
+        margin-left: 10px;
+    }
+    .vertical.tabs {
+        border:none;
+        background-color: #3F729B;
+        .tabs-title>a {
+            color: white;
+        }
+        .tabs-title>a:hover {
+            background-color: #224F72;
+        }
+        .tabs-title>a:focus, .tabs-title>a[aria-selected=true] {
+            background-color: #224F72;
+            color: white;
+        }
+    }
+
+    .tabs-content {
+
+        min-height:400px;
+    }
+    .filter-modal-left {
+        background-color: #3F729B;
+    }
+    .filter-modal-right {
+        background-color: #F2F2F2;
+        border: none;
+    }
+    .button-cancel {
+        background-color: #F2F2F2;
+        color: black;
+    }
+    .confirm-buttons {
+        text-align: end;
+    }
+
+}

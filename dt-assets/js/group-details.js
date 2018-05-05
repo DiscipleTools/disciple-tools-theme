@@ -149,7 +149,7 @@ jQuery(document).ready(function($) {
     template: function (query, item) {
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups-compact/'),
+    source: TYPEAHEADS.typeaheadSource('people_groups', 'dt/v1/people-groups/compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -198,7 +198,7 @@ jQuery(document).ready(function($) {
       }
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: TYPEAHEADS.typeaheadSource('groups', 'dt/v1/groups-compact/'),
+    source: TYPEAHEADS.typeaheadSource('groups', 'dt/v1/groups/compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -258,7 +258,7 @@ jQuery(document).ready(function($) {
       }
       return `<span>${_.escape(item.name)}</span>`
     },
-    source: TYPEAHEADS.typeaheadSource('groups', 'dt/v1/groups-compact/'),
+    source: TYPEAHEADS.typeaheadSource('groups', 'dt/v1/groups/compact/'),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,

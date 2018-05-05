@@ -17,11 +17,26 @@ if ( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Posts
 {
 
+    public static $connection_types;
+
     /**
      * Disciple_Tools_Posts constructor.
      */
     public function __construct()
     {
+        self::$connection_types = [
+            "locations",
+            "groups",
+            "people_groups",
+            "baptized_by",
+            "baptized",
+            "coached_by",
+            "coaching",
+            "subassigned",
+            "leaders",
+            "parent_groups",
+            "child_groups",
+        ];
     }
 
     /**
@@ -659,6 +674,247 @@ class Disciple_Tools_Posts
             "deleted" => $delete_posts
         ];
     }
+
+
+    public static function search_viewable_post( string $post_type, array $query, bool $check_permissions = true ){
+        if ( $check_permissions && !self::can_access( $post_type ) ) {
+            return new WP_Error( __FUNCTION__, __( "You do not have access to these" ), [ 'status' => 403 ] );
+        }
+        global $wpdb;
+        $current_user = wp_get_current_user();
+
+        $include = [];
+        if ( isset( $query["include"] ) ){
+            $include = $query["include"];
+            unset( $query["include"] );
+        }
+        $search = "";
+        if ( isset( $query["text"] )){
+            $search = sanitize_text_field( $query["text"] );
+            unset( $query["text"] );
+        }
+        $offset = 0;
+        if ( isset( $query["offset"] )){
+            $offset = esc_sql( sanitize_text_field( $query["offset"] ) );
+            unset( $query["offset"] );
+        }
+        $sort = "post_title";
+        $sort_dir = "asc";
+        if ( isset( $query["sort"] )){
+            $sort = esc_sql( sanitize_text_field( $query["sort"] ) );
+            if ( strpos( $sort, "-" ) === 0 ){
+                $sort_dir = "desc";
+                $sort = str_replace( "-", "", $sort );
+            }
+            unset( $query["sort"] );
+        }
+
+        $inner_joins = "";
+        $connections_sql_to = "";
+        $connections_sql_from = "";
+
+        foreach ( $query as $query_key => $query_value ) {
+            if ( in_array( $query_key, self::$connection_types ) ) {
+                if ( $query_key === "locations" ) {
+                    $location_sql = "";
+                    foreach ( $query_value as $location ) {
+                        $l = get_post( $location );
+                        if ( $l && $l->post_type === "locations" ){
+                            $location_sql .= empty( $location_sql ) ? $l->ID : ( ",".$l->ID );
+                        }
+                    }
+                    if ( !empty( $location_sql ) ){
+                        $connections_sql_to .= "AND ( to_p2p.p2p_type = 'contacts_to_locations' AND to_p2p.p2p_to in (" . esc_sql( $location_sql ) .") )";
+                    }
+                }
+                if ( $query_key === "subassigned" ) {
+                    $subassigned_sql = "";
+                    foreach ( $query_value as $subassigned ) {
+                        $l = get_post( $subassigned );
+                        if ( $l && $l->post_type === "contacts" ){
+                            $subassigned_sql .= empty( $subassigned_sql ) ? $l->ID : ( ",".$l->ID );
+                        }
+                    }
+                    if ( !empty( $subassigned_sql ) ){
+                        $connections_sql_from .= "AND ( from_p2p.p2p_type = 'contacts_to_subassigned' AND from_p2p.p2p_from in (" . esc_sql( $subassigned_sql ) .") )";
+                    }
+                }
+            }
+        }
+        if ( !empty( $connections_sql_to )){
+            $inner_joins .= " INNER JOIN $wpdb->p2p as to_p2p ON ( to_p2p.p2p_from = $wpdb->posts.ID )";
+        }
+        if ( !empty( $connections_sql_from )){
+            $inner_joins .= " INNER JOIN $wpdb->p2p as from_p2p ON ( from_p2p.p2p_to = $wpdb->posts.ID )";
+        }
+
+
+        $meta_query = "";
+        $includes_query = "";
+        $share_joins = "";
+        $access_joins = "";
+        $access_query = "";
+        if ( !isset( $query["assigned_to"] ) || in_array( "all", $query["assigned_to"] ) ){
+            $query["assigned_to"] = [ "all" ];
+            if ( !self::can_view_all( 'contacts' ) ){
+                $query["assigned_to"] = [ "me" ];
+                if ( !in_array( "shared", $include )){
+                    $include[] = "shared";
+                }
+            };
+        }
+        foreach ( $include as $i ){
+            if ( $i === "shared" ){
+                $share_joins = "LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
+                $access_query = "shares.user_id = $current_user->ID ";
+            }
+        }
+        if ( in_array( "shared", $query["assigned_to"] ) ){
+            $share_joins = "LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
+            $access_query = ( !empty( $access_query ) ? "OR" : "" ) ." shares.user_id = $current_user->ID ";
+        }
+        foreach ( $query as $query_key => $query_value ){
+            $meta_field_sql = "";
+            if ( !is_array( $query_value )){
+                return new WP_Error( __FUNCTION__, __( "Filter queries must be arrays" ), [ 'status' => 403 ] );
+            }
+            if ( !in_array( $query_key, self::$connection_types ) && strpos( $query_key, "contact_" ) !== 0 ){
+                if ( $query_key == "assigned_to" ){
+                    foreach ( $query_value as $assigned_to ){
+                        $connector = "OR";
+                        if ( $assigned_to == "me" ){
+                            $assigned_to = "user-" . $current_user->ID;
+                        } else if ( $assigned_to != "all" && $assigned_to != "shared" ) {
+                            if ( self::can_view_all( 'contacts' ) ){
+                                $assigned_to = "user-" . $assigned_to;
+                            } else {
+                                $assigned_to = "user-" . $assigned_to;
+                                if ( !$share_joins ){
+                                    $share_joins = "INNER JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
+                                    $access_query = "shares.user_id = $current_user->ID ";
+                                    $connector = "AND";
+                                }
+                            }
+                        } else {
+                            break;
+                        }
+                        $access_joins = "INNER JOIN $wpdb->postmeta AS assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id ) ";
+                        $access_query .= ( !empty( $access_query ) ? $connector : "" ) . ( $connector == "AND" ? " ( " : "" ) . " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value = '" . esc_sql( $assigned_to ) . "' ) " . ( $connector == "AND" ? " ) " : "" );
+
+                    }
+                } else {
+                    foreach ( $query_value as $value ){
+                        if ( !empty( $meta_field_sql ) ){
+                            $meta_field_sql .= " OR ";
+                        }
+                        $meta_field_sql .= " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value = '" . esc_sql( $value ) . "' ) ";
+                    }
+                }
+                if ( $meta_field_sql ){
+                    $inner_joins .= "INNER JOIN $wpdb->postmeta AS " . esc_sql( $query_key ) . " ON ( $wpdb->posts.ID = " . esc_sql( $query_key ) . ".post_id ) ";
+                    $meta_query .= "AND ( " .$meta_field_sql . ") ";
+                }
+            }
+        }
+
+        if ( !empty( $search )){
+            $inner_joins .= "INNER JOIN $wpdb->postmeta AS search ON ( $wpdb->posts.ID = search.post_id ) ";
+            $meta_query .= "AND ( ( INSTR( $wpdb->posts.post_title ,'" . esc_sql( $search ) . "' ) > 0 ) OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 ) ) ";
+
+        }
+
+        $access_query = $access_query ? ( "AND ( " . $access_query . " ) " ) : "";
+
+        $sort_sql = "$wpdb->posts.post_date asc";
+        $sort_join = "";
+        $post_type_check = "";
+        if ( $post_type == "contacts" ){
+            $post_type_check = " AND (
+                ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'media' )
+                OR
+                ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'next_gen' )
+                OR ( $wpdb->postmeta.meta_key IS NULL )
+            ) ";
+            $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+            if ( $sort === "overall_status" || $sort === "seeker_path" ) {
+                $keys = array_keys( $contact_fields[$sort]["default"] );
+                $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $sort_sql  = "CASE ";
+                foreach ( $keys as $index => $key ) {
+                    $i        = $key == "closed" ? 99 : $index;
+                    $sort_sql .= "WHEN ( sort.meta_value = '" . esc_sql( $key ) . "' ) THEN $i ";
+                }
+                $sort_sql .= "else 98 end ";
+                $sort_sql .= $sort_dir;
+            } elseif ( $sort === "faith_milestones" ){
+                $all_field_keys = array_keys( $contact_fields );
+                $sort_sql = "CASE ";
+                $sort_join = "";
+                foreach ( array_reverse( $all_field_keys ) as $field_index => $field_key ){
+                    if ( strpos( $field_key, "milestone_" ) === 0 ){
+                        $alias = 'faith_' . esc_sql( $field_key );
+                        $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON 
+                    ( $wpdb->posts.ID = $alias.post_id AND $alias.meta_key = '" . esc_sql( $field_key ) . "' AND $alias.meta_value = 'yes') ";
+                        $sort_sql .= "WHEN ( $alias.meta_key = '" . esc_sql( $field_key ) . "' ) THEN $field_index ";
+                    }
+                }
+                $sort_sql .= "else 1000 end ";
+                $sort_sql .= $sort_dir;
+            }
+        } elseif ( $post_type === "groups" ){
+            $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+            if ( $sort === "group_status" || $sort === "group_type" ) {
+                $keys      = array_keys( $group_fields[ $sort ]["default"] );
+                $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $sort_sql  = "CASE ";
+                foreach ( $keys as $index => $key ) {
+                    $sort_sql .= "WHEN ( sort.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
+                }
+                $sort_sql .= "else 98 end ";
+                $sort_sql .= $sort_dir;
+            } elseif ( $sort === "members" ){
+                $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_to = $wpdb->posts.ID AND sort.p2p_type = 'contacts_to_groups' )";
+                $sort_sql = "COUNT(sort.p2p_id) $sort_dir";
+            }
+        }
+        if ( $sort === "name" ){
+            $sort_sql = "$wpdb->posts.post_title  " . $sort_dir;
+        } elseif ( $sort === "assigned_to" ){
+            $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
+            $sort_sql = "sort.meta_value $sort_dir";
+        } elseif ( $sort === "locations" || $sort === "groups" || $sort === "leaders" ){
+            $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = '" . $post_type . "_to_$sort' ) 
+            LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_to)";
+            $sort_sql = "ISNULL(p2p_post.post_name), p2p_post.post_name $sort_dir";
+        }
+
+
+        // phpcs:disable
+        $prepared_sql = $wpdb->prepare("
+            SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, $wpdb->posts.post_title, $wpdb->posts.post_type FROM $wpdb->posts
+            LEFT JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id )
+            " . $sort_join . " " . $inner_joins . " " . $share_joins . " " . $access_joins . "
+            WHERE 1=1 
+            " . $post_type_check . " " . $connections_sql_to . " ". $connections_sql_from . " " . $meta_query . " " . $includes_query . " " . $access_query . "
+            AND $wpdb->posts.post_type = %s
+            AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
+            GROUP BY $wpdb->posts.ID 
+            ORDER BY " . $sort_sql . "
+            LIMIT %d, 100
+            ",
+            esc_sql( $post_type ),
+            $offset
+        );
+        $posts = $wpdb->get_results( $prepared_sql, OBJECT );
+        // phpcs:enable
+        $total_rows = $wpdb->get_var( "SELECT found_rows();" );
+
+        return [
+            "posts" => $posts,
+            "total" => $total_rows,
+        ];
+    }
+
 
     /**
      * Gets an array of users whom the post is shared with.

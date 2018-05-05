@@ -264,12 +264,15 @@ function dt_site_scripts() {
         dt_theme_enqueue_script( 'data-tables', 'dt-core/dependencies/DataTables/datatables.min.js', array( 'jquery' ) );
         dt_theme_enqueue_style( 'data-tables', 'dt-core/dependencies/DataTables/datatables.min.css', array() );
         $post_type = null;
+        $custom_field_settings = [];
         if (is_post_type_archive( "contacts" )) {
             $post_type = "contacts";
+            $custom_field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false );
             dt_theme_enqueue_script( 'list-js', 'dt-assets/js/contacts-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js' ), true );
         } elseif (is_post_type_archive( "groups" )) {
-            dt_theme_enqueue_script( 'list-js', 'dt-assets/js/list.js', array( 'jquery', 'lodash', 'shared-functions', 'data-tables', 'site-js' ), true );
+            dt_theme_enqueue_script( 'list-js', 'dt-assets/js/contacts-list.js', array( 'jquery', 'lodash', 'shared-functions', 'data-tables', 'site-js' ), true );
             $post_type = "groups";
+            $custom_field_settings = Disciple_Tools_Groups_Post_type::instance()->get_custom_fields_settings();
         }
         wp_localize_script( 'list-js', 'wpApiSettings', array(
             'root' => esc_url_raw( rest_url() ),
@@ -288,8 +291,7 @@ function dt_site_scripts() {
             'txt_info' => _x( 'Showing _START_ to _END_ of _TOTAL_ entries', 'just copy as they are: _START_ _END_ and _TOTAL_', 'disciple_tools' ),
             'txt_infoEmpty' => __( 'Showing 0 to 0 of 0 entries', 'disciple_tools' ),
             'txt_infoFiltered' => _x( '(filtered from _MAX_ total entries)', 'just copy `_MAX_`', 'disciple_tools' ),
-            'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
-            'groups_custom_fields_settings' => Disciple_Tools_Groups_Post_type::instance()->get_custom_fields_settings(),
+            'custom_fields_settings' => $custom_field_settings,
             'template_directory_uri' => get_template_directory_uri(),
             'current_user_login' => wp_get_current_user()->user_login,
             'current_user_roles' => wp_get_current_user()->roles,

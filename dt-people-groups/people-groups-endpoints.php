@@ -62,7 +62,7 @@ class Disciple_Tools_People_Groups_Endpoints
     public function add_api_routes()
     {
         register_rest_route(
-            $this->namespace, '/people-groups-compact', [
+            $this->namespace, '/people-groups/compact', [
                 'methods'  => 'GET',
                 'callback' => [ $this, 'get_people_groups_compact' ],
             ]

@@ -23,7 +23,7 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
                 <span class="hide-for-small-only"><?php esc_html_e( "Filter contacts", 'disciple_tools' ) ?></span>
             </a>
             <input style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="search">
-            <button class="button" style="margin-bottom:0" id="search-contacts">
+            <button class="button" style="margin-bottom:0" id="search">
                 <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
                 <?php esc_html_e( "Search", 'disciple_tools' ) ?>
             </button>
@@ -46,17 +46,14 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
     </a>
     <div class="hideable-search" style="display: none; margin-top:5px">
         <input style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile" placeholder="search">
-        <button class="button" style="margin-bottom:0" id="search-contacts-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
+        <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
     </div>
-
-
 </nav>
 <div id="content">
 
     <div id="inner-content" class="grid-x grid-margin-x">
 
         <aside class="large-3 cell padding-bottom hide-for-small-only">
-
             <div class="bordered-box js-pane-filters">
                 <?php /* Javascript may move .js-filters-modal-content to this location. */ ?>
             </div>
@@ -64,31 +61,26 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
 
         <aside class="cell padding-bottom show-for-small-only">
             <div class="bordered-box" style="padding-top:5px;padding-bottom:5px">
-                <div class="js-list-filter filter--closed" data-filter="assigned_login">
+                <div class="js-list-filter filter--closed">
                     <div class="filter__title js-list-filter-title" style="margin-bottom:0"><?php esc_html_e( "Filters" ); ?>
                         <div style="display: inline-block" class="loading-spinner active"></div>
                     </div>
-
                     <div class="js-filters-accordion"></div>
                 </div>
             </div>
         </aside>
 
-        <div class="reveal js-filters-modal" id="filters-modal" data-reveal>
+        <div class="reveal js-filters-modal" id="filters-modal">
             <div class="js-filters-modal-content">
                 <h5 class="hide-for-small-only"><?php esc_html_e( 'Filters', "disciple_tools" ); ?></h5>
                 <div class="list-views">
-                    <!--                    --><?php //if (user_can( get_current_user_id(), 'view_any_contacts' ) ){ ?>
-
                     <label class="list-view">
-                        <input type="radio" name="view" value="all_contacts" class="js-list-view" autocomplete="off">
+                        <input type="radio" name="view" value="all" class="js-list-view" autocomplete="off">
                         <?php esc_html_e( "All contacts", "disciple_tools" ); ?>
                         <span class="list-view__count js-list-view-count" data-value="all_contacts">.</span>
                     </label>
-                    <!--                    --><?php //} ?>
-
                     <label class="list-view">
-                        <input type="radio" name="view" value="my_contacts" class="js-list-view" checked autocomplete="off">
+                        <input type="radio" name="view" value="my" class="js-list-view" checked autocomplete="off">
                         <?php esc_html_e( "My contacts", "disciple_tools" ); ?>
                         <span class="list-view__count js-list-view-count" data-value="my_contacts">.</span>
                     </label>
@@ -118,7 +110,7 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
                         </label>
                     </div>
                     <label class="list-view">
-                        <input type="radio" name="view" value="contacts_shared_with_me" class="js-list-view" autocomplete="off">
+                        <input type="radio" name="view" value="shared_with_me" class="js-list-view" autocomplete="off">
                         <?php esc_html_e( "Contacts shared with me", "disciple_tools" ); ?>
                         <span class="list-view__count js-list-view-count" data-value="contacts_shared_with_me">.</span>
                     </label>
@@ -148,9 +140,6 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
                 </div>
 
             </div>
-            <button class="close-button" data-close aria-label="<?php esc_html_e( "Close modal" ); ?>" type="button">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
 
         <main id="main" class="large-9 cell padding-bottom" role="main">
@@ -165,22 +154,19 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
 </div> <!-- end #content -->
 
 
-<div class="reveal large" id="filter-modal" data-reveal style="padding:10px 0">
-    <!--        <p class="lead">--><?php //esc_html_e( 'Why do you want to pause this contact?', 'disciple_tools' )?><!--</p>-->
-    <div class="grid-container" style="min-height:400px">
-        <div class="grid-x grid-margin-x">
+<div class="reveal" id="filter-modal" data-reveal style="padding:10px 0">
+    <div class="grid-container">
+        <div class="grid-x">
             <div class="cell small-4">
-                <h2><?php esc_html_e( 'New Filter', 'disciple_tools' )?></h2>
-
+                <h3><?php esc_html_e( 'New Filter', 'disciple_tools' )?></h3>
             </div>
             <div class="cell small-8">
                 <div id="selected-filters"></div>
-
             </div>
         </div>
 
-        <div class="grid-x grid-margin-x">
-            <div class="cell small-4">
+        <div class="grid-x">
+            <div class="cell small-4 filter-modal-left">
                 <ul class="vertical tabs" data-tabs id="example-tabs">
                     <li class="tabs-title is-active"><a href="#assigned_to" aria-selected="true"><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?></a></li>
                     <li class="tabs-title"><a href="#subassigned"><?php esc_html_e( "Sub-assigned To", 'disciple_tools' ) ?></a></li>
@@ -191,100 +177,94 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
                 </ul>
             </div>
 
-
-            <div class="cell small-8">
-                <div class="tabs-content" data-tabs-content="example-tabs">
-                    <div class="tabs-panel is-active" id="assigned_to">
-                        <h4><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?></h4>
-                        <div class="assigned_to details">
-                            <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
-                            <div id="assigned_to_t" name="form-assigned_to" class="scrollable-typeahead typeahead-margin-when-active">
-                                <div class="typeahead__container">
-                                    <div class="typeahead__field">
-                                        <span class="typeahead__query">
-                                            <input class="js-typeahead-assigned_to"
-                                                 name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
-                                                 autocomplete="off">
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tabs-panel" id="subassigned">
-                        <h4><?php esc_html_e( "Sub-assigned to", 'disciple_tools' ) ?></h4>
-                        <div class="subassigned details">
-                            <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
-                            <div id="subassigned_t" name="form-subassigned" class="scrollable-typeahead typeahead-margin-when-active">
-                                <div class="typeahead__container">
-                                    <div class="typeahead__field">
+            <div class="cell small-8 tabs-content" data-tabs-content="example-tabs">
+                <div class="tabs-panel is-active" id="assigned_to">
+                    <div class="assigned_to details">
+                        <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
+                        <div id="assigned_to_t" name="form-assigned_to" class="scrollable-typeahead typeahead-margin-when-active">
+                            <div class="typeahead__container">
+                                <div class="typeahead__field">
                                     <span class="typeahead__query">
-                                        <input class="js-typeahead-subassigned input-height"
-                                               name="subassigned[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
-                                               autocomplete="off">
+                                        <input class="js-typeahead-assigned_to"
+                                             name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
+                                             autocomplete="off">
                                     </span>
-                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="tabs-panel" id="locations">
-                        <h4><?php esc_html_e( "Locations", 'disciple_tools' ) ?></h4>
-                        <div class="locations">
-                            <var id="locations-result-container" class="result-container"></var>
-                            <div id="locations_t" name="form-locations" class="scrollable-typeahead typeahead-margin-when-active">
-                                <div class="typeahead__container">
-                                    <div class="typeahead__field">
-                                        <span class="typeahead__query">
-                                            <input class="js-typeahead-locations"
-                                                 name="locations[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
-                                                 autocomplete="off">
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tabs-panel" id="overall_status">
-                        <h4><?php esc_html_e( "Overall Status", 'disciple_tools' ) ?></h4>
-                        <div id="overall_status-options"></div>
-                    </div>
-                    <div class="tabs-panel" id="seeker_path">
-                        <h4><?php esc_html_e( "Seeker Path", 'disciple_tools' ) ?></h4>
-                        <div id="seeker_path-options"></div>
-                    </div>
-                    <div class="tabs-panel" id="faith_milestones">
-                        <h4><?php esc_html_e( "Faith Miletones", 'disciple_tools' ) ?></h4>
-                        <div id="faith_milestones-options">
-                            <?php foreach ( $dt_contact_field_options as $dt_field_key => $dt_field_value ) :
-                                if ( strpos( $dt_field_key, "milestone_" ) === 0 ) : ?>
-                                    <div>
-                                        <label style="cursor: pointer;">
-                                            <input type="checkbox" value="<?php echo esc_html( $dt_field_key ) ?>" class="milestone-filter" autocomplete="off">
-                                            <?php echo esc_html( $dt_field_value["name"] ) ?>
-                                        </label>
-                                    </div>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
-
+                <div class="tabs-panel" id="subassigned">
+                    <div class="subassigned details">
+                        <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
+                        <div id="subassigned_t" name="form-subassigned" class="scrollable-typeahead typeahead-margin-when-active">
+                            <div class="typeahead__container">
+                                <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-subassigned input-height"
+                                           name="subassigned[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
+                                           autocomplete="off">
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabs-panel" id="locations">
+                    <div class="locations">
+                        <var id="locations-result-container" class="result-container"></var>
+                        <div id="locations_t" name="form-locations" class="scrollable-typeahead typeahead-margin-when-active">
+                            <div class="typeahead__container">
+                                <div class="typeahead__field">
+                                    <span class="typeahead__query">
+                                        <input class="js-typeahead-locations"
+                                             name="locations[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                             autocomplete="off">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabs-panel" id="overall_status">
+                    <div id="overall_status-options"></div>
+                </div>
+                <div class="tabs-panel" id="seeker_path">
+                    <div id="seeker_path-options"></div>
+                </div>
+                <div class="tabs-panel" id="faith_milestones">
+                    <div id="faith_milestones-options">
+                        <?php foreach ( $dt_contact_field_options as $dt_field_key => $dt_field_value ) :
+                            if ( strpos( $dt_field_key, "milestone_" ) === 0 ) : ?>
+                                <div>
+                                    <label style="cursor: pointer;">
+                                        <input type="checkbox" value="<?php echo esc_html( $dt_field_key ) ?>" class="milestone-filter" autocomplete="off">
+                                        <?php echo esc_html( $dt_field_value["name"] ) ?>
+                                    </label>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div style="margin-top:20px">
-        <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-            <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
-        </button>
-        <button class="button loader confirm-filter-contacts" type="button" id="confirm-filter-contacts" data-close >
-            <?php esc_html_e( 'Filter Contacts', 'disciple_tools' )?>
-        </button>
-        <button class="close-button" data-close aria-label="Close modal" type="button">
-            <span aria-hidden="true">&times;</span>
-        </button>
+    <div class="grid-x grid-padding-x">
+        <div class="cell small-4 filter-modal-left">
+            <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+            </button>
+        </div>
+        <div class="cell small-8 filter-modal-right confirm-buttons">
+            <button class="button loader confirm-filter-contacts" type="button" id="confirm-filter-contacts" data-close >
+                <?php esc_html_e( 'Filter Contacts', 'disciple_tools' )?>
+            </button>
+        </div>
     </div>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
 </div>
 
 <div class="reveal" id="save-filter-modal" data-reveal>

@@ -60,7 +60,13 @@ class Disciple_Tools_Groups_Endpoints
             ]
         );
         register_rest_route(
-            $this->namespace, '/groups-compact', [
+            $this->namespace, '/groups/search', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'search_viewable_groups' ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/groups/compact', [
                 'methods'  => 'GET',
                 'callback' => [ $this, 'get_groups_compact' ],
             ]
@@ -145,6 +151,21 @@ class Disciple_Tools_Groups_Endpoints
         ];
     }
 
+    public function search_viewable_groups( WP_REST_Request $request )
+    {
+        $params = $request->get_params();
+        $result = Disciple_Tools_Groups::search_viewable_groups( $params, true );
+        if ( is_wp_error( $result ) ) {
+            return $result;
+        }
+
+        return [
+            "groups" => $this->add_related_info_to_groups( $result["groups"] ),
+            "total" => $result["total"],
+        ];
+    }
+
+
     /**
      * @param array $groups
      *
@@ -153,7 +174,8 @@ class Disciple_Tools_Groups_Endpoints
     private function add_related_info_to_groups( array $groups )
     {
         p2p_type( 'groups_to_locations' )->each_connected( $groups, [], 'locations' );
-        p2p_type( 'contacts_to_groups' )->each_connected( $groups, [], 'contacts' );
+        p2p_type( 'contacts_to_groups' )->each_connected( $groups, [], 'members' );
+        p2p_type( 'groups_to_leaders' )->each_connected( $groups, [], 'leaders' );
         $rv = [];
         foreach ( $groups as $group ) {
             $meta_fields = get_post_custom( $group->ID );
@@ -167,14 +189,14 @@ class Disciple_Tools_Groups_Endpoints
             }
             $group_array['leaders'] = [];
             $group_array['member_count'] = 0;
-            foreach ( $group->contacts as $contact ) {
-                if ( (int) p2p_get_meta( $contact->p2p_id, 'leader' ) ) {
-                    $group_array['leaders'][] = [
-                        'post_title' => $contact->post_title,
-                        'permalink'  => get_permalink( $contact->ID ),
-                    ];
-                }
+            foreach ( $group->members as $contact ) {
                 $group_array['member_count']++;
+            }
+            foreach ( $group->leaders as $leader ){
+                $group_array['leaders'][] = [
+                    'post_title' => $leader->post_title,
+                    'permalink'  => get_permalink( $leader->ID ),
+                ];
             }
             $group_array['group_status'] = "";
             foreach ( $meta_fields as $meta_key => $meta_value ) {
@@ -185,6 +207,9 @@ class Disciple_Tools_Groups_Endpoints
                 } elseif ( $meta_key == 'last_modified' ) {
                     $group_array[ $meta_key ] = (int) $meta_value[0];
                 }
+            }
+            if ( !isset( $group_array["last_modified"] ) ){
+                $group_array["last_modified"] = 0;
             }
             $rv[] = $group_array;
         }
