@@ -141,49 +141,56 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
 
     /**
-     * Print extension module box for options page
+     * Print extension module box for options page // @todo in progress
      */
     public function metrics()
     {
-        if ( isset( $_POST['extension_modules_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['extension_modules_nonce'] ) ), 'extension_modules' ) ) {
+//        $site_options = dt_get_option( 'dt_site_options' ); // @todo create new default section for dt_get_option()
+        $roles = dt_multi_role_get_roles();
+        if ( isset( $roles['administrator'] ) ) {
+            unset( $roles['administrator'] );
+        }
+//        dt_write_log( $roles );
 
-            $site_options = dt_get_option( 'dt_site_options' );
+        if ( isset( $_POST['metrics_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['metrics_nonce'] ) ), 'metrics' . get_current_user_id() ) ) {
 
-            if ( isset( $_POST['reset_extension_modules'] ) ) {
-                unset( $site_options['extension_modules'] );
-                $site_option_defaults = dt_get_site_options_defaults();
-                $site_options['extension_modules'] = $site_option_defaults['extension_modules'];
-            }
+            dt_write_log( $_POST ); // @todo add saving logic
 
-            foreach ( $site_options['extension_modules'] as $key => $value ) {
-                $site_options['extension_modules'][ $key ] = isset( $_POST[ $key ] );
-            }
-
-            update_option( 'dt_site_options', $site_options, true );
         }
 
-        $site_options = dt_get_option( 'dt_site_options' );
-        $metrics_defaults = $site_options['metrics_defaults'];
 
         ?>
-        <form method="post" name="extension_modules_form">';
-        <button type="submit" class="button-like-link" name="reset_extension_modules" value="1"><?php  echo esc_html__( 'reset' ) ?></button>
-        <p><?php esc_html__( 'Configure which groups see metrics' ) ?></p>
-        <input type="hidden" name="extension_modules_nonce" id="extension_modules_nonce" value="<?php echo esc_attr( wp_create_nonce( 'metric_modules' ) ) ?>" />
+        <form method="post" name="extension_modules_form">
 
-        <table class="widefat">
-            <tr>
-                <td>Personal Metrics</td>
-                <td><input name="add_people_groups" type="checkbox" <?php echo  ( true ? "checked" : "" ) ?> /></td>
-            </tr>
-            <tr>
-                <td><?php esc_html__( 'Project Metrics' ) ?></td>
-                <td><input name="add_people_groups" type="checkbox" <?php echo  ( true ? "checked" : "" ) ?> /></td>
-            </tr>
+            <button type="submit" class="button-like-link" name="reset_extension_modules" value="1"><?php  echo esc_html__( 'reset' ) ?></button>
 
-        </table>
+            <p><?php esc_html_e( 'Configure which groups see metrics' ) ?></p>
+
+            <input type="hidden" name="extension_modules_nonce" id="extension_modules_nonce" value="<?php echo esc_attr( wp_create_nonce( 'metrics' . get_current_user_id() ) ) ?>" />
+
+            <table class="widefat">
+                <thead>
+                    <tr>
+                        <th><?php echo esc_html( 'Role' ) ?></th>
+                        <th><?php echo esc_html( 'Hide Personal' ) ?></th>
+                        <th><?php echo esc_html( 'Hide Project' ) ?></th>
+                        <th><?php echo esc_html( 'Hide Extensions' ) ?></th>
+                    </tr>
+                </thead>
+
+                <?php foreach( $roles as $role ) : ?>
+                <tr>
+                    <td><?php echo esc_html__( $role->name ) ?></td>
+                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-personal" type="checkbox" <?php echo  ( false ? "checked" : "" ) ?> /></td>
+                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-project" type="checkbox" <?php echo  ( false ? "checked" : "" ) ?> /></td>
+                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-extensions" type="checkbox" <?php echo  ( false ? "checked" : "" ) ?> /></td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+
             <br>
-            <span style="float:right;"><button type="submit" class="button float-right">Save</button> </span></form>
+            <span style="float:right;"><button type="submit" class="button float-right">Save</button></span>
+        </form>
         <?php
     }
 
