@@ -26,6 +26,7 @@
     savedFilters[wpApiSettings.current_post_type] = []
   }
   let filterToSave = ""
+  let filterToDelete = ""
   let currentFilters = $("#current-filters")
   let newFilterLabels = []
   let typeaheadTotals = {}
@@ -33,19 +34,6 @@
   let tableHeaderRow = $('.js-list thead .sortable th')
   let getContactsPromise = null
 
-  //look at the cookie to see what was the last selected view
-  let cachedFilter = JSON.parse(getCookie("last_view")||"{}")
-  if ( cachedFilter && !_.isEmpty(cachedFilter)){
-    if (cachedFilter.type==="saved-filters"){
-      if ( _.find(savedFilters[wpApiSettings.current_post_type], {ID: cachedFilter.ID})){
-        $(`input[name=view][value=saved-filters][data-id='${cachedFilter.ID}']`).prop('checked', true);
-      }
-    } else if ( cachedFilter.type==="default" ){
-      $("input[name=view][value=" + cachedFilter.ID + "]").prop('checked', true);
-    } else if ( cachedFilter.type === "custom_filter" ){
-      addCustomFilter(cachedFilter.name, "default", cachedFilter.query, cachedFilter.labels)
-    }
-  }
 
   function get_contacts( offset = 0, sort ) {
     loading_spinner.addClass("active")
@@ -76,7 +64,8 @@
       } else  {
         items = data[wpApiSettings.current_post_type] || []
       }
-      $('.filter-result-text').html(`Showing ${items.length} of ${data.total}`)
+      let result_text = wpApiSettings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", data.total)
+      $('.filter-result-text').html(result_text)
       $("#current-filters").html(selectedFilters.html())
       displayRows();
       setupCurrentFilterLabels()
@@ -84,20 +73,24 @@
     })
   }
 
-
   let savedFiltersList = $("#saved-filters")
 
   function setupFilters(filters){
-    savedFiltersList.html("")
+    savedFiltersList.empty()
     filters.forEach(filter=>{
       if (filter){
-        const radio = $("<input name='view' class='js-list-view' autocomplete='off'>")
+        let deleteFilter = $(`<span style="float:right" data-filter="${filter.ID}">
+            ${wpApiSettings.translations.delete}
+        </span>`).on("click", function () {
+          $(`.delete-filter-name`).html(filter.name)
+          $('#delete-filter-modal').foundation('open');
+          filterToDelete = filter.ID;
+        })
+        const radio = $(`<input name='view' class='js-list-view' autocomplete='off' data-id="${filter.ID}" >`)
           .attr("type", "radio")
           .val("saved-filters")
-          .data("id", filter.ID)
           .on("change", function() {
           });
-        getContactForCurrentView()
         savedFiltersList.append(
           $("<div>").append(
             $("<label>")
@@ -107,14 +100,29 @@
               .data("filter-value", status)
               .append(radio)
               .append(document.createTextNode(filter.name))
-            // .append($("<span>")
-            //     .css("float", "right")
-            //     .append(document.createTextNode(counts[key]))
-            // )
-          ))
+              .append(deleteFilter)
+
+          )
+        )
       }
     })
   }
+
+  setupFilters(savedFilters[wpApiSettings.current_post_type])
+  //look at the cookie to see what was the last selected view
+  let cachedFilter = JSON.parse(getCookie("last_view")||"{}")
+  if ( cachedFilter && !_.isEmpty(cachedFilter)){
+    if (cachedFilter.type==="saved-filters"){
+      if ( _.find(savedFilters[wpApiSettings.current_post_type], {ID: cachedFilter.ID})){
+        $(`input[name=view][value=saved-filters][data-id='${cachedFilter.ID}']`).prop('checked', true);
+      }
+    } else if ( cachedFilter.type==="default" ){
+      $("input[name=view][value=" + cachedFilter.ID + "]").prop('checked', true);
+    } else if ( cachedFilter.type === "custom_filter" ){
+      addCustomFilter(cachedFilter.name, "default", cachedFilter.query, cachedFilter.labels)
+    }
+  }
+
 
   $(function() {
     $(window).resize(function() {
@@ -353,14 +361,12 @@
       for (let i = 0; i < typeahead.items.length; i ){
         typeahead.cancelMultiselectItem(0)
       }
-      console.log(typeahead.node);
       typeahead.node.trigger('propertychange.typeahead')
     })
   })
 
   $('.tabs-title a').on("click", function () {
     let id = $(this).attr('href').replace('#', '')
-    console.log(id);
     $(`.js-typeahead-${id}`).trigger('input')
   })
 
@@ -401,7 +407,9 @@
     currentFilter = {ID, type, name, query:JSON.parse(JSON.stringify(query)), labels:labels}
     customFilters.push(JSON.parse(JSON.stringify(currentFilter)))
 
-    let saveFilter = $(`<span style="float:right" data-filter="${ID}">Save</span>`).on("click", function () {
+    let saveFilter = $(`<span style="float:right" data-filter="${ID}">
+        ${wpApiSettings.translations.save}
+    </span>`).on("click", function () {
       $('#save-filter-modal').foundation('open');
       filterToSave = ID;
     })
@@ -430,10 +438,19 @@
 
       savedFilters[wpApiSettings.current_post_type].push(newFilter)
       API.save_filters(savedFilters).then(()=>{
-        $(`.custom-filters .list-view.${filterToSave}`).remove()
+        $(`.custom-filters [class*="list-view ${filterToSave}`).remove()
         setupFilters(savedFilters[wpApiSettings.current_post_type])
+        $(`input[name="view"][value="saved-filters"][data-id='${filterToSave}']`).prop('checked', true);
+        getContactForCurrentView()
       })
     }
+  })
+
+  $(`#confirm-filter-delete`).on('click', function () {
+    _.pullAllBy(savedFilters[wpApiSettings.current_post_type], [{ID:filterToDelete}], "ID")
+    API.save_filters(savedFilters).then(()=>{
+      setupFilters(savedFilters[wpApiSettings.current_post_type])
+    })
   })
 
 

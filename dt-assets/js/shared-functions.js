@@ -165,7 +165,6 @@ let API = {
     })
   },
   save_filters( filters ){
-    console.log(filters);
     return jQuery.ajax({
       type: "POST",
       contentType: "application/json; charset=utf-8",

@@ -95,21 +95,7 @@ declare(strict_types=1);
                 </div>
                 <div class="custom-filters">
                 </div>
-                <div id="saved-filters">
-                    <?php
-                    $dt_saved_filters = Disciple_Tools_Users::get_user_filters();
-                    if ( isset( $dt_saved_filters["groups"] )){
-                        foreach ( $dt_saved_filters["groups"] as $filter ) { ?>
-                            <div>
-                                <label style="cursor:pointer" class="js-filter-checkbox-label">
-                                    <input name="view" class="js-list-view" type="radio" autocomplete="off" data-id="<?php echo esc_html( $filter["ID"] ) ?>" value="saved-filters">
-                                    <?php echo esc_html( $filter["name"] ) ?>
-                                </label>
-                            </div>
-                        <?php }
-                    }
-                    ?>
-                </div>
+                <div id="saved-filters"></div>
             </div>
         </div>
 
@@ -221,22 +207,7 @@ declare(strict_types=1);
     </button>
 </div>
 
-<div class="reveal" id="save-filter-modal" data-reveal>
-    <h2><?php esc_html_e( "Save Filter", 'disciple_tools' ) ?></h2>
-    <label><?php esc_html_e( "What do you want to call this filter?", 'disciple_tools' ) ?>
-        <input id="filter-name">
-    </label>
-    <div style="margin-top:20px">
-        <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-            <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
-        </button>
-        <button class="button loader confirm-filter-save" type="button" id="confirm-filter-save" data-close >
-            <?php esc_html_e( 'Save Filter', 'disciple_tools' )?>
-        </button>
-        <button class="close-button" data-close aria-label="Close modal" type="button">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-</div>
+
+<?php get_template_part( 'dt-assets/parts/modals/modal', 'filters' ); ?>
 
 <?php get_footer(); ?>
