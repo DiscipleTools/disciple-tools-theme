@@ -829,11 +829,12 @@ class Disciple_Tools_Posts
         $sort_join = "";
         $post_type_check = "";
         if ( $post_type == "contacts" ){
+            $inner_joins .= "LEFT JOIN $wpdb->postmeta as contact_type ON ( $wpdb->posts.ID = contact_type.post_id AND contact_type.meta_key = 'type' ) ";
             $post_type_check = " AND (
-                ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'media' )
+                ( contact_type.meta_key = 'type' AND contact_type.meta_value = 'media' )
                 OR
-                ( $wpdb->postmeta.meta_key = 'type' AND $wpdb->postmeta.meta_value = 'next_gen' )
-                OR ( $wpdb->postmeta.meta_key IS NULL )
+                ( contact_type.meta_key = 'type' AND contact_type.meta_value = 'next_gen' )
+                OR ( contact_type.meta_key IS NULL )
             ) ";
             $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
             if ( $sort === "overall_status" || $sort === "seeker_path" ) {
@@ -892,7 +893,6 @@ class Disciple_Tools_Posts
         // phpcs:disable
         $prepared_sql = $wpdb->prepare("
             SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, $wpdb->posts.post_title, $wpdb->posts.post_type FROM $wpdb->posts
-            LEFT JOIN $wpdb->postmeta ON ( $wpdb->posts.ID = $wpdb->postmeta.post_id )
             " . $sort_join . " " . $inner_joins . " " . $share_joins . " " . $access_joins . "
             WHERE 1=1 
             " . $post_type_check . " " . $connections_sql_to . " ". $connections_sql_from . " " . $meta_query . " " . $includes_query . " " . $access_query . "
