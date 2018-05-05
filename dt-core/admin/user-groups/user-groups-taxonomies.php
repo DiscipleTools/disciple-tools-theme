@@ -247,7 +247,7 @@ function dt_groups_admin_assets()
 
     if ( 'users.php' === $pagenow || 'user-new.php' === $pagenow || 'user-edit.php' === $pagenow || 'edit-tags.php' === $pagenow || 'profile.php' === $pagenow ) {
 
-        $url = disciple_tools()->plugin_url;
+        $url = disciple_tools()->theme_url;
         $ver = disciple_tools()->version;
 
         wp_enqueue_style( 'disciple_tools_groups', $url . 'dt-core/admin/css/user-groups.css', false, $ver, false );
