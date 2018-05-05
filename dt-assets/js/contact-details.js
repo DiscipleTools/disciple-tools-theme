@@ -412,7 +412,7 @@ jQuery(document).ready(function($) {
     template: function (query, item) {
       return `<span class="row">
         <span class="avatar"><img src="{{avatar}}"/> </span>
-        <span>${item.name} (${item.email})</span>
+        <span>${item.name}</span>
       </span>`
     },
     dynamic: true,
