@@ -940,9 +940,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 $next = date( 'Y-m-dH', strtotime( '+1 hour' ) );
                 $next_hour = md5( $key . $next );
 
-                if ( md5( $key . $current_hour ) == $transfer_token
-                    || md5( $key . $past_hour ) == $transfer_token
-                    || md5( $key . $next_hour ) == $transfer_token ) {
+                if ( $current_hour == $transfer_token
+                    || $past_hour == $transfer_token
+                    || $next_hour == $transfer_token ) {
                     return $key;
                 }
             }
