@@ -124,7 +124,7 @@ declare(strict_types=1);
 </div> <!-- end #content -->
 
 
-<div class="reveal" id="filter-modal" data-reveal style="padding:10px 0">
+<div class="reveal" id="filter-modal" data-reveal>
     <div class="grid-container" >
         <div class="grid-x">
             <div class="cell small-4">

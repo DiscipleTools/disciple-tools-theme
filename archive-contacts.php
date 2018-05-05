@@ -154,7 +154,7 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
 </div> <!-- end #content -->
 
 
-<div class="reveal" id="filter-modal" data-reveal style="padding:10px 0">
+<div class="reveal" id="filter-modal" data-reveal>
     <div class="grid-container">
         <div class="grid-x">
             <div class="cell small-4">
@@ -177,7 +177,7 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
                 </ul>
             </div>
 
-            <div class="cell small-8 tabs-content" data-tabs-content="example-tabs">
+            <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="example-tabs">
                 <div class="tabs-panel is-active" id="assigned_to">
                     <div class="assigned_to details">
                         <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
