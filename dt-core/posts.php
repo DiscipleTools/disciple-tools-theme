@@ -880,13 +880,15 @@ class Disciple_Tools_Posts
         }
         if ( $sort === "name" ){
             $sort_sql = "$wpdb->posts.post_title  " . $sort_dir;
-        } elseif ( $sort === "assigned_to" ){
+        } elseif ( $sort === "assigned_to" || $sort === "last_modified" ){
             $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
             $sort_sql = "sort.meta_value $sort_dir";
         } elseif ( $sort === "locations" || $sort === "groups" || $sort === "leaders" ){
             $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = '" . $post_type . "_to_$sort' ) 
             LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_to)";
             $sort_sql = "ISNULL(p2p_post.post_name), p2p_post.post_name $sort_dir";
+        } elseif ( $sort === "post_date" ){
+            $sort_sql = "$wpdb->posts.post_date  " . $sort_dir;
         }
 
 

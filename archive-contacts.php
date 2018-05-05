@@ -160,6 +160,7 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
                     <li class="tabs-title"><a href="#overall_status"><?php esc_html_e( "Status", 'disciple_tools' ) ?></a></li>
                     <li class="tabs-title"><a href="#seeker_path"><?php esc_html_e( "Seeker Path", 'disciple_tools' ) ?></a></li>
                     <li class="tabs-title"><a href="#faith_milestones"><?php esc_html_e( "Faith Milestones", 'disciple_tools' ) ?></a></li>
+                    <li class="tabs-title"><a href="#requires_update"><?php esc_html_e( "Update Needed", 'disciple_tools' ) ?></a></li>
                 </ul>
             </div>
 
@@ -231,6 +232,9 @@ $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_cu
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </div>
+                </div>
+                <div class="tabs-panel" id="requires_update">
+                    <div id="requires_update-options"></div>
                 </div>
             </div>
         </div>

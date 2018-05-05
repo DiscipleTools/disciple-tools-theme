@@ -383,7 +383,7 @@
       fields = ["group_type", "group_status"]
     } else if ( wpApiSettings.current_post_type === "contacts" ){
       searchQuery.subassigned = _.map(_.get(Typeahead['.js-typeahead-subassigned'], "items"), "ID")
-      fields = ["overall_status", "seeker_path"]
+      fields = ["overall_status", "seeker_path", "requires_update"]
       $("#faith_milestones-options input:checked").each(function(){
         searchQuery[$(this).val()] = ["yes"]
       })
@@ -503,6 +503,14 @@
       id = `-${id}`
     }
     get_contacts(0, id)
+  })
+
+  $('.js-sort-by').click(function () {
+    tableHeaderRow.removeClass("sorting_asc")
+    tableHeaderRow.removeClass("sorting_desc")
+    let dir = $(this).data('order')
+    let field = $(this).data('field')
+    get_contacts(0, (dir === "asc" ? "" : '-') + field)
   })
 
 
@@ -709,7 +717,7 @@
   if ( wpApiSettings.current_post_type === "groups" ){
     fields = ["group_type", "group_status"]
   } else if ( wpApiSettings.current_post_type === "contacts" ){
-    fields = ["overall_status", "seeker_path"]
+    fields = ["overall_status", "seeker_path", "requires_update"]
   }
   fields.forEach(field_key=>{
     let field_options = _.get(wpApiSettings, `custom_fields_settings.${field_key}.default`) || {}

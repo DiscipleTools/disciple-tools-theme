@@ -6,22 +6,27 @@ declare(strict_types=1);
     <div style="display: inline-block" class="loading-spinner active"></div>
     <span style="display: inline-block" class="filter-result-text"></span>
     <div style="display: inline-block" id="current-filters"></div>
-<!--    <div class="js-sort-dropdown" hidden>-->
-<!--        <ul class="dropdown menu" data-dropdown-menu>-->
-<!--            <li>-->
-<!--                <a href="#">--><?php //esc_html_e( "Sort", "disciple_tools" ); ?><!--</a>-->
-<!--                <ul class="menu">-->
-<!--                    <li><a href="#" class="js-sort-by" data-column-index="6" data-order="desc">-->
-<!--                        --><?php //esc_html_e( "Most recent", "disciple_tools" ); ?>
-<!--                    </a></li>-->
-<!--                    <li><a href="#" class="js-sort-by" data-column-index="6" data-order="asc">-->
-<!--                        --><?php //esc_html_e( "Least recent", "disciple_tools" ); ?>
-<!--                    </a></li>-->
-<!--                </ul>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--    </div>-->
-
+    <div class="js-sort-dropdown" style="display: inline-block">
+        <ul class="dropdown menu" data-dropdown-menu>
+            <li>
+                <a href="#"><?php esc_html_e( "Sort" ); ?></a>
+                <ul class="menu">
+                    <li><a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="post_date">
+                        <?php esc_html_e( "Newest", "disciple_tools" ); ?>
+                    </a></li>
+                    <li><a href="#" class="js-sort-by" data-column-index="6" data-order="asc" data-field="post_date">
+                        <?php esc_html_e( "Oldest", "disciple_tools" ); ?>
+                    </a></li>
+                    <li><a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="last_modified">
+                        <?php esc_html_e( "Most recently modified", "disciple_tools" ); ?>
+                    </a></li>
+                    <li><a href="#" class="js-sort-by" data-column-index="6" data-order="asc" data-field="last_modified">
+                        <?php esc_html_e( "Least recently modified", "disciple_tools" ); ?>
+                    </a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
     <table class="table-remove-top-border js-list stack striped">
         <thead>
             <tr class="sortable">
