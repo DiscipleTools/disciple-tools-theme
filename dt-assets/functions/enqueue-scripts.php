@@ -266,9 +266,9 @@ function dt_site_scripts() {
         if (is_post_type_archive( "contacts" )) {
             $post_type = "contacts";
             $custom_field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false );
-            dt_theme_enqueue_script( 'list-js', 'dt-assets/js/contacts-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js' ), true );
+            dt_theme_enqueue_script( 'list-js', 'dt-assets/js/list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js' ), true );
         } elseif (is_post_type_archive( "groups" )) {
-            dt_theme_enqueue_script( 'list-js', 'dt-assets/js/contacts-list.js', array( 'jquery', 'lodash', 'shared-functions', 'site-js' ), true );
+            dt_theme_enqueue_script( 'list-js', 'dt-assets/js/list.js', array( 'jquery', 'lodash', 'shared-functions', 'site-js' ), true );
             $post_type = "groups";
             $custom_field_settings = Disciple_Tools_Groups_Post_type::instance()->get_custom_fields_settings();
         }
