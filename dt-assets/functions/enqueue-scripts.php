@@ -235,18 +235,16 @@ function dt_site_scripts() {
         );
     }
     if ( 'metrics' === $url_path ) {
-
-
-            dt_theme_enqueue_script( 'dt-metrics', 'dt-assets/js/metrics.js', array( 'jquery', 'jquery-ui' ), true );
-
-        wp_localize_script(
-            'dt-metrics', 'wpApiMetricsPage', array(
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' )
-            )
-        );
-        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(), false );
-
+        if ( dt_metrics_visibility( 'tab' ) ) { // @todo add logic to load personal or project statistics
+            dt_theme_enqueue_script( 'dt-metrics', 'dt-assets/js/metrics.js', [ 'jquery', 'jquery-ui' ], true );
+            wp_localize_script(
+                'dt-metrics', 'wpApiMetricsPage', [
+                    'root'  => esc_url_raw( rest_url() ),
+                    'nonce' => wp_create_nonce( 'wp_rest' )
+                ]
+            );
+            wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', [], false );
+        }
     }
     if ( 'locations' === $url_path && ( is_archive() || is_singular( 'locations' ) ) ) {
         dt_theme_enqueue_script( 'dt-locations', 'dt-assets/js/locations.js', array( 'jquery', 'jquery-ui' ), true );

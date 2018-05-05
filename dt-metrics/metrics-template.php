@@ -10,3 +10,18 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 /** Functions to output data for the theme. @see Buddypress bp-members-template.php or bp-groups-template.php for an example of the role of this page  */
+
+/**
+ * Helper function to decide which metrics a user can see.
+ */
+function dt_metrics_visibility( $item ) : bool {
+
+    switch ( $item ) {
+        case 'tab':
+            return ( user_can( get_current_user_id(), 'view_any_contacts' ) || user_can( get_current_user_id(), 'view_project_metrics' ) ) ? true : false;
+            break;
+        default:
+            return false;
+            break;
+    }
+}
