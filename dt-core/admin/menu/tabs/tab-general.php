@@ -46,7 +46,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         if ( $tab == 'general' || !isset( $tab ) ) {
             echo 'nav-tab-active';
         }
-        echo '">' . __( 'General Settings' ) . '</a>';
+        echo '">' . esc_html__( 'General Settings' ) . '</a>';
     }
 
     public function content( $tab )
@@ -76,11 +76,13 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* Site Notifications */
 
+        if ( dt_metrics_visibility( 'tab' ) ) : // @todo remove after development
             /* Metrics */
             $this->box( 'top', 'Metrics' );
             $this->metrics(); // prints content for the notifications box
             $this->box( 'bottom' );
             /* End Metrics */
+        endif;
 
             $this->template( 'right_column' );
 
@@ -145,6 +147,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
      */
     public function metrics()
     {
+
 //        $site_options = dt_get_option( 'dt_site_options' ); // @todo create new default section for dt_get_option()
         $roles = dt_multi_role_get_roles();
         if ( isset( $roles['administrator'] ) ) {
@@ -162,7 +165,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         ?>
         <form method="post" name="extension_modules_form">
 
-            <button type="submit" class="button-like-link" name="reset_extension_modules" value="1"><?php  echo esc_html__( 'reset' ) ?></button>
+            <button type="submit" class="button-like-link" name="reset_extension_modules" value="1"><?php echo esc_html__( 'reset' ) ?></button>
 
             <p><?php esc_html_e( 'Configure which groups see metrics' ) ?></p>
 
@@ -178,12 +181,12 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                     </tr>
                 </thead>
 
-                <?php foreach( $roles as $role ) : ?>
+                <?php foreach ( $roles as $role ) : ?>
                 <tr>
-                    <td><?php echo esc_html__( $role->name ) ?></td>
-                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-personal" type="checkbox" <?php echo  ( false ? "checked" : "" ) ?> /></td>
-                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-project" type="checkbox" <?php echo  ( false ? "checked" : "" ) ?> /></td>
-                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-extensions" type="checkbox" <?php echo  ( false ? "checked" : "" ) ?> /></td>
+                    <td><?php echo esc_html( $role->name ) ?></td>
+                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-personal" type="checkbox" <?php echo ( false ? "checked" : "" ) ?> /></td>
+                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-project" type="checkbox" <?php echo ( false ? "checked" : "" ) ?> /></td>
+                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-extensions" type="checkbox" <?php echo ( false ? "checked" : "" ) ?> /></td>
                 </tr>
                 <?php endforeach; ?>
             </table>
