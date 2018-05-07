@@ -2056,6 +2056,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                  ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
                     AND c.meta_value = CONCAT( 'user-', %s )
+               JOIN $wpdb->postmeta as d
+                 ON a.ID=d.post_id
+                    AND d.meta_key = 'overall_status'
+                    AND d.meta_value = 'active'
               WHERE a.post_status = 'publish')
             as update_needed,
             (SELECT count(a.ID)
@@ -2068,6 +2072,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                  ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
                     AND c.meta_value = CONCAT( 'user-', %s )
+               JOIN $wpdb->postmeta as d
+                 ON a.ID=d.post_id
+                    AND d.meta_key = 'overall_status'
+                    AND d.meta_value = 'active'
               WHERE a.post_status = 'publish')
             as contact_attempted,
             (SELECT count(a.ID)
@@ -2080,6 +2088,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                  ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
                     AND c.meta_value = CONCAT( 'user-', %s )
+               JOIN $wpdb->postmeta as d
+                 ON a.ID=d.post_id
+                    AND d.meta_key = 'overall_status'
+                    AND d.meta_value = 'active'
               WHERE a.post_status = 'publish')
              as meeting_scheduled,
             (SELECT count(ID)
