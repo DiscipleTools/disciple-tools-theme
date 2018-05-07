@@ -49,6 +49,7 @@ Template Name: Metrics
 
                         </ul>
 
+
                     </div>
 
                 </section>
@@ -74,3 +75,4 @@ Template Name: Metrics
     </div> <!-- end #content -->
 
 <?php get_footer(); ?>
+

@@ -2083,9 +2083,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
               WHERE a.post_status = 'publish')
              as meeting_scheduled,
             (SELECT count(ID)
-             FROM wp_9_posts
+             FROM $wpdb->posts
              WHERE ID IN (SELECT post_id
-                          FROM wp_9_dt_share
+                          FROM $wpdb->dt_share
                           WHERE user_id = %s)
                       AND post_status = 'publish' )
               as shared;

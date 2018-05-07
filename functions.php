@@ -42,7 +42,6 @@ else {
      */
     function dt_theme_loaded()
     {
-        dt_write_log( __METHOD__ );
         /** We want to make sure roles are up-to-date. */
         require_once( get_template_directory() . '/dt-core/admin/class-roles.php' );
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
@@ -328,18 +327,15 @@ else {
             /**
              * dt-metrics
              */
-            require_once( get_template_directory() . '/dt-metrics/class-counter.php' );
+            require_once( get_template_directory() . '/dt-metrics/counter.php' );
             $this->counter = Disciple_Tools_Counter::instance();
-            require_once( get_template_directory() . '/dt-metrics/class-goals.php' );
             require_once( get_template_directory() . '/dt-metrics/metrics-template.php' );
             require_once( get_template_directory() . '/dt-metrics/metrics.php' );
             $this->metrics = Disciple_Tools_Metrics::instance();
-            require_once( get_template_directory() . '/dt-metrics/metrics-hooks.php' );
-            Disciple_Tools_Metrics_Hooks::instance();
+
             require_once( get_template_directory() . '/dt-metrics/metrics-endpoints.php' );
-            $this->endpoints['metrics'] = new Disciple_Tools_Metrics_Endpoints();
-            require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
-            Disciple_Tools_Metrics_Personal::instance();
+            $this->endpoints['metrics'] = Disciple_Tools_Metrics_Endpoints::instance();
+
 
             /**
              * dt-users

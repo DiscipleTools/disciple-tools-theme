@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-    // console.log( dtMetricsPersonal )
+    console.log( dtMetricsPersonal )
 
     if( ! window.location.hash || '#overview' === window.location.hash  ) {
         overview()
@@ -36,21 +36,30 @@ function overview() {
                     <div class="medium-3 cell center" style="border-left: 1px solid #ccc">
                         <h4>Updates Needed<br><span id="updates_needed"></span></h4>
                     </div>
+                    <div class="medium-3 cell center" style="border-left: 1px solid #ccc">
+                        <h4>Attempts Needed<br><span id="attempts_needed"></span></h4>
+                    </div>
                 </div>
             </div>
+            <div class="cell center">
+                <span class="section-subheader">My Contacts Progress</span>
+            </div>
             <div class="cell">
-            <span class="section-subheader">My Critical Path</span>
-            <div id="my_critical_path" style="height: 500px; margin: 0 1em 1.2em; "></div>
-            </div> 
+                <div id="my_contacts_progress" style="height: 500px; margin: 0 1em 1.2em; "></div>
+            </div>
+            <div class="cell center">
+                <hr>
+                <span class="section-subheader">My Groups Progress</span>
+            </div>
             <div class="cell">
-            <hr>
-            <span class="section-subheader">My Contacts Progress</span>
-            <div id="my_contacts_progress" style="height: 500px; margin: 0 1em 1.2em; "></div>
-            </div> 
+                <div id="my_groups_progress" style="height: 500px; margin: 0 1em 1.2em; "></div>
+            </div>
+            <div class="cell center">
+                <hr>
+                <span class="section-subheader">My Critical Path</span>
+            </div>
             <div class="cell">
-            <hr>
-            <span class="section-subheader">My Groups Progress</span>
-            <div id="my_groups_progress" style="height: 500px; margin: 0 1em 1.2em; "></div>
+                <div id="my_critical_path" style="height: 500px; margin: 0 1em 1.2em; "></div>
             </div>
         </div>
         `)
@@ -58,6 +67,8 @@ function overview() {
     let hero = overview.hero_stats
     jQuery('#total_contacts').append( numberWithCommas( hero.total_contacts ) )
     jQuery('#total_groups').append( numberWithCommas( hero.total_groups ) )
+    jQuery('#updates_needed').append( numberWithCommas( hero.updates_needed ) )
+    jQuery('#attempts_needed').append( numberWithCommas( hero.attempts_needed ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'bar']});
@@ -77,9 +88,6 @@ function overview() {
                 top: '0%',
                 width: "80%",
                 height: "90%" },
-            vAxis: {
-                title: 'steps',
-            },
             hAxis: {
                 title: 'number of contacts',
             },
@@ -107,7 +115,7 @@ function overview() {
                 title: 'steps',
             },
             hAxis: {
-                title: 'number of contacts',
+                title: 'number of groups',
             },
             title: "Number of groups according to their member count",
             legend: {position: "none"},

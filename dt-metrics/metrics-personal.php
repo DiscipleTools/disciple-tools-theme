@@ -1,6 +1,6 @@
 <?php
 
-
+Disciple_Tools_Metrics_Personal::instance();
 class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
 {
     private static $_instance = null;
@@ -19,9 +19,6 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
         parent::__construct();
-
-//        dt_write_log( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS ) );
-        dt_write_log( __METHOD__ );
     }
 
     public function add_overview_menu( $content ) {
@@ -57,7 +54,7 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
             wp_localize_script(
                 'dt_metrics_personal_script', 'dtMetricsPersonal', [
                     'root' => esc_url_raw( rest_url() ),
-                    'plugin_uri' => disciple_tools()->theme_url,
+                    'plugin_uri' => get_stylesheet_directory_uri(),
                     'nonce' => wp_create_nonce( 'wp_rest' ),
                     'current_user_login' => wp_get_current_user()->user_login,
                     'current_user_id' => get_current_user_id(),
@@ -74,22 +71,16 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
         return [
             'translations' => [
                 'title' => __( 'Overview' ),
+                'total_contacts' => __( 'Total Contacts' ),
+                'total_groups' => __( 'Total Groups' ),
+                'updates_needed' => __( 'Updates Needed' ),
+                'attempts_needed' => __( 'Attempts Needed' ),
             ],
             'hero_stats' => [
-                'total_contacts' => 100,
-                'total_groups' => 20,
-            ],
-            'critical_path' => [
-                [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
-                [ 'New Contacts', 100, 100 ],
-                [ 'Contacts Attempted', 95, 95 ],
-                [ 'Contacts Established', 88, 88 ],
-                [ 'First Meetings', 80, 80 ],
-                [ 'Baptisms', 4, 4 ],
-                [ 'Baptizers', 3, 3 ],
-                [ 'Active Groups', 4, 4 ],
-                [ 'Active Churches', 5, 5 ],
-                [ 'Church Planters', 4, 4 ],
+                'total_contacts' => dt_count_user_contacts(),
+                'total_groups' => dt_count_user_groups(),
+                'updates_needed' => dt_count_updates_needed(),
+                'attempts_needed' => dt_count_attempts_needed(),
             ],
             'contacts_progress' => [
                 [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
@@ -110,6 +101,18 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
                 [ 'First Meeting Complete', 40, 40 ],
                 [ 'Ongoing Meetings', 50, 50 ],
                 [ 'Being Coached', 23, 23 ],
+            ],
+            'critical_path' => [
+                [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
+                [ 'New Contacts', 100, 100 ],
+                [ 'Contacts Attempted', 95, 95 ],
+                [ 'Contacts Established', 88, 88 ],
+                [ 'First Meetings', 80, 80 ],
+                [ 'Baptisms', 4, 4 ],
+                [ 'Baptizers', 3, 3 ],
+                [ 'Active Groups', 4, 4 ],
+                [ 'Active Churches', 5, 5 ],
+                [ 'Church Planters', 4, 4 ],
             ],
         ];
     }
