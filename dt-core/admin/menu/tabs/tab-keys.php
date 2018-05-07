@@ -207,17 +207,17 @@ class Disciple_Tools_Keys_Tab extends Disciple_Tools_Abstract_Menu_Base
                         <li>Next go to <a href="https://developers.google.com/maps/documentation/javascript/"
                                           target="_blank" rel="noopener">Google Maps Javascript API key website</a>.
                             <br><img class="img-center" title="Get a key"
-                                 src="<?php echo esc_url( Disciple_Tools::instance()->plugin_img_url ) ?>google-api-1-screenshot.png" alt="Get a key" />
+                                 src="<?php echo esc_url( Disciple_Tools::instance()->admin_img_url ) ?>google-api-1-screenshot.png" alt="Get a key" />
                         </li>
                         <li>In “<strong>Activate the Google Maps JavaScript API</strong>” popup window, changed the default title (optional), select "Yes" to the Terms of Service, and then click “Next”.
                             <br><img
                                     title="Activate the Google Maps JavaScript API"
-                                    src="<?php echo esc_url( Disciple_Tools::instance()->plugin_img_url ) ?>google-api-2-screenshot.png"
+                                    src="<?php echo esc_url( Disciple_Tools::instance()->admin_img_url ) ?>google-api-2-screenshot.png"
                                     alt="Activate the Google Maps JavaScript API" />
                         </li>
                         <li>After this, you will get your Google maps API key, copy it.<br>
                             <img title="Copy API Key"
-                                    src="<?php echo esc_url( Disciple_Tools::instance()->plugin_img_url ) ?>google-api-3-screenshot.png"
+                                    src="<?php echo esc_url( Disciple_Tools::instance()->admin_img_url ) ?>google-api-3-screenshot.png"
                                     alt="Copy API Key" />
                         </li>
                         <li>Paste this key into the "Add Your Own Key" field above and save it. That's it!</li>

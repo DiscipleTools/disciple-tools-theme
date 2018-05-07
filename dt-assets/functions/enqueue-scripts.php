@@ -131,9 +131,6 @@ function dt_site_scripts() {
             $post = Disciple_Tools_Groups::get_group( get_the_ID() );
         }
         if ( !is_wp_error( $post )){
-
-
-
             dt_theme_enqueue_script( 'comments', 'dt-assets/js/comments.js', array(
                 'jquery',
                 'lodash',
@@ -234,31 +231,29 @@ function dt_site_scripts() {
             )
         );
     }
-    if ( 'metrics' === $url_path ) {
-
-
-            dt_theme_enqueue_script( 'dt-metrics', 'dt-assets/js/metrics.js', array( 'jquery', 'jquery-ui' ), true );
-
-        wp_localize_script(
-            'dt-metrics', 'wpApiMetricsPage', array(
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' )
-            )
-        );
-        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(), false );
-
-    }
-    if ( 'locations' === $url_path && ( is_archive() || is_singular( 'locations' ) ) ) {
-        dt_theme_enqueue_script( 'dt-locations', 'dt-assets/js/locations.js', array( 'jquery', 'jquery-ui' ), true );
-        wp_localize_script(
-            'dt-locations', 'wpApiLocationsPage', array(
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' )
-            )
-        );
-        wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . dt_get_option( 'map_key' ), array(), null, true );
-
-    }
+//    if ( 'metrics' === $url_path ) {
+//        if ( dt_metrics_visibility( 'tab' ) ) { // @todo add logic to load personal or project statistics
+//            dt_theme_enqueue_script( 'dt-metrics', 'dt-assets/js/metrics.js', [ 'jquery', 'jquery-ui' ], true );
+//            wp_localize_script(
+//                'dt-metrics', 'wpApiMetricsPage', [
+//                    'root'  => esc_url_raw( rest_url() ),
+//                    'nonce' => wp_create_nonce( 'wp_rest' )
+//                ]
+//            );
+//            wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', [], false );
+//        }
+//    }
+//    if ( 'locations' === $url_path && ( is_archive() || is_singular( 'locations' ) ) ) {
+//        dt_theme_enqueue_script( 'dt-locations', 'dt-assets/js/locations.js', array( 'jquery', 'jquery-ui' ), true );
+//        wp_localize_script(
+//            'dt-locations', 'wpApiLocationsPage', array(
+//                'root' => esc_url_raw( rest_url() ),
+//                'nonce' => wp_create_nonce( 'wp_rest' )
+//            )
+//        );
+//        wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . dt_get_option( 'map_key' ), array(), null, true );
+//
+//    }
 
     if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )) {
         $post_type = null;
