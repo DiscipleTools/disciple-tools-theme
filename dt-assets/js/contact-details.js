@@ -875,7 +875,7 @@ jQuery(document).ready(function($) {
           let value = _.escape(field.value)
           let match = urlRegex.exec(value)
           if (match){
-            if (!match.includes("http")){
+            if (!value.includes("http")){
               value = `https://${value}`
             }
             value = `<a href="${value}" target="_blank" >${_.escape(match[1] || value)}</a>`

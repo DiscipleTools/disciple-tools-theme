@@ -48,9 +48,9 @@
     <section class="cell">
         <div class="bordered-box">
             <div class="item-details-header-row">
-                <button class="float-right">
+                <button class="float-right" id="open-edit">
                     <i class="fi-pencil"></i>
-                    <span id="open-edit"><?php esc_html_e( 'Edit', 'disciple_tools' )?></span>
+                    <span><?php esc_html_e( 'Edit', 'disciple_tools' )?></span>
                 </button>
                 <h3 class="section-header"><?php esc_html_e( 'Details', 'disciple_tools' ) ?></h3>
             </div>

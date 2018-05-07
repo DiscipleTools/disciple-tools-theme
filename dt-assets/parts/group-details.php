@@ -34,7 +34,7 @@ function dt_contact_details_status( $id, $verified, $invalid ){
 
         <button class="float-right" id="open-edit">
             <i class="fi-pencil"></i>
-            <span id="edit-button-label"><?php esc_html_e( 'Edit', 'disciple_tools' )?></span>
+            <span><?php esc_html_e( 'Edit', 'disciple_tools' )?></span>
         </button>
     </div>
 
