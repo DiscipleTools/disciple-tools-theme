@@ -96,8 +96,8 @@ else {
          */
         public $token;
         public $version;
-        public $plugin_url;
-        public $plugin_path;
+        public $theme_url;
+        public $theme_path;
         public $dt_svg;
         public $admin;
         public $settings;
@@ -153,14 +153,16 @@ else {
             $this->token = 'disciple_tools';
             $this->version = '0.8.0';
             $this->migration_number = 6;
-            $this->plugin_url = get_template_directory_uri() . '/';
-            $this->plugin_path = get_template_directory() . '/';
-            $this->plugin_img_url = get_template_directory_uri() . '/dt-core/admin/img/';
-            $this->plugin_img_path = get_template_directory() . '/dt-core/admin/img/';
-            $this->plugin_js_url = get_template_directory_uri() . '/dt-core/admin/js/';
-            $this->plugin_js_path = get_template_directory() . '/dt-core/admin/js/';
-            $this->plugin_css_url = get_template_directory_uri() . '/dt-core/admin/css/';
-            $this->plugin_css_path = get_template_directory() . '/dt-core/admin/css/';
+
+            $this->theme_url = get_template_directory_uri() . '/';
+            $this->theme_path = get_template_directory() . '/';
+
+            $this->admin_img_url = get_template_directory_uri() . '/dt-core/admin/img/';
+            $this->admin_js_url = get_template_directory_uri() . '/dt-core/admin/js/';
+            $this->admin_js_path = get_template_directory() . '/dt-core/admin/js/';
+            $this->admin_css_url = get_template_directory_uri() . '/dt-core/admin/css/';
+            $this->admin_css_path = get_template_directory() . '/dt-core/admin/css/';
+
             $this->user_local = get_user_locale();
 
             $wpdb->dt_activity_log = $wpdb->prefix . 'dt_activity_log'; // Prepare database table names

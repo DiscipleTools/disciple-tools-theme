@@ -935,9 +935,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             foreach ( $keys as $key => $array ) {
                 $current_hour = md5( $key . current_time( 'Y-m-dH', 1 ) );
-                $past = date( 'Y-m-dH', strtotime( '-1 hour' ) );
+                $past = date( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) . '-1 hour' ) );
                 $past_hour = md5( $key . $past );
-                $next = date( 'Y-m-dH', strtotime( '+1 hour' ) );
+                $next = date( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) .  '+1 hour' ) );
                 $next_hour = md5( $key . $next );
 
                 if ( $current_hour == $transfer_token

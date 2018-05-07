@@ -23,3 +23,7 @@ Prayer Network is a total of people engaged through multiple channels.
 ### Active Groups
 ### Active Churches
 ### Chuch Planters
+
+
+### Example of Metrics Menu Extension:
+

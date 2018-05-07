@@ -46,7 +46,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         if ( $tab == 'general' || !isset( $tab ) ) {
             echo 'nav-tab-active';
         }
-        echo '">General</a>';
+        echo '">' . esc_html__( 'General Settings' ) . '</a>';
     }
 
     public function content( $tab )
@@ -76,13 +76,13 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* Site Notifications */
 
-        /* Report Settings */
-        // @todo These settings are intended to trigger builds on daily reports. They are hidden until future development. 4/13/2018
-//            $this->box( 'top', 'Reports Settings' );
-//            $this->process_reports();
-//            $this->reports(); // prints
-//            $this->box( 'bottom' );
-            /* End Report Settings */
+            if ( dt_metrics_visibility( 'tab' ) ) : // @todo remove after development
+                /* Metrics */
+                $this->box( 'top', 'Metrics' );
+                $this->metrics(); // prints content for the notifications box
+                $this->box( 'bottom' );
+                /* End Metrics */
+        endif;
 
             $this->template( 'right_column' );
 
@@ -140,104 +140,64 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
-    /**
-     * Print reports selection box
-     */
-    public function reports()
-    {
 
-        $site_options = dt_get_option( 'dt_site_options' );
-        $daily_reports = $site_options['daily_reports'];
-
-        echo '<form method="post" name="daily_reports_form">';
-        echo '<button type="submit" class="button-like-link" name="reset_reports" value="1">reset</button>';
-        echo '<p>These are regular services that run to check and build reports on integrations and system status.</p>';
-        echo '<input type="hidden" name="daily_reports_nonce" id="daily_reports_nonce" value="' . esc_attr( wp_create_nonce( 'daily_reports' ) ) . '" />';
-
-        echo '<table class="widefat">';
-
-        echo '<tr><td>Build Report for Contacts</td><td><input name="build_report_for_contacts" type="checkbox" ' . ( $daily_reports['build_report_for_contacts'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Groups</td><td><input name="build_report_for_groups" type="checkbox" ' . ( $daily_reports['build_report_for_groups'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Facebook</td><td><input name="build_report_for_facebook" type="checkbox" ' . ( $daily_reports['build_report_for_facebook'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Twitter</td><td><input name="build_report_for_twitter" type="checkbox" ' . ( $daily_reports['build_report_for_twitter'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Analytics</td><td><input name="build_report_for_analytics" type="checkbox" ' . ( $daily_reports['build_report_for_analytics'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Adwords</td><td><input name="build_report_for_adwords" type="checkbox" ' . ( $daily_reports['build_report_for_adwords'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Mailchimp</td><td><input name="build_report_for_mailchimp" type="checkbox" ' . ( $daily_reports['build_report_for_mailchimp'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Build Report for Youtube</td><td><input name="build_report_for_youtube" type="checkbox" ' . ( $daily_reports['build_report_for_youtube'] ? "checked" : "" ) . ' /></td></tr>';
-
-        echo '</table><br><span style="float:right;"><button type="submit" class="button float-right">Save</button></span>  </form>';
-    }
 
     /**
-     * Process reports selections from reports box
+     * Print extension module box for options page // @todo in progress
      */
-    public function process_reports()
+    public function metrics()
     {
 
-        if ( isset( $_POST['daily_reports_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['daily_reports_nonce'] ) ), 'daily_reports' ) ) {
-
-            $site_options = dt_get_option( 'dt_site_options' );
-
-            if ( isset( $_POST['reset_reports'] ) ) {
-                unset( $site_options['daily_reports'] );
-                $site_option_defaults = dt_get_site_options_defaults();
-                $site_options['daily_reports'] = $site_option_defaults['daily_reports'];
-            }
-
-            foreach ( $site_options['daily_reports'] as $key => $value ) {
-                $site_options['daily_reports'][ $key ] = isset( $_POST[ $key ] );
-            }
-
-            update_option( 'dt_site_options', $site_options, true );
+//        $site_options = dt_get_option( 'dt_site_options' ); // @todo create new default section for dt_get_option()
+        $roles = dt_multi_role_get_roles();
+        if ( isset( $roles['administrator'] ) ) {
+            unset( $roles['administrator'] );
         }
-    }
+//        dt_write_log( $roles );
 
-    /**
-     * Print extension module box for options page
-     */
-    public function extension_modules()
-    {
+        if ( isset( $_POST['metrics_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['metrics_nonce'] ) ), 'metrics' . get_current_user_id() ) ) {
 
-        $site_options = dt_get_option( 'dt_site_options' );
-        $extension_modules = $site_options['extension_modules'];
+            dt_write_log( $_POST ); // @todo add saving logic
 
-        echo '<form method="post" name="extension_modules_form">';
-        echo '<button type="submit" class="button-like-link" name="reset_extension_modules" value="1">reset</button>';
-        echo '<p>These are optional modules available in the system.</p>';
-        echo '<input type="hidden" name="extension_modules_nonce" id="extension_modules_nonce" value="' . esc_attr( wp_create_nonce( 'extension_modules' ) ) . '" />';
-
-        echo '<table class="widefat">';
-
-        echo '<tr><td>Add People Groups Module <span style="color:darkred;float:right;">(planned for future)</span></td><td><input name="add_people_groups" type="checkbox" ' . ( $extension_modules['add_people_groups'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Add Asset Mapping <span style="color:darkred;float:right;">(planned for future)</span></td><td><input name="add_assetmapping" type="checkbox" ' . ( $extension_modules['add_assetmapping'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Add Prayer <span style="color:darkred;float:right;">(planned for future)</span></td><td><input name="add_prayer" type="checkbox" ' . ( $extension_modules['add_prayer'] ? "checked" : "" ) . ' /></td></tr>';
-        echo '<tr><td>Add Workers Section <span style="color:darkred;float:right;">(planned for future)</span> </td><td><input name="add_worker" type="checkbox" ' . ( $extension_modules['add_worker'] ? "checked" : "" ) . ' /></td></tr>';
-
-        echo '</table><br><span style="float:right;"><button type="submit" class="button float-right">Save</button> </span></form>';
-    }
-
-    /**
-     * Process extension module
-     */
-    public function process_extension_modules()
-    {
-        if ( isset( $_POST['extension_modules_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['extension_modules_nonce'] ) ), 'extension_modules' ) ) {
-
-            $site_options = dt_get_option( 'dt_site_options' );
-
-            if ( isset( $_POST['reset_extension_modules'] ) ) {
-                unset( $site_options['extension_modules'] );
-                $site_option_defaults = dt_get_site_options_defaults();
-                $site_options['extension_modules'] = $site_option_defaults['extension_modules'];
-            }
-
-            foreach ( $site_options['extension_modules'] as $key => $value ) {
-                $site_options['extension_modules'][ $key ] = isset( $_POST[ $key ] );
-            }
-
-            update_option( 'dt_site_options', $site_options, true );
         }
+
+
+        ?>
+        <form method="post" name="extension_modules_form">
+
+            <button type="submit" class="button-like-link" name="reset_extension_modules" value="1"><?php echo esc_html__( 'reset' ) ?></button>
+
+            <p><?php esc_html_e( 'Configure which groups see metrics' ) ?></p>
+
+            <input type="hidden" name="extension_modules_nonce" id="extension_modules_nonce" value="<?php echo esc_attr( wp_create_nonce( 'metrics' . get_current_user_id() ) ) ?>" />
+
+            <table class="widefat">
+                <thead>
+                    <tr>
+                        <th><?php echo esc_html( 'Role' ) ?></th>
+                        <th><?php echo esc_html( 'Hide Personal' ) ?></th>
+                        <th><?php echo esc_html( 'Hide Project' ) ?></th>
+                        <th><?php echo esc_html( 'Hide Extensions' ) ?></th>
+                    </tr>
+                </thead>
+
+                <?php foreach ( $roles as $role ) : ?>
+                <tr>
+                    <td><?php echo esc_html( $role->name ) ?></td>
+                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-personal" type="checkbox" <?php echo ( false ? "checked" : "" ) ?> /></td>
+                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-project" type="checkbox" <?php echo ( false ? "checked" : "" ) ?> /></td>
+                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-extensions" type="checkbox" <?php echo ( false ? "checked" : "" ) ?> /></td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+
+            <br>
+            <span style="float:right;"><button type="submit" class="button float-right">Save</button></span>
+        </form>
+        <?php
     }
+
+
 
     /**
      * Set base user assigns the catch-all user
@@ -286,7 +246,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
-
     public function email_settings(){
         ?>
         <form method="POST">
@@ -307,6 +266,116 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 $email_subject = sanitize_text_field( wp_unslash( $_POST['email_subject'] ) );
                 update_option( 'dt_email_base_subject', $email_subject );
             }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+    // @todo evaluate below and possibly remove
+
+    /**
+     * Print extension module box for options page
+     */
+    public function extension_modules()
+    {
+
+        $site_options = dt_get_option( 'dt_site_options' );
+        $extension_modules = $site_options['extension_modules'];
+
+        echo '<form method="post" name="extension_modules_form">';
+        echo '<button type="submit" class="button-like-link" name="reset_extension_modules" value="1">reset</button>';
+        echo '<p>These are optional modules available in the system.</p>';
+        echo '<input type="hidden" name="extension_modules_nonce" id="extension_modules_nonce" value="' . esc_attr( wp_create_nonce( 'extension_modules' ) ) . '" />';
+
+        echo '<table class="widefat">';
+
+        echo '<tr><td>Add People Groups Module <span style="color:darkred;float:right;">(planned for future)</span></td><td><input name="add_people_groups" type="checkbox" ' . ( $extension_modules['add_people_groups'] ? "checked" : "" ) . ' /></td></tr>';
+        echo '<tr><td>Add Asset Mapping <span style="color:darkred;float:right;">(planned for future)</span></td><td><input name="add_assetmapping" type="checkbox" ' . ( $extension_modules['add_assetmapping'] ? "checked" : "" ) . ' /></td></tr>';
+        echo '<tr><td>Add Prayer <span style="color:darkred;float:right;">(planned for future)</span></td><td><input name="add_prayer" type="checkbox" ' . ( $extension_modules['add_prayer'] ? "checked" : "" ) . ' /></td></tr>';
+        echo '<tr><td>Add Workers Section <span style="color:darkred;float:right;">(planned for future)</span> </td><td><input name="add_worker" type="checkbox" ' . ( $extension_modules['add_worker'] ? "checked" : "" ) . ' /></td></tr>';
+
+        echo '</table><br><span style="float:right;"><button type="submit" class="button float-right">Save</button> </span></form>';
+    }
+
+    /**
+     * Print reports selection box @todo remove?
+     */
+    public function reports()
+    {
+
+        $site_options = dt_get_option( 'dt_site_options' );
+        $daily_reports = $site_options['daily_reports'];
+
+        echo '<form method="post" name="daily_reports_form">';
+        echo '<button type="submit" class="button-like-link" name="reset_reports" value="1">reset</button>';
+        echo '<p>These are regular services that run to check and build reports on integrations and system status.</p>';
+        echo '<input type="hidden" name="daily_reports_nonce" id="daily_reports_nonce" value="' . esc_attr( wp_create_nonce( 'daily_reports' ) ) . '" />';
+
+        echo '<table class="widefat">';
+
+        echo '<tr><td>Build Report for Contacts</td><td><input name="build_report_for_contacts" type="checkbox" ' . ( $daily_reports['build_report_for_contacts'] ? "checked" : "" ) . ' /></td></tr>';
+        echo '<tr><td>Build Report for Groups</td><td><input name="build_report_for_groups" type="checkbox" ' . ( $daily_reports['build_report_for_groups'] ? "checked" : "" ) . ' /></td></tr>';
+        echo '<tr><td>Build Report for Facebook</td><td><input name="build_report_for_facebook" type="checkbox" ' . ( $daily_reports['build_report_for_facebook'] ? "checked" : "" ) . ' /></td></tr>';
+        echo '<tr><td>Build Report for Twitter</td><td><input name="build_report_for_twitter" type="checkbox" ' . ( $daily_reports['build_report_for_twitter'] ? "checked" : "" ) . ' /></td></tr>';
+        echo '<tr><td>Build Report for Analytics</td><td><input name="build_report_for_analytics" type="checkbox" ' . ( $daily_reports['build_report_for_analytics'] ? "checked" : "" ) . ' /></td></tr>';
+        echo '<tr><td>Build Report for Adwords</td><td><input name="build_report_for_adwords" type="checkbox" ' . ( $daily_reports['build_report_for_adwords'] ? "checked" : "" ) . ' /></td></tr>';
+        echo '<tr><td>Build Report for Mailchimp</td><td><input name="build_report_for_mailchimp" type="checkbox" ' . ( $daily_reports['build_report_for_mailchimp'] ? "checked" : "" ) . ' /></td></tr>';
+        echo '<tr><td>Build Report for Youtube</td><td><input name="build_report_for_youtube" type="checkbox" ' . ( $daily_reports['build_report_for_youtube'] ? "checked" : "" ) . ' /></td></tr>';
+
+        echo '</table><br><span style="float:right;"><button type="submit" class="button float-right">Save</button></span>  </form>';
+    }
+
+    /**
+     * Process reports selections from reports box @todo remove?
+     */
+    public function process_reports()
+    {
+
+        if ( isset( $_POST['daily_reports_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['daily_reports_nonce'] ) ), 'daily_reports' ) ) {
+
+            $site_options = dt_get_option( 'dt_site_options' );
+
+            if ( isset( $_POST['reset_reports'] ) ) {
+                unset( $site_options['daily_reports'] );
+                $site_option_defaults = dt_get_site_options_defaults();
+                $site_options['daily_reports'] = $site_option_defaults['daily_reports'];
+            }
+
+            foreach ( $site_options['daily_reports'] as $key => $value ) {
+                $site_options['daily_reports'][ $key ] = isset( $_POST[ $key ] );
+            }
+
+            update_option( 'dt_site_options', $site_options, true );
+        }
+    }
+
+    /**
+     * Process extension module
+     */
+    public function process_extension_modules()
+    {
+        if ( isset( $_POST['extension_modules_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['extension_modules_nonce'] ) ), 'extension_modules' ) ) {
+
+            $site_options = dt_get_option( 'dt_site_options' );
+
+            if ( isset( $_POST['reset_extension_modules'] ) ) {
+                unset( $site_options['extension_modules'] );
+                $site_option_defaults = dt_get_site_options_defaults();
+                $site_options['extension_modules'] = $site_option_defaults['extension_modules'];
+            }
+
+            foreach ( $site_options['extension_modules'] as $key => $value ) {
+                $site_options['extension_modules'][ $key ] = isset( $_POST[ $key ] );
+            }
+
+            update_option( 'dt_site_options', $site_options, true );
         }
     }
 }

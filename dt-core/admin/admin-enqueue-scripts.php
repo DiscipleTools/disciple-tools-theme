@@ -35,14 +35,14 @@ function dt_contact_page_scripts()
 
     if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'contacts' === get_post_type( $post ) ) {
 
-        wp_register_style( 'dt_admin_css', disciple_tools()->plugin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->plugin_css_path . 'disciple-tools-admin-styles.css' ) );
+        wp_register_style( 'dt_admin_css', disciple_tools()->admin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->admin_css_path . 'disciple-tools-admin-styles.css' ) );
         wp_enqueue_style( 'dt_admin_css' );
 
-        wp_enqueue_script( 'dt_contact_scripts', disciple_tools()->plugin_js_url . 'dt-contacts.js', [
+        wp_enqueue_script( 'dt_contact_scripts', disciple_tools()->admin_js_url . 'dt-contacts.js', [
             'jquery',
             'jquery-ui-core',
-        ], filemtime( disciple_tools()->plugin_js_path . 'dt-contacts.js' ), true );
-        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->plugin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->plugin_js_path . 'dt-shared.js' ), true );
+        ], filemtime( disciple_tools()->admin_js_path . 'dt-contacts.js' ), true );
+        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
     }
 }
 
@@ -55,14 +55,14 @@ function dt_group_page_scripts()
 
     if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'groups' === get_post_type( $post ) ) {
 
-        wp_register_style( 'dt_admin_css', disciple_tools()->plugin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->plugin_css_path . 'disciple-tools-admin-styles.css' ) );
+        wp_register_style( 'dt_admin_css', disciple_tools()->admin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->admin_css_path . 'disciple-tools-admin-styles.css' ) );
         wp_enqueue_style( 'dt_admin_css' );
 
-        wp_enqueue_script( 'dt_group_scripts', disciple_tools()->plugin_js_url . 'dt-groups.js', [
+        wp_enqueue_script( 'dt_group_scripts', disciple_tools()->admin_js_url . 'dt-groups.js', [
             'jquery',
             'jquery-ui-core',
-        ], filemtime( disciple_tools()->plugin_js_path . 'dt-groups.js' ), true );
-        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->plugin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->plugin_js_path . 'dt-shared.js' ), true );
+        ], filemtime( disciple_tools()->admin_js_path . 'dt-groups.js' ), true );
+        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
 
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'jquery-ui-datepicker', [ 'jquery' ] );
@@ -82,8 +82,8 @@ function dt_dashboard_page_scripts()
     if ( is_admin() && 'index.php' === $pagenow ) {
 
         wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(), false );
-        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->plugin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->plugin_js_path . 'dt-shared.js' ), true );
-        wp_enqueue_script( 'dt_dashboard_scripts', disciple_tools()->plugin_js_url . 'dt-dashboard.js', [], filemtime( disciple_tools()->plugin_js_path . 'dt-dashboard.js' ), true );
+        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
+        wp_enqueue_script( 'dt_dashboard_scripts', disciple_tools()->admin_js_url . 'dt-dashboard.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-dashboard.js' ), true );
         wp_localize_script(
             'dt_dashboard_scripts', 'wpApiDashboard', array(
                 'root' => esc_url_raw( rest_url() ),
@@ -103,13 +103,13 @@ function dt_location_page_scripts()
 
     if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'locations' === get_post_type( $post ) ) {
 
-        wp_register_style( 'dt_admin_css', disciple_tools()->plugin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->plugin_css_path . 'disciple-tools-admin-styles.css' ) );
+        wp_register_style( 'dt_admin_css', disciple_tools()->admin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->admin_css_path . 'disciple-tools-admin-styles.css' ) );
         wp_enqueue_style( 'dt_admin_css' );
 
-        wp_enqueue_script( 'dt_locations_scripts', disciple_tools()->plugin_js_url . 'dt-locations.js', [
+        wp_enqueue_script( 'dt_locations_scripts', disciple_tools()->admin_js_url . 'dt-locations.js', [
             'jquery',
             'jquery-ui-core',
-        ], filemtime( disciple_tools()->plugin_js_path . 'dt-locations.js' ), true );
+        ], filemtime( disciple_tools()->admin_js_path . 'dt-locations.js' ), true );
         wp_localize_script(
             "dt_locations_scripts", "dtLocAPI", array(
                 'root' => esc_url_raw( rest_url() ),
@@ -117,10 +117,10 @@ function dt_location_page_scripts()
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'theme_uri' => get_stylesheet_directory_uri(),
-                'images_uri' => Disciple_Tools::instance()->plugin_img_url,
+                'images_uri' => Disciple_Tools::instance()->admin_img_url,
             )
         );
-        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->plugin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->plugin_js_path . 'dt-shared.js' ), true );
+        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
     }
 }
 
@@ -133,14 +133,14 @@ function dt_asset_page_scripts()
 
     if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'assets' === get_post_type( $post ) ) {
 
-        wp_register_style( 'dt_admin_css', disciple_tools()->plugin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->plugin_css_path . 'disciple-tools-admin-styles.css' ) );
+        wp_register_style( 'dt_admin_css', disciple_tools()->admin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->admin_css_path . 'disciple-tools-admin-styles.css' ) );
         wp_enqueue_style( 'dt_admin_css' );
 
-        wp_enqueue_script( 'dt_assets_scripts', disciple_tools()->plugin_js_url . 'dt-assets.js', [
+        wp_enqueue_script( 'dt_assets_scripts', disciple_tools()->admin_js_url . 'dt-assets.js', [
             'jquery',
             'jquery-ui-core',
-        ], filemtime( disciple_tools()->plugin_js_path . 'dt-assets.js' ), true );
-        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->plugin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->plugin_js_path . 'dt-shared.js' ), true );
+        ], filemtime( disciple_tools()->admin_js_path . 'dt-assets.js' ), true );
+        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
     }
 }
 
@@ -153,11 +153,11 @@ function dt_people_groups_post_type_scripts()
 
     if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow || 'edit.php' === $pagenow ) && 'peoplegroups' === get_post_type( $post ) ) {
 
-        wp_enqueue_script( 'dt_peoplegroups_scripts', disciple_tools()->plugin_js_url . 'dt-peoplegroups.js', [
+        wp_enqueue_script( 'dt_peoplegroups_scripts', disciple_tools()->admin_js_url . 'dt-peoplegroups.js', [
             'jquery',
             'jquery-ui-core',
-        ], filemtime( disciple_tools()->plugin_js_path . 'dt-peoplegroups.js' ), true );
-        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->plugin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->plugin_js_path . 'dt-shared.js' ), true );
+        ], filemtime( disciple_tools()->admin_js_path . 'dt-peoplegroups.js' ), true );
+        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
     }
 }
 
@@ -167,11 +167,11 @@ function dt_people_groups_post_type_scripts()
 function dt_options_scripts()
 {
     if ( isset( $_GET["page"] ) && $_GET["page"] === 'dt_options' ) {
-        wp_enqueue_script( 'dt_options_script', disciple_tools()->plugin_js_url . 'dt-options.js', [
+        wp_enqueue_script( 'dt_options_script', disciple_tools()->admin_js_url . 'dt-options.js', [
             'jquery',
             'jquery-ui-core',
-        ], filemtime( disciple_tools()->plugin_js_path . 'dt-options.js' ), true );
-        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->plugin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->plugin_js_path . 'dt-shared.js' ), true );
+        ], filemtime( disciple_tools()->admin_js_path . 'dt-options.js' ), true );
+        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
         wp_localize_script(
             "dt_options_script", "dtOptionAPI", array(
                 'root' => esc_url_raw( rest_url() ),
@@ -179,10 +179,10 @@ function dt_options_scripts()
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'theme_uri' => get_stylesheet_directory_uri(),
-                'images_uri' => Disciple_Tools::instance()->plugin_img_url,
+                'images_uri' => Disciple_Tools::instance()->admin_img_url,
             )
         );
-        wp_register_style( 'dt_admin_css', disciple_tools()->plugin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->plugin_css_path . 'disciple-tools-admin-styles.css' ) );
+        wp_register_style( 'dt_admin_css', disciple_tools()->admin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->admin_css_path . 'disciple-tools-admin-styles.css' ) );
         wp_enqueue_style( 'dt_admin_css' );
     }
 }
@@ -194,6 +194,6 @@ function dt_dismiss_notice_callback_script()
 {
     global $pagenow;
     if ( is_admin() && $pagenow === 'options-general.php' ) {
-        wp_enqueue_script( 'disciple-tools-admin_script', disciple_tools()->plugin_js_url . 'disciple-tools-admin.js', [ 'jquery' ], filemtime( disciple_tools()->plugin_js_path . 'disciple-tools-admin.js' ), true );
+        wp_enqueue_script( 'disciple-tools-admin_script', disciple_tools()->admin_js_url . 'disciple-tools-admin.js', [ 'jquery' ], filemtime( disciple_tools()->admin_js_path . 'disciple-tools-admin.js' ), true );
     }
 }

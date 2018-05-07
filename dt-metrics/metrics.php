@@ -20,23 +20,7 @@ if ( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Metrics
 {
 
-    /**
-     * Disciple_Tools_Admin_Menus The single instance of Disciple_Tools_Admin_Menus.
-     *
-     * @var    object
-     * @access   private
-     * @since    0.1.0
-     */
     private static $_instance = null;
-
-    /**
-     * Main Disciple_Tools_Admin_Menus Instance
-     * Ensures only one instance of Disciple_Tools_Admin_Menus is loaded or can be loaded.
-     *
-     * @since 0.1.0
-     * @static
-     * @return Disciple_Tools_Metrics instance
-     */
     public static function instance()
     {
         if ( is_null( self::$_instance ) ) {
@@ -46,15 +30,8 @@ class Disciple_Tools_Metrics
         return self::$_instance;
     } // End instance()
 
-    /**
-     * Constructor function.
-     *
-     * @access  public
-     * @since   0.1.0
-     */
     public function __construct()
     {
-
     } // End __construct()
 
     /**
