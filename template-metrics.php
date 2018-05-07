@@ -19,36 +19,13 @@ Template Name: Metrics
                         <ul id="metrics-sidemenu" class="vertical menu accordion-menu" data-accordion-menu data-multi-open>
 
                             <?php
-                            // @codingStandardsIgnoreLine
-                            echo apply_filters( 'dt_metrics_top_menu', '' );
-                            ?>
 
-                            <li >
-                                <a href=""><?php esc_html_e( 'My Contacts', 'disciple_tools' )?></a>
-                                <ul class="menu vertical nested">
-                                    <?php
-                                    // @codingStandardsIgnoreLine
-                                    echo apply_filters( 'dt_metrics_menu_my_contacts', '' );
-                                    ?>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href=""><?php esc_html_e( 'My Groups', 'disciple_tools' )?></a>
-                                <ul class="menu vertical nested">
-                                    <?php
-                                    // @codingStandardsIgnoreLine
-                                    echo apply_filters( 'dt_metrics_menu_my_groups', '' );
-                                    ?>
-                                </ul>
-                            </li>
-
-                            <?php
                             // @codingStandardsIgnoreLine
-                            echo apply_filters( 'dt_metrics_bottom_menu', '' );
+                            echo apply_filters( 'dt_metrics_menu', '' );
+
                             ?>
 
                         </ul>
-
 
                     </div>
 

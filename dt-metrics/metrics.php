@@ -379,13 +379,55 @@ class Disciple_Tools_Metrics
         }
     }
 
-    public static function query_my_contacts_progress() {
+    public static function query_my_contacts_progress( $user_id = null ) {
         global $wpdb;
-        $results = $wpdb->get_results( "
-            
-        ", ARRAY_A );
+        if ( empty( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
 
-        return $results;
+        $defaults = [];
+        $status = dt_get_option( 'seeker_path' );
+        foreach ( $status as $key => $label ) {
+            $defaults[$key] = [
+                'label' => $label,
+                'count' => 0,
+            ];
+
+        }
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT b.meta_value as status, count( a.ID ) as count
+             FROM $wpdb->posts as a
+               JOIN $wpdb->postmeta as b
+                 ON a.ID=b.post_id
+                    AND b.meta_key = 'seeker_path'
+               JOIN $wpdb->postmeta as c
+                 ON a.ID=c.post_id
+                    AND c.meta_key = 'assigned_to'
+                    AND c.meta_value = %s
+               JOIN $wpdb->postmeta as d
+                 ON a.ID=d.post_id
+                    AND d.meta_key = 'overall_status'
+                    AND d.meta_value = 'active'
+             WHERE a.post_status = 'publish'
+             GROUP BY b.meta_value
+        ",
+            'user-'. $user_id ), ARRAY_A );
+
+        $query_results = [];
+
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                if ( isset( $defaults[$result['status']] ) ) {
+                    $query_results[$result['status']] = [
+                        'label' => $defaults[$result['status']]['label'],
+                        'count' => intval( $result['count'] ),
+                    ];
+                }
+            }
+        }
+
+        return wp_parse_args( $query_results, $defaults );
     }
 
 

@@ -201,6 +201,29 @@ function dt_get_option( string $name )
             }
             return $subject_base;
             break;
+
+        case 'seeker_path':
+            return [
+                'none'        => __( 'Contact Attempt Needed' ),
+                'attempted'   => __( 'Contact Attempted' ),
+                'established' => __( 'Contact Established' ),
+                'scheduled'   => __( 'First Meeting Scheduled' ),
+                'met'         => __( 'First Meeting Complete' ),
+                'ongoing'     => __( 'Ongoing Meetings' ),
+                'coaching'    => __( 'Being Coached' ),
+            ];
+            break;
+        case 'overall_status':
+            return [
+                'unassigned'   => _x( 'Unassigned', 'Contact Status', 'disciple_tools' ),
+                'assigned'     => _X( "Assigned", 'Contact Status', 'disciple_tools' ),
+                'active'       => _X( 'Active', 'Contact Status', 'disciple_tools' ),
+                'paused'       => _x( 'Paused', 'Contact Status', 'disciple_tools' ),
+                'closed'       => _x( 'Closed', 'Contact Status', 'disciple_tools' ),
+                'unassignable' => _x( 'Unassignable', 'Contact Status', 'disciple_tools' ),
+            ];
+            break;
+
         default:
             return false;
             break;

@@ -1,6 +1,6 @@
 <?php
 
-Disciple_Tools_Metrics_Personal::instance();
+
 class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
 {
     private static $_instance = null;
@@ -13,12 +13,17 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
     } // End instance()
 
     public function __construct() {
-        add_filter( 'dt_metrics_top_menu', [ $this, 'add_overview_menu' ], 10 );
-        add_filter( 'dt_metrics_menu_my_contacts', [ $this, 'add_contacts_menu' ], 10 );
-        add_filter( 'dt_metrics_menu_my_groups', [ $this, 'add_groups_menu' ], 10 );
-        add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+        $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
 
-        parent::__construct();
+        if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
+
+            add_filter( 'dt_metrics_menu', [ $this, 'add_overview_menu' ], 20 );
+            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+
+            parent::__construct();
+
+            dt_write_log( Disciple_Tools_Metrics::query_my_contacts_progress( get_current_user_id() ) );
+        }
     }
 
     public function add_overview_menu( $content ) {
@@ -28,43 +33,25 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
         return $content;
     }
 
-    public function add_contacts_menu( $content ) {
-        $content .= '
-            <li><a href="'. site_url( '/metrics/' ) .'#my_contacts_progress" onclick="my_contacts_progress()">' .  esc_html__( 'Progress', 'disciple_tools' ) . '</a></li>
-            ';
-        return $content;
-    }
-
-    public function add_groups_menu( $content ) {
-        $content .= '
-            <li><a href="'. site_url( '/metrics/' ) .'#my_groups_progress" onclick="my_groups_progress()">' .  esc_html__( 'Progress', 'disciple_tools' ) . '</a></li>
-            ';
-        return $content;
-    }
-
     public function scripts() {
-        $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
+        wp_enqueue_script( 'dt_metrics_personal_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-personal.js', [
+            'jquery',
+            'jquery-ui-core',
+        ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-personal.js' ), true );
 
-        if ( 'metrics' === $url_path ) {
-            wp_enqueue_script( 'dt_metrics_personal_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-personal.js', [
-                'jquery',
-                'jquery-ui-core',
-            ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-personal.js' ), true );
-
-            wp_localize_script(
-                'dt_metrics_personal_script', 'dtMetricsPersonal', [
-                    'root' => esc_url_raw( rest_url() ),
-                    'plugin_uri' => get_stylesheet_directory_uri(),
-                    'nonce' => wp_create_nonce( 'wp_rest' ),
-                    'current_user_login' => wp_get_current_user()->user_login,
-                    'current_user_id' => get_current_user_id(),
-                    'map_key' => dt_get_option( 'map_key' ),
-                    'overview' => $this->overview(),
-                    'my_contacts' => $this->my_contacts(),
-                    'my_groups' => $this->my_groups(),
-                ]
-            );
-        }
+        wp_localize_script(
+            'dt_metrics_personal_script', 'dtMetricsPersonal', [
+                'root' => esc_url_raw( rest_url() ),
+                'plugin_uri' => get_stylesheet_directory_uri(),
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'current_user_login' => wp_get_current_user()->user_login,
+                'current_user_id' => get_current_user_id(),
+                'map_key' => dt_get_option( 'map_key' ),
+                'overview' => $this->overview(),
+                'my_contacts' => $this->my_contacts(),
+                'my_groups' => $this->my_groups(),
+            ]
+        );
     }
 
     public function overview() {
@@ -161,3 +148,4 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
         ];
     }
 }
+Disciple_Tools_Metrics_Personal::instance();
