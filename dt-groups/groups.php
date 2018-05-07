@@ -698,7 +698,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return $connection;
         }
 
-        return new WP_Error( "add_group_detail", "Field not recognized: " . $key , [ "status" => 400 ] );
+        return new WP_Error( "add_group_detail", "Field not recognized: " . $key, [ "status" => 400 ] );
     }
 
     /**
