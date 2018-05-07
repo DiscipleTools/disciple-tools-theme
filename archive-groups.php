@@ -19,7 +19,7 @@ declare(strict_types=1);
                 <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
                 <span class="hide-for-small-only"><?php esc_html_e( "Filter groups", 'disciple_tools' ) ?></span>
             </a>
-            <input style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="search">
+            <input class="search-input" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="search">
             <button class="button" style="margin-bottom:0" id="search">
                 <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
                 <?php esc_html_e( "Search", 'disciple_tools' ) ?>
@@ -42,7 +42,7 @@ declare(strict_types=1);
         <span class="hide-for-small-only"><?php esc_html_e( "Search groups", 'disciple_tools' ) ?></span>
     </a>
     <div class="hideable-search" style="display: none; margin-top:5px">
-        <input style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile" placeholder="search">
+        <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile" placeholder="search">
         <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
     </div>
 </nav>

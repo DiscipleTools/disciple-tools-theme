@@ -466,6 +466,16 @@
     let labels = [{ id:"search", name:searchText, field: "search"}]
     addCustomFilter(searchText, "search", query, labels)
   })
+  $('.search-input').on('keyup', function (e) {
+    if ( e.keyCode === 13 ){
+      $("#search").trigger("click")
+    }
+  })
+  $('.search-input-mobile').on('keyup', function (e) {
+    if ( e.keyCode === 13 ){
+      $("#search-mobile").trigger("click")
+    }
+  })
 
 
   $(".js-list-filter-title").on("click", function() {
