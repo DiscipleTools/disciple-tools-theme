@@ -76,12 +76,12 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* Site Notifications */
 
-        if ( dt_metrics_visibility( 'tab' ) ) : // @todo remove after development
-            /* Metrics */
-            $this->box( 'top', 'Metrics' );
-            $this->metrics(); // prints content for the notifications box
-            $this->box( 'bottom' );
-            /* End Metrics */
+            if ( dt_metrics_visibility( 'tab' ) ) : // @todo remove after development
+                /* Metrics */
+                $this->box( 'top', 'Metrics' );
+                $this->metrics(); // prints content for the notifications box
+                $this->box( 'bottom' );
+                /* End Metrics */
         endif;
 
             $this->template( 'right_column' );

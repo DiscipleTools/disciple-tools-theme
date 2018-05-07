@@ -36,9 +36,17 @@ function overview() {
                 </div>
             </div>
             <div class="cell">
+            <span class="section-subheader">My Critical Path</span>
+            <div id="my_critical_path" style="height: 500px; margin: 0 1em 1.2em; "></div>
+            </div> 
+            <div class="cell">
+            <hr>
+            <span class="section-subheader">My Contacts Progress</span>
             <div id="my_contacts_progress" style="height: 500px; margin: 0 1em 1.2em; "></div>
             </div> 
             <div class="cell">
+            <hr>
+            <span class="section-subheader">My Groups Progress</span>
             <div id="my_groups_progress" style="height: 500px; margin: 0 1em 1.2em; "></div>
             </div>
         </div>
@@ -53,6 +61,7 @@ function overview() {
 
     google.charts.setOnLoadCallback(drawMyContactsProgress);
     google.charts.setOnLoadCallback(drawMyGroupsProgress);
+    google.charts.setOnLoadCallback(drawCriticalPath);
 
     function drawMyContactsProgress() {
 
@@ -103,6 +112,32 @@ function overview() {
         };
 
         let chart = new google.visualization.BarChart(document.getElementById('my_groups_progress'));
+        chart.draw(data, options);
+    }
+
+    function drawCriticalPath() {
+
+        let data = google.visualization.arrayToDataTable( overview.critical_path );
+
+        let options = {
+            bars: 'horizontal',
+            chartArea: {
+                left: '25%',
+                top: '0%',
+                width: "80%",
+                height: "90%" },
+            vAxis: {
+                title: 'steps',
+            },
+            hAxis: {
+                title: 'number of contacts',
+            },
+            title: "Number of groups according to their member count",
+            legend: {position: "none"},
+            colors: ['green'],
+        };
+
+        let chart = new google.visualization.BarChart(document.getElementById('my_critical_path'));
         chart.draw(data, options);
     }
 }

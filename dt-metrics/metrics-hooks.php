@@ -95,10 +95,6 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
                     'current_user_login' => wp_get_current_user()->user_login,
                     'current_user_id' => get_current_user_id(),
                     'map_key' => dt_get_option( 'map_key' ),
-                    'translations' => [
-                        "my_contacts_progress" => __( "My Contacts Progress" ),
-                        "my_groups_progress" => __( "My Groups Progress" ),
-                    ],
                     'overview' => $this->overview(),
                     'my_contacts' => $this->my_contacts(),
                     'my_groups' => $this->my_groups(),
@@ -115,6 +111,18 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
             'hero_stats' => [
                 'total_contacts' => 100,
                 'total_groups' => 20,
+            ],
+            'critical_path' => [
+                [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
+                [ 'New Contacts', 100, 100 ],
+                [ 'Contacts Attempted', 95, 95 ],
+                [ 'Contacts Established', 88, 88 ],
+                [ 'First Meetings', 80, 80 ],
+                [ 'Baptisms', 4, 4 ],
+                [ 'Baptizers', 3, 3 ],
+                [ 'Active Groups', 4, 4 ],
+                [ 'Active Churches', 5, 5 ],
+                [ 'Church Planters', 4, 4 ],
             ],
             'contacts_progress' => [
                 [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
