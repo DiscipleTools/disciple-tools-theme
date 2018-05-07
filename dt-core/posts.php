@@ -535,39 +535,54 @@ class Disciple_Tools_Posts
         if ( !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, sprintf( __( "You do not have access to these %s" ), $post_type ), [ 'status' => 403 ] );
         }
+        global $wpdb;
         $current_user = wp_get_current_user();
         $compact = [];
-
         $search_string = esc_sql( sanitize_text_field( $search_string ) );
-        $query_args = [
-            'post_type' => $post_type,
-            's'         => $search_string,
-            'posts_per_page' => 30,
-        ];
         $shared_with_user = [];
         $users_interacted_with =[];
+        $posts = [];
         if ( !self::can_view_all( $post_type ) ) {
 //            @todo better way to get the contact records for users my contacts are shared with
             $users_interacted_with = Disciple_Tools_Users::get_assignable_users_compact( $search_string );
             $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID );
             $query_args['meta_key'] = 'assigned_to';
             $query_args['meta_value'] = "user-" . $current_user->ID;
+            $posts = $wpdb->get_results( $wpdb->prepare( "
+                SELECT * FROM $wpdb->posts 
+                INNER JOIN $wpdb->postmeta as assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id AND assigned_to.meta_key = 'assigned_to')
+                WHERE assigned_to.meta_value = %s
+                AND INSTR( $wpdb->posts.post_title, %s ) > 0
+                AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
+                ORDER BY CASE
+                    WHEN INSTR( $wpdb->posts.post_title, %s ) = 1 then 1
+                    ELSE 2  
+                END, CHAR_LENGTH($wpdb->posts.post_title)
+                LIMIT 0, 30
+            ", "user-". $current_user->ID, $search_string, $post_type, $search_string
+            ), OBJECT );
+        } else {
+            $posts = $wpdb->get_results( $wpdb->prepare( "
+                SELECT * FROM $wpdb->posts WHERE 1=1 AND
+                INSTR( $wpdb->posts.post_title, %s ) > 0
+                AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
+                ORDER BY  CASE
+                    WHEN INSTR( $wpdb->posts.post_title, %s ) = 1 then 1
+                    ELSE 2  
+                END, CHAR_LENGTH($wpdb->posts.post_title)
+                LIMIT 0, 30
+            ", $search_string, $post_type, $search_string
+            ), OBJECT );
         }
-        $posts = new WP_Query( $query_args );
         if ( is_wp_error( $posts ) ) {
             return $posts;
         }
-        foreach ( $posts->posts as $post ) {
-            $compact[] = [
-            "ID" => $post->ID,
-            "name" => $post->post_title
-            ];
-        }
+
         $post_ids = array_map(
             function( $post ) {
                 return $post->ID;
             },
-            $posts->posts
+            $posts
         );
         foreach ( $shared_with_user as $shared ) {
             if ( !in_array( $shared->ID, $post_ids ) ) {
@@ -588,9 +603,15 @@ class Disciple_Tools_Posts
                 }
             }
         }
+        foreach ( $posts as $post ) {
+            $compact[] = [
+                "ID" => $post->ID,
+                "name" => $post->post_title
+            ];
+        }
 
         return [
-        "total" => $posts->found_posts,
+        "total" => $wpdb->get_var( "SELECT found_rows();" ),
         "posts" => $compact
         ];
     }

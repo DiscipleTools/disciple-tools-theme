@@ -957,7 +957,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return $connection;
         }
 
-        return new WP_Error( "add_contact_detail", "Field not recognized", [ "status" => 400 ] );
+        return new WP_Error( "add_contact_detail", "Field not recognized: " . $key, [ "status" => 400 ] );
     }
 
     public static function add_contact_method( int $contact_id, string $key, string $value, array $field, bool $check_permissions ) {
@@ -2108,13 +2108,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( user_can( $user_id, 'view_any_contacts' ) ) {
             $dispatcher_counts = $wpdb->get_results( "
             SELECT (SELECT count(ID) as all_contacts
-                    FROM wp_9_posts
+                    FROM $wpdb->posts
                     WHERE post_status = 'publish'
                       AND post_type = 'contacts')
                 as all_contacts,
                   (SELECT count(a.ID) as assignment_needed
-                    FROM wp_9_posts as a
-                    JOIN wp_9_postmeta as b
+                    FROM $wpdb->posts as a
+                    JOIN $wpdb->postmeta as b
                       ON a.ID=b.post_id
                          AND b.meta_key = 'overall_status'
                          AND b.meta_value = 'unassigned'
