@@ -36,10 +36,12 @@ dt_print_breadcrumbs(
 
     <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
-        <main id="main" class="large-7 medium-12 small-12 cell" role="main" style="padding:0">
+        <main id="main" class="large-7 medium-12 small-12 cell  grid-margin-y" role="main" style="padding:0">
             <div class="cell grid-y grid-margin-y" style="display: block">
-                <section id="contact-details" class="cell small-12">
-                    <?php get_template_part( 'dt-assets/parts/group', 'details' ); ?>
+                <section id="contact-details" class="cell small-12  grid-margin-y">
+                    <div class="cell">
+                        <?php get_template_part( 'dt-assets/parts/group', 'details' ); ?>
+                    </div>
                 </section>
                 <div class="cell small-12">
                     <div class="grid-x grid-margin-x grid-margin-y grid">

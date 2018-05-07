@@ -5,18 +5,18 @@
     $channel_list = Disciple_Tools_Contacts::get_channel_list();
     $current_user = wp_get_current_user();
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
-    $custom_lists = dt_get_option( 'dt_site_custom_lists' );
 
     function dt_contact_details_status( $id, $verified, $invalid ) { ?>
         <img id="<?php echo esc_html( $id )?>-verified" class="details-status" style="display:<?php echo esc_html( $verified )?>" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/verified.svg' )?>" />
         <img id="<?php echo esc_html( $id ) ?>-invalid" class="details-status" style="display:<?php echo esc_html( $invalid )?>" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/broken.svg' )?>" />
     <?php
-    }
+    } ?>
 
 
+    <?php
 //    <!-- Requires update block -->
     if ( isset( $contact['requires_update'] ) && $contact['requires_update']['key'] === 'yes' ) { ?>
-    <section class="cell update-needed-notification grid-margin-y">
+    <section class="cell small-12 update-needed-notification">
         <div class="bordered-box">
             <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This contact needs an update', 'disciple_tools' ) ?>.</h4>
             <p><?php esc_html_e( 'It has been a while since this contact was updated. Please do so', 'disciple_tools' )?>.</p>

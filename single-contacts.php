@@ -136,21 +136,20 @@ declare( strict_types=1 );
                 </div>
             </div>
 
+            <section class="hide-for-large small-12 cell">
+                <div class="bordered-box">
+                    <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
+
+                    <div style="text-align: center">
+                        <a class="button small" href="#comment-activity-section" style="margin-bottom: 0">
+                            <?php esc_html_e( 'View Comments', 'disciple_tools' ) ?>
+                        </a>
+                    </div>
+                </div>
+            </section>
             <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell" role="main" style="padding:0">
                 <div class="cell grid-y grid-margin-y" style="display: block">
-                    <!-- Top bar-->
-                    <section class="hide-for-large small-12 cell">
-                        <div class="bordered-box">
-                            <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
-
-                            <div style="text-align: center">
-                                <a class="button small" href="#comment-activity-section" style="margin-bottom: 0">
-                                    <?php esc_html_e( 'View Comments', 'disciple_tools' ) ?>
-                                </a>
-                            </div>
-                        </div>
-                    </section>
-                    <section id="contact-details" class="cell small-12 grid-margin-y">
+                    <section id="contact-details" class="small-12 grid-y grid-margin-y ">
                         <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
                     </section>
                     <div class="cell small-12">
