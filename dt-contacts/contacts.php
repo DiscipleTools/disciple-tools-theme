@@ -957,7 +957,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return $connection;
         }
 
-        return new WP_Error( "add_contact_detail", "Field not recognized", [ "status" => 400 ] );
+        return new WP_Error( "add_contact_detail", "Field not recognized: " . $key, [ "status" => 400 ] );
     }
 
     public static function add_contact_method( int $contact_id, string $key, string $value, array $field, bool $check_permissions ) {
