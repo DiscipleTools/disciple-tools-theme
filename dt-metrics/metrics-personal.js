@@ -28,10 +28,13 @@ function overview() {
             <div class="cell">
                 <div class="grid-x callout">
                     <div class="medium-3 cell center">
-                    <h4>Total Contacts<br><span id="total_contacts"></span></h4>
+                        <h4>Total Contacts<br><span id="total_contacts"></span></h4>
                     </div>
                     <div class="medium-3 cell center" style="border-left: 1px solid #ccc">
-                    <h4>Total Groups<br><span id="total_groups"></span></h4>
+                        <h4>Total Groups<br><span id="total_groups"></span></h4>
+                    </div>
+                    <div class="medium-3 cell center" style="border-left: 1px solid #ccc">
+                        <h4>Updates Needed<br><span id="updates_needed"></span></h4>
                     </div>
                 </div>
             </div>
