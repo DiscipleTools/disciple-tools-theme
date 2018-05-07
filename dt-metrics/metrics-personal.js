@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-    console.log( dtMetricsPersonal )
+    // console.log( dtMetricsPersonal )
 
     if( ! window.location.hash || '#overview' === window.location.hash  ) {
         overview()
