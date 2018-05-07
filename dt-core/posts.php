@@ -551,24 +551,23 @@ class Disciple_Tools_Posts
             $posts = $wpdb->get_results( $wpdb->prepare( "
                 SELECT * FROM $wpdb->posts 
                 INNER JOIN $wpdb->postmeta as assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id AND assigned_to.meta_key = 'assigned_to')
-                WHERE 1=1 AND
-                assigned_to.meta_value = 
-                INSTR( $wpdb->posts.post_title ,'%s' ) > 0
-                AND $wpdb->posts.post_type = '%s' AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
+                WHERE assigned_to.meta_value = %s
+                AND INSTR( $wpdb->posts.post_title, %s ) > 0
+                AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
                 ORDER BY CASE
-                    WHEN INSTR( $wpdb->posts.post_title ,'%s' ) = 1 then 1
+                    WHEN INSTR( $wpdb->posts.post_title, %s ) = 1 then 1
                     ELSE 2  
-                END
+                END, CHAR_LENGTH($wpdb->posts.post_title)
                 LIMIT 0, 30
             ", "user-". $current_user->ID, $search_string, $post_type, $search_string
             ), OBJECT );
         } else {
             $posts = $wpdb->get_results( $wpdb->prepare( "
                 SELECT * FROM $wpdb->posts WHERE 1=1 AND
-                INSTR( $wpdb->posts.post_title ,'%s' ) > 0
-                AND $wpdb->posts.post_type = '%s' AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
+                INSTR( $wpdb->posts.post_title, %s ) > 0
+                AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
                 ORDER BY  CASE
-                    WHEN INSTR( $wpdb->posts.post_title ,'%s' ) = 1 then 1
+                    WHEN INSTR( $wpdb->posts.post_title, %s ) = 1 then 1
                     ELSE 2  
                 END, CHAR_LENGTH($wpdb->posts.post_title)
                 LIMIT 0, 30
