@@ -548,6 +548,21 @@ class Disciple_Tools_Notifications
     }
 
 
+    /**
+     * Format comment replacing @mentions with a readable value
+     *
+     * @param $comment_content
+     *
+     * @return mixed
+     */
+    public static function format_comment( $comment_content ){
+        preg_match_all( '/\@\[(.*?)\]\((.+?)\)/', $comment_content, $matches );
+        foreach ( $matches[0] as $match_key => $match ){
+            $comment_content = str_replace( $match, '@' . $matches[1][$match_key], $comment_content );
+        }
+        return $comment_content;
+    }
+
 
     public static function get_notification_message( $notification ){
         $object_id = $notification["post_id"];
@@ -562,6 +577,13 @@ class Disciple_Tools_Notifications
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
             $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '" >' . $post_title . '</a>';
             $notification_note = $display_name . ' ' . sprintf( esc_html_x( 'shared %s with you.', '', 'disciple_tools' ), $link );
+        } elseif ( $notification["notification_name"] ==="mention" ){
+            $source_user = get_userdata( $notification["source_user_id"] );
+            $comment = get_comment( $notification["secondary_item_id"] );
+            $comment_content = $comment ? self::format_comment( $comment->comment_content ) : "";
+            $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
+            $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '" >' . $post_title . '</a>';
+            $notification_note = $display_name . ' ' . sprintf( esc_html_x( 'mentioned you on %s saying', '', 'disciple_tools' ), $link ) . ' "' . $comment_content . '"';
         } elseif ( $notification["notification_name"] === "subassigned" ){
             $source_user = get_userdata( $notification["source_user_id"] );
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );

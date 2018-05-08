@@ -68,27 +68,24 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                         // share record with mentioned individual
                         Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id, null, false );
 
+                        $message = '<strong>' . strip_tags( $author_name ) . '</strong> mentioned you on <a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '">'
+                                   . strip_tags( get_the_title( $post_id ) ) . '</a> saying, "' . strip_tags( $comment->comment_content ) . '" ';
+
                         // web notification
                         if ( dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) ) {
-
-                            $notification_note = '<strong>' . strip_tags( $author_name ) . '</strong> mentioned you on <a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '">'
-                                . strip_tags( get_the_title( $post_id ) ) . '</a> saying, "' . strip_tags( $comment->comment_content ) . '" ';
-
                             $this->add_mention_notification(
                                 $mentioned_user_id,
                                 $source_user_id,
                                 $post_id,
                                 $comment_id,
                                 $notification_action,
-                                $notification_note,
+                                $message,
                                 $date_notified
                             );
                         }
 
                         // email notification
                         if ( dt_user_notification_is_enabled( 'mentions_email', $user_meta, $user->ID ) ) {
-
-                            $message = strip_tags( $author_name ) . ' mentioned you saying: ' . strip_tags( $comment->comment_content );
                             $message .= "\r\n\r\n";
                             $message .= 'Click here to reply: ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
                             dt_send_email(
@@ -190,8 +187,11 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      */
     public function check_for_mention( $comment_content )
     {
-        return preg_match( '/(?<= |^)@([^@ ]+)/', $comment_content );
+        return preg_match( '/\@\[(.*?)\]\((.+?)\)/', $comment_content );
     }
+
+
+
 
     /**
      * Parse @mention to find user match
@@ -205,7 +205,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
         preg_match_all( '/\@\[(.*?)\]\((.+?)\)/', $comment_content, $matches );
 
         $user_ids = [];
-        foreach ( $matches[2] as $match_index => $match ) {
+        foreach ( $matches[2] as $match ) {
 
             // trim punctuation
             $match = preg_replace( '/\W+/', '', $match );
@@ -217,12 +217,10 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                     $user_ids[] = $user->ID;
                 }
             }
-            $comment_content = str_replace( $matches[0][$match_index], '@' . $matches[1][$match_index], $comment_content );
-
         }
         return [
             "user_ids" => empty( $user_ids ) ? false : $user_ids,
-            "comment" => $comment_content
+            "comment" => Disciple_Tools_Notifications::format_comment( $comment_content )
         ];
 
 //        return empty( $user_ids ) ? false : $user_ids;
