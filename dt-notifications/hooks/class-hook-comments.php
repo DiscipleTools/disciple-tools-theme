@@ -40,7 +40,9 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
             return;
         }
 
-        $mentioned_user_ids = $this->match_mention( $comment->comment_content ); // fail if no match for mention found
+        $comment_with_users = $this->match_mention( $comment->comment_content ); // fail if no match for mention found
+        $comment->comment_content = $comment_with_users["comment"];
+        $mentioned_user_ids = $comment_with_users["user_ids"];
         if ( !$mentioned_user_ids ) {
             return;
         }
@@ -215,7 +217,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                     $user_ids[] = $user->ID;
                 }
             }
-            $comment_content = str_replace( $matches[0][$match_index], $match[1][$match_index], $comment_content );
+            $comment_content = str_replace( $matches[0][$match_index], '@' . $matches[1][$match_index], $comment_content );
 
         }
         return [
