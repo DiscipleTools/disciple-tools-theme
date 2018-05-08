@@ -1,17 +1,17 @@
 jQuery(document).ready(function() {
-    console.log( dtMetricsPersonal )
+    console.log( dtMetricsProject )
 
-    if( ! window.location.hash || '#overview' === window.location.hash  ) {
-        overview()
+    if( ! window.location.hash || '#project' === window.location.hash  ) {
+        project()
     }
 })
 
-function overview() {
+function project() {
     "use strict";
     let chartDiv = jQuery('#chart')
-    let overview = dtMetricsPersonal.overview
+    let overview = dtMetricsProject.project
     chartDiv.empty().html(`
-        <span class="section-header">`+ dtMetricsPersonal.overview.translations.title +`</span>
+        <span class="section-header">`+ dtMetricsProject.project.translations.title +`</span>
         <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
         <div class="medium reveal" id="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
@@ -211,7 +211,7 @@ function overview() {
 function my_contacts_progress() {
     "use strict";
     let chartDiv = jQuery('#chart')
-    let myContacts = dtMetricsPersonal.my_contacts
+    let myContacts = dtMetricsProject.my_contacts
     chartDiv.empty().html(`
         <span class="section-header">`+ myContacts.translations.title +`</span>
         <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
@@ -275,7 +275,7 @@ function my_contacts_progress() {
 function my_groups_progress() {
     "use strict";
     let chartDiv = jQuery('#chart')
-    let myGroups = dtMetricsPersonal.my_groups
+    let myGroups = dtMetricsProject.my_groups
     chartDiv.empty().html(`
         <span class="section-header">`+ myGroups.translations.title +`</span>
         <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>

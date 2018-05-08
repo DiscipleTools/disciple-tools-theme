@@ -1,7 +1,7 @@
 <?php
 
 
-class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
+class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 {
     private static $_instance = null;
     public static function instance()
@@ -17,43 +17,52 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
 
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
 
-            add_filter( 'dt_metrics_menu', [ $this, 'add_overview_menu' ], 20 );
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
+            add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 50 );
+
+            if ( 'metrics/project' === $url_path ) {
+                add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            }
 
             parent::__construct();
         }
     }
 
-    public function add_overview_menu( $content ) {
+    public function add_url( $template_for_url ) {
+        $template_for_url['metrics/project'] = 'template-metrics.php';
+        return $template_for_url;
+    }
+
+    public function add_menu( $content ) {
         $content .= '
-            <li><a href="'. site_url( '/metrics/' ) .'#overview" onclick="overview()">' .  esc_html__( 'Overview', 'disciple_tools' ) . '</a></li>
+            <li><a href="'. site_url( '/metrics/project/' ) .'#project" onclick="project()">' .  esc_html__( 'Project', 'disciple_tools' ) . '</a></li>
             ';
         return $content;
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_metrics_personal_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-personal.js', [
+        wp_enqueue_script( 'dt_metrics_project_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-project.js', [
             'jquery',
             'jquery-ui-core',
-        ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-personal.js' ), true );
+        ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-project.js' ), true );
 
         wp_localize_script(
-            'dt_metrics_personal_script', 'dtMetricsPersonal', [
+            'dt_metrics_project_script', 'dtMetricsProject', [
                 'root' => esc_url_raw( rest_url() ),
                 'plugin_uri' => get_stylesheet_directory_uri(),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'map_key' => dt_get_option( 'map_key' ),
-                'overview' => $this->overview(),
+                'project' => $this->project(),
             ]
         );
     }
 
-    public function overview() {
+    public function project() {
         return [
             'translations' => [
-                'title' => __( 'Overview' ),
+                'title' => __( 'Project' ),
                 'total_contacts' => __( 'Total Contacts' ),
                 'total_groups' => __( 'Total Groups' ),
                 'updates_needed' => __( 'Updates Needed' ),
@@ -127,4 +136,4 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
         ];
     }
 }
-Disciple_Tools_Metrics_Personal::instance();
+Disciple_Tools_Metrics_Project::instance();

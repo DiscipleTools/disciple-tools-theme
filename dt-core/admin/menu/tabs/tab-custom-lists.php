@@ -78,6 +78,15 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $this->sources_box(); // prints
             $this->box( 'bottom' );
             /* end Sources */
+
+            /* Metrics */
+            $this->box( 'top', 'Seeker Path' );
+            $this->process_seeker_path_box();
+            $this->seeker_path_box(); // prints
+            $this->box( 'bottom' );
+            /* end Metrics */
+
+
             $this->template( 'right_column' );
 
             $this->template( 'end' );
@@ -336,6 +345,75 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             // Update the site option
             update_option( 'dt_site_custom_lists', $site_custom_lists, true );
         }
+    }
+
+    /**
+     * Process contact seeker_path settings
+     */
+    public function process_seeker_path_box()
+    {
+        if ( isset( $_POST['seeker_path_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['seeker_path_nonce'] ) ), 'seeker_path' . get_current_user_id() ) ) {
+
+            if ( !wp_verify_nonce( sanitize_key( $_POST['seeker_path_nonce'] ), 'seeker_path' ) ) {
+                return;
+            }
+
+            dt_write_log( $_POST );
+        }
+    }
+
+    /**
+     * Prints the seeker_path settings box.
+     */
+    public function seeker_path_box()
+    {
+        $seeker_path = dt_get_option( 'seeker_path' );
+        if ( ! $seeker_path ) {
+            wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
+        }
+
+        ?>
+        <form method="post" name="seeker_path_form">
+            <input type="hidden" name="seeker_path_nonce" id="seeker_path_nonce" value="<?php echo esc_attr( wp_create_nonce( 'seeker_path' . get_current_user_id() ) ) ?>" />
+
+            <button type="submit" class="button-like-link" name="seeker_path_reset" value="1">reset</button>
+
+            <p>Add or remove seeker_path for new contacts.</p>
+
+            <input type="hidden" name="seeker_path_nonce" id="seeker_path_nonce" value="<?php echo esc_attr( wp_create_nonce( 'seeker_path' ) ) ?>" />
+            <table class="widefat">
+                <thead>
+                    <tr>
+                        <td>Label</td>
+                        <td>Delete</td>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach ( $seeker_path as $key => $label ) : ?>
+                    <tr>
+                        <td><input name="seeker_path['<?php echo  esc_attr( $key ) ?>']" type="text" value="<?php echo esc_html( $label ) ?>" /></td>
+                        <td><button type="submit" name="delete_field" value="<?php echo  esc_attr( $key ) ?>" class="button small" >delete</button> </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+
+            <br>
+            <button type="button" onclick="jQuery('#add_seeker_path').toggle();" class="button">Add</button>
+            <button type="submit" style="float:right;" class="button">Save</button>
+
+            <div id="add_seeker_path" style="display:none;">
+            <table width="100%">
+                <tr>
+                    <td><hr><br>
+                        <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;
+                    <button type="submit">Add</button>
+                </td></tr>
+            </table>
+            </div>
+
+        </form>
+    <?php
     }
 }
 Disciple_Tools_Tab_Custom_Lists::instance();

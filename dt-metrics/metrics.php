@@ -34,13 +34,14 @@ class Disciple_Tools_Metrics
 
         // load basic charts
         require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
+        require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
 
     }
 
     // Enqueue maps and charts for standard metrics
     public function enqueue_google() {
         $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
-        if ( 'metrics' === $url_path ) {
+        if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
             wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', [], false );
             wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . dt_get_option( 'map_key' ), array(), null, true );
         }
@@ -392,7 +393,6 @@ class Disciple_Tools_Metrics
                 'label' => $label,
                 'count' => 0,
             ];
-
         }
 
         $results = $wpdb->get_results( $wpdb->prepare( "
@@ -430,7 +430,6 @@ class Disciple_Tools_Metrics
         return wp_parse_args( $query_results, $defaults );
     }
 
-
     /**
      * Check permissions for if the user can view a certain report
      *
@@ -460,7 +459,6 @@ class Disciple_Tools_Metrics
                 break;
         }
     }
-
 
     /**
      * System stats dashboard widget
@@ -572,9 +570,7 @@ class Disciple_Tools_Metrics
         $baptisms = disciple_tools()->counter->get_baptisms( 'baptisms' );
         $baptizers = disciple_tools()->counter->get_baptisms( 'baptizers' );
     }
-
 }
-
 
 abstract class Disciple_Tools_Metrics_Hooks_Base
 {

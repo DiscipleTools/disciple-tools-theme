@@ -215,6 +215,4 @@ class Disciple_Tools_Metrics_Endpoints {
             return true;
         }
     }
-
-
 }
