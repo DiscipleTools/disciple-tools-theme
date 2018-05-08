@@ -64,7 +64,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                         $notification_action = 'mentioned';
 
                         // share record with mentioned individual
-                        Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
+                        Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id, null, false );
 
                         // web notification
                         if ( dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) ) {
@@ -203,7 +203,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
         preg_match_all( '/\@\[(.*?)\]\((.+?)\)/', $comment_content, $matches );
 
         $user_ids = [];
-        foreach ( $matches[2] as $match ) {
+        foreach ( $matches[2] as $match_index => $match ) {
 
             // trim punctuation
             $match = preg_replace( '/\W+/', '', $match );
@@ -215,9 +215,15 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                     $user_ids[] = $user->ID;
                 }
             }
-        }
+            $comment_content = str_replace( $matches[0][$match_index], $match[1][$match_index], $comment_content );
 
-        return empty( $user_ids ) ? false : $user_ids;
+        }
+        return [
+            "user_ids" => empty( $user_ids ) ? false : $user_ids,
+            "comment" => $comment_content
+        ];
+
+//        return empty( $user_ids ) ? false : $user_ids;
     }
 
     /**

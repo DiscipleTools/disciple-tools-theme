@@ -806,6 +806,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $user_id = get_post_meta( $subassigned, "corresponds_to_user", true );
         if ( $user_id ){
             self::add_shared_on_contact( $contact_id, $user_id, null, false, false );
+            Disciple_Tools_Notifications::insert_notification_for_subassigned( $user_id, $contact_id );
         }
 
         return p2p_type( 'contacts_to_subassigned' )->connect(

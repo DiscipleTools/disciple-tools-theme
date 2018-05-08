@@ -484,6 +484,39 @@ class Disciple_Tools_Notifications
     }
 
     /**
+     * Insert notification for subassigned
+     *
+     * @param int $user_id
+     * @param int $post_id
+     */
+    public static function insert_notification_for_subassigned( int $user_id, int $post_id )
+    {
+
+        if ( $user_id != get_current_user_id() ) { // check if subassigned is not to self, else don't notify
+
+            $args = [
+                'user_id'             => $user_id,
+                'source_user_id'      => get_current_user_id(),
+                'post_id'             => $post_id,
+                'secondary_item_id'   => 0,
+                'notification_name'   => 'subassigned',
+                'notification_action' => 'alert',
+                'notification_note'   => '<a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '" >' . strip_tags( get_the_title( $post_id ) ) . '</a> was sub-assigned to you.',
+                'date_notified'       => current_time( 'mysql' ),
+                'is_new'              => 1,
+                'field_key'           => "comments",
+                'field_value'         => ''
+            ];
+            $message = self::get_notification_message( $args ) . ' Click here to view ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
+
+            dt_notification_insert( $args );
+            $user = get_userdata( $user_id );
+            $subject = __( "Contact sub-assigned to", 'disciple_tools' );
+            dt_send_email( $user->user_email, $subject, $message );
+        }
+    }
+
+    /**
      * Process post notifications for a user who has visited the post. This removes the new status for all notifications for this post
      *
      * @param $post_id
