@@ -2057,6 +2057,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                  ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
                     AND c.meta_value = CONCAT( 'user-', %s )
+               JOIN $wpdb->postmeta as d
+                 ON a.ID=d.post_id
+                    AND d.meta_key = 'overall_status'
+                    AND d.meta_value = 'active'
               WHERE a.post_status = 'publish')
             as update_needed,
             (SELECT count(a.ID)
@@ -2069,6 +2073,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                  ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
                     AND c.meta_value = CONCAT( 'user-', %s )
+               JOIN $wpdb->postmeta as d
+                 ON a.ID=d.post_id
+                    AND d.meta_key = 'overall_status'
+                    AND d.meta_value = 'active'
               WHERE a.post_status = 'publish')
             as contact_attempted,
             (SELECT count(a.ID)
@@ -2081,12 +2089,16 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                  ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
                     AND c.meta_value = CONCAT( 'user-', %s )
+               JOIN $wpdb->postmeta as d
+                 ON a.ID=d.post_id
+                    AND d.meta_key = 'overall_status'
+                    AND d.meta_value = 'active'
               WHERE a.post_status = 'publish')
              as meeting_scheduled,
             (SELECT count(ID)
-             FROM wp_9_posts
+             FROM $wpdb->posts
              WHERE ID IN (SELECT post_id
-                          FROM wp_9_dt_share
+                          FROM $wpdb->dt_share
                           WHERE user_id = %s)
                       AND post_status = 'publish' )
               as shared;
@@ -2109,13 +2121,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( user_can( $user_id, 'view_any_contacts' ) ) {
             $dispatcher_counts = $wpdb->get_results( "
             SELECT (SELECT count(ID) as all_contacts
-                    FROM wp_9_posts
+                    FROM $wpdb->posts
                     WHERE post_status = 'publish'
                       AND post_type = 'contacts')
                 as all_contacts,
                   (SELECT count(a.ID) as assignment_needed
-                    FROM wp_9_posts as a
-                    JOIN wp_9_postmeta as b
+                    FROM $wpdb->posts as a
+                    JOIN $wpdb->postmeta as b
                       ON a.ID=b.post_id
                          AND b.meta_key = 'overall_status'
                          AND b.meta_value = 'unassigned'
