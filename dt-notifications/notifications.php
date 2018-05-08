@@ -629,7 +629,7 @@ class Disciple_Tools_Notifications
             $link = '<a href="' . home_url( '/' ) .
             get_post_type( $object_id ) . '/' . $object_id . '">' .
             $post_title . '</a>';
-            $notification_note = $element . ' ' . $link . ' ' . __( 'were modified by', 'disciple_tools' ) .
+            $notification_note = $element . ' ' . $link . ' ' . __( 'were modified by', 'disciple_tools' ) . " " .
             '<strong>' . $display_name . '</strong>';
         }
         return $notification_note;
