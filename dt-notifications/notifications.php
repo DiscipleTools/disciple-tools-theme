@@ -552,7 +552,7 @@ class Disciple_Tools_Notifications
     public static function get_notification_message( $notification ){
         $object_id = $notification["post_id"];
         $post = get_post( $object_id );
-        $post_title = sanitize_text_field( $post->post_title );
+        $post_title = isset( $post->post_title ) ? sanitize_text_field( $post->post_title ) : "";
         $notification_note = $notification["notification_note"];
         if ( $notification["notification_name"] === "assigned_to" ) {
             $notification_note = __( 'You have been assigned', 'disciple_tools' ) . ' <a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
