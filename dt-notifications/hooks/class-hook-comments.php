@@ -68,30 +68,35 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                         // share record with mentioned individual
                         Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id, null, false );
 
-                        $message = '<strong>' . strip_tags( $author_name ) . '</strong> mentioned you on <a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '">'
-                                   . strip_tags( get_the_title( $post_id ) ) . '</a> saying, "' . strip_tags( $comment->comment_content ) . '" ';
+                        $notification = [
+                            'user_id'             => $mentioned_user_id,
+                            'source_user_id'      => $source_user_id,
+                            'post_id'             => (int) $post_id,
+                            'secondary_item_id'   => (int) $comment_id,
+                            'notification_name'   => "mention",
+                            'notification_action' => $notification_action,
+                            'notification_note'   => "",
+                            'date_notified'       => current_time( 'mysql' ),
+                            'is_new'              => 1,
+                            'field_key'           => 'comments',
+                            'field_value'         => '',
+                        ];
+
+                        $notification["notification_note"] = Disciple_Tools_Notifications::get_notification_message( $notification );
 
                         // web notification
                         if ( dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) ) {
-                            $this->add_mention_notification(
-                                $mentioned_user_id,
-                                $source_user_id,
-                                $post_id,
-                                $comment_id,
-                                $notification_action,
-                                $message,
-                                $date_notified
-                            );
+                            dt_notification_insert( $notification );
                         }
 
                         // email notification
                         if ( dt_user_notification_is_enabled( 'mentions_email', $user_meta, $user->ID ) ) {
-                            $message .= "\r\n\r\n";
-                            $message .= 'Click here to reply: ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
+                            $notification["notification_note"] .= "\r\n\r\n";
+                            $notification["notification_note"] .= __( 'Click here to reply ', 'disciple_tools' ) . ' :' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
                             dt_send_email(
                                 $user->user_email,
                                 __( "You were mentioned!", 'disciple_tools' ),
-                                $message
+                                $notification["notification_note"]
                             );
                         }
 
