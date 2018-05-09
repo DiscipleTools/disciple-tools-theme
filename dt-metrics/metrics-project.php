@@ -23,7 +23,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             if ( 'metrics/project' === $url_path ) {
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             }
-
         }
     }
 
