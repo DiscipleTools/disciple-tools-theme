@@ -3,16 +3,246 @@ jQuery(document).ready(function() {
 
     if( ! window.location.hash || '#project_overview' === window.location.hash  ) {
         project_overview()
-        jQuery('#projects-menu').foundation('down', $target);
+    }
+    if( '#project_critical_path' === window.location.hash  ) {
+        project_critical_path()
+    }
+    if( '#project_timeline' === window.location.hash  ) {
+        project_timeline()
+    }
+    if( '#project_contacts' === window.location.hash  ) {
+        project_contacts()
+        jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+    }
+    if( '#project_groups' === window.location.hash  ) {
+        project_groups()
+        jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     }
 })
 
 function project_overview() {
     "use strict";
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
-    let overview = dtMetricsProject.project_overview
+    let sourceData = dtMetricsProject.data
     chartDiv.empty().html(`
-        <span class="section-header">`+ dtMetricsProject.project_overview.translations.title +`</span>
+        <span class="section-header">`+ sourceData.translations.title_overview +`</span>
+        <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
+        <div class="medium reveal" class="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button></div>
+        <br><br>
+        <div class="grid-x grid-padding-x grid-padding-y">
+            <div class="cell center callout">
+                <p><span class="section-subheader">Contacts</span></p>
+                <div class="grid-x">
+                    <div class="medium-3 cell center">
+                        <h4>Total Contacts<br><span id="total_contacts">0</span></h4>
+                    </div>
+                    <div class="medium-3 cell center left-border-grey">
+                        <h4>Need Accepted<br><span id="need_accepted">0</span></h4>
+                    </div>
+                    <div class="medium-3 cell center left-border-grey">
+                        <h4>Updates Needed<br><span id="updates_needed">0</span></h4>
+                    </div>
+                    <div class="medium-3 cell center left-border-grey">
+                        <h4>Attempts Needed<br><span id="attempts_needed">0</span></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="cell">
+                <div id="my_contacts_progress" style="height: 350px;"></div>
+            </div>
+            <div class="cell">
+            <hr>
+                <div id="my_critical_path" style="height: 650px;"></div>
+            </div>
+            <div class="cell">
+            <br>
+                <div class="cell center callout">
+                    <p><span class="section-subheader">Groups</span></p>
+                    <div class="grid-x">
+                        <div class="medium-3 cell center">
+                            <h4>Total Groups<br><span id="total_groups">0</span></h4>
+                        </div>
+                        <div class="medium-3 cell center left-border-grey">
+                            <h4>Needs Training<br><span id="updates_needed">0</span></h4>
+                        </div>
+                        <div class="medium-3 cell center left-border-grey">
+                            <h4>Generations<br><span id="updates_needed">0</span></h4>
+                        </div>
+                   </div> 
+                </div>
+            </div>
+            <div class="cell">
+                <div class="grid-x">
+                    <div class="cell medium-6 center">
+                        <span class="section-subheader">Group Types</span>
+                        <div id="group_types" style="height: 400px;"></div>
+                    </div>
+                    <div class="cell medium-6">
+                        <div id="group_generations" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cell">
+            <hr>
+                <div id="my_groups_health" style="height: 500px;"></div>
+            </div>
+        </div>
+        `)
+
+    let hero = sourceData.hero_stats
+    jQuery('#total_contacts').html( numberWithCommas( hero.total_contacts ) )
+    jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
+    jQuery('#attempts_needed').html( numberWithCommas( hero.attempts_needed ) )
+
+    jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
+
+    // build charts
+    google.charts.load('current', {'packages':['corechart', 'bar']});
+
+    google.charts.setOnLoadCallback(drawMyContactsProgress);
+    google.charts.setOnLoadCallback(drawMyGroupHealth);
+    google.charts.setOnLoadCallback(drawCriticalPath);
+    google.charts.setOnLoadCallback(drawGroupTypes);
+    google.charts.setOnLoadCallback(drawGroupGenerations);
+
+    function drawMyContactsProgress() {
+
+        let data = google.visualization.arrayToDataTable( sourceData.contacts_progress );
+
+        let options = {
+            bars: 'horizontal',
+            chartArea: {
+                left: '20%',
+                top: '7%',
+                width: "75%",
+                height: "85%" },
+            hAxis: {
+                title: 'number of contacts',
+            },
+            title: "My Follow-Up Progress",
+            legend: {position: "none"},
+        };
+
+        let chart = new google.visualization.BarChart(document.getElementById('my_contacts_progress'));
+        chart.draw(data, options);
+    }
+
+    function drawCriticalPath() {
+
+        let data = google.visualization.arrayToDataTable( sourceData.critical_path );
+
+        let options = {
+            bars: 'horizontal',
+            chartArea: {
+                left: '20%',
+                top: '7%',
+                width: "75%",
+                height: "85%" },
+            title: "My Critical Path",
+            legend: {position: "none"},
+        };
+
+        let chart = new google.visualization.BarChart(document.getElementById('my_critical_path'));
+        chart.draw(data, options);
+    }
+
+    function drawMyGroupHealth() {
+
+        let data = google.visualization.arrayToDataTable( sourceData.group_health );
+
+        let options = {
+            chartArea: {
+                left: '10%',
+                top: '10%',
+                width: "85%",
+                height: "75%" },
+            vAxis: {
+                title: 'groups',
+            },
+            title: "Groups Needing Training Attention",
+            legend: {position: "none"},
+            colors: ['green' ],
+        };
+
+        let chart = new google.visualization.ColumnChart(document.getElementById('my_groups_health'));
+
+        function selectHandler() {
+            let selectedItem = chart.getSelection()[0];
+            if (selectedItem) {
+                let topping = data.getValue(selectedItem.row, 0);
+                alert('You selected ' + topping);
+            }
+        }
+
+        google.visualization.events.addListener(chart, 'select', selectHandler);
+
+        chart.draw(data, options);
+    }
+
+    function drawGroupTypes() {
+        let data = google.visualization.arrayToDataTable( sourceData.group_types );
+
+        let options = {
+            legend: 'bottom',
+            pieSliceText: 'groups',
+            pieStartAngle: 135,
+            slices: {
+                0: { color: 'lightgreen' },
+                1: { color: 'limegreen' },
+                2: { color: 'darkgreen' },
+            },
+            pieHole: 0.4,
+            chartArea: {
+                left: '0%',
+                top: '7%',
+                width: "100%",
+                height: "80%" },
+            fontSize: '20',
+        };
+
+        let chart = new google.visualization.PieChart(document.getElementById('group_types'));
+        chart.draw(data, options);
+    }
+
+    function drawGroupGenerations() {
+
+        let data = google.visualization.arrayToDataTable( sourceData.group_generations );
+
+        let options = {
+            bars: 'horizontal',
+            chartArea: {
+                left: '20%',
+                top: '7%',
+                width: "75%",
+                height: "85%" },
+            title: "Generations",
+            legend: { position: 'bottom', maxLines: 3 },
+            isStacked: true,
+            colors: [ 'lightgreen', 'limegreen', 'darkgreen' ],
+        };
+
+        let chart = new google.visualization.BarChart(document.getElementById('group_generations'));
+        chart.draw(data, options);
+    }
+
+    new Foundation.Reveal(jQuery('.dt-project-legend'));
+
+    chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span> 
+            <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
+            <span class="spinner" style="display: none;"><img src="`+dtMetricsPersonal.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
+            </div>`)
+}
+
+function project_critical_path() {
+    "use strict";
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+    let chartDiv = jQuery('#chart')
+    let sourceData = dtMetricsProject.data
+    chartDiv.empty().html(`
+        <span class="section-header">`+ sourceData.translations.title_critical_path +`</span>
         <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
         <div class="medium reveal" id="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
@@ -36,13 +266,13 @@ function project_overview() {
                 </div>
             </div>
             <div class="cell">
-                <div id="my_critical_path" style="height: 700px;"></div>
+                <div id="my_critical_path" style="height: 750px;"></div>
             </div>
             
         </div>
         `)
 
-    let hero = overview.hero_stats
+    let hero = sourceData.hero_stats
     jQuery('#total_contacts').html( numberWithCommas( hero.total_contacts ) )
     jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
     jQuery('#attempts_needed').html( numberWithCommas( hero.attempts_needed ) )
@@ -56,7 +286,7 @@ function project_overview() {
 
     function drawCriticalPath() {
 
-        let data = google.visualization.arrayToDataTable( overview.critical_path );
+        let data = google.visualization.arrayToDataTable( sourceData.critical_path );
 
         let options = {
             bars: 'horizontal',
@@ -70,6 +300,329 @@ function project_overview() {
         };
 
         let chart = new google.visualization.BarChart(document.getElementById('my_critical_path'));
+        chart.draw(data, options);
+    }
+}
+
+function project_timeline() {
+    "use strict";
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+    let chartDiv = jQuery('#chart')
+    let sourceData = dtMetricsProject.data
+    chartDiv.empty().html(`
+        <span class="section-header">`+ sourceData.translations.title_critical_path +`</span>
+        <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
+        <div class="medium reveal" id="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button></div>
+        <br><br>
+        <div class="grid-x grid-padding-x grid-padding-y">
+            <div class="cell center callout">
+                <div class="grid-x">
+                    <div class="medium-3 cell center">
+                        <h4>Total Contacts<br><span id="total_contacts">0</span></h4>
+                    </div>
+                    <div class="medium-3 cell center left-border-grey">
+                        <h4>Total Groups<br><span id="need_accepted">0</span></h4>
+                    </div>
+                    <div class="medium-3 cell center left-border-grey">
+                        <h4>Total Users<br><span id="updates_needed">0</span></h4>
+                    </div>
+                    <div class="medium-3 cell center left-border-grey">
+                        <h4>Total Locations<br><span id="attempts_needed">0</span></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="cell">
+                <div id="my_critical_path" style="height: 750px;"></div>
+            </div>
+            
+        </div>
+        `)
+
+    let hero = sourceData.hero_stats
+    jQuery('#total_contacts').html( numberWithCommas( hero.total_contacts ) )
+    jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
+    jQuery('#attempts_needed').html( numberWithCommas( hero.attempts_needed ) )
+
+    jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
+
+    // build charts
+    google.charts.load('current', {'packages':['corechart', 'bar']});
+
+    google.charts.setOnLoadCallback(drawCriticalPath);
+
+    function drawCriticalPath() {
+
+        let data = google.visualization.arrayToDataTable( sourceData.critical_path );
+
+        let options = {
+            bars: 'horizontal',
+            chartArea: {
+                left: '20%',
+                top: '7%',
+                width: "75%",
+                height: "85%" },
+            title: "Critical Path",
+            legend: {position: "none"},
+        };
+
+        let chart = new google.visualization.BarChart(document.getElementById('my_critical_path'));
+        chart.draw(data, options);
+    }
+}
+
+function project_contacts() {
+    "use strict";
+    let chartDiv = jQuery('#chart')
+    let sourceData = dtMetricsProject.data
+    chartDiv.empty().html(`
+        <span class="section-header">`+ sourceData.translations.title_contacts +`</span>
+        <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
+        <div class="medium reveal" id="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button></div>
+        <br><br>
+        <div class="grid-x grid-padding-x grid-padding-y">
+            <div class="cell center callout">
+                <div class="grid-x">
+                    <div class="medium-3 cell center">
+                        <h4>Total Groups<br><span id="total_contacts">0</span></h4>
+                    </div>
+                    <div class="medium-3 cell center left-border-grey">
+                        <h4>Generations<br><span id="need_accepted">0</span></h4>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="cell">
+                <div class="grid-x">
+                    <div class="cell medium-6">
+                        <div id="group_types" style="height:500px;"></div>
+                    </div>
+                    <div class="cell medium-6">
+                        <div id="group_generations" style="height: 500px;"></div>
+                    </div> 
+                </div>
+            </div>
+            <div class="cell">
+            <hr>
+                <div id="my_groups_health" style="height: 700px;"></div>
+            </div>
+            
+        </div>
+        `)
+
+    google.charts.load('current', {'packages':['corechart', 'bar']});
+
+    google.charts.setOnLoadCallback(drawGroupTypes);
+    google.charts.setOnLoadCallback(drawGroupGenerations);
+    google.charts.setOnLoadCallback(drawMyGroupHealth);
+
+    function drawGroupTypes() {
+        let data = google.visualization.arrayToDataTable( sourceData.group_types );
+
+        let options = {
+            legend: 'bottom',
+            pieSliceText: 'groups',
+            pieStartAngle: 135,
+            slices: {
+                0: { color: 'lightgreen' },
+                1: { color: 'limegreen' },
+                2: { color: 'darkgreen' },
+            },
+            pieHole: 0.4,
+            chartArea: {
+                left: '0%',
+                top: '7%',
+                width: "100%",
+                height: "80%" },
+            fontSize: '20',
+        };
+
+        let chart = new google.visualization.PieChart(document.getElementById('group_types'));
+        chart.draw(data, options);
+    }
+
+    function drawGroupGenerations() {
+
+        let data = google.visualization.arrayToDataTable( sourceData.group_generations );
+
+        let options = {
+            bars: 'horizontal',
+            chartArea: {
+                left: '20%',
+                top: '7%',
+                width: "75%",
+                height: "85%" },
+            title: "Generations",
+            legend: { position: 'bottom', maxLines: 3 },
+            isStacked: true,
+            colors: [ 'lightgreen', 'limegreen', 'darkgreen' ],
+        };
+
+        let chart = new google.visualization.BarChart(document.getElementById('group_generations'));
+        chart.draw(data, options);
+    }
+
+    function drawMyGroupHealth() {
+
+        let data = google.visualization.arrayToDataTable( sourceData.group_health );
+
+        let options = {
+            chartArea: {
+                left: '10%',
+                top: '10%',
+                width: "85%",
+                height: "75%" },
+            vAxis: {
+                title: 'groups',
+            },
+            title: "Groups Needing Training Attention",
+            legend: {position: "none"},
+            colors: ['green' ],
+        };
+
+        let chart = new google.visualization.ColumnChart(document.getElementById('my_groups_health'));
+
+        function selectHandler() {
+            let selectedItem = chart.getSelection()[0];
+            if (selectedItem) {
+                let topping = data.getValue(selectedItem.row, 0);
+                alert('You selected ' + topping);
+            }
+        }
+
+        google.visualization.events.addListener(chart, 'select', selectHandler);
+
+        chart.draw(data, options);
+    }
+
+}
+
+function project_groups() {
+    "use strict";
+    let chartDiv = jQuery('#chart')
+    let sourceData = dtMetricsProject.data
+    chartDiv.empty().html(`
+        <span class="section-header">`+ sourceData.translations.title_groups +`</span>
+        <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
+        <div class="medium reveal" id="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button></div>
+        <br><br>
+        <div class="grid-x grid-padding-x grid-padding-y">
+            <div class="cell center callout">
+                <div class="grid-x">
+                    <div class="medium-3 cell center">
+                        <h4>Total Groups<br><span id="total_contacts">0</span></h4>
+                    </div>
+                    <div class="medium-3 cell center left-border-grey">
+                        <h4>Generations<br><span id="need_accepted">0</span></h4>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="cell">
+                <div class="grid-x">
+                    <div class="cell medium-6">
+                        <div id="group_types" style="height:500px;"></div>
+                    </div>
+                    <div class="cell medium-6">
+                        <div id="group_generations" style="height: 500px;"></div>
+                    </div> 
+                </div>
+            </div>
+            <div class="cell">
+            <hr>
+                <div id="my_groups_health" style="height: 700px;"></div>
+            </div>
+            
+        </div>
+        `)
+
+    google.charts.load('current', {'packages':['corechart', 'bar']});
+
+    google.charts.setOnLoadCallback(drawGroupTypes);
+    google.charts.setOnLoadCallback(drawGroupGenerations);
+    google.charts.setOnLoadCallback(drawMyGroupHealth);
+
+    function drawGroupTypes() {
+        let data = google.visualization.arrayToDataTable( sourceData.group_types );
+
+        let options = {
+            legend: 'bottom',
+            pieSliceText: 'groups',
+            pieStartAngle: 135,
+            slices: {
+                0: { color: 'lightgreen' },
+                1: { color: 'limegreen' },
+                2: { color: 'darkgreen' },
+            },
+            pieHole: 0.4,
+            chartArea: {
+                left: '0%',
+                top: '7%',
+                width: "100%",
+                height: "80%" },
+            fontSize: '20',
+        };
+
+        let chart = new google.visualization.PieChart(document.getElementById('group_types'));
+        chart.draw(data, options);
+    }
+
+    function drawGroupGenerations() {
+
+        let data = google.visualization.arrayToDataTable( sourceData.group_generations );
+
+        let options = {
+            bars: 'horizontal',
+            chartArea: {
+                left: '20%',
+                top: '7%',
+                width: "75%",
+                height: "85%" },
+            title: "Generations",
+            legend: { position: 'bottom', maxLines: 3 },
+            isStacked: true,
+            colors: [ 'lightgreen', 'limegreen', 'darkgreen' ],
+        };
+
+        let chart = new google.visualization.BarChart(document.getElementById('group_generations'));
+        chart.draw(data, options);
+    }
+
+    function drawMyGroupHealth() {
+
+        let data = google.visualization.arrayToDataTable( sourceData.group_health );
+
+        let options = {
+            chartArea: {
+                left: '10%',
+                top: '10%',
+                width: "85%",
+                height: "75%" },
+            vAxis: {
+                title: 'groups',
+            },
+            title: "Groups Needing Training Attention",
+            legend: {position: "none"},
+            colors: ['green' ],
+        };
+
+        let chart = new google.visualization.ColumnChart(document.getElementById('my_groups_health'));
+
+        function selectHandler() {
+            let selectedItem = chart.getSelection()[0];
+            if (selectedItem) {
+                let topping = data.getValue(selectedItem.row, 0);
+                alert('You selected ' + topping);
+            }
+        }
+
+        google.visualization.events.addListener(chart, 'select', selectHandler);
+
         chart.draw(data, options);
     }
 }

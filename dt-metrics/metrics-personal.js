@@ -9,11 +9,11 @@ jQuery(document).ready(function() {
 function my_stats() {
     "use strict";
     let chartDiv = jQuery('#chart')
-    let overview = dtMetricsPersonal.overview
+    let sourceData = dtMetricsPersonal.overview
     chartDiv.empty().html(`
-        <span class="section-header">`+ dtMetricsPersonal.overview.translations.title +`</span>
+        <span class="section-header">`+ sourceData.translations.title +`</span>
         <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
-        <div class="medium reveal" id="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
+        <div class="medium reveal" class="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button></div>
         <br><br>
@@ -50,6 +50,12 @@ function my_stats() {
                         <div class="medium-3 cell center">
                             <h4>Total Groups<br><span id="total_groups">0</span></h4>
                         </div>
+                        <div class="medium-3 cell center left-border-grey">
+                            <h4>Needs Training<br><span id="updates_needed">0</span></h4>
+                        </div>
+                        <div class="medium-3 cell center left-border-grey">
+                            <h4>Generations<br><span id="updates_needed">0</span></h4>
+                        </div>
                    </div> 
                 </div>
             </div>
@@ -71,7 +77,7 @@ function my_stats() {
         </div>
         `)
 
-    let hero = overview.hero_stats
+    let hero = sourceData.hero_stats
     jQuery('#total_contacts').html( numberWithCommas( hero.total_contacts ) )
     jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
     jQuery('#attempts_needed').html( numberWithCommas( hero.attempts_needed ) )
@@ -89,7 +95,7 @@ function my_stats() {
 
     function drawMyContactsProgress() {
 
-        let data = google.visualization.arrayToDataTable( overview.contacts_progress );
+        let data = google.visualization.arrayToDataTable( sourceData.contacts_progress );
 
         let options = {
             bars: 'horizontal',
@@ -111,7 +117,7 @@ function my_stats() {
 
     function drawCriticalPath() {
 
-        let data = google.visualization.arrayToDataTable( overview.critical_path );
+        let data = google.visualization.arrayToDataTable( sourceData.critical_path );
 
         let options = {
             bars: 'horizontal',
@@ -130,7 +136,7 @@ function my_stats() {
 
     function drawMyGroupHealth() {
 
-        let data = google.visualization.arrayToDataTable( overview.group_health );
+        let data = google.visualization.arrayToDataTable( sourceData.group_health );
 
         let options = {
             chartArea: {
@@ -162,7 +168,7 @@ function my_stats() {
     }
 
     function drawGroupTypes() {
-        let data = google.visualization.arrayToDataTable( overview.group_types );
+        let data = google.visualization.arrayToDataTable( sourceData.group_types );
 
         let options = {
             legend: 'bottom',
@@ -188,7 +194,7 @@ function my_stats() {
 
     function drawGroupGenerations() {
 
-        let data = google.visualization.arrayToDataTable( overview.group_generations );
+        let data = google.visualization.arrayToDataTable( sourceData.group_generations );
 
         let options = {
             bars: 'horizontal',
@@ -206,6 +212,13 @@ function my_stats() {
         let chart = new google.visualization.BarChart(document.getElementById('group_generations'));
         chart.draw(data, options);
     }
+
+    new Foundation.Reveal(jQuery('.dt-project-legend'));
+
+    chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span> 
+            <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
+            <span class="spinner" style="display: none;"><img src="`+dtMetricsPersonal.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
+            </div>`)
 }
 
 function legend() {
