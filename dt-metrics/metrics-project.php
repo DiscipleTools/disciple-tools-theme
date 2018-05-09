@@ -36,7 +36,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             <li><a href="" >' .  esc_html__( 'Project', 'disciple_tools' ) . '</a>
                 <ul class="menu vertical nested" id="project-menu">
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_overview" onclick="project_overview()">'. esc_html__( 'Overview' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_overview" onclick="project_overview()">'. esc_html__( 'Timeline' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_timeline" onclick="project_timeline()">'. esc_html__( 'Timeline' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_critical_path" onclick="project_critical_path()" style="border-bottom:1px solid #ccc;">'. esc_html__( 'Critical Path' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_outreach" onclick="project_outreach()">'. esc_html__( 'Outreach' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_follow_up" onclick="project_follow_up()">'. esc_html__( 'Follow-up' ) .'</a></li>
@@ -57,7 +57,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
                 'root' => esc_url_raw( rest_url() ),
-                'plugin_uri' => get_stylesheet_directory_uri(),
+                'theme_uri' => get_stylesheet_directory_uri(),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
@@ -71,9 +71,12 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
         return [
             'translations' => [
                 'title_overview' => __( 'Project Overview' ),
+                'title_timeline' => __( 'Timeline Activity' ),
                 'title_critical_path' => __( 'Critical Path' ),
-                'title_contacts' => __( 'Project Contacts'),
-                'title_groups' => __( 'Project Groups'),
+                'title_outreach' => __( 'Outreach' ),
+                'title_follow_up' => __( 'Follow Up' ),
+                'title_training' => __( 'Training' ),
+                'title_multiplication' => __( 'Multiplication' ),
                 'total_contacts' => __( 'Total Contacts' ),
                 'total_groups' => __( 'Total Groups' ),
                 'updates_needed' => __( 'Updates Needed' ),
