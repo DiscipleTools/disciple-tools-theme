@@ -279,7 +279,7 @@ function dt_get_site_options_defaults()
 {
     $fields = [];
 
-    $fields['version'] = '2';
+    $fields['version'] = '3';
 
     $fields['user_notifications'] = [
         'new_web'          => true,
@@ -287,11 +287,11 @@ function dt_get_site_options_defaults()
         'mentions_web'     => true,
         'mentions_email'   => true,
         'updates_web'      => true,
-        'updates_email'    => false,
-        'changes_web'      => false,
-        'changes_email'    => false,
-        'milestones_web'   => false,
-        'milestones_email' => false,
+        'updates_email'    => true,
+        'changes_web'      => true,
+        'changes_email'    => true,
+        'milestones_web'   => true,
+        'milestones_email' => true,
     ];
 
     $fields['extension_modules'] = [
