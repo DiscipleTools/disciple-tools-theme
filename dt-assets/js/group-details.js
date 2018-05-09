@@ -474,7 +474,7 @@ jQuery(document).ready(function($) {
     let addressHTML = "";
     (group.contact_address|| []).forEach(field=>{
       addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" value="${field.value}" data-type="contact_address"/>
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address">${field.value}</textarea>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
             <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
