@@ -18,7 +18,10 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
 
             add_filter( 'dt_metrics_menu', [ $this, 'add_overview_menu' ], 20 );
-            add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+
+            if ( 'metrics' === $url_path ) {
+                add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+            }
 
             parent::__construct();
         }

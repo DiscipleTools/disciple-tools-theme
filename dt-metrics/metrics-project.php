@@ -35,7 +35,14 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 
     public function add_menu( $content ) {
         $content .= '
-            <li><a href="'. site_url( '/metrics/project/' ) .'#project" onclick="project()">' .  esc_html__( 'Project', 'disciple_tools' ) . '</a></li>
+            <li><a href="" id="projects-menu">' .  esc_html__( 'Project', 'disciple_tools' ) . '</a>
+                <ul class="menu vertical nested" >
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_overview">'. esc_html__( 'Overview' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_contacts">'. esc_html__( 'Contacts' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_groups">'. esc_html__( 'Groups' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_users">'. esc_html__( 'Users' ) .'</a></li>
+                </ul>
+            </li>
             ';
         return $content;
     }
@@ -54,12 +61,12 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'map_key' => dt_get_option( 'map_key' ),
-                'project' => $this->project(),
+                'project_overview' => $this->project_overview(),
             ]
         );
     }
 
-    public function project() {
+    public function project_overview() {
         return [
             'translations' => [
                 'title' => __( 'Project' ),
