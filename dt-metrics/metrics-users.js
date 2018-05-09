@@ -1,12 +1,12 @@
 jQuery(document).ready(function() {
-    console.log( dtMetricsPersonal )
+    console.log( dtMetricsUsers )
 
-    if( ! window.location.hash || '#my_stats' === window.location.hash  ) {
-        my_stats()
+    if( ! window.location.hash || '#user_activity' === window.location.hash  ) {
+        overview()
     }
 })
 
-function my_stats() {
+function overview() {
     "use strict";
     let chartDiv = jQuery('#chart')
     let overview = dtMetricsPersonal.overview

@@ -30,21 +30,22 @@ class Disciple_Tools_Metrics
     }
 
     public function __construct() {
-        add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_google' ], 10 );
+        $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
+        if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
 
-        // load basic charts
-        require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
-        require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
+            add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_google' ], 10 );
 
+            // load basic charts
+            require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
+            require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
+            require_once( get_template_directory() . '/dt-metrics/metrics-users.php' );
+        }
     }
 
     // Enqueue maps and charts for standard metrics
     public function enqueue_google() {
-        $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
-        if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
-            wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', [], false );
-            wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . dt_get_option( 'map_key' ), array(), null, true );
-        }
+        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', [], false );
+        wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . dt_get_option( 'map_key' ), array(), null, true );
     }
 
     /**

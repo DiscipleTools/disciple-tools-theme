@@ -1,6 +1,6 @@
 <?php
 
-
+Disciple_Tools_Metrics_Project::instance();
 class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 {
     private static $_instance = null;
@@ -24,7 +24,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             }
 
-            parent::__construct();
         }
     }
 
@@ -143,4 +142,3 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
         ];
     }
 }
-Disciple_Tools_Metrics_Project::instance();
