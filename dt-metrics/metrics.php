@@ -412,7 +412,7 @@ class Disciple_Tools_Metrics
              WHERE a.post_status = 'publish'
              GROUP BY b.meta_value
         ",
-            'user-'. $user_id ), ARRAY_A );
+        'user-'. $user_id ), ARRAY_A );
 
         $query_results = [];
 

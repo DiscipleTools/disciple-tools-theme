@@ -548,7 +548,7 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                         </tr>
                                         <tr>
                                             <td><?php esc_html_e( 'Password', 'disciple_tools' )?></td>
-                                            <td><span data-tooltip data-click-open="true" class="top" tabindex="1" title="<?php esc_html_e('Use this email reset form to create a new password.') ?>">
+                                            <td><span data-tooltip data-click-open="true" class="top" tabindex="1" title="<?php esc_html_e( 'Use this email reset form to create a new password.' ) ?>">
                                                     <a href="/wp-login.php?action=lostpassword" target="_blank" rel="nofollow noopener">
                                                         <?php esc_html_e( 'go to password change form' ) ?> <i class="fi-link"></i>
                                                     </a>

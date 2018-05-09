@@ -101,10 +101,10 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
 
             ],
             'group_types' => [
-                ['Group Type', 'Number'],
-                ['Pre-Group', 75],
-                ['Group', 25],
-                ['Church', 25],
+                [ 'Group Type', 'Number' ],
+                [ 'Pre-Group', 75 ],
+                [ 'Group', 25 ],
+                [ 'Church', 25 ],
             ],
             'group_health' => [
                 [ 'Step', 'Groups', [ 'role' => 'annotation' ] ],

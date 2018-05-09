@@ -391,8 +391,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <tbody>
                 <?php foreach ( $seeker_path as $key => $label ) : ?>
                     <tr>
-                        <td><input name="seeker_path['<?php echo  esc_attr( $key ) ?>']" type="text" value="<?php echo esc_html( $label ) ?>" /></td>
-                        <td><button type="submit" name="delete_field" value="<?php echo  esc_attr( $key ) ?>" class="button small" >delete</button> </td>
+                        <td><input name="seeker_path['<?php echo esc_attr( $key ) ?>']" type="text" value="<?php echo esc_html( $label ) ?>" /></td>
+                        <td><button type="submit" name="delete_field" value="<?php echo esc_attr( $key ) ?>" class="button small" >delete</button> </td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
