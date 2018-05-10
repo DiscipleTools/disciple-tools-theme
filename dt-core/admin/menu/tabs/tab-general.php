@@ -176,7 +176,8 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                     <tr>
                         <th><?php echo esc_html( 'Role' ) ?></th>
                         <th><?php echo esc_html( 'Hide Personal' ) ?></th>
-                        <th><?php echo esc_html( 'Hide Project' ) ?></th>
+                        <th><?php echo esc_html( 'Hide Project Basic' ) ?></th>
+                        <th><?php echo esc_html( 'Hide Project Advanced' ) ?></th>
                         <th><?php echo esc_html( 'Hide Extensions' ) ?></th>
                     </tr>
                 </thead>
@@ -185,7 +186,8 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <td><?php echo esc_html( $role->name ) ?></td>
                     <td><input name="<?php echo esc_attr( $role->slug ) ?>-personal" type="checkbox" <?php echo ( false ? "checked" : "" ) ?> /></td>
-                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-project" type="checkbox" <?php echo ( false ? "checked" : "" ) ?> /></td>
+                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-project-basic" type="checkbox" <?php echo ( false ? "checked" : "" ) ?> /></td>
+                    <td><input name="<?php echo esc_attr( $role->slug ) ?>-project-advanced" type="checkbox" <?php echo ( false ? "checked" : "" ) ?> /></td>
                     <td><input name="<?php echo esc_attr( $role->slug ) ?>-extensions" type="checkbox" <?php echo ( false ? "checked" : "" ) ?> /></td>
                 </tr>
                 <?php endforeach; ?>
