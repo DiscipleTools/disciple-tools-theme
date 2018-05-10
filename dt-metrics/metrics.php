@@ -595,8 +595,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     }
 
 
-
-
     /**
      * PROJECT METRICS
      */
@@ -853,6 +851,34 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             [ 'User', 'Active Contacts', 'Attempt Needed', 'Attempted', 'Established', '1st Scheduled', '1st Complete', 'Ongoing', 'Being Coached' ],
             [ 'Chris', 100, 4, 0, 4, 8, 0, 0, 9 ],
             [ 'Kara', 100, 4, 0, 4, 8, 0, 0, 9 ],
+        ];
+
+        $results = [];
+
+        return wp_parse_args( $results, $default );
+    }
+
+    public static function chart_user_least_active() {
+
+        $default = [
+            [ 'User', 'Login (Days Ago)' ],
+            [ 'Chris', 34 ],
+            [ 'Kara', 14 ],
+            [ 'Mason', 9 ],
+        ];
+
+        $results = [];
+
+        return wp_parse_args( $results, $default );
+    }
+
+    public static function chart_user_most_active() {
+
+        $default = [
+            [ 'User', 'Logins' ],
+            [ 'Chris', 34 ],
+            [ 'Kara', 14 ],
+            [ 'Mason', 9 ],
         ];
 
         $results = [];

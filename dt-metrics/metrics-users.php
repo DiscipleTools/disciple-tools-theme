@@ -69,13 +69,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             'hero_stats' => self::chart_user_hero_stats(),
             'logins_by_day' => self::chart_user_logins_by_day(),
             'contacts_per_user' => self::chart_user_contacts_per_user(),
-            'least_active' => [
-                [ 'User', 'Login (Days Ago)' ],
-                [ 'Chris', 34 ],
-                [ 'Kara', 14 ],
-                [ 'Mason', 9 ],
-            ],
-            'most_active' => [],
+            'least_active' => self::chart_user_least_active(),
+            'most_active' => self::chart_user_most_active(),
         ];
     }
 }

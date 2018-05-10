@@ -45,14 +45,14 @@ function users_activity() {
             </div>
             <div class="cell">
                 <hr>
-                <div class="grid-x">
+                <div class="grid-x grid-padding-x">
                     <div class="cell medium-6">
                         <span class="section-subheader">Least Active</span>
-                        
+                        <div id="least_active"></div>
                     </div>
                     <div class="cell medium-6">
                         <span class="section-subheader">Most Active</span>
-                        
+                        <div id="most_active"></div>
                     </div>
                 </div>
             </div>
@@ -70,6 +70,8 @@ function users_activity() {
 
     google.charts.setOnLoadCallback(drawLineChartLogins);
     google.charts.setOnLoadCallback(drawContactsPerUser);
+    google.charts.setOnLoadCallback(drawLeastActive);
+    google.charts.setOnLoadCallback(drawMostActive);
 
     function drawLineChartLogins() {
         let chartData = google.visualization.arrayToDataTable( sourceData.logins_by_day );
@@ -107,8 +109,8 @@ function users_activity() {
         chart.draw(chartData, options);
     }
 
-    function drawContactsPerUser() {
-        let chartData = google.visualization.arrayToDataTable( sourceData.contacts_per_user );
+    function drawLeastActive() {
+        let chartData = google.visualization.arrayToDataTable( sourceData.least_active );
         let options = {
             chartArea: {
                 left: '5%',
@@ -122,13 +124,13 @@ function users_activity() {
             width: '100%',
 
         };
-        let chart = new google.visualization.Table( document.getElementById('contacts_per_user') );
+        let chart = new google.visualization.Table( document.getElementById('least_active') );
 
         chart.draw(chartData, options);
     }
 
-    function drawContactsPerUser() {
-        let chartData = google.visualization.arrayToDataTable( sourceData.contacts_per_user );
+    function drawMostActive() {
+        let chartData = google.visualization.arrayToDataTable( sourceData.most_active );
         let options = {
             chartArea: {
                 left: '5%',
@@ -142,7 +144,7 @@ function users_activity() {
             width: '100%',
 
         };
-        let chart = new google.visualization.Table( document.getElementById('contacts_per_user') );
+        let chart = new google.visualization.Table( document.getElementById('most_active') );
 
         chart.draw(chartData, options);
     }
