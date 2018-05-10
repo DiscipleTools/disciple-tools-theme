@@ -570,8 +570,11 @@ class Disciple_Tools_Notifications
         $post_title = isset( $post->post_title ) ? sanitize_text_field( $post->post_title ) : "";
         $notification_note = $notification["notification_note"];
         if ( $notification["notification_name"] === "assigned_to" ) {
-            $notification_note = __( 'You have been assigned', 'disciple_tools' ) . ' <a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
-
+            $notification_note = __( 'You have been assigned', 'disciple_tools' ) .
+                ' <a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
+        } elseif ( $notification["notification_name"] === "assigned_to_other" ) {
+            $notification_note = __( 'Contact assignment has changed on', 'disciple_tools' ) .
+                ' <a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
         } elseif ( $notification["notification_name"] ==="share" ){
             $source_user = get_userdata( $notification["source_user_id"] );
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
@@ -584,6 +587,13 @@ class Disciple_Tools_Notifications
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
             $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '" >' . $post_title . '</a>';
             $notification_note = $display_name . ' ' . sprintf( esc_html_x( 'mentioned you on %s saying', '', 'disciple_tools' ), $link ) . ' "' . $comment_content . '"';
+        } elseif ( $notification["notification_name"] ==="comment" ){
+            $source_user = get_userdata( $notification["source_user_id"] );
+            $comment = get_comment( $notification["secondary_item_id"] );
+            $comment_content = $comment ? self::format_comment( $comment->comment_content ) : "";
+            $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
+            $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '" >' . $post_title . '</a>';
+            $notification_note = $display_name . ' ' . sprintf( esc_html_x( 'commented on %s saying', '', 'disciple_tools' ), $link ) . ' "' . $comment_content . '"';
         } elseif ( $notification["notification_name"] === "subassigned" ){
             $source_user = get_userdata( $notification["source_user_id"] );
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );

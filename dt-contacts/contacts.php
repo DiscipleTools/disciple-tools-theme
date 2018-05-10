@@ -571,7 +571,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return $potential_error;
         }
 
-        $potential_error = self::parse_multi_select_fields( $contact_id, $fields );
+        $potential_error = self::parse_multi_select_fields( $contact_id, $fields, $existing_contact );
         if ( is_wp_error( $potential_error )){
             return $potential_error;
         }

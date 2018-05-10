@@ -784,6 +784,20 @@ class Disciple_Tools_Groups_Post_Type
             'default' => [],
             'section' => 'admin'
         ];
+        $fields["follow"] = [
+            'name'        => __( 'Follow', 'disciple_tools' ),
+            'description' => 'Users following this contact',
+            'type'        => 'multi_select',
+            'default'     => [],
+            'section'     => 'misc',
+        ];
+        $fields["unfollow"] = [
+            'name'        => __( 'Un-Follow', 'disciple_tools' ),
+            'description' => 'Users not following this contact',
+            'type'        => 'multi_select',
+            'default'     => [],
+            'section'     => 'misc',
+        ];
 
 
         $id = isset( $post->ID ) ? $post->ID : $post_id;

@@ -218,6 +218,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                             }
                         }
                     }
+                } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'multi_select' ){
+                    $fields[ $key ] = $value;
+                } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'array' ){
+                    $fields[ $key ] = maybe_unserialize( $value[0] );
                 } else {
                     $fields[ $key ] = $value[0];
                 }
@@ -263,6 +267,35 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         }
         return $bad_fields;
     }
+
+    private static function parse_multi_select_fields( $contact_id, $fields, $existing_contact = null ){
+        foreach ( $fields as $field_key => $field ){
+            if ( isset( self::$group_fields[$field_key] ) && self::$group_fields[$field_key]["type"] === "multi_select" ){
+                if ( !isset( $field["values"] )){
+                    return new WP_Error( __FUNCTION__, __( "missing values field on:" ) . " " . $field_key );
+                }
+                if ( isset( $field["force_values"] ) && $field["force_values"] === true ){
+                    delete_post_meta( $contact_id, $field_key );
+                }
+                foreach ( $field["values"] as $value ){
+                    if ( isset( $value["value"] )){
+                        if ( isset( $value["delete"] ) && $value["delete"] == true ){
+                            delete_post_meta( $contact_id, $field_key, $value["value"] );
+                        } else {
+                            $existing_array = isset( $existing_contact[ $field_key ] ) ? $existing_contact[ $field_key ] : [];
+                            if ( !in_array( $value["value"], $existing_array ) ){
+                                add_post_meta( $contact_id, $field_key, $value["value"] );
+                            }
+                        }
+                    } else {
+                        return new WP_Error( __FUNCTION__, __( "Something wrong on field:" ) . " " . $field_key );
+                    }
+                }
+            }
+        }
+        return $fields;
+    }
+
 
     private static function parse_contact_methods( $group_id, $fields, $existing_group = null ){
         // update group details (phone, facebook, etc)
@@ -439,6 +472,11 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return $potential_error;
         }
 
+        $potential_error = self::parse_multi_select_fields( $group_id, $fields, $existing_group );
+        if ( is_wp_error( $potential_error )){
+            return $potential_error;
+        }
+
         if ( isset( $fields["assigned_to"] ) ) {
             if ( filter_var( $fields["assigned_to"], FILTER_VALIDATE_EMAIL ) ){
                 $user = get_user_by( "email", $fields["assigned_to"] );
@@ -462,7 +500,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         foreach ( $fields as $field_id => $value ) {
             if ( !self::is_key_contact_method_or_connection( $field_id )){
                 $field_type = self::$group_fields[$field_id]["type"] ?? '';
-                if ( $field_type ) {
+                //we handle multi_select above.
+                if ( $field_type && $field_type !== "multi_select" ){
                     update_post_meta( $group_id, $field_id, $value );
                 }
             }

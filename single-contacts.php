@@ -15,16 +15,14 @@ declare( strict_types=1 );
     get_header(); ?>
 
     <?php
-    dt_print_breadcrumbs(
-        [
-            [ home_url( '/' ), __( "Dashboard" ) ],
-            [ home_url( '/' ) . "contacts/", __( "Contacts" ) ],
-        ],
-        get_the_title(),
+    $current_user_id = get_current_user_id();
+    $following = Disciple_Tools_Posts::get_users_following_post( "contacts", get_the_ID() );
+    dt_print_details_bar(
         true,
         true,
         current_user_can( "assign_any_contacts" ),
-        isset( $contact["requires_update"] ) && $contact["requires_update"]["key"] === "yes"
+        isset( $contact["requires_update"] ) && $contact["requires_update"]["key"] === "yes",
+        in_array( $current_user_id, $following )
     ); ?>
 
     <div id="errors"></div>
