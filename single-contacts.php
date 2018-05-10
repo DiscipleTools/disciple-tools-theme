@@ -19,6 +19,7 @@ declare( strict_types=1 );
     $following = Disciple_Tools_Posts::get_users_following_post( "contacts", get_the_ID() );
     dt_print_details_bar(
         true,
+        true,
         current_user_can( "assign_any_contacts" ),
         isset( $contact["requires_update"] ) && $contact["requires_update"]["key"] === "yes",
         in_array( $current_user_id, $following )

@@ -20,6 +20,7 @@ dt_print_details_bar(
     true,
     true,
     false,
+    true,
     in_array( $current_user_id, $following )
 ); ?>
 
