@@ -21,7 +21,6 @@ dt_print_details_bar(
     true,
     false,
     in_array( $current_user_id, $following )
-
 ); ?>
 
 <div id="errors"> </div>
