@@ -42,7 +42,6 @@ function save_quick_action(contactId, fieldKey){
   data[fieldKey] = newNumber
   API.save_field_api("contact", contactId, data)
   .then(data=>{
-    console.log(data);
     console.log("updated " + fieldKey + " to: " + newNumber)
     if (fieldKey.indexOf("quick_button")>-1){
       if (_.get(data, "seeker_path.key")){
@@ -74,8 +73,6 @@ function contactUpdated(updateNeeded) {
 
 }
 function details_accept_contact(contactId, accept){
-  console.log(contactId)
-
   let data = {accept:accept}
   jQuery.ajax({
     type: "POST",
@@ -168,9 +165,6 @@ jQuery(document).ready(function($) {
           API.save_field_api('contact', contactId, {groups: {values:[{value:item.ID}]}})
           masonGrid.masonry('layout')
         }
-        console.log(node)
-        console.log(a)
-        console.log(event)
         node.blur()
         a.blur()
       },
@@ -225,7 +219,6 @@ jQuery(document).ready(function($) {
     if (!window.Typeahead['.js-typeahead-sources']){
 
       let sourcesData = []
-      console.log(contact);
       _.forOwn(contactsDetailsWpApiSettings.contacts_custom_fields_settings.sources.default, (sourceValue, sourceKey)=>{
         sourcesData.push({key:sourceKey, value:sourceValue})
       })
@@ -751,7 +744,7 @@ jQuery(document).ready(function($) {
     let addressHTML = "";
     (contact.contact_address|| []).forEach(field=>{
       addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" value="${field.value}" data-type="contact_address"/>
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" >${field.value}</textarea>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
             <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
@@ -762,8 +755,6 @@ jQuery(document).ready(function($) {
     let html = ""
     for( let field in contact ){
       if ( field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field) ){
-        console.log(field);
-        console.log(contact[field]);
         contact[field].forEach(socialField=>{
           html += `<li style="display: flex">
             <input class="contact-input" type="text" id="${socialField.key}" value="${socialField.value}" data-type="${field}"/>
@@ -824,7 +815,6 @@ jQuery(document).ready(function($) {
    */
   $('#save-edit-details').on('click', function () {
     $(this).toggleClass("loading")
-    console.log(editFieldsUpdate);
     API.save_field_api( "contact", contactId, editFieldsUpdate).then((updatedContact)=>{
       contact = updatedContact
       $(this).toggleClass("loading")
@@ -901,7 +891,6 @@ jQuery(document).ready(function($) {
         htmlField.append(`<li id="no-${connection}">${contactsDetailsWpApiSettings.translations["not-set"][connection]}</li>`)
       } else {
         contact[connection].forEach(field=>{
-          console.log(field);
           htmlField.append(`<li class="details-list ${_.escape(field.key)}">
             ${_.escape(field.post_title)}
               <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>

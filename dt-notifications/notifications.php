@@ -484,6 +484,39 @@ class Disciple_Tools_Notifications
     }
 
     /**
+     * Insert notification for subassigned
+     *
+     * @param int $user_id
+     * @param int $post_id
+     */
+    public static function insert_notification_for_subassigned( int $user_id, int $post_id )
+    {
+
+        if ( $user_id != get_current_user_id() ) { // check if subassigned is not to self, else don't notify
+
+            $args = [
+                'user_id'             => $user_id,
+                'source_user_id'      => get_current_user_id(),
+                'post_id'             => $post_id,
+                'secondary_item_id'   => 0,
+                'notification_name'   => 'subassigned',
+                'notification_action' => 'alert',
+                'notification_note'   => '<a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '" >' . strip_tags( get_the_title( $post_id ) ) . '</a> was sub-assigned to you.',
+                'date_notified'       => current_time( 'mysql' ),
+                'is_new'              => 1,
+                'field_key'           => "comments",
+                'field_value'         => ''
+            ];
+            $message = self::get_notification_message( $args ) . ' Click here to view ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
+
+            dt_notification_insert( $args );
+            $user = get_userdata( $user_id );
+            $subject = __( "Contact sub-assigned to", 'disciple_tools' );
+            dt_send_email( $user->user_email, $subject, $message );
+        }
+    }
+
+    /**
      * Process post notifications for a user who has visited the post. This removes the new status for all notifications for this post
      *
      * @param $post_id
@@ -515,18 +548,46 @@ class Disciple_Tools_Notifications
     }
 
 
+    /**
+     * Format comment replacing @mentions with a readable value
+     *
+     * @param $comment_content
+     *
+     * @return mixed
+     */
+    public static function format_comment( $comment_content ){
+        preg_match_all( '/\@\[(.*?)\]\((.+?)\)/', $comment_content, $matches );
+        foreach ( $matches[0] as $match_key => $match ){
+            $comment_content = str_replace( $match, '@' . $matches[1][$match_key], $comment_content );
+        }
+        return $comment_content;
+    }
+
 
     public static function get_notification_message( $notification ){
         $object_id = $notification["post_id"];
+        $post = get_post( $object_id );
+        $post_title = isset( $post->post_title ) ? sanitize_text_field( $post->post_title ) : "";
         $notification_note = $notification["notification_note"];
         if ( $notification["notification_name"] === "assigned_to" ) {
-            $notification_note = __( 'You have been assigned', 'disciple_tools' ) . ' <a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . strip_tags( get_the_title( $object_id ) ) . '</a>';
+            $notification_note = __( 'You have been assigned', 'disciple_tools' ) . ' <a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
 
         } elseif ( $notification["notification_name"] ==="share" ){
             $source_user = get_userdata( $notification["source_user_id"] );
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
-
-            $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '" >' . strip_tags( get_the_title( $object_id ) ) . '</a>';
+            $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '" >' . $post_title . '</a>';
+            $notification_note = $display_name . ' ' . sprintf( esc_html_x( 'shared %s with you.', '', 'disciple_tools' ), $link );
+        } elseif ( $notification["notification_name"] ==="mention" ){
+            $source_user = get_userdata( $notification["source_user_id"] );
+            $comment = get_comment( $notification["secondary_item_id"] );
+            $comment_content = $comment ? self::format_comment( $comment->comment_content ) : "";
+            $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
+            $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '" >' . $post_title . '</a>';
+            $notification_note = $display_name . ' ' . sprintf( esc_html_x( 'mentioned you on %s saying', '', 'disciple_tools' ), $link ) . ' "' . $comment_content . '"';
+        } elseif ( $notification["notification_name"] === "subassigned" ){
+            $source_user = get_userdata( $notification["source_user_id"] );
+            $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
+            $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '" >' . $post_title . '</a>';
             $notification_note = $display_name . ' ' . sprintf( esc_html_x( 'shared %s with you.', '', 'disciple_tools' ), $link );
         } elseif ( $notification["notification_name"] ==="milestone" ){
             $meta_key = $notification["field_key"] ?? '';
@@ -569,12 +630,12 @@ class Disciple_Tools_Notifications
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
             $link = '<a href="' . home_url( '/' ) .
                 get_post_type( $object_id ) . '/' . $object_id . '">' .
-                strip_tags( get_the_title( $object_id ) ) . '</a>';
+                $post_title . '</a>';
             $notification_note = $element . ' ' . $link  . ' ' . __( 'by', 'disciple_tools' ) . ' ' .
                 '<strong>' . $display_name . '</strong>';
 
         } elseif ( $notification["notification_name"] ==="requires_update" ) {
-            $link              = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . strip_tags( get_the_title( $object_id ) ) . '</a>';
+            $link              = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
             $notification_note = __( 'An update is requested on:', 'disciple_tools' ) . $link;
         } elseif ( $notification["notification_name"] ==="contact_info_update" ){
             $meta_key = $notification["field_key"] ?? 'contact';
@@ -589,8 +650,8 @@ class Disciple_Tools_Notifications
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
             $link = '<a href="' . home_url( '/' ) .
             get_post_type( $object_id ) . '/' . $object_id . '">' .
-            strip_tags( get_the_title( $object_id ) ) . '</a>';
-            $notification_note = $element . ' ' . $link . ' ' . __( 'were modified by', 'disciple_tools' ) .
+            $post_title . '</a>';
+            $notification_note = $element . ' ' . $link . ' ' . __( 'were modified by', 'disciple_tools' ) . " " .
             '<strong>' . $display_name . '</strong>';
         }
         return $notification_note;

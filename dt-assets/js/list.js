@@ -46,6 +46,8 @@
     if ( sort ){
       data.sort = sort
       data.offset = 0
+    } else {
+      data.sort = wpApiSettings.current_post_type === "contacts" ? "overall_status" : "status";
     }
     //abort previous promise if it is not finished.
     if (getContactsPromise && _.get(getContactsPromise, "readyState") !== 4){
@@ -76,6 +78,7 @@
   let savedFiltersList = $("#saved-filters")
 
   function setupFilters(filters){
+    console.log(filters);
     savedFiltersList.empty()
     filters.forEach(filter=>{
       if (filter){

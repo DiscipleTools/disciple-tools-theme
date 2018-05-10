@@ -40,7 +40,9 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
             return;
         }
 
-        $mentioned_user_ids = $this->match_mention( $comment->comment_content ); // fail if no match for mention found
+        $comment_with_users = $this->match_mention( $comment->comment_content ); // fail if no match for mention found
+        $comment->comment_content = $comment_with_users["comment"];
+        $mentioned_user_ids = $comment_with_users["user_ids"];
         if ( !$mentioned_user_ids ) {
             return;
         }
@@ -64,35 +66,37 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                         $notification_action = 'mentioned';
 
                         // share record with mentioned individual
-                        Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
+                        Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id, null, false );
+
+                        $notification = [
+                            'user_id'             => $mentioned_user_id,
+                            'source_user_id'      => $source_user_id,
+                            'post_id'             => (int) $post_id,
+                            'secondary_item_id'   => (int) $comment_id,
+                            'notification_name'   => "mention",
+                            'notification_action' => $notification_action,
+                            'notification_note'   => "",
+                            'date_notified'       => current_time( 'mysql' ),
+                            'is_new'              => 1,
+                            'field_key'           => 'comments',
+                            'field_value'         => '',
+                        ];
+
+                        $notification["notification_note"] = Disciple_Tools_Notifications::get_notification_message( $notification );
 
                         // web notification
                         if ( dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) ) {
-
-                            $notification_note = '<strong>' . strip_tags( $author_name ) . '</strong> mentioned you on <a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '">'
-                                . strip_tags( get_the_title( $post_id ) ) . '</a> saying, "' . strip_tags( $comment->comment_content ) . '" ';
-
-                            $this->add_mention_notification(
-                                $mentioned_user_id,
-                                $source_user_id,
-                                $post_id,
-                                $comment_id,
-                                $notification_action,
-                                $notification_note,
-                                $date_notified
-                            );
+                            dt_notification_insert( $notification );
                         }
 
                         // email notification
                         if ( dt_user_notification_is_enabled( 'mentions_email', $user_meta, $user->ID ) ) {
-
-                            $message = strip_tags( $author_name ) . ' mentioned you saying: ' . strip_tags( $comment->comment_content );
-                            $message .= "\r\n\r\n";
-                            $message .= 'Click here to reply: ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
+                            $notification["notification_note"] .= "\r\n\r\n";
+                            $notification["notification_note"] .= __( 'Click here to reply ', 'disciple_tools' ) . ' :' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
                             dt_send_email(
                                 $user->user_email,
                                 __( "You were mentioned!", 'disciple_tools' ),
-                                $message
+                                $notification["notification_note"]
                             );
                         }
 
@@ -188,8 +192,11 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      */
     public function check_for_mention( $comment_content )
     {
-        return preg_match( '/(?<= |^)@([^@ ]+)/', $comment_content );
+        return preg_match( '/\@\[(.*?)\]\((.+?)\)/', $comment_content );
     }
+
+
+
 
     /**
      * Parse @mention to find user match
@@ -216,8 +223,12 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                 }
             }
         }
+        return [
+            "user_ids" => empty( $user_ids ) ? false : $user_ids,
+            "comment" => Disciple_Tools_Notifications::format_comment( $comment_content )
+        ];
 
-        return empty( $user_ids ) ? false : $user_ids;
+//        return empty( $user_ids ) ? false : $user_ids;
     }
 
     /**
