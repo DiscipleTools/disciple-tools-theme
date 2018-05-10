@@ -117,7 +117,7 @@ function dt_location_page_scripts()
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'theme_uri' => get_stylesheet_directory_uri(),
-                'images_uri' => Disciple_Tools::instance()->admin_img_url,
+                'images_uri' => disciple_tools()->admin_img_url,
             )
         );
         wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );

@@ -201,6 +201,29 @@ function dt_get_option( string $name )
             }
             return $subject_base;
             break;
+
+        case 'seeker_path':
+            return [
+                'none'        => __( 'Contact Attempt Needed' ),
+                'attempted'   => __( 'Contact Attempted' ),
+                'established' => __( 'Contact Established' ),
+                'scheduled'   => __( 'First Meeting Scheduled' ),
+                'met'         => __( 'First Meeting Complete' ),
+                'ongoing'     => __( 'Ongoing Meetings' ),
+                'coaching'    => __( 'Being Coached' ),
+            ];
+            break;
+        case 'overall_status':
+            return [
+                'unassigned'   => _x( 'Unassigned', 'Contact Status', 'disciple_tools' ),
+                'assigned'     => _X( "Assigned", 'Contact Status', 'disciple_tools' ),
+                'active'       => _X( 'Active', 'Contact Status', 'disciple_tools' ),
+                'paused'       => _x( 'Paused', 'Contact Status', 'disciple_tools' ),
+                'closed'       => _x( 'Closed', 'Contact Status', 'disciple_tools' ),
+                'unassignable' => _x( 'Unassignable', 'Contact Status', 'disciple_tools' ),
+            ];
+            break;
+
         default:
             return false;
             break;
@@ -256,7 +279,7 @@ function dt_get_site_options_defaults()
 {
     $fields = [];
 
-    $fields['version'] = '2';
+    $fields['version'] = '3';
 
     $fields['user_notifications'] = [
         'new_web'          => true,
@@ -264,11 +287,11 @@ function dt_get_site_options_defaults()
         'mentions_web'     => true,
         'mentions_email'   => true,
         'updates_web'      => true,
-        'updates_email'    => false,
-        'changes_web'      => false,
-        'changes_email'    => false,
-        'milestones_web'   => false,
-        'milestones_email' => false,
+        'updates_email'    => true,
+        'changes_web'      => true,
+        'changes_email'    => true,
+        'milestones_web'   => true,
+        'milestones_email' => true,
     ];
 
     $fields['extension_modules'] = [

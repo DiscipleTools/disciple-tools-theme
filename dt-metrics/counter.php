@@ -11,47 +11,26 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
+function dt_counter() {
+    return Disciple_Tools_Counter::instance();
+}
+
 /**
  * Class Disciple_Tools_Counter_Factory
  */
 class Disciple_Tools_Counter
 {
-
-    /**
-     * Disciple_Tools_Counter_Factory The single instance of Disciple_Tools_Counter_Factory.
-     *
-     * @var    object
-     * @access private
-     * @since  0.1.0
-     */
     private static $_instance = null;
-
-    /**
-     * Main Disciple_Tools_Counter_Factory Instance
-     * Ensures only one instance of Disciple_Tools_Counter_Factory is loaded or can be loaded.
-     *
-     * @since  0.1.0
-     * @static
-     * @return Disciple_Tools_Counter
-     */
     public static function instance()
     {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
-
         return self::$_instance;
     } // End instance()
 
-    /**
-     * Constructor function
-     *
-     * @access public
-     * @since  0.1.0
-     */
     public function __construct()
     {
-
         // Load required files
         require_once( 'counters/abstract-class-counter.php' );
         require_once( 'counters/counter-connected.php' );

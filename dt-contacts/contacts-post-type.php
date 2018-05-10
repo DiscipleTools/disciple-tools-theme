@@ -585,14 +585,7 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Overall Status', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [
-                'unassigned'   => _x( 'Unassigned', 'Contact Status', 'disciple_tools' ),
-                'assigned'     => _X( "Assigned", 'Contact Status', 'disciple_tools' ),
-                'active'       => _X( 'Active', 'Contact Status', 'disciple_tools' ),
-                'paused'       => _x( 'Paused', 'Contact Status', 'disciple_tools' ),
-                'closed'       => _x( 'Closed', 'Contact Status', 'disciple_tools' ),
-                'unassignable' => _x( 'Unassignable', 'Contact Status', 'disciple_tools' ),
-            ],
+            'default'     => dt_get_option( 'overall_status' ),
             'section'     => 'status',
             'colors' => [
                 "unassigned" => "#F43636",  //(red)
@@ -609,15 +602,7 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Seeker Path', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [
-                'none'        => __( 'Contact Attempt Needed', 'disciple_tools' ),
-                'attempted'   => __( 'Contact Attempted', 'disciple_tools' ),
-                'established' => __( 'Contact Established', 'disciple_tools' ),
-                'scheduled'   => __( 'First Meeting Scheduled', 'disciple_tools' ),
-                'met'         => __( 'First Meeting Complete', 'disciple_tools' ),
-                'ongoing'     => __( 'Ongoing Meetings', 'disciple_tools' ),
-                'coaching'    => __( 'Being Coached', 'disciple_tools' ),
-            ],
+            'default'     => dt_get_option( 'seeker_path' ),
             'section'     => 'status'
         ];
         $fields['requires_update'] = [

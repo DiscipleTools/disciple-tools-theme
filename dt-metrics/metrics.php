@@ -26,13 +26,27 @@ class Disciple_Tools_Metrics
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
-
         return self::$_instance;
-    } // End instance()
+    }
 
-    public function __construct()
-    {
-    } // End __construct()
+    public function __construct() {
+        $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
+        if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
+
+            add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_google' ], 10 );
+
+            // load basic charts
+            require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
+            require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
+            require_once( get_template_directory() . '/dt-metrics/metrics-users.php' );
+        }
+    }
+
+    // Enqueue maps and charts for standard metrics
+    public function enqueue_google() {
+        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', [], false );
+        wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . dt_get_option( 'map_key' ), array(), null, true );
+    }
 
     /**
      * Get the critical path in an array
@@ -41,7 +55,7 @@ class Disciple_Tools_Metrics
      *
      * @return array|WP_Error
      */
-    public static function get_critical_path(): array {
+    public static function chart_critical_path(): array {
         // Check for transient cache first for speed
         $current = get_transient( 'dt_critical_path' );
         if ( empty( $current ) ) {
@@ -62,7 +76,7 @@ class Disciple_Tools_Metrics
      *
      * @return array|\WP_Error
      */
-    public static function critical_path_chart_data( $check_permissions )
+    public static function chart_critical_path_chart_data( $check_permissions )
     {
 
         $current_user = get_current_user();
@@ -71,7 +85,7 @@ class Disciple_Tools_Metrics
         }
 
         // Check for transient cache
-        $current = self::get_critical_path();
+        $current = self::chart_critical_path();
         if ( is_wp_error( $current ) ) {
             return $current;
         }
@@ -117,7 +131,7 @@ class Disciple_Tools_Metrics
      *
      * @return array|\WP_Error
      */
-    public static function critical_path_prayer( $check_permissions )
+    public static function chart_critical_path_prayer( $check_permissions )
     {
 
         $current_user = get_current_user();
@@ -160,7 +174,7 @@ class Disciple_Tools_Metrics
      *
      * @return array|\WP_Error
      */
-    public static function critical_path_outreach( $check_permissions )
+    public static function chart_critical_path_outreach( $check_permissions )
     {
 
         $current_user = get_current_user();
@@ -207,7 +221,7 @@ class Disciple_Tools_Metrics
      *
      * @return array|\WP_Error
      */
-    public static function critical_path_fup( $check_permissions )
+    public static function chart_critical_path_fup( $check_permissions )
     {
 
         $current_user = get_current_user();
@@ -262,7 +276,7 @@ class Disciple_Tools_Metrics
      *
      * @return array|\WP_Error
      */
-    public static function critical_path_multiplication( $check_permissions )
+    public static function chart_critical_path_multiplication( $check_permissions )
     {
 
         $current_user = get_current_user();
@@ -313,6 +327,111 @@ class Disciple_Tools_Metrics
     }
 
     /**
+     * @param $check_permissions
+     *
+     * @return array|\WP_Error
+     */
+    public static function chart_my_contacts_progress( $check_permissions )
+    {
+
+        $current_user = get_current_user();
+        if ( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
+            return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
+        }
+
+        $current['baptisms'] = disciple_tools()->counter->get_baptisms( 'baptisms' );
+        $current['baptizers'] = disciple_tools()->counter->get_baptisms( 'baptizers' );
+        $current['active_churches'] = disciple_tools()->counter->groups_meta_counter( 'is_church', '1' );
+        $current['church_planters'] = disciple_tools()->counter->connection_type_counter( 'participation', 'Planting' );
+
+        $report = [
+            [ 'Multiplication', 'Current' ],
+            [ 'Baptisms', (int) $current['baptisms'] ],
+            [ 'Baptizers', (int) $current['baptizers'] ],
+            [ 'Active Churches', (int) $current['active_churches'] ],
+            [ 'Church Planters', (int) $current['church_planters'] ],
+        ];
+
+        // Check for goals
+        $has_goals = true; // TODO check site options to see if they have goals
+        if ( $has_goals ) {
+
+            $goal['baptisms'] = (int) 40; // TODO replace with calculated data
+            $goal['baptizers'] = (int) 35; // TODO replace with calculated data
+            $goal['active_churches'] = (int) 20; // TODO replace with calculated data
+            $goal['church_planters'] = (int) 5; // TODO replace with calculated data
+
+            array_push( $report[0], 'Goal' );
+            array_push( $report[1], $goal['baptisms'] );
+            array_push( $report[2], $goal['baptizers'] );
+            array_push( $report[3], $goal['active_churches'] );
+            array_push( $report[4], $goal['church_planters'] );
+        }
+
+        if ( !empty( $report ) ) {
+            return [
+                'status' => true,
+                'data'   => $report,
+            ];
+        } else {
+            return [
+                'status'  => false,
+                'message' => 'Failed to build critical path data.',
+            ];
+        }
+    }
+
+    public static function query_my_contacts_progress( $user_id = null ) {
+        global $wpdb;
+        if ( empty( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+
+        $defaults = [];
+        $status = dt_get_option( 'seeker_path' );
+        foreach ( $status as $key => $label ) {
+            $defaults[$key] = [
+                'label' => $label,
+                'count' => 0,
+            ];
+        }
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT b.meta_value as status, count( a.ID ) as count
+             FROM $wpdb->posts as a
+               JOIN $wpdb->postmeta as b
+                 ON a.ID=b.post_id
+                    AND b.meta_key = 'seeker_path'
+               JOIN $wpdb->postmeta as c
+                 ON a.ID=c.post_id
+                    AND c.meta_key = 'assigned_to'
+                    AND c.meta_value = %s
+               JOIN $wpdb->postmeta as d
+                 ON a.ID=d.post_id
+                    AND d.meta_key = 'overall_status'
+                    AND d.meta_value = 'active'
+             WHERE a.post_status = 'publish'
+             GROUP BY b.meta_value
+        ",
+        'user-'. $user_id ), ARRAY_A );
+
+        $query_results = [];
+
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                if ( isset( $defaults[$result['status']] ) ) {
+                    $query_results[$result['status']] = [
+                        'label' => $defaults[$result['status']]['label'],
+                        'count' => intval( $result['count'] ),
+                    ];
+                }
+            }
+        }
+
+        return wp_parse_args( $query_results, $defaults );
+    }
+
+    /**
      * Check permissions for if the user can view a certain report
      *
      * @param $report_name
@@ -343,17 +462,13 @@ class Disciple_Tools_Metrics
     }
 
     /**
-     * TODO: Deprecate and Remove Functions Below
-     */
-
-    /**
      * System stats dashboard widget
      * TODO: Deprecate and remove
      *
      * @since  0.1.0
      * @access public
      */
-    public function system_stats_widget()
+    public function temp_delete_system_stats_widget()
     {
 
         // Build counters
@@ -374,78 +489,6 @@ class Disciple_Tools_Metrics
 
         $comments_for_dispatcher = 'x';
 
-        ?>
-        <table class="widefat striped ">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Progress</th>
-
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>System Users</td>
-                <td><?php echo esc_html( $system_users['total_users'] ); ?></td>
-            </tr>
-            <tr>
-                <td>Dispatchers</td>
-                <td><?php echo esc_html( $dispatchers ); ?></td>
-            </tr>
-            <tr>
-                <td>Marketers</td>
-                <td><?php echo esc_html( $marketers ); ?></td>
-            </tr>
-            <tr>
-                <td>Multipliers</td>
-                <td><?php echo esc_html( $multipliers ); ?></td>
-            </tr>
-            <tr>
-                <td>Multiplier Leaders</td>
-                <td><?php echo esc_html( $multiplier_leader ); ?></td>
-            </tr>
-            <tr>
-                <td>Prayer Supporters</td>
-                <td><?php echo esc_html( $prayer_supporters ); ?></td>
-            </tr>
-            <tr>
-                <td>Project Supporters</td>
-                <td><?php echo esc_html( $project_supporters ); ?></td>
-            </tr>
-            <tr>
-                <td>Registered</td>
-                <td><?php echo esc_html( $registered ); ?></td>
-            </tr>
-            <tr>
-                <td>Monitored Websites</td>
-                <td><?php echo esc_html( $monitored_websites ); ?></td>
-            </tr>
-            <tr>
-                <td>Monitored Facebook</td>
-                <td><?php echo esc_html( $monitored_facebook_pages ); ?></td>
-            </tr>
-            <tr>
-                <td>Comments</td>
-                <td><?php echo esc_html( $comments ); ?></td>
-            </tr>
-            <tr>
-                <td>Comments for @dispatcher</td>
-                <td><?php echo esc_html( $comments_for_dispatcher ); ?></td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
-    }
-
-    /**
-     * Movement funnel path dashboard widget
-     *TODO: Deprecate and remove
-     *
-     * @since  0.1.0
-     * @access public
-     */
-    public function critical_path_stats()
-    {
         // Build variables
         $mailchimp_subscribers = disciple_tools()->logging_report_api->get_meta_key_total( '2017', 'Mailchimp', 'new_subscribers', 'max' );
         $facebook = disciple_tools()->logging_report_api->get_meta_key_total( '2017', 'Facebook', 'page_likes_count' );
@@ -460,80 +503,6 @@ class Disciple_Tools_Metrics
         $active_churches = disciple_tools()->counter->groups_meta_counter( 'type', 'Church' );
         $church_planters = disciple_tools()->counter->connection_type_counter( 'participation', 'Planting' );
 
-        ?>
-        <table class="widefat striped ">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Progress</th>
-
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Prayers Network</td>
-                <td><?php echo esc_html( $mailchimp_subscribers ); ?></td>
-
-            </tr>
-            <tr>
-                <td>Social Engagement</td>
-                <td><?php echo esc_html( $facebook ); ?></td>
-
-            </tr>
-            <tr>
-                <td>Website Visitors</td>
-                <td><?php echo esc_html( $websites ); ?></td>
-
-            </tr>
-            <tr>
-                <td>New Contacts</td>
-                <td><?php echo esc_html( $new_contacts ); ?></td>
-            </tr>
-            <tr>
-                <td>Contact Attempted</td>
-                <td><?php echo esc_html( $contacts_attempted ); ?></td>
-            </tr>
-            <tr>
-                <td>Contact Established</td>
-                <td><?php echo esc_html( $contacts_established ); ?></td>
-            </tr>
-            <tr>
-                <td>First Meeting Complete</td>
-                <td><?php echo esc_html( $first_meetings ); ?></td>
-            </tr>
-            <tr>
-                <td>Baptisms</td>
-                <td><?php echo esc_html( $baptisms ); ?></td>
-            </tr>
-            <tr>
-                <td>Baptizers</td>
-                <td><?php echo esc_html( $baptizers ); ?></td>
-            </tr>
-            <tr>
-                <td>Active Churches</td>
-                <td><?php echo esc_html( $active_churches ); ?></td>
-            </tr>
-            <tr>
-                <td>Church Planters</td>
-                <td><?php echo esc_html( $church_planters ); ?></td>
-            </tr>
-
-            </tbody>
-        </table>
-        <?php
-    }
-
-    /**
-     * Contacts stats widget
-     *TODO: Deprecate and remove
-     *
-     * @since  0.1.0
-     * @access public
-     */
-    public function contacts_stats_widget()
-    {
-
-        //        print '<pre>'; print_r( disciple_tools()->counter->get_generation('generation_list') ); print '</pre>';
 
         // Build counters
         $has_at_least_1 = disciple_tools()->counter->get_generation( 'has_one_or_more' );
@@ -563,124 +532,6 @@ class Disciple_Tools_Metrics
         $first_meeting_complete = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'First Meeting Complete' );
         $ongoing_meetings = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'Ongoing Meetings' );
 
-        ?>
-        <table class="widefat striped ">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Count</th>
-                <th>Name</th>
-                <th>Count</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td><strong>SEEKER MILESTONES</strong></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Published Contacts / New Inquirers</td>
-<!--                <td>--><?php //echo esc_html( $contacts_count->publish ); ?><!--</td>-->
-                <td>Contact Established</td>
-                <td><?php echo esc_html( $contact_established ); ?></td>
-            </tr>
-            <tr>
-                <td>Unassigned</td>
-                <td><?php echo esc_html( $unassigned ); ?></td>
-                <td>Meeting Scheduled</td>
-                <td><?php echo esc_html( $meeting_scheduled ); ?></td>
-            </tr>
-            <tr>
-                <td>Assigned Inquirers</td>
-                <td><?php echo esc_html( $assigned_inquirers ); ?></td>
-                <td>First Meeting Complete</td>
-                <td><?php echo esc_html( $first_meeting_complete ); ?></td>
-            </tr>
-            <tr>
-                <td>Active</td>
-                <td><?php echo esc_html( $active_inquirers ); ?></td>
-                <td>Ongoing Meetings</td>
-                <td><?php echo esc_html( $ongoing_meetings ); ?></td>
-            </tr>
-            <tr>
-                <td>Contact Attempted</td>
-                <td><?php echo esc_html( $contact_attempted ); ?></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th><strong>HAS AT LEAST</strong></th>
-                <td></td>
-                <th><strong>GENERATIONS</strong></th>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Has at least 1 disciple</td>
-                <td><?php echo esc_html( $has_at_least_1 ); ?></td>
-                <td>Zero Gen</td>
-                <td><?php echo esc_html( $con_0gen ); ?></td>
-            </tr>
-            <tr>
-                <td>Has at least 2 disciples</td>
-                <td><?php echo esc_html( $has_at_least_2 ); ?></td>
-                <td>1st Gen</td>
-                <td><?php echo esc_html( $con_1gen ); ?></td>
-            </tr>
-            <tr>
-                <td>Has more than 2 disciples</td>
-                <td><?php echo esc_html( $has_more_than_2 ); ?></td>
-                <td>2nd Gen</td>
-                <td><?php echo esc_html( $con_2gen ); ?></td>
-            </tr>
-            <tr>
-                <td><strong>HAS</strong></td>
-                <td></td>
-                <td>3rd Gen</td>
-                <td><?php echo esc_html( $con_3gen ); ?></td>
-            </tr>
-            <tr>
-                <td>Has No Disciples</td>
-                <td><?php echo esc_html( $has_0 ); ?></td>
-                <td>4th Gen</td>
-                <td><?php echo esc_html( $con_4gen ); ?></td>
-            </tr>
-            <tr>
-                <td>Has 1 Disciple</td>
-                <td><?php echo esc_html( $has_1 ); ?></td>
-                <td>5th Gen</td>
-                <td><?php echo esc_html( $con_5gen ); ?></td>
-            </tr>
-            <tr>
-                <td>Has 2 Disciples</td>
-                <td><?php echo esc_html( $has_2 ); ?></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Has 3 Disciples</td>
-                <td><?php echo esc_html( $has_3 ); ?></td>
-                <td></td>
-                <td></td>
-            </tr>
-            </tbody>
-        </table>
-        <?php
-    }
-
-    /**
-     * Groups stats widget
-     * TODO: Deprecate and remove
-     *
-     * @since  0.1.0
-     * @access public
-     */
-    public function groups_stats_widget()
-    {
-
-        //        print '<pre>'; print_r( disciple_tools()->counter->get_generation('generation_list') ); print '</pre>';
-
         // Build counters
         $has_at_least_1 = disciple_tools()->counter->get_generation( 'has_one_or_more', 'groups' );
         $has_at_least_2 = disciple_tools()->counter->get_generation( 'has_two_or_more', 'groups' );
@@ -699,107 +550,6 @@ class Disciple_Tools_Metrics
 
         $dbs = disciple_tools()->counter->groups_meta_counter( 'type', 'DBS' );
         $active_churches = disciple_tools()->counter->groups_meta_counter( 'type', 'Church' );
-
-        ?>
-        <table class="widefat striped ">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Count</th>
-                <th>Name</th>
-                <th>Count</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th><strong>TOTALS</strong></th>
-                <td></td>
-                <td><strong>GENERATIONS</strong></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>2x2 or DBS Groups</td>
-                <td><?php echo esc_html( $dbs ); ?></td>
-                <td>Zero Gen (has no record of being planted by another group)</td>
-                <td><?php echo esc_html( $gr_0gen ); ?></td>
-            </tr>
-            <tr>
-                <td>Active Churches</td>
-                <td><?php echo esc_html( $active_churches ); ?></td>
-                <td>1st Gen</td>
-                <td><?php echo esc_html( $gr_1gen ); ?></td>
-            </tr>
-            <tr>
-                <th><strong>HAS AT LEAST</strong></th>
-                <td></td>
-                <td>2nd Gen</td>
-                <td><?php echo esc_html( $gr_2gen ); ?></td>
-            </tr>
-            <tr>
-                <td>Has planted at least 1 group</td>
-                <td><?php echo esc_html( $has_at_least_1 ); ?></td>
-                <td>3rd Gen</td>
-                <td><?php echo esc_html( $gr_3gen ); ?></td>
-            </tr>
-            <tr>
-                <td>Has planted at least 2 groups</td>
-                <td><?php echo esc_html( $has_at_least_2 ); ?></td>
-                <td>4th Gen</td>
-                <td><?php echo esc_html( $gr_4gen ); ?></td>
-            </tr>
-            <tr>
-                <td>Has planted at least 3 groups</td>
-                <td><?php echo esc_html( $has_more_than_2 ); ?></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><strong>HAS</strong></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Has Not Planted Another Group</td>
-                <td><?php echo esc_html( $has_0 ); ?></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Has Planted 1 Group</td>
-                <td><?php echo esc_html( $has_1 ); ?></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Has Planted 2 Groups</td>
-                <td><?php echo esc_html( $has_2 ); ?></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Has Planted 3 Groups</td>
-                <td><?php echo esc_html( $has_3 ); ?></td>
-                <td></td>
-                <td></td>
-            </tr>
-
-            </tbody>
-        </table>
-        <?php
-    }
-
-    /**
-     * Baptism Generations stats dashboard widget
-     * TODO: Deprecate and remove
-     *
-     * @since  0.1.0
-     * @access public
-     */
-    public function baptism_stats_widget()
-    {
-
-        //        print '<pre>'; print_r( disciple_tools()->counter->get_generation('generation_list') ); print '</pre>';
 
         // Build counters
         $has_at_least_1 = disciple_tools()->counter->get_generation( 'has_one_or_more', 'baptisms' );
@@ -820,97 +570,11 @@ class Disciple_Tools_Metrics
 
         $baptisms = disciple_tools()->counter->get_baptisms( 'baptisms' );
         $baptizers = disciple_tools()->counter->get_baptisms( 'baptizers' );
-
-        ?>
-        <table class="widefat striped ">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Count</th>
-
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th><strong>TOTALS</strong></th>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Baptisms</td>
-                <td><?php echo esc_html( $baptisms ); ?></td>
-            </tr>
-            <tr>
-                <td>Baptizers</td>
-                <td><?php echo esc_html( $baptizers ); ?></td>
-            </tr>
-            <tr>
-                <th><strong>HAS AT LEAST</strong></th>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Has baptized at least 1 disciple</td>
-                <td><?php echo esc_html( $has_at_least_1 ); ?></td>
-            </tr>
-            <tr>
-                <td>Has baptized at least 2 disciples</td>
-                <td><?php echo esc_html( $has_at_least_2 ); ?></td>
-            </tr>
-            <tr>
-                <td>Has baptized more than 2 disciples</td>
-                <td><?php echo esc_html( $has_more_than_2 ); ?></td>
-            </tr>
-            <tr>
-                <td><strong>HAS</strong></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Has not baptized anyone</td>
-                <td><?php echo esc_html( $has_0 ); ?></td>
-            </tr>
-            <tr>
-                <td>Has baptized 1</td>
-                <td><?php echo esc_html( $has_1 ); ?></td>
-            </tr>
-            <tr>
-                <td>Has baptized 2</td>
-                <td><?php echo esc_html( $has_2 ); ?></td>
-            </tr>
-            <tr>
-                <td>Has baptized 3</td>
-                <td><?php echo esc_html( $has_3 ); ?></td>
-            </tr>
-            <tr>
-                <th><strong>BAPTISM GENERATIONS</strong></th>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Zero Gen</td>
-                <td><?php echo esc_html( $con_0gen ); ?></td>
-            </tr>
-            <tr>
-                <td>1st Gen</td>
-                <td><?php echo esc_html( $con_1gen ); ?></td>
-            </tr>
-            <tr>
-                <td>2nd Gen</td>
-                <td><?php echo esc_html( $con_2gen ); ?></td>
-            </tr>
-            <tr>
-                <td>3rd Gen</td>
-                <td><?php echo esc_html( $con_3gen ); ?></td>
-            </tr>
-            <tr>
-                <td>4th Gen</td>
-                <td><?php echo esc_html( $con_4gen ); ?></td>
-            </tr>
-            <tr>
-                <td>5th Gen</td>
-                <td><?php echo esc_html( $con_5gen ); ?></td>
-            </tr>
-
-            </tbody>
-        </table>
-        <?php
     }
+}
+
+abstract class Disciple_Tools_Metrics_Hooks_Base
+{
+    public function __construct() {}
 
 }
