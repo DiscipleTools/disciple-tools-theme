@@ -9,22 +9,19 @@ declare(strict_types=1);
     }
 
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
-
+    $following = Disciple_Tools_Posts::get_users_following_post( "contacts", get_the_ID() );
     $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
     $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
-    $shared_with = Disciple_Tools_Contacts::get_shared_with_on_contact( get_the_id() );
-    $users = Disciple_Tools_Users::get_assignable_users_compact();
+    $current_user_id = get_current_user_id();
     get_header();?>
 
 <?php
-dt_print_breadcrumbs(
-    [
-        [ home_url( '/' ), __( "Dashboard" ) ],
-        [ home_url( '/' ) . 'groups/', __( "Groups" ) ],
-    ],
-    get_the_title(),
+dt_print_details_bar(
     true,
-    true
+    true,
+    false,
+    true,
+    in_array( $current_user_id, $following )
 ); ?>
 
 <div id="errors"> </div>

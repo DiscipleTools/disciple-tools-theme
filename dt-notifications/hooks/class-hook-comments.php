@@ -15,9 +15,9 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
     public function __construct()
     {
         add_action( 'wp_insert_comment', [ &$this, 'filter_comment_for_notification' ], 10, 2 );
-        add_action( 'edit_comment', [ &$this, 'filter_comment_for_notification' ] );
+//        add_action( 'edit_comment', [ &$this, 'filter_comment_for_notification' ] );
         add_action( 'trash_comment', [ &$this, 'filter_comment_for_notification' ] );
-        add_action( 'untrash_comment', [ &$this, 'filter_comment_for_notification' ] );
+//        add_action( 'untrash_comment', [ &$this, 'filter_comment_for_notification' ] );
         add_action( 'delete_comment', [ &$this, 'filter_comment_for_notification' ] );
 
         parent::__construct();
@@ -36,130 +36,69 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
             $comment = get_comment( $comment_id );
         }
 
-        if ( $this->check_for_mention( $comment->comment_content ) == '0' ) { // fail if no mention found
-            return;
-        }
-
         $comment_with_users = $this->match_mention( $comment->comment_content ); // fail if no match for mention found
         $comment->comment_content = $comment_with_users["comment"];
         $mentioned_user_ids = $comment_with_users["user_ids"];
-        if ( !$mentioned_user_ids ) {
-            return;
-        }
+        $post_id = $comment->comment_post_ID;
+        $date_notified = $comment->comment_date;
+        $author_name = $comment->comment_author;
+        $post_type = get_post_type( $post_id );
 
-        foreach ( $mentioned_user_ids as $mentioned_user_id ) {
-            $source_user_id = $comment->user_id;
+        $followers = Disciple_Tools_Posts::get_users_following_post( $post_type, $post_id );
 
-            if ( $mentioned_user_id != $source_user_id ) { // checks that the user who created the event and the user receiving the notification are not the same.
+        $source_user_id = $comment->user_id;
+        $notification = [
+            'user_id'             => '',
+            'source_user_id'      => $source_user_id,
+            'post_id'             => (int) $post_id,
+            'secondary_item_id'   => (int) $comment_id,
+            'notification_name'   => "comment",
+            'notification_action' => 'comment',
+            'notification_note'   => "",
+            'date_notified'       => current_time( 'mysql' ),
+            'is_new'              => 1,
+            'field_key'           => 'comments',
+            'field_value'         => '',
+        ];
 
-                // build variables
-                $post_id = $comment->comment_post_ID;
-                $date_notified = $comment->comment_date;
-                $author_name = $comment->comment_author;
-                $post_type = get_post_type( $post_id );
-                $user = get_userdata( $mentioned_user_id );
-                $user_meta = get_user_meta( $mentioned_user_id );
+        $users_to_notify = array_merge( $mentioned_user_ids, $followers );
+
+        foreach ( $users_to_notify as $user_to_notify ) {
+
+            if ( $user_to_notify != $source_user_id ) { // checks that the user who created the event and the user receiving the notification are not the same.
+
+                $user = get_userdata( $user_to_notify );
+                $user_meta = get_user_meta( $user_to_notify );
 
                 // call appropriate action
                 switch ( current_filter() ) {
                     case 'wp_insert_comment' :
-                        $notification_action = 'mentioned';
+                        $notification["user_id"] = $user_to_notify;
+                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ){
+                            $notification["notification_name"] = 'mention';
+                            $notification["notification_action"] = 'mentioned';
+                            // share record with mentioned individual
+                            Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $user_to_notify, null, false );
+                        }
 
-                        // share record with mentioned individual
-                        Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id, null, false );
-
-                        $notification = [
-                            'user_id'             => $mentioned_user_id,
-                            'source_user_id'      => $source_user_id,
-                            'post_id'             => (int) $post_id,
-                            'secondary_item_id'   => (int) $comment_id,
-                            'notification_name'   => "mention",
-                            'notification_action' => $notification_action,
-                            'notification_note'   => "",
-                            'date_notified'       => current_time( 'mysql' ),
-                            'is_new'              => 1,
-                            'field_key'           => 'comments',
-                            'field_value'         => '',
-                        ];
 
                         $notification["notification_note"] = Disciple_Tools_Notifications::get_notification_message( $notification );
 
                         // web notification
-                        if ( dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) ) {
+                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) :
+                            dt_user_notification_is_enabled( 'comments_web', $user_meta, $user->ID ) ) {
                             dt_notification_insert( $notification );
                         }
 
                         // email notification
-                        if ( dt_user_notification_is_enabled( 'mentions_email', $user_meta, $user->ID ) ) {
+                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions_email', $user_meta, $user->ID ) :
+                            dt_user_notification_is_enabled( 'comments_email', $user_meta, $user->ID )) {
                             $notification["notification_note"] .= "\r\n\r\n";
-                            $notification["notification_note"] .= __( 'Click here to reply ', 'disciple_tools' ) . ' :' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
+                            $notification["notification_note"] .= __( 'Click here to reply', 'disciple_tools' ) . ': ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
                             dt_send_email(
                                 $user->user_email,
-                                __( "You were mentioned!", 'disciple_tools' ),
+                                in_array( $user_to_notify, $mentioned_user_ids ) ? __( "You were mentioned!", 'disciple_tools' ) : __( "Comment on a contact!", 'disciple_tools' ),
                                 $notification["notification_note"]
-                            );
-                        }
-
-                        break;
-
-                    case 'edit_comment' :
-                        $notification_action = 'updated';
-
-                        // share record with mentioned individual
-                        Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
-
-                        // web notification
-                        if ( dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) ) {
-
-                            $notification_note = '<strong>' . strip_tags( $author_name ) . '</strong> mentioned you on <a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '">'
-                                . strip_tags( get_the_title( $post_id ) ) . '</a> saying, "' . strip_tags( $comment->comment_content ) . '" ';
-
-                            $this->add_mention_notification(
-                                $mentioned_user_id,
-                                $source_user_id,
-                                $post_id,
-                                $comment_id,
-                                $notification_action,
-                                $notification_note,
-                                $date_notified
-                            );
-                        }
-
-                        // email notification
-                        if ( dt_user_notification_is_enabled( 'mentions_email', $user_meta, $user->ID ) ) {
-
-                            $message = strip_tags( $author_name ) . ' updated a comment that mentioned you saying: ' . strip_tags( $comment->comment_content );
-                            $message .= '. Want to reply: ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
-
-                            dt_send_email(
-                                $user->user_email,
-                                __( 'You were mentioned!', 'disciple_tools' ),
-                                $message
-                            );
-                        }
-
-                        break;
-
-                    case 'untrash_comment' :
-                        $notification_action = 'untrashed';
-
-                        // share record with mentioned individual
-                        Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
-
-                        // web notification
-                        if ( dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) ) {
-
-                            $notification_note = '<strong>' . strip_tags( $author_name ) . '</strong> untrashed a comment that mentioned you on <a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '">'
-                                . strip_tags( get_the_title( $post_id ) ) . '</a> saying, "' . strip_tags( $comment->comment_content ) . '" ';
-
-                            $this->add_mention_notification(
-                                $mentioned_user_id,
-                                $source_user_id,
-                                $post_id,
-                                $comment_id,
-                                $notification_action,
-                                $notification_note,
-                                $date_notified
                             );
                         }
 
@@ -167,12 +106,15 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
 
                     case 'delete_comment' :
                     case 'trash_comment' :
-                        $this->delete_mention_notification(
-                            $mentioned_user_id,
-                            $post_id,
-                            $comment_id,
-                            $date_notified
-                        );
+                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ){
+                            $this->delete_mention_notification(
+                                $user_to_notify,
+                                $post_id,
+                                $comment_id,
+                                $date_notified
+                            );
+                        }
+
                         break;
 
                     default:
@@ -224,7 +166,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
             }
         }
         return [
-            "user_ids" => empty( $user_ids ) ? false : $user_ids,
+            "user_ids" => $user_ids,
             "comment" => Disciple_Tools_Notifications::format_comment( $comment_content )
         ];
 

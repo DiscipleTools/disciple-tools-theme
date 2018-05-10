@@ -192,7 +192,8 @@ function dt_site_scripts() {
                         'template_dir'                    => get_template_directory_uri(),
                         'txt_created'                     => __( "Created contact at {}" ),
                         'translations'                    => $translations,
-                        'can_view_all'                    => user_can( get_current_user_id(), 'view_any_contacts' )
+                        'can_view_all'                    => user_can( get_current_user_id(), 'view_any_contacts' ),
+                        'current_user_id'                 => get_current_user_id()
                     )
                 );
             }
@@ -211,7 +212,8 @@ function dt_site_scripts() {
                         'nonce'             => wp_create_nonce( 'wp_rest' ),
                         'template_dir'      => get_template_directory_uri(),
                         'txt_created'       => __( "Created group at {}" ),
-                        'translations'      => $translations
+                        'translations'      => $translations,
+                        'current_user_id'   => get_current_user_id()
                     )
                 );
             }

@@ -7,14 +7,6 @@ if ( ! current_user_can( 'create_groups' ) ) {
 
 get_header();
 
-dt_print_breadcrumbs(
-    [
-        [ home_url( '/' ), __( "Dashboard" ) ],
-        [ home_url( '/' ) . "groups/", __( "Groups" ) ],
-    ],
-    __( "New group" )
-);
-
 ?>
 
 <div id="content">
