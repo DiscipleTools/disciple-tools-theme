@@ -64,38 +64,30 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                             <div class="small-12 medium-4 cell">
 
                                 <p><?php echo get_avatar( get_current_user_id(), '150' ); ?></p>
-                                <p><span data-tooltip data-click-open="true" class="top" tabindex="1" title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar) for user profiles. If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.' ) ?>">
-                                        <a href="http://gravatar.com" class="small"><?php esc_html_e( 'edit image @ gravatar.com', 'zume' ) ?></a>
-                                    <i class="fi-info primary-color "></i></span> </p>
-
-                                <p>
-                                    <hr>
-                                    <a href="/wp-login.php?action=lostpassword">Change Password</a>
-                                </p>
-
 
                                 <p>
                                     <strong><?php esc_html_e( 'Username', 'disciple_tools' )?></strong><br>
                                     <?php echo esc_html( $dt_user->user_login ); ?>
                                 </p>
 
-                                <p>
-                                    <strong><?php esc_html_e( 'Name', 'disciple_tools' )?></strong><br>
-                                    <?php echo esc_html( $dt_user->first_name ); ?>
-                                    &nbsp;<?php echo esc_html( $dt_user->last_name ); ?>
-                                </p>
+                                <?php if ( ! empty( $dt_user->first_name ) || ! empty( $dt_user->last_name ) ) : ?>
+                                    <p>
+                                        <strong><?php esc_html_e( 'Name', 'disciple_tools' )?></strong><br>
+                                        <?php echo esc_html( $dt_user->first_name ); ?> <?php echo esc_html( $dt_user->last_name ); ?>
+                                    </p>
+                                <?php endif; ?>
 
-                                <p>
-                                    <strong><?php esc_html_e( 'Nickname', 'disciple_tools' )?></strong><br>
-                                    <?php echo esc_html( $dt_user->nickname ); ?>
-                                </p>
+                                <?php if ( ! empty( $dt_user->nickname ) ) : ?>
+                                    <p>
+                                        <strong><?php esc_html_e( 'Nickname', 'disciple_tools' )?></strong><br>
+                                        <?php echo esc_html( $dt_user->nickname ); ?>
+                                    </p>
+                                <?php endif; ?>
 
                                 <p>
                                     <strong><?php esc_html_e( "Roles" ); ?></strong><br>
                                     <?php echo esc_html( implode( ", ", wp_get_current_user()->roles ) ); ?>
                                 </p>
-
-
 
                             </div>
                             <div class="small-12 medium-4 cell" style="border-left: 1px solid lightgrey; padding-left: 1em;">
@@ -533,9 +525,37 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                     <table class="table">
 
                                         <tr>
-                                            <td><?php esc_html_e( 'User Name', 'disciple_tools' )?></td>
-                                            <td> <?php echo esc_html( $dt_user->user_login ); ?> (<?php esc_html_e( 'can not change', "disciple_tools" ) ?>)</td>
+                                            <td><?php echo get_avatar( get_current_user_id(), '32' ); ?></td>
+                                            <td>
+                                                <span data-tooltip data-click-open="true" class="top" tabindex="1" title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar) for user profiles. If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.' ) ?>">
+                                                    <a href="http://gravatar.com" class="small"><?php esc_html_e( 'edit image on gravatar.com', 'zume' ) ?> <i class="fi-link"></i></a>
+                                                </span>
+                                            </td>
                                         </tr>
+                                        <tr>
+                                            <td><?php esc_html_e( 'User Name', 'disciple_tools' )?> </td>
+                                            <td><span data-tooltip data-click-open="true" class="top" tabindex="2" title="<?php esc_html_e( 'Username cannot be changed' ) ?>"><?php echo esc_html( $dt_user->user_login ); ?> <i class="fi-info primary-color" onclick="jQuery('#username-message').toggle()"></i></span>
+                                                <span id="username-message" style="display: none; font-size: .7em;"><br><?php esc_html_e( 'Username cannot be changed' ) ?></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><?php esc_html_e( 'System Email', 'disciple_tools' )?></td>
+                                            <td><span data-tooltip data-click-open="true" class="top" tabindex="3" title="<?php esc_html_e( 'User email can be changed by site administrator.' ) ?>">
+                                                    <?php echo esc_html( $dt_user->user_email ); ?> <i class="fi-info primary-color" onclick="jQuery('#email-message').toggle()"></i>
+                                                </span>
+                                                <span id="email-message" style="display: none; font-size: .7em;"><br><?php esc_html_e( 'User email can be changed by site administrator.' ) ?></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><?php esc_html_e( 'Password', 'disciple_tools' )?></td>
+                                            <td><span data-tooltip data-click-open="true" class="top" tabindex="1" title="<?php esc_html_e( 'Use this email reset form to create a new password.' ) ?>">
+                                                    <a href="/wp-login.php?action=lostpassword" target="_blank" rel="nofollow noopener">
+                                                        <?php esc_html_e( 'go to password change form' ) ?> <i class="fi-link"></i>
+                                                    </a>
+                                                </span>
+                                            </td>
+                                        </tr>
+
                                         <tr>
                                             <td><label for="first_name"><?php esc_html_e( 'First Name', 'disciple_tools' )?></label></td>
                                             <td><input type="text" class="profile-input" id="first_name"

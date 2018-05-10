@@ -51,6 +51,8 @@ footer {
     height:4em;
 }
 
+
+
 /*********************
 LINK STYLES
 *********************/
@@ -1636,9 +1638,6 @@ select#overall_status {
     font-weight: 300;
 }
 
-
-
-
 @media screen and (max-width : 640px){
     table.js-list {
         tbody tr:nth-child(even) {
@@ -1698,4 +1697,10 @@ select#overall_status {
         text-align: end;
     }
 
+}
+
+@media screen and (min-width : 640px) {
+    .left-border-grey {
+        border-left: 1px solid $light-gray;
+    }
 }
