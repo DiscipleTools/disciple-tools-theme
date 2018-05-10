@@ -943,15 +943,17 @@ class Disciple_Tools_Posts
      * Gets an array of users whom the post is shared with.
      *
      * @param string $post_type
-     * @param int    $post_id
+     * @param int $post_id
+     *
+     * @param bool $check_permissions
      *
      * @return array|mixed
      */
-    public static function get_shared_with( string $post_type, int $post_id )
+    public static function get_shared_with( string $post_type, int $post_id, bool $check_permissions = false )
     {
         global $wpdb;
 
-        if ( !self::can_update( $post_type, $post_id ) ) {
+        if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( 'no_permission', __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
 
@@ -1194,7 +1196,7 @@ class Disciple_Tools_Posts
                 }
             }
         }
-        $shared_with = self::get_shared_with( $post_type, $post_id );
+        $shared_with = self::get_shared_with( $post_type, $post_id, false );
         foreach ( $shared_with as $shared ){
             $users[] = $shared["user_id"];
         }

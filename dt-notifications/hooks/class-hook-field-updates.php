@@ -71,6 +71,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
             return;
         }
 
+
         // Configure switch statement
         $original_meta_key = '';
         if ( strpos( $meta_key, "address" ) === 0 || strpos( $meta_key, "contact" ) === 0 ) {
@@ -100,7 +101,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                 $post_title = sanitize_text_field( $post->post_title );
                 $subject = __( "Updates on contact", 'disciple_tools' );
 
-                $notification_type = $meta_key;
+                $notification_type = '';
                 // Switch between types of notifications
                 switch ( $meta_key ) {
 
@@ -180,18 +181,20 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                 $user = get_userdata( $follower );
                 $user_meta = get_user_meta( $follower );
-                if ( dt_user_notification_is_enabled( $notification_type . '_web', $user_meta, $user->ID ) ) {
-                    dt_notification_insert( $notification );
-                }
-                if ( dt_user_notification_is_enabled( $notification_type . '_email', $user_meta, $user->ID ) ) {
-                    $notification["notification_note"] .= "\r\n\r\n";
-                    $notification["notification_note"] .= 'Click here to reply: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
+                if ( $notification_type ){
+                    if ( dt_user_notification_is_enabled( $notification_type . '_web', $user_meta, $user->ID ) ) {
+                        dt_notification_insert( $notification );
+                    }
+                    if ( dt_user_notification_is_enabled( $notification_type . '_email', $user_meta, $user->ID ) ) {
+                        $notification["notification_note"] .= "\r\n\r\n";
+                        $notification["notification_note"] .= 'Click here to reply: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
 
-                    dt_send_email(
-                        $user->user_email,
-                        $subject,
-                        $notification["notification_note"]
-                    );
+                        dt_send_email(
+                            $user->user_email,
+                            $subject,
+                            $notification["notification_note"]
+                        );
+                    }
                 }
             }
         }
