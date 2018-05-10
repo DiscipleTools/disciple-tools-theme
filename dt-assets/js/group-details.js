@@ -1,8 +1,8 @@
 /* global jQuery:false, wpApiGroupsSettings:false */
+let typeaheadTotals = {}
 jQuery(document).ready(function($) {
 
   let group = wpApiGroupsSettings.group
-  let typeaheadTotals = {}
   let masonGrid = $('.grid')
   let groupId = group.ID
   let editFieldsUpdate = {}
@@ -40,7 +40,7 @@ jQuery(document).ready(function($) {
     minLength: 0,
     accent: true,
     searchOnFocus: true,
-    source: TYPEAHEADS.typeaheadSource('assigned_to', 'dt/v1/users/get_users'),
+    source: TYPEAHEADS.typeaheadUserSource(),
     display: "name",
     templateValue: "{{name}}",
     template: function (query, item) {
