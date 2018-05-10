@@ -1992,7 +1992,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $contacts = $this->find_contacts_by_title( $field_value, $contact_id );
                     $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
                 } else {
-                    foreach ( $field_value as $val ){
+                    if ( isset( $field_value["values"] ) ){
+                        $values = $field_value["values"];
+                    } else {
+                        $values = [ $field_value ];
+                    }
+                    foreach ( $values as $val ){
                         if ( !empty( $val["value"] ) ){
                             $contacts = $this->find_contacts_with( $field_id, $val["value"], $contact_id );
                             $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
