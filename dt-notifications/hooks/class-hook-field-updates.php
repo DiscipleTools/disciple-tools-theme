@@ -80,96 +80,110 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
             $original_meta_key = $meta_key;
             $meta_key = 'milestone';
         }
-
-        $notification = [
-            'user_id'             => '',
-            'source_user_id'      => $source_user_id,
-            'post_id'             => (int) $object_id,
-            'secondary_item_id'   => (int) $meta_id,
-            'notification_name'   => $meta_key,
-            'notification_action' => 'alert',
-            'notification_note'   => '',
-            'date_notified'       => current_time( 'mysql' ),
-            'is_new'              => 1,
-            'field_key'           => '',
-            'field_value'         => '',
-        ];
-
-        $post_title = sanitize_text_field( $post->post_title );
-        $subject = __( "Updates on contact", 'disciple_tools' );
-
-        // Switch between types of notifications
-        switch ( $meta_key ) {
-
-            case 'assigned_to':
-
-                $notification_name = 'assigned_to';
-
-                /**
-                 * Delete all notifications with matching post_id and notification_name
-                 * This prevents an assigned_to notification remaining in another persons inbox, that has since been
-                 * assigned to someone else. The Activity log keeps the historical data, but this notifications table
-                 * only should keep real status data.
-                 */
-                $this->delete_by_post(
-                    $object_id,
-                    $notification_name
-                );
-
-                $subject = __( 'You have been assigned a new contact!', 'disciple_tools' );
-
-                break;
-
-            case 'requires_update':
-
-                if ( $meta_value == 'yes' ) {
-
-                    $notification_name = 'requires_update';
-
-                    /**
-                     * Delete all notifications with matching post_id and notification_name
-                     * This prevents an assigned_to notification remaining in another persons inbox, that has since been
-                     * assigned to someone else. The Activity log keeps the historical data, but this notifications table
-                     * only should keep real status data.
-                     */
-                    $this->delete_by_post(
-                        $object_id,
-                        $notification_name
-                    );
-
-                    $subject = __( 'Update requested!', 'disciple_tools' );
-
-                }
-
-                break;
-
-            case 'contact_info_update':
-                $notification["field_key"] = $original_meta_key;
-                $subject = __( 'Changes to your contact.', 'disciple_tools' );
-
-                break;
-
-            case 'milestone':
-                $meta_value == 'yes' ? $value = 'added' : $value = 'removed';
-                $notification["field_key"] = $original_meta_key;
-                $notification["field_value"] = $value;
-                $subject = __( 'Milestones update on', 'disciple_tools' ) . " " . $post_title;
-
-                break;
-
-            default:
-                break;
-        }
-        $notification["notification_note"] = Disciple_Tools_Notifications::get_notification_message( $notification );
-
         foreach ( $followers as $follower ){
             if ( $follower != $source_user_id ){
+
+                $notification = [
+                    'user_id'             => $follower,
+                    'source_user_id'      => $source_user_id,
+                    'post_id'             => (int) $object_id,
+                    'secondary_item_id'   => (int) $meta_id,
+                    'notification_name'   => $meta_key,
+                    'notification_action' => 'alert',
+                    'notification_note'   => '',
+                    'date_notified'       => current_time( 'mysql' ),
+                    'is_new'              => 1,
+                    'field_key'           => '',
+                    'field_value'         => '',
+                ];
+
+                $post_title = sanitize_text_field( $post->post_title );
+                $subject = __( "Updates on contact", 'disciple_tools' );
+
+                $notification_type = $meta_key;
+                // Switch between types of notifications
+                switch ( $meta_key ) {
+
+                    case 'assigned_to':
+                        $assigned_to = get_post_meta( $object_id, $key = 'assigned_to', $single = true );
+                        $meta_array = explode( '-', $assigned_to ); // Separate the type and id
+                        $user_id = (int) $meta_array[1];
+
+                        if ( $user_id == $follower ){
+                            $notification_name = 'assigned_to';
+                            $notification_type = 'new';
+
+                            /**
+                             * Delete all notifications with matching post_id and notification_name
+                             * This prevents an assigned_to notification remaining in another persons inbox, that has since been
+                             * assigned to someone else. The Activity log keeps the historical data, but this notifications table
+                             * only should keep real status data.
+                             */
+                            $this->delete_by_post(
+                                $object_id,
+                                $notification_name
+                            );
+                            $subject = __( 'You have been assigned a new contact!', 'disciple_tools' );
+                        } else {
+                            $notification["notification_name"] = "assigned_to_other";
+                            $notification_type = 'changes';
+                            $subject = __( 'Assignment on a contact has changed', 'disciple_tools' );
+                        }
+
+
+                        break;
+
+                    case 'requires_update':
+
+                        if ( $meta_value == 'yes' ) {
+
+                            $notification_name = 'requires_update';
+                            $notification_type = 'updates';
+
+                            /**
+                             * Delete all notifications with matching post_id and notification_name
+                             * This prevents an assigned_to notification remaining in another persons inbox, that has since been
+                             * assigned to someone else. The Activity log keeps the historical data, but this notifications table
+                             * only should keep real status data.
+                             */
+                            $this->delete_by_post(
+                                $object_id,
+                                $notification_name
+                            );
+
+                            $subject = __( 'Update requested!', 'disciple_tools' );
+                        }
+
+                        break;
+
+                    case 'contact_info_update':
+                        $notification_type = 'changes';
+                        $notification["field_key"] = $original_meta_key;
+                        $subject = __( 'Contact info changed', 'disciple_tools' );
+
+                        break;
+
+                    case 'milestone':
+                        $notification_type = 'milestones';
+                        $meta_value == 'yes' ? $value = 'added' : $value = 'removed';
+                        $notification["field_key"] = $original_meta_key;
+                        $notification["field_value"] = $value;
+                        $subject = __( 'Milestones update', 'disciple_tools' );
+
+                        break;
+
+                    default:
+                        break;
+                }
+                $notification["notification_note"] = Disciple_Tools_Notifications::get_notification_message( $notification );
+
+
                 $user = get_userdata( $follower );
                 $user_meta = get_user_meta( $follower );
-                if ( dt_user_notification_is_enabled( 'milestones_web', $user_meta, $user->ID ) ) {
+                if ( dt_user_notification_is_enabled( $notification_type . '_web', $user_meta, $user->ID ) ) {
                     dt_notification_insert( $notification );
                 }
-                if ( dt_user_notification_is_enabled( 'milestones_email', $user_meta, $user->ID ) ) {
+                if ( dt_user_notification_is_enabled( $notification_type . '_email', $user_meta, $user->ID ) ) {
                     $notification["notification_note"] .= "\r\n\r\n";
                     $notification["notification_note"] .= 'Click here to reply: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
 
