@@ -82,7 +82,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
         }
 
         $notification = [
-            'user_id'             => $user_id,
+            'user_id'             => '',
             'source_user_id'      => $source_user_id,
             'post_id'             => (int) $object_id,
             'secondary_item_id'   => (int) $meta_id,
@@ -165,7 +165,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
         foreach ( $followers as $follower ){
             if ( $follower != $source_user_id ){
                 $user = get_userdata( $follower );
-                $user_meta = get_userdata( $follower );
+                $user_meta = get_user_meta( $follower );
                 if ( dt_user_notification_is_enabled( 'milestones_web', $user_meta, $user->ID ) ) {
                     dt_notification_insert( $notification );
                 }
