@@ -39,10 +39,6 @@ function my_stats() {
                 <div id="my_contacts_progress" style="height: 350px;"></div>
             </div>
             <div class="cell">
-            <hr>
-                <div id="my_critical_path" style="height: 650px;"></div>
-            </div>
-            <div class="cell">
             <br>
                 <div class="cell center callout">
                     <p><span class="section-subheader">Groups</span></p>
@@ -89,7 +85,6 @@ function my_stats() {
 
     google.charts.setOnLoadCallback(drawMyContactsProgress);
     google.charts.setOnLoadCallback(drawMyGroupHealth);
-    google.charts.setOnLoadCallback(drawCriticalPath);
     google.charts.setOnLoadCallback(drawGroupTypes);
     google.charts.setOnLoadCallback(drawGroupGenerations);
 
@@ -112,25 +107,6 @@ function my_stats() {
         };
 
         let chart = new google.visualization.BarChart(document.getElementById('my_contacts_progress'));
-        chart.draw(data, options);
-    }
-
-    function drawCriticalPath() {
-
-        let data = google.visualization.arrayToDataTable( sourceData.critical_path );
-
-        let options = {
-            bars: 'horizontal',
-            chartArea: {
-                left: '20%',
-                top: '7%',
-                width: "75%",
-                height: "85%" },
-            title: "My Critical Path",
-            legend: {position: "none"},
-        };
-
-        let chart = new google.visualization.BarChart(document.getElementById('my_critical_path'));
         chart.draw(data, options);
     }
 

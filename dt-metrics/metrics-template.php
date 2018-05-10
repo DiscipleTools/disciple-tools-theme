@@ -26,18 +26,3 @@ function dt_metrics_visibility( $item ) : bool {
     }
 }
 
-function dt_count_user_contacts() {
-    return 100;
-}
-
-function dt_count_user_groups() {
-    return 20;
-}
-
-function dt_count_updates_needed() {
-    return 2;
-}
-
-function dt_count_attempts_needed() {
-    return 3;
-}

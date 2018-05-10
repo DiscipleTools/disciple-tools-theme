@@ -37,11 +37,13 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 <ul class="menu vertical nested" id="project-menu">
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_overview" onclick="project_overview()">'. esc_html__( 'Overview' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_timeline" onclick="project_timeline()">'. esc_html__( 'Timeline' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_critical_path" onclick="project_critical_path()" style="border-bottom:1px solid #ccc;">'. esc_html__( 'Critical Path' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_critical_path" onclick="project_critical_path()">'. esc_html__( 'Critical Path' ) .'</a></li>
+                    <!--
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_outreach" onclick="project_outreach()">'. esc_html__( 'Outreach' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_follow_up" onclick="project_follow_up()">'. esc_html__( 'Follow-up' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_training" onclick="project_training()">'. esc_html__( 'Training' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_multiplication" onclick="project_multiplication()"  style="border-bottom:1px solid #ccc;">'. esc_html__( 'Multiplication' ) .'</a></li>
+                    -->
                 </ul>
             </li>
             ';
@@ -82,71 +84,13 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'updates_needed' => __( 'Updates Needed' ),
                 'attempts_needed' => __( 'Attempts Needed' ),
             ],
-            'hero_stats' => [
-                'total_contacts' => dt_count_user_contacts(),
-                'total_groups' => dt_count_user_groups(),
-                'updates_needed' => dt_count_updates_needed(),
-                'attempts_needed' => dt_count_attempts_needed(),
-            ],
-            'contacts_progress' => [
-                [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
-                [ 'Contact Attempt Needed', 10, 10 ],
-                [ 'Contact Attempted', 10, 10 ],
-                [ 'Contact Established', 10, 10 ],
-                [ 'First Meeting Scheduled', 10, 10 ],
-                [ 'First Meeting Complete', 10, 10 ],
-                [ 'Ongoing Meetings', 10, 10 ],
-                [ 'Being Coached', 23, 23 ],
-            ],
-            'critical_path' => [
-                [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
-                [ 'New Contacts', 100, 100 ],
-                [ 'Contacts Attempted', 95, 95 ],
-                [ 'First Meetings', 80, 80 ],
-                [ 'All Baptisms', 6, 6 ],
-                [ '1st Gen', 4, 4 ],
-                [ '2nd Gen', 2, 2 ],
-                [ '3rd Gen', 0, 0 ],
-                [ '4th Gen', 0, 0 ],
-                [ 'Baptizers', 3, 3 ],
-                [ 'Church Planters', 4, 4 ],
-                [ 'All Groups', 4, 4 ],
-                [ 'Active Pre-Groups', 4, 4 ],
-                [ 'Active Groups', 4, 4 ],
-                [ 'Active Churches', 5, 5 ],
-                [ '1st Gen', 3, 3 ],
-                [ '2nd Gen', 2, 2 ],
-                [ '3rd Gen', 0, 0 ],
-                [ '4th Gen', 0, 0 ],
-
-            ],
-            'group_types' => [
-                [ 'Group Type', 'Number' ],
-                [ 'Pre-Group', 75 ],
-                [ 'Group', 25 ],
-                [ 'Church', 25 ],
-            ],
-            'group_health' => [
-                [ 'Step', 'Groups', [ 'role' => 'annotation' ] ],
-                [ 'Fellowship', 10, 10 ],
-                [ 'Giving', 10, 10 ],
-                [ 'Communion', 10, 10 ],
-                [ 'Baptism', 10, 10 ],
-                [ 'Prayer', 40, 40 ],
-                [ 'Leaders', 50, 50 ],
-                [ 'Word', 23, 23 ],
-                [ 'Praise', 23, 23 ],
-                [ 'Evangelism', 23, 23 ],
-                [ 'Covenant', 23, 23 ],
-            ],
-            'group_generations' => [
-                [ 'Generation', 'Pre-Group', 'Group', 'Church', [ 'role' => 'annotation' ] ],
-                [ '1st Gen', 5, 8, 6, 21 ],
-                [ '2st Gen', 1, 3, 4, 8 ],
-                [ '3st Gen', 0, 2, 0, 2 ],
-                [ '4st Gen', 1, 1, 0, 2 ],
-                [ '5+ Gen', 0, 0, 1, 1 ],
-            ],
+            'hero_stats' => self::chart_project_hero_stats(),
+            'critical_path' => self::chart_project_critical_path(),
+            'contacts_progress' => self::chart_contacts_progress( 'project' ),
+            'group_types' => self::chart_group_types(),
+            'group_health' => self::chart_group_health(),
+            'group_generations' => self::chart_group_generations(),
+            'timeline' => self::chart_timeline(),
         ];
     }
 }
