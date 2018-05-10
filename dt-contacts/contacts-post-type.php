@@ -937,6 +937,20 @@ class Disciple_Tools_Contact_Post_Type
             'default'     => [],
             'section'     => 'misc',
         ];
+        $fields["follow"] = [
+            'name'        => __( 'Follow', 'disciple_tools' ),
+            'description' => 'Users following this contact',
+            'type'        => 'multi_select',
+            'default'     => [],
+            'section'     => 'misc',
+        ];
+        $fields["unfollow"] = [
+            'name'        => __( 'Un-Follow', 'disciple_tools' ),
+            'description' => 'Users not following this contact',
+            'type'        => 'multi_select',
+            'default'     => [],
+            'section'     => 'misc',
+        ];
 
         return apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
     } // End get_custom_fields_settings()

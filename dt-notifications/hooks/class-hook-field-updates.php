@@ -64,27 +64,12 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
             return;
         }
 
-        // get post meta assigned_to
-        $assigned_to = get_post_meta( $object_id, $key = 'assigned_to', $single = true );
-        if ( empty( $assigned_to ) ) { // if assigned_to is empty, there is no one to notify.
-            return;
-        }
-
-        // parse assigned to
-        $meta_array = explode( '-', $assigned_to ); // Separate the type and id
-        $type = $meta_array[0]; // parse type
-        $user_id = (int) $meta_array[1];
-
-        // get source user id and check if same as notification target
+        $post = get_post( $object_id );
         $source_user_id = get_current_user_id();
-        if ( $source_user_id == $user_id || !$user_id ) {
+        $followers = Disciple_Tools_Posts::get_users_following_post( $post->post_type, $object_id );
+        if ( sizeof( $followers ) === 0 || ( sizeof( $followers === 1 ) && $source_user_id == $followers[0] ) ){
             return;
         }
-
-        $user = get_userdata( $user_id );
-        $user_meta = get_user_meta( $user_id );
-
-
 
         // Configure switch statement
         $original_meta_key = '';
@@ -109,7 +94,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
             'field_key'           => '',
             'field_value'         => '',
         ];
-        $post = get_post( $object_id );
+
         $post_title = sanitize_text_field( $post->post_title );
         $subject = __( "Updates on contact", 'disciple_tools' );
 
@@ -177,20 +162,25 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
         }
         $notification["notification_note"] = Disciple_Tools_Notifications::get_notification_message( $notification );
 
-        if ( dt_user_notification_is_enabled( 'milestones_web', $user_meta, $user->ID ) ) {
-            dt_notification_insert( $notification );
-        }
-        if ( dt_user_notification_is_enabled( 'milestones_email', $user_meta, $user->ID ) ) {
-            $notification["notification_note"] .= "\r\n\r\n";
-            $notification["notification_note"] .= 'Click here to reply: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
+        foreach ( $followers as $follower ){
+            if ( $follower != $source_user_id ){
+                $user = get_userdata( $follower );
+                $user_meta = get_userdata( $follower );
+                if ( dt_user_notification_is_enabled( 'milestones_web', $user_meta, $user->ID ) ) {
+                    dt_notification_insert( $notification );
+                }
+                if ( dt_user_notification_is_enabled( 'milestones_email', $user_meta, $user->ID ) ) {
+                    $notification["notification_note"] .= "\r\n\r\n";
+                    $notification["notification_note"] .= 'Click here to reply: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
 
-            dt_send_email(
-                $user->user_email,
-                $subject,
-                $notification["notification_note"]
-            );
+                    dt_send_email(
+                        $user->user_email,
+                        $subject,
+                        $notification["notification_note"]
+                    );
+                }
+            }
         }
-
     }
 
     /**

@@ -463,6 +463,18 @@ jQuery(document).ready(function($) {
   })
 
   /**
+   * Follow
+   */
+  $('.follow.switch-input').change(function () {
+    let follow = $(this).is(':checked')
+    let update = {
+      follow: {values:[{value:contactsDetailsWpApiSettings.current_user_id, delete:!follow}]},
+      unfollow: {values:[{value:contactsDetailsWpApiSettings.current_user_id, delete:follow}]}
+    }
+    API.save_field_api( "contact", contactId, update)
+  })
+
+  /**
    * connections to other contacts
    */
   ;["baptized_by", "baptized", "coached_by", "coaching", "subassigned"].forEach(field_id=>{

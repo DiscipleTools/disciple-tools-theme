@@ -207,7 +207,7 @@ else {
             require_once( get_template_directory() . '/dt-assets/functions/private-site.php' ); // Sets site to private
             require_once( get_template_directory() . '/dt-assets/functions/login.php' ); // Customize the WordPress login menu
             require_once( get_template_directory() . '/dt-assets/functions/menu.php' ); // Register menus and menu walkers
-            require_once( get_template_directory() . '/dt-assets/functions/breadcrumbs.php' ); // Breadcrumbs bar
+            require_once( get_template_directory() . '/dt-assets/functions/details-bar.php' ); // Breadcrumbs bar
 
             /**
              * URL loader

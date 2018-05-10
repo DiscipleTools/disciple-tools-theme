@@ -10,16 +10,6 @@ $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id(
 
 <?php get_header(); ?>
 
-<?php
-dt_print_breadcrumbs(
-    [
-        [ home_url( '/' ), __( "Dashboard" ) ],
-        [ home_url( '/' ) . "workers", __( "Workers" ) ],
-    ],
-    get_the_title(),
-    false
-); ?>
-
 <div id="content">
 
     <div id="inner-content" class="grid-x grid-margin-x align-center">

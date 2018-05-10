@@ -91,6 +91,18 @@ jQuery(document).ready(function($) {
     }
   })
 
+  /**
+   * Follow
+   */
+  $('.follow.switch-input').change(function () {
+    let follow = $(this).is(':checked')
+    let update = {
+      follow: {values:[{value:wpApiGroupsSettings.current_user_id, delete:!follow}]},
+      unfollow: {values:[{value:wpApiGroupsSettings.current_user_id, delete:follow}]}
+    }
+    API.save_field_api( "group", groupId, update)
+  })
+
   let locationsList = $('.locations-list')
   /**
    * Locations

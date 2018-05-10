@@ -256,13 +256,15 @@ function dt_get_site_options_defaults()
 {
     $fields = [];
 
-    $fields['version'] = '2';
+    $fields['version'] = '3';
 
     $fields['user_notifications'] = [
         'new_web'          => true,
         'new_email'        => true,
         'mentions_web'     => true,
         'mentions_email'   => true,
+        'comments_web'     => true,
+        'comments_email'   => true,
         'updates_web'      => true,
         'updates_email'    => false,
         'changes_web'      => false,

@@ -78,7 +78,6 @@
   let savedFiltersList = $("#saved-filters")
 
   function setupFilters(filters){
-    console.log(filters);
     savedFiltersList.empty()
     filters.forEach(filter=>{
       if (filter){

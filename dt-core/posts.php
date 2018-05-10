@@ -1167,4 +1167,50 @@ class Disciple_Tools_Posts
         }
         return null;
     }
+
+    public static function get_users_following_post( $post_type, $post_id ){
+        $users = [];
+        $assigned_to_meta = get_post_meta( $post_id, "assigned_to", true );
+        $assigned_to = strpos( $assigned_to_meta, '-' ) !== false ? explode( "-", $assigned_to_meta )[1] : null;
+        if ( $assigned_to ){
+            $users[] = $assigned_to;
+        }
+        if ( $post_type === "contacts" ){
+            $subassigned = get_posts(
+                [
+                    'connected_type'      => 'contacts_to_subassigned',
+                    'connected_direction' => 'to',
+                    'connected_items'     => $post_id,
+                    'nopaging'            => true,
+                    'suppress_filters'    => false,
+                    'meta_key'            => "type",
+                    'meta_value'          => "user"
+                ]
+            );
+            foreach ( $subassigned as $c ) {
+                $user_id = get_post_meta( $c->ID, "corresponds_to_user", true );
+                if ( $user_id ){
+                    $users[] = $user_id;
+                }
+            }
+        }
+        $shared_with = self::get_shared_with( $post_type, $post_id );
+        foreach ( $shared_with as $shared ){
+            $users[] = $shared["user_id"];
+        }
+        $users = array_unique( $users );
+        $users_follow = get_post_meta( $post_id, "follow", false );
+        foreach ( $users_follow as $follow ){
+            if ( !in_array( $follow, $users ) && user_can( $follow, "view_any_". $post_type ) ){
+                $users[] = $follow;
+            }
+        }
+        $users_unfollow = get_post_meta( $post_id, "unfollow", false );
+        foreach ( $users_unfollow as $unfollower ){
+            if ( ( $key = array_search( $unfollower, $users ) ) !== false ){
+                unset( $users[$key] );
+            }
+        }
+        return $users;
+    }
 }

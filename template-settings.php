@@ -292,6 +292,39 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                 </td>
                             </tr>
                             <tr>
+                                <td class="tall-4"><?php esc_html_e( 'Comments', 'disciple_tools' )?></td>
+                                <td>
+                                    <?php
+                                    if ( $dt_site_notification_defaults['comments_web'] ) {
+                                        print 'required';
+                                    } else { ?>
+                                        <div class="switch">
+                                            <input class="switch-input" id="comments_web" type="checkbox"
+                                                   name="comments_web"
+                                                   onclick="switch_preference('comments_web');" <?php ( isset( $dt_user_meta['comments_web'] ) && $dt_user_meta['comments_web'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
+                                            <label class="switch-paddle" for="comments_web">
+                                                <span class="show-for-sr"><?php esc_html_e( 'Comments', 'disciple_tools' )?></span>
+                                            </label>
+                                        </div>
+                                    <?php } // end else ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    if ( $dt_site_notification_defaults['comments_email'] ) {
+                                        print 'required';
+                                    } else { ?>
+                                        <div class="switch">
+                                            <input class="switch-input" id="comments_email" type="checkbox"
+                                                   name="comments_email"
+                                                   onclick="switch_preference('comments_email');" <?php ( isset( $dt_user_meta['comments_email'] ) && $dt_user_meta['comments_email'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
+                                            <label class="switch-paddle" for="comments_email">
+                                                <span class="show-for-sr"><?php esc_html_e( 'Comments', 'disciple_tools' )?></span>
+                                            </label>
+                                        </div>
+                                    <?php } // end else ?>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td class="tall-4"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></td>
                                 <td>
                                     <?php
