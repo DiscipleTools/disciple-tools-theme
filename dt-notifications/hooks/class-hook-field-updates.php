@@ -67,7 +67,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
         $post = get_post( $object_id );
         $source_user_id = get_current_user_id();
         $followers = Disciple_Tools_Posts::get_users_following_post( $post->post_type, $object_id );
-        if ( sizeof( $followers ) === 0 || ( sizeof( $followers === 1 ) && $source_user_id == $followers[0] ) ){
+        if ( sizeof( $followers ) === 0 || ( sizeof( $followers ) === 1 && $source_user_id == $followers[0] ) ){
             return;
         }
 
