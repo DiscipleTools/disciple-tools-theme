@@ -221,6 +221,28 @@ let TYPEAHEADS = {
       }
     }
   },
+  typeaheadUserSource : function (field, ur) {
+    return {
+      users: {
+        display: ["name", "user"],
+        ajax: {
+          url: wpApiSettings.root + 'dt/v1/users/get_users',
+          data: {
+            s: "{{query}}"
+          },
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+          },
+          callback: {
+            done: function (data) {
+              typeaheadTotals["assigned_id"] = data.total || data.length
+              return data.posts || data
+            }
+          }
+        }
+      }
+    }
+  },
   typeaheadHelpText : function (resultCount, query, result){
     var text = "";
     if (result.length > 0 && result.length < resultCount) {
