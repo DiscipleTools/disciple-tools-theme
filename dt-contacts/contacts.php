@@ -317,6 +317,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         //hook for signaling that a contact has been created and the initial fields
         if ( !is_wp_error( $post_id )){
             do_action( "dt_contact_created", $post_id, $initial_fields );
+            Disciple_Tools_Notifications::insert_notification_for_new_post( "contacts", $fields, $post_id );
         }
 
         return $post_id;
@@ -526,6 +527,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
         $initial_fields = $fields;
+        $initial_keys = array_keys( $fields );
 
         $post = get_post( $contact_id );
         if ( isset( $fields['id'] ) ) {
@@ -571,7 +573,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return $potential_error;
         }
 
-        $potential_error = self::parse_multi_select_fields( $contact_id, $fields );
+        $potential_error = self::parse_multi_select_fields( $contact_id, $fields, $existing_contact );
         if ( is_wp_error( $potential_error )){
             return $potential_error;
         }
@@ -648,6 +650,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         //hook for signaling that a contact has been updated and which keys have been changed
         if ( !is_wp_error( $contact )){
             do_action( "dt_contact_updated", $contact_id, $initial_fields, $contact );
+            Disciple_Tools_Notifications::insert_notification_for_post_update( "contacts", $contact, $existing_contact, $initial_keys );
         }
 
         return $contact;
@@ -1752,20 +1755,23 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @param string $type
      *
+     * @param null $user_id
+     * @param null $author
+     *
      * @return false|int|\WP_Error
      */
-    public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true, $type = "comment" )
+    public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null )
     {
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
         $user = wp_get_current_user();
-        $user_id = get_current_user_id();
+        $user_id = $user_id ?? get_current_user_id();
         $comment_data = [
             'comment_post_ID'      => $contact_id,
             'comment_content'      => $comment,
             'user_id'              => $user_id,
-            'comment_author'       => $user->display_name,
+            'comment_author'       => $author ?? $user->display_name,
             'comment_author_url'   => $user->user_url,
             'comment_author_email' => $user->user_email,
             'comment_type'         => $type,
@@ -1814,9 +1820,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         if ( $accepted ) {
-            update_post_meta( $contact_id, 'overall_status', 'active' );
-            update_post_meta( $contact_id, 'accepted', 'Yes' );
-
+            $update = [
+                "overall_status" => 'active',
+                "accepted" => 'yes'
+            ];
+            self::update_contact( $contact_id, $update, true );
             return [ "overall_status" => self::$contact_fields["overall_status"]["default"]['active'] ];
         } else {
             $assign_to_id = 0;
@@ -1829,8 +1837,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $assign_to_id = $base_user;
                 }
             }
-            update_post_meta( $contact_id, 'assigned_to', $meta_value = "user-" . $assign_to_id );
-            update_post_meta( $contact_id, 'overall_status', $meta_value = 'unassigned' );
+
+            $update = [
+                "assigned_to" => $assign_to_id,
+                "overall_status" => 'unassigned'
+            ];
+            self::update_contact( $contact_id, $update, true );
             $assign = get_user_by( 'id', $assign_to_id );
             $current_user = wp_get_current_user();
             dt_activity_insert(
@@ -1847,7 +1859,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'object_note'    => $current_user->display_name . " declined assignment",
                 ]
             );
-
+            Disciple_Tools_Notifications::insert_notification_for_assignment_declined( $current_user->ID, $assign_to_id, $contact_id );
             return [
                 "assigned_to" => $assign->display_name,
                 "overall_status" => 'unassigned'
@@ -1977,7 +1989,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 if ( $has_unconfirmed_duplicates > 5 ){
                     $message .= "- " . $has_unconfirmed_duplicates . " " . __( "more duplicates not shown", "disciple_tools" );
                 }
-                self::add_comment( $contact_id, $message, false, "duplicate" );
+                self::add_comment( $contact_id, $message, false, "duplicate", 0, "Duplicate Checker" );
                 update_post_meta( $contact_id, "duplicate_data", $duplicate_data );
             }
         }
@@ -1992,7 +2004,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $contacts = $this->find_contacts_by_title( $field_value, $contact_id );
                     $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
                 } else {
-                    foreach ( $field_value as $val ){
+                    if ( isset( $field_value["values"] ) ){
+                        $values = $field_value["values"];
+                    } else {
+                        $values = [ $field_value ];
+                    }
+                    foreach ( $values as $val ){
                         if ( !empty( $val["value"] ) ){
                             $contacts = $this->find_contacts_with( $field_id, $val["value"], $contact_id );
                             $this->save_duplicate_finding( $field_id, $contacts, $contact_id );

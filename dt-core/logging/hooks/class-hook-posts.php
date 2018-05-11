@@ -120,7 +120,9 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         global $wpdb;
         $parent_post = get_post( $object_id, ARRAY_A ); // get object info
 
-        if ($meta_key == '_edit_lock' || $meta_key == '_edit_last' || $meta_key == "last_modified") { // ignore edit lock
+        $ignore_fields = [ '_edit_lock', '_edit_last', "last_modified", "follow" , "unfollow" ];
+
+        if ( in_array( $meta_key, $ignore_fields ) ) {
             return;
         }
         if ($parent_post["post_status"] === "auto-draft"){

@@ -170,6 +170,21 @@ class Disciple_Tools_Posts
         return false;
     }
 
+    public static function get_label_for_post_type( $post_type, $singular ){
+        switch ( $post_type ) {
+            case "contacts":
+            case "contact":
+                return $singular ? Disciple_Tools_Contact_Post_Type::instance()->singular : Disciple_Tools_Contact_Post_Type::instance()->plural;
+                break;
+            case "groups":
+            case "group":
+                return $singular ? Disciple_Tools_Groups_Post_Type::instance()->singular : Disciple_Tools_Groups_Post_Type::instance()->plural;
+                break;
+            default:
+                return $post_type;
+        }
+    }
+
     /**
      * @param string $post_type
      * @param int    $user_id
@@ -943,15 +958,17 @@ class Disciple_Tools_Posts
      * Gets an array of users whom the post is shared with.
      *
      * @param string $post_type
-     * @param int    $post_id
+     * @param int $post_id
+     *
+     * @param bool $check_permissions
      *
      * @return array|mixed
      */
-    public static function get_shared_with( string $post_type, int $post_id )
+    public static function get_shared_with( string $post_type, int $post_id, bool $check_permissions = false )
     {
         global $wpdb;
 
-        if ( !self::can_update( $post_type, $post_id ) ) {
+        if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( 'no_permission', __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
 
@@ -1000,7 +1017,7 @@ class Disciple_Tools_Posts
         $assigned_to_meta = get_post_meta( $post_id, "assigned_to", true );
         if ( !( current_user_can( 'update_any_' . $post_type ) ||
              get_current_user_id() === $user_id ||
-            dt_get_user_id_from_meta( $assigned_to_meta ) === get_current_user_id() )
+            dt_get_user_id_from_assigned_to( $assigned_to_meta ) === get_current_user_id() )
         ){
             $name = dt_get_user_display_name( $user_id );
             return new WP_Error( __FUNCTION__, __( "You do not have permission to unshare with" ) . " " . $name, [ 'status' => 403 ] );
@@ -1166,5 +1183,58 @@ class Disciple_Tools_Posts
             return get_post( $page_id, $output );
         }
         return null;
+    }
+
+
+    public static function get_subassigned_users( $post_id ){
+        $users = [];
+        $subassigned = get_posts(
+            [
+                'connected_type'      => 'contacts_to_subassigned',
+                'connected_direction' => 'to',
+                'connected_items'     => $post_id,
+                'nopaging'            => true,
+                'suppress_filters'    => false,
+                'meta_key'            => "type",
+                'meta_value'          => "user"
+            ]
+        );
+        foreach ( $subassigned as $c ) {
+            $user_id = get_post_meta( $c->ID, "corresponds_to_user", true );
+            if ( $user_id ){
+                $users[] = $user_id;
+            }
+        }
+        return $users;
+    }
+
+    public static function get_users_following_post( $post_type, $post_id ){
+        $users = [];
+        $assigned_to_meta = get_post_meta( $post_id, "assigned_to", true );
+        $assigned_to = dt_get_user_id_from_assigned_to( $assigned_to_meta );
+        if ( $post_type === "contacts" ){
+            array_merge( $users, self::get_subassigned_users( $post_id ) );
+        }
+        $shared_with = self::get_shared_with( $post_type, $post_id, false );
+        foreach ( $shared_with as $shared ){
+            $users[] = $shared["user_id"];
+        }
+        $users_follow = get_post_meta( $post_id, "follow", false );
+        foreach ( $users_follow as $follow ){
+            if ( !in_array( $follow, $users ) && user_can( $follow, "view_any_". $post_type ) ){
+                $users[] = $follow;
+            }
+        }
+        $users_unfollow = get_post_meta( $post_id, "unfollow", false );
+        foreach ( $users_unfollow as $unfollower ){
+            if ( ( $key = array_search( $unfollower, $users ) ) !== false ){
+                unset( $users[$key] );
+            }
+        }
+        //you always follow a post if you are assigned to it.
+        if ( $assigned_to ){
+            $users[] = $assigned_to;
+        }
+        return array_unique( $users );
     }
 }

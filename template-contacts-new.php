@@ -7,14 +7,6 @@ if ( ! current_user_can( 'create_contacts' ) ) {
 
 get_header();
 
-dt_print_breadcrumbs(
-    [
-        [ home_url( '/' ), __( "Dashboard" ) ],
-        [ home_url( '/' ) . "contacts/", __( "Contacts" ) ],
-    ],
-    __( "New contact" )
-);
-
 ( function() {
 
 ?>

@@ -8,14 +8,13 @@ jQuery(document).ready(function($) {
   function post_comment(postId) {
     let commentInput = jQuery("#comment-input")
     let commentButton = jQuery("#add-comment-button")
-    // let comment = commentInput.val()
     getCommentWithMentions(comment=>{
       if (comment) {
         commentButton.toggleClass('loading')
         commentInput.attr("disabled", true)
         commentButton.attr("disabled", true)
         API.post_comment(postType, postId, comment).then(data => {
-          commentInput.val("")
+          commentInput.val("").trigger( "change" )
           commentButton.toggleClass('loading')
           data.comment.date = moment(data.comment.comment_date_gmt + "Z")
           comments.push(data.comment)

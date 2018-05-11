@@ -131,6 +131,9 @@ function dt_site_scripts() {
             $post = Disciple_Tools_Groups::get_group( get_the_ID() );
         }
         if ( !is_wp_error( $post )){
+            dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.js', array( 'jquery' ), true );
+            dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.js', array( 'jquery' ), true );
+            dt_theme_enqueue_style( 'jquery-mentions-css', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.css', array() );
             dt_theme_enqueue_script( 'comments', 'dt-assets/js/comments.js', array(
                 'jquery',
                 'lodash',
@@ -149,9 +152,6 @@ function dt_site_scripts() {
                 ]
             );
 
-            dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.js', array( 'jquery' ), true );
-            dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.js', array( 'jquery' ), true );
-            dt_theme_enqueue_style( 'jquery-mentions-css', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.css', array() );
 
 
             $translations = [
@@ -192,7 +192,8 @@ function dt_site_scripts() {
                         'template_dir'                    => get_template_directory_uri(),
                         'txt_created'                     => __( "Created contact at {}" ),
                         'translations'                    => $translations,
-                        'can_view_all'                    => user_can( get_current_user_id(), 'view_any_contacts' )
+                        'can_view_all'                    => user_can( get_current_user_id(), 'view_any_contacts' ),
+                        'current_user_id'                 => get_current_user_id()
                     )
                 );
             }
@@ -211,7 +212,8 @@ function dt_site_scripts() {
                         'nonce'             => wp_create_nonce( 'wp_rest' ),
                         'template_dir'      => get_template_directory_uri(),
                         'txt_created'       => __( "Created group at {}" ),
-                        'translations'      => $translations
+                        'translations'      => $translations,
+                        'current_user_id'   => get_current_user_id()
                     )
                 );
             }

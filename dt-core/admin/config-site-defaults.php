@@ -286,6 +286,8 @@ function dt_get_site_options_defaults()
         'new_email'        => true,
         'mentions_web'     => true,
         'mentions_email'   => true,
+        'comments_web'     => true,
+        'comments_email'   => true,
         'updates_web'      => true,
         'updates_email'    => true,
         'changes_web'      => true,

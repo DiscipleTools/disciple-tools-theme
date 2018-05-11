@@ -379,32 +379,14 @@ jQuery(document).ready(function($) {
   /**
    * Assigned_to
    */
+  let assigned_to_input = $(`.js-typeahead-assigned_to`)
   typeaheadTotals.assigned_to = 0;
   $.typeahead({
     input: '.js-typeahead-assigned_to',
     minLength: 0,
     accent: true,
     searchOnFocus: true,
-    source: {
-      users: {
-        display: ["name", "user"],
-        ajax: {
-          url: contactsDetailsWpApiSettings.root + 'dt/v1/users/get_users',
-          data: {
-            s: "{{query}}"
-          },
-          beforeSend: function (xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-          },
-          callback: {
-            done: function (data) {
-              typeaheadTotals["assigned_id"] = data.total || data.length
-              return data.posts || data
-            }
-          }
-        }
-      }
-    },
+    source: TYPEAHEADS.typeaheadUserSource(),
     templateValue: "{{name}}",
     template: function (query, item) {
       return `<span class="row">
@@ -419,10 +401,9 @@ jQuery(document).ready(function($) {
       onClick: function(node, a, item, event){
         API.save_field_api('contact', contactId, {assigned_to: 'user-' + item.ID}).then(function (response) {
           _.set(contact, "assigned_to", response.assigned_to)
-          $('.current-assigned').text(contact.assigned_to.display)
           setStatus(response)
-          $('.js-typeahead-assigned_to').val(contact.assigned_to.display)
-          $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
+          assigned_to_input.val(contact.assigned_to.display)
+          assigned_to_input.blur()
         })
       },
       onResult: function (node, query, result, resultCount) {
@@ -443,9 +424,9 @@ jQuery(document).ready(function($) {
     },
   });
   $('.search_assigned_to').on('click', function () {
-    let id = $(this).data("id")
-    $(`#${id} .js-typeahead-assigned_to`).val("")
-    $(`#${id} .js-typeahead-assigned_to`).trigger('input.typeahead')
+    assigned_to_input.val("")
+    assigned_to_input.trigger('input.typeahead')
+    assigned_to_input.focus()
   })
   if (_.get(contact, "assigned_to")){
     $('.current-assigned').text(_.get(contact, "assigned_to.display"))
@@ -460,6 +441,18 @@ jQuery(document).ready(function($) {
     if  (!shareTypeahead) {
       shareTypeahead = TYPEAHEADS.share("contact", contactId)
     }
+  })
+
+  /**
+   * Follow
+   */
+  $('.follow.switch-input').change(function () {
+    let follow = $(this).is(':checked')
+    let update = {
+      follow: {values:[{value:contactsDetailsWpApiSettings.current_user_id, delete:!follow}]},
+      unfollow: {values:[{value:contactsDetailsWpApiSettings.current_user_id, delete:follow}]}
+    }
+    API.save_field_api( "contact", contactId, update)
   })
 
   /**
@@ -828,10 +821,10 @@ jQuery(document).ready(function($) {
   })
 
 
-  let urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi)
+  let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi
 
   let resetDetailsFields = (contact=>{
-    $('.title').html(contact.title)
+    $('.title').html(_.escape(contact.title))
     let contact_methods = ["contact_email", "contact_phone", "contact_address"]
     contact_methods.forEach(contact_method=>{
       let fieldDesignator = contact_method.replace('contact_', '')
@@ -863,7 +856,7 @@ jQuery(document).ready(function($) {
         fields.forEach(field=>{
           socialIsEmpty = false
           let value = _.escape(field.value)
-          let match = urlRegex.exec(value)
+          let match = new RegExp(urlRegex).exec(value)
           if (match){
             if (!value.includes("http")){
               value = `https://${value}`

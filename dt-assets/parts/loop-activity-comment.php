@@ -7,9 +7,8 @@
     <div class="grid-y">
         <div class="cell grid-x grid-margin-x" id="add-comment-section">
             <div class="auto cell">
-            <textarea class="mention" dir="auto" rows="4" id="comment-input"
+            <textarea class="mention" dir="auto"  id="comment-input"
                       placeholder="<?php esc_html_e( "Write your comment or note here", 'disciple_tools' ) ?>"
-                      style="min-height:100px"
             ></textarea>
             </div>
         </div>

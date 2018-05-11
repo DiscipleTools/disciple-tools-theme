@@ -1,8 +1,8 @@
 /* global jQuery:false, wpApiGroupsSettings:false */
+let typeaheadTotals = {}
 jQuery(document).ready(function($) {
 
   let group = wpApiGroupsSettings.group
-  let typeaheadTotals = {}
   let masonGrid = $('.grid')
   let groupId = group.ID
   let editFieldsUpdate = {}
@@ -34,13 +34,14 @@ jQuery(document).ready(function($) {
   /**
    * Assigned_to
    */
+  let assignedToInput = $('.js-typeahead-assigned_to');
   typeaheadTotals.assigned_to = 0;
   $.typeahead({
     input: '.js-typeahead-assigned_to',
     minLength: 0,
     accent: true,
     searchOnFocus: true,
-    source: TYPEAHEADS.typeaheadSource('assigned_to', 'dt/v1/users/get_users'),
+    source: TYPEAHEADS.typeaheadUserSource(),
     display: "name",
     templateValue: "{{name}}",
     template: function (query, item) {
@@ -66,18 +67,17 @@ jQuery(document).ready(function($) {
       },
       onReady: function () {
         if (_.get(group,  "assigned_to.display")){
-          $('.js-typeahead-assigned_to').val(group.assigned_to.display)
+          assignedToInput.val(group.assigned_to.display)
         }
-        $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
+        assignedToInput.focus()
         $('.assigned_to-result-container').html("");
       }
     },
     debug:true
   });
   $('.search_assigned_to').on('click', function () {
-    let id = $(this).data("id")
-    $(`#${id} .js-typeahead-assigned_to`).val("")
-    $(`#${id} .js-typeahead-assigned_to`).trigger('input.typeahead')
+    assignedToInput.val("")
+    assignedToInput.trigger('input.typeahead')
   })
 
   /**
@@ -89,6 +89,18 @@ jQuery(document).ready(function($) {
     if  (!shareTypeahead) {
       shareTypeahead = TYPEAHEADS.share("group", groupId)
     }
+  })
+
+  /**
+   * Follow
+   */
+  $('.follow.switch-input').change(function () {
+    let follow = $(this).is(':checked')
+    let update = {
+      follow: {values:[{value:wpApiGroupsSettings.current_user_id, delete:!follow}]},
+      unfollow: {values:[{value:wpApiGroupsSettings.current_user_id, delete:follow}]}
+    }
+    API.save_field_api( "group", groupId, update)
   })
 
   let locationsList = $('.locations-list')
@@ -533,7 +545,7 @@ jQuery(document).ready(function($) {
   })
 
   let resetDetailsFields = (group=>{
-    $('.title').html(group.title)
+    $('.title').html(_.escape(group.title))
     let contact_methods = ["contact_address"]
     contact_methods.forEach(contact_method=>{
       let fieldDesignator = contact_method.replace('contact_', '')
