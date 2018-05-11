@@ -478,67 +478,94 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
      * MY METRICS
      */
 
-    public static function chart_my_hero_stats()
+    public static function chart_my_hero_stats( $user_id = null )
     {
-        $default = [
-            'total_contacts' => 0,
-            'total_groups' => 0,
-            'updates_needed' => 0,
-            'attempts_needed' => 0,
+        if ( is_null( $user_id ) || empty( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+
+        $results = self::query_my_hero_stats( $user_id );
+
+        $chart = [
+            'contacts' => $results['contacts'],
+            'needs_accept' => $results['needs_accept'],
+            'needs_update' => $results['needs_update'],
+            'groups' => $results['groups'],
         ];
 
-        $results = [];
-
-        return wp_parse_args( $results, $default );
+        return $chart;
     }
 
     public static function chart_contacts_progress( $type = 'personal' )
     {
+        $chart = [];
+
         switch ( $type ) {
             case 'personal':
-                $results = [];
+                $results = self::query_my_contacts_progress( get_current_user_id() );
+
+                $chart[] = [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ];
+
+                foreach ( $results as $value ) {
+                    $chart[] = [ $value['label'], $value['count'], $value['count'] ];
+                }
                 break;
             case 'project':
-                $results = [];
+                $results = self::query_project_contacts_progress();
+
+                $chart[] = [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ];
+
+                foreach ( $results as $value ) {
+                    $chart[] = [ $value['label'], $value['count'], $value['count'] ];
+                }
                 break;
             default:
-                $results = [];
+                $chart = [
+                    [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
+                    [ 'Contact Attempt Needed', 0, 0 ],
+                    [ 'Contact Attempted', 0, 0 ],
+                    [ 'Contact Established', 0, 0 ],
+                    [ 'First Meeting Scheduled', 0, 0 ],
+                    [ 'First Meeting Complete', 0, 0 ],
+                    [ 'Ongoing Meetings', 0, 0 ],
+                    [ 'Being Coached', 0, 0 ],
+                ];
                 break;
         }
-        $default = [
-            [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
-            [ 'Contact Attempt Needed', 0, 0 ],
-            [ 'Contact Attempted', 0, 0 ],
-            [ 'Contact Established', 0, 0 ],
-            [ 'First Meeting Scheduled', 0, 0 ],
-            [ 'First Meeting Complete', 0, 0 ],
-            [ 'Ongoing Meetings', 0, 0 ],
-            [ 'Being Coached', 0, 0 ],
-        ];
 
-        return wp_parse_args( $results, $default );
+        return $chart;
     }
 
     public static function chart_group_types( $type = 'personal' ) {
+
+        $chart = [];
+
         switch ( $type ) {
             case 'personal':
-                $results = [];
+                $results = self::query_my_group_types();
+                $chart[] = [ 'Group Type', 'Number' ];
+                foreach ( $results as $result ) {
+                    $chart[] = [ $result['type'], intval( $result['count'] ) ];
+                }
                 break;
             case 'project':
-                $results = [];
+                $results = self::query_project_group_types();
+                $chart[] = [ 'Group Type', 'Number' ];
+                foreach ( $results as $result ) {
+                    $chart[] = [ $result['type'], intval( $result['count'] ) ];
+                }
                 break;
             default:
-                $results = [];
+                $chart = [
+                    [ 'Group Type', 'Number' ],
+                    [ 'Pre-Group', 0 ],
+                    [ 'Group', 0 ],
+                    [ 'Church', 0 ],
+                ];
                 break;
         }
-        $default = [
-            [ 'Group Type', 'Number' ],
-            [ 'Pre-Group', 0 ],
-            [ 'Group', 0 ],
-            [ 'Church', 0 ],
-        ];
 
-        return wp_parse_args( $results, $default );
+        return $chart;
     }
 
     public static function chart_group_health( $type = 'personal' ) {
@@ -603,47 +630,25 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     {
         $default = [
             'total_contacts' => 0,
-            'total_groups' => 0,
+            'needs_accepted' => 0,
             'updates_needed' => 0,
-            'attempts_needed' => 0,
+            'total_groups' => 0,
+            'needs_training' => 0,
+            'generations' => 0,
         ];
 
-        $results = [];
+        $results = [
+            'total_contacts' => 0,
+            'needs_accepted' => 0,
+            'updates_needed' => 0,
+            'total_groups' => 0,
+            'needs_training' => 0,
+            'generations' => 0,
+        ];
 
         return wp_parse_args( $results, $default );
     }
 
-    public static function chart_project_contacts_progress()
-    {
-        $default = [
-            [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
-            [ 'Contact Attempt Needed', 10, 10 ],
-            [ 'Contact Attempted', 10, 10 ],
-            [ 'Contact Established', 10, 10 ],
-            [ 'First Meeting Scheduled', 10, 10 ],
-            [ 'First Meeting Complete', 10, 10 ],
-            [ 'Ongoing Meetings', 10, 10 ],
-            [ 'Being Coached', 23, 23 ],
-        ];
-
-        $results = [];
-
-        return wp_parse_args( $results, $default );
-    }
-
-    public static function chart_project_group_types()
-    {
-        $default = [
-            [ 'Group Type', 'Number' ],
-            [ 'Pre-Group', 75 ],
-            [ 'Group', 25 ],
-            [ 'Church', 25 ],
-        ];
-
-        $results = [];
-
-        return wp_parse_args( $results, $default );
-    }
 
     public static function chart_project_critical_path()
     {
@@ -819,13 +824,25 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
      */
     public static function chart_user_hero_stats() {
         $default = [
-            'multipliers' => 200,
-            'dispatchers' => 50,
-            'other' => 3,
-            'locations' => 3,
+            'multipliers' => 0,
+            'dispatchers' => 0,
+            'other' => 0,
+            'total' => 0,
         ];
 
-        $results = [];
+        $system_users = count_users();
+        $dispatchers = $system_users['avail_roles']['dispatcher'];
+        $multiplier = $system_users['avail_roles']['multiplier'];
+        $total_users = $system_users['total_users'];
+
+        $other = $total_users - ( $dispatchers + $multiplier );
+
+        $results = [
+            'multipliers' => $multiplier,
+            'dispatchers' => $dispatchers,
+            'other' => $other,
+            'total' => $system_users['total_users'],
+        ];
 
         return wp_parse_args( $results, $default );
     }
@@ -886,6 +903,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return wp_parse_args( $results, $default );
     }
 
+
+
+
+
     /**
      * QUERIES
      */
@@ -920,9 +941,53 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     AND d.meta_key = 'overall_status'
                     AND d.meta_value = 'active'
              WHERE a.post_status = 'publish'
+              AND a.post_type = 'contacts'
              GROUP BY b.meta_value
         ",
         'user-'. $user_id ), ARRAY_A );
+
+        $query_results = [];
+
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $result ) {
+                if ( isset( $defaults[$result['status']] ) ) {
+                    $query_results[$result['status']] = [
+                        'label' => $defaults[$result['status']]['label'],
+                        'count' => intval( $result['count'] ),
+                    ];
+                }
+            }
+        }
+
+        return wp_parse_args( $query_results, $defaults );
+    }
+
+    public static function query_project_contacts_progress() {
+        global $wpdb;
+
+        $defaults = [];
+        $status = dt_get_option( 'seeker_path' );
+        foreach ( $status as $key => $label ) {
+            $defaults[$key] = [
+                'label' => $label,
+                'count' => 0,
+            ];
+        }
+
+        $results = $wpdb->get_results( "
+            SELECT b.meta_value as status, count( a.ID ) as count
+             FROM $wpdb->posts as a
+               JOIN $wpdb->postmeta as b
+                 ON a.ID=b.post_id
+                    AND b.meta_key = 'seeker_path'
+               JOIN $wpdb->postmeta as d
+                 ON a.ID=d.post_id
+                    AND d.meta_key = 'overall_status'
+                    AND d.meta_value = 'active'
+             WHERE a.post_status = 'publish'
+                AND a.post_type = 'contacts'
+             GROUP BY b.meta_value
+        ", ARRAY_A );
 
         $query_results = [];
 
@@ -957,6 +1022,142 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         ", ARRAY_A );
 
         return $results;
+    }
+
+    public static function query_project_group_types() {
+        global $wpdb;
+
+        $results = $wpdb->get_results( "
+            SELECT c.meta_value as type, count( a.ID ) as count
+                FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                ON a.ID=b.post_id
+                AND b.meta_key = 'group_status'
+                   AND b.meta_value = 'active'
+                JOIN $wpdb->postmeta as c
+                ON a.ID=c.post_id
+                AND c.meta_key = 'group_type'
+                WHERE a.post_status = 'publish'
+                  AND a.post_type = 'groups'
+                GROUP BY type
+                ORDER BY type DESC
+        ", ARRAY_A );
+
+        return $results;
+    }
+
+    public static function query_my_group_types( $user_id = null ) {
+        global $wpdb;
+
+        if ( is_null( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT c.meta_value as type, count( a.ID ) as count
+                FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                ON a.ID=b.post_id
+                AND b.meta_key = 'group_status'
+                   AND b.meta_value = 'active'
+                JOIN $wpdb->postmeta as c
+                ON a.ID=c.post_id
+                AND c.meta_key = 'group_type'
+                JOIN $wpdb->postmeta as d
+                 ON a.ID=d.post_id
+                    AND d.meta_key = 'assigned_to'
+                    AND d.meta_value = %s
+                WHERE a.post_status = 'publish'
+                  AND a.post_type = 'groups'
+                GROUP BY type
+                ORDER BY type DESC
+        ",
+            'user-' . $user_id ), ARRAY_A );
+
+        return $results;
+    }
+
+    public static function query_my_hero_stats( $user_id = null ) {
+        global $wpdb;
+        $numbers = [];
+
+        if ( is_null( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+        $personal_counts = $wpdb->get_results( $wpdb->prepare( "
+            SELECT (
+             SELECT count(a.ID)
+             FROM $wpdb->posts as a
+               JOIN $wpdb->postmeta as b
+                 ON a.ID=b.post_id
+                    AND b.meta_key = 'assigned_to'
+                    AND b.meta_value = CONCAT( 'user-', %s )
+             WHERE a.post_status = 'publish'
+              AND a.post_type = 'contacts')
+              as contacts,
+              (SELECT count(a.ID)
+               FROM $wpdb->posts as a
+                 JOIN $wpdb->postmeta as b
+                   ON a.ID=b.post_id
+                      AND b.meta_key = 'accepted'
+                      AND b.meta_value = 'no'
+                 JOIN $wpdb->postmeta as c
+                   ON a.ID=c.post_id
+                      AND c.meta_key = 'assigned_to'
+                      AND c.meta_value = CONCAT( 'user-', %s )
+                 JOIN $wpdb->postmeta as d
+                   ON a.ID=d.post_id
+                      AND d.meta_key = 'overall_status'
+                      AND d.meta_value = 'active'
+               WHERE a.post_status = 'publish'
+                     AND a.post_type = 'contacts')
+                as needs_accept,
+              (SELECT count(a.ID)
+               FROM $wpdb->posts as a
+                 JOIN $wpdb->postmeta as b
+                   ON a.ID=b.post_id
+                      AND b.meta_key = 'requires_update'
+                      AND b.meta_value = 'yes'
+                 JOIN $wpdb->postmeta as c
+                   ON a.ID=c.post_id
+                      AND c.meta_key = 'assigned_to'
+                      AND c.meta_value = CONCAT( 'user-', %s )
+                 JOIN $wpdb->postmeta as d
+                   ON a.ID=d.post_id
+                      AND d.meta_key = 'overall_status'
+                      AND d.meta_value = 'active'
+               WHERE a.post_status = 'publish'
+                     AND a.post_type = 'contacts')
+                as needs_update,
+              (SELECT count(a.ID)
+               FROM $wpdb->posts as a
+                 JOIN $wpdb->postmeta as c
+                   ON a.ID=c.post_id
+                      AND c.meta_key = 'assigned_to'
+                      AND c.meta_value = CONCAT( 'user-', %s )
+                 JOIN $wpdb->postmeta as d
+                   ON a.ID=d.post_id
+                      AND d.meta_key = 'group_status'
+                      AND d.meta_value = 'active'
+               WHERE a.post_status = 'publish'
+                     AND a.post_type = 'groups')
+                as groups
+            ",
+            $user_id,
+            $user_id,
+            $user_id,
+            $user_id
+        ), ARRAY_A );
+
+        if ( empty( $personal_counts ) ) {
+            return new WP_Error( __METHOD__, 'No results from the personal count query' );
+        }
+
+        foreach ( $personal_counts[0] as $key => $value ) {
+            $numbers[$key] = $value;
+        }
+
+        return $numbers;
     }
 
 }

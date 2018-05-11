@@ -43,18 +43,16 @@ function project_overview() {
             <div class="cell center callout">
                 <p><span class="section-subheader">Contacts</span></p>
                 <div class="grid-x">
-                    <div class="medium-3 cell center">
+                    <div class="medium-4 cell center">
                         <h4>Total Contacts<br><span id="total_contacts">0</span></h4>
                     </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Need Accepted<br><span id="need_accepted">0</span></h4>
+                    <div class="medium-4 cell center left-border-grey">
+                        <h4>Waiting on Accept<br><span id="needs_accepted">0</span></h4>
                     </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Updates Needed<br><span id="updates_needed">0</span></h4>
+                    <div class="medium-4 cell center left-border-grey">
+                        <h4>Waiting on Update<br><span id="updates_needed">0</span></h4>
                     </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Attempts Needed<br><span id="attempts_needed">0</span></h4>
-                    </div>
+                    
                 </div>
             </div>
             <div class="cell">
@@ -65,14 +63,14 @@ function project_overview() {
                 <div class="cell center callout">
                     <p><span class="section-subheader">Groups</span></p>
                     <div class="grid-x">
-                        <div class="medium-3 cell center">
+                        <div class="medium-4 cell center">
                             <h4>Total Groups<br><span id="total_groups">0</span></h4>
                         </div>
-                        <div class="medium-3 cell center left-border-grey">
-                            <h4>Needs Training<br><span id="updates_needed">0</span></h4>
+                        <div class="medium-4 cell center left-border-grey">
+                            <h4>Needs Training<br><span id="needs_training">0</span></h4>
                         </div>
-                        <div class="medium-3 cell center left-border-grey">
-                            <h4>Generations<br><span id="updates_needed">0</span></h4>
+                        <div class="medium-4 cell center left-border-grey">
+                            <h4>Generations<br><span id="generations">0</span></h4>
                         </div>
                    </div> 
                 </div>
@@ -97,10 +95,12 @@ function project_overview() {
 
     let hero = sourceData.hero_stats
     jQuery('#total_contacts').html( numberWithCommas( hero.total_contacts ) )
+    jQuery('#needs_accepted').html( numberWithCommas( hero.needs_accepted ) )
     jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
-    jQuery('#attempts_needed').html( numberWithCommas( hero.attempts_needed ) )
 
     jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
+    jQuery('#needs_training').html( numberWithCommas( hero.needs_training ) )
+    jQuery('#generations').html( numberWithCommas( hero.generations ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'bar']});

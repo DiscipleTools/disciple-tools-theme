@@ -21,6 +21,9 @@ function users_activity() {
             <div class="cell center callout">
                 <div class="grid-x">
                     <div class="medium-3 cell center">
+                        <h4>Total Users<br><span id="total">0</span></h4>
+                    </div>
+                    <div class="medium-3 cell center left-border-grey">
                         <h4>Multipliers<br><span id="multipliers">0</span></h4>
                     </div>
                     <div class="medium-3 cell center left-border-grey">
@@ -29,9 +32,7 @@ function users_activity() {
                     <div class="medium-3 cell center left-border-grey">
                         <h4>Other<br><span id="other">0</span></h4>
                     </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Locations<br><span id="locations">0</span></h4>
-                    </div>
+                    
                 </div>
             </div>
             <div class="cell">
@@ -63,7 +64,7 @@ function users_activity() {
     jQuery('#multipliers').html( numberWithCommas( hero.multipliers ) )
     jQuery('#dispatchers').html( numberWithCommas( hero.dispatchers ) )
     jQuery('#other').html( numberWithCommas( hero.other ) )
-    jQuery('#locations').html( numberWithCommas( hero.locations ) )
+    jQuery('#total').html( numberWithCommas( hero.total ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'line', 'table']});
@@ -80,7 +81,7 @@ function users_activity() {
             chartArea: {
                 left: '5%',
                 top: '7%',
-                width: "95%",
+                width: "90%",
                 height: "85%" },
             legend: { position: 'bottom' }
         };
