@@ -1820,9 +1820,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         if ( $accepted ) {
-            update_post_meta( $contact_id, 'overall_status', 'active' );
-            update_post_meta( $contact_id, 'accepted', 'Yes' );
-
+            $update = [
+                "overall_status" => 'active',
+                "accepted" => 'yes'
+            ];
+            self::update_contact( $contact_id, $update, true );
             return [ "overall_status" => self::$contact_fields["overall_status"]["default"]['active'] ];
         } else {
             $assign_to_id = 0;
@@ -1835,8 +1837,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $assign_to_id = $base_user;
                 }
             }
-            update_post_meta( $contact_id, 'assigned_to', $meta_value = "user-" . $assign_to_id );
-            update_post_meta( $contact_id, 'overall_status', $meta_value = 'unassigned' );
+
+            $update = [
+                "assigned_to" => $assign_to_id,
+                "overall_status" => 'unassigned'
+            ];
+            self::update_contact( $contact_id, $update, true );
             $assign = get_user_by( 'id', $assign_to_id );
             $current_user = wp_get_current_user();
             dt_activity_insert(
@@ -1853,7 +1859,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'object_note'    => $current_user->display_name . " declined assignment",
                 ]
             );
-
+            Disciple_Tools_Notifications::insert_notification_for_assignment_declined( $current_user->ID, $assign_to_id, $contact_id );
             return [
                 "assigned_to" => $assign->display_name,
                 "overall_status" => 'unassigned'
