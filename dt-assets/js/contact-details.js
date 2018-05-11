@@ -821,7 +821,7 @@ jQuery(document).ready(function($) {
   })
 
 
-  let urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi)
+  let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi
 
   let resetDetailsFields = (contact=>{
     $('.title').html(_.escape(contact.title))
@@ -856,7 +856,7 @@ jQuery(document).ready(function($) {
         fields.forEach(field=>{
           socialIsEmpty = false
           let value = _.escape(field.value)
-          let match = urlRegex.exec(value)
+          let match = new RegExp(urlRegex).exec(value)
           if (match){
             if (!value.includes("http")){
               value = `https://${value}`
