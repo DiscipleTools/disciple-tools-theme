@@ -824,7 +824,7 @@ jQuery(document).ready(function($) {
   let urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi)
 
   let resetDetailsFields = (contact=>{
-    $('.title').html(contact.title)
+    $('.title').html(_.escape(contact.title))
     let contact_methods = ["contact_email", "contact_phone", "contact_address"]
     contact_methods.forEach(contact_method=>{
       let fieldDesignator = contact_method.replace('contact_', '')
