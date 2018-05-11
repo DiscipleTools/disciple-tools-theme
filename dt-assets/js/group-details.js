@@ -34,6 +34,7 @@ jQuery(document).ready(function($) {
   /**
    * Assigned_to
    */
+  let assignedToInput = $('.js-typeahead-assigned_to');
   typeaheadTotals.assigned_to = 0;
   $.typeahead({
     input: '.js-typeahead-assigned_to',
@@ -66,18 +67,17 @@ jQuery(document).ready(function($) {
       },
       onReady: function () {
         if (_.get(group,  "assigned_to.display")){
-          $('.js-typeahead-assigned_to').val(group.assigned_to.display)
+          assignedToInput.val(group.assigned_to.display)
         }
-        $('.js-typeahead-assigned_to').trigger('propertychange.typeahead')
+        assignedToInput.focus()
         $('.assigned_to-result-container').html("");
       }
     },
     debug:true
   });
   $('.search_assigned_to').on('click', function () {
-    let id = $(this).data("id")
-    $(`#${id} .js-typeahead-assigned_to`).val("")
-    $(`#${id} .js-typeahead-assigned_to`).trigger('input.typeahead')
+    assignedToInput.val("")
+    assignedToInput.trigger('input.typeahead')
   })
 
   /**
