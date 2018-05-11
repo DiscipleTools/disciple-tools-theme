@@ -1072,7 +1072,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 GROUP BY type
                 ORDER BY type DESC
         ",
-            'user-' . $user_id ), ARRAY_A );
+        'user-' . $user_id ), ARRAY_A );
 
         return $results;
     }
