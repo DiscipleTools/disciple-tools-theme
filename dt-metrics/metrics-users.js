@@ -1,17 +1,17 @@
 jQuery(document).ready(function() {
     console.log( dtMetricsUsers )
 
-    if( ! window.location.hash || '#user_activity' === window.location.hash  ) {
-        overview()
+    if( ! window.location.hash || '#users_activity' === window.location.hash  ) {
+        users_activity()
     }
 })
 
-function overview() {
+function users_activity() {
     "use strict";
     let chartDiv = jQuery('#chart')
-    let overview = dtMetricsPersonal.overview
+    let sourceData = dtMetricsUsers.data
     chartDiv.empty().html(`
-        <span class="section-header">`+ dtMetricsPersonal.overview.translations.title +`</span>
+        <span class="section-header">`+ sourceData.translations.title_activity +`</span>
         <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
         <div class="medium reveal" id="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
@@ -19,193 +19,144 @@ function overview() {
         <br><br>
         <div class="grid-x grid-padding-x grid-padding-y">
             <div class="cell center callout">
-                <p><span class="section-subheader">Contacts</span></p>
                 <div class="grid-x">
                     <div class="medium-3 cell center">
-                        <h4>Total Contacts<br><span id="total_contacts">0</span></h4>
+                        <h4>Total Users<br><span id="total">0</span></h4>
                     </div>
                     <div class="medium-3 cell center left-border-grey">
-                        <h4>Need Accepted<br><span id="need_accepted">0</span></h4>
+                        <h4>Multipliers<br><span id="multipliers">0</span></h4>
                     </div>
                     <div class="medium-3 cell center left-border-grey">
-                        <h4>Updates Needed<br><span id="updates_needed">0</span></h4>
+                        <h4>Dispatchers<br><span id="dispatchers">0</span></h4>
                     </div>
                     <div class="medium-3 cell center left-border-grey">
-                        <h4>Attempts Needed<br><span id="attempts_needed">0</span></h4>
+                        <h4>Other<br><span id="other">0</span></h4>
                     </div>
+                    
                 </div>
             </div>
             <div class="cell">
-                <div id="my_contacts_progress" style="height: 350px;"></div>
+                <span class="section-subheader">Recent Logins</span>
+                <div id="chart_line_logins" style="height:300px"></div>
             </div>
             <div class="cell">
             <hr>
-                <div id="my_critical_path" style="height: 650px;"></div>
+                <p><span class="section-subheader">Contacts Per User</span></p>
+                <div id="contacts_per_user" ></div>
             </div>
             <div class="cell">
-            <br>
-                <div class="cell center callout">
-                    <p><span class="section-subheader">Groups</span></p>
-                    <div class="grid-x">
-                        <div class="medium-3 cell center">
-                            <h4>Total Groups<br><span id="total_groups">0</span></h4>
-                        </div>
-                   </div> 
-                </div>
-            </div>
-            <div class="cell">
-                <div class="grid-x">
-                    <div class="cell medium-6 center">
-                        <span class="section-subheader">Group Types</span>
-                        <div id="group_types" style="height: 400px;"></div>
+                <hr>
+                <div class="grid-x grid-padding-x">
+                    <div class="cell medium-6">
+                        <span class="section-subheader">Least Active</span>
+                        <div id="least_active"></div>
                     </div>
                     <div class="cell medium-6">
-                        <div id="group_generations" style="height: 400px;"></div>
+                        <span class="section-subheader">Most Active</span>
+                        <div id="most_active"></div>
                     </div>
                 </div>
-            </div>
-            <div class="cell">
-            <hr>
-                <div id="my_groups_health" style="height: 500px;"></div>
             </div>
         </div>
         `)
 
-    let hero = overview.hero_stats
-    jQuery('#total_contacts').html( numberWithCommas( hero.total_contacts ) )
-    jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
-    jQuery('#attempts_needed').html( numberWithCommas( hero.attempts_needed ) )
-
-    jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
+    let hero = sourceData.hero_stats
+    jQuery('#multipliers').html( numberWithCommas( hero.multipliers ) )
+    jQuery('#dispatchers').html( numberWithCommas( hero.dispatchers ) )
+    jQuery('#other').html( numberWithCommas( hero.other ) )
+    jQuery('#total').html( numberWithCommas( hero.total ) )
 
     // build charts
-    google.charts.load('current', {'packages':['corechart', 'bar']});
+    google.charts.load('current', {'packages':['corechart', 'line', 'table']});
 
-    google.charts.setOnLoadCallback(drawMyContactsProgress);
-    google.charts.setOnLoadCallback(drawMyGroupHealth);
-    google.charts.setOnLoadCallback(drawCriticalPath);
-    google.charts.setOnLoadCallback(drawGroupTypes);
-    google.charts.setOnLoadCallback(drawGroupGenerations);
+    google.charts.setOnLoadCallback(drawLineChartLogins);
+    google.charts.setOnLoadCallback(drawContactsPerUser);
+    google.charts.setOnLoadCallback(drawLeastActive);
+    google.charts.setOnLoadCallback(drawMostActive);
 
-    function drawMyContactsProgress() {
-
-        let data = google.visualization.arrayToDataTable( overview.contacts_progress );
-
+    function drawLineChartLogins() {
+        let chartData = google.visualization.arrayToDataTable( sourceData.logins_by_day );
         let options = {
-            bars: 'horizontal',
+            vAxis: {title: 'logins'},
             chartArea: {
-                left: '20%',
+                left: '5%',
                 top: '7%',
-                width: "75%",
+                width: "90%",
                 height: "85%" },
-            hAxis: {
-                title: 'number of contacts',
-            },
-            title: "My Follow-Up Progress",
-            legend: {position: "none"},
+            legend: { position: 'bottom' }
         };
+        let chart = new google.visualization.LineChart( document.getElementById('chart_line_logins') );
 
-        let chart = new google.visualization.BarChart(document.getElementById('my_contacts_progress'));
-        chart.draw(data, options);
+        chart.draw(chartData, options);
     }
 
-    function drawCriticalPath() {
-
-        let data = google.visualization.arrayToDataTable( overview.critical_path );
-
-        let options = {
-            bars: 'horizontal',
-            chartArea: {
-                left: '20%',
-                top: '7%',
-                width: "75%",
-                height: "85%" },
-            title: "My Critical Path",
-            legend: {position: "none"},
-        };
-
-        let chart = new google.visualization.BarChart(document.getElementById('my_critical_path'));
-        chart.draw(data, options);
-    }
-
-    function drawMyGroupHealth() {
-
-        let data = google.visualization.arrayToDataTable( overview.group_health );
-
+    function drawContactsPerUser() {
+        let chartData = google.visualization.arrayToDataTable( sourceData.contacts_per_user );
         let options = {
             chartArea: {
-                left: '10%',
-                top: '10%',
-                width: "85%",
-                height: "75%" },
-            vAxis: {
-                title: 'groups',
-            },
-            title: "Groups Needing Training Attention",
-            legend: {position: "none"},
-            colors: ['green' ],
-        };
-
-        let chart = new google.visualization.ColumnChart(document.getElementById('my_groups_health'));
-
-        function selectHandler() {
-            let selectedItem = chart.getSelection()[0];
-            if (selectedItem) {
-                let topping = data.getValue(selectedItem.row, 0);
-                alert('You selected ' + topping);
-            }
-        }
-
-        google.visualization.events.addListener(chart, 'select', selectHandler);
-
-        chart.draw(data, options);
-    }
-
-    function drawGroupTypes() {
-        let data = google.visualization.arrayToDataTable( overview.group_types );
-
-        let options = {
-            legend: 'bottom',
-            pieSliceText: 'groups',
-            pieStartAngle: 135,
-            slices: {
-                0: { color: 'lightgreen' },
-                1: { color: 'limegreen' },
-                2: { color: 'darkgreen' },
-            },
-            pieHole: 0.4,
-            chartArea: {
-                left: '0%',
+                left: '5%',
                 top: '7%',
                 width: "100%",
-                height: "80%" },
-            fontSize: '20',
-        };
-
-        let chart = new google.visualization.PieChart(document.getElementById('group_types'));
-        chart.draw(data, options);
-    }
-
-    function drawGroupGenerations() {
-
-        let data = google.visualization.arrayToDataTable( overview.group_generations );
-
-        let options = {
-            bars: 'horizontal',
-            chartArea: {
-                left: '20%',
-                top: '7%',
-                width: "75%",
                 height: "85%" },
-            title: "Generations",
-            legend: { position: 'bottom', maxLines: 3 },
-            isStacked: true,
-            colors: [ 'lightgreen', 'limegreen', 'darkgreen' ],
-        };
+            legend: { position: 'bottom' },
+            alternatingRowStyle: true,
+            sort: 'enable',
+            showRowNumber: true,
+            width: '100%',
 
-        let chart = new google.visualization.BarChart(document.getElementById('group_generations'));
-        chart.draw(data, options);
+        };
+        let chart = new google.visualization.Table( document.getElementById('contacts_per_user') );
+
+        chart.draw(chartData, options);
     }
+
+    function drawLeastActive() {
+        let chartData = google.visualization.arrayToDataTable( sourceData.least_active );
+        let options = {
+            chartArea: {
+                left: '5%',
+                top: '7%',
+                width: "100%",
+                height: "85%" },
+            legend: { position: 'bottom' },
+            alternatingRowStyle: true,
+            sort: 'enable',
+            showRowNumber: true,
+            width: '100%',
+
+        };
+        let chart = new google.visualization.Table( document.getElementById('least_active') );
+
+        chart.draw(chartData, options);
+    }
+
+    function drawMostActive() {
+        let chartData = google.visualization.arrayToDataTable( sourceData.most_active );
+        let options = {
+            chartArea: {
+                left: '5%',
+                top: '7%',
+                width: "100%",
+                height: "85%" },
+            legend: { position: 'bottom' },
+            alternatingRowStyle: true,
+            sort: 'enable',
+            showRowNumber: true,
+            width: '100%',
+
+        };
+        let chart = new google.visualization.Table( document.getElementById('most_active') );
+
+        chart.draw(chartData, options);
+    }
+
+
+    new Foundation.Reveal(jQuery('.dt-project-legend'));
+
+    chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span> 
+            <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
+            <span class="spinner" style="display: none;"><img src="`+dtMetricsUsers.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
+            </div>`)
 }
 
 function legend() {

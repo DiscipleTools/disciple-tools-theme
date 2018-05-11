@@ -43,40 +43,34 @@ function project_overview() {
             <div class="cell center callout">
                 <p><span class="section-subheader">Contacts</span></p>
                 <div class="grid-x">
-                    <div class="medium-3 cell center">
+                    <div class="medium-4 cell center">
                         <h4>Total Contacts<br><span id="total_contacts">0</span></h4>
                     </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Need Accepted<br><span id="need_accepted">0</span></h4>
+                    <div class="medium-4 cell center left-border-grey">
+                        <h4>Waiting on Accept<br><span id="needs_accepted">0</span></h4>
                     </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Updates Needed<br><span id="updates_needed">0</span></h4>
+                    <div class="medium-4 cell center left-border-grey">
+                        <h4>Waiting on Update<br><span id="updates_needed">0</span></h4>
                     </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Attempts Needed<br><span id="attempts_needed">0</span></h4>
-                    </div>
+                    
                 </div>
             </div>
             <div class="cell">
                 <div id="my_contacts_progress" style="height: 350px;"></div>
             </div>
             <div class="cell">
-            <hr>
-                <div id="my_critical_path" style="height: 650px;"></div>
-            </div>
-            <div class="cell">
             <br>
                 <div class="cell center callout">
                     <p><span class="section-subheader">Groups</span></p>
                     <div class="grid-x">
-                        <div class="medium-3 cell center">
+                        <div class="medium-4 cell center">
                             <h4>Total Groups<br><span id="total_groups">0</span></h4>
                         </div>
-                        <div class="medium-3 cell center left-border-grey">
-                            <h4>Needs Training<br><span id="updates_needed">0</span></h4>
+                        <div class="medium-4 cell center left-border-grey">
+                            <h4>Needs Training<br><span id="needs_training">0</span></h4>
                         </div>
-                        <div class="medium-3 cell center left-border-grey">
-                            <h4>Generations<br><span id="updates_needed">0</span></h4>
+                        <div class="medium-4 cell center left-border-grey">
+                            <h4>Generations<br><span id="generations">0</span></h4>
                         </div>
                    </div> 
                 </div>
@@ -101,17 +95,18 @@ function project_overview() {
 
     let hero = sourceData.hero_stats
     jQuery('#total_contacts').html( numberWithCommas( hero.total_contacts ) )
+    jQuery('#needs_accepted').html( numberWithCommas( hero.needs_accepted ) )
     jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
-    jQuery('#attempts_needed').html( numberWithCommas( hero.attempts_needed ) )
 
     jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
+    jQuery('#needs_training').html( numberWithCommas( hero.needs_training ) )
+    jQuery('#generations').html( numberWithCommas( hero.generations ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'bar']});
 
     google.charts.setOnLoadCallback(drawMyContactsProgress);
     google.charts.setOnLoadCallback(drawMyGroupHealth);
-    google.charts.setOnLoadCallback(drawCriticalPath);
     google.charts.setOnLoadCallback(drawGroupTypes);
     google.charts.setOnLoadCallback(drawGroupGenerations);
 
@@ -129,30 +124,11 @@ function project_overview() {
             hAxis: {
                 title: 'number of contacts',
             },
-            title: "My Follow-Up Progress",
+            title: "Follow-Up Progress",
             legend: {position: "none"},
         };
 
         let chart = new google.visualization.BarChart(document.getElementById('my_contacts_progress'));
-        chart.draw(data, options);
-    }
-
-    function drawCriticalPath() {
-
-        let data = google.visualization.arrayToDataTable( sourceData.critical_path );
-
-        let options = {
-            bars: 'horizontal',
-            chartArea: {
-                left: '20%',
-                top: '7%',
-                width: "75%",
-                height: "85%" },
-            title: "My Critical Path",
-            legend: {position: "none"},
-        };
-
-        let chart = new google.visualization.BarChart(document.getElementById('my_critical_path'));
         chart.draw(data, options);
     }
 
@@ -249,26 +225,13 @@ function project_timeline() {
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
 
-    console.log( sourceData )
-
     chartDiv.empty().html(`
         <span class="section-header">`+ sourceData.translations.title_timeline +`</span>
         <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
         <div class="medium reveal" id="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button></div>
-        <br><br>
-        <div class="grid-x grid-padding-x">
-            <div class="cell medium-3">
-                <input type="text" id="start_date" class="datepicker"  />
-            </div>
-            <div class="cell medium-3">
-                <input type="text" id="end_date" class="datepicker" />
-            </div>
-            <div class="cell medium-2">
-                <button type="button" class="button" class="datepicker" value="filter">Filter</button>
-            </div>
-        </div>
+        <br>
         <hr>
         <div class="grid-x grid-padding-x grid-padding-y">
             <div class="cell">
@@ -276,261 +239,6 @@ function project_timeline() {
                   <div class="page__demo">
                     <div class="main-container page__container">
                       <div class="timeline">
-                        <div class="timeline__group">
-                          <span class="timeline__year">May</span>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">20</span>
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">19</span>
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>5</strong> contacts closed<br>
-                                <strong>1</strong> contacts paused<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">18</span>
-                              
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>40</strong> new comments<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">17</span>
-                              
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">16</span>
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">15</span>
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">14</span>
-                              
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">13</span>
-                              
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">12</span>
-                              
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">11</span>
-                              
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">10</span>
-                              
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">09</span>
-                              
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">08</span>
-                              
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">07</span>
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">06</span>
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">05</span>
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">04</span>
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">03</span>
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">02</span>
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="timeline__box">
-                            <div class="timeline__date">
-                              <span class="timeline__day">01</span>
-                            </div>
-                            <div class="timeline__post">
-                              <div class="timeline__content">
-                                <p><strong>2</strong> new contacts<br>
-                                <strong>1</strong> new group<br>
-                                <strong>12</strong> seeker steps increased</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -563,7 +271,7 @@ function project_timeline() {
                           margin-top: 4rem;
                         }
                         
-                        .timeline__year{
+                        .timeline__month{
                           padding: .5rem 1.5rem;
                           color: var(--uiTimelineSecondaryColor);
                           background-color: var(--uiTimelineMainColor);
@@ -611,11 +319,7 @@ function project_timeline() {
                           display: block;
                         }
                         
-                        .timeline__month{
-                          display: block;
-                          font-size: .8em;
-                          text-transform: uppercase;
-                        }
+                        
                         
                         .timeline__post{
                           padding: 1.5rem 3rem;
@@ -746,7 +450,7 @@ function project_timeline() {
                         }
                         
                         .page__container{
-                          padding-top: 30px;
+                          padding-top: 0px;
                           padding-bottom: 30px;
                           max-width: 800px;
                         }
@@ -778,14 +482,38 @@ function project_timeline() {
                           } 
                         }
                 </style>
-                
             </div>
         </div>
         `)
 
+    let timeline = jQuery('.timeline')
+    jQuery.each( sourceData.timeline, function( index, value) {
+        let id = index.replace(/\W/g,'_')
+        timeline.append(`<div id="`+id+`" class="timeline__group"></div>`)
 
-    jQuery( ".datepicker" ).datepicker();
+        jQuery('#'+id).append(`<span class="timeline__month">` + index + `</span>`)
 
+        jQuery.each( value, function( i, v ) {
+            let dayContentId = id + `_` + v.day
+            jQuery('#'+id).append(`
+                          <div class="timeline__box">
+                            <div class="timeline__date">
+                                <span class="timeline__day">
+                                        ` + v.day + `
+                                </span>
+                            </div>
+                            <div class="timeline__post">
+                              <div class="timeline__content">
+                                <p id="` + dayContentId + `"></p>
+                              </div>
+                            </div>
+                          </div>`)
+
+            jQuery.each( v.content, function( line, list ) {
+                jQuery('#' + dayContentId ).append( '<strong>' + list.count + '</strong> ' + list.tag + '<br>' )
+            })
+        })
+    })
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
 
@@ -876,7 +604,6 @@ function project_outreach() {
                 These are outreach activities that are collecting contacts. Media lead generation. Other lead generation.
             </div>
             <div class="cell">
-                <div id="my_critical_path" style="height: 750px;"></div>
             </div>
             
         </div>
@@ -892,26 +619,7 @@ function project_outreach() {
     // build charts
     google.charts.load('current', {'packages':['corechart', 'bar']});
 
-    google.charts.setOnLoadCallback(drawCriticalPath);
 
-    function drawCriticalPath() {
-
-        let data = google.visualization.arrayToDataTable( sourceData.critical_path );
-
-        let options = {
-            bars: 'horizontal',
-            chartArea: {
-                left: '20%',
-                top: '7%',
-                width: "75%",
-                height: "85%" },
-            title: "Critical Path",
-            legend: {position: "none"},
-        };
-
-        let chart = new google.visualization.BarChart(document.getElementById('my_critical_path'));
-        chart.draw(data, options);
-    }
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
 
@@ -941,6 +649,9 @@ function project_follow_up() {
                 These are follow-up activities statistics.
             </div>
             <div class="cell">
+            Recently Accepted
+            Waiting to be Accepted
+            
             </div>
             
         </div>

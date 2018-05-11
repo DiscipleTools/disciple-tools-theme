@@ -21,17 +21,14 @@ function my_stats() {
             <div class="cell center callout">
                 <p><span class="section-subheader">Contacts</span></p>
                 <div class="grid-x">
-                    <div class="medium-3 cell center">
-                        <h4>Total Contacts<br><span id="total_contacts">0</span></h4>
+                    <div class="medium-4 cell center">
+                        <h4>Total Contacts<br><span id="contacts">0</span></h4>
                     </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Need Accepted<br><span id="need_accepted">0</span></h4>
+                    <div class="medium-4 cell center left-border-grey">
+                        <h4>Waiting on Accept<br><span id="needs_accepted">0</span></h4>
                     </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Updates Needed<br><span id="updates_needed">0</span></h4>
-                    </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Attempts Needed<br><span id="attempts_needed">0</span></h4>
+                    <div class="medium-4 cell center left-border-grey">
+                        <h4>Waiting on Update<br><span id="updates_needed">0</span></h4>
                     </div>
                 </div>
             </div>
@@ -39,22 +36,18 @@ function my_stats() {
                 <div id="my_contacts_progress" style="height: 350px;"></div>
             </div>
             <div class="cell">
-            <hr>
-                <div id="my_critical_path" style="height: 650px;"></div>
-            </div>
-            <div class="cell">
             <br>
                 <div class="cell center callout">
                     <p><span class="section-subheader">Groups</span></p>
                     <div class="grid-x">
-                        <div class="medium-3 cell center">
+                        <div class="medium-4 cell center">
                             <h4>Total Groups<br><span id="total_groups">0</span></h4>
                         </div>
-                        <div class="medium-3 cell center left-border-grey">
-                            <h4>Needs Training<br><span id="updates_needed">0</span></h4>
+                        <div class="medium-4 cell center left-border-grey">
+                            <h4>Needs Training<br><span id="needs_training">0</span></h4>
                         </div>
-                        <div class="medium-3 cell center left-border-grey">
-                            <h4>Generations<br><span id="updates_needed">0</span></h4>
+                        <div class="medium-4 cell center left-border-grey">
+                            <h4>Generations<br><span id="generations">0</span></h4>
                         </div>
                    </div> 
                 </div>
@@ -78,18 +71,17 @@ function my_stats() {
         `)
 
     let hero = sourceData.hero_stats
-    jQuery('#total_contacts').html( numberWithCommas( hero.total_contacts ) )
-    jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
-    jQuery('#attempts_needed').html( numberWithCommas( hero.attempts_needed ) )
+    jQuery('#contacts').html( numberWithCommas( hero.contacts ) )
+    jQuery('#needs_accepted').html( numberWithCommas( hero.needs_accept ) )
+    jQuery('#updates_needed').html( numberWithCommas( hero.needs_update ) )
 
-    jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
+    jQuery('#total_groups').html( numberWithCommas( hero.groups ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'bar']});
 
     google.charts.setOnLoadCallback(drawMyContactsProgress);
     google.charts.setOnLoadCallback(drawMyGroupHealth);
-    google.charts.setOnLoadCallback(drawCriticalPath);
     google.charts.setOnLoadCallback(drawGroupTypes);
     google.charts.setOnLoadCallback(drawGroupGenerations);
 
@@ -112,25 +104,6 @@ function my_stats() {
         };
 
         let chart = new google.visualization.BarChart(document.getElementById('my_contacts_progress'));
-        chart.draw(data, options);
-    }
-
-    function drawCriticalPath() {
-
-        let data = google.visualization.arrayToDataTable( sourceData.critical_path );
-
-        let options = {
-            bars: 'horizontal',
-            chartArea: {
-                left: '20%',
-                top: '7%',
-                width: "75%",
-                height: "85%" },
-            title: "My Critical Path",
-            legend: {position: "none"},
-        };
-
-        let chart = new google.visualization.BarChart(document.getElementById('my_critical_path'));
         chart.draw(data, options);
     }
 

@@ -27,7 +27,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function add_url( $template_for_url ) {
-        $template_for_url['metrics/user'] = 'template-metrics.php';
+        $template_for_url['metrics/users'] = 'template-metrics.php';
         return $template_for_url;
     }
 
@@ -35,7 +35,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         $content .= '
             <li><a href="" id="projects-menu">' .  esc_html__( 'Users', 'disciple_tools' ) . '</a>
                 <ul class="menu vertical nested" >
-                    <li><a href="'. site_url( '/metrics/users/' ) .'#user_activity">'. esc_html__( 'Activity' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/users/' ) .'#users_activity" onclick="users_activity()">'. esc_html__( 'Activity' ) .'</a></li>
                 </ul>
             </li>
             ';
@@ -49,14 +49,14 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-users.js' ), true );
 
         wp_localize_script(
-            'dt_metrics_users_script', 'dtMetricsProject', [
+            'dt_metrics_users_script', 'dtMetricsUsers', [
                 'root' => esc_url_raw( rest_url() ),
-                'plugin_uri' => get_stylesheet_directory_uri(),
+                'theme_uri' => get_stylesheet_directory_uri(),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'map_key' => dt_get_option( 'map_key' ),
-                'users' => $this->users(),
+                'data' => $this->users(),
             ]
         );
     }
@@ -64,77 +64,13 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     public function users() {
         return [
             'translations' => [
-                'title' => __( 'Users' ),
-                'total_contacts' => __( 'Total Contacts' ),
-                'total_groups' => __( 'Total Groups' ),
-                'updates_needed' => __( 'Updates Needed' ),
-                'attempts_needed' => __( 'Attempts Needed' ),
+                'title_activity' => __( 'Users Activity' ),
             ],
-            'hero_stats' => [
-                'total_contacts' => dt_count_user_contacts(),
-                'total_groups' => dt_count_user_groups(),
-                'updates_needed' => dt_count_updates_needed(),
-                'attempts_needed' => dt_count_attempts_needed(),
-            ],
-            'contacts_progress' => [
-                [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
-                [ 'Contact Attempt Needed', 10, 10 ],
-                [ 'Contact Attempted', 10, 10 ],
-                [ 'Contact Established', 10, 10 ],
-                [ 'First Meeting Scheduled', 10, 10 ],
-                [ 'First Meeting Complete', 10, 10 ],
-                [ 'Ongoing Meetings', 10, 10 ],
-                [ 'Being Coached', 23, 23 ],
-            ],
-            'critical_path' => [
-                [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
-                [ 'New Contacts', 100, 100 ],
-                [ 'Contacts Attempted', 95, 95 ],
-                [ 'First Meetings', 80, 80 ],
-                [ 'All Baptisms', 6, 6 ],
-                [ '1st Gen', 4, 4 ],
-                [ '2nd Gen', 2, 2 ],
-                [ '3rd Gen', 0, 0 ],
-                [ '4th Gen', 0, 0 ],
-                [ 'Baptizers', 3, 3 ],
-                [ 'Church Planters', 4, 4 ],
-                [ 'All Groups', 4, 4 ],
-                [ 'Active Pre-Groups', 4, 4 ],
-                [ 'Active Groups', 4, 4 ],
-                [ 'Active Churches', 5, 5 ],
-                [ '1st Gen', 3, 3 ],
-                [ '2nd Gen', 2, 2 ],
-                [ '3rd Gen', 0, 0 ],
-                [ '4th Gen', 0, 0 ],
-
-            ],
-            'group_types' => [
-                [ 'Group Type', 'Number' ],
-                [ 'Pre-Group', 75 ],
-                [ 'Group', 25 ],
-                [ 'Church', 25 ],
-            ],
-            'group_health' => [
-                [ 'Step', 'Groups', [ 'role' => 'annotation' ] ],
-                [ 'Fellowship', 10, 10 ],
-                [ 'Giving', 10, 10 ],
-                [ 'Communion', 10, 10 ],
-                [ 'Baptism', 10, 10 ],
-                [ 'Prayer', 40, 40 ],
-                [ 'Leaders', 50, 50 ],
-                [ 'Word', 23, 23 ],
-                [ 'Praise', 23, 23 ],
-                [ 'Evangelism', 23, 23 ],
-                [ 'Covenant', 23, 23 ],
-            ],
-            'group_generations' => [
-                [ 'Generation', 'Pre-Group', 'Group', 'Church', [ 'role' => 'annotation' ] ],
-                [ '1st Gen', 5, 8, 6, 21 ],
-                [ '2st Gen', 1, 3, 4, 8 ],
-                [ '3st Gen', 0, 2, 0, 2 ],
-                [ '4st Gen', 1, 1, 0, 2 ],
-                [ '5+ Gen', 0, 0, 1, 1 ],
-            ],
+            'hero_stats' => self::chart_user_hero_stats(),
+            'logins_by_day' => self::chart_user_logins_by_day(),
+            'contacts_per_user' => self::chart_user_contacts_per_user(),
+            'least_active' => self::chart_user_least_active(),
+            'most_active' => self::chart_user_most_active(),
         ];
     }
 }
