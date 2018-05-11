@@ -22,7 +22,8 @@ declare( strict_types=1 );
         true,
         current_user_can( "assign_any_contacts" ),
         isset( $contact["requires_update"] ) && $contact["requires_update"]["key"] === "yes",
-        in_array( $current_user_id, $following )
+        in_array( $current_user_id, $following ),
+        isset( $contact["assigned_to"]["id"] ) ? $contact["assigned_to"]["id"] == $current_user_id : false
     ); ?>
 
     <div id="errors"></div>

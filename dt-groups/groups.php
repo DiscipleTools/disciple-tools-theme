@@ -513,6 +513,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         //hook for when a group has been updated
         if ( !is_wp_error( $group ) ){
             do_action( "dt_group_updated", $field_keys, $group );
+            Disciple_Tools_Notifications::insert_notification_for_post_update( "groups", $group, $existing_group, $field_keys );
         }
         return $group;
 
@@ -973,6 +974,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         //hook for signaling that a group has been created and the initial fields
         if ( !is_wp_error( $post_id )){
             do_action( "dt_group_created", $post_id, $initial_fields );
+            Disciple_Tools_Notifications::insert_notification_for_new_post( "groups", $fields, $post_id );
         }
         return $post_id;
     }

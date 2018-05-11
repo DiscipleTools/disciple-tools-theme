@@ -317,6 +317,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         //hook for signaling that a contact has been created and the initial fields
         if ( !is_wp_error( $post_id )){
             do_action( "dt_contact_created", $post_id, $initial_fields );
+            Disciple_Tools_Notifications::insert_notification_for_new_post( "contacts", $fields, $post_id );
         }
 
         return $post_id;
@@ -526,6 +527,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
         $initial_fields = $fields;
+        $initial_keys = array_keys( $fields );
 
         $post = get_post( $contact_id );
         if ( isset( $fields['id'] ) ) {
@@ -648,6 +650,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         //hook for signaling that a contact has been updated and which keys have been changed
         if ( !is_wp_error( $contact )){
             do_action( "dt_contact_updated", $contact_id, $initial_fields, $contact );
+            Disciple_Tools_Notifications::insert_notification_for_post_update( "contacts", $contact, $existing_contact, $initial_keys );
         }
 
         return $contact;
@@ -1752,20 +1755,23 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @param string $type
      *
+     * @param null $user_id
+     * @param null $author
+     *
      * @return false|int|\WP_Error
      */
-    public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true, $type = "comment" )
+    public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null )
     {
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
         $user = wp_get_current_user();
-        $user_id = get_current_user_id();
+        $user_id = $user_id ?? get_current_user_id();
         $comment_data = [
             'comment_post_ID'      => $contact_id,
             'comment_content'      => $comment,
             'user_id'              => $user_id,
-            'comment_author'       => $user->display_name,
+            'comment_author'       => $author ?? $user->display_name,
             'comment_author_url'   => $user->user_url,
             'comment_author_email' => $user->user_email,
             'comment_type'         => $type,
@@ -1977,7 +1983,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 if ( $has_unconfirmed_duplicates > 5 ){
                     $message .= "- " . $has_unconfirmed_duplicates . " " . __( "more duplicates not shown", "disciple_tools" );
                 }
-                self::add_comment( $contact_id, $message, false, "duplicate" );
+                self::add_comment( $contact_id, $message, false, "duplicate", 0, "Duplicate Checker" );
                 update_post_meta( $contact_id, "duplicate_data", $duplicate_data );
             }
         }

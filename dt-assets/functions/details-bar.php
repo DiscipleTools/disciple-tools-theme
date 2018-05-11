@@ -8,13 +8,15 @@ declare(strict_types=1);
  * @param bool $show_update_needed
  * @param bool $update_needed
  * @param bool $following
+ * @param bool $disable_following_toggle_function
  */
 function dt_print_details_bar(
     bool $share_button = false,
     bool $comment_button = false,
     bool $show_update_needed = false,
     bool $update_needed = false,
-    bool $following = false
+    bool $following = false,
+    bool $disable_following_toggle_function = false
 ) {
 ?>
 
@@ -46,9 +48,12 @@ function dt_print_details_bar(
                     </div>
                     <div class="cell small-4 align-right grid-x grid-margin-x">
                         <div class="cell shrink center-items ">
-                            <div class="" style="margin-right:5px"><span><?php esc_html_e( 'Follow', 'disciple_tools' )?></span></div>
+                            <?php if ( $disable_following_toggle_function ) : ?>
+                            <span style="color: black"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></span>
+                            <?php else : ?>
+                            <div style="margin-right:5px"><span><?php esc_html_e( 'Follow', 'disciple_tools' )?></span></div>
                             <div class="switch tiny cell shrink" style="margin-bottom: 0px">
-                                <input class="switch-input follow" id="follow" type="checkbox" name="follow"
+                                <input class="switch-input follow" id="follow" type="checkbox" name="follow" />
                                 <?php echo ( $following ? 'checked' : "" ) ?>>
                                 <label class="switch-paddle follow" for="follow">
                                     <span class="show-for-sr"><?php esc_html_e( 'Follow', 'disciple_tools' )?></span>
@@ -56,6 +61,7 @@ function dt_print_details_bar(
                                     <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
                                 </label>
                             </div>
+                            <?php endif; ?>
                         </div>
                         <?php if ( $share_button ): ?>
                         <div class="cell shrink center-items ">
