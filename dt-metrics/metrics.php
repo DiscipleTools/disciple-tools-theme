@@ -34,7 +34,7 @@ class Disciple_Tools_Metrics
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
 
             add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_google' ], 10 );
-
+           
             if ( user_can( get_current_user_id(), 'manage_dt' ) ) {
 
                 // load basic charts
