@@ -33,8 +33,9 @@ class Disciple_Tools_Metrics
         $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
 
-                add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_google' ], 10 );
-            if ( user_can( get_current_user_id(), 'dt_developer' ) ) {
+            add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_google' ], 10 );
+
+            if ( user_can( get_current_user_id(), 'manage_dt' ) ) {
 
                 // load basic charts
                 require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
