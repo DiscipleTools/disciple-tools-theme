@@ -18,7 +18,7 @@ function dt_metrics_visibility( $item ) : bool {
 
     switch ( $item ) {
         case 'tab':
-            return ( user_can( get_current_user_id(), 'manage_options' ) ) ? true : false;
+            return ( user_can( get_current_user_id(), 'manage_dt' ) ) ? true : false;
             break;
         default:
             return false;
