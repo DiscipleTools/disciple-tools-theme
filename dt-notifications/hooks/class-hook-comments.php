@@ -85,13 +85,13 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                         $notification["notification_note"] = Disciple_Tools_Notifications::get_notification_message( $notification );
 
                         // web notification
-                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) :
+                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions', 'web', $user_meta, $user->ID ) :
                             dt_user_notification_is_enabled( 'comments_web', $user_meta, $user->ID ) ) {
                             dt_notification_insert( $notification );
                         }
 
                         // email notification
-                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions_email', $user_meta, $user->ID ) :
+                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions', 'email', $user_meta, $user->ID ) :
                             dt_user_notification_is_enabled( 'comments_email', $user_meta, $user->ID )) {
                             $notification["notification_note"] .= "\r\n\r\n";
                             $notification["notification_note"] .= __( 'Click here to reply', 'disciple_tools' ) . ': ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;

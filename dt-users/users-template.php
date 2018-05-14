@@ -166,7 +166,7 @@ function dt_get_site_notification_defaults()
 {
     $site_options = dt_get_option( 'dt_site_options' );
 
-    return $site_options['user_notifications'];
+    return $site_options['notifications'];
 }
 
 /**
@@ -393,12 +393,13 @@ function dt_get_user_team_members_list( int $user_id )
  *
  *
  * @param string   $notification_name
+ * @param string   $channel
  * @param array|null $user_meta_data
  * @param int|null $user_id
  *
  * @return bool
  */
-function dt_user_notification_is_enabled( string $notification_name, array $user_meta_data = null, int $user_id = null ): bool
+function dt_user_notification_is_enabled( string $notification_name, string $channel, array $user_meta_data = null, int $user_id = null ): bool
 {
     if ( empty( $user_id ) ) {
         $user_id = get_current_user_id();
@@ -406,7 +407,7 @@ function dt_user_notification_is_enabled( string $notification_name, array $user
 
     // Check status of site defined defaults
     $site_defaults = dt_get_site_notification_defaults();
-    if ( $site_defaults[ $notification_name ] ) { // This checks to see if the site has required this notification to be true. If true, then personal preference is not checked.
+    if ( isset( $site_defaults[ $notification_name ][ $channel ] ) && $site_defaults[ $notification_name ][ $channel ] ) { // This checks to see if the site has required this notification to be true. If true, then personal preference is not checked.
         return true;
     }
 
@@ -414,11 +415,9 @@ function dt_user_notification_is_enabled( string $notification_name, array $user
         $user_meta_data = get_user_meta( $user_id );
     }
 
-    if ( isset( $user_meta_data[ $notification_name ] ) && $user_meta_data[ $notification_name ][0] == true ) {
-        return true;
-    } else {
-        return false;
-    }
+    //by default a notification is enabled unless set to false
+    return isset( $user_meta_data[ $notification_name . '_' . $channel ] ) ? $user_meta_data[ $notification_name . '_' . $channel ][0] == true : true;
+
 }
 
 /**

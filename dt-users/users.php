@@ -135,42 +135,45 @@ class Disciple_Tools_Users
     /**
      * Switch user preference for notifications and availability meta fields.
      *
-     * @param int    $user_id
+     * @param int $user_id
      * @param string $preference_key
+     *
+     * @param string|null $type
      *
      * @return array
      */
-    public static function switch_preference( int $user_id, string $preference_key )
+    public static function switch_preference( int $user_id, string $preference_key, string $type = null )
     {
 
         $value = get_user_meta( $user_id, $preference_key, true );
 
-        if ( empty( $value ) ) {
-            $status = update_metadata( 'user', $user_id, $preference_key, true );
-            if ( $status ) {
-                return [
-                    'status'   => true,
-                    'response' => $status,
-                ];
-            } else {
-                return [
-                    'status'  => false,
-                    'message' => 'Unable to update_user_option ' . $preference_key . ' to true.',
-                ];
-            }
+        $label = '';
+        $default = false;
+        if ( $type === "notifications" ){
+            $default = true;
+        }
+
+        if ( $value === '' ){
+            $status = update_metadata( 'user', $user_id, $preference_key, $default ? '0' : '1' );
+            $label = $default ? "false" : "true";
+        } elseif ( $value === '0'){
+            $status = update_metadata( 'user', $user_id, $preference_key, "1" );
+            $label = "true";
         } else {
-            $status = update_metadata( 'user', $user_id, $preference_key, false );
-            if ( $status ) {
-                return [
-                    'status'   => true,
-                    'response' => $status,
-                ];
-            } else {
-                return [
-                    'status'  => false,
-                    'message' => 'Unable to update_user_option ' . $preference_key . ' to false.',
-                ];
-            }
+            $status = update_metadata( 'user', $user_id, $preference_key, '0' );
+            $label = "false";
+        }
+
+        if ( $status ) {
+            return [
+                'status'   => true,
+                'response' => $status,
+            ];
+        } else {
+            return [
+                'status'  => false,
+                'message' => 'Unable to update_user_option ' . $preference_key . ' to ' . $label
+            ];
         }
     }
 
