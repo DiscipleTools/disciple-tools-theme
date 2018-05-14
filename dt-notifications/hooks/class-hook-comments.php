@@ -79,6 +79,9 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                             $notification["notification_action"] = 'mentioned';
                             // share record with mentioned individual
                             Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $user_to_notify, null, false );
+                        } else {
+                            $notification["notification_name"] = 'comment';
+                            $notification["notification_action"] = 'comment';
                         }
 
 
