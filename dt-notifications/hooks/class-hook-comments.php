@@ -41,7 +41,6 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
         $mentioned_user_ids = $comment_with_users["user_ids"];
         $post_id = $comment->comment_post_ID;
         $date_notified = $comment->comment_date;
-        $author_name = $comment->comment_author;
         $post_type = get_post_type( $post_id );
 
         $followers = Disciple_Tools_Posts::get_users_following_post( $post_type, $post_id );
@@ -89,7 +88,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
 
                         // web notification
                         if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions', 'web', $user_meta, $user->ID ) :
-                            dt_user_notification_is_enabled( 'comments','web', $user_meta, $user->ID ) ) {
+                            dt_user_notification_is_enabled( 'comments', 'web', $user_meta, $user->ID ) ) {
                             dt_notification_insert( $notification );
                         }
 

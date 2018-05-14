@@ -564,7 +564,7 @@ class Disciple_Tools_Notifications
 
         if ( isset( $fields["assigned_to"] ) ){
             $user_id = dt_get_user_id_from_assigned_to( $fields["assigned_to"] );
-            if ( $user_id ){
+            if ( $user_id && $user_id != get_current_user_id()){
                 $notification = [
                     'user_id'             => $user_id,
                     'source_user_id'      => get_current_user_id(),
@@ -590,7 +590,7 @@ class Disciple_Tools_Notifications
                     $user = get_userdata( $user_id );
                     dt_send_email(
                         $user->user_email,
-                        sprintf( esc_html_x( 'New % created and assigned to you', '', 'disciple_tools' ), Disciple_Tools_Posts::get_label_for_post_type( $post_type, true ) ),
+                        sprintf( esc_html_x( 'New %s created and assigned to you', '', 'disciple_tools' ), Disciple_Tools_Posts::get_label_for_post_type( $post_type, true ) ),
                         $message
                     );
                 }
