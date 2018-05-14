@@ -570,18 +570,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     }
 
     public static function chart_group_health( $type = 'personal' ) {
-        switch ( $type ) {
-            case 'personal':
-                $results = [];
-                break;
-            case 'project':
-                $results = [];
-                break;
-            default:
-                $results = [];
-                break;
-        }
-        $default = [
+
+        $default_key_list = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+
+        $default_chart = [
             [ 'Step', 'Groups', [ 'role' => 'annotation' ] ],
             [ 'Fellowship', 0, 0 ],
             [ 'Giving', 0, 0 ],
@@ -595,7 +587,35 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             [ 'Covenant', 0, 0 ],
         ];
 
-        return wp_parse_args( $results, $default );
+        $chart = [];
+
+        switch ( $type ) {
+            case 'personal':
+                $results = self::query_my_group_health();
+                break;
+            case 'project':
+                $results = self::query_project_group_health();
+                break;
+            default:
+                $results = false;
+                break;
+        }
+
+        if ( ! $results ) {
+            $chart = $default_chart;
+        }
+        else {
+            $chart[] = [ 'Step', 'Groups', [ 'role' => 'annotation' ] ];
+
+            foreach ( $results as $result ) {
+                if ( isset( $default_key_list[ $result['health_key'] ] ) ) {
+                    $value = intval( $result['out_of'] ) - intval( $result['count'] );
+                    $chart[] = [ $default_key_list[ $result['health_key'] ]['name'], intval( $value ), intval( $value ) ];
+                }
+            }
+        }
+
+        return $chart;
     }
 
     public static function chart_group_generations( $type = 'personal' ) {
@@ -1159,6 +1179,83 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         }
 
         return $numbers;
+    }
+
+    public static function query_my_group_health( $user_id = null ) {
+        global $wpdb;
+
+        if ( is_null( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT d.meta_key as health_key, 
+              count(*) as count, 
+              ( SELECT count(*)
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                     AND b.meta_key = 'assigned_to'
+                     AND b.meta_value = %s
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
+                     AND c.meta_key = 'group_status'
+                     AND c.meta_value = 'active'
+              WHERE a.post_status = 'publish'
+                    AND a.post_type = 'groups'
+              ) as out_of
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                     AND b.meta_key = 'assigned_to'
+                     AND b.meta_value = %s
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
+                     AND c.meta_key = 'group_status'
+                     AND c.meta_value = 'active'
+                JOIN $wpdb->postmeta as d
+                  ON a.ID=d.post_id
+              WHERE a.post_status = 'publish'
+                    AND a.post_type = 'groups'
+                    AND d.meta_key LIKE %s
+              GROUP BY d.meta_key
+        ",
+            'user-' . $user_id,
+            'user-' . $user_id,
+        $wpdb->esc_like( 'church_' ) . '%' ), ARRAY_A );
+
+        return $results;
+    }
+
+    public static function query_project_group_health() {
+        global $wpdb;
+
+        $results = $wpdb->get_results($wpdb->prepare( "
+            SELECT d.meta_key as health_key, 
+              count(*) as count, 
+              ( SELECT count(*)
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
+                     AND c.meta_key = 'group_status'
+                     AND c.meta_value = 'active'
+              WHERE a.post_status = 'publish'
+                    AND a.post_type = 'groups'
+              ) as out_of
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
+                     AND c.meta_key = 'group_status'
+                     AND c.meta_value = 'active'
+                JOIN $wpdb->postmeta as d
+                  ON a.ID=d.post_id
+              WHERE a.post_status = 'publish'
+                    AND a.post_type = 'groups'
+                    AND d.meta_key LIKE %s
+              GROUP BY d.meta_key
+        ", $wpdb->esc_like( 'church_' ) . '%' ), ARRAY_A );
+
+        return $results;
     }
 
 }
