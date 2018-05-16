@@ -60,7 +60,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
             'field_value'         => '',
         ];
 
-        $users_to_notify = array_merge( $mentioned_user_ids, $followers );
+        $users_to_notify = array_unique( array_merge( $mentioned_user_ids, $followers ) );
 
         foreach ( $users_to_notify as $user_to_notify ) {
 
