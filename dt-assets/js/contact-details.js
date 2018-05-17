@@ -192,11 +192,11 @@ jQuery(document).ready(function($) {
   //create new group
   $(".js-create-group").on("submit", function(e) {
     e.preventDefault();
-    let title = $(".js-create-group input[name=title]").val()
+    let title = $("#create-group-modal .js-create-group input[name=title]").val()
     API.create_group(title,contactId)
       .then((newGroup)=>{
         $(".reveal-after-group-create").show()
-        $("#new-group-link").html(`<a href="${newGroup.permalink}">${title}</a>`)
+        $("#new-group-link").html(`<a href="${newGroup.permalink}">${_.escape(title)}</a>`)
         $(".hide-after-group-create").hide()
         $('#go-to-group').attr('href', newGroup.permalink);
         Typeahead['.js-typeahead-groups'].addMultiselectItemLayout({ID:newGroup.post_id.toString(), name:title})

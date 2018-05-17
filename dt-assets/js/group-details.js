@@ -483,6 +483,7 @@ jQuery(document).ready(function($) {
       people_groups : { values: [] },
       leaders : { values: [] },
     }
+    $('#group-details-edit #title').val( group.name );
     let addressHTML = "";
     (group.contact_address|| []).forEach(field=>{
       addressHTML += `<li style="display: flex">
