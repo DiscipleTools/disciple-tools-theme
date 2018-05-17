@@ -619,9 +619,31 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     }
 
     public static function chart_group_generations( $type = 'personal' ) {
+
         switch ( $type ) {
             case 'personal':
-                $results = [];
+
+                $all_first_gen_groups = self::query_first_generation_groups();
+                $all_group_connections = self::query_all_group_connections();
+
+                foreach ( $all_first_gen_groups as $value ) {
+                    array_push( $all_group_connections, $value );
+                }
+
+                $tree = Disciple_Tools_Counter_Base::build_generation_tree( $all_group_connections );
+
+                $generations = [];
+                foreach ( $tree as $key => $level ) {
+                    $gen = Disciple_Tools_Counter_Base::get_array_depth( $level );
+                    if ( ! isset( $generations[ $gen ] ) ) {
+                        $generations[ $gen ] = 0;
+                    }
+                    $generations[ $gen ] = [ 'generation' => $gen, 'groups' => $generations[ $gen ] + 1 ];
+                }
+
+                dt_write_log( $generations );
+                dt_write_log( $tree );
+
                 break;
             case 'project':
                 $results = [];
@@ -630,8 +652,11 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 $results = [];
                 break;
         }
-        $default = [
-            [ 'Generation', 'Pre-Group', 'Group', 'Church', [ 'role' => 'annotation' ] ],
+
+
+        $chart = [
+            [ 'Generations', 'Pre-Group', 'Group', 'Church', [ 'role' => 'annotation' ] ],
+            [ 'Zero Gen', 0, 0, 0, 0 ],
             [ '1st Gen', 0, 0, 0, 0 ],
             [ '2st Gen', 0, 0, 0, 0 ],
             [ '3st Gen', 0, 0, 0, 0 ],
@@ -639,14 +664,16 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             [ '5+ Gen', 0, 0, 0, 0 ],
         ];
 
-        return wp_parse_args( $results, $default );
+
+
+        return $chart;
     }
 
 
     /**
      * PROJECT METRICS
      */
-
+    // @todo
     public static function chart_project_hero_stats()
     {
         $default = [
@@ -670,7 +697,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return wp_parse_args( $results, $default );
     }
 
-
+    // @todo
     public static function chart_project_critical_path()
     {
         $default = [
@@ -701,6 +728,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return wp_parse_args( $results, $default );
     }
 
+
+    // @todo
     public static function chart_timeline() {
         $default = [
             'May' => [
@@ -883,6 +912,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $logins;
     }
 
+    // @todo
     public static function chart_user_contacts_per_user() {
 
         $default = [
@@ -896,6 +926,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return wp_parse_args( $results, $default );
     }
 
+    // @todo
     public static function chart_user_least_active() {
 
         $default = [
@@ -910,6 +941,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return wp_parse_args( $results, $default );
     }
 
+    // @todo
     public static function chart_user_most_active() {
 
         $default = [
@@ -1256,6 +1288,154 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         ", $wpdb->esc_like( 'church_' ) . '%' ), ARRAY_A );
 
         return $results;
+    }
+
+
+    public static function query_my_generations( $user_id = null ) {
+        global $wpdb;
+
+        if ( is_null( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT e.meta_value as type, d.p2p_to as parent, d.p2p_from as child
+            FROM wp_2_posts as a
+              JOIN wp_2_postmeta as b
+                ON a.ID=b.post_id
+                   AND b.meta_key = 'assigned_to'
+                   AND b.meta_value = %s
+              JOIN wp_2_postmeta as c
+                ON a.ID=c.post_id
+                   AND c.meta_key = 'group_status'
+                   AND c.meta_value = 'active'
+              JOIN wp_2_p2p as d
+                ON a.ID=d.p2p_from
+              JOIN wp_2_postmeta as e
+                ON a.ID=e.post_id
+                   AND e.meta_key = 'group_type'
+            WHERE a.post_status = 'publish'
+                  AND a.post_type = 'groups'
+        ", 'user-' . $user_id ), ARRAY_A );
+
+        return $results;
+    }
+
+    public static function query_my_first_generations( $user_id = null ) {
+        global $wpdb;
+
+        if ( is_null( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT 0 as parent_id, p2p_to as id
+              FROM $wpdb->p2p
+              WHERE p2p_type = 'groups_to_groups'
+                    AND p2p_to NOT IN
+                        (
+                          SELECT p2p_from
+                          FROM $wpdb->p2p
+                          WHERE p2p_type = 'groups_to_groups'
+                          GROUP BY p2p_from
+                        )
+                    AND p2p_to IN
+                        (
+                        SELECT ID
+                        FROM $wpdb->posts as a
+                          JOIN $wpdb->postmeta as b
+                            ON a.ID = b.post_id
+                               AND b.meta_key = 'assigned_to'
+                               AND b.meta_value = %s
+                          JOIN $wpdb->postmeta as c
+                            ON a.ID = c.post_id
+                               AND c.meta_key = 'group_status'
+                               AND c.meta_value = 'active'
+                        WHERE a.post_status = 'publish'
+                              AND a.post_type = 'groups'
+                        )
+        ", 'user-' . $user_id ), ARRAY_A );
+
+        return $results;
+    }
+
+    public static function query_first_generation_groups( ) {
+        global $wpdb;
+
+        $results = $wpdb->get_results("
+            SELECT DISTINCT ( p2p_to ) as id, 0 as parent_id
+              FROM $wpdb->p2p
+              WHERE p2p_type = 'groups_to_groups'
+                    AND p2p_to NOT IN
+                        (
+                          SELECT p2p_from
+                          FROM $wpdb->p2p
+                          WHERE p2p_type = 'groups_to_groups'
+                          GROUP BY p2p_from
+                        )
+                    AND p2p_to IN
+                        (
+                        SELECT ID
+                        FROM $wpdb->posts as a
+                          JOIN $wpdb->postmeta as c
+                            ON a.ID = c.post_id
+                               AND c.meta_key = 'group_status'
+                               AND c.meta_value = 'active'
+                        WHERE a.post_status = 'publish'
+                              AND a.post_type = 'groups'
+                        )
+        ", ARRAY_A );
+
+        return $results;
+    }
+
+    public static function query_my_first_generations_with_type( $user_id = null ) {
+        global $wpdb;
+
+        if ( is_null( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT p2p_to as group_id,
+                (
+                SELECT meta_value
+                FROM $wpdb->postmeta
+                WHERE post_id = group_id
+                AND meta_key = 'group_type'
+                ) as type
+              FROM $wpdb->p2p
+              WHERE p2p_type = 'groups_to_groups'
+                    AND p2p_to NOT IN
+                        (
+                          SELECT p2p_from
+                          FROM $wpdb->p2p
+                          WHERE p2p_type = 'groups_to_groups'
+                          GROUP BY p2p_from
+                        )
+                    AND p2p_to IN
+                        (
+                        SELECT ID
+                        FROM $wpdb->posts as a
+                          JOIN $wpdb->postmeta as b
+                            ON a.ID = b.post_id
+                               AND b.meta_key = 'assigned_to'
+                               AND b.meta_value = %s
+                          JOIN $wpdb->postmeta as c
+                            ON a.ID = c.post_id
+                               AND c.meta_key = 'group_status'
+                               AND c.meta_value = 'active'
+                        WHERE a.post_status = 'publish'
+                              AND a.post_type = 'groups'
+                        )
+        ", 'user-' . $user_id ), ARRAY_A );
+
+        return $results;
+    }
+
+    public static function query_all_group_connections() {
+        global $wpdb;
+        return $wpdb->get_results("SELECT p2p_to as parent_id, p2p_from as id FROM $wpdb->p2p WHERE p2p_type = 'groups_to_groups'", ARRAY_A );
     }
 
 }

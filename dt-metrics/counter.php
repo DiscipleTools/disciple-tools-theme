@@ -254,7 +254,7 @@ class Disciple_Tools_Counter
 
             case 'generation_list':
                 $gen_object = new Disciple_Tools_Counter_Generations();
-                $count = $gen_object->generation_status_list();
+                $count = $gen_object->generation_status_list( $type );
                 break;
 
             case 'at_zero':

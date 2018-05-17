@@ -119,6 +119,10 @@ function my_stats() {
                 height: "75%" },
             vAxis: {
                 title: 'groups',
+                format: 'decimal',
+            },
+            hAxis: {
+                format: 'decimal',
             },
             title: "Groups Needing Training Attention",
             legend: {position: "none"},
@@ -177,6 +181,9 @@ function my_stats() {
                 width: "75%",
                 height: "85%" },
             title: "Generations",
+            hAxis: {
+                format: 'decimal',
+            },
             legend: { position: 'bottom', maxLines: 3 },
             isStacked: true,
             colors: [ 'lightgreen', 'limegreen', 'darkgreen' ],
