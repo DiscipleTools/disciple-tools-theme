@@ -44,7 +44,8 @@ function dt_print_details_bar(
                             <?php } ?>
                         </div>
                     </div>
-                    <div class="cell small-4 center-items hide-for-small-only">
+                    <div class="cell small-4 center hide-for-small-only">
+                        <strong><?php the_title_attribute(); ?></strong>
                     </div>
                     <div class="cell small-4 align-right grid-x grid-margin-x">
                         <div class="cell shrink center-items ">
