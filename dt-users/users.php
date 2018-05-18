@@ -132,6 +132,8 @@ class Disciple_Tools_Users
 
         function asc_meth( $a, $b )
         {
+            $a["name"] = strtolower( $a["name"] );
+            $b["name"] = strtolower( $b["name"] );
             return strcmp( $a["name"], $b["name"] );
         }
 
