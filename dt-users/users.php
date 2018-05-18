@@ -244,7 +244,7 @@ class Disciple_Tools_Users
             }
         }
 
-        return wp_redirect( "/settings" );
+        return wp_redirect( get_site_url() ."/settings" );
     }
 
 
