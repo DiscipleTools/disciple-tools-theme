@@ -511,7 +511,7 @@ class Disciple_Tools_Notifications
 
             dt_notification_insert( $args );
             $user = get_userdata( $user_id );
-            $subject = __( "Contact sub-assigned to", 'disciple_tools' );
+            $subject = __( "Contact sub-assigned to you", 'disciple_tools' );
             dt_send_email( $user->user_email, $subject, $message );
         }
     }
@@ -802,7 +802,7 @@ class Disciple_Tools_Notifications
         } elseif ( $notification["notification_name"] === "subassigned" ){
             $source_user = get_userdata( $notification["source_user_id"] );
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
-            $notification_note = $display_name . ' ' . sprintf( esc_html_x( 'shared %s with you.', '', 'disciple_tools' ), $link );
+            $notification_note = $display_name . ' ' . sprintf( esc_html_x( 'subassigned %s to you.', '', 'disciple_tools' ), $link );
         } elseif ( $notification["notification_name"] ==="milestone" ){
             $meta_key = $notification["field_key"] ?? '';
             $meta_value = $notification["field_value"] ?? '';
