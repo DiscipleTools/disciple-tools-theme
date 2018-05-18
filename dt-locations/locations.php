@@ -286,7 +286,8 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
         }
         $query_args = [
             'post_type' => 'locations',
-            'orderby'   => 'ID',
+            'orderby'   => 'title',
+            'order' => 'ASC',
             's'         => $search,
             'posts_per_page' => 30,
         ];

@@ -63,7 +63,8 @@ class Disciple_Tools_People_Groups
         //        @todo check permissions
         $query_args = [
             'post_type' => 'peoplegroups',
-            'orderby'   => 'ID',
+            'orderby'   => 'title',
+            'order' => 'ASC',
             'nopaging'  => true,
             's'         => $search,
         ];
