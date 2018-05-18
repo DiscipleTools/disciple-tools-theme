@@ -632,3 +632,9 @@ function dt_custom_password_reset( $message, $key, $user_login, $user_data ){
     return $message;
 
 }
+
+function dt_get_url_path() {
+    $url  = @( $_SERVER["HTTPS"] != 'on' ) ? 'http://'.$_SERVER["SERVER_NAME"] :  'https://'.$_SERVER["SERVER_NAME"];
+    $url .= $_SERVER["REQUEST_URI"];
+    return trim( str_replace( get_site_url(), "", $url ) , '/');
+}

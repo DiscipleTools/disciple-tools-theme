@@ -30,7 +30,7 @@ class Disciple_Tools_Metrics
     }
 
     public function __construct() {
-        $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
+        $url_path = dt_get_url_path();
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
 
             add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_google' ], 10 );
