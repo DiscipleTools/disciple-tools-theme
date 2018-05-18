@@ -181,8 +181,12 @@ function my_stats() {
                 width: "75%",
                 height: "85%" },
             title: "Generations",
+            vAxis: {
+                title: 'generations',
+                format: '0'
+            },
             hAxis: {
-                format: 'decimal',
+                format: '0'
             },
             legend: { position: 'bottom', maxLines: 3 },
             isStacked: true,

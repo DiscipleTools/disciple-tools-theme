@@ -638,15 +638,44 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     if ( ! isset( $generations[ $gen ] ) ) {
                         $generations[ $gen ] = 0;
                     }
-                    $generations[ $gen ] = [ 'generation' => $gen, 'groups' => $generations[ $gen ] + 1 ];
+                    $inc = $generations[ $gen ] + 1;
+                    $generations[ $gen ] = $inc;
                 }
 
-                dt_write_log( $generations );
-                dt_write_log( $tree );
+//                dt_write_log( $generations );
+//                dt_write_log( $tree );
 
                 break;
             case 'project':
-                $results = [];
+                // get all groups
+                $all_first_gen_groups = self::query_first_generation_groups();
+                $all_group_connections = self::query_all_group_connections();
+                $total_groups = self::query_total_groups();
+                $total_child_groups = self::query_count_all_child_groups();
+
+
+                // merge first gen into master array
+                foreach ( $all_first_gen_groups as $value ) {
+                    array_push( $all_group_connections, $value );
+                }
+                // build nested tree
+                $tree = Disciple_Tools_Counter_Base::build_generation_tree( $all_group_connections );
+
+                $generations = [];
+                foreach ( $tree as $key => $level ) {
+                    $gen = Disciple_Tools_Counter_Base::get_array_depth( $level );
+                    if ( ! isset( $generations[ $gen ] ) ) {
+                        $generations[ $gen ] = 0;
+                    }
+                    $inc = $generations[ $gen ] + 1;
+                    $generations[ $gen ] = $inc;
+                }
+
+//                dt_write_log( $generations );
+//                dt_write_log( $tree );
+                dt_write_log( $total_groups );
+                dt_write_log( $total_groups - $total_child_groups );
+                dt_write_log( $total_child_groups );
                 break;
             default:
                 $results = [];
@@ -656,15 +685,17 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         $chart = [
             [ 'Generations', 'Pre-Group', 'Group', 'Church', [ 'role' => 'annotation' ] ],
-            [ 'Zero Gen', 0, 0, 0, 0 ],
-            [ '1st Gen', 0, 0, 0, 0 ],
-            [ '2st Gen', 0, 0, 0, 0 ],
-            [ '3st Gen', 0, 0, 0, 0 ],
-            [ '4st Gen', 0, 0, 0, 0 ],
-            [ '5+ Gen', 0, 0, 0, 0 ],
+//            [ 'Zero Gen', 0, 0, 0, 0 ],
+//            [ '1st Gen', 0, 0, 0, 0 ],
+//            [ '2st Gen', 0, 0, 0, 0 ],
+//            [ '3st Gen', 0, 0, 0, 0 ],
+//            [ '4st Gen', 0, 0, 0, 0 ],
+//            [ '5+ Gen', 0, 0, 0, 0 ],
         ];
 
-
+        foreach ( $generations as $row_key => $row_value ) {
+            $chart[] = [ (string) $row_key, $row_value, $row_value, $row_value, $row_value, ];
+        }
 
         return $chart;
     }
@@ -1436,6 +1467,29 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     public static function query_all_group_connections() {
         global $wpdb;
         return $wpdb->get_results("SELECT p2p_to as parent_id, p2p_from as id FROM $wpdb->p2p WHERE p2p_type = 'groups_to_groups'", ARRAY_A );
+    }
+
+    public static function query_count_all_child_groups() {
+        global $wpdb;
+        return $wpdb->get_var("
+            SELECT count(DISTINCT p2p_id) as children
+            FROM $wpdb->p2p
+            WHERE p2p_type = 'groups_to_groups'
+            " );
+    }
+
+    public static function query_total_groups() {
+        global $wpdb;
+        return $wpdb->get_var("
+            SELECT ID
+            FROM $wpdb->posts as a
+              JOIN $wpdb->postmeta as c
+                ON a.ID = c.post_id
+                   AND c.meta_key = 'group_status'
+                   AND c.meta_value = 'active'
+            WHERE a.post_status = 'publish'
+                  AND a.post_type = 'groups'
+            " );
     }
 
 }

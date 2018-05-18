@@ -89,7 +89,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             'contacts_progress' => self::chart_contacts_progress( 'project' ),
             'group_types' => self::chart_group_types( 'project' ),
             'group_health' => self::chart_group_health(),
-            'group_generations' => self::chart_group_generations(),
+            'group_generations' => self::chart_group_generations('project'),
             'timeline' => self::chart_timeline(),
         ];
     }
