@@ -188,7 +188,7 @@ jQuery(document).ready(function($) {
         let urlRegex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
         comment = comment.replace(urlRegex, (match, ext)=>{
             let url = match
-            if(match.indexOf("@") != 0) {
+            if(match.indexOf("@") == -1) {
                 if (match.indexOf("http") == 0 && match.indexOf("www.") == -1) {
                     url = match
                 }
@@ -201,6 +201,10 @@ jQuery(document).ready(function($) {
                 return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`
             }
             return match
+        })
+        let atRegex = /^@\S*/
+        comment = comment.replace(atRegex, (match)=>{
+            return `<a>${match}</a>`
         })
 
     }
