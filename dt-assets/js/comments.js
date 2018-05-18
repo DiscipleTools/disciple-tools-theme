@@ -202,10 +202,6 @@ jQuery(document).ready(function($) {
             }
             return match
         })
-        let atRegex = /^@\S*/
-        comment = comment.replace(atRegex, (match)=>{
-            return `<a>${match}</a>`
-        })
 
     }
     return comment
