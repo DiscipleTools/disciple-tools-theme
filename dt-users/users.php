@@ -33,6 +33,7 @@ class Disciple_Tools_Users
      *
      * @return array|\WP_Error
      */
+
     public static function get_assignable_users_compact( string $search_string = null )
     {
         //        @todo better permissions?
@@ -74,7 +75,7 @@ class Disciple_Tools_Users
                       WHERE user_id = %1\$s
                             AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_status = 'publish' ) )
                       AND meta_key = 'assigned_to'
-                GROUP BY user_id ORDER BY ASC;",
+                GROUP BY user_id",
                 $user_id,
                 $user_id,
                 $user_id,
@@ -83,7 +84,7 @@ class Disciple_Tools_Users
             ), ARRAY_N );
 
             $dispatchers = $wpdb->get_results("SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 
-            'wp_capabilities' AND meta_value LIKE '%dispatcher%' ORDER BY ASC");
+            'wp_capabilities' AND meta_value LIKE '%dispatcher%'");
 
             $assure_unique = [];
             foreach ( $dispatchers as $index ){
@@ -129,6 +130,12 @@ class Disciple_Tools_Users
             }
         }
 
+        function asc_meth( $a, $b )
+        {
+            return strcmp( $a["name"], $b["name"] );
+        }
+
+        usort( $list, "asc_meth" );
         return $list;
     }
 
