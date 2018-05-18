@@ -74,7 +74,7 @@ class Disciple_Tools_Users
                       WHERE user_id = %1\$s
                             AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_status = 'publish' ) )
                       AND meta_key = 'assigned_to'
-                GROUP BY user_id;",
+                GROUP BY user_id ORDER BY ASC;",
                 $user_id,
                 $user_id,
                 $user_id,
@@ -83,7 +83,7 @@ class Disciple_Tools_Users
             ), ARRAY_N );
 
             $dispatchers = $wpdb->get_results("SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 
-            'wp_capabilities' AND meta_value LIKE '%dispatcher%' ");
+            'wp_capabilities' AND meta_value LIKE '%dispatcher%' ORDER BY ASC");
 
             $assure_unique = [];
             foreach ( $dispatchers as $index ){
