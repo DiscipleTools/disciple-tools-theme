@@ -481,7 +481,7 @@ jQuery(document).ready(function($) {
               s: "{{query}}"
             },
             beforeSend: function(xhr) {
-              xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+              xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
             },
             callback: {
               done: function (data) {
