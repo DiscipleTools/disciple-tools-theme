@@ -16,6 +16,12 @@ abstract class Disciple_Tools_Counter_Base
     {
     }
 
+    /**
+     * @param array $elements
+     * @param int   $parentId
+     *
+     * @return array
+     */
     public static function build_generation_tree( array $elements, $parentId = 0 ) {
         $branch = array();
 
@@ -32,6 +38,67 @@ abstract class Disciple_Tools_Counter_Base
         return $branch;
     }
 
+    /**
+     * @param array $tree
+     *
+     * @return array
+     */
+    public static function get_tree_level_count( array $tree ) {
+        $groups_at_level = [];
+
+        foreach ( $tree as $key => $level ) {
+            $level = self::get_array_item_levels( $level );
+            foreach ( $level as $k => $v ) {
+                if ( ! isset( $groups_at_level[$k] ) ) {
+                    $groups_at_level[$k] = 0;
+                }
+                $groups_at_level[$k] = $groups_at_level[$k] + 1;
+            }
+        }
+
+        return $groups_at_level;
+    }
+
+    /**
+     * @param array $tree
+     *
+     * @return array
+     */
+    public static function get_type_by_level( array $tree ) {
+        $groups_at_level = [];
+        foreach ( $tree as $key => $level ) {
+            $groups_at_level[] = self::get_items_by_level( $level );
+        }
+        return $groups_at_level;
+    }
+
+    /**
+     * Get the total counts of streams
+     * @param array $tree
+     *
+     * @return array
+     */
+    public static function get_stream_count( array $tree ) {
+        $streams = [];
+
+        foreach ( $tree as $key => $level ) {
+            // stream
+            $depth = self::get_array_depth( $level );
+            if ( ! isset( $streams[ $depth ] ) ) {
+                $streams[ $depth ] = 0;
+            }
+            $inc = $streams[ $depth ] + 1;
+            $streams[ $depth ] = $inc;
+        }
+
+        return $streams;
+    }
+
+    /**
+     * @param array $array
+     *
+     * @return int
+     */
     public static function get_array_depth( array $array  ) {
         $i = 1;
         while( isset( $array['children'] ) && is_array( $array['children'] ) ) {
@@ -42,4 +109,54 @@ abstract class Disciple_Tools_Counter_Base
         }
         return $i;
     }
+
+    /**
+     * @param array $array
+     *
+     * @return array
+     */
+    public static function get_array_item_levels( array $array ) {
+        $item_levels =[];
+        $i = 1;
+
+        while( isset( $array['children'] ) && is_array( $array['children'] ) ) {
+            if ( ! isset( $item_levels[ $i ] ) ) {
+                $item_levels[ $i ] = 0;
+            }
+            $item_levels[ $i ] = $item_levels[ $i ] + 1;
+            $i++;
+            foreach( $array as $item ) {
+                if ( isset( $item['children'] ) ) {
+                    $array = $item;
+                }
+
+            }
+        }
+        return $item_levels;
+    }
+
+    /**
+     * @param array $array
+     *
+     * @return array
+     */
+    public static function get_items_by_level( array $array  ) {
+        $item_levels =[];
+        $i = 1;
+
+        while( isset( $array['children'] ) && is_array( $array['children'] ) ) {
+            if ( ! isset( $item_levels[ $i ] ) ) {
+                $item_levels[ $i ] = 0;
+            }
+
+            $item_levels[ $i ] = $array['id'];
+            $i++;
+            foreach( $array['children'] as $item ) {
+                $array = $item;
+            }
+        }
+        return $item_levels;
+    }
+
+
 }

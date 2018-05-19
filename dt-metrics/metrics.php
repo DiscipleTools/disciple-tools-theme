@@ -647,54 +647,64 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
                 break;
             case 'project':
-                // get all groups
-                $all_first_gen_groups = self::query_first_generation_groups();
-                $all_group_connections = self::query_all_group_connections();
-                $total_groups = self::query_total_groups();
-                $total_child_groups = self::query_count_all_child_groups();
+                $raw_connections = self::query_get_group_generations();
+                $tree = Disciple_Tools_Counter_Base::build_generation_tree( $raw_connections );
 
+                $generations = Disciple_Tools_Counter_Base::get_tree_level_count( $tree );
 
-                // merge first gen into master array
-                foreach ( $all_first_gen_groups as $value ) {
-                    array_push( $all_group_connections, $value );
-                }
-                // build nested tree
-                $tree = Disciple_Tools_Counter_Base::build_generation_tree( $all_group_connections );
+                dt_write_log( 'GET_TREE_LEVEL_COUNT' );
+                dt_write_log( $generations );
 
-                $generations = [];
-                foreach ( $tree as $key => $level ) {
-                    $gen = Disciple_Tools_Counter_Base::get_array_depth( $level );
-                    if ( ! isset( $generations[ $gen ] ) ) {
-                        $generations[ $gen ] = 0;
-                    }
-                    $inc = $generations[ $gen ] + 1;
-                    $generations[ $gen ] = $inc;
-                }
+                $type_by_level = Disciple_Tools_Counter_Base::get_type_by_level( $tree );
+                dt_write_log( 'get_type_by_level' );
+                dt_write_log( $type_by_level );
 
-//                dt_write_log( $generations );
-//                dt_write_log( $tree );
-                dt_write_log( $total_groups );
-                dt_write_log( $total_groups - $total_child_groups );
-                dt_write_log( $total_child_groups );
+                dt_write_log( 'TREE' );
+                dt_write_log( $tree );
+//                $streams = Disciple_Tools_Counter_Base::get_stream_count( $tree );
+//                $total_groups = self::query_total_groups();
+//                $total_child_groups = self::query_count_all_child_groups();
+
                 break;
             default:
                 $results = [];
                 break;
         }
 
+        $target = [
+          1 => [
+              'pre-group' => 2,
+              'group' => 3,
+              'church' => 1,
+              'total' => 6,
+          ],
+          2 => [
+              'pre-group' => 2,
+              'group' => 1,
+              'church' => 1,
+              'total' => 4,
+          ],
+          3 => [
+              'pre-group' => 0,
+              'group' => 0,
+              'church' => 0,
+              'total' => 3,
+          ],
+          4 => [
+              'pre-group' => 0,
+              'group' => 0,
+              'church' => 0,
+              'total' => 1,
+          ]
+        ];
 
         $chart = [
             [ 'Generations', 'Pre-Group', 'Group', 'Church', [ 'role' => 'annotation' ] ],
 //            [ 'Zero Gen', 0, 0, 0, 0 ],
-//            [ '1st Gen', 0, 0, 0, 0 ],
-//            [ '2st Gen', 0, 0, 0, 0 ],
-//            [ '3st Gen', 0, 0, 0, 0 ],
-//            [ '4st Gen', 0, 0, 0, 0 ],
-//            [ '5+ Gen', 0, 0, 0, 0 ],
         ];
 
-        foreach ( $generations as $row_key => $row_value ) {
-            $chart[] = [ (string) $row_key, $row_value, $row_value, $row_value, $row_value, ];
+        foreach ( $target as $row_key => $row_value ) {
+            $chart[] = [ (string) $row_key, $row_value['pre-group'], $row_value['group'], $row_value['church'], $row_value['total'] ];
         }
 
         return $chart;
@@ -1490,6 +1500,33 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             WHERE a.post_status = 'publish'
                   AND a.post_type = 'groups'
             " );
+    }
+
+    public static function query_get_group_generations( ) {
+        global $wpdb;
+
+        $results = $wpdb->get_results( "
+            SELECT id, 0 as parent_id
+              FROM $wpdb->posts as a
+              JOIN $wpdb->postmeta as c
+                ON a.ID = c.post_id
+                AND c.meta_key = 'group_status'
+                AND c.meta_value = 'active'
+              WHERE a.post_status = 'publish'
+                AND a.post_type = 'groups'
+                AND a.ID NOT IN (
+                  SELECT DISTINCT ( p2p_from )
+                  FROM $wpdb->p2p
+                  WHERE p2p_type = 'groups_to_groups'
+                  GROUP BY p2p_from
+                )
+            UNION
+            SELECT p2p_from as id, p2p_to as parent_id
+              FROM $wpdb->p2p 
+              WHERE p2p_type = 'groups_to_groups'
+        ", ARRAY_A );
+
+        return $results;
     }
 
 }
