@@ -623,47 +623,11 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         switch ( $type ) {
             case 'personal':
 
-                $all_first_gen_groups = self::query_first_generation_groups();
-                $all_group_connections = self::query_all_group_connections();
-
-                foreach ( $all_first_gen_groups as $value ) {
-                    array_push( $all_group_connections, $value );
-                }
-
-                $tree = Disciple_Tools_Counter_Base::build_generation_tree( $all_group_connections );
-
-                $generations = [];
-                foreach ( $tree as $key => $level ) {
-                    $gen = Disciple_Tools_Counter_Base::get_array_depth( $level );
-                    if ( ! isset( $generations[ $gen ] ) ) {
-                        $generations[ $gen ] = 0;
-                    }
-                    $inc = $generations[ $gen ] + 1;
-                    $generations[ $gen ] = $inc;
-                }
-
-//                dt_write_log( $generations );
-//                dt_write_log( $tree );
 
                 break;
             case 'project':
                 $raw_connections = self::query_get_group_generations();
                 $tree = Disciple_Tools_Counter_Base::build_generation_tree( $raw_connections );
-
-                $generations = Disciple_Tools_Counter_Base::get_tree_level_count( $tree );
-
-                dt_write_log( 'GET_TREE_LEVEL_COUNT' );
-                dt_write_log( $generations );
-
-                $type_by_level = Disciple_Tools_Counter_Base::get_type_by_level( $tree );
-                dt_write_log( 'get_type_by_level' );
-                dt_write_log( $type_by_level );
-
-                dt_write_log( 'TREE' );
-                dt_write_log( $tree );
-//                $streams = Disciple_Tools_Counter_Base::get_stream_count( $tree );
-//                $total_groups = self::query_total_groups();
-//                $total_child_groups = self::query_count_all_child_groups();
 
                 break;
             default:
@@ -700,13 +664,32 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         $chart = [
             [ 'Generations', 'Pre-Group', 'Group', 'Church', [ 'role' => 'annotation' ] ],
-//            [ 'Zero Gen', 0, 0, 0, 0 ],
         ];
 
         foreach ( $target as $row_key => $row_value ) {
             $chart[] = [ (string) $row_key, $row_value['pre-group'], $row_value['group'], $row_value['church'], $row_value['total'] ];
         }
 
+        return $chart;
+    }
+
+    public static function chart_streams() {
+        $raw_connections = self::query_get_group_generations();
+        $tree = Disciple_Tools_Counter_Base::build_generation_tree( $raw_connections );
+
+        $streams = Disciple_Tools_Counter_Base::get_stream_count( $tree );
+
+        ksort( $streams );
+
+        $chart = [
+            [ 'Generations', 'Streams' ],
+        ];
+
+        foreach ( $streams as $row_key => $row_value ) {
+            $chart[] = [ (string) $row_key . ' gen' , intval( $row_value ) ];
+        }
+
+        dt_write_log( $chart );
         return $chart;
     }
 
@@ -1332,198 +1315,39 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     }
 
 
-    public static function query_my_generations( $user_id = null ) {
+    public static function query_get_group_generations( ) {
         global $wpdb;
 
-        if ( is_null( $user_id ) ) {
-            $user_id = get_current_user_id();
-        }
-
-        $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT e.meta_value as type, d.p2p_to as parent, d.p2p_from as child
-            FROM wp_2_posts as a
-              JOIN wp_2_postmeta as b
-                ON a.ID=b.post_id
-                   AND b.meta_key = 'assigned_to'
-                   AND b.meta_value = %s
-              JOIN wp_2_postmeta as c
-                ON a.ID=c.post_id
-                   AND c.meta_key = 'group_status'
-                   AND c.meta_value = 'active'
-              JOIN wp_2_p2p as d
-                ON a.ID=d.p2p_from
-              JOIN wp_2_postmeta as e
-                ON a.ID=e.post_id
-                   AND e.meta_key = 'group_type'
-            WHERE a.post_status = 'publish'
-                  AND a.post_type = 'groups'
-        ", 'user-' . $user_id ), ARRAY_A );
-
-        return $results;
-    }
-
-    public static function query_my_first_generations( $user_id = null ) {
-        global $wpdb;
-
-        if ( is_null( $user_id ) ) {
-            $user_id = get_current_user_id();
-        }
-
-        $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT 0 as parent_id, p2p_to as id
-              FROM $wpdb->p2p
-              WHERE p2p_type = 'groups_to_groups'
-                    AND p2p_to NOT IN
-                        (
-                          SELECT p2p_from
-                          FROM $wpdb->p2p
-                          WHERE p2p_type = 'groups_to_groups'
-                          GROUP BY p2p_from
-                        )
-                    AND p2p_to IN
-                        (
-                        SELECT ID
-                        FROM $wpdb->posts as a
-                          JOIN $wpdb->postmeta as b
-                            ON a.ID = b.post_id
-                               AND b.meta_key = 'assigned_to'
-                               AND b.meta_value = %s
-                          JOIN $wpdb->postmeta as c
-                            ON a.ID = c.post_id
-                               AND c.meta_key = 'group_status'
-                               AND c.meta_value = 'active'
-                        WHERE a.post_status = 'publish'
-                              AND a.post_type = 'groups'
-                        )
-        ", 'user-' . $user_id ), ARRAY_A );
-
-        return $results;
-    }
-
-    public static function query_first_generation_groups( ) {
-        global $wpdb;
-
-        $results = $wpdb->get_results("
-            SELECT DISTINCT ( p2p_to ) as id, 0 as parent_id
-              FROM $wpdb->p2p
-              WHERE p2p_type = 'groups_to_groups'
-                    AND p2p_to NOT IN
-                        (
-                          SELECT p2p_from
-                          FROM $wpdb->p2p
-                          WHERE p2p_type = 'groups_to_groups'
-                          GROUP BY p2p_from
-                        )
-                    AND p2p_to IN
-                        (
-                        SELECT ID
-                        FROM $wpdb->posts as a
-                          JOIN $wpdb->postmeta as c
-                            ON a.ID = c.post_id
-                               AND c.meta_key = 'group_status'
-                               AND c.meta_value = 'active'
-                        WHERE a.post_status = 'publish'
-                              AND a.post_type = 'groups'
-                        )
-        ", ARRAY_A );
-
-        return $results;
-    }
-
-    public static function query_my_first_generations_with_type( $user_id = null ) {
-        global $wpdb;
-
-        if ( is_null( $user_id ) ) {
-            $user_id = get_current_user_id();
-        }
-
-        $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT p2p_to as group_id,
-                (
-                SELECT meta_value
-                FROM $wpdb->postmeta
-                WHERE post_id = group_id
-                AND meta_key = 'group_type'
-                ) as type
-              FROM $wpdb->p2p
-              WHERE p2p_type = 'groups_to_groups'
-                    AND p2p_to NOT IN
-                        (
-                          SELECT p2p_from
-                          FROM $wpdb->p2p
-                          WHERE p2p_type = 'groups_to_groups'
-                          GROUP BY p2p_from
-                        )
-                    AND p2p_to IN
-                        (
-                        SELECT ID
-                        FROM $wpdb->posts as a
-                          JOIN $wpdb->postmeta as b
-                            ON a.ID = b.post_id
-                               AND b.meta_key = 'assigned_to'
-                               AND b.meta_value = %s
-                          JOIN $wpdb->postmeta as c
-                            ON a.ID = c.post_id
-                               AND c.meta_key = 'group_status'
-                               AND c.meta_value = 'active'
-                        WHERE a.post_status = 'publish'
-                              AND a.post_type = 'groups'
-                        )
-        ", 'user-' . $user_id ), ARRAY_A );
-
-        return $results;
-    }
-
-    public static function query_all_group_connections() {
-        global $wpdb;
-        return $wpdb->get_results("SELECT p2p_to as parent_id, p2p_from as id FROM $wpdb->p2p WHERE p2p_type = 'groups_to_groups'", ARRAY_A );
-    }
-
-    public static function query_count_all_child_groups() {
-        global $wpdb;
-        return $wpdb->get_var("
-            SELECT count(DISTINCT p2p_id) as children
-            FROM $wpdb->p2p
-            WHERE p2p_type = 'groups_to_groups'
-            " );
-    }
-
-    public static function query_total_groups() {
-        global $wpdb;
-        return $wpdb->get_var("
-            SELECT ID
+        $results = $wpdb->get_results( "
+            SELECT
+              a.ID         as id,
+              0            as parent_id,
+              d.meta_value as group_type
             FROM $wpdb->posts as a
               JOIN $wpdb->postmeta as c
                 ON a.ID = c.post_id
                    AND c.meta_key = 'group_status'
                    AND c.meta_value = 'active'
+              LEFT JOIN $wpdb->postmeta as d
+                ON a.ID = d.post_id
+                   AND d.meta_key = 'group_type'
             WHERE a.post_status = 'publish'
                   AND a.post_type = 'groups'
-            " );
-    }
-
-    public static function query_get_group_generations( ) {
-        global $wpdb;
-
-        $results = $wpdb->get_results( "
-            SELECT id, 0 as parent_id
-              FROM $wpdb->posts as a
-              JOIN $wpdb->postmeta as c
-                ON a.ID = c.post_id
-                AND c.meta_key = 'group_status'
-                AND c.meta_value = 'active'
-              WHERE a.post_status = 'publish'
-                AND a.post_type = 'groups'
-                AND a.ID NOT IN (
-                  SELECT DISTINCT ( p2p_from )
-                  FROM $wpdb->p2p
-                  WHERE p2p_type = 'groups_to_groups'
-                  GROUP BY p2p_from
-                )
-            UNION
-            SELECT p2p_from as id, p2p_to as parent_id
-              FROM $wpdb->p2p 
+                  AND a.ID NOT IN (
+              SELECT DISTINCT (p2p_from)
+              FROM $wpdb->p2p
               WHERE p2p_type = 'groups_to_groups'
+              GROUP BY p2p_from)
+            UNION
+            SELECT
+              p.p2p_from                          as id,
+              p.p2p_to                            as parent_id,
+              (SELECT meta_value
+               FROM $wpdb->postmeta
+               WHERE post_id = p.p2p_from
+                     AND meta_key = 'group_type') as group_type
+            FROM $wpdb->p2p as p
+            WHERE p.p2p_type = 'groups_to_groups'
         ", ARRAY_A );
 
         return $results;

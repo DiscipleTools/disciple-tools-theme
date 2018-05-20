@@ -22,41 +22,25 @@ abstract class Disciple_Tools_Counter_Base
      *
      * @return array
      */
-    public static function build_generation_tree( array $elements, $parentId = 0 ) {
+    public static function build_generation_tree( array $elements, $parentId = 0, $generation = 0 ) {
         $branch = array();
+        $generation++;
 
         foreach ($elements as $element) {
             if ($element['parent_id'] == $parentId) {
-                $children = self::build_generation_tree($elements, $element['id']);
+                $children = self::build_generation_tree( $elements, $element['id'], $generation );
                 if ($children) {
+                    $element['generation'] = $generation;
                     $element['children'] = $children;
+                }
+                else {
+                    $element['generation'] = $generation;
                 }
                 $branch[] = $element;
             }
         }
 
         return $branch;
-    }
-
-    /**
-     * @param array $tree
-     *
-     * @return array
-     */
-    public static function get_tree_level_count( array $tree ) {
-        $groups_at_level = [];
-
-        foreach ( $tree as $key => $level ) {
-            $level = self::get_array_item_levels( $level );
-            foreach ( $level as $k => $v ) {
-                if ( ! isset( $groups_at_level[$k] ) ) {
-                    $groups_at_level[$k] = 0;
-                }
-                $groups_at_level[$k] = $groups_at_level[$k] + 1;
-            }
-        }
-
-        return $groups_at_level;
     }
 
     /**
@@ -125,11 +109,8 @@ abstract class Disciple_Tools_Counter_Base
             }
             $item_levels[ $i ] = $item_levels[ $i ] + 1;
             $i++;
-            foreach( $array as $item ) {
-                if ( isset( $item['children'] ) ) {
-                    $array = $item;
-                }
-
+            foreach( $array['children'] as $item ) {
+                $array = $item;
             }
         }
         return $item_levels;

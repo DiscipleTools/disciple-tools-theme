@@ -91,6 +91,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             'group_health' => self::chart_group_health(),
             'group_generations' => self::chart_group_generations('project'),
             'timeline' => self::chart_timeline(),
+            'streams' => self::chart_streams(),
         ];
     }
 }
