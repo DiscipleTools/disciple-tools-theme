@@ -14,6 +14,7 @@ if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
+
 /**
  * Class Disciple_Tools_Admin_Menus
  */
@@ -40,7 +41,7 @@ class Disciple_Tools_Metrics
                 // load basic charts
                 require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
                 require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
-//                require_once( get_template_directory() . '/dt-metrics/metrics-users.php' );
+                require_once( get_template_directory() . '/dt-metrics/metrics-users.php' );
             }
         }
     }
@@ -471,6 +472,31 @@ class Disciple_Tools_Metrics
     }
 }
 
+/**
+ * This builds and gets the generation tree, and for speed caches today's snapshot
+ *
+ * @param bool $reset (This allows the ability to reset the cache)
+ *
+ * @return array|mixed
+ */
+function dt_get_generation_tree( $reset = false ) {
+
+    $generation_tree = get_transient( 'dt_generation_tree' );
+
+    if ( ! $generation_tree || $reset ) {
+        $raw_connections = Disciple_Tools_Metrics_Hooks_Base::query_get_group_generations();
+        $generation_tree = Disciple_Tools_Counter_Base::build_generation_tree( $raw_connections );
+        set_transient( 'dt_generation_tree', $generation_tree, dt_get_time_until_midnight() );
+    }
+
+    return $generation_tree;
+}
+
+function dt_get_time_until_midnight() {
+    $midnight = mktime( 0, 0, 0, date( 'n' ), date( 'j' ) +1, date( 'Y' ) );
+    return $midnight - current_time( 'timestamp' );
+}
+
 abstract class Disciple_Tools_Metrics_Hooks_Base
 {
     public function __construct() {}
@@ -626,8 +652,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
                 break;
             case 'project':
-                $raw_connections = self::query_get_group_generations();
-                $tree = Disciple_Tools_Counter_Base::build_generation_tree( $raw_connections );
+                $tree = dt_get_generation_tree();
+                dt_write_log( $tree );
 
                 break;
             default:
@@ -650,7 +676,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
           ],
           3 => [
               'pre-group' => 0,
-              'group' => 0,
+              'group' => 3,
               'church' => 0,
               'total' => 3,
           ],
@@ -674,8 +700,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     }
 
     public static function chart_streams() {
-        $raw_connections = self::query_get_group_generations();
-        $tree = Disciple_Tools_Counter_Base::build_generation_tree( $raw_connections );
+        $tree = dt_get_generation_tree();
 
         $streams = Disciple_Tools_Counter_Base::get_stream_count( $tree );
 
@@ -689,7 +714,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             $chart[] = [ (string) $row_key . ' gen' , intval( $row_value ) ];
         }
 
-        dt_write_log( $chart );
         return $chart;
     }
 
