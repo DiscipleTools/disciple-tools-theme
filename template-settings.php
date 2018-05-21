@@ -217,205 +217,43 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td class="tall-4"><?php esc_html_e( 'Newly Assigned Contact', 'disciple_tools' )?></td>
-                                <td>
-                                    <?php
-                                    if ( $dt_site_notification_defaults['new_web'] ) {
-                                        print '<div style="height:2em;">required</div>';
-                                    } else { ?>
+                                <?php foreach ( $dt_site_notification_defaults as $dt_notification_key => $dt_notification_default ) : ?>
+                                <tr>
+                                    <td class="tall-4"><?php echo esc_html( $dt_notification_default["label"] )?></td>
+                                    <td>
+                                    <?php if ( $dt_notification_default["web"] ) : ?>
+                                        <div style="height:2em;"><?php esc_html_e( "required", 'disciple_tools' ) ?></div>
+                                    <?php else : ?>
                                         <div class="switch">
-                                            <input class="switch-input" id="new_web" type="checkbox"
-                                                   name="new_web"
-                                                   onclick="switch_preference('new_web');" <?php ( isset( $dt_user_meta['new_web'] ) && $dt_user_meta['new_web'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
-                                            <label class="switch-paddle inactive" for="new_web">
-                                                <span class="show-for-sr">Newly Assigned Contact</span>
+                                            <input class="switch-input" id="<?php echo esc_html( $dt_notification_key ) ?>_web" type="checkbox"
+                                                   name="<?php echo esc_html( $dt_notification_key ) ?>_web"
+                                                   onclick="switch_preference( '<?php echo esc_html( $dt_notification_key ) ?>_web', 'notifications' );"
+                                                <?php ( isset( $dt_user_meta[$dt_notification_key . '_web'] ) && $dt_user_meta[$dt_notification_key . '_web'][0] == false ) ?
+                                                    print esc_attr( '', 'disciple_tools' ) : print esc_attr( 'checked', 'disciple_tools' ); ?>>
+                                            <label class="switch-paddle inactive" for="<?php echo esc_html( $dt_notification_key ) ?>_web">
+                                                <span class="show-for-sr"><?php echo esc_html( $dt_notification_default['label'] ) ?></span>
                                             </label>
                                         </div>
-                                    <?php } // end else ?>
-                                </td>
-                                <td>
-                                    <?php
-                                    if ( $dt_site_notification_defaults['new_email'] ) {
-                                        print 'required';
-                                    } else { ?>
+                                    <?php endif; ?>
+                                    </td>
+                                    <td>
+                                    <?php if ( $dt_notification_default["email"] ) : ?>
+                                        <div style="height:2em;"><?php esc_html_e( "required", 'disciple_tools' ) ?></div>
+                                    <?php else : ?>
                                         <div class="switch">
-                                            <input class="switch-input" id="new_email" type="checkbox"
-                                                   name="new_email"
-                                                   onclick="switch_preference('new_email');" <?php ( isset( $dt_user_meta['new_email'] ) && $dt_user_meta['new_email'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
-                                            <label class="switch-paddle" for="new_email">
-                                                <span class="show-for-sr">Newly Assigned Contact</span>
+                                            <input class="switch-input" id="<?php echo esc_html( $dt_notification_key ) ?>_email" type="checkbox"
+                                                   name="<?php echo esc_html( $dt_notification_key ) ?>_email"
+                                                   onclick="switch_preference( '<?php echo esc_html( $dt_notification_key ) ?>_email', 'notifications' );"
+                                                <?php ( isset( $dt_user_meta[$dt_notification_key . '_email'] ) && $dt_user_meta[$dt_notification_key . '_email'][0] == false ) ?
+                                                    print esc_attr( '', 'disciple_tools' ) : print esc_attr( 'checked', 'disciple_tools' ); ?>>
+                                            <label class="switch-paddle inactive" for="<?php echo esc_html( $dt_notification_key ) ?>_email">
+                                                <span class="show-for-sr"><?php echo esc_html( $dt_notification_default['label'] ) ?></span>
                                             </label>
                                         </div>
-                                    <?php } // end else ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="tall-4"><?php esc_html_e( '@Mentions', 'disciple_tools' )?></td>
-                                <td>
-                                    <?php
-                                    if ( $dt_site_notification_defaults['mentions_web'] ) {
-                                        print 'required';
-                                    } else { ?>
-                                        <div class="switch">
-                                            <input class="switch-input" id="mentions_web" type="checkbox"
-                                                   name="mentions_web"
-                                                   onclick="switch_preference('mentions_web');" <?php ( isset( $dt_user_meta['mentions_web'] ) && $dt_user_meta['mentions_web'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
-                                            <label class="switch-paddle" for="mentions_web">
-                                                <span class="show-for-sr"><?php esc_html_e( '@Mentions', 'disciple_tools' )?></span>
-                                            </label>
-                                        </div>
-                                    <?php } // end else ?>
-                                </td>
-                                <td>
-                                    <?php
-                                    if ( $dt_site_notification_defaults['mentions_email'] ) {
-                                        print 'required';
-                                    } else { ?>
-                                        <div class="switch">
-                                            <input class="switch-input" id="mentions_email" type="checkbox"
-                                                   name="mentions_email"
-                                                   onclick="switch_preference('mentions_email');" <?php ( isset( $dt_user_meta['mentions_email'] ) && $dt_user_meta['mentions_email'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
-                                            <label class="switch-paddle" for="mentions_email">
-                                                <span class="show-for-sr"><?php esc_html_e( '@Mentions', 'disciple_tools' )?></span>
-                                            </label>
-                                        </div>
-                                    <?php } // end else ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="tall-4"><?php esc_html_e( 'Comments', 'disciple_tools' )?></td>
-                                <td>
-                                    <?php
-                                    if ( $dt_site_notification_defaults['comments_web'] ) {
-                                        print 'required';
-                                    } else { ?>
-                                        <div class="switch">
-                                            <input class="switch-input" id="comments_web" type="checkbox"
-                                                   name="comments_web"
-                                                   onclick="switch_preference('comments_web');" <?php ( isset( $dt_user_meta['comments_web'] ) && $dt_user_meta['comments_web'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
-                                            <label class="switch-paddle" for="comments_web">
-                                                <span class="show-for-sr"><?php esc_html_e( 'Comments', 'disciple_tools' )?></span>
-                                            </label>
-                                        </div>
-                                    <?php } // end else ?>
-                                </td>
-                                <td>
-                                    <?php
-                                    if ( $dt_site_notification_defaults['comments_email'] ) {
-                                        print 'required';
-                                    } else { ?>
-                                        <div class="switch">
-                                            <input class="switch-input" id="comments_email" type="checkbox"
-                                                   name="comments_email"
-                                                   onclick="switch_preference('comments_email');" <?php ( isset( $dt_user_meta['comments_email'] ) && $dt_user_meta['comments_email'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
-                                            <label class="switch-paddle" for="comments_email">
-                                                <span class="show-for-sr"><?php esc_html_e( 'Comments', 'disciple_tools' )?></span>
-                                            </label>
-                                        </div>
-                                    <?php } // end else ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="tall-4"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></td>
-                                <td>
-                                    <?php
-                                    if ( $dt_site_notification_defaults['updates_web'] ) {
-                                        print 'required';
-                                    } else { ?>
-                                        <div class="switch">
-                                            <input class="switch-input" id="updates_web" type="checkbox"
-                                                   name="updates_web"
-                                                   onclick="switch_preference('updates_web');" <?php ( isset( $dt_user_meta['updates_web'] ) && $dt_user_meta['updates_web'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
-                                            <label class="switch-paddle" for="updates_web">
-                                                <span class="show-for-sr"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></span>
-                                            </label>
-                                        </div>
-                                    <?php } // end else ?>
-                                </td>
-                                <td>
-                                    <?php
-                                    if ( $dt_site_notification_defaults['updates_email'] ) {
-                                        print 'required';
-                                    } else { ?>
-                                        <div class="switch">
-                                            <input class="switch-input" id="updates_email" type="checkbox"
-                                                   name="updates_email"
-                                                   onclick="switch_preference('updates_email');" <?php ( isset( $dt_user_meta['updates_email'] ) && $dt_user_meta['updates_email'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
-                                            <label class="switch-paddle" for="updates_email">
-                                                <span class="show-for-sr"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></span>
-                                            </label>
-                                        </div>
-                                    <?php } // end else ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="tall-4"><?php esc_html_e( 'Contact Info Changed', 'disciple_tools' )?></td>
-                                <td>
-                                    <?php
-                                    if ( $dt_site_notification_defaults['changes_web'] ) {
-                                        print 'required';
-                                    } else { ?>
-                                        <div class="switch">
-                                            <input class="switch-input" id="changes_web" type="checkbox"
-                                                   name="changes_web"
-                                                   onclick="switch_preference('changes_web');" <?php ( isset( $dt_user_meta['changes_web'] ) && $dt_user_meta['changes_web'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
-                                            <label class="switch-paddle" for="changes_web">
-                                                <span class="show-for-sr"><?php esc_html_e( 'Contact Info Changed', 'disciple_tools' )?></span>
-                                            </label>
-                                        </div>
-                                    <?php } // end else ?>
-                                </td>
-                                <td>
-                                    <?php
-                                    if ( $dt_site_notification_defaults['changes_email'] ) {
-                                        print 'required';
-                                    } else { ?>
-                                        <div class="switch">
-                                            <input class="switch-input" id="changes_email" type="checkbox"
-                                                   name="changes_email"
-                                                   onclick="switch_preference('changes_email');" <?php ( isset( $dt_user_meta['changes_email'] ) && $dt_user_meta['changes_email'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
-                                            <label class="switch-paddle" for="changes_email">
-                                                <span class="show-for-sr"><?php esc_html_e( 'Contact Info Changed', 'disciple_tools' )?></span>
-                                            </label>
-                                        </div>
-                                    <?php } // end else ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="tall-4"><?php esc_html_e( 'Contact Milestones', 'disciple_tools' )?></td>
-                                <td>
-                                    <?php
-                                    if ( $dt_site_notification_defaults['milestones_web'] ) {
-                                        print 'required';
-                                    } else { ?>
-                                        <div class="switch">
-                                            <input class="switch-input" id="milestones_web" type="checkbox"
-                                                   name="milestones_web"
-                                                   onclick="switch_preference('milestones_web');" <?php ( isset( $dt_user_meta['milestones_web'] ) && $dt_user_meta['milestones_web'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
-                                            <label class="switch-paddle" for="milestones_web">
-                                                <span class="show-for-sr"><?php esc_html_e( 'Milestones', 'disciple_tools' )?></span>
-                                            </label>
-                                        </div>
-                                    <?php } // end else ?>
-                                </td>
-                                <td>
-                                    <?php
-                                    if ( $dt_site_notification_defaults['milestones_email'] ) {
-                                        print 'required';
-                                    } else { ?>
-                                        <div class="switch">
-                                            <input class="switch-input" id="milestones_email" type="checkbox"
-                                                   name="milestones_email"
-                                                   onclick="switch_preference('milestones_email');" <?php ( isset( $dt_user_meta['milestones_email'] ) && $dt_user_meta['milestones_email'][0] == true ) ? print esc_attr( 'checked', 'disciple_tools' ) : print esc_attr( '', 'disciple_tools' ); ?> >
-                                            <label class="switch-paddle" for="milestones_email">
-                                                <span class="show-for-sr"><?php esc_html_e( 'Milestones', 'disciple_tools' )?></span>
-                                            </label>
-                                        </div>
-                                    <?php } // end else ?>
-                                </td>
-                            </tr>
-
+                                    <?php endif; ?>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
                             </tbody>
                         </table>
 

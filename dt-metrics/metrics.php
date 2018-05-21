@@ -30,7 +30,7 @@ class Disciple_Tools_Metrics
     }
 
     public function __construct() {
-        $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
+        $url_path = dt_get_url_path();
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
 
             add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_google' ], 10 );
@@ -40,7 +40,7 @@ class Disciple_Tools_Metrics
                 // load basic charts
                 require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
                 require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
-                require_once( get_template_directory() . '/dt-metrics/metrics-users.php' );
+//                require_once( get_template_directory() . '/dt-metrics/metrics-users.php' );
             }
         }
     }
@@ -1237,6 +1237,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $numbers;
     }
 
+<<<<<<< HEAD
     public static function query_my_group_health( $user_id = null ) {
         global $wpdb;
 
@@ -1354,3 +1355,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     }
 
 }
+=======
+}
+>>>>>>> master

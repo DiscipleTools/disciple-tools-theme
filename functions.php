@@ -152,7 +152,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.8.0';
+            $this->version = '0.8.1';
             $this->migration_number = 6;
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -210,6 +210,7 @@ else {
             require_once( get_template_directory() . '/dt-assets/functions/menu.php' ); // Register menus and menu walkers
             require_once( get_template_directory() . '/dt-assets/functions/details-bar.php' ); // Breadcrumbs bar
 
+
             /**
              * URL loader
              */
@@ -226,7 +227,7 @@ else {
 
                 $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
 
-                $url_path = trim( parse_url( add_query_arg( [] ), PHP_URL_PATH ), '/' );
+                $url_path = dt_get_url_path();
 
                 if ( isset( $template_for_url[ $url_path ] ) ) {
                     $template_filename = locate_template( $template_for_url[ $url_path ], true );
