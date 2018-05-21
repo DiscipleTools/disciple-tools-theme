@@ -1237,7 +1237,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $numbers;
     }
 
-<<<<<<< HEAD
+
     public static function query_my_group_health( $user_id = null ) {
         global $wpdb;
 
@@ -1355,6 +1355,4 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     }
 
 }
-=======
-}
->>>>>>> master
+
