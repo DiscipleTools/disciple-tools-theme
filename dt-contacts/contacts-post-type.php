@@ -1247,10 +1247,9 @@ class Disciple_Tools_Contact_Post_Type
     }
 
     public function disable_new_contacts_in_admin_area() {
-        // Hide sidebar link
-        global $submenu;
-        unset( $submenu['edit.php?post_type=contacts'][10] );
-
+        echo "<style type='text/css' >
+            #menu-posts-contacts ul { display:none; }
+        </style>";
         // Hide link on listing page
         if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'contacts') {
             echo '<style type="text/css">

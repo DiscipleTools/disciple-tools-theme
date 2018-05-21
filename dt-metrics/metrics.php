@@ -652,8 +652,13 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
                 break;
             case 'project':
+<<<<<<< HEAD
                 $tree = dt_get_generation_tree();
                 dt_write_log( $tree );
+=======
+                $raw_connections = self::query_get_group_generations();
+                $tree = Disciple_Tools_Counter_Base::build_generation_tree( $raw_connections );
+>>>>>>> master
 
                 break;
             default:
@@ -676,7 +681,11 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
           ],
           3 => [
               'pre-group' => 0,
+<<<<<<< HEAD
               'group' => 3,
+=======
+              'group' => 0,
+>>>>>>> master
               'church' => 0,
               'total' => 3,
           ],
@@ -700,7 +709,12 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     }
 
     public static function chart_streams() {
+<<<<<<< HEAD
         $tree = dt_get_generation_tree();
+=======
+        $raw_connections = self::query_get_group_generations();
+        $tree = Disciple_Tools_Counter_Base::build_generation_tree( $raw_connections );
+>>>>>>> master
 
         $streams = Disciple_Tools_Counter_Base::get_stream_count( $tree );
 
@@ -714,6 +728,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             $chart[] = [ (string) $row_key . ' gen' , intval( $row_value ) ];
         }
 
+<<<<<<< HEAD
+=======
+        dt_write_log( $chart );
+>>>>>>> master
         return $chart;
     }
 

@@ -43,6 +43,7 @@ abstract class Disciple_Tools_Counter_Base
         return $branch;
     }
 
+<<<<<<< HEAD
     public static function count_generation_tree( array $elements, $parent_id = 0, $generation = 0 ) {
         if ( is_null( $elements ) ) {
             $elements = Disciple_Tools_Metrics_Hooks_Base::query_get_group_generations();
@@ -65,6 +66,19 @@ abstract class Disciple_Tools_Counter_Base
         }
 
         return $branch;
+=======
+    /**
+     * @param array $tree
+     *
+     * @return array
+     */
+    public static function get_type_by_level( array $tree ) {
+        $groups_at_level = [];
+        foreach ( $tree as $key => $level ) {
+            $groups_at_level[] = self::get_items_by_level( $level );
+        }
+        return $groups_at_level;
+>>>>>>> master
     }
 
     /**
@@ -105,6 +119,30 @@ abstract class Disciple_Tools_Counter_Base
         return $i;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * @param array $array
+     *
+     * @return array
+     */
+    public static function get_array_item_levels( array $array ) {
+        $item_levels =[];
+        $i = 1;
+
+        while ( isset( $array['children'] ) && is_array( $array['children'] ) ) {
+            if ( ! isset( $item_levels[ $i ] ) ) {
+                $item_levels[ $i ] = 0;
+            }
+            $item_levels[ $i ] = $item_levels[ $i ] + 1;
+            $i++;
+            foreach ( $array['children'] as $item ) {
+                $array = $item;
+            }
+        }
+        return $item_levels;
+    }
+>>>>>>> master
 
     /**
      * @param array $array

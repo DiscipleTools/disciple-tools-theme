@@ -639,7 +639,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         if ( !isset( $fields["requires_update"] )){
-            self::check_requires_update( $contact_id );
+            //only mark as updated with a comment or when is quick action button is pressed.
+            //self::check_requires_update( $contact_id );
         }
 //        @todo permission?
         $contact = self::get_contact( $contact_id, false );
