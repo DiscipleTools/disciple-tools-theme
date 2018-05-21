@@ -120,12 +120,12 @@ get_header();
             contacts: {
                 display: "name",
                 ajax: {
-                    url: wpApiShare.root + "dt/v1/locations/grouped/",
+                    url: wpApiSettings.root + "dt/v1/locations/grouped/",
                     data: {
                         s: "{{query}}"
                     },
                     beforeSend: function (xhr) {
-                        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+                        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
                     },
                     callback: {
                         done: function (data) {

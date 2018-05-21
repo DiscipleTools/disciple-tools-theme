@@ -13,7 +13,7 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
     } // End instance()
 
     public function __construct() {
-        $url_path = dt_get_url_path();
+        $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
 
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
 
