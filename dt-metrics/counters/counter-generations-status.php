@@ -42,6 +42,7 @@ class Disciple_Tools_Counter_Generations extends Disciple_Tools_Counter_Base  {
         return $i;
     }
 
+
     /**
      * Counts generation status
      * Returns an array of all contacts in discipleship and their generation status.

@@ -22,6 +22,8 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
         parent::__construct();
     } // End __construct()
 
+
+
     /**
      * Returns count of contacts for different statuses
      * Primary 'countable'

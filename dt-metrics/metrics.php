@@ -570,18 +570,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     }
 
     public static function chart_group_health( $type = 'personal' ) {
-        switch ( $type ) {
-            case 'personal':
-                $results = [];
-                break;
-            case 'project':
-                $results = [];
-                break;
-            default:
-                $results = [];
-                break;
-        }
-        $default = [
+
+        $default_key_list = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+
+        $default_chart = [
             [ 'Step', 'Groups', [ 'role' => 'annotation' ] ],
             [ 'Fellowship', 0, 0 ],
             [ 'Giving', 0, 0 ],
@@ -595,38 +587,117 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             [ 'Covenant', 0, 0 ],
         ];
 
-        return wp_parse_args( $results, $default );
+        $chart = [];
+
+        switch ( $type ) {
+            case 'personal':
+                $results = self::query_my_group_health();
+                break;
+            case 'project':
+                $results = self::query_project_group_health();
+                break;
+            default:
+                $results = false;
+                break;
+        }
+
+        if ( ! $results ) {
+            $chart = $default_chart;
+        }
+        else {
+            $chart[] = [ 'Step', 'Groups', [ 'role' => 'annotation' ] ];
+
+            foreach ( $results as $result ) {
+                if ( isset( $default_key_list[ $result['health_key'] ] ) ) {
+                    $value = intval( $result['out_of'] ) - intval( $result['count'] );
+                    $chart[] = [ $default_key_list[ $result['health_key'] ]['name'], intval( $value ), intval( $value ) ];
+                }
+            }
+        }
+
+        return $chart;
     }
 
     public static function chart_group_generations( $type = 'personal' ) {
+
         switch ( $type ) {
             case 'personal':
-                $results = [];
+
+
                 break;
             case 'project':
-                $results = [];
+                $raw_connections = self::query_get_group_generations();
+                $tree = Disciple_Tools_Counter_Base::build_generation_tree( $raw_connections );
+
                 break;
             default:
                 $results = [];
                 break;
         }
-        $default = [
-            [ 'Generation', 'Pre-Group', 'Group', 'Church', [ 'role' => 'annotation' ] ],
-            [ '1st Gen', 0, 0, 0, 0 ],
-            [ '2st Gen', 0, 0, 0, 0 ],
-            [ '3st Gen', 0, 0, 0, 0 ],
-            [ '4st Gen', 0, 0, 0, 0 ],
-            [ '5+ Gen', 0, 0, 0, 0 ],
+
+        $target = [
+          1 => [
+              'pre-group' => 2,
+              'group' => 3,
+              'church' => 1,
+              'total' => 6,
+          ],
+          2 => [
+              'pre-group' => 2,
+              'group' => 1,
+              'church' => 1,
+              'total' => 4,
+          ],
+          3 => [
+              'pre-group' => 0,
+              'group' => 0,
+              'church' => 0,
+              'total' => 3,
+          ],
+          4 => [
+              'pre-group' => 0,
+              'group' => 0,
+              'church' => 0,
+              'total' => 1,
+          ]
         ];
 
-        return wp_parse_args( $results, $default );
+        $chart = [
+            [ 'Generations', 'Pre-Group', 'Group', 'Church', [ 'role' => 'annotation' ] ],
+        ];
+
+        foreach ( $target as $row_key => $row_value ) {
+            $chart[] = [ (string) $row_key, $row_value['pre-group'], $row_value['group'], $row_value['church'], $row_value['total'] ];
+        }
+
+        return $chart;
+    }
+
+    public static function chart_streams() {
+        $raw_connections = self::query_get_group_generations();
+        $tree = Disciple_Tools_Counter_Base::build_generation_tree( $raw_connections );
+
+        $streams = Disciple_Tools_Counter_Base::get_stream_count( $tree );
+
+        ksort( $streams );
+
+        $chart = [
+            [ 'Generations', 'Streams' ],
+        ];
+
+        foreach ( $streams as $row_key => $row_value ) {
+            $chart[] = [ (string) $row_key . ' gen' , intval( $row_value ) ];
+        }
+
+        dt_write_log( $chart );
+        return $chart;
     }
 
 
     /**
      * PROJECT METRICS
      */
-
+    // @todo
     public static function chart_project_hero_stats()
     {
         $default = [
@@ -650,7 +721,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return wp_parse_args( $results, $default );
     }
 
-
+    // @todo
     public static function chart_project_critical_path()
     {
         $default = [
@@ -681,6 +752,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return wp_parse_args( $results, $default );
     }
 
+
+    // @todo
     public static function chart_timeline() {
         $default = [
             'May' => [
@@ -863,6 +936,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $logins;
     }
 
+    // @todo
     public static function chart_user_contacts_per_user() {
 
         $default = [
@@ -876,6 +950,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return wp_parse_args( $results, $default );
     }
 
+    // @todo
     public static function chart_user_least_active() {
 
         $default = [
@@ -890,6 +965,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return wp_parse_args( $results, $default );
     }
 
+    // @todo
     public static function chart_user_most_active() {
 
         $default = [
@@ -1161,4 +1237,122 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $numbers;
     }
 
+
+    public static function query_my_group_health( $user_id = null ) {
+        global $wpdb;
+
+        if ( is_null( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT d.meta_key as health_key, 
+              count(*) as count, 
+              ( SELECT count(*)
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                     AND b.meta_key = 'assigned_to'
+                     AND b.meta_value = %s
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
+                     AND c.meta_key = 'group_status'
+                     AND c.meta_value = 'active'
+              WHERE a.post_status = 'publish'
+                    AND a.post_type = 'groups'
+              ) as out_of
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                     AND b.meta_key = 'assigned_to'
+                     AND b.meta_value = %s
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
+                     AND c.meta_key = 'group_status'
+                     AND c.meta_value = 'active'
+                JOIN $wpdb->postmeta as d
+                  ON a.ID=d.post_id
+              WHERE a.post_status = 'publish'
+                    AND a.post_type = 'groups'
+                    AND d.meta_key LIKE %s
+              GROUP BY d.meta_key
+        ",
+            'user-' . $user_id,
+            'user-' . $user_id,
+        $wpdb->esc_like( 'church_' ) . '%' ), ARRAY_A );
+
+        return $results;
+    }
+
+    public static function query_project_group_health() {
+        global $wpdb;
+
+        $results = $wpdb->get_results($wpdb->prepare( "
+            SELECT d.meta_key as health_key, 
+              count(*) as count, 
+              ( SELECT count(*)
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
+                     AND c.meta_key = 'group_status'
+                     AND c.meta_value = 'active'
+              WHERE a.post_status = 'publish'
+                    AND a.post_type = 'groups'
+              ) as out_of
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
+                     AND c.meta_key = 'group_status'
+                     AND c.meta_value = 'active'
+                JOIN $wpdb->postmeta as d
+                  ON a.ID=d.post_id
+              WHERE a.post_status = 'publish'
+                    AND a.post_type = 'groups'
+                    AND d.meta_key LIKE %s
+              GROUP BY d.meta_key
+        ", $wpdb->esc_like( 'church_' ) . '%' ), ARRAY_A );
+
+        return $results;
+    }
+
+
+    public static function query_get_group_generations() {
+        global $wpdb;
+
+        $results = $wpdb->get_results( "
+            SELECT
+              a.ID         as id,
+              0            as parent_id,
+              d.meta_value as group_type
+            FROM $wpdb->posts as a
+              JOIN $wpdb->postmeta as c
+                ON a.ID = c.post_id
+                   AND c.meta_key = 'group_status'
+                   AND c.meta_value = 'active'
+              LEFT JOIN $wpdb->postmeta as d
+                ON a.ID = d.post_id
+                   AND d.meta_key = 'group_type'
+            WHERE a.post_status = 'publish'
+                  AND a.post_type = 'groups'
+                  AND a.ID NOT IN (
+              SELECT DISTINCT (p2p_from)
+              FROM $wpdb->p2p
+              WHERE p2p_type = 'groups_to_groups'
+              GROUP BY p2p_from)
+            UNION
+            SELECT
+              p.p2p_from                          as id,
+              p.p2p_to                            as parent_id,
+              (SELECT meta_value
+               FROM $wpdb->postmeta
+               WHERE post_id = p.p2p_from
+                     AND meta_key = 'group_type') as group_type
+            FROM $wpdb->p2p as p
+            WHERE p.p2p_type = 'groups_to_groups'
+        ", ARRAY_A );
+
+        return $results;
+    }
+
 }
+
