@@ -58,6 +58,30 @@ let API = {
       }
     })
   },
+  delete_comment(type, postId, comment_ID){
+    return jQuery.ajax({
+      type: "DELETE",
+      data: JSON.stringify({comment_ID}),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: wpApiShare.root + `dt/v1/${type}/${postId}/comment`,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+      }
+    })
+  },
+  update_comment(type, postId, comment_ID, comment_content){
+    return jQuery.ajax({
+      type: "POST",
+      data: JSON.stringify({comment_ID, comment_content}),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: wpApiShare.root + `dt/v1/${type}/${postId}/comment/update`,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+      }
+    })
+  },
   get_comments(type, postId) {
     return jQuery.ajax({
       type: "GET",

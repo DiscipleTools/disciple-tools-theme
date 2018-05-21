@@ -1807,6 +1807,25 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return $comments;
     }
 
+
+    public static function delete_comment( int $contact_id, int $comment_id, bool $check_permissions = true ){
+        if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
+            return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
+        }
+        return wp_delete_comment( $comment_id );
+    }
+
+    public static function update_comment( int $contact_id, int $comment_id, string $comment_content, bool $check_permissions = true ){
+        if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
+            return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
+        }
+        $comment = [
+            "comment_content" => $comment_content,
+            "comment_ID" => $comment_id,
+        ];
+        return wp_update_comment( $comment );
+    }
+
     /**
      * @param int  $contact_id
      * @param bool $accepted

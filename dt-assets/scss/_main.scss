@@ -407,9 +407,21 @@ img {
 
 .comment-bubble {
     word-wrap: break-word;
-    margin: 0 10px 5px 0;
-
+    margin: 0 10px 0 0;
 }
+
+.comment-controls {
+    a {
+        font-size: 12px;
+    }
+    img {
+        height: 10px;
+    }
+    object path {
+        fill: red;
+    }
+}
+
 .comment-date {
     text-align: right;
     margin-right: 20px;
@@ -1219,6 +1231,7 @@ button.loader{
         position: relative;
         pointer-events: none;
         cursor: not-allowed;
+        padding-right:35px;
     }
     &:not(.disabled).loading:not(.expand) {
         text-align: left;

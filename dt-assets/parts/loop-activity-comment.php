@@ -62,5 +62,49 @@
 
         </div>
     </div>
+
+
+
+    <div class="reveal" id="delete-comment-modal" data-reveal>
+        <p class="lead"><?php esc_html_e( 'Delete Comment:', 'disciple_tools' )?></p>
+        <p id="comment-to-delete"></p>
+        <div class="grid-x">
+            <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                <?php esc_html_e( 'Close', 'disciple_tools' )?>
+            </button>
+            <button class="button alert loader" aria-label="confirm" type="button" id="confirm-comment-delete">
+                <?php esc_html_e( 'Delete', 'disciple_tools' )?>
+            </button>
+            <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="delete-comment callout small alert" style="display: none">
+            <h5><?php esc_html_e( "Sorry, something went wrong", 'disciple_tools' ) ?></h5>
+            <p id="delete-comment-error"><?php esc_html_e( "The comment could not be deleted.", 'disciple_tools' ) ?></p>
+        </div>
+    </div>
+
+    <div class="reveal" id="edit-comment-modal" data-reveal>
+        <p class="lead"><?php esc_html_e( 'Edit Comment:', 'disciple_tools' )?></p>
+        <textarea id="comment-to-edit" rows="10"></textarea>
+        <div class="grid-x">
+            <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                <?php esc_html_e( 'Close', 'disciple_tools' )?>
+            </button>
+            <button class="button loader" aria-label="confirm" type="button" id="confirm-comment-edit">
+                <?php esc_html_e( 'Update', 'disciple_tools' )?>
+            </button>
+            <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="edit-comment callout small alert" style="display: none">
+            <h5><?php esc_html_e( "Sorry, something went wrong", 'disciple_tools' ) ?></h5>
+            <p id="edit-comment-error"><?php esc_html_e( "The comment could not be updated.", 'disciple_tools' ) ?></p>
+        </div>
+    </div>
+
+
     <?php
 } )();

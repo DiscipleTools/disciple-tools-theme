@@ -118,15 +118,27 @@ class Disciple_Tools_Contacts_Endpoints
 //            ]
 //        );
         register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/comments', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_comments' ],
+            ]
+        );
+        register_rest_route(
             $this->namespace, '/contact/(?P<id>\d+)/comment', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'post_comment' ],
             ]
         );
         register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/comments', [
-                "methods"  => "GET",
-                "callback" => [ $this, 'get_comments' ],
+            $this->namespace, '/contact/(?P<id>\d+)/comment/update', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'update_comment' ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/comment', [
+                "methods"  => "DELETE",
+                "callback" => [ $this, 'delete_comment' ],
             ]
         );
         register_rest_route(
@@ -539,6 +551,38 @@ class Disciple_Tools_Contacts_Endpoints
             }
         } else {
             return new WP_Error( "post_comment", "Missing a valid contact id", [ 'status' => 400 ] );
+        }
+    }
+
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return false|int|\WP_Error|\WP_REST_Response
+     */
+    public function update_comment( WP_REST_Request $request )
+    {
+        $params = $request->get_params();
+        $body = $request->get_json_params();
+        if ( isset( $params['id'] ) && isset( $body['comment_ID'] ) && isset( $body['comment_content'] ) ) {
+            return Disciple_Tools_Contacts::update_comment( $params['id'], $body["comment_ID"], $body["comment_content"], true );
+        } else {
+            return new WP_Error( "post_comment", "Missing a valid contact id, comment id or missing new comment.", [ 'status' => 400 ] );
+        }
+    }
+
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return false|int|\WP_Error|\WP_REST_Response
+     */
+    public function delete_comment( WP_REST_Request $request )
+    {
+        $params = $request->get_params();
+        $body = $request->get_json_params();
+        if ( isset( $params['id'] ) && isset( $body['comment_ID'] ) ) {
+            return Disciple_Tools_Contacts::delete_comment( $params['id'], $body["comment_ID"], true );
+        } else {
+            return new WP_Error( "post_comment", "Missing a valid contact id or comment id", [ 'status' => 400 ] );
         }
     }
 
