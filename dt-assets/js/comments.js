@@ -178,17 +178,10 @@ jQuery(document).ready(function($) {
       comment = comment.replace(mentionRegex, (match, text, id)=>{
         return `<a>@${text}</a>`
       })
-      let linkRegex = /\[(.*?)\]\((.+?)\)/g
-      comment = comment.replace(linkRegex, (match, text, url)=>{
-        if (text.includes("http") && !url.includes("http")){
-          [url, text] = [text, url]
-        }
-        return `<a href="${url}">${text}</a>`
-      })
-        let urlRegex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+        let urlRegex = /(\[?http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
         comment = comment.replace(urlRegex, (match, ext)=>{
             let url = match
-            if(match.indexOf("@") == -1) {
+            if(match.indexOf("@") == -1 && match.indexOf("[") == -1) {
                 if (match.indexOf("http") == 0 && match.indexOf("www.") == -1) {
                     url = match
                 }
@@ -202,6 +195,13 @@ jQuery(document).ready(function($) {
             }
             return match
         })
+      let linkRegex = /\[(.*?)\]\((.+?)\)/g
+      comment = comment.replace(linkRegex, (match, text, url)=>{
+        if (text.includes("http") && !url.includes("http")){
+          [url, text] = [text, url]
+        }
+        return `<a href="${url}">${text}</a>`
+      })
 
     }
     return comment
