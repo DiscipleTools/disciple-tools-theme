@@ -1469,7 +1469,7 @@ html[dir='rtl'] {
 
 .dataTables_wrapper {
     input[type="search"] {
-        background: url("/wp-content/themes/disciple-tools-theme/dt-assets/images/search.svg") no-repeat scroll 7px 10px;
+        background: url("../../../dt-assets/images/search.svg") no-repeat scroll 7px 10px;
         padding-left:32px;
     }
 }
@@ -1597,14 +1597,14 @@ html[dir='rtl'] {
     background-repeat: no-repeat;
     background-position: center right;
     padding-right:1.5rem;
-    background-image: url("/wp-content/themes/disciple-tools-theme/dt-assets/images/sort_both.png")
+    background-image: url("../../../dt-assets/images/sort_both.png")
 }
 
 #content table thead .sortable .sorting_desc {
-    background-image: url("/wp-content/themes/disciple-tools-theme/dt-assets/images/sort_desc.png")
+    background-image: url("../../../dt-assets/images/sort_desc.png")
 }
 #content table thead .sortable .sorting_asc {
-    background-image: url("/wp-content/themes/disciple-tools-theme/dt-assets/images/sort_asc.png")
+    background-image: url("../../../dt-assets/images/sort_asc.png")
 }
 
 .help-icon {
@@ -1631,7 +1631,7 @@ select#overall_status {
 
 //add a loading spinner when searching for contacts
 .mentions-input-box textarea.loading-gif {
-    background:url('/wp-content/themes/disciple-tools-theme/dt-assets/images/ajax-loader.gif') no-repeat 99% 6px;
+    background:url('../../../dt-assets/images/ajax-loader.gif') no-repeat 99% 6px;
 }
 //make sure the blue boxes around the @mentions in the textarea are the right sizes
 .mentions-input-box .mentions strong span {

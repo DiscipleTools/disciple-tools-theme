@@ -1,15 +1,23 @@
-/* global jQuery:false, wpApiSettings:false */
-
-
+/* global jQuery:false, wpApiShare:false */
+jQuery(document).ready(function($) {
+// Adds an active state to the top bar navigation
+  let ref = "";
+  if (wpApiShare && wpApiShare.site_url) {
+    ref = window.location.href.replace(wpApiShare.site_url + '/', "");
+  } else {
+    ref = window.location.pathname
+  }
+  $(`div.top-bar-left ul.menu [href*=${ref.split('/')[0]}]`).parent().addClass('active');
+})
 let API = {
   get_post(type, postId){
     return jQuery.ajax({
       type:"GET",
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt/v1/${type}/${postId}`,
+      url: wpApiShare.root + `dt/v1/${type}/${postId}`,
       beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
   },
@@ -19,9 +27,9 @@ let API = {
       data: JSON.stringify(fields),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt/v1/contact/create`,
+      url: wpApiShare.root + `dt/v1/contact/create`,
       beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
   },
@@ -32,9 +40,9 @@ let API = {
       data:JSON.stringify(post_data),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt/v1/${type}/${postId}`,
+      url: wpApiShare.root + `dt/v1/${type}/${postId}`,
       beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
   },
@@ -44,9 +52,9 @@ let API = {
       data: JSON.stringify({comment}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt/v1/${type}/${postId}/comment`,
+      url: wpApiShare.root + `dt/v1/${type}/${postId}/comment`,
       beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
   },
@@ -55,9 +63,9 @@ let API = {
       type: "GET",
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt/v1/${type}/${postId}/comments`,
+      url: wpApiShare.root + `dt/v1/${type}/${postId}/comments`,
       beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
   },
@@ -66,9 +74,9 @@ let API = {
       type: "GET",
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt/v1/${type}/${postId}/activity`,
+      url: wpApiShare.root + `dt/v1/${type}/${postId}/activity`,
       beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
   },
@@ -77,9 +85,9 @@ let API = {
       type: "GET",
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt/v1/${type}/${postId}/activity/${activityId}`,
+      url: wpApiShare.root + `dt/v1/${type}/${postId}/activity/${activityId}`,
       beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
   },
@@ -88,9 +96,9 @@ let API = {
       type: "GET",
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt/v1/${type}/${postId}/revert/${activityId}`,
+      url: wpApiShare.root + `dt/v1/${type}/${postId}/revert/${activityId}`,
       beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
   },
@@ -99,9 +107,9 @@ let API = {
       type: "GET",
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt/v1/${type}/${postId}/shared-with`,
+      url: wpApiShare.root + `dt/v1/${type}/${postId}/shared-with`,
       beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
   },
@@ -111,9 +119,9 @@ let API = {
       data: JSON.stringify({user_id:userId}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt/v1/${type}/${postId}/add-shared`,
+      url: wpApiShare.root + `dt/v1/${type}/${postId}/add-shared`,
       beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
   },
@@ -123,9 +131,9 @@ let API = {
       data: JSON.stringify({user_id:userId}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt/v1/${type}/${postId}/remove-shared`,
+      url: wpApiShare.root + `dt/v1/${type}/${postId}/remove-shared`,
       beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
   },
@@ -136,9 +144,9 @@ let API = {
       data: JSON.stringify({title, created_from_contact_id, parent_group_id}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt/v1/group/create`,
+      url: wpApiShare.root + `dt/v1/group/create`,
       beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
   },
@@ -147,9 +155,9 @@ let API = {
       type: "GET",
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt/v1/users/get_users?s=${query}`,
+      url: wpApiShare.root + `dt/v1/users/get_users?s=${query}`,
       beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
   },
@@ -158,9 +166,9 @@ let API = {
       type: "GET",
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      url: wpApiSettings.root + `dt/v1/users/get_filters`,
+      url: wpApiShare.root + `dt/v1/users/get_filters`,
       beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
   },
@@ -170,9 +178,9 @@ let API = {
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       data: JSON.stringify( {filters} ),
-      url: wpApiSettings.root + `dt/v1/users/save_filters`,
+      url: wpApiShare.root + `dt/v1/users/save_filters`,
       beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
   }
@@ -205,12 +213,12 @@ let TYPEAHEADS = {
       contacts: {
         display: "name",
         ajax: {
-          url: wpApiSettings.root + url,
+          url: wpApiShare.root + url,
           data: {
             s: "{{query}}"
           },
           beforeSend: function (xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+            xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
           },
           callback: {
             done: function (data) {
@@ -226,12 +234,12 @@ let TYPEAHEADS = {
       users: {
         display: ["name", "user"],
         ajax: {
-          url: wpApiSettings.root + 'dt/v1/users/get_users',
+          url: wpApiShare.root + 'dt/v1/users/get_users',
           data: {
             s: "{{query}}"
           },
           beforeSend: function (xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+            xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
           },
           callback: {
             done: function (data) {

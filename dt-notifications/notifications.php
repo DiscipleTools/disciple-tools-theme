@@ -511,7 +511,7 @@ class Disciple_Tools_Notifications
 
             dt_notification_insert( $args );
             $user = get_userdata( $user_id );
-            $subject = __( "Contact sub-assigned to", 'disciple_tools' );
+            $subject = __( "Contact sub-assigned to you", 'disciple_tools' );
             dt_send_email( $user->user_email, $subject, $message );
         }
     }
@@ -564,7 +564,7 @@ class Disciple_Tools_Notifications
 
         if ( isset( $fields["assigned_to"] ) ){
             $user_id = dt_get_user_id_from_assigned_to( $fields["assigned_to"] );
-            if ( $user_id ){
+            if ( $user_id && $user_id != get_current_user_id()){
                 $notification = [
                     'user_id'             => $user_id,
                     'source_user_id'      => get_current_user_id(),
@@ -581,16 +581,16 @@ class Disciple_Tools_Notifications
                 $message = self::get_notification_message( $notification );
 
                 $user_meta = get_user_meta( $user_id );
-                if ( dt_user_notification_is_enabled( 'new_web', $user_meta, $user_id ) ) {
+                if ( dt_user_notification_is_enabled( 'new_assigned', 'web', $user_meta, $user_id ) ) {
                     dt_notification_insert( $notification );
                 }
-                if ( dt_user_notification_is_enabled( 'new_email', $user_meta, $user_id ) ) {
+                if ( dt_user_notification_is_enabled( 'new_assigned', 'email', $user_meta, $user_id ) ) {
                     $message .= "\r\n\r\n";
                     $message .= 'Click here to reply: ' . home_url( '/' ) . $post_type . '/' . $post_id;
                     $user = get_userdata( $user_id );
                     dt_send_email(
                         $user->user_email,
-                        sprintf( esc_html_x( 'New % created and assigned to you', '', 'disciple_tools' ), Disciple_Tools_Posts::get_label_for_post_type( $post_type, true ) ),
+                        sprintf( esc_html_x( 'New %s created and assigned to you', '', 'disciple_tools' ), Disciple_Tools_Posts::get_label_for_post_type( $post_type, true ) ),
                         $message
                     );
                 }
@@ -652,21 +652,21 @@ class Disciple_Tools_Notifications
                         if ( $assigned_to ){
                             if ( $follower === $assigned_to ){
                                 $notification["notification_name"] = "assigned_to";
-                                $notification_type = 'new';
-                                if ( dt_user_notification_is_enabled( $notification_type . '_web', $user_meta, $follower ) ) {
+                                $notification_type = 'new_assigned';
+                                if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
                                     dt_notification_insert( $notification );
                                 }
-                                if ( dt_user_notification_is_enabled( $notification_type . '_email', $user_meta, $follower ) ) {
+                                if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
                                     $subject = __( 'You have been assigned a new contact!', 'disciple_tools' );
                                     $email .= self::get_notification_message( $notification ) . "\n";
                                 }
                             } else {
                                 $notification["notification_name"] = "assigned_to_other";
                                 $notification_type = 'changes';
-                                if ( dt_user_notification_is_enabled( $notification_type . '_web', $user_meta, $follower ) ) {
+                                if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
                                     dt_notification_insert( $notification );
                                 }
-                                if ( dt_user_notification_is_enabled( $notification_type . '_email', $user_meta, $follower ) ) {
+                                if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
                                     $subject = __( 'Assignment on a contact has changed', 'disciple_tools' );
                                     $email .= self::get_notification_message( $notification ) . "\n";
                                 }
@@ -677,10 +677,10 @@ class Disciple_Tools_Notifications
                         if ( $follower === $assigned_to || in_array( $follower, $subassigned ) ){
                             $notification["notification_name"] = "requires_update";
                             $notification_type = 'updates';
-                            if ( dt_user_notification_is_enabled( $notification_type . '_web', $user_meta, $follower ) ) {
+                            if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
                                 dt_notification_insert( $notification );
                             }
-                            if ( dt_user_notification_is_enabled( $notification_type . '_email', $user_meta, $follower ) ) {
+                            if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
                                 $subject = $subject ?? __( 'Update requested!', 'disciple_tools' );
                                 $email .= self::get_notification_message( $notification ) . "\n";
                             }
@@ -689,10 +689,10 @@ class Disciple_Tools_Notifications
                     if ( in_array( "milestone", $notification_on_fields )){
                         $notification["notification_name"] = "milestone";
                         $notification_type = 'milestones';
-                        if ( dt_user_notification_is_enabled( $notification_type . '_web', $user_meta, $follower ) ) {
+                        if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
                             dt_notification_insert( $notification );
                         }
-                        if ( dt_user_notification_is_enabled( $notification_type . '_email', $user_meta, $follower ) ) {
+                        if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
                             $subject = $subject ?? __( 'Milestones update', 'disciple_tools' );
                             $email .= self::get_notification_message( $notification ) . "\n";
                         }
@@ -700,10 +700,10 @@ class Disciple_Tools_Notifications
                     if ( in_array( "contact_info_update", $notification_on_fields )){
                         $notification["notification_name"] = "contact_info_update";
                         $notification_type = 'changes';
-                        if ( dt_user_notification_is_enabled( $notification_type . '_web', $user_meta, $follower ) ) {
+                        if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
                             dt_notification_insert( $notification );
                         }
-                        if ( dt_user_notification_is_enabled( $notification_type . '_email', $user_meta, $follower ) ) {
+                        if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
                             $subject = $subject ?? __( 'Contact info changed', 'disciple_tools' );
                             $email .= self::get_notification_message( $notification ) . "\n";
                         }
@@ -802,7 +802,7 @@ class Disciple_Tools_Notifications
         } elseif ( $notification["notification_name"] === "subassigned" ){
             $source_user = get_userdata( $notification["source_user_id"] );
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
-            $notification_note = $display_name . ' ' . sprintf( esc_html_x( 'shared %s with you.', '', 'disciple_tools' ), $link );
+            $notification_note = $display_name . ' ' . sprintf( esc_html_x( 'subassigned %s to you.', '', 'disciple_tools' ), $link );
         } elseif ( $notification["notification_name"] ==="milestone" ){
             $meta_key = $notification["field_key"] ?? '';
             $meta_value = $notification["field_value"] ?? '';

@@ -41,7 +41,6 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
         $mentioned_user_ids = $comment_with_users["user_ids"];
         $post_id = $comment->comment_post_ID;
         $date_notified = $comment->comment_date;
-        $author_name = $comment->comment_author;
         $post_type = get_post_type( $post_id );
 
         $followers = Disciple_Tools_Posts::get_users_following_post( $post_type, $post_id );
@@ -61,7 +60,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
             'field_value'         => '',
         ];
 
-        $users_to_notify = array_merge( $mentioned_user_ids, $followers );
+        $users_to_notify = array_unique( array_merge( $mentioned_user_ids, $followers ) );
 
         foreach ( $users_to_notify as $user_to_notify ) {
 
@@ -79,20 +78,23 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                             $notification["notification_action"] = 'mentioned';
                             // share record with mentioned individual
                             Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $user_to_notify, null, false );
+                        } else {
+                            $notification["notification_name"] = 'comment';
+                            $notification["notification_action"] = 'comment';
                         }
 
 
                         $notification["notification_note"] = Disciple_Tools_Notifications::get_notification_message( $notification );
 
                         // web notification
-                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) :
-                            dt_user_notification_is_enabled( 'comments_web', $user_meta, $user->ID ) ) {
+                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions', 'web', $user_meta, $user->ID ) :
+                            dt_user_notification_is_enabled( 'comments', 'web', $user_meta, $user->ID ) ) {
                             dt_notification_insert( $notification );
                         }
 
                         // email notification
-                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions_email', $user_meta, $user->ID ) :
-                            dt_user_notification_is_enabled( 'comments_email', $user_meta, $user->ID )) {
+                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions', 'email', $user_meta, $user->ID ) :
+                            dt_user_notification_is_enabled( 'comments', 'email', $user_meta, $user->ID )) {
                             $notification["notification_note"] .= "\r\n\r\n";
                             $notification["notification_note"] .= __( 'Click here to reply', 'disciple_tools' ) . ': ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
                             dt_send_email(

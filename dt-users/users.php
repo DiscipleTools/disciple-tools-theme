@@ -33,6 +33,7 @@ class Disciple_Tools_Users
      *
      * @return array|\WP_Error
      */
+
     public static function get_assignable_users_compact( string $search_string = null )
     {
         //        @todo better permissions?
@@ -74,7 +75,7 @@ class Disciple_Tools_Users
                       WHERE user_id = %1\$s
                             AND post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_status = 'publish' ) )
                       AND meta_key = 'assigned_to'
-                GROUP BY user_id;",
+                GROUP BY user_id",
                 $user_id,
                 $user_id,
                 $user_id,
@@ -83,7 +84,7 @@ class Disciple_Tools_Users
             ), ARRAY_N );
 
             $dispatchers = $wpdb->get_results("SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 
-            'wp_capabilities' AND meta_value LIKE '%dispatcher%' ");
+            'wp_capabilities' AND meta_value LIKE '%dispatcher%'");
 
             $assure_unique = [];
             foreach ( $dispatchers as $index ){
@@ -129,48 +130,59 @@ class Disciple_Tools_Users
             }
         }
 
+        function asc_meth( $a, $b )
+        {
+            $a["name"] = strtolower( $a["name"] );
+            $b["name"] = strtolower( $b["name"] );
+            return strcmp( $a["name"], $b["name"] );
+        }
+
+        usort( $list, "asc_meth" );
         return $list;
     }
 
     /**
      * Switch user preference for notifications and availability meta fields.
      *
-     * @param int    $user_id
+     * @param int $user_id
      * @param string $preference_key
+     *
+     * @param string|null $type
      *
      * @return array
      */
-    public static function switch_preference( int $user_id, string $preference_key )
+    public static function switch_preference( int $user_id, string $preference_key, string $type = null )
     {
 
         $value = get_user_meta( $user_id, $preference_key, true );
 
-        if ( empty( $value ) ) {
-            $status = update_metadata( 'user', $user_id, $preference_key, true );
-            if ( $status ) {
-                return [
-                    'status'   => true,
-                    'response' => $status,
-                ];
-            } else {
-                return [
-                    'status'  => false,
-                    'message' => 'Unable to update_user_option ' . $preference_key . ' to true.',
-                ];
-            }
+        $label = '';
+        $default = false;
+        if ( $type === "notifications" ){
+            $default = true;
+        }
+
+        if ( $value === '' ){
+            $status = update_metadata( 'user', $user_id, $preference_key, $default ? '0' : '1' );
+            $label = $default ? "false" : "true";
+        } elseif ( $value === '0'){
+            $status = update_metadata( 'user', $user_id, $preference_key, "1" );
+            $label = "true";
         } else {
-            $status = update_metadata( 'user', $user_id, $preference_key, false );
-            if ( $status ) {
-                return [
-                    'status'   => true,
-                    'response' => $status,
-                ];
-            } else {
-                return [
-                    'status'  => false,
-                    'message' => 'Unable to update_user_option ' . $preference_key . ' to false.',
-                ];
-            }
+            $status = update_metadata( 'user', $user_id, $preference_key, '0' );
+            $label = "false";
+        }
+
+        if ( $status ) {
+            return [
+                'status'   => true,
+                'response' => $status,
+            ];
+        } else {
+            return [
+                'status'  => false,
+                'message' => 'Unable to update_user_option ' . $preference_key . ' to ' . $label
+            ];
         }
     }
 
@@ -241,7 +253,7 @@ class Disciple_Tools_Users
             }
         }
 
-        return wp_redirect( "/settings" );
+        return wp_redirect( get_site_url() ."/settings" );
     }
 
 
