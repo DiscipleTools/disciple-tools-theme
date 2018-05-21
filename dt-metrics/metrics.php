@@ -1315,7 +1315,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     }
 
 
-    public static function query_get_group_generations( ) {
+    public static function query_get_group_generations() {
         global $wpdb;
 
         $results = $wpdb->get_results( "

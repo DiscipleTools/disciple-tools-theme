@@ -18,16 +18,16 @@ abstract class Disciple_Tools_Counter_Base
 
     /**
      * @param array $elements
-     * @param int   $parentId
+     * @param int   $parent_id
      *
      * @return array
      */
-    public static function build_generation_tree( array $elements, $parentId = 0, $generation = 0 ) {
+    public static function build_generation_tree( array $elements, $parent_id = 0, $generation = 0 ) {
         $branch = array();
         $generation++;
 
         foreach ($elements as $element) {
-            if ($element['parent_id'] == $parentId) {
+            if ($element['parent_id'] == $parent_id) {
                 $children = self::build_generation_tree( $elements, $element['id'], $generation );
                 if ($children) {
                     $element['generation'] = $generation;
@@ -83,11 +83,11 @@ abstract class Disciple_Tools_Counter_Base
      *
      * @return int
      */
-    public static function get_array_depth( array $array  ) {
+    public static function get_array_depth( array $array ) {
         $i = 1;
-        while( isset( $array['children'] ) && is_array( $array['children'] ) ) {
+        while ( isset( $array['children'] ) && is_array( $array['children'] ) ) {
             $i++;
-            foreach( $array['children'] as $item ) {
+            foreach ( $array['children'] as $item ) {
                 $array = $item;
             }
         }
@@ -103,13 +103,13 @@ abstract class Disciple_Tools_Counter_Base
         $item_levels =[];
         $i = 1;
 
-        while( isset( $array['children'] ) && is_array( $array['children'] ) ) {
+        while ( isset( $array['children'] ) && is_array( $array['children'] ) ) {
             if ( ! isset( $item_levels[ $i ] ) ) {
                 $item_levels[ $i ] = 0;
             }
             $item_levels[ $i ] = $item_levels[ $i ] + 1;
             $i++;
-            foreach( $array['children'] as $item ) {
+            foreach ( $array['children'] as $item ) {
                 $array = $item;
             }
         }
@@ -121,18 +121,18 @@ abstract class Disciple_Tools_Counter_Base
      *
      * @return array
      */
-    public static function get_items_by_level( array $array  ) {
+    public static function get_items_by_level( array $array ) {
         $item_levels =[];
         $i = 1;
 
-        while( isset( $array['children'] ) && is_array( $array['children'] ) ) {
+        while ( isset( $array['children'] ) && is_array( $array['children'] ) ) {
             if ( ! isset( $item_levels[ $i ] ) ) {
                 $item_levels[ $i ] = 0;
             }
 
             $item_levels[ $i ] = $array['id'];
             $i++;
-            foreach( $array['children'] as $item ) {
+            foreach ( $array['children'] as $item ) {
                 $array = $item;
             }
         }
