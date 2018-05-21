@@ -884,9 +884,9 @@ class Disciple_Tools_Groups_Post_Type
 
     public function disable_new_groups_in_admin_area() {
         // Hide sidebar link
-        global $submenu, $pagenow, $post;
-        unset( $submenu['edit.php?post_type=groups'][10] );
-
+        echo "<style type='text/css' >
+            #menu-posts-groups ul { display:none; }
+        </style>";
         // Hide link on listing page
         if ( ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'groups' ) ) {
             echo '<style type="text/css">
