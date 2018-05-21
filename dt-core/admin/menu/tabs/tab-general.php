@@ -98,36 +98,22 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     {
 
         $site_options = dt_get_option( 'dt_site_options' );
-        $notifications = $site_options['notifications'];
+        $notifications = $site_options['user_notifications'];
 
-        ?>
-        <form method="post" name="notifications-form">
-            <button type="submit" class="button-like-link" name="reset_notifications" value="1"><?php esc_html_e( "reset", 'disciple_tools' ) ?></button>
-            <p><?php esc_html_e( "These are site overrides for individual preferences for notifications. Uncheck if you want, users to make their own decision on which notifications to receive.", 'disciple_tools' ) ?></p>
-            <input type="hidden" name="notifications_nonce" id="notifications_nonce" value="' <?php echo esc_attr( wp_create_nonce( 'notifications' ) ) ?>'" />
+        echo '<form method="post" name="notifications-form">';
+        echo '<button type="submit" class="button-like-link" name="reset_notifications" value="1">reset</button>';
+        echo '<p>These are site overrides for individual preferences for notifications. Uncheck if you want, users to make their own decision on which notifications to recieve.</p>';
+        echo '<input type="hidden" name="notifications_nonce" id="notifications_nonce" value="' . esc_attr( wp_create_nonce( 'notifications' ) ) . '" />';
 
-            <table class="widefat">
-            <?php foreach ( $notifications as $notification_key => $notification_value ) : ?>
-                <tr>
-                    <td><?php echo esc_html( $notification_value['label'] ) ?></td>
-                    <td>
-                        <?php esc_html_e( "Web", 'disciple_tools' ) ?>
-                        <input name="<?php echo esc_html( $notification_key ) ?>_web" type="checkbox"
-                            <?php echo $notifications[ $notification_key ]['web'] ? "checked" : "" ?>  />
-                    </td>
-                    <td>
-                        <?php esc_html_e( "Email", 'disciple_tools' ) ?>
-                        <input name="<?php echo esc_html( $notification_key ) ?>_email" type="checkbox"
-                            <?php echo $notifications[ $notification_key ]['email'] ? "checked" : "" ?>  />
-                    </td>
-                </tr>
-            <?php endforeach; ?>
+        echo '<table class="widefat">';
 
-            </table>
-            <br>
-            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
-        </form>
-        <?php
+        echo '<tr><td>New Contacts</td><td>Web <input name="new_web" type="checkbox" ' . ( $notifications['new_web'] ? "checked" : "" ) . ' /></td><td>Email <input name="new_email" type="checkbox" ' . ( $notifications['new_email'] ? "checked" : "" ) . ' /></td></tr>';
+        echo '<tr><td>@Mentions</td><td>Web <input name="mentions_web" type="checkbox" ' . ( $notifications['mentions_web'] ? "checked" : "" ) . ' /></td><td>Email <input name="mentions_email" type="checkbox" ' . ( $notifications['mentions_email'] ? "checked" : "" ) . ' /></td></tr>';
+        echo '<tr><td>Updates Required</td><td>Web <input name="updates_web" type="checkbox" ' . ( $notifications['updates_web'] ? "checked" : "" ) . ' /></td><td>Email <input name="updates_email" type="checkbox" ' . ( $notifications['updates_email'] ? "checked" : "" ) . ' /></td></tr>';
+        echo '<tr><td>Contact Info Changes</td><td>Web <input name="changes_web" type="checkbox" ' . ( $notifications['changes_web'] ? "checked" : "" ) . ' /></td><td>Email <input name="changes_email" type="checkbox" ' . ( $notifications['changes_email'] ? "checked" : "" ) . ' /></td></tr>';
+        echo '<tr><td>Contact Milestones</td><td>Web <input name="milestones_web" type="checkbox" ' . ( $notifications['milestones_web'] ? "checked" : "" ) . ' /></td><td>Email <input name="milestones_email" type="checkbox" ' . ( $notifications['milestones_email'] ? "checked" : "" ) . ' /></td></tr>';
+
+        echo '</table><br><span style="float:right;"><button type="submit" class="button float-right">Save</button> </span></form>';
     }
 
     /**
@@ -141,14 +127,13 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $site_options = dt_get_option( 'dt_site_options' );
 
             if ( isset( $_POST['reset_notifications'] ) ) {
-                unset( $site_options['notifications'] );
+                unset( $site_options['user_notifications'] );
                 $site_option_defaults = dt_get_site_options_defaults();
-                $site_options['notifications'] = $site_option_defaults['notifications'];
+                $site_options['user_notifications'] = $site_option_defaults['user_notifications'];
             }
 
-            foreach ( $site_options['notifications'] as $key => $value ) {
-                $site_options['notifications'][ $key ]['web'] = isset( $_POST[ $key.'_web' ] );
-                $site_options['notifications'][ $key ]['email'] = isset( $_POST[ $key.'_email' ] );
+            foreach ( $site_options['user_notifications'] as $key => $value ) {
+                $site_options['user_notifications'][ $key ] = isset( $_POST[ $key ] );
             }
 
             update_option( 'dt_site_options', $site_options, true );

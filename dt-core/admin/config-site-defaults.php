@@ -100,14 +100,20 @@ function dt_get_option( string $name )
                 if ( !$add ) {
                     return false;
                 }
+
+                return get_option( 'dt_site_options' );
             }
             elseif ( get_option( 'dt_site_options' )['version'] < $site_options['version'] ) { // option exists but version is behind
                 $upgrade = dt_site_options_upgrade_version( 'dt_site_options' );
                 if ( !$upgrade ) {
                     return false;
                 }
+
+                return get_option( 'dt_site_options' );
             }
-            return get_option( 'dt_site_options' );
+            else {
+                return get_option( 'dt_site_options' );
+            }
 
             break;
 
@@ -273,7 +279,7 @@ function dt_get_site_options_defaults()
 {
     $fields = [];
 
-    $fields['version'] = '4';
+    $fields['version'] = '3';
 
     $fields['user_notifications'] = [
         'new_web'          => true,
@@ -288,39 +294,6 @@ function dt_get_site_options_defaults()
         'changes_email'    => true,
         'milestones_web'   => true,
         'milestones_email' => true,
-    ];
-
-    $fields['notifications'] = [
-        'new_assigned' => [
-            'label' => __( 'Newly Assigned Contact', 'disciple_tools' ),
-            'web'   => true,
-            'email' => true
-        ],
-        'mentions' => [
-            'label' => __( '@Mentions', 'disciple_tools' ),
-            'web'   => true,
-            'email' => true
-        ],
-        'comments' => [
-            'label' => __( 'New comments', 'disciple_tools' ),
-            'web'   => false,
-            'email' => false
-        ],
-        'updates' => [
-            'label' => __( 'Update Needed', 'disciple_tools' ),
-            'web'   => true,
-            'email' => true
-        ],
-        'changes' => [
-            'label' => __( 'Contact Info Changed', 'disciple_tools' ),
-            'web'   => false,
-            'email' => false
-        ],
-        'milestones' => [
-            'label' => __( 'Contact Milestones and Group Heath metrics', 'disciple_tools' ),
-            'web'   => false,
-            'email' => false
-        ]
     ];
 
     $fields['extension_modules'] = [
@@ -631,15 +604,4 @@ function dt_custom_password_reset( $message, $key, $user_login, $user_data ){
 
     return $message;
 
-}
-
-
-/**
- * The the base site url with, including the subfolder if wp is installed in a subfolder.
- * @return string
- */
-function dt_get_url_path() {
-    $url  = @( $_SERVER["HTTPS"] != 'on' ) ? 'http://'.$_SERVER["SERVER_NAME"] : 'https://'.$_SERVER["SERVER_NAME"];
-    $url .= $_SERVER["REQUEST_URI"];
-    return trim( str_replace( get_site_url(), "", $url ), '/' );
 }

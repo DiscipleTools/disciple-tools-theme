@@ -13,7 +13,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
     } // End instance()
 
     public function __construct() {
-        $url_path = dt_get_url_path();
+        $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
 
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
 
@@ -38,12 +38,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_overview" onclick="project_overview()">'. esc_html__( 'Overview' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_timeline" onclick="project_timeline()">'. esc_html__( 'Timeline' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_critical_path" onclick="project_critical_path()">'. esc_html__( 'Critical Path' ) .'</a></li>
-                    <!--
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_outreach" onclick="project_outreach()">'. esc_html__( 'Outreach' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_follow_up" onclick="project_follow_up()">'. esc_html__( 'Follow-up' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_training" onclick="project_training()">'. esc_html__( 'Training' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_multiplication" onclick="project_multiplication()"  style="border-bottom:1px solid #ccc;">'. esc_html__( 'Multiplication' ) .'</a></li>
-                    -->
                 </ul>
             </li>
             ';

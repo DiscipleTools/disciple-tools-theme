@@ -39,7 +39,7 @@ get_header();
             .attr("disabled", true)
             .addClass("loading");
         $.ajax({
-            url: wpApiShare.root + 'dt/v1/group/create',
+            url: wpApiSettings.root + 'dt/v1/group/create',
             type: "POST",
             contentType: "application/json; charset=UTF-8",
             dataType: "json",
@@ -47,7 +47,7 @@ get_header();
                 title: $(".js-create-group input[name=title]").val(),
             }),
             beforeSend: function(xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+                xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
             }
         }).promise().then(function(data) {
             window.location = data.permalink;

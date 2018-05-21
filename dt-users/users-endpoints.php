@@ -88,7 +88,7 @@ class Disciple_Tools_Users_Endpoints
         $params = $request->get_params();
         $user_id = get_current_user_id();
         if ( isset( $params['preference_key'] ) ) {
-            $result = Disciple_Tools_Users::switch_preference( $user_id, $params['preference_key'], $params['type'] ?? null );
+            $result = Disciple_Tools_Users::switch_preference( $user_id, $params['preference_key'] );
             if ( $result["status"] ) {
                 return $result["response"];
             } else {

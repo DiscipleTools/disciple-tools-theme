@@ -12,9 +12,7 @@ abstract class Disciple_Tools_Counter_Base
     /**
      * Disciple_Tools_Counter constructor.
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * @param array $elements
@@ -34,6 +32,31 @@ abstract class Disciple_Tools_Counter_Base
                     $element['children'] = $children;
                 }
                 else {
+                    $element['generation'] = $generation;
+                }
+                $branch[] = $element;
+            }
+        }
+
+        return $branch;
+    }
+
+
+    public static function count_generation_tree( array $elements, $parent_id = 0, $generation = 0 )
+    {
+        if ( is_null( $elements ) ) {
+            $elements = Disciple_Tools_Metrics_Hooks_Base::query_get_group_generations();
+        }
+
+        $branch = [];
+        $generation++;
+
+        foreach ( $elements as $element ) {
+            if ( $element['parent_id'] == $parent_id ) {
+                $children = self::build_generation_tree( $elements, $element['id'], $generation );
+                if ( $children ) {
+                    $element['generation'] = $generation;
+                } else {
                     $element['generation'] = $generation;
                 }
                 $branch[] = $element;
@@ -94,6 +117,7 @@ abstract class Disciple_Tools_Counter_Base
         return $i;
     }
 
+
     /**
      * @param array $array
      *
@@ -138,6 +162,4 @@ abstract class Disciple_Tools_Counter_Base
         }
         return $item_levels;
     }
-
-
 }

@@ -101,10 +101,9 @@ function dt_site_scripts() {
 
     dt_theme_enqueue_script( 'shared-functions', 'dt-assets/js/shared-functions.js', array( 'jquery', 'lodash' ) );
     wp_localize_script(
-        'shared-functions', 'wpApiShare', array(
+        'shared-functions', 'wpApiSettings', array(
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
-            'site_url' => get_site_url(),
         )
     );
 
@@ -221,7 +220,7 @@ function dt_site_scripts() {
         }
     }
 
-    $url_path = dt_get_url_path();
+    $url_path = trim( parse_url( add_query_arg( array() ), PHP_URL_PATH ), '/' );
     if ( 'settings' === $url_path ) {
         dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash' ), true );
         wp_localize_script(
@@ -245,7 +244,7 @@ function dt_site_scripts() {
             $post_type = "groups";
             $custom_field_settings = Disciple_Tools_Groups_Post_type::instance()->get_custom_fields_settings();
         }
-        wp_localize_script( 'list-js', 'wpApiListSettings', array(
+        wp_localize_script( 'list-js', 'wpApiSettings', array(
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'translations' => [

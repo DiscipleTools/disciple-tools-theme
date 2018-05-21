@@ -1,5 +1,5 @@
-function switch_preference(preference_key, type=null) {
-  let data = {"preference_key": preference_key, type}
+function switch_preference(preference_key) {
+  let data = {"preference_key": preference_key}
   return jQuery.ajax({
     type: "POST",
     data: JSON.stringify(data),
