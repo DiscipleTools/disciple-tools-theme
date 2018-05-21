@@ -75,7 +75,7 @@ if ( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
          *
          * @param int $auth_level The authentication level to use (see above)
          */
-        public function __construct( $auth_level = self::LOGGED_IN )
+        public function __construct( $auth_level = self::BOTH )
         {
             if ( empty( $this->action ) ) {
                 throw new Exception( 'Action not defined for class ' . __CLASS__ );
