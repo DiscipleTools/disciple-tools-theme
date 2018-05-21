@@ -5,4 +5,3 @@ node_modules/
 .idea
 .DS_Store
 dt-people-groups/json/*
-composer.phar

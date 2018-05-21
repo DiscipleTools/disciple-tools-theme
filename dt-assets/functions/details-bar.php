@@ -44,8 +44,7 @@ function dt_print_details_bar(
                             <?php } ?>
                         </div>
                     </div>
-                    <div class="cell small-4 center hide-for-small-only">
-                        <strong><?php the_title_attribute(); ?></strong>
+                    <div class="cell small-4 center-items hide-for-small-only">
                     </div>
                     <div class="cell small-4 align-right grid-x grid-margin-x">
                         <div class="cell shrink center-items ">
@@ -54,8 +53,8 @@ function dt_print_details_bar(
                             <?php else : ?>
                             <div style="margin-right:5px"><span><?php esc_html_e( 'Follow', 'disciple_tools' )?></span></div>
                             <div class="switch tiny cell shrink" style="margin-bottom: 0px">
-                                <input class="switch-input follow" id="follow" type="checkbox" name="follow"
-                                <?php echo ( $following ? 'checked' : "" ) ?> />
+                                <input class="switch-input follow" id="follow" type="checkbox" name="follow" />
+                                <?php echo ( $following ? 'checked' : "" ) ?>>
                                 <label class="switch-paddle follow" for="follow">
                                     <span class="show-for-sr"><?php esc_html_e( 'Follow', 'disciple_tools' )?></span>
                                     <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>

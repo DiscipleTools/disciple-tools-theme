@@ -870,7 +870,7 @@ function legend() {
 }
 
 function numberWithCommas(x) {
-  x = (x || 0).toString();
+    x = x.toString();
     let pattern = /(-?\d+)(\d{3})/;
     while (pattern.test(x))
         x = x.replace(pattern, "$1,$2");

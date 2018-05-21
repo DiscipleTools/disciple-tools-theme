@@ -572,7 +572,7 @@ class Disciple_Tools_Posts
                 ORDER BY CASE
                     WHEN INSTR( $wpdb->posts.post_title, %s ) = 1 then 1
                     ELSE 2  
-                END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
+                END, CHAR_LENGTH($wpdb->posts.post_title)
                 LIMIT 0, 30
             ", "user-". $current_user->ID, $search_string, $post_type, $search_string
             ), OBJECT );
@@ -584,7 +584,7 @@ class Disciple_Tools_Posts
                 ORDER BY  CASE
                     WHEN INSTR( $wpdb->posts.post_title, %s ) = 1 then 1
                     ELSE 2  
-                END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
+                END, CHAR_LENGTH($wpdb->posts.post_title)
                 LIMIT 0, 30
             ", $search_string, $post_type, $search_string
             ), OBJECT );
