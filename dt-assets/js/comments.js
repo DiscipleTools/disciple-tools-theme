@@ -93,15 +93,16 @@ jQuery(document).ready(function($) {
         if (a.comment){ %>
             <div dir="auto" class="comment-bubble <%- a.comment_ID %>" style="white-space: pre-line"> <%= a.text %> </div>
             <p class="comment-controls">
-            <!--@todo-->
-                <a class="open-edit-comment" data-id="<%- a.comment_ID %>" style="margin-right:5px">
-                    <img src="${commentsSettings.template_dir}/dt-assets/images/edit-blue.svg">
-                    ${commentsSettings.translations.edit}
-                </a>
-                <a class="open-delete-comment" data-id="<%- a.comment_ID %>">
-                    <img src="${commentsSettings.template_dir}/dt-assets/images/trash-blue.svg">
-                    ${commentsSettings.translations.delete}
-                </a>
+               <% if ( a.comment_ID ) { %>
+                  <a class="open-edit-comment" data-id="<%- a.comment_ID %>" style="margin-right:5px">
+                      <img src="${commentsSettings.template_dir}/dt-assets/images/edit-blue.svg">
+                      ${commentsSettings.translations.edit}
+                  </a>
+                  <a class="open-delete-comment" data-id="<%- a.comment_ID %>">
+                      <img src="${commentsSettings.template_dir}/dt-assets/images/trash-blue.svg">
+                      ${commentsSettings.translations.delete}
+                  </a>
+               <% } %>
             </p>
         <% } else { %>
             <p class="activity-bubble">  <%- a.text %> <% print(a.action) %> </p>
@@ -196,7 +197,7 @@ jQuery(document).ready(function($) {
         gravatar,
         text:d.object_note || formatComment(d.comment_content),
         comment: !!d.comment_content,
-        comment_ID : d.comment_ID,
+        comment_ID : d.user_id === commentsSettings.current_user_id ? d.comment_ID : false,
         action: d.action
       }
 

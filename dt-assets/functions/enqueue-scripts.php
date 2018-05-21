@@ -154,6 +154,7 @@ function dt_site_scripts() {
                         "edit" => __( "edit", "disciple_tools" ),
                         "delete" => __( "delete", "disciple_tools" )
                     ],
+                    'current_user_id' => get_current_user_id()
                 ]
             );
 

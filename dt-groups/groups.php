@@ -837,15 +837,23 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
 
     public static function delete_comment( int $group_id, int $comment_id, bool $check_permissions = true ){
-        if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
+        $comment = get_comment( $comment_id );
+        if ( $check_permissions && isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) {
+            return new WP_Error( __FUNCTION__, __( "You don't have permission to delete this comment" ), [ 'status' => 403 ] );
+        }
+        if ( !$comment ){
+            return new WP_Error( __FUNCTION__, __( "No comment found with id:" ) . ' ' . $comment_id, [ 'status' => 403 ] );
         }
         return wp_delete_comment( $comment_id );
     }
 
     public static function update_comment( int $group_id, int $comment_id, string $comment_content, bool $check_permissions = true ){
-        if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
+        $comment = get_comment( $comment_id );
+        if ( $check_permissions && isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) {
+            return new WP_Error( __FUNCTION__, __( "You don't have permission to edit this comment" ), [ 'status' => 403 ] );
+        }
+        if ( !$comment ){
+            return new WP_Error( __FUNCTION__, __( "No comment found with id:" ) . ' ' . $comment_id, [ 'status' => 403 ] );
         }
         $comment = [
             "comment_content" => $comment_content,
