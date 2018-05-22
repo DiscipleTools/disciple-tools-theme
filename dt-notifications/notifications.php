@@ -151,7 +151,7 @@ class Disciple_Tools_Notifications
                 'secondary_item_id'   => $args['secondary_item_id'],
                 'notification_name'   => $args['notification_name'],
                 'notification_action' => $args['notification_action'],
-                'notification_note'   => $args['notification_note'],
+                'notification_note'   => "", // notification note is generated (and translated)
                 'date_notified'       => $args['date_notified'],
                 'is_new'              => $args['is_new'],
                 'field_key'           => $args['field_key'],
