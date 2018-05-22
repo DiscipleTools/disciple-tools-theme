@@ -149,6 +149,11 @@ function project_overview() {
                 height: "75%" },
             vAxis: {
                 title: 'groups',
+                format: '0',
+            },
+            hAxis: {
+
+                format: '0',
             },
             title: "Groups Needing Training Attention",
             legend: {position: "none"},
@@ -206,6 +211,12 @@ function project_overview() {
                 top: '7%',
                 width: "75%",
                 height: "85%" },
+            vAxis: {
+                format: '0',
+            },
+            hAxis: {
+                format: '0',
+            },
             title: "Generations",
             legend: { position: 'bottom', maxLines: 3 },
             isStacked: true,
