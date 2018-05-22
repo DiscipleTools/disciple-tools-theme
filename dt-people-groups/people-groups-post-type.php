@@ -115,7 +115,7 @@ class Disciple_Tools_People_Groups_Post_Type
                 }
             }
 
-            add_action( 'admin_init', [ $this, 'remove_add_new_submenu' ] );
+//            add_action( 'admin_init', [ $this, 'remove_add_new_submenu' ] );
         }
     }
 
@@ -298,7 +298,7 @@ class Disciple_Tools_People_Groups_Post_Type
     public function meta_box_setup()
     {
         //        add_meta_box( $this->post_type . '_data', __( 'People Group Details', 'disciple_tools' ), [ $this, 'load_details_meta_box' ], $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_jp', __( 'Joshua Project Info', 'disciple_tools' ), [ $this, 'load_jp_meta_box' ], $this->post_type, 'normal', 'high' );
+//        add_meta_box( $this->post_type . '_jp', __( 'Joshua Project Info', 'disciple_tools' ), [ $this, 'load_jp_meta_box' ], $this->post_type, 'normal', 'high' );
     } // End meta_box_setup()
 
     /**

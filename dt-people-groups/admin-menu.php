@@ -66,7 +66,7 @@ class Disciple_Tools_People_Groups_Admin_Menu
      */
     public function load_admin_menu_item()
     {
-        add_submenu_page( 'edit.php?post_type=peoplegroups', __( 'Add New', 'disciple_tools' ), __( 'Add New', 'disciple_tools' ), 'manage_dt', 'disciple_tools_people_groups', [ $this, 'page_content' ] );
+//        add_submenu_page( 'edit.php?post_type=peoplegroups', __( 'Import', 'disciple_tools' ), __( 'Import', 'disciple_tools' ), 'manage_dt', 'disciple_tools_people_groups', [ $this, 'page_content' ] );
     }
 
     /**
