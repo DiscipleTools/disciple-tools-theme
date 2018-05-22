@@ -375,10 +375,9 @@ function dt_get_generation_tree( $reset = false ) {
 
     if ( ! $generation_tree || $reset ) {
         $raw_connections = Disciple_Tools_Metrics_Hooks_Base::query_get_group_generations();
-        $generation_tree = Disciple_Tools_Counter_Base::build_generation_tree( $raw_connections );
+        $generation_tree = Disciple_Tools_Counter_Base::build_group_generation_counts( $raw_connections );
         set_transient( 'dt_generation_tree', $generation_tree, dt_get_time_until_midnight() );
     }
-
     return $generation_tree;
 }
 
@@ -600,7 +599,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         }
 //        dt_write_log( $chart );
 
-        return $chart;
+//        return $chart;
+        return $tree;
 
     }
 
@@ -1338,12 +1338,12 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             SELECT
               a.ID         as id,
               0            as parent_id,
-              d.meta_value as group_type
+              d.meta_value as group_type,
+              c.meta_value as group_status
             FROM $wpdb->posts as a
               JOIN $wpdb->postmeta as c
                 ON a.ID = c.post_id
                    AND c.meta_key = 'group_status'
-                   AND c.meta_value = 'active'
               LEFT JOIN $wpdb->postmeta as d
                 ON a.ID = d.post_id
                    AND d.meta_key = 'group_type'
@@ -1361,7 +1361,11 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
               (SELECT meta_value
                FROM $wpdb->postmeta
                WHERE post_id = p.p2p_from
-                     AND meta_key = 'group_type') as group_type
+                     AND meta_key = 'group_type') as group_type,
+               (SELECT meta_value
+               FROM $wpdb->postmeta
+               WHERE post_id = p.p2p_from
+                     AND meta_key = 'group_status') as group_status
             FROM $wpdb->p2p as p
             WHERE p.p2p_type = 'groups_to_groups'
         ", ARRAY_A );
