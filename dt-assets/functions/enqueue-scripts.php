@@ -150,6 +150,11 @@ function dt_site_scripts() {
                     'txt_created' => __( "Created contact at {}" ),
                     'template_dir' => get_template_directory_uri(),
                     'contact_author_name' => isset( $post->post_author ) && (int) $post->post_author > 0 ? get_user_by( 'id', intval( $post->post_author ) )->display_name : "",
+                    'translations' => [
+                        "edit" => __( "edit", "disciple_tools" ),
+                        "delete" => __( "delete", "disciple_tools" )
+                    ],
+                    'current_user_id' => get_current_user_id()
                 ]
             );
 

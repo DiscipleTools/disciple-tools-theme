@@ -1,3 +1,4 @@
+/* global jQuery:false, moment:false, _:false, commentsSettings:false */
 
 jQuery(document).ready(function($) {
   let postId = $("#post-id").text()
@@ -90,15 +91,80 @@ jQuery(document).ready(function($) {
     <div class="activity-text">
     <% _.forEach(activity, function(a){
         if (a.comment){ %>
-            <p dir="auto" class="comment-bubble" style="white-space: pre-line"> <%= a.text %> </p>
-      <% } else { %>
+            <div dir="auto" class="comment-bubble <%- a.comment_ID %>" style="white-space: pre-line"> <%= a.text %> </div>
+            <p class="comment-controls">
+               <% if ( a.comment_ID ) { %>
+                  <a class="open-edit-comment" data-id="<%- a.comment_ID %>" style="margin-right:5px">
+                      <img src="${commentsSettings.template_dir}/dt-assets/images/edit-blue.svg">
+                      ${commentsSettings.translations.edit}
+                  </a>
+                  <a class="open-delete-comment" data-id="<%- a.comment_ID %>">
+                      <img src="${commentsSettings.template_dir}/dt-assets/images/trash-blue.svg">
+                      ${commentsSettings.translations.delete}
+                  </a>
+               <% } %>
+            </p>
+        <% } else { %>
             <p class="activity-bubble">  <%- a.text %> <% print(a.action) %> </p>
-    <%  }
+        <%  }
     }); %>
     </div>
   </div>`
   )
 
+  $(document).on("click", ".open-delete-comment", function () {
+    let id = $(this).data("id")
+    $('#comment-to-delete').html($(`.comment-bubble.${id}`).html())
+    $('.delete-comment.callout').hide()
+    $('#delete-comment-modal').foundation('open')
+    $('#confirm-comment-delete').data("id", id)
+  })
+  $('#confirm-comment-delete').on("click", function () {
+    let id = $(this).data("id")
+    $(this).toggleClass('loading')
+    API.delete_comment( postType, postId, id ).then(response=>{
+      $(this).toggleClass('loading')
+      if (response){
+        $('#delete-comment-modal').foundation('close')
+      } else {
+        $('.delete-comment.callout').show()
+      }
+    }).catch(err=>{
+      $(this).toggleClass('loading')
+      if (_.get(err, "responseJSON.message")){
+        $('.delete-comment.callout').show()
+        $('#delete-comment-error').html(err.responseJSON.message)
+      }
+    })
+  })
+
+  $(document).on("click", ".open-edit-comment", function () {
+    let id = $(this).data("id")
+    let comment = _.find(comments, {comment_ID:id.toString()})
+    $('#comment-to-edit').val(comment.comment_content)
+    $('.edit-comment.callout').hide()
+    $('#edit-comment-modal').foundation('open')
+    $('#confirm-comment-edit').data("id", id)
+  })
+  $('#confirm-comment-edit').on("click", function () {
+    $(this).toggleClass('loading')
+    let id = $(this).data("id")
+    let updated_comment = $('#comment-to-edit').val()
+    API.update_comment( postType, postId, id, updated_comment).then((response)=>{
+      $(this).toggleClass('loading')
+      if (response === 1 || response === 0){
+        $('#edit-comment-modal').foundation('close')
+      } else {
+        $('.edit-comment.callout').show()
+      }
+    }).catch(err=>{
+      $(this).toggleClass('loading')
+      if (_.get(err, "responseJSON.message")){
+        $('.edit-comment.callout').show()
+        $('#edit-comment-error').html(err.responseJSON.message)
+      }
+    })
+  })
 
   function formatDate(date) {
     return date.format("YYYY-MM-DD h:mm a")
@@ -131,6 +197,7 @@ jQuery(document).ready(function($) {
         gravatar,
         text:d.object_note || formatComment(d.comment_content),
         comment: !!d.comment_content,
+        comment_ID : d.user_id === commentsSettings.current_user_id ? d.comment_ID : false,
         action: d.action
       }
 
