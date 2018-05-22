@@ -359,116 +359,7 @@ class Disciple_Tools_Metrics
         }
     }
 
-    /**
-     * System stats dashboard widget
-     * TODO: Deprecate and remove
-     *
-     * @since  0.1.0
-     * @access public
-     */
-    public function temp_delete_system_stats_widget()
-    {
 
-        // Build counters
-        $system_users = count_users();
-        $dispatchers = $system_users['avail_roles']['dispatcher'];
-        $marketers = $system_users['avail_roles']['marketer'];
-        $multipliers = $system_users['avail_roles']['multiplier'];
-        $multiplier_leader = $system_users['avail_roles']['multiplier_leader'];
-        $prayer_supporters = $system_users['avail_roles']['prayer_supporter'];
-        $project_supporters = $system_users['avail_roles']['project_supporter'];
-        $registered = $system_users['avail_roles']['registered'];
-
-        $monitored_websites = 'x';
-        $monitored_facebook_pages = 'x';
-
-        $comments = wp_count_comments();
-        $comments = $comments->total_comments;
-
-        $comments_for_dispatcher = 'x';
-
-        // Build variables
-        $mailchimp_subscribers = disciple_tools()->logging_report_api->get_meta_key_total( '2017', 'Mailchimp', 'new_subscribers', 'max' );
-        $facebook = disciple_tools()->logging_report_api->get_meta_key_total( '2017', 'Facebook', 'page_likes_count' );
-        $websites = disciple_tools()->logging_report_api->get_meta_key_total( '2017', 'Analytics', 'unique_website_visitors' );
-
-        $new_contacts = disciple_tools()->counter->contacts_post_status( 'publish' );
-        $contacts_attempted = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'attempted' );
-        $contacts_established = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'established' );
-        $first_meetings = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'met' );
-        $baptisms = disciple_tools()->counter->get_baptisms( 'baptisms' );
-        $baptizers = disciple_tools()->counter->get_baptisms( 'baptizers' );
-        $active_churches = disciple_tools()->counter->groups_meta_counter( 'type', 'Church' );
-        $church_planters = disciple_tools()->counter->connection_type_counter( 'participation', 'Planting' );
-
-
-        // Build counters
-        $has_at_least_1 = disciple_tools()->counter->get_generation( 'has_one_or_more' );
-        $has_at_least_2 = disciple_tools()->counter->get_generation( 'has_two_or_more' );
-        $has_more_than_2 = disciple_tools()->counter->get_generation( 'has_three_or_more' );
-
-        $has_0 = disciple_tools()->counter->get_generation( 'has_0' );
-        $has_1 = disciple_tools()->counter->get_generation( 'has_1' );
-        $has_2 = disciple_tools()->counter->get_generation( 'has_2' );
-        $has_3 = disciple_tools()->counter->get_generation( 'has_3' );
-
-        $con_0gen = '';//disciple_tools()->counter->get_generation('at_zero');
-        $con_1gen = '';//disciple_tools()->counter->get_generation('at_first');
-        $con_2gen = '';//disciple_tools()->counter->get_generation('at_second');
-        $con_3gen = '';//disciple_tools()->counter->get_generation('at_third');
-        $con_4gen = '';//disciple_tools()->counter->get_generation('at_fourth');
-        $con_5gen = '';//disciple_tools()->counter->get_generation('at_fifth');
-
-        // Build counters
-        $unassigned = disciple_tools()->counter->contacts_meta_counter( 'overall_status', 'unassigned' );
-
-        $assigned_inquirers = disciple_tools()->counter->contacts_meta_counter( 'overall_status', 'assigned' );
-        $active_inquirers = disciple_tools()->counter->contacts_meta_counter( 'overall_status', 'active' );
-        $contact_attempted = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'Contact Attempted' );
-        $contact_established = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'Contact Established' );
-        $meeting_scheduled = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'Meeting Scheduled' );
-        $first_meeting_complete = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'First Meeting Complete' );
-        $ongoing_meetings = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'Ongoing Meetings' );
-
-        // Build counters
-        $has_at_least_1 = disciple_tools()->counter->get_generation( 'has_one_or_more', 'groups' );
-        $has_at_least_2 = disciple_tools()->counter->get_generation( 'has_two_or_more', 'groups' );
-        $has_more_than_2 = disciple_tools()->counter->get_generation( 'has_three_or_more', 'groups' );
-
-        $has_0 = disciple_tools()->counter->get_generation( 'has_0', 'groups' );
-        $has_1 = disciple_tools()->counter->get_generation( 'has_1', 'groups' );
-        $has_2 = disciple_tools()->counter->get_generation( 'has_2', 'groups' );
-        $has_3 = disciple_tools()->counter->get_generation( 'has_3', 'groups' );
-
-        $gr_0gen = '';//disciple_tools()->counter->get_generation('at_zero', 'groups');
-        $gr_1gen = '';//disciple_tools()->counter->get_generation('at_first', 'groups');
-        $gr_2gen = '';//disciple_tools()->counter->get_generation('at_second', 'groups');
-        $gr_3gen = '';//disciple_tools()->counter->get_generation('at_third', 'groups');
-        $gr_4gen = '';//disciple_tools()->counter->get_generation('at_fourth', 'groups');
-
-        $dbs = disciple_tools()->counter->groups_meta_counter( 'type', 'DBS' );
-        $active_churches = disciple_tools()->counter->groups_meta_counter( 'type', 'Church' );
-
-        // Build counters
-        $has_at_least_1 = disciple_tools()->counter->get_generation( 'has_one_or_more', 'baptisms' );
-        $has_at_least_2 = disciple_tools()->counter->get_generation( 'has_two_or_more', 'baptisms' );
-        $has_more_than_2 = disciple_tools()->counter->get_generation( 'has_three_or_more', 'baptisms' );
-
-        $has_0 = disciple_tools()->counter->get_generation( 'has_0', 'baptisms' );
-        $has_1 = disciple_tools()->counter->get_generation( 'has_1', 'baptisms' );
-        $has_2 = disciple_tools()->counter->get_generation( 'has_2', 'baptisms' );
-        $has_3 = disciple_tools()->counter->get_generation( 'has_3', 'baptisms' );
-
-        $con_0gen = '';//disciple_tools()->counter->get_generation('at_zero', 'baptisms');
-        $con_1gen = '';//disciple_tools()->counter->get_generation('at_first', 'baptisms');
-        $con_2gen = '';//disciple_tools()->counter->get_generation('at_second', 'baptisms');
-        $con_3gen = '';//disciple_tools()->counter->get_generation('at_third', 'baptisms');
-        $con_4gen = '';//disciple_tools()->counter->get_generation('at_fourth', 'baptisms');
-        $con_5gen = '';//disciple_tools()->counter->get_generation('at_fifth', 'baptisms');
-
-        $baptisms = disciple_tools()->counter->get_baptisms( 'baptisms' );
-        $baptizers = disciple_tools()->counter->get_baptisms( 'baptizers' );
-    }
 }
 
 /**
@@ -596,21 +487,14 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
     public static function chart_group_health( $type = 'personal' ) {
 
+        // Make key list
         $default_key_list = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
-
-        $default_chart = [
-            [ 'Step', 'Groups', [ 'role' => 'annotation' ] ],
-            [ 'Fellowship', 0, 0 ],
-            [ 'Giving', 0, 0 ],
-            [ 'Communion', 0, 0 ],
-            [ 'Baptism', 0, 0 ],
-            [ 'Prayer', 0, 0 ],
-            [ 'Leaders', 0, 0 ],
-            [ 'Word', 0, 0 ],
-            [ 'Praise', 0, 0 ],
-            [ 'Evangelism', 0, 0 ],
-            [ 'Covenant', 0, 0 ],
-        ];
+        $labels = [];
+        foreach ( $default_key_list as $key => $list ) {
+            if ( 'church' == substr( $key, 0, 6 ) ) {
+                $labels[$key] = $list['name'];
+            }
+        }
 
         $chart = [];
 
@@ -620,39 +504,60 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 break;
             case 'project':
                 $results = self::query_project_group_health();
+                dt_write_log( $results );
                 break;
             default:
                 $results = false;
                 break;
         }
 
-        if ( ! $results ) {
-            $chart = $default_chart;
-        }
-        else {
-            $chart[] = [ 'Step', 'Groups', [ 'role' => 'annotation' ] ];
+        if ( $results ) {
 
+            if ( isset( $results[0]['out_of'] ) ) {
+                $out_of = $results[0]['out_of'];
+            }
+
+            // Create rows from results
             foreach ( $results as $result ) {
-                if ( isset( $default_key_list[ $result['health_key'] ] ) ) {
-                    $value = intval( $result['out_of'] ) - intval( $result['count'] );
-                    $chart[] = [ $default_key_list[ $result['health_key'] ]['name'], intval( $value ), intval( $value ) ];
+                foreach ( $labels as $k_label => $v_label ) {
+                    if ( $k_label === $result['health_key'] ) {
+                        $value = intval( $result['out_of'] ) - intval( $result['count'] );
+                        $chart[] = [ $v_label, intval( $value ), intval( $value ) ];
+                        unset( $labels[ $k_label ] ); // remove established value from list
+                        break;
+                    }
+                    $out_of = $result['out_of'];
                 }
             }
+        } else {
+            $out_of = 0;
         }
+
+        // Create remaining rows at full value
+        foreach ( $labels as $k_label => $v_label ) {
+            $chart[] = [ $v_label, $out_of, $out_of ];
+        }
+
+        array_unshift( $chart, [ 'Step', 'Groups', [ 'role' => 'annotation' ] ] ); // add top row
 
         return $chart;
     }
 
     public static function chart_group_generations( $type = 'personal' ) {
 
+        $chart = [];
         switch ( $type ) {
             case 'personal':
-
 
                 break;
             case 'project':
                 $tree = dt_get_generation_tree();
 
+//                    $result = self::parse_branch( $tree );
+//                foreach( $tree as $branch ) {
+//                    $result = self::parse_branch( $branch );
+//                }
+                    dt_write_log( Disciple_Tools_Counter_Base::get_type_by_level( $tree ) );
                 break;
             default:
                 $results = [];
@@ -693,9 +598,98 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         foreach ( $target as $row_key => $row_value ) {
             $chart[] = [ (string) $row_key, $row_value['pre-group'], $row_value['group'], $row_value['church'], $row_value['total'] ];
         }
+//        dt_write_log( $chart );
 
         return $chart;
+
     }
+
+    public static function parse_branch( array $tree, $generation = 0 ) {
+        $child_node = [];
+
+        foreach ( $tree as $key => $node ) {
+            if ( isset( $node['children'] ) && is_array( $node['children'] ) ) {
+                dt_write_log( 'if' );
+                $child_node = self::parse_branch( $node );
+
+                $types = [
+                    'pre-group' => $node['group_type'] == 'pre-group' ? 1 : 0,
+                    'group' => $node['group_type'] == 'group' ? 1 : 0,
+                    'church' => $node['group_type'] == 'church' ? 1 : 0,
+                    'total' => 1,
+                ];
+                $child_node[$node['generation']] = $types;
+
+            } else {
+                dt_write_log( 'else' );
+                $types = [
+                    'pre-group' => 0,
+                    'group' => 0,
+                    'church' => 0,
+                    'total' => 1,
+                ];
+                $child_node[] = $types;
+            }
+        }
+        return [
+            'child_node' => $child_node,
+            'generation' => $child_node[$node['generation']]
+        ];
+    }
+
+//    public static function build_generation_tree( array $elements, $parent_id = 0, $generation = 0 ) {
+//        $branch = array();
+//        $generation++;
+//
+//        foreach ($elements as $element) {
+//            if ($element['parent_id'] == $parent_id) {
+//                $children = self::build_generation_tree( $elements, $element['id'], $generation );
+//                if ($children) {
+//                    $element['generation'] = $generation;
+//                    $element['children'] = $children;
+//                }
+//                else {
+//                    $element['generation'] = $generation;
+//                }
+//                $branch[] = $element;
+//            }
+//        }
+//
+//        return $branch;
+//    }
+
+
+//    public static function build_group_generation_counts( array $elements, $parent_id = 0, $generation = 0, $counts = [] ) {
+//        if ( empty( $counts ) ){
+//            $counts = [
+//                [ "Generations", "Pre-Group", "Group", "Church", [ "role" => "Annotation"] ]
+//            ];
+//        }
+//
+//        $generation++;
+//
+//        if ( !isset( $counts[$generation] ) ){
+//            $counts[$generation] = [ (string) $generation, 0, 0, 0, 0];
+//        }
+//
+//        foreach ($elements as $element) {
+//            if ( $element["group_type"] === "pre-group" ){
+//                $counts[ $generation ][1]++;
+//            } elseif ( $element["group_type"] === "group" ){
+//                $counts[ $generation ][2]++;
+//            } elseif ( $element["group_type"] === "church" ){
+//                $counts[ $generation ][3]++;
+//            }
+//            $counts[ $generation ][4]++;
+//
+//            if ($element['parent_id'] == $parent_id) {
+//                $counts = self::build_group_generation_counts( $elements, $element['id'], $generation, $counts );
+//            }
+//        }
+//
+//        return $counts;
+//    }
+
 
     public static function chart_streams() {
         $tree = dt_get_generation_tree();
@@ -712,7 +706,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             $chart[] = [ (string) $row_key . ' gen' , intval( $row_value ) ];
         }
 
-        dt_write_log( $chart );
         return $chart;
     }
 
@@ -1002,7 +995,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         return wp_parse_args( $results, $default );
     }
-
 
 
 
