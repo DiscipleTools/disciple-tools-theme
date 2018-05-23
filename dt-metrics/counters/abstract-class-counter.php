@@ -25,13 +25,13 @@ abstract class Disciple_Tools_Counter_Base
     public static function build_group_generation_counts( array $elements, $parent_id = 0, $generation = 0, $counts = [] ) {
         if ( empty( $counts ) ){
             $counts = [
-                [ "generations", "Pre-Group", "Group", "Church", [ "role" => "Annotation"] ]
+                [ "generations", "Pre-Group", "Group", "Church", [ "role" => "Annotation" ] ]
             ];
         }
 
         $generation++;
         if ( !isset( $counts[$generation] ) ){
-            $counts[$generation] = [ $generation, 0, 0, 0, 0];
+            $counts[$generation] = [ $generation, 0, 0, 0, 0 ];
         }
         foreach ($elements as $element) {
 
