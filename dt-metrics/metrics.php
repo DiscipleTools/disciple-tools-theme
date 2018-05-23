@@ -1347,7 +1347,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
           as needs_update,
                (SELECT count(a.ID)
                 FROM $wpdb->posts as a
-               JOIN wp_2_postmeta as d
+               JOIN $wpdb->postmeta as d
                ON a.ID=d.post_id
                       AND d.meta_key = 'group_status'
                AND d.meta_value = 'active'
