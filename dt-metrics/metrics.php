@@ -375,10 +375,9 @@ function dt_get_generation_tree( $reset = false ) {
 
     if ( ! $generation_tree || $reset ) {
         $raw_connections = Disciple_Tools_Metrics_Hooks_Base::query_get_group_generations();
-        $generation_tree = Disciple_Tools_Counter_Base::build_generation_tree( $raw_connections );
+        $generation_tree = Disciple_Tools_Counter_Base::build_group_generation_counts( $raw_connections );
         set_transient( 'dt_generation_tree', $generation_tree, dt_get_time_until_midnight() );
     }
-
     return $generation_tree;
 }
 
@@ -551,56 +550,53 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
                 break;
             case 'project':
-                $tree = dt_get_generation_tree();
-
-//                    $result = self::parse_branch( $tree );
-//                foreach( $tree as $branch ) {
-//                    $result = self::parse_branch( $branch );
-//                }
-                    dt_write_log( Disciple_Tools_Counter_Base::get_type_by_level( $tree ) );
+//                $tree = dt_get_generation_tree();
+                $raw_connections = Disciple_Tools_Metrics_Hooks_Base::query_get_group_generations();
+                $generation_tree = Disciple_Tools_Counter_Base::build_group_generation_counts( $raw_connections );
                 break;
             default:
                 $results = [];
                 break;
         }
 
-        $target = [
-          1 => [
-              'pre-group' => 2,
-              'group' => 3,
-              'church' => 1,
-              'total' => 6,
-          ],
-          2 => [
-              'pre-group' => 2,
-              'group' => 1,
-              'church' => 1,
-              'total' => 4,
-          ],
-          3 => [
-              'pre-group' => 0,
-              'group' => 0,
-              'church' => 0,
-              'total' => 3,
-          ],
-          4 => [
-              'pre-group' => 0,
-              'group' => 0,
-              'church' => 0,
-              'total' => 1,
-          ]
-        ];
-
-        $chart = [
-            [ 'Generations', 'Pre-Group', 'Group', 'Church', [ 'role' => 'annotation' ] ],
-        ];
-
-        foreach ( $target as $row_key => $row_value ) {
-            $chart[] = [ (string) $row_key, $row_value['pre-group'], $row_value['group'], $row_value['church'], $row_value['total'] ];
-        }
+//        $target = [
+//          1 => [
+//              'pre-group' => 2,
+//              'group' => 3,
+//              'church' => 1,
+//              'total' => 6,
+//          ],
+//          2 => [
+//              'pre-group' => 2,
+//              'group' => 1,
+//              'church' => 1,
+//              'total' => 4,
+//          ],
+//          3 => [
+//              'pre-group' => 0,
+//              'group' => 0,
+//              'church' => 0,
+//              'total' => 3,
+//          ],
+//          4 => [
+//              'pre-group' => 0,
+//              'group' => 0,
+//              'church' => 0,
+//              'total' => 1,
+//          ]
+//        ];
+//
+//        $chart = [
+//            [ 'Generations', 'Pre-Group', 'Group', 'Church', [ 'role' => 'annotation' ] ],
+//        ];
+//
+//        foreach ( $target as $row_key => $row_value ) {
+//            $chart[] = [ (string) $row_key, $row_value['pre-group'], $row_value['group'], $row_value['church'], $row_value['total'] ];
+//        }
 //        dt_write_log( $chart );
 
-        return $chart;
+//        return $chart;
+        return $generation_tree;
 
     }
 
@@ -636,60 +632,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             'generation' => $child_node[$node['generation']]
         ];
     }
-
-//    public static function build_generation_tree( array $elements, $parent_id = 0, $generation = 0 ) {
-//        $branch = array();
-//        $generation++;
-//
-//        foreach ($elements as $element) {
-//            if ($element['parent_id'] == $parent_id) {
-//                $children = self::build_generation_tree( $elements, $element['id'], $generation );
-//                if ($children) {
-//                    $element['generation'] = $generation;
-//                    $element['children'] = $children;
-//                }
-//                else {
-//                    $element['generation'] = $generation;
-//                }
-//                $branch[] = $element;
-//            }
-//        }
-//
-//        return $branch;
-//    }
-
-
-//    public static function build_group_generation_counts( array $elements, $parent_id = 0, $generation = 0, $counts = [] ) {
-//        if ( empty( $counts ) ){
-//            $counts = [
-//                [ "Generations", "Pre-Group", "Group", "Church", [ "role" => "Annotation"] ]
-//            ];
-//        }
-//
-//        $generation++;
-//
-//        if ( !isset( $counts[$generation] ) ){
-//            $counts[$generation] = [ (string) $generation, 0, 0, 0, 0];
-//        }
-//
-//        foreach ($elements as $element) {
-//            if ( $element["group_type"] === "pre-group" ){
-//                $counts[ $generation ][1]++;
-//            } elseif ( $element["group_type"] === "group" ){
-//                $counts[ $generation ][2]++;
-//            } elseif ( $element["group_type"] === "church" ){
-//                $counts[ $generation ][3]++;
-//            }
-//            $counts[ $generation ][4]++;
-//
-//            if ($element['parent_id'] == $parent_id) {
-//                $counts = self::build_group_generation_counts( $elements, $element['id'], $generation, $counts );
-//            }
-//        }
-//
-//        return $counts;
-//    }
-
 
     public static function chart_streams() {
         $tree = dt_get_generation_tree();
@@ -1338,12 +1280,12 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             SELECT
               a.ID         as id,
               0            as parent_id,
-              d.meta_value as group_type
+              d.meta_value as group_type,
+              c.meta_value as group_status
             FROM $wpdb->posts as a
               JOIN $wpdb->postmeta as c
                 ON a.ID = c.post_id
                    AND c.meta_key = 'group_status'
-                   AND c.meta_value = 'active'
               LEFT JOIN $wpdb->postmeta as d
                 ON a.ID = d.post_id
                    AND d.meta_key = 'group_type'
@@ -1361,7 +1303,11 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
               (SELECT meta_value
                FROM $wpdb->postmeta
                WHERE post_id = p.p2p_from
-                     AND meta_key = 'group_type') as group_type
+                     AND meta_key = 'group_type') as group_type,
+               (SELECT meta_value
+               FROM $wpdb->postmeta
+               WHERE post_id = p.p2p_from
+                     AND meta_key = 'group_status') as group_status
             FROM $wpdb->p2p as p
             WHERE p.p2p_type = 'groups_to_groups'
         ", ARRAY_A );

@@ -22,6 +22,43 @@ abstract class Disciple_Tools_Counter_Base
      *
      * @return array
      */
+    public static function build_group_generation_counts( array $elements, $parent_id = 0, $generation = 0, $counts = [] ) {
+        if ( empty( $counts ) ){
+            $counts = [
+                [ "generations", "Pre-Group", "Group", "Church", [ "role" => "Annotation" ] ]
+            ];
+        }
+
+        $generation++;
+        if ( !isset( $counts[$generation] ) ){
+            $counts[$generation] = [ $generation, 0, 0, 0, 0 ];
+        }
+        foreach ($elements as $element) {
+
+            if ($element['parent_id'] == $parent_id) {
+                if ( $element["group_status"] === "active" ){
+                    if ( $element["group_type"] === "pre-group" ){
+                        $counts[ $generation ][1]++;
+                    } elseif ( $element["group_type"] === "group" ){
+                        $counts[ $generation ][2]++;
+                    } elseif ( $element["group_type"] === "church" ){
+                        $counts[ $generation ][3]++;
+                    }
+                    $counts[ $generation ][4]++;
+                }
+                $counts = self::build_group_generation_counts( $elements, $element['id'], $generation, $counts );
+            }
+        }
+
+        return $counts;
+    }
+
+    /**
+     * @param array $elements
+     * @param int   $parent_id
+     *
+     * @return array
+     */
     public static function build_generation_tree( array $elements, $parent_id = 0, $generation = 0 ) {
         $branch = array();
         $generation++;
