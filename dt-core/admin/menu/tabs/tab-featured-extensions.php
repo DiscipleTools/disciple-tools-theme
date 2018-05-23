@@ -94,67 +94,72 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         if ( isset( $_POST["activate"] ) && is_admin() ) {
             //activate the plugin
             $result = activate_plugin( $_POST["activate"] );
+            ?>
+            <p> plugin installed </p>
+            <p><a href=<?php echo esc_html( $_SERVER["HTTP_REFERER"] ); ?>> return to plugin page </a></p>
+            <?php
+            exit;
         }
         if ( isset( $_POST["install"] ) && is_admin() ) {
+            //install plugin
             $this->install_plugin( $_POST["install"] );
+            exit;
         }
-        else {
-            //get plugin data
-            $plugins = $this->get_plugins();
-            ?>
-            <table class="widefat striped">
+        //get plugin data
+        $plugins = $this->get_plugins();
+        ?>
+        <table class="widefat striped">
 
-                <thead>
-                <tr>
-                    <td>
-                        Plugin
-                    </td>
-                    <td>
-                        Actions
-                    </td>
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-                foreach ($plugins as $plugin) {
-                    foreach ($plugin as $p) {
+            <thead>
+            <tr>
+                <td>
+                    Plugin
+                </td>
+                <td>
+                    Actions
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($plugins as $plugin) {
+                foreach ($plugin as $p) {
+                    ?>
+                    <tr>
+                    <td><?php echo esc_html( $p->name ); ?></td>
+                    <td><?php
+                    $result_name = $this->partial_array_search( $all_plugins, $p->folder_name );
+                    if ($result_name == -1) {
                         ?>
-                        <tr>
-                        <td><?php echo esc_html( $p->name ); ?></td>
-                        <td><?php
-                        $result_name = $this->partial_array_search( $all_plugins, $p->folder_name );
-                        if ($result_name == -1) {
-                            ?>
-                            <form action="" method="POST">
-                                <input type="hidden" value="true" name="javascript"/>
-                                <input type="hidden" value=<?php echo esc_html( $p->url ); ?> name="install"/>
-                                <input type="submit" value="install" name="submit_btn">
-                            </form>
-                            </td>
-                            </tr>
-                            <?php
-                        } else if ( $this->partial_array_search( $active_plugins, $p->folder_name ) == -1 && isset( $_POST["activate"] ) == false && strpos( $_POST["activate"], $p->folder_name ) === false) {
-                            ?>
-                            <form action="" method="POST">
-                                <input type="hidden" value=<?php echo esc_html( $result_name ); ?>  name="activate" ?/>
-                                <input type="submit" value="activate" name="submit_btn">
-                            </form>
-                            </td>
-                            </tr>
-                            <?php
-                        } else {
-                            ?>
-                            <p>Installed</p>
-                            </td>
-                            </tr>
-                            <?php
-                        }
+                        <form action="" method="POST">
+                            <input type="hidden" value="true" name="javascript"/>
+                            <input type="hidden" value=<?php echo esc_html( $p->url ); ?> name="install"/>
+                            <input type="submit" value="install" name="submit_btn">
+                        </form>
+                        </td>
+                        </tr>
+                        <?php
+                    } else if ( $this->partial_array_search( $active_plugins, $p->folder_name ) == -1 && isset( $_POST["activate"] ) == false && strpos( $_POST["activate"], $p->folder_name ) === false ) {
+                        ?>
+                        <form action="" method="POST">
+                            <input type="hidden" value=<?php echo esc_html( $result_name ); ?>  name="activate" ?/>
+                            <input type="submit" value="activate" name="submit_btn">
+                        </form>
+                        </td>
+                        </tr>
+                        <?php
+                    } else {
+                        ?>
+                        <p>Installed</p>
+                        </td>
+                        </tr>
+                        <?php
                     }
                 }
-                ?></tbody>
-            </table>
-            <?php
-        }
+            }
+            ?></tbody>
+        </table>
+        <?php
     }
 
     //this function will install a plugin with a name
