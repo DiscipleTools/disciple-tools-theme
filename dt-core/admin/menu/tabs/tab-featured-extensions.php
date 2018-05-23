@@ -199,13 +199,9 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             $folder_name = realpath( $folder_name );
             //unzip
             WP_Filesystem();
-            $unzip = unzip_file($folder_name, realpath( get_home_path() . "wp-content/plugins/" ) );
-            if ( is_wp_error( $unzip ) ) {
-            }
-            else{
-                //remove the file
-                unlink( $folder_name );
-            }
+            $unzip = unzip_file( $folder_name, realpath( get_home_path() . "wp-content/plugins/" ) );
+            //remove the file
+            unlink( $folder_name );
         }
     }
 
