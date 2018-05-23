@@ -195,8 +195,9 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             //download the zip file to plugins
             //http://php.net/file_put_contents <- to download
             file_put_contents( $folder_name, file_get_contents( $download_url ) );
-            //unzip the file
             // get the absolute path to $file
+            $folder_name = realpath( $folder_name );
+            //unzip
             $zip = new ZipArchive();
             $res = $zip->open( $folder_name );
             if ( $res === true ) {
