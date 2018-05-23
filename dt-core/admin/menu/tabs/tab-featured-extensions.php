@@ -110,7 +110,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     public function box_message()
     {
         //check for actions
-        if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce' , $_POST["_ajax_nonce"] ) ) {
+        if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', $_POST["_ajax_nonce"] ) ) {
             //activate the plugin
             activate_plugin( $_POST["activate"] );
             exit;
