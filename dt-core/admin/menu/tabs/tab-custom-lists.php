@@ -79,7 +79,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* end Sources */
 
-            /* Metrics */
+            /* Metrics
             $this->box( 'top', 'Seeker Path' );
             $this->process_seeker_path_box();
             $this->seeker_path_box(); // prints
