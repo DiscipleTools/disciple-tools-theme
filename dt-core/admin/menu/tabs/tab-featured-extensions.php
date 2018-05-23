@@ -126,7 +126,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         $plugins = $this->get_plugins();
         ?>
         <table class="widefat striped">
-
             <thead>
             <tr>
                 <td>
@@ -145,33 +144,38 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 foreach ($plugin as $p) {
                     ?>
                     <tr>
-                    <td><?php echo esc_html( $p->name ); ?></td>
+                        <td>
+                            <?php echo esc_html( $p->name ); ?>
+                        </td>
+                        <td>
+                            <?php echo esc_html( $p->description ); ?>
+                        </td>
                     <td>
-                    <?php echo esc_html( $p->description ); ?></td>
-                    <td><?php
+                    <?php
                     $result_name = $this->partial_array_search( $all_plugins, $p->folder_name );
                     if ($result_name == -1) {
                         ?>
-                        <button class="button" onclick="install('<?php echo esc_html( $p->url ); ?>')">Install</button>
-                        </td>
+                                <button class="button" onclick="install('<?php echo esc_html( $p->url ); ?>')"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></button>
+                            </td>
                         </tr>
                         <?php
                     } else if ( $this->partial_array_search( $active_plugins, $p->folder_name ) == -1 && isset( $_POST["activate"] ) == false ) {
                         ?>
-                        <button class="button" onclick="activate('<?php echo esc_html( $result_name ); ?>')">Activate</button>
-                        </td>
+                                <button class="button" onclick="activate('<?php echo esc_html( $result_name ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
+                            </td>
                         </tr>
                         <?php
                     } else {
                         ?>
-                        <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
-                        </td>
+                                <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
+                            </td>
                         </tr>
                         <?php
                     }
                 }
             }
-            ?></tbody>
+            ?>
+            </tbody>
         </table>
         <?php
     }
