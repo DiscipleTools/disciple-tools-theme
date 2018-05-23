@@ -16,6 +16,8 @@ abstract class Disciple_Tools_Counter_Base
     {
     }
 
+
+
     /**
      * @param array $elements
      * @param int   $parent_id
