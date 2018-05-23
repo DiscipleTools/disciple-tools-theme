@@ -1304,9 +1304,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                      AND meta_key = 'group_status') as group_status
             FROM $wpdb->p2p as p
             WHERE p.p2p_type = 'groups_to_groups'
-        ",
-            'user-' . $user_id ),
-            ARRAY_A );
+        ", 'user-' . $user_id ), ARRAY_A );
 
         return $results;
     }
@@ -1357,7 +1355,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 AND a.post_type = 'groups')
           as groups
         ",
-            ARRAY_A );
+        ARRAY_A );
 
         if ( empty( $results ) ) {
             return new WP_Error( __METHOD__, 'No results from the personal count query' );
