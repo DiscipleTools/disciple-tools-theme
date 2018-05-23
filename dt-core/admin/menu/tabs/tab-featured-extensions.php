@@ -83,7 +83,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     public function partial_array_search( $array, $find )
     {
         //check for null value
-        if ($find == null) {
+        if ($find == null || count( $array ) == 0) {
             return -1;
         }
         //with array keys
@@ -95,9 +95,11 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         }
         //with array values
         foreach ($array as $key) {
-            $key = " " . $key; //for rare bug
-            if ( strpos( $key, $find ) !== false ) {
-                return $key;
+            if ( gettype( $key ) != 'array' ) {
+                $key = " " . $key;
+                if ( strpos( $key, $find ) !== false) {
+                    return $key;
+                }
             }
         }
         //false
@@ -154,7 +156,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         </td>
                         </tr>
                         <?php
-                    } else if ( $this->partial_array_search( $active_plugins, $p->folder_name ) == -1 && isset( $_POST["activate"] ) == false && strpos( $_POST["activate"], $p->folder_name ) === false ) {
+                    } else if ( $this->partial_array_search( $active_plugins, $p->folder_name ) == -1 && isset( $_POST["activate"] ) == false ) {
                         ?>
                         <button class="button" onclick="activate('<?php echo esc_html( $result_name ); ?>')">Activate</button>
                         </td>
@@ -162,7 +164,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         <?php
                     } else {
                         ?>
-                        <p>Installed</p>
+                        <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
                         </td>
                         </tr>
                         <?php
