@@ -110,12 +110,12 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     public function box_message()
     {
         //check for actions
-        if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce' ) ) {
+        if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce' , $_POST["_ajax_nonce"] ) ) {
             //activate the plugin
             activate_plugin( $_POST["activate"] );
             exit;
         }
-        else if ( isset( $_POST["install"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce' ) ) {
+        else if ( isset( $_POST["install"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', $_POST["_ajax_nonce"] ) ) {
             //install plugin
             $this->install_plugin( $_POST["install"] );
             exit;
@@ -195,14 +195,14 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             //download the zip file to plugins
             //http://php.net/file_put_contents <- to download
             file_put_contents( $folder_name, file_get_contents( $download_url ) );
-            //unzip the file
             // get the absolute path to $file
-            $zip = new ZipArchive();
-            $res = $zip->open( $folder_name );
-            if ( $res === true ) {
-                // extract it to the path we determined above
-                $zip->extractTo( get_home_path() . "wp-content/plugins/" );
-                $zip->close();
+            $folder_name = realpath( $folder_name );
+            //unzip
+            WP_Filesystem();
+            $unzip = unzip_file($folder_name, realpath( get_home_path() . "wp-content/plugins/" ) );
+            if ( is_wp_error( $unzip ) ) {
+            }
+            else{
                 //remove the file
                 unlink( $folder_name );
             }
