@@ -66,12 +66,12 @@ function project_overview() {
                         <div class="medium-4 cell center">
                             <h4>Total Groups<br><span id="total_groups">0</span></h4>
                         </div>
-                        <div class="medium-4 cell center left-border-grey">
+                        <!--<div class="medium-4 cell center left-border-grey">
                             <h4>Needs Training<br><span id="needs_training">0</span></h4>
                         </div>
                         <div class="medium-4 cell center left-border-grey">
                             <h4>Generations<br><span id="generations">0</span></h4>
-                        </div>
+                        </div>-->
                    </div> 
                 </div>
             </div>
@@ -81,9 +81,9 @@ function project_overview() {
                         <span class="section-subheader">Group Types</span>
                         <div id="group_types" style="height: 400px;"></div>
                     </div>
-                    <div class="cell medium-6">
+                    <!--<div class="cell medium-6">
                         <div id="group_generations" style="height: 400px;"></div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
             <div class="cell">
