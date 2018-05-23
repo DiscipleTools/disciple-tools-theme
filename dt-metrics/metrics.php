@@ -1367,6 +1367,5 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         return $numbers;
     }
-
 }
 
