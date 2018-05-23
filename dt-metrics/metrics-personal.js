@@ -53,6 +53,10 @@ function my_stats() {
                 </div>
             </div>
             <div class="cell">
+                <div id="my_groups_health" style="height: 500px;"></div>
+            </div>
+            <div class="cell">
+            <hr>
                 <div class="grid-x">
                     <div class="cell medium-6 center">
                         <span class="section-subheader">Group Types</span>
@@ -63,10 +67,7 @@ function my_stats() {
                     </div>-->
                 </div>
             </div>
-            <div class="cell">
-            <hr>
-                <div id="my_groups_health" style="height: 500px;"></div>
-            </div>
+            
         </div>
         `)
 

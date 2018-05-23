@@ -375,7 +375,7 @@ function dt_get_generation_tree( $reset = false ) {
 
     if ( ! $generation_tree || $reset ) {
         $raw_connections = Disciple_Tools_Metrics_Hooks_Base::query_get_group_generations();
-        $generation_tree = Disciple_Tools_Counter_Base::build_group_generation_counts( $raw_connections );
+        $generation_tree = Disciple_Tools_Counter_Base::build_generation_tree( $raw_connections );
         set_transient( 'dt_generation_tree', $generation_tree, dt_get_time_until_midnight() );
     }
     return $generation_tree;
@@ -389,10 +389,6 @@ function dt_get_time_until_midnight() {
 abstract class Disciple_Tools_Metrics_Hooks_Base
 {
     public function __construct() {}
-
-    /**
-     * MY METRICS
-     */
 
     public static function chart_my_hero_stats( $user_id = null )
     {
@@ -544,93 +540,52 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
     public static function chart_group_generations( $type = 'personal' ) {
 
-        $chart = [];
         switch ( $type ) {
             case 'personal':
-
+                $raw_connections = Disciple_Tools_Metrics_Hooks_Base::query_get_group_generations();
+                $generation_tree = self::build_group_generation_counts( $raw_connections );
                 break;
             case 'project':
-//                $tree = dt_get_generation_tree();
                 $raw_connections = Disciple_Tools_Metrics_Hooks_Base::query_get_group_generations();
-                $generation_tree = Disciple_Tools_Counter_Base::build_group_generation_counts( $raw_connections );
+                $generation_tree = self::build_group_generation_counts( $raw_connections );
                 break;
             default:
                 $results = [];
                 break;
         }
 
-//        $target = [
-//          1 => [
-//              'pre-group' => 2,
-//              'group' => 3,
-//              'church' => 1,
-//              'total' => 6,
-//          ],
-//          2 => [
-//              'pre-group' => 2,
-//              'group' => 1,
-//              'church' => 1,
-//              'total' => 4,
-//          ],
-//          3 => [
-//              'pre-group' => 0,
-//              'group' => 0,
-//              'church' => 0,
-//              'total' => 3,
-//          ],
-//          4 => [
-//              'pre-group' => 0,
-//              'group' => 0,
-//              'church' => 0,
-//              'total' => 1,
-//          ]
-//        ];
-//
-//        $chart = [
-//            [ 'Generations', 'Pre-Group', 'Group', 'Church', [ 'role' => 'annotation' ] ],
-//        ];
-//
-//        foreach ( $target as $row_key => $row_value ) {
-//            $chart[] = [ (string) $row_key, $row_value['pre-group'], $row_value['group'], $row_value['church'], $row_value['total'] ];
-//        }
-//        dt_write_log( $chart );
-
-//        return $chart;
         return $generation_tree;
-
     }
 
-    public static function parse_branch( array $tree, $generation = 0 ) {
-        $child_node = [];
+    public static function build_group_generation_counts( array $elements, $parent_id = 0, $generation = 0, $counts = [] ) {
+        if ( empty( $counts ) ){
+            $counts = [
+                [ "Generations", "Pre-Group", "Group", "Church", [ "role" => "Annotation" ] ]
+            ];
+        }
 
-        foreach ( $tree as $key => $node ) {
-            if ( isset( $node['children'] ) && is_array( $node['children'] ) ) {
-                dt_write_log( 'if' );
-                $child_node = self::parse_branch( $node );
+        $generation++;
+        if ( !isset( $counts[$generation] ) ){
+            $counts[$generation] = [ $generation, 0, 0, 0, 0 ];
+        }
+        foreach ($elements as $element) {
 
-                $types = [
-                    'pre-group' => $node['group_type'] == 'pre-group' ? 1 : 0,
-                    'group' => $node['group_type'] == 'group' ? 1 : 0,
-                    'church' => $node['group_type'] == 'church' ? 1 : 0,
-                    'total' => 1,
-                ];
-                $child_node[$node['generation']] = $types;
-
-            } else {
-                dt_write_log( 'else' );
-                $types = [
-                    'pre-group' => 0,
-                    'group' => 0,
-                    'church' => 0,
-                    'total' => 1,
-                ];
-                $child_node[] = $types;
+            if ($element['parent_id'] == $parent_id) {
+                if ( $element["group_status"] === "active" ){
+                    if ( $element["group_type"] === "pre-group" ){
+                        $counts[ $generation ][1]++;
+                    } elseif ( $element["group_type"] === "group" ){
+                        $counts[ $generation ][2]++;
+                    } elseif ( $element["group_type"] === "church" ){
+                        $counts[ $generation ][3]++;
+                    }
+                    $counts[ $generation ][4]++;
+                }
+                $counts = self::build_group_generation_counts( $elements, $element['id'], $generation, $counts );
             }
         }
-        return [
-            'child_node' => $child_node,
-            'generation' => $child_node[$node['generation']]
-        ];
+
+        return $counts;
     }
 
     public static function chart_streams() {
@@ -651,32 +606,22 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $chart;
     }
 
-
-    /**
-     * PROJECT METRICS
-     */
-    // @todo
     public static function chart_project_hero_stats()
     {
-        $default = [
-            'total_contacts' => 0,
-            'needs_accepted' => 0,
-            'updates_needed' => 0,
-            'total_groups' => 0,
-            'needs_training' => 0,
-            'generations' => 0,
-        ];
+        $stats = self::query_project_hero_stats();
+
+        dt_write_log( $stats );
 
         $results = [
-            'total_contacts' => 0,
-            'needs_accepted' => 0,
-            'updates_needed' => 0,
-            'total_groups' => 0,
+            'total_contacts' => $stats['contacts'],
+            'needs_accepted' => $stats['needs_accept'],
+            'updates_needed' => $stats['needs_update'],
+            'total_groups' => $stats['groups'],
             'needs_training' => 0,
             'generations' => 0,
         ];
 
-        return wp_parse_args( $results, $default );
+        return $results;
     }
 
     // @todo
@@ -709,7 +654,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         return wp_parse_args( $results, $default );
     }
-
 
     // @todo
     public static function chart_timeline() {
@@ -1313,6 +1257,117 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         ", ARRAY_A );
 
         return $results;
+    }
+
+    public static function query_my_group_generations( $user_id = null ) {
+        global $wpdb;
+
+        if ( is_null( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT
+              a.ID         as id,
+              0            as parent_id,
+              d.meta_value as group_type,
+              c.meta_value as group_status
+            FROM $wpdb->posts as a
+              JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                     AND b.meta_key = 'assigned_to'
+                     AND b.meta_value = %s
+              JOIN $wpdb->postmeta as c
+                ON a.ID = c.post_id
+                   AND c.meta_key = 'group_status'
+              LEFT JOIN $wpdb->postmeta as d
+                ON a.ID = d.post_id
+                   AND d.meta_key = 'group_type'
+            WHERE a.post_status = 'publish'
+                  AND a.post_type = 'groups'
+                  AND a.ID NOT IN (
+              SELECT DISTINCT (p2p_from)
+              FROM $wpdb->p2p
+              WHERE p2p_type = 'groups_to_groups'
+              GROUP BY p2p_from)
+            UNION
+            SELECT
+              p.p2p_from                          as id,
+              p.p2p_to                            as parent_id,
+              (SELECT meta_value
+               FROM $wpdb->postmeta
+               WHERE post_id = p.p2p_from
+                     AND meta_key = 'group_type') as group_type,
+               (SELECT meta_value
+               FROM $wpdb->postmeta
+               WHERE post_id = p.p2p_from
+                     AND meta_key = 'group_status') as group_status
+            FROM $wpdb->p2p as p
+            WHERE p.p2p_type = 'groups_to_groups'
+        ",
+            'user-' . $user_id ),
+            ARRAY_A );
+
+        return $results;
+    }
+
+    public static function query_project_hero_stats() {
+        global $wpdb;
+
+        $results = $wpdb->get_results( "
+            SELECT (
+                 SELECT count(a.ID)
+                 FROM $wpdb->posts as a
+                 WHERE a.post_status = 'publish'
+                 AND a.post_type = 'contacts')
+          as contacts,
+               (SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                            JOIN $wpdb->postmeta as b
+                            ON a.ID=b.post_id
+                               AND b.meta_key = 'accepted'
+                                     AND b.meta_value = 'no'
+               JOIN $wpdb->postmeta as d
+               ON a.ID=d.post_id
+                      AND d.meta_key = 'overall_status'
+               AND d.meta_value = 'active'
+               WHERE a.post_status = 'publish'
+                AND a.post_type = 'contacts')
+          as needs_accept,
+               (SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                            JOIN $wpdb->postmeta as b
+                            ON a.ID=b.post_id
+                               AND b.meta_key = 'requires_update'
+                                     AND b.meta_value = 'yes'
+               JOIN $wpdb->postmeta as d
+               ON a.ID=d.post_id
+                      AND d.meta_key = 'overall_status'
+               AND d.meta_value = 'active'
+               WHERE a.post_status = 'publish'
+                AND a.post_type = 'contacts')
+          as needs_update,
+               (SELECT count(a.ID)
+                FROM $wpdb->posts as a
+               JOIN wp_2_postmeta as d
+               ON a.ID=d.post_id
+                      AND d.meta_key = 'group_status'
+               AND d.meta_value = 'active'
+               WHERE a.post_status = 'publish'
+                AND a.post_type = 'groups')
+          as groups
+        ",
+            ARRAY_A );
+
+        if ( empty( $results ) ) {
+            return new WP_Error( __METHOD__, 'No results from the personal count query' );
+        }
+
+        foreach ( $results[0] as $key => $value ) {
+            $numbers[$key] = $value;
+        }
+
+        return $numbers;
     }
 
 }

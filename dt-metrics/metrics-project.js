@@ -76,20 +76,21 @@ function project_overview() {
                 </div>
             </div>
             <div class="cell">
+                <div id="my_groups_health" style="height: 500px;"></div>
+            </div>
+            <div class="cell">
+                <hr>
                 <div class="grid-x">
                     <div class="cell medium-6 center">
                         <span class="section-subheader">Group Types</span>
                         <div id="group_types" style="height: 400px;"></div>
                     </div>
-                    <!--<div class="cell medium-6">
+                    <div class="cell medium-6">
                         <div id="group_generations" style="height: 400px;"></div>
-                    </div>-->
+                    </div>
                 </div>
             </div>
-            <div class="cell">
-            <hr>
-                <div id="my_groups_health" style="height: 500px;"></div>
-            </div>
+            
             <div class="cell">
             <hr>
                 <div id="streams" style="height: 500px;"></div>
@@ -103,8 +104,8 @@ function project_overview() {
     jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
 
     jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
-    jQuery('#needs_training').html( numberWithCommas( hero.needs_training ) )
-    jQuery('#generations').html( numberWithCommas( hero.generations ) )
+    // jQuery('#needs_training').html( numberWithCommas( hero.needs_training ) )
+    // jQuery('#generations').html( numberWithCommas( hero.generations ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'bar']});
@@ -212,9 +213,11 @@ function project_overview() {
                 width: "75%",
                 height: "85%" },
             vAxis: {
+                title: 'generations',
                 format: '0',
             },
             hAxis: {
+                title: 'groups by type',
                 format: '0',
             },
             title: "Generations",
