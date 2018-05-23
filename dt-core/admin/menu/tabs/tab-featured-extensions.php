@@ -28,16 +28,16 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
     public function add_tab( $tab )
     {
+        $nonce = wp_create_nonce( 'portal-nonce' );
         ?>
         <script type="text/javascript">
-            //alert("nice");
             function install(plug) {
-                //alert("working install");
-                //alert(plug);
                 jQuery("#wpbody-content").replaceWith( "<p>installing...</p>" );
                 jQuery.post("",
                     {
                         install: plug,
+                        _ajax_nonce: "<?php echo esc_attr( $nonce ); ?>"
+
                     },
                     function(data, status){
                         location.reload();
@@ -48,6 +48,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 jQuery.post("",
                     {
                         activate: plug,
+                        _ajax_nonce: "<?php echo esc_attr( $nonce ); ?>"
                     },
                     function(data, status){
                         location.reload();
@@ -106,24 +107,13 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     //main page
     public function box_message()
     {
-        //nonce check
-        //do we set the nonce because this fails always for me?
-        $nonce = $_REQUEST['_wpnonce'];
-        if ( !wp_verify_nonce( $nonce, 'my-nonce' ) ) {
-            //die( 'Security Check' );
-
-        }
         //check for actions
-        if ( isset( $_POST["activate"] ) && is_admin() ) {
+        if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce' ) ) {
             //activate the plugin
-            $result = activate_plugin( $_POST["activate"] );
-            ?>
-            <p> plugin installed </p>
-            <p><a href=<?php echo esc_html( $_SERVER["HTTP_REFERER"] ); ?>> return to plugin page </a></p>
-            <?php
+            activate_plugin( $_POST["activate"] );
             exit;
         }
-        else if ( isset( $_POST["install"] ) && is_admin() ) {
+        else if ( isset( $_POST["install"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce' ) ) {
             //install plugin
             $this->install_plugin( $_POST["install"] );
             exit;
@@ -195,14 +185,10 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         $download_url = $plugin_json->download_url;
         $folder_name = explode( "/", $download_url );
         $folder_name = get_home_path() . "wp-content/plugins/" . $folder_name[ count( $folder_name ) - 1 ];
-        ?> <p> got info </p>
-        <?php
         if ( $folder_name != "" ) {
             //download the zip file to plugins
             //http://php.net/file_put_contents <- to download
             file_put_contents( $folder_name, file_get_contents( $download_url ) );
-            ?> <p> downloaded file </p>
-            <?php
             //unzip the file
             // get the absolute path to $file
             $zip = new ZipArchive();
@@ -213,12 +199,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 $zip->close();
                 //remove the file
                 unlink( $folder_name );
-                ?> <p> opening zip </p> <?php
             }
         }
-        ?>
-        <p> click on the activate button (on the main plugin page) to activate the plugin </p>
-        <p><a href=<?php echo esc_html( $_SERVER["HTTP_REFERER"] ); ?>> return to plugin page </a></p> <?php
     }
 
     //this function gets the plugin list data
