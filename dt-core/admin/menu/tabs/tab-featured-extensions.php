@@ -21,15 +21,40 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
     public function __construct()
     {
-        add_action( 'admin_footer', 'load' );
         add_action( 'dt_extensions_tab_menu', [ $this, 'add_tab' ], 10, 1 ); // use the priority setting to control load order
         add_action( 'dt_extensions_tab_content', [ $this, 'content' ], 99, 1 );
-
         parent::__construct();
     } // End __construct()
 
     public function add_tab( $tab )
     {
+        ?>
+        <script type="text/javascript">
+            //alert("nice");
+            function install(plug) {
+                //alert("working install");
+                //alert(plug);
+                jQuery("#wpbody-content").replaceWith( "<p>installing...</p>" );
+                jQuery.post("",
+                    {
+                        install: plug,
+                    },
+                    function(data, status){
+                        location.reload();
+                    });
+            }
+            function activate(plug) {
+                jQuery("#wpbody-content").replaceWith( "<p>activating...</p>" );
+                jQuery.post("",
+                    {
+                        activate: plug,
+                    },
+                    function(data, status){
+                        location.reload();
+                    });
+            }
+        </script>
+        <?php
         echo '<a href="' . esc_url( admin_url() ) . 'admin.php?page=dt_extensions&tab=featured-extensions" class="nav-tab ';
         if ($tab == 'featured-extensions') {
             echo 'nav-tab-active';
@@ -88,8 +113,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             //die( 'Security Check' );
 
         }
-        $active_plugins = get_option( 'active_plugins' );
-        $all_plugins = get_plugins();
         //check for actions
         if ( isset( $_POST["activate"] ) && is_admin() ) {
             //activate the plugin
@@ -100,11 +123,13 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             <?php
             exit;
         }
-        if ( isset( $_POST["install"] ) && is_admin() ) {
+        else if ( isset( $_POST["install"] ) && is_admin() ) {
             //install plugin
             $this->install_plugin( $_POST["install"] );
             exit;
         }
+        $active_plugins = get_option( 'active_plugins' );
+        $all_plugins = get_plugins();
         //get plugin data
         $plugins = $this->get_plugins();
         ?>
@@ -113,10 +138,12 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             <thead>
             <tr>
                 <td>
-                    Plugin
+                    <?php echo esc_html__( 'Name', 'disciple_tools' ) ?>
                 </td>
                 <td>
-                    Actions
+                    <?php echo esc_html__( 'Description', 'disciple_tools' ) ?>
+                <td>
+                    <?php echo esc_html__( 'Actions', 'disciple_tools' ) ?>
                 </td>
             </tr>
             </thead>
@@ -127,24 +154,19 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     ?>
                     <tr>
                     <td><?php echo esc_html( $p->name ); ?></td>
+                    <td>
+                    <?php echo esc_html( $p->description ); ?></td>
                     <td><?php
                     $result_name = $this->partial_array_search( $all_plugins, $p->folder_name );
                     if ($result_name == -1) {
                         ?>
-                        <form action="" method="POST">
-                            <input type="hidden" value="true" name="javascript"/>
-                            <input type="hidden" value=<?php echo esc_html( $p->url ); ?> name="install"/>
-                            <input type="submit" value="install" name="submit_btn">
-                        </form>
+                        <button class="button" onclick="install('<?php echo esc_html( $p->url ); ?>')">Install</button>
                         </td>
                         </tr>
                         <?php
                     } else if ( $this->partial_array_search( $active_plugins, $p->folder_name ) == -1 && isset( $_POST["activate"] ) == false && strpos( $_POST["activate"], $p->folder_name ) === false ) {
                         ?>
-                        <form action="" method="POST">
-                            <input type="hidden" value=<?php echo esc_html( $result_name ); ?>  name="activate" ?/>
-                            <input type="submit" value="activate" name="submit_btn">
-                        </form>
+                        <button class="button" onclick="activate('<?php echo esc_html( $result_name ); ?>')">Activate</button>
                         </td>
                         </tr>
                         <?php
