@@ -566,7 +566,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 $generation_tree = [ "Generations", "Pre-Group", "Group", "Church", [ "role" => "Annotation" ] ];
                 break;
         }
-        dt_write_log( $generation_tree );
         return $generation_tree;
     }
 
@@ -982,12 +981,20 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                JOIN $wpdb->postmeta as b
                  ON a.ID=b.post_id
                     AND b.meta_key = 'seeker_path'
+               JOIN $wpdb->postmeta as c
+                 ON a.ID=c.post_id
+                    AND c.meta_key != 'corresponds_to_user'
                JOIN $wpdb->postmeta as d
                  ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
                     AND d.meta_value = 'active'
              WHERE a.post_status = 'publish'
                 AND a.post_type = 'contacts'
+                AND a.ID NOT IN (
+                    SELECT post_id
+                    FROM wp_2_postmeta
+                    WHERE meta_key = 'corresponds_to_user'
+                )
              GROUP BY b.meta_value
         ", ARRAY_A );
 

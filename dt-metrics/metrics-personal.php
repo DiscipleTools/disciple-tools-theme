@@ -46,7 +46,7 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'map_key' => dt_get_option( 'map_key' ),
-                'overview' => $this->overview(),
+                'data' => $this->overview(),
             ]
         );
     }
@@ -54,14 +54,22 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
     public function overview() {
         $data = [
             'translations' => [
-                'title'           => __( 'My Overview' ),
-                'total_contacts'  => __( 'Total Contacts' ),
+                'title' => __( 'My Overview' ),
+                'title_waiting_on_accept' => __( 'Waiting on Accept' ),
+                'title_waiting_on_update' => __( 'Waiting on Update' ),
+                'title_contacts' => __( 'Contacts' ),
+                'title_groups' => __( 'Groups' ),
+                'title_total_groups' => __( 'Total Groups' ),
+                'title_needs_training' => __( 'Needs Training' ),
+                'title_group_types' => __( 'Group Types' ),
+                'label_total_contacts'  => __( 'Total Contacts' ),
                 'total_groups'    => __( 'Total Groups' ),
                 'updates_needed'  => __( 'Updates Needed' ),
                 'attempts_needed' => __( 'Attempts Needed' ),
+                'label_number_of_contacts' => __( 'number of contacts' ),
             ],
             'hero_stats'        => self::chart_my_hero_stats(),
-            'contacts_progress' => self::chart_contacts_progress( 'personal' ),
+            'contacts_progress' => self::chart_contacts_progress(),
             'group_types'       => self::chart_group_types(),
             'group_health'      => self::chart_group_health(),
             'group_generations' => self::chart_group_generations(),

@@ -240,7 +240,7 @@ function project_overview() {
             },
             title: "Streams",
             legend: {position: "none"},
-            colors: ['green' ],
+            colors: ['limegreen' ],
         };
 
         let chart = new google.visualization.ColumnChart(document.getElementById('streams'));
