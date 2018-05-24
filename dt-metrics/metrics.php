@@ -650,6 +650,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     // @todo
     public static function chart_project_critical_path()
     {
+
+
         $default = [
             [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
             [ 'New Contacts', 100, 100 ],
@@ -673,9 +675,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         ];
 
-        $results = [];
-
-        return wp_parse_args( $results, $default );
+        return $default;
     }
 
     // @todo
@@ -904,8 +904,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         return wp_parse_args( $results, $default );
     }
-
-
 
 
     /**
