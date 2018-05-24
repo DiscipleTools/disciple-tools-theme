@@ -398,11 +398,25 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         $results = self::query_my_hero_stats( $user_id );
 
+        $group_health = self::query_my_group_health();
+        $needs_training = 0;
+
+        if ( ! empty( $group_health ) ) {
+            foreach ( $group_health as $value ) {
+                $count = intval( $value['out_of'] ) - intval( $value['count'] );
+                if ( $count > $needs_training ) {
+
+                    $needs_training = $count;
+                }
+            }
+        }
+
         $chart = [
             'contacts' => $results['contacts'],
             'needs_accept' => $results['needs_accept'],
             'needs_update' => $results['needs_update'],
             'groups' => $results['groups'],
+            'needs_training' => $needs_training,
         ];
 
         return $chart;
@@ -499,7 +513,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 break;
             case 'project':
                 $results = self::query_project_group_health();
-                dt_write_log( $results );
                 break;
             default:
                 $results = false;
@@ -550,10 +563,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 $generation_tree = self::build_group_generation_counts( $raw_connections );
                 break;
             default:
-                $results = [];
+                $generation_tree = [ "Generations", "Pre-Group", "Group", "Church", [ "role" => "Annotation" ] ];
                 break;
         }
-
+        dt_write_log( $generation_tree );
         return $generation_tree;
     }
 
@@ -566,7 +579,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         $generation++;
         if ( !isset( $counts[$generation] ) ){
-            $counts[$generation] = [ $generation, 0, 0, 0, 0 ];
+            $counts[$generation] = [ (string) $generation , 0, 0, 0, 0 ];
         }
         foreach ($elements as $element) {
 
@@ -610,14 +623,25 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     {
         $stats = self::query_project_hero_stats();
 
-        dt_write_log( $stats );
+        $group_health = self::query_project_group_health();
+        $needs_training = 0;
+
+        if ( ! empty( $group_health ) ) {
+            foreach ( $group_health as $value ) {
+                $count = intval( $value['out_of'] ) - intval( $value['count'] );
+                if ( $count > $needs_training ) {
+
+                    $needs_training = $count;
+                }
+            }
+        }
 
         $results = [
             'total_contacts' => $stats['contacts'],
             'needs_accepted' => $stats['needs_accept'],
             'updates_needed' => $stats['needs_update'],
             'total_groups' => $stats['groups'],
-            'needs_training' => 0,
+            'needs_training' => $needs_training,
             'generations' => 0,
         ];
 

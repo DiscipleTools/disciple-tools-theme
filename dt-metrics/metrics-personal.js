@@ -43,10 +43,10 @@ function my_stats() {
                         <div class="medium-4 cell center">
                             <h4>Total Groups<br><span id="total_groups">0</span></h4>
                         </div>
-                        <!--<div class="medium-4 cell center left-border-grey">
+                        <div class="medium-4 cell center left-border-grey">
                             <h4>Needs Training<br><span id="needs_training">0</span></h4>
                         </div>
-                        <div class="medium-4 cell center left-border-grey">
+                        <!-- <div class="medium-4 cell center left-border-grey">
                             <h4>Generations<br><span id="generations">0</span></h4>
                         </div>-->
                    </div> 
@@ -77,6 +77,7 @@ function my_stats() {
     jQuery('#updates_needed').html( numberWithCommas( hero.needs_update ) )
 
     jQuery('#total_groups').html( numberWithCommas( hero.groups ) )
+    jQuery('#needs_training').html( numberWithCommas( hero.needs_training ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'bar']});

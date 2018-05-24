@@ -66,10 +66,10 @@ function project_overview() {
                         <div class="medium-4 cell center">
                             <h4>`+ label.title_total_groups +`<br><span id="total_groups">0</span></h4>
                         </div>
-                        <!--<div class="medium-4 cell center left-border-grey">
+                        <div class="medium-4 cell center left-border-grey">
                             <h4>`+ label.title_needs_training +`<br><span id="needs_training">0</span></h4>
                         </div>
-                        <div class="medium-4 cell center left-border-grey">
+                        <!--<div class="medium-4 cell center left-border-grey">
                             <h4>`+ label.title_generations +`<br><span id="generations">0</span></h4>
                         </div>-->
                    </div> 
@@ -104,7 +104,7 @@ function project_overview() {
     jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
 
     jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
-    // jQuery('#needs_training').html( numberWithCommas( hero.needs_training ) )
+    jQuery('#needs_training').html( numberWithCommas( hero.needs_training ) )
     // jQuery('#generations').html( numberWithCommas( hero.generations ) )
 
     // build charts
@@ -627,6 +627,7 @@ function project_outreach() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
+    let label = dtMetricsProject.data.translations
 
     console.log( sourceData )
 
@@ -672,6 +673,7 @@ function project_follow_up() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
+    let label = dtMetricsProject.data.translations
 
     console.log( sourceData )
 
@@ -739,6 +741,7 @@ function project_training() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
+    let label = dtMetricsProject.data.translations
 
     console.log( sourceData )
 
@@ -803,6 +806,7 @@ function project_multiplication() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
+    let label = dtMetricsProject.data.translations
 
     console.log( sourceData )
 

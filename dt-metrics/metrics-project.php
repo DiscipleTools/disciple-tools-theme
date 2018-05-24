@@ -96,7 +96,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             'critical_path' => self::chart_project_critical_path(),
             'contacts_progress' => self::chart_contacts_progress( 'project' ),
             'group_types' => self::chart_group_types( 'project' ),
-            'group_health' => self::chart_group_health(),
+            'group_health' => self::chart_group_health( 'project' ),
             'group_generations' => self::chart_group_generations( 'project' ),
             'timeline' => self::chart_timeline(),
             'streams' => self::chart_streams(),
