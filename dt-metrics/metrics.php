@@ -947,6 +947,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     SELECT post_id
                     FROM $wpdb->postmeta
                     WHERE meta_key = 'corresponds_to_user'
+                      AND meta_value != 0
+                    GROUP BY post_id
                 )
              GROUP BY b.meta_value
         ",
@@ -999,6 +1001,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     SELECT post_id
                     FROM $wpdb->postmeta
                     WHERE meta_key = 'corresponds_to_user'
+                      AND meta_value != 0
+                    GROUP BY post_id
                 )
              GROUP BY b.meta_value
         ", ARRAY_A );
@@ -1107,7 +1111,14 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     AND b.meta_key = 'assigned_to'
                     AND b.meta_value = CONCAT( 'user-', %s )
              WHERE a.post_status = 'publish'
-              AND a.post_type = 'contacts')
+              AND a.post_type = 'contacts'
+              AND a.ID NOT IN (
+                    SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_key = 'corresponds_to_user'
+                      AND meta_value != 0
+                    GROUP BY post_id
+                ))
               as contacts,
               (SELECT count(a.ID)
                FROM $wpdb->posts as a
@@ -1129,6 +1140,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     SELECT post_id
                     FROM $wpdb->postmeta
                     WHERE meta_key = 'corresponds_to_user'
+                      AND meta_value != 0
+                    GROUP BY post_id
                 ))
                 as needs_accept,
               (SELECT count(a.ID)
@@ -1151,6 +1164,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     SELECT post_id
                     FROM $wpdb->postmeta
                     WHERE meta_key = 'corresponds_to_user'
+                      AND meta_value != 0
+                    GROUP BY post_id
                 ))
                 as needs_update,
               (SELECT count(a.ID)
@@ -1363,7 +1378,14 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                  SELECT count(a.ID)
                  FROM $wpdb->posts as a
                  WHERE a.post_status = 'publish'
-                 AND a.post_type = 'contacts')
+                 AND a.post_type = 'contacts'
+                 AND a.ID NOT IN (
+                    SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_key = 'corresponds_to_user'
+                      AND meta_value != 0
+                    GROUP BY post_id
+                ))
           as contacts,
                (SELECT count(a.ID)
                 FROM $wpdb->posts as a
@@ -1376,7 +1398,14 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                       AND d.meta_key = 'overall_status'
                AND d.meta_value = 'active'
                WHERE a.post_status = 'publish'
-                AND a.post_type = 'contacts')
+                AND a.post_type = 'contacts'
+                AND a.ID NOT IN (
+                    SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_key = 'corresponds_to_user'
+                      AND meta_value != 0
+                    GROUP BY post_id
+                ))
           as needs_accept,
                (SELECT count(a.ID)
                 FROM $wpdb->posts as a
@@ -1389,7 +1418,14 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                       AND d.meta_key = 'overall_status'
                AND d.meta_value = 'active'
                WHERE a.post_status = 'publish'
-                AND a.post_type = 'contacts')
+                AND a.post_type = 'contacts'
+                AND a.ID NOT IN (
+                    SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_key = 'corresponds_to_user'
+                      AND meta_value != 0
+                    GROUP BY post_id
+                ))
           as needs_update,
                (SELECT count(a.ID)
                 FROM $wpdb->posts as a
