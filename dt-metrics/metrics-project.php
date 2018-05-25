@@ -93,7 +93,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'label_stats_as_of' => strtolower( __( 'stats as of' ) ),
             ],
             'hero_stats' => self::chart_project_hero_stats(),
-            'critical_path' => self::chart_project_critical_path(),
+            'critical_path' => self::chart_critical_path( 'project' ),
             'contacts_progress' => self::chart_contacts_progress( 'project' ),
             'group_types' => self::chart_group_types( 'project' ),
             'group_health' => self::chart_group_health( 'project' ),
