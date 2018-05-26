@@ -997,9 +997,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                JOIN $wpdb->postmeta as b
                  ON a.ID=b.post_id
                     AND b.meta_key = 'seeker_path'
-               JOIN $wpdb->postmeta as c
-                 ON a.ID=c.post_id
-                    AND c.meta_key != 'corresponds_to_user'
                JOIN $wpdb->postmeta as d
                  ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
@@ -1487,7 +1484,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
               ( 4 ) as people_groups,
               ( 4 ) as movements
         ",
-            ARRAY_A );
+        ARRAY_A );
 
         if ( empty( $results ) ) {
             return new WP_Error( __METHOD__, 'No results from the personal count query' );
