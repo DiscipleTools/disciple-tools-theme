@@ -97,7 +97,7 @@ function my_stats() {
             hAxis: {
                 title: label.label_number_of_contacts,
             },
-            title: "My Follow-Up Progress",
+            title: label.label_my_follow_up_progress,
             legend: {position: "none"},
         };
 
@@ -122,7 +122,7 @@ function my_stats() {
             hAxis: {
                 format: 'decimal',
             },
-            title: "Groups Needing Training Attention",
+            title: label.label_group_needing_training,
             legend: {position: "none"},
             colors: ['green' ],
         };
@@ -180,7 +180,7 @@ function my_stats() {
                 height: "85%" },
             title: "Generations",
             vAxis: {
-                title: 'generations',
+                title: label.label_generations,
                 format: '0'
             },
             hAxis: {

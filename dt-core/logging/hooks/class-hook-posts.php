@@ -208,7 +208,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         if ( $meta_key == "title" ){
             $object_note = "Name changed to: " . $meta_value;
         }
-        if (strpos( $meta_key, "assigned_to" ) !== false ){
+        if ( strpos( $meta_key, "assigned_to" ) !== false ){
             $meta_array = explode( '-', $meta_value ); // Separate the type and id
             if ( isset( $meta_array[1] ) ) {
                 $user = get_user_by( "ID", $meta_array[1] );

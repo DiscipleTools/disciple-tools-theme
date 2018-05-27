@@ -647,35 +647,46 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $results;
     }
 
-    // @todo
-    public static function chart_project_critical_path()
+    public static function chart_critical_path( $type = 'project' )
     {
-        $default = [
-            [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
-            [ 'New Contacts', 100, 100 ],
-            [ 'Contacts Attempted', 95, 95 ],
-            [ 'First Meetings', 80, 80 ],
-            [ 'All Baptisms', 6, 6 ],
-            [ '1st Gen', 4, 4 ],
-            [ '2nd Gen', 2, 2 ],
-            [ '3rd Gen', 0, 0 ],
-            [ '4th Gen', 0, 0 ],
-            [ 'Baptizers', 3, 3 ],
-            [ 'Church Planters', 4, 4 ],
-            [ 'All Groups', 4, 4 ],
-            [ 'Active Pre-Groups', 4, 4 ],
-            [ 'Active Groups', 4, 4 ],
-            [ 'Active Churches', 5, 5 ],
-            [ '1st Gen', 3, 3 ],
-            [ '2nd Gen', 2, 2 ],
-            [ '3rd Gen', 0, 0 ],
-            [ '4th Gen', 0, 0 ],
+        $chart[] = [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ];
 
-        ];
+        switch ( $type ) {
+            case 'project':
+                $results = self::query_project_critical_path();
 
-        $results = [];
+                foreach ( $results as $key => $value ) {
+                    $new_key = ucwords( str_replace( '_', ' ', $key ) );
+                    $chart[] = [ $new_key, intval( $value ), intval( $value ) ];
+                }
 
-        return wp_parse_args( $results, $default );
+                break;
+            default:
+                $chart = [
+                    [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
+                    [ 'New Contacts', 0, 0 ],
+                    [ 'Contacts Attempted', 0, 0 ],
+                    [ 'First Meetings', 0, 0 ],
+                    [ 'All Baptisms', 0, 0 ],
+                    [ '1st Gen', 0, 0 ],
+                    [ '2nd Gen', 0, 0 ],
+                    [ '3rd Gen', 0, 0 ],
+                    [ '4th Gen', 0, 0 ],
+                    [ 'Baptizers', 0, 0 ],
+                    [ 'Church Planters', 0, 0 ],
+                    [ 'All Groups', 0, 0 ],
+                    [ 'Active Pre-Groups', 0, 0 ],
+                    [ 'Active Groups', 0, 0 ],
+                    [ 'Active Churches', 0, 0 ],
+                    [ '1st Gen', 0, 0 ],
+                    [ '2nd Gen', 0, 0 ],
+                    [ '3rd Gen', 0, 0 ],
+                    [ '4th Gen', 0, 0 ],
+                ];
+                break;
+        }
+
+        return apply_filters( 'dt_critical_path_chart', $chart );
     }
 
     // @todo
@@ -906,8 +917,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     }
 
 
-
-
     /**
      * QUERIES
      */
@@ -988,9 +997,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                JOIN $wpdb->postmeta as b
                  ON a.ID=b.post_id
                     AND b.meta_key = 'seeker_path'
-               JOIN $wpdb->postmeta as c
-                 ON a.ID=c.post_id
-                    AND c.meta_key != 'corresponds_to_user'
                JOIN $wpdb->postmeta as d
                  ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
@@ -1449,5 +1455,48 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         return $numbers;
     }
+
+    public static function query_project_critical_path( $year = null ) {
+        global $wpdb;
+
+        if ( empty( $year ) ) {
+            $year = date( 'Y' ); // default to this year
+        }
+
+        $results = $wpdb->get_results( "
+            SELECT
+              ( 100 ) as new_inquirers,
+              ( 78 ) as first_meetings,
+              ( 78 ) as ongoing_meetings,
+              ( 6 ) as total_baptisms,
+              ( 4 ) as 1st_gen_baptisms,
+              ( 2 ) as 2nd_gen_baptisms,
+              ( 0 ) as 3rd_gen_baptisms,
+              ( 30 ) as baptizers,
+              ( 43 ) as total_churches_and_groups,
+              ( 15 ) as active_groups,
+              ( 10 ) as active_churches,
+              ( 10 ) as 1st_gen_churches,
+              ( 12 ) as 2nd_gen_churches,
+              ( 100 ) as 3rd_gen_churches,
+              ( 0 ) as 4th_gen_churches,
+              ( 4 ) as church_planters,
+              ( 4 ) as people_groups,
+              ( 4 ) as movements
+        ",
+        ARRAY_A );
+
+        if ( empty( $results ) ) {
+            return new WP_Error( __METHOD__, 'No results from the personal count query' );
+        }
+
+        foreach ( $results[0] as $key => $value ) {
+            $numbers[$key] = $value;
+        }
+
+        return $numbers;
+    }
+
+
 }
 
