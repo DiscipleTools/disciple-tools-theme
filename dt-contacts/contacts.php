@@ -1795,7 +1795,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_comments( int $contact_id, bool $check_permissions = true, $type = "all" )
     {
-        return self::get_post_comments( 'comments', $contact_id, $check_permissions, $type );
+        return self::get_post_comments( 'contacts', $contact_id, $check_permissions, $type );
     }
 
 
