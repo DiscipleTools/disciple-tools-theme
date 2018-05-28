@@ -523,16 +523,28 @@ class Disciple_Tools_Posts
      * Get post comments
      *
      * @param string $post_type
-     * @param int    $post_id
+     * @param int $post_id
+     *
+     * @param bool $check_permissions
+     * @param string $type
      *
      * @return array|int|\WP_Error
      */
-    public static function get_post_comments( string $post_type, int $post_id )
+    public static function get_post_comments( string $post_type, int $post_id, bool $check_permissions = true, $type = "all" )
     {
-        if ( !self::can_view( $post_type, $post_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
+        if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
+            return new WP_Error( __FUNCTION__, __( "No permissions to read post" ), [ 'status' => 403 ] );
         }
-        $comments = get_comments( [ 'post_id' => $post_id ] );
+        //setting type to "comment" does not work.
+        $comments = get_comments( [
+            'post_id' => $post_id,
+            "type" => $type
+        ]);
+
+        foreach ( $comments as $comment ){
+            $comment->gravatar = get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
+            $comment->comment_author = dt_get_user_display_name( $comment->user_id );
+        }
 
         return $comments;
     }

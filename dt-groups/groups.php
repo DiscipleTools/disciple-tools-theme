@@ -73,6 +73,9 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     public static function search_viewable_groups( array $query, bool $check_permissions = true ){
         $viewable = self::search_viewable_post( "groups", $query, $check_permissions );
+        if ( is_wp_error( $viewable ) ){
+            return $viewable;
+        }
         return [
             "groups" => $viewable["posts"],
             "total" => $viewable["total"]

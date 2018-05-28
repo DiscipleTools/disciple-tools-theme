@@ -1572,6 +1572,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     public static function search_viewable_contacts( array $query, bool $check_permissions = true){
         $viewable = self::search_viewable_post( "contacts", $query, $check_permissions );
+        if ( is_wp_error( $viewable ) ){
+            return $viewable;
+        }
         return [
             "contacts" => $viewable["posts"],
             "total" => $viewable["total"]
@@ -1792,19 +1795,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_comments( int $contact_id, bool $check_permissions = true, $type = "all" )
     {
-        if ( $check_permissions && !self::can_view( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
-        }
-        //setting type to "comment" does not work.
-        $comments = get_comments( [
-            'post_id' => $contact_id,
-            "type" => $type
-        ]);
-        foreach ( $comments as $comment ){
-            $comment->gravatar = get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
-        }
-
-        return $comments;
+        return self::get_post_comments( 'comments', $contact_id, $check_permissions, $type );
     }
 
 
