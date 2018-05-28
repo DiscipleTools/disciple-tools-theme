@@ -245,7 +245,7 @@ jQuery(document).ready(function($) {
       comment = comment.replace(mentionRegex, (match, text, id)=>{
         return `<a>@${text}</a>`
       })
-        let urlRegex = /((\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+        let urlRegex = /((\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g
         comment = comment.replace(urlRegex, (match, ext)=>{
             let url = match
             if(match.indexOf("@") == -1 && match.indexOf("[") == -1 && match.indexOf("(") == -1) {
