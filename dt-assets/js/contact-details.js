@@ -598,6 +598,13 @@ jQuery(document).ready(function($) {
       }
     }).catch(handelAjaxError)
   })
+  $('input.text-input').change(function(){
+    const id = $(this).attr('id')
+    const val = $(this).val()
+
+    API.save_field_api('contact', contactId, { [id]: val })
+      .catch(handelAjaxError)
+  })
 
 
   // Baptism date
@@ -774,7 +781,7 @@ jQuery(document).ready(function($) {
     editFieldsUpdate[key] = val
   })
 
-  $(document).on('change', '.contact-input', function() {
+  $('#contact-details-edit').on('change', '.contact-input', function() {
     let value = $(this).val()
     let field = $(this).data("type")
     let key = $(this).attr('id')
@@ -799,6 +806,7 @@ jQuery(document).ready(function($) {
     }
     $(this).parent().remove()
   }).on('change', '.text-input', function () {
+    console.log("test");
     let field = $(this).attr('id')
     editFieldsUpdate[field] = $(this).val()
   })
