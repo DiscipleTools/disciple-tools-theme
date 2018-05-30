@@ -249,10 +249,10 @@ function project_overview() {
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
 
-    chartDiv.append(`<hr><div><span class="small grey">( `+ label.label_stats_as_of +` )</span> 
+    /*chartDiv.append(`<hr><div><span class="small grey">( `+ label.label_stats_as_of +` )</span>
             <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
             <span class="spinner" style="display: none;"><img src="`+dtMetricsProject.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
-            </div>`)
+            </div>`)*/
 }
 
 function project_timeline() {
@@ -554,10 +554,10 @@ function project_timeline() {
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
 
-    chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span> 
+    /*chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span>
             <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
             <span class="spinner" style="display: none;"><img src="`+dtMetricsProject.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
-            </div>`)
+            </div>`)*/
 }
 
 function project_critical_path() {
@@ -571,15 +571,19 @@ function project_critical_path() {
 
     chartDiv.empty().html(`
         <span class="section-header">`+ label.title_critical_path +`</span>
-        <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
-        <div class="medium reveal dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button></div>
-        <br>
+        <span style="float:right;">
+        <select id="type_select" >
+            <option>This Year</option>
+            <option>This Month</option>
+        </select>
+        </span>
+        
+        <br clear="all">
         <div class="grid-x grid-padding-x">
             <div class="cell">
                 <div id="dashboard_div">
                     <div id="my_critical_path" style="height: 750px;"></div>
+                    <hr>
                     <div id="filter_div"></div>
                 </div>
             </div>
@@ -601,22 +605,9 @@ function project_critical_path() {
     function drawCriticalPath() {
 
         let data = google.visualization.arrayToDataTable( sourceData.critical_path );
-
         let dashboard = new google.visualization.Dashboard(
             document.getElementById('dashboard_div')
         );
-
-        let options = {
-            bars: 'horizontal',
-            chartArea: {
-                left: '20%',
-                top: '7%',
-                width: "75%",
-                height: "85%" },
-            hAxis: { scaleType: 'mirrorLog' },
-            title: "Critical Path (Jan 1 - May 10)",
-            legend: { position: "none"},
-        };
 
         let barChart = new google.visualization.ChartWrapper({
             'chartType': 'BarChart',
@@ -629,33 +620,46 @@ function project_critical_path() {
                     width: "75%",
                     height: "85%" },
                 hAxis: { scaleType: 'mirrorLog' },
-                title: "Critical Path (Jan 1 - May 10)",
+                title: label.title_critical_path,
                 legend: { position: "none"},
+                animation:{
+                    duration: 400,
+                    easing: 'out',
+                },
             }
         });
+
+        var crit_keys = []
+        jQuery.each( sourceData.critical_path, function( index, value ) {
+            crit_keys.push( value[0] )
+
+        })
 
         let categoryFilter = new google.visualization.ControlWrapper({
             'controlType': 'CategoryFilter',
             'containerId': 'filter_div',
             'options': {
                 'filterColumnLabel': 'Step'
-            }
-        });
+            },
+            'ui': {
+                'allowMultiple': true,
+                'caption': "Select Path Step...",
+            },
+            'state': { 'selectedValues': crit_keys },
 
-        let chart = new google.visualization.BarChart(document.getElementById('my_critical_path'));
+        });
 
         dashboard.bind(categoryFilter, barChart);
 
         dashboard.draw( data )
-
     }
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
 
-    chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span> 
+    /*chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span>
             <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
             <span class="spinner" style="display: none;"><img src="`+dtMetricsProject.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
-            </div>`)
+            </div>`)*/
 }
 
 function project_outreach() {

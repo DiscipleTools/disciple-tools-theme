@@ -197,10 +197,10 @@ function my_stats() {
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
 
-    chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span> 
+    /*chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span>
             <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
             <span class="spinner" style="display: none;"><img src="`+dtMetricsPersonal.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
-            </div>`)
+            </div>`)*/
 }
 
 function legend() {

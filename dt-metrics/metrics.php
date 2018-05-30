@@ -647,46 +647,95 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $results;
     }
 
-    public static function chart_critical_path( $type = 'project' )
+    public static function chart_critical_path( $year = null )
     {
-        $chart[] = [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ];
+        $chart = [];
 
-        switch ( $type ) {
-            case 'project':
-                $results = self::query_project_critical_path();
-
-                foreach ( $results as $key => $value ) {
-                    $new_key = ucwords( str_replace( '_', ' ', $key ) );
-                    $chart[] = [ $new_key, intval( $value ), intval( $value ) ];
-                }
-
-                break;
-            default:
-                $chart = [
-                    [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
-                    [ 'New Contacts', 0, 0 ],
-                    [ 'Contacts Attempted', 0, 0 ],
-                    [ 'First Meetings', 0, 0 ],
-                    [ 'All Baptisms', 0, 0 ],
-                    [ '1st Gen', 0, 0 ],
-                    [ '2nd Gen', 0, 0 ],
-                    [ '3rd Gen', 0, 0 ],
-                    [ '4th Gen', 0, 0 ],
-                    [ 'Baptizers', 0, 0 ],
-                    [ 'Church Planters', 0, 0 ],
-                    [ 'All Groups', 0, 0 ],
-                    [ 'Active Pre-Groups', 0, 0 ],
-                    [ 'Active Groups', 0, 0 ],
-                    [ 'Active Churches', 0, 0 ],
-                    [ '1st Gen', 0, 0 ],
-                    [ '2nd Gen', 0, 0 ],
-                    [ '3rd Gen', 0, 0 ],
-                    [ '4th Gen', 0, 0 ],
-                ];
-                break;
+        if ( empty( $year ) ) {
+            $year = date( 'Y' ); // default to this year
         }
 
-        return apply_filters( 'dt_critical_path_chart', $chart );
+        // Outreach Steps
+//        $chart[] = [ 'New Inquirers', 0, 0 ];
+
+        // Follow-up Steps
+        $results = self::query_project_critical_path( $year );
+        foreach ( $results as $key => $value ) {
+            $new_key = ucwords( str_replace( '_', ' ', $key ) );
+            $chart[] = [ $new_key, intval( $value ), intval( $value ) ];
+        }
+        // end Follow-up Path
+
+        // Training Steps
+//
+//        $chart[] = [ 'Total Baptisms', 0, 0 ];
+//        $chart[] = [ '1st Gen Baptisms', 0, 0 ];
+//        $chart[] = [ '2nd Gen Baptisms', 0, 0 ];
+//        $chart[] = [ '3rd Gen Baptisms', 0, 0 ];
+//        $chart[] = [ '4th Gen Baptisms', 0, 0 ];
+//        $chart[] = [ 'Baptizers', 0, 0 ];
+//        $chart[] = [ 'Total Churches and Groups', 0, 0 ];
+//        $chart[] = [ 'Active Groups', 0, 0 ];
+//        $chart[] = [ 'Active Churches', 0, 0 ];
+//        $chart[] = [ '1st Gen Churches', 0, 0 ];
+//        $chart[] = [ '2nd Gen Churches', 0, 0 ];
+//        $chart[] = [ '3rd Gen Churches', 0, 0 ];
+//        $chart[] = [ '4th Gen Churches', 0, 0 ];
+//        $chart[] = [ 'Church Planters', 0, 0 ];
+//
+//        // Movement Steps
+//        $chart[] = [ 'People Groups', 0, 0 ];
+//        $chart[] = [ 'Movements', 0, 0 ];
+
+        /**
+         * Filter chart array before sending to enqueue.
+         */
+        $chart = apply_filters( 'dt_chart_critical_path', $chart );
+
+        array_unshift( $chart, [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ] ); // add google chart headers
+
+        return $chart;
+    }
+
+    public static function query_project_critical_path( $year = null ) {
+        global $wpdb;
+
+        if ( empty( $year ) ) {
+            $year = date( 'Y' ); // default to this year
+        }
+
+        $results = $wpdb->get_results( "
+            SELECT
+              ( 100 ) as new_inquirers,
+              ( 78 ) as first_meetings,
+              ( 78 ) as ongoing_meetings,
+              ( 6 ) as total_baptisms,
+              ( 4 ) as 1st_gen_baptisms,
+              ( 2 ) as 2nd_gen_baptisms,
+              ( 0 ) as 3rd_gen_baptisms,
+              ( 30 ) as baptizers,
+              ( 43 ) as total_churches_and_groups,
+              ( 15 ) as active_groups,
+              ( 10 ) as active_churches,
+              ( 10 ) as 1st_gen_churches,
+              ( 12 ) as 2nd_gen_churches,
+              ( 100 ) as 3rd_gen_churches,
+              ( 0 ) as 4th_gen_churches,
+              ( 4 ) as church_planters,
+              ( 4 ) as people_groups,
+              ( 0 ) as movements
+        ",
+            ARRAY_A );
+
+        if ( empty( $results ) ) {
+            return [];
+        }
+
+        foreach ( $results[0] as $key => $value ) {
+            $numbers[$key] = $value;
+        }
+
+        return $numbers;
     }
 
     // @todo
@@ -1456,46 +1505,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $numbers;
     }
 
-    public static function query_project_critical_path( $year = null ) {
-        global $wpdb;
 
-        if ( empty( $year ) ) {
-            $year = date( 'Y' ); // default to this year
-        }
-
-        $results = $wpdb->get_results( "
-            SELECT
-              ( 100 ) as new_inquirers,
-              ( 78 ) as first_meetings,
-              ( 78 ) as ongoing_meetings,
-              ( 6 ) as total_baptisms,
-              ( 4 ) as 1st_gen_baptisms,
-              ( 2 ) as 2nd_gen_baptisms,
-              ( 0 ) as 3rd_gen_baptisms,
-              ( 30 ) as baptizers,
-              ( 43 ) as total_churches_and_groups,
-              ( 15 ) as active_groups,
-              ( 10 ) as active_churches,
-              ( 10 ) as 1st_gen_churches,
-              ( 12 ) as 2nd_gen_churches,
-              ( 100 ) as 3rd_gen_churches,
-              ( 0 ) as 4th_gen_churches,
-              ( 4 ) as church_planters,
-              ( 4 ) as people_groups,
-              ( 4 ) as movements
-        ",
-        ARRAY_A );
-
-        if ( empty( $results ) ) {
-            return new WP_Error( __METHOD__, 'No results from the personal count query' );
-        }
-
-        foreach ( $results[0] as $key => $value ) {
-            $numbers[$key] = $value;
-        }
-
-        return $numbers;
-    }
 
 
 }
