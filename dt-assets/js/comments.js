@@ -43,9 +43,6 @@ jQuery(document).ready(function($) {
     let settings = commentsSettings
     const currentContact = settings.post
     let createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
-    if (_.get(settings, "post_with_fields.created_on")){
-      createdDate = moment.utc(settings.post_with_fields.created_on)
-    }
     const createdContactActivityItem = {
       hist_time: createdDate.unix(),
       object_note: settings.txt_created.replace("{}", formatDate(createdDate.local())),
