@@ -113,6 +113,7 @@ class Disciple_Tools_Users
                     'user_url',
                     'display_name'
                 ],
+                'number' => 10
             ] );
 
             $users = $user_query->get_results();

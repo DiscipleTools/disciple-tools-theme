@@ -303,10 +303,16 @@ jQuery(document).ready(function($) {
     display_activity_comment(tabId)
   })
 
+  let searchUsersPromise = null
+
   $('textarea.mention').mentionsInput({
     onDataRequest:function (mode, query, callback) {
       $('#comment-input').addClass('loading-gif')
-      API.search_users(query).then(responseData=>{
+      if ( searchUsersPromise && _.get(searchUsersPromise, 'readyState') !== 4 ){
+        searchUsersPromise.abort()
+      }
+      searchUsersPromise = API.search_users(query)
+      searchUsersPromise.then(responseData=>{
         $('#comment-input').removeClass('loading-gif')
         let data = []
         responseData.forEach(user=>{
