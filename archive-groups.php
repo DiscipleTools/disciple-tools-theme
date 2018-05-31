@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+$dt_group_field_options = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( false )
 ?>
 
 <?php get_header(); ?>
@@ -122,70 +123,90 @@ declare(strict_types=1);
         </div>
         <div class="grid-x">
             <div class="cell small-4 filter-modal-left">
+                <?php $fields = [ "assigned_to", "group_status", "group_type", "locations" ];
+                $fields = apply_filters( 'dt_filters_additional_fields', $fields, "groups" );
+                $connections = Disciple_Tools_Posts::$connection_types;
+                $connections["assigned_to"] = [ "name" => __( "Assigned To", 'disciple_tools' ) ];
+                ?>
                 <ul class="vertical tabs" data-tabs id="example-tabs">
-                    <li class="tabs-title is-active"><a href="#assigned_to" aria-selected="true"><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?></a></li>
-                    <li class="tabs-title"><a href="#group_status"><?php esc_html_e( "Status", 'disciple_tools' ) ?></a></li>
-                    <li class="tabs-title"><a href="#group_type"><?php esc_html_e( "Type", 'disciple_tools' ) ?></a></li>
-                    <li class="tabs-title"><a href="#leaders"><?php esc_html_e( "Leaders", 'disciple_tools' ) ?></a></li>
-                    <li class="tabs-title"><a href="#locations"><?php esc_html_e( "Locations", 'disciple_tools' ) ?></a></li>
+                    <?php foreach ( $fields as $index => $field ) :
+                        if ( $field === "health_metrics" ) : ?>
+                            <li class="tabs-title">
+                                <a href="#<?php echo esc_html( $field )?>">
+                                    <?php echo esc_html( "Health Metrics" ) ?></a>
+                            </li>
+                        <?php elseif ( isset( $dt_group_field_options[$field]["name"] ) ) : ?>
+                            <li class="tabs-title <?php if ( $index === 0 ){ echo "is-active"; } ?>" >
+                                <a href="#<?php echo esc_html( $field )?>" <?php if ( $index === 0 ){ echo 'aria-selected="true"'; } ?>>
+                                    <?php echo esc_html( $dt_group_field_options[$field]["name"] ) ?></a>
+                            </li>
+                        <?php elseif ( in_array( $field, array_keys( $connections ) ) ) : ?>
+                            <li class="tabs-title" >
+                                <a href="#<?php echo esc_html( $field )?>">
+                                    <?php echo esc_html( $connections[$field]["name"] ) ?></a>
+                            </li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
                 </ul>
             </div>
 
             <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="example-tabs">
-                <div class="tabs-panel is-active" id="assigned_to">
-                    <div class="assigned_to details">
-                        <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
-                        <div id="assigned_to_t" name="form-assigned_to" class="scrollable-typeahead typeahead-margin-when-active">
-                            <div class="typeahead__container">
-                                <div class="typeahead__field">
-                                    <span class="typeahead__query">
-                                        <input class="js-typeahead-assigned_to"
-                                               name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
-                                               autocomplete="off">
-                                    </span>
+                <?php foreach ( $fields as $index => $field ) :
+                    $test = in_array( $field, array_keys( $connections ) );
+                    $keys = array_keys( $connections );
+
+                    $is_multi_select = isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "multi_select";
+                    if ( in_array( $field, array_keys( $connections ) ) || $is_multi_select ) : ?>
+                        <div class="tabs-panel <?php if ( $index === 0 ){ echo "is-active"; } ?>" id="<?php echo esc_html( $field ) ?>">
+                            <div class="<?php echo esc_html( $field );?>  <?php echo esc_html( $is_multi_select ? "multi_select" : "" ) ?> details" >
+                                <var id="<?php echo esc_html( $field ) ?>-result-container" class="result-container <?php echo esc_html( $field ) ?>-result-container"></var>
+                                <div id="<?php echo esc_html( $field ) ?>_t" name="form-<?php echo esc_html( $field ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
+                                    <div class="typeahead__container">
+                                        <div class="typeahead__field">
+                                            <span class="typeahead__query">
+                                                <input class="js-typeahead-<?php echo esc_html( $field ) ?>" data-field="<?php echo esc_html( $field ) ?>"
+                                                       name="<?php echo esc_html( $field ) ?>[query]" placeholder="<?php esc_html_e( "Type to Search", 'disciple_tools' ) ?>"
+                                                       autocomplete="off">
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="tabs-panel" id="leaders">
-                    <div class="leaders details">
-                        <var id="leaders-result-container" class="result-container leaders-result-container"></var>
-                        <div id="leaders_t" name="form-leaders" class="scrollable-typeahead typeahead-margin-when-active">
-                            <div class="typeahead__container">
-                                <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-leaders input-height"
-                                           name="leaders[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
-                                           autocomplete="off">
-                                </span>
-                                </div>
+
+                    <?php elseif ( $field == "health_metrics" ) : ?>
+                        <div class="tabs-panel" id="health_metrics">
+                            <div id="health_metrics-options">
+                                <?php foreach ( $dt_group_field_options as $dt_field_key => $dt_field_value ) :
+                                    if ( strpos( $dt_field_key, "church_" ) === 0 ) : ?>
+                                        <div>
+                                            <label style="cursor: pointer;">
+                                                <input type="checkbox" value="<?php echo esc_html( $dt_field_key ) ?>" class="milestone-filter" autocomplete="off">
+                                                <?php echo esc_html( $dt_field_value["name"] ) ?>
+                                            </label>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="tabs-panel" id="locations">
-                    <div class="locations">
-                        <var id="locations-result-container" class="result-container"></var>
-                        <div id="locations_t" name="form-locations" class="scrollable-typeahead typeahead-margin-when-active">
-                            <div class="typeahead__container">
-                                <div class="typeahead__field">
-                                    <span class="typeahead__query">
-                                        <input class="js-typeahead-locations"
-                                               name="locations[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
-                                               autocomplete="off">
-                                    </span>
-                                </div>
+                    <?php else : ?>
+                        <div class="tabs-panel" id="<?php echo esc_html( $field ) ?>">
+                            <div id="<?php echo esc_html( $field ) ?>-options">
+                                <?php if ( isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "key_select" ) :
+                                    foreach( $dt_group_field_options[$field]["default"] as $option_key => $option_value ) : ?>
+                                        <div class="key_select_options">
+                                            <label style="cursor: pointer"></label>
+                                            <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>" value="<?php echo esc_html( $option_key ) ?>"> <?php echo esc_html( $option_value) ?>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php elseif ( isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "key_select" ) : ?>
+
+                                <?php endif; ?>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="tabs-panel" id="group_status">
-                    <div id="group_status-options"></div>
-                </div>
-                <div class="tabs-panel" id="group_type">
-                    <div id="group_type-options"></div>
-                </div>
+
+                    <?php endif; ?>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>

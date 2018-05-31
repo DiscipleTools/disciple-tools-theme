@@ -2188,19 +2188,4 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return $numbers;
     }
 
-    public static function get_tag_options(){
-        if ( !self::can_access( "contacts" ) ){
-            return new WP_Error( __FUNCTION__, __( "You do not have access to tags" ), [ 'status' => 403 ] );
-        }
-        global $wpdb;
-        $tags = $wpdb->get_col( "
-            SELECT $wpdb->postmeta.meta_value FROM $wpdb->postmeta
-            LEFT JOIN $wpdb->posts on $wpdb->posts.ID = $wpdb->postmeta.post_id
-            WHERE $wpdb->postmeta.meta_key = 'tags'
-            AND $wpdb->posts.post_type = 'contacts'
-            AND $wpdb->posts.post_status = 'publish'
-        ;");
-        return $tags;
-    }
-
 }

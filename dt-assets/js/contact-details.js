@@ -542,10 +542,14 @@ jQuery(document).ready(function($) {
         },
         onHideLayout: function () {
           $(`#${field_id}-result-container`).html("");
+          masonGrid.masonry('layout')
         },
         onReady: function () {
           if (field_id === "subassigned"){
           }
+        },
+        onShowLayout (){
+          masonGrid.masonry('layout')
         }
       }
     })
