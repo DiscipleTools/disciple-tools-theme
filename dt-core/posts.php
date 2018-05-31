@@ -1252,9 +1252,8 @@ class Disciple_Tools_Posts
 
     public static function get_multi_select_options( $post_type, $field, $search = ""){
         if ( !self::can_access( $post_type ) ){
-            return new WP_Error( __FUNCTION__, __( "You do not have access to:" ) . ' ' . $field , [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, __( "You do not have access to:" ) . ' ' . $field, [ 'status' => 403 ] );
         }
-//        $search = "%";
         global $wpdb;
         $options = $wpdb->get_col( $wpdb->prepare("
             SELECT DISTINCT $wpdb->postmeta.meta_value FROM $wpdb->postmeta
