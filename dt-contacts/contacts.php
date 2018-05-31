@@ -1572,6 +1572,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     public static function search_viewable_contacts( array $query, bool $check_permissions = true){
         $viewable = self::search_viewable_post( "contacts", $query, $check_permissions );
+        if ( is_wp_error( $viewable ) ){
+            return $viewable;
+        }
         return [
             "contacts" => $viewable["posts"],
             "total" => $viewable["total"]
@@ -1794,19 +1797,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_comments( int $contact_id, bool $check_permissions = true, $type = "all" )
     {
-        if ( $check_permissions && !self::can_view( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
-        }
-        //setting type to "comment" does not work.
-        $comments = get_comments( [
-            'post_id' => $contact_id,
-            "type" => $type
-        ]);
-        foreach ( $comments as $comment ){
-            $comment->gravatar = get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
-        }
-
-        return $comments;
+        return self::get_post_comments( 'contacts', $contact_id, $check_permissions, $type );
     }
 
 
@@ -2197,21 +2188,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         ] );
 
         return $numbers;
-    }
-
-    public static function get_tag_options(){
-        if ( !self::can_access( "contacts" ) ){
-            return new WP_Error( __FUNCTION__, __( "You do not have access to tags" ), [ 'status' => 403 ] );
-        }
-        global $wpdb;
-        $tags = $wpdb->get_col( "
-            SELECT $wpdb->postmeta.meta_value FROM $wpdb->postmeta
-            LEFT JOIN $wpdb->posts on $wpdb->posts.ID = $wpdb->postmeta.post_id
-            WHERE $wpdb->postmeta.meta_key = 'tags'
-            AND $wpdb->posts.post_type = 'contacts'
-            AND $wpdb->posts.post_status = 'publish'
-        ;");
-        return $tags;
     }
 
 }

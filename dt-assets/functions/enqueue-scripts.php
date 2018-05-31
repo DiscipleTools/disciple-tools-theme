@@ -238,7 +238,7 @@ function dt_site_scripts() {
             )
         );
     }
-    if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )) {
+    if ( is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" ) ) {
         $post_type = null;
         $custom_field_settings = [];
         if (is_post_type_archive( "contacts" )) {
@@ -266,7 +266,8 @@ function dt_site_scripts() {
             'current_user_roles' => wp_get_current_user()->roles,
             'current_post_type' => $post_type,
             'access_all_contacts' => user_can( get_current_user_id(), 'view_any_contacts' ),
-            'filters' => Disciple_Tools_Users::get_user_filters()
+            'filters' => Disciple_Tools_Users::get_user_filters(),
+            'additional_filter_options' => apply_filters( 'dt_filters_additional_fields', [], $post_type )
         ) );
     }
 

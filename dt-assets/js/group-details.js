@@ -517,7 +517,7 @@ jQuery(document).ready(function($) {
     }).catch(handelAjaxError)
   })
 
-  $(document).on('change', '.contact-input', function() {
+  $("#group-details-edit").on('change', '.contact-input', function() {
     let value = $(this).val()
     let field = $(this).data("type")
     let key = $(this).attr('id')
@@ -530,7 +530,7 @@ jQuery(document).ready(function($) {
     } else {
       editFieldsUpdate[field].values.push({ key, value })
     }
-  }).on('click', '#group-details-edit .delete-button', function () {
+  }).on('click', '.delete-button', function () {
     let field = $(this).data('type')
     let key = $(this).data('id')
     if ( key !== 'new' ){
@@ -615,7 +615,7 @@ jQuery(document).ready(function($) {
    * Group Status
    */
 
-  let selectFiled = $('.select-field')
+  let selectFiled = $('select.select-field')
   selectFiled.on('change', function () {
     let id = $(this).attr('id')
     let val = $(this).val()
@@ -626,6 +626,13 @@ jQuery(document).ready(function($) {
     ).catch(err=>{
       console.log(err)
     })
+  })
+  $('input.text-input').change(function(){
+    const id = $(this).attr('id')
+    const val = $(this).val()
+
+    API.save_field_api('group', groupId, { [id]: val })
+      .catch(handelAjaxError)
   })
 
   /**
