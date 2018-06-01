@@ -309,7 +309,7 @@ jQuery(document).ready(function($) {
     onDataRequest:function (mode, query, callback) {
       $('#comment-input').addClass('loading-gif')
       if ( searchUsersPromise && _.get(searchUsersPromise, 'readyState') !== 4 ){
-        searchUsersPromise.abort()
+        searchUsersPromise.abort("abortPromise")
       }
       searchUsersPromise = API.search_users(query)
       searchUsersPromise.then(responseData=>{
