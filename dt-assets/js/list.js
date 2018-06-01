@@ -2,11 +2,11 @@
   "use strict";
 
   function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-      var c = ca[i];
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
       while (c.charAt(0) == ' ') {
         c = c.substring(1);
       }
@@ -28,6 +28,7 @@
   }
   let filterToSave = ""
   let filterToDelete = ""
+  let filterToEdit = ""
   let currentFilters = $("#current-filters")
   let newFilterLabels = []
   let typeaheadTotals = {}
@@ -69,7 +70,6 @@
       }
       let result_text = wpApiListSettings.translations.txt_info.replace("_START_", items.length).replace("_TOTAL_", data.total)
       $('.filter-result-text').html(result_text)
-      $("#current-filters").html(selectedFilters.html())
       displayRows();
       setupCurrentFilterLabels()
       loading_spinner.removeClass("active")
@@ -83,11 +83,17 @@
     filters.forEach(filter=>{
       if (filter){
         let deleteFilter = $(`<span style="float:right" data-filter="${filter.ID}">
-            ${wpApiListSettings.translations.delete}
+            <img style="padding: 0 4px"src="${wpApiShare.template_dir}/dt-assets/images/trash.svg">
         </span>`).on("click", function () {
           $(`.delete-filter-name`).html(filter.name)
           $('#delete-filter-modal').foundation('open');
           filterToDelete = filter.ID;
+        })
+        let editFilter = $(`<span style="float:right" data-filter="${filter.ID}">
+            <img style="padding: 0 4px" src="${wpApiShare.template_dir}/dt-assets/images/edit.svg">
+        </span>`).on("click", function () {
+          editSavedFilter( filter )
+          filterToEdit = filter.ID;
         })
         const radio = $(`<input name='view' class='js-list-view' autocomplete='off' data-id="${filter.ID}" >`)
           .attr("type", "radio")
@@ -104,6 +110,7 @@
               .append(radio)
               .append(document.createTextNode(filter.name))
               .append(deleteFilter)
+              .append(editFilter)
 
           )
         )
@@ -267,7 +274,7 @@
     let filter = currentFilter
     if (filter && filter.labels){
       filter.labels.forEach(label=>{
-        html+= `<span class="current-filter ${label.field}" id="${label.id}">${label.name}</span>`
+        html+= `<span class="current-filter ${label.field}">${label.name}</span>`
       })
     } else {
       let query = filter.query
@@ -276,10 +283,10 @@
 
           query[query_key].forEach(q => {
 
-            html += `<span class="current-filter ${query_key}" id="${q}">${q}</span>`
+            html += `<span class="current-filter ${query_key}">${q}</span>`
           })
         } else {
-          html += `<span class="current-filter search" id="${query[query_key]}">${query[query_key]}</span>`
+          html += `<span class="current-filter search">${query[query_key]}</span>`
         }
       }
     }
@@ -353,7 +360,11 @@
   //create new custom filter from modal
   let selectedFilters = $("#selected-filters")
   $("#confirm-filter-contacts").on("click", function () {
+    let searchQuery = getSearchQuery()
+    addCustomFilter("Custom Filter", "custom-filter", searchQuery, newFilterLabels)
+  })
 
+  let getSearchQuery = ()=>{
     let searchQuery = {}
     searchQuery.assigned_to = _.map(_.get(Typeahead['.js-typeahead-assigned_to'], "items"), "ID")
     searchQuery.locations = _.map(_.get(Typeahead['.js-typeahead-locations'], "items"), "ID")
@@ -380,9 +391,8 @@
         })
       }
     })
-
-    addCustomFilter("Custom Filter", "custom-filter", searchQuery, newFilterLabels)
-  })
+    return searchQuery
+  }
 
 
   //add the new filter in the filters list
@@ -550,7 +560,7 @@
           onHideLayout: function () {
             $('#locations-result-container').html("");
           },
-          onClick: function (node, a, item, event) {
+          onClick: function (node, a, item) {
             newFilterLabels.push({id: item.ID, name: item.name, field: "locations"})
             selectedFilters.append(`<span class="current-filter locations" id="${item.ID}">${item.name}</span>`)
           }
@@ -752,7 +762,6 @@
             data: [],
             callback: {
               onCancel: function (node, item) {
-                console.log(item);
                 $(`#${item.name}.${field}`).remove()
                 _.pullAllBy(newFilterLabels, [{id:item.name}], "id")
               }
@@ -784,7 +793,7 @@
     if ( wpApiListSettings.current_post_type === "groups" ){
       loadLocationTypeahead()
       loadAssignedToTypeahead()
-      loadLeadersTypeahead()
+      // loadLeadersTypeahead()
       loadMultiSelectTypeaheads()
     } else if ( wpApiListSettings.current_post_type === "contacts" ){
       loadLocationTypeahead()
@@ -805,9 +814,47 @@
         typeahead.node.trigger('propertychange.typeahead')
       }
     })
+    $('#confirm-filter-contacts').show()
+    $('#save-filter-edits').hide()
   })
 
-  //watch miltestone checkboxes
+  let editSavedFilter = function( filter ){
+    $('#filter-modal').foundation('open');
+    newFilterLabels = filter.labels
+    let connectionTypeKeys = Object.keys(wpApiListSettings.connection_types)
+    connectionTypeKeys.push("assigned_to")
+    newFilterLabels.forEach(label=>{
+      selectedFilters.append(`<span class="current-filter ${label.field}" id="${label.id}">${label.name}</span>`)
+      if ( label.field === "faith_milestones" || _.get(wpApiListSettings, `custom_fields_settings.${label.field}.type`) === "key_select" ){
+        $(`#filter-modal #${label.field}-options input[value="${label.id}"]`).prop('checked', true)
+      } else if ( connectionTypeKeys.includes(label.field) ){
+        Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
+      } else if ( _.get(wpApiListSettings, `custom_fields_settings.${label.field}.type`) === "multi_select" ){
+        Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
+
+      }
+    })
+    $('#confirm-filter-contacts').hide()
+    $('#save-filter-edits').data("filter-id", filter.ID).show()
+  }
+  $('#save-filter-edits').on('click', function () {
+    let searchQuery = getSearchQuery()
+    let filterId = $('#save-filter-edits').data("filter-id")
+    let filter = _.find(savedFilters[wpApiListSettings.current_post_type], {ID:filterId})
+    filter.query = searchQuery
+    filter.label = newFilterLabels
+    API.save_filters(savedFilters)
+    getContactForCurrentView()
+  })
+
+  $('#example-tabs').on('change.zf.tabs', function (a, b) {
+    let field = $(b).data("field")
+    if (field &&  Typeahead[`.js-typeahead-${field}`]){
+      Typeahead[`.js-typeahead-${field}`].adjustInputSize()
+    }
+  })
+
+  //watch milestone checkboxes
   $(".milestone-filter").on("click", function () {
     let field = $(this).val()
     let name = _.get(wpApiListSettings, `custom_fields_settings.${field}.name`) || ""
@@ -822,9 +869,9 @@
   //watch all other checkboxes
   $('#filter-modal .key_select_options input').on("change", function() {
     let field_key = $(this).data('field');
+    let optionId = $(this).val()
     if ($(this).is(":checked")){
       let field_options = _.get( wpApiListSettings, `custom_fields_settings.${field_key}.default` )
-      let optionId = $(this).val()
       let optionName = field_options[optionId]
       newFilterLabels.push({id:$(this).val(), name:optionName, field:field_key})
       selectedFilters.append(`<span class="current-filter ${field_key}" id="${optionId}">${optionName}</span>`)

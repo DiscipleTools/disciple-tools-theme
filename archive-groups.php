@@ -130,17 +130,17 @@ declare(strict_types=1);
                     <ul class="vertical tabs" data-tabs id="example-tabs">
                         <?php foreach ( $fields as $index => $field ) :
                             if ( $field === "health_metrics" ) : ?>
-                                <li class="tabs-title">
+                                <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>">
                                         <?php echo esc_html( "Health Metrics" ) ?></a>
                                 </li>
                             <?php elseif ( isset( $dt_group_field_options[$field]["name"] ) ) : ?>
-                                <li class="tabs-title <?php if ( $index === 0 ){ echo "is-active"; } ?>" >
+                                <li class="tabs-title <?php if ( $index === 0 ){ echo "is-active"; } ?>" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>" <?php if ( $index === 0 ){ echo 'aria-selected="true"'; } ?>>
                                         <?php echo esc_html( $dt_group_field_options[$field]["name"] ) ?></a>
                                 </li>
                             <?php elseif ( in_array( $field, array_keys( $connections ) ) ) : ?>
-                                <li class="tabs-title" >
+                                <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>">
                                         <?php echo esc_html( $connections[$field]["name"] ) ?></a>
                                 </li>
@@ -217,6 +217,9 @@ declare(strict_types=1);
             <div class="cell small-8 filter-modal-right confirm-buttons">
                 <button class="button loader confirm-filter-contacts" type="button" id="confirm-filter-contacts" data-close >
                     <?php esc_html_e( 'Filter Groups', 'disciple_tools' )?>
+                </button>
+                <button class="button loader confirm-filter-contacts" type="button" id="save-filter-edits" data-close style="display: none">
+                    <?php esc_html_e( 'Save', 'disciple_tools' )?>
                 </button>
             </div>
         </div>

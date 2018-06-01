@@ -105,6 +105,7 @@ function dt_site_scripts() {
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'site_url' => get_site_url(),
+            'template_dir' => get_template_directory_uri(),
         )
     );
 
@@ -255,6 +256,7 @@ function dt_site_scripts() {
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'translations' => [
                 'save' => __( 'Save', 'disciple_tools' ),
+                'edit' => __( 'Edit', 'disciple_tools' ),
                 'delete' => __( 'Delete', 'disciple_tools' ),
                 'txt_info' => _x( 'Showing _START_ of _TOTAL_', 'just copy as they are: _START_ and _TOTAL_', 'disciple_tools' ),
             ],
@@ -267,13 +269,9 @@ function dt_site_scripts() {
             'current_post_type' => $post_type,
             'access_all_contacts' => user_can( get_current_user_id(), 'view_any_contacts' ),
             'filters' => Disciple_Tools_Users::get_user_filters(),
-            'additional_filter_options' => apply_filters( 'dt_filters_additional_fields', [], $post_type )
+            'additional_filter_options' => apply_filters( 'dt_filters_additional_fields', [], $post_type ),
+            'connection_types' => Disciple_Tools_Posts::$connection_types,
         ) );
-    }
-
-    if ($url_path = "contacts/new"){
-        dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
-        dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
     }
 
 }
