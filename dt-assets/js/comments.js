@@ -43,9 +43,6 @@ jQuery(document).ready(function($) {
     let settings = commentsSettings
     const currentContact = settings.post
     let createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
-    if (_.get(settings, "post_with_fields.created_on")){
-      createdDate = moment.utc(settings.post_with_fields.created_on)
-    }
     const createdContactActivityItem = {
       hist_time: createdDate.unix(),
       object_note: settings.txt_created.replace("{}", formatDate(createdDate.local())),
@@ -306,10 +303,16 @@ jQuery(document).ready(function($) {
     display_activity_comment(tabId)
   })
 
+  let searchUsersPromise = null
+
   $('textarea.mention').mentionsInput({
     onDataRequest:function (mode, query, callback) {
       $('#comment-input').addClass('loading-gif')
-      API.search_users(query).then(responseData=>{
+      if ( searchUsersPromise && _.get(searchUsersPromise, 'readyState') !== 4 ){
+        searchUsersPromise.abort("abortPromise")
+      }
+      searchUsersPromise = API.search_users(query)
+      searchUsersPromise.then(responseData=>{
         $('#comment-input').removeClass('loading-gif')
         let data = []
         responseData.forEach(user=>{
