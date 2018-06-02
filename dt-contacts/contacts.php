@@ -1719,6 +1719,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 update_post_meta( $contact_id, "quick_button_meeting_complete", "1" );
             }
         }
+        self::check_requires_update( $contact_id );
     }
 
     /**
@@ -1746,6 +1747,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         if ( isset( $update["seeker_path"] ) ) {
+            self::check_requires_update( $contact_id );
             return self::update_seeker_path( $contact_id, $update["seeker_path"], $check_permissions );
         } else {
             return $contact_id;

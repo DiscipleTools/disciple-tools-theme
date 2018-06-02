@@ -273,7 +273,7 @@ function dt_get_site_options_defaults()
 {
     $fields = [];
 
-    $fields['version'] = '4';
+    $fields['version'] = '5';
 
     $fields['user_notifications'] = [
         'new_web'          => true,
@@ -341,6 +341,47 @@ function dt_get_site_options_defaults()
         'build_report_for_adwords'   => false,
         'build_report_for_mailchimp' => false,
         'build_report_for_youtube'   => false,
+    ];
+
+    $fields['update_required'] = [
+        "enabled" => false,
+        "options" => [
+            [
+                "status"      => "active",
+                "seeker_path" => "none",
+                "days"        => 3
+            ],
+            [
+                "status"      => "active",
+                "seeker_path" => "attempted",
+                "days"        => 7
+            ],
+            [
+                "status"      => "active",
+                "seeker_path" => "established",
+                "days"        => 30
+            ],
+            [
+                "status"      => "active",
+                "seeker_path" => "scheduled",
+                "days"        => 30
+            ],
+            [
+                "status"      => "active",
+                "seeker_path" => "met",
+                "days"        => 30
+            ],
+            [
+                "status"      => "active",
+                "seeker_path" => "ongoing",
+                "days"        => 30
+            ],
+            [
+                "status"      => "active",
+                "seeker_path" => "coaching",
+                "days"        => 30
+            ]
+        ]
     ];
 
     return $fields;
