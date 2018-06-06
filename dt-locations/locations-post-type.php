@@ -94,7 +94,7 @@ class Disciple_Tools_Location_Post_Type
         $this->post_type = 'locations';
         $this->singular = __( 'Location', 'disciple_tools' );
         $this->plural = __( 'Locations', 'disciple_tools' );
-        $this->args = [ 'menu_icon' => dt_svg_icon() ];
+        $this->args = [ 'menu_icon' => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMTIsMEM3LjYsMCwzLDMuNCwzLDljMCw1LjMsOCwxMy40LDguMywxMy43YzAuMiwwLjIsMC40LDAuMywwLjcsMC4zczAuNS0wLjEsMC43LTAuM0MxMywyMi40LDIxLDE0LjMsMjEsOSBDMjEsMy40LDE2LjQsMCwxMiwweiBNMTIsMTJjLTEuNywwLTMtMS4zLTMtM3MxLjMtMywzLTNzMywxLjMsMywzUzEzLjcsMTIsMTIsMTJ6Ij48L3BhdGg+PC9nPjwvc3ZnPg==' ];
         $this->error = '';
 
         add_action( 'init', [ $this, 'register_post_type' ] );
