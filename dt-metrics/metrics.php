@@ -598,6 +598,104 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $counts;
     }
 
+    public static function build_contact_generation_counts( array $elements, $parent_id = 0, $generation = 0, $counts = [] ) {
+
+        $generation++;
+        if ( !isset( $counts[$generation] ) ){
+            $counts[$generation] = [ (string) $generation , 0, 0, 0, 0 ];
+        }
+        foreach ($elements as $element) {
+
+            if ($element['parent_id'] == $parent_id) {
+                if ( $element["group_status"] === "active" ){
+                    if ( $element["group_type"] === "pre-group" ){
+                        $counts[ $generation ][1]++;
+                    } elseif ( $element["group_type"] === "group" ){
+                        $counts[ $generation ][2]++;
+                    } elseif ( $element["group_type"] === "church" ){
+                        $counts[ $generation ][3]++;
+                    }
+                    $counts[ $generation ][4]++;
+                }
+                $counts = self::build_group_generation_counts( $elements, $element['id'], $generation, $counts );
+            }
+        }
+
+        return $counts;
+    }
+
+    public static function query_get_contact_generations() {
+        global $wpdb;
+
+        $results = $wpdb->get_results( "
+            SELECT
+              a.ID as id,
+              0 as parent_id
+            FROM $wpdb->posts as a
+            JOIN $wpdb->postmeta as c
+              ON a.ID = c.post_id
+              AND c.meta_key = 'baptism_date'
+              AND c.meta_value >= '2018'
+              AND c.meta_value < '2019'
+            WHERE a.post_type = 'contacts'
+              AND a.post_status = 'publish'
+              AND a.ID IN (
+                SELECT DISTINCT( p2p_from )
+                FROM $wpdb->p2p
+                WHERE p2p_type = 'baptizer_to_baptized'
+                  AND p2p_from NOT IN (
+                    SELECT DISTINCT( p2p_to )
+                    FROM $wpdb->p2p
+                    WHERE p2p_type = 'baptizer_to_baptized'
+                ))
+            UNION
+            SELECT
+              p.p2p_from as id,
+              p.p2p_to as parent_id
+            FROM $wpdb->p2p as p
+            WHERE p.p2p_type = 'baptizer_to_baptized'
+              AND p2p_to IN (
+              SELECT
+                t.ID
+              FROM $wpdb->posts as t
+                JOIN $wpdb->postmeta as e
+                  ON t.ID = e.post_id
+                     AND e.meta_key = 'baptism_date'
+                     AND e.meta_value >= '2018'
+                     AND e.meta_value < '2019'
+              WHERE t.post_type = 'contacts'
+                    AND t.post_status = 'publish'
+            );
+        ", ARRAY_A );
+
+        return $results;
+    }
+
+    public static function query_get_baptisms( $year = null ) {
+        global $wpdb;
+
+        if ( empty( $year ) ) {
+            $year = date( 'Y' ); // default to this year
+        }
+
+        $next_year = $year + 1;
+
+        $results = $wpdb->get_var( $wpdb->prepare( "
+            SELECT
+              count( a.ID )
+            FROM wp_posts as a
+              JOIN wp_postmeta as c
+                ON a.ID = c.post_id
+                   AND c.meta_key = 'baptism_date'
+                   AND c.meta_value >= %d
+                   AND c.meta_value < %d
+            WHERE a.post_type = 'contacts'
+                  AND a.post_status = 'publish'
+        ", $year, $next_year ) );
+
+        return $results;
+    }
+
 
     public static function chart_streams() {
         $tree = dt_get_generation_tree();
@@ -743,13 +841,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                                  AND  b.meta_value < '2019')
                     WHERE a.post_status = 'publish'
                           AND a.post_type = 'contacts'
-                          AND a.ID NOT IN (
-                      SELECT post_id
-                      FROM $wpdb->postmeta
-                      WHERE meta_key = 'corresponds_to_user'
-                            AND meta_value != 0
-                      GROUP BY post_id
-                    ) ) as total_baptisms,
+                    ) as total_baptisms,
                   ( 6 ) as 1st_gen_baptisms,
                   ( 1 ) as 2nd_gen_baptisms,
                   ( SELECT count( DISTINCT p2p_to) as count
@@ -824,7 +916,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             '2nd_gen_baptisms' => 1,
             '3rd_gen_baptisms' => 0,
         ];
-
 
         $raw_connections = self::query_get_group_generations();
         $church_generation = self::build_group_generation_counts( $raw_connections );
