@@ -825,10 +825,10 @@ class Disciple_Tools_Location_Post_Type
 
                     let mapDim = {height: $mapDiv.height(), width: $mapDiv.width()};
 
-                    let zoom = getBoundsZoomLevel(bounds, mapDim);
+                    let zoomLevel = getBoundsZoomLevel(bounds, mapDim);
 
                     let map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: zoom - 3,
+                        zoom: zoomLevel - 3,
                         center: center,
                         mapTypeId: 'terrain'
                     });
