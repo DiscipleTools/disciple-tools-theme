@@ -46,30 +46,18 @@ function dt_site_scripts() {
 
     wp_enqueue_style( 'foundation-css', 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' );
 
-    /**
-     * Force new version of jQuery.
-     * Forcing newest version of jquery and jquery ui because of the themes use of controlgroups and checkboxradio widget. Once Wordpress core updates to 1.12, then
-     * the next section could be removed.
-     */
-
-    /** jQuery UI custom theme styles. @see http://jqueryui.com/themeroller/  */
     wp_enqueue_style( 'jquery-ui-site-css', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css', array(), '', 'all' );
-
-    // comment out the next two lines to load the local copy of jQuery
     wp_deregister_script( 'jquery' );
-    wp_register_script( 'jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js', false, '1.12.4' );
+    wp_register_script( 'jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js', false, '3.2.1' );
     wp_enqueue_script( 'jquery' );
-
-    // comment out the next two lines to load the local copy of jQuery
     wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', false, '1.12.1' );
     wp_enqueue_script( 'jquery-ui' );
-    /**
-     * End jQuery force new version
-     */
+
     wp_register_script( 'moment', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js', false, '2.19.1' );
     wp_enqueue_script( 'moment' );
+    wp_register_script( 'lodash', 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.min.js', false, '4.17.10' );
+    wp_enqueue_script( 'lodash' );
 
-    dt_theme_enqueue_script( 'lodash', 'dt-core/dependencies/lodash/lodash.min.js', array() );
 
     dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts.min.js', array( 'jquery' ), true );
 
