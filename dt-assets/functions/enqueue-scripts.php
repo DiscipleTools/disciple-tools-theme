@@ -121,8 +121,8 @@ function dt_site_scripts() {
             $post = Disciple_Tools_Groups::get_group( get_the_ID() );
         }
         if ( !is_wp_error( $post )){
-            dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.js', array( 'jquery' ), true );
-            dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.js', array( 'jquery' ), true );
+            dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.min.js', array( 'jquery' ), true );
+            dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.min.js', array( 'jquery' ), true );
             dt_theme_enqueue_style( 'jquery-mentions-css', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.css', array() );
             dt_theme_enqueue_script( 'comments', 'dt-assets/js/comments.js', array(
                 'jquery',
