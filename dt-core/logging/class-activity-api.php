@@ -162,7 +162,7 @@ class Disciple_Tools_Activity_Log_API {
                 'object_note'    => $args['object_note'],
                 'meta_id'        => $args['meta_id'],
                 'meta_key'       => $args['meta_key'],
-                'meta_value'       => $args['meta_value'],
+                //'meta_value'       => $args['meta_value'],
                 'meta_parent'       => $args['meta_parent'],
                 'old_value'         => $args['old_value'],
                 'field_type'        => $args['field_type']
