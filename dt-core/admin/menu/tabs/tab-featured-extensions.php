@@ -207,7 +207,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         ?>
                                 <a class="button" href="./plugin-install.php?tab=plugin-information&plugin=updraftplus"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
                         <?php
-                    } else if ( $this->partial_array_search( $active_plugins,  "updraftplus" ) == -1 && isset( $_POST["activate"] ) == false ) {
+                    } else if ( $this->partial_array_search( $active_plugins, "updraftplus" ) == -1 && isset( $_POST["activate"] ) == false ) {
                         ?>
                                 <button class="button" onclick="activate('<?php echo esc_html( "updraftplus/updraftplus.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
                             </td>
