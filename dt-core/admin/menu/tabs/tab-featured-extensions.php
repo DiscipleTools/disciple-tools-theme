@@ -125,6 +125,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         //get plugin data
         $plugins = $this->get_plugins();
         ?>
+        <h3>Official DT Plugins</h3>
         <table class="widefat striped">
             <thead>
             <tr>
@@ -175,6 +176,52 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 }
             }
             ?>
+            </tbody>
+        </table>
+        <h3>Recommended Plugins</h3>
+        <table class="widefat striped">
+            <thead>
+            <tr>
+                <td>
+                    <?php echo esc_html__( 'Name', 'disciple_tools' ) ?>
+                </td>
+                <td>
+                    <?php echo esc_html__( 'Description', 'disciple_tools' ) ?>
+                <td>
+                    <?php echo esc_html__( 'Action', 'disciple_tools' ) ?>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <?php echo esc_html( "UpdraftPlus - Backup/Restore", 'disciple_tools' ); ?>
+                    </td>
+                    <td>
+                            <?php echo esc_html( "Backup and restore: take backups locally, or backup to Amazon S3, Dropbox, Google Drive, Rackspace, (S)FTP, WebDAV & email, on automatic schedules.", 'disciple_tools' ); ?>
+                    </td>
+                    <td>
+                    <?php
+                    $result_name = $this->partial_array_search( $all_plugins, "updraftplus" );
+                    if ($result_name == -1) {
+                        ?>
+                                <a class="button" href="./plugin-install.php?tab=plugin-information&plugin=updraftplus"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
+                        <?php
+                    } else if ( $this->partial_array_search( $active_plugins,  "updraftplus" ) == -1 && isset( $_POST["activate"] ) == false ) {
+                        ?>
+                                <button class="button" onclick="activate('<?php echo esc_html( "updraftplus/updraftplus.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                    else {
+                    ?>
+                                <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
+                    <?php
+                    }
+                    ?>
+                    </td>    
+                </tr>
             </tbody>
         </table>
         <?php
