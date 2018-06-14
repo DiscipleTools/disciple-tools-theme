@@ -193,6 +193,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             </tr>
             </thead>
             <tbody>
+            <!--Updraft-->
                 <tr>
                     <td>
                         <?php echo esc_html( "UpdraftPlus - Backup/Restore", 'disciple_tools' ); ?>
@@ -210,6 +211,66 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     } else if ( $this->partial_array_search( $active_plugins, "updraftplus" ) == -1 && isset( $_POST["activate"] ) == false ) {
                         ?>
                                 <button class="button" onclick="activate('<?php echo esc_html( "updraftplus/updraftplus.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                    else {
+                    ?>
+                                <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
+                    <?php
+                    }
+                    ?>
+                    </td>    
+                </tr>
+            <!--Two Factor Authentication-->
+                <tr>
+                    <td>
+                        <?php echo esc_html( "Two Factor Authentication", 'disciple_tools' ); ?>
+                    </td>
+                    <td>
+                            <?php echo esc_html( "Secure your WordPress login forms with two factor authentication - including WooCommerce login forms", 'disciple_tools' ); ?>
+                    </td>
+                    <td>
+                    <?php
+                    $result_name = $this->partial_array_search( $all_plugins, "two-factor-authentication" );
+                    if ($result_name == -1) {
+                        ?>
+                                <a class="button" href="./plugin-install.php?tab=plugin-information&plugin=two-factor-authentication"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
+                        <?php
+                    } else if ( $this->partial_array_search( $active_plugins, "two-factor-authentication" ) == -1 && isset( $_POST["activate"] ) == false ) {
+                        ?>
+                                <button class="button" onclick="activate('<?php echo esc_html( "two-factor-authentication/two-factor-login.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                    else {
+                    ?>
+                                <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
+                    <?php
+                    }
+                    ?>
+                    </td>    
+                </tr>
+            <!--Inactive Logout-->
+                <tr>
+                    <td>
+                        <?php echo esc_html( "Inactive Logout", 'disciple_tools' ); ?>
+                    </td>
+                    <td>
+                            <?php echo esc_html( "Inactive logout provides functionality to log out any idle users defined specified time showing a message. Works for frontend as well.", 'disciple_tools' ); ?>
+                    </td>
+                    <td>
+                    <?php
+                    $result_name = $this->partial_array_search( $all_plugins, " inactive-logout" );
+                    if ($result_name == -1) {
+                        ?>
+                                <a class="button" href="./plugin-install.php?tab=plugin-information&plugin= inactive-logout"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
+                        <?php
+                    } else if ( $this->partial_array_search( $active_plugins, " inactive-logout" ) == -1 && isset( $_POST["activate"] ) == false ) {
+                        ?>
+                                <button class="button" onclick="activate('<?php echo esc_html( " inactive-logout/inactive-logout.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
                             </td>
                         </tr>
                         <?php
