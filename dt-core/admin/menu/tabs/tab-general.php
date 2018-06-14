@@ -305,7 +305,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             }
             $site_options["update_required"]["enabled"] = isset( $_POST["triggers_enabled"] );
 
-            foreach ( $site_options["update_required"] as $option_index => $option ){
+            foreach ( $site_options["update_required"]["options"] as $option_index => $option ){
                 if ( isset( $_POST[$option_index . "_days"] ) ){
                     $site_options["update_required"]["options"][$option_index]["days"] = sanitize_text_field( $_POST[$option_index . "_days"] );
                 }
