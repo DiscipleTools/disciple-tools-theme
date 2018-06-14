@@ -179,6 +179,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             </tbody>
         </table>
         <h3>Recommended Plugins</h3>
+        <p><?php echo esc_html__( 'look for the "Install" button on the bottom right of your screen after clicking the install button link', 'disciple_tools' ) ?></p>
         <table class="widefat striped">
             <thead>
             <tr>
