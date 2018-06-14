@@ -109,13 +109,19 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     //main page
     public function box_message()
     {
+        //check if it can run commands
+        $run = true;
+        //check for admin or multisite super admin
+        if ( ( is_multisite() && !is_super_admin() ) || ( !is_multisite() && !is_admin() ) ) {
+            $run = false;
+        }
         //check for actions
-        if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', $_POST["_ajax_nonce"] ) ) {
+        if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', $_POST["_ajax_nonce"] ) && $run ) {
             //activate the plugin
             activate_plugin( $_POST["activate"] );
             exit;
         }
-        else if ( isset( $_POST["install"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', $_POST["_ajax_nonce"] ) ) {
+        else if ( isset( $_POST["install"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', $_POST["_ajax_nonce"] ) && $run ) {
             //install plugin
             $this->install_plugin( $_POST["install"] );
             exit;
