@@ -16,6 +16,7 @@
     }
     return "";
   }
+  let cachedFilter = JSON.parse(getCookie("last_view")||"{}")
   let currentFilter = {}
   let items = []
   let customFilters = []
@@ -40,17 +41,18 @@
   function get_contacts( offset = 0, sort ) {
     loading_spinner.addClass("active")
     let data = currentFilter.query
-    document.cookie = `last_view=${JSON.stringify(currentFilter)}`
-
     if ( offset ){
       data.offset = offset
     }
     if ( sort ){
       data.sort = sort
       data.offset = 0
-    } else {
+    } else if (!data.sort) {
       data.sort = wpApiListSettings.current_post_type === "contacts" ? "overall_status" : "status";
     }
+    currentFilter.query = data
+    document.cookie = `last_view=${JSON.stringify(currentFilter)}`
+
     //abort previous promise if it is not finished.
     if (getContactsPromise && _.get(getContactsPromise, "readyState") !== 4){
       getContactsPromise.abort()
@@ -120,7 +122,6 @@
 
   setupFilters(savedFilters[wpApiListSettings.current_post_type])
   //look at the cookie to see what was the last selected view
-  let cachedFilter = JSON.parse(getCookie("last_view")||"{}")
   if ( cachedFilter && !_.isEmpty(cachedFilter)){
     if (cachedFilter.type==="saved-filters"){
       if ( _.find(savedFilters[wpApiListSettings.current_post_type], {ID: cachedFilter.ID})){
@@ -296,13 +297,7 @@
   function getContactForCurrentView() {
     let checked = $(".js-list-view:checked")
     let currentView = checked.val()
-    //reset sorting in table header
-    tableHeaderRow.removeClass("sorting_asc")
-    tableHeaderRow.removeClass("sorting_desc")
-    $('.js-list thead .sortable th[data-id="overall_status"]').addClass("sorting_asc")
-    tableHeaderRow.data("sort", '')
-    $('.js-list thead .sortable th[data-id="overall_status"]').data("sort", 'asc')
-
+    let filterId = checked.data("id") || currentView
     let query = {assigned_to:["me"]}
     let filter = {type:"default", ID:currentView, query:{}, labels:[{ id:"me", name:"My Contacts", field: "assigned"}]}
     if ( currentView === "all" ){
@@ -332,15 +327,25 @@
       filter.type = currentView
       query = filter.query
     } else if ( currentView === "saved-filters" ){
-      let filterId = checked.data("id")
+
       filter = _.find(savedFilters[wpApiListSettings.current_post_type], {ID:filterId})
       filter.type = currentView
       query = filter.query
     }
     filter.query = query
+    let sortField = "overall_status";
+    if ( _.get( cachedFilter, "query.sort") && cachedFilter.type === filter.type && cachedFilter.ID === filterId ){
+      filter.query.sort = cachedFilter.query.sort;
+      sortField = cachedFilter.query.sort.replace("-", "");
+    }
+    //reset sorting in table header
+    tableHeaderRow.removeClass("sorting_asc")
+    tableHeaderRow.removeClass("sorting_desc")
+    $(`.js-list thead .sortable th[data-id="${sortField}"]`).addClass("sorting_asc")
+    tableHeaderRow.data("sort", '')
+    $(`.js-list thead .sortable th[data-id="${sortField}"]`).data("sort", 'asc')
 
     currentFilter = JSON.parse(JSON.stringify(filter))
-
     get_contacts()
   }
   if (!getContactsPromise){
