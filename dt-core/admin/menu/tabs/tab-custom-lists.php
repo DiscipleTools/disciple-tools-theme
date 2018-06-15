@@ -358,8 +358,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      */
     public function milestones_box()
     {
-        global $wpdb;
-
         echo '<form method="post" name="milestones_form">';
         //echo '<button type="submit" class="button-like-link" name="milestones_reset" value="1">reset</button>';
         echo '<p>Add or remove custom milestones for new contacts.</p>';
@@ -406,6 +404,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      */
     public function process_milestones_box()
     {
+        global $wpdb;
+
         if ( isset( $_POST['milestones_nonce'] ) ) {
 
             if ( !wp_verify_nonce( sanitize_key( $_POST['milestones_nonce'] ), 'milestones' ) ) {
@@ -443,6 +443,18 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     //delete key
                     $key = "milestone_".str_replace( " ", "_", $value );
                     if ( $milestone != $key ) {
+                        //change old ref
+                        //table
+                        $tb = $wpdb->prefix . "postmeta";
+                        //database
+                        $db = $wpdb->dbname;
+                        //TODO cahnge refrerecnce of wp_dt_activity_log and wp_postmeta
+                        //to reflect the new change
+                        //UPDATE `wordpress2`.`wp_postmeta` SET `meta_key` = 'milestone_new_key' WHERE `meta_key` = 'milestone_custom'
+                        $wpdb->query( $wpdb->prepare( "UPDATE `$db`.`$tb` SET `meta_key` = %s WHERE `meta_key` = %s;" , array( $key, $milestone ) ) );
+                        //UPDATE `wordpress2`.`wp_dt_activity_log` SET `object_subtype` = 'milestone_new_key', `meta_key` = 'milestone_new_key' WHERE `meta_key` = 'milestone_custom';
+                        $tb = $wpdb->prefix . "dt_activity_log";
+                        $wpdb->query( $wpdb->prepare( "UPDATE `$db`.`$tb` SET `object_subtype` = %s, `meta_key` = %s WHERE `meta_key` = %s;", array( $key, $key, $milestone ) ) );
                         //delete old value
                         unset( $site_custom_lists[$milestone] );
                         //make new one
