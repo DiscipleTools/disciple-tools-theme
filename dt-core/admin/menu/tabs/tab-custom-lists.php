@@ -426,7 +426,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $key = "milestone_".str_replace( " ", "_", $label );
                 //set all the values note for right now the default is ALWAYS NO
                 $site_custom_lists[$key] = [
-                        'name'        => sprintf(__( "this %s is cool" , 'disciple_tools' ), $label),
+                        'name'        => sprintf( __( "this %s is cool", 'disciple_tools' ), $label ),
                         'description' => '',
                         'type'        => 'key_select',
                         'default'     => [
