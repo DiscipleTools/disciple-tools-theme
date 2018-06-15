@@ -79,6 +79,13 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* end Sources */
 
+            /* milestones */
+            $this->box( 'top', 'Milestones' );
+            $this->process_milestones_box();
+            $this->milestones_box(); // prints
+            $this->box( 'bottom' );
+            /* end milestones */
+
             /* Metrics
             $this->box( 'top', 'Seeker Path' );
             $this->process_seeker_path_box();
@@ -342,6 +349,113 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $site_custom_lists['sources'] = dt_get_site_custom_lists( 'sources' );
             }
 
+            // Update the site option
+            update_option( 'dt_site_custom_lists', $site_custom_lists, true );
+        }
+    }
+    
+    /**
+     * Prints the mielsteons settings box.
+     */
+    public function milestones_box()
+    {
+        global $wpdb;
+
+        echo '<form method="post" name="milestones_form">';
+        echo '<button type="submit" class="button-like-link" name="milestones_reset" value="1">reset</button>';
+        echo '<p>Add or remove milestones for new contacts.</p>';
+        echo '<input type="hidden" name="milestones_nonce" id="milestones_nonce" value="' . esc_attr( wp_create_nonce( 'milestones' ) ) . '" />';
+        echo '<table class="widefat">';
+        echo '<thead><tr><td>Label</td><td>Delete</td></tr></thead><tbody>';
+
+        // get the list of custom lists
+        $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+        //empty check
+        if ( ! $site_custom_lists ) {
+            wp_die( 'Failed to get custom list from options table.' );
+        }
+        //for each milestone put it on the list
+        foreach ( $site_custom_lists as $milestone => $value) {
+            if ( strpos( $milestone, "milestone_" ) === 0 ) {
+                //get the first value
+                reset($value["default"]);
+                $first_key = key($value["default"]);
+                //parse the name into pretty format
+                $name = str_replace( "_"," ",str_replace( "milestone_", "", $milestone ) );
+                //echo $first_key;
+                echo '<tr>
+                            <td>' . esc_attr( $name ) . '</td>
+                            <td><button type="submit" name="delete_field" value="' . esc_attr( $milestone ) . '" class="button small" >delete</button> </td>
+                        </tr>';
+            }
+        }
+
+        // end list block
+        echo '</table>';
+        echo '<br><button type="button" onclick="jQuery(\'#add_milestone\').toggle();" class="button">Add</button>
+                        <button type="submit" style="float:right;" class="button">Save</button>';
+        echo '<div id="add_milestone" style="display:none;">';
+        echo '<table width="100%"><tr><td><hr><br>
+                    <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
+        echo '<button type="submit">Add</button>
+                    </td></tr></table></div>';
+        echo '</tbody></form>';
+    }
+
+    /**
+     * Process milestones milestones settings
+     */
+    public function process_milestones_box()
+    {
+        if ( isset( $_POST['milestones_nonce'] ) ) {
+
+            if ( !wp_verify_nonce( sanitize_key( $_POST['milestones_nonce'] ), 'milestones' ) ) {
+                return;
+            }
+
+            //get the custom list of lists
+            $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+            // Process current fields submitted
+            if ( ! $site_custom_lists ) {
+                wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
+            }
+            //make a new milestone object
+            if ( !empty( $_POST[ 'add_input_field' ][ 'label' ] ) ) {
+                //make the label 
+                $label = sanitize_text_field( wp_unslash( $_POST[ 'add_input_field' ][ 'label' ] ) );
+                //for the key add the _ for spaces
+                $key = str_replace( " ", "_", $label );
+                //set all the values note for right now the default is ALWAYS NO
+                $site_custom_lists[ "milestone_".$key ] = [
+                        'name'        => __( $label, 'disciple_tools' ),
+                        'description' => '',
+                        'type'        => 'key_select',
+                        'default'     => [
+                            'no' => __( 'No', 'disciple_tools' ),
+                            'yes' => __( 'Yes', 'disciple_tools' )
+                        ],
+                        'section'     => 'milestone',
+                    ];
+            }
+            // Process a field to delete.
+            if ( isset( $_POST['delete_field'] ) ) {
+
+                $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
+
+                unset( $site_custom_lists[ $delete_key ] );
+                //TODO: Consider adding a database query to delete all instances of this key from usermeta
+
+            }
+            // Process reset request
+            if ( isset( $_POST['milestones_reset'] ) ) {
+                // for each custom object with the start of milestone_ delete
+                foreach (  $site_custom_lists as $milestone => $value ) {
+                    if ( strpos( $milestone, "milestone_" ) === 0 ) {
+                        unset( $site_custom_lists[ $milestone ] );
+                    }
+
+                }
+            }
             // Update the site option
             update_option( 'dt_site_custom_lists', $site_custom_lists, true );
         }
