@@ -383,7 +383,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $name = str_replace( "_", " ", str_replace( "milestone_", "", $milestone ) );
                 //echo $first_key;
                 echo '<tr>
-                            <td><input type="text" name=' . $milestone  . ' value = ' . esc_attr( $name ) . '></input></td>
+                            <td><input type="text" name=' . esc_attr( $milestone ) . ' value = ' . esc_attr( $name ) . '></input></td>
                             <td><button type="submit" name="delete_field" value="' . esc_attr( $milestone ) . '" class="button small" >delete</button> </td>
                         </tr>';
             }
