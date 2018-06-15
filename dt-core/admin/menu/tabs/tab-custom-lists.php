@@ -377,7 +377,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         foreach ( $site_custom_lists as $milestone => $value) {
             if ( strpos( $milestone, "milestone_" ) === 0 ) {
                 //get the first value
-                reset($value["default"]);
+                reset( $value["default"] );
                 $first_key = key( $value["default"] );
                 //parse the name into pretty format
                 $name = str_replace( "_", " ", str_replace( "milestone_", "", $milestone ) );
@@ -423,9 +423,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 //make the label
                 $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
                 //for the key add the _ for spaces
-                $key = str_replace( " ", "_", $label );
-                //set all the values note for right now the default is ALWAYS NO
-                $site_custom_lists["milestone_".$key] = [
+                $key = "milestone_".str_replace( " ", "_", $label );
+                //set all the values note for right now the default is ALWAYS NO       
+                $site_custom_lists[$key] = [
                         'name'        => __( $label, 'disciple_tools' ),
                         'description' => '',
                         'type'        => 'key_select',
@@ -448,7 +448,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             // Process reset request
             if ( isset( $_POST['milestones_reset'] ) ) {
                 // for each custom object with the start of milestone_ delete
-                foreach (  $site_custom_lists as $milestone => $value ) {
+                foreach ( $site_custom_lists as $milestone => $value ) {
                     if ( strpos( $milestone, "milestone_" ) === 0 ) {
                         unset( $site_custom_lists[$milestone] );
                     }
