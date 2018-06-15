@@ -361,8 +361,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         global $wpdb;
 
         echo '<form method="post" name="milestones_form">';
-        echo '<button type="submit" class="button-like-link" name="milestones_reset" value="1">reset</button>';
-        echo '<p>Add or remove milestones for new contacts.</p>';
+        //echo '<button type="submit" class="button-like-link" name="milestones_reset" value="1">reset</button>';
+        echo '<p>Add or remove custom milestones for new contacts.</p>';
         echo '<input type="hidden" name="milestones_nonce" id="milestones_nonce" value="' . esc_attr( wp_create_nonce( 'milestones' ) ) . '" />';
         echo '<table class="widefat">';
         echo '<thead><tr><td>Label</td><td>Delete</td></tr></thead><tbody>';
@@ -383,7 +383,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $name = str_replace( "_", " ", str_replace( "milestone_", "", $milestone ) );
                 //echo $first_key;
                 echo '<tr>
-                            <td>' . esc_attr( $name ) . '</td>
+                            <td><input type="text" name=' . $milestone  . ' value = ' . esc_attr( $name ) . '></input></td>
                             <td><button type="submit" name="delete_field" value="' . esc_attr( $milestone ) . '" class="button small" >delete</button> </td>
                         </tr>';
             }
@@ -435,6 +435,34 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         ],
                         'section'     => 'milestone',
                     ];
+            }
+            //edit name
+            // for each custom object with the start of milestone_ make sure name is up to date
+            foreach ( $_POST as $milestone => $value ) {
+                if ( strpos( $milestone, "milestone_" ) === 0 && $milestone != 'milestones_nonce' ) {
+                    //delete key
+                    $key = "milestone_".str_replace( " ", "_", $value );
+                    if ( $milestone != $key ) {
+                        //delete old value
+                        unset( $site_custom_lists[$milestone] );
+                        //make new one
+                        //make the label
+                        $label = sanitize_text_field( wp_unslash( $_POST[$milestone] ) );
+                        //for the key add the _ for spaces
+                        $key = "milestone_".str_replace( " ", "_", $label );
+                        //set all the values note for right now the default is ALWAYS NO
+                        $site_custom_lists[$key] = [
+                            'name'        => $label,
+                            'description' => '',
+                            'type'        => 'key_select',
+                            'default'     => [
+                                'no' => __( 'No', 'disciple_tools' ),
+                                'yes' => __( 'Yes', 'disciple_tools' )
+                            ],
+                            'section'     => 'milestone',
+                        ];
+                    }
+                }
             }
             // Process a field to delete.
             if ( isset( $_POST['delete_field'] ) ) {
