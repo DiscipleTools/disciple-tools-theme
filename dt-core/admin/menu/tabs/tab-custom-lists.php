@@ -353,7 +353,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             update_option( 'dt_site_custom_lists', $site_custom_lists, true );
         }
     }
-    
     /**
      * Prints the mielsteons settings box.
      */
@@ -379,9 +378,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             if ( strpos( $milestone, "milestone_" ) === 0 ) {
                 //get the first value
                 reset($value["default"]);
-                $first_key = key($value["default"]);
+                $first_key = key( $value["default"] );
                 //parse the name into pretty format
-                $name = str_replace( "_"," ",str_replace( "milestone_", "", $milestone ) );
+                $name = str_replace( "_", " ", str_replace( "milestone_", "", $milestone ) );
                 //echo $first_key;
                 echo '<tr>
                             <td>' . esc_attr( $name ) . '</td>
@@ -420,13 +419,13 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
             }
             //make a new milestone object
-            if ( !empty( $_POST[ 'add_input_field' ][ 'label' ] ) ) {
-                //make the label 
-                $label = sanitize_text_field( wp_unslash( $_POST[ 'add_input_field' ][ 'label' ] ) );
+            if ( !empty( $_POST['add_input_field']['label'] ) ) {
+                //make the label
+                $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
                 //for the key add the _ for spaces
                 $key = str_replace( " ", "_", $label );
                 //set all the values note for right now the default is ALWAYS NO
-                $site_custom_lists[ "milestone_".$key ] = [
+                $site_custom_lists["milestone_".$key] = [
                         'name'        => __( $label, 'disciple_tools' ),
                         'description' => '',
                         'type'        => 'key_select',
@@ -451,9 +450,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 // for each custom object with the start of milestone_ delete
                 foreach (  $site_custom_lists as $milestone => $value ) {
                     if ( strpos( $milestone, "milestone_" ) === 0 ) {
-                        unset( $site_custom_lists[ $milestone ] );
+                        unset( $site_custom_lists[$milestone] );
                     }
-
                 }
             }
             // Update the site option
