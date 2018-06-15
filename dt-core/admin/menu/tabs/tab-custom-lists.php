@@ -424,9 +424,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
                 //for the key add the _ for spaces
                 $key = "milestone_".str_replace( " ", "_", $label );
-                //set all the values note for right now the default is ALWAYS NO       
+                //set all the values note for right now the default is ALWAYS NO
                 $site_custom_lists[$key] = [
-                        'name'        => __( $label, 'disciple_tools' ),
+                        'name'        => sprintf(__( "this %s is cool" , 'disciple_tools' ), $label),
                         'description' => '',
                         'type'        => 'key_select',
                         'default'     => [
