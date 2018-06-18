@@ -273,7 +273,7 @@ function dt_get_site_options_defaults()
 {
     $fields = [];
 
-    $fields['version'] = '5';
+    $fields['version'] = '6';
 
     $fields['user_notifications'] = [
         'new_web'          => true,
@@ -349,37 +349,44 @@ function dt_get_site_options_defaults()
             [
                 "status"      => "active",
                 "seeker_path" => "none",
-                "days"        => 3
+                "days"        => 3,
+                "comment"     => "This contact is active and nobody has tried to contact them. Please do so."
             ],
             [
                 "status"      => "active",
                 "seeker_path" => "attempted",
-                "days"        => 7
+                "days"        => 7,
+                "comment"     => "Please try connecting with this contact again."
             ],
             [
                 "status"      => "active",
                 "seeker_path" => "established",
-                "days"        => 30
+                "days"        => 30,
+                "comment"     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
             ],
             [
                 "status"      => "active",
                 "seeker_path" => "scheduled",
-                "days"        => 30
+                "days"        => 30,
+                "comment"     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
             ],
             [
                 "status"      => "active",
                 "seeker_path" => "met",
-                "days"        => 30
+                "days"        => 30,
+                "comment"     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
             ],
             [
                 "status"      => "active",
                 "seeker_path" => "ongoing",
-                "days"        => 30
+                "days"        => 30,
+                "comment"     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
             ],
             [
                 "status"      => "active",
                 "seeker_path" => "coaching",
-                "days"        => 30
+                "days"        => 30,
+                "comment"     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
             ]
         ]
     ];

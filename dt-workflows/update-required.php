@@ -15,14 +15,24 @@ class Disciple_Tools_Update_Needed {
         if ( ! wp_next_scheduled( 'update-required' ) ) {
             wp_schedule_event( time( 'today midnight' ), 'daily', 'update-required' );
         }
-        add_action( 'update-required', [ &$this, 'find_contacts_that_need_an_update' ] );
+        add_action( 'update-required', [ &$this, 'dt_find_contacts_that_need_an_update' ] );
+    }
+}
+
+class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
+
+    protected $action = 'dt_find_contacts_that_need_an_update';
+
+    protected function prepare_data( $data ) {
+        return $data;
     }
 
-    public static function find_contacts_that_need_an_update() {
+    protected function run_action() {
         global $wpdb;
         $site_options = dt_get_option( "dt_site_options" );
         $update_needed_settings = $site_options["update_required"];
         if ( $update_needed_settings["enabled"] === true ){
+            wp_set_current_user( 0 ); // to keep the update needed notifications from coming from a specific user.
             foreach ( $update_needed_settings["options"] as $setting ){
                 $date = time() - $setting["days"] * 24 * 60 * 60; // X days in seconds
                 $contacts_need_update = $wpdb->get_results( $wpdb->prepare( "
@@ -45,6 +55,7 @@ class Disciple_Tools_Update_Needed {
                     esc_sql( $setting["seeker_path"] )
                 ), OBJECT );
                 foreach ( $contacts_need_update as $contact ) {
+                    Disciple_Tools_Contacts::add_comment( $contact->ID, $setting["comment"], false, "comment", 0 );
                     Disciple_Tools_contacts::update_contact( $contact->ID, [ "requires_update" => "yes" ], false );
                 }
             }
