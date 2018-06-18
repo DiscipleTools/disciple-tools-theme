@@ -378,7 +378,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 reset( $value["default"] );
                 $first_key = key( $value["default"] );
                 //parse the name into pretty format
-                $name = str_replace( "_", " ", str_replace( "milestone_", "", $milestone ) );
+                $name = $value["name"];
                 //echo $first_key;
                 echo '<tr>
                             <td><input type="text" name=' . esc_attr( $milestone ) . ' value = ' . esc_attr( $name ) . '></input></td>
@@ -407,7 +407,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         global $wpdb;
 
         if ( isset( $_POST['milestones_nonce'] ) ) {
-
+            $DELETE = true;  //for the bug where you press enter and it deltes a key
             if ( !wp_verify_nonce( sanitize_key( $_POST['milestones_nonce'] ), 'milestones' ) ) {
                 return;
             }
@@ -442,8 +442,16 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 if ( strpos( $milestone, "milestone_" ) === 0 && $milestone != 'milestones_nonce' ) {
                     //delete key
                     $key = "milestone_".str_replace( " ", "_", $value );
-                    if ( $milestone != $key ) {
+                    if ( $site_custom_lists[$milestone]['name'] != $key ) {
+                        $DELETE = false; //for the enter bug
+                        //set new label value
+                        $label = sanitize_text_field( wp_unslash( $value ) );
+                        //set all the values note for right now the default is ALWAYS NO
+                        $site_custom_lists[$milestone]['name'] = $label;
+
+                        //other method where you create a new milestone and delete the old one
                         //change old ref
+                        /*
                         //table
                         $tb = $wpdb->prefix . "postmeta";
                         //database
@@ -451,7 +459,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         //TODO cahnge refrerecnce of wp_dt_activity_log and wp_postmeta
                         //to reflect the new change
                         //UPDATE `wordpress2`.`wp_postmeta` SET `meta_key` = 'milestone_new_key' WHERE `meta_key` = 'milestone_custom'
-                        $wpdb->query( $wpdb->prepare( "UPDATE `$db`.`$tb` SET `meta_key` = %s WHERE `meta_key` = %s;" , array( $key, $milestone ) ) );
+                        $wpdb->query( $wpdb->prepare( "UPDATE `$db`.`$tb` SET `meta_key` = %s WHERE `meta_key` = %s;", array( $key, $milestone ) ) );
                         //UPDATE `wordpress2`.`wp_dt_activity_log` SET `object_subtype` = 'milestone_new_key', `meta_key` = 'milestone_new_key' WHERE `meta_key` = 'milestone_custom';
                         $tb = $wpdb->prefix . "dt_activity_log";
                         $wpdb->query( $wpdb->prepare( "UPDATE `$db`.`$tb` SET `object_subtype` = %s, `meta_key` = %s WHERE `meta_key` = %s;", array( $key, $key, $milestone ) ) );
@@ -461,9 +469,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         //make the label
                         $label = sanitize_text_field( wp_unslash( $_POST[$milestone] ) );
                         //for the key add the _ for spaces
-                        $key = "milestone_".str_replace( " ", "_", $label );
+                        //$key = "milestone_".str_replace( " ", "_", $label );
                         //set all the values note for right now the default is ALWAYS NO
-                        $site_custom_lists[$key] = [
+                        $site_custom_lists[$milestone] = [
                             'name'        => $label,
                             'description' => '',
                             'type'        => 'key_select',
@@ -473,12 +481,14 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                             ],
                             'section'     => 'milestone',
                         ];
+                        */
                     }
                 }
             }
             // Process a field to delete.
-            if ( isset( $_POST['delete_field'] ) ) {
-
+            if ( isset( $_POST['delete_field'] ) && $DELETE ) {
+                echo var_dump($_POST);
+                echo "DEL";
                 $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
 
                 unset( $site_custom_lists[ $delete_key ] );
