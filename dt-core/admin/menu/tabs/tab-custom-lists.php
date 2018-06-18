@@ -381,8 +381,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $name = $value["name"];
                 //echo $first_key;
                 echo '<tr>
-                            <td><input type="text" name=' . esc_attr( $milestone ) . ' value = ' . esc_attr( $name ) . '></input></td>
-                            <td><button type="submit" name="delete_field" value="' . esc_attr( $milestone ) . '" class="button small" >delete</button> </td>
+                            <td><input type="text" name=' . esc_html( $milestone ) . ' value = "' . esc_html( $name ) .  '"></input></td>
+                            <td><button type="submit" name="delete_field" value="' . esc_html( $milestone ) . '" class="button small" >delete</button> </td>
                         </tr>';
             }
         }
@@ -420,6 +420,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
             //make a new milestone object
             if ( !empty( $_POST['add_input_field']['label'] ) ) {
+                $delete = false; //for the enter bug
                 //make the label
                 $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
                 //for the key add the _ for spaces
@@ -441,7 +442,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             foreach ( $_POST as $milestone => $value ) {
                 if ( strpos( $milestone, "milestone_" ) === 0 && $milestone != 'milestones_nonce' ) {
                     //delete key
-                    $key = "milestone_".str_replace( " ", "_", $value );
+                    $key = $_POST[$milestone];
                     if ( $site_custom_lists[$milestone]['name'] != $key ) {
                         $delete = false; //for the enter bug
                         //set new label value
@@ -488,7 +489,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             // Process a field to delete.
             if ( isset( $_POST['delete_field'] ) && $delete ) {
                 $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
-
                 unset( $site_custom_lists[ $delete_key ] );
                 //TODO: Consider adding a database query to delete all instances of this key from usermeta
 
