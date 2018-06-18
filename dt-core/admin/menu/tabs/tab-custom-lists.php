@@ -407,7 +407,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         global $wpdb;
 
         if ( isset( $_POST['milestones_nonce'] ) ) {
-            $DELETE = true;  //for the bug where you press enter and it deltes a key
+            $delete = true;  //for the bug where you press enter and it deltes a key
             if ( !wp_verify_nonce( sanitize_key( $_POST['milestones_nonce'] ), 'milestones' ) ) {
                 return;
             }
@@ -443,7 +443,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     //delete key
                     $key = "milestone_".str_replace( " ", "_", $value );
                     if ( $site_custom_lists[$milestone]['name'] != $key ) {
-                        $DELETE = false; //for the enter bug
+                        $delete = false; //for the enter bug
                         //set new label value
                         $label = sanitize_text_field( wp_unslash( $value ) );
                         //set all the values note for right now the default is ALWAYS NO
@@ -486,9 +486,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 }
             }
             // Process a field to delete.
-            if ( isset( $_POST['delete_field'] ) && $DELETE ) {
-                echo var_dump($_POST);
-                echo "DEL";
+            if ( isset( $_POST['delete_field'] ) && $delete ) {
                 $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
 
                 unset( $site_custom_lists[ $delete_key ] );
