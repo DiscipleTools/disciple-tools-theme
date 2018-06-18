@@ -537,7 +537,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             if ( ! $site_custom_lists ) {
                 wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
             }
-            if( !$site_custom_lists["seeker_path"] ) {
+            if ( !$site_custom_lists["seeker_path"] ) {
                 $site_custom_lists = $seek;
             }
             //make a new seeker object

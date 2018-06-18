@@ -208,8 +208,8 @@ function dt_get_option( string $name )
                 'ongoing'     => __( 'Ongoing Meetings' ),
                 'coaching'    => __( 'Being Coached' ),
             ];
-            if( $site_custom_lists ) {
-                foreach($site_custom_lists as $path => $val){
+            if ( $site_custom_lists ) {
+                foreach ( $site_custom_lists as $path => $val ) {
                     $seek[$path] = $val;
                 }
                 return $site_custom_lists;
