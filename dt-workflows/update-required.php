@@ -45,7 +45,7 @@ class Disciple_Tools_Update_Needed {
                     esc_sql( $setting["seeker_path"] )
                 ), OBJECT );
                 foreach ( $contacts_need_update as $contact ) {
-                    update_post_meta( $contact->ID, "requires_update", "yes" );
+                    Disciple_Tools_contacts::update_contact( $contact->ID, [ "requires_update" => "yes" ], false );
                 }
             }
         }
