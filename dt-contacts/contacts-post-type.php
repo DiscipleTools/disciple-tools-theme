@@ -936,6 +936,21 @@ class Disciple_Tools_Contact_Post_Type
             'section'     => 'misc',
         ];
 
+        //get the custom milestone fields
+        $custom_contact_fields = dt_get_option( 'dt_site_custom_lists' );
+        foreach ( $custom_contact_fields as $key => $value ){
+            if ( strpos( $key, "milestone_" ) === 0 ) {
+                $fields[$key] = [
+                    'name'        => $value['name'],
+                    'description' => $value['description'],
+                    'type'        => $value['type'],
+                    'default'     => $value['default'],
+                    'section'     => $value['section'],
+                ];
+            }
+        }
+
+
         return apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
     } // End get_custom_fields_settings()
 

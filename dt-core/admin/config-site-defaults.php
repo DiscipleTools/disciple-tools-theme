@@ -197,7 +197,9 @@ function dt_get_option( string $name )
             break;
 
         case 'seeker_path':
-            return [
+            $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+            $site_custom_lists = $site_custom_lists["seeker_path"];
+            $seek = [
                 'none'        => __( 'Contact Attempt Needed' ),
                 'attempted'   => __( 'Contact Attempted' ),
                 'established' => __( 'Contact Established' ),
@@ -206,6 +208,13 @@ function dt_get_option( string $name )
                 'ongoing'     => __( 'Ongoing Meetings' ),
                 'coaching'    => __( 'Being Coached' ),
             ];
+            if ( $site_custom_lists ) {
+                foreach ( $site_custom_lists as $path => $val ) {
+                    $seek[$path] = $val;
+                }
+                return $site_custom_lists;
+            }
+            return $seek;
             break;
         case 'overall_status':
             return [
