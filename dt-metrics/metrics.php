@@ -763,144 +763,135 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT
-                  (
-                    SELECT count(ID) as count
-                    FROM $wpdb->posts
-                    WHERE post_type = 'contacts'
-                          AND post_status = 'publish'
-                          AND post_date >= %s
-                          AND post_date < %s
-                          AND ID NOT IN (
-                            SELECT post_id
-                            FROM $wpdb->postmeta
-                            WHERE meta_key = 'corresponds_to_user'
-                              AND meta_value != 0
-                            GROUP BY post_id
-                    )
-                  ) as new_inquirers,
-                  ( SELECT
-                      count(a.ID)  as count
-                    FROM $wpdb->posts as a
-                      JOIN $wpdb->postmeta as b
-                        ON a.ID = b.post_id
-                           AND b.meta_key = 'seeker_path'
-                           AND ( b.meta_value = 'met' OR b.meta_value = 'ongoing' OR b.meta_value = 'coaching' )
-                    WHERE a.post_status = 'publish'
-                          AND a.post_type = 'contacts'
-                          AND post_date >= %s
-                          AND post_date < %s
-                          AND a.ID NOT IN (
-                      SELECT post_id
-                      FROM $wpdb->postmeta
-                      WHERE meta_key = 'corresponds_to_user'
-                            AND meta_value != 0
-                      GROUP BY post_id
-                    ) ) as first_meetings,
-                  ( SELECT
-                      count(a.ID)  as count
-                    FROM $wpdb->posts as a
-                      JOIN $wpdb->postmeta as b
-                        ON a.ID = b.post_id
-                           AND b.meta_key = 'seeker_path'
-                           AND ( b.meta_value = 'ongoing' OR b.meta_value = 'coaching' )
-                      JOIN $wpdb->postmeta as d
-                           ON a.ID=d.post_id
-                           AND d.meta_key = 'overall_status'
-                           AND d.meta_value = 'active'
-                    WHERE a.post_status = 'publish'
-                          AND a.post_type = 'contacts'
-                          AND a.ID NOT IN (
-                      SELECT post_id
-                      FROM $wpdb->postmeta
-                      WHERE meta_key = 'corresponds_to_user'
-                            AND meta_value != 0
-                      GROUP BY post_id
-                    ) ) as ongoing_meetings,
-                  ( SELECT
-                      count(a.ID) as count
-                    FROM $wpdb->posts as a
-                      JOIN $wpdb->postmeta as b
-                        ON a.ID = b.post_id
-                           AND b.meta_key = 'baptism_date'
-                           AND ( b.meta_value >= %s
-                                 AND  b.meta_value < %s )
-                    WHERE a.post_status = 'publish'
-                          AND a.post_type = 'contacts'
-                    ) as total_baptisms,
-                  ( 0 ) as 1st_gen_baptisms,
-                  ( SELECT count( DISTINCT p2p_to) as count
-                    FROM $wpdb->p2p
-                    WHERE p2p_type = 'baptizer_to_baptized'
-                          AND p2p_id IN (
-                      SELECT meta_id
-                      FROM $wpdb->p2pmeta
-                      WHERE meta_key = 'date'
-                            AND meta_value >= %s
-                            AND meta_value < %s
-                    ) ) as baptizers,
-                  ( SELECT count(ID) as count
-                    FROM $wpdb->posts as a
-                      JOIN $wpdb->postmeta as b
-                        ON a.ID = b.post_id
-                           AND b.meta_key = 'group_status'
-                           AND b.meta_value = 'active'
-                      JOIN $wpdb->postmeta as c
-                        ON a.ID = c.post_id
-                           AND c.meta_key = 'group_type'
-                           AND ( c.meta_value = 'group' OR c.meta_value = 'church' )
-                    WHERE post_type = 'groups'
-                          AND post_status = 'publish'
-                  ) as total_churches_and_groups,
-                  ( SELECT count(ID) as count
-                    FROM $wpdb->posts as a
-                      JOIN $wpdb->postmeta as b
-                        ON a.ID = b.post_id
-                           AND b.meta_key = 'group_status'
-                           AND b.meta_value = 'active'
-                      JOIN $wpdb->postmeta as c
-                        ON a.ID = c.post_id
-                           AND c.meta_key = 'group_type'
-                           AND c.meta_value = 'group'
-                    WHERE post_type = 'groups'
-                          AND post_status = 'publish'  ) as active_groups,
-                  ( SELECT count(ID) as count
-                    FROM $wpdb->posts as a
-                      JOIN $wpdb->postmeta as b
-                        ON a.ID = b.post_id
-                           AND b.meta_key = 'group_status'
-                           AND b.meta_value = 'active'
-                      JOIN $wpdb->postmeta as c
-                        ON a.ID = c.post_id
-                           AND c.meta_key = 'group_type'
-                           AND c.meta_value = 'church'
-                    WHERE post_type = 'groups'
-                          AND post_status = 'publish'  ) as active_churches,
-                  ( 0 ) as 1st_gen_churches,
-                  ( 4 ) as church_planters,
-                  ( SELECT count(a.ID) as count
-                    FROM $wpdb->posts as a
-                    WHERE post_type = 'peoplegroups'
-                          AND post_status = 'publish'
-                          AND ID IN (
-                      SELECT DISTINCT( p2p_to )
-                      FROM $wpdb->p2p
-                      WHERE p2p_type = 'contacts_to_peoplegroups'
-                            OR p2p_type = 'groups_to_peoplegroups'
-                    ) ) as people_groups,
-                    ( 0 ) as movements;
-        ",
-            $year,
-            $next_year,
-            $year,
-            $next_year,
-            $year,
-            $next_year,
-            $year,
-            $next_year ),
-            ARRAY_A );
+                (
+                SELECT count(ID) as count
+                FROM $wpdb->posts
+                WHERE post_type = 'contacts'
+                  AND post_status = 'publish'
+                  AND post_date >= %s
+                  AND post_date < %s
+                  AND ID NOT IN (
+                    SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_key = 'corresponds_to_user'
+                      AND meta_value != 0
+                    GROUP BY post_id
+                )
+                ) as new_inquirers,
+                ( SELECT
+                count(a.ID)  as count
+                FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                ON a.ID = b.post_id
+                   AND b.meta_key = 'seeker_path'
+                   AND ( b.meta_value = 'met' OR b.meta_value = 'ongoing' OR b.meta_value = 'coaching' )
+                WHERE a.post_status = 'publish'
+                  AND a.post_type = 'contacts'
+                  AND post_date >= %s
+                  AND post_date < %s
+                  AND a.ID NOT IN (
+                SELECT post_id
+                FROM $wpdb->postmeta
+                WHERE meta_key = 'corresponds_to_user'
+                    AND meta_value != 0
+                GROUP BY post_id
+                ) ) as first_meetings,
+                ( SELECT
+                count(a.ID)  as count
+                FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                ON a.ID = b.post_id
+                   AND b.meta_key = 'seeker_path'
+                   AND ( b.meta_value = 'ongoing' OR b.meta_value = 'coaching' )
+                JOIN $wpdb->postmeta as d
+                   ON a.ID=d.post_id
+                   AND d.meta_key = 'overall_status'
+                   AND d.meta_value = 'active'
+                WHERE a.post_status = 'publish'
+                  AND a.post_type = 'contacts'
+                  AND a.ID NOT IN (
+                SELECT post_id
+                FROM $wpdb->postmeta
+                WHERE meta_key = 'corresponds_to_user'
+                    AND meta_value != 0
+                GROUP BY post_id
+                ) ) as ongoing_meetings,
+                ( SELECT
+                count(a.ID) as count
+                FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                ON a.ID = b.post_id
+                   AND b.meta_key = 'baptism_date'
+                   AND ( b.meta_value >= %s
+                         AND  b.meta_value < %s )
+                WHERE a.post_status = 'publish'
+                  AND a.post_type = 'contacts'
+                ) as total_baptisms,
+                ( 0 ) as 1st_gen_baptisms,
+                ( SELECT count( DISTINCT p2p_to) as count
+                FROM $wpdb->p2p
+                WHERE p2p_type = 'baptizer_to_baptized'
+                  AND p2p_id IN (
+                SELECT meta_id
+                FROM $wpdb->p2pmeta
+                WHERE meta_key = 'date'
+                    AND meta_value >= %s
+                    AND meta_value < %s
+                ) ) as baptizers,
+                ( SELECT count(ID) as count
+                FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                ON a.ID = b.post_id
+                   AND b.meta_key = 'group_status'
+                   AND b.meta_value = 'active'
+                JOIN $wpdb->postmeta as c
+                ON a.ID = c.post_id
+                   AND c.meta_key = 'group_type'
+                   AND ( c.meta_value = 'group' OR c.meta_value = 'church' )
+                WHERE post_type = 'groups'
+                  AND post_status = 'publish'
+                ) as total_churches_and_groups,
+                ( SELECT count(ID) as count
+                FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                ON a.ID = b.post_id
+                   AND b.meta_key = 'group_status'
+                   AND b.meta_value = 'active'
+                JOIN $wpdb->postmeta as c
+                ON a.ID = c.post_id
+                   AND c.meta_key = 'group_type'
+                   AND c.meta_value = 'group'
+                WHERE post_type = 'groups'
+                  AND post_status = 'publish'  ) as active_groups,
+                ( SELECT count(ID) as count
+                FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                ON a.ID = b.post_id
+                   AND b.meta_key = 'group_status'
+                   AND b.meta_value = 'active'
+                JOIN $wpdb->postmeta as c
+                ON a.ID = c.post_id
+                   AND c.meta_key = 'group_type'
+                   AND c.meta_value = 'church'
+                WHERE post_type = 'groups'
+                  AND post_status = 'publish'  ) as active_churches,
+                ( 0 ) as 1st_gen_churches,
+                ( 4 ) as church_planters,
+                ( SELECT count(a.ID) as count
+                FROM $wpdb->posts as a
+                WHERE post_type = 'peoplegroups'
+                  AND post_status = 'publish'
+                  AND ID IN (
+                SELECT DISTINCT( p2p_to )
+                FROM $wpdb->p2p
+                WHERE p2p_type = 'contacts_to_peoplegroups'
+                    OR p2p_type = 'groups_to_peoplegroups'
+                ) ) as people_groups,
+                ( 0 ) as movements;
+        ", $year, $next_year, $year, $next_year, $year, $next_year, $year, $next_year ), ARRAY_A );
 
         if ( empty( $results ) ) {
-            dt_write_log('failed query');
+            dt_write_log( 'failed query' );
         }
 
         // build baptism generations
@@ -915,12 +906,12 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         foreach ( $results[0] as $key => $value ) {
             if ( '1st_gen_baptisms' === $key ) {
                 foreach ( $baptism_generations_this_year as $key_bg => $value_bg ) {
-                    $baptism_key = self::addOrdinalNumberSuffix($key_bg) . '_gen_baptisms';
+                    $baptism_key = self::add_ordinal_number_suffix( $key_bg ) . '_gen_baptisms';
                     $numbers[$baptism_key] = $value_bg;
                 }
             } elseif ( '1st_gen_churches' === $key ) {
                 foreach ( $church_generation as $key_gc => $value_gc ) {
-                    $generation_key = self::addOrdinalNumberSuffix($key_gc) . '_gen_churches';
+                    $generation_key = self::add_ordinal_number_suffix( $key_gc ) . '_gen_churches';
 
                     $numbers[$generation_key] = $value_gc[3];
                 }
@@ -956,8 +947,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         $list = self::query_get_baptisms_id_list( $year );
 
         // redact counts according to baptisms this year
-        foreach( $list as $baptism ) {
-            foreach( $all_baptisms as $generation ) {
+        foreach ( $list as $baptism ) {
+            foreach ( $all_baptisms as $generation ) {
                 if ( in_array( $baptism, $generation[2] ) ) {
                     if ( ! isset( $count[ $generation[0] ] ) ) {
                         $count[ $generation[0] ] = 0;
@@ -1025,16 +1016,16 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     }
 
 
-    public static function addOrdinalNumberSuffix($num) {
-        if (!in_array(($num % 100),array(11,12,13))){
-          switch ($num % 10) {
-            // Handle 1st, 2nd, 3rd
-            case 1:  return $num.'st';
-            case 2:  return $num.'nd';
-            case 3:  return $num.'rd';
-          }
-    }
-    return $num.'th';
+    public static function add_ordinal_number_suffix( $num) {
+        if ( !in_array( ( $num % 100 ), array( 11,12,13 ) )){
+            switch ($num % 10) {
+              // Handle 1st, 2nd, 3rd
+                case 1:  return $num.'st';
+                case 2:  return $num.'nd';
+                case 3:  return $num.'rd';
+            }
+        }
+        return $num.'th';
     }
 
 
