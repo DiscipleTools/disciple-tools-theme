@@ -86,7 +86,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* end milestones */
 
-            /* Metrics
+            /* Metrics */
             $this->box( 'top', 'Seeker Path' );
             $this->process_seeker_path_box();
             $this->seeker_path_box(); // prints
@@ -381,7 +381,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $name = $value["name"];
                 //echo $first_key;
                 echo '<tr>
-                            <td><input type="text" name=' . esc_html( $milestone ) . ' value = "' . esc_html( $name ) .  '"></input></td>
+                            <td><input type="text" name=' . esc_html( $milestone ) . ' value = "' . esc_html( $name ) . '"></input></td>
                             <td><button type="submit" name="delete_field" value="' . esc_html( $milestone ) . '" class="button small" >delete</button> </td>
                         </tr>';
             }
@@ -512,12 +512,78 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      */
     public function process_seeker_path_box()
     {
-        if ( isset( $_POST['seeker_path_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['seeker_path_nonce'] ) ), 'seeker_path' . get_current_user_id() ) ) {
-
-            if ( !wp_verify_nonce( sanitize_key( $_POST['seeker_path_nonce'] ), 'seeker_path' ) ) {
-                return;
+        if ( isset( $_POST['seeker_path_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['seeker_path_nonce'] ) ), 'seeker_path' ) ) {
+            $delete = true;
+            $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+             //get the custom list of lists
+            //$site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+            //checks if default optiions in custom
+            $seek = [
+                'none'        => __( 'Contact Attempt Needed' ),
+                'attempted'   => __( 'Contact Attempted' ),
+                'established' => __( 'Contact Established' ),
+                'scheduled'   => __( 'First Meeting Scheduled' ),
+                'met'         => __( 'First Meeting Complete' ),
+                'ongoing'     => __( 'Ongoing Meetings' ),
+                'coaching'    => __( 'Being Coached' ),
+            ];
+            //foreach ( $seek as $key => $value ) {
+            //    if ( !isset( $site_custom_lists["seeker_path"][$key] ) ){
+            //        $site_custom_lists["seeker_path"][$key] = $value;
+            //    }
+            //}
+            //update_option( 'dt_site_custom_lists', $seek, true );
+            //return;
+            if ( ! $site_custom_lists ) {
+                wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
             }
+            if( !$site_custom_lists["seeker_path"] ) {
+                $site_custom_lists = $seek;
+            }
+            //make a new seeker object
+            if ( !empty( $_POST['add_input_field']['label'] ) ) {
+                $delete = false; //for the enter bug
+                //make the label
+                $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
+                //set label and name to same thing
+                $site_custom_lists["seeker_path"][$label] = $label;
+            }
+            //edit name
+            // for each custom object with the start of seeker make sure name is up to date
+            foreach ( $_POST as $seeker => $value ) {
+                $key = $_POST[$seeker];
+                if ( isset( $site_custom_lists["seeker_path"][$seeker] ) ) {
+                    $key = $_POST[$seeker];
+                    if ( $site_custom_lists["seeker_path"][$seeker] != $value ) {
+                        $site_custom_lists = $_POST["seeker_path"];
+                        break;
+                        $delete = false; //for the enter bug
+                        //set new label value
+                        $label = sanitize_text_field( wp_unslash( $value ) );
+                        //set all the values note for right now the default is ALWAYS NO
+                        $site_custom_lists["seeker_path"][$seeker] = $label;
+                    }
+                }
+            }
+            foreach ( $_POST["seeker_path"] as $key => $val) {
+                $site_custom_lists["seeker_path"][$key] = $val;
+            }
+            // Process reset request
+            if ( isset( $_POST['seeker_path_reset'] ) ) {
+                // for each custom object with the start of seeker_ delete
+                foreach ( $site_custom_lists["seeker_path"] as $seeker => $value ) {
+                        unset( $site_custom_lists["seeker_path"] );
+                }
+            }
+            // Process a field to delete.
+            if ( isset( $_POST['delete_field'] ) && $delete ) {
+                $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
+                unset( $site_custom_lists["seeker_path"][ $delete_key ] );
+                //TODO: Consider adding a database query to delete all instances of this key from usermeta
 
+            }
+            // Update the site option
+            update_option( 'dt_site_custom_lists', $site_custom_lists, true );
             dt_write_log( $_POST );
         }
     }
@@ -528,14 +594,16 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     public function seeker_path_box()
     {
         $seeker_path = dt_get_option( 'seeker_path' );
+        //$site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+        //$site_custom_lists = $site_custom_lists["seeker_path"];
         if ( ! $seeker_path ) {
             wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
         }
 
         ?>
         <form method="post" name="seeker_path_form">
-            <input type="hidden" name="seeker_path_nonce" id="seeker_path_nonce" value="<?php echo esc_attr( wp_create_nonce( 'seeker_path' . get_current_user_id() ) ) ?>" />
-
+            <input type="hidden" name="seeker_path_nonce" id="seeker_path_nonce" value="<?php echo esc_attr( wp_create_nonce( 'seeker_path' ) ) ?>" />
+            <button type="submit" class="button-like-link" name="seeker_path_reset_bug_fix" value="&nasb"></button>
             <button type="submit" class="button-like-link" name="seeker_path_reset" value="1">reset</button>
 
             <p>Add or remove seeker_path for new contacts.</p>
@@ -551,8 +619,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <tbody>
                 <?php foreach ( $seeker_path as $key => $label ) : ?>
                     <tr>
-                        <td><input name="seeker_path['<?php echo esc_attr( $key ) ?>']" type="text" value="<?php echo esc_html( $label ) ?>" /></td>
-                        <td><button type="submit" name="delete_field" value="<?php echo esc_attr( $key ) ?>" class="button small" >delete</button> </td>
+                        <td><input name="seeker_path[<?php echo esc_html( $key ) ?>]" type="text" value="<?php echo esc_html( $label ) ?>"/></td>
+                        <td><button type="submit" name="delete_field" value="<?php echo esc_html( $key ) ?>" class="button small" >delete</button> </td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
