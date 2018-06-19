@@ -6,3 +6,7 @@ node_modules/
 .DS_Store
 dt-people-groups/json/*
 composer.phar
+.vscode/*
+.gitignore
+composer.json
+composer.lock

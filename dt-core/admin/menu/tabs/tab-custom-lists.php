@@ -367,6 +367,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
         // get the list of custom lists
         $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+        $site_custom_lists = $site_custom_lists["custom_milestones"];
         //empty check
         if ( ! $site_custom_lists ) {
             wp_die( 'Failed to get custom list from options table.' );
@@ -426,7 +427,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 //for the key add the _ for spaces
                 $key = "milestone_".str_replace( " ", "_", $label );
                 //set all the values note for right now the default is ALWAYS NO
-                $site_custom_lists[$key] = [
+                $site_custom_lists["custom_milestones"][$key] = [
                         'name'        => $label,
                         'description' => '',
                         'type'        => 'key_select',
@@ -443,64 +444,26 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 if ( strpos( $milestone, "milestone_" ) === 0 && $milestone != 'milestones_nonce' ) {
                     //delete key
                     $key = $_POST[$milestone];
-                    if ( $site_custom_lists[$milestone]['name'] != $key ) {
+                    if ( $site_custom_lists["custom_milestones"][$milestone]['name'] != $key ) {
                         $delete = false; //for the enter bug
                         //set new label value
                         $label = sanitize_text_field( wp_unslash( $value ) );
                         //set all the values note for right now the default is ALWAYS NO
-                        $site_custom_lists[$milestone]['name'] = $label;
-
-                        //other method where you create a new milestone and delete the old one
-                        //change old ref
-                        /*
-                        //table
-                        $tb = $wpdb->prefix . "postmeta";
-                        //database
-                        $db = $wpdb->dbname;
-                        //TODO cahnge refrerecnce of wp_dt_activity_log and wp_postmeta
-                        //to reflect the new change
-                        //UPDATE `wordpress2`.`wp_postmeta` SET `meta_key` = 'milestone_new_key' WHERE `meta_key` = 'milestone_custom'
-                        $wpdb->query( $wpdb->prepare( "UPDATE `$db`.`$tb` SET `meta_key` = %s WHERE `meta_key` = %s;", array( $key, $milestone ) ) );
-                        //UPDATE `wordpress2`.`wp_dt_activity_log` SET `object_subtype` = 'milestone_new_key', `meta_key` = 'milestone_new_key' WHERE `meta_key` = 'milestone_custom';
-                        $tb = $wpdb->prefix . "dt_activity_log";
-                        $wpdb->query( $wpdb->prepare( "UPDATE `$db`.`$tb` SET `object_subtype` = %s, `meta_key` = %s WHERE `meta_key` = %s;", array( $key, $key, $milestone ) ) );
-                        //delete old value
-                        unset( $site_custom_lists[$milestone] );
-                        //make new one
-                        //make the label
-                        $label = sanitize_text_field( wp_unslash( $_POST[$milestone] ) );
-                        //for the key add the _ for spaces
-                        //$key = "milestone_".str_replace( " ", "_", $label );
-                        //set all the values note for right now the default is ALWAYS NO
-                        $site_custom_lists[$milestone] = [
-                            'name'        => $label,
-                            'description' => '',
-                            'type'        => 'key_select',
-                            'default'     => [
-                                'no' => __( 'No', 'disciple_tools' ),
-                                'yes' => __( 'Yes', 'disciple_tools' )
-                            ],
-                            'section'     => 'milestone',
-                        ];
-                        */
+                        $site_custom_lists["custom_milestones"][$milestone]['name'] = $label;
                     }
                 }
             }
             // Process a field to delete.
             if ( isset( $_POST['delete_field'] ) && $delete ) {
                 $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
-                unset( $site_custom_lists[ $delete_key ] );
+                unset( $site_custom_lists["custom_milestones"][ $delete_key ] );
                 //TODO: Consider adding a database query to delete all instances of this key from usermeta
 
             }
             // Process reset request
             if ( isset( $_POST['milestones_reset'] ) ) {
-                // for each custom object with the start of milestone_ delete
-                foreach ( $site_custom_lists as $milestone => $value ) {
-                    if ( strpos( $milestone, "milestone_" ) === 0 ) {
-                        unset( $site_custom_lists[$milestone] );
-                    }
-                }
+                unset( $site_custom_lists["custom_milestones"] );
+                $site_custom_lists["custom_milestones"] = [];
             }
             // Update the site option
             update_option( 'dt_site_custom_lists', $site_custom_lists, true );
@@ -527,18 +490,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 'ongoing'     => __( 'Ongoing Meetings' ),
                 'coaching'    => __( 'Being Coached' ),
             ];
-            //foreach ( $seek as $key => $value ) {
-            //    if ( !isset( $site_custom_lists["seeker_path"][$key] ) ){
-            //        $site_custom_lists["seeker_path"][$key] = $value;
-            //    }
-            //}
-            //update_option( 'dt_site_custom_lists', $seek, true );
-            //return;
-            if ( ! $site_custom_lists ) {
+            if ( !$site_custom_lists ) {
                 wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
-            }
-            if ( !$site_custom_lists["seeker_path"] ) {
-                $site_custom_lists = $seek;
             }
             //make a new seeker object
             if ( !empty( $_POST['add_input_field']['label'] ) ) {
@@ -549,22 +502,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $site_custom_lists["seeker_path"][$label] = $label;
             }
             //edit name
-            // for each custom object with the start of seeker make sure name is up to date
-            foreach ( $_POST as $seeker => $value ) {
-                $key = $_POST[$seeker];
-                if ( isset( $site_custom_lists["seeker_path"][$seeker] ) ) {
-                    $key = $_POST[$seeker];
-                    if ( $site_custom_lists["seeker_path"][$seeker] != $value ) {
-                        $site_custom_lists = $_POST["seeker_path"];
-                        break;
-                        $delete = false; //for the enter bug
-                        //set new label value
-                        $label = sanitize_text_field( wp_unslash( $value ) );
-                        //set all the values note for right now the default is ALWAYS NO
-                        $site_custom_lists["seeker_path"][$seeker] = $label;
-                    }
-                }
-            }
             foreach ( $_POST["seeker_path"] as $key => $val) {
                 $site_custom_lists["seeker_path"][$key] = $val;
             }
@@ -573,6 +510,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 // for each custom object with the start of seeker_ delete
                 foreach ( $site_custom_lists["seeker_path"] as $seeker => $value ) {
                         unset( $site_custom_lists["seeker_path"] );
+                        $site_custom_lists["seeker_path"] = $seek;
                 }
             }
             // Process a field to delete.
@@ -593,7 +531,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      */
     public function seeker_path_box()
     {
-        $seeker_path = dt_get_option( 'seeker_path' );
+        $seeker_path = dt_get_option( 'dt_site_custom_lists' );
+        $seeker_path = $seeker_path["seeker_path"];
         //$site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
         //$site_custom_lists = $site_custom_lists["seeker_path"];
         if ( ! $seeker_path ) {
@@ -641,7 +580,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             </div>
 
         </form>
-    <?php
+        <?php
     }
 }
 Disciple_Tools_Tab_Custom_Lists::instance();
