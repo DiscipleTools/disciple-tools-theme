@@ -527,18 +527,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 'ongoing'     => __( 'Ongoing Meetings' ),
                 'coaching'    => __( 'Being Coached' ),
             ];
-            //foreach ( $seek as $key => $value ) {
-            //    if ( !isset( $site_custom_lists["seeker_path"][$key] ) ){
-            //        $site_custom_lists["seeker_path"][$key] = $value;
-            //    }
-            //}
-            //update_option( 'dt_site_custom_lists', $seek, true );
-            //return;
-            if ( ! $site_custom_lists ) {
+            if ( !$site_custom_lists ) {
                 wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
-            }
-            if ( !$site_custom_lists["seeker_path"] ) {
-                $site_custom_lists = $seek;
             }
             //make a new seeker object
             if ( !empty( $_POST['add_input_field']['label'] ) ) {
@@ -550,7 +540,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
             //edit name
             // for each custom object with the start of seeker make sure name is up to date
-            foreach ( $_POST as $seeker => $value ) {
+            /*foreach ( $_POST as $seeker => $value ) {
                 $key = $_POST[$seeker];
                 if ( isset( $site_custom_lists["seeker_path"][$seeker] ) ) {
                     $key = $_POST[$seeker];
@@ -564,7 +554,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         $site_custom_lists["seeker_path"][$seeker] = $label;
                     }
                 }
-            }
+            }*/
             foreach ( $_POST["seeker_path"] as $key => $val) {
                 $site_custom_lists["seeker_path"][$key] = $val;
             }
@@ -573,6 +563,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 // for each custom object with the start of seeker_ delete
                 foreach ( $site_custom_lists["seeker_path"] as $seeker => $value ) {
                         unset( $site_custom_lists["seeker_path"] );
+                        $site_custom_lists["seeker_path"] = $seek;
                 }
             }
             // Process a field to delete.
@@ -593,7 +584,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      */
     public function seeker_path_box()
     {
-        $seeker_path = dt_get_option( 'seeker_path' );
+        $seeker_path = dt_get_option( 'dt_site_custom_lists' );
+        $seeker_path = $seeker_path["seeker_path"];
         //$site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
         //$site_custom_lists = $site_custom_lists["seeker_path"];
         if ( ! $seeker_path ) {
@@ -641,7 +633,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             </div>
 
         </form>
-    <?php
+        <?php
     }
 }
 Disciple_Tools_Tab_Custom_Lists::instance();
