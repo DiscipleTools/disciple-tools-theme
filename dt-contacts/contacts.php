@@ -1783,7 +1783,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'comment_type'         => $type,
         ];
 
-        self::check_requires_update( $contact_id );
+        if ( $type === "comment" && $user_id ){
+            self::check_requires_update( $contact_id );
+        }
         return wp_new_comment( $comment_data );
     }
 

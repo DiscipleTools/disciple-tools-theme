@@ -301,13 +301,16 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $site_options = dt_get_option( "dt_site_options" );
 
             if ( isset( $_POST["run_update_required"] ) ){
-                Disciple_Tools_Update_Needed::find_contacts_that_need_an_update();
+                do_action( "dt_find_contacts_that_need_an_update" );
             }
             $site_options["update_required"]["enabled"] = isset( $_POST["triggers_enabled"] );
 
             foreach ( $site_options["update_required"]["options"] as $option_index => $option ){
                 if ( isset( $_POST[$option_index . "_days"] ) ){
                     $site_options["update_required"]["options"][$option_index]["days"] = sanitize_text_field( $_POST[$option_index . "_days"] );
+                }
+                if ( isset( $_POST[$option_index . "_comment"] ) ){
+                    $site_options["update_required"]["options"][$option_index]["comment"] = wp_unslash( sanitize_text_field( $_POST[$option_index . "_comment"] ) );
                 }
             }
             update_option( 'dt_site_options', $site_options, true );
@@ -336,6 +339,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                         <th><?php esc_html_e( "Status", 'disciple_tools' ) ?></th>
                         <th><?php esc_html_e( "Seeker Path", 'disciple_tools' ) ?></th>
                         <th><?php esc_html_e( "Days to wait", 'disciple_tools' ) ?></th>
+                        <th><?php esc_html_e( "Comment", 'disciple_tools' ) ?></th>
                     </tr>
                 </thead>
                 <?php foreach ( $update_required_options as $option_key => $option ) : ?>
@@ -343,9 +347,11 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                         <td><?php echo esc_html( $field_options["overall_status"]['default'][$option['status']] ) ?></td>
                         <td><?php echo esc_html( $field_options["seeker_path"]['default'][$option['seeker_path']] ) ?></td>
                         <td>
-
                             <input name="<?php echo esc_html( $option_key ) ?>_days" type="number"
                                 value="<?php echo esc_html( $option["days"] ) ?>"  />
+                        </td>
+                        <td>
+                            <input name="<?php echo esc_html( $option_key ) ?>_comment" type="text" value="<?php echo esc_html( $option["comment"] ) ?>">
                         </td>
                     </tr>
                 <?php endforeach; ?>
