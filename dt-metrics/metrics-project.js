@@ -91,10 +91,6 @@ function project_overview() {
                 </div>
             </div>
             
-            <div class="cell">
-            <hr>
-                <div id="streams" style="height: 500px;"></div>
-            </div>
         </div>
         `)
 
@@ -114,7 +110,6 @@ function project_overview() {
     google.charts.setOnLoadCallback(drawMyGroupHealth);
     google.charts.setOnLoadCallback(drawGroupTypes);
     google.charts.setOnLoadCallback(drawGroupGenerations);
-    google.charts.setOnLoadCallback(drawStreams);
 
     function drawMyContactsProgress() {
 
@@ -220,32 +215,6 @@ function project_overview() {
         chart.draw(data, options);
     }
 
-    function drawStreams() {
-
-        let data = google.visualization.arrayToDataTable( sourceData.streams );
-
-        let options = {
-            chartArea: {
-                left: '10%',
-                top: '10%',
-                width: "85%",
-                height: "75%" },
-            vAxis: {
-                title: label.label_streams,
-                format: '0',
-            },
-            hAxis: {
-                title: label.label_generations,
-                format: '0',
-            },
-            title: "Streams",
-            legend: {position: "none"},
-            colors: ['limegreen' ],
-        };
-
-        let chart = new google.visualization.ColumnChart(document.getElementById('streams'));
-        chart.draw(data, options);
-    }
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
 

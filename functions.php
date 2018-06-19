@@ -408,6 +408,7 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-site-links.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-keys.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-locations.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-critical-path.php' );
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-extensions.php' ); // main registers all the menu pages and tabs
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-featured-extensions.php' );
