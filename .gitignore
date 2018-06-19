@@ -8,5 +8,4 @@ dt-people-groups/json/*
 composer.phar
 .vscode/*
 .gitignore
-composer.json
 composer.lock

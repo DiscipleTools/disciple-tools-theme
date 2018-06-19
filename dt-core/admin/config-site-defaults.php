@@ -398,7 +398,7 @@ function dt_get_site_custom_lists( string $list_title = null )
 {
     $fields = [];
 
-    $fields['version'] = '1.0';
+    $fields['version'] = '2.0';
 
     //custom fields
     $fields['seeker_path'] = [

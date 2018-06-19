@@ -367,11 +367,11 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
         // get the list of custom lists
         $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-        $site_custom_lists = $site_custom_lists["custom_milestones"];
         //empty check
         if ( ! $site_custom_lists ) {
             wp_die( 'Failed to get custom list from options table.' );
         }
+        $site_custom_lists = $site_custom_lists["custom_milestones"];
         //for each milestone put it on the list
         foreach ( $site_custom_lists as $milestone => $value) {
             if ( strpos( $milestone, "milestone_" ) === 0 ) {
