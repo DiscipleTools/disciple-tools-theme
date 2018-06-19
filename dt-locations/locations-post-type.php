@@ -353,7 +353,7 @@ class Disciple_Tools_Location_Post_Type
             <input name="menu_order" type="text" size="4" id="menu_order" value="<?php echo esc_attr( $post->menu_order ); ?>" />
 
 
-        <?php
+            <?php
         /**************************************************************************************************************
          * Geocoded section
          */
@@ -378,7 +378,7 @@ class Disciple_Tools_Location_Post_Type
                 ?>
                 <strong><?php echo esc_attr( $post->post_title ); ?></strong>
             </p>
-            <?php if ( user_can( get_current_user_id(), 'manage_dt' ) && dt_get_option( 'auto_location' ) ) : ?>
+                <?php if ( user_can( get_current_user_id(), 'manage_dt' ) && dt_get_option( 'auto_location' ) ) : ?>
                 <hr>
                 <p style="text-align:center;">
                     <a class="add-parent-location button" href="javascript:void(0)"
@@ -409,7 +409,7 @@ class Disciple_Tools_Location_Post_Type
                         </a>
                     </p>
                 </div>
-                <?php
+                    <?php
                 endif; // if political
             endif; // user permission check on auto build
         endif;
@@ -453,7 +453,7 @@ class Disciple_Tools_Location_Post_Type
         else :
             ?>
         You must save post before geocoding.
-        <?php
+            <?php
             endif;
     }
 

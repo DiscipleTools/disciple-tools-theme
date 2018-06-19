@@ -256,7 +256,7 @@ declare( strict_types=1 );
                                             if (strpos( $field, "milestone_" ) === 0) {
                                                 $class = ( isset( $contact[ $field ] ) && $contact[ $field ]['key'] === 'yes' ) ?
                                                     "selected-select-button" : "empty-select-button";
-                                            ?>
+                                                ?>
                                                 <button onclick="save_seeker_milestones( <?php echo esc_html( get_the_ID() ) ?> , '<?php echo esc_html( $field ) ?>')"
                                                         id="<?php echo esc_html( $field ) ?>"
                                                         class="<?php echo esc_html( $class ) ?> select-button button ">

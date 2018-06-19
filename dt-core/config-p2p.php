@@ -360,7 +360,6 @@ function dt_my_connection_types()
     );
 
     //    } // end options filter for people groups
-
 }
 add_action( 'p2p_init', 'dt_my_connection_types' );
 

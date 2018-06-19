@@ -15,14 +15,14 @@ declare(strict_types=1);
     $current_user_id = get_current_user_id();
     get_header();?>
 
-<?php
-dt_print_details_bar(
-    true,
-    true,
-    false,
-    true,
-    in_array( $current_user_id, $following )
-); ?>
+    <?php
+    dt_print_details_bar(
+        true,
+        true,
+        false,
+        true,
+        in_array( $current_user_id, $following )
+    ); ?>
 
 <div id="errors"> </div>
 
@@ -247,7 +247,7 @@ dt_print_details_bar(
 
 
 
-<?php
+    <?php
 } )();
 
 get_footer();

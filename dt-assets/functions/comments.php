@@ -62,5 +62,5 @@ function disciple_tools_comments( $comment, $args, $depth ) {
 
         </div>
     <!-- </li> is added by WordPress automatically -->
-<?php
+    <?php
 }

@@ -31,9 +31,7 @@ class Disciple_Tools_Migration_Engine
         $expected_migration_number = 0;
         $rv = [];
         foreach ( $filenames as $filename ) {
-            if ( $filename[0] === "." || $filename === "abstract.php" ) {
-                // skip this filename
-            } elseif ( preg_match( '/^([0-9][0-9][0-9][0-9])(-.*)?\.php$/i', $filename, $matches ) ) {
+            if ( preg_match( '/^([0-9][0-9][0-9][0-9])(-.*)?\.php$/i', $filename, $matches ) && !( $filename[0] === "." || $filename === "abstract.php" ) ) {
                 $got_migration_number = intval( $matches[1] );
                 if ( $expected_migration_number !== $got_migration_number ) {
                     throw new Exception( sprintf( "Expected to find migration number %04d", $expected_migration_number ) );
