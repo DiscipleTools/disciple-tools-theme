@@ -197,16 +197,8 @@ function dt_get_option( string $name )
             break;
 
         case 'seeker_path':
-            return [
-                'none'        => __( 'Contact Attempt Needed' ),
-                'attempted'   => __( 'Contact Attempted' ),
-                'established' => __( 'Contact Established' ),
-                'scheduled'   => __( 'First Meeting Scheduled' ),
-                'met'         => __( 'First Meeting Complete' ),
-                'ongoing'     => __( 'Ongoing Meetings' ),
-                'coaching'    => __( 'Being Coached' ),
-            ];
-            break;
+            $seeker_list = dt_get_site_custom_lists();
+            return $seeker_list["seeker_path"];
         case 'overall_status':
             return [
                 'unassigned'   => _x( 'Unassigned', 'Contact Status', 'disciple_tools' ),
@@ -406,8 +398,19 @@ function dt_get_site_custom_lists( string $list_title = null )
 {
     $fields = [];
 
-    $fields['version'] = '1.0';
+    $fields['version'] = '2.0';
 
+    //custom fields
+    $fields['seeker_path'] = [
+        'none'        => __( 'Contact Attempt Needed' ),
+        'attempted'   => __( 'Contact Attempted' ),
+        'established' => __( 'Contact Established' ),
+        'scheduled'   => __( 'First Meeting Scheduled' ),
+        'met'         => __( 'First Meeting Complete' ),
+        'ongoing'     => __( 'Ongoing Meetings' ),
+        'coaching'    => __( 'Being Coached' ),
+    ];
+    $fields['custom_milestones'] = [];
     // the prefix dt_user_ assists db meta queries on the user
     $fields['user_fields'] = [
         'dt_user_personal_phone'   => [

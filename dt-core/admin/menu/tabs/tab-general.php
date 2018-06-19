@@ -360,7 +360,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             <br>
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
         </form>
-    <?php
+        <?php
     }
 
 

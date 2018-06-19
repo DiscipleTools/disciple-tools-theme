@@ -638,10 +638,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
         }
 
-        if ( !isset( $fields["requires_update"] )){
+        //if ( !isset( $fields["requires_update"] )){
             //only mark as updated with a comment or when is quick action button is pressed.
             //self::check_requires_update( $contact_id );
-        }
+        //}
 //        @todo permission?
         $contact = self::get_contact( $contact_id, false );
         if (isset( $fields["added_fields"] )){
@@ -1476,9 +1476,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ($most_recent){
             global $wpdb;
             $deleted_query = $wpdb->get_results( $wpdb->prepare(
-                "SELECT object_id 
+                "SELECT object_id
                 FROM `$wpdb->dt_activity_log`
-                WHERE 
+                WHERE
                     ( `action` = 'deleted' || `action` = 'trashed' )
                     AND `object_subtype` = 'contacts'
                     AND hist_time > %d
@@ -2036,11 +2036,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         if ( !empty( $val["value"] ) ){
                             $contacts = $this->find_contacts_with( $field_id, $val["value"], $contact_id );
                             $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
-                        } else if ( $this->get_field_details( $field_id, $contact_id )["type"] === "array" ){
+                        }
+                        //else if ( $this->get_field_details( $field_id, $contact_id )["type"] === "array" ){
 //                            @todo, specify which field(s) in the array to look for duplicates on
 //                            $contacts = $this->find_contacts_with( $field_id, $val, $contact_id );
 //                            $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
-                        }
+                        //}
                     }
                 }
             }

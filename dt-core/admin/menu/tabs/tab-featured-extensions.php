@@ -223,9 +223,9 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         <?php
                     }
                     else {
-                    ?>
+                        ?>
                                 <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
-                    <?php
+                        <?php
                     }
                     ?>
                     </td>    
@@ -253,9 +253,9 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         <?php
                     }
                     else {
-                    ?>
+                        ?>
                                 <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
-                    <?php
+                        <?php
                     }
                     ?>
                     </td>    
@@ -283,9 +283,9 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         <?php
                     }
                     else {
-                    ?>
+                        ?>
                                 <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
-                    <?php
+                        <?php
                     }
                     ?>
                     </td>    

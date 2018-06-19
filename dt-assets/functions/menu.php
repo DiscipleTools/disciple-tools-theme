@@ -144,9 +144,8 @@ function disciple_tools_off_canvas_nav()
 
         <?php
 
-    } else {
-        /* redirect to registered page */
     }
+    /* redirect to registered page */
 }
 
 /**
