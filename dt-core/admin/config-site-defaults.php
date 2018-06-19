@@ -403,6 +403,7 @@ function dt_get_site_custom_lists( string $list_title = null )
         'ongoing'     => __( 'Ongoing Meetings' ),
         'coaching'    => __( 'Being Coached' ),
     ];
+    $fields['custom_milestones'] = [];
     // the prefix dt_user_ assists db meta queries on the user
     $fields['user_fields'] = [
         'dt_user_personal_phone'   => [
