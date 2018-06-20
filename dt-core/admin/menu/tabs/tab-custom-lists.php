@@ -569,10 +569,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         $default = dt_get_site_custom_lists( "seeker_path" ); //the standard ones
         $seeker_path = dt_get_option( 'dt_site_custom_lists' );
         $seeker_path = $seeker_path["seeker_path"];
-        //wp-admin/images/arrows.png
-        //<?php echo twentyseventeen_get_svg( array( 'icon' => 'arrow-right' ) ); ? >
-        //$site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-        //$site_custom_lists = $site_custom_lists["seeker_path"];
+        $first = true;
         if ( ! $seeker_path ) {
             wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
         }
@@ -597,16 +594,18 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <tbody>
                 <?php foreach ( $seeker_path as $key => $label ) : ?>
                     <tr>
-                        <?php //echo twentyseventeen_get_svg( array( 'icon' => 'arrow-up' ) ); ?>
                         <td>
+                        <?php if ( !$first ) : ?>
                             <button type="submit" name="seeker_path_move_up" value="<?php echo esc_html( $key ) ?>" class="button small" >↑</button>
                             <button type="submit" name="seeker_path_move_down" value="<?php echo esc_html( $key ) ?>" class="button small" >↓</button>
+                        <?php endif; ?>
                         </td>
                         <td><input name="seeker_path[<?php echo esc_html( $key ) ?>]" type="text" value="<?php echo esc_html( $label ) ?>"/></td>
                         <?php if ( !in_array( $key, array_keys( $default ), true ) ) { ?>
                             <td><button type="submit" name="delete_field" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "delete", 'disciple_tools' ) ?></button> </td>
                         <?php } ?>
                     </tr>
+                <?php $first = false; ?>
                 <?php endforeach; ?>
                 </tbody>
             </table>
