@@ -70,7 +70,7 @@ $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id(
 
                                                     <?php
                                                     if ( isset( $dt_user_meta['dt_avalability'] ) && $dt_user_meta['dt_avalability'] == false ){
-                                                    ?> <strong><?php esc_html_e( 'Not Available', 'disciple_tools' ) ?></strong>
+                                                        ?> <strong><?php esc_html_e( 'Not Available', 'disciple_tools' ) ?></strong>
                                                     <?php } else { ?>
                                                     <strong><?php esc_html_e( 'Not Available', 'disciple_tools' ) ?></strong>
                                                     <?php } ?>
