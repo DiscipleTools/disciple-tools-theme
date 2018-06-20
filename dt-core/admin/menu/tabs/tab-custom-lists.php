@@ -501,10 +501,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             if ( isset( $_POST['seeker_path_move_up'] ) ) {
                 $new_seekers = [];
                 $previous_key = null;
+                reset( $site_custom_lists["seeker_path"] );
+                $first_key = key( $site_custom_lists["seeker_path"] );
                 $key = sanitize_text_field( $_POST['seeker_path_move_up'] );
                 $item = array( $key => $site_custom_lists["seeker_path"][$key] );
                 foreach ( $site_custom_lists["seeker_path"] as $h_key => $h_val ) {
-                    if ( $h_key == $key && $previous_key != null ) {
+                    if ( $h_key == $key && $previous_key != null && $previous_key != $first_key ) {
                         $previous = $new_seekers[$previous_key];
                         unset( $new_seekers[$previous_key] );
                         unset( $new_seekers[$h_key] );
