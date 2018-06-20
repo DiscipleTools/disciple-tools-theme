@@ -531,6 +531,15 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      */
     public function seeker_path_box()
     {
+        $default = [
+            'none'        => __( 'Contact Attempt Needed' ),
+            'attempted'   => __( 'Contact Attempted' ),
+            'established' => __( 'Contact Established' ),
+            'scheduled'   => __( 'First Meeting Scheduled' ),
+            'met'         => __( 'First Meeting Complete' ),
+            'ongoing'     => __( 'Ongoing Meetings' ),
+            'coaching'    => __( 'Being Coached' ),
+        ]; //the standard ones
         $seeker_path = dt_get_option( 'dt_site_custom_lists' );
         $seeker_path = $seeker_path["seeker_path"];
         //$site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -559,7 +568,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <?php foreach ( $seeker_path as $key => $label ) : ?>
                     <tr>
                         <td><input name="seeker_path[<?php echo esc_html( $key ) ?>]" type="text" value="<?php echo esc_html( $label ) ?>"/></td>
-                        <td><button type="submit" name="delete_field" value="<?php echo esc_html( $key ) ?>" class="button small" >delete</button> </td>
+                        <?php if ( !in_array( $key, $default, true ) ) { ?>
+                            <td><button type="submit" name="delete_field" value="<?php echo esc_html( $key ) ?>" class="button small" >delete</button> </td>
+                        <?php } ?>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
