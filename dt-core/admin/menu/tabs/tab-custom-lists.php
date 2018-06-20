@@ -90,9 +90,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'top', 'Seeker Path' );
             $this->process_seeker_path_box();
             $this->seeker_path_box(); // prints
+
             $this->box( 'bottom' );
             /* end Metrics */
-
 
             $this->template( 'right_column' );
 
@@ -577,6 +577,75 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <button type="submit">Add</button>
                 </td></tr>
             </table>
+            </div>
+
+        </form>
+        <?php
+    }
+
+    /**
+     * Process contact critical_path settings
+     */
+    public function process_critical_path_box()
+    {
+        if ( isset( $_POST['critical_path_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['critical_path_nonce'] ) ), 'critical_path' . get_current_user_id() ) ) {
+
+            if ( !wp_verify_nonce( sanitize_key( $_POST['critical_path_nonce'] ), 'critical_path' ) ) {
+                return;
+            }
+
+            dt_write_log( $_POST );
+        }
+    }
+
+    /**
+     * Prints the critical_path settings box.
+     */
+    public function critical_path_box()
+    {
+        $critical_path = dt_get_option( 'critical_path' );
+        if ( ! $critical_path ) {
+            $critical_path = [];
+        }
+
+        ?>
+        <form method="post" name="critical_path_form">
+            <input type="hidden" name="critical_path_nonce" id="critical_path_nonce" value="<?php echo esc_attr( wp_create_nonce( 'critical_path' . get_current_user_id() ) ) ?>" />
+
+            <button type="submit" class="button-like-link" name="critical_path_reset" value="1">reset</button>
+
+            <p>Add or remove critical_path for new contacts.</p>
+
+            <input type="hidden" name="critical_path_nonce" id="critical_path_nonce" value="<?php echo esc_attr( wp_create_nonce( 'critical_path' ) ) ?>" />
+            <table class="widefat">
+                <thead>
+                <tr>
+                    <td>Label</td>
+                    <td>Delete</td>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ( $critical_path as $key => $label ) : ?>
+                    <tr>
+                        <td><input name="critical_path['<?php echo esc_attr( $key ) ?>']" type="text" value="<?php echo esc_html( $label ) ?>" /></td>
+                        <td><button type="submit" name="delete_field" value="<?php echo esc_attr( $key ) ?>" class="button small" >delete</button> </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+
+            <br>
+            <button type="button" onclick="jQuery('#add_critical_path').toggle();" class="button">Add</button>
+            <button type="submit" style="float:right;" class="button">Save</button>
+
+            <div id="add_critical_path" style="display:none;">
+                <table width="100%">
+                    <tr>
+                        <td><hr><br>
+                            <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;
+                            <button type="submit">Add</button>
+                        </td></tr>
+                </table>
             </div>
 
         </form>
