@@ -295,7 +295,7 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
             foreach ( $sources as $source ) {
                 foreach ( $results as $result ) {
                     if ( $location === $result['section'] && $result['source'] === $source['key'] ) :
-                    ?>
+                        ?>
                         <tr>
                             <td><?php echo esc_attr( $source['label'] ) ?></td>
                             <td><?php echo esc_attr( $result['year'] ) ?></td>
@@ -303,7 +303,7 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
                             <td><span style="font-size:.8em;"><?php echo esc_attr( $result['submit_date'] ) ?></span></td>
                             <td><button type="submit" class="button" name="delete" value="<?php echo esc_attr( $result['id'] ) ?>"><?php esc_attr_e( 'Delete' ) ?></button></td>
                         </tr>
-                    <?php
+                        <?php
                     endif;
                 }
             }
