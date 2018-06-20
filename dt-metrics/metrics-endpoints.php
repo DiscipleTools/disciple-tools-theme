@@ -90,6 +90,15 @@ class Disciple_Tools_Metrics_Endpoints {
             ]
         );
 
+        register_rest_route(
+            $namespace, '/metrics/critical_path_by_year/(?P<id>\d+)', [
+                [
+                    'methods'  => WP_REST_Server::READABLE,
+                    'callback' => [ $this, 'critical_path_by_year' ],
+                ],
+            ]
+        );
+
     }
 
     /**
@@ -131,6 +140,21 @@ class Disciple_Tools_Metrics_Endpoints {
         }
         else {
             return new WP_Error( "critical_path_processing_error", $result["message"], [ 'status' => 400 ] );
+        }
+    }
+
+    public function critical_path_by_year( WP_REST_Request $request )
+    {
+        $params = $request->get_params();
+        if ( isset( $params['id'] ) ) {
+            $result = Disciple_Tools_Metrics_Hooks_Base::chart_critical_path( $params['id'] );
+            if ( is_wp_error( $result ) ) {
+                return $result;
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( "critical_path_by_year", "Missing a valid contact id", [ 'status' => 400 ] );
         }
     }
 

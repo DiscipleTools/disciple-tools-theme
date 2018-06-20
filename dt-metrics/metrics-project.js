@@ -541,9 +541,8 @@ function project_critical_path() {
     chartDiv.empty().html(`
         <span class="section-header">`+ label.title_critical_path +`</span>
         <span style="float:right;">
-        <select id="type_select" >
-            <option>This Year</option>
-            <option>This Month</option>
+        <select id="year_select" onchange="change_critical_path_year($(this).val())">
+            `+year_list()+`
         </select>
         </span>
         
@@ -571,64 +570,112 @@ function project_critical_path() {
 
     google.charts.setOnLoadCallback(drawCriticalPath);
 
-    function drawCriticalPath() {
-
-        let data = google.visualization.arrayToDataTable( sourceData.critical_path );
-        let dashboard = new google.visualization.Dashboard(
-            document.getElementById('dashboard_div')
-        );
-
-        let barChart = new google.visualization.ChartWrapper({
-            'chartType': 'BarChart',
-            'containerId': 'my_critical_path',
-            'options': {
-                bars: 'horizontal',
-                chartArea: {
-                    left: '20%',
-                    top: '7%',
-                    width: "75%",
-                    height: "85%" },
-                hAxis: { scaleType: 'mirrorLog' },
-                title: label.title_critical_path,
-                legend: { position: "none"},
-                animation:{
-                    duration: 400,
-                    easing: 'out',
-                },
-            }
-        });
-
-        var crit_keys = []
-        jQuery.each( sourceData.critical_path, function( index, value ) {
-            crit_keys.push( value[0] )
-
-        })
-
-        let categoryFilter = new google.visualization.ControlWrapper({
-            'controlType': 'CategoryFilter',
-            'containerId': 'filter_div',
-            'options': {
-                'filterColumnLabel': 'Step'
-            },
-            'ui': {
-                'allowMultiple': true,
-                'caption': "Select Path Step...",
-            },
-            'state': { 'selectedValues': crit_keys },
-
-        });
-
-        dashboard.bind(categoryFilter, barChart);
-
-        dashboard.draw( data )
-    }
-
     new Foundation.Reveal(jQuery('.dt-project-legend'));
 
     /*chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span>
             <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
             <span class="spinner" style="display: none;"><img src="`+dtMetricsProject.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
             </div>`)*/
+}
+
+function drawCriticalPath( cp_data ) {
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+    let chartDiv = jQuery('#chart')
+    let sourceData = dtMetricsProject.data
+    let label = dtMetricsProject.data.translations
+    let path_data = []
+
+    if ( cp_data ) {
+        path_data = cp_data
+    } else {
+        path_data = sourceData.critical_path
+    }
+
+    let data = google.visualization.arrayToDataTable( path_data );
+    let dashboard = new google.visualization.Dashboard(
+        document.getElementById('dashboard_div')
+    );
+
+    let barChart = new google.visualization.ChartWrapper({
+        'chartType': 'BarChart',
+        'containerId': 'my_critical_path',
+        'options': {
+            bars: 'horizontal',
+            chartArea: {
+                left: '20%',
+                top: '7%',
+                width: "75%",
+                height: "85%" },
+            hAxis: { scaleType: 'mirrorLog' },
+            title: label.title_critical_path,
+            legend: { position: "none"},
+            animation:{
+                duration: 400,
+                easing: 'out',
+            },
+        }
+    });
+
+    var crit_keys = []
+    jQuery.each( sourceData.critical_path, function( index, value ) {
+        crit_keys.push( value[0] )
+
+    })
+
+    let categoryFilter = new google.visualization.ControlWrapper({
+        'controlType': 'CategoryFilter',
+        'containerId': 'filter_div',
+        'options': {
+            'filterColumnLabel': 'Step'
+        },
+        'ui': {
+            'allowMultiple': true,
+            'caption': "Select Path Step...",
+        },
+        'state': { 'selectedValues': crit_keys },
+
+    });
+
+    dashboard.bind(categoryFilter, barChart);
+
+    dashboard.draw( data )
+}
+
+function year_list() {
+    // create array with descending dates
+    let i = 0
+    let fullDate = new Date()
+    let date = fullDate.getFullYear()
+    let options = ''
+    while (i < 15) {
+        options += `<option value="`+date+`">`+date+`</option>`;
+        i++;
+        date--;
+    }
+
+    return options
+}
+
+function change_critical_path_year( year ) {
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: dtMetricsProject.root + 'dt/v1/metrics/critical_path_by_year/'+year,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
+        },
+    })
+        .done(function (data) {
+            if ( data ) {
+                drawCriticalPath( data )
+            }
+        })
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+            jQuery("#errors").append(err.responseText)
+        })
 }
 
 function project_outreach() {

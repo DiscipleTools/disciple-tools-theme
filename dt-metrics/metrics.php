@@ -973,7 +973,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 }
             }
         }
-        dt_write_log( $numbers );
+//        dt_write_log( $numbers );
 
         return $numbers;
     }
