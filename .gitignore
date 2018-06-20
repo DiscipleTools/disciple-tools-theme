@@ -7,5 +7,4 @@ node_modules/
 dt-people-groups/json/*
 composer.phar
 .vscode/*
-.gitignore
 composer.lock
