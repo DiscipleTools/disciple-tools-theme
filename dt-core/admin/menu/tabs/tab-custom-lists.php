@@ -568,7 +568,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <?php foreach ( $seeker_path as $key => $label ) : ?>
                     <tr>
                         <td><input name="seeker_path[<?php echo esc_html( $key ) ?>]" type="text" value="<?php echo esc_html( $label ) ?>"/></td>
-                        <?php if ( !in_array( $key, $default, true ) ) { ?>
+                        <?php if ( !in_array( $key, array_keys( $default ), true ) ) { ?>
                             <td><button type="submit" name="delete_field" value="<?php echo esc_html( $key ) ?>" class="button small" >delete</button> </td>
                         <?php } ?>
                     </tr>
