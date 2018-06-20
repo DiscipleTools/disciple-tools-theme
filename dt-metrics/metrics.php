@@ -659,8 +659,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         $results = $wpdb->get_col( $wpdb->prepare( "
             SELECT
               a.ID
-            FROM wp_posts as a
-              JOIN wp_postmeta as c
+            FROM $wpdb->posts as a
+              JOIN $wpdb->postmeta as c
                 ON a.ID = c.post_id
                    AND c.meta_key = 'baptism_date'
                    AND c.meta_value >= %d
@@ -829,16 +829,20 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                   AND a.post_type = 'contacts'
                 ) as total_baptisms,
                 ( 0 ) as 1st_gen_baptisms,
-                ( SELECT count( DISTINCT p2p_to) as count
-                FROM $wpdb->p2p
-                WHERE p2p_type = 'baptizer_to_baptized'
-                  AND p2p_id IN (
-                SELECT meta_id
-                FROM $wpdb->p2pmeta
-                WHERE meta_key = 'date'
-                    AND meta_value >= %s
-                    AND meta_value < %s
-                ) ) as baptizers,
+                ( SELECT count(*) as count
+                    FROM $wpdb->p2p
+                    WHERE p2p_from IN (
+                      SELECT a.ID
+                      FROM $wpdb->posts as a
+                        JOIN $wpdb->postmeta as b
+                          ON a.ID = b.post_id
+                             AND b.meta_key = 'baptism_date'
+                             AND ( b.meta_value >= %s
+                                   AND b.meta_value < %s )
+                      WHERE a.post_status = 'publish'
+                            AND a.post_type = 'contacts'
+                    )
+                    AND p2p_type = 'baptizer_to_baptized' ) as baptizers,
                 ( SELECT count(ID) as count
                 FROM $wpdb->posts as a
                 JOIN $wpdb->postmeta as b
@@ -923,34 +927,34 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         /**
          * Check for manual additions to critical path
          */
-        $manual_additions = $wpdb->get_results("
+        $manual_additions = $wpdb->get_results($wpdb->prepare( "
             SELECT a.report_source as source,
               h.meta_value as total,
               g.meta_value as section
-            FROM wp_dt_reports as a
-            LEFT JOIN wp_dt_reportmeta as e
+            FROM $wpdb->dt_reports as a
+            LEFT JOIN $wpdb->dt_reportmeta as e
               ON a.id=e.report_id
                  AND e.meta_key = 'year'
-            LEFT JOIN wp_dt_reportmeta as h
+            LEFT JOIN $wpdb->dt_reportmeta as h
               ON a.id=h.report_id
                  AND h.meta_key = 'total'
-              LEFT JOIN wp_dt_reportmeta as g
+              LEFT JOIN $wpdb->dt_reportmeta as g
                 ON a.id=g.report_id
                    AND g.meta_key = 'section'
             WHERE category = 'manual'
               AND a.id IN ( SELECT MAX( bb.report_id )
-                FROM wp_dt_reportmeta as bb
-                  LEFT JOIN wp_dt_reportmeta as d
+                FROM $wpdb->dt_reportmeta as bb
+                  LEFT JOIN $wpdb->dt_reportmeta as d
                     ON bb.report_id=d.report_id
                        AND d.meta_key = 'source'
-                  LEFT JOIN wp_dt_reportmeta as e
+                  LEFT JOIN $wpdb->dt_reportmeta as e
                     ON bb.report_id=e.report_id
                        AND e.meta_key = 'year'
                 WHERE bb.meta_key = 'submit_date'
                 GROUP BY d.meta_value, e.meta_value
               )
-            AND e.meta_value = '2018'
-            ", ARRAY_A );
+            AND e.meta_value = %s
+            ", $year ), ARRAY_A );
 
         if ( ! empty( $manual_additions ) ) {
             // get source order
@@ -1023,26 +1027,26 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             SELECT
               a.ID as id,
               0    as parent_id
-            FROM wp_posts as a
+            FROM $wpdb->posts as a
             WHERE a.post_type = 'contacts'
                   AND a.post_status = 'publish'
                   AND a.ID NOT IN (
                     SELECT
                       DISTINCT( b.p2p_from ) as id
-                    FROM wp_p2p as b
+                    FROM $wpdb->p2p as b
                     WHERE b.p2p_type = 'baptizer_to_baptized'
                   )
                   AND a.ID IN (
                     SELECT
                       DISTINCT( b.p2p_to ) as id
-                    FROM wp_p2p as b
+                    FROM $wpdb->p2p as b
                     WHERE b.p2p_type = 'baptizer_to_baptized'
             )
             UNION
             SELECT
               b.p2p_from as id,
               b.p2p_to as parent_id
-            FROM wp_p2p as b
+            FROM $wpdb->p2p as b
             WHERE b.p2p_type = 'baptizer_to_baptized'
         ", ARRAY_A);
 
@@ -1845,9 +1849,5 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         return $numbers;
     }
-
-
-
-
 }
 
