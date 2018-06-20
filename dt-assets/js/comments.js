@@ -43,9 +43,6 @@ jQuery(document).ready(function($) {
     let settings = commentsSettings
     const currentContact = settings.post
     let createdDate = moment.utc(currentContact.post_date_gmt, "YYYY-MM-DD HH:mm:ss", true)
-    if (_.get(settings, "post_with_fields.created_on")){
-      createdDate = moment.utc(settings.post_with_fields.created_on)
-    }
     const createdContactActivityItem = {
       hist_time: createdDate.unix(),
       object_note: settings.txt_created.replace("{}", formatDate(createdDate.local())),
@@ -245,10 +242,10 @@ jQuery(document).ready(function($) {
       comment = comment.replace(mentionRegex, (match, text, id)=>{
         return `<a>@${text}</a>`
       })
-        let urlRegex = /(\[?http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+        let urlRegex = /((\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g
         comment = comment.replace(urlRegex, (match, ext)=>{
             let url = match
-            if(match.indexOf("@") == -1 && match.indexOf("[") == -1) {
+            if(match.indexOf("@") == -1 && match.indexOf("[") == -1 && match.indexOf("(") == -1) {
                 if (match.indexOf("http") == 0 && match.indexOf("www.") == -1) {
                     url = match
                 }
@@ -306,10 +303,16 @@ jQuery(document).ready(function($) {
     display_activity_comment(tabId)
   })
 
+  let searchUsersPromise = null
+
   $('textarea.mention').mentionsInput({
     onDataRequest:function (mode, query, callback) {
       $('#comment-input').addClass('loading-gif')
-      API.search_users(query).then(responseData=>{
+      if ( searchUsersPromise && _.get(searchUsersPromise, 'readyState') !== 4 ){
+        searchUsersPromise.abort("abortPromise")
+      }
+      searchUsersPromise = API.search_users(query)
+      searchUsersPromise.then(responseData=>{
         $('#comment-input').removeClass('loading-gif')
         let data = []
         responseData.forEach(user=>{

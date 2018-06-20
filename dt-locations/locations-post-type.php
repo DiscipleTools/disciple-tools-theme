@@ -94,7 +94,7 @@ class Disciple_Tools_Location_Post_Type
         $this->post_type = 'locations';
         $this->singular = __( 'Location', 'disciple_tools' );
         $this->plural = __( 'Locations', 'disciple_tools' );
-        $this->args = [ 'menu_icon' => dt_svg_icon() ];
+        $this->args = [ 'menu_icon' => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMTIsMEM3LjYsMCwzLDMuNCwzLDljMCw1LjMsOCwxMy40LDguMywxMy43YzAuMiwwLjIsMC40LDAuMywwLjcsMC4zczAuNS0wLjEsMC43LTAuM0MxMywyMi40LDIxLDE0LjMsMjEsOSBDMjEsMy40LDE2LjQsMCwxMiwweiBNMTIsMTJjLTEuNywwLTMtMS4zLTMtM3MxLjMtMywzLTNzMywxLjMsMywzUzEzLjcsMTIsMTIsMTJ6Ij48L3BhdGg+PC9nPjwvc3ZnPg==' ];
         $this->error = '';
 
         add_action( 'init', [ $this, 'register_post_type' ] );
@@ -353,7 +353,7 @@ class Disciple_Tools_Location_Post_Type
             <input name="menu_order" type="text" size="4" id="menu_order" value="<?php echo esc_attr( $post->menu_order ); ?>" />
 
 
-        <?php
+            <?php
         /**************************************************************************************************************
          * Geocoded section
          */
@@ -378,7 +378,7 @@ class Disciple_Tools_Location_Post_Type
                 ?>
                 <strong><?php echo esc_attr( $post->post_title ); ?></strong>
             </p>
-            <?php if ( user_can( get_current_user_id(), 'manage_dt' ) && dt_get_option( 'auto_location' ) ) : ?>
+                <?php if ( user_can( get_current_user_id(), 'manage_dt' ) && dt_get_option( 'auto_location' ) ) : ?>
                 <hr>
                 <p style="text-align:center;">
                     <a class="add-parent-location button" href="javascript:void(0)"
@@ -409,7 +409,7 @@ class Disciple_Tools_Location_Post_Type
                         </a>
                     </p>
                 </div>
-                <?php
+                    <?php
                 endif; // if political
             endif; // user permission check on auto build
         endif;
@@ -453,7 +453,7 @@ class Disciple_Tools_Location_Post_Type
         else :
             ?>
         You must save post before geocoding.
-        <?php
+            <?php
             endif;
     }
 
@@ -825,10 +825,10 @@ class Disciple_Tools_Location_Post_Type
 
                     let mapDim = {height: $mapDiv.height(), width: $mapDiv.width()};
 
-                    let zoom = getBoundsZoomLevel(bounds, mapDim);
+                    let zoomLevel = getBoundsZoomLevel(bounds, mapDim);
 
                     let map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: zoom - 3,
+                        zoom: zoomLevel - 3,
                         center: center,
                         mapTypeId: 'terrain'
                     });

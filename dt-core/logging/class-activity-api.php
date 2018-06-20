@@ -95,7 +95,7 @@ class Disciple_Tools_Activity_Log_API {
                 $args['user_id'] = $user->ID;
             }
         } else {
-            $args['user_caps'] = 'guest';
+            $args['user_caps'] = 'system';
             if ( empty( $args['user_id'] ) ) {
                 $args['user_id'] = 0;
             }

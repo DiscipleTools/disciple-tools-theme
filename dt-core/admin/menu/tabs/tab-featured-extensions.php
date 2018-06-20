@@ -109,13 +109,19 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     //main page
     public function box_message()
     {
+        //check if it can run commands
+        $run = true;
+        //check for admin or multisite super admin
+        if ( ( is_multisite() && !is_super_admin() ) || ( !is_multisite() && !is_admin() ) ) {
+            $run = false;
+        }
         //check for actions
-        if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', $_POST["_ajax_nonce"] ) ) {
+        if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', $_POST["_ajax_nonce"] ) && $run ) {
             //activate the plugin
             activate_plugin( $_POST["activate"] );
             exit;
         }
-        else if ( isset( $_POST["install"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', $_POST["_ajax_nonce"] ) ) {
+        else if ( isset( $_POST["install"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', $_POST["_ajax_nonce"] ) && $run ) {
             //install plugin
             $this->install_plugin( $_POST["install"] );
             exit;
@@ -125,6 +131,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         //get plugin data
         $plugins = $this->get_plugins();
         ?>
+        <h3>Official DT Plugins</h3>
         <table class="widefat striped">
             <thead>
             <tr>
@@ -175,6 +182,114 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 }
             }
             ?>
+            </tbody>
+        </table>
+        <h3>Recommended Plugins</h3>
+        <p><?php echo esc_html__( 'look for the "Install" button on the bottom right of your screen after clicking the install button link', 'disciple_tools' ) ?></p>
+        <table class="widefat striped">
+            <thead>
+            <tr>
+                <td>
+                    <?php echo esc_html__( 'Name', 'disciple_tools' ) ?>
+                </td>
+                <td>
+                    <?php echo esc_html__( 'Description', 'disciple_tools' ) ?>
+                <td>
+                    <?php echo esc_html__( 'Action', 'disciple_tools' ) ?>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <!--Updraft-->
+                <tr>
+                    <td>
+                        <?php echo esc_html( "UpdraftPlus - Backup/Restore", 'disciple_tools' ); ?>
+                    </td>
+                    <td>
+                            <?php echo esc_html( "Backup and restore: take backups locally, or backup to Amazon S3, Dropbox, Google Drive, Rackspace, (S)FTP, WebDAV & email, on automatic schedules.", 'disciple_tools' ); ?>
+                    </td>
+                    <td>
+                    <?php
+                    $result_name = $this->partial_array_search( $all_plugins, "updraftplus" );
+                    if ($result_name == -1) {
+                        ?>
+                                <a class="button" href="./plugin-install.php?tab=plugin-information&plugin=updraftplus"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
+                        <?php
+                    } else if ( $this->partial_array_search( $active_plugins, "updraftplus" ) == -1 && isset( $_POST["activate"] ) == false ) {
+                        ?>
+                                <button class="button" onclick="activate('<?php echo esc_html( "updraftplus/updraftplus.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                    else {
+                        ?>
+                                <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
+                        <?php
+                    }
+                    ?>
+                    </td>    
+                </tr>
+            <!--Two Factor Authentication-->
+                <tr>
+                    <td>
+                        <?php echo esc_html( "Two Factor Authentication", 'disciple_tools' ); ?>
+                    </td>
+                    <td>
+                            <?php echo esc_html( "Secure your WordPress login forms with two factor authentication - including WooCommerce login forms", 'disciple_tools' ); ?>
+                    </td>
+                    <td>
+                    <?php
+                    $result_name = $this->partial_array_search( $all_plugins, "two-factor-authentication" );
+                    if ($result_name == -1) {
+                        ?>
+                                <a class="button" href="./plugin-install.php?tab=plugin-information&plugin=two-factor-authentication"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
+                        <?php
+                    } else if ( $this->partial_array_search( $active_plugins, "two-factor-authentication" ) == -1 && isset( $_POST["activate"] ) == false ) {
+                        ?>
+                                <button class="button" onclick="activate('<?php echo esc_html( "two-factor-authentication/two-factor-login.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                    else {
+                        ?>
+                                <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
+                        <?php
+                    }
+                    ?>
+                    </td>    
+                </tr>
+            <!--Inactive Logout-->
+                <tr>
+                    <td>
+                        <?php echo esc_html( "Inactive Logout", 'disciple_tools' ); ?>
+                    </td>
+                    <td>
+                            <?php echo esc_html( "Inactive logout provides functionality to log out any idle users defined specified time showing a message. Works for frontend as well.", 'disciple_tools' ); ?>
+                    </td>
+                    <td>
+                    <?php
+                    $result_name = $this->partial_array_search( $all_plugins, " inactive-logout" );
+                    if ($result_name == -1) {
+                        ?>
+                                <a class="button" href="./plugin-install.php?tab=plugin-information&plugin= inactive-logout"><?php echo esc_html__( 'Install', 'disciple_tools' ) ?></a>
+                        <?php
+                    } else if ( $this->partial_array_search( $active_plugins, " inactive-logout" ) == -1 && isset( $_POST["activate"] ) == false ) {
+                        ?>
+                                <button class="button" onclick="activate('<?php echo esc_html( " inactive-logout/inactive-logout.php" ); ?>')"><?php echo esc_html__( 'Activate', 'disciple_tools' ) ?></button>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                    else {
+                        ?>
+                                <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
+                        <?php
+                    }
+                    ?>
+                    </td>    
+                </tr>
             </tbody>
         </table>
         <?php

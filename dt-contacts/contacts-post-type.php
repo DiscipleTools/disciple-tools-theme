@@ -103,7 +103,7 @@ class Disciple_Tools_Contact_Post_Type
         $this->post_type = 'contacts';
         $this->singular = _x( 'Contact', 'singular of contact', 'disciple_tools' );
         $this->plural = _x( 'Contacts', 'plural of contact', 'disciple_tools' );
-        $this->args = [ 'menu_icon' => dt_svg_icon() ];
+        $this->args = [ 'menu_icon' => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNOSwxMmMyLjc1NywwLDUtMi4yNDMsNS01VjVjMC0yLjc1Ny0yLjI0My01LTUtNVM0LDIuMjQzLDQsNXYyQzQsOS43NTcsNi4yNDMsMTIsOSwxMnoiPjwvcGF0aD4gPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTE1LjQyMywxNS4xNDVDMTQuMDQyLDE0LjYyMiwxMS44MDYsMTQsOSwxNHMtNS4wNDIsMC42MjItNi40MjQsMS4xNDZDMS4wMzUsMTUuNzI5LDAsMTcuMjMzLDAsMTguODg2VjI0IGgxOHYtNS4xMTRDMTgsMTcuMjMzLDE2Ljk2NSwxNS43MjksMTUuNDIzLDE1LjE0NXoiPjwvcGF0aD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTYiIHk9IjMiIGZpbGw9IiNmZmZmZmYiIHdpZHRoPSI4IiBoZWlnaHQ9IjIiPjwvcmVjdD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTYiIHk9IjgiIGZpbGw9IiNmZmZmZmYiIHdpZHRoPSI4IiBoZWlnaHQ9IjIiPjwvcmVjdD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTkiIHk9IjEzIiBmaWxsPSIjZmZmZmZmIiB3aWR0aD0iNSIgaGVpZ2h0PSIyIj48L3JlY3Q+PC9nPjwvc3ZnPg==' ];
         $this->taxonomies = $taxonomies = [];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
@@ -111,8 +111,6 @@ class Disciple_Tools_Contact_Post_Type
         add_filter( 'post_type_link', [ $this, 'contacts_permalink' ], 1, 3 );
 
         if ( is_admin() ) {
-            add_action( 'admin_menu', [ $this, 'disable_new_contacts_in_admin_area' ] );
-
             add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
             add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
@@ -169,6 +167,7 @@ class Disciple_Tools_Contact_Post_Type
             'edit_others_posts'   => 'update_any_contacts',
             'publish_posts'       => 'create_contacts',
             'read_private_posts'  => 'view_any_contacts',
+            'create_posts'        => 'do_not_allow'
         ];
         $defaults = [
             'label'                 => __( 'Contact', 'disciple_tools' ),
@@ -937,6 +936,20 @@ class Disciple_Tools_Contact_Post_Type
             'section'     => 'misc',
         ];
 
+        //get the custom milestone fields
+        $custom_contact_fields = dt_get_option( 'dt_site_custom_lists' );
+        $custom_contact_fields = $custom_contact_fields["custom_milestones"];
+        foreach ( $custom_contact_fields as $key => $value ){
+            $fields[$key] = [
+                    'name'        => $value['name'],
+                    'description' => $value['description'],
+                    'type'        => $value['type'],
+                    'default'     => $value['default'],
+                    'section'     => $value['section'],
+            ];
+        }
+
+
         return apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
     } // End get_custom_fields_settings()
 
@@ -1244,18 +1257,6 @@ class Disciple_Tools_Contact_Post_Type
     public function contacts_rewrites_init()
     {
         add_rewrite_rule( 'contacts/([0-9]+)?$', 'index.php?post_type=contacts&p=$matches[1]', 'top' );
-    }
-
-    public function disable_new_contacts_in_admin_area() {
-        echo "<style type='text/css' >
-            #menu-posts-contacts ul { display:none; }
-        </style>";
-        // Hide link on listing page
-        if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'contacts') {
-            echo '<style type="text/css">
-            .page-title-action { display:none; }
-        </style>';
-        }
     }
 
 } // End Class

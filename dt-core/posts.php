@@ -25,17 +25,17 @@ class Disciple_Tools_Posts
     public function __construct()
     {
         self::$connection_types = [
-            "locations",
-            "groups",
-            "people_groups",
-            "baptized_by",
-            "baptized",
-            "coached_by",
-            "coaching",
-            "subassigned",
-            "leaders",
-            "parent_groups",
-            "child_groups",
+            "locations" => [ "name" => __( "Locations", "disciple_tools" ) ],
+            "groups" => [ "name" => __( "Groups", "disciple_tools" ) ],
+            "people_groups" => [ "name" => __( "People Groups", "disciple_tools" ) ],
+            "baptized_by" => [ "name" => __( "Baptized By", "disciple_tools" ) ],
+            "baptized" => [ "name" => __( "Baptized", "disciple_tools" ) ],
+            "coached_by" => [ "name" => __( "Coached By", "disciple_tools" ) ],
+            "coaching" => [ "name" => __( "Coaching", "disciple_tools" ) ],
+            "subassigned" => [ "name" => __( "Sub Assigned", "disciple_tools" ) ],
+            "leaders" => [ "name" => __( "Leaders", "disciple_tools" ) ],
+            "parent_groups" => [ "name" => __( "Parent Groups", "disciple_tools" ) ],
+            "child_groups" => [ "name" => __( "Child Groups", "disciple_tools" ) ],
         ];
     }
 
@@ -523,16 +523,28 @@ class Disciple_Tools_Posts
      * Get post comments
      *
      * @param string $post_type
-     * @param int    $post_id
+     * @param int $post_id
+     *
+     * @param bool $check_permissions
+     * @param string $type
      *
      * @return array|int|\WP_Error
      */
-    public static function get_post_comments( string $post_type, int $post_id )
+    public static function get_post_comments( string $post_type, int $post_id, bool $check_permissions = true, $type = "all" )
     {
-        if ( !self::can_view( $post_type, $post_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
+        if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
+            return new WP_Error( __FUNCTION__, __( "No permissions to read post" ), [ 'status' => 403 ] );
         }
-        $comments = get_comments( [ 'post_id' => $post_id ] );
+        //setting type to "comment" does not work.
+        $comments = get_comments( [
+            'post_id' => $post_id,
+            "type" => $type
+        ]);
+
+        foreach ( $comments as $comment ){
+            $comment->gravatar = get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
+            $comment->comment_author = dt_get_user_display_name( $comment->user_id );
+        }
 
         return $comments;
     }
@@ -750,7 +762,7 @@ class Disciple_Tools_Posts
         $connections_sql_from = "";
 
         foreach ( $query as $query_key => $query_value ) {
-            if ( in_array( $query_key, self::$connection_types ) ) {
+            if ( in_array( $query_key, array_keys( self::$connection_types ) ) ) {
                 if ( $query_key === "locations" ) {
                     $location_sql = "";
                     foreach ( $query_value as $location ) {
@@ -760,7 +772,7 @@ class Disciple_Tools_Posts
                         }
                     }
                     if ( !empty( $location_sql ) ){
-                        $connections_sql_to .= "AND ( to_p2p.p2p_type = 'contacts_to_locations' AND to_p2p.p2p_to in (" . esc_sql( $location_sql ) .") )";
+                        $connections_sql_to .= "AND ( to_p2p.p2p_type = '" . esc_sql( $post_type ) . "_to_locations' AND to_p2p.p2p_to in (" . esc_sql( $location_sql ) .") )";
                     }
                 }
                 if ( $query_key === "subassigned" ) {
@@ -814,7 +826,7 @@ class Disciple_Tools_Posts
             if ( !is_array( $query_value )){
                 return new WP_Error( __FUNCTION__, __( "Filter queries must be arrays" ), [ 'status' => 403 ] );
             }
-            if ( !in_array( $query_key, self::$connection_types ) && strpos( $query_key, "contact_" ) !== 0 ){
+            if ( !in_array( $query_key, array_keys( self::$connection_types ) ) && strpos( $query_key, "contact_" ) !== 0 ){
                 if ( $query_key == "assigned_to" ){
                     foreach ( $query_value as $assigned_to ){
                         $connector = "OR";
@@ -1236,5 +1248,23 @@ class Disciple_Tools_Posts
             $users[] = $assigned_to;
         }
         return array_unique( $users );
+    }
+
+    public static function get_multi_select_options( $post_type, $field, $search = ""){
+        if ( !self::can_access( $post_type ) ){
+            return new WP_Error( __FUNCTION__, __( "You do not have access to:" ) . ' ' . $field, [ 'status' => 403 ] );
+        }
+        global $wpdb;
+        $options = $wpdb->get_col( $wpdb->prepare("
+            SELECT DISTINCT $wpdb->postmeta.meta_value FROM $wpdb->postmeta
+            LEFT JOIN $wpdb->posts on $wpdb->posts.ID = $wpdb->postmeta.post_id
+            WHERE $wpdb->postmeta.meta_key = %s
+            AND $wpdb->postmeta.meta_value LIKE %s
+            AND $wpdb->posts.post_type = %s
+            AND $wpdb->posts.post_status = 'publish'
+            ORDER BY $wpdb->postmeta.meta_value ASC
+            LIMIT 20
+        ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%', esc_sql( $post_type )));
+        return $options;
     }
 }

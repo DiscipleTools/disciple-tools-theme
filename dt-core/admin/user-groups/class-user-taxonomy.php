@@ -924,7 +924,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             <div id="message" class="updated notice notice-success is-dismissible">
             <p><?php
                 echo esc_html( $text );
-                ?>
+            ?>
                 <button type="button" class="notice-dismiss"><span
                         class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'disciple-tools-user-groups' ); ?></span>
                 </button>

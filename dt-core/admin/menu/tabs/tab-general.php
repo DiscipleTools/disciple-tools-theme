@@ -76,6 +76,13 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* Site Notifications */
 
+        /* Update Required */
+            $this->box( 'top', 'Update Needed Triggers' );
+            $this->process_update_required();
+            $this->update_required_options();
+            $this->box( 'bottom' );
+            /* Site Notifications */
+
         /* Metrics
             if ( dt_metrics_visibility( 'tab' ) ) : // @todo remove after development
                 $this->box( 'top', 'Metrics' );
@@ -289,6 +296,74 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
 
 
+    public function process_update_required(){
+        if ( isset( $_POST['update_required_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['update_required_nonce'] ) ), 'update_required' ) ) {
+            $site_options = dt_get_option( "dt_site_options" );
+
+            if ( isset( $_POST["run_update_required"] ) ){
+                do_action( "dt_find_contacts_that_need_an_update" );
+            }
+            $site_options["update_required"]["enabled"] = isset( $_POST["triggers_enabled"] );
+
+            foreach ( $site_options["update_required"]["options"] as $option_index => $option ){
+                if ( isset( $_POST[$option_index . "_days"] ) ){
+                    $site_options["update_required"]["options"][$option_index]["days"] = sanitize_text_field( $_POST[$option_index . "_days"] );
+                }
+                if ( isset( $_POST[$option_index . "_comment"] ) ){
+                    $site_options["update_required"]["options"][$option_index]["comment"] = wp_unslash( sanitize_text_field( $_POST[$option_index . "_comment"] ) );
+                }
+            }
+            update_option( 'dt_site_options', $site_options, true );
+        }
+
+    }
+
+    public function update_required_options(){
+        $site_options = dt_get_option( 'dt_site_options' );
+        $update_required_options = $site_options['update_required']["options"];
+        $field_options = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false )
+        ?>
+        <form method="post" name="update_required-form">
+            <button type="submit" class="button-like-link" name="run_update_required" value="1"><?php esc_html_e( "Run checker now", 'disciple_tools' ) ?></button>
+            <p><?php esc_html_e( "Change how long to wait before a contact needs an update", 'disciple_tools' ) ?></p>
+            <p>
+                <?php esc_html_e( "Update needed triggers enabled", 'disciple_tools' ) ?>
+                <input type="checkbox" name="triggers_enabled" <?php echo esc_html( $site_options['update_required']["enabled"] ) ? 'checked' : '' ?> />
+            </p>
+
+            <input type="hidden" name="update_required_nonce" id="update_required_nonce" value="' <?php echo esc_attr( wp_create_nonce( 'update_required' ) ) ?>'" />
+
+            <table class="widefat">
+                <thead>
+                    <tr>
+                        <th><?php esc_html_e( "Status", 'disciple_tools' ) ?></th>
+                        <th><?php esc_html_e( "Seeker Path", 'disciple_tools' ) ?></th>
+                        <th><?php esc_html_e( "Days to wait", 'disciple_tools' ) ?></th>
+                        <th><?php esc_html_e( "Comment", 'disciple_tools' ) ?></th>
+                    </tr>
+                </thead>
+                <?php foreach ( $update_required_options as $option_key => $option ) : ?>
+                    <tr>
+                        <td><?php echo esc_html( $field_options["overall_status"]['default'][$option['status']] ) ?></td>
+                        <td><?php echo esc_html( $field_options["seeker_path"]['default'][$option['seeker_path']] ) ?></td>
+                        <td>
+                            <input name="<?php echo esc_html( $option_key ) ?>_days" type="number"
+                                value="<?php echo esc_html( $option["days"] ) ?>"  />
+                        </td>
+                        <td>
+                            <input name="<?php echo esc_html( $option_key ) ?>_comment" type="text" value="<?php echo esc_html( $option["comment"] ) ?>">
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+
+            </table>
+            <br>
+            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
+        </form>
+        <?php
+    }
+
+
 
 
 
@@ -396,4 +471,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 }
+
+
+
 Disciple_Tools_General_Tab::instance();

@@ -9,7 +9,7 @@ get_header();
 
 ( function() {
 
-?>
+    ?>
 
 <div id="content">
     <div id="inner-content" class="grid-x grid-margin-x">
@@ -171,7 +171,7 @@ get_header();
 });</script>
 
 
-<?php
+    <?php
 
 } )();
 

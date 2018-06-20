@@ -188,9 +188,9 @@ class Disciple_Tools_Contacts_Endpoints
             ]
         );
         register_rest_route(
-            $this->namespace, '/contact/tags', [
+            $this->namespace, '/contact/multi-select-options', [
                 "methods" => "GET",
-                "callback" => [ $this, 'get_tag_options' ]
+                "callback" => [ $this, 'get_multi_select_options' ]
             ]
         );
     }
@@ -770,8 +770,13 @@ class Disciple_Tools_Contacts_Endpoints
     }
 
 
-    public function get_tag_options( WP_REST_Request $request ){
+    public function get_multi_select_options( WP_REST_Request $request ){
         $params = $request->get_params();
-        return Disciple_Tools_Contacts::get_tag_options();
+        $search = $params["s"] ?? "";
+        if ( isset( $params['field'] ) ){
+            return Disciple_Tools_Contacts::get_multi_select_options( "contacts", $params["field"], $search );
+        } else {
+            return new WP_Error( 'get_multi_select_options', "Missing field for request", [ 'status' => 400 ] );
+        }
     }
 }

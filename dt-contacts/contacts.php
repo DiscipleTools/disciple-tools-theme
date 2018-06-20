@@ -638,10 +638,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
         }
 
-        if ( !isset( $fields["requires_update"] )){
+        //if ( !isset( $fields["requires_update"] )){
             //only mark as updated with a comment or when is quick action button is pressed.
             //self::check_requires_update( $contact_id );
-        }
+        //}
 //        @todo permission?
         $contact = self::get_contact( $contact_id, false );
         if (isset( $fields["added_fields"] )){
@@ -1476,9 +1476,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ($most_recent){
             global $wpdb;
             $deleted_query = $wpdb->get_results( $wpdb->prepare(
-                "SELECT object_id 
+                "SELECT object_id
                 FROM `$wpdb->dt_activity_log`
-                WHERE 
+                WHERE
                     ( `action` = 'deleted' || `action` = 'trashed' )
                     AND `object_subtype` = 'contacts'
                     AND hist_time > %d
@@ -1572,6 +1572,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     public static function search_viewable_contacts( array $query, bool $check_permissions = true){
         $viewable = self::search_viewable_post( "contacts", $query, $check_permissions );
+        if ( is_wp_error( $viewable ) ){
+            return $viewable;
+        }
         return [
             "contacts" => $viewable["posts"],
             "total" => $viewable["total"]
@@ -1716,6 +1719,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 update_post_meta( $contact_id, "quick_button_meeting_complete", "1" );
             }
         }
+        self::check_requires_update( $contact_id );
     }
 
     /**
@@ -1743,6 +1747,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         if ( isset( $update["seeker_path"] ) ) {
+            self::check_requires_update( $contact_id );
             return self::update_seeker_path( $contact_id, $update["seeker_path"], $check_permissions );
         } else {
             return $contact_id;
@@ -1778,7 +1783,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'comment_type'         => $type,
         ];
 
-        self::check_requires_update( $contact_id );
+        if ( $type === "comment" && $user_id ){
+            self::check_requires_update( $contact_id );
+        }
         return wp_new_comment( $comment_data );
     }
 
@@ -1792,19 +1799,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_comments( int $contact_id, bool $check_permissions = true, $type = "all" )
     {
-        if ( $check_permissions && !self::can_view( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
-        }
-        //setting type to "comment" does not work.
-        $comments = get_comments( [
-            'post_id' => $contact_id,
-            "type" => $type
-        ]);
-        foreach ( $comments as $comment ){
-            $comment->gravatar = get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
-        }
-
-        return $comments;
+        return self::get_post_comments( 'contacts', $contact_id, $check_permissions, $type );
     }
 
 
@@ -2041,11 +2036,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         if ( !empty( $val["value"] ) ){
                             $contacts = $this->find_contacts_with( $field_id, $val["value"], $contact_id );
                             $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
-                        } else if ( $this->get_field_details( $field_id, $contact_id )["type"] === "array" ){
+                        }
+                        //else if ( $this->get_field_details( $field_id, $contact_id )["type"] === "array" ){
 //                            @todo, specify which field(s) in the array to look for duplicates on
 //                            $contacts = $this->find_contacts_with( $field_id, $val, $contact_id );
 //                            $this->save_duplicate_finding( $field_id, $contacts, $contact_id );
-                        }
+                        //}
                     }
                 }
             }
@@ -2195,21 +2191,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         ] );
 
         return $numbers;
-    }
-
-    public static function get_tag_options(){
-        if ( !self::can_access( "contacts" ) ){
-            return new WP_Error( __FUNCTION__, __( "You do not have access to tags" ), [ 'status' => 403 ] );
-        }
-        global $wpdb;
-        $tags = $wpdb->get_col( "
-            SELECT $wpdb->postmeta.meta_value FROM $wpdb->postmeta
-            LEFT JOIN $wpdb->posts on $wpdb->posts.ID = $wpdb->postmeta.post_id
-            WHERE $wpdb->postmeta.meta_key = 'tags'
-            AND $wpdb->posts.post_type = 'contacts'
-            AND $wpdb->posts.post_status = 'publish'
-        ;");
-        return $tags;
     }
 
 }

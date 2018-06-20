@@ -46,30 +46,18 @@ function dt_site_scripts() {
 
     wp_enqueue_style( 'foundation-css', 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' );
 
-    /**
-     * Force new version of jQuery.
-     * Forcing newest version of jquery and jquery ui because of the themes use of controlgroups and checkboxradio widget. Once Wordpress core updates to 1.12, then
-     * the next section could be removed.
-     */
-
-    /** jQuery UI custom theme styles. @see http://jqueryui.com/themeroller/  */
     wp_enqueue_style( 'jquery-ui-site-css', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css', array(), '', 'all' );
-
-    // comment out the next two lines to load the local copy of jQuery
     wp_deregister_script( 'jquery' );
-    wp_register_script( 'jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js', false, '1.12.4' );
+    wp_register_script( 'jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js', false, '3.2.1' );
     wp_enqueue_script( 'jquery' );
-
-    // comment out the next two lines to load the local copy of jQuery
     wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', false, '1.12.1' );
     wp_enqueue_script( 'jquery-ui' );
-    /**
-     * End jQuery force new version
-     */
+
     wp_register_script( 'moment', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js', false, '2.19.1' );
     wp_enqueue_script( 'moment' );
+    wp_register_script( 'lodash', 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.min.js', false, '4.17.10' );
+    wp_enqueue_script( 'lodash' );
 
-    dt_theme_enqueue_script( 'lodash', 'dt-core/dependencies/lodash/lodash.min.js', array() );
 
     dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts.min.js', array( 'jquery' ), true );
 
@@ -105,6 +93,7 @@ function dt_site_scripts() {
             'root' => esc_url_raw( rest_url() ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'site_url' => get_site_url(),
+            'template_dir' => get_template_directory_uri(),
         )
     );
 
@@ -132,8 +121,8 @@ function dt_site_scripts() {
             $post = Disciple_Tools_Groups::get_group( get_the_ID() );
         }
         if ( !is_wp_error( $post )){
-            dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.js', array( 'jquery' ), true );
-            dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.js', array( 'jquery' ), true );
+            dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.min.js', array( 'jquery' ), true );
+            dt_theme_enqueue_script( 'jquery-mentions-elastic', 'dt-core/dependencies/jquery-mentions-input/lib/jquery.elastic.min.js', array( 'jquery' ), true );
             dt_theme_enqueue_style( 'jquery-mentions-css', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.css', array() );
             dt_theme_enqueue_script( 'comments', 'dt-assets/js/comments.js', array(
                 'jquery',
@@ -238,7 +227,7 @@ function dt_site_scripts() {
             )
         );
     }
-    if (is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" )) {
+    if ( is_post_type_archive( "contacts" ) || is_post_type_archive( "groups" ) ) {
         $post_type = null;
         $custom_field_settings = [];
         if (is_post_type_archive( "contacts" )) {
@@ -255,6 +244,7 @@ function dt_site_scripts() {
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'translations' => [
                 'save' => __( 'Save', 'disciple_tools' ),
+                'edit' => __( 'Edit', 'disciple_tools' ),
                 'delete' => __( 'Delete', 'disciple_tools' ),
                 'txt_info' => _x( 'Showing _START_ of _TOTAL_', 'just copy as they are: _START_ and _TOTAL_', 'disciple_tools' ),
             ],
@@ -266,13 +256,10 @@ function dt_site_scripts() {
             'current_user_roles' => wp_get_current_user()->roles,
             'current_post_type' => $post_type,
             'access_all_contacts' => user_can( get_current_user_id(), 'view_any_contacts' ),
-            'filters' => Disciple_Tools_Users::get_user_filters()
+            'filters' => Disciple_Tools_Users::get_user_filters(),
+            'additional_filter_options' => apply_filters( 'dt_filters_additional_fields', [], $post_type ),
+            'connection_types' => Disciple_Tools_Posts::$connection_types,
         ) );
-    }
-
-    if ($url_path = "contacts/new"){
-        dt_theme_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
-        dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
     }
 
 }

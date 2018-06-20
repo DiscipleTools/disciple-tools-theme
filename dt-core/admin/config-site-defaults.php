@@ -197,16 +197,8 @@ function dt_get_option( string $name )
             break;
 
         case 'seeker_path':
-            return [
-                'none'        => __( 'Contact Attempt Needed' ),
-                'attempted'   => __( 'Contact Attempted' ),
-                'established' => __( 'Contact Established' ),
-                'scheduled'   => __( 'First Meeting Scheduled' ),
-                'met'         => __( 'First Meeting Complete' ),
-                'ongoing'     => __( 'Ongoing Meetings' ),
-                'coaching'    => __( 'Being Coached' ),
-            ];
-            break;
+            $seeker_list = dt_get_option( "dt_site_custom_lists" );
+            return $seeker_list["seeker_path"];
         case 'overall_status':
             return [
                 'unassigned'   => _x( 'Unassigned', 'Contact Status', 'disciple_tools' ),
@@ -273,7 +265,7 @@ function dt_get_site_options_defaults()
 {
     $fields = [];
 
-    $fields['version'] = '4';
+    $fields['version'] = '6';
 
     $fields['user_notifications'] = [
         'new_web'          => true,
@@ -343,6 +335,54 @@ function dt_get_site_options_defaults()
         'build_report_for_youtube'   => false,
     ];
 
+    $fields['update_required'] = [
+        "enabled" => false,
+        "options" => [
+            [
+                "status"      => "active",
+                "seeker_path" => "none",
+                "days"        => 3,
+                "comment"     => "This contact is active and nobody has tried to contact them. Please do so."
+            ],
+            [
+                "status"      => "active",
+                "seeker_path" => "attempted",
+                "days"        => 7,
+                "comment"     => "Please try connecting with this contact again."
+            ],
+            [
+                "status"      => "active",
+                "seeker_path" => "established",
+                "days"        => 30,
+                "comment"     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
+            ],
+            [
+                "status"      => "active",
+                "seeker_path" => "scheduled",
+                "days"        => 30,
+                "comment"     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
+            ],
+            [
+                "status"      => "active",
+                "seeker_path" => "met",
+                "days"        => 30,
+                "comment"     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
+            ],
+            [
+                "status"      => "active",
+                "seeker_path" => "ongoing",
+                "days"        => 30,
+                "comment"     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
+            ],
+            [
+                "status"      => "active",
+                "seeker_path" => "coaching",
+                "days"        => 30,
+                "comment"     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
+            ]
+        ]
+    ];
+
     return $fields;
 }
 
@@ -358,8 +398,19 @@ function dt_get_site_custom_lists( string $list_title = null )
 {
     $fields = [];
 
-    $fields['version'] = '1.0';
+    $fields['version'] = '2.0';
 
+    //custom fields
+    $fields['seeker_path'] = [
+        'none'        => __( 'Contact Attempt Needed' ),
+        'attempted'   => __( 'Contact Attempted' ),
+        'established' => __( 'Contact Established' ),
+        'scheduled'   => __( 'First Meeting Scheduled' ),
+        'met'         => __( 'First Meeting Complete' ),
+        'ongoing'     => __( 'Ongoing Meetings' ),
+        'coaching'    => __( 'Being Coached' ),
+    ];
+    $fields['custom_milestones'] = [];
     // the prefix dt_user_ assists db meta queries on the user
     $fields['user_fields'] = [
         'dt_user_personal_phone'   => [
@@ -639,7 +690,7 @@ function dt_custom_password_reset( $message, $key, $user_login, $user_data ){
  * @return string
  */
 function dt_get_url_path() {
-    $url  = @( $_SERVER["HTTPS"] != 'on' ) ? 'http://'.$_SERVER["SERVER_NAME"] : 'https://'.$_SERVER["SERVER_NAME"];
+    $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'.$_SERVER["SERVER_NAME"] : 'https://'.$_SERVER["SERVER_NAME"];
     $url .= $_SERVER["REQUEST_URI"];
     return trim( str_replace( get_site_url(), "", $url ), '/' );
 }

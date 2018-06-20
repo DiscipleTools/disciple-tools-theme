@@ -542,10 +542,14 @@ jQuery(document).ready(function($) {
         },
         onHideLayout: function () {
           $(`#${field_id}-result-container`).html("");
+          masonGrid.masonry('layout')
         },
         onReady: function () {
           if (field_id === "subassigned"){
           }
+        },
+        onShowLayout (){
+          masonGrid.masonry('layout')
         }
       }
     })
@@ -597,6 +601,13 @@ jQuery(document).ready(function($) {
         setStatus(contactResponse, true)
       }
     }).catch(handelAjaxError)
+  })
+  $('input.text-input').change(function(){
+    const id = $(this).attr('id')
+    const val = $(this).val()
+
+    API.save_field_api('contact', contactId, { [id]: val })
+      .catch(handelAjaxError)
   })
 
 
@@ -774,7 +785,7 @@ jQuery(document).ready(function($) {
     editFieldsUpdate[key] = val
   })
 
-  $(document).on('change', '.contact-input', function() {
+  $('#contact-details-edit').on('change', '.contact-input', function() {
     let value = $(this).val()
     let field = $(this).data("type")
     let key = $(this).attr('id')
@@ -799,6 +810,7 @@ jQuery(document).ready(function($) {
     }
     $(this).parent().remove()
   }).on('change', '.text-input', function () {
+    console.log("test");
     let field = $(this).attr('id')
     editFieldsUpdate[field] = $(this).val()
   })
