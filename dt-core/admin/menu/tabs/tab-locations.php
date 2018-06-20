@@ -136,7 +136,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
                 'col_span' => 2,
                 'row_container' => false
             ] );
-        ?>
+            ?>
 
         <form method="post" action="">
             <?php wp_nonce_field( 'dt_zume_select_levels'. get_current_user_id(), 'dt_zume_select_levels_nonce', false, true ) ?>
@@ -161,8 +161,8 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
                 </tr>
         </form>
 
-        <?php
-        $this->box( 'bottom' );
+            <?php
+            $this->box( 'bottom' );
 
         endif; // hide settings, if auto locations is set to manual
     }
