@@ -753,6 +753,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
     public static function query_project_critical_path( $year = null ) {
         global $wpdb;
+        $numbers = [];
 
         if ( is_null( $year ) ) {
             $year = date( 'Y' ); // default to this year
@@ -886,8 +887,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 FROM $wpdb->p2p
                 WHERE p2p_type = 'contacts_to_peoplegroups'
                     OR p2p_type = 'groups_to_peoplegroups'
-                ) ) as people_groups,
-                ( 0 ) as movements;
+                ) ) as people_groups;
         ", $year, $next_year, $year, $next_year, $year, $next_year, $year, $next_year ), ARRAY_A );
 
         if ( empty( $results ) ) {
@@ -919,6 +919,57 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 $numbers[$key] = $value;
             }
         }
+
+        /**
+         * Check for manual additions to critical path
+         */
+        $manual_additions = $wpdb->get_results("
+            SELECT a.report_source as source,
+              h.meta_value as total,
+              g.meta_value as section
+            FROM wp_dt_reports as a
+            LEFT JOIN wp_dt_reportmeta as e
+              ON a.id=e.report_id
+                 AND e.meta_key = 'year'
+            LEFT JOIN wp_dt_reportmeta as h
+              ON a.id=h.report_id
+                 AND h.meta_key = 'total'
+              LEFT JOIN wp_dt_reportmeta as g
+                ON a.id=g.report_id
+                   AND g.meta_key = 'section'
+            WHERE category = 'manual'
+              AND a.id IN ( SELECT MAX( bb.report_id )
+                FROM wp_dt_reportmeta as bb
+                  LEFT JOIN wp_dt_reportmeta as d
+                    ON bb.report_id=d.report_id
+                       AND d.meta_key = 'source'
+                  LEFT JOIN wp_dt_reportmeta as e
+                    ON bb.report_id=e.report_id
+                       AND e.meta_key = 'year'
+                WHERE bb.meta_key = 'submit_date'
+                GROUP BY d.meta_value, e.meta_value
+              )
+            AND e.meta_value = '2018'
+            ", ARRAY_A );
+
+        if ( ! empty( $manual_additions ) ) {
+            // get source order
+            $sources = get_option( 'dt_critical_path_sources', [] );
+
+            foreach ( $sources as $source ) { // loop sources in order
+                foreach ( $manual_additions as $mkey => $mvalue ) { // loop and match manual additions
+                    if ( $source['key'] == $mvalue['source'] ) {
+                        if ( 'before' == $mvalue['section'] ) {
+                            $array_temp[ $mvalue['source'] ] = (int) $mvalue['total'];
+                            $numbers = array_merge( $array_temp, $numbers );
+                        } else {
+                            $numbers[ $mvalue['source'] ] = (int) $mvalue['total'];
+                        }
+                    }
+                }
+            }
+        }
+        dt_write_log( $numbers );
 
         return $numbers;
     }
@@ -1546,7 +1597,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $numbers;
     }
 
-
     public static function query_my_group_health( $user_id = null ) {
         global $wpdb;
 
@@ -1624,7 +1674,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $results;
     }
 
-
     public static function query_get_group_generations() {
         global $wpdb;
 
@@ -1666,8 +1715,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         return $results;
     }
-
-
 
     public static function query_my_group_generations( $user_id = null ) {
         global $wpdb;

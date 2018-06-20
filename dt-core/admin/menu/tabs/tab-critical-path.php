@@ -52,7 +52,7 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function content( $tab )
     {
         if ( 'critical_path' == $tab ) :
-
+            $this->process_critical_path_sources();
             $this->process_add();
             $this->process_delete();
 
@@ -75,7 +75,7 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
 
             $this->box( 'top', 'Sources' );
-            $this->sources_box();
+            $this->critical_path_sources_box();
             $this->box( 'bottom' );
 
             /** End */
@@ -158,8 +158,7 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function add_new_box() {
-        $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-        $sources = $site_custom_lists['sources'];
+        $sources = get_option( 'dt_critical_path_sources', [] );
         ?>
         <form method="post">
             <?php wp_nonce_field( 'dt_add_new_box'. get_current_user_id(), 'dt_add_new_box_nonce', false, true ) ?>
@@ -202,6 +201,7 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
                         </select>
                     </p>
                 </dt>
+
                 <dt>
                     <p>
                     <label for="total"><?php esc_attr_e( 'Total' ) ?></label><br>
@@ -225,6 +225,7 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function list_reports( $location ) {
 
         global $wpdb;
+        $sources = get_option( 'dt_critical_path_sources', [] );
 
         $results = $wpdb->get_results("
             SELECT a.id,
@@ -291,19 +292,22 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
             </thead>
             <tbody>
             <?php
-            foreach ( $results as $result ) {
-                if ( $location === $result['section'] ) :
+            foreach ( $sources as $source ) {
+                foreach ( $results as $result ) {
+                    if ( $location === $result['section'] && $result['source'] === $source['key'] ) :
                     ?>
-                    <tr>
-                        <td><?php echo esc_attr( ucwords( $result['source'] ) ) ?></td>
-                        <td><?php echo esc_attr( $result['year'] ) ?></td>
-                        <td><?php echo esc_attr( number_format( $result['total'], 0, '.', ',' ) ) ?></td>
-                        <td><span style="font-size:.8em;"><?php echo esc_attr( $result['submit_date'] ) ?></span></td>
-                        <td><button type="submit" class="button" name="delete" value="<?php echo esc_attr( $result['id'] ) ?>"><?php esc_attr_e( 'Delete' ) ?></button></td>
-                    </tr>
+                        <tr>
+                            <td><?php echo esc_attr( $source['label'] ) ?></td>
+                            <td><?php echo esc_attr( $result['year'] ) ?></td>
+                            <td><?php echo esc_attr( number_format( $result['total'], 0, '.', ',' ) ) ?></td>
+                            <td><span style="font-size:.8em;"><?php echo esc_attr( $result['submit_date'] ) ?></span></td>
+                            <td><button type="submit" class="button" name="delete" value="<?php echo esc_attr( $result['id'] ) ?>"><?php esc_attr_e( 'Delete' ) ?></button></td>
+                        </tr>
                     <?php
                     endif;
+                }
             }
+
             ?>
             </tbody>
             </table>
@@ -313,6 +317,107 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
 
     public function sources_box() {
         esc_html_e( 'Sources can be edited on the custom lists tab. Disabled list items will show up in source selection as well.' );
+    }
+
+    /**
+     * Prints the sources settings box.
+     */
+    public function critical_path_sources_box()
+    {
+        $site_custom_lists = get_option( 'dt_critical_path_sources', [] );
+        ?>
+        <form method="post" name="critical_path_sources_form" id="critical_path_sources_form">
+
+            <?php wp_nonce_field( 'critical_path_sources'. get_current_user_id(), 'critical_path_sources_nonce', false, true ) ?>
+
+            <table class="widefat">
+                <thead><tr><td>Label</td><td>Order</td><td>Delete</td></tr></thead><tbody>
+                <?php
+                foreach ( $site_custom_lists as $index => $source ) {
+                    echo '<tr>
+                        <td>' . esc_attr( $source['label'] ) . '</td>
+                        <td>' . esc_attr( $source['order'] ) . '</td>
+                        <td><button type="submit" name="delete_field" value="' . esc_attr( $index ) . '" class="button small" >delete</button></td>
+                      </tr>';
+                }
+                ?>
+            </table>
+            <br>
+            <button type="button" onclick="jQuery('#add_source').toggle();" class="button">Add/Edit</button>
+            <button type="submit" style="float:right;" class="button">Save</button>
+            <div id="add_source" style="display:none;">
+                <table width="100%">
+                    <tr>
+                        <td>
+                            <hr>
+                            <br>
+                            <input type="text" name="add_input_field[label]" placeholder="label"/><br>
+                            <input type="number" name="add_input_field[order]" placeholder="order"/><br>
+                            <button type="submit">Add/Edit</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+        <script>
+            function add_form() {
+                jQuery('#add_source').append(`
+                `)
+            }
+        </script>
+        <?php
+    }
+
+    public function process_critical_path_sources() {
+        if ( isset( $_POST['critical_path_sources_nonce'] ) ) {
+            $site_custom_lists = get_option( 'dt_critical_path_sources', [] );
+
+            if ( !wp_verify_nonce( sanitize_key( $_POST['critical_path_sources_nonce'] ), 'critical_path_sources'. get_current_user_id() ) ) {
+                return;
+            }
+
+            // Process a field to delete.
+            if ( isset( $_POST['delete_field'] ) ) {
+                $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
+                unset( $site_custom_lists[ $delete_key ] );
+            }
+            // Process addition or update
+            elseif ( isset( $_POST['add_input_field']['label'] ) ) {
+
+                $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
+                $label_index = null;
+                if ( empty( $label ) ) {
+                    return;
+                }
+
+                if ( isset( $_POST['add_input_field']['order'] ) ) {
+                    $order = sanitize_text_field( wp_unslash( $_POST['add_input_field']['order'] ) );
+                }
+
+                $key = sanitize_key( strtolower( str_replace( ' ', '_', $label ) ) );
+
+                foreach ( $site_custom_lists as $index => $site_custom_list ) {
+                    if ( $site_custom_list['label'] === $label ) {
+                        $label_index = $index;
+                    }
+                }
+
+                // strip and make lowercase process
+                $site_custom_lists[$label_index] = [
+                    'label'         => $label,
+                    'key'           => $key,
+                    'order'         => $order ?? 50,
+                ];
+            }
+
+            // Sort new array
+            usort($site_custom_lists, function( $a, $b) {
+                return $a['order'] <=> $b['order'];
+            });
+
+            // Update the site option
+            update_option( 'dt_critical_path_sources', $site_custom_lists, true );
+        }
     }
 
 }
