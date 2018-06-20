@@ -363,7 +363,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         echo '<p>Add or remove custom milestones for new contacts.</p>';
         echo '<input type="hidden" name="milestones_nonce" id="milestones_nonce" value="' . esc_attr( wp_create_nonce( 'milestones' ) ) . '" />';
         echo '<table class="widefat">';
-        echo '<thead><tr><td>'. __( "Label", 'disciple_tools' ) . '</td><td>'. __( "Delete", 'disciple_tools' ) . '</td></tr></thead><tbody>';
+        echo '<thead><tr><td>'. esc_html( __( "Label", 'disciple_tools' ) ) . '</td><td>'. esc_html( __( "Delete", 'disciple_tools' ) ) . '</td></tr></thead><tbody>';
 
         // get the list of custom lists
         $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -515,7 +515,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     }
                     else {
                         $previous_key = $h_key;
-                        $new_seekers += array( $h_key => $h_val );;
+                        $new_seekers += array( $h_key => $h_val );
                     }
                 }
                 $site_custom_lists["seeker_path"] = $new_seekers;
@@ -538,7 +538,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     }
                     else {
                         $previous_key = $h_key;
-                        $new_seekers += array( $h_key => $h_val );;
+                        $new_seekers += array( $h_key => $h_val );
                     }
                 }
                 $site_custom_lists["seeker_path"] = array_reverse( $new_seekers );
@@ -607,7 +607,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                             <td><button type="submit" name="delete_field" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "delete", 'disciple_tools' ) ?></button> </td>
                         <?php } ?>
                     </tr>
-                <?php $first = false; ?>
+                    <?php $first = false; ?>
                 <?php endforeach; ?>
                 </tbody>
             </table>
