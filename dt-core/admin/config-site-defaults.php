@@ -197,7 +197,7 @@ function dt_get_option( string $name )
             break;
 
         case 'seeker_path':
-            $seeker_list = dt_get_site_custom_lists();
+            $seeker_list = dt_get_option( "dt_site_custom_lists" );
             return $seeker_list["seeker_path"];
         case 'overall_status':
             return [
