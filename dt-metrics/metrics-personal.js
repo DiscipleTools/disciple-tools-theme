@@ -24,7 +24,7 @@ function my_stats() {
                 <p><span class="section-subheader">`+ label.title_contacts +`</span></p>
                 <div class="grid-x">
                     <div class="medium-4 cell center">
-                        <h4>`+ label.label_total_contacts +`<br><span id="contacts">0</span></h4>
+                        <h4>`+ label.label_active_contacts +`<br><span id="contacts">0</span></h4>
                     </div>
                     <div class="medium-4 cell center left-border-grey">
                         <h4>`+ label.title_waiting_on_accept +`<br><span id="needs_accepted">0</span></h4>

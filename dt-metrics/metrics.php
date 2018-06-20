@@ -709,7 +709,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         }
 
         $results = [
-            'total_contacts' => $stats['contacts'],
+            'active_contacts' => $stats['active_contacts'],
             'needs_accepted' => $stats['needs_accept'],
             'updates_needed' => $stats['needs_update'],
             'total_groups' => $stats['groups'],
@@ -1508,7 +1508,11 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             SELECT (
              SELECT count(a.ID)
              FROM $wpdb->posts as a
-               JOIN $wpdb->postmeta as b
+              JOIN $wpdb->postmeta as d
+                   ON a.ID=d.post_id
+                      AND d.meta_key = 'overall_status'
+                      AND d.meta_value = 'active'
+              JOIN $wpdb->postmeta as b
                  ON a.ID=b.post_id
                     AND b.meta_key = 'assigned_to'
                     AND b.meta_value = CONCAT( 'user-', %s )
@@ -1775,18 +1779,22 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         $results = $wpdb->get_results( "
             SELECT (
-                 SELECT count(a.ID)
-                 FROM $wpdb->posts as a
-                 WHERE a.post_status = 'publish'
-                 AND a.post_type = 'contacts'
-                 AND a.ID NOT IN (
-                    SELECT post_id
-                    FROM $wpdb->postmeta
-                    WHERE meta_key = 'corresponds_to_user'
-                      AND meta_value != 0
-                    GROUP BY post_id
-                ))
-          as contacts,
+                SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                ON a.ID = b.post_id
+                AND b.meta_key = 'overall_status'
+                AND b.meta_value = 'active'
+                WHERE a.post_status = 'publish'
+                AND a.post_type = 'contacts'
+                AND a.ID NOT IN (
+                SELECT bb.post_id
+                FROM $wpdb->postmeta as bb
+                WHERE meta_key = 'corresponds_to_user'
+                AND meta_value != 0
+                GROUP BY bb.post_id )
+                )
+          as active_contacts,
                (SELECT count(a.ID)
                 FROM $wpdb->posts as a
                             JOIN $wpdb->postmeta as b

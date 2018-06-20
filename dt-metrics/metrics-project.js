@@ -45,7 +45,7 @@ function project_overview() {
                 <p><span class="section-subheader">`+ label.title_contacts +`</span></p>
                 <div class="grid-x">
                     <div class="medium-4 cell center">
-                        <h4>`+ label.title_total_contacts +`<br><span id="total_contacts">0</span></h4>
+                        <h4>`+ label.title_active_contacts +`<br><span id="active_contacts">0</span></h4>
                     </div>
                     <div class="medium-4 cell center left-border-grey">
                         <h4>`+ label.title_waiting_on_accept +`<br><span id="needs_accepted">0</span></h4>
@@ -95,7 +95,7 @@ function project_overview() {
         `)
 
     let hero = sourceData.hero_stats
-    jQuery('#total_contacts').html( numberWithCommas( hero.total_contacts ) )
+    jQuery('#active_contacts').html( numberWithCommas( hero.active_contacts ) )
     jQuery('#needs_accepted').html( numberWithCommas( hero.needs_accepted ) )
     jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
 
@@ -536,6 +536,9 @@ function project_critical_path() {
     let sourceData = dtMetricsProject.data
     let label = dtMetricsProject.data.translations
 
+    let height = $(window).height()
+    let chartHeight = height - ( height * .15 )
+
     console.log( sourceData )
 
     chartDiv.empty().html(`
@@ -550,7 +553,7 @@ function project_critical_path() {
         <div class="grid-x grid-padding-x">
             <div class="cell">
                 <div id="dashboard_div">
-                    <div id="my_critical_path" style="height: 750px;"></div>
+                    <div id="my_critical_path" style="height: `+chartHeight+`px;"></div>
                     <hr>
                     <div id="filter_div"></div>
                 </div>

@@ -62,7 +62,7 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
                 'title_total_groups' => __( 'Total Groups' ),
                 'title_needs_training' => __( 'Needs Training' ),
                 'title_group_types' => __( 'Group Types' ),
-                'label_total_contacts'  => __( 'Total Contacts' ),
+                'label_active_contacts'  => __( 'Active Contacts' ),
                 'total_groups'    => __( 'Total Groups' ),
                 'updates_needed'  => __( 'Updates Needed' ),
                 'attempts_needed' => __( 'Attempts Needed' ),

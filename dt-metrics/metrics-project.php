@@ -80,7 +80,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'title_contacts' => __( 'Project Contacts' ),
                 'title_groups' => __( 'Project Groups' ),
                 'title_multiplication' => __( 'Multiplication' ),
-                'title_total_contacts' => __( 'Total Contacts' ),
+                'title_active_contacts' => __( 'Active Contacts' ),
                 'title_waiting_on_accept' => __( 'Waiting on Accept' ),
                 'title_waiting_on_update' => __( 'Waiting on Update' ),
                 'title_project_groups' => __( 'Project Groups' ),
