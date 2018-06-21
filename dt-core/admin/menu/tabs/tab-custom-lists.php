@@ -720,7 +720,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         <?php if ( $label != '' && $label !== false) : ?>
                             <tr>
                                 <td><input name="reason_closed[<?php echo esc_html( $key ) ?>]" type="text" value="<?php echo esc_html( $label ) ?>"/></td>
-                                <?php if ( !in_array ( $key, array_keys ( $default ) ) ) { ?>
+                                <?php if ( !in_array( $key, array_keys( $default ) ) ) { ?>
                                     <td><button type="submit" name="delete_field" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "delete", 'disciple_tools' ) ?></button> </td>
                                 <?php } ?>
                             </tr>
