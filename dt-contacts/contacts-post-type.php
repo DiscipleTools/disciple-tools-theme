@@ -804,8 +804,20 @@ class Disciple_Tools_Contact_Post_Type
                 'denies_submission'    => __( 'Denies submitting contact request', 'disciple_tools' ),
                 'unknown'              => __( 'Unknown', 'disciple_tools' )
             ],
+            'save'        => [],
             'section'     => 'misc',
         ];
+        $fields['reason_closed']['save'] = $fields['reason_closed']['default'];
+
+        //add custom fields to reason closed
+        $seeker_path = dt_get_option( 'dt_site_custom_lists' );
+        if ( isset ( $seeker_path["custom_reason_closed"] ) ) {
+            foreach ( $seeker_path["custom_reason_closed"] as $key => $val ) {
+                if ( $val != '' ) {
+                    $fields['reason_closed']['default'][$key] = $val;
+                }
+            }
+        }
 
         $fields['accepted'] = [
             'name'        => __( 'Accepted', 'disciple_tools' ),

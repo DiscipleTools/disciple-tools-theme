@@ -86,12 +86,19 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* end milestones */
 
-            /* Metrics */
+            /* seeker path */
             $this->box( 'top', 'Seeker Path' );
             $this->process_seeker_path_box();
             $this->seeker_path_box(); // prints
             $this->box( 'bottom' );
-            /* end Metrics */
+            /* end seeker path */
+
+            /* reason closed */
+            $this->box( 'top', 'Reason Closed' );
+            $this->process_reason_closed_box();
+            $this->reason_closed_box(); // prints
+            $this->box( 'bottom' );
+            /* end reason closed */
 
 
             $this->template( 'right_column' );
@@ -617,6 +624,117 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             <button type="submit" style="float:right;" class="button">Save</button>
 
             <div id="add_seeker_path" style="display:none;">
+            <table width="100%">
+                <tr>
+                    <td><hr><br>
+                        <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;
+                    <button type="submit">Add</button>
+                </td></tr>
+            </table>
+            </div>
+
+        </form>
+        <?php
+    }
+
+    /**
+     * Process contact reason closed settings
+     */
+    public function process_reason_closed_box()
+    {
+        if ( isset( $_POST['reason_closed_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['reason_closed_nonce'] ) ), 'reason_closed' ) ) {
+            $delete = true;
+            $site_custom_lists = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+            $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+            $seek = dt_get_site_custom_lists( "seeker_path" ); //the standard ones
+            $default = $site_custom_lists['default'];
+            if ( !$site_custom_lists ) {
+                wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
+            }
+            //make a new seeker object
+            if ( !empty( $_POST['add_input_field']['label'] ) ) {
+                $delete = false; //for the enter bug
+                //make the label
+                $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
+                //set label and name to same thing
+                $site_custom_lists["custom_reason_closed"][$label] = $label;
+            }
+            //edit name
+            foreach ( $_POST["reason_closed"] as $key => $val) {
+                $site_custom_lists["custom_reason_closed"][$key] = $val;
+            }
+            // Process a field to delete.
+            if ( isset( $_POST['delete_field'] ) && $delete ) {
+                $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
+                unset( $site_custom_lists["custom_reason_closed"][ $delete_key ] );
+                //TODO: Consider adding a database query to delete all instances of this key from usermeta
+            }
+            // Process reset request
+            else if ( isset( $_POST['reason_closed_reset'] ) ) {
+                // for each custom object with the start of seeker_ delete
+                foreach ( $site_custom_lists["reason_closed"] as $seeker => $value ) {
+                        unset( $site_custom_lists["custom_reason_closed"] );
+                        $site_custom_lists["custom_reason_closed"] = $default;
+                }
+            }
+            // Update the site option
+            update_option( 'dt_site_custom_lists', $site_custom_lists, true );
+            dt_write_log( $_POST );
+        }
+    }
+
+    /**
+     * Prints the reason settings box.
+     */
+    public function reason_closed_box()
+    {
+        //$default = Disciple_Tools_Contact_Post_Type::get_custom_fields_settings( "reason_closed" ); //the standard ones
+        $reason_closed = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $reason_closed = $reason_closed['reason_closed'];
+        $default = $reason_closed['save'];
+        $reason_closed = $reason_closed['default'];
+
+        $first = true;
+        if ( ! $reason_closed ) {
+            wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
+        }
+
+        ?>
+        <form method="post" name="reason_closed_form">
+            <input type="hidden" name="reason_closed_nonce" id="reason_closed_nonce" value="<?php echo esc_attr( wp_create_nonce( 'reason_closed' ) ) ?>" />
+            <button type="submit" class="button-like-link" name="reason_closed_reset_bug_fix" value="&nasb"></button>
+            <button type="submit" class="button-like-link" name="reason_closed_reset" value="1">reset</button>
+
+            <p>Add or remove reason_closed for new contacts.</p>
+
+            <input type="hidden" name="reason_closed_nonce" id="reason_closed_nonce" value="<?php echo esc_attr( wp_create_nonce( 'reason_closed' ) ) ?>" />
+            <table class="widefat">
+                <thead>
+                    <tr>
+                        <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( "Delete", 'disciple_tools' ) ?></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ( $reason_closed as $key => $label ) : ?>
+                        <?php if ( $label != '' && $label !== false) : ?>
+                            <tr>
+                                <td><input name="reason_closed[<?php echo esc_html( $key ) ?>]" type="text" value="<?php echo esc_html( $label ) ?>"/></td>
+                                <?php if ( !in_array ( $key, array_keys ( $default ) ) ) { ?>
+                                    <td><button type="submit" name="delete_field" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "delete", 'disciple_tools' ) ?></button> </td>
+                                <?php } ?>
+                            </tr>
+                            <?php $first = false; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+
+            <br>
+            <button type="button" onclick="jQuery('#add_reason_closed').toggle();" class="button">Add</button>
+            <button type="submit" style="float:right;" class="button">Save</button>
+
+            <div id="add_reason_closed" style="display:none;">
             <table width="100%">
                 <tr>
                     <td><hr><br>

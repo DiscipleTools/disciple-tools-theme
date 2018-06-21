@@ -398,7 +398,7 @@ function dt_get_site_custom_lists( string $list_title = null )
 {
     $fields = [];
 
-    $fields['version'] = '2.0';
+    $fields['version'] = '2.1';
 
     //custom fields
     $fields['seeker_path'] = [
@@ -411,6 +411,7 @@ function dt_get_site_custom_lists( string $list_title = null )
         'coaching'    => __( 'Being Coached' ),
     ];
     $fields['custom_milestones'] = [];
+    $fields['custom_reason_closed'] = [];
     // the prefix dt_user_ assists db meta queries on the user
     $fields['user_fields'] = [
         'dt_user_personal_phone'   => [
