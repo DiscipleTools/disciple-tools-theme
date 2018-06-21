@@ -152,7 +152,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         echo '</select>' . "\n";
 
         echo '<input type="text" name="add_input_field[description]" placeholder="description" />&nbsp;
-                    <button type="submit">' . __('Add','disciple_tools') . '</button>
+                    <button type="submit">' . esc_html( __( 'Add', 'disciple_tools' ) ) . '</button>
                     </td></tr></table></div>';
 
         echo '</tbody></form>';
@@ -273,7 +273,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         echo '<div id="add_source" style="display:none;">';
         echo '<table width="100%"><tr><td><hr><br>
                     <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
-        echo '<button type="submit">' . __('Add','disciple_tools') . '</button>
+        echo '<button type="submit">' . esc_html( __( 'Add', 'disciple_tools' ) ) . '</button>
                     </td></tr></table></div>';
 
         echo '</tbody></form>';
@@ -402,7 +402,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         echo '<div id="add_milestone" style="display:none;">';
         echo '<table width="100%"><tr><td><hr><br>
                     <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
-        echo '<button type="submit">' . __('Add','disciple_tools') . '</button>
+        echo '<button type="submit">' . esc_html( __( 'Add', 'disciple_tools' ) ) . '</button>
                     </td></tr></table></div>';
         echo '</tbody></form>';
     }
@@ -587,7 +587,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         <form method="post" name="seeker_path_form">
             <input type="hidden" name="seeker_path_nonce" id="seeker_path_nonce" value="<?php echo esc_attr( wp_create_nonce( 'seeker_path' ) ) ?>" />
             <button type="submit" class="button-like-link" name="seeker_path_reset_bug_fix" value="&nasb"></button>
-            <button type="submit" class="button-like-link" name="seeker_path_reset" value="1"><?php echo esc_html ( __('reset','disciple_tools') ) ?></button>
+            <button type="submit" class="button-like-link" name="seeker_path_reset" value="1"><?php echo esc_html( __( 'reset', 'disciple_tools' ) ) ?></button>
 
             <p>Add or remove seeker_path for new contacts.</p>
 
@@ -628,7 +628,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <td><hr><br>
                         <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;
-                    <button type="submit"><?php echo esc_html ( __('Add','disciple_tools') ) ?></button>
+                    <button type="submit"><?php echo esc_html( __( 'Add', 'disciple_tools' ) ) ?></button>
                 </td></tr>
             </table>
             </div>
@@ -736,7 +736,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <td><hr><br>
                         <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;
-                    <button type="submit"><?php echo esc_html ( __('Add','disciple_tools') ) ?></button>
+                    <button type="submit"><?php echo esc_html( __( 'Add', 'disciple_tools' ) ) ?></button>
                 </td></tr>
             </table>
             </div>
