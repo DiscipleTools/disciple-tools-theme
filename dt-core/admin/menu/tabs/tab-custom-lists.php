@@ -152,7 +152,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         echo '</select>' . "\n";
 
         echo '<input type="text" name="add_input_field[description]" placeholder="description" />&nbsp;
-                    <button type="submit">Add</button>
+                    <button type="submit">' . __('Add','disciple_tools') . '</button>
                     </td></tr></table></div>';
 
         echo '</tbody></form>';
@@ -273,7 +273,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         echo '<div id="add_source" style="display:none;">';
         echo '<table width="100%"><tr><td><hr><br>
                     <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
-        echo '<button type="submit">Add</button>
+        echo '<button type="submit">' . __('Add','disciple_tools') . '</button>
                     </td></tr></table></div>';
 
         echo '</tbody></form>';
@@ -402,7 +402,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         echo '<div id="add_milestone" style="display:none;">';
         echo '<table width="100%"><tr><td><hr><br>
                     <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
-        echo '<button type="submit">Add</button>
+        echo '<button type="submit">' . __('Add','disciple_tools') . '</button>
                     </td></tr></table></div>';
         echo '</tbody></form>';
     }
@@ -587,7 +587,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         <form method="post" name="seeker_path_form">
             <input type="hidden" name="seeker_path_nonce" id="seeker_path_nonce" value="<?php echo esc_attr( wp_create_nonce( 'seeker_path' ) ) ?>" />
             <button type="submit" class="button-like-link" name="seeker_path_reset_bug_fix" value="&nasb"></button>
-            <button type="submit" class="button-like-link" name="seeker_path_reset" value="1">reset</button>
+            <button type="submit" class="button-like-link" name="seeker_path_reset" value="1"><?php echo esc_html ( __('reset','disciple_tools') ) ?></button>
 
             <p>Add or remove seeker_path for new contacts.</p>
 
@@ -628,7 +628,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <td><hr><br>
                         <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;
-                    <button type="submit">Add</button>
+                    <button type="submit"><?php echo esc_html ( __('Add','disciple_tools') ) ?></button>
                 </td></tr>
             </table>
             </div>
@@ -644,9 +644,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     {
         if ( isset( $_POST['reason_closed_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['reason_closed_nonce'] ) ), 'reason_closed' ) ) {
             $delete = true;
-            $site_custom_lists = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
             $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-            $seek = dt_get_site_custom_lists( "seeker_path" ); //the standard ones
             $default = $site_custom_lists['default'];
             if ( !$site_custom_lists ) {
                 wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
@@ -674,7 +672,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 // for each custom object with the start of seeker_ delete
                 foreach ( $site_custom_lists["reason_closed"] as $seeker => $value ) {
                         unset( $site_custom_lists["custom_reason_closed"] );
-                        $site_custom_lists["custom_reason_closed"] = $default;
+                        $site_custom_lists["custom_reason_closed"] = dt_get_site_custom_lists( "custom_reason_closed" ); //the standard ones;
                 }
             }
             // Update the site option
@@ -689,10 +687,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     public function reason_closed_box()
     {
         //$default = Disciple_Tools_Contact_Post_Type::get_custom_fields_settings( "reason_closed" ); //the standard ones
-        $reason_closed = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
-        $reason_closed = $reason_closed['reason_closed'];
-        $default = $reason_closed['save'];
-        $reason_closed = $reason_closed['default'];
+        $reason_closed = dt_get_option( 'dt_site_custom_lists' );
+        $reason_closed = $reason_closed['custom_reason_closed'];
+        $default = dt_get_site_custom_lists( "custom_reason_closed" ); //the standard ones
 
         $first = true;
         if ( ! $reason_closed ) {
@@ -739,7 +736,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <td><hr><br>
                         <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;
-                    <button type="submit">Add</button>
+                    <button type="submit"><?php echo esc_html ( __('Add','disciple_tools') ) ?></button>
                 </td></tr>
             </table>
             </div>

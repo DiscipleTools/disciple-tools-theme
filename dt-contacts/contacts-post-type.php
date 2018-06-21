@@ -790,34 +790,12 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Reason Closed', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [
-                'none'                 => '',
-                'duplicate'            => __( 'Duplicate', 'disciple_tools' ),
-                'hostile_self_gain'     => __( 'Hostile, playing game or self gain', 'disciple_tools' ),
-                'games'                => __( 'Playing games', 'disciple_tools' ),
-                'apologetics'          => __( 'Only wants to argue or debate', 'disciple_tools' ),
-                'insufficient'         => __( 'Insufficient contact info', 'disciple_tools' ),
-                'already_connected'    => __( 'Already in church or connected with Others', 'disciple_tools' ),
-                'no_longer_interested' => __( 'No longer interested', 'disciple_tools' ),
-                'no_longer_responding' => __( 'No longer responding', 'disciple_tools' ),
-                'media_only'           => __( 'Just wanted media or book', 'disciple_tools' ),
-                'denies_submission'    => __( 'Denies submitting contact request', 'disciple_tools' ),
-                'unknown'              => __( 'Unknown', 'disciple_tools' )
-            ],
-            'save'        => [],
+            'default'     => [],
             'section'     => 'misc',
         ];
-        $fields['reason_closed']['save'] = $fields['reason_closed']['default'];
-
         //add custom fields to reason closed
         $reason_closed = dt_get_option( 'dt_site_custom_lists' );
-        if ( isset( $reason_closed["custom_reason_closed"] ) ) {
-            foreach ( $reason_closed["custom_reason_closed"] as $key => $val ) {
-                if ( $val != '' ) {
-                    $fields['reason_closed']['default'][$key] = $val;
-                }
-            }
-        }
+        $fields['reason_closed']['default'] = $reason_closed["custom_reason_closed"];
 
         $fields['accepted'] = [
             'name'        => __( 'Accepted', 'disciple_tools' ),
