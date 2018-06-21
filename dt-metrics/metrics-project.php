@@ -36,8 +36,8 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             <li><a href="" >' .  esc_html__( 'Project', 'disciple_tools' ) . '</a>
                 <ul class="menu vertical nested" id="project-menu">
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_overview" onclick="project_overview()">'. esc_html__( 'Overview' ) .'</a></li>
-                    <!-- <li><a href="'. site_url( '/metrics/project/' ) .'#project_timeline" onclick="project_timeline()">'. esc_html__( 'Timeline' ) .'</a></li> 
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_critical_path" onclick="project_critical_path()">'. esc_html__( 'Critical Path' ) .'</a></li>-->
+                    <!-- <li><a href="'. site_url( '/metrics/project/' ) .'#project_timeline" onclick="project_timeline()">'. esc_html__( 'Timeline' ) .'</a></li> -->
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_critical_path" onclick="project_critical_path()">'. esc_html__( 'Critical Path' ) .'</a></li>
                 </ul>
             </li>
             ';
@@ -64,6 +64,11 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function data() {
+
+        /**
+         * Apply Filters before final enqueue. This provides opportunity for complete override or modification of chart.
+         */
+
         return [
             'translations' => [
                 'title_overview' => __( 'Project Overview' ),
@@ -75,7 +80,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'title_contacts' => __( 'Project Contacts' ),
                 'title_groups' => __( 'Project Groups' ),
                 'title_multiplication' => __( 'Multiplication' ),
-                'title_total_contacts' => __( 'Total Contacts' ),
+                'title_active_contacts' => __( 'Active Contacts' ),
                 'title_waiting_on_accept' => __( 'Waiting on Accept' ),
                 'title_waiting_on_update' => __( 'Waiting on Update' ),
                 'title_project_groups' => __( 'Project Groups' ),
@@ -93,7 +98,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'label_stats_as_of' => strtolower( __( 'stats as of' ) ),
             ],
             'hero_stats' => self::chart_project_hero_stats(),
-            'critical_path' => self::chart_critical_path( 'project' ),
+            'critical_path' => self::chart_critical_path(),
             'contacts_progress' => self::chart_contacts_progress( 'project' ),
             'group_types' => self::chart_group_types( 'project' ),
             'group_health' => self::chart_group_health( 'project' ),
