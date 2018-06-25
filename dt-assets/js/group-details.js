@@ -663,7 +663,18 @@ jQuery(document).ready(function($) {
         churchWheel.find(`#${m}`).css("opacity", ".1")
         $(`#church_${m}`).css("opacity", ".4")
       }
-    })
+  })
+  //for custom fields
+  Object.keys(group).forEach(m=>{
+    var m = m.replace("church_custom_", "");
+    if (group[`church_custom_${m}`] && ["1", "Yes"].indexOf(group[`church_custom_${m}`]["key"])> -1){
+      churchWheel.find(`#${m}`).css("opacity", "1")
+      $(`#church_custom_${m}`).css("opacity", "1")
+    } else {
+      churchWheel.find(`#${m}`).css("opacity", ".1")
+      $(`#church_custom_${m}`).css("opacity", ".4")
+    }
+})
     if (!group["church_commitment"] || group["church_commitment"]["key"] === '0'){
       churchWheel.find('#group').css("opacity", "1")
       $(`#church_commitment`).css("opacity", ".4")

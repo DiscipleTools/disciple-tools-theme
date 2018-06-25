@@ -398,7 +398,7 @@ function dt_get_site_custom_lists( string $list_title = null )
 {
     $fields = [];
 
-    $fields['version'] = '2.1';
+    $fields['version'] = '2.2';
 
     //custom fields
     $fields['seeker_path'] = [
@@ -411,6 +411,7 @@ function dt_get_site_custom_lists( string $list_title = null )
         'coaching'    => __( 'Being Coached' ),
     ];
     $fields['custom_milestones'] = [];
+    $fields['custom_church'] = [];
     $fields['custom_reason_closed'] = [
         'none'                 => '',
         'duplicate'            => __( 'Duplicate', 'disciple_tools' ),

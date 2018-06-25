@@ -156,6 +156,18 @@ declare(strict_types=1);
                                         </button>
                                         <p><?php esc_html_e( 'Covenant', 'disciple_tools' )?></p>
                                     </div>
+                                    <?php
+                                    //custom group helth metrics
+                                    $custom_health = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( false );
+                                    foreach ( $custom_health as $key => $val ) :
+                                        if( strpos($key,"church_custom_") === 0 ) : ?>
+                                            <div class="group-progress-button-wrapper">
+                                                <button class="group-progress-button" style="opacity: 1;" id="<?php echo $key;?>">
+                                                </button>
+                                                <p><?php echo $val['name'] ?></p>
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
                                 </div>
                                 <div class="grid-x">
                                     <div style="margin-right:auto; margin-left:auto;min-height:302px">

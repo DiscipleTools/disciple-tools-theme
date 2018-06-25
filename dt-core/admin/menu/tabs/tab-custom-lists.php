@@ -101,6 +101,14 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* end reason closed */
 
+            /* health  */
+            $this->box( 'top', 'Health' );
+            $this->process_health_box();
+            $this->health_box(); // prints
+            $this->box( 'bottom' );
+            /* end health */
+
+
             $this->template( 'right_column' );
 
             $this->template( 'end' );
@@ -412,8 +420,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      */
     public function process_milestones_box()
     {
-        global $wpdb;
-
         if ( isset( $_POST['milestones_nonce'] ) ) {
             $delete = true;  //for the bug where you press enter and it deltes a key
             if ( !wp_verify_nonce( sanitize_key( $_POST['milestones_nonce'] ), 'milestones' ) ) {
@@ -743,6 +749,121 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
         </form>
         <?php
+    }
+
+    /**
+     * Prints the health settings box.
+     */
+    public function health_box()
+    {
+        echo '<form method="post" name="health_form">';
+        //echo '<button type="submit" class="button-like-link" name="health_reset" value="1">reset</button>';
+        echo '<p>Add or remove custom health for new contacts.</p>';
+        echo '<input type="hidden" name="health_nonce" id="health_nonce" value="' . esc_attr( wp_create_nonce( 'health' ) ) . '" />';
+        echo '<table class="widefat">';
+        echo '<thead><tr><td>'. esc_html( __( "Label", 'disciple_tools' ) ) . '</td><td>'. esc_html( __( "Delete", 'disciple_tools' ) ) . '</td></tr></thead><tbody>';
+
+        // get the list of custom lists
+        $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+        //empty check
+        if ( ! $site_custom_lists ) {
+            wp_die( 'Failed to get custom list from options table.' );
+        }
+        $site_custom_lists = $site_custom_lists["custom_church"];
+        //for each health put it on the list
+        foreach ( $site_custom_lists as $health => $value) {
+            if ( strpos( $health, "church_custom_" ) === 0 ) {
+                //get the first value
+                reset( $value["default"] );
+                $first_key = key( $value["default"] );
+                //parse the name into pretty format
+                $name = $value["name"];
+                //echo $first_key;
+                echo '<tr>
+                            <td><input type="text" name=' . esc_html( $health ) . ' value = "' . esc_html( $name ) . '"></input></td>
+                            <td><button type="submit" name="delete_field" value="' . esc_html( $health ) . '" class="button small" >delete</button> </td>
+                        </tr>';
+            }
+        }
+
+        // end list block
+        echo '</table>';
+        echo '<br><button type="button" onclick="jQuery(\'#add_health\').toggle();" class="button">Add</button>
+                        <button type="submit" style="float:right;" class="button">Save</button>';
+        echo '<div id="add_health" style="display:none;">';
+        echo '<table width="100%"><tr><td><hr><br>
+                    <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
+        echo '<button type="submit">' . esc_html( __( 'Add', 'disciple_tools' ) ) . '</button>
+                    </td></tr></table></div>';
+        echo '</tbody></form>';
+    }
+
+    /**
+     * Process health health settings
+     */
+    public function process_health_box()
+    {
+        if ( isset( $_POST['health_nonce'] ) ) {
+            $delete = true;  //for the bug where you press enter and it deltes a key
+            if ( !wp_verify_nonce( sanitize_key( $_POST['health_nonce'] ), 'health' ) ) {
+                return;
+            }
+
+            //get the custom list of lists
+            $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+            // Process current fields submitted
+            if ( ! $site_custom_lists ) {
+                wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
+            }
+            //make a new health object
+            if ( !empty( $_POST['add_input_field']['label'] ) ) {
+                $delete = false; //for the enter bug
+                //make the label
+                $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
+                //for the key add the _ for spaces
+                $key = "church_custom_".str_replace( " ", "_", $label );
+                //set all the values note for right now the default is ALWAYS NO
+                $site_custom_lists["custom_church"][$key] = [
+                    'name'        => $label,
+                    'description' => '',
+                    'type'        => 'key_select',
+                    'default'     => [
+                    '0' => __( 'No', 'disciple_tools' ),
+                    '1' => __( 'Yes', 'disciple_tools' )
+                    ],
+                    'section'     => 'church_hidden',
+                ];
+            }
+            //edit name
+            // for each custom object with the start of health_ make sure name is up to date
+            foreach ( $_POST as $health => $value ) {
+                if ( strpos( $health, "church_custom_" ) === 0 && $health != 'health_nonce' ) {
+                    //delete key
+                    $key = $_POST[$health];
+                    if ( $site_custom_lists["custom_church"][$health]['name'] != $key ) {
+                        $delete = false; //for the enter bug
+                        //set new label value
+                        $label = sanitize_text_field( wp_unslash( $value ) );
+                        //set all the values note for right now the default is ALWAYS NO
+                        $site_custom_lists["custom_church"][$health]['name'] = $label;
+                    }
+                }
+            }
+            // Process a field to delete.
+            if ( isset( $_POST['delete_field'] ) && $delete ) {
+                $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
+                unset( $site_custom_lists["custom_church"][ $delete_key ] );
+                //TODO: Consider adding a database query to delete all instances of this key from usermeta
+
+            }
+            // Process reset request
+            if ( isset( $_POST['health_reset'] ) ) {
+                unset( $site_custom_lists["custom_church"] );
+                $site_custom_lists["custom_church"] = [];
+            }
+            // Update the site option
+            update_option( 'dt_site_custom_lists', $site_custom_lists, true );
+        }
     }
 }
 Disciple_Tools_Tab_Custom_Lists::instance();
