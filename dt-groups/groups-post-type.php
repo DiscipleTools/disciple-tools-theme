@@ -765,7 +765,7 @@ class Disciple_Tools_Groups_Post_Type
         $health = dt_get_option( 'dt_site_custom_lists' );
         $health = $health['custom_church'];
         foreach ( $health as $key => $value ) {
-            $fields[$key] = $value ;
+            $fields[$key] = $value;
         }
 
         $fields['start_date'] = [
