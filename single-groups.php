@@ -162,7 +162,7 @@ declare(strict_types=1);
                                     foreach ( $custom_health as $key => $val ) :
                                         if ( strpos( $key, "church_custom_" ) === 0 ) : ?>
                                             <div class="group-progress-button-wrapper">
-                                                <button class="group-progress-button" style="opacity: 1;" id="<?php echo esc_html( $key );?>">
+                                                <button class="group-progress-button" style="opacity: .6;" id="<?php echo esc_html( $key );?>">
                                                 </button>
                                                 <p><?php echo esc_html( $val['name'] )?></p>
                                             </div>
