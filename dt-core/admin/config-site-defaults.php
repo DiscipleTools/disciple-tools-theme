@@ -398,7 +398,7 @@ function dt_get_site_custom_lists( string $list_title = null )
 {
     $fields = [];
 
-    $fields['version'] = '2.2';
+    $fields['version'] = '2.3';
 
     //custom fields
     $fields['seeker_path'] = [
@@ -425,6 +425,11 @@ function dt_get_site_custom_lists( string $list_title = null )
         'media_only'           => __( 'Just wanted media or book', 'disciple_tools' ),
         'denies_submission'    => __( 'Denies submitting contact request', 'disciple_tools' ),
         'unknown'              => __( 'Unknown', 'disciple_tools' )
+    ];
+    $fields['custom_reason_paused'] = [
+        'none'           => '',
+        'vacation'       => __( 'On Vacation', 'disciple_tools' ),
+        'not-responding' => __( 'Not Responding', 'disciple_tools' ),
     ];
     // the prefix dt_user_ assists db meta queries on the user
     $fields['user_fields'] = [

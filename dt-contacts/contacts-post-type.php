@@ -778,11 +778,7 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Reason Paused' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [
-                'none'           => '',
-                'vacation'       => __( 'On Vacation', 'disciple_tools' ),
-                'not-responding' => __( 'Not Responding', 'disciple_tools' ),
-            ],
+            'default'     => [],
             'section'     => 'misc',
         ];
 
@@ -793,9 +789,10 @@ class Disciple_Tools_Contact_Post_Type
             'default'     => [],
             'section'     => 'misc',
         ];
-        //add custom fields to reason closed
-        $reason_closed = dt_get_option( 'dt_site_custom_lists' );
-        $fields['reason_closed']['default'] = $reason_closed["custom_reason_closed"];
+        //add custom fields to reason closed/paused
+        $custom_lists = dt_get_option( 'dt_site_custom_lists' );
+        $fields['reason_closed']['default'] = $custom_lists["custom_reason_closed"];
+        $fields['reason_paused']['default'] = $custom_lists["custom_reason_paused"];
 
         $fields['accepted'] = [
             'name'        => __( 'Accepted', 'disciple_tools' ),
