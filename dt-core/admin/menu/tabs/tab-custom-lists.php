@@ -651,7 +651,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         if ( isset( $_POST['reason_closed_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['reason_closed_nonce'] ) ), 'reason_closed' ) ) {
             $delete = true;
             $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-            $default = $site_custom_lists['default'];
             if ( !$site_custom_lists ) {
                 wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
             }
