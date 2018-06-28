@@ -675,11 +675,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
             // Process reset request
             else if ( isset( $_POST['reason_closed_reset'] ) ) {
-                // for each custom object with the start of seeker_ delete
-                foreach ( $site_custom_lists["reason_closed"] as $seeker => $value ) {
-                        unset( $site_custom_lists["custom_reason_closed"] );
-                        $site_custom_lists["custom_reason_closed"] = dt_get_site_custom_lists( "custom_reason_closed" ); //the standard ones;
-                }
+                //for each custom object with the start of seeker_ delete
+                unset( $site_custom_lists["custom_reason_closed"] );
+                $site_custom_lists["custom_reason_closed"] = dt_get_site_custom_lists( "custom_reason_closed" ); //the standard ones;
             }
             // Update the site option
             update_option( 'dt_site_custom_lists', $site_custom_lists, true );
@@ -781,7 +779,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 //echo $first_key;
                 echo '<tr>
                             <td><input type="text" name=' . esc_html( $health ) . ' value = "' . esc_html( $name ) . '"></input></td>
-                            <td><button type="submit" name="delete_field" value="' . esc_html( $health ) . '" class="button small" >delete</button> </td>
+                            <td><button type="submit" name="delete_field" value="' . esc_html( wp_unslash( $health ) ) . '" class="button small" >delete</button> </td>
                         </tr>';
             }
         }
