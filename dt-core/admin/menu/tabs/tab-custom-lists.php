@@ -129,7 +129,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     public function user_profile_box()
     {
         echo '<form method="post" name="user_fields_form">';
-        echo '<button type="submit" class="button-like-link" name="user_fields_reset" value="1">reset</button>';
+        echo '<button type="submit" class="button-like-link" name="user_fields_reset" value="1">' . esc_html( __( "reset", 'disciple_tools' ) ) . '</button>';
         echo '<p>' . esc_html( __( "You can add or remove types of contact fields for worker profiles.", 'disciple_tools' ) ) . '</p>';
         echo '<input type="hidden" name="user_fields_nonce" id="user_fields_nonce" value="' . esc_attr( wp_create_nonce( 'user_fields' ) ) . '" />';
         echo '<table class="widefat">';
@@ -261,7 +261,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     public function sources_box()
     {
         echo '<form method="post" name="sources_form">';
-        echo '<button type="submit" class="button-like-link" name="sources_reset" value="1">reset</button>';
+        echo '<button type="submit" class="button-like-link" name="sources_reset" value="1">' . esc_html( __( "reset", 'disciple_tools' ) ) . '</button>';
         echo '<p>' . esc_html( __( "Add or remove sources for new contacts.", 'disciple_tools' ) ) . '</p>';
         echo '<input type="hidden" name="sources_nonce" id="sources_nonce" value="' . esc_attr( wp_create_nonce( 'sources' ) ) . '" />';
         echo '<table class="widefat">';
@@ -381,7 +381,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     public function milestones_box()
     {
         echo '<form method="post" name="milestones_form">';
-        //echo '<button type="submit" class="button-like-link" name="milestones_reset" value="1">reset</button>';
+        //echo '<button type="submit" class="button-like-link" name="milestones_reset" value="1">' . esc_html( __( "reset", 'disciple_tools' ) ) . '</button>';
         echo '<p>' . esc_html( __( "Add or remove custom milestones for new contacts.", 'disciple_tools' ) ) . '</p>';
         echo '<input type="hidden" name="milestones_nonce" id="milestones_nonce" value="' . esc_attr( wp_create_nonce( 'milestones' ) ) . '" />';
         echo '<table class="widefat">';
@@ -602,7 +602,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             <button type="submit" class="button-like-link" name="seeker_path_reset_bug_fix" value="&nasb"></button>
             <button type="submit" class="button-like-link" name="seeker_path_reset" value="1"><?php echo esc_html( __( 'reset', 'disciple_tools' ) ) ?></button>
 
-            <p><?php esc_html( __( "Add or remove seeker_path for new contacts.", 'disciple_tools' ) ) ?></p>
+            <p><?php esc_html_e( "Add or remove seeker_path for new contacts.", 'disciple_tools' ) ?></p>
 
             <input type="hidden" name="seeker_path_nonce" id="seeker_path_nonce" value="<?php echo esc_attr( wp_create_nonce( 'seeker_path' ) ) ?>" />
             <table class="widefat">
@@ -633,8 +633,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             </table>
 
             <br>
-            <button type="button" onclick="jQuery('#add_seeker_path').toggle();" class="button"><? esc_html( __( "Add", 'disciple_tools' ) ) ?></button>
-            <button type="submit" style="float:right;" class="button">' . esc_html( __( "Save", 'disciple_tools' ) ) . '</button>
+            <button type="button" onclick="jQuery('#add_seeker_path').toggle();" class="button"><?php esc_html_e( "Add", 'disciple_tools' ) ?></button>
+            <button type="submit" style="float:right;" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
 
             <div id="add_seeker_path" style="display:none;">
             <table width="100%">
@@ -710,9 +710,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         <form method="post" name="reason_closed_form">
             <input type="hidden" name="reason_closed_nonce" id="reason_closed_nonce" value="<?php echo esc_attr( wp_create_nonce( 'reason_closed' ) ) ?>" />
             <button type="submit" class="button-like-link" name="reason_closed_reset_bug_fix" value="&nasb"></button>
-            <button type="submit" class="button-like-link" name="reason_closed_reset" value="1"><?php esc_html( __( "reset", 'disciple_tools' ) ) ?></button>
+            <button type="submit" class="button-like-link" name="reason_closed_reset" value="1"><?php esc_html_e( "reset", 'disciple_tools' ) ?></button>
 
-            <p><?php esc_html( __( "Add or remove reason_closed for new contacts.", 'disciple_tools' ) ) ?></p>
+            <p><?php esc_html_e( "Add or remove reason_closed for new contacts.", 'disciple_tools' ) ?></p>
 
             <input type="hidden" name="reason_closed_nonce" id="reason_closed_nonce" value="<?php echo esc_attr( wp_create_nonce( 'reason_closed' ) ) ?>" />
             <table class="widefat">
@@ -738,8 +738,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             </table>
 
             <br>
-            <button type="button" onclick="jQuery('#add_reason_closed').toggle();" class="button"><? esc_html( __( "Add", 'disciple_tools' ) ) ?></button>
-            <button type="submit" style="float:right;" class="button">' . esc_html( __( "Save", 'disciple_tools' ) ) . '</button>
+            <button type="button" onclick="jQuery('#add_reason_closed').toggle();" class="button"><?php esc_html_e( "Add", 'disciple_tools' ) ?></button>
+            <button type="submit" style="float:right;" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
 
             <div id="add_reason_closed" style="display:none;">
             <table width="100%">
@@ -815,9 +815,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         <form method="post" name="reason_paused_form">
             <input type="hidden" name="reason_paused_nonce" id="reason_paused_nonce" value="<?php echo esc_attr( wp_create_nonce( 'reason_paused' ) ) ?>" />
             <button type="submit" class="button-like-link" name="reason_paused_reset_bug_fix" value="&nasb"></button>
-            <button type="submit" class="button-like-link" name="reason_paused_reset" value="1">reset</button>
+            <button type="submit" class="button-like-link" name="reason_paused_reset" value="1"><?php esc_html_e( "reset", 'disciple_tools' ) ?></button>
 
-            <p>Add or remove reason_paused for new contacts.</p>
+            <p><?php esc_html_e( "Add or remove reason_paused for new contacts.", 'disciple_tools' ) ?></p>
 
             <input type="hidden" name="reason_paused_nonce" id="reason_paused_nonce" value="<?php echo esc_attr( wp_create_nonce( 'reason_paused' ) ) ?>" />
             <table class="widefat">
@@ -843,8 +843,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             </table>
 
             <br>
-            <button type="button" onclick="jQuery('#add_reason_paused').toggle();" class="button"><? esc_html( __( "Add", 'disciple_tools' ) ) ?></button>
-            <button type="submit" style="float:right;" class="button">' . esc_html( __( "Save", 'disciple_tools' ) ) . '</button>
+            <button type="button" onclick="jQuery('#add_reason_paused').toggle();" class="button"><?php esc_html_e( "Add", 'disciple_tools' ) ?></button>
+            <button type="submit" style="float:right;" class="button"> <?php esc_html_e( "Save", 'disciple_tools' ) ?> </button>
 
             <div id="add_reason_paused" style="display:none;">
             <table width="100%">
@@ -867,7 +867,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     public function health_box()
     {
         echo '<form method="post" name="health_form">';
-        //echo '<button type="submit" class="button-like-link" name="health_reset" value="1">reset</button>';
+        //echo '<button type="submit" class="button-like-link" name="health_reset" value="1">' . esc_html( __( "reset", 'disciple_tools' ) ) . '</button>';
         echo '<p>'. esc_html( __( "Add or remove custom health for new contacts.", 'disciple_tools' ) ) .'</p>';
         echo '<input type="hidden" name="health_nonce" id="health_nonce" value="' . esc_attr( wp_create_nonce( 'health' ) ) . '" />';
         echo '<table class="widefat">';
