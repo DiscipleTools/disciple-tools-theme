@@ -71,7 +71,10 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
         if ( isset( $_POST['dt_zume_auto_levels_nonce'] ) && ! empty( $_POST['dt_zume_auto_levels_nonce'] )
             && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_zume_auto_levels_nonce'] ) ), 'dt_zume_auto_levels'. get_current_user_id() ) ) {
 
-            $setting = sanitize_text_field( wp_unslash( $_POST['auto_location'] ) );
+            $setting = '';
+            if ( isset( $_POST['auto_location'] ) ) {
+                $setting = sanitize_text_field( wp_unslash( $_POST['auto_location'] ) );
+            }
             dt_update_option( 'auto_location', $setting, false );
         }
 
@@ -175,10 +178,15 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
             unset( $_POST['dt_import_levels_nonce'] );
 
             // parse and sanitize list
-            $list = explode( "\n", $_POST['import-list'] );
-            $items = array_filter( array_map( 'sanitize_text_field', wp_unslash( $list ) ) );
+            $items = [];
+            if ( isset( $_POST['import-list'] ) ) {
+                $items = explode( "\n", sanitize_textarea_field( wp_unslash( $_POST['import-list'] ) ) );
+            }
 
-            $country = sanitize_text_field( wp_unslash( $_POST['country'] ) );
+            $country = '';
+            if ( isset( $_POST['country'] ) ) {
+                $country = sanitize_text_field( wp_unslash( $_POST['country'] ) );
+            }
 
             $geocode = new Disciple_Tools_Google_Geocode_API();
 
