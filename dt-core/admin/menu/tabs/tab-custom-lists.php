@@ -133,7 +133,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         echo '<p>' . esc_html( __( "You can add or remove types of contact fields for worker profiles.", 'disciple_tools' ) ) . '</p>';
         echo '<input type="hidden" name="user_fields_nonce" id="user_fields_nonce" value="' . esc_attr( wp_create_nonce( 'user_fields' ) ) . '" />';
         echo '<table class="widefat">';
-        echo '<thead><tr><td>Label</td><td>Type</td><td>Description</td><td>Enabled</td><td>Delete</td></tr></thead><tbody>';
+        echo '<thead><tr><td>Label</td><td>Type</td><td>Description</td><td>Enabled</td><td>' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</td></tr></thead><tbody>';
 
         // custom list block
         $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -147,14 +147,14 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         <td>' . esc_attr( $field['type'] ) . '</td>
                         <td>' . esc_attr( $field['description'] ) . ' </td>
                         <td><input name="user_fields[' . esc_attr( $field['key'] ) . ']" type="checkbox" ' . ( $field['enabled'] ? "checked" : "" ) . ' /></td>
-                        <td><button type="submit" name="delete_field" value="' . esc_attr( $field['key'] ) . '" class="button small" >delete</button> </td>
+                        <td><button type="submit" name="delete_field" value="' . esc_attr( $field['key'] ) . '" class="button small" >' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</button> </td>
                       </tr>';
         }
         // end list block
 
         echo '</table>';
-        echo '<br><button type="button" onclick="jQuery(\'#add_user\').toggle();" class="button">Add</button>
-                        <button type="submit" style="float:right;" class="button">Save</button>';
+        echo '<br><button type="button" onclick="jQuery(\'#add_user\').toggle();" class="button">' . esc_html( __( "Add", 'disciple_tools' ) ) . '</button>
+                        <button type="submit" style="float:right;" class="button">' . esc_html( __( "Save", 'disciple_tools' ) ) . '</button>';
         echo '<div id="add_user" style="display:none;">';
         echo '<table width="100%"><tr><td><hr><br>
                     <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
@@ -265,7 +265,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         echo '<p>' . esc_html( __( "Add or remove sources for new contacts.", 'disciple_tools' ) ) . '</p>';
         echo '<input type="hidden" name="sources_nonce" id="sources_nonce" value="' . esc_attr( wp_create_nonce( 'sources' ) ) . '" />';
         echo '<table class="widefat">';
-        echo '<thead><tr><td>Label</td><td>Enabled</td><td>Delete</td></tr></thead><tbody>';
+        echo '<thead><tr><td>Label</td><td>Enabled</td><td>' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</td></tr></thead><tbody>';
 
         // custom list block
         $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -277,14 +277,14 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             echo '<tr>
                         <td>' . esc_attr( $source['label'] ) . '</td>
                         <td><input name="sources[' . esc_attr( $source['key'] ) . ']" type="checkbox" ' . ( $source['enabled'] ? "checked" : "" ) . ' /></td>
-                        <td><button type="submit" name="delete_field" value="' . esc_attr( $source['key'] ) . '" class="button small" >delete</button> </td>
+                        <td><button type="submit" name="delete_field" value="' . esc_attr( $source['key'] ) . '" class="button small" >' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</button> </td>
                       </tr>';
         }
         // end list block
 
         echo '</table>';
-        echo '<br><button type="button" onclick="jQuery(\'#add_source\').toggle();" class="button">Add</button>
-                        <button type="submit" style="float:right;" class="button">Save</button>';
+        echo '<br><button type="button" onclick="jQuery(\'#add_source\').toggle();" class="button">' . esc_html( __( "Add", 'disciple_tools' ) ) . '</button>
+                        <button type="submit" style="float:right;" class="button">' . esc_html( __( "Save", 'disciple_tools' ) ) . '</button>';
         echo '<div id="add_source" style="display:none;">';
         echo '<table width="100%"><tr><td><hr><br>
                     <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
@@ -405,15 +405,15 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 //echo $first_key;
                 echo '<tr>
                             <td><input type="text" name=' . esc_html( $milestone ) . ' value = "' . esc_html( $name ) . '"></input></td>
-                            <td><button type="submit" name="delete_field" value="' . esc_html( $milestone ) . '" class="button small" >delete</button> </td>
+                            <td><button type="submit" name="delete_field" value="' . esc_html( $milestone ) . '" class="button small" >' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</button> </td>
                         </tr>';
             }
         }
 
         // end list block
         echo '</table>';
-        echo '<br><button type="button" onclick="jQuery(\'#add_milestone\').toggle();" class="button">Add</button>
-                        <button type="submit" style="float:right;" class="button">Save</button>';
+        echo '<br><button type="button" onclick="jQuery(\'#add_milestone\').toggle();" class="button">' . esc_html( __( "Add", 'disciple_tools' ) ) . '</button>
+                        <button type="submit" style="float:right;" class="button">' . esc_html( __( "Save", 'disciple_tools' ) ) . '</button>';
         echo '<div id="add_milestone" style="display:none;">';
         echo '<table width="100%"><tr><td><hr><br>
                     <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
@@ -633,8 +633,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             </table>
 
             <br>
-            <button type="button" onclick="jQuery('#add_seeker_path').toggle();" class="button">Add</button>
-            <button type="submit" style="float:right;" class="button">Save</button>
+            <button type="button" onclick="jQuery('#add_seeker_path').toggle();" class="button"><? esc_html( __( "Add", 'disciple_tools' ) ) ?></button>
+            <button type="submit" style="float:right;" class="button">' . esc_html( __( "Save", 'disciple_tools' ) ) . '</button>
 
             <div id="add_seeker_path" style="display:none;">
             <table width="100%">
@@ -738,8 +738,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             </table>
 
             <br>
-            <button type="button" onclick="jQuery('#add_reason_closed').toggle();" class="button">Add</button>
-            <button type="submit" style="float:right;" class="button">Save</button>
+            <button type="button" onclick="jQuery('#add_reason_closed').toggle();" class="button"><? esc_html( __( "Add", 'disciple_tools' ) ) ?></button>
+            <button type="submit" style="float:right;" class="button">' . esc_html( __( "Save", 'disciple_tools' ) ) . '</button>
 
             <div id="add_reason_closed" style="display:none;">
             <table width="100%">
@@ -843,8 +843,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             </table>
 
             <br>
-            <button type="button" onclick="jQuery('#add_reason_paused').toggle();" class="button">Add</button>
-            <button type="submit" style="float:right;" class="button">Save</button>
+            <button type="button" onclick="jQuery('#add_reason_paused').toggle();" class="button"><? esc_html( __( "Add", 'disciple_tools' ) ) ?></button>
+            <button type="submit" style="float:right;" class="button">' . esc_html( __( "Save", 'disciple_tools' ) ) . '</button>
 
             <div id="add_reason_paused" style="display:none;">
             <table width="100%">
@@ -891,15 +891,15 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 //echo $first_key;
                 echo '<tr>
                             <td><input type="text" name=' . esc_html( $health ) . ' value = "' . esc_html( $name ) . '"></input></td>
-                            <td><button type="submit" name="delete_field" value="' . esc_html( wp_unslash( $health ) ) . '" class="button small" >delete</button> </td>
+                            <td><button type="submit" name="delete_field" value="' . esc_html( wp_unslash( $health ) ) . '" class="button small" >' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</button> </td>
                         </tr>';
             }
         }
 
         // end list block
         echo '</table>';
-        echo '<br><button type="button" onclick="jQuery(\'#add_health\').toggle();" class="button">Add</button>
-                        <button type="submit" style="float:right;" class="button">Save</button>';
+        echo '<br><button type="button" onclick="jQuery(\'#add_health\').toggle();" class="button">' . esc_html( __( "Add", 'disciple_tools' ) ) . '</button>
+                        <button type="submit" style="float:right;" class="button">' . esc_html( __( "Save", 'disciple_tools' ) ) . '</button>';
         echo '<div id="add_health" style="display:none;">';
         echo '<table width="100%"><tr><td><hr><br>
                     <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
