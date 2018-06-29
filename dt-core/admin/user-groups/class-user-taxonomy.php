@@ -986,7 +986,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                             class="subtitle"><?php printf( esc_html__( 'Viewing users of %1$s: %2$s', 'disciple-tools-user-groups' ), esc_html( $this->tax_singular_low ), '<a href="' . esc_url( $url ) . '">' . esc_html( $terms[ $viewing ]->name ) . '</a>' ); ?></span>
                     </h1>
                     <?php
-                    // @codingStandardsIgnoreLine
+                    // @phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
                     echo wpautop( $terms[ $viewing ]->description );
                     ?>
                 </div>

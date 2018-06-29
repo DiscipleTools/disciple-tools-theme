@@ -154,7 +154,7 @@ if ( !class_exists( 'Disciple_Tools_Three_Column_Screen_Layout' ) ) {
             global $post;
             ob_start();
             $name = sprintf( 'side%d', $i );
-            // @codingStandardsIgnoreLine
+            // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
             do_action( 'do_meta_boxes', $post_type, $name, $post );
             do_meta_boxes( $post_type, $name, $post );
 
@@ -188,7 +188,7 @@ if ( !class_exists( 'Disciple_Tools_Three_Column_Screen_Layout' ) ) {
                 }
             }
 
-            // @codingStandardsIgnoreLine
+            // @phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
             echo $content;
         }
     }

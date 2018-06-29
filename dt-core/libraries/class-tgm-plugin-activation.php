@@ -647,9 +647,7 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 
                 global $tab, $body_id;
                 $body_id = 'plugin-information';
-				// @codingStandardsIgnoreStart
 				$tab     = 'plugin-information';
-				// @codingStandardsIgnoreEnd
 
                 install_plugin_information();
 
@@ -3040,7 +3038,7 @@ if ( ! class_exists( 'TGMPA_List_Table' ) ) {
 
                     printf( // WPCS: xss ok.
                            '<div id="message" class="updated"><p>%1$s %2$s.</p></div>',
-                           esc_html( _n( 'The following plugin was activated successfully:', 'The following plugins were activated successfully:', $count, 'tgmpa' ), 
+                           esc_html( _n( 'The following plugin was activated successfully:', 'The following plugins were activated successfully:', $count, 'tgmpa' ),
                                      'disciple_tools' ),
                             $imploded
                     );
@@ -3814,7 +3812,6 @@ if ( ! class_exists( 'TGMPA_Utils' ) ) {
          * @return bool
          */
         protected static function emulate_filter_bool( $value ) {
-			// @codingStandardsIgnoreStart
 			static $true  = array(
 				'1',
 				'true', 'True', 'TRUE',
@@ -3829,7 +3826,6 @@ if ( ! class_exists( 'TGMPA_Utils' ) ) {
 				'no', 'No', 'NO',
 				'off', 'Off', 'OFF',
 			);
-			// @codingStandardsIgnoreEnd
 
             if ( is_bool( $value ) ) {
                 return $value;

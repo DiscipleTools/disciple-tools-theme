@@ -3,7 +3,7 @@
 function disciple_tools_comments( $comment, $args, $depth ) {
 
     // TODO: Investigate whether we have to override a WordPress global
-    // @codingStandardsIgnoreLine
+    // @phpcs:ignore WordPress.Variables.GlobalVariables.OverrideProhibited
     $GLOBALS['comment'] = $comment; ?>
 
     <li <?php comment_class( 'panel' ); ?>>

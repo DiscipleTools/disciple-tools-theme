@@ -23,7 +23,6 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * Class Disciple_Tools_Google_Geocode_API
  */
-// @codingStandardsIgnoreLine
 class Disciple_Tools_Google_Geocode_API
 {
     public function __construct() {}
@@ -251,18 +250,15 @@ class Disciple_Tools_Google_Geocode_API
         $ip = '';
         if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ))   //check ip from share internet
         {
-            // @codingStandardsIgnoreLine
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
+            $ip = sanitize_text_field( wp_unslash( $_SERVER['HTTP_CLIENT_IP'] ) );
         }
         elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ))   //to check ip is pass from proxy
         {
-            // @codingStandardsIgnoreLine
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            $ip = sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) );
         }
         elseif ( ! empty( $_SERVER['REMOTE_ADDR'] ) )
         {
-            // @codingStandardsIgnoreLine
-            $ip = $_SERVER['REMOTE_ADDR'];
+            $ip = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
         }
         return $ip;
     }

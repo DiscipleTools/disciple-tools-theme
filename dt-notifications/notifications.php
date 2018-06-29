@@ -347,7 +347,8 @@ class Disciple_Tools_Notifications
         $user_id = get_current_user_id();
 
         $result = $wpdb->get_results( $wpdb->prepare(
-            "SELECT * FROM `$wpdb->dt_notifications` WHERE user_id = %d $all_where ORDER BY date_notified DESC LIMIT %d OFFSET %d", // @codingStandardsIgnoreLine
+            // phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
+            "SELECT * FROM `$wpdb->dt_notifications` WHERE user_id = %d $all_where ORDER BY date_notified DESC LIMIT %d OFFSET %d",
             $user_id,
             $limit,
             $page
