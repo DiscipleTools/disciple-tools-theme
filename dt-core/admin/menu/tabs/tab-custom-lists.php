@@ -268,6 +268,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     public function sources_box()
     {
         echo '<form method="post" name="sources_form">';
+        echo '<button type="submit" class="button-like-link" name="enter_bug_fix" value="&nasb"></button>';
         echo '<button type="submit" class="button-like-link" name="sources_reset" value="1">' . esc_html( __( "reset", 'disciple_tools' ) ) . '</button>';
         echo '<p>' . esc_html( __( "Add or remove sources for new contacts.", 'disciple_tools' ) ) . '</p>';
         echo '<input type="hidden" name="sources_nonce" id="sources_nonce" value="' . esc_attr( wp_create_nonce( 'sources' ) ) . '" />';
@@ -282,7 +283,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         $sources = $site_custom_lists['sources'];
         foreach ( $sources as $source ) {
             echo '<tr>
-                        <td>' . esc_attr( $source['label'] ) . '</td>
+                        <td><input type="text" name="sources_label[' . esc_attr( $source['key'] ) . ']" value = "' . esc_attr( $source['label'] ) . '"></input></td>
                         <td><input name="sources[' . esc_attr( $source['key'] ) . ']" type="checkbox" ' . ( $source['enabled'] ? "checked" : "" ) . ' /></td>
                         <td><button type="submit" name="delete_field" value="' . esc_attr( $source['key'] ) . '" class="button small" >' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</button> </td>
                       </tr>';
@@ -358,6 +359,15 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     'description' => $description,
                     'enabled'     => $enabled,
                 ];
+            }
+
+            //process a field edit
+            // for each custom object with the start of milestone_ make sure name is up to date
+            foreach ( $_POST['sources_label'] as $source => $value ) {
+                //set new label value
+                $label = sanitize_text_field( wp_unslash( $value ) );
+                //set all the values
+                $site_custom_lists['sources'][$source]['label'] = $label;
             }
 
             // Process a field to delete.
@@ -927,7 +937,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         ?>
         <form method="post" name="reason_unassignable_form">
             <input type="hidden" name="reason_unassignable_nonce" id="reason_unassignable_nonce" value="<?php echo esc_attr( wp_create_nonce( 'reason_unassignable' ) ) ?>" />
-            <button type="submit" class="button-like-link" name="reason_unassignable_reset_bug_fix" value="&nasb"></button>
+            <button type="submit" class="button-like-link" name="enter_bug_fix" value="&nasb"></button>
             <button type="submit" class="button-like-link" name="reason_unassignable_reset" value="1"><?php esc_html_e( "reset", 'disciple_tools' ) ?></button>
 
             <p><?php esc_html_e( "Add or remove reason_unassignable for new contacts.", 'disciple_tools' ) ?></p>
