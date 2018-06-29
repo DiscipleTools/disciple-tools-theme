@@ -398,7 +398,7 @@ function dt_get_site_custom_lists( string $list_title = null )
 {
     $fields = [];
 
-    $fields['version'] = '2.3';
+    $fields['version'] = '2.4';
 
     //custom fields
     $fields['seeker_path'] = [
@@ -425,6 +425,15 @@ function dt_get_site_custom_lists( string $list_title = null )
         'media_only'           => __( 'Just wanted media or book', 'disciple_tools' ),
         'denies_submission'    => __( 'Denies submitting contact request', 'disciple_tools' ),
         'unknown'              => __( 'Unknown', 'disciple_tools' )
+    ];
+    $fields['custom_reason_unassignable'] =[
+        'none'         => '',
+        'insufficient' => __( 'Insufficient Contact Information' ),
+        'location'     => __( 'Unknown Location' ),
+        'media'        => __( 'Only wants media' ),
+        'outside_area' => __( 'Outside Area' ),
+        'needs_review' => __( 'Needs Review' ),
+        'awaiting_confirmation' => __( 'Waiting for Confirmation' ),
     ];
     $fields['custom_reason_paused'] = [
         'none'           => '',

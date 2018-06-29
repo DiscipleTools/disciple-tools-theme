@@ -762,15 +762,7 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Reason Unassaginable' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [
-                'none'         => '',
-                'insufficient' => __( 'Insufficient Contact Information' ),
-                'location'     => __( 'Unknown Location' ),
-                'media'        => __( 'Only wants media' ),
-                'outside_area' => __( 'Outside Area' ),
-                'needs_review' => __( 'Needs Review' ),
-                'awaiting_confirmation' => __( 'Waiting for Confirmation' ),
-            ],
+            'default'     => [],
             'section'     => 'misc',
         ];
 
@@ -793,7 +785,7 @@ class Disciple_Tools_Contact_Post_Type
         $custom_lists = dt_get_option( 'dt_site_custom_lists' );
         $fields['reason_closed']['default'] = $custom_lists["custom_reason_closed"];
         $fields['reason_paused']['default'] = $custom_lists["custom_reason_paused"];
-
+        $fields['reason_unassignable']['default'] = $custom_lists["custom_reason_unassignable"];
         $fields['accepted'] = [
             'name'        => __( 'Accepted', 'disciple_tools' ),
             'description' => '',
