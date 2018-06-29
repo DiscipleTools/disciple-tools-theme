@@ -130,7 +130,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     {
         echo '<form method="post" name="user_fields_form">';
         echo '<button type="submit" class="button-like-link" name="user_fields_reset" value="1">reset</button>';
-        echo '<p>You can add or remove types of contact fields for worker profiles.</p>';
+        echo '<p>' . esc_html( __( "You can add or remove types of contact fields for worker profiles.", 'disciple_tools' ) ) . '</p>';
         echo '<input type="hidden" name="user_fields_nonce" id="user_fields_nonce" value="' . esc_attr( wp_create_nonce( 'user_fields' ) ) . '" />';
         echo '<table class="widefat">';
         echo '<thead><tr><td>Label</td><td>Type</td><td>Description</td><td>Enabled</td><td>Delete</td></tr></thead><tbody>';
@@ -262,7 +262,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     {
         echo '<form method="post" name="sources_form">';
         echo '<button type="submit" class="button-like-link" name="sources_reset" value="1">reset</button>';
-        echo '<p>Add or remove sources for new contacts.</p>';
+        echo '<p>' . esc_html( __( "Add or remove sources for new contacts.", 'disciple_tools' ) ) . '</p>';
         echo '<input type="hidden" name="sources_nonce" id="sources_nonce" value="' . esc_attr( wp_create_nonce( 'sources' ) ) . '" />';
         echo '<table class="widefat">';
         echo '<thead><tr><td>Label</td><td>Enabled</td><td>Delete</td></tr></thead><tbody>';
@@ -382,7 +382,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     {
         echo '<form method="post" name="milestones_form">';
         //echo '<button type="submit" class="button-like-link" name="milestones_reset" value="1">reset</button>';
-        echo '<p>Add or remove custom milestones for new contacts.</p>';
+        echo '<p>' . esc_html( __( "Add or remove custom milestones for new contacts.", 'disciple_tools' ) ) . '</p>';
         echo '<input type="hidden" name="milestones_nonce" id="milestones_nonce" value="' . esc_attr( wp_create_nonce( 'milestones' ) ) . '" />';
         echo '<table class="widefat">';
         echo '<thead><tr><td>'. esc_html( __( "Label", 'disciple_tools' ) ) . '</td><td>'. esc_html( __( "Delete", 'disciple_tools' ) ) . '</td></tr></thead><tbody>';
@@ -602,7 +602,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             <button type="submit" class="button-like-link" name="seeker_path_reset_bug_fix" value="&nasb"></button>
             <button type="submit" class="button-like-link" name="seeker_path_reset" value="1"><?php echo esc_html( __( 'reset', 'disciple_tools' ) ) ?></button>
 
-            <p>Add or remove seeker_path for new contacts.</p>
+            <p><?php esc_html( __( "Add or remove seeker_path for new contacts.", 'disciple_tools' ) ) ?></p>
 
             <input type="hidden" name="seeker_path_nonce" id="seeker_path_nonce" value="<?php echo esc_attr( wp_create_nonce( 'seeker_path' ) ) ?>" />
             <table class="widefat">
@@ -710,9 +710,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         <form method="post" name="reason_closed_form">
             <input type="hidden" name="reason_closed_nonce" id="reason_closed_nonce" value="<?php echo esc_attr( wp_create_nonce( 'reason_closed' ) ) ?>" />
             <button type="submit" class="button-like-link" name="reason_closed_reset_bug_fix" value="&nasb"></button>
-            <button type="submit" class="button-like-link" name="reason_closed_reset" value="1">reset</button>
+            <button type="submit" class="button-like-link" name="reason_closed_reset" value="1"><?php esc_html( __( "reset", 'disciple_tools' ) ) ?></button>
 
-            <p>Add or remove reason_closed for new contacts.</p>
+            <p><?php esc_html( __( "Add or remove reason_closed for new contacts.", 'disciple_tools' ) ) ?></p>
 
             <input type="hidden" name="reason_closed_nonce" id="reason_closed_nonce" value="<?php echo esc_attr( wp_create_nonce( 'reason_closed' ) ) ?>" />
             <table class="widefat">
@@ -868,7 +868,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     {
         echo '<form method="post" name="health_form">';
         //echo '<button type="submit" class="button-like-link" name="health_reset" value="1">reset</button>';
-        echo '<p>Add or remove custom health for new contacts.</p>';
+        echo '<p>'. esc_html( __( "Add or remove custom health for new contacts.", 'disciple_tools' ) ) .'</p>';
         echo '<input type="hidden" name="health_nonce" id="health_nonce" value="' . esc_attr( wp_create_nonce( 'health' ) ) . '" />';
         echo '<table class="widefat">';
         echo '<thead><tr><td>'. esc_html( __( "Label", 'disciple_tools' ) ) . '</td><td>'. esc_html( __( "Delete", 'disciple_tools' ) ) . '</td></tr></thead><tbody>';
