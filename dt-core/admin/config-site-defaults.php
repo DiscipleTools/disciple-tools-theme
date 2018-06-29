@@ -398,7 +398,7 @@ function dt_get_site_custom_lists( string $list_title = null )
 {
     $fields = [];
 
-    $fields['version'] = '2.0';
+    $fields['version'] = '2.3';
 
     //custom fields
     $fields['seeker_path'] = [
@@ -411,6 +411,26 @@ function dt_get_site_custom_lists( string $list_title = null )
         'coaching'    => __( 'Being Coached' ),
     ];
     $fields['custom_milestones'] = [];
+    $fields['custom_church'] = [];
+    $fields['custom_reason_closed'] = [
+        'none'                 => '',
+        'duplicate'            => __( 'Duplicate', 'disciple_tools' ),
+        'hostile_self_gain'     => __( 'Hostile, playing game or self gain', 'disciple_tools' ),
+        'games'                => __( 'Playing games', 'disciple_tools' ),
+        'apologetics'          => __( 'Only wants to argue or debate', 'disciple_tools' ),
+        'insufficient'         => __( 'Insufficient contact info', 'disciple_tools' ),
+        'already_connected'    => __( 'Already in church or connected with Others', 'disciple_tools' ),
+        'no_longer_interested' => __( 'No longer interested', 'disciple_tools' ),
+        'no_longer_responding' => __( 'No longer responding', 'disciple_tools' ),
+        'media_only'           => __( 'Just wanted media or book', 'disciple_tools' ),
+        'denies_submission'    => __( 'Denies submitting contact request', 'disciple_tools' ),
+        'unknown'              => __( 'Unknown', 'disciple_tools' )
+    ];
+    $fields['custom_reason_paused'] = [
+        'none'           => '',
+        'vacation'       => __( 'On Vacation', 'disciple_tools' ),
+        'not-responding' => __( 'Not Responding', 'disciple_tools' ),
+    ];
     // the prefix dt_user_ assists db meta queries on the user
     $fields['user_fields'] = [
         'dt_user_personal_phone'   => [

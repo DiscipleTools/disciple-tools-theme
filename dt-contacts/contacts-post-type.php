@@ -778,11 +778,7 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Reason Paused' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [
-                'none'           => '',
-                'vacation'       => __( 'On Vacation', 'disciple_tools' ),
-                'not-responding' => __( 'Not Responding', 'disciple_tools' ),
-            ],
+            'default'     => [],
             'section'     => 'misc',
         ];
 
@@ -790,22 +786,13 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Reason Closed', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [
-                'none'                 => '',
-                'duplicate'            => __( 'Duplicate', 'disciple_tools' ),
-                'hostile_self_gain'     => __( 'Hostile, playing game or self gain', 'disciple_tools' ),
-                'games'                => __( 'Playing games', 'disciple_tools' ),
-                'apologetics'          => __( 'Only wants to argue or debate', 'disciple_tools' ),
-                'insufficient'         => __( 'Insufficient contact info', 'disciple_tools' ),
-                'already_connected'    => __( 'Already in church or connected with Others', 'disciple_tools' ),
-                'no_longer_interested' => __( 'No longer interested', 'disciple_tools' ),
-                'no_longer_responding' => __( 'No longer responding', 'disciple_tools' ),
-                'media_only'           => __( 'Just wanted media or book', 'disciple_tools' ),
-                'denies_submission'    => __( 'Denies submitting contact request', 'disciple_tools' ),
-                'unknown'              => __( 'Unknown', 'disciple_tools' )
-            ],
+            'default'     => [],
             'section'     => 'misc',
         ];
+        //add custom fields to reason closed/paused
+        $custom_lists = dt_get_option( 'dt_site_custom_lists' );
+        $fields['reason_closed']['default'] = $custom_lists["custom_reason_closed"];
+        $fields['reason_paused']['default'] = $custom_lists["custom_reason_paused"];
 
         $fields['accepted'] = [
             'name'        => __( 'Accepted', 'disciple_tools' ),
