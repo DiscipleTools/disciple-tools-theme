@@ -79,6 +79,13 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* end Sources */
 
+            /* status */
+            $this->box( 'top', 'Status' );
+            $this->process_status_box();
+            $this->status_box(); // prints
+            $this->box( 'bottom' );
+            /* end status */
+
             /* milestones */
             $this->box( 'top', 'Milestones' );
             $this->process_milestones_box();
@@ -392,6 +399,98 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             update_option( 'dt_site_custom_lists', $site_custom_lists, true );
         }
     }
+
+    /**
+     * Prints the status settings box.
+     */
+    public function status_box()
+    {
+        echo '<form method="post" name="status_form">';
+        echo '<button type="submit" class="button-like-link" name="enter_bug_fix" value="&nasb"></button>';
+        echo '<p>' . esc_html( __( "Add or remove custom status for new contacts.", 'disciple_tools' ) ) . '</p>';
+        echo '<input type="hidden" name="status_nonce" id="status_nonce" value="' . esc_attr( wp_create_nonce( 'status' ) ) . '" />';
+        echo '<table class="widefat">';
+        echo '<thead><tr><td>'. esc_html( __( "Label", 'disciple_tools' ) ) . '</td><td>'. esc_html( __( "Delete", 'disciple_tools' ) ) . '</td></tr></thead><tbody>';
+
+        // get the list of custom lists
+        $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+        //empty check
+        if ( ! $site_custom_lists ) {
+            wp_die( 'Failed to get custom list from options table.' );
+        }
+        $site_custom_lists = $site_custom_lists["custom_status"];
+        //for each status put it on the list
+        foreach ( $site_custom_lists as $status => $value) {
+            echo '<tr>
+                        <td><input type="text" name="status[' . esc_attr( $status ) . ']" value = "' . esc_html( $value ) . '"></input></td>
+                        <td><button type="submit" name="delete_field" value="' . esc_html( $status ) . '" class="button small" >' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</button> </td>
+                    </tr>';
+        }
+
+        // end list block
+        echo '</table>';
+        echo '<br><button type="button" onclick="jQuery(\'#add_status\').toggle();" class="button">' . esc_html( __( "Add", 'disciple_tools' ) ) . '</button>
+                        <button type="submit" style="float:right;" class="button">' . esc_html( __( "Save", 'disciple_tools' ) ) . '</button>';
+        echo '<div id="add_status" style="display:none;">';
+        echo '<table width="100%"><tr><td><hr><br>
+                    <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
+        echo '<button type="submit">' . esc_html( __( 'Add', 'disciple_tools' ) ) . '</button>
+                    </td></tr></table></div>';
+        echo '</tbody></form>';
+    }
+
+    /**
+     * Process status status settings
+     */
+    public function process_status_box()
+    {
+        if ( isset( $_POST['status_nonce'] ) ) {
+            $delete = true;  //for the bug where you press enter and it deltes a key
+            if ( !wp_verify_nonce( sanitize_key( $_POST['status_nonce'] ), 'status' ) ) {
+                return;
+            }
+
+            //get the custom list of lists
+            $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+            // Process current fields submitted
+            if ( ! $site_custom_lists ) {
+                wp_die( 'Failed to get dt_site_custom_lists() from options table.' );
+            }
+            //make a new status object
+            if ( !empty( $_POST['add_input_field']['label'] ) ) {
+                $delete = false; //for the enter bug
+                //make the label
+                $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
+                //for the key add the _ for spaces
+                $key = str_replace( " ", "_", $label );
+                //set all the values note for right now the default is ALWAYS NO
+                $site_custom_lists["custom_status"][$key] = $label;
+            }
+            //edit name
+            // for each custom object with the start of status_ make sure name is up to date
+            foreach ( $_POST["status"] as $status => $value ) {
+                //set new label value
+                $label = sanitize_text_field( wp_unslash( $value ) );
+                //set all the values note for right now the default is ALWAYS NO
+                $site_custom_lists["custom_status"][$status] = $label;
+            }
+            // Process a field to delete.
+            if ( isset( $_POST['delete_field'] ) && $delete ) {
+                $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
+                unset( $site_custom_lists["custom_status"][ $delete_key ] );
+                //TODO: Consider adding a database query to delete all instances of this key from usermeta
+
+            }
+            // Process reset request
+            if ( isset( $_POST['status_reset'] ) ) {
+                unset( $site_custom_lists["custom_status"] );
+                $site_custom_lists["custom_status"] = [];
+            }
+            // Update the site option
+            update_option( 'dt_site_custom_lists', $site_custom_lists, true );
+        }
+    }
+
     /**
      * Prints the mielsteons settings box.
      */
