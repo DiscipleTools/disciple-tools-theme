@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 12;
+    private static $target_roles_version_number = 13;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -257,7 +257,7 @@ class Disciple_Tools_Roles
                 'publish_groups'             => true,
                 'read_private_groups'        => true,
 
-                /* Add custom caps for locations */
+                /* Add wp-admin caps for locations */
                 'read_location'             => true,
                 'edit_location'             => true,
                 'delete_location'           => true,
@@ -267,6 +267,9 @@ class Disciple_Tools_Roles
                 'edit_others_locations'     => true,
                 'publish_locations'         => true,
                 'read_private_locations'    => true,
+
+                /* Add custom caps for locations */
+                'delete_any_locations'       => true,
 
                 /* Add custom caps for people groups */
                 'read_peoplegroup'          => true,
@@ -278,6 +281,9 @@ class Disciple_Tools_Roles
                 'edit_others_peoplegroups'   => true,
                 'publish_peoplegroups'       => true,
                 'read_private_peoplegroups' => true,
+
+                /* Add custom caps for people groups */
+                'delete_any_peoplegroup'     => true,
 
             ]
         );
@@ -384,6 +390,9 @@ class Disciple_Tools_Roles
             $role->add_cap( 'publish_locations' );
             $role->add_cap( 'read_private_locations' );
 
+            /* Add custom caps for locations */
+            $role->add_cap( 'delete_any_locations' );
+
             /* Add People Group permissions */
             $role->add_cap( 'edit_peoplegroup' );
             $role->add_cap( 'read_peoplegroup' );
@@ -394,6 +403,9 @@ class Disciple_Tools_Roles
             $role->add_cap( 'edit_others_peoplegroups' );
             $role->add_cap( 'publish_peoplegroups' );
             $role->add_cap( 'read_private_peoplegroups' );
+
+            /* Add custom caps for people groups */
+            $role->add_cap( 'delete_any_peoplegroups' );
         }
 
         update_option( 'dt_roles_number', self::$target_roles_version_number );
