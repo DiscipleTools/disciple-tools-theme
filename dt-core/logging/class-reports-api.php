@@ -257,7 +257,7 @@ class Disciple_Tools_Reports_API
         }
 
         $results = $wpdb->get_results( $wpdb->prepare(
-            "SELECT " // @codingStandardsIgnoreLine
+            "SELECT "
             . " %s AS %s
                 FROM
                     `$wpdb->dt_reports`
@@ -394,7 +394,7 @@ class Disciple_Tools_Reports_API
             // Build full query
             $results = $wpdb->get_results( $wpdb->prepare(
                 "SELECT "
-                // @codingStandardsIgnoreLine
+                // @phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
                 . ( $id_only ? "id " : "* " )
                 . " FROM
                     `$wpdb->dt_reports`
@@ -410,7 +410,7 @@ class Disciple_Tools_Reports_API
             // Build full query
             $results = $wpdb->get_results( $wpdb->prepare(
                 "SELECT "
-                // @codingStandardsIgnoreLine
+                // @phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
                 . ( $id_only ? "id " : "* " )
                 . " FROM
                     `$wpdb->dt_reports`

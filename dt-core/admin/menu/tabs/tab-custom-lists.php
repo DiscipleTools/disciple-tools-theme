@@ -461,9 +461,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             //edit name
             // for each custom object with the start of milestone_ make sure name is up to date
             foreach ( $_POST as $milestone => $value ) {
+                $value = sanitize_text_field( wp_unslash( $value ) );
                 if ( strpos( $milestone, "milestone_" ) === 0 && $milestone != 'milestones_nonce' ) {
                     //delete key
-                    $key = $_POST[$milestone];
+                    $key = $value;
                     if ( $site_custom_lists["custom_milestones"][$milestone]['name'] != $key ) {
                         $delete = false; //for the enter bug
                         //set new label value
@@ -514,8 +515,11 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $site_custom_lists["seeker_path"][$label] = $label;
             }
             //edit name
-            foreach ( $_POST["seeker_path"] as $key => $val) {
-                $site_custom_lists["seeker_path"][$key] = $val;
+            if ( isset( $_POST["seeker_path"] ) ) {
+                $seeker_path = sanitize_text_field( wp_unslash( $_POST["seeker_path"] ) );
+                foreach ( $seeker_path as $key => $val) {
+                    $site_custom_lists["seeker_path"][$key] = $val;
+                }
             }
             // Process move up request
             if ( isset( $_POST['seeker_path_move_up'] ) ) {
@@ -523,7 +527,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $previous_key = null;
                 reset( $site_custom_lists["seeker_path"] );
                 $first_key = key( $site_custom_lists["seeker_path"] );
-                $key = sanitize_text_field( $_POST['seeker_path_move_up'] );
+                $key = sanitize_text_field( wp_unslash( $_POST['seeker_path_move_up'] ) );
                 $item = array( $key => $site_custom_lists["seeker_path"][$key] );
                 foreach ( $site_custom_lists["seeker_path"] as $h_key => $h_val ) {
                     if ( $h_key == $key && $previous_key != null && $previous_key != $first_key ) {
@@ -546,7 +550,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $site_custom_lists["seeker_path"] = array_reverse( $site_custom_lists["seeker_path"] );
                 $new_seekers = [];
                 $previous_key = null;
-                $key = sanitize_text_field( $_POST['seeker_path_move_down'] );
+                $key = sanitize_text_field( wp_unslash( $_POST['seeker_path_move_down'] ) );
                 $item = array( $key => $site_custom_lists["seeker_path"][$key] );
                 foreach ( $site_custom_lists["seeker_path"] as $h_key => $h_val ) {
                     if ( $h_key == $key && $previous_key != null ) {
@@ -670,8 +674,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $site_custom_lists["custom_reason_closed"][$label] = $label;
             }
             //edit name
-            foreach ( $_POST["reason_closed"] as $key => $val) {
-                $site_custom_lists["custom_reason_closed"][$key] = $val;
+            if ( isset( $_POST["reason_closed"] ) ) {
+                foreach ( sanitize_text_field( wp_unslash( $_POST["reason_closed"] ) ) as $key => $val) {
+                    $site_custom_lists["custom_reason_closed"][$key] = $val;
+                }
             }
             // Process a field to delete.
             if ( isset( $_POST['delete_field'] ) && $delete ) {
@@ -775,8 +781,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $site_custom_lists["custom_reason_paused"][$label] = $label;
             }
             //edit name
-            foreach ( $_POST["reason_paused"] as $key => $val) {
-                $site_custom_lists["custom_reason_paused"][$key] = $val;
+            if ( isset( $_POST["reason_paused"] ) ) {
+                foreach ( sanitize_text_field( wp_unslash( $_POST["reason_paused"] ) ) as $key => $val) {
+                    $site_custom_lists["custom_reason_paused"][$key] = $val;
+                }
             }
             // Process a field to delete.
             if ( isset( $_POST['delete_field'] ) && $delete ) {
@@ -946,10 +954,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
             //edit name
             // for each custom object with the start of health_ make sure name is up to date
-            foreach ( $_POST as $health => $value ) {
+            foreach ( sanitize_text_field( wp_unslash( $_POST ) ) as $health => $value ) {
                 if ( strpos( $health, "church_custom_" ) === 0 && $health != 'health_nonce' ) {
                     //delete key
-                    $key = $_POST[$health];
+                    $key = $value;
                     if ( $site_custom_lists["custom_church"][$health]['name'] != $key ) {
                         $delete = false; //for the enter bug
                         //set new label value

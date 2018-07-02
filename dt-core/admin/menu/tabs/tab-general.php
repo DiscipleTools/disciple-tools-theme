@@ -307,10 +307,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             foreach ( $site_options["update_required"]["options"] as $option_index => $option ){
                 if ( isset( $_POST[$option_index . "_days"] ) ){
-                    $site_options["update_required"]["options"][$option_index]["days"] = sanitize_text_field( $_POST[$option_index . "_days"] );
+                    $site_options["update_required"]["options"][$option_index]["days"] = sanitize_text_field( wp_unslash( $_POST[$option_index . "_days"] ) );
                 }
                 if ( isset( $_POST[$option_index . "_comment"] ) ){
-                    $site_options["update_required"]["options"][$option_index]["comment"] = wp_unslash( sanitize_text_field( $_POST[$option_index . "_comment"] ) );
+                    $site_options["update_required"]["options"][$option_index]["comment"] = wp_unslash( sanitize_text_field( wp_unslash( $_POST[$option_index . "_comment"] ) ) );
                 }
             }
             update_option( 'dt_site_options', $site_options, true );

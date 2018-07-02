@@ -5,8 +5,8 @@ Template Name: Settings
 
 /* Process $_POST content */
 // We're not checking the nonce here because update_user_contact_info will
-// @codingStandardsIgnoreLine
-if( isset( $_POST[ 'user_update_nonce' ] ) ) {
+// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+if ( isset( $_POST['user_update_nonce'] ) ) {
     Disciple_Tools_Users::update_user_contact_info();
 }
 

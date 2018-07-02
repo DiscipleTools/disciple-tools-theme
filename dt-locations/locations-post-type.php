@@ -331,21 +331,21 @@ class Disciple_Tools_Location_Post_Type
          * Free parenting of non-geocoded locations section
          */
         if ( ! $raw ) :
-            $dropdown_args = array(
+            // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
+            $pages = wp_dropdown_pages( [
                 'post_type'        => $post->post_type,
-                'exclude_tree'     => $post->ID,
-                'selected'         => $post->post_parent,
+                'exclude_tree'     => esc_html( $post->ID ),
+                'selected'         => esc_html( $post->post_parent ),
                 'name'             => 'parent_id',
-                'show_option_none' => __( '(no parent)' ),
+                'show_option_none' => esc_html__( '(no parent)' ),
                 'sort_column'      => 'menu_order, post_title',
                 'echo'             => 0,
-            );
-            // @codingStandardsIgnoreLine
-            $pages = wp_dropdown_pages( $dropdown_args );
+            ] );
+            // phpcs:enable
             if ( ! empty( $pages ) ) : ?>
                 <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="parent_id"><?php esc_html_e( 'Parent' ); ?></label></p>
                 <?php
-                // @codingStandardsIgnoreLine
+                // @phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
                 echo $pages;
             endif; // end empty pages check?>
 
