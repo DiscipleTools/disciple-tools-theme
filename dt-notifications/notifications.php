@@ -479,7 +479,7 @@ class Disciple_Tools_Notifications
 
             dt_notification_insert( $args );
             $user = get_userdata( $user_id );
-            $subject = __( "Contact shared", 'disciple_tools' );
+            $subject = __( "Contact shared", 'disciple_tools' ) . '. #' . $post_id;
             dt_send_email( $user->user_email, $subject, $message );
         }
     }
@@ -512,7 +512,7 @@ class Disciple_Tools_Notifications
 
             dt_notification_insert( $args );
             $user = get_userdata( $user_id );
-            $subject = __( "Contact sub-assigned to you", 'disciple_tools' );
+            $subject = __( "Contact sub-assigned to you", 'disciple_tools' )  . '. #' . $post_id;
             dt_send_email( $user->user_email, $subject, $message );
         }
     }
@@ -546,7 +546,7 @@ class Disciple_Tools_Notifications
 
             dt_notification_insert( $args );
             $user = get_userdata( $new_assigned_to );
-            $subject = __( "Assignment declined", 'disciple_tools' );
+            $subject = __( "Assignment declined", 'disciple_tools' )  . '. #' . $post_id;
             dt_send_email( $user->user_email, $subject, $message );
         }
     }
@@ -591,7 +591,7 @@ class Disciple_Tools_Notifications
                     $user = get_userdata( $user_id );
                     dt_send_email(
                         $user->user_email,
-                        sprintf( esc_html_x( 'New %s created and assigned to you', '', 'disciple_tools' ), Disciple_Tools_Posts::get_label_for_post_type( $post_type, true ) ),
+                        sprintf( esc_html_x( 'New %s created and assigned to you', '', 'disciple_tools' ), Disciple_Tools_Posts::get_label_for_post_type( $post_type, true ) )  . '. #' . $post_id,
                         $message
                     );
                 }
@@ -715,7 +715,7 @@ class Disciple_Tools_Notifications
                         $user = get_userdata( $follower );
                         dt_send_email(
                             $user->user_email,
-                            $subject,
+                            $subject  . '. #' . $fields["ID"],
                             $email
                         );
                     }

@@ -99,7 +99,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                             $notification["notification_note"] .= __( 'Click here to reply', 'disciple_tools' ) . ': ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
                             dt_send_email(
                                 $user->user_email,
-                                in_array( $user_to_notify, $mentioned_user_ids ) ? __( "You were mentioned!", 'disciple_tools' ) : __( "Comment on a contact!", 'disciple_tools' ),
+                                in_array( $user_to_notify, $mentioned_user_ids ) ? __( "You were mentioned on contact", 'disciple_tools' ) . $post_id : __( "Update on contact", 'disciple_tools' ) . $post_id,
                                 $notification["notification_note"]
                             );
                         }
