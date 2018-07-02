@@ -191,9 +191,10 @@ declare(strict_types=1);
                                     <?php if ( isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "key_select" ) :
                                         foreach ( $dt_group_field_options[$field]["default"] as $option_key => $option_value ) : ?>
                                             <div class="key_select_options">
-                                                <label style="cursor: pointer"></label>
-                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
-                                                       value="<?php echo esc_html( $option_key ) ?>"> <?php echo esc_html( $option_value ) ?>
+                                                <label style="cursor: pointer">
+                                                    <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
+                                                           value="<?php echo esc_html( $option_key ) ?>"> <?php echo esc_html( $option_value ) ?>
+                                                </label>
                                             </div>
                                         <?php endforeach; ?>
                                     <?php elseif ( isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "key_select" ) : ?>
