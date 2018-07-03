@@ -23,6 +23,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     {
         add_action( 'dt_extensions_tab_menu', [ $this, 'add_tab' ], 10, 1 ); // use the priority setting to control load order
         add_action( 'dt_extensions_tab_content', [ $this, 'content' ], 99, 1 );
+        //tools tab
+        add_action( 'dt_extensions_tools_tab_content', [ $this, 'content' ], 100, 1 );
         parent::__construct();
     } // End __construct()
 
@@ -61,6 +63,11 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             echo 'nav-tab-active';
         }
         echo '">' . esc_attr__( 'Featured Extensions', 'disciple_tools' ) . '</a>';
+        echo '<a href="' . esc_url( admin_url() ) . 'admin.php?page=dt_extensions&tab=tools" class="nav-tab ';
+        if ($tab == 'tools') {
+            echo 'nav-tab-active';
+        }
+        echo '">' . esc_attr__( 'Tools', 'disciple_tools' ) . '</a>';
     }
 
     public function content( $tab )
@@ -70,6 +77,18 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             $this->template( 'begin' );
 
             $this->box_message();
+
+            // begin right column template
+            $this->template( 'right_column' );
+
+            // end columns template
+            $this->template( 'end' );
+        }
+        else if ( 'tools' == $tab ) {
+            // begin columns template
+            $this->template( 'begin' );
+
+            $this->tools_box_message();
 
             // begin right column template
             $this->template( 'right_column' );
@@ -104,6 +123,38 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         }
         //false
         return -1;
+    }
+
+    //tools page
+    public function tools_box_message()
+    {
+        echo var_dump( $_POST );
+        //check if it can run commands
+        $run = true;
+        //check for admin or multisite super admin
+        if ( ( is_multisite() && !is_super_admin() ) || ( !is_multisite() && !is_admin() ) ) {
+            $run = false;
+        }
+        //check for action of csv import
+        if ( isset( $_POST['csv_import_nonce'] ) && wp_verify_nonce( $_POST['csv_import_nonce'], 'csv_import' ) && $run ) {
+            $this->import_csv( $_POST['csv_import_text'] );
+            echo "done";
+            exit;
+        }
+        ?>
+        <h3>CSV IMPORT</h3>
+        <p>INSTRUCTIONS</p>
+        <form method="post">
+            <textarea name='csv_import_text' rows="20" cols="100">
+            </textarea>
+            <?php wp_nonce_field( 'csv_import', 'csv_import_nonce' ); ?>
+            <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Submit"></p>
+        </form>
+        <?php
+    }
+
+    private function import_csv( $text ) {
+        $text = sanitize_text_field( $text );
     }
 
     //main page
@@ -228,7 +279,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         <?php
                     }
                     ?>
-                    </td>    
+                    </td>
                 </tr>
             <!--Two Factor Authentication-->
                 <tr>
@@ -258,7 +309,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         <?php
                     }
                     ?>
-                    </td>    
+                    </td>
                 </tr>
             <!--Inactive Logout-->
                 <tr>
@@ -288,7 +339,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         <?php
                     }
                     ?>
-                    </td>    
+                    </td>
                 </tr>
             </tbody>
         </table>
