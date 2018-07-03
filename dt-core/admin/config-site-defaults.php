@@ -200,7 +200,7 @@ function dt_get_option( string $name )
             $seeker_list = dt_get_option( "dt_site_custom_lists" );
             return $seeker_list["seeker_path"];
         case 'overall_status':
-            return [
+            $status = [
                 'unassigned'   => _x( 'Unassigned', 'Contact Status', 'disciple_tools' ),
                 'assigned'     => _X( "Assigned", 'Contact Status', 'disciple_tools' ),
                 'active'       => _X( 'Active', 'Contact Status', 'disciple_tools' ),
@@ -208,7 +208,12 @@ function dt_get_option( string $name )
                 'closed'       => _x( 'Closed', 'Contact Status', 'disciple_tools' ),
                 'unassignable' => _x( 'Unassignable', 'Contact Status', 'disciple_tools' ),
             ];
-            break;
+            $custom = dt_get_option( "dt_site_custom_lists" );
+            $custom = $custom["custom_status"];
+            foreach ( $custom as $key => $value ) {
+                $status[$key] = $value;
+            }
+            return $status;
 
         default:
             return false;
@@ -398,7 +403,7 @@ function dt_get_site_custom_lists( string $list_title = null )
 {
     $fields = [];
 
-    $fields['version'] = '2.3';
+    $fields['version'] = '2.5';
 
     //custom fields
     $fields['seeker_path'] = [
@@ -425,6 +430,16 @@ function dt_get_site_custom_lists( string $list_title = null )
         'media_only'           => __( 'Just wanted media or book', 'disciple_tools' ),
         'denies_submission'    => __( 'Denies submitting contact request', 'disciple_tools' ),
         'unknown'              => __( 'Unknown', 'disciple_tools' )
+    ];
+    $fields['custom_status'] = [];
+    $fields['custom_reason_unassignable'] =[
+        'none'         => '',
+        'insufficient' => __( 'Insufficient Contact Information' ),
+        'location'     => __( 'Unknown Location' ),
+        'media'        => __( 'Only wants media' ),
+        'outside_area' => __( 'Outside Area' ),
+        'needs_review' => __( 'Needs Review' ),
+        'awaiting_confirmation' => __( 'Waiting for Confirmation' ),
     ];
     $fields['custom_reason_paused'] = [
         'none'           => '',
