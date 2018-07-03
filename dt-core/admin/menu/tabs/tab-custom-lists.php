@@ -372,8 +372,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             //process a field edit
             // for each custom object with the start of milestone_ make sure name is up to date
             if ( isset( $_POST['sources_label'] ) ) {
-                $sources_label = sanitize_text_field( wp_unslash( $_POST ) );
+                $sources_label = $_POST['sources_label'];
                 foreach ( $sources_label as $source => $value ) {
+                    $source = sanitize_text_field( wp_unslash( $source ) );
+                    $value = sanitize_text_field( wp_unslash( $value ) );
                     //set new label value
                     $label = $value;
                     //set all the values
@@ -473,8 +475,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             //edit name
             // for each custom object with the start of status_ make sure name is up to date
             if ( isset( $_POST["status"] ) ) {
-                $sanitized_post_status = sanitize_text_field( wp_unslash( $_POST["status"] ) );
+                $sanitized_post_status = $_POST["status"];
                 foreach ( $sanitized_post_status as $status => $value ) {
+                    $status = sanitize_text_field( wp_unslash( $status ) );
+                    $value = sanitize_text_field( wp_unslash( $value ) );
                     //set new label value
                     $label = $value;
                     //set all the values note for right now the default is ALWAYS NO
@@ -1005,8 +1009,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
             //edit name
             if (isset( $_POST["reason_unassignable"] )) {
-                $reason_unassignable = sanitize_text_field( wp_unslash( $_POST["reason_unassignable"] ) );
+                $reason_unassignable =  $_POST["reason_unassignable"];
                 foreach ( $reason_unassignable as $key => $val) {
+                    $status = sanitize_text_field( wp_unslash( $key ) );
+                    $value = sanitize_text_field( wp_unslash( $val ) );
                     $site_custom_lists["custom_reason_unassignable"][$key] = $val;
                 }
             }
