@@ -137,7 +137,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         }
         //check for action of csv import
         if ( isset( $_POST['csv_import_nonce'] ) && wp_verify_nonce( $_POST['csv_import_nonce'], 'csv_import' ) && $run ) {
-            $this->import_csv( $_POST['csv_import_text'] );
+            $this->import_csv( $_POST['csv_file'] );
             echo "done";
             exit;
         }
@@ -145,16 +145,25 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         <h3>CSV IMPORT</h3>
         <p>INSTRUCTIONS</p>
         <form method="post">
-            <textarea name='csv_import_text' rows="20" cols="100">
-            </textarea>
+            <input type="file" name="csv_file" id="csv_file">
             <?php wp_nonce_field( 'csv_import', 'csv_import_nonce' ); ?>
             <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Submit"></p>
         </form>
         <?php
     }
 
-    private function import_csv( $text ) {
-        $text = sanitize_text_field( $text );
+    private function import_csv( $file ) {
+        //satnatize
+        //$text = sanitize_text_field( $text );
+        //make into array
+        $data = fgetcsv ( $text );
+        //TODO MAKE IT SO THAT CSV TAKES DIF DEL
+        //loop over array
+        echo var_dump($data);
+        foreach ( $data as $row ) {
+            echo var_dump($row);
+        }
+        //Disciple_Tools_Contacts::update_contact( $contact_id, $fields, true );
     }
 
     //main page
