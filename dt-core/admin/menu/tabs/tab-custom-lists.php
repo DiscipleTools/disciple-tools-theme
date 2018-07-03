@@ -371,11 +371,13 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 
             //process a field edit
             // for each custom object with the start of milestone_ make sure name is up to date
-            foreach ( wp_unslash( $_POST['sources_label'] ) as $source => $value ) {
-                //set new label value
-                $label = sanitize_text_field( wp_unslash( $value ) );
-                //set all the values
-                $site_custom_lists['sources'][$source]['label'] = $label;
+            if ( isset( $_POST['sources_label'] ) ) {
+                foreach ( $_POST['sources_label'] as $source => $value ) {
+                    //set new label value
+                    $label = sanitize_text_field( wp_unslash( $value ) );
+                    //set all the values
+                    $site_custom_lists['sources'][wp_unslash( $source )]['label'] = $label;
+                }
             }
 
             // Process a field to delete.
@@ -470,11 +472,11 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             //edit name
             // for each custom object with the start of status_ make sure name is up to date
             if ( isset( $_POST["status"] ) ) {
-                foreach ( wp_unslash( $_POST["status"] ) as $status => $value ) {
+                foreach ( $_POST["status"] as $status => $value ) {
                     //set new label value
                     $label = sanitize_text_field( wp_unslash( $value ) );
                     //set all the values note for right now the default is ALWAYS NO
-                    $site_custom_lists["custom_status"][$status] = $label;
+                    $site_custom_lists["custom_status"][ wp_unslash( $status ) ] = $label;
                 }
             }
             // Process a field to delete.
