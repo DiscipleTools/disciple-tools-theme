@@ -372,11 +372,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             //process a field edit
             // for each custom object with the start of milestone_ make sure name is up to date
             if ( isset( $_POST['sources_label'] ) ) {
-                foreach ( $_POST['sources_label'] as $source => $value ) {
+                $sources_label = sanitize_text_field( wp_unslash( $_POST ) );
+                foreach ( $sources_label as $source => $value ) {
                     //set new label value
-                    $label = sanitize_text_field( wp_unslash( $value ) );
+                    $label = $value;
                     //set all the values
-                    $site_custom_lists['sources'][wp_unslash( $source )]['label'] = $label;
+                    $site_custom_lists['sources'][ $source ]['label'] = $label;
                 }
             }
 
@@ -472,11 +473,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             //edit name
             // for each custom object with the start of status_ make sure name is up to date
             if ( isset( $_POST["status"] ) ) {
-                foreach ( $_POST["status"] as $status => $value ) {
+                $sanitized_post_status = sanitize_text_field( wp_unslash( $_POST["status"] ) );
+                foreach ( $sanitized_post_status as $status => $value ) {
                     //set new label value
-                    $label = sanitize_text_field( wp_unslash( $value ) );
+                    $label = $value;
                     //set all the values note for right now the default is ALWAYS NO
-                    $site_custom_lists["custom_status"][ wp_unslash( $status ) ] = $label;
+                    $site_custom_lists["custom_status"][ $status ] = $label;
                 }
             }
             // Process a field to delete.
@@ -1002,8 +1004,11 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $site_custom_lists["custom_reason_unassignable"][$label] = $label;
             }
             //edit name
-            foreach ( $_POST["reason_unassignable"] as $key => $val) {
-                $site_custom_lists["custom_reason_unassignable"][$key] = $val;
+            if (isset( $_POST["reason_unassignable"] )) {
+                $reason_unassignable = sanitize_text_field( wp_unslash( $_POST["reason_unassignable"] ) );
+                foreach ( $reason_unassignable as $key => $val) {
+                    $site_custom_lists["custom_reason_unassignable"][$key] = $val;
+                }
             }
             // Process a field to delete.
             if ( isset( $_POST['delete_field'] ) && $delete ) {
