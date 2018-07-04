@@ -117,10 +117,13 @@ function dt_get_option( string $name )
             if ( !get_option( 'dt_site_custom_lists' ) ) { // options doen't exist, create new.
                 add_option( 'dt_site_custom_lists', $default_custom_lists, '', true );
             }
-            elseif ( get_option( 'dt_site_custom_lists' )['version'] < $default_custom_lists['version'] ) { // option exists but version is behind
-                $upgrade = dt_site_options_upgrade_version( 'dt_site_custom_lists' );
-                if ( !$upgrade ) {
-                    return false;
+            else {
+                if ( get_option( 'dt_site_custom_lists', $default_custom_lists )['version'] < $default_custom_lists['version'] ) { // option exists but version is behind
+                    dt_site_options_upgrade_version( 'dt_site_custom_lists' );
+//                    updating the option is not always working right away, return the non updated option instead of failing.
+//                    if ( !$upgrade ) {
+//                        return false;
+//                    }
                 }
             }
             //return apply_filters( "dt_site_custom_lists", get_option( 'dt_site_custom_lists' ) );
