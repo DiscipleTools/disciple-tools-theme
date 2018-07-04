@@ -15,7 +15,7 @@ class Disciple_Tools_Update_Needed {
         if ( ! wp_next_scheduled( 'update-required' ) ) {
             wp_schedule_event( time( 'today midnight' ), 'daily', 'update-required' );
         }
-        add_action( 'update-required', [ &$this, 'dt_find_contacts_that_need_an_update' ] );
+        add_action( 'update-required', 'dt_find_contacts_that_need_an_update' );
     }
 }
 
