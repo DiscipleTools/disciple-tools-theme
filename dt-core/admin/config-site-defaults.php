@@ -118,12 +118,12 @@ function dt_get_option( string $name )
                 add_option( 'dt_site_custom_lists', $default_custom_lists, '', true );
             }
             else {
-                if ( get_option( 'dt_site_custom_lists', $default_custom_lists )['version'] < $default_custom_lists['version'] ) { // option exists but version is behind
-                    dt_site_options_upgrade_version( 'dt_site_custom_lists' );
+                if ( (int) get_option( 'dt_site_custom_lists' )['version'] < $default_custom_lists['version'] ) { // option exists but version is behind
+                    $upgrade = dt_site_options_upgrade_version( 'dt_site_custom_lists' );
 //                    updating the option is not always working right away, return the non updated option instead of failing.
-//                    if ( !$upgrade ) {
-//                        return false;
-//                    }
+                    if ( !$upgrade ) {
+                        return $default_custom_lists;
+                    }
                 }
             }
             //return apply_filters( "dt_site_custom_lists", get_option( 'dt_site_custom_lists' ) );
@@ -406,7 +406,7 @@ function dt_get_site_custom_lists( string $list_title = null )
 {
     $fields = [];
 
-    $fields['version'] = '2.5';
+    $fields['version'] = 3;
 
     //custom fields
     $fields['seeker_path'] = [
@@ -632,7 +632,7 @@ function dt_site_options_upgrade_version( string $name )
     $new_options = array_replace_recursive( $site_options_defaults, $site_options_current );
     $new_options['version'] = $new_version_number;
 
-    return update_option( $name, $new_options, true );
+    return update_option( $name, $new_options, "no" );
 }
 
 /**
