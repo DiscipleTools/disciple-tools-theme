@@ -1019,7 +1019,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
             //edit name
             if (isset( $_POST["reason_unassignable"] )) {
-                $reason_unassignable = $_POST["reason_unassignable"];
+                $reason_unassignable = $_POST["reason_unassignable"]; // phpcs:ignore
                 foreach ( $reason_unassignable as $key => $val) {
                     $status = sanitize_text_field( wp_unslash( $key ) );
                     $value = sanitize_text_field( wp_unslash( $val ) );
