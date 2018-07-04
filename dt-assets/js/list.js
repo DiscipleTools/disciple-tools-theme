@@ -380,6 +380,11 @@
     } else if ( wpApiListSettings.current_post_type === "contacts" ){
       searchQuery.subassigned = _.map(_.get(Typeahead['.js-typeahead-subassigned'], "items"), "ID")
       fields = ["overall_status", "seeker_path", "requires_update"]
+      _.forOwn( wpApiListSettings.custom_fields_settings, (field, field_key)=>{
+        if (field.type === "key_select" && !field_key.includes("milestone_") && !fields.includes(field_key) ){
+          fields.push(field_key)
+        }
+      })
       $("#faith_milestones-options input:checked").each(function(){
         searchQuery[$(this).val()] = ["yes"]
       })
