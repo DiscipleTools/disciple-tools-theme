@@ -158,7 +158,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             //@codingStandardsIgnoreLine
             if ( isset( $_POST["csv_contacts"] ) ) {
                 //@codingStandardsIgnoreLine
-                $this->insert_contacts( unserialize( sanitize_text_field( wp_unslash( base64_decode( $_POST["csv_contacts"] ) ) ) ) );
+                $this->insert_contacts( unserialize( base64_decode( $_POST["csv_contacts"] ) ) );
             }
             exit;
         }
@@ -210,6 +210,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 }
                 $fields["sources"] = [ "values" => array( [ "value" => $source ] ) ];
                 foreach ($info as $index => $i) {
+                    $i = str_replace( "\"", "", $i );
                     //checks for name
                     if ( $index == 0 ){
                         $fields['title'] = $i;
@@ -223,15 +224,20 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         $fields['contact_email'][] = [ "value" => $i ];
                     }
                     //cehecks for comments
-                    else if ( $index == 3) { //$index == count($info)-1 ) {
-                        $fields["notes"] = array( $i );
+                    else { //$index == count($info)-1 ) {
+                        if ( $i != '' ) {
+                            $fields["notes"][] = $i;
+                        }
                     }
                 }
                 //add person
-                $people[] = array( $fields );
-                unset( $fields['contact_email'] );
-                unset( $fields['contact_phone'] );
-                unset( $fields['sources'] );
+                if ( $fields['title'] != '' && $fields['title'] != ' ' && $fields['title'] !== false ) {
+                    $people[] = array( $fields );
+                    unset( $fields['contact_email'] );
+                    unset( $fields['contact_phone'] );
+                    unset( $fields['sources'] );
+                    unset( $fields['notes'] );
+                }
             }
         }
         //close the file
@@ -241,7 +247,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         <h3> <?php echo esc_html_e( "Is This Data In The Correct Fields?", 'disciple_tools' ); ?> </h3>
         <p><?php esc_html_e( "Name", 'disciple_tools' ) ?>: <?php echo esc_html( $people[0][0]['title'] ) ?></p>
         <p><?php esc_html_e( "Source", 'disciple_tools' ) ?>: <?php echo esc_html( $people[0][0]['sources']["values"][0]["value"] ) ?></p>
-        <p><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['assigned_to'] ) ? esc_html( get_user_by( 'id', $people[0][0]['assigned_to'] )->data->display_name ) : "Not Set" ?></p>
+        <p><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?>: <?php echo ( isset( $people[0][0]['assigned_to'] ) && $people[0][0]['assigned_to'] != '' ) ? esc_html( get_user_by( 'id', $people[0][0]['assigned_to'] )->data->display_name ) : "Not Set" ?></p>
         <p><?php esc_html_e( "Contact Phone", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['contact_phone'][0]["value"] ) ? esc_html( $people[0][0]['contact_phone'][0]["value"] ) : "None" ?></p>
         <p><?php esc_html_e( "Contact Email", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['contact_email'][0]["value"] ) ? esc_html( $people[0][0]['contact_email'][0]["value"] ) : "None" ?></p>
         <p><?php esc_html_e( "Notes", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['notes'][0] ) ? esc_html( $people[0][0]['notes'][0] ) : "None" ?></p>
@@ -263,7 +269,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 echo esc_html_e( "ERROR CREATING CONTACT", 'disciple_tools' );
             }
         }
-        $num++;
+        $num = count( $contacts );
         echo esc_html( sprintf( __( "Created %s Contacts", 'disciple_tools' ), $num ) );
         ?>
         <form method="post" enctype="multipart/form-data">
