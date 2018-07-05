@@ -135,8 +135,13 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             $run = false;
         }
         //check for action of csv import
-        if ( isset( $_POST['csv_import_nonce'] ) && wp_verify_nonce( $_POST['csv_import_nonce'], 'csv_import' ) && $run ) {
+        if ( isset( $_POST['csv_import_nonce'] ) && wp_verify_nonce( wp_unslash( $_POST['csv_import_nonce'] ), 'csv_import' ) && $run ) {
             if ( isset( $_FILES["csv_file"] ) ) {
+                $file_parts = explode( ".", $_FILES["csv_file"]["name"] )[count( explode( ".", $_FILES["csv_file"]["name"] ) ) -1];
+                if ( $file_parts != 'csv') {
+                    esc_html_e( "NOT CSV", 'disciple_tools' );
+                    exit;
+                }
                 if ($_FILES["csv_file"]["error"] > 0) {
                     esc_html_e( "ERROR UPLOADING FILE", 'disciple_tools' );
                     exit;
@@ -164,7 +169,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
                 foreach ( $site_custom_lists['sources'] as $key => $value ) {
                     if ( $value['enabled'] ) {
-                        ?>  <option value=<?php echo $key; ?>><?php echo $value['label']; ?></option> <?php
+                        ?>  <option value=<?php echo esc_html( $key ); ?>><?php echo esc_html( $value['label'] ); ?></option> <?php
                     }
                 }
                 ?>
@@ -175,30 +180,30 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 <?php
                 $users = Disciple_Tools_Users::get_assignable_users_compact();
                 foreach ( $users as $user) {
-                    ?>  <option value=<?php echo $user['ID']; ?>><?php echo $user['name']; ?></option> <?php
+                    ?>  <option value=<?php echo esc_html( $user['ID'] ); ?>><?php echo esc_html( $user['name'] ); ?></option> <?php
                 }
                 ?>
             </select>
             <?php esc_html_e( "The User to Assign to", 'disciple_tools' ) ?>
             <?php wp_nonce_field( 'csv_import', 'csv_import_nonce' ); ?>
-            <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Submit"></p>
+            <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value=<?php esc_html_e( "Submit", 'disciple_tools' ) ?>></p>
         </form>
         <?php
     }
 
-    public function import_csv( $file, $del=';', $source='web', $assign='' ) {
+    public function import_csv( $file, $del = ';', $source = 'web', $assign = '' ) {
         $people = [];
         //open file
-        $file_data = fopen($file['tmp_name'],"r");
+        $file_data = fopen( $file['tmp_name'], "r" );
         //loop over array
         while ( $row = fgetcsv( $file_data ) ) {
             foreach ($row as $data) {
-                $info = explode($del,$data);
+                $info = explode( $del, $data );
                 //chcek for data type
-                if($assign != '') {
-                    $fields["assigned_to"] = (int)$assign;
+                if ($assign != '') {
+                    $fields["assigned_to"] = (int) $assign;
                 }
-                $fields["sources"] = ["values" => array( [ "value" => $source ] ) ];
+                $fields["sources"] = [ "values" => array( [ "value" => $source ] ) ];
                 foreach ($info as $index => $i) {
                     //checks for name
                     if ( $index == 0 ){
@@ -206,7 +211,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     }
                     //checks for phone
                     else if ( $index == 1) {//preg_match('/^[0-9|(|)|\-|#|" "|+]*]*$/', $i) ) {
-                        $fields['contact_phone'][] =  [ "value" => $i ];
+                        $fields['contact_phone'][] = [ "value" => $i ];
                     }
                     //checks for email
                     else if ( $index == 2) {//filter_var($i, FILTER_VALIDATE_EMAIL) ) {
@@ -214,9 +219,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     }
                     //cehecks for comments
                     else if ( $index == 3) { //$index == count($info)-1 ) {
-                        $fields["notes"] = array($i);
+                        $fields["notes"] = array( $i );
                     }
-                    echo "<br>";
                 }
                 //add person
                 $people[] = array( $fields );
@@ -226,19 +230,19 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             }
         }
         //close the file
-        fclose($file_data);
+        fclose( $file_data );
         //check for correct data
         ?>
         <h3> <?php echo esc_html_e( "Is This Data In The Correct Fields?", 'disciple_tools' ); ?> </h3>
-        <p><?php esc_html_e( "Name", 'disciple_tools' ) ?>: <?php echo $people[0][0]['title'] ?></p>
-        <p><?php esc_html_e( "Source", 'disciple_tools' ) ?>: <?php echo $people[0][0]['sources']["values"][0]["value"] ?></p>
-        <p><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['assigned_to'] ) ? get_user_by( 'id', $people[0][0]['assigned_to'] )->data->display_name : "Not Set" ?></p>
-        <p><?php esc_html_e( "Contact Phone", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['contact_phone'][0]["value"] )? $people[0][0]['contact_phone'][0]["value"] : "None" ?></p>
-        <p><?php esc_html_e( "Contact Email", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['contact_email'][0]["value"] )? $people[0][0]['contact_email'][0]["value"] : "None" ?></p>
-        <p><?php esc_html_e( "Notes", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['notes'][0] )? $people[0][0]['notes'][0] : "None" ?></p>
+        <p><?php esc_html_e( "Name", 'disciple_tools' ) ?>: <?php echo esc_html( $people[0][0]['title'] ) ?></p>
+        <p><?php esc_html_e( "Source", 'disciple_tools' ) ?>: <?php echo esc_html( $people[0][0]['sources']["values"][0]["value"] ) ?></p>
+        <p><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['assigned_to'] ) ? esc_html( get_user_by( 'id', $people[0][0]['assigned_to'] )->data->display_name ) : "Not Set" ?></p>
+        <p><?php esc_html_e( "Contact Phone", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['contact_phone'][0]["value"] ) ? esc_html( $people[0][0]['contact_phone'][0]["value"] ) : "None" ?></p>
+        <p><?php esc_html_e( "Contact Email", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['contact_email'][0]["value"] ) ? esc_html( $people[0][0]['contact_email'][0]["value"] ) : "None" ?></p>
+        <p><?php esc_html_e( "Notes", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['notes'][0] ) ? esc_html( $people[0][0]['notes'][0] ) : "None" ?></p>
         </p>
         <form method="post" enctype="multipart/form-data">
-            <input type="hidden" name="csv_contacts" value="<?php echo base64_encode( serialize( $people ) ); ?>">
+            <input type="hidden" name="csv_contacts" value="<?php echo esc_html( base64_encode( serialize( $people ) ) ); ?>">
             <?php wp_nonce_field( 'csv_correct', 'csv_correct_nonce' ); ?>
             <a href="/dt3/wp-admin/admin.php?page=dt_extensions&tab=tools" class="button button-primary"> <?php esc_html_e( "No", 'disciple_tools' ) ?> </a>
             <input type="submit" name="submit" id="submit" style="background-color:#4CAF50; color:white" class="button" value=<?php esc_html_e( "Yes", 'disciple_tools' ) ?>>
@@ -246,7 +250,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         <?php
     }
 
-    private function  insert_contacts($contacts) {
+    private function insert_contacts( $contacts) {
         foreach ( $contacts as $num => $f ) {
             $ret = Disciple_Tools_Contacts::create_contact( $f[0], true );
             if ( !is_numeric( $ret ) ) {
@@ -254,13 +258,14 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 echo esc_html_e( "ERROR CREATING CONTACT", 'disciple_tools' );
             }
         }
-        $num += 1;
-        esc_html_e( "Created $num Contacts", 'disciple_tools' );
+        $num++;
+        echo esc_html( sprintf( __( "Created %s Contacts", 'disciple_tools' ), $num ) );
         ?>
         <form method="post" enctype="multipart/form-data">
             <a href="/dt3/wp-admin/admin.php?page=dt_extensions&tab=tools" class="button button-primary"> <?php esc_html_e( "Back", 'disciple_tools' ) ?> </a>
         </form>
         <?php
+        exit;
     }
     //main page
     public function box_message()
@@ -287,7 +292,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         //get plugin data
         $plugins = $this->get_plugins();
         ?>
-        <h3>Official DT Plugins</h3>
+        <h3><?php esc_html_e( "Official DT Plugins", 'disciple_tools' ) ?></h3>
         <table class="widefat striped">
             <thead>
             <tr>
@@ -340,7 +345,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             ?>
             </tbody>
         </table>
-        <h3>Recommended Plugins</h3>
+        <h3><?php esc_html_e( "Recommended Plugins", 'disciple_tools' ) ?></h3>
         <p><?php echo esc_html__( 'look for the "Install" button on the bottom right of your screen after clicking the install button link', 'disciple_tools' ) ?></p>
         <table class="widefat striped">
             <thead>
