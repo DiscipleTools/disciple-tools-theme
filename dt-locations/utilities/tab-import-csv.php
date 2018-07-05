@@ -77,8 +77,7 @@ class Disciple_Tools_Import_CSV_Tab extends Disciple_Tools_Abstract_Menu_Base
                 $this->step = 1;
             }
             else {
-                // @codingStandardsIgnoreLine
-                move_uploaded_file( $_FILES['csv_import']['tmp_name'] , $this->filename ); // locally store uploaded file
+                move_uploaded_file( sanitize_file_name( wp_unslash( $_FILES['csv_import']['tmp_name'] ) ), $this->filename ); // locally store uploaded file
 
                 if ( ! file_exists( $this->filename ) || ! is_readable( $this->filename ) ) { // validate file
                     $this->error = "Can not open or read uploaded file.";

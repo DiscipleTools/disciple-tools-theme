@@ -576,14 +576,14 @@ class Disciple_Tools_Posts
             $query_args['meta_key'] = 'assigned_to';
             $query_args['meta_value'] = "user-" . $current_user->ID;
             $posts = $wpdb->get_results( $wpdb->prepare( "
-                SELECT * FROM $wpdb->posts 
+                SELECT * FROM $wpdb->posts
                 INNER JOIN $wpdb->postmeta as assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id AND assigned_to.meta_key = 'assigned_to')
                 WHERE assigned_to.meta_value = %s
                 AND INSTR( $wpdb->posts.post_title, %s ) > 0
                 AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
                 ORDER BY CASE
                     WHEN INSTR( $wpdb->posts.post_title, %s ) = 1 then 1
-                    ELSE 2  
+                    ELSE 2
                 END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
                 LIMIT 0, 30
             ", "user-". $current_user->ID, $search_string, $post_type, $search_string
@@ -595,7 +595,7 @@ class Disciple_Tools_Posts
                 AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
                 ORDER BY  CASE
                     WHEN INSTR( $wpdb->posts.post_title, %s ) = 1 then 1
-                    ELSE 2  
+                    ELSE 2
                 END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
                 LIMIT 0, 30
             ", $search_string, $post_type, $search_string
@@ -670,7 +670,7 @@ class Disciple_Tools_Posts
             'orderby' => 'meta_value_num',
             'meta_key' => "last_modified",
             'order' => 'ASC',
-            'posts_per_page' => 1000 // @codingStandardsIgnoreLine
+            'posts_per_page' => 1000 // @phpcs:ignore WordPress.VIP.PostsPerPage
         ];
         $posts_shared_with_user = [];
         if ( !self::can_view_all( $post_type ) ) {
@@ -701,9 +701,9 @@ class Disciple_Tools_Posts
         if ($most_recent){
             global $wpdb;
             $deleted_query = $wpdb->get_results( $wpdb->prepare(
-                "SELECT object_id 
+                "SELECT object_id
                 FROM `$wpdb->dt_activity_log`
-                WHERE 
+                WHERE
                     ( `action` = 'deleted' || `action` = 'trashed' )
                     AND `object_subtype` = %s
                     AND hist_time > %d
@@ -902,7 +902,7 @@ class Disciple_Tools_Posts
                 foreach ( array_reverse( $all_field_keys ) as $field_index => $field_key ){
                     if ( strpos( $field_key, "milestone_" ) === 0 ){
                         $alias = 'faith_' . esc_sql( $field_key );
-                        $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON 
+                        $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON
                     ( $wpdb->posts.ID = $alias.post_id AND $alias.meta_key = '" . esc_sql( $field_key ) . "' AND $alias.meta_value = 'yes') ";
                         $sort_sql .= "WHEN ( $alias.meta_key = '" . esc_sql( $field_key ) . "' ) THEN $field_index ";
                     }
@@ -932,7 +932,7 @@ class Disciple_Tools_Posts
             $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
             $sort_sql = "sort.meta_value $sort_dir";
         } elseif ( $sort === "locations" || $sort === "groups" || $sort === "leaders" ){
-            $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = '" . $post_type . "_to_$sort' ) 
+            $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = '" . $post_type . "_to_$sort' )
             LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_to)";
             $sort_sql = "ISNULL(p2p_post.post_name), p2p_post.post_name $sort_dir";
         } elseif ( $sort === "post_date" ){
@@ -940,15 +940,15 @@ class Disciple_Tools_Posts
         }
 
 
-        // phpcs:disable
+        // phpcs:disable WordPress.WP.PreparedSQL.NotPrepared
         $prepared_sql = $wpdb->prepare("
             SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, $wpdb->posts.post_title, $wpdb->posts.post_type FROM $wpdb->posts
             " . $sort_join . " " . $inner_joins . " " . $share_joins . " " . $access_joins . "
-            WHERE 1=1 
+            WHERE 1=1
             " . $post_type_check . " " . $connections_sql_to . " ". $connections_sql_from . " " . $meta_query . " " . $includes_query . " " . $access_query . "
             AND $wpdb->posts.post_type = %s
             AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
-            GROUP BY $wpdb->posts.ID 
+            GROUP BY $wpdb->posts.ID
             ORDER BY " . $sort_sql . "
             LIMIT %d, 100
             ",
@@ -1266,5 +1266,22 @@ class Disciple_Tools_Posts
             LIMIT 20
         ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%', esc_sql( $post_type )));
         return $options;
+    }
+
+
+    public static function delete_post( int $post_id, string $post_type ){
+        if ( !self::can_delete( $post_type ) ) {
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+        }
+
+        global $wpdb;
+        $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_notifications WHERE post_id = %s", $post_id ) );
+        $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_share WHERE post_id = %s", $post_id ) );
+        $wpdb->query( $wpdb->prepare( "DELETE p, pm FROM $wpdb->p2p p left join $wpdb->p2pmeta pm on pm.p2p_id = p.p2p_id WHERE (p.p2p_to = %s OR p.p2p_from = %s) ", $post_id, $post_id ) );
+        $wpdb->query( $wpdb->prepare( "DELETE p, pm FROM $wpdb->posts p left join $wpdb->postmeta pm on pm.post_id = p.ID WHERE p.ID = %s", $post_id ) );
+        $wpdb->query( $wpdb->prepare( "DELETE c, cm FROM $wpdb->comments c left join $wpdb->commentmeta cm on cm.comment_id = c.comment_ID WHERE c.comment_post_ID = %s", $post_id ) );
+        $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_activity_log WHERE object_id = %s", $post_id ) );
+
+        return true;
     }
 }

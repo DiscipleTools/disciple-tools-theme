@@ -125,7 +125,7 @@ declare( strict_types=1 );
                                 <div class="typeahead__field">
                                     <span class="typeahead__query">
                                         <input class="js-typeahead-subassigned input-height"
-                                               name="subassigned[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
+                                               name="subassigned[query]" placeholder="<?php esc_html_e( "Search multipliers and contacts", 'disciple_tools' ) ?>"
                                                autocomplete="off">
                                     </span>
                                 </div>
@@ -164,7 +164,7 @@ declare( strict_types=1 );
                                             <div class="typeahead__field">
                                                 <span class="typeahead__query">
                                                     <input class="js-typeahead-groups input-height"
-                                                           name="groups[query]" placeholder="<?php esc_html_e( "Search Groups", 'disciple_tools' ) ?>"
+                                                           name="groups[query]" placeholder="<?php esc_html_e( "Search groups", 'disciple_tools' ) ?>"
                                                            autocomplete="off">
                                                 </span>
                                                 <span class="typeahead__button">
@@ -192,7 +192,7 @@ declare( strict_types=1 );
                                                 <div class="typeahead__field">
                                                     <span class="typeahead__query">
                                                         <input class="js-typeahead-<?php echo esc_html( $connection ) ?>"
-                                                               name="<?php echo esc_html( $connection ) ?>[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
+                                                               name="<?php echo esc_html( $connection ) ?>[query]" placeholder="<?php esc_html_e( "Search multipliers and contacts", 'disciple_tools' ) ?>"
                                                                autocomplete="off">
                                                     </span>
             <!--                                        <span class="typeahead__button">-->

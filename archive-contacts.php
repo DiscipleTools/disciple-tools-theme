@@ -154,6 +154,11 @@ declare(strict_types=1);
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
                     <?php $fields = [ "assigned_to", "subassigned", "locations", "overall_status", "seeker_path", "faith_milestones", "requires_update" ];
+                    foreach ( $dt_contact_field_options as $field_key => $field){
+                        if ( $field["type"] === "key_select" && strpos( $field_key, "milestone_" ) === false && !in_array( $field_key, $fields ) && !$field["hidden"] ){
+                            $fields[] = $field_key;
+                        }
+                    }
                     $fields = apply_filters( 'dt_filters_additional_fields', $fields, "contacts" );
                     $connections = Disciple_Tools_Posts::$connection_types;
                     $connections["assigned_to"] = [ "name" => __( "Assigned To", 'disciple_tools' ) ];
@@ -222,9 +227,10 @@ declare(strict_types=1);
                                     <?php if ( isset( $dt_contact_field_options[$field] ) && $dt_contact_field_options[$field]["type"] == "key_select" ) :
                                         foreach ( $dt_contact_field_options[$field]["default"] as $option_key => $option_value ) : ?>
                                             <div class="key_select_options">
-                                                <label style="cursor: pointer"></label>
-                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
-                                                       value="<?php echo esc_html( $option_key ) ?>"> <?php echo esc_html( $option_value ) ?>
+                                                <label style="cursor: pointer">
+                                                    <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
+                                                           value="<?php echo esc_html( $option_key ) ?>"> <?php echo esc_html( $option_value ) ?>
+                                                </label>
                                             </div>
                                         <?php endforeach; ?>
                                     <?php elseif ( isset( $dt_contact_field_options[$field] ) && $dt_contact_field_options[$field]["type"] == "key_select" ) : ?>

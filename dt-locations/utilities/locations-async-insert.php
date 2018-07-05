@@ -36,10 +36,10 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
          * to allow for asynchronous processing. This is a valid nonce but is not recognized by the WP standards checker.
          *
          */
-        // @codingStandardsIgnoreLine
-        if( isset( $_POST[ 'action' ] ) && sanitize_key( wp_unslash( $_POST[ 'action' ] ) ) == 'dt_async_insert_location' && isset( $_POST[ '_nonce' ] ) && $this->verify_async_nonce( sanitize_key( wp_unslash( $_POST[ '_nonce' ] ) ) ) ) {
+        // @phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+        if ( isset( $_POST['action'] ) && sanitize_key( wp_unslash( $_POST['action'] ) ) == 'dt_async_insert_location' && isset( $_POST['_nonce'] ) && $this->verify_async_nonce( sanitize_key( wp_unslash( $_POST['_nonce'] ) ) ) ) {
 
-            // @codingStandardsIgnoreLine
+            // @phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
             $mapped_from_form = array_map( 'sanitize_text_field', wp_unslash( $_POST[0] ) );
 
             // prepare standard fields
@@ -68,7 +68,6 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
 
                     // lookup post parent id
                     if ( isset( $mapped_from_form['post_parent'] ) ) {
-                        // @codingStandardsIgnoreLine
                         $parent_id = get_page_by_title( $mapped_from_form['post_parent'], OBJECT, 'locations' );
                         if ( ! is_null( $parent_id ) ) {
                             $args['post_parent'] = $parent_id->ID;

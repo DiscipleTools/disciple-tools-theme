@@ -29,14 +29,14 @@ If you need support, email us at supportXXXdisciple.tools, replacing XXXX with t
 ## How to Install
 The goal of the project is to create a disciple-making DRM that is incredibly simple, cheap, and fast to launch. Below are the simple steps to do that.
 
-**Note: You must have php 7 or above. php 5.6 will not work.**
+**Note: You must have PHP 7.0 or above. PHP 5.6 will not work.**
 
 ### Step 1
 - Download the theme .zip file from the Disciple-Tools-Theme GitHub release page (https://github.com/DiscipleTools/disciple-tools-theme/releases)
 
 ### Step 2
-- Open up your Wordpress site. 
-- Login to your Admin Dashboard. `http://{your website}/wp-admin/` 
+- Open up your Wordpress site.
+- Login to your Admin Dashboard. `http://{your website}/wp-admin/`
 
 > Note: You have to be an administrator with the permissions to install plugins.
 
@@ -64,9 +64,7 @@ Follow these steps.
 1. Push to the branch: `git push origin my-new-feature`
 1. Submit a pull request
 
-> Note: you may also want to fork the theme repo (https://github.com/DiscipleTools/disciple-tools-theme)
-
-To apply your changes to the plugin, update the contents of the `wp-content\plugins\disciple-tools` folder in your WordPress installation.
+To apply your changes to the plugin, update the contents of the `wp-content/themes/disciple-tools-theme` folder in your WordPress installation.
 
 Make sure tests are passing!
 

@@ -21,7 +21,7 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 if ( ! class_exists( 'Site_Link_System' ) ) {
 
-    // @codingStandardsIgnoreLine
+    // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
     class Site_Link_System
     {
 
@@ -211,7 +211,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'supports'            => [ 'title' ]
             ]; /* end of options */
 
-            // @codingStandardsIgnoreLine
+            // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
             $args = apply_filters( 'site_link_system_post_type_args', $args );
 
             register_post_type( $this->post_type, $args );
@@ -555,7 +555,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'section'     => 'non_wp',
             ];
 
-            // @codingStandardsIgnoreLine
+            // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
             return apply_filters( 'site_link_fields_settings', $fields );
         }
 
@@ -669,13 +669,13 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         public function scripts()
         {
             echo "<script type='text/javascript'>
-            
+
             function check_link_status( transfer_token, url, id ) {
-                
+
             let linked = '" . esc_attr__( 'Linked' ) . "';
             let not_linked = '" . esc_attr__( 'Not Linked' ) . "';
             let not_found = '" . esc_attr__( 'Failed to connect with the URL provided.' ) . "';
-            
+
             return jQuery.ajax({
                 type: 'POST',
                 data: JSON.stringify({ \"transfer_token\": transfer_token } ),
@@ -706,8 +706,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 .success-green { color: limegreen;}
                 .fail-red { color: red;}
                 .info-color { color: steelblue; }
-                .button-like-link-left { 
-                    float: left; 
+                .button-like-link-left {
+                    float: left;
                     background: none !important;
                     color: inherit;
                     border: none;

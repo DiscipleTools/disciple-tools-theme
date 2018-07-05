@@ -117,10 +117,13 @@ function dt_get_option( string $name )
             if ( !get_option( 'dt_site_custom_lists' ) ) { // options doen't exist, create new.
                 add_option( 'dt_site_custom_lists', $default_custom_lists, '', true );
             }
-            elseif ( get_option( 'dt_site_custom_lists' )['version'] < $default_custom_lists['version'] ) { // option exists but version is behind
-                $upgrade = dt_site_options_upgrade_version( 'dt_site_custom_lists' );
-                if ( !$upgrade ) {
-                    return false;
+            else {
+                if ( (int) get_option( 'dt_site_custom_lists' )['version'] < $default_custom_lists['version'] ) { // option exists but version is behind
+                    $upgrade = dt_site_options_upgrade_version( 'dt_site_custom_lists' );
+//                    updating the option is not always working right away, return the non updated option instead of failing.
+                    if ( !$upgrade ) {
+                        return $default_custom_lists;
+                    }
                 }
             }
             //return apply_filters( "dt_site_custom_lists", get_option( 'dt_site_custom_lists' ) );
@@ -403,7 +406,7 @@ function dt_get_site_custom_lists( string $list_title = null )
 {
     $fields = [];
 
-    $fields['version'] = '2.5';
+    $fields['version'] = 3;
 
     //custom fields
     $fields['seeker_path'] = [
@@ -629,7 +632,7 @@ function dt_site_options_upgrade_version( string $name )
     $new_options = array_replace_recursive( $site_options_defaults, $site_options_current );
     $new_options['version'] = $new_version_number;
 
-    return update_option( $name, $new_options, true );
+    return update_option( $name, $new_options, "no" );
 }
 
 /**
@@ -725,7 +728,11 @@ function dt_custom_password_reset( $message, $key, $user_login, $user_data ){
  * @return string
  */
 function dt_get_url_path() {
-    $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'.$_SERVER["SERVER_NAME"] : 'https://'.$_SERVER["SERVER_NAME"];
-    $url .= $_SERVER["REQUEST_URI"];
+    if ( isset( $_SERVER["SERVER_NAME"] ) ) {
+        $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) );
+        if ( isset( $_SERVER["REQUEST_URI"] ) ) {
+            $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
+        }
+    }
     return trim( str_replace( get_site_url(), "", $url ), '/' );
 }

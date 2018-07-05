@@ -12,7 +12,7 @@ $dt_user = wp_get_current_user(); // query to get new notifications
 <script>
 
     jQuery(document).ready(function () {
-        get_notifications(true, true);
+        get_notifications(false, true);
     });
 
 </script>
@@ -35,11 +35,11 @@ $dt_user = wp_get_current_user(); // query to get new notifications
                                 <div class="expanded small button-group" style="text-align:center;">
                                     <button id="all" type="button"
                                             onclick="toggle_buttons('all'); get_notifications( all = true, true );"
-                                            class="button"><?php esc_html_e( 'All', 'disciple_tools' )?>
+                                            class="button hollow"><?php esc_html_e( 'All', 'disciple_tools' )?>
                                     </button>
                                     <button id="new" type="button"
                                             onclick="toggle_buttons('new'); get_notifications( all = false, true );"
-                                            class="button hollow"><?php esc_html_e( 'Unread', 'disciple_tools' )?>
+                                            class="button"><?php esc_html_e( 'Unread', 'disciple_tools' )?>
                                     </button>
                                 </div>
                             </div>

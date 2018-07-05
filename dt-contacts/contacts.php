@@ -1434,7 +1434,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'orderby' => 'meta_value_num',
             'meta_key' => "last_modified",
             'order' => 'ASC',
-            'posts_per_page' => 1000 // @codingStandardsIgnoreLine
+            'posts_per_page' => 1000 // @phpcs:ignore WordPress.VIP.PostsPerPage
         ];
         $contacts_shared_with_user = [];
         if ( !self::can_view_all( 'contacts' ) ) {

@@ -163,8 +163,8 @@ if ( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
         public function handle_postback()
         {
 
-            // @codingStandardsIgnoreLine
-            if( isset( $_POST[ '_nonce' ] ) && $this->verify_async_nonce( $_POST[ '_nonce' ] ) ) {
+            // phpcs:ignore
+            if ( isset( $_POST[ '_nonce' ] ) && $this->verify_async_nonce( $_POST[ '_nonce' ] ) ) {
                 if ( !is_user_logged_in() ) {
                     $this->action = "nopriv_$this->action";
                 }

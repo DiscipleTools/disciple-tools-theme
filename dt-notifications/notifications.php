@@ -347,7 +347,8 @@ class Disciple_Tools_Notifications
         $user_id = get_current_user_id();
 
         $result = $wpdb->get_results( $wpdb->prepare(
-            "SELECT * FROM `$wpdb->dt_notifications` WHERE user_id = %d $all_where ORDER BY date_notified DESC LIMIT %d OFFSET %d", // @codingStandardsIgnoreLine
+            // phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
+            "SELECT * FROM `$wpdb->dt_notifications` WHERE user_id = %d $all_where ORDER BY date_notified DESC LIMIT %d OFFSET %d",
             $user_id,
             $limit,
             $page
@@ -478,7 +479,7 @@ class Disciple_Tools_Notifications
 
             dt_notification_insert( $args );
             $user = get_userdata( $user_id );
-            $subject = __( "Contact shared", 'disciple_tools' );
+            $subject = __( "Contact shared", 'disciple_tools' ) . '. #' . $post_id;
             dt_send_email( $user->user_email, $subject, $message );
         }
     }
@@ -511,7 +512,7 @@ class Disciple_Tools_Notifications
 
             dt_notification_insert( $args );
             $user = get_userdata( $user_id );
-            $subject = __( "Contact sub-assigned to you", 'disciple_tools' );
+            $subject = __( "Contact sub-assigned to you", 'disciple_tools' )  . '. #' . $post_id;
             dt_send_email( $user->user_email, $subject, $message );
         }
     }
@@ -545,7 +546,7 @@ class Disciple_Tools_Notifications
 
             dt_notification_insert( $args );
             $user = get_userdata( $new_assigned_to );
-            $subject = __( "Assignment declined", 'disciple_tools' );
+            $subject = __( "Assignment declined", 'disciple_tools' )  . '. #' . $post_id;
             dt_send_email( $user->user_email, $subject, $message );
         }
     }
@@ -590,7 +591,7 @@ class Disciple_Tools_Notifications
                     $user = get_userdata( $user_id );
                     dt_send_email(
                         $user->user_email,
-                        sprintf( esc_html_x( 'New %s created and assigned to you', '', 'disciple_tools' ), Disciple_Tools_Posts::get_label_for_post_type( $post_type, true ) ),
+                        sprintf( esc_html_x( 'New %s created and assigned to you', '', 'disciple_tools' ), Disciple_Tools_Posts::get_label_for_post_type( $post_type, true ) )  . '. #' . $post_id,
                         $message
                     );
                 }
@@ -714,7 +715,7 @@ class Disciple_Tools_Notifications
                         $user = get_userdata( $follower );
                         dt_send_email(
                             $user->user_email,
-                            $subject,
+                            $subject  . '. #' . $fields["ID"],
                             $email
                         );
                     }
