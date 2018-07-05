@@ -128,7 +128,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     //tools page
     public function tools_box_message()
     {
-        echo var_dump( $_POST );
         //check if it can run commands
         $run = true;
         //check for admin or multisite super admin
@@ -137,35 +136,132 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         }
         //check for action of csv import
         if ( isset( $_POST['csv_import_nonce'] ) && wp_verify_nonce( $_POST['csv_import_nonce'], 'csv_import' ) && $run ) {
-            $this->import_csv( $_POST['csv_file'] );
-            echo "done";
+            if ( isset( $_FILES["csv_file"] ) ) {
+                if ($_FILES["csv_file"]["error"] > 0) {
+                    esc_html_e( "ERROR UPLOADING FILE", 'disciple_tools' );
+                    exit;
+                }
+                $this->import_csv( $_FILES['csv_file'], sanitize_text_field( $_POST['csv_del'] ), sanitize_text_field( $_POST['csv_source'] ), sanitize_text_field( $_POST['csv_assign'] ) );
+            }
+            exit;
+        }
+        //check for varrification of data
+        if ( isset( $_POST['csv_correct_nonce'] ) && wp_verify_nonce( $_POST['csv_correct_nonce'], 'csv_correct' ) && $run ) {
+            if ( isset( $_POST["csv_contacts"] ) ) {
+                $this->insert_contacts( unserialize( base64_decode( $_POST["csv_contacts"] ) ) );
+            }
             exit;
         }
         ?>
-        <h3>CSV IMPORT</h3>
-        <p>INSTRUCTIONS</p>
-        <form method="post">
-            <input type="file" name="csv_file" id="csv_file">
+        <h3><?php esc_html_e( "CSV IMPORT", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "Format", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "name, phone, email, initial_comment", 'disciple_tools' ) ?></p>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="csv_file" id="csv_file"> <br>
+            <input type="text" name="csv_del" value=',' size=2> <?php esc_html_e( "The CSV Delimiter", 'disciple_tools' ) ?> <br>
+            <select name="csv_source">
+                <?php
+                $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+                foreach ( $site_custom_lists['sources'] as $key => $value ) {
+                    if ( $value['enabled'] ) {
+                        ?>  <option value=<?php echo $key; ?>><?php echo $value['label']; ?></option> <?php
+                    }
+                }
+                ?>
+            </select>
+            <?php esc_html_e( "The Source of the Contacts", 'disciple_tools' ) ?> <br>
+            <select name="csv_assign">
+                <option value""></option>
+                <?php
+                $users = Disciple_Tools_Users::get_assignable_users_compact();
+                foreach ( $users as $user) {
+                    ?>  <option value=<?php echo $user['ID']; ?>><?php echo $user['name']; ?></option> <?php
+                }
+                ?>
+            </select>
+            <?php esc_html_e( "The User to Assign to", 'disciple_tools' ) ?>
             <?php wp_nonce_field( 'csv_import', 'csv_import_nonce' ); ?>
             <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Submit"></p>
         </form>
         <?php
     }
 
-    private function import_csv( $file ) {
-        //satnatize
-        //$text = sanitize_text_field( $text );
-        //make into array
-        $data = fgetcsv ( $text );
-        //TODO MAKE IT SO THAT CSV TAKES DIF DEL
+    public function import_csv( $file, $del=';', $source='web', $assign='' ) {
+        $people = [];
+        //open file
+        $file_data = fopen($file['tmp_name'],"r");
         //loop over array
-        echo var_dump($data);
-        foreach ( $data as $row ) {
-            echo var_dump($row);
+        while ( $row = fgetcsv( $file_data ) ) {
+            foreach ($row as $data) {
+                $info = explode($del,$data);
+                //chcek for data type
+                if($assign != '') {
+                    $fields["assigned_to"] = (int)$assign;
+                }
+                $fields["sources"] = ["values" => array( [ "value" => $source ] ) ];
+                foreach ($info as $index => $i) {
+                    //checks for name
+                    if ( $index == 0 ){
+                        $fields['title'] = $i;
+                    }
+                    //checks for phone
+                    else if ( $index == 1) {//preg_match('/^[0-9|(|)|\-|#|" "|+]*]*$/', $i) ) {
+                        $fields['contact_phone'][] =  [ "value" => $i ];
+                    }
+                    //checks for email
+                    else if ( $index == 2) {//filter_var($i, FILTER_VALIDATE_EMAIL) ) {
+                        $fields['contact_email'][] = [ "value" => $i ];
+                    }
+                    //cehecks for comments
+                    else if ( $index == 3) { //$index == count($info)-1 ) {
+                        $fields["notes"] = array($i);
+                    }
+                    echo "<br>";
+                }
+                //add person
+                $people[] = array( $fields );
+                unset( $fields['contact_email'] );
+                unset( $fields['contact_phone'] );
+                unset( $fields['sources'] );
+            }
         }
-        //Disciple_Tools_Contacts::update_contact( $contact_id, $fields, true );
+        //close the file
+        fclose($file_data);
+        //check for correct data
+        ?>
+        <h3> <?php echo esc_html_e( "Is This Data In The Correct Fields?", 'disciple_tools' ); ?> </h3>
+        <p><?php esc_html_e( "Name", 'disciple_tools' ) ?>: <?php echo $people[0][0]['title'] ?></p>
+        <p><?php esc_html_e( "Source", 'disciple_tools' ) ?>: <?php echo $people[0][0]['sources']["values"][0]["value"] ?></p>
+        <p><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['assigned_to'] ) ? get_user_by( 'id', $people[0][0]['assigned_to'] )->data->display_name : "Not Set" ?></p>
+        <p><?php esc_html_e( "Contact Phone", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['contact_phone'][0]["value"] )? $people[0][0]['contact_phone'][0]["value"] : "None" ?></p>
+        <p><?php esc_html_e( "Contact Email", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['contact_email'][0]["value"] )? $people[0][0]['contact_email'][0]["value"] : "None" ?></p>
+        <p><?php esc_html_e( "Notes", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['notes'][0] )? $people[0][0]['notes'][0] : "None" ?></p>
+        </p>
+        <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csv_contacts" value="<?php echo base64_encode( serialize( $people ) ); ?>">
+            <?php wp_nonce_field( 'csv_correct', 'csv_correct_nonce' ); ?>
+            <a href="/dt3/wp-admin/admin.php?page=dt_extensions&tab=tools" class="button button-primary"> <?php esc_html_e( "No", 'disciple_tools' ) ?> </a>
+            <input type="submit" name="submit" id="submit" style="background-color:#4CAF50; color:white" class="button" value=<?php esc_html_e( "Yes", 'disciple_tools' ) ?>>
+        </form>
+        <?php
     }
 
+    private function  insert_contacts($contacts) {
+        foreach ( $contacts as $num => $f ) {
+            $ret = Disciple_Tools_Contacts::create_contact( $f[0], true );
+            if ( !is_numeric( $ret ) ) {
+                break;
+                echo esc_html_e( "ERROR CREATING CONTACT", 'disciple_tools' );
+            }
+        }
+        $num += 1;
+        esc_html_e( "Created $num Contacts", 'disciple_tools' );
+        ?>
+        <form method="post" enctype="multipart/form-data">
+            <a href="/dt3/wp-admin/admin.php?page=dt_extensions&tab=tools" class="button button-primary"> <?php esc_html_e( "Back", 'disciple_tools' ) ?> </a>
+        </form>
+        <?php
+    }
     //main page
     public function box_message()
     {
