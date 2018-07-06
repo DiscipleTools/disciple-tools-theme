@@ -851,11 +851,24 @@ class Disciple_Tools_Posts
 
                     }
                 } else {
+                    $connector = " OR ";
                     foreach ( $query_value as $value ){
-                        if ( !empty( $meta_field_sql ) ){
-                            $meta_field_sql .= " OR ";
+                        //allow negative searches
+                        $equality = "=";
+                        if ( strpos( $value, "-" ) === 0 ){
+                            $equality = "!=";
+                            $value = ltrim( $value, "-" );
+                            $connector = " AND ";
                         }
-                        $meta_field_sql .= " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value = '" . esc_sql( $value ) . "' ) ";
+                        if ( !empty( $meta_field_sql ) ){
+                            $meta_field_sql .= $connector;
+                        }
+                        if ($equality === "!="){
+                            //find one with the value to exclude
+                            $meta_query .= " AND not exists (select 1 from $wpdb->postmeta where $wpdb->postmeta.post_id = $wpdb->posts.ID and $wpdb->postmeta.meta_key = '" . esc_sql( $query_key ) ."'  and $wpdb->postmeta.meta_value = '" . esc_sql( $value ) . "') ";
+                        } else {
+                            $meta_field_sql .= " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value " . $equality . " '" . esc_sql( $value ) . "' ) ";
+                        }
                     }
                 }
                 if ( $meta_field_sql ){

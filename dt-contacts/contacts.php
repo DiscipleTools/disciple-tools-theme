@@ -30,18 +30,18 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 self::$contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
                 self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
                 self::$address_types = dt_address_metabox()->get_address_type_list( "contacts" );
-                self::$contact_connection_types = [
-                    "locations",
-                    "groups",
-                    "people_groups",
-                    "baptized_by",
-                    "baptized",
-                    "coached_by",
-                    "coaching",
-                    "subassigned"
-                ];
             }
         );
+        self::$contact_connection_types = [
+            "locations",
+            "groups",
+            "people_groups",
+            "baptized_by",
+            "baptized",
+            "coached_by",
+            "coaching",
+            "subassigned"
+        ];
         add_action( "dt_contact_created", [ $this, "check_for_duplicates" ], 10, 2 );
         add_action( "dt_contact_updated", [ $this, "check_for_duplicates" ], 10, 2 );
         parent::__construct();
@@ -1210,6 +1210,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $meta_fields = get_post_custom( $contact_id );
             foreach ( $meta_fields as $key => $value ) {
                 //if is contact details and is in a channel
+                if(!(isset(self::$channel_list))){
+                    self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
+                }
                 if ( strpos( $key, "contact_" ) === 0 && isset( self::$channel_list[ explode( '_', $key )[1] ] ) ) {
                     if ( strpos( $key, "details" ) === false ) {
                         $type = explode( '_', $key )[1];
