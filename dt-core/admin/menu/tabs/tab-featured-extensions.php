@@ -201,15 +201,15 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         //open file
         $file_data = fopen( $file['tmp_name'], "r" );
         //loop over array
-        while ( $row = fgetcsv( $file_data ) ) {
-            foreach ($row as $data) {
-                $info = explode( $del, $data );
+        while ( $row = fgetcsv( $file_data,10000,$del) ) {
+            foreach ($row as $index => $i) {
+                //$info = explode( $del, $data );
                 //chcek for data type
                 if ($assign != '') {
                     $fields["assigned_to"] = (int) $assign;
                 }
                 $fields["sources"] = [ "values" => array( [ "value" => $source ] ) ];
-                foreach ($info as $index => $i) {
+                //foreach ($info as $index => $i) {
                     $i = str_replace( "\"", "", $i );
                     //checks for name
                     if ( $index == 0 ){
@@ -238,7 +238,6 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     unset( $fields['sources'] );
                     unset( $fields['notes'] );
                 }
-            }
         }
         //close the file
         fclose( $file_data );
@@ -262,7 +261,9 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     }
 
     private function insert_contacts( $contacts) {
+        set_time_limit( 0 );
         foreach ( $contacts as $num => $f ) {
+            $ret = 0;
             $ret = Disciple_Tools_Contacts::create_contact( $f[0], true );
             if ( !is_numeric( $ret ) ) {
                 break;
