@@ -1202,14 +1202,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
             $fields["subassigned"] = $subassigned;
 
-            if ( $contact_id == 308 ){
-                $test = "soahu";
-            }
-
             $meta_fields = get_post_custom( $contact_id );
             foreach ( $meta_fields as $key => $value ) {
                 //if is contact details and is in a channel
-                if( !( isset( self::$channel_list ))){
+                if ( !isset( self::$channel_list )){
                     self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
                 }
                 if ( strpos( $key, "contact_" ) === 0 && isset( self::$channel_list[ explode( '_', $key )[1] ] ) ) {
