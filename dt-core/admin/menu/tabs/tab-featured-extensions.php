@@ -149,7 +149,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     exit;
                 }
                 //@codingStandardsIgnoreLine
-                $this->import_csv( $_FILES['csv_file'], sanitize_text_field( wp_unslash( $_POST['csv_del'] ) ), sanitize_text_field( wp_unslash( $_POST['csv_source'] ) ), sanitize_text_field( wp_unslash( $_POST['csv_assign'] ) ) );
+                $this->import_csv( $_FILES['csv_file'], sanitize_text_field( wp_unslash( $_POST['csv_del'] ) ), sanitize_text_field( wp_unslash( $_POST['csv_source'] ) ), sanitize_text_field( wp_unslash( $_POST['csv_assign'] ) ), sanitize_text_field( wp_unslash( $_POST['csv_header'] ) ) );
             }
             exit;
         }
@@ -165,10 +165,15 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         ?>
         <h3><?php esc_html_e( "CSV IMPORT", 'disciple_tools' ) ?></h3>
         <p><?php esc_html_e( "Format", 'disciple_tools' ) ?></p>
-        <p><?php esc_html_e( "name, phone, email, initial_comment", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "name, phone, email, address, gender, initial_comment", 'disciple_tools' ) ?></p>
         <form method="post" enctype="multipart/form-data">
             <input type="file" name="csv_file" id="csv_file"> <br>
             <input type="text" name="csv_del" value=',' size=2> <?php esc_html_e( "The CSV Delimiter", 'disciple_tools' ) ?> <br>
+            <select name="csv_header">
+                <option value=yes ><?php esc_html_e( "yes", 'disciple_tools' ) ?></option>
+                <option value=no ><?php esc_html_e( "no", 'disciple_tools' ) ?></option>
+            </select>
+            <?php esc_html_e( "Include header?", 'disciple_tools' ) ?> <br>
             <select name="csv_source">
                 <?php
                 $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -183,11 +188,15 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             <select name="csv_assign">
                 <option value""></option>
                 <?php
-                $users = Disciple_Tools_Users::get_assignable_users_compact();
-                foreach ( $users as $user) {
-                    ?>  <option value=<?php echo esc_html( $user['ID'] ); ?>><?php echo esc_html( $user['name'] ); ?></option> <?php
-                }
-                ?>
+                $args = [
+                    'role__not_in' => [ 'registered' ],
+                    'fields' => [ 'ID', 'display_name' ],
+                    'order' => 'ASC'
+                ];
+                $users = get_users( $args );
+                foreach ( $users as $user) { ?>
+                    <option value=<?php echo esc_html( $user->ID ); ?>><?php echo esc_html( $user->display_name ); ?></option>
+                <?php } ?>
             </select>
             <?php esc_html_e( "The User to Assign to", 'disciple_tools' ) ?>
             <?php wp_nonce_field( 'csv_import', 'csv_import_nonce' ); ?>
@@ -196,7 +205,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         <?php
     }
 
-    public function import_csv( $file, $del = ';', $source = 'web', $assign = '' ) {
+    public function import_csv( $file, $del = ';', $source = 'web', $assign = '', $header = "no" ) {
         $people = [];
         //open file
         $file_data = fopen( $file['tmp_name'], "r" );
@@ -211,19 +220,36 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 $fields["sources"] = [ "values" => array( [ "value" => $source ] ) ];
                 //foreach ($info as $index => $i) {
                     $i = str_replace( "\"", "", $i );
-                    //checks for name
+                //checks for name
                 if ( $index == 0 ){
                     $fields['title'] = $i;
                 }
-                    //checks for phone
+                //checks for phone
                 else if ( $index == 1) {//preg_match('/^[0-9|(|)|\-|#|" "|+]*]*$/', $i) ) {
                     $fields['contact_phone'][] = [ "value" => $i ];
                 }
-                    //checks for email
+                //checks for email
                 else if ( $index == 2) {//filter_var($i, FILTER_VALIDATE_EMAIL) ) {
                     $fields['contact_email'][] = [ "value" => $i ];
                 }
-                    //cehecks for comments
+                //checks for address
+                else if ( $index == 3) {
+                    $fields['contact_address'][] = [ "value" => $i ];
+                }
+                //checks for gender
+                else if ( $index == 4) {
+                    $i = strtolower( $i );
+                    $i = substr( $i, 0, 1 );
+                    $gender = "not-set";
+                    if ($i == "m" ){
+                        $gender = "male";
+                    }
+                    else if ($i == "f" ){
+                        $gender = "female";
+                    }
+                    $fields['gender'] = $gender;
+                }
+                //checks for comments
                 else { //$index == count($info)-1 ) {
                     if ( $i != '' ) {
                         $fields["notes"][] = $i;
@@ -235,6 +261,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 $people[] = array( $fields );
                 unset( $fields['contact_email'] );
                 unset( $fields['contact_phone'] );
+                unset( $fields['contact_address'] );
+                unset( $fields['gender'] );
                 unset( $fields['sources'] );
                 unset( $fields['notes'] );
             }
@@ -242,14 +270,21 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         //close the file
         fclose( $file_data );
         //check for correct data
+        $pos = 0;
+        if ( $header == "no" ) {
+            unset( $people[0] );
+            $pos = 1;
+        }
         ?>
         <h3> <?php echo esc_html_e( "Is This Data In The Correct Fields?", 'disciple_tools' ); ?> </h3>
-        <p><?php esc_html_e( "Name", 'disciple_tools' ) ?>: <?php echo esc_html( $people[0][0]['title'] ) ?></p>
-        <p><?php esc_html_e( "Source", 'disciple_tools' ) ?>: <?php echo esc_html( $people[0][0]['sources']["values"][0]["value"] ) ?></p>
-        <p><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?>: <?php echo ( isset( $people[0][0]['assigned_to'] ) && $people[0][0]['assigned_to'] != '' ) ? esc_html( get_user_by( 'id', $people[0][0]['assigned_to'] )->data->display_name ) : "Not Set" ?></p>
-        <p><?php esc_html_e( "Contact Phone", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['contact_phone'][0]["value"] ) ? esc_html( $people[0][0]['contact_phone'][0]["value"] ) : "None" ?></p>
-        <p><?php esc_html_e( "Contact Email", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['contact_email'][0]["value"] ) ? esc_html( $people[0][0]['contact_email'][0]["value"] ) : "None" ?></p>
-        <p><?php esc_html_e( "Notes", 'disciple_tools' ) ?>: <?php echo isset( $people[0][0]['notes'][0] ) ? esc_html( $people[0][0]['notes'][0] ) : "None" ?></p>
+        <p><?php esc_html_e( "Name", 'disciple_tools' ) ?>: <?php echo esc_html( $people[$pos][0]['title'] ) ?></p>
+        <p><?php esc_html_e( "Source", 'disciple_tools' ) ?>: <?php echo esc_html( $people[$pos][0]['sources']["values"][0]["value"] ) ?></p>
+        <p><?php esc_html_e( "Assigned To", 'disciple_tools' ) ?>: <?php echo ( isset( $people[$pos][0]['assigned_to'] ) && $people[$pos][0]['assigned_to'] != '' ) ? esc_html( get_user_by( 'id', $people[$pos][0]['assigned_to'] )->data->display_name ) : "Not Set" ?></p>
+        <p><?php esc_html_e( "Contact Phone", 'disciple_tools' ) ?>: <?php echo isset( $people[$pos][0]['contact_phone'][0]["value"] ) ? esc_html( $people[$pos][0]['contact_phone'][0]["value"] ) : "None" ?></p>
+        <p><?php esc_html_e( "Contact Email", 'disciple_tools' ) ?>: <?php echo isset( $people[$pos][0]['contact_email'][0]["value"] ) ? esc_html( $people[$pos][0]['contact_email'][0]["value"] ) : "None" ?></p>
+        <p><?php esc_html_e( "Contact Address", 'disciple_tools' ) ?>: <?php echo isset( $people[$pos][0]['contact_address'][0]["value"] ) ? esc_html( $people[$pos][0]['contact_address'][0]["value"] ) : "None" ?></p>
+        <p><?php esc_html_e( "Gender", 'disciple_tools' ) ?>: <?php echo isset( $people[$pos][0]['gender'] ) ? esc_html( $people[$pos][0]['gender'] ) : "None" ?></p>
+        <p><?php esc_html_e( "Notes", 'disciple_tools' ) ?>: <?php echo isset( $people[$pos][0]['notes'][0] ) ? esc_html( $people[$pos][0]['notes'][0] ) : "None" ?></p>
         </p>
         <form method="post" enctype="multipart/form-data">
             <input type="hidden" name="csv_contacts" value="<?php echo esc_html( base64_encode( serialize( $people ) ) ); ?>">
