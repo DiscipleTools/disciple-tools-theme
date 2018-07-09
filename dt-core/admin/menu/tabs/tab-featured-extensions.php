@@ -329,7 +329,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             }
         }
         $num = count( $contacts );
-        echo esc_html( sprintf( __( "Creating %s Contacts", 'disciple_tools' ), $num ) );
+        echo esc_html( sprintf( __( "Creating %s Contacts DO NOT LEAVE THE PAGE UNTIL THE BACK BUTTON APPEARS", 'disciple_tools' ), $num ) );
         ?>
         <form id="back" method="post" enctype="multipart/form-data" hidden>
             <a href="" class="button button-primary"> <?php esc_html_e( "Back", 'disciple_tools' ) ?> </a>
