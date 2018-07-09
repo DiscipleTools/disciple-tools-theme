@@ -201,7 +201,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         //open file
         $file_data = fopen( $file['tmp_name'], "r" );
         //loop over array
-        while ( $row = fgetcsv( $file_data,10000,$del) ) {
+        while ( $row = fgetcsv( $file_data, 10000, $del ) ) {
             foreach ($row as $index => $i) {
                 //$info = explode( $del, $data );
                 //chcek for data type
@@ -212,32 +212,32 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 //foreach ($info as $index => $i) {
                     $i = str_replace( "\"", "", $i );
                     //checks for name
-                    if ( $index == 0 ){
-                        $fields['title'] = $i;
-                    }
+                if ( $index == 0 ){
+                    $fields['title'] = $i;
+                }
                     //checks for phone
-                    else if ( $index == 1) {//preg_match('/^[0-9|(|)|\-|#|" "|+]*]*$/', $i) ) {
-                        $fields['contact_phone'][] = [ "value" => $i ];
-                    }
+                else if ( $index == 1) {//preg_match('/^[0-9|(|)|\-|#|" "|+]*]*$/', $i) ) {
+                    $fields['contact_phone'][] = [ "value" => $i ];
+                }
                     //checks for email
-                    else if ( $index == 2) {//filter_var($i, FILTER_VALIDATE_EMAIL) ) {
-                        $fields['contact_email'][] = [ "value" => $i ];
-                    }
+                else if ( $index == 2) {//filter_var($i, FILTER_VALIDATE_EMAIL) ) {
+                    $fields['contact_email'][] = [ "value" => $i ];
+                }
                     //cehecks for comments
-                    else { //$index == count($info)-1 ) {
-                        if ( $i != '' ) {
-                            $fields["notes"][] = $i;
-                        }
+                else { //$index == count($info)-1 ) {
+                    if ( $i != '' ) {
+                        $fields["notes"][] = $i;
                     }
                 }
+            }
                 //add person
-                if ( $fields['title'] != '' && $fields['title'] != ' ' && $fields['title'] !== false ) {
-                    $people[] = array( $fields );
-                    unset( $fields['contact_email'] );
-                    unset( $fields['contact_phone'] );
-                    unset( $fields['sources'] );
-                    unset( $fields['notes'] );
-                }
+            if ( $fields['title'] != '' && $fields['title'] != ' ' && $fields['title'] !== false ) {
+                $people[] = array( $fields );
+                unset( $fields['contact_email'] );
+                unset( $fields['contact_phone'] );
+                unset( $fields['sources'] );
+                unset( $fields['notes'] );
+            }
         }
         //close the file
         fclose( $file_data );
@@ -262,9 +262,11 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
     private function insert_contacts( $contacts) {
         set_time_limit( 0 );
+        global $wpdb;
         foreach ( $contacts as $num => $f ) {
             $ret = 0;
             $ret = Disciple_Tools_Contacts::create_contact( $f[0], true );
+            $wpdb->queries = [];
             if ( !is_numeric( $ret ) ) {
                 break;
                 echo esc_html_e( "ERROR CREATING CONTACT", 'disciple_tools' );
