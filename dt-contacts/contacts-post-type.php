@@ -373,7 +373,7 @@ class Disciple_Tools_Contact_Post_Type
                         case 'user_select':
                             echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . esc_attr( $v['name'] ) . '</label></th><td>';
                             echo wp_kses(
-                                $v['default'],
+                                $k === "assigned_to" ? $this->assigned_to_field() : $v['default'],
                                 [
                                     'a'      => [
                                         'id'    => [],
@@ -576,7 +576,7 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Assigned To', 'disciple_tools' ),
             'description' => '',
             'type'        => 'user_select',
-            'default'     => $this->assigned_to_field(),
+            'default'     => '',
             'section'     => 'status',
         ];
         // Status Section
