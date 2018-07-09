@@ -296,11 +296,32 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     }
 
     private function insert_contacts( $contacts) {
+        ?>
+         <script type="text/javascript">
+        jQuery(document).ajaxStop(function () {
+            jQuery("#back").show();
+        });
+        </script>
+        <?php
         set_time_limit( 0 );
         global $wpdb;
         foreach ( $contacts as $num => $f ) {
+            $js_array = json_encode($f[0]);
             $ret = 0;
-            $ret = Disciple_Tools_Contacts::create_contact( $f[0], true );
+            ?>
+            <script type="text/javascript">
+            jQuery.ajax({
+                type: "POST",
+                data: JSON.stringify(<?php echo $js_array; ?>),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: "<?php echo esc_url_raw( rest_url() ); ?>" + `dt/v1/contact/create`,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-WP-Nonce', "<?php echo wp_create_nonce( 'wp_rest' ); ?>");
+                    }
+            });
+            </script>
+            <?php
             $wpdb->queries = [];
             if ( !is_numeric( $ret ) ) {
                 break;
@@ -308,9 +329,9 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             }
         }
         $num = count( $contacts );
-        echo esc_html( sprintf( __( "Created %s Contacts", 'disciple_tools' ), $num ) );
+        echo esc_html( sprintf( __( "Creating %s Contacts", 'disciple_tools' ), $num ) );
         ?>
-        <form method="post" enctype="multipart/form-data">
+        <form id="back" method="post" enctype="multipart/form-data" hidden>
             <a href="/dt3/wp-admin/admin.php?page=dt_extensions&tab=tools" class="button button-primary"> <?php esc_html_e( "Back", 'disciple_tools' ) ?> </a>
         </form>
         <?php
