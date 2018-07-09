@@ -306,18 +306,18 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         set_time_limit( 0 );
         global $wpdb;
         foreach ( $contacts as $num => $f ) {
-            $js_array = json_encode($f[0]);
+            $js_array = json_encode( $f[0] );
             $ret = 0;
             ?>
             <script type="text/javascript">
             jQuery.ajax({
                 type: "POST",
-                data: JSON.stringify(<?php echo $js_array; ?>),
+                data: JSON.stringify(<?php echo esc_js( $js_array ); ?>),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 url: "<?php echo esc_url_raw( rest_url() ); ?>" + `dt/v1/contact/create`,
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('X-WP-Nonce', "<?php echo wp_create_nonce( 'wp_rest' ); ?>");
+                    xhr.setRequestHeader('X-WP-Nonce', "<?php echo esc_js( wp_create_nonce( 'wp_rest' ) ); ?>");
                     }
             });
             </script>
