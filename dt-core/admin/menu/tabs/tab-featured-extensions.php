@@ -205,7 +205,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         <?php
     }
 
-    public function import_csv( $file, $del = ';', $source = 'web', $assign = '', $header = "no" ) {
+    public function import_csv( $file, $del = ';', $source = 'web', $assign = '', $header = "yes" ) {
         $people = [];
         //open file
         $file_data = fopen( $file['tmp_name'], "r" );
@@ -271,7 +271,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         fclose( $file_data );
         //check for correct data
         $pos = 0;
-        if ( $header == "no" ) {
+        if ( $header == "yes" ) {
             unset( $people[0] );
             $pos = 1;
         }
@@ -332,7 +332,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         echo esc_html( sprintf( __( "Creating %s Contacts", 'disciple_tools' ), $num ) );
         ?>
         <form id="back" method="post" enctype="multipart/form-data" hidden>
-            <a href="/dt3/wp-admin/admin.php?page=dt_extensions&tab=tools" class="button button-primary"> <?php esc_html_e( "Back", 'disciple_tools' ) ?> </a>
+            <a href="" class="button button-primary"> <?php esc_html_e( "Back", 'disciple_tools' ) ?> </a>
         </form>
         <?php
         exit;
