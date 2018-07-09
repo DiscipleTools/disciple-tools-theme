@@ -24,14 +24,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public function __construct()
     {
-        add_action(
-            'init',
-            function() {
-                self::$contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
-                self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
-                self::$address_types = dt_address_metabox()->get_address_type_list( "contacts" );
-            }
-        );
+        self::$contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
+        self::$address_types = dt_get_option( "dt_site_custom_lists" )["contact_address_types"];
         self::$contact_connection_types = [
             "locations",
             "groups",
@@ -1207,11 +1202,18 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
             $fields["subassigned"] = $subassigned;
 
+            if ( $contact_id == 308 ){
+                $test = "soahu";
+            }
+
             $meta_fields = get_post_custom( $contact_id );
             foreach ( $meta_fields as $key => $value ) {
                 //if is contact details and is in a channel
                 if(!(isset(self::$channel_list))){
                     self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
+                }
+                if ( $key == "tags" && $contact_id == 308 ){
+                    $test = "soahu";
                 }
                 if ( strpos( $key, "contact_" ) === 0 && isset( self::$channel_list[ explode( '_', $key )[1] ] ) ) {
                     if ( strpos( $key, "details" ) === false ) {

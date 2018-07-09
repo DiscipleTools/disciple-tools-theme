@@ -1077,7 +1077,7 @@ class Disciple_Tools_Contact_Post_Type
             ],
             "address" => [
                 "label" => __( "Address", 'disciple_tools' ),
-                "types" => dt_address_metabox()->get_address_type_list( "contacts" )
+                "types" => dt_get_option( "dt_site_custom_lists" )["contact_address_types"]
             ],
             "facebook"  => [
                 "label" => __( 'Facebook', 'disciple_tools' ),

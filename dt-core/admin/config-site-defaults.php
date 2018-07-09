@@ -406,7 +406,7 @@ function dt_get_site_custom_lists( string $list_title = null )
 {
     $fields = [];
 
-    $fields['version'] = 3;
+    $fields['version'] = 4;
 
     //custom fields
     $fields['seeker_path'] = [
@@ -568,6 +568,12 @@ function dt_get_site_custom_lists( string $list_title = null )
             'description' => 'Contacts coming an advertisement campaign.',
             'enabled'     => true,
         ],
+
+    ];
+    $fields["contact_address_types"] = [
+        "home"  => [ "label" => __( 'Home', 'disciple_tools' ) ],
+        "work"  => [ "label" => __( 'Work', 'disciple_tools' ) ],
+        "other" => [ "label" => __( 'Other', 'disciple_tools' ) ],
     ];
 
     // $fields = apply_filters( 'dt_site_custom_lists', $fields );
