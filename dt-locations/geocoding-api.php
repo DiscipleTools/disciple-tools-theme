@@ -209,7 +209,8 @@ class Disciple_Tools_Google_Geocode_API
             $ip_address = self::get_real_ip_address();
         }
 
-        $url_address = 'http://freegeoip.net/json/' . $ip_address;
+        $api_key = 'bc09c19cf847fa2e616facc110699f17';
+        $url_address = 'http://api.ipstack.com/'.$ip_address.'?access_key=' . $api_key;
         $details = json_decode( self::url_get_contents( $url_address ), true );
 
         if ( ! $details ) {
