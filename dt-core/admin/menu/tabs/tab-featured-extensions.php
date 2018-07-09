@@ -173,7 +173,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 <option value=yes ><?php esc_html_e( "yes", 'disciple_tools' ) ?></option>
                 <option value=no ><?php esc_html_e( "no", 'disciple_tools' ) ?></option>
             </select>
-            <?php esc_html_e( "Include header?", 'disciple_tools' ) ?> <br>
+            <?php esc_html_e( "Does the file have a header?", 'disciple_tools' ) ?> <br>
             <select name="csv_source">
                 <?php
                 $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -312,13 +312,12 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             <script type="text/javascript">
             jQuery.ajax({
                 type: "POST",
-                <?php //@codingStandardsIgnoreLine ?>
-                data: JSON.stringify(<?php echo $js_array; ?>),
+                data: JSON.stringify(<?php /*@codingStandardsIgnoreLine*/ echo $js_array; ?>),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 url: "<?php echo esc_url_raw( rest_url() ); ?>" + `dt/v1/contact/create`,
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('X-WP-Nonce', "<?php echo sanitize_text_field( wp_unslash( wp_create_nonce( 'wp_rest' ) ) ); ?>");
+                    xhr.setRequestHeader('X-WP-Nonce', "<?php /*@codingStandardsIgnoreLine*/ echo sanitize_text_field( wp_unslash( wp_create_nonce( 'wp_rest' ) ) ); ?>");
                     }
             });
             </script>
