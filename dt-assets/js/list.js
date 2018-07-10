@@ -16,7 +16,13 @@
     }
     return "";
   }
-  let cachedFilter = JSON.parse(getCookie("last_view")||"{}")
+  let cookie = getCookie("last_view");
+  let cachedFilter = {}
+  try {
+    cachedFilter = JSON.parse(cookie)
+  } catch (e) {
+    cachedFilter = {}
+  }
   let currentFilter = {}
   let items = []
   let customFilters = []
