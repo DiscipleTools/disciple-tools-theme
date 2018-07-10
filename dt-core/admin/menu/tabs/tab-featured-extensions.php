@@ -356,23 +356,23 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         </script>
         <?php
         global $wpdb;
-        $jsContacts = [];
+        $js_contacts = [];
         foreach ( $contacts as $num => $f ) {
             $js_array = wp_json_encode( $f[0] );
-            $jsContacts[] = $js_array;
+            $js_contacts[] = $js_array;
             $wpdb->queries = [];
         }
         ?>
         <script type="text/javascript">
         // start processing queue!
-        queue = <?php  echo  wp_json_encode($jsContacts); ?>
+        queue = <?php echo wp_json_encode( $js_contacts ); ?>
 
         process(queue, 5, doEach, doDone);
         </script>
          <?php
-        $num = count( $contacts );
-        echo esc_html( sprintf( __( "Creating %s Contacts DO NOT LEAVE THE PAGE UNTIL THE BACK BUTTON APPEARS", 'disciple_tools' ), $num ) );
-        ?>
+            $num = count( $contacts );
+            echo esc_html( sprintf( __( "Creating %s Contacts DO NOT LEAVE THE PAGE UNTIL THE BACK BUTTON APPEARS", 'disciple_tools' ), $num ) );
+            ?>
         <form id="back" method="post" enctype="multipart/form-data" hidden>
             <a href="" class="button button-primary"> <?php esc_html_e( "Back", 'disciple_tools' ) ?> </a>
         </form>
