@@ -130,8 +130,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     {
         //check if it can run commands
         $run = true;
-        //check for admin or multisite super admin
-        if ( ( is_multisite() && !is_super_admin() ) || ( !is_multisite() && !is_admin() ) ) {
+        //check for admin
+        if ( !is_admin() ) {
             $run = false;
         }
         //check for action of csv import
@@ -296,41 +296,83 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     }
 
     private function insert_contacts( $contacts) {
-        ?>
-         <script type="text/javascript">
-        jQuery(document).ajaxStop(function () {
-            jQuery("#back").show();
-        });
-        </script>
-        <?php
         set_time_limit( 0 );
         global $wpdb;
-        foreach ( $contacts as $num => $f ) {
-            $js_array = wp_json_encode( $f[0] );
-            $ret = 0;
-            ?>
-            <script type="text/javascript">
+        ?>
+        <script type="text/javascript">
+        function process( q, num, fn, done ) {
+            // remove a batch of items from the queue
+            var items = q.splice(0, num),
+            count = items.length;
+
+            // no more items?
+            if ( !count ) {
+                // exec done callback if specified
+                done && done();
+                // quit
+                return;
+            }
+
+            // loop over each item
+            for ( var i = 0; i < count; i++ ) {
+                // call callback, passing item and
+                // a "done" callback
+                fn(items[i], function() {
+                    // when done, decrement counter and
+                    // if counter is 0, process next batch
+                    --count || process(q, num, fn, done);
+                });
+            }
+        }
+
+        // a per-item action
+        function doEach( item, done ) {
+            console.log('starting ...' );
             jQuery.ajax({
                 type: "POST",
-                data: JSON.stringify(<?php /*@codingStandardsIgnoreLine*/ echo $js_array; ?>),
+                data: item,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 url: "<?php echo esc_url_raw( rest_url() ); ?>" + `dt/v1/contact/create`,
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('X-WP-Nonce', "<?php /*@codingStandardsIgnoreLine*/ echo sanitize_text_field( wp_unslash( wp_create_nonce( 'wp_rest' ) ) ); ?>");
-                    }
+                    },
+                success: function(data) {
+                    console.log('done');
+                    done();
+                },
+                error: function(xhr) { // if error occured
+                    alert("Error occured.please try again");
+                    console.log("%o",xhr);
+                }
             });
-            </script>
-            <?php
-            $wpdb->queries = [];
-            if ( !is_numeric( $ret ) ) {
-                break;
-                echo esc_html_e( "ERROR CREATING CONTACT", 'disciple_tools' );
-            }
         }
-        $num = count( $contacts );
-        echo esc_html( sprintf( __( "Creating %s Contacts DO NOT LEAVE THE PAGE UNTIL THE BACK BUTTON APPEARS", 'disciple_tools' ), $num ) );
+
+        // an all-done action
+        function doDone() {
+            console.log('all done!');
+            jQuery("#back").show();
+        }
+        </script>
+        <?php
+        global $wpdb;
+        $js_contacts = [];
+        foreach ( $contacts as $num => $f ) {
+            $js_array = wp_json_encode( $f[0] );
+            $js_contacts[] = $js_array;
+            $wpdb->queries = [];
+        }
         ?>
+        <script type="text/javascript">
+        // start processing queue!
+        queue = <?php echo wp_json_encode( $js_contacts ); ?>
+
+        process(queue, 5, doEach, doDone);
+        </script>
+         <?php
+            $num = count( $contacts );
+            echo esc_html( sprintf( __( "Creating %s Contacts DO NOT LEAVE THE PAGE UNTIL THE BACK BUTTON APPEARS", 'disciple_tools' ), $num ) );
+            ?>
         <form id="back" method="post" enctype="multipart/form-data" hidden>
             <a href="" class="button button-primary"> <?php esc_html_e( "Back", 'disciple_tools' ) ?> </a>
         </form>
