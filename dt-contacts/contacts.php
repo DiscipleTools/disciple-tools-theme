@@ -155,12 +155,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @param  array     $fields , the new contact's data
      * @param  bool|true $check_permissions
+     * @param  bool|true $silent
      *
      * @access private
      * @since  0.1.0
      * @return int | WP_Error
      */
-    public static function create_contact( array $fields = [], $check_permissions = true )
+    public static function create_contact( array $fields = [], $check_permissions = true, $silent = false )
     {
         if ( $check_permissions && !current_user_can( 'create_contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( "You may not publish a contact" ), [ 'status' => 403 ] );
@@ -312,7 +313,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         //hook for signaling that a contact has been created and the initial fields
         if ( !is_wp_error( $post_id )){
             do_action( "dt_contact_created", $post_id, $initial_fields );
-            Disciple_Tools_Notifications::insert_notification_for_new_post( "contacts", $fields, $post_id );
+            if ( !$silent ){
+                Disciple_Tools_Notifications::insert_notification_for_new_post( "contacts", $fields, $post_id );
+            }
         }
 
         return $post_id;

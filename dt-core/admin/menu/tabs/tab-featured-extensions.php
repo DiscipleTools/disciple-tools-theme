@@ -333,7 +333,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                 data: item,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                url: "<?php echo esc_url_raw( rest_url() ); ?>" + `dt/v1/contact/create`,
+                url: "<?php echo esc_url_raw( rest_url() ); ?>" + `dt/v1/contact/create?silent=true`,
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('X-WP-Nonce', "<?php /*@codingStandardsIgnoreLine*/ echo sanitize_text_field( wp_unslash( wp_create_nonce( 'wp_rest' ) ) ); ?>");
                     },
