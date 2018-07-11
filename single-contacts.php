@@ -125,7 +125,7 @@ declare( strict_types=1 );
                                 <div class="typeahead__field">
                                     <span class="typeahead__query">
                                         <input class="js-typeahead-subassigned input-height"
-                                               name="subassigned[query]" placeholder="<?php esc_html_e( "Search multipliers and contacts", 'disciple_tools' ) ?>"
+                                               name="subassigned[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
                                                autocomplete="off">
                                     </span>
                                 </div>
@@ -164,7 +164,7 @@ declare( strict_types=1 );
                                             <div class="typeahead__field">
                                                 <span class="typeahead__query">
                                                     <input class="js-typeahead-groups input-height"
-                                                           name="groups[query]" placeholder="<?php esc_html_e( "Search groups", 'disciple_tools' ) ?>"
+                                                           name="groups[query]" placeholder="<?php esc_html_e( "Search Groups", 'disciple_tools' ) ?>"
                                                            autocomplete="off">
                                                 </span>
                                                 <span class="typeahead__button">
@@ -192,7 +192,7 @@ declare( strict_types=1 );
                                                 <div class="typeahead__field">
                                                     <span class="typeahead__query">
                                                         <input class="js-typeahead-<?php echo esc_html( $connection ) ?>"
-                                                               name="<?php echo esc_html( $connection ) ?>[query]" placeholder="<?php esc_html_e( "Search multipliers and contacts", 'disciple_tools' ) ?>"
+                                                               name="<?php echo esc_html( $connection ) ?>[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
                                                                autocomplete="off">
                                                     </span>
             <!--                                        <span class="typeahead__button">-->
@@ -273,6 +273,40 @@ declare( strict_types=1 );
                                         </div>
                                     </div>
 
+                                    <!-- custom sections -->
+                                    <?php $custom_sections = dt_get_option( 'dt_site_custom_lists' );
+                                    $custom_sections = $custom_sections["custom_dropdown_contact_options"];
+                                    foreach ( $custom_sections as $key => $value ) :
+                                        ?>
+                                            <div class="custom_progress">
+                                                <!-- drop down section -->
+                                                <div class="section-subheader">
+                                                    <?php echo esc_html( $value["label"] ); ?>
+                                                </div>
+                                                <!-- the id is what makes the blue progress bar go up -->
+                                                <select class="select-field" id=<?php echo esc_html( "custom_dropdown_contact_" . $key ); ?> style="margin-bottom: 0px">
+                                                <?php
+                                                //this section fills the drop down with the data
+                                                foreach ($value as $s_key => $s_value){
+                                                    if ($s_key != "label") {
+                                                        if ( isset( $contact["custom_dropdown_contact_" . $key]["key"] ) ) {
+                                                            if ( $contact["custom_dropdown_contact_" . $key]["key"] === $s_value ) {
+                                                                ?>
+                                                                <option value="<?php echo esc_html( $s_value ) ?>" selected><?php echo esc_html( $s_value ); ?></option>
+                                                            <?php }
+                                                            else {
+                                                                ?>
+                                                                <option value="<?php echo esc_html( $s_value ) ?>"><?php echo esc_html( $s_value ); ?></option>
+                                                            <?php }
+                                                        } else { ?>
+                                                                <option value="<?php echo esc_html( $s_value ) ?>"><?php echo esc_html( $s_value ); ?></option>
+                                                            <?php }
+                                                    }
+                                                }
+                                                ?>
+                                                </select>
+                                            </div>
+                                    <?php endforeach; ?>
 
                                 </div>
                             </section>
