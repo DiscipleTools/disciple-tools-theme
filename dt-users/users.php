@@ -23,6 +23,7 @@ class Disciple_Tools_Users
     public function __construct()
     {
         add_action( 'user_register', [ &$this, 'user_register_hook' ] );
+        add_action( 'wpmu_new_user', [ &$this, 'user_register_hook' ] );
         add_action( 'profile_update', [ &$this, 'profile_update_hook' ], 99 );
     }
 
