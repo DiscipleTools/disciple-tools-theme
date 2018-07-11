@@ -24,6 +24,7 @@ class Disciple_Tools_Users
     {
         add_action( 'user_register', [ &$this, 'user_register_hook' ] );
         add_action( 'wpmu_new_user', [ &$this, 'user_register_hook' ] );
+        add_action( 'add_user_to_blog', [ &$this, 'user_register_hook' ] );
         add_action( 'profile_update', [ &$this, 'profile_update_hook' ], 99 );
     }
 
@@ -333,7 +334,7 @@ class Disciple_Tools_Users
     }
 
     /**
-     * Profile uppdate hook
+     * Profile update hook
      *
      * @param $user_id
      */
