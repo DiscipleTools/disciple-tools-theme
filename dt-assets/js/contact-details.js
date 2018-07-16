@@ -848,8 +848,14 @@ jQuery(document).ready(function($) {
         if (field.value){
           allEmptyValues = false
         }
+        let link = _.escape(field.value);
+        if (contact_method == "contact_email") {
+          link = `<a href="mailto:${_.escape(field.value)}">${_.escape(field.value)}</a>`
+        } else if (contact_method == "contact_phone") {
+          link = `<a href="tel:${_.escape(field.value)}">${_.escape(field.value)}</a>`
+        }
         htmlField.append(`<li class="details-list ${_.escape(field.key)}">
-            ${_.escape(field.value)}
+              ${link}
               <img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
               <img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
             </li>
