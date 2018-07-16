@@ -13,7 +13,7 @@ class Disciple_Tools_Update_Needed {
 //        @todo set the cron on plugin activation
 //        https://codex.wordpress.org/Function_Reference/wp_schedule_event
         if ( ! wp_next_scheduled( 'update-required' ) ) {
-            wp_schedule_event( time( 'today midnight' ), 'daily', 'update-required' );
+            wp_schedule_event( strtotime( 'today 1am' ), 'daily', 'update-required' );
         }
         add_action( 'update-required', [ $this, 'find_contacts_that_need_an_update' ] );
     }
