@@ -444,7 +444,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                         <?php
                     } else {
                         ?>
-                                <p><?php echo esc_html__( 'Installed', 'disciple_tools' ) ?></p>
+                                <p><?php echo esc_html__( 'Activated', 'disciple_tools' ) ?></p>
                             </td>
                         </tr>
                         <?php
