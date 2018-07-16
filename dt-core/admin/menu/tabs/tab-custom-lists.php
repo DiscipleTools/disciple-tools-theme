@@ -1245,7 +1245,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         $key = $k;
         $num = 0;
         if ( $t == 'k' ) {
-            while ( in_array( $key, array_keys( $lookup ) ) === false ) {
+            while ( true ) {
                 if ( in_array( $key, array_keys( $lookup ) ) === false ){
                     if ( $num == 0 ){
                         return "";
@@ -1289,9 +1289,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $key =  $this->sanatize_all( $_POST['add_input_field_path'] );
                 if ( !empty( $key ) ){
                     // @codingStandardsIgnoreLine
-                    $key = $key . $this->custom_dropdown_field_dub_check( $site_custom_lists["custom_dropdown_contact_options"], $key );
+                    $key = $key . $this->custom_dropdown_field_dub_check( $site_custom_lists["custom_dropdown_contact_options"], $key, 'k' );
                     // @codingStandardsIgnoreLine
-                    $site_custom_lists["custom_dropdown_contact_options"][$key]["label"] = sanitize_text_field( wp_unslash( $_POST['add_input_field_path'] . $this->custom_dropdown_field_dub_check( $site_custom_lists["custom_dropdown_contact_options"], $_POST['add_input_field_path'] ) ) );
+                    $site_custom_lists["custom_dropdown_contact_options"][$key]["label"] = sanitize_text_field( wp_unslash( $_POST['add_input_field_path'] . $this->custom_dropdown_field_dub_check( $site_custom_lists["custom_dropdown_contact_options"], $this->sanatize_all( $_POST['add_input_field_path'] ), 'k' ) ) );
                 }
             }
             //make a new field for a path
@@ -1301,7 +1301,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     if ( $v["label"] != "" ) {
                         $k = $this->sanatize_all( $k );
                         $v = sanitize_text_field( wp_unslash( $v["label"] ) );
-                        $v = $v . $this->custom_dropdown_field_dub_check( $site_custom_lists["custom_dropdown_contact_options"][$k], $v );
+                        $v = $v . $this->custom_dropdown_field_dub_check( $site_custom_lists["custom_dropdown_contact_options"][$k], $v, 'v' );
                         if ( !empty( $k ) ) {
                             $site_custom_lists["custom_dropdown_contact_options"][$k][ str_replace( " ", "_", $v ) ] = $v;
                         }
