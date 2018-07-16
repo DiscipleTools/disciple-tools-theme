@@ -916,8 +916,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
 
         //get the custom milestone fields
-        $custom_contact_fields = dt_get_option( 'dt_site_custom_lists' );
-        $custom_contact_fields = $custom_contact_fields["custom_milestones"];
+        $custom_contact_fields = $custom_lists["custom_milestones"];
         foreach ( $custom_contact_fields as $key => $value ){
             $fields[$key] = [
                     'name'        => $value['name'],
@@ -928,6 +927,15 @@ class Disciple_Tools_Contact_Post_Type
             ];
         }
 
+        foreach ($custom_lists["custom_dropdown_contact_options"] as $k => $v ){
+            $fields["custom_dropdown_contact_".$k] = [
+                'name'        => $k,
+                 'description' => 'holds ' . $k . ' progress',
+                 'type'        => 'key_select',
+                 'default'     => [],
+                 'section'     => 'misc',
+             ];
+        }
 
         return apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
     } // End get_custom_fields_settings()
