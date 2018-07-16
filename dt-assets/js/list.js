@@ -175,8 +175,14 @@
       <td class="hide-for-small-only"><span class="status status--<%- overall_status %>"><%- status %></span></td>
       <td class="hide-for-small-only"><span class="status status--<%- seeker_path %>"><%- seeker_path %></span></td>
       <td class="hide-for-small-only">
+        <span class="milestone milestone--<%- access_milestone_key %>"><%- access_milestone %></span>
+        <% if (access_milestone){ %>
+            <br>
+        <% } %>
         <span class="milestone milestone--<%- sharing_milestone_key %>"><%- sharing_milestone %></span>
-        <br>
+        <% if (sharing_milestone){ %>
+            <br>
+        <% } %>
         <span class="milestone milestone--<%- belief_milestone_key %>"><%- belief_milestone %></span>
       </td>
       <td class="hide-for-small-only"><%- assigned_to ? assigned_to.name : "" %></td>
@@ -224,6 +230,10 @@
   function buildContactRow(contact, index) {
     const template = templates[wpApiListSettings.current_post_type];
     const ccfs = wpApiListSettings.custom_fields_settings;
+    const access_milestone_key = _.find(
+      ["has_bible", "reading_bible"],
+      function (key) { return contact["milestone_" + key]; }
+    )
     const belief_milestone_key = _.find(
       ['baptizing', 'baptized', 'belief'],
       function(key) { return contact["milestone_" + key]; }
@@ -247,7 +257,9 @@
       status,
       belief_milestone_key,
       sharing_milestone_key,
+      access_milestone_key,
       seeker_path,
+      access_milestone: (ccfs["milestone_" + access_milestone_key] || {}).name || "",
       belief_milestone: (ccfs["milestone_" + belief_milestone_key] || {}).name || "",
       sharing_milestone: (ccfs["milestone_" + sharing_milestone_key] || {}).name || "",
       group_links,
