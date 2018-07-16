@@ -382,19 +382,16 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     //main page
     public function box_message()
     {
-        //check if it can run commands
-        $run = true;
-        //check for admin or multisite super admin
-        if ( ( is_multisite() && !is_super_admin() ) || ( !is_multisite() && !is_admin() ) ) {
-            $run = false;
-        }
         //check for actions
-        if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && $run ) {
+        if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
             //activate the plugin
             activate_plugin( sanitize_text_field( wp_unslash( $_POST["activate"] ) ) );
             exit;
         }
-        else if ( isset( $_POST["install"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && $run ) {
+        else if ( isset( $_POST["install"] ) && is_admin() && isset( $_POST["_ajax_nonce"] )
+                  && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) )
+                  && ( is_multisite() && !is_super_admin() ) || ( !is_multisite() && !current_user_can( "manage_dt" ) ) ) {
+            //check for admin or multisite super admin
             //install plugin
             $this->install_plugin( sanitize_text_field( wp_unslash( $_POST["install"] ) ) );
             exit;
