@@ -155,7 +155,7 @@ declare(strict_types=1);
                 <div class="cell small-4 filter-modal-left">
                     <?php $fields = [ "assigned_to", "subassigned", "locations", "overall_status", "seeker_path", "faith_milestones", "requires_update" ];
                     foreach ( $dt_contact_field_options as $field_key => $field){
-                        if ( $field["type"] === "key_select" && strpos( $field_key, "milestone_" ) === false && !in_array( $field_key, $fields ) && ( isset( $field["hidden"] ) && !$field["hidden"] )){
+                        if ( $field["type"] === "key_select" && strpos( $field_key, "milestone_" ) === false && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
                             $fields[] = $field_key;
                         }
                     }
