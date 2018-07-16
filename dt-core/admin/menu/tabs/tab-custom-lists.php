@@ -1248,17 +1248,21 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
             //make a new path
             if ( !empty( $_POST['add_input_field_path'] ) ) {
-                $key = sanitize_text_field( wp_unslash( $_POST['add_input_field_path'] ) );
-                $site_custom_lists["custom_dropdown_contact_options"][$key]["label"] = $key;
+                $key =  str_replace(" ","_", sanitize_text_field( wp_unslash( $_POST['add_input_field_path'] ) ) );
+                if( !empty( $key ) ){
+                    $site_custom_lists["custom_dropdown_contact_options"][$key]["label"] = sanitize_text_field( wp_unslash( $_POST['add_input_field_path'] ) );
+                }
             }
             //make a new field for a path
-            if ( !empty( $_POST['add_input_field_option'] ) ) {
+            else if ( !empty( $_POST['add_input_field_option'] ) ) {
                 // @codingStandardsIgnoreLine
                 foreach ( $_POST['add_input_field_option'] as $k => $v ){
                     if ( $v["label"] != "" ) {
-                        $k = sanitize_text_field( wp_unslash( $k ) );
+                        $k = str_replace(" ","_", sanitize_text_field(  wp_unslash( $k ) ) );
                         $v = sanitize_text_field( wp_unslash( $v["label"] ) );
-                        $site_custom_lists["custom_dropdown_contact_options"][$k][$v] = $v;
+                        if( !empty( $k ) ) {
+                            $site_custom_lists["custom_dropdown_contact_options"][$k][str_replace(" ","_",$v )] = $v;
+                        }
                     }
                 }
             }
@@ -1266,9 +1270,14 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             if ( isset( $_POST["custom_path"] ) ) {
                 // @codingStandardsIgnoreLine
                 foreach ( $_POST["custom_path"] as $key => $val) {
-                    // @codingStandardsIgnoreLine
-                    foreach ( $val as $k => $v ){
-                        $site_custom_lists["custom_dropdown_contact_options"][sanitize_key( wp_unslash( $key ) )][sanitize_key( wp_unslash( $k ) )] = sanitize_key( wp_unslash( $v ) );
+                    $key = str_replace(" ","_", sanitize_text_field( wp_unslash( $key ) ) );
+                    if ( !empty( $key ) ) {
+                        // @codingStandardsIgnoreLine
+                        foreach ( $val as $k => $v ){
+                            $v = wp_unslash( $v );
+                            $k = str_replace(" ","_", wp_unslash( $k ) );
+                            $site_custom_lists["custom_dropdown_contact_options"][$key][$k] = $v;
+                        }
                     }
                 }
             }
@@ -1334,7 +1343,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
             // Process a path to delete.
             else if ( isset( $_POST['delete_path'] ) && $delete ) {
-                $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_path'] ) );
+                $delete_key = str_replace(" ","_", sanitize_text_field( wp_unslash( $_POST['delete_path'] ) ) );
                 unset( $site_custom_lists["custom_dropdown_contact_options"][ $delete_key ] );
                 //TODO: Consider adding a database query to delete all instances of this key from usermeta
             }
@@ -1343,8 +1352,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 // @codingStandardsIgnoreLine
                 foreach ( $_POST['delete_field'] as $k => $v ){
                     if ( $v["field"] != "" ) {
-                        $delete_key = sanitize_text_field( wp_unslash( $k ) );
-                        $delete_field  = sanitize_text_field( wp_unslash( $v["field"] ) );
+                        $delete_key = str_replace(" ","_", sanitize_text_field( wp_unslash( $k ) ) );
+                        $delete_field  = str_replace(" ","_", sanitize_text_field( wp_unslash( $v["field"] ) ) );
                         unset( $site_custom_lists["custom_dropdown_contact_options"][ $delete_key ][ $delete_field ] );
                     }
                 }
@@ -1389,17 +1398,17 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <tbody>
                     <?php foreach ( $value as $i => $label ) : ?>
                         <?php if ( $first ) { ?>
-                            <input name="custom_path[<?php echo esc_html( $key ); ?>][label]" type="text" value="<?php echo esc_html( $value["label"] ) ?>"/>
+                            <input name="custom_path[<?php echo str_replace(" ","_", esc_html( sanitize_text_field( $key ) ) ); ?>][label]" type="text" value="<?php echo esc_html( $value["label"] ) ?>"/>
                             <button type="submit" name="delete_path" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "delete", 'disciple_tools' ) ?></button>
                     <?php } if ( $i !== "label" ) { ?>
                         <tr>
                             <td>
-                                <button type="submit" name="custom_path_move_up[<?php echo esc_html( $key ) ?>]" value="<?php echo esc_html( $label ) ?>" class="button small" >↑</button>
-                                <button type="submit" name="custom_path_move_down[<?php echo esc_html( $key ) ?>]" value="<?php echo esc_html( $label ) ?>" class="button small" >↓</button>
+                                <button type="submit" name="custom_path_move_up[<?php echo str_replace(" ","_", esc_html( $key ) ) ?>]" value="<?php echo esc_html( sanitize_text_field( $label ) ) ?>" class="button small" >↑</button>
+                                <button type="submit" name="custom_path_move_down[<?php echo str_replace(" ","_", esc_html( $key ) ) ?>]" value="<?php echo esc_html( sanitize_text_field( $label ) )?>" class="button small" >↓</button>
                             </td>
-                            <td><input name="custom_path[<?php echo esc_html( $key ); ?>][<?php echo esc_html( $label ) ?>]" type="text" value="<?php echo esc_html( $label ) ?>"/></td>
+                            <td><input name="custom_path[<?php echo str_replace(" ","_", esc_html( sanitize_text_field( $key ) ) ); ?>][<?php echo esc_html( sanitize_text_field( $label ) ) ?>]" type="text" value="<?php echo esc_html( $label ) ?>"/></td>
                             <?php if ( !in_array( $key, array_keys( $default ), true ) ) { ?>
-                                <td><button type="submit" name="delete_field[<?php echo esc_html( $key ); ?>][field]" value="<?php echo esc_html( $label ) ?>" class="button small" ><?php esc_html_e( "delete", 'disciple_tools' ) ?></button> </td>
+                                <td><button type="submit" name="delete_field[<?php echo str_replace(" ","_", esc_html( sanitize_text_field( $key ) ) ); ?>][field]" value="<?php echo esc_html( sanitize_text_field( $label ) ) ?>" class="button small" ><?php esc_html_e( "delete", 'disciple_tools' ) ?></button> </td>
                             <?php } ?>
                         </tr>
                             <?php } ?>
@@ -1407,9 +1416,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <?php endforeach; ?>
                             </tbody>
                     </table>
-                    <button type="button" onclick="jQuery('#add_custom_field_<?php echo esc_html( $key ); ?>').toggle();" class="button"><?php esc_html_e( "Add Option", 'disciple_tools' ) ?></button>
+                    <button type="button" onclick="jQuery('#add_custom_field_<?php echo esc_html( str_replace("`","", str_replace("\"","", str_replace("'","", sanitize_text_field( $key ) ) ) ) ); ?>').toggle();" class="button"><?php esc_html_e( "Add Option", 'disciple_tools' ) ?></button>
                     <button type="submit" style="float:right;" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
-                    <div id="add_custom_field_<?php echo esc_html( $key ); ?>" style="display:none;">
+                    <div id="add_custom_field_<?php echo esc_html( str_replace("`","", str_replace("\"","", str_replace("'","", sanitize_text_field( $key ) ) ) ) ); ?>" style="display:none;">
                     <table width="100%">
                         <tr>
                             <td><hr><br>
