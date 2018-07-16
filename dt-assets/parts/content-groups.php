@@ -2,7 +2,7 @@
 declare(strict_types=1);
 ?>
 <div class="bordered-box list-box">
-    <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( "Contacts", "disciple_tools" ); ?></h5>
+    <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( "Groups", "disciple_tools" ); ?></h5>
     <div style="display: inline-block" class="loading-spinner active"></div>
     <span style="display: inline-block" class="filter-result-text"></span>
     <div style="display: inline-block" id="current-filters"></div>
