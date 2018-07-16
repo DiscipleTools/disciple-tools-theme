@@ -35,7 +35,7 @@ class Disciple_Tools_Metrics
 
             add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_google' ], 10 );
 
-            if ( user_can( get_current_user_id(), 'manage_dt' ) ) {
+            if ( user_can( get_current_user_id(), 'manage_dt' ) || current_user_can( "view_project_metrics" ) ) {
 
                 // load basic charts
                 require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
