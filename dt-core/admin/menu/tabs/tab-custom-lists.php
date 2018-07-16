@@ -1479,7 +1479,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <?php endforeach; ?>
             <br>
             <br>
-            <p> <?php esc_html_e( "Add a custom path", 'disciple_tools' ) ?> </p>
             <button type="button" onclick="jQuery('#add_custom_dropdown_field').toggle();" class="button"><?php esc_html_e( "Add Dropdown Field", 'disciple_tools' ) ?></button>
             <button type="submit" style="float:right;" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
             <div id="add_custom_dropdown_field" style="display:none;">
