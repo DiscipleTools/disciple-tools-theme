@@ -1234,43 +1234,43 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      * Process custom path settings
      */
 
-    public function sanatize_all($s){
-        return esc_html( str_replace("(","", str_replace(")","", str_replace("[","", str_replace("]","", str_replace(" ","_", str_replace("`","", str_replace("\"","", str_replace("'","", wp_unslash( sanitize_text_field( $s )))))))))) );
+    public function sanatize_all( $s ){
+        return esc_html( str_replace( "(", "", str_replace( ")", "", str_replace( "[", "", str_replace( "]", "", str_replace( " ", "_", str_replace( "`", "", str_replace( "\"", "", str_replace( "'", "", wp_unslash( sanitize_text_field( $s ) ) ) ) ) ) ) ) ) ) );
     }
 
-    public function custom_dropdown_field_dub_check( $lookup, $k, $t='k' ){
-        //$key = $this->sanatize_all( $k );
-        if( empty( $lookup ) ) {
+    public function custom_dropdown_field_dub_check( $lookup, $k, $t = 'k' ){
+        if ( empty( $lookup ) ) {
             return "";
         }
         $key = $k;
         $num = 0;
-        if($t = 'k') {
-            while(true){
-                if( in_array( $key, array_keys($lookup) ) === false ){
-                    if($num == 0){
+        if ( $t == 'k' ) {
+            while ( in_array( $key, array_keys( $lookup ) ) === false ) {
+                if ( in_array( $key, array_keys( $lookup ) ) === false ){
+                    if ( $num == 0 ){
                         return "";
                     }
-                    return "-" . (string)$num;
+                    return "-" . (string) $num;
                 }
-                $num += 1;
-                $key =  $k . "-" . (string)$num;
+                $num++;
+                $key = $k . "-" . (string) $num;
             }
         }
-        $num = 0;
-        if($t = 'v') {
-            while(true){
-                if( in_array( $key, $lookup ) === false ){
-                    if($num == 0){
+        else if ( $t == 'v' ) {
+            $num = 0;
+            while ( true ) {
+                if ( in_array( $key, $lookup ) === false ) {
+                    if ( $num == 0 ){
                         return "";
                     }
-                    return "-" . (string)$num;
+                    return "-" . (string) $num;
                 }
-                $num += 1;
-                $key =  $k . "-" . (string)$num;
+                $num++;
+                $key = $k . "-" . (string) $num;
             }
         }
     }
+
     public function process_custom_dropdown_field_box()
     {
         if ( isset( $_POST['custom_dropdown_field_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['custom_dropdown_field_nonce'] ) ), 'custom_dropdown_field' ) ) {
@@ -1285,10 +1285,13 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
             //make a new path
             if ( !empty( $_POST['add_input_field_path'] ) ) {
+                // @codingStandardsIgnoreLine
                 $key =  $this->sanatize_all( $_POST['add_input_field_path'] );
-                if( !empty( $key ) ){
-                    $key = $key . $this->custom_dropdown_field_dub_check($site_custom_lists["custom_dropdown_contact_options"], $key);
-                    $site_custom_lists["custom_dropdown_contact_options"][$key]["label"] = sanitize_text_field( wp_unslash( $_POST['add_input_field_path'] . $this->custom_dropdown_field_dub_check($site_custom_lists["custom_dropdown_contact_options"], $_POST['add_input_field_path']) ) );
+                if ( !empty( $key ) ){
+                    // @codingStandardsIgnoreLine
+                    $key = $key . $this->custom_dropdown_field_dub_check( $site_custom_lists["custom_dropdown_contact_options"], $key );
+                    // @codingStandardsIgnoreLine
+                    $site_custom_lists["custom_dropdown_contact_options"][$key]["label"] = sanitize_text_field( wp_unslash( $_POST['add_input_field_path'] . $this->custom_dropdown_field_dub_check( $site_custom_lists["custom_dropdown_contact_options"], $_POST['add_input_field_path'] ) ) );
                 }
             }
             //make a new field for a path
@@ -1298,9 +1301,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     if ( $v["label"] != "" ) {
                         $k = $this->sanatize_all( $k );
                         $v = sanitize_text_field( wp_unslash( $v["label"] ) );
-                        $v = $v . $this->custom_dropdown_field_dub_check($site_custom_lists["custom_dropdown_contact_options"][$k] ,$v);
-                        if( !empty( $k ) ) {
-                            $site_custom_lists["custom_dropdown_contact_options"][$k][str_replace(" ","_",$v )] = $v;
+                        $v = $v . $this->custom_dropdown_field_dub_check( $site_custom_lists["custom_dropdown_contact_options"][$k], $v );
+                        if ( !empty( $k ) ) {
+                            $site_custom_lists["custom_dropdown_contact_options"][$k][ str_replace( " ", "_", $v ) ] = $v;
                         }
                     }
                 }
@@ -1315,8 +1318,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         foreach ( $val as $k => $v ){
                             $v = wp_unslash( $v );
                             $k = $this->sanatize_all( $k );
-                            $ret = $this->custom_dropdown_field_dub_check($site_custom_lists["custom_dropdown_contact_options"][$key], $v, 'v');
-                            if( $ret == "" ) {
+                            $ret = $this->custom_dropdown_field_dub_check( $site_custom_lists["custom_dropdown_contact_options"][$key], $v, 'v' );
+                            if ( $ret == "" ) {
                                 $site_custom_lists["custom_dropdown_contact_options"][$key][$k] = $v;
                             }
                         }
@@ -1384,18 +1387,19 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $site_custom_lists["custom_dropdown_contact_options"][$path] = array_reverse( $new_path );
             }
             // Process a path to delete.
+            //@codingStandardsIgnoreLine
             else if ( isset( $_POST['delete_path'] ) && $delete ) {
+                // @codingStandardsIgnoreLine
                 $delete_key = $this->sanatize_all( $_POST['delete_path'] );
                 unset( $site_custom_lists["custom_dropdown_contact_options"][ $delete_key ] );
-                //TODO: Consider adding a database query to delete all instances of this key from usermeta
             }
             // Process a field to a path.
             else if ( isset( $_POST['delete_field'] ) && $delete ) {
                 // @codingStandardsIgnoreLine
                 foreach ( $_POST['delete_field'] as $k => $v ){
-                    if ( $v["field"] != "" ) {
+                    if ( $v["field"] != "" ){
                         $delete_key = $this->sanatize_all( $k );
-                        $delete_field  = str_replace(" ","_", sanitize_text_field( wp_unslash( $v["field"] ) ) );
+                        $delete_field  = str_replace( " ", "_", sanitize_text_field( wp_unslash( $v["field"] ) ) );
                         unset( $site_custom_lists["custom_dropdown_contact_options"][ $delete_key ][ $delete_field ] );
                     }
                 }
@@ -1445,8 +1449,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <?php } if ( $i !== "label" ) { ?>
                         <tr>
                             <td>
-                                <button type="submit" name="custom_dropdown_field_move_up[<?php echo $this->sanatize_all( esc_html( $key ) ) ?>]" value="<?php echo esc_html( sanitize_text_field( $label ) ) ?>" class="button small" >↑</button>
-                                <button type="submit" name="custom_dropdown_field_move_down[<?php echo $this->sanatize_all( esc_html( $key ) ) ?>]" value="<?php echo esc_html( sanitize_text_field( $label ) )?>" class="button small" >↓</button>
+                                <button type="submit" name="custom_dropdown_field_move_up[<?php echo esc_html( $this->sanatize_all( $key ) ) ?>]" value="<?php echo esc_html( sanitize_text_field( $label ) ) ?>" class="button small" >↑</button>
+                                <button type="submit" name="custom_dropdown_field_move_down[<?php echo esc_html( $this->sanatize_all( $key ) ) ?>]" value="<?php echo esc_html( sanitize_text_field( $label ) )?>" class="button small" >↓</button>
                             </td>
                             <td><input name="custom_dropdown_field[<?php echo esc_html( $this->sanatize_all( $key ) ); ?>][<?php echo esc_html( sanitize_text_field( $label ) ) ?>]" type="text" value="<?php echo esc_html( $label ) ?>"/></td>
                             <?php if ( !in_array( $key, array_keys( $default ), true ) ) { ?>
