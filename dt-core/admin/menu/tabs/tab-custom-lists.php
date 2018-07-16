@@ -1235,7 +1235,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      */
 
     public function sanatize_all( $s ){
-        return esc_html( str_replace( "(", "", str_replace( ")", "", str_replace( "[", "", str_replace( "]", "", str_replace( " ", "_", str_replace( "`", "", str_replace( "\"", "", str_replace( "'", "", wp_unslash( sanitize_text_field( $s ) ) ) ) ) ) ) ) ) ) );
+        return esc_html( sanitize_text_field( str_replace( "\\", "", str_replace( " ", "_", preg_replace('/>|<|\)|\(|]|\[|"| |\'|`/', "", $s ) ) ) ) );
+        //return esc_html( str_replace( ">", "", str_replace( "<", "", str_replace( "(", "", str_replace( ")", "", str_replace( "[", "", str_replace( "]", "", str_replace( " ", "_", str_replace( "`", "", str_replace( "\"", "", str_replace( "'", "", wp_unslash( sanitize_text_field( $s ) ) ) ) ) ) ) ) ) ) ) ) );
     }
 
     public function custom_dropdown_field_dub_check( $lookup, $k, $t = 'k' ){
@@ -1468,7 +1469,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <table width="100%">
                         <tr>
                             <td><hr><br>
-                                <input type="text" name="add_input_field_option[<?php echo esc_html( $key ); ?>][label]" placeholder="label" />&nbsp;
+                                <input type="text" name="add_input_field_option[<?php echo esc_html( $this->sanatize_all( $key ) ); ?>][label]" placeholder="label" />&nbsp;
                             <button type="submit"><?php echo esc_html( __( 'Add', 'disciple_tools' ) ) ?></button>
                         </td></tr>
                     </table>
