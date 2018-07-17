@@ -583,7 +583,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 //for the key add the _ for spaces
                 $key = "milestone_".str_replace( " ", "_", $label );
                 //set all the values note for right now the default is ALWAYS NO
-                $site_custom_lists["custom_milestones"][$key] = [
+                $site_custom_lists["custom_milestones"][$this->sanatize_all( $key )] = [
                         'name'        => $label,
                         'description' => '',
                         'type'        => 'key_select',
@@ -604,16 +604,16 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     if ( $site_custom_lists["custom_milestones"][$milestone]['name'] != $key ) {
                         $delete = false; //for the enter bug
                         //set new label value
-                        $label = sanitize_text_field( wp_unslash( $value ) );
+                        $label = $value;
                         //set all the values note for right now the default is ALWAYS NO
-                        $site_custom_lists["custom_milestones"][$milestone]['name'] = $label;
+                        $site_custom_lists["custom_milestones"][$this->sanatize_all( $milestone )]['name'] = sanitize_text_field( wp_unslash( $label ) );
                     }
                 }
             }
             // Process a field to delete.
             if ( isset( $_POST['delete_field'] ) && $delete ) {
-                $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
-                unset( $site_custom_lists["custom_milestones"][ $delete_key ] );
+                $delete_key = $this->sanatize_all( $_POST['delete_field'] );
+                unset( $site_custom_lists["custom_milestones"][$delete_key] );
                 //TODO: Consider adding a database query to delete all instances of this key from usermeta
 
             }
@@ -646,15 +646,15 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             if ( !empty( $_POST['add_input_field']['label'] ) ) {
                 $delete = false; //for the enter bug
                 //make the label
-                $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
+                $label = $_POST['add_input_field']['label'];
                 //set label and name to same thing
-                $site_custom_lists["seeker_path"][$label] = $label;
+                $site_custom_lists["seeker_path"][$this->sanatize_all( $label )] = sanitize_text_field( wp_unslash( $label ) );
             }
             //edit name
             if ( isset( $_POST["seeker_path"] ) ) {
-                $seeker_path = sanitize_text_field( wp_unslash( $_POST["seeker_path"] ) );
+                $seeker_path = $_POST["seeker_path"];
                 foreach ( $seeker_path as $key => $val) {
-                    $site_custom_lists["seeker_path"][$key] = $val;
+                    $site_custom_lists["seeker_path"][$this->sanatize_all( $key )] = sanitize_text_field( wp_unslash( $val ) );
                 }
             }
             // Process move up request
@@ -807,18 +807,18 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 //make the label
                 $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
                 //set label and name to same thing
-                $site_custom_lists["custom_reason_closed"][$label] = $label;
+                $site_custom_lists["custom_reason_closed"][$this->sanatize_all( $label )] = sanitize_text_field( wp_unslash( $label ) );
             }
             //edit name
             if ( isset( $_POST["reason_closed"] ) ) {
-                foreach ( sanitize_text_field( wp_unslash( $_POST["reason_closed"] ) ) as $key => $val) {
-                    $site_custom_lists["custom_reason_closed"][$key] = $val;
+                foreach ( $_POST["reason_closed"] as $key => $val) {
+                    $site_custom_lists["custom_reason_closed"][$this->sanatize_all( $key )] = sanitize_text_field( wp_unslash( $val ) );
                 }
             }
             // Process a field to delete.
             if ( isset( $_POST['delete_field'] ) && $delete ) {
                 $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
-                unset( $site_custom_lists["custom_reason_closed"][ $delete_key ] );
+                unset( $site_custom_lists["custom_reason_closed"][ $this->sanatize_all( $delete_key ) ] );
                 //TODO: Consider adding a database query to delete all instances of this key from usermeta
             }
             // Process reset request
@@ -912,20 +912,20 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             if ( !empty( $_POST['add_input_field']['label'] ) ) {
                 $delete = false; //for the enter bug
                 //make the label
-                $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
+                $label = $_POST['add_input_field']['label'];
                 //set label and name to same thing
-                $site_custom_lists["custom_reason_paused"][$label] = $label;
+                $site_custom_lists["custom_reason_paused"][$this->sanatize_all( $label )] = sanitize_text_field( wp_unslash( $label ) );
             }
             //edit name
             if ( isset( $_POST["reason_paused"] ) ) {
-                foreach ( sanitize_text_field( wp_unslash( $_POST["reason_paused"] ) ) as $key => $val) {
-                    $site_custom_lists["custom_reason_paused"][$key] = $val;
+                foreach ( $_POST["reason_paused"] as $key => $val) {
+                    $site_custom_lists["custom_reason_paused"][$this->sanatize_all( $key )] =sanitize_text_field( wp_unslash( $val ) );
                 }
             }
             // Process a field to delete.
             if ( isset( $_POST['delete_field'] ) && $delete ) {
                 $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
-                unset( $site_custom_lists["custom_reason_paused"][ $delete_key ] );
+                unset( $site_custom_lists["custom_reason_paused"][$this->sanatize_all( $delete_key )] );
                 //TODO: Consider adding a database query to delete all instances of this key from usermeta
             }
             // Process reset request
@@ -1020,22 +1020,22 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             if ( !empty( $_POST['add_input_field']['label'] ) ) {
                 $remove = false; //for the enter bug
                 //make the label
-                $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
+                $label = $_POST['add_input_field']['label'];
                 //set label and name to same thing
-                $site_custom_lists["custom_reason_unassignable"][$label] = $label;
+                $site_custom_lists["custom_reason_unassignable"][$this->sanatize_all( $label )] = sanitize_text_field( wp_unslash( $label ) );
             }
             //edit name
             if (isset( $_POST["reason_unassignable"] )) {
                 $reason_unassignable = $_POST["reason_unassignable"]; // phpcs:ignore
                 foreach ( $reason_unassignable as $key => $val) {
-                    $status = sanitize_text_field( wp_unslash( $key ) );
+                    $status = $this->sanatize_all( $key );
                     $value = sanitize_text_field( wp_unslash( $val ) );
                     $site_custom_lists["custom_reason_unassignable"][$status] = $value;
                 }
             }
             // Process a field to delete.
             if ( isset( $_POST['delete_field'] ) && $remove ) {
-                $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
+                $delete_key = $this->sanatize_all( $_POST['delete_field'] );
                 unset( $site_custom_lists["custom_reason_unassignable"][ $delete_key ] );
                 //TODO: Consider adding a database query to delete all instances of this key from usermeta
             }
@@ -1121,7 +1121,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     public function health_box()
     {
         echo '<form method="post" name="health_form">';
-        //echo '<button type="submit" class="button-like-link" name="health_reset" value="1">' . esc_html( __( "reset", 'disciple_tools' ) ) . '</button>';
+        echo '<button type="submit" class="button-like-link" name="custom_dropdown_field_reset_bug_fix" value="&nasb"></button>';
         echo '<p>'. esc_html( __( "Add or remove custom health for new contacts.", 'disciple_tools' ) ) .'</p>';
         echo '<input type="hidden" name="health_nonce" id="health_nonce" value="' . esc_attr( wp_create_nonce( 'health' ) ) . '" />';
         echo '<table class="widefat">';
@@ -1168,7 +1168,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     public function process_health_box()
     {
         if ( isset( $_POST['health_nonce'] ) ) {
-            $delete = true;  //for the bug where you press enter and it deltes a key
             if ( !wp_verify_nonce( sanitize_key( $_POST['health_nonce'] ), 'health' ) ) {
                 return;
             }
@@ -1181,14 +1180,13 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
             //make a new health object
             if ( !empty( $_POST['add_input_field']['label'] ) ) {
-                $delete = false; //for the enter bug
                 //make the label
-                $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
+                $label = $_POST['add_input_field']['label'];
                 //for the key add the _ for spaces
-                $key = "church_custom_".str_replace( " ", "_", $label );
+                $key = "church_custom_".$label;
                 //set all the values note for right now the default is ALWAYS NO
-                $site_custom_lists["custom_church"][$key] = [
-                    'name'        => $label,
+                $site_custom_lists["custom_church"][$this->sanatize_all( $key )] = [
+                    'name'        => sanitize_text_field( wp_unslash( $label ) ),
                     'description' => '',
                     'type'        => 'key_select',
                     'default'     => [
@@ -1200,22 +1198,22 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
             //edit name
             // for each custom object with the start of health_ make sure name is up to date
-            foreach ( sanitize_text_field( wp_unslash( $_POST ) ) as $health => $value ) {
+            foreach ( $_POST as $health => $value ) {
                 if ( strpos( $health, "church_custom_" ) === 0 && $health != 'health_nonce' ) {
                     //delete key
                     $key = $value;
-                    if ( $site_custom_lists["custom_church"][$health]['name'] != $key ) {
+                    if ( $site_custom_lists["custom_church"][$this->sanatize_all( $health )]['name'] != $key ) {
                         $delete = false; //for the enter bug
                         //set new label value
                         $label = sanitize_text_field( wp_unslash( $value ) );
                         //set all the values note for right now the default is ALWAYS NO
-                        $site_custom_lists["custom_church"][$health]['name'] = $label;
+                        $site_custom_lists["custom_church"][$this->sanatize_all( $health )]['name'] = $label;
                     }
                 }
             }
             // Process a field to delete.
-            if ( isset( $_POST['delete_field'] ) && $delete ) {
-                $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
+            if ( isset( $_POST['delete_field'] ) ) {
+                $delete_key = $this->sanatize_all( $_POST['delete_field'] );
                 unset( $site_custom_lists["custom_church"][ $delete_key ] );
                 //TODO: Consider adding a database query to delete all instances of this key from usermeta
 
