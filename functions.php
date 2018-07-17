@@ -153,7 +153,7 @@ else {
              */
             $this->token = 'disciple_tools';
             $this->version = '0.9.0';
-            $this->migration_number = 6;
+            $this->migration_number = 7;
 
             $this->theme_url = get_template_directory_uri() . '/';
             $this->theme_path = get_template_directory() . '/';
@@ -346,6 +346,7 @@ else {
             require_once( get_template_directory() . '/dt-users/users-template.php' );
             require_once( get_template_directory() . '/dt-users/users-endpoints.php' );
             $this->endpoints['users'] = new Disciple_Tools_Users_Endpoints();
+            require_once( get_template_directory() . '/dt-users/users-product-tour.php' );
 
             /**
              * dt-notifications
