@@ -556,6 +556,79 @@ jQuery(document).ready(function($) {
   })
 
   /**
+   * Tags
+   */
+  $.typeahead({
+    input: '.js-typeahead-tags',
+    minLength: 0,
+    maxItem: 20,
+    searchOnFocus: true,
+    template: function (query, item) {
+      return `<span>${_.escape(item.name)}</span>`
+    },
+    source: {
+      tags: {
+        display: ["name"],
+        ajax: {
+          url: contactsDetailsWpApiSettings.root  + 'dt/v1/contact/multi-select-options',
+          data: {
+            s: "{{query}}",
+            field: "tags"
+          },
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+          },
+          callback: {
+            done: function (data) {
+              return (data || []).map(tag=>{
+                return {name:tag}
+              })
+            }
+          }
+        }
+      }
+    },
+    display: "name",
+    templateValue: "{{name}}",
+    dynamic: true,
+    multiselect: {
+      matchOn: ["name"],
+      data: function () {
+        return (contact.tags || []).map(t=>{
+          return {name:t}
+        })
+      }, callback: {
+        onCancel: function (node, item) {
+          API.save_field_api('contact', contactId, {'tags': {values:[{value:item.name, delete:true}]}})
+        }
+      }
+    },
+    callback: {
+      onClick: function(node, a, item, event){
+        API.save_field_api('contact', contactId, {tags: {values:[{value:item.name}]}})
+      },
+      onResult: function (node, query, result, resultCount) {
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+        $('#tags-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('#tags-result-container').html("");
+        masonGrid.masonry('layout')
+      },
+      onShowLayout (){
+        masonGrid.masonry('layout')
+      }
+    }
+  });
+
+  $("#create-tag-return").on("click", function () {
+    let tag = $("#new-tag").val()
+    Typeahead['.js-typeahead-tags'].addMultiselectItemLayout({name:tag})
+    API.save_field_api('contact', contactId, {tags: {values:[{value:tag}]}})
+
+  })
+
+  /**
    * Contact details
    */
 
