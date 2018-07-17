@@ -914,11 +914,6 @@ class Disciple_Tools_Contact_Post_Type
             'default'     => [],
             'section'     => 'misc',
         ];
-        $fields["tags"] = [
-            "name" => __( "Tags", "disciple_tools" ),
-            "type" => "multi_select",
-            "default" => []
-        ];
 
         //get the custom milestone fields
         $custom_contact_fields = $custom_lists["custom_milestones"];

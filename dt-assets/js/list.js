@@ -408,7 +408,6 @@
       })
     }
     fields = fields.concat(wpApiListSettings.additional_filter_options || [])
-    fields.push("tags")
     //get checked field options
     fields.forEach(field=>{
       searchQuery[field] =[]

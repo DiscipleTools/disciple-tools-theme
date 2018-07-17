@@ -144,7 +144,7 @@ function dt_get_option( string $name )
                 $user_id = $users[0]->ID;
 
                 // set as base user
-                $add = update_option( 'dt_base_user', $user_id, false );
+                $add = add_option( 'dt_base_user', $user_id, '', false );
                 if ( ! $add ) {
                     return false;
                 }

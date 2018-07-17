@@ -69,60 +69,58 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                 $user = get_userdata( $user_to_notify );
                 $user_meta = get_user_meta( $user_to_notify );
 
-                if ( $user && $user_meta ){
-                    // call appropriate action
-                    switch ( current_filter() ) {
-                        case 'wp_insert_comment' :
-                            $notification["user_id"] = $user_to_notify;
-                            if ( in_array( $user_to_notify, $mentioned_user_ids ) ){
-                                $notification["notification_name"] = 'mention';
-                                $notification["notification_action"] = 'mentioned';
-                                // share record with mentioned individual
-                                Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $user_to_notify, null, false );
-                            } else {
-                                $notification["notification_name"] = 'comment';
-                                $notification["notification_action"] = 'comment';
-                            }
+                // call appropriate action
+                switch ( current_filter() ) {
+                    case 'wp_insert_comment' :
+                        $notification["user_id"] = $user_to_notify;
+                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ){
+                            $notification["notification_name"] = 'mention';
+                            $notification["notification_action"] = 'mentioned';
+                            // share record with mentioned individual
+                            Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $user_to_notify, null, false );
+                        } else {
+                            $notification["notification_name"] = 'comment';
+                            $notification["notification_action"] = 'comment';
+                        }
 
 
-                            $notification["notification_note"] = Disciple_Tools_Notifications::get_notification_message( $notification );
+                        $notification["notification_note"] = Disciple_Tools_Notifications::get_notification_message( $notification );
 
-                            // web notification
-                            if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions', 'web', $user_meta, $user->ID ) :
-                                dt_user_notification_is_enabled( 'comments', 'web', $user_meta, $user->ID ) ) {
-                                dt_notification_insert( $notification );
-                            }
+                        // web notification
+                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions', 'web', $user_meta, $user->ID ) :
+                            dt_user_notification_is_enabled( 'comments', 'web', $user_meta, $user->ID ) ) {
+                            dt_notification_insert( $notification );
+                        }
 
-                            // email notification
-                            if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions', 'email', $user_meta, $user->ID ) :
-                                dt_user_notification_is_enabled( 'comments', 'email', $user_meta, $user->ID )) {
-                                $notification["notification_note"] .= "\r\n\r\n";
-                                $notification["notification_note"] .= __( 'Click here to reply', 'disciple_tools' ) . ': ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
-                                dt_send_email(
-                                    $user->user_email,
-                                    in_array( $user_to_notify, $mentioned_user_ids ) ? __( "You were mentioned on contact", 'disciple_tools' ) . $post_id : __( "Update on contact", 'disciple_tools' ) . $post_id,
-                                    $notification["notification_note"]
-                                );
-                            }
+                        // email notification
+                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions', 'email', $user_meta, $user->ID ) :
+                            dt_user_notification_is_enabled( 'comments', 'email', $user_meta, $user->ID )) {
+                            $notification["notification_note"] .= "\r\n\r\n";
+                            $notification["notification_note"] .= __( 'Click here to reply', 'disciple_tools' ) . ': ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
+                            dt_send_email(
+                                $user->user_email,
+                                in_array( $user_to_notify, $mentioned_user_ids ) ? __( "You were mentioned on contact", 'disciple_tools' ) . $post_id : __( "Update on contact", 'disciple_tools' ) . $post_id,
+                                $notification["notification_note"]
+                            );
+                        }
 
-                            break;
+                        break;
 
-                        case 'delete_comment' :
-                        case 'trash_comment' :
-                            if ( in_array( $user_to_notify, $mentioned_user_ids ) ){
-                                $this->delete_mention_notification(
-                                    $user_to_notify,
-                                    $post_id,
-                                    $comment_id,
-                                    $date_notified
-                                );
-                            }
+                    case 'delete_comment' :
+                    case 'trash_comment' :
+                        if ( in_array( $user_to_notify, $mentioned_user_ids ) ){
+                            $this->delete_mention_notification(
+                                $user_to_notify,
+                                $post_id,
+                                $comment_id,
+                                $date_notified
+                            );
+                        }
 
-                            break;
+                        break;
 
-                        default:
-                            break;
-                    }
+                    default:
+                        break;
                 }
             }
         }
