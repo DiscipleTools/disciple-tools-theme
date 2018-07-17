@@ -94,7 +94,9 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
         // @phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification
         $id = get_user_by( 'email', sanitize_email( $_POST[0]['email'] ) );
         if ( isset( $_POST['action'] ) ) {
-            if ( ( metadata_exists( 'user', $id->ID, 'default_password_nag' ) || metadata_exists( 'user', $id->ID, 'session_tokens' ) ) && sanitize_text_field( wp_unslash( $_POST['action'] ) ) == 'dt_async_email_notification' && isset( $_POST['_nonce'] ) && $this->verify_async_nonce( sanitize_key( wp_unslash( $_POST['_nonce'] ) ) ) ) {
+//            ( metadata_exists( 'user', $id->ID, 'default_password_nag' ) || metadata_exists( 'user', $id->ID, 'session_tokens' )
+            if ( sanitize_text_field( wp_unslash( $_POST['action'] ) ) == 'dt_async_email_notification' &&
+                 isset( $_POST['_nonce'] ) && $this->verify_async_nonce( sanitize_key( wp_unslash( $_POST['_nonce'] ) ) ) ) {
 
                 wp_mail( sanitize_email( $_POST[0]['email'] ), sanitize_text_field( wp_unslash( $_POST[0]['subject'] ) ), sanitize_textarea_field( wp_unslash( $_POST[0]['message'] ) ) );
 
