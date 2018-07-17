@@ -881,7 +881,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 WHERE post_type = 'groups'
                   AND post_status = 'publish'  ) as active_churches,
                 ( 0 ) as 1st_gen_churches,
-                ( 4 ) as church_planters,
+                ( 0 ) as church_planters,
                 ( SELECT count(a.ID) as count
                 FROM $wpdb->posts as a
                 WHERE post_type = 'peoplegroups'
