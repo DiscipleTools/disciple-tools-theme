@@ -663,6 +663,8 @@ class Disciple_Tools_Notifications
                                 }
                             } else {
                                 $notification["notification_name"] = "assigned_to_other";
+                                $notification['field_key'] = "assigned_to";
+                                $notification['field_value'] = $fields["assigned_to"]["id"];
                                 $notification_type = 'changes';
                                 if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
                                     dt_notification_insert( $notification );
@@ -783,7 +785,11 @@ class Disciple_Tools_Notifications
         } elseif ( $notification["notification_name"] === "assigned_to" ) {
             $notification_note = __( 'You have been assigned', 'disciple_tools' ) . ' ' . $link;
         } elseif ( $notification["notification_name"] === "assigned_to_other" ) {
-            $notification_note = __( 'Assignment has changed on', 'disciple_tools' ) . ' ' . $link;
+            $source_user = get_userdata( $notification["source_user_id"] );
+            $source_user_name = $source_user ? "@" . $source_user->display_name : '';
+            $new_assigned = get_userdata( $notification["field_value"] );
+            $new_assigned_name = $new_assigned ? '@' . $new_assigned->display_name : '';
+            $notification_note = sprintf( esc_html_x( '%1$s assigned %2$s to %3$s', 'user1 assigned contact1 to user2', 'disciple_tools' ), $source_user_name, $link, $new_assigned_name );
         } elseif ( $notification["notification_name"] ==="share" ){
             $source_user = get_userdata( $notification["source_user_id"] );
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
