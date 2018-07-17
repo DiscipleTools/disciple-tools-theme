@@ -72,24 +72,9 @@ final class Disciple_Tools_Dashboard
      */
     public function add_widgets()
     {
-        add_meta_box( 'funnel_stats_widget', 'Funnel Stats', [ $this, 'funnel_stats_widget' ], 'dashboard', 'normal', 'high' );
         add_filter( 'dashboard_recent_posts_query_args', [ $this, 'add_page_to_dashboard_activity' ] );
     }
 
-    /**
-     * Movement funnel path dashboard widget
-     *
-     * @since  0.1.0
-     * @access public
-     */
-    public function funnel_stats_widget()
-    {
-        echo '<div id="chart"></div><!-- Container for charts -->';
-    }
-
-    protected function enqueue_funnel_chart() {
-
-    }
 
     /**
      * Remove default dashboard widgets

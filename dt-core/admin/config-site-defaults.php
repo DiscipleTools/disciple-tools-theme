@@ -213,8 +213,10 @@ function dt_get_option( string $name )
             ];
             $custom = dt_get_option( "dt_site_custom_lists" );
             $custom = $custom["custom_status"];
-            foreach ( $custom as $key => $value ) {
-                $status[$key] = $value;
+            if (! empty( $custom ) ) {
+                foreach ( $custom as $key => $value ) {
+                    $status[$key] = $value;
+                }
             }
             return $status;
 

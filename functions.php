@@ -34,8 +34,8 @@ else {
     /**
      * Activation, Deactivation, and Multisite
      */
-    register_activation_hook( __FILE__, 'dt_activate' );
-    register_deactivation_hook( __FILE__, 'dt_deactivate' );
+//    register_activation_hook( __FILE__, 'dt_activate' );
+//    register_deactivation_hook( __FILE__, 'dt_deactivate' );
 
     /**
      * Adds the Disciple_Tools Class and runs database and roles version checks.
@@ -46,7 +46,6 @@ else {
         require_once( get_template_directory() . '/dt-core/admin/class-roles.php' );
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
-        disciple_tools();
 
         /**
          * We want to make sure migrations are run on updates.
@@ -59,6 +58,8 @@ else {
         } catch ( Throwable $e ) {
             new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
         }
+
+        disciple_tools();
 
         /**
          * Load Language Files
@@ -439,7 +440,7 @@ else {
          * @access private
          * @since  0.1.0
          */
-        public function _log_version_number()
+        public function _log_version_number() // @todo remove. Don't migrations replace this?
         {
             // Log the version number.
             update_option( $this->token . '-version', $this->version );
