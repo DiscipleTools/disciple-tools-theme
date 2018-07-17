@@ -595,6 +595,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             }
             //edit name
             // for each custom object with the start of milestone_ make sure name is up to date
+            //@codingStandardsIgnoreLine
             foreach ( $_POST as $milestone => $value ) {
                 $milestone = $this->sanatize_all( $milestone );
                 $value = $value;
