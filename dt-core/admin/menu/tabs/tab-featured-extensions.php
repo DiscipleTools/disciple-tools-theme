@@ -140,12 +140,32 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             if ( isset( $_FILES["csv_file"] ) ) {
                 //@codingStandardsIgnoreLine
                 $file_parts = explode( ".", sanitize_text_field( wp_unslash( $_FILES["csv_file"]["name"] ) ) )[count( explode( ".", sanitize_text_field( wp_unslash( $_FILES["csv_file"]["name"] ) ) ) ) -1];
-                if ( $file_parts != 'csv') {
-                    esc_html_e( "NOT CSV", 'disciple_tools' );
-                    exit;
-                }
                 if ($_FILES["csv_file"]["error"] > 0) {
                     esc_html_e( "ERROR UPLOADING FILE", 'disciple_tools' );
+                    ?>
+                    <form id="back" method="post" enctype="multipart/form-data" >
+                        <a href="" class="button button-primary"> <?php esc_html_e( "Back", 'disciple_tools' ) ?> </a>
+                    </form>
+                    <?php
+                    exit;
+                }
+                if ( $file_parts != 'csv') {
+                    esc_html_e( "NOT CSV", 'disciple_tools' );
+                    ?>
+                    <form id="back" method="post" enctype="multipart/form-data" >
+                        <a href="" class="button button-primary"> <?php esc_html_e( "Back", 'disciple_tools' ) ?> </a>
+                    </form>
+                    <?php
+                    exit;
+                }
+                //@codingStandardsIgnoreLine
+                if ( mb_detect_encoding( file_get_contents( $_FILES["csv_file"]['tmp_name'], false, null, 0, 100 ), 'UTF-8', true ) === false ) {
+                    esc_html_e( "FILE IS NOT UTF-8", 'disciple_tools' );
+                    ?>
+                    <form id="back" method="post" enctype="multipart/form-data" >
+                        <a href="" class="button button-primary"> <?php esc_html_e( "Back", 'disciple_tools' ) ?> </a>
+                    </form>
+                    <?php
                     exit;
                 }
                 //@codingStandardsIgnoreLine
@@ -164,8 +184,9 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         }
         ?>
         <h3><?php esc_html_e( "CSV IMPORT", 'disciple_tools' ) ?></h3>
-        <p><?php esc_html_e( "Format", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "columns you need to have in your csv file:", 'disciple_tools' ) ?></p>
         <p><?php esc_html_e( "name, phone, email, address, gender, initial_comment", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "use utf-8 file format", 'disciple_tools' ) ?></p>
         <form method="post" enctype="multipart/form-data">
             <input type="file" name="csv_file" id="csv_file"> <br>
             <input type="text" name="csv_del" value=',' size=2> <?php esc_html_e( "The CSV Delimiter", 'disciple_tools' ) ?> <br>
