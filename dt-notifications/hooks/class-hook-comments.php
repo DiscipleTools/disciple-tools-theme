@@ -96,14 +96,8 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
 
                                 // email notification
                                 if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions', 'email', $user_meta, $user->ID ) :
-                                    dt_user_notification_is_enabled( 'comments', 'email', $user_meta, $user->ID ) ) {
-                                    $notification["notification_note"] .= "\r\n\r\n";
-                                    $notification["notification_note"] .= __( 'Click here to reply', 'disciple_tools' ) . ': ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
-                                    dt_send_email(
-                                        $user->user_email,
-                                        in_array( $user_to_notify, $mentioned_user_ids ) ? __( "You were mentioned on contact", 'disciple_tools' ) . $post_id : __( "Update on contact", 'disciple_tools' ) . $post_id,
-                                        $notification["notification_note"]
-                                    );
+                                    dt_user_notification_is_enabled( 'comments', 'email', $user_meta, $user->ID )) {
+                                    dt_send_email_about_post( $user->user_email, $post_id, $notification["notification_note"] );
                                 }
 
                                 break;
