@@ -475,7 +475,7 @@ class Disciple_Tools_Notifications
                 'field_key'           => "comments",
                 'field_value'         => ''
             ];
-            $message = self::get_notification_message( $args ) . ' Click here to view ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
+            $message = self::get_notification_message( $args );
 
             dt_notification_insert( $args );
             $user = get_userdata( $user_id );
@@ -507,7 +507,7 @@ class Disciple_Tools_Notifications
                 'field_key'           => "comments",
                 'field_value'         => ''
             ];
-            $message = self::get_notification_message( $args ) . ' Click here to view ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
+            $message = self::get_notification_message( $args );
 
             dt_notification_insert( $args );
             $user = get_userdata( $user_id );
@@ -540,7 +540,7 @@ class Disciple_Tools_Notifications
                 'field_key'           => "",
                 'field_value'         => ''
             ];
-            $message = self::get_notification_message( $args ) . '\r\n\r\nClick here to view ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
+            $message = self::get_notification_message( $args );
 
             dt_notification_insert( $args );
             $user = get_userdata( $new_assigned_to );
@@ -583,8 +583,6 @@ class Disciple_Tools_Notifications
                     dt_notification_insert( $notification );
                 }
                 if ( dt_user_notification_is_enabled( 'new_assigned', 'email', $user_meta, $user_id ) ) {
-                    $message .= "\r\n\r\n";
-                    $message .= 'Click here to reply: ' . home_url( '/' ) . $post_type . '/' . $post_id;
                     $user = get_userdata( $user_id );
                     dt_send_email_about_contact( $user->user_email, $post_id, $message );
                 }
@@ -697,8 +695,6 @@ class Disciple_Tools_Notifications
                         }
                     }
                     if ( $email ){
-                        $email .= "\r\n\r\n";
-                        $email .= 'Click here to view: ' . home_url( '/' ) . $post_type . '/' . $fields["ID"] . " \n";
                         $user = get_userdata( $follower );
                         dt_send_email_about_contact(
                             $user->user_email,

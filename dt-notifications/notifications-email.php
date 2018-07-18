@@ -77,6 +77,8 @@ function dt_send_email( $email, $subject, $message )
  * clients, but that would make this code more complex, as we probably
  * would have to store the Message-IDs for previous sent emails.
  *
+ * This function also appends a link in the email body to the contact record.
+ *
  * @param string $email
  * @param int    $contact_post_id
  * @param string $message
@@ -86,10 +88,13 @@ function dt_send_email( $email, $subject, $message )
 function dt_send_email_about_contact( string $email, int $contact_post_id, string $message )
 {
 
+    $contact_url = home_url( '/' ) . get_post_type( $contact_post_id ) . '/' . $contact_post_id;
+    $full_message = $message . "\r\n\r\n--\r\n" . __( 'Click here to view or reply', 'disciple_tools' ) . ": $contact_url";
+
     return dt_send_email(
         $email,
         __( "Update on contact", 'disciple_tools' ) . $contact_post_id,
-        $message
+        $full_message
     );
 }
 
