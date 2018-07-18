@@ -97,9 +97,22 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                             dt_user_notification_is_enabled( 'comments', 'email', $user_meta, $user->ID )) {
                             $notification["notification_note"] .= "\r\n\r\n";
                             $notification["notification_note"] .= __( 'Click here to reply', 'disciple_tools' ) . ': ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
+
+                            /* Note that we want to keep the subject line for all updates related to
+                             * a particular contact the same. For contact 43, the subject line
+                             * should always be the same:
+                             *
+                             * Subject: Update on contact43
+                             *
+                             * That way, Gmail.com will group these emails in a single conversation
+                             * view. Ideally, we would use the `Message-ID` and `References` email
+                             * headers to make this more robust and more portable in other email
+                             * clients, but that would make this code more complex, as we probably
+                             * would have to store the Message-IDs for previous sent emails. */
+
                             dt_send_email(
                                 $user->user_email,
-                                in_array( $user_to_notify, $mentioned_user_ids ) ? __( "You were mentioned on contact", 'disciple_tools' ) . $post_id : __( "Update on contact", 'disciple_tools' ) . $post_id,
+                                __( "Update on contact", 'disciple_tools' ) . $post_id,
                                 $notification["notification_note"]
                             );
                         }
