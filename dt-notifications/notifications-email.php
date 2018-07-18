@@ -80,20 +80,21 @@ function dt_send_email( $email, $subject, $message )
  * This function also appends a link in the email body to the contact record.
  *
  * @param string $email
- * @param int    $contact_post_id
+ * @param int    $post_id
  * @param string $message
  *
  * @return bool|\WP_Error
  */
-function dt_send_email_about_contact( string $email, int $contact_post_id, string $message )
+function dt_send_email_about_post( string $email, int $post_id, string $message )
 {
-
-    $contact_url = home_url( '/' ) . get_post_type( $contact_post_id ) . '/' . $contact_post_id;
+    $post_type = get_post_type( $post_id );
+    $contact_url = home_url( '/' ) . $post_type . '/' . $post_id;
     $full_message = $message . "\r\n\r\n--\r\n" . __( 'Click here to view or reply', 'disciple_tools' ) . ": $contact_url";
+    $post_label = Disciple_Tools_Posts::get_label_for_post_type( $post_type, true );
 
     return dt_send_email(
         $email,
-        __( "Update on contact", 'disciple_tools' ) . $contact_post_id,
+        sprintf( esc_html_x( 'Update on %1$s #%2$s', 'ex: Update on Contact #323', 'disciple_tools' ), $post_label, $post_id ),
         $full_message
     );
 }

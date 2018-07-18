@@ -95,7 +95,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                         // email notification
                         if ( in_array( $user_to_notify, $mentioned_user_ids ) ? dt_user_notification_is_enabled( 'mentions', 'email', $user_meta, $user->ID ) :
                             dt_user_notification_is_enabled( 'comments', 'email', $user_meta, $user->ID )) {
-                            dt_send_email_about_contact( $user->user_email, $post_id, $notification["notification_note"] );
+                            dt_send_email_about_post( $user->user_email, $post_id, $notification["notification_note"] );
                         }
 
                         break;

@@ -479,7 +479,7 @@ class Disciple_Tools_Notifications
 
             dt_notification_insert( $args );
             $user = get_userdata( $user_id );
-            dt_send_email_about_contact( $user->user_email, $post_id, $message );
+            dt_send_email_about_post( $user->user_email, $post_id, $message );
         }
     }
 
@@ -511,7 +511,7 @@ class Disciple_Tools_Notifications
 
             dt_notification_insert( $args );
             $user = get_userdata( $user_id );
-            dt_send_email_about_contact( $user->user_email, $post_id, $message );
+            dt_send_email_about_post( $user->user_email, $post_id, $message );
         }
     }
 
@@ -544,7 +544,7 @@ class Disciple_Tools_Notifications
 
             dt_notification_insert( $args );
             $user = get_userdata( $new_assigned_to );
-            dt_send_email_about_contact( $user->user_email, $post_id, $message );
+            dt_send_email_about_post( $user->user_email, $post_id, $message );
         }
     }
 
@@ -584,7 +584,7 @@ class Disciple_Tools_Notifications
                 }
                 if ( dt_user_notification_is_enabled( 'new_assigned', 'email', $user_meta, $user_id ) ) {
                     $user = get_userdata( $user_id );
-                    dt_send_email_about_contact( $user->user_email, $post_id, $message );
+                    dt_send_email_about_post( $user->user_email, $post_id, $message );
                 }
             }
         }
@@ -696,7 +696,7 @@ class Disciple_Tools_Notifications
                     }
                     if ( $email ){
                         $user = get_userdata( $follower );
-                        dt_send_email_about_contact(
+                        dt_send_email_about_post(
                             $user->user_email,
                             $fields["ID"],
                             $email
