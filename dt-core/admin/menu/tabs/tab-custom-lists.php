@@ -1252,7 +1252,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      */
 
     public function sanatize_all( $s ){
-        return esc_html( sanitize_text_field( str_replace( "\\", "", preg_replace( '/>|<|\)|\(|]|\[|"| |\'|`/', "", str_replace( " ", "_", $s ) ) ) ) );
+        $string = str_replace( ' ', '_', $s ); // Replaces all spaces with hyphens.
+        $ret = preg_replace( '/[^A-Za-z0-9\-_]/', '', $string ); // Removes special chars.
+        return $ret;
     }
 
     public function custom_dropdown_field_dub_check( $lookup, $k, $t = 'k' ){
@@ -1305,8 +1307,10 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 $add_input_field_path = sanitize_text_field( wp_unslash( $_POST['add_input_field_path'] ) );
                 if ( !empty( $add_input_field_path ) ){
                     $key = $add_input_field_path . $this->custom_dropdown_field_dub_check( $site_custom_lists["custom_dropdown_contact_options"], $add_input_field_path, 'k' );
-                    $site_custom_lists["custom_dropdown_contact_options"][$key]["label"] = $key;
-                    $site_custom_lists["custom_dropdown_contact_options"][$key]["not-set"] = "Not set";
+                    $label = $key;
+                    $key = $this->sanatize_all( $key );
+                    $site_custom_lists["custom_dropdown_contact_options"][ $key ]["label"] = $label;
+                    $site_custom_lists["custom_dropdown_contact_options"][ $key ]["not-set"] = "Not set";
                 }
             }
             //make a new field for a path
@@ -1318,7 +1322,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         $v = sanitize_text_field( wp_unslash( $v["label"] ) );
                         $v = $v . $this->custom_dropdown_field_dub_check( $site_custom_lists["custom_dropdown_contact_options"][$k], $v, 'v' );
                         if ( !empty( $k ) ) {
-                            $site_custom_lists["custom_dropdown_contact_options"][$k][ str_replace( " ", "_", $v ) ] = $v;
+                            $site_custom_lists["custom_dropdown_contact_options"][$k][ $this->sanatize_all( $v ) . $this->custom_dropdown_field_dub_check( $site_custom_lists["custom_dropdown_contact_options"][$k], $this->sanatize_all( $v ) ) ] = $v;
                         }
                     }
                 }
