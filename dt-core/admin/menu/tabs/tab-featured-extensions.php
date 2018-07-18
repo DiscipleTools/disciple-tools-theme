@@ -158,7 +158,8 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     <?php
                     exit;
                 }
-                if ( mb_detect_encoding( file_get_contents( $_FILES["csv_file"]['tmp_name'],false, null, 0, 100 ), 'UTF-8', true) === false ) {
+                //@codingStandardsIgnoreLine
+                if ( mb_detect_encoding( file_get_contents( $_FILES["csv_file"]['tmp_name'], false, null, 0, 100 ), 'UTF-8', true ) === false ) {
                     esc_html_e( "FILE IS NOT UTF-8", 'disciple_tools' );
                     ?>
                     <form id="back" method="post" enctype="multipart/form-data" >
