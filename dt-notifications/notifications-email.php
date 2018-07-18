@@ -62,6 +62,38 @@ function dt_send_email( $email, $subject, $message )
 }
 
 /**
+ * Shared DT email function, similar to dt_send_email, but intended for use for
+ * emails that are related to a particular contact record.
+ *
+ * We want to keep the subject line for all updates related to a particular
+ * contact the same. For contact 43, the subject line should always be the
+ * same:
+ *
+ * Subject: Update on contact43
+ *
+ * That way, Gmail.com will group these emails in a single conversation
+ * view. Ideally, we would use the `Message-ID` and `References` email
+ * headers to make this more robust and more portable in other email
+ * clients, but that would make this code more complex, as we probably
+ * would have to store the Message-IDs for previous sent emails.
+ *
+ * @param string $email
+ * @param int    $contact_post_id
+ * @param string $message
+ *
+ * @return bool|\WP_Error
+ */
+function dt_send_email_about_contact( string $email, int $contact_post_id, string $message )
+{
+
+    return dt_send_email(
+        $email,
+        __( "Update on contact", 'disciple_tools' ) . $contact_post_id,
+        $message
+    );
+}
+
+/**
  * Class Disciple_Tools_Notifications_Email
  */
 class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task

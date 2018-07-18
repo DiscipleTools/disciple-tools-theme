@@ -479,8 +479,7 @@ class Disciple_Tools_Notifications
 
             dt_notification_insert( $args );
             $user = get_userdata( $user_id );
-            $subject = __( "Contact shared", 'disciple_tools' ) . '. #' . $post_id;
-            dt_send_email( $user->user_email, $subject, $message );
+            dt_send_email_about_contact( $user->user_email, $post_id, $message );
         }
     }
 
@@ -512,8 +511,7 @@ class Disciple_Tools_Notifications
 
             dt_notification_insert( $args );
             $user = get_userdata( $user_id );
-            $subject = __( "Contact sub-assigned to you", 'disciple_tools' )  . '. #' . $post_id;
-            dt_send_email( $user->user_email, $subject, $message );
+            dt_send_email_about_contact( $user->user_email, $post_id, $message );
         }
     }
 
@@ -546,8 +544,7 @@ class Disciple_Tools_Notifications
 
             dt_notification_insert( $args );
             $user = get_userdata( $new_assigned_to );
-            $subject = __( "Assignment declined", 'disciple_tools' )  . '. #' . $post_id;
-            dt_send_email( $user->user_email, $subject, $message );
+            dt_send_email_about_contact( $user->user_email, $post_id, $message );
         }
     }
 
@@ -589,11 +586,7 @@ class Disciple_Tools_Notifications
                     $message .= "\r\n\r\n";
                     $message .= 'Click here to reply: ' . home_url( '/' ) . $post_type . '/' . $post_id;
                     $user = get_userdata( $user_id );
-                    dt_send_email(
-                        $user->user_email,
-                        sprintf( esc_html_x( 'New %s created and assigned to you', '', 'disciple_tools' ), Disciple_Tools_Posts::get_label_for_post_type( $post_type, true ) )  . '. #' . $post_id,
-                        $message
-                    );
+                    dt_send_email_about_contact( $user->user_email, $post_id, $message );
                 }
             }
         }
@@ -627,7 +620,6 @@ class Disciple_Tools_Notifications
 
         if ( sizeof( $notification_on_fields ) > 0 ){
             $source_user_id = get_current_user_id();
-            $subject = null;
             $followers = Disciple_Tools_Posts::get_users_following_post( $post_type, $fields["ID"] );
             $subassigned = $post_type === "contacts" ? Disciple_Tools_Posts::get_subassigned_users( $fields["ID"] ) : [];
             $assigned_to = isset( $fields["assigned_to"]["id"] ) ? $fields["assigned_to"]["id"] : false;
@@ -658,7 +650,6 @@ class Disciple_Tools_Notifications
                                     dt_notification_insert( $notification );
                                 }
                                 if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
-                                    $subject = __( 'You have been assigned a new contact!', 'disciple_tools' );
                                     $email .= self::get_notification_message( $notification ) . "\n";
                                 }
                             } else {
@@ -668,7 +659,6 @@ class Disciple_Tools_Notifications
                                     dt_notification_insert( $notification );
                                 }
                                 if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
-                                    $subject = __( 'Assignment on a contact has changed', 'disciple_tools' );
                                     $email .= self::get_notification_message( $notification ) . "\n";
                                 }
                             }
@@ -682,7 +672,6 @@ class Disciple_Tools_Notifications
                                 dt_notification_insert( $notification );
                             }
                             if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
-                                $subject = $subject ?? __( 'Update requested!', 'disciple_tools' );
                                 $email .= self::get_notification_message( $notification ) . "\n";
                             }
                         }
@@ -694,7 +683,6 @@ class Disciple_Tools_Notifications
                             dt_notification_insert( $notification );
                         }
                         if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
-                            $subject = $subject ?? __( 'Milestones update', 'disciple_tools' );
                             $email .= self::get_notification_message( $notification ) . "\n";
                         }
                     }
@@ -705,17 +693,16 @@ class Disciple_Tools_Notifications
                             dt_notification_insert( $notification );
                         }
                         if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
-                            $subject = $subject ?? __( 'Contact info changed', 'disciple_tools' );
                             $email .= self::get_notification_message( $notification ) . "\n";
                         }
                     }
-                    if ( $subject && $email ){
+                    if ( $email ){
                         $email .= "\r\n\r\n";
                         $email .= 'Click here to view: ' . home_url( '/' ) . $post_type . '/' . $fields["ID"] . " \n";
                         $user = get_userdata( $follower );
-                        dt_send_email(
+                        dt_send_email_about_contact(
                             $user->user_email,
-                            $subject  . '. #' . $fields["ID"],
+                            $fields["ID"],
                             $email
                         );
                     }
