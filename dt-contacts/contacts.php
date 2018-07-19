@@ -949,6 +949,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $connect = self::add_coaching_to_contact( $contact_id, $value );
         } elseif ( $key === "subassigned" ){
             $connect = self::add_subassigned_to_contact( $contact_id, $value );
+        } else {
+            return new WP_Error( __FUNCTION__, "Field not recognized: " . $key, [ "status" => 400 ] );
         }
         if ( is_wp_error( $connect ) ) {
             return $connect;
@@ -958,9 +960,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $connection->permalink = get_permalink( $value );
 
             return $connection;
+        } else {
+            return new WP_Error( __FUNCTION__, "Field not parsed or understood: " . $key, [ "status" => 400 ] );
         }
-
-        return new WP_Error( "add_contact_detail", "Field not recognized: " . $key, [ "status" => 400 ] );
     }
 
     public static function add_contact_method( int $contact_id, string $key, string $value, array $field, bool $check_permissions ) {

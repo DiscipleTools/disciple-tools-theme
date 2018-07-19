@@ -730,6 +730,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $connect = self::add_child_group_to_group( $group_id, $value );
         } elseif ( $key === "parent_groups" ) {
             $connect = self::add_parent_group_to_group( $group_id, $value );
+        } else {
+            return new WP_Error( __FUNCTION__, "Field not recognized: " . $key, [ "status" => 400 ] );
         }
         if ( is_wp_error( $connect ) ) {
             return $connect;
@@ -739,9 +741,9 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $connection->guid = get_permalink( $value );
 
             return $connection;
+        } else {
+            return new WP_Error( __FUNCTION__, "Field not parsed or understood: " . $key, [ "status" => 400 ] );
         }
-
-        return new WP_Error( "add_group_detail", "Field not recognized: " . $key, [ "status" => 400 ] );
     }
 
     /**
