@@ -53,7 +53,7 @@
         <div class="cell">
             <ul class="tabs" data-tabs id="comment-activity-tabs">
                 <li class="tabs-title is-active" data-tab="all"><a href="#all" aria-selected="true"><?php esc_html_e( "All", 'disciple_tools' ) ?></a></li>
-<!--             <?php
+                <?php
                 $sections = [
                     [ "key" => "comments", "label" => __( "Comments", 'disciple_tools' ) ],
                     [ "key" => "activity", "label" => __( "Activity", 'disciple_tools' ) ]
