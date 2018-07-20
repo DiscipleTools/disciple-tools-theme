@@ -55,8 +55,14 @@
                 <li class="tabs-title is-active" data-tab="all"><a href="#all" aria-selected="true"><?php esc_html_e( "All", 'disciple_tools' ) ?></a></li>
                 <?php
                 $sections = [
-                    [ "key" => "comments", "label" => __( "Comments", 'disciple_tools' ) ],
-                    [ "key" => "activity", "label" => __( "Activity", 'disciple_tools' ) ]
+                    [
+                        "key" => "comments",
+                        "label" => __( "Comments", 'disciple_tools' )
+                    ],
+                    [
+                        "key" => "activity",
+                        "label" => __( "Activity", 'disciple_tools' )
+                    ]
                 ];
                 $sections = apply_filters( 'dt_comments_additional_sections', $sections, "contacts" );
                 foreach ( $sections as $section ) :
