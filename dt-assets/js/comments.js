@@ -170,16 +170,22 @@ jQuery(document).ready(function($) {
   let current_section = "all"
   function display_activity_comment(section) {
     current_section = section || current_section
-
+    let additional_sections = commentsSettings.additional_sections;
     let commentsWrapper = $("#comments-wrapper")
     commentsWrapper.empty()
     let displayed = []
     if (current_section === "all"){
       displayed = _.union(comments, activity)
     } else if (current_section === "comments"){
-      displayed = comments
+      displayed = comments.filter(comment => comment.comment_type === 'comment')
     } else if ( current_section === "activity"){
       displayed = activity
+    } else {
+      additional_sections.forEach(section=>{
+        if ( current_section === section.key ){
+          displayed = comments.filter(comment => comment.comment_type === section.key)
+        }
+      })
     }
     displayed = _.orderBy(displayed, "date", "desc")
     let array = []
