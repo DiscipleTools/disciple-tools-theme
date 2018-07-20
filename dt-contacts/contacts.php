@@ -195,9 +195,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             unset( $fields["initial_comment"] );
         }
         $notes = null;
-        if ( isset( $fields["notes"] ) && is_array( $fields["notes"] ) ) {
-            $notes = $fields["notes"];
-            unset( $fields["notes"] );
+        if ( isset( $fields["notes"] ) ) {
+            if ( is_array( $fields["notes"] ) ) {
+                $notes = $fields["notes"];
+                unset( $fields["notes"] );
+            } else {
+                return new WP_Error( __FUNCTION__, "'notes' field expected to be an array" );
+            }
         }
 
         $bad_fields = self::check_for_invalid_fields( $fields );
