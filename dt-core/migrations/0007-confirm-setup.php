@@ -5,7 +5,7 @@ class Disciple_Tools_Migration_0007 extends Disciple_Tools_Migration {
         global $wpdb;
 
         $table_name = $wpdb->prefix . 'p2p';
-        if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+        if ($wpdb->get_var( "SHOW TABLES LIKE '$table_name'" ) != $table_name) {
             P2P_Storage::install();
         }
 

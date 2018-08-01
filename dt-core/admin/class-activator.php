@@ -14,7 +14,7 @@ require_once( dirname( __FILE__ ) . '/class-migration-engine.php' );
 
 //add_action('after_switch_theme', 'dt_theme_activation');
 
-function dt_theme_activation () {
+function dt_theme_activation() {
     global $wpdb;
     $disciple_tools = disciple_tools();
     $disciple_tools->_log_version_number();
@@ -43,12 +43,12 @@ function dt_theme_activation () {
     // the code in functions.php
 
     // Confirm install of Post 2 Post tables
-    require_once( get_stylesheet_directory() . 'dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/storage.php');
-    require_once( get_stylesheet_directory() . 'dt-core/libraries/posts-to-posts/vendor/scribu/scb-framework/Util.php');
+    require_once( get_stylesheet_directory() . 'dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/storage.php' );
+    require_once( get_stylesheet_directory() . 'dt-core/libraries/posts-to-posts/vendor/scribu/scb-framework/Util.php' );
     P2P_Storage::install();
 
-    dt_write_log(__METHOD__);
-    dt_write_log('test');
+    dt_write_log( __METHOD__ );
+    dt_write_log( 'test' );
 }
 
 
@@ -95,18 +95,18 @@ class Disciple_Tools_Activator
         // Disciple_Tools_Migration_Engine::migrate is also run on updates, see
         // the code in functions.php
 
-        dt_write_log(__METHOD__);
-        dt_write_log('test');
+        dt_write_log( __METHOD__ );
+        dt_write_log( 'test' );
     }
 
     public static function install_p2p() {
         // Confirm install of Post 2 Post tables
-        require_once( get_stylesheet_directory() . 'dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/storage.php');
-        require_once( get_stylesheet_directory() . 'dt-core/libraries/posts-to-posts/vendor/scribu/scb-framework/Util.php');
+        require_once( get_stylesheet_directory() . 'dt-core/libraries/posts-to-posts/vendor/scribu/lib-posts-to-posts/storage.php' );
+        require_once( get_stylesheet_directory() . 'dt-core/libraries/posts-to-posts/vendor/scribu/scb-framework/Util.php' );
         P2P_Storage::install();
 
-        dt_write_log(__METHOD__);
-        dt_write_log('p2p tables installed');
+        dt_write_log( __METHOD__ );
+        dt_write_log( 'p2p tables installed' );
         return true;
     }
 
