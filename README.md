@@ -12,9 +12,10 @@ There needs to exist a simple, low-cost, highly distributable DRM that is tailor
 ## Platform
 We are building on the Wordpress platform because of its open-source availability, simplicity of installation, numerous low cost hosting options, multi-lingual support, substantial configurability and customization, giant development community and resources, native REST API, mobile readiness, and healthy market place for distributing themes and plugins.
 
-## Wiki
+## Guidebook
 
-Don't forget, we have a [wiki for Disciple Tools](https://github.com/DiscipleTools/disciple-tools-theme/wiki).
+Visit our [online guidebook](https://disciple-tools.readthedocs.io/en/latest/index.html)
+
 
 ## Theme
 
