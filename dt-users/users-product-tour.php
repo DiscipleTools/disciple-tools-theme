@@ -60,5 +60,5 @@ if ( ! get_user_meta( get_current_user_id(), 'dt_product_tour' ) ) { // test if 
             <?php
         }
     }
-    add_action( 'wp_head', 'dt_product_tour' );
+//    add_action( 'wp_head', 'dt_product_tour' );
 }
