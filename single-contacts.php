@@ -273,8 +273,72 @@ declare( strict_types=1 );
                                         </div>
                                     </div>
 
+                                    <!-- custom sections -->
+                                    <?php $custom_sections = dt_get_option( 'dt_site_custom_lists' );
+                                    $custom_sections = $custom_sections["custom_dropdown_contact_options"];
+                                    foreach ( $custom_sections as $key => $value ) :
+                                        ?>
+                                            <div class="custom_progress">
+                                                <!-- drop down section -->
+                                                <div class="section-subheader">
+                                                    <?php echo esc_html( $value["label"] ); ?>
+                                                </div>
+                                                <!-- the id is what makes the blue progress bar go up -->
+                                                <select class="select-field" id=<?php echo esc_html( "custom_dropdown_contact_" . $key ); ?> style="margin-bottom: 0px">
+                                                <?php
+                                                //this section fills the drop down with the data
+                                                foreach ($value as $s_key => $s_value){
+                                                    if ($s_key != "label") {
+                                                        if ( isset( $contact["custom_dropdown_contact_" . $key]["key"] ) ) {
+                                                            if ( $contact["custom_dropdown_contact_" . $key]["key"] === $s_value ) {
+                                                                ?>
+                                                                <option value="<?php echo esc_html( $s_value ) ?>" selected><?php echo esc_html( $s_value ); ?></option>
+                                                            <?php }
+                                                            else {
+                                                                ?>
+                                                                <option value="<?php echo esc_html( $s_value ) ?>"><?php echo esc_html( $s_value ); ?></option>
+                                                            <?php }
+                                                        } else { ?>
+                                                                <option value="<?php echo esc_html( $s_value ) ?>"><?php echo esc_html( $s_value ); ?></option>
+                                                            <?php }
+                                                    }
+                                                }
+                                                ?>
+                                                </select>
+                                            </div>
+                                    <?php endforeach; ?>
 
                                 </div>
+                            </section>
+
+                            <section id="other" class="xlarge-6 large-12 medium-6 cell grid-item">
+                                <div class="bordered-box">
+                                    <label class="section-header"><?php esc_html_e( 'Other', 'disciple_tools' )?></label>
+
+                                    <div class="section-subheader">
+                                        <?php echo esc_html( $contact_fields["tags"]["name"] ) ?>
+                                    </div>
+                                    <div class="tags">
+                                        <var id="tags-result-container" class="result-container"></var>
+                                        <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
+                                            <div class="typeahead__container">
+                                                <div class="typeahead__field">
+                                                    <span class="typeahead__query">
+                                                        <input class="js-typeahead-tags input-height"
+                                                               name="tags[query]" placeholder="<?php esc_html_e( "Search Tags", 'disciple_tools' ) ?>"
+                                                               autocomplete="off">
+                                                    </span>
+                                                    <span class="typeahead__button">
+                                                        <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
+                                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </section>
 
                             <?php
@@ -426,6 +490,31 @@ declare( strict_types=1 );
                 }
                 ?>
             </select>
+        </div>
+    </div>
+
+    <div class="reveal" id="create-tag-modal" data-reveal data-reset-on-close>
+
+        <p class="lead"><?php esc_html_e( 'Create Tag', 'disciple_tools' )?></p>
+
+        <form class="js-create-tag">
+            <label for="title">
+                <?php esc_html_e( "Tag", "disciple_tools" ); ?>
+            </label>
+            <input name="title" id="new-tag" type="text" placeholder="<?php esc_html_e( "tag", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
+            <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
+        </form>
+
+        <div class="grid-x">
+            <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+            </button>
+            <button class="button" data-close type="button" id="create-tag-return">
+                <?php esc_html_e( 'Create and apply tag', 'disciple_tools' ); ?>
+            </button>
+            <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     </div>
 

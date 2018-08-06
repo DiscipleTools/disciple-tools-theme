@@ -13,7 +13,7 @@ class Disciple_Tools_Update_Needed {
 //        @todo set the cron on plugin activation
 //        https://codex.wordpress.org/Function_Reference/wp_schedule_event
         if ( ! wp_next_scheduled( 'update-required' ) ) {
-            wp_schedule_event( time( 'today midnight' ), 'daily', 'update-required' );
+            wp_schedule_event( strtotime( 'today 1am' ), 'daily', 'update-required' );
         }
         add_action( 'update-required', [ $this, 'find_contacts_that_need_an_update' ] );
     }
@@ -60,7 +60,9 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     esc_sql( $setting["seeker_path"] )
                 ), OBJECT );
                 foreach ( $contacts_need_update as $contact ) {
-                    Disciple_Tools_Contacts::add_comment( $contact->ID, $setting["comment"], false, "comment", 0 );
+                    $user_name = ( "@" . dt_get_assigned_name( $contact->ID, true ) . " " ) ?? "";
+                    $comment = $user_name . $setting["comment"];
+                    Disciple_Tools_Contacts::add_comment( $contact->ID, $comment, false, "comment", 0 );
                     Disciple_Tools_contacts::update_contact( $contact->ID, [ "requires_update" => "yes" ], false );
                 }
             }

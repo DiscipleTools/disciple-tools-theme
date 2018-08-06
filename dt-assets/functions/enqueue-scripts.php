@@ -115,10 +115,12 @@ function dt_site_scripts() {
     dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
 
     if ( is_singular( "contacts" ) || is_singular( "groups" ) ) {
+        $post_type = "contacts";
         if ( is_singular( "contacts" )){
             $post = Disciple_Tools_Contacts::get_contact( get_the_ID() );
         } else {
             $post = Disciple_Tools_Groups::get_group( get_the_ID() );
+            $post_type = "groups";
         }
         if ( !is_wp_error( $post )){
             dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.min.js', array( 'jquery' ), true );
@@ -143,7 +145,8 @@ function dt_site_scripts() {
                         "edit" => __( "edit", "disciple_tools" ),
                         "delete" => __( "delete", "disciple_tools" )
                     ],
-                    'current_user_id' => get_current_user_id()
+                    'current_user_id' => get_current_user_id(),
+                    'additional_sections' => apply_filters( 'dt_comments_additional_sections', [], $post_type ),
                 ]
             );
 

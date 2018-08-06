@@ -155,12 +155,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @param  array     $fields , the new contact's data
      * @param  bool|true $check_permissions
+     * @param  bool|true $silent
      *
      * @access private
      * @since  0.1.0
      * @return int | WP_Error
      */
-    public static function create_contact( array $fields = [], $check_permissions = true )
+    public static function create_contact( array $fields = [], $check_permissions = true, $silent = false )
     {
         if ( $check_permissions && !current_user_can( 'create_contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( "You may not publish a contact" ), [ 'status' => 403 ] );
@@ -194,9 +195,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             unset( $fields["initial_comment"] );
         }
         $notes = null;
-        if ( isset( $fields["notes"] ) && is_array( $fields["notes"] ) ) {
-            $notes = $fields["notes"];
-            unset( $fields["notes"] );
+        if ( isset( $fields["notes"] ) ) {
+            if ( is_array( $fields["notes"] ) ) {
+                $notes = $fields["notes"];
+                unset( $fields["notes"] );
+            } else {
+                return new WP_Error( __FUNCTION__, "'notes' field expected to be an array" );
+            }
         }
 
         $bad_fields = self::check_for_invalid_fields( $fields );
@@ -312,7 +317,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         //hook for signaling that a contact has been created and the initial fields
         if ( !is_wp_error( $post_id )){
             do_action( "dt_contact_created", $post_id, $initial_fields );
-            Disciple_Tools_Notifications::insert_notification_for_new_post( "contacts", $fields, $post_id );
+            if ( !$silent ){
+                Disciple_Tools_Notifications::insert_notification_for_new_post( "contacts", $fields, $post_id );
+            }
         }
 
         return $post_id;
@@ -946,6 +953,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $connect = self::add_coaching_to_contact( $contact_id, $value );
         } elseif ( $key === "subassigned" ){
             $connect = self::add_subassigned_to_contact( $contact_id, $value );
+        } else {
+            return new WP_Error( __FUNCTION__, "Field not recognized: " . $key, [ "status" => 400 ] );
         }
         if ( is_wp_error( $connect ) ) {
             return $connect;
@@ -955,9 +964,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $connection->permalink = get_permalink( $value );
 
             return $connection;
+        } else {
+            return new WP_Error( __FUNCTION__, "Field not parsed or understood: " . $key, [ "status" => 400 ] );
         }
-
-        return new WP_Error( "add_contact_detail", "Field not recognized: " . $key, [ "status" => 400 ] );
     }
 
     public static function add_contact_method( int $contact_id, string $key, string $value, array $field, bool $check_permissions ) {
@@ -1202,14 +1211,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
             $fields["subassigned"] = $subassigned;
 
-            if ( $contact_id == 308 ){
-                $test = "soahu";
-            }
-
             $meta_fields = get_post_custom( $contact_id );
             foreach ( $meta_fields as $key => $value ) {
                 //if is contact details and is in a channel
+<<<<<<< HEAD
                 if ( !( isset( self::$channel_list ) )){
+=======
+                if ( !isset( self::$channel_list )){
+>>>>>>> master
                     self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
                 }
                 if ( strpos( $key, "contact_" ) === 0 && isset( self::$channel_list[ explode( '_', $key )[1] ] ) ) {

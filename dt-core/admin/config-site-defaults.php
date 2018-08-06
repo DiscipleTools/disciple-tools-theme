@@ -144,7 +144,7 @@ function dt_get_option( string $name )
                 $user_id = $users[0]->ID;
 
                 // set as base user
-                $add = add_option( 'dt_base_user', $user_id, '', false );
+                $add = update_option( 'dt_base_user', $user_id, false );
                 if ( ! $add ) {
                     return false;
                 }
@@ -408,9 +408,9 @@ function dt_get_site_custom_lists( string $list_title = null )
 {
     $fields = [];
 
-    $fields['version'] = 4;
-
+    $fields['version'] = 5;
     //custom fields
+    $fields['custom_dropdown_contact_options'] = [];
     $fields['seeker_path'] = [
         'none'        => __( 'Contact Attempt Needed' ),
         'attempted'   => __( 'Contact Attempted' ),

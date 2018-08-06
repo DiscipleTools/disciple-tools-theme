@@ -914,13 +914,24 @@ class Disciple_Tools_Contact_Post_Type
             'default'     => [],
             'section'     => 'misc',
         ];
+        $fields["tags"] = [
+            "name" => __( "Tags", "disciple_tools" ),
+            "type" => "multi_select",
+            "default" => []
+        ];
 
         //get the custom milestone fields
+<<<<<<< HEAD
         $custom_contact_fields = dt_get_option( 'dt_site_custom_lists' );
         $custom_contact_fields = $custom_contact_fields["custom_milestones"];
         if ( ! empty( $custom_contact_fields ) ) {
             foreach ( $custom_contact_fields as $key => $value ){
                 $fields[$key] = [
+=======
+        $custom_contact_fields = $custom_lists["custom_milestones"];
+        foreach ( $custom_contact_fields as $key => $value ){
+            $fields[$key] = [
+>>>>>>> master
                     'name'        => $value['name'],
                     'description' => $value['description'],
                     'type'        => $value['type'],
@@ -930,6 +941,19 @@ class Disciple_Tools_Contact_Post_Type
             }
         }
 
+<<<<<<< HEAD
+=======
+        foreach ($custom_lists["custom_dropdown_contact_options"] as $k => $v ){
+            $fields["custom_dropdown_contact_".$k] = [
+                'name'        => $k,
+                 'description' => 'holds ' . $k . ' progress',
+                 'type'        => 'key_select',
+                 'default'     => [],
+                 'section'     => 'misc',
+             ];
+        }
+
+>>>>>>> master
         return apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
     } // End get_custom_fields_settings()
 

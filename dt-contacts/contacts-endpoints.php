@@ -254,7 +254,12 @@ class Disciple_Tools_Contacts_Endpoints
     public function create_contact( WP_REST_Request $request )
     {
         $fields = $request->get_json_params();
-        $result = Disciple_Tools_Contacts::create_contact( $fields, true );
+        $get_params = $request->get_query_params();
+        $silent = false;
+        if ( isset( $get_params["silent"] ) && $get_params["silent"] === "true" ){
+            $silent = true;
+        }
+        $result = Disciple_Tools_Contacts::create_contact( $fields, true, $silent );
         if ( is_wp_error( $result ) ) {
             return $result;
         }

@@ -53,8 +53,27 @@
         <div class="cell">
             <ul class="tabs" data-tabs id="comment-activity-tabs">
                 <li class="tabs-title is-active" data-tab="all"><a href="#all" aria-selected="true"><?php esc_html_e( "All", 'disciple_tools' ) ?></a></li>
-                <li class="tabs-title" data-tab="comments"><a href="#comments"><?php esc_html_e( "Comments", 'disciple_tools' ) ?></a></li>
-                <li class="tabs-title" data-tab="activity"><a href="#activity"><?php esc_html_e( "Activity", 'disciple_tools' ) ?></a></li>
+                <?php
+                $sections = [
+                    [
+                        "key" => "comments",
+                        "label" => __( "Comments", 'disciple_tools' )
+                    ],
+                    [
+                        "key" => "activity",
+                        "label" => __( "Activity", 'disciple_tools' )
+                    ]
+                ];
+                $sections = apply_filters( 'dt_comments_additional_sections', $sections, "contacts" );
+                foreach ( $sections as $section ) :
+                    if ( isset( $section["key"] ) && isset( $section["label"] ) ) : ?>
+                    <li class="tabs-title" data-tab="<?php echo esc_html( $section["key"] ) ?>">
+                        <a href="#<?php echo esc_html( $section["key"] ) ?>">
+                            <?php echo esc_html( $section["label"] ) ?>
+                        </a>
+                    </li>
+                    <?php endif;
+                endforeach; ?>
             </ul>
         </div>
 

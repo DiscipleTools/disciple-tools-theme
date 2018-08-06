@@ -22,7 +22,7 @@ declare(strict_types=1);
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php esc_html_e( "Filter contacts", 'disciple_tools' ) ?></span>
                 </a>
-                <input class="search-input" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="search">
+                <input class="search-input" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="search contacts">
                 <button class="button" style="margin-bottom:0" id="search">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
                     <?php esc_html_e( "Search", 'disciple_tools' ) ?>
@@ -45,7 +45,7 @@ declare(strict_types=1);
             <span class="hide-for-small-only"><?php esc_html_e( "Search contacts", 'disciple_tools' ) ?></span>
         </a>
         <div class="hideable-search" style="display: none; margin-top:5px">
-            <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile" placeholder="search">
+            <input class="search-input-mobile" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query-mobile" placeholder="search contacts">
             <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( "Search", 'disciple_tools' ) ?></button>
         </div>
     </nav>
@@ -153,13 +153,17 @@ declare(strict_types=1);
 
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
-                    <?php $fields = [ "assigned_to", "subassigned", "locations", "overall_status", "seeker_path", "faith_milestones", "requires_update" ];
+                    <?php $fields = [ "assigned_to", "subassigned", "locations", "overall_status", "seeker_path", "faith_milestones", "requires_update", "tags" ];
                     foreach ( $dt_contact_field_options as $field_key => $field){
+<<<<<<< HEAD
                         if ( $field["type"] === "key_select" && strpos( $field_key, "milestone_" ) === false && !in_array( $field_key, $fields ) && ! isset( $field["hidden"] ) ){
+=======
+                        if ( $field["type"] === "key_select" && strpos( $field_key, "milestone_" ) === false && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
+>>>>>>> master
                             $fields[] = $field_key;
                         }
                     }
-                    $fields = apply_filters( 'dt_filters_additional_fields', $fields, "contacts" );
+                    $fields = apply_filters( 'dt_filters_additional_fields', $fields, "contacts" ) ?? [];
                     $connections = Disciple_Tools_Posts::$connection_types;
                     $connections["assigned_to"] = [ "name" => __( "Assigned To", 'disciple_tools' ) ];
                     ?>
