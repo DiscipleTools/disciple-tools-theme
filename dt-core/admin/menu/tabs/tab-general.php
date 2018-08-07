@@ -20,16 +20,14 @@ if ( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 {
     private static $_instance = null;
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
         return self::$_instance;
     } // End instance()
 
-    public function __construct()
-    {
+    public function __construct() {
 //        add_action( 'admin_menu', [ $this, 'add_submenu' ] );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 5, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 10, 1 );
@@ -49,8 +47,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         echo '">' . esc_html__( 'General Settings' ) . '</a>';
     }
 
-    public function content( $tab )
-    {
+    public function content( $tab ) {
         if ( 'general' == $tab ) :
 
             $this->template( 'begin' );
@@ -101,8 +98,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Prints the user notifications box
      */
-    public function user_notifications()
-    {
+    public function user_notifications() {
 
         $site_options = dt_get_option( 'dt_site_options' );
         $notifications = $site_options['notifications'];
@@ -140,8 +136,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Process user notifications box
      */
-    public function process_user_notifications()
-    {
+    public function process_user_notifications() {
 
         if ( isset( $_POST['notifications_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['notifications_nonce'] ) ), 'notifications' ) ) {
 
@@ -167,8 +162,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Print extension module box for options page // @todo in progress
      */
-    public function metrics()
-    {
+    public function metrics() {
 
 //        $site_options = dt_get_option( 'dt_site_options' ); // @todo create new default section for dt_get_option()
         $roles = dt_multi_role_get_roles();
@@ -375,8 +369,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Print extension module box for options page
      */
-    public function extension_modules()
-    {
+    public function extension_modules() {
 
         $site_options = dt_get_option( 'dt_site_options' );
         $extension_modules = $site_options['extension_modules'];
@@ -399,8 +392,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Print reports selection box @todo remove?
      */
-    public function reports()
-    {
+    public function reports() {
 
         $site_options = dt_get_option( 'dt_site_options' );
         $daily_reports = $site_options['daily_reports'];
@@ -427,8 +419,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Process reports selections from reports box @todo remove?
      */
-    public function process_reports()
-    {
+    public function process_reports() {
 
         if ( isset( $_POST['daily_reports_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['daily_reports_nonce'] ) ), 'daily_reports' ) ) {
 
@@ -451,8 +442,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Process extension module
      */
-    public function process_extension_modules()
-    {
+    public function process_extension_modules() {
         if ( isset( $_POST['extension_modules_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['extension_modules_nonce'] ) ), 'extension_modules' ) ) {
 
             $site_options = dt_get_option( 'dt_site_options' );

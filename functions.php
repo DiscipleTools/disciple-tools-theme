@@ -40,8 +40,7 @@ else {
     /**
      * Adds the Disciple_Tools Class and runs database and roles version checks.
      */
-    function dt_theme_loaded()
-    {
+    function dt_theme_loaded() {
         /** We want to make sure roles are up-to-date. */
         require_once( get_template_directory() . '/dt-core/admin/class-roles.php' );
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
@@ -74,8 +73,7 @@ else {
      * @since  0.1.0
      * @return object Disciple_Tools
      */
-    function disciple_tools()
-    {
+    function disciple_tools() {
         return Disciple_Tools::instance();
     }
 
@@ -130,8 +128,7 @@ else {
          * @see    disciple_tools()
          * @return Disciple_Tools instance
          */
-        public static function instance()
-        {
+        public static function instance() {
             if ( is_null( self::$_instance ) ) {
                 self::$_instance = new self();
             }
@@ -145,8 +142,7 @@ else {
          * @access public
          * @since  0.1.0
          */
-        public function __construct()
-        {
+        public function __construct() {
             global $wpdb;
 
             /**
@@ -453,8 +449,7 @@ else {
          * @access public
          * @since  0.1.0
          */
-        public function __clone()
-        {
+        public function __clone() {
             wp_die( esc_html__( "Cheatin' huh?" ), __FUNCTION__ );
         } // End __clone()
 
@@ -464,8 +459,7 @@ else {
          * @access public
          * @since  0.1.0
          */
-        public function __wakeup()
-        {
+        public function __wakeup() {
             wp_die( esc_html__( "Cheatin' huh?" ), __FUNCTION__ );
         } // End __wakeup()
 
@@ -474,8 +468,7 @@ else {
     /**
      * Deactivation Hook
      */
-    function dt_deactivate()
-    {
+    function dt_deactivate() {
         require_once get_template_directory() . '/dt-core/admin/class-deactivator.php';
         Disciple_Tools_Deactivator::deactivate();
     }
@@ -483,8 +476,7 @@ else {
     /**
      * Activation Hook
      */
-    function dt_activate()
-    {
+    function dt_activate() {
         require_once get_template_directory() . '/dt-core/admin/class-activator.php';
         Disciple_Tools_Activator::activate();
     }
@@ -492,8 +484,7 @@ else {
     /**
      * Route Front Page depending on login role
      */
-    function dt_route_front_page()
-    {
+    function dt_route_front_page() {
         if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
             wp_safe_redirect( home_url( '/contacts' ) );
         } else {
@@ -534,8 +525,7 @@ else {
          *
          * @param $log
          */
-        function dt_write_log( $log )
-        {
+        function dt_write_log( $log ) {
             if ( true === WP_DEBUG ) {
                 if ( is_array( $log ) || is_object( $log ) ) {
                     error_log( print_r( $log, true ) );
@@ -550,8 +540,7 @@ else {
 /**
  * Php Version Alert
  */
-function dt_theme_admin_notice_required_php_version()
-{
+function dt_theme_admin_notice_required_php_version() {
     ?>
     <div class="notice notice-error">
         <p><?php esc_html_e( 'Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:', 'disciple_tools' );

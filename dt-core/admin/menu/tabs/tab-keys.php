@@ -17,8 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Keys_Tab extends Disciple_Tools_Abstract_Menu_Base
 {
     private static $_instance = null;
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -31,8 +30,7 @@ class Disciple_Tools_Keys_Tab extends Disciple_Tools_Abstract_Menu_Base
      * @access  public
      * @since   0.1.0
      */
-    public function __construct()
-    {
+    public function __construct() {
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 20, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
@@ -56,8 +54,7 @@ class Disciple_Tools_Keys_Tab extends Disciple_Tools_Abstract_Menu_Base
      *
      * @return void
      */
-    public function content( $tab )
-    {
+    public function content( $tab ) {
         if ( 'google-map' == $tab ) :
             $this->template( 'begin' );
 
@@ -79,8 +76,7 @@ class Disciple_Tools_Keys_Tab extends Disciple_Tools_Abstract_Menu_Base
         endif;
     }
 
-    public function google_map_api_key_metabox()
-    {
+    public function google_map_api_key_metabox() {
         $this->handle_post();
 
         $current_key = dt_get_option( 'map_key' );
@@ -140,8 +136,7 @@ class Disciple_Tools_Keys_Tab extends Disciple_Tools_Abstract_Menu_Base
         <?php
     }
 
-    public function handle_post()
-    {
+    public function handle_post() {
         if ( isset( $_POST[ 'map_key' . get_current_user_id() ] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[ 'map_key' . get_current_user_id() ] ) ), 'map_key_' . get_current_user_id() . '_nonce' ) ) {
             if ( empty( $_POST['map_key'] ) ) {
                 $default_keys = Disciple_Tools_Google_Geocode_API::default_google_api_keys();
@@ -186,8 +181,7 @@ class Disciple_Tools_Keys_Tab extends Disciple_Tools_Abstract_Menu_Base
         return false;
     }
 
-    public function get_your_own_google_key_metabox()
-    {
+    public function get_your_own_google_key_metabox() {
         ?>
         <table class="widefat striped">
             <thead>

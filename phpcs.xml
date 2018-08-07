@@ -42,7 +42,7 @@
        the WordPress namespaces. -->
   <rule ref="WordPress">
 
-    <!-- TODO: enable these -->
+
     <exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
     <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
     <exclude name="WordPress.VIP.PostsPerPage.posts_per_page_nopaging" />

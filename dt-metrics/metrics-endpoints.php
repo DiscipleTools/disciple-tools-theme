@@ -15,24 +15,21 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 class Disciple_Tools_Metrics_Endpoints {
 
     private static $_instance = null;
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
         return self::$_instance;
     }
 
-    public function __construct()
-    {
+    public function __construct() {
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
     /**
      * API Routes
      */
-    public function add_api_routes()
-    {
+    public function add_api_routes() {
         $version = '1';
         $namespace = 'dt/v' . $version;
 
@@ -108,8 +105,7 @@ class Disciple_Tools_Metrics_Endpoints {
      * @since  0.1.0
      * @return string|WP_Error|array The contact on success
      */
-    public function critical_path_chart_data()
-    {
+    public function critical_path_chart_data() {
         $result = Disciple_Tools_Metrics::chart_critical_path_chart_data( true );
         if ( is_wp_error( $result ) ) {
             return $result;
@@ -143,8 +139,7 @@ class Disciple_Tools_Metrics_Endpoints {
         }
     }
 
-    public function critical_path_by_year( WP_REST_Request $request )
-    {
+    public function critical_path_by_year( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['id'] ) ) {
             $result = Disciple_Tools_Metrics_Hooks_Base::chart_critical_path( $params['id'] );
@@ -228,8 +223,7 @@ class Disciple_Tools_Metrics_Endpoints {
      * @since  0.1.0
      * @return bool|WP_Error The contact on success
      */
-    public function refresh_critical_path()
-    {
+    public function refresh_critical_path() {
         delete_transient( 'dt_critical_path' );
         $result = Disciple_Tools_Metrics::chart_critical_path();
         if ( is_wp_error( $result ) ) {

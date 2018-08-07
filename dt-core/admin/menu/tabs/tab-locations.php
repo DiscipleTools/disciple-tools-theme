@@ -10,8 +10,7 @@ if ( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
 {
     private static $_instance = null;
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -24,8 +23,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
      * @access  public
      * @since   0.1.0
      */
-    public function __construct()
-    {
+    public function __construct() {
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 99, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
@@ -66,8 +64,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
         endif;
     }
 
-    public function select_auto_locations()
-    {
+    public function select_auto_locations() {
         if ( isset( $_POST['dt_zume_auto_levels_nonce'] ) && ! empty( $_POST['dt_zume_auto_levels_nonce'] )
             && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_zume_auto_levels_nonce'] ) ), 'dt_zume_auto_levels'. get_current_user_id() ) ) {
 
@@ -109,8 +106,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
         // end metabox
     }
 
-    public function select_location_levels_to_record()
-    {
+    public function select_location_levels_to_record() {
         $list_array = dt_get_location_levels();
         $list_array = $list_array['location_levels_labels'];
 

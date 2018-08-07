@@ -12,8 +12,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
     /**
      * Disciple_Tools_Notifications_Hook_Comments constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
         add_action( 'wp_insert_comment', [ &$this, 'filter_comment_for_notification' ], 10, 2 );
 //        add_action( 'edit_comment', [ &$this, 'filter_comment_for_notification' ] );
         add_action( 'trash_comment', [ &$this, 'filter_comment_for_notification' ] );
@@ -29,8 +28,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      * @param      $comment_id
      * @param null $comment
      */
-    public function filter_comment_for_notification( $comment_id, $comment = null )
-    {
+    public function filter_comment_for_notification( $comment_id, $comment = null ) {
 
         if ( is_null( $comment ) ) {
             $comment = get_comment( $comment_id );
@@ -132,8 +130,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      *
      * @return bool
      */
-    public function check_for_mention( $comment_content )
-    {
+    public function check_for_mention( $comment_content ) {
         return preg_match( '/\@\[(.*?)\]\((.+?)\)/', $comment_content );
     }
 
@@ -147,8 +144,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      *
      * @return bool|array
      */
-    public function match_mention( $comment_content )
-    {
+    public function match_mention( $comment_content ) {
         preg_match_all( '/\@\[(.*?)\]\((.+?)\)/', $comment_content, $matches );
 
         $user_ids = [];
@@ -196,8 +192,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
         $date_notified,
         string $field_key = "comments",
         string $field_value = ""
-    )
-    {
+    ) {
 
         dt_notification_insert(
             [
@@ -224,8 +219,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      * @param int $comment_id
      * @param     $date_notified
      */
-    protected function delete_mention_notification( int $mentioned_user_id, int $post_id, int $comment_id, $date_notified )
-    {
+    protected function delete_mention_notification( int $mentioned_user_id, int $post_id, int $comment_id, $date_notified ) {
 
         dt_notification_delete(
             [

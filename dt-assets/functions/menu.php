@@ -8,8 +8,7 @@ register_nav_menus(
 );
 
 // The Top Menu
-function disciple_tools_top_nav_desktop()
-{
+function disciple_tools_top_nav_desktop() {
     if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
         ?><li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li><?php
     }
@@ -21,8 +20,7 @@ function disciple_tools_top_nav_desktop()
     }
 }
 
-function disciple_tools_top_nav_mobile()
-{
+function disciple_tools_top_nav_mobile() {
     if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
         ?>
         <li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>"><i class="fi-torsos-all"></i></a></li>
@@ -44,16 +42,14 @@ class DT_Topbar_Menu_Walker extends Walker_Nav_Menu
      * @param int    $depth
      * @param array  $args
      */
-    public function start_lvl( &$output, $depth = 0, $args = [] )
-    {
+    public function start_lvl( &$output, $depth = 0, $args = [] ) {
         $indent = str_repeat( "\t", $depth );
         $output .= "\n$indent<ul class=\"menu\">\n";
     }
 }
 
 // The Off Canvas Menu
-function disciple_tools_off_canvas_nav()
-{
+function disciple_tools_off_canvas_nav() {
 
     if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
         ?>
@@ -158,16 +154,14 @@ class DT_Off_Canvas_Menu_Walker extends Walker_Nav_Menu
      * @param int    $depth
      * @param array  $args
      */
-    public function start_lvl( &$output, $depth = 0, $args = [] )
-    {
+    public function start_lvl( &$output, $depth = 0, $args = [] ) {
         $indent = str_repeat( "\t", $depth );
         $output .= "\n$indent<ul class=\"vertical menu\">\n";
     }
 }
 
 // The Footer Menu
-function disciple_tools_footer_links()
-{
+function disciple_tools_footer_links() {
     wp_nav_menu(
         [
             'container'      => 'false',                         // Remove nav container
@@ -181,8 +175,7 @@ function disciple_tools_footer_links()
 } /* End Footer Menu */
 
 // Header Fallback Menu
-function disciple_tools_main_nav_fallback()
-{
+function disciple_tools_main_nav_fallback() {
     wp_page_menu(
         [
             'show_home'   => true,
@@ -199,8 +192,7 @@ function disciple_tools_main_nav_fallback()
 /**
  * Footer Fallback Menu
  */
-function disciple_tools_footer_links_fallback()
-{
+function disciple_tools_footer_links_fallback() {
     /* You can put a default here if you like */
 }
 
@@ -212,8 +204,7 @@ function disciple_tools_footer_links_fallback()
  *
  * @return array
  */
-function dt_required_active_nav_class( $classes, $item )
-{
+function dt_required_active_nav_class( $classes, $item ) {
     if ( $item->current == 1 || $item->current_item_ancestor == true ) {
         $classes[] = 'active';
     }

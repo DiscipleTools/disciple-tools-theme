@@ -21,8 +21,7 @@ class Disciple_Tools_Metrics
 {
 
     private static $_instance = null;
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -79,8 +78,7 @@ class Disciple_Tools_Metrics
      *
      * @return array|\WP_Error
      */
-    public static function chart_critical_path_chart_data( $check_permissions )
-    {
+    public static function chart_critical_path_chart_data( $check_permissions ) {
 
         $current_user = get_current_user();
         if ( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
@@ -134,8 +132,7 @@ class Disciple_Tools_Metrics
      *
      * @return array|\WP_Error
      */
-    public static function chart_critical_path_prayer( $check_permissions )
-    {
+    public static function chart_critical_path_prayer( $check_permissions ) {
 
         $current_user = get_current_user();
         if ( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
@@ -177,8 +174,7 @@ class Disciple_Tools_Metrics
      *
      * @return array|\WP_Error
      */
-    public static function chart_critical_path_outreach( $check_permissions )
-    {
+    public static function chart_critical_path_outreach( $check_permissions ) {
 
         $current_user = get_current_user();
         if ( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
@@ -224,8 +220,7 @@ class Disciple_Tools_Metrics
      *
      * @return array|\WP_Error
      */
-    public static function chart_critical_path_fup( $check_permissions )
-    {
+    public static function chart_critical_path_fup( $check_permissions ) {
 
         $current_user = get_current_user();
         if ( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
@@ -279,8 +274,7 @@ class Disciple_Tools_Metrics
      *
      * @return array|\WP_Error
      */
-    public static function chart_critical_path_multiplication( $check_permissions )
-    {
+    public static function chart_critical_path_multiplication( $check_permissions ) {
 
         $current_user = get_current_user();
         if ( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
@@ -337,8 +331,7 @@ class Disciple_Tools_Metrics
      *
      * @return bool
      */
-    public static function can_view( $report_name, $user_id )
-    {
+    public static function can_view( $report_name, $user_id ) {
         // TODO decide on permission strategy for reporting
         // Do we hardwire permissions to reports to the roles of a person?
         // Do we set up a permission assignment tool in the config area, so that a group could assign reports to a role
@@ -390,8 +383,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 {
     public function __construct() {}
 
-    public static function chart_my_hero_stats( $user_id = null )
-    {
+    public static function chart_my_hero_stats( $user_id = null ) {
         if ( is_null( $user_id ) || empty( $user_id ) ) {
             $user_id = get_current_user_id();
         }
@@ -422,8 +414,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $chart;
     }
 
-    public static function chart_contacts_progress( $type = 'personal' )
-    {
+    public static function chart_contacts_progress( $type = 'personal' ) {
         $chart = [];
 
         switch ( $type ) {
@@ -555,11 +546,11 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         switch ( $type ) {
             case 'personal':
-                $raw_connections = Disciple_Tools_Metrics_Hooks_Base::query_my_group_generations();
+                $raw_connections = self::query_my_group_generations();
                 $generation_tree = self::build_group_generation_counts( $raw_connections );
                 break;
             case 'project':
-                $raw_connections = Disciple_Tools_Metrics_Hooks_Base::query_get_group_generations();
+                $raw_connections = self::query_get_group_generations();
                 $generation_tree = self::build_group_generation_counts( $raw_connections );
                 break;
             default:
@@ -691,8 +682,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $chart;
     }
 
-    public static function chart_project_hero_stats()
-    {
+    public static function chart_project_hero_stats() {
         $stats = self::query_project_hero_stats();
 
         $group_health = self::query_project_group_health();
@@ -726,8 +716,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
      * CRITICAL PATH
      */
 
-    public static function chart_critical_path( $year = null )
-    {
+    public static function chart_critical_path( $year = null ) {
         $chart = [];
 
         if ( empty( $year ) ) {

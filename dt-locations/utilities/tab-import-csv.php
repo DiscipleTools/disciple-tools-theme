@@ -18,16 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Import_CSV_Tab extends Disciple_Tools_Abstract_Menu_Base
 {
     private static $_instance = null;
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
         return self::$_instance;
     }
 
-    public function __construct()
-    {
+    public function __construct() {
 
         $this->odelimiter = "dt_import_odelimiter";
         $this->onumberfields = "dt_import_onumberfields";
@@ -60,8 +58,7 @@ class Disciple_Tools_Import_CSV_Tab extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Primary page content
      */
-    public function content()
-    {
+    public function content() {
 
         // Routing
         if ( $this->check_is_post( '_csv_panel', 'post_for_step_2' ) ) {
@@ -396,8 +393,7 @@ class Disciple_Tools_Import_CSV_Tab extends Disciple_Tools_Abstract_Menu_Base
      *
      * @return array|WP_Error
      */
-    public function process_form()
-    {
+    public function process_form() {
         $this->insertype = get_transient( $this->otype );
 
         // Check for duplicate mappings and build mappings variable
@@ -495,8 +491,7 @@ class Disciple_Tools_Import_CSV_Tab extends Disciple_Tools_Abstract_Menu_Base
      *
      * @return bool|int|resource
      */
-    public function fopen_utf8( $filename )
-    {
+    public function fopen_utf8( $filename ) {
         if ( ! file_exists( $filename ) || ! is_readable( $filename ) ) {
             return 0;
         }
@@ -580,8 +575,7 @@ class Disciple_Tools_Import_CSV_Tab extends Disciple_Tools_Abstract_Menu_Base
      *
      * @return bool
      */
-    public function get_post( $postvar, &$postval )
-    {
+    public function get_post( $postvar, &$postval ) {
         if ( ! isset( $_POST[ $postvar ] ) || ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ), 'import_csv' ) ) {
             return false;
         }
@@ -598,8 +592,7 @@ class Disciple_Tools_Import_CSV_Tab extends Disciple_Tools_Abstract_Menu_Base
      *
      * @return array|bool
      */
-    public function get_header_and_rows()
-    {
+    public function get_header_and_rows() {
         /**
          * Get CSV Headers
          * creates $header and $rows variables
@@ -670,8 +663,7 @@ class Disciple_Tools_Import_CSV_Tab extends Disciple_Tools_Abstract_Menu_Base
      *
      * @return bool
      */
-    public function check_is_post( $postvar, $postval )
-    {
+    public function check_is_post( $postvar, $postval ) {
         if ( ! isset( $_POST[ $postvar ] ) || ! isset( $_POST['_csv_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_csv_nonce'] ) ), 'import_csv' ) ) {
             return false;
         }
@@ -758,8 +750,7 @@ class Disciple_Tools_Import_CSV_Tab extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
-    public function remove_temp_file()
-    {
+    public function remove_temp_file() {
         // Delete temporary file
         if ( file_exists( $this->filename ) ) {
             @unlink( $this->filename );

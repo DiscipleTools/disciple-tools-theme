@@ -26,8 +26,7 @@ class Disciple_Tools_Deactivator
      *
      * @since 0.1.0
      */
-    public static function deactivate()
-    {
+    public static function deactivate() {
 
         // Reset roles and capabilities
         require_once( 'class-roles.php' );
@@ -48,8 +47,7 @@ class Disciple_Tools_Deactivator
      *
      * @access protected
      */
-    protected static function _remove_tables()
-    {
+    protected static function _remove_tables() {
         global $wpdb;
 
         // TODO: replace this code, with running migrations backwards

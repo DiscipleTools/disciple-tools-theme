@@ -42,8 +42,7 @@ class Disciple_Tools_Roles
      * @static
      * @return Disciple_Tools_Roles instance
      */
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -78,8 +77,7 @@ class Disciple_Tools_Roles
      *
      * @return string
      */
-    public function set_roles()
-    {
+    public function set_roles() {
         /* IMPORTANT:
          *
          * If you modify the roles here, make sure to increment
@@ -415,8 +413,7 @@ class Disciple_Tools_Roles
     /*
     * Reset Roles on deactivation
     */
-    public function reset_roles()
-    {
+    public function reset_roles() {
         delete_option( 'run_once' );
 
         remove_role( 'dispatcher' );

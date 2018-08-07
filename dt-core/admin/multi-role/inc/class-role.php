@@ -144,7 +144,7 @@ class Disciple_Tools_Multi_Role {
         }
 
         // Check whether the role is editable.
-        // @phpcs:ignore -- TODO: do we need to invoke editable_roles filter here?
+        // @codingStandardsIgnoreLine
         $editable_roles    = function_exists( 'get_editable_roles' ) ? get_editable_roles() : apply_filters( 'editable_roles', $wp_roles->roles );
         $this->is_editable = array_key_exists( $role, $editable_roles );
 

@@ -26,8 +26,7 @@ class Disciple_Tools_Notification_Hooks
      * @static
      * @return Disciple_Tools_Notification_Hooks instance
      */
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -38,8 +37,7 @@ class Disciple_Tools_Notification_Hooks
     /**
      * Build hook classes
      */
-    public function __construct()
-    {
+    public function __construct() {
         // Load abstract class.
         include( 'hooks/abstract-class-hook-base.php' );
 

@@ -63,8 +63,7 @@ class Disciple_Tools_Activator
      *
      * @since 0.1.0
      */
-    public static function activate()
-    {
+    public static function activate() {
         /** @todo Since moving to a theme, I do not believe this activation section is called. I believe it is only called when it is a plugin not a theme. */
         global $wpdb;
         $disciple_tools = disciple_tools();

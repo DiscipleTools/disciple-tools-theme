@@ -20,16 +20,14 @@ if ( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
 {
     private static $_instance = null;
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
         return self::$_instance;
     } // End instance()
 
-    public function __construct()
-    {
+    public function __construct() {
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 99, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
@@ -49,8 +47,7 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
         add_submenu_page( 'dt_options', __( 'Critical Path', 'disciple_tools' ), __( 'Critical Path', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=critical_path', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
     }
 
-    public function content( $tab )
-    {
+    public function content( $tab ) {
         if ( 'critical_path' == $tab ) :
             $this->process_critical_path_sources();
             $this->process_add();
@@ -322,8 +319,7 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Prints the sources settings box.
      */
-    public function critical_path_sources_box()
-    {
+    public function critical_path_sources_box() {
         $site_custom_lists = get_option( 'dt_critical_path_sources', [] );
         ?>
         <form method="post" name="critical_path_sources_form" id="critical_path_sources_form">

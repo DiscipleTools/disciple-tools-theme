@@ -4,8 +4,7 @@ Disciple_Tools_Metrics_Project::instance();
 class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 {
     private static $_instance = null;
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
