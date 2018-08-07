@@ -35,8 +35,7 @@ if ( ! class_exists( 'DT_Extensions_Menu' ) ) {
         /**
          * @return void
          */
-        public function page()
-        {
+        public function page() {
             if ( !current_user_can( 'manage_dt' ) ) {
                 wp_die( 'You do not have sufficient permissions to access this page.' );
             }

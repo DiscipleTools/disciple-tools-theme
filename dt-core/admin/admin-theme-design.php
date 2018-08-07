@@ -27,8 +27,7 @@ if ( is_admin() ) {
 /**
  * Modify the admin bar
  */
-function dt_modify_admin_bar( $wp_admin_bar )
-{
+function dt_modify_admin_bar( $wp_admin_bar ) {
 
     // Remove Logo
     $wp_admin_bar->remove_node( 'wp-logo' );
@@ -61,8 +60,7 @@ function dt_modify_admin_bar( $wp_admin_bar )
 /**
  * Remove Admin Footer and Version Number
  */
-function dt_empty_footer_string()
-{
+function dt_empty_footer_string() {
     // Update the text area with an empty string.
     return '';
 }
@@ -96,8 +94,7 @@ if ( !class_exists( 'Disciple_Tools_Three_Column_Screen_Layout' ) ) {
         /**
          * Disciple_Tools_Three_Column_Screen_Layout constructor.
          */
-        public function __construct()
-        {
+        public function __construct() {
             register_activation_hook( __FILE__, [ $this, 'activate' ] );
             register_deactivation_hook( __FILE__, [ $this, 'deactivate' ] );
             if ( function_exists( 'get_bloginfo' ) && version_compare( get_bloginfo( 'version' ), '3.4' ) >= 0 ) {
@@ -110,22 +107,19 @@ if ( !class_exists( 'Disciple_Tools_Three_Column_Screen_Layout' ) ) {
             }
         }
 
-        public function activate()
-        {
+        public function activate() {
             global $wpdb;
             if ( $wpdb->get_results( sprintf( "SELECT * FROM $wpdb->options WHERE option_name = '_site_transient_update_plugins' AND option_value LIKE '%%three-column-screen-layout%%';" ) ) ) {
                 $wpdb->query( sprintf( "UPDATE $wpdb->usermeta SET meta_value = REPLACE(meta_value, 's:8:\"advanced\"', 's:5:\"side3\"') WHERE meta_key LIKE 'meta-box-order_%%';" ) );
             }
         }
 
-        public function deactivate()
-        {
+        public function deactivate() {
             global $wpdb;
             $wpdb->query( sprintf( "UPDATE %s SET meta_value = REPLACE(meta_value, 's:5:\"side3\"', 's:6:\"normal\"'), meta_value = REPLACE(meta_value, 's:5:\"side4\"', 's:6:\"normal\"') WHERE meta_key LIKE 'meta-box-order_%%';", $wpdb->usermeta ) );
         }
 
-        public function admin_head()
-        {
+        public function admin_head() {
             ob_start();
             add_screen_option( 'layout_columns', [
                 'max' => 24,
@@ -133,13 +127,11 @@ if ( !class_exists( 'Disciple_Tools_Three_Column_Screen_Layout' ) ) {
             ] );
         }
 
-        public function admin_footer()
-        {
+        public function admin_footer() {
             $this->splice_columns( ob_get_clean() );
         }
 
-        public function admin_scripts()
-        {
+        public function admin_scripts() {
             wp_enqueue_style( 'Disciple_Tools_Three_Column_Screen_Layout-style', disciple_tools()->admin_css_url . 'three-column-screen-layout.min.css?v=4.2' );
         }
 
@@ -148,8 +140,7 @@ if ( !class_exists( 'Disciple_Tools_Three_Column_Screen_Layout' ) ) {
          *
          * @return string
          */
-        protected function create_metabox( $i )
-        {
+        protected function create_metabox( $i ) {
             global $post_type;
             global $post;
             ob_start();
@@ -164,8 +155,7 @@ if ( !class_exists( 'Disciple_Tools_Three_Column_Screen_Layout' ) ) {
         /**
          * @param $content
          */
-        protected function splice_columns( $content )
-        {
+        protected function splice_columns( $content ) {
             global $post_type;
             $pref_start = strpos( $content, 'class="screen-layout"' );
             $pref_end = strpos( $content, 'id="screenoptionnonce"', $pref_start );

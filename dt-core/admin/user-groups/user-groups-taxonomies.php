@@ -22,8 +22,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 0.1.4
  */
-function disciple_tools_register_default_user_group_taxonomy()
-{
+function disciple_tools_register_default_user_group_taxonomy() {
     new Disciple_Tools_User_Taxonomy(
         'user-group', 'users/group', [
             'singular' => __( 'Team', 'disciple-tools' ),
@@ -40,8 +39,7 @@ function disciple_tools_register_default_user_group_taxonomy()
  *
  * @since 0.1.4
  */
-function disciple_tools_register_default_user_type_taxonomy()
-{
+function disciple_tools_register_default_user_type_taxonomy() {
     new Disciple_Tools_User_Taxonomy(
         'user-type', 'users/type', [
             'singular' => __( 'Type', 'disciple-tools' ),
@@ -80,8 +78,7 @@ add_filter( 'disciple_tools_profiles_sections', 'disciple_tools_groups_add_profi
  *
  * @return object|bool //corrected from boolean
  */
-function disciple_tools_get_terms_for_user( $user = false, $taxonomy = '' )
-{
+function disciple_tools_get_terms_for_user( $user = false, $taxonomy = '' ) {
 
     // Verify user ID
     $user_id = is_object( $user )
@@ -113,8 +110,7 @@ function disciple_tools_get_terms_for_user( $user = false, $taxonomy = '' )
  *
  * @return boolean
  */
-function disciple_tools_set_terms_for_user( $user_id, $taxonomy, $terms = [], $bulk = false )
-{
+function disciple_tools_set_terms_for_user( $user_id, $taxonomy, $terms = [], $bulk = false ) {
 
     // Get the taxonomy
     $tax = get_taxonomy( $taxonomy );
@@ -166,8 +162,7 @@ function disciple_tools_set_terms_for_user( $user_id, $taxonomy, $terms = [], $b
  *
  * @return array A list of taxonomy names or objects.
  */
-function disciple_tools_get_user_groups( $args = [], $output = 'names', $operator = 'and' )
-{
+function disciple_tools_get_user_groups( $args = [], $output = 'names', $operator = 'and' ) {
 
     // Parse arguments
     $r = wp_parse_args(
@@ -191,8 +186,7 @@ function disciple_tools_get_user_groups( $args = [], $output = 'names', $operato
  *
  * @return array
  */
-function disciple_tools_get_user_group_objects( $args = [], $operator = 'and' )
-{
+function disciple_tools_get_user_group_objects( $args = [], $operator = 'and' ) {
     return disciple_tools_get_user_groups( $args, 'objects', $operator );
 }
 
@@ -201,8 +195,7 @@ function disciple_tools_get_user_group_objects( $args = [], $operator = 'and' )
  *
  * @since 0.1.0
  */
-function disciple_tools_get_users_of_group( $args = [] )
-{
+function disciple_tools_get_users_of_group( $args = [] ) {
 
     // Parse arguments
     $r = wp_parse_args(
@@ -241,8 +234,7 @@ function disciple_tools_get_users_of_group( $args = [] )
  *
  * @since 0.1.4
  */
-function dt_groups_admin_assets()
-{
+function dt_groups_admin_assets() {
     global $pagenow;
 
     if ( 'users.php' === $pagenow || 'user-new.php' === $pagenow || 'user-edit.php' === $pagenow || 'edit-tags.php' === $pagenow || 'profile.php' === $pagenow ) {
@@ -263,8 +255,7 @@ function dt_groups_admin_assets()
  *
  * @return array
  */
-function disciple_tools_groups_add_profile_section( $sections = [] )
-{
+function disciple_tools_groups_add_profile_section( $sections = [] ) {
 
     // Copy for modifying
     $new_sections = $sections;

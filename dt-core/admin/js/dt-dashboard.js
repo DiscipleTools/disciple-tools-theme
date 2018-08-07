@@ -11,51 +11,51 @@ function critical_path(){
 
   chartDiv.append(`<div id="critical-path" style="height: ` + screen_height / 2 + `px; margin: 2.5em 1em; "></div>`)
 
-  jQuery.ajax({
-    type: "GET",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiDashboard.root + 'dt/v1/metrics/critical_path_chart_data',
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiDashboard.nonce);
-    },
-  })
-    .done(function (data) {
-
-      google.charts.load('current', {packages: ['corechart', 'bar']});
-      google.charts.setOnLoadCallback(function() {
-
-        let chartData = google.visualization.arrayToDataTable(data.chart);
-
-        let options = {
-          bars: 'horizontal',
-          chartArea: {
-            left: '20%',
-            top: '0%',
-            width: "80%",
-            height: "90%" },
-          hAxis: {
-            scaleType: 'mirrorLog',
-            title: 'logarithmic scale'
-          },
-          legend: {
-            position: 'none'
-          },
-        }
-
-        let chart = new google.visualization.BarChart(document.getElementById('critical-path'));
-        chart.draw(chartData, options);
-
-      });
-
-      chartDiv.append(`<div><span class="small grey">( stats as of `+ data.timestamp +` )</span> <a href="javascript:void(0);" onclick="refresh_critical_path_data()">Refresh</a></div>`)
-
-    })
-    .fail(function (err) {
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    })
+  // jQuery.ajax({
+  //   type: "GET",
+  //   contentType: "application/json; charset=utf-8",
+  //   dataType: "json",
+  //   url: wpApiDashboard.root + 'dt/v1/metrics/critical_path_chart_data',
+  //   beforeSend: function(xhr) {
+  //     xhr.setRequestHeader('X-WP-Nonce', wpApiDashboard.nonce);
+  //   },
+  // })
+  //   .done(function (data) {
+  //
+  //     google.charts.load('current', {packages: ['corechart', 'bar']});
+  //     google.charts.setOnLoadCallback(function() {
+  //
+  //       let chartData = google.visualization.arrayToDataTable(data.chart);
+  //
+  //       let options = {
+  //         bars: 'horizontal',
+  //         chartArea: {
+  //           left: '20%',
+  //           top: '0%',
+  //           width: "80%",
+  //           height: "90%" },
+  //         hAxis: {
+  //           scaleType: 'mirrorLog',
+  //           title: 'logarithmic scale'
+  //         },
+  //         legend: {
+  //           position: 'none'
+  //         },
+  //       }
+  //
+  //       let chart = new google.visualization.BarChart(document.getElementById('critical-path'));
+  //       chart.draw(chartData, options);
+  //
+  //     });
+  //
+  //     chartDiv.append(`<div><span class="small grey">( stats as of `+ data.timestamp +` )</span> <a href="javascript:void(0);" onclick="refresh_critical_path_data()">Refresh</a></div>`)
+  //
+  //   })
+  //   .fail(function (err) {
+  //     console.log("error")
+  //     console.log(err)
+  //     jQuery("#errors").append(err.responseText)
+  //   })
 
 }
 jQuery(document).ready(function() {

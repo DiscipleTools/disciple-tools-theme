@@ -22,8 +22,7 @@ class Disciple_Tools_Posts
     /**
      * Disciple_Tools_Posts constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
         self::$connection_types = [
             "locations" => [ "name" => __( "Locations", "disciple_tools" ) ],
             "groups" => [ "name" => __( "Groups", "disciple_tools" ) ],
@@ -55,8 +54,7 @@ class Disciple_Tools_Posts
      *
      * @return bool
      */
-    public static function can_access( string $post_type )
-    {
+    public static function can_access( string $post_type ) {
         return current_user_can( "access_" . $post_type );
     }
 
@@ -65,8 +63,7 @@ class Disciple_Tools_Posts
      *
      * @return bool
      */
-    public static function can_view_all( string $post_type )
-    {
+    public static function can_view_all( string $post_type ) {
         return current_user_can( "view_any_" . $post_type );
     }
 
@@ -75,8 +72,7 @@ class Disciple_Tools_Posts
      *
      * @return bool
      */
-    public static function can_create( string $post_type )
-    {
+    public static function can_create( string $post_type ) {
         return current_user_can( 'create_' . $post_type );
     }
 
@@ -85,8 +81,7 @@ class Disciple_Tools_Posts
      *
      * @return bool
      */
-    public static function can_delete( string $post_type )
-    {
+    public static function can_delete( string $post_type ) {
         return current_user_can( 'delete_any_' . $post_type );
     }
 
@@ -99,8 +94,7 @@ class Disciple_Tools_Posts
      *
      * @return bool
      */
-    public static function can_view( string $post_type, int $post_id )
-    {
+    public static function can_view( string $post_type, int $post_id ) {
         global $wpdb;
         if ( current_user_can( 'view_any_' . $post_type ) ) {
             return true;
@@ -139,8 +133,7 @@ class Disciple_Tools_Posts
      *
      * @return bool
      */
-    public static function can_update( string $post_type, int $post_id )
-    {
+    public static function can_update( string $post_type, int $post_id ) {
         global $wpdb;
         if ( current_user_can( 'update_any_' . $post_type ) ) {
             return true;
@@ -191,8 +184,7 @@ class Disciple_Tools_Posts
      *
      * @return array
      */
-    public static function get_posts_shared_with_user( string $post_type, int $user_id )
-    {
+    public static function get_posts_shared_with_user( string $post_type, int $user_id ) {
         global $wpdb;
         $shares = $wpdb->get_results(
             $wpdb->prepare(
@@ -224,8 +216,7 @@ class Disciple_Tools_Posts
      *
      * @return false|int|\WP_Error
      */
-    public static function add_post_comment( string $post_type, int $group_id, string $comment )
-    {
+    public static function add_post_comment( string $post_type, int $group_id, string $comment ) {
         if ( !self::can_update( $post_type, $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
@@ -445,8 +436,7 @@ class Disciple_Tools_Posts
      *
      * @return array|null|object|\WP_Error
      */
-    public static function get_post_activity( string $post_type, int $post_id, array $fields )
-    {
+    public static function get_post_activity( string $post_type, int $post_id, array $fields ) {
         global $wpdb;
         if ( !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read:" ) . $post_type, [ 'status' => 403 ] );
@@ -530,8 +520,7 @@ class Disciple_Tools_Posts
      *
      * @return array|int|\WP_Error
      */
-    public static function get_post_comments( string $post_type, int $post_id, bool $check_permissions = true, $type = "all" )
-    {
+    public static function get_post_comments( string $post_type, int $post_id, bool $check_permissions = true, $type = "all" ) {
         if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read post" ), [ 'status' => 403 ] );
         }
@@ -557,8 +546,7 @@ class Disciple_Tools_Posts
      *
      * @return array|\WP_Error|\WP_Query
      */
-    public static function get_viewable_compact( string $post_type, string $search_string )
-    {
+    public static function get_viewable_compact( string $post_type, string $search_string ) {
         if ( !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, sprintf( __( "You do not have access to these %s" ), $post_type ), [ 'status' => 403 ] );
         }
@@ -650,8 +638,7 @@ class Disciple_Tools_Posts
      *
      * @return array|\WP_Error|\WP_Query
      */
-    public static function get_viewable( string $post_type, int $most_recent = 0 )
-    {
+    public static function get_viewable( string $post_type, int $most_recent = 0 ) {
         if ( !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, sprintf( __( "You do not have access to these %s" ), $post_type ), [ 'status' => 403 ] );
         }
@@ -989,8 +976,7 @@ class Disciple_Tools_Posts
      *
      * @return array|mixed
      */
-    public static function get_shared_with( string $post_type, int $post_id, bool $check_permissions = false )
-    {
+    public static function get_shared_with( string $post_type, int $post_id, bool $check_permissions = false ) {
         global $wpdb;
 
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
@@ -1030,8 +1016,7 @@ class Disciple_Tools_Posts
      *
      * @return false|int|WP_Error
      */
-    public static function remove_shared( string $post_type, int $post_id, int $user_id )
-    {
+    public static function remove_shared( string $post_type, int $post_id, int $user_id ) {
         global $wpdb;
 
         if ( !self::can_update( $post_type, $post_id ) ) {
@@ -1093,8 +1078,7 @@ class Disciple_Tools_Posts
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared( string $post_type, int $post_id, int $user_id, $meta = null, bool $send_notifications = true, $check_permissions = true )
-    {
+    public static function add_shared( string $post_type, int $post_id, int $user_id, $meta = null, bool $send_notifications = true, $check_permissions = true ) {
         global $wpdb;
 
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {

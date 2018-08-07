@@ -23,24 +23,21 @@ if ( !defined( 'ABSPATH' ) ) {
  *
  * @return void
  */
-function dt_notification_insert( $args = [] )
-{
+function dt_notification_insert( $args = [] ) {
     Disciple_Tools_Notifications::insert_notification( $args );
 }
 
 /**
  * @param array $args
  */
-function dt_notification_delete( $args = [] )
-{
+function dt_notification_delete( $args = [] ) {
     Disciple_Tools_Notifications::delete_notification( $args );
 }
 
 /**
  * @param array $args
  */
-function dt_notification_delete_by_post( $args = [] )
-{
+function dt_notification_delete_by_post( $args = [] ) {
     Disciple_Tools_Notifications::delete_by_post( $args );
 }
 
@@ -67,8 +64,7 @@ class Disciple_Tools_Notifications
      * @static
      * @return Disciple_Tools_Notifications instance
      */
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -82,8 +78,7 @@ class Disciple_Tools_Notifications
      * @access  public
      * @since   0.1.0
      */
-    public function __construct()
-    {
+    public function __construct() {
 
     } // End __construct()
 
@@ -96,8 +91,7 @@ class Disciple_Tools_Notifications
      *
      * @return void
      */
-    public static function insert_notification( $args )
-    {
+    public static function insert_notification( $args ) {
         global $wpdb;
 
         // Make sure for non duplicate.
@@ -173,8 +167,7 @@ class Disciple_Tools_Notifications
      *
      * @return void
      */
-    public static function delete_notification( $args )
-    {
+    public static function delete_notification( $args ) {
         global $wpdb;
 
         $args = wp_parse_args(
@@ -212,8 +205,7 @@ class Disciple_Tools_Notifications
      *
      * @return void
      */
-    public static function delete_by_post( $args )
-    {
+    public static function delete_by_post( $args ) {
         global $wpdb;
 
         $args = wp_parse_args(
@@ -243,8 +235,7 @@ class Disciple_Tools_Notifications
      *
      * @return array
      */
-    public static function mark_viewed( $notification_id )
-    {
+    public static function mark_viewed( $notification_id ) {
         global $wpdb;
 
         $wpdb->update(
@@ -273,8 +264,7 @@ class Disciple_Tools_Notifications
      *
      * @return array
      */
-    public static function mark_unread( $notification_id )
-    {
+    public static function mark_unread( $notification_id ) {
         global $wpdb;
 
         $wpdb->update(
@@ -303,8 +293,7 @@ class Disciple_Tools_Notifications
      *
      * @return array
      */
-    public static function mark_all_viewed( int $user_id )
-    {
+    public static function mark_all_viewed( int $user_id ) {
         global $wpdb;
 
         $wpdb->update(
@@ -335,8 +324,7 @@ class Disciple_Tools_Notifications
      *
      * @return array
      */
-    public static function get_notifications( bool $all, int $page, int $limit )
-    {
+    public static function get_notifications( bool $all, int $page, int $limit ) {
         global $wpdb;
 
         $all_where = '';
@@ -381,8 +369,7 @@ class Disciple_Tools_Notifications
      *
      * @return false|string
      */
-    public static function pretty_timestamp( $timestamp )
-    {
+    public static function pretty_timestamp( $timestamp ) {
         $current_time = current_time( 'mysql' );
         $one_hour_ago = date( 'Y-m-d H:i:s', strtotime( '-1 hour', strtotime( $current_time ) ) );
         $yesterday = date( 'Y-m-d', strtotime( '-1 day', strtotime( $current_time ) ) );
@@ -409,8 +396,7 @@ class Disciple_Tools_Notifications
      *
      * @return array
      */
-    public static function get_new_notifications_count()
-    {
+    public static function get_new_notifications_count() {
         global $wpdb;
 
         $user_id = get_current_user_id();
@@ -446,8 +432,7 @@ class Disciple_Tools_Notifications
      *
      * @return array|null|WP_Post
      */
-    public static function get_at_mention_message( $comment_id )
-    {
+    public static function get_at_mention_message( $comment_id ) {
         return get_post( $comment_id );
     }
 
@@ -457,8 +442,7 @@ class Disciple_Tools_Notifications
      * @param int $user_id
      * @param int $post_id
      */
-    public static function insert_notification_for_share( int $user_id, int $post_id )
-    {
+    public static function insert_notification_for_share( int $user_id, int $post_id ) {
 
         if ( $user_id != get_current_user_id() ) { // check if share is not to self, else don't notify
 
@@ -489,8 +473,7 @@ class Disciple_Tools_Notifications
      * @param int $user_id
      * @param int $post_id
      */
-    public static function insert_notification_for_subassigned( int $user_id, int $post_id )
-    {
+    public static function insert_notification_for_subassigned( int $user_id, int $post_id ) {
 
         if ( $user_id != get_current_user_id() ) { // check if subassigned is not to self, else don't notify
 
@@ -522,8 +505,7 @@ class Disciple_Tools_Notifications
      * @param int $new_assigned_to
      * @param int $post_id
      */
-    public static function insert_notification_for_assignment_declined( int $user_who_declined, int $new_assigned_to, int $post_id )
-    {
+    public static function insert_notification_for_assignment_declined( int $user_who_declined, int $new_assigned_to, int $post_id ) {
 
         if ( $new_assigned_to != get_current_user_id() ) { // check if assignment_declined is not to self, else don't notify
 
@@ -714,8 +696,7 @@ class Disciple_Tools_Notifications
      *
      * @param $post_id
      */
-    public static function process_new_notifications( $post_id )
-    {
+    public static function process_new_notifications( $post_id ) {
         global $wpdb;
         $user_id = get_current_user_id();
 

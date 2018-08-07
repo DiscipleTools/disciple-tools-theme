@@ -21,8 +21,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
 {
 
     private static $_instance = null;
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -35,8 +34,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      * @access  public
      * @since   0.1.0
      */
-    public function __construct()
-    {
+    public function __construct() {
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 10, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
@@ -61,8 +59,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
      *
      * @param $tab
      */
-    public function content( $tab )
-    {
+    public function content( $tab ) {
         if ( 'custom-lists' == $tab ) :
 
             $this->template( 'begin' );
@@ -149,8 +146,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Print the contact settings box.
      */
-    public function user_profile_box()
-    {
+    public function user_profile_box() {
         echo '<form method="post" name="user_fields_form">';
         echo '<button type="submit" class="button-like-link" name="enter_bug_fix" value="&nasb"></button>';
         echo '<button type="submit" class="button-like-link" name="user_fields_reset" value="1">' . esc_html( __( "reset", 'disciple_tools' ) ) . '</button>';
@@ -200,8 +196,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Process user profile settings
      */
-    public function process_user_profile_box()
-    {
+    public function process_user_profile_box() {
 
         if ( isset( $_POST['user_fields_nonce'] ) ) {
 
@@ -282,8 +277,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Prints the sources settings box.
      */
-    public function sources_box()
-    {
+    public function sources_box() {
         echo '<form method="post" name="sources_form">';
         echo '<button type="submit" class="button-like-link" name="enter_bug_fix" value="&nasb"></button>';
         echo '<button type="submit" class="button-like-link" name="sources_reset" value="1">' . esc_html( __( "reset", 'disciple_tools' ) ) . '</button>';
@@ -322,8 +316,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Process contact sources settings
      */
-    public function process_sources_box()
-    {
+    public function process_sources_box() {
 
         if ( isset( $_POST['sources_nonce'] ) ) {
 
@@ -418,8 +411,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Prints the status settings box.
      */
-    public function status_box()
-    {
+    public function status_box() {
         echo '<form method="post" name="status_form">';
         echo '<button type="submit" class="button-like-link" name="enter_bug_fix" value="&nasb"></button>';
         echo '<p>' . esc_html( __( "Add or remove custom status for new contacts.", 'disciple_tools' ) ) . '</p>';
@@ -457,8 +449,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Process status status settings
      */
-    public function process_status_box()
-    {
+    public function process_status_box() {
         if ( isset( $_POST['status_nonce'] ) ) {
             $delete = true;  //for the bug where you press enter and it deltes a key
             if ( !wp_verify_nonce( sanitize_key( $_POST['status_nonce'] ), 'status' ) ) {
@@ -514,8 +505,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Prints the mielsteons settings box.
      */
-    public function milestones_box()
-    {
+    public function milestones_box() {
         echo '<form method="post" name="milestones_form">';
         echo '<button type="submit" class="button-like-link" name="reset_bug_fix" value="&nasb"></button>';
         echo '<p>' . esc_html( __( "Add or remove custom milestones for new contacts.", 'disciple_tools' ) ) . '</p>';
@@ -561,8 +551,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Process milestones milestones settings
      */
-    public function process_milestones_box()
-    {
+    public function process_milestones_box() {
         if ( isset( $_POST['milestones_nonce'] ) ) {
             $delete = true;  //for the bug where you press enter and it deltes a key
             if ( !wp_verify_nonce( sanitize_key( $_POST['milestones_nonce'] ), 'milestones' ) ) {
@@ -632,8 +621,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Process contact seeker_path settings
      */
-    public function process_seeker_path_box()
-    {
+    public function process_seeker_path_box() {
         if ( isset( $_POST['seeker_path_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['seeker_path_nonce'] ) ), 'seeker_path' ) ) {
             $delete = true;
             $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -731,8 +719,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Prints the seeker_path settings box.
      */
-    public function seeker_path_box()
-    {
+    public function seeker_path_box() {
         $default = dt_get_site_custom_lists( "seeker_path" ); //the standard ones
         $seeker_path = dt_get_option( 'dt_site_custom_lists' );
         $seeker_path = $seeker_path["seeker_path"];
@@ -798,8 +785,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Process contact reason closed settings
      */
-    public function process_reason_closed_box()
-    {
+    public function process_reason_closed_box() {
         if ( isset( $_POST['reason_closed_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['reason_closed_nonce'] ) ), 'reason_closed' ) ) {
             $delete = true;
             $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -843,8 +829,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Prints the reason settings box.
      */
-    public function reason_closed_box()
-    {
+    public function reason_closed_box() {
         //$default = Disciple_Tools_Contact_Post_Type::get_custom_fields_settings( "reason_closed" ); //the standard ones
         $reason_closed = dt_get_option( 'dt_site_custom_lists' );
         $reason_closed = $reason_closed['custom_reason_closed'];
@@ -907,8 +892,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Process contact reason paused settings
      */
-    public function process_reason_paused_box()
-    {
+    public function process_reason_paused_box() {
         if ( isset( $_POST['reason_paused_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['reason_paused_nonce'] ) ), 'reason_paused' ) ) {
             $delete = true;
             $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -951,8 +935,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Prints the reason settings box.
      */
-    public function reason_paused_box()
-    {
+    public function reason_paused_box() {
         //$default = Disciple_Tools_Contact_Post_Type::get_custom_fields_settings( "reason_paused" ); //the standard ones
         $reason_paused = dt_get_option( 'dt_site_custom_lists' );
         $reason_paused = $reason_paused['custom_reason_paused'];
@@ -1016,8 +999,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Process contact reason unassignable settings
      */
-    public function process_reason_unassignable_box()
-    {
+    public function process_reason_unassignable_box() {
         if ( isset( $_POST['reason_unassignable_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['reason_unassignable_nonce'] ) ), 'reason_unassignable' ) ) {
             $remove = true;
             $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -1064,8 +1046,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Prints the reason settings box.
      */
-    public function reason_unassignable_box()
-    {
+    public function reason_unassignable_box() {
         //$default = Disciple_Tools_Contact_Post_Type::get_custom_fields_settings( "reason_unassignable" ); //the standard ones
         $reason_unassignable = dt_get_option( 'dt_site_custom_lists' );
         $reason_unassignable = $reason_unassignable['custom_reason_unassignable'];
@@ -1128,8 +1109,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Prints the health settings box.
      */
-    public function health_box()
-    {
+    public function health_box() {
         echo '<form method="post" name="health_form">';
         echo '<button type="submit" class="button-like-link" name="reset_bug_fix" value="&nasb"></button>';
         echo '<p>'. esc_html( __( "Add or remove custom health for new contacts.", 'disciple_tools' ) ) .'</p>';
@@ -1175,8 +1155,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Process health health settings
      */
-    public function process_health_box()
-    {
+    public function process_health_box() {
         //@codingStandardsIgnoreLine
         if ( isset( $_POST['health_nonce'] ) ) {
             if ( !wp_verify_nonce( sanitize_key( $_POST['health_nonce'] ), 'health' ) ) {
@@ -1290,8 +1269,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
-    public function process_custom_dropdown_field_box()
-    {
+    public function process_custom_dropdown_field_box() {
         if ( isset( $_POST['custom_dropdown_field_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['custom_dropdown_field_nonce'] ) ), 'custom_dropdown_field' ) ) {
             $delete = true;
             $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -1432,8 +1410,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     /**
      * Prints the custom_dropdown_field settings box.
      */
-    public function custom_dropdown_field_box()
-    {
+    public function custom_dropdown_field_box() {
         $default = [];
         $custom_dropdown_field = dt_get_option( 'dt_site_custom_lists' );
         $custom_dropdown_field = $custom_dropdown_field["custom_dropdown_contact_options"];

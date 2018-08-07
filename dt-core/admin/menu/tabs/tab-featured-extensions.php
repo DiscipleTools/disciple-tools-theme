@@ -11,16 +11,14 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 {
     private static $_instance = null;
 
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
         return self::$_instance;
     }
 
-    public function __construct()
-    {
+    public function __construct() {
         add_action( 'dt_extensions_tab_menu', [ $this, 'add_tab' ], 10, 1 ); // use the priority setting to control load order
         add_action( 'dt_extensions_tab_content', [ $this, 'content' ], 99, 1 );
         //tools tab
@@ -28,8 +26,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         parent::__construct();
     } // End __construct()
 
-    public function add_tab( $tab )
-    {
+    public function add_tab( $tab ) {
         $nonce = wp_create_nonce( 'portal-nonce' );
         ?>
         <script type="text/javascript">
@@ -70,8 +67,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         echo '">' . esc_attr__( 'Tools', 'disciple_tools' ) . '</a>';
     }
 
-    public function content( $tab )
-    {
+    public function content( $tab ) {
         if ( 'featured-extensions' == $tab ) {
             // begin columns template
             $this->template( 'begin' );
@@ -99,8 +95,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     }
 
     //checks for a partial string in an array
-    public function partial_array_search( $array, $find )
-    {
+    public function partial_array_search( $array, $find ) {
         //check for null value
         if ($find == null || count( $array ) == 0) {
             return -1;
@@ -126,8 +121,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     }
 
     //tools page
-    public function tools_box_message()
-    {
+    public function tools_box_message() {
         //check if it can run commands
         $run = true;
         //check for admin
@@ -390,7 +384,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
 
         process(queue, 5, doEach, doDone);
         </script>
-         <?php
+            <?php
             $num = count( $contacts );
             echo esc_html( sprintf( __( "Creating %s Contacts DO NOT LEAVE THE PAGE UNTIL THE BACK BUTTON APPEARS", 'disciple_tools' ), $num ) );
             ?>
@@ -401,8 +395,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         exit;
     }
     //main page
-    public function box_message()
-    {
+    public function box_message() {
         //check for actions
         if ( isset( $_POST["activate"] ) && is_admin() && isset( $_POST["_ajax_nonce"] ) && check_ajax_referer( 'portal-nonce', sanitize_key( $_POST["_ajax_nonce"] ) ) && current_user_can( "manage_dt" ) ) {
             //activate the plugin
@@ -587,8 +580,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     }
 
     //this function will install a plugin with a name
-    public function install_plugin( $url )
-    {
+    public function install_plugin( $url ) {
         set_time_limit( 0 );
         //download plugin json data
         $plugin_json_text = file_get_contents( $url );
@@ -612,8 +604,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
     }
 
     //this function gets the plugin list data
-    public function get_plugins()
-    {
+    public function get_plugins() {
         return json_decode( trim( file_get_contents( 'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-plugin-url-list.json' ) ) );
     }
 }

@@ -33,8 +33,7 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
      *
      * @return int
      */
-    public static function get_groups_count( string $status = '', int $year = null )
-    {
+    public static function get_groups_count( string $status = '', int $year = null ) {
 
         $status = strtolower( $status );
 

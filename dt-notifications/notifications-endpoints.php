@@ -36,8 +36,7 @@ class Disciple_Tools_Notifications_Endpoints
      * @static
      * @return Disciple_Tools_Notifications_Endpoints instance
      */
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -51,13 +50,11 @@ class Disciple_Tools_Notifications_Endpoints
      * @access  public
      * @since   0.1.0
      */
-    public function __construct()
-    {
+    public function __construct() {
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     } // End __construct()
 
-    public function add_api_routes()
-    {
+    public function add_api_routes() {
         $version = '1';
         $namespace = 'dt/v' . $version;
 
@@ -117,8 +114,7 @@ class Disciple_Tools_Notifications_Endpoints
      * @since  0.1.0
      * @return string|WP_Error|array The contact on success
      */
-    public function mark_viewed( WP_REST_Request $request )
-    {
+    public function mark_viewed( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['notification_id'] ) ) {
             $result = Disciple_Tools_Notifications::mark_viewed( $params['notification_id'] );
@@ -141,8 +137,7 @@ class Disciple_Tools_Notifications_Endpoints
      * @since  0.1.0
      * @return string|WP_Error|array The contact on success
      */
-    public function mark_all_viewed( WP_REST_Request $request )
-    {
+    public function mark_all_viewed( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['user_id'] ) ) {
             $result = Disciple_Tools_Notifications::mark_all_viewed( $params['user_id'] );
@@ -165,8 +160,7 @@ class Disciple_Tools_Notifications_Endpoints
      * @since  0.1.0
      * @return string|WP_Error|array The contact on success
      */
-    public function get_notifications( WP_REST_Request $request )
-    {
+    public function get_notifications( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['all'] ) && isset( $params['page'] ) && isset( $params['limit'] ) ) {
             $result = Disciple_Tools_Notifications::get_notifications( $params['all'], $params['page'], $params['limit'] );
@@ -187,8 +181,7 @@ class Disciple_Tools_Notifications_Endpoints
      * @since  0.1.0
      * @return string|WP_Error|array The contact on success
      */
-    public function get_new_notifications_count()
-    {
+    public function get_new_notifications_count() {
         $result = Disciple_Tools_Notifications::get_new_notifications_count();
         if ( $result["status"] ) {
             return $result['result'];
@@ -206,8 +199,7 @@ class Disciple_Tools_Notifications_Endpoints
      * @since  0.1.0
      * @return string|WP_Error|array The contact on success
      */
-    public function mark_unread( WP_REST_Request $request )
-    {
+    public function mark_unread( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params['notification_id'] ) ) {
             $result = Disciple_Tools_Notifications::mark_unread( $params['notification_id'] );

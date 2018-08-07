@@ -22,8 +22,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * Disciple_Tools_Contacts constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
         self::$contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
         self::$address_types = dt_get_option( "dt_site_custom_lists" )["contact_address_types"];
@@ -62,8 +61,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return WP_Query | WP_Error
      */
-    private static function query_with_pagination( array $query_args, array $query_pagination_args )
-    {
+    private static function query_with_pagination( array $query_args, array $query_pagination_args ) {
         $allowed_keys = [
             'order',
             'orderby',
@@ -96,16 +94,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * @return mixed
      */
-    public static function get_contact_fields()
-    {
+    public static function get_contact_fields() {
         return self::$contact_fields;
     }
 
     /**
      * @return mixed
      */
-    public static function get_channel_list()
-    {
+    public static function get_channel_list() {
         return self::$channel_list;
     }
 
@@ -161,8 +157,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @since  0.1.0
      * @return int | WP_Error
      */
-    public static function create_contact( array $fields = [], $check_permissions = true, $silent = false )
-    {
+    public static function create_contact( array $fields = [], $check_permissions = true, $silent = false ) {
         if ( $check_permissions && !current_user_can( 'create_contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( "You may not publish a contact" ), [ 'status' => 403 ] );
         }
@@ -344,8 +339,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @since  0.1.0
      * @return array
      */
-    private static function check_for_invalid_fields( $fields, int $post_id = null )
-    {
+    private static function check_for_invalid_fields( $fields, int $post_id = null ) {
         $bad_fields = [];
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( isset( $post_id ), $post_id );
         $contact_fields['title'] = "";
@@ -522,8 +516,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @since  0.1.0
      * @return int | WP_Error of contact ID
      */
-    public static function update_contact( int $contact_id, array $fields, $check_permissions = true )
-    {
+    public static function update_contact( int $contact_id, array $fields, $check_permissions = true ) {
 
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
@@ -700,8 +693,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_location_to_contact( $contact_id, $location_id )
-    {
+    public static function add_location_to_contact( $contact_id, $location_id ) {
         return p2p_type( 'contacts_to_locations' )->connect(
             $location_id, $contact_id,
             [ 'date' => current_time( 'mysql' ) ]
@@ -714,8 +706,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_group_to_contact( $contact_id, $group_id )
-    {
+    public static function add_group_to_contact( $contact_id, $group_id ) {
         // share the group with the owner of the contact.
         $assigned_to = get_post_meta( $contact_id, "assigned_to", true );
         if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
@@ -736,8 +727,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_people_group_to_contact( $contact_id, $people_group_id )
-    {
+    public static function add_people_group_to_contact( $contact_id, $people_group_id ) {
         return p2p_type( 'contacts_to_peoplegroups' )->connect(
             $people_group_id, $contact_id,
             [ 'date' => current_time( 'mysql' ) ]
@@ -750,8 +740,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_baptized_by_to_contact( $contact_id, $baptized_by )
-    {
+    public static function add_baptized_by_to_contact( $contact_id, $baptized_by ) {
         return p2p_type( 'baptizer_to_baptized' )->connect(
             $contact_id, $baptized_by,
             [ 'date' => current_time( 'mysql' ) ]
@@ -764,8 +753,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_baptized_to_contact( $contact_id, $baptized )
-    {
+    public static function add_baptized_to_contact( $contact_id, $baptized ) {
         return p2p_type( 'baptizer_to_baptized' )->connect(
             $baptized, $contact_id,
             [ 'date' => current_time( 'mysql' ) ]
@@ -778,8 +766,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_coached_by_to_contact( $contact_id, $coached_by )
-    {
+    public static function add_coached_by_to_contact( $contact_id, $coached_by ) {
         return p2p_type( 'contacts_to_contacts' )->connect(
             $contact_id, $coached_by,
             [ 'date' => current_time( 'mysql' ) ]
@@ -792,8 +779,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_coaching_to_contact( $contact_id, $coaching )
-    {
+    public static function add_coaching_to_contact( $contact_id, $coaching ) {
         return p2p_type( 'contacts_to_contacts' )->connect(
             $coaching, $contact_id,
             [ 'date' => current_time( 'mysql' ) ]
@@ -806,8 +792,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_subassigned_to_contact( $contact_id, $subassigned )
-    {
+    public static function add_subassigned_to_contact( $contact_id, $subassigned ) {
 
         $user_id = get_post_meta( $subassigned, "corresponds_to_user", true );
         if ( $user_id ){
@@ -827,8 +812,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_location_from_contact( $contact_id, $location_id )
-    {
+    public static function remove_location_from_contact( $contact_id, $location_id ) {
         return p2p_type( 'contacts_to_locations' )->disconnect( $location_id, $contact_id );
     }
 
@@ -838,8 +822,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_group_from_contact( $contact_id, $people_group_id )
-    {
+    public static function remove_group_from_contact( $contact_id, $people_group_id ) {
         return p2p_type( 'contacts_to_groups' )->disconnect( $people_group_id, $contact_id );
     }
 
@@ -849,8 +832,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_people_group_from_contact( $contact_id, $group_id )
-    {
+    public static function remove_people_group_from_contact( $contact_id, $group_id ) {
         return p2p_type( 'contacts_to_peoplegroups' )->disconnect( $group_id, $contact_id );
     }
 
@@ -860,8 +842,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_baptized_by_from_contact( $contact_id, $baptized_by )
-    {
+    public static function remove_baptized_by_from_contact( $contact_id, $baptized_by ) {
         return p2p_type( 'baptizer_to_baptized' )->disconnect( $contact_id, $baptized_by );
     }
 
@@ -871,8 +852,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_baptized_from_contact( $contact_id, $baptized )
-    {
+    public static function remove_baptized_from_contact( $contact_id, $baptized ) {
         return p2p_type( 'baptizer_to_baptized' )->disconnect( $baptized, $contact_id );
     }
 
@@ -882,8 +862,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_coached_by_from_contact( $contact_id, $coached_by )
-    {
+    public static function remove_coached_by_from_contact( $contact_id, $coached_by ) {
         return p2p_type( 'contacts_to_contacts' )->disconnect( $contact_id, $coached_by );
     }
 
@@ -893,8 +872,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_coaching_from_contact( $contact_id, $coaching )
-    {
+    public static function remove_coaching_from_contact( $contact_id, $coaching ) {
         return p2p_type( 'contacts_to_contacts' )->disconnect( $coaching, $contact_id );
     }
 
@@ -904,8 +882,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_subassigned_from_contact( $contact_id, $subassigned )
-    {
+    public static function remove_subassigned_from_contact( $contact_id, $subassigned ) {
         return p2p_type( 'contacts_to_subassigned' )->disconnect( $subassigned, $contact_id );
     }
 
@@ -917,8 +894,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return array|mixed|null|string|\WP_Error|\WP_Post
      */
-    public static function add_contact_detail( int $contact_id, string $key, string $value, bool $check_permissions )
-    {
+    public static function add_contact_detail( int $contact_id, string $key, string $value, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
@@ -1003,8 +979,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return int|\WP_Error
      */
-    public static function update_contact_method( int $contact_id, string $key, array $values, bool $check_permissions )
-    {
+    public static function update_contact_method( int $contact_id, string $key, array $values, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
@@ -1045,8 +1020,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return bool|mixed|\WP_Error
      */
-    public static function remove_contact_connection( int $contact_id, string $key, string $value, bool $check_permissions )
-    {
+    public static function remove_contact_connection( int $contact_id, string $key, string $value, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
@@ -1095,8 +1069,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @since  0.1.0
      * @return array| WP_Error, On success: the contact, else: the error message
      */
-    public static function get_contact( int $contact_id, $check_permissions = true )
-    {
+    public static function get_contact( int $contact_id, $check_permissions = true ) {
         if ( $check_permissions && !self::can_view( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
         }
@@ -1214,7 +1187,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $meta_fields = get_post_custom( $contact_id );
             foreach ( $meta_fields as $key => $value ) {
                 //if is contact details and is in a channel
+
                 if ( !isset( self::$channel_list )){
+
                     self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
                 }
                 if ( strpos( $key, "contact_" ) === 0 && isset( self::$channel_list[ explode( '_', $key )[1] ] ) ) {
@@ -1287,8 +1262,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return array|mixed
      */
-    public static function format_contact_details( $meta_fields, $type, $key, $value )
-    {
+    public static function format_contact_details( $meta_fields, $type, $key, $value ) {
 
         $details = [];
 
@@ -1313,8 +1287,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @param $base_contact
      * @param $duplicate_contact
      */
-    public static function merge_contacts( $base_contact, $duplicate_contact )
-    {
+    public static function merge_contacts( $base_contact, $duplicate_contact ) {
 
     }
 
@@ -1323,8 +1296,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return array|null|object
      */
-    public static function get_activity( $contact_id )
-    {
+    public static function get_activity( $contact_id ) {
         $fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( true, $contact_id );
         return self::get_post_activity( "contacts", $contact_id, $fields );
     }
@@ -1335,8 +1307,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return array|null|object
      */
-    public static function get_single_activity( $contact_id, $activity_id )
-    {
+    public static function get_single_activity( $contact_id, $activity_id ) {
         $fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( true, $contact_id );
         return self::get_post_single_activity( "contacts", $contact_id, $fields, $activity_id );
     }
@@ -1373,8 +1344,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @since  0.1.0
      * @return WP_Query | WP_Error
      */
-    public static function get_user_contacts( int $user_id, bool $check_permissions = true, array $query_pagination_args = [] )
-    {
+    public static function get_user_contacts( int $user_id, bool $check_permissions = true, array $query_pagination_args = [] ) {
         if ( $check_permissions && !self::can_access( 'contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), [ 'status' => 403 ] );
         }
@@ -1400,8 +1370,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @since  0.1.0
      * @return array | WP_Error | WP_Query
      */
-    public static function get_viewable_contacts( int $most_recent, bool $check_permissions = true )
-    {
+    public static function get_viewable_contacts( int $most_recent, bool $check_permissions = true ) {
         if ( $check_permissions && !self::can_access( 'contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), [ 'status' => 403 ] );
         }
@@ -1441,7 +1410,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'orderby' => 'meta_value_num',
             'meta_key' => "last_modified",
             'order' => 'ASC',
-            'posts_per_page' => 1000 // @phpcs:ignore WordPress.VIP.PostsPerPage
+            // @codingStandardsIgnoreLine
+            'posts_per_page' => 1000,
         ];
         $contacts_shared_with_user = [];
         if ( !self::can_view_all( 'contacts' ) ) {
@@ -1509,8 +1479,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return array|\WP_Query
      */
-    public static function get_viewable_contacts_compact( string $search_string )
-    {
+    public static function get_viewable_contacts_compact( string $search_string ) {
         return self::get_viewable_compact( 'contacts', $search_string );
     }
 
@@ -1602,8 +1571,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @access public
      * @since  0.1.0
      */
-    public static function get_team_contacts( int $user_id, bool $check_permissions = true, $exclude_current_user = false, $most_recent = 0 )
-    {
+    public static function get_team_contacts( int $user_id, bool $check_permissions = true, $exclude_current_user = false, $most_recent = 0 ) {
         if ( $check_permissions ) {
             $current_user = wp_get_current_user();
             // TODO: the current permissions required don't make sense
@@ -1683,8 +1651,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return array|int|\WP_Error
      */
-    public static function update_seeker_path( int $contact_id, string $path_option, $check_permissions = true )
-    {
+    public static function update_seeker_path( int $contact_id, string $path_option, $check_permissions = true ) {
         $seeker_path_options = self::$contact_fields["seeker_path"]["default"];
         $option_keys = array_keys( $seeker_path_options );
         $current_seeker_path = get_post_meta( $contact_id, "seeker_path", true );
@@ -1736,8 +1703,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return array|int|\WP_Error
      */
-    private static function handle_quick_action_button_event( int $contact_id, array $field, bool $check_permissions = true )
-    {
+    private static function handle_quick_action_button_event( int $contact_id, array $field, bool $check_permissions = true ) {
         $update = [];
         $key = key( $field );
 
@@ -1773,8 +1739,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return false|int|\WP_Error
      */
-    public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null )
-    {
+    public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null ) {
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
@@ -1804,8 +1769,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return array|int|\WP_Error
      */
-    public static function get_comments( int $contact_id, bool $check_permissions = true, $type = "all" )
-    {
+    public static function get_comments( int $contact_id, bool $check_permissions = true, $type = "all" ) {
         return self::get_post_comments( 'contacts', $contact_id, $check_permissions, $type );
     }
 
@@ -1843,8 +1807,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return array|\WP_Error
      */
-    public static function accept_contact( int $contact_id, bool $accepted, bool $check_permissions )
-    {
+    public static function accept_contact( int $contact_id, bool $accepted, bool $check_permissions ) {
         if ( !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
@@ -1904,8 +1867,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return array|mixed
      */
-    public static function get_shared_with_on_contact( int $post_id )
-    {
+    public static function get_shared_with_on_contact( int $post_id ) {
         return self::get_shared_with( 'contacts', $post_id );
     }
 
@@ -1917,8 +1879,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return false|int|WP_Error
      */
-    public static function remove_shared_on_contact( int $post_id, int $user_id )
-    {
+    public static function remove_shared_on_contact( int $post_id, int $user_id ) {
         return self::remove_shared( 'contacts', $post_id, $user_id );
     }
 
@@ -1934,8 +1895,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared_on_contact( int $post_id, int $user_id, $meta = null, $send_notifications = true, $check_permissions = true )
-    {
+    public static function add_shared_on_contact( int $post_id, int $user_id, $meta = null, $send_notifications = true, $check_permissions = true ) {
         return self::add_shared( 'contacts', $post_id, $user_id, $meta, $send_notifications, $check_permissions );
     }
 

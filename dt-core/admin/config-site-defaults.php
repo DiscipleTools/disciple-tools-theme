@@ -34,8 +34,7 @@ add_filter( 'retrieve_password_message', 'dt_custom_password_reset', 99, 4 );
  * Set default premalink structure
  * Needed for the rest api url structure (for wp-json to work)
  */
-function dt_set_permalink_structure()
-{
+function dt_set_permalink_structure() {
     global $wp_rewrite;
     $wp_rewrite->set_permalink_structure( '/%postname%/' );
     flush_rewrite_rules();
@@ -44,8 +43,7 @@ function dt_set_permalink_structure()
 /**
  *
  */
-function dt_warn_user_about_permalink_settings()
-{
+function dt_warn_user_about_permalink_settings() {
     ?>
     <div class="error notices">
         <p><?php esc_html_e( 'You may only set your permalink settings to "Post name"' ); ?></p>
@@ -58,8 +56,7 @@ function dt_warn_user_about_permalink_settings()
  *
  * @param $permalink_structure
  */
-function dt_permalink_structure_changed_callback( $permalink_structure )
-{
+function dt_permalink_structure_changed_callback( $permalink_structure ) {
     global $wp_rewrite;
     if ( $permalink_structure !== '/%postname%/' ) {
         add_action( 'admin_notices', 'dt_warn_user_about_permalink_settings' );
@@ -75,8 +72,7 @@ function dt_override_comment_notice_recipients() {
  *
  * @return string
  */
-function dt_svg_icon()
-{
+function dt_svg_icon() {
     return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS40IDIwLjMyIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDojMmQyZDJkO308L3N0eWxlPjwvZGVmcz48dGl0bGU+ZGlzY2lwbGUtdG9vbHM8L3RpdGxlPjxwb2x5Z29uIGNsYXNzPSJhIiBwb2ludHM9IjIxLjQgMjAuMzIgOS4zIDAgMi44NiAxMC44MSA4LjUyIDIwLjMyIDIxLjQgMjAuMzIiLz48cG9seWdvbiBjbGFzcz0iYSIgcG9pbnRzPSIwLjAyIDE1LjU4IDAgMTUuNjEgMi44MyAyMC4zMiA1LjUxIDE1LjM0IDAuMDIgMTUuNTgiLz48L3N2Zz4=';
 }
 
@@ -88,8 +84,7 @@ function dt_svg_icon()
  *
  * @return array|false
  */
-function dt_get_option( string $name )
-{
+function dt_get_option( string $name ) {
 
     switch ( $name ) {
         case 'dt_site_options':
@@ -213,8 +208,10 @@ function dt_get_option( string $name )
             ];
             $custom = dt_get_option( "dt_site_custom_lists" );
             $custom = $custom["custom_status"];
-            foreach ( $custom as $key => $value ) {
-                $status[$key] = $value;
+            if ( ! empty( $custom ) ) {
+                foreach ( $custom as $key => $value ) {
+                    $status[$key] = $value;
+                }
             }
             return $status;
 
@@ -269,8 +266,7 @@ function dt_update_option( $name, $value, $autoload = false ) {
  *
  * @return array
  */
-function dt_get_site_options_defaults()
-{
+function dt_get_site_options_defaults() {
     $fields = [];
 
     $fields['version'] = '6';
@@ -402,8 +398,7 @@ function dt_get_site_options_defaults()
  *
  * @return array|mixed
  */
-function dt_get_site_custom_lists( string $list_title = null )
-{
+function dt_get_site_custom_lists( string $list_title = null ) {
     $fields = [];
 
     $fields['version'] = 5;
@@ -618,8 +613,7 @@ function dt_get_location_levels() {
  *
  * @return bool
  */
-function dt_site_options_upgrade_version( string $name )
-{
+function dt_site_options_upgrade_version( string $name ) {
     $site_options_current = get_option( $name );
     if ( $name === "dt_site_custom_lists" ){
         $site_options_defaults = dt_get_site_custom_lists();

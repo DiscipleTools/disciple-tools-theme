@@ -31,8 +31,7 @@ if ( version_compare( $dt_dra_current_wp_version, '4.7', '>=' ) ) {
  * This function is called if the current version of WordPress is 4.7 or above
  * Forcibly raise an authentication error to the REST API if the user is not logged in
  */
-function dt_dra_force_auth_error()
-{
+function dt_dra_force_auth_error() {
     add_filter( 'rest_authentication_errors', 'dt_dra_only_allow_logged_in_rest_access' );
 }
 
@@ -40,8 +39,7 @@ function dt_dra_force_auth_error()
  * This function gets called if the current version of WordPress is less than 4.7
  * We are able to make use of filters to actually disable the functionality entirely
  */
-function dt_dra_disable_via_filters()
-{
+function dt_dra_disable_via_filters() {
 
     // Filters for WP-API version 1.x
     add_filter( 'json_enabled', '__return_false' );
@@ -64,8 +62,7 @@ function dt_dra_disable_via_filters()
  *
  * @return WP_Error
  */
-function dt_dra_only_allow_logged_in_rest_access( $access )
-{
+function dt_dra_only_allow_logged_in_rest_access( $access ) {
     $is_public = false;
     /**
      * External integrations to a Disciple Tools site can be done through the /dt-public/ route, which is left open to non-logged in external access
