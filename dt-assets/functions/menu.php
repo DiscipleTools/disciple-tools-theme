@@ -10,22 +10,22 @@ register_nav_menus(
 // The Top Menu
 function disciple_tools_top_nav_desktop() {
     if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-        ?><li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li><?php
+        ?><li><a href="<?php echo esc_url( site_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li><?php
     }
     if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-        ?><li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li><?php
+        ?><li><a href="<?php echo esc_url( site_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li><?php
     }
     if ( user_can( get_current_user_id(), 'view_any_contacts' ) || user_can( get_current_user_id(), 'view_project_metrics' ) ) {
-        ?><li><a href="<?php echo esc_url( home_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li><?php
+        ?><li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li><?php
     }
 }
 
 function disciple_tools_top_nav_mobile() {
     if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
         ?>
-        <li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>"><i class="fi-torsos-all"></i></a></li>
-        <li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>"><i class="fi-address-book"></i></a></li>
-        <li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><i class="fi-graph-pie"></i></a></li>
+        <li><a href="<?php echo esc_url( site_url( '/groups/' ) ); ?>"><i class="fi-torsos-all"></i></a></li>
+        <li><a href="<?php echo esc_url( site_url( '/contacts/' ) ); ?>"><i class="fi-address-book"></i></a></li>
+        <li><a href="<?php echo esc_url( site_url( '/' ) ); ?>"><i class="fi-graph-pie"></i></a></li>
         <?php
     }
 }
@@ -64,27 +64,27 @@ function disciple_tools_off_canvas_nav() {
 
             <?php
             if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-                ?><li><a href="<?php echo esc_url( home_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li><?php
+                ?><li><a href="<?php echo esc_url( site_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li><?php
             }
             if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-                ?><li><a href="<?php echo esc_url( home_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li><?php
+                ?><li><a href="<?php echo esc_url( site_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li><?php
             }
             if ( dt_metrics_visibility( 'tab' ) ) {
-                ?><li><a href="<?php echo esc_url( home_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li><?php
+                ?><li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li><?php
             }
             ?>
             <?php if ( dt_get_user_team_members_list( get_current_user_id() ) ) : // check if part of team, if not don't show link ?>
                 <li>
-                    <a href="<?php echo esc_url( home_url( '/team/' ) ); ?>"><?php esc_html_e( "Team" ); ?></a>
+                    <a href="<?php echo esc_url( site_url( '/team/' ) ); ?>"><?php esc_html_e( "Team" ); ?></a>
                 </li>
             <?php endif; ?>
 
             <li>&nbsp;<!-- Spacer--></li>
             <li>
-                <a href="<?php echo esc_url( home_url( '/notifications/' ) ); ?>"><?php esc_html_e( "Notifications" ); ?></a>
+                <a href="<?php echo esc_url( site_url( '/notifications/' ) ); ?>"><?php esc_html_e( "Notifications" ); ?></a>
             </li>
             <li>
-                <a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a>
+                <a href="<?php echo esc_url( site_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a>
             </li>
             <li>
                 <a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( "Log Off" ); ?></a>
@@ -101,16 +101,16 @@ function disciple_tools_off_canvas_nav() {
             <ul class="vertical medium-horizontal menu sticky is-stuck is-at-top" data-accordion-menu>
 
                 <li>
-                    <a href="<?php echo esc_url( home_url( '/about-us/' ) ); ?>"><?php esc_html_e( "About Us" ); ?></a>
+                    <a href="<?php echo esc_url( site_url( '/about-us/' ) ); ?>"><?php esc_html_e( "About Us" ); ?></a>
                 </li>
                 <li>
-                    <a href="<?php echo esc_url( home_url( '/prayer/' ) ); ?>"><?php esc_html_e( "Prayer Guide" ); ?></a>
+                    <a href="<?php echo esc_url( site_url( '/prayer/' ) ); ?>"><?php esc_html_e( "Prayer Guide" ); ?></a>
                 </li>
                 <li>
-                    <a href="<?php echo esc_url( home_url( '/project/' ) ); ?>"><?php esc_html_e( "Project Updates" ); ?></a>
+                    <a href="<?php echo esc_url( site_url( '/project/' ) ); ?>"><?php esc_html_e( "Project Updates" ); ?></a>
                 </li>
                 <li>
-                    <a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a>
+                    <a href="<?php echo esc_url( site_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a>
                 </li>
 
             </ul>
@@ -126,13 +126,13 @@ function disciple_tools_off_canvas_nav() {
             <ul class="vertical medium-horizontal menu sticky is-stuck is-at-top" data-accordion-menu>
 
                 <li>
-                    <a href="<?php echo esc_url( home_url( '/about-us/' ) ); ?>"><?php esc_html_e( "About Us" ); ?></a>
+                    <a href="<?php echo esc_url( site_url( '/about-us/' ) ); ?>"><?php esc_html_e( "About Us" ); ?></a>
                 </li>
                 <li>
-                    <a href="<?php echo esc_url( home_url( '/prayer/' ) ); ?>"><?php esc_html_e( "Prayer Guide" ); ?></a>
+                    <a href="<?php echo esc_url( site_url( '/prayer/' ) ); ?>"><?php esc_html_e( "Prayer Guide" ); ?></a>
                 </li>
                 <li>
-                    <a href="<?php echo esc_url( home_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a>
+                    <a href="<?php echo esc_url( site_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a>
                 </li>
 
             </ul>
