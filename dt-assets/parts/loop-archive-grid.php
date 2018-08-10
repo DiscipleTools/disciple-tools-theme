@@ -1,17 +1,17 @@
 <?php
 
 ( function() {
-    ?>
-    <?php
+?>
+<?php
 // Adjust the amount of rows in the grid
 
-    $grid_columns = 4; ?>
+$grid_columns = 4; ?>
 
-    <?php if ( 0 === ( $wp_query->current_post ) % $grid_columns ): ?>
+<?php if ( 0 === ( $wp_query->current_post ) % $grid_columns ): ?>
 
     <div class="row archive-grid" data-equalizer> <!--Begin Row:-->
 
-    <?php endif; ?>
+<?php endif; ?>
 
         <!--Item: -->
         <div class="large-3 medium-3 columns panel" data-equalizer-watch>
@@ -39,11 +39,11 @@
 
         </div>
 
-    <?php if ( 0 === ( $wp_query->current_post + 1 ) % $grid_columns || ( $wp_query->current_post + 1 ) === $wp_query->post_count ): ?>
+<?php if ( 0 === ( $wp_query->current_post + 1 ) % $grid_columns || ( $wp_query->current_post + 1 ) === $wp_query->post_count ): ?>
 
    </div>  <!--End Row: -->
 
-    <?php endif; ?>
+<?php endif; ?>
 
-    <?php
+<?php
 } )();

@@ -37,7 +37,8 @@ class Disciple_Tools_People_Groups_Admin_Menu
      * @see    disciple_tools()
      * @return Disciple_Tools_People_Groups_Admin_Menu instance
      */
-    public static function instance() {
+    public static function instance()
+    {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -51,7 +52,8 @@ class Disciple_Tools_People_Groups_Admin_Menu
      * @access public
      * @since  0.1.0
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->path = plugin_dir_path( __DIR__ );
 
         require_once( 'admin-tab-import.php' );
@@ -62,8 +64,9 @@ class Disciple_Tools_People_Groups_Admin_Menu
     /**
      * Load Admin menu into Settings
      */
-    public function load_admin_menu_item() {
-//        add_submenu_page( 'edit.php?post_type=peoplegroups', __( 'Import', 'disciple_tools' ), __( 'Import', 'disciple_tools' ), 'manage_dt', 'disciple_tools_people_groups', [ $this, 'page_content' ] );
+    public function load_admin_menu_item()
+    {
+        add_submenu_page( 'edit.php?post_type=peoplegroups', __( 'Add New', 'disciple_tools' ), __( 'Add New', 'disciple_tools' ), 'manage_dt', 'disciple_tools_people_groups', [ $this, 'page_content' ] );
     }
 
     /**
@@ -71,7 +74,8 @@ class Disciple_Tools_People_Groups_Admin_Menu
      *
      * @since 0.1.0
      */
-    public function page_content() {
+    public function page_content()
+    {
 
         if ( !current_user_can( 'manage_dt' ) ) {
             wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );

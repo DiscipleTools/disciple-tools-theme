@@ -10,7 +10,7 @@ GENERAL STYLES
 
 .grey {
     color: $dark-gray;
-    font-weight: 200;
+    font-weight: 400;
 }
 
 .primary-color {
@@ -941,6 +941,10 @@ DT comments and activity
 .comment-section
 
 
+
+
+
+
 /*********************
 SIDEBARS & ASIDES
 *********************/
@@ -1689,9 +1693,6 @@ select#overall_status {
             background-color: #224F72;
             color: white;
         }
-        max-height: 500px;
-        overflow-y: auto;
-        overflow-x: hidden;
     }
 
     .tabs-content {

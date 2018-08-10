@@ -12,10 +12,9 @@ abstract class Disciple_Tools_Counter_Base
     /**
      * Disciple_Tools_Counter constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
     }
-
-
 
     /**
      * @param array $elements
@@ -56,25 +55,6 @@ abstract class Disciple_Tools_Counter_Base
         }
         return $groups_at_level;
     }
-    public static function get_items_by_level( array $array ) {
-        $item_levels =[];
-        $i = 1;
-
-        while ( isset( $array['children'] ) && is_array( $array['children'] ) ) {
-            if ( ! isset( $item_levels[ $i ] ) ) {
-                $item_levels[ $i ] = 0;
-            }
-
-            $item_levels[ $i ] = $array['id'];
-            $i++;
-            foreach ( $array['children'] as $item ) {
-                $array = $item;
-            }
-        }
-        return $item_levels;
-    }
-
-
 
     /**
      * Get the total counts of streams
@@ -97,6 +77,12 @@ abstract class Disciple_Tools_Counter_Base
 
         return $streams;
     }
+
+    /**
+     * @param array $array
+     *
+     * @return int
+     */
     public static function get_array_depth( array $array ) {
         $i = 1;
         while ( isset( $array['children'] ) && is_array( $array['children'] ) ) {
@@ -107,8 +93,6 @@ abstract class Disciple_Tools_Counter_Base
         }
         return $i;
     }
-
-
 
     /**
      * @param array $array
@@ -132,7 +116,28 @@ abstract class Disciple_Tools_Counter_Base
         return $item_levels;
     }
 
+    /**
+     * @param array $array
+     *
+     * @return array
+     */
+    public static function get_items_by_level( array $array ) {
+        $item_levels =[];
+        $i = 1;
 
+        while ( isset( $array['children'] ) && is_array( $array['children'] ) ) {
+            if ( ! isset( $item_levels[ $i ] ) ) {
+                $item_levels[ $i ] = 0;
+            }
+
+            $item_levels[ $i ] = $array['id'];
+            $i++;
+            foreach ( $array['children'] as $item ) {
+                $array = $item;
+            }
+        }
+        return $item_levels;
+    }
 
 
 }

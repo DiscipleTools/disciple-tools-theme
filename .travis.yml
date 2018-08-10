@@ -3,7 +3,7 @@ php:
   - '7.0'
   - '7.1'
   - '7.2'
-dist: xenial
+dist: trusty
 sudo: required # this seems to be required for some reason to get MySQL to work
 services:
   - mysql
@@ -24,9 +24,7 @@ script:
   - ./dt-core/test/test_phpcs.sh
   - find dt-assets/ -iname "*.min.js" -or -iname "*.map" -or -iname "*.min.css" -delete && rm -rf build/
   - gulp
-  - git diff --exit-code -- . ':(exclude)package-lock.json'
+  #- git diff --exit-code
   # If the previous command returns a non-zero exit code, that means gulp has
   # modified some files in version control. This shouldn't happen, developers
-  # should remember to run gulp before committing. (We're excluding
-  # package-lock.json, as changes can be caused merely by a different version
-  # of npm.)
+  # should remember to run gulp before committing.

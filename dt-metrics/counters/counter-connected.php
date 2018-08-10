@@ -145,7 +145,8 @@ class Disciple_Tools_Counter_Connected extends Disciple_Tools_Counter_Base  {
      *
      * @return null|string
      */
-    public function has_meta_value( $type, $meta_value ) {
+    public function has_meta_value( $type, $meta_value )
+    {
         global $wpdb;
 
         //Select count(DISTINCT p2p_to) as planters from wp_p2p INNER JOIN wp_p2pmeta ON wp_p2p.p2p_id=wp_p2pmeta.p2p_id  where meta_value = 'Planting'

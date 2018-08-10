@@ -31,7 +31,8 @@ class Disciple_Tools_People_Groups_Tab_Import
      * @access public
      * @since  0.1.0
      */
-    public function __construct() {
+    public function __construct()
+    {
         // API Keys
         $this->jp_api_key = '0c0a0b16408a'; // Joshua Project API Key /* TODO: Currently using Chasm JP Key (0c0a0b16408a). Should we have each project get their own key? */
 
@@ -49,7 +50,8 @@ class Disciple_Tools_People_Groups_Tab_Import
     /**
      * Page content for the tab
      */
-    public function page_contents() {
+    public function page_contents()
+    {
         echo '<div class="wrap">'; // Block title
         echo '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
         echo '<div id="post-body-content">';
@@ -69,7 +71,8 @@ class Disciple_Tools_People_Groups_Tab_Import
      * Joshua Project install metabox
      *
      */
-    public function joshua_project_country_install_box() {
+    public function joshua_project_country_install_box()
+    {
         $this->check_data_age( 'jp_countries' ); // Checks the age of the static json countries data
 
         $jp_install_request = '';
@@ -149,7 +152,8 @@ class Disciple_Tools_People_Groups_Tab_Import
      *
      * @return mixed|array|boolean
      */
-    public function get_joshua_project_country_names() {
+    public function get_joshua_project_country_names()
+    {
 
         $jp_countries = json_decode( file_get_contents( $this->jp_countries_path ) ); // load countries data
 
@@ -170,7 +174,8 @@ class Disciple_Tools_People_Groups_Tab_Import
      * Prints dropdown menu for Joshua Project countries
      *
      */
-    public function get_joshua_project_countries_dropdown_not_installed() {
+    public function get_joshua_project_countries_dropdown_not_installed()
+    {
 
         $jp_countries = $this->get_joshua_project_country_names();
 
@@ -213,7 +218,8 @@ class Disciple_Tools_People_Groups_Tab_Import
      *
      * @return bool
      */
-    public function json_refresh( $file ) {
+    public function json_refresh( $file )
+    {
 
         switch ( $file ) {
             case 'jp_countries':
@@ -244,7 +250,8 @@ class Disciple_Tools_People_Groups_Tab_Import
      *
      * @param $file
      */
-    public function check_data_age( $file ) {
+    public function check_data_age( $file )
+    {
 
         $one_month_ago = date( "Ymd", mktime( 0, 0, 0, date( "m" ) - 1, date( "d" ), date( "Y" ) ) );
 
@@ -273,7 +280,8 @@ class Disciple_Tools_People_Groups_Tab_Import
      *
      * @return bool|\WP_Error
      */
-    public function install_jp_country( $jp_install_request ) {
+    public function install_jp_country( $jp_install_request )
+    {
         global $wpdb;
 
         // get people group data for the country

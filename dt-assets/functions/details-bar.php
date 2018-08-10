@@ -18,7 +18,7 @@ function dt_print_details_bar(
     bool $following = false,
     bool $disable_following_toggle_function = false
 ) {
-    ?>
+?>
 
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
         <nav aria-label="<?php esc_attr_e( "You are here:" ); ?>" role="navigation"

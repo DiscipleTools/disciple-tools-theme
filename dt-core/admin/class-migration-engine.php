@@ -31,19 +31,19 @@ class Disciple_Tools_Migration_Engine
         $expected_migration_number = 0;
         $rv = [];
         foreach ( $filenames as $filename ) {
-            if ( $filename[0] !== "." && $filename !== "abstract.php"){
-                if ( preg_match( '/^([0-9][0-9][0-9][0-9])(-.*)?\.php$/i', $filename, $matches ) ) {
-                    $got_migration_number = intval( $matches[1] );
-                    if ( $expected_migration_number !== $got_migration_number ) {
-                        throw new Exception( sprintf( "Expected to find migration number %04d", $expected_migration_number ) );
-                    }
-                    require_once( plugin_dir_path( __DIR__ ) . "migrations/$filename" );
-                    $migration_name = sprintf( "Disciple_Tools_Migration_%04d", $got_migration_number );
-                    $rv[] = new $migration_name();
-                    $expected_migration_number++;
-                } else {
-                    throw new Exception( "Found filename that doesn't match pattern: $filename" );
+            if ( $filename[0] === "." || $filename === "abstract.php" ) {
+                // skip this filename
+            } elseif ( preg_match( '/^([0-9][0-9][0-9][0-9])(-.*)?\.php$/i', $filename, $matches ) ) {
+                $got_migration_number = intval( $matches[1] );
+                if ( $expected_migration_number !== $got_migration_number ) {
+                    throw new Exception( sprintf( "Expected to find migration number %04d", $expected_migration_number ) );
                 }
+                require_once( plugin_dir_path( __DIR__ ) . "migrations/$filename" );
+                $migration_name = sprintf( "Disciple_Tools_Migration_%04d", $got_migration_number );
+                $rv[] = new $migration_name();
+                $expected_migration_number++;
+            } else {
+                throw new Exception( "Found filename that doesn't match pattern: $filename" );
             }
         }
         self::$migrations = $rv;
@@ -61,7 +61,8 @@ class Disciple_Tools_Migration_Engine
      * @throws \Disciple_Tools_Migration_Lock_Exception ...
      * @throws \Throwable ...
      */
-    public static function migrate( int $target_migration_number ) {
+    public static function migrate( int $target_migration_number )
+    {
         if ( $target_migration_number >= count( self::get_migrations() ) ) {
             throw new Exception( "Migration number $target_migration_number does not exist" );
         }
@@ -118,7 +119,8 @@ class Disciple_Tools_Migration_Engine
      *
      * @throws \Exception Expected to find table name in table definition of $name.
      */
-    protected static function sanity_check_expected_tables( array $expected_tables ) {
+    protected static function sanity_check_expected_tables( array $expected_tables )
+    {
         global $wpdb;
         foreach ( $expected_tables as $name => $table ) {
             if ( preg_match( '/\bIF NOT EXISTS\b/i', $table ) ) {

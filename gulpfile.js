@@ -86,7 +86,7 @@ gulp.task('scripts', function() {
     }))
     .pipe(plugin.sourcemaps.init())
     .pipe(plugin.babel({
-      presets: ['env'],
+      presets: ['es2015'],
       compact: true,
       ignore: ['what-input.js']
     }))
@@ -119,24 +119,8 @@ gulp.task('styles', function() {
     }));
 });
 
-
-
-// Watch files for changes (without Browser-Sync)
-gulp.task('watch', function() {
-
-  // Watch .scss files
-  gulp.watch(SOURCE.styles, ['styles']);
-
-  // Watch scripts files
-  gulp.watch(SOURCE.scripts, ['scripts']);
-
-});
-
-// Run styles, scripts and foundation-js
-gulp.task('default', gulp.parallel('styles', 'scripts'));
-
 // Browser-Sync watch files and inject changes
-gulp.task('browsersync', gulp.series('default', function() {
+gulp.task('browsersync', ['default'], function() {
 
   // Watch these files
   var files = [
@@ -153,4 +137,18 @@ gulp.task('browsersync', gulp.series('default', function() {
   gulp.watch(SOURCE.styles, ['styles']);
   gulp.watch(SOURCE.scripts, ['scripts']).on('change', browserSync.reload);
 
-}));
+});
+
+// Watch files for changes (without Browser-Sync)
+gulp.task('watch', function() {
+
+  // Watch .scss files
+  gulp.watch(SOURCE.styles, ['styles']);
+
+  // Watch scripts files
+  gulp.watch(SOURCE.scripts, ['scripts']);
+
+});
+
+// Run styles, scripts and foundation-js
+gulp.task('default', ['styles', 'scripts']);

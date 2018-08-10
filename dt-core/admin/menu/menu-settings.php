@@ -19,23 +19,26 @@ if ( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Settings_Menu
 {
     private static $_instance = null;
-    public static function instance() {
+    public static function instance()
+    {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
         return self::$_instance;
     }
 
-    public function __construct() {
+    public function __construct()
+    {
         add_action( "admin_menu", [ $this, "add_dt_options_menu" ] );
     }
 
-    public function add_dt_options_menu() {
-        $image_url = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMjEsMTBoLTEuM2MtMC4yLTAuNy0wLjUtMS40LTAuOS0yLjFsMC45LTAuOWMwLjgtMC44LDAuOC0yLDAtMi44aDBjLTAuOC0wLjgtMi0wLjgtMi44LDBsLTAuOSwwLjkgYy0wLjYtMC40LTEuMy0wLjctMi4xLTAuOVYzYzAtMS4xLTAuOS0yLTItMnMtMiwwLjktMiwydjEuM0M5LjMsNC41LDguNiw0LjcsNy45LDUuMUw3LjEsNC4yYy0wLjgtMC44LTItMC44LTIuOCwwaDAgYy0wLjgsMC44LTAuOCwyLDAsMi44bDAuOSwwLjlDNC43LDguNiw0LjUsOS4zLDQuMywxMEgzYy0xLjEsMC0yLDAuOS0yLDJjMCwxLjEsMC45LDIsMiwyaDEuM2MwLjIsMC43LDAuNSwxLjQsMC45LDIuMWwtMC45LDAuOSBjLTAuOCwwLjgtMC44LDIsMCwyLjhoMGMwLjgsMC44LDIsMC44LDIuOCwwbDAuOS0wLjljMC42LDAuNCwxLjMsMC43LDIuMSwwLjlWMjFjMCwxLjEsMC45LDIsMiwyczItMC45LDItMnYtMS4zIGMwLjctMC4yLDEuNC0wLjUsMi4xLTAuOWwwLjksMC45YzAuOCwwLjgsMiwwLjgsMi44LDBoMGMwLjgtMC44LDAuOC0yLDAtMi44bC0wLjktMC45YzAuNC0wLjYsMC43LTEuMywwLjktMi4xSDIxYzEuMSwwLDItMC45LDItMiBDMjMsMTAuOSwyMi4xLDEwLDIxLDEweiBNMTIsMTVjLTEuNywwLTMtMS4zLTMtM3MxLjMtMywzLTNzMywxLjMsMywzUzEzLjcsMTUsMTIsMTV6Ij48L3BhdGg+PC9nPjwvc3ZnPg==';
-        add_menu_page( __( 'General', 'disciple_tools' ), __( 'Settings (DT)', 'disciple_tools' ), 'manage_dt', 'dt_options', [ $this, 'content' ], $image_url, 59 );
+    public function add_dt_options_menu()
+    {
+        add_menu_page( __( 'General', 'disciple_tools' ), __( 'Settings (DT)', 'disciple_tools' ), 'manage_dt', 'dt_options', [ $this, 'content' ], dt_svg_icon(), 59 );
     }
 
-    public function content() {
+    public function content()
+    {
         if ( !current_user_can( 'manage_dt' ) ) {
             wp_die( 'You do not have sufficient permissions to access this page.' );
         }

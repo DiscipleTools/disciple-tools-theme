@@ -10,7 +10,8 @@ if ( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Site_Links_Tab extends Disciple_Tools_Abstract_Menu_Base
 {
     private static $_instance = null;
-    public static function instance() {
+    public static function instance()
+    {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -23,7 +24,8 @@ class Disciple_Tools_Site_Links_Tab extends Disciple_Tools_Abstract_Menu_Base
      * @access  public
      * @since   0.1.0
      */
-    public function __construct() {
+    public function __construct()
+    {
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 50, 1 ); // use the priority setting to control load order
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );

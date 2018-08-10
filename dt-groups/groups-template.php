@@ -16,7 +16,8 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * @return void
  */
-function dt_get_group_edit_form() {
+function dt_get_group_edit_form()
+{
 
     if ( class_exists( 'Disciple_Tools' ) ) {
 
@@ -50,7 +51,8 @@ function dt_get_group_edit_form() {
  *
  * @param $post
  */
-function dt_save_group( $post ) {
+function dt_save_group( $post )
+{
     if ( class_exists( 'Disciple_Tools' ) ) {
 
         if ( $post['post_title'] != get_the_title() ) {

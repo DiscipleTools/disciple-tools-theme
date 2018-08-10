@@ -20,10 +20,9 @@ class Disciple_Tools_Users
     /**
      * Disciple_Tools_Users constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         add_action( 'user_register', [ &$this, 'user_register_hook' ] );
-        add_action( 'wpmu_new_user', [ &$this, 'user_register_hook' ] );
-        add_action( 'add_user_to_blog', [ &$this, 'user_register_hook' ] );
         add_action( 'profile_update', [ &$this, 'profile_update_hook' ], 99 );
     }
 
@@ -35,7 +34,8 @@ class Disciple_Tools_Users
      * @return array|\WP_Error
      */
 
-    public static function get_assignable_users_compact( string $search_string = null ) {
+    public static function get_assignable_users_compact( string $search_string = null )
+    {
         //        @todo better permissions?
         //        @todo return only the users the user has the permission to assign to
         if ( !current_user_can( "access_contacts" ) ) {
@@ -113,7 +113,6 @@ class Disciple_Tools_Users
                     'user_url',
                     'display_name'
                 ],
-                'number' => 10
             ] );
 
             $users = $user_query->get_results();
@@ -131,7 +130,8 @@ class Disciple_Tools_Users
             }
         }
 
-        function asc_meth( $a, $b ) {
+        function asc_meth( $a, $b )
+        {
             $a["name"] = strtolower( $a["name"] );
             $b["name"] = strtolower( $b["name"] );
             return strcmp( $a["name"], $b["name"] );
@@ -151,7 +151,8 @@ class Disciple_Tools_Users
      *
      * @return array
      */
-    public static function switch_preference( int $user_id, string $preference_key, string $type = null ) {
+    public static function switch_preference( int $user_id, string $preference_key, string $type = null )
+    {
 
         $value = get_user_meta( $user_id, $preference_key, true );
 
@@ -190,7 +191,8 @@ class Disciple_Tools_Users
      *
      * @return bool|\WP_Error
      */
-    public static function update_user_contact_info() {
+    public static function update_user_contact_info()
+    {
         $current_user = wp_get_current_user();
 
         // validate nonce
@@ -279,7 +281,8 @@ class Disciple_Tools_Users
      *
      * @param $user_id
      */
-    public static function create_contact_for_user( $user_id ) {
+    public static function create_contact_for_user( $user_id )
+    {
         $user = get_user_by( 'id', $user_id );
         if ( $user->has_cap( 'access_contacts' ) ) {
             $args = [
@@ -322,16 +325,18 @@ class Disciple_Tools_Users
      *
      * @param $user_id
      */
-    public static function user_register_hook( $user_id ) {
+    public static function user_register_hook( $user_id )
+    {
         self::create_contact_for_user( $user_id );
     }
 
     /**
-     * Profile update hook
+     * Profile uppdate hook
      *
      * @param $user_id
      */
-    public static function profile_update_hook( $user_id ) {
+    public static function profile_update_hook( $user_id )
+    {
         self::create_contact_for_user( $user_id );
     }
 

@@ -95,7 +95,7 @@ class Disciple_Tools_Activity_Log_API {
                 $args['user_id'] = $user->ID;
             }
         } else {
-            $args['user_caps'] = 'system';
+            $args['user_caps'] = 'guest';
             if ( empty( $args['user_id'] ) ) {
                 $args['user_id'] = 0;
             }
@@ -170,7 +170,7 @@ class Disciple_Tools_Activity_Log_API {
             [ '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%d' ]
         );
 
-        if ( isset( $args["object_id"] ) && isset( $args["object_subtype"] ) && $args["object_subtype"] !== "last_modified" && ( isset( $args["object_type"] ) && $args["object_type"] !== "User" ) ){
+        if ( isset( $args["object_id"] ) && isset( $args["object_subtype"] ) && $args["object_subtype"] !== "last_modified" ){
             update_post_meta( $args["object_id"], "last_modified", time() );
         }
 

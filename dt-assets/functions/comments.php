@@ -3,7 +3,7 @@
 function disciple_tools_comments( $comment, $args, $depth ) {
 
     // TODO: Investigate whether we have to override a WordPress global
-    // @phpcs:ignore WordPress.Variables.GlobalVariables.OverrideProhibited
+    // @codingStandardsIgnoreLine
     $GLOBALS['comment'] = $comment; ?>
 
     <li <?php comment_class( 'panel' ); ?>>
@@ -62,5 +62,5 @@ function disciple_tools_comments( $comment, $args, $depth ) {
 
         </div>
     <!-- </li> is added by WordPress automatically -->
-    <?php
+<?php
 }

@@ -16,7 +16,8 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Locations extends Disciple_Tools_Posts
 {
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -257,7 +258,8 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
      *
      * @return array|WP_Error
      */
-    public static function get_locations() {
+    public static function get_locations()
+    {
         if ( ! current_user_can( 'read_location' ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read locations" ), [ 'status' => 403 ] );
         }
@@ -277,7 +279,8 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
      *
      * @return array|WP_Error
      */
-    public static function get_locations_compact( $search ) {
+    public static function get_locations_compact( $search )
+    {
         if ( !current_user_can( 'read_location' )){
             return new WP_Error( __FUNCTION__, __( "No permissions to read locations" ), [ 'status' => 403 ] );
         }

@@ -24,7 +24,8 @@ class Disciple_Tools_Reports_Contacts_Groups
      * @access public
      * @since  0.1.0
      */
-    public function __construct() {
+    public function __construct()
+    {
     } // End __construct()
 
     /**

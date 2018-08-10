@@ -70,7 +70,8 @@ class Disciple_Tools_Taxonomy
      * @param  string $plural    Plural  name.
      * @param  array  $args      Array of argument overrides.
      */
-    public function __construct( $post_type = '', $token = '', $singular = '', $plural = '', $args = [] ) {
+    public function __construct( $post_type = '', $token = '', $singular = '', $plural = '', $args = [] )
+    {
         $this->post_type = $post_type;
         $this->token = esc_attr( $token );
         $this->singular = esc_html( $singular );
@@ -93,7 +94,8 @@ class Disciple_Tools_Taxonomy
      * @since  0.1.0
      * @return array Default arguments.
      */
-    private function _get_default_args() {
+    private function _get_default_args()
+    {
         return [
         'labels' => $this->_get_default_labels(),
         'public' => true,
@@ -113,7 +115,8 @@ class Disciple_Tools_Taxonomy
      * @since  0.1.0
      * @return array Default labels.
      */
-    private function _get_default_labels() {
+    private function _get_default_labels()
+    {
         return [
             'name'              => _x( 'Categories', 'taxonomy general name', 'disciple_tools' ),
             'singular_name'     => _x( 'Category', 'taxonomy singular name', 'disciple_tools' ),
@@ -136,7 +139,8 @@ class Disciple_Tools_Taxonomy
      * @since  1.3.0
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         register_taxonomy( esc_attr( $this->token ), esc_attr( $this->post_type ), (array) $this->args );
     } // End register()
 }

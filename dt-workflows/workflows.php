@@ -39,7 +39,6 @@ class Disciple_Tools_Workflows {
     public function __construct() {
         include( 'update-required.php' );
         new Disciple_Tools_Update_Needed();
-        new Disciple_Tools_Update_Needed_Async();
 
     }
 }

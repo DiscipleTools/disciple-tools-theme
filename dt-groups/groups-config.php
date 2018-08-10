@@ -38,7 +38,8 @@ class Disciple_Tools_Groups_Config
      * @static
      * @return Disciple_Tools_Groups_Config instance
      */
-    public static function instance() {
+    public static function instance()
+    {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -52,7 +53,8 @@ class Disciple_Tools_Groups_Config
      * @access public
      * @since  0.1.0
      */
-    public function __construct() {
+    public function __construct()
+    {
         add_action( 'admin_menu', [ $this, 'remove_default_meta_boxes' ] );
     } // End __construct()
 
@@ -61,7 +63,8 @@ class Disciple_Tools_Groups_Config
      *
      * @see https://codex.wordpress.org/Function_Reference/remove_meta_box
      */
-    public function remove_default_meta_boxes() {
+    public function remove_default_meta_boxes()
+    {
 
         remove_meta_box( 'linktargetdiv', 'link', 'normal' );
         remove_meta_box( 'linkxfndiv', 'link', 'normal' );

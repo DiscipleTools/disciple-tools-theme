@@ -28,14 +28,14 @@ if ( ! class_exists( 'DT_Extensions_Menu' ) ) {
         }
 
         public function menu() {
-            $image_url = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4gICAgPGcgY2xhc3M9Im5jLWljb24td3JhcHBlciIgZmlsbD0iI2ZmZmZmZiI+ICAgICAgICA8cGF0aCBkPSJNMjAuNSAxMUgxOVY3YzAtMS4xLS45LTItMi0yaC00VjMuNUMxMyAyLjEyIDExLjg4IDEgMTAuNSAxUzggMi4xMiA4IDMuNVY1SDRjLTEuMSAwLTEuOTkuOS0xLjk5IDJ2My44SDMuNWMxLjQ5IDAgMi43IDEuMjEgMi43IDIuN3MtMS4yMSAyLjctMi43IDIuN0gyVjIwYzAgMS4xLjkgMiAyIDJoMy44di0xLjVjMC0xLjQ5IDEuMjEtMi43IDIuNy0yLjcgMS40OSAwIDIuNyAxLjIxIDIuNyAyLjdWMjJIMTdjMS4xIDAgMi0uOSAyLTJ2LTRoMS41YzEuMzggMCAyLjUtMS4xMiAyLjUtMi41UzIxLjg4IDExIDIwLjUgMTF6Ij48L3BhdGg+ICAgIDwvZz48L3N2Zz4=';
-            add_menu_page( __( 'Extensions (DT)', 'disciple_tools' ), __( 'Extensions (DT)', 'disciple_tools' ), 'manage_dt', 'dt_extensions', [ $this, 'page' ], $image_url, 59 );
+            add_menu_page( __( 'Extensions (DT)', 'disciple_tools' ), __( 'Extensions (DT)', 'disciple_tools' ), 'manage_dt', 'dt_extensions', [ $this, 'page' ], dt_svg_icon(), 59 );
         }
 
         /**
          * @return void
          */
-        public function page() {
+        public function page()
+        {
             if ( !current_user_can( 'manage_dt' ) ) {
                 wp_die( 'You do not have sufficient permissions to access this page.' );
             }
