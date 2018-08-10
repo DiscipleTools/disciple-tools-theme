@@ -42,8 +42,8 @@
        the WordPress namespaces. -->
   <rule ref="WordPress">
 
-
-
+    <!-- TODO: enable these -->
+    <exclude name="WordPress.VIP" />
     <exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
     <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
     <exclude name="WordPress.VIP.PostsPerPage.posts_per_page_nopaging" />
@@ -156,7 +156,6 @@
     <exclude name="WordPress.VIP.AdminBarRemoval.RemovalDetected" />
     <exclude name="WordPress.VIP.DirectDatabaseQuery.SchemaChange" />
     <exclude name="WordPress.VIP.RestrictedFunctions.custom_role_add_role" />
-    <exclude name="WordPress.VIP.RestrictedFunctions.get_page_by_title_get_page_by_title" />
     <exclude name="WordPress.VIP.RestrictedFunctions.get_term_by_get_term_by" />
     <exclude name="WordPress.VIP.RestrictedFunctions.switch_to_blog_switch_to_blog" />
     <!-- <exclude name="WordPress.WhiteSpace.CastStructureSpacing.NoSpaceBeforeOpenParenthesis" /> -->

@@ -16,7 +16,8 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * @return \Disciple_Tools_Metabox_Activity
  */
-function dt_activity_metabox() {
+function dt_activity_metabox()
+{
     $object = new Disciple_Tools_Metabox_Activity();
 
     return $object;
@@ -34,7 +35,8 @@ class Disciple_Tools_Metabox_Activity
      * @access public
      * @since  0.1.0
      */
-    public function __construct() {
+    public function __construct()
+    {
 
     } // End __construct()
 
@@ -46,7 +48,8 @@ class Disciple_Tools_Metabox_Activity
      *
      * @return array|null|object|\WP_Error
      */
-    public function activity_list_for_id( $id, $order = 'DESC' ) {
+    public function activity_list_for_id( $id, $order = 'DESC' )
+    {
         global $wpdb;
 
         if ( strtolower( $order ) != "desc" && strtolower( $order ) != "asc" ) {
@@ -65,9 +68,9 @@ class Disciple_Tools_Metabox_Activity
                     AND `object_id` != ''
                     AND `object_id` IS NOT NULL
                 ORDER BY "
-                // phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
-                . sanitize_sql_orderby( "`hist_time` $order" )
-                . ";",
+                // @codingStandardsIgnoreLine
+                . " `hist_time` $order
+                ;",
                 $id
             ), ARRAY_A
         );
@@ -82,7 +85,8 @@ class Disciple_Tools_Metabox_Activity
      *
      * @return \WP_Error
      */
-    public function activity_meta_box( $id ) {
+    public function activity_meta_box( $id )
+    {
         $list = $this->activity_list_for_id( $id );
         if ( is_wp_error( $list ) ) {
             echo 'List not available';

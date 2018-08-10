@@ -29,7 +29,8 @@ add_action( 'admin_enqueue_scripts', 'dt_options_scripts' );
 /**
  * Loads scripts and styles for the contacts page.
  */
-function dt_contact_page_scripts() {
+function dt_contact_page_scripts()
+{
     global $pagenow, $post;
 
     if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'contacts' === get_post_type( $post ) ) {
@@ -48,7 +49,8 @@ function dt_contact_page_scripts() {
 /**
  * Loads scripts and styles for the groups page.
  */
-function dt_group_page_scripts() {
+function dt_group_page_scripts()
+{
     global $pagenow, $post;
 
     if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'groups' === get_post_type( $post ) ) {
@@ -73,7 +75,8 @@ function dt_group_page_scripts() {
 /**
  * Loads scripts and styles for the groups page.
  */
-function dt_dashboard_page_scripts() {
+function dt_dashboard_page_scripts()
+{
     global $pagenow;
 
     if ( is_admin() && 'index.php' === $pagenow ) {
@@ -94,7 +97,8 @@ function dt_dashboard_page_scripts() {
 /**
  * Loads scripts and styles for the locations page.
  */
-function dt_location_page_scripts() {
+function dt_location_page_scripts()
+{
     global $pagenow, $post;
 
     if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'locations' === get_post_type( $post ) ) {
@@ -123,7 +127,8 @@ function dt_location_page_scripts() {
 /**
  * Loads scripts and styles for the assets page.
  */
-function dt_asset_page_scripts() {
+function dt_asset_page_scripts()
+{
     global $pagenow, $post;
 
     if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'assets' === get_post_type( $post ) ) {
@@ -142,7 +147,8 @@ function dt_asset_page_scripts() {
 /**
  * Loads scripts and styles for the assets page.
  */
-function dt_people_groups_post_type_scripts() {
+function dt_people_groups_post_type_scripts()
+{
     global $pagenow, $post;
 
     if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow || 'edit.php' === $pagenow ) && 'peoplegroups' === get_post_type( $post ) ) {
@@ -158,7 +164,8 @@ function dt_people_groups_post_type_scripts() {
 /**
  * Loads scripts and styles for the assets page.
  */
-function dt_options_scripts() {
+function dt_options_scripts()
+{
     if ( isset( $_GET["page"] ) && $_GET["page"] === 'dt_options' ) {
         wp_enqueue_script( 'dt_options_script', disciple_tools()->admin_js_url . 'dt-options.js', [
             'jquery',
@@ -183,7 +190,8 @@ function dt_options_scripts() {
 /**
  *
  */
-function dt_dismiss_notice_callback_script() {
+function dt_dismiss_notice_callback_script()
+{
     global $pagenow;
     if ( is_admin() && $pagenow === 'options-general.php' ) {
         wp_enqueue_script( 'disciple-tools-admin_script', disciple_tools()->admin_js_url . 'disciple-tools-admin.js', [ 'jquery' ], filemtime( disciple_tools()->admin_js_path . 'disciple-tools-admin.js' ), true );

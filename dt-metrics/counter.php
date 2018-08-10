@@ -21,14 +21,16 @@ function dt_counter() {
 class Disciple_Tools_Counter
 {
     private static $_instance = null;
-    public static function instance() {
+    public static function instance()
+    {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
         return self::$_instance;
     } // End instance()
 
-    public function __construct() {
+    public function __construct()
+    {
         // Load required files
         require_once( 'counters/abstract-class-counter.php' );
         require_once( 'counters/counter-connected.php' );
@@ -48,7 +50,8 @@ class Disciple_Tools_Counter
      *
      * @return int|array
      */
-    public static function critical_path( string $step_name = '' ) {
+    public static function critical_path( string $step_name = '' )
+    {
 
         $step_name = strtolower( $step_name );
 
@@ -121,7 +124,8 @@ class Disciple_Tools_Counter
      *
      * @return null|string
      */
-    public function connection_type_counter( $type, $meta_value ) {
+    public function connection_type_counter( $type, $meta_value )
+    {
         $type = $this->set_connection_type( $type );
         $count = new Disciple_Tools_Counter_Connected();
         $result = $count->has_meta_value( $type, $meta_value );
@@ -139,7 +143,8 @@ class Disciple_Tools_Counter
      *
      * @return int
      */
-    public function contacts_meta_counter( $meta_key, $meta_value ) {
+    public function contacts_meta_counter( $meta_key, $meta_value )
+    {
         $query = new WP_Query( [
             'meta_key' => $meta_key,
             'meta_value' => $meta_value,
@@ -159,7 +164,8 @@ class Disciple_Tools_Counter
      *
      * @return int
      */
-    public function groups_meta_counter( $meta_key, $meta_value ) {
+    public function groups_meta_counter( $meta_key, $meta_value )
+    {
         $query = new WP_Query( [
             'meta_key' => $meta_key,
             'meta_value' => $meta_value,
@@ -176,7 +182,8 @@ class Disciple_Tools_Counter
      *
      * @return null|string
      */
-    public function get_baptisms( $type ) {
+    public function get_baptisms( $type )
+    {
         switch ( $type ) {
             case 'baptisms':
                 $count = new Disciple_Tools_Counter_Baptism();
@@ -202,7 +209,8 @@ class Disciple_Tools_Counter
      *
      * @return number
      */
-    public function get_generation( $generation_number, $type = 'contacts' ) {
+    public function get_generation( $generation_number, $type = 'contacts' )
+    {
 
         // Set the P2P type for selecting group or contacts
         $type = $this->set_connection_type( $type );
@@ -294,7 +302,8 @@ class Disciple_Tools_Counter
      *
      * @return string
      */
-    protected function set_connection_type( $type ) {
+    protected function set_connection_type( $type )
+    {
         if ( $type == 'contacts' ) {
             $type = 'contacts_to_contacts';
         } elseif ( $type == 'groups' ) {

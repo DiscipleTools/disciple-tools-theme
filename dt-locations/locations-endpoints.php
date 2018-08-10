@@ -41,7 +41,8 @@ class Disciple_Tools_Locations_Endpoints
      * @static
      * @return Disciple_Tools_Locations_Endpoints instance
      */
-    public static function instance() {
+    public static function instance()
+    {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -55,7 +56,8 @@ class Disciple_Tools_Locations_Endpoints
      * @access public
      * @since  0.1.0
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->namespace = $this->context . "/v" . intval( $this->version );
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     } // End __construct()
@@ -63,7 +65,8 @@ class Disciple_Tools_Locations_Endpoints
     /**
      * Registers all of the routes associated with locations
      */
-    public function add_api_routes() {
+    public function add_api_routes()
+    {
         $base = '/locations';
 
         // Holds all routes for locations
@@ -141,7 +144,8 @@ class Disciple_Tools_Locations_Endpoints
     /**
      * @return array|\WP_Error
      */
-    public function get_locations() {
+    public function get_locations()
+    {
         //        $params = $request->get_params();
         //        @TODO check permissions
         $locations = Disciple_Tools_Locations::get_locations();
@@ -154,7 +158,8 @@ class Disciple_Tools_Locations_Endpoints
      *
      * @return array
      */
-    public function get_locations_compact( WP_REST_Request $request ) {
+    public function get_locations_compact( WP_REST_Request $request )
+    {
         $params = $request->get_params();
         $search = "";
         if ( isset( $params['s'] ) ) {
@@ -169,7 +174,8 @@ class Disciple_Tools_Locations_Endpoints
      *
      * @return array
      */
-    public function get_all_locations_grouped() {
+    public function get_all_locations_grouped()
+    {
         return Disciple_Tools_Locations::get_all_locations_grouped();
     }
 

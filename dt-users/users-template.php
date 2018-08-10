@@ -35,7 +35,8 @@ if ( !defined( 'ABSPATH' ) ) {
  *
  * @return array
  */
-function dt_get_user_associations() {
+function dt_get_user_associations()
+{
 
     // Set variables
     global $wpdb;
@@ -94,7 +95,8 @@ function dt_get_user_associations() {
  *
  * @return array
  */
-function dt_get_team_contacts( $user_id ) {
+function dt_get_team_contacts( $user_id )
+{
     // get variables
     global $wpdb;
     $user_connections = [];
@@ -160,7 +162,8 @@ function dt_get_team_contacts( $user_id ) {
  *
  * @return array
  */
-function dt_get_site_notification_defaults() {
+function dt_get_site_notification_defaults()
+{
     $site_options = dt_get_option( 'dt_site_options' );
 
     return $site_options['notifications'];
@@ -186,7 +189,8 @@ function dt_get_site_default_user_fields(): array
  *
  * @param int $user_id
  */
-function dt_user_display_name( int $user_id ) {
+function dt_user_display_name( int $user_id )
+{
     echo esc_html( dt_get_user_display_name( $user_id ) );
 }
 
@@ -197,7 +201,8 @@ function dt_user_display_name( int $user_id ) {
  *
  * @return string|WP_Error
  */
-function dt_get_user_display_name( $user_id ) {
+function dt_get_user_display_name( $user_id )
+{
     $user = get_userdata( $user_id );
 
     if ( ! $user ) {
@@ -229,7 +234,8 @@ function dt_get_user_id_from_assigned_to( $user_meta ){
  *
  * @return mixed
  */
-function dt_modify_profile_fields( $profile_fields ) {
+function dt_modify_profile_fields( $profile_fields )
+{
 
     $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
     if ( ! $site_custom_lists ) {
@@ -294,7 +300,8 @@ function dt_build_user_fields_display( array $usermeta ): array
  *
  * @return array|bool
  */
-function dt_get_user_locations_list( int $user_id ) {
+function dt_get_user_locations_list( int $user_id )
+{
     global $wpdb;
 
     // get connected location ids to user
@@ -336,7 +343,8 @@ function dt_get_user_locations_list( int $user_id ) {
  *
  * @return array|bool
  */
-function dt_get_user_team_members_list( int $user_id ) {
+function dt_get_user_team_members_list( int $user_id )
+{
 
     $team_members_list = [];
 

@@ -21,7 +21,6 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 if ( ! class_exists( 'Site_Link_System' ) ) {
 
-    // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
     // @codingStandardsIgnoreLine
     class Site_Link_System
     {
@@ -61,7 +60,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          * @since 1.4
          * @return array Returns array of site keys, or empty array.
          */
-        public static function get_site_keys() {
+        public static function get_site_keys()
+        {
             $prefix = self::$token;
             $keys = get_option( $prefix . '_api_keys', [] );
 
@@ -80,7 +80,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          *
          * @return string Returns transfer token for the two sites specified in the site1 and site2 fields.
          */
-        public static function create_transfer_token_for_site( $site_key ) {
+        public static function create_transfer_token_for_site( $site_key )
+        {
             return md5( $site_key . current_time( 'Y-m-dH', 1 ) );
         }
 
@@ -116,7 +117,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          *
          * @since 1.4
          */
-        public static function add_cors_sites() {
+        public static function add_cors_sites()
+        {
             /**
              * Cross Origin Resource Sharing (CORS)
              * This allows the javascript requests to cross domains to get access to resources. This is normally
@@ -172,7 +174,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          * For example: Site_Link_System::metabox_multiple_link()
          ************************************************************************************************************/
 
-        public function register_post_type() {
+        public function register_post_type()
+        {
             $args = [
                 'labels' => [
                         'name'               => $this->plural, /* This is the Title of the Group */
@@ -208,14 +211,14 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'supports'            => [ 'title' ]
             ]; /* end of options */
 
-            // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
             // @codingStandardsIgnoreLine
             $args = apply_filters( 'site_link_system_post_type_args', $args );
 
             register_post_type( $this->post_type, $args );
         }
 
-        public function register_custom_columns( $column_name ) {
+        public function register_custom_columns( $column_name )
+        {
             global $post;
 
             switch ( $column_name ) {
@@ -250,7 +253,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             }
         }
 
-        public function register_custom_column_headings( $defaults ) {
+        public function register_custom_column_headings( $defaults )
+        {
 
             $new_columns = array( 'linked' => __( 'Linked' ) );
 
@@ -273,7 +277,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             return $defaults;
         }
 
-        public function post_type_updated_messages( $messages ) {
+        public function post_type_updated_messages( $messages )
+        {
             global $post;
 
             $messages[ $this->post_type ] = [
@@ -306,12 +311,14 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             return $messages;
         }
 
-        public function meta_box_setup() {
+        public function meta_box_setup()
+        {
             add_meta_box( $this->post_type . '_details', __( 'Manage Site Link' ), [ $this, 'meta_box_load_management_box' ], $this->post_type, 'normal', 'high' );
             add_meta_box( $this->post_type . '_instructions', __( 'Configuration' ), [ $this, 'meta_box_configuration_box' ], $this->post_type, 'normal', 'high' );
         }
 
-        public function meta_box_content( $section = 'info' ) {
+        public function meta_box_content( $section = 'info' )
+        {
             global $post_id;
             $this->build_cached_option(); // verifies options install on load
             $fields = get_post_custom( $post_id );
@@ -433,7 +440,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             }
         }
 
-        public function meta_box_save( $post_id ) {
+        public function meta_box_save( $post_id )
+        {
 
             // Verify
             if ( get_post_type() != $this->post_type ) {
@@ -506,7 +514,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             return $post_id;
         }
 
-        public function meta_box_custom_fields_settings() {
+        public function meta_box_custom_fields_settings()
+        {
             $fields = [];
 
             // Public Info
@@ -546,12 +555,12 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'section'     => 'non_wp',
             ];
 
-            // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
             // @codingStandardsIgnoreLine
             return apply_filters( 'site_link_fields_settings', $fields );
         }
 
-        public function meta_box_load_management_box() {
+        public function meta_box_load_management_box()
+        {
             global $pagenow, $post_id;
 
             $this->build_cached_option(); // rests cached version of the site_link_details
@@ -650,21 +659,23 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             <?php
         }
 
-        public static function admin_notice( $notice, $type ) {
+        public static function admin_notice( $notice, $type )
+        {
             echo '<div class="notice notice-' . esc_attr( $type ) . ' is-dismissible"><p>';
             echo esc_html( $notice );
             echo '</p></div>';
         }
 
-        public function scripts() {
+        public function scripts()
+        {
             echo "<script type='text/javascript'>
-
+            
             function check_link_status( transfer_token, url, id ) {
-
+                
             let linked = '" . esc_attr__( 'Linked' ) . "';
             let not_linked = '" . esc_attr__( 'Not Linked' ) . "';
             let not_found = '" . esc_attr__( 'Failed to connect with the URL provided.' ) . "';
-
+            
             return jQuery.ajax({
                 type: 'POST',
                 data: JSON.stringify({ \"transfer_token\": transfer_token } ),
@@ -695,8 +706,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 .success-green { color: limegreen;}
                 .fail-red { color: red;}
                 .info-color { color: steelblue; }
-                .button-like-link-left {
-                    float: left;
+                .button-like-link-left { 
+                    float: left; 
                     background: none !important;
                     color: inherit;
                     border: none;
@@ -708,7 +719,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             </style>";
         }
 
-        public function enter_title_here( $title ) {
+        public function enter_title_here( $title )
+        {
             if ( get_post_type() == $this->post_type ) {
                 $title = __( 'Enter the title here' );
             }
@@ -810,7 +822,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             return self::get_non_local_site( $site1, $site2 );
         }
 
-        public static function get_non_local_site( $site1, $site2 ) {
+        public static function get_non_local_site( $site1, $site2 )
+        {
             $local_site = self::get_current_site_base_url();
             if ( $local_site == $site1 ) {
                 return $site2;
@@ -829,7 +842,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          *
          * @return bool
          */
-        public static function verify_one_site_is_local( $site1, $site2 ) {
+        public static function verify_one_site_is_local( $site1, $site2 )
+        {
             $local_site = self::get_current_site_base_url();
             if ( $local_site == $site1 ) {
                 return true;
@@ -850,7 +864,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         /**
          * Rest Registration for Site Link Check javascript
          */
-        public function add_api_routes() {
+        public function add_api_routes()
+        {
             $version = '1';
             $namespace = 'dt-public/v' . $version;
 
@@ -874,7 +889,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          *
          * @return string|WP_Error|array The contact on success
          */
-        public function site_link_check( WP_REST_Request $request ) {
+        public function site_link_check( WP_REST_Request $request )
+        {
             $params = $request->get_params();
 
             if ( isset( $params['transfer_token'] ) ) {
@@ -903,11 +919,13 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          *
          * @return string
          */
-        public static function generate_key( $token, $site1, $site2 ) {
+        public static function generate_key( $token, $site1, $site2 )
+        {
             return md5( $token . $site1 . $site2 );
         }
 
-        public static function decrypt_transfer_token( $transfer_token ) {
+        public static function decrypt_transfer_token( $transfer_token )
+        {
 
             $keys = self::get_site_keys();
 
@@ -932,7 +950,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             return false;
         }
 
-        public static function filter_for_target_site( $value ) {
+        public static function filter_for_target_site( $value )
+        {
             $local_site = self::get_current_site_base_url();
             if ( $local_site == $value['site1'] ) {
                 return $value['site2'];
@@ -941,7 +960,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             }
         }
 
-        public static function filter_url( $url ) {
+        public static function filter_url( $url )
+        {
             $url = sanitize_text_field( wp_unslash( $url ) );
             $url = str_replace( 'http://', '', $url );
             $url = trim( str_replace( 'https://', '', $url ) );
@@ -949,27 +969,32 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             return $url;
         }
 
-        public static function generate_token( $length = 32 ) {
+        public static function generate_token( $length = 32 )
+        {
             return bin2hex( random_bytes( $length ) );
         }
 
-        protected static function get_current_site_base_url() {
+        protected static function get_current_site_base_url()
+        {
             $url = str_replace( 'http://', '', home_url() );
             $url = str_replace( 'https://', '', $url );
 
             return trim( $url );
         }
 
-        private function flush_rewrite_rules() {
+        private function flush_rewrite_rules()
+        {
             $this->register_post_type();
             flush_rewrite_rules();
         }
 
-        public static function activation() {
-            self::instance()->flush_rewrite_rules();
+        public static function activation()
+        {
+            Site_Link_System::instance()->flush_rewrite_rules();
         }
 
-        public static function deactivate() {
+        public static function deactivate()
+        {
             $prefix = self::$token;
             delete_option( $prefix . '_api_keys' );
         }
@@ -984,7 +1009,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         public $menu_position;
         public $dashicon;
         private static $_instance = null;
-        public static function instance() {
+        public static function instance()
+        {
             if ( is_null( self::$_instance ) ) {
                 self::$_instance = new self();
             }
@@ -997,7 +1023,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          * @param int    $menu_position
          * @param string $dashicon
          */
-        public function __construct( $menu_position = 100, $dashicon = 'dashicons-admin-links' ) {
+        public function __construct( $menu_position = 100, $dashicon = 'dashicons-admin-links' )
+        {
             $this->post_type = self::$token;
             $this->singular = 'Site Link';
             $this->plural = 'Site Links';

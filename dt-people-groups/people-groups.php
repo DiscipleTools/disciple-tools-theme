@@ -34,7 +34,8 @@ class Disciple_Tools_People_Groups
      * @static
      * @return Disciple_Tools_People_Groups instance
      */
-    public static function instance() {
+    public static function instance()
+    {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -48,7 +49,8 @@ class Disciple_Tools_People_Groups
      * @access  public
      * @since   0.1.0
      */
-    public function __construct() {
+    public function __construct()
+    {
     } // End __construct()
 
     /**
@@ -56,7 +58,8 @@ class Disciple_Tools_People_Groups
      *
      * @return array
      */
-    public static function get_people_groups_compact( $search ) {
+    public static function get_people_groups_compact( $search )
+    {
         //        @todo check permissions
         $query_args = [
             'post_type' => 'peoplegroups',

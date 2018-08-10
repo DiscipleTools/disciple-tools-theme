@@ -25,7 +25,8 @@ class Disciple_Tools_Api_Keys // @todo remove and replace with Site_Link_System
      * @static
      * @return Disciple_Tools_Api_Keys instance
      */
-    public static function instance() {
+    public static function instance()
+    {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -39,7 +40,8 @@ class Disciple_Tools_Api_Keys // @todo remove and replace with Site_Link_System
      * @access public
      * @since  0.1.0
      */
-    public function __construct() {
+    public function __construct()
+    {
     }
 
     /**
@@ -51,7 +53,8 @@ class Disciple_Tools_Api_Keys // @todo remove and replace with Site_Link_System
      * @access private
      * @since  0.1.0
      */
-    private function admin_notice( $notice, $type ) {
+    private function admin_notice( $notice, $type )
+    {
         echo '<div class="notice notice-' . esc_attr( $type ) . ' is-dismissible"><p>';
         echo esc_html( $notice );
         echo '</p></div>';
@@ -63,7 +66,8 @@ class Disciple_Tools_Api_Keys // @todo remove and replace with Site_Link_System
      * @access public
      * @since  0.1.0
      */
-    public function api_keys_page() {
+    public function api_keys_page()
+    {
         $keys = get_option( "dt_api_keys", [] );
 
         if ( isset( $_POST['api-key-view-field'] ) && wp_verify_nonce( sanitize_key( $_POST['api-key-view-field'] ), 'api-keys-view' ) ) {
@@ -98,7 +102,8 @@ class Disciple_Tools_Api_Keys // @todo remove and replace with Site_Link_System
      *
      * @return bool
      */
-    public function check_api_key( $client_id, $client_token ) {
+    public function check_api_key( $client_id, $client_token )
+    {
         $keys = get_option( "dt_api_keys", [] );
 
         return isset( $keys[ $client_id ] ) && $keys[ $client_id ]["client_token"] == $client_token;

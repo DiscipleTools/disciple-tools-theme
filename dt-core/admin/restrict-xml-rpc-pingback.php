@@ -8,7 +8,8 @@
  *
  * @return mixed
  */
-function dt_block_xmlrpc_attacks( $methods ) {
+function dt_block_xmlrpc_attacks( $methods )
+{
     unset( $methods['pingback.ping'] );
     unset( $methods['pingback.extensions.getPingbacks'] );
 
@@ -21,7 +22,8 @@ add_filter( 'xmlrpc_methods', 'dt_block_xmlrpc_attacks' );
  *
  * @return mixed
  */
-function dt_remove_x_pingback_header( $headers ) {
+function dt_remove_x_pingback_header( $headers )
+{
     unset( $headers['X-Pingback'] );
 
     return $headers;

@@ -37,7 +37,8 @@ class Disciple_Tools_Reports_Cron
      * @static
      * @return Disciple_Tools_Reports_Cron instance
      */
-    public static function instance() {
+    public static function instance()
+    {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -50,7 +51,8 @@ class Disciple_Tools_Reports_Cron
      * @access public
      * @since  0.1.0
      */
-    public function __construct() {
+    public function __construct()
+    {
         // Adds actions for building reports
         add_action( 'build_disciple_tools_contacts_reports', [ $this, 'build_all_disciple_tools_contacts_reports' ] );
         add_action( 'build_disciple_tools_groups_reports', [ $this, 'build_all_disciple_tools_groups_reports' ] );
@@ -65,7 +67,8 @@ class Disciple_Tools_Reports_Cron
      *
      * @return void
      */
-    public static function register_daily_report_events() {
+    public static function register_daily_report_events()
+    {
 
         /**
          * Get options settings for reports
@@ -111,7 +114,8 @@ class Disciple_Tools_Reports_Cron
     /**
      * Build reports for Contacts
      */
-    public function build_all_disciple_tools_contacts_reports() {
+    public function build_all_disciple_tools_contacts_reports()
+    {
         // Calculate the next date(s) needed reporting
         $var_date = date( 'Y-m-d', strtotime( '-1 day' ) ); //TODO: should replace this with a foreach loop that queries that last day recorded
         $dates = [ $var_date ]; // array of dates
@@ -133,7 +137,8 @@ class Disciple_Tools_Reports_Cron
     /**
      * Build reports for Groups
      */
-    public function build_all_disciple_tools_groups_reports() {
+    public function build_all_disciple_tools_groups_reports()
+    {
         // Calculate the next date(s) needed reporting
         $var_date = date( 'Y-m-d', strtotime( '-1 day' ) ); //TODO: should replace this with a foreach loop that queries that last day recorded
         $dates = [ $var_date ]; // array of dates

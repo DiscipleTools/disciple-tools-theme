@@ -9,11 +9,9 @@ jQuery(document).ready(function() {
 function my_stats() {
     "use strict";
     let chartDiv = jQuery('#chart')
-    let sourceData = dtMetricsPersonal.data
-    let label = dtMetricsPersonal.data.translations
-
+    let sourceData = dtMetricsPersonal.overview
     chartDiv.empty().html(`
-        <span class="section-header">`+ label.title +`</span>
+        <span class="section-header">`+ sourceData.translations.title +`</span>
         <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
         <div class="medium reveal" class="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
@@ -21,16 +19,16 @@ function my_stats() {
         <br><br>
         <div class="grid-x grid-padding-x grid-padding-y">
             <div class="cell center callout">
-                <p><span class="section-subheader">`+ label.title_contacts +`</span></p>
+                <p><span class="section-subheader">Contacts</span></p>
                 <div class="grid-x">
                     <div class="medium-4 cell center">
-                        <h4>`+ label.label_active_contacts +`<br><span id="contacts">0</span></h4>
+                        <h4>Total Contacts<br><span id="contacts">0</span></h4>
                     </div>
                     <div class="medium-4 cell center left-border-grey">
-                        <h4>`+ label.title_waiting_on_accept +`<br><span id="needs_accepted">0</span></h4>
+                        <h4>Waiting on Accept<br><span id="needs_accepted">0</span></h4>
                     </div>
                     <div class="medium-4 cell center left-border-grey">
-                        <h4>`+ label.title_waiting_on_update +`<br><span id="updates_needed">0</span></h4>
+                        <h4>Waiting on Update<br><span id="updates_needed">0</span></h4>
                     </div>
                 </div>
             </div>
@@ -40,30 +38,35 @@ function my_stats() {
             <div class="cell">
             <br>
                 <div class="cell center callout">
-                    <p><span class="section-subheader">`+ label.title_groups +`</span></p>
+                    <p><span class="section-subheader">Groups</span></p>
                     <div class="grid-x">
                         <div class="medium-4 cell center">
-                            <h4>`+ label.title_total_groups +`<br><span id="total_groups">0</span></h4>
+                            <h4>Total Groups<br><span id="total_groups">0</span></h4>
                         </div>
                         <div class="medium-4 cell center left-border-grey">
-                            <h4>`+ label.title_needs_training +`<br><span id="needs_training">0</span></h4>
+                            <h4>Needs Training<br><span id="needs_training">0</span></h4>
+                        </div>
+                        <div class="medium-4 cell center left-border-grey">
+                            <h4>Generations<br><span id="generations">0</span></h4>
                         </div>
                    </div> 
                 </div>
             </div>
             <div class="cell">
-                <div id="my_groups_health" style="height: 500px;"></div>
-            </div>
-            <div class="cell">
-            <hr>
                 <div class="grid-x">
                     <div class="cell medium-6 center">
-                        <span class="section-subheader">`+ label.title_group_types +`</span>
+                        <span class="section-subheader">Group Types</span>
                         <div id="group_types" style="height: 400px;"></div>
+                    </div>
+                    <div class="cell medium-6">
+                        <div id="group_generations" style="height: 400px;"></div>
                     </div>
                 </div>
             </div>
-            
+            <div class="cell">
+            <hr>
+                <div id="my_groups_health" style="height: 500px;"></div>
+            </div>
         </div>
         `)
 
@@ -73,7 +76,6 @@ function my_stats() {
     jQuery('#updates_needed').html( numberWithCommas( hero.needs_update ) )
 
     jQuery('#total_groups').html( numberWithCommas( hero.groups ) )
-    jQuery('#needs_training').html( numberWithCommas( hero.needs_training ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'bar']});
@@ -95,9 +97,9 @@ function my_stats() {
                 width: "75%",
                 height: "85%" },
             hAxis: {
-                title: label.label_number_of_contacts,
+                title: 'number of contacts',
             },
-            title: label.label_my_follow_up_progress,
+            title: "My Follow-Up Progress",
             legend: {position: "none"},
         };
 
@@ -122,7 +124,7 @@ function my_stats() {
             hAxis: {
                 format: 'decimal',
             },
-            title: label.label_group_needing_training,
+            title: "Groups Needing Training Attention",
             legend: {position: "none"},
             colors: ['green' ],
         };
@@ -180,7 +182,7 @@ function my_stats() {
                 height: "85%" },
             title: "Generations",
             vAxis: {
-                title: label.label_generations,
+                title: 'generations',
                 format: '0'
             },
             hAxis: {
@@ -197,10 +199,10 @@ function my_stats() {
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
 
-    /*chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span>
+    chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span> 
             <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
             <span class="spinner" style="display: none;"><img src="`+dtMetricsPersonal.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
-            </div>`)*/
+            </div>`)
 }
 
 function legend() {

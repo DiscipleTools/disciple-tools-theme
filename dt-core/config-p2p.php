@@ -6,7 +6,8 @@
  * @see https://github.com/scribu/wp-posts-to-posts/wiki
  */
 
-function dt_my_connection_types() {
+function dt_my_connection_types()
+{
 
     p2p_register_connection_type(
         [
@@ -359,6 +360,7 @@ function dt_my_connection_types() {
     );
 
     //    } // end options filter for people groups
+
 }
 add_action( 'p2p_init', 'dt_my_connection_types' );
 
@@ -369,7 +371,8 @@ add_action( 'p2p_init', 'dt_my_connection_types' );
  * @param  $args
  * @return mixed
  */
-function dt_p2p_published_by_default( $args ) {
+function dt_p2p_published_by_default( $args )
+{
     $args['post_status'] = 'publish';
 
     return $args;
@@ -381,7 +384,8 @@ add_filter( 'p2p_new_post_args', 'dt_p2p_published_by_default', 10, 1 );
  *
  * @param $user
  */
-function dt_user_location_connections( $user ) {
+function dt_user_location_connections( $user )
+{
 
     // Find connected posts
     $args = [
@@ -454,7 +458,8 @@ add_action( 'edit_user_profile', 'dt_user_location_connections', 999 );
  *
  * @param $user
  */
-function dt_user_peoplegroup_connections( $user ) {
+function dt_user_peoplegroup_connections( $user )
+{
 
     // Find connected posts
     $args = [

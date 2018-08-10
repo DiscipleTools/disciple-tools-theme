@@ -17,7 +17,8 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * @return \Disciple_Tools_Metabox_Share_Contact
  */
-function dt_share_contact_metabox() {
+function dt_share_contact_metabox()
+{
     return new Disciple_Tools_Metabox_Share_Contact();
 }
 
@@ -33,13 +34,15 @@ class Disciple_Tools_Metabox_Share_Contact
      * @access public
      * @since  0.1.0
      */
-    public function __construct() {
+    public function __construct()
+    {
     } // End __construct()
 
     /**
      * Contents for the Sharing Metabox
      */
-    public function content_display( $post_id ) {
+    public function content_display( $post_id )
+    {
         $shared_with_list = Disciple_Tools_Contacts::get_shared_with( 'contacts', $post_id );
         if ( !empty( $shared_with_list ) ) { ?>
 

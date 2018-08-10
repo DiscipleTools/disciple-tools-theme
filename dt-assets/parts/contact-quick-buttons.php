@@ -2,7 +2,7 @@
 ( function() {
     $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
-    ?>
+?>
 
 
 <div style="width:100%">
@@ -28,12 +28,12 @@
                 <span class="contact-quick-button-number"><?php echo esc_html( $current_value ); ?></span>
                 <p><?php echo esc_html( $val["name"] ); ?></p>
             </button>
-            <?php
+        <?php
         }
     }
     ?>
     </div>
 </div>
 
-    <?php
+<?php
 } )();

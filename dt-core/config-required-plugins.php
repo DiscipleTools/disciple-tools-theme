@@ -91,13 +91,13 @@ function dt_register_required_plugins() {
 //            'version' => '0.1.0',
 //            'is_callable' => 'dt_mailchimp',
 //        ),
-//        array(
-//            'name' => 'Disciple Tools - Webform',
-//            'slug' => 'disciple-tools-webform',
-//            'source' => 'https://github.com/DiscipleTools/disciple-tools-webform/archive/master.zip',
-//            'version' => '0.1.3',
-//            'is_callable' => 'dt_webform',
-//        ),
+        array(
+            'name' => 'Disciple Tools - Webform',
+            'slug' => 'disciple-tools-webform',
+            'source' => 'https://github.com/DiscipleTools/disciple-tools-webform/archive/master.zip',
+            'version' => '0.1.3',
+            'is_callable' => 'dt_webform',
+        ),
 
     );
 

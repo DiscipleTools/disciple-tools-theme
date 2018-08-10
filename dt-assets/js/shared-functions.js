@@ -211,11 +211,9 @@ let API = {
 }
 
 function handelAjaxError(err) {
-  if (_.get(err, "statusText") !== "abortPromise" && err.responseText){
-    console.trace("error")
-    console.log(err)
-    jQuery("#errors").append(err.responseText)
-  }
+  console.trace("error")
+  console.log(err)
+  jQuery("#errors").append(err.responseText)
 }
 
 jQuery( document ).ajaxComplete(function(event, xhr, settings) {

@@ -517,7 +517,7 @@ jQuery(document).ready(function($) {
     }).catch(handelAjaxError)
   })
 
-  $("#group-details-edit").on('change', '.contact-input', function() {
+  $(document).on('change', '.contact-input', function() {
     let value = $(this).val()
     let field = $(this).data("type")
     let key = $(this).attr('id')
@@ -530,7 +530,7 @@ jQuery(document).ready(function($) {
     } else {
       editFieldsUpdate[field].values.push({ key, value })
     }
-  }).on('click', '.delete-button', function () {
+  }).on('click', '#contact-details-edit .delete-button', function () {
     let field = $(this).data('type')
     let key = $(this).data('id')
     if ( key !== 'new' ){
@@ -615,7 +615,7 @@ jQuery(document).ready(function($) {
    * Group Status
    */
 
-  let selectFiled = $('select.select-field')
+  let selectFiled = $('.select-field')
   selectFiled.on('change', function () {
     let id = $(this).attr('id')
     let val = $(this).val()
@@ -626,13 +626,6 @@ jQuery(document).ready(function($) {
     ).catch(err=>{
       console.log(err)
     })
-  })
-  $('input.text-input').change(function(){
-    const id = $(this).attr('id')
-    const val = $(this).val()
-
-    API.save_field_api('group', groupId, { [id]: val })
-      .catch(handelAjaxError)
   })
 
   /**
@@ -663,18 +656,7 @@ jQuery(document).ready(function($) {
         churchWheel.find(`#${m}`).css("opacity", ".1")
         $(`#church_${m}`).css("opacity", ".4")
       }
-  })
-  //for custom fields
-  Object.keys(group).forEach(m=>{
-    var m = m.replace("church_custom_", "");
-    if (group[`church_custom_${m}`] && ["1", "Yes"].indexOf(group[`church_custom_${m}`]["key"])> -1){
-      churchWheel.find(`#${m}`).css("opacity", "1")
-      $(`#church_custom_${m}`).css("opacity", "1")
-    } else {
-      churchWheel.find(`#${m}`).css("opacity", ".1")
-      $(`#church_custom_${m}`).css("opacity", ".4")
-    }
-})
+    })
     if (!group["church_commitment"] || group["church_commitment"]["key"] === '0'){
       churchWheel.find('#group').css("opacity", "1")
       $(`#church_commitment`).css("opacity", ".4")
