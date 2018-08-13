@@ -42,9 +42,9 @@ if ( ! get_user_meta( get_current_user_id(), 'dt_product_tour' ) ) { // test if 
                     return jQuery.ajax({
                         type: "GET",
                         contentType: "application/json; charset=utf-8",
-                        url: "<?php echo get_site_url( null, '/wp-json/dt/v1/users/disable_product_tour' ) ?>",
+                        url: "<?php echo esc_html( get_site_url( null, '/wp-json/dt/v1/users/disable_product_tour' ) )?>",
                         beforeSend: function(xhr) {
-                            xhr.setRequestHeader('X-WP-Nonce', '<?php echo wp_create_nonce( 'wp_rest' ) ?>' );
+                            xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_html( wp_create_nonce( 'wp_rest' ) )?>' );
                         },
                     })
                         .done(function (data) {

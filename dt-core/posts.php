@@ -940,7 +940,8 @@ class Disciple_Tools_Posts
         }
 
 
-        // phpcs:disable WordPress.WP.PreparedSQL.NotPrepared
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
         $prepared_sql = $wpdb->prepare("
             SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, $wpdb->posts.post_title, $wpdb->posts.post_type FROM $wpdb->posts
             " . $sort_join . " " . $inner_joins . " " . $share_joins . " " . $access_joins . "

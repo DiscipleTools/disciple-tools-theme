@@ -192,20 +192,6 @@ class Disciple_Tools_Contacts_Endpoints
         );
     }
 
-    /**
-     * Check to see if the client_id and the client_token are set and see if they are valid
-     *
-     * @param  $query_params
-     *
-     * @access private
-     * @since  0.1.0
-     * @return bool
-     */
-    private function check_api_token( $query_params ) {
-        if ( isset( $query_params['client_id'] ) && isset( $query_params['client_token'] ) ) {
-            return $this->api_keys_controller->check_api_key( $query_params['client_id'], $query_params['client_token'] );
-        }
-    }
 
     /**
      * Create a contact from the PUBLIC api.

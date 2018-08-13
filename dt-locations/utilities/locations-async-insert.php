@@ -34,10 +34,12 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
          * to allow for asynchronous processing. This is a valid nonce but is not recognized by the WP standards checker.
          *
          */
-        // @phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+        // WordPress.CSRF.NonceVerification.NoNonceVerification
+        // @phpcs:ignore
         if ( isset( $_POST['action'] ) && sanitize_key( wp_unslash( $_POST['action'] ) ) == 'dt_async_insert_location' && isset( $_POST['_nonce'] ) && $this->verify_async_nonce( sanitize_key( wp_unslash( $_POST['_nonce'] ) ) ) ) {
 
-            // @phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+            // WordPress.CSRF.NonceVerification.NoNonceVerification
+            // @phpcs:ignore
             $mapped_from_form = array_map( 'sanitize_text_field', wp_unslash( $_POST[0] ) );
 
             // prepare standard fields

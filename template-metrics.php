@@ -20,7 +20,8 @@ Template Name: Metrics
 
                             <?php
 
-                            // @phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+                            // WordPress.XSS.EscapeOutput.OutputNotEscaped
+                            // @phpcs:ignore
                             echo apply_filters( 'dt_metrics_menu', '' );
 
                             ?>
