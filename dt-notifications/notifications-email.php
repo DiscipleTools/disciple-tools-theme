@@ -125,7 +125,8 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
          * Nonce validation is done through a custom nonce process inside Disciple_Tools_Async_Task
          * to allow for asynchronous processing. This is a valid nonce but is not recognized by the WP standards checker.
          */
-        // @phpcs:disable WordPress.CSRF.NonceVerification.NoNonceVerification
+        // WordPress.CSRF.NonceVerification.NoNonceVerification
+        // @phpcs:disable
         $id = get_user_by( 'email', sanitize_email( $_POST[0]['email'] ) );
         if ( isset( $_POST['action'] ) ) {
 //            ( metadata_exists( 'user', $id->ID, 'default_password_nag' ) || metadata_exists( 'user', $id->ID, 'session_tokens' )

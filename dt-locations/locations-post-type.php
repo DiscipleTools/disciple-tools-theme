@@ -321,7 +321,8 @@ class Disciple_Tools_Location_Post_Type
          * Free parenting of non-geocoded locations section
          */
         if ( ! $raw ) :
-            // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
+            // WordPress.XSS.EscapeOutput.OutputNotEscaped
+            // phpcs:disable
             $pages = wp_dropdown_pages( [
                 'post_type'        => $post->post_type,
                 'exclude_tree'     => esc_html( $post->ID ),
@@ -335,7 +336,8 @@ class Disciple_Tools_Location_Post_Type
             if ( ! empty( $pages ) ) : ?>
                 <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="parent_id"><?php esc_html_e( 'Parent' ); ?></label></p>
                 <?php
-                // @phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+                // WordPress.XSS.EscapeOutput.OutputNotEscaped
+                // @phpcs:ignore
                 echo $pages;
             endif; // end empty pages check?>
 

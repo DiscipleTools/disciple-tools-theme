@@ -383,15 +383,13 @@ class Disciple_Tools_Reports_API
         if ( !empty( $subsource ) ) {
             // Build full query
             $results = $wpdb->get_results( $wpdb->prepare(
-                "SELECT "
-                // @phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
-                . ( $id_only ? "id " : "* " )
-                . " FROM
-                    `$wpdb->dt_reports`
+                "SELECT %s 
+                FROM `$wpdb->dt_reports`
                 WHERE
                     `report_date` LIKE %s
                     AND `report_source` = %s
                     AND `report_subsource` = %s",
+                ( $id_only ? "id " : "* " ),
                 $wpdb->esc_like( $date ) . '%',
                 $source,
                 $subsource
@@ -399,14 +397,12 @@ class Disciple_Tools_Reports_API
         } else {
             // Build full query
             $results = $wpdb->get_results( $wpdb->prepare(
-                "SELECT "
-                // @phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
-                . ( $id_only ? "id " : "* " )
-                . " FROM
+                "SELECT %s FROM
                     `$wpdb->dt_reports`
                 WHERE
                     `report_date` LIKE %s
                     AND `report_source` = %s",
+                ( $id_only ? "id " : "* " ),
                 $wpdb->esc_like( $date ) . '%',
                 $source
             ), ARRAY_A );

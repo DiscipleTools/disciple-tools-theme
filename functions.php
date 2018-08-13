@@ -180,8 +180,8 @@ else {
             /**
              * Rest API Support
              */
-            require_once( get_template_directory() . '/dt-core/integrations/class-api-keys.php' ); // API keys for remote access // @todo remove and integrate with Site_Link_System
-            $this->api_keys = Disciple_Tools_Api_Keys::instance(); // @todo remove and integrate with Site_Link_System
+//            require_once( get_template_directory() . '/dt-core/integrations/class-api-keys.php' ); // API keys for remote access // @todo remove and integrate with Site_Link_System
+//            $this->api_keys = Disciple_Tools_Api_Keys::instance(); // @todo remove and integrate with Site_Link_System
 
             require_once( get_template_directory() . '/dt-core/admin/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
             require_once( get_template_directory() . '/dt-core/admin/restrict-xml-rpc-pingback.php' ); // protect against DDOS attacks.
@@ -201,7 +201,6 @@ else {
             require_once( get_template_directory() . '/dt-assets/functions/cleanup.php' ); // WP Head and other cleanup functions
             require_once( get_template_directory() . '/dt-assets/functions/enqueue-scripts.php' ); // Register scripts and stylesheets
             require_once( get_template_directory() . '/dt-assets/functions/sidebar.php' ); // Register sidebars/widget areas
-            require_once( get_template_directory() . '/dt-assets/functions/comments.php' ); // Makes WordPress comments suck less
             require_once( get_template_directory() . '/dt-assets/functions/page-navi.php' ); // Replace 'older/newer' post links with numbered navigation
             require_once( get_template_directory() . '/dt-assets/functions/private-site.php' ); // Sets site to private
             require_once( get_template_directory() . '/dt-assets/functions/login.php' ); // Customize the WordPress login menu

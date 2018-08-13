@@ -64,10 +64,8 @@ class Disciple_Tools_Metabox_Activity
                     `object_id` = %s
                     AND `object_id` != ''
                     AND `object_id` IS NOT NULL
-                ORDER BY "
-                // phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
-                . sanitize_sql_orderby( "`hist_time` $order" )
-                . ";",
+                ORDER BY %s ;",
+                sanitize_sql_orderby( "`hist_time` $order" ),
                 $id
             ), ARRAY_A
         );

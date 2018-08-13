@@ -34,7 +34,6 @@ class Disciple_Tools_Groups_Endpoints
     private $context = "dt";
     private $namespace;
     private $groups_instance;
-    private $api_keys_controller;
 
     /**
      * Disciple_Tools_Groups_Endpoints constructor.
@@ -46,7 +45,6 @@ class Disciple_Tools_Groups_Endpoints
         require_once( 'groups.php' );
         $this->groups_instance = new Disciple_Tools_Groups();
 
-        $this->api_keys_controller = Disciple_Tools_Api_Keys::instance();
     }
 
     public function add_api_routes() {

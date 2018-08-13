@@ -178,7 +178,8 @@ if ( !class_exists( 'Disciple_Tools_Three_Column_Screen_Layout' ) ) {
                 }
             }
 
-            // @phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+            // WordPress.XSS.EscapeOutput.OutputNotEscaped
+            // @phpcs:ignore
             echo $content;
         }
     }
