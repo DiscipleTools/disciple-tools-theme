@@ -34,7 +34,6 @@ class Disciple_Tools_Contacts_Endpoints
     private $context = "dt";
     private $namespace;
     private $contacts_instance;
-    private $api_keys_controller;
 
     /**
      * Disciple_Tools_Contacts_Endpoints constructor.
@@ -45,8 +44,6 @@ class Disciple_Tools_Contacts_Endpoints
 
         require_once( 'contacts.php' );
         $this->contacts_instance = new Disciple_Tools_Contacts();
-
-        $this->api_keys_controller = Disciple_Tools_Api_Keys::instance();
     }
 
     /**
