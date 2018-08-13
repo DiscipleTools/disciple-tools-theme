@@ -24,9 +24,9 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
-        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 99, 1 );
-        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
+        add_action( 'admin_menu', [ $this, 'add_submenu' ], 110 );
+        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 110, 1 );
+        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 110, 1 );
 
         parent::__construct();
     } // End __construct()
