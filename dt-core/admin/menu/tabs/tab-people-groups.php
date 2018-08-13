@@ -48,7 +48,7 @@ class Disciple_Tools_Tab_People_Groups extends Disciple_Tools_Abstract_Menu_Base
 
             $this->template( 'begin' );
 
-            echo 'here';
+            Disciple_Tools_People_Groups::admin_tab_table();
 
             $this->template( 'right_column' );
 

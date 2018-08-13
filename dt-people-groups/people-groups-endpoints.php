@@ -64,6 +64,18 @@ class Disciple_Tools_People_Groups_Endpoints
                 'callback' => [ $this, 'get_people_groups_compact' ],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/people-groups/search_csv', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'search_csv' ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/people-groups/add_single_people_group', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'add_single_people_group' ],
+            ]
+        );
     }
 
     /**
@@ -81,5 +93,37 @@ class Disciple_Tools_People_Groups_Endpoints
         $people_groups = Disciple_Tools_people_groups::get_people_groups_compact( $search );
 
         return $people_groups;
+    }
+
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return array|WP_Error
+     */
+    public function search_csv( WP_REST_Request $request ) {
+
+        $params = $request->get_params();
+        if ( isset( $params['s'] ) ) {
+            $people_groups = Disciple_Tools_people_groups::search_csv( $params['s'] );
+            return $people_groups;
+        } else {
+            return new WP_Error( __METHOD__, 'Missing required parameter `s`' );
+        }
+    }
+
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return array|WP_Error
+     */
+    public function add_single_people_group( WP_REST_Request $request ) {
+
+        $params = $request->get_params();
+        if ( isset( $params['rop3'] ) ) {
+            $result = Disciple_Tools_people_groups::add_single_people_group( $params['rop3'] );
+            return $result;
+        } else {
+            return new WP_Error( __METHOD__, 'Missing required parameter `s`' );
+        }
     }
 }

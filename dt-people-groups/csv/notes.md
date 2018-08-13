@@ -28,6 +28,28 @@ JOSHUA PROJECT PEOPLES DATA
 ROG3,Ctry,PeopleID3,ROP3,PeopNameAcrossCountries,PeopNameInCountry,Population,.....
 ```
 
+Remove the last section of the file which includes sources information. 
+```$xslt
+
+Bible Translation status:
+0,Translation Need Questionable
+1,"None, Definite Need"
+2,Portions
+3,New Testament
+4,Complete Bible
+
+"Joshua Project welcomes corrections / updates to this data.  Please send feedback to:"
+
+Email:,info@joshuaproject.net
+Web:,www.joshuaproject.net
+Office:,719.886.4000
+Postal:,Joshua Project 
+,PO Box 62614
+,"Colorado Springs, CO 80962"
+,United States
+
+```
+
 This places the column names at the top of the file with no empty space. Now 
 the `.csv` file that is ready for installing into the Disciple Tools theme. 
 

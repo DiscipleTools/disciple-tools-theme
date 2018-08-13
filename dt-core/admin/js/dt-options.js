@@ -125,3 +125,61 @@ function import_simple_list() {
 
     spinner.empty()
 }
+
+function group_search() {
+    let sval = jQuery('#group-search').val();
+    let data = { "s": sval }
+    jQuery.ajax({
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: dtOptionAPI.root + 'dt/v1/people-groups/search_csv',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtOptionAPI.nonce);
+        },
+    })
+        .done(function (data) {
+            let div = jQuery('#results')
+            div.empty()
+
+            div.append(`<dl><dt><strong>`+sval+`</strong></dt>`)
+
+            jQuery.each(data, function(i, v) {
+                div.append(`
+                <dd>`+ v[4] +` (`+ v[3] +`) <button onclick="add_single_people_group(`+v[3]+`)">add</button></dd>
+                `)
+            })
+            div.append(`</dl>`)
+
+        })
+        .fail(function (err) {
+            console.log("error");
+            console.log(err);
+        })
+}
+
+function add_single_people_group( rop3 ) {
+    let data = { "rop3": rop3 }
+    console.log("add_single_people_group")
+    console.log(rop3)
+
+    jQuery.ajax({
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: dtOptionAPI.root + 'dt/v1/people-groups/add_single_people_group',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtOptionAPI.nonce);
+        },
+    })
+        .done(function (data) {
+            console.log(data)
+
+        })
+        .fail(function (err) {
+            console.log("error");
+            console.log(err);
+        })
+}
