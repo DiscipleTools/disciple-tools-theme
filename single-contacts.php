@@ -102,7 +102,7 @@ declare( strict_types=1 );
         ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $masterId, $nonMasterId );
         Disciple_Tools_Contacts::close_account( $closeId );
         //$contact=Disciple_Tools_Contacts::update_contact( $contact_id, $update, true);
-        header( "location: /contacts/". get_the_ID() );
+        header( "location: " . site_url( '/contacts/' .get_the_ID() ) );
 
             // $update = [
             //     "overall_status" => 'active',

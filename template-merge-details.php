@@ -10,13 +10,13 @@ if (isset( $_POST['dismiss'] )) {
     $currentId = $_POST['currentId'];
     $id = $_POST['id'];
     ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $currentId, $id );
-    header( 'Location: /contacts/' . $currentId );
+    header( "location: " . site_url( '/contacts/' . $currentId ) );
 }
 if (isset( $_POST['unsure'] )) {
     $currentId = $_POST['currentId'];
     $id = $_POST['id'];
     ( new Disciple_Tools_Contacts() )->unsure_duplicate( $currentId, $id );
-    header( 'Location: /contacts/' . $currentId );
+    header( "location: " . site_url( '/contacts/' . $currentId ) );
 }
 
 get_header();
@@ -77,8 +77,8 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
                 </div>
-                 
-                <form id="merge-form" onsubmit="merge(event);" method="post" action="/contacts/" >
+
+                <form id="merge-form" onsubmit="merge(event);" method="post" action="<?php echo esc_url( site_url( '/contacts/' ) ); ?>" >
                     <input type='hidden' name='duplicateId' value='<?php echo $dupeid; ?>'/>
                 <div class="line-wrap">
                   <div class="merge-column">
@@ -94,8 +94,8 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                   </div>
                 </div>
 
+                <form id='merge-form' onsubmit='merge(event);' method='POST' action='<?php echo esc_url( site_url( '/contacts/' ) ); ?>'>";
                 <?php
-                echo "<form id='merge-form' onsubmit='merge(event);' method='POST' action='/contacts/'>";
                 foreach ($fields as $key => $field) {
                     foreach ($data[$key] as $idx => $type) {
                         $class = '';
@@ -180,7 +180,7 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                           }
                       });
                   }
-                  
+
                   function toggleFields(o) {
                       if($(o).text().match(/Show/)) {
                           $(".toggle").removeClass('hide');
@@ -190,7 +190,7 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                           $(o).text("Show All Fields");
                       }
                   }
-                  
+
                   $(".merge-column").click(function(e) {
                         var input = $(this).find('input[type=radio], input[type=checkbox]');
                         if($(e.target).is(input) || $(e.target).is('.fi-pencil')) {
@@ -198,9 +198,9 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                         }
                         input.click();
                   });
-                  
-              
-              
+
+
+
               function editRow(o, callback) {
                   var line = $(o).closest('.line-wrap');
                   var cell = $(o).closest('.merge-column');
@@ -219,7 +219,7 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                   toggleRowEdit(o);
                   return callback(cell, copy, checked, field);
               }
-              
+
               function edit(o, copy, checked, field) {
                   $('html').click(function(e) {
                         // TODO : cancel editing on outside clicks
@@ -240,7 +240,7 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                     }
                     bindInputs(o.find('input'));
                   });
-                  
+
                   o.find('.save').click(function() {
                         var postData = {};
                         var key;
@@ -282,11 +282,11 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                         }
                   });
               }
-              
+
               function toggleRowEdit(o) {
                   $(o).closest('.row-edit').find('a').toggleClass('hide');
               }
-              
+
               function bindInputs(inputs) {
                   $(inputs).change(function(){
                   if($(this).is(":checked")){
@@ -305,7 +305,7 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                 });
               });
               }
-              
+
                 function merge(e) {
                     var form = $("#merge-form");
                     var master = form.find('input[name=master-record]:checked').val();
