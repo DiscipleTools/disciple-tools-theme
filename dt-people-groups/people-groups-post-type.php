@@ -179,7 +179,7 @@ class Disciple_Tools_People_Groups_Post_Type
             'capabilities'          => $capabilities,
             'has_archive'           => true,
             'hierarchical'          => false,
-            'supports'              => [ 'title', 'comments' ],
+            'supports'              => [ 'title' ],
             'menu_position'         => 6,
             'menu_icon'             => 'dashicons-smiley',
             'show_in_rest'          => true,
@@ -262,21 +262,21 @@ class Disciple_Tools_People_Groups_Post_Type
 
         $messages[ $this->post_type ] = [
             0  => '', // Unused. Messages start at index 1.
-            1  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
+            1  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ) ,
             2  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
             3  => sprintf( __( '%s deleted.', 'disciple_tools' ), $this->singular ),
             4  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
             /* translators: %s: date and time of the revision */
             5  => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-            6  => sprintf( __( '%s published.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
+            6  => sprintf( __( '%s published.', 'disciple_tools' ), $this->singular ) ,
             7  => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
-            8  => sprintf( __( '%s submitted.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
+            8  => sprintf( __( '%s submitted.', 'disciple_tools' ), $this->singular ) ,
             9  => sprintf(
                 __( '%1$s scheduled for: %2$s.', 'disciple_tools' ),
                 $this->singular,
                 '<strong>' . date_i18n( _x( 'M j, Y @ G:i', 'Publish box date format, see http://php.net/date', 'disciple_tools' ), strtotime( $post->post_date ) ) . '</strong>'
-            ) . ' ' . $link,
-            10  => sprintf( __( '%s draft updated.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
+            ) ,
+            10  => sprintf( __( '%s draft updated.', 'disciple_tools' ), $this->singular ) ,
         ];
 
         return $messages;
@@ -290,15 +290,95 @@ class Disciple_Tools_People_Groups_Post_Type
      * @return void
      */
     public function meta_box_setup() {
-        //        add_meta_box( $this->post_type . '_data', __( 'People Group Details', 'disciple_tools' ), [ $this, 'load_details_meta_box' ], $this->post_type, 'normal', 'high' );
-//        add_meta_box( $this->post_type . '_jp', __( 'Joshua Project Info', 'disciple_tools' ), [ $this, 'load_jp_meta_box' ], $this->post_type, 'normal', 'high' );
+          add_meta_box( $this->post_type . '_update', __( 'Add/Update People Group', 'disciple_tools' ), [ $this, 'load_add_update_meta_box' ], $this->post_type, 'normal', 'high' );
+          add_meta_box( $this->post_type . '_data', __( 'People Group Details', 'disciple_tools' ), [ $this, 'load_details_meta_box' ], $this->post_type, 'normal', 'high' );
     } // End meta_box_setup()
+
+    public function load_add_update_meta_box( $post ) {
+        $names = Disciple_Tools_People_Groups::get_country_dropdown();
+        ?>
+        <input type="hidden" id="post_id" value="<?php echo esc_attr( $post->ID ) ?>" />
+
+        Search by either country or ROP3 code:<br>
+        <table class="widefat">
+            <tr>
+                <td width="33%"><label for="country">Country </label><br>
+                    <select id="country">
+                        <option></option>
+                        <?php foreach ( $names as $name ) {
+                            echo '<option value="'.esc_attr( $name ).'">'.esc_attr( $name ).'</option>';
+} ?>
+                    </select>
+                </td>
+                <td width="33%" style="text-align:center;"><br>or</td>
+                <td width="33%">
+                    <label for="rop3">ROP3 Code</label>
+                    <br>
+                    <input type="text" name="rop3" id="rop3" class="text-input" />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="text-align:center;"><button type="button" class="button" id="search_button" onclick="link_search()">Search</button></td>
+                <td></td>
+            </tr>
+        </table>
+        <br>
+        <div id="results"></div>
+
+
+        <?php
+    }
 
     /**
      * Load activity metabox
      */
     public function load_details_meta_box() {
-        $this->meta_box_content( 'info' );
+        global $wpdb, $post;
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            SELECT meta_key, meta_value 
+            FROM $wpdb->postmeta 
+            WHERE post_id = %s 
+            AND (
+            meta_key LIKE %s
+            OR meta_key LIKE %s
+            ) ",
+            $post->ID,
+            $wpdb->esc_like( 'jp_' ). '%',
+            $wpdb->esc_like( 'imb_' ). '%'
+        ), ARRAY_A );
+
+        if ( ! empty( $results ) ) {
+            $record = [];
+            foreach ( $results as $item ) {
+                $record[$item['meta_key']] = $item['meta_value'];
+            }
+            ksort( $record );
+
+            if ( isset( $record['jp_ROP3'] ) ) {
+                echo '<table class="widefat striped">';
+                echo '<tr><td colspan="2"><h3>JOSHUA PROJECT - ('.esc_attr( $record['jp_PeopNameAcrossCountries'] ).')</h3></td><td></td></tr>';
+                foreach ( $record as $key => $value ) {
+                    if ( substr( $key, 0, 3 ) == 'jp_' ) {
+                        echo '<tr><td>' . esc_attr( substr( $key, 3 ) ) . '</td><td>' . esc_attr( $value ) . '</td></tr>';
+                    }
+                }
+                echo '</table>';
+            }
+
+
+            if ( isset( $record['imb_ROP3'] ) ) {
+                echo "<br>";
+                echo '<table class="widefat striped">';
+                echo '<tr><td><h3>IMB - (' . esc_attr( $record['imb_People Name'] ) . ')</h3></td><td></td></tr>';
+                foreach ( $record as $key => $value ) {
+                    if ( substr( $key, 0, 4 ) == 'imb_' ) {
+                        echo '<tr><td>' . esc_attr( substr( $key, 4 ) ) . '</td><td>' . esc_attr( $value ) . '</td></tr>';
+                    }
+                }
+                echo '</table>';
+            }
+        }
     }
 
     /**

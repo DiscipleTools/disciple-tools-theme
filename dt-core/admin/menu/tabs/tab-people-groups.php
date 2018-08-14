@@ -32,6 +32,7 @@ class Disciple_Tools_Tab_People_Groups extends Disciple_Tools_Abstract_Menu_Base
     } // End __construct()
 
     public function add_submenu() {
+        add_submenu_page( 'edit.php?post_type=peoplegroups', __( 'Import', 'disciple_tools' ), __( 'Import', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=people-groups', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
         add_submenu_page( 'dt_options', __( 'Import People Groups', 'disciple_tools' ), __( 'Import People Groups', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=people-groups', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
     }
 
@@ -40,7 +41,7 @@ class Disciple_Tools_Tab_People_Groups extends Disciple_Tools_Abstract_Menu_Base
         if ( $tab == 'people-groups' ) {
             echo 'nav-tab-active';
         }
-        echo '">Import People Groups</a>';
+        echo '">' . esc_attr__( 'Import People Groups' ) . '</a>';
     }
 
     public function content( $tab ) {
@@ -56,6 +57,8 @@ class Disciple_Tools_Tab_People_Groups extends Disciple_Tools_Abstract_Menu_Base
 
         endif;
     }
+
+
 
 }
 Disciple_Tools_Tab_People_Groups::instance();

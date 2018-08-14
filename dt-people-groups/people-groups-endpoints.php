@@ -71,9 +71,21 @@ class Disciple_Tools_People_Groups_Endpoints
             ]
         );
         register_rest_route(
+            $this->namespace, '/people-groups/search_csv_by_rop3', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'search_csv_by_rop3' ],
+            ]
+        );
+        register_rest_route(
             $this->namespace, '/people-groups/add_single_people_group', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'add_single_people_group' ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/people-groups/link_or_update', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'link_or_update' ],
             ]
         );
     }
@@ -111,6 +123,17 @@ class Disciple_Tools_People_Groups_Endpoints
         }
     }
 
+    public function search_csv_by_rop3( WP_REST_Request $request ) {
+
+        $params = $request->get_params();
+        if ( isset( $params['rop3'] ) ) {
+            $people_groups = Disciple_Tools_people_groups::search_csv_by_rop3( $params['rop3'] );
+            return $people_groups;
+        } else {
+            return new WP_Error( __METHOD__, 'Missing required parameter `rop3`' );
+        }
+    }
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -118,12 +141,31 @@ class Disciple_Tools_People_Groups_Endpoints
      */
     public function add_single_people_group( WP_REST_Request $request ) {
 
+        if ( ! user_can( get_current_user_id(), 'manage_dt' ) ) {
+            return new WP_Error( __METHOD__, 'You do not have permission to add people groups', [] );
+        }
+
         $params = $request->get_params();
-        if ( isset( $params['rop3'] ) ) {
-            $result = Disciple_Tools_people_groups::add_single_people_group( $params['rop3'] );
+        if ( isset( $params['rop3'] ) && isset( $params['country'] ) ) {
+            $result = Disciple_Tools_People_Groups::add_single_people_group( $params['rop3'], $params['country'] );
             return $result;
         } else {
-            return new WP_Error( __METHOD__, 'Missing required parameter `s`' );
+            return new WP_Error( __METHOD__, 'Missing required parameter rop3 or country' );
+        }
+    }
+
+    public function link_or_update( WP_REST_Request $request ) {
+
+        if ( ! user_can( get_current_user_id(), 'manage_dt' ) ) {
+            return new WP_Error( __METHOD__, 'You do not have permission to add people groups', [] );
+        }
+
+        $params = $request->get_params();
+        if ( isset( $params['rop3'] ) && isset( $params['country'] ) && isset( $params['post_id'] ) ) {
+            $result = Disciple_Tools_People_Groups::link_or_update( $params['rop3'], $params['country'], $params['post_id'] );
+            return $result;
+        } else {
+            return new WP_Error( __METHOD__, 'Missing required parameter rop3 or country' );
         }
     }
 }
