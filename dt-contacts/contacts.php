@@ -2190,7 +2190,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     if ( isset( $field_value["values"] ) ){
                         $values = $field_value["values"];
                     } else {
-                        $values = [ $field_value ];
+                        $values = $field_value;
                     }
                     foreach ( $values as $val ){
                         if ( !empty( $val["value"] ) ){
