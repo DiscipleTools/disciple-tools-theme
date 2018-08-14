@@ -22,7 +22,7 @@ declare(strict_types=1);
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php esc_html_e( "Filter contacts", 'disciple_tools' ) ?></span>
                 </a>
-                <a class="button" style="margin-bottom:0" href="/view-duplicates">
+                <a class="button" style="margin-bottom:0" href="<?php echo esc_url( site_url( '/view-duplicates' ) ); ?>">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>"/>
                     <span class="hide-for-small-only"><?php esc_html_e( "View Duplicates", 'disciple_tools' ) ?></span>
                 </a>

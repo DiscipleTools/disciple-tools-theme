@@ -56,7 +56,7 @@
             ?>
           <h4 style="text-align:center; font-size:1.25rem; font-weight:bold; padding:20px 0px 0px; margin-bottom:0px;"><?php esc_html_e( "Possible Duplicates", 'disciple_tools' ) ?></h4>
           <div style='display: inline-block; width: 100%;'>
-              <form method='POST' id='form-unsure-dismiss' action='/contacts/<?php echo get_the_Id(); ?>'>
+              <form method='POST' id='form-unsure-dismiss' action='<?php echo esc_url( site_url( '/contacts/' .get_the_ID() ) ); ?>'>
                 <input type='hidden' name='id' value='<?php echo get_the_Id(); ?>'/>
                 <a style='float: right; margin-left: 10%;' onclick='dismiss_all();'>Dismiss All</a>
                 <a style='float: right;' onclick='unsure_all();'>Unsure All</a>
@@ -120,7 +120,7 @@
           <button class='mergelinks' onclick="$('#dismiss-id').val('<?php echo $value; ?>'); $('#form-dismiss input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>
           <button class='mergelinks' onclick="$('#unsure-id').val('<?php echo $value; ?>'); $('#form-unsure input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Unsure", 'disciple_tools' ) ?></a></button>
 
-          <form action="/contacts/mergedetails" method="post"><input type='hidden' name='currentid' value='<?php echo $contact['ID'];?>'/><input type='hidden' name='dupeid' value='<?php echo $duplicate_contact['ID']; ?>'/><button type='submit' style='float:right; padding-left:10%;'><a><?php esc_html_e( "Merge", 'disciple_tools' ) ?></a></button></form></div>
+          <form action="<?php echo esc_url( site_url( '/contacts/mergedetails' ) ); ?>" method="post"><input type='hidden' name='currentid' value='<?php echo $contact['ID'];?>'/><input type='hidden' name='dupeid' value='<?php echo $duplicate_contact['ID']; ?>'/><button type='submit' style='float:right; padding-left:10%;'><a><?php esc_html_e( "Merge", 'disciple_tools' ) ?></a></button></form></div>
 
                 <?php
             }
@@ -173,19 +173,19 @@
 
           <button class='mergelinks' onclick="$('#dismiss-id').val('<?php echo $value; ?>'); $('#form-dismiss input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>
 
-          <form action="/contacts/mergedetails" method="post"><input type='hidden' name='currentid' value='<?php echo $contact['ID'];?>'/><input type='hidden' name='dupeid' value='<?php echo $duplicate_contact['ID']; ?>'/><button type='submit' style='float:right; padding-left:10%;'><a><?php esc_html_e( "Merge", 'disciple_tools' ) ?></a></button></form></div>
+          <form action="<?php echo esc_url( site_url( '/contacts/mergedetails' ) ); ?>" method="post"><input type='hidden' name='currentid' value='<?php echo $contact['ID'];?>'/><input type='hidden' name='dupeid' value='<?php echo $duplicate_contact['ID']; ?>'/><button type='submit' style='float:right; padding-left:10%;'><a><?php esc_html_e( "Merge", 'disciple_tools' ) ?></a></button></form></div>
 
                 <?php
             }
             ?>
 
-        <form action="/contacts/mergedetails" id='form-dismiss' method="POST">
+        <form action="<?php echo esc_url( site_url( '/contacts/mergedetails' ) ); ?>" id='form-dismiss' method="POST">
             <input type='hidden' name='dismiss' value='1'/>
             <input type='hidden' id="dismiss-id" name='id' value='<?php echo $value; ?>'/>
             <input type='hidden' name='currentId' value='<?php echo get_the_ID(); ?>'/>
             <input type='submit' style='display: none' value='Dismiss'/>
         </form>
-        <form action="/contacts/mergedetails" id='form-unsure' method="POST">
+        <form action="<?php echo esc_url( site_url( '/contacts/mergedetails' ) ); ?>" id='form-unsure' method="POST">
             <input type='hidden' name='unsure' value='1'/>
             <input type='hidden' id="unsure-id" name='id' value='<?php echo $value; ?>'/>
             <input type='hidden' name='currentId' value='<?php echo get_the_ID(); ?>'/>
@@ -193,7 +193,7 @@
         </form>
         </div>
     </div>
-    
+
     <script type='text/javascript'>
         function unsure_all() {
             var form = $("#form-unsure-dismiss");
@@ -201,7 +201,7 @@
             submit.attr('name', 'unsure_all');
             submit.click();
         }
-        
+
         function dismiss_all() {
             var form = $("#form-unsure-dismiss");
             var submit = form.find('input[type=submit]');
