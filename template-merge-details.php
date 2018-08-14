@@ -6,24 +6,24 @@ Template Name: Merge Details
 
 
 <?php
-if(isset($_POST['dismiss'])) {
+if (isset( $_POST['dismiss'] )) {
     $currentId = $_POST['currentId'];
     $id = $_POST['id'];
-    (new Disciple_Tools_Contacts())->dismiss_duplicate($currentId, $id);
-    header('Location: /contacts/' . $currentId);
+    ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $currentId, $id );
+    header( 'Location: /contacts/' . $currentId );
 }
-if(isset($_POST['unsure'])) {
+if (isset( $_POST['unsure'] )) {
     $currentId = $_POST['currentId'];
     $id = $_POST['id'];
-    (new Disciple_Tools_Contacts())->unsure_duplicate($currentId, $id);
-    header('Location: /contacts/' . $currentId);
+    ( new Disciple_Tools_Contacts() )->unsure_duplicate( $currentId, $id );
+    header( 'Location: /contacts/' . $currentId );
 }
 
 get_header();
 
-$currentid=$_POST['currentid'];
-$dupeid=$_POST['dupeid'];
-list($current, $duplicate, $data, $fields) = Disciple_Tools_Contacts::get_merge_data($currentid, $dupeid);
+$currentid =$_POST['currentid'];
+$dupeid =$_POST['dupeid'];
+list($current, $duplicate, $data, $fields) = Disciple_Tools_Contacts::get_merge_data( $currentid, $dupeid );
 $contact = Disciple_Tools_Contacts::get_contact( $currentid, true );
 $channel_list = Disciple_Tools_Contacts::get_channel_list();
 $current_user = wp_get_current_user();
@@ -31,21 +31,21 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 
 
 
-  $contact_name=$contact['title'] ?? null;
-  $contact_address=$contact['contact_address'][0]['value'] ?? null;
-  $contact_phone=$contact['contact_phone'][0]['value'] ?? null;
-  $contact_email=$contact['contact_email'][0]['value'] ?? null;
-  $contact_facebook=$contact['contact_facebook'][0]['value'] ?? null;
+  $contact_name =$contact['title'] ?? null;
+  $contact_address =$contact['contact_address'][0]['value'] ?? null;
+  $contact_phone =$contact['contact_phone'][0]['value'] ?? null;
+  $contact_email =$contact['contact_email'][0]['value'] ?? null;
+  $contact_facebook =$contact['contact_facebook'][0]['value'] ?? null;
 
 
   $duplicate_contact = Disciple_Tools_Contacts::get_contact( $dupeid, true );
 
-  $duplicate_contact_name=$duplicate_contact['title'] ?? null;
-  $duplicate_contact_address=$duplicate_contact['contact_address'][0]['value'] ?? null;
-  $duplicate_contact_phone=$duplicate_contact['contact_phone'][0]['value'] ?? null;
-  $duplicate_contact_email=$duplicate_contact['contact_email'][0]['value'] ?? null;
-  $duplicate_contact_facebook=$duplicate_contact['contact_facebook'][0]['value'] ?? null;
-  
+  $duplicate_contact_name =$duplicate_contact['title'] ?? null;
+  $duplicate_contact_address =$duplicate_contact['contact_address'][0]['value'] ?? null;
+  $duplicate_contact_phone =$duplicate_contact['contact_phone'][0]['value'] ?? null;
+  $duplicate_contact_email =$duplicate_contact['contact_email'][0]['value'] ?? null;
+  $duplicate_contact_facebook =$duplicate_contact['contact_facebook'][0]['value'] ?? null;
+
   $used_values = array(
       'contact_phone' => array(),
       'contact_address' => array(),
@@ -53,7 +53,7 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
   );
 
   $editRow = "<span class='row-edit'><a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a><a class='fi-check hide save' title='Save'></a></span>";
-?>
+    ?>
 
     <div id="content">
 
@@ -96,19 +96,19 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 
                 <?php
                 echo "<form id='merge-form' onsubmit='merge(event);' method='POST' action='/contacts/'>";
-                foreach($fields as $key => $field) {
-                    foreach($data[$key] as $idx => $type) {
+                foreach ($fields as $key => $field) {
+                    foreach ($data[$key] as $idx => $type) {
                         $class = '';
-                        if($type['original']['hide'] || ($idx > 0)) {
+                        if ($type['original']['hide'] || ( $idx > 0 )) {
                             $class = 'hide toggle';
                         }
                         echo "<div class='line-wrap $class'>";
                             echo "<div class='merge-column'><span class='bold'>$field</span></div>";
-                        foreach($type as $vals) {
+                        foreach ($type as $vals) {
                             $value = $vals['value'];
                             echo "<div class='merge-column'>";
-                            if($value) {
-                                echo "<input type='checkbox' name='" . strtolower($field) . "[]' value='$value'> $value $editRow";
+                            if ($value) {
+                                echo "<input type='checkbox' name='" . strtolower( $field ) . "[]' value='$value'> $value $editRow";
                             } else {
                                 echo "<div class='empty'></div>";
                             }
@@ -120,7 +120,7 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                 echo "<p class='center'>Showing fields with different values.<a onclick='toggleFields(this);'>Show All Fields</a></p>";
                 echo "<button class='button' name='merge-submit' type='submit' value='Merge'>Merge</button>";
                 echo "</form>";
-?>
+                ?>
             </div>
             <style>
             .blueBackground{
