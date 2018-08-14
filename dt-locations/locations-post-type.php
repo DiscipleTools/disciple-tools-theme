@@ -74,8 +74,7 @@ class Disciple_Tools_Location_Post_Type
      * @static
      * @return Disciple_Tools_Location_Post_Type instance
      */
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -89,12 +88,11 @@ class Disciple_Tools_Location_Post_Type
      * @access public
      * @since  0.1.0
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->post_type = 'locations';
         $this->singular = __( 'Location', 'disciple_tools' );
         $this->plural = __( 'Locations', 'disciple_tools' );
-        $this->args = [ 'menu_icon' => dt_svg_icon() ];
+        $this->args = [ 'menu_icon' => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMTIsMEM3LjYsMCwzLDMuNCwzLDljMCw1LjMsOCwxMy40LDguMywxMy43YzAuMiwwLjIsMC40LDAuMywwLjcsMC4zczAuNS0wLjEsMC43LTAuM0MxMywyMi40LDIxLDE0LjMsMjEsOSBDMjEsMy40LDE2LjQsMCwxMiwweiBNMTIsMTJjLTEuNywwLTMtMS4zLTMtM3MxLjMtMywzLTNzMywxLjMsMywzUzEzLjcsMTIsMTIsMTJ6Ij48L3BhdGg+PC9nPjwvc3ZnPg==' ];
         $this->error = '';
 
         add_action( 'init', [ $this, 'register_post_type' ] );
@@ -124,8 +122,7 @@ class Disciple_Tools_Location_Post_Type
      * @access public
      * @return void
      */
-    public function register_post_type()
-    {
+    public function register_post_type() {
         $labels = [
             'name'                  => _x( 'Locations', 'post type general name', 'disciple_tools' ),
             'singular_name'         => _x( 'Location', 'post type singular name', 'disciple_tools' ),
@@ -194,8 +191,7 @@ class Disciple_Tools_Location_Post_Type
         register_post_type( $this->post_type, $args );
     } // End register_post_type()
 
-    public function register_custom_columns( $column_name, $post_id )
-    {
+    public function register_custom_columns( $column_name, $post_id ) {
         global $post;
         switch ( $column_name ) {
             case 'location_address':
@@ -223,8 +219,7 @@ class Disciple_Tools_Location_Post_Type
      *
      * @return array
      */
-    public function register_custom_column_headings( $defaults )
-    {
+    public function register_custom_column_headings( $defaults ) {
 
         $new_columns =
         [
@@ -265,8 +260,7 @@ class Disciple_Tools_Location_Post_Type
      *
      * @return array           Modified array.
      */
-    public function updated_messages( $messages )
-    {
+    public function updated_messages( $messages ) {
         global $post;
 
         $link = '<a target="_blank" href="' . esc_url( get_permalink( $post->ID ) ) .'">' .  __( 'View', 'disciple_tools' ) . '</a>';
@@ -300,8 +294,7 @@ class Disciple_Tools_Location_Post_Type
      * @since  0.1.0
      * @return void
      */
-    public function meta_box_setup()
-    {
+    public function meta_box_setup() {
         add_meta_box( $this->post_type . '_geocode', __( 'Geo-Code', 'disciple_tools' ), [ $this, 'geocode_metabox' ], $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_map', __( 'Map', 'disciple_tools' ), [ $this, 'load_map_meta_box' ], $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_notes', __( 'Notes', 'disciple_tools' ), [ $this, 'load_notes_meta_box' ], $this->post_type, 'advanced', 'high' );
@@ -312,18 +305,15 @@ class Disciple_Tools_Location_Post_Type
     /**
      * Load activity metabox
      */
-    public function load_activity_meta_box()
-    {
+    public function load_activity_meta_box() {
         dt_activity_metabox()->activity_meta_box( get_the_ID() );
     }
 
-    public function load_notes_meta_box()
-    {
+    public function load_notes_meta_box() {
         $this->meta_box_content( 'notes' );
     }
 
-    public function load_levels_meta_box( $post )
-    {
+    public function load_levels_meta_box( $post ) {
         $raw = get_post_meta( $post->ID, 'raw', true ); // raw google result
         $locations_result = Disciple_Tools_Locations::query_all_geocoded_locations(); // all current locations and their raw results
 
@@ -331,21 +321,23 @@ class Disciple_Tools_Location_Post_Type
          * Free parenting of non-geocoded locations section
          */
         if ( ! $raw ) :
-            $dropdown_args = array(
+            // WordPress.XSS.EscapeOutput.OutputNotEscaped
+            // phpcs:disable
+            $pages = wp_dropdown_pages( [
                 'post_type'        => $post->post_type,
-                'exclude_tree'     => $post->ID,
-                'selected'         => $post->post_parent,
+                'exclude_tree'     => esc_html( $post->ID ),
+                'selected'         => esc_html( $post->post_parent ),
                 'name'             => 'parent_id',
-                'show_option_none' => __( '(no parent)' ),
+                'show_option_none' => esc_html__( '(no parent)' ),
                 'sort_column'      => 'menu_order, post_title',
                 'echo'             => 0,
-            );
-            // @codingStandardsIgnoreLine
-            $pages = wp_dropdown_pages( $dropdown_args );
+            ] );
+            // phpcs:enable
             if ( ! empty( $pages ) ) : ?>
                 <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="parent_id"><?php esc_html_e( 'Parent' ); ?></label></p>
                 <?php
-                // @codingStandardsIgnoreLine
+                // WordPress.XSS.EscapeOutput.OutputNotEscaped
+                // @phpcs:ignore
                 echo $pages;
             endif; // end empty pages check?>
 
@@ -353,7 +345,7 @@ class Disciple_Tools_Location_Post_Type
             <input name="menu_order" type="text" size="4" id="menu_order" value="<?php echo esc_attr( $post->menu_order ); ?>" />
 
 
-        <?php
+            <?php
         /**************************************************************************************************************
          * Geocoded section
          */
@@ -378,7 +370,7 @@ class Disciple_Tools_Location_Post_Type
                 ?>
                 <strong><?php echo esc_attr( $post->post_title ); ?></strong>
             </p>
-            <?php if ( user_can( get_current_user_id(), 'manage_dt' ) && dt_get_option( 'auto_location' ) ) : ?>
+                <?php if ( user_can( get_current_user_id(), 'manage_dt' ) && dt_get_option( 'auto_location' ) ) : ?>
                 <hr>
                 <p style="text-align:center;">
                     <a class="add-parent-location button" href="javascript:void(0)"
@@ -409,7 +401,7 @@ class Disciple_Tools_Location_Post_Type
                         </a>
                     </p>
                 </div>
-                <?php
+                    <?php
                 endif; // if political
             endif; // user permission check on auto build
         endif;
@@ -418,8 +410,7 @@ class Disciple_Tools_Location_Post_Type
     /**
      * Load activity metabox
      */
-    public function load_map_meta_box()
-    {
+    public function load_map_meta_box() {
         $this->display_location_map();
     }
 
@@ -453,7 +444,7 @@ class Disciple_Tools_Location_Post_Type
         else :
             ?>
         You must save post before geocoding.
-        <?php
+            <?php
             endif;
     }
 
@@ -463,8 +454,7 @@ class Disciple_Tools_Location_Post_Type
      *
      * @param string $section
      */
-    public function meta_box_content( $section = 'info' )
-    {
+    public function meta_box_content( $section = 'info' ) {
         global $post_id;
         $fields = get_post_custom( $post_id );
         $field_data = $this->get_custom_fields_settings();
@@ -570,8 +560,7 @@ class Disciple_Tools_Location_Post_Type
      *
      * @return mixed
      */
-    public function meta_box_save( $post_id )
-    {
+    public function meta_box_save( $post_id ) {
         // Verify
         $key = 'dt_' . $this->post_type . '_noonce';
         if ( ( get_post_type() != $this->post_type ) || !isset( $_POST[ $key ] ) || !wp_verify_nonce( sanitize_key( $_POST[ $key ] ), 'update_location_info' ) ) {
@@ -664,8 +653,7 @@ class Disciple_Tools_Location_Post_Type
      *
      * @return string
      */
-    public function enter_title_here( $title )
-    {
+    public function enter_title_here( $title ) {
         if ( get_post_type() == $this->post_type ) {
             $title = __( 'Enter the location title here', 'disciple_tools' );
         }
@@ -680,8 +668,7 @@ class Disciple_Tools_Location_Post_Type
      * @since  0.1.0
      * @return array
      */
-    public function get_custom_fields_settings()
-    {
+    public function get_custom_fields_settings() {
         global $post;
         $fields = [];
 
@@ -725,8 +712,7 @@ class Disciple_Tools_Location_Post_Type
      * @access public
      * @since  0.1.0
      */
-    public function activation()
-    {
+    public function activation() {
         $this->flush_rewrite_rules();
     }
 
@@ -736,8 +722,7 @@ class Disciple_Tools_Location_Post_Type
      * @access public
      * @since  0.1.0
      */
-    private function flush_rewrite_rules()
-    {
+    private function flush_rewrite_rules() {
         $this->register_post_type();
         flush_rewrite_rules();
     }
@@ -748,8 +733,7 @@ class Disciple_Tools_Location_Post_Type
      *
      * @return mixed
      */
-    public function install_google_coordinates( $post, $location_address )
-    {
+    public function install_google_coordinates( $post, $location_address ) {
 
         global $post;
 
@@ -770,8 +754,7 @@ class Disciple_Tools_Location_Post_Type
     /**
      * Load map metabox
      */
-    public function display_location_map()
-    {
+    public function display_location_map() {
         global $post, $pagenow;
         $geocode = new Disciple_Tools_Google_Geocode_API();
         $raw_location = get_post_meta( $post->ID, 'raw', true );
@@ -825,10 +808,10 @@ class Disciple_Tools_Location_Post_Type
 
                     let mapDim = {height: $mapDiv.height(), width: $mapDiv.width()};
 
-                    let zoom = getBoundsZoomLevel(bounds, mapDim);
+                    let zoomLevel = getBoundsZoomLevel(bounds, mapDim);
 
                     let map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: zoom - 3,
+                        zoom: zoomLevel - 3,
                         center: center,
                         mapTypeId: 'terrain'
                     });

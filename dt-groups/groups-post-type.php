@@ -76,8 +76,7 @@ class Disciple_Tools_Groups_Post_Type
      * @static
      * @return Disciple_Tools_Groups_Post_Type instance
      */
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -94,12 +93,11 @@ class Disciple_Tools_Groups_Post_Type
      * @param array  $args
      * @param array  $taxonomies
      */
-    public function __construct( $post_type = 'groups', $singular = '', $plural = '', $args = [], $taxonomies = [ 'Cities' ] )
-    {
+    public function __construct( $post_type = 'groups', $singular = '', $plural = '', $args = [], $taxonomies = [ 'Cities' ] ) {
         $this->post_type = 'groups';
         $this->singular = __( 'Group', 'disciple_tools' );
         $this->plural = __( 'Groups', 'disciple_tools' );
-        $this->args = [ 'menu_icon' => dt_svg_icon() ];
+        $this->args = [ 'menu_icon' => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMTIsNkwxMiw2Yy0xLjY1NywwLTMtMS4zNDMtMy0zdjBjMC0xLjY1NywxLjM0My0zLDMtM2gwYzEuNjU3LDAsMywxLjM0MywzLDN2MEMxNSw0LjY1NywxMy42NTcsNiwxMiw2eiI+PC9wYXRoPiA8cGF0aCBkYXRhLWNvbG9yPSJjb2xvci0yIiBmaWxsPSIjZmZmZmZmIiBkPSJNNCwxOXYtOGMwLTEuMTMsMC4zOTEtMi4xNjIsMS4wMjYtM0gyYy0xLjEwNSwwLTIsMC44OTUtMiwydjZoMnY1YzAsMC41NTIsMC40NDgsMSwxLDFoMiBjMC41NTIsMCwxLTAuNDQ4LDEtMXYtMkg0eiI+PC9wYXRoPiA8cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMTQsMjRoLTRjLTAuNTUyLDAtMS0wLjQ0OC0xLTF2LTZINnYtNmMwLTEuNjU3LDEuMzQzLTMsMy0zaDZjMS42NTcsMCwzLDEuMzQzLDMsM3Y2aC0zdjYgQzE1LDIzLjU1MiwxNC41NTIsMjQsMTQsMjR6Ij48L3BhdGg+IDxwYXRoIGRhdGEtY29sb3I9ImNvbG9yLTIiIGZpbGw9IiNmZmZmZmYiIGQ9Ik00LDdMNCw3QzIuODk1LDcsMiw2LjEwNSwyLDV2MGMwLTEuMTA1LDAuODk1LTIsMi0yaDBjMS4xMDUsMCwyLDAuODk1LDIsMnYwIEM2LDYuMTA1LDUuMTA1LDcsNCw3eiI+PC9wYXRoPiA8cGF0aCBkYXRhLWNvbG9yPSJjb2xvci0yIiBmaWxsPSIjZmZmZmZmIiBkPSJNMjAsMTl2LThjMC0xLjEzLTAuMzkxLTIuMTYyLTEuMDI2LTNIMjJjMS4xMDUsMCwyLDAuODk1LDIsMnY2aC0ydjVjMCwwLjU1Mi0wLjQ0OCwxLTEsMWgtMiBjLTAuNTUyLDAtMS0wLjQ0OC0xLTF2LTJIMjB6Ij48L3BhdGg+IDxwYXRoIGRhdGEtY29sb3I9ImNvbG9yLTIiIGZpbGw9IiNmZmZmZmYiIGQ9Ik0yMCw3TDIwLDdjMS4xMDUsMCwyLTAuODk1LDItMnYwYzAtMS4xMDUtMC44OTUtMi0yLTJoMGMtMS4xMDUsMC0yLDAuODk1LTIsMnYwIEMxOCw2LjEwNSwxOC44OTUsNywyMCw3eiI+PC9wYXRoPjwvZz48L3N2Zz4=' ];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'groups_rewrites_init' ] );
@@ -112,7 +110,6 @@ class Disciple_Tools_Groups_Post_Type
             add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
             //            add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
-            add_action( 'admin_menu', [ $this, 'disable_new_groups_in_admin_area' ] );
 
             if ( $pagenow == 'edit.php' && isset( $_GET['post_type'] ) && esc_attr( sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) ) == $this->post_type ) {
                 add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
@@ -127,8 +124,7 @@ class Disciple_Tools_Groups_Post_Type
      * @access public
      * @return void
      */
-    public function register_post_type()
-    {
+    public function register_post_type() {
         $labels = [
             'name'                  => $this->plural,
             'singular_name'         => $this->singular,
@@ -165,6 +161,7 @@ class Disciple_Tools_Groups_Post_Type
             'edit_others_posts'   => 'update_any_groups',
             'publish_posts'       => 'create_groups',
             'read_private_posts'  => 'view_any_groups',
+            'create_posts'        => 'do_not_allow'
         ];
 
         $rewrite = [
@@ -210,8 +207,7 @@ class Disciple_Tools_Groups_Post_Type
      * @since  0.1.0
      * @return void
      */
-    public function register_custom_columns( $column_name )
-    {
+    public function register_custom_columns( $column_name ) {
         //        global $post;
 
         switch ( $column_name ) {
@@ -233,8 +229,7 @@ class Disciple_Tools_Groups_Post_Type
      * @since  0.1.0
      * @return mixed
      */
-    public function register_custom_column_headings( $defaults )
-    {
+    public function register_custom_column_headings( $defaults ) {
         $new_columns = [ 'location' => __( 'Location', 'disciple_tools' ) ];
 
         $last_item = [];
@@ -267,8 +262,7 @@ class Disciple_Tools_Groups_Post_Type
      *
      * @return array           Modified array.
      */
-    public function updated_messages( $messages )
-    {
+    public function updated_messages( $messages ) {
         global $post;
 
         $link = '<a target="_blank" href="' . esc_url( get_permalink( $post->ID ) ) .'">' .  __( 'View', 'disciple_tools' ) . '</a>';
@@ -302,8 +296,7 @@ class Disciple_Tools_Groups_Post_Type
      * @since  0.1.0
      * @return void
      */
-    public function meta_box_setup()
-    {
+    public function meta_box_setup() {
         add_meta_box( $this->post_type . '_type', __( 'Group Details', 'disciple_tools' ), [ $this, 'load_type_meta_box' ], $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), [ $this, 'load_address_meta_box' ], $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_info', __( 'Info', 'disciple_tools' ), [ $this, 'load_info_meta_box' ], $this->post_type, 'normal', 'high' );
@@ -313,16 +306,14 @@ class Disciple_Tools_Groups_Post_Type
     /**
      * Load activity metabox
      */
-    public function load_activity_meta_box()
-    {
+    public function load_activity_meta_box() {
         dt_activity_metabox()->activity_meta_box( get_the_ID() );
     }
 
     /**
      * Load type metabox
      */
-    public function load_type_meta_box()
-    {
+    public function load_type_meta_box() {
         $this->meta_box_content( 'church' ); // prints
         $this->meta_box_content( 'church_hidden' ); // prints
     }
@@ -330,16 +321,14 @@ class Disciple_Tools_Groups_Post_Type
     /**
      * Load type metabox
      */
-    public function load_info_meta_box()
-    {
+    public function load_info_meta_box() {
         $this->meta_box_content( 'info' ); // prints
     }
 
     /**
      * Load address metabox
      */
-    public function load_address_meta_box()
-    {
+    public function load_address_meta_box() {
         $this->meta_box_content( 'address' ); // prints
         dt_address_metabox()->add_new_address_field(); // prints
     }
@@ -349,8 +338,7 @@ class Disciple_Tools_Groups_Post_Type
      *
      * @param string $section
      */
-    public function meta_box_content( $section = 'info' )
-    {
+    public function meta_box_content( $section = 'info' ) {
         global $post_id;
         $fields = get_post_custom( $post_id );
         $field_data = $this->get_custom_fields_settings();
@@ -477,8 +465,7 @@ class Disciple_Tools_Groups_Post_Type
      * @return int
      * @throws \Exception 'Expected field to exist'.
      */
-    public function meta_box_save( int $post_id )
-    {
+    public function meta_box_save( int $post_id ) {
         //        global $post, $messages;
 
         // Verify
@@ -549,8 +536,7 @@ class Disciple_Tools_Groups_Post_Type
      *
      * @return string
      */
-    public function assigned_to_field()
-    {
+    public function assigned_to_field() {
         global $post;
 
         //        $exclude_group = '';
@@ -614,8 +600,7 @@ class Disciple_Tools_Groups_Post_Type
      *
      * @return mixed
      */
-    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null )
-    {
+    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null ) {
         global $post;
 
         $fields = [];
@@ -762,6 +747,13 @@ class Disciple_Tools_Groups_Post_Type
             ],
             'section'     => 'church_hidden',
         ];
+        $health = dt_get_option( 'dt_site_custom_lists' );
+        $health = $health['custom_church'];
+        if ( ! empty( $health ) ) {
+            foreach ( $health as $key => $value ) {
+                $fields[$key] = $value;
+            }
+        }
 
         $fields['start_date'] = [
             'name'        => __( 'Start Date', 'disciple_tools' ),
@@ -830,8 +822,7 @@ class Disciple_Tools_Groups_Post_Type
      *
      * @return string
      */
-    public function enter_title_here( string $title )
-    {
+    public function enter_title_here( string $title ) {
         if ( get_post_type() == $this->post_type ) {
             $title = __( 'Enter the group here', 'disciple_tools' );
         }
@@ -845,8 +836,7 @@ class Disciple_Tools_Groups_Post_Type
      * @access public
      * @since  0.1.0
      */
-    public function activation()
-    {
+    public function activation() {
         $this->flush_rewrite_rules();
     } // End activation()
 
@@ -856,8 +846,7 @@ class Disciple_Tools_Groups_Post_Type
      * @access public
      * @since  0.1.0
      */
-    private function flush_rewrite_rules()
-    {
+    private function flush_rewrite_rules() {
         $this->register_post_type();
         flush_rewrite_rules();
     } // End flush_rewrite_rules()
@@ -868,8 +857,7 @@ class Disciple_Tools_Groups_Post_Type
      *
      * @return string
      */
-    public function groups_permalink( $post_link, $post )
-    {
+    public function groups_permalink( $post_link, $post ) {
         if ( $post->post_type === "groups" ) {
             return home_url( "groups/" . $post->ID . '/' );
         } else {
@@ -877,22 +865,9 @@ class Disciple_Tools_Groups_Post_Type
         }
     }
 
-    public function groups_rewrites_init()
-    {
+    public function groups_rewrites_init() {
         add_rewrite_rule( 'groups/([0-9]+)?$', 'index.php?post_type=groups&p=$matches[1]', 'top' );
     }
 
-    public function disable_new_groups_in_admin_area() {
-        // Hide sidebar link
-        echo "<style type='text/css' >
-            #menu-posts-groups ul { display:none; }
-        </style>";
-        // Hide link on listing page
-        if ( ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'groups' ) ) {
-            echo '<style type="text/css">
-            .page-title-action { display:none; }
-        </style>';
-        }
-    }
 
 } // End Class

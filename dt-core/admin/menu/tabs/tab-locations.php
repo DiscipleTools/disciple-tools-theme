@@ -10,8 +10,7 @@ if ( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
 {
     private static $_instance = null;
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -24,8 +23,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
      * @access  public
      * @since   0.1.0
      */
-    public function __construct()
-    {
+    public function __construct() {
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 99 );
         add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 99, 1 );
         add_action( 'dt_settings_tab_content', [ $this, 'content' ], 99, 1 );
@@ -34,7 +32,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
     } // End __construct()
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'Locations', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=locations', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_options', __( 'Import Locations', 'disciple_tools' ), __( 'Import Locations', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=locations', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
     }
 
     public function add_tab( $tab ) {
@@ -42,7 +40,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
         if ( $tab == 'locations' ) {
             echo 'nav-tab-active';
         }
-        echo '">Locations</a>';
+        echo '">Import Locations</a>';
     }
 
     public function content( $tab ) {
@@ -66,12 +64,14 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
         endif;
     }
 
-    public function select_auto_locations()
-    {
+    public function select_auto_locations() {
         if ( isset( $_POST['dt_zume_auto_levels_nonce'] ) && ! empty( $_POST['dt_zume_auto_levels_nonce'] )
             && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_zume_auto_levels_nonce'] ) ), 'dt_zume_auto_levels'. get_current_user_id() ) ) {
 
-            $setting = sanitize_text_field( wp_unslash( $_POST['auto_location'] ) );
+            $setting = '';
+            if ( isset( $_POST['auto_location'] ) ) {
+                $setting = sanitize_text_field( wp_unslash( $_POST['auto_location'] ) );
+            }
             dt_update_option( 'auto_location', $setting, false );
         }
 
@@ -106,8 +106,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
         // end metabox
     }
 
-    public function select_location_levels_to_record()
-    {
+    public function select_location_levels_to_record() {
         $list_array = dt_get_location_levels();
         $list_array = $list_array['location_levels_labels'];
 
@@ -136,7 +135,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
                 'col_span' => 2,
                 'row_container' => false
             ] );
-        ?>
+            ?>
 
         <form method="post" action="">
             <?php wp_nonce_field( 'dt_zume_select_levels'. get_current_user_id(), 'dt_zume_select_levels_nonce', false, true ) ?>
@@ -161,8 +160,8 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
                 </tr>
         </form>
 
-        <?php
-        $this->box( 'bottom' );
+            <?php
+            $this->box( 'bottom' );
 
         endif; // hide settings, if auto locations is set to manual
     }
@@ -175,10 +174,15 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
             unset( $_POST['dt_import_levels_nonce'] );
 
             // parse and sanitize list
-            $list = explode( "\n", $_POST['import-list'] );
-            $items = array_filter( array_map( 'sanitize_text_field', wp_unslash( $list ) ) );
+            $items = [];
+            if ( isset( $_POST['import-list'] ) ) {
+                $items = explode( "\n", sanitize_textarea_field( wp_unslash( $_POST['import-list'] ) ) );
+            }
 
-            $country = sanitize_text_field( wp_unslash( $_POST['country'] ) );
+            $country = '';
+            if ( isset( $_POST['country'] ) ) {
+                $country = sanitize_text_field( wp_unslash( $_POST['country'] ) );
+            }
 
             $geocode = new Disciple_Tools_Google_Geocode_API();
 

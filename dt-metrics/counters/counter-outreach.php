@@ -21,8 +21,7 @@ class Disciple_Tools_Counter_Outreach extends Disciple_Tools_Counter_Base
      * @access public
      * @since  0.1.0
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     } // End __construct()
 
@@ -35,8 +34,7 @@ class Disciple_Tools_Counter_Outreach extends Disciple_Tools_Counter_Base
      *
      * @return int
      */
-    public static function get_outreach_count( string $status = '', int $year = null )
-    {
+    public static function get_outreach_count( string $status = '', int $year = null ) {
 
         $status = strtolower( $status );
 

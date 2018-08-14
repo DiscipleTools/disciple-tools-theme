@@ -9,8 +9,13 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
             if ( isset( $_POST['_wpnonce'] ) && isset( $_POST['action'] ) && isset( $_POST['theme'] ) ) {
                 // We're doing nonce verification later, and it's OK if the
                 // action name is built on POST parameters.
-                // @codingStandardsIgnoreLine
-                $stylesheet = $_POST['theme'] ? wp_unslash( $_POST['theme'] ) : get_stylesheet();
+                if ( isset( $_POST['theme'] ) ) {
+                    // WordPress.CSRF.NonceVerification.NoNonceVerification
+                    // @phpcs:ignore
+                    $stylesheet = sanitize_text_field( wp_unslash( $_POST['theme'] ) );
+                } else {
+                    $stylesheet = get_stylesheet();
+                }
                 if ( ! wp_verify_nonce( sanitize_key( $_POST['_wpnonce'] ), 'edit-theme_' . $file . $stylesheet ) ) {
                     throw new Exception( "Could not verify nonce" );
                 }

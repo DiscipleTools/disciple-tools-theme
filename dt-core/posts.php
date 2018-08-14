@@ -22,20 +22,19 @@ class Disciple_Tools_Posts
     /**
      * Disciple_Tools_Posts constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
         self::$connection_types = [
-            "locations",
-            "groups",
-            "people_groups",
-            "baptized_by",
-            "baptized",
-            "coached_by",
-            "coaching",
-            "subassigned",
-            "leaders",
-            "parent_groups",
-            "child_groups",
+            "locations" => [ "name" => __( "Locations", "disciple_tools" ) ],
+            "groups" => [ "name" => __( "Groups", "disciple_tools" ) ],
+            "people_groups" => [ "name" => __( "People Groups", "disciple_tools" ) ],
+            "baptized_by" => [ "name" => __( "Baptized By", "disciple_tools" ) ],
+            "baptized" => [ "name" => __( "Baptized", "disciple_tools" ) ],
+            "coached_by" => [ "name" => __( "Coached By", "disciple_tools" ) ],
+            "coaching" => [ "name" => __( "Coaching", "disciple_tools" ) ],
+            "subassigned" => [ "name" => __( "Sub Assigned", "disciple_tools" ) ],
+            "leaders" => [ "name" => __( "Leaders", "disciple_tools" ) ],
+            "parent_groups" => [ "name" => __( "Parent Groups", "disciple_tools" ) ],
+            "child_groups" => [ "name" => __( "Child Groups", "disciple_tools" ) ],
         ];
     }
 
@@ -55,8 +54,7 @@ class Disciple_Tools_Posts
      *
      * @return bool
      */
-    public static function can_access( string $post_type )
-    {
+    public static function can_access( string $post_type ) {
         return current_user_can( "access_" . $post_type );
     }
 
@@ -65,8 +63,7 @@ class Disciple_Tools_Posts
      *
      * @return bool
      */
-    public static function can_view_all( string $post_type )
-    {
+    public static function can_view_all( string $post_type ) {
         return current_user_can( "view_any_" . $post_type );
     }
 
@@ -75,8 +72,7 @@ class Disciple_Tools_Posts
      *
      * @return bool
      */
-    public static function can_create( string $post_type )
-    {
+    public static function can_create( string $post_type ) {
         return current_user_can( 'create_' . $post_type );
     }
 
@@ -85,8 +81,7 @@ class Disciple_Tools_Posts
      *
      * @return bool
      */
-    public static function can_delete( string $post_type )
-    {
+    public static function can_delete( string $post_type ) {
         return current_user_can( 'delete_any_' . $post_type );
     }
 
@@ -99,8 +94,7 @@ class Disciple_Tools_Posts
      *
      * @return bool
      */
-    public static function can_view( string $post_type, int $post_id )
-    {
+    public static function can_view( string $post_type, int $post_id ) {
         global $wpdb;
         if ( current_user_can( 'view_any_' . $post_type ) ) {
             return true;
@@ -139,8 +133,7 @@ class Disciple_Tools_Posts
      *
      * @return bool
      */
-    public static function can_update( string $post_type, int $post_id )
-    {
+    public static function can_update( string $post_type, int $post_id ) {
         global $wpdb;
         if ( current_user_can( 'update_any_' . $post_type ) ) {
             return true;
@@ -191,8 +184,7 @@ class Disciple_Tools_Posts
      *
      * @return array
      */
-    public static function get_posts_shared_with_user( string $post_type, int $user_id )
-    {
+    public static function get_posts_shared_with_user( string $post_type, int $user_id ) {
         global $wpdb;
         $shares = $wpdb->get_results(
             $wpdb->prepare(
@@ -224,8 +216,7 @@ class Disciple_Tools_Posts
      *
      * @return false|int|\WP_Error
      */
-    public static function add_post_comment( string $post_type, int $group_id, string $comment )
-    {
+    public static function add_post_comment( string $post_type, int $group_id, string $comment ) {
         if ( !self::can_update( $post_type, $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
@@ -445,8 +436,7 @@ class Disciple_Tools_Posts
      *
      * @return array|null|object|\WP_Error
      */
-    public static function get_post_activity( string $post_type, int $post_id, array $fields )
-    {
+    public static function get_post_activity( string $post_type, int $post_id, array $fields ) {
         global $wpdb;
         if ( !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read:" ) . $post_type, [ 'status' => 403 ] );
@@ -523,16 +513,27 @@ class Disciple_Tools_Posts
      * Get post comments
      *
      * @param string $post_type
-     * @param int    $post_id
+     * @param int $post_id
+     *
+     * @param bool $check_permissions
+     * @param string $type
      *
      * @return array|int|\WP_Error
      */
-    public static function get_post_comments( string $post_type, int $post_id )
-    {
-        if ( !self::can_view( $post_type, $post_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
+    public static function get_post_comments( string $post_type, int $post_id, bool $check_permissions = true, $type = "all" ) {
+        if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
+            return new WP_Error( __FUNCTION__, __( "No permissions to read post" ), [ 'status' => 403 ] );
         }
-        $comments = get_comments( [ 'post_id' => $post_id ] );
+        //setting type to "comment" does not work.
+        $comments = get_comments( [
+            'post_id' => $post_id,
+            "type" => $type
+        ]);
+
+        foreach ( $comments as $comment ){
+            $comment->gravatar = get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
+            $comment->comment_author = dt_get_user_display_name( $comment->user_id );
+        }
 
         return $comments;
     }
@@ -545,8 +546,7 @@ class Disciple_Tools_Posts
      *
      * @return array|\WP_Error|\WP_Query
      */
-    public static function get_viewable_compact( string $post_type, string $search_string )
-    {
+    public static function get_viewable_compact( string $post_type, string $search_string ) {
         if ( !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, sprintf( __( "You do not have access to these %s" ), $post_type ), [ 'status' => 403 ] );
         }
@@ -564,14 +564,14 @@ class Disciple_Tools_Posts
             $query_args['meta_key'] = 'assigned_to';
             $query_args['meta_value'] = "user-" . $current_user->ID;
             $posts = $wpdb->get_results( $wpdb->prepare( "
-                SELECT * FROM $wpdb->posts 
+                SELECT * FROM $wpdb->posts
                 INNER JOIN $wpdb->postmeta as assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id AND assigned_to.meta_key = 'assigned_to')
                 WHERE assigned_to.meta_value = %s
                 AND INSTR( $wpdb->posts.post_title, %s ) > 0
                 AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
                 ORDER BY CASE
                     WHEN INSTR( $wpdb->posts.post_title, %s ) = 1 then 1
-                    ELSE 2  
+                    ELSE 2
                 END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
                 LIMIT 0, 30
             ", "user-". $current_user->ID, $search_string, $post_type, $search_string
@@ -583,7 +583,7 @@ class Disciple_Tools_Posts
                 AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
                 ORDER BY  CASE
                     WHEN INSTR( $wpdb->posts.post_title, %s ) = 1 then 1
-                    ELSE 2  
+                    ELSE 2
                 END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
                 LIMIT 0, 30
             ", $search_string, $post_type, $search_string
@@ -638,8 +638,7 @@ class Disciple_Tools_Posts
      *
      * @return array|\WP_Error|\WP_Query
      */
-    public static function get_viewable( string $post_type, int $most_recent = 0 )
-    {
+    public static function get_viewable( string $post_type, int $most_recent = 0 ) {
         if ( !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, sprintf( __( "You do not have access to these %s" ), $post_type ), [ 'status' => 403 ] );
         }
@@ -658,7 +657,7 @@ class Disciple_Tools_Posts
             'orderby' => 'meta_value_num',
             'meta_key' => "last_modified",
             'order' => 'ASC',
-            'posts_per_page' => 1000 // @codingStandardsIgnoreLine
+            'posts_per_page' => 1000 // @phpcs:ignore WordPress.VIP.PostsPerPage
         ];
         $posts_shared_with_user = [];
         if ( !self::can_view_all( $post_type ) ) {
@@ -689,9 +688,9 @@ class Disciple_Tools_Posts
         if ($most_recent){
             global $wpdb;
             $deleted_query = $wpdb->get_results( $wpdb->prepare(
-                "SELECT object_id 
+                "SELECT object_id
                 FROM `$wpdb->dt_activity_log`
-                WHERE 
+                WHERE
                     ( `action` = 'deleted' || `action` = 'trashed' )
                     AND `object_subtype` = %s
                     AND hist_time > %d
@@ -750,7 +749,7 @@ class Disciple_Tools_Posts
         $connections_sql_from = "";
 
         foreach ( $query as $query_key => $query_value ) {
-            if ( in_array( $query_key, self::$connection_types ) ) {
+            if ( in_array( $query_key, array_keys( self::$connection_types ) ) ) {
                 if ( $query_key === "locations" ) {
                     $location_sql = "";
                     foreach ( $query_value as $location ) {
@@ -760,7 +759,7 @@ class Disciple_Tools_Posts
                         }
                     }
                     if ( !empty( $location_sql ) ){
-                        $connections_sql_to .= "AND ( to_p2p.p2p_type = 'contacts_to_locations' AND to_p2p.p2p_to in (" . esc_sql( $location_sql ) .") )";
+                        $connections_sql_to .= "AND ( to_p2p.p2p_type = '" . esc_sql( $post_type ) . "_to_locations' AND to_p2p.p2p_to in (" . esc_sql( $location_sql ) .") )";
                     }
                 }
                 if ( $query_key === "subassigned" ) {
@@ -814,7 +813,7 @@ class Disciple_Tools_Posts
             if ( !is_array( $query_value )){
                 return new WP_Error( __FUNCTION__, __( "Filter queries must be arrays" ), [ 'status' => 403 ] );
             }
-            if ( !in_array( $query_key, self::$connection_types ) && strpos( $query_key, "contact_" ) !== 0 ){
+            if ( !in_array( $query_key, array_keys( self::$connection_types ) ) && strpos( $query_key, "contact_" ) !== 0 ){
                 if ( $query_key == "assigned_to" ){
                     foreach ( $query_value as $assigned_to ){
                         $connector = "OR";
@@ -839,11 +838,24 @@ class Disciple_Tools_Posts
 
                     }
                 } else {
+                    $connector = " OR ";
                     foreach ( $query_value as $value ){
-                        if ( !empty( $meta_field_sql ) ){
-                            $meta_field_sql .= " OR ";
+                        //allow negative searches
+                        $equality = "=";
+                        if ( strpos( $value, "-" ) === 0 ){
+                            $equality = "!=";
+                            $value = ltrim( $value, "-" );
+                            $connector = " AND ";
                         }
-                        $meta_field_sql .= " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value = '" . esc_sql( $value ) . "' ) ";
+                        if ( !empty( $meta_field_sql ) ){
+                            $meta_field_sql .= $connector;
+                        }
+                        if ($equality === "!="){
+                            //find one with the value to exclude
+                            $meta_query .= " AND not exists (select 1 from $wpdb->postmeta where $wpdb->postmeta.post_id = $wpdb->posts.ID and $wpdb->postmeta.meta_key = '" . esc_sql( $query_key ) ."'  and $wpdb->postmeta.meta_value = '" . esc_sql( $value ) . "') ";
+                        } else {
+                            $meta_field_sql .= " ( " . esc_sql( $query_key ) . ".meta_key = '" . esc_sql( $query_key ) ."' AND " . esc_sql( $query_key ) . ".meta_value " . $equality . " '" . esc_sql( $value ) . "' ) ";
+                        }
                     }
                 }
                 if ( $meta_field_sql ){
@@ -890,7 +902,7 @@ class Disciple_Tools_Posts
                 foreach ( array_reverse( $all_field_keys ) as $field_index => $field_key ){
                     if ( strpos( $field_key, "milestone_" ) === 0 ){
                         $alias = 'faith_' . esc_sql( $field_key );
-                        $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON 
+                        $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON
                     ( $wpdb->posts.ID = $alias.post_id AND $alias.meta_key = '" . esc_sql( $field_key ) . "' AND $alias.meta_value = 'yes') ";
                         $sort_sql .= "WHEN ( $alias.meta_key = '" . esc_sql( $field_key ) . "' ) THEN $field_index ";
                     }
@@ -920,7 +932,7 @@ class Disciple_Tools_Posts
             $sort_join = "INNER JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
             $sort_sql = "sort.meta_value $sort_dir";
         } elseif ( $sort === "locations" || $sort === "groups" || $sort === "leaders" ){
-            $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = '" . $post_type . "_to_$sort' ) 
+            $sort_join = "LEFT JOIN $wpdb->p2p as sort ON ( sort.p2p_from = $wpdb->posts.ID AND sort.p2p_type = '" . $post_type . "_to_$sort' )
             LEFT JOIN $wpdb->posts as p2p_post ON (p2p_post.ID = sort.p2p_to)";
             $sort_sql = "ISNULL(p2p_post.post_name), p2p_post.post_name $sort_dir";
         } elseif ( $sort === "post_date" ){
@@ -929,14 +941,15 @@ class Disciple_Tools_Posts
 
 
         // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
         $prepared_sql = $wpdb->prepare("
             SELECT SQL_CALC_FOUND_ROWS $wpdb->posts.ID, $wpdb->posts.post_title, $wpdb->posts.post_type FROM $wpdb->posts
             " . $sort_join . " " . $inner_joins . " " . $share_joins . " " . $access_joins . "
-            WHERE 1=1 
+            WHERE 1=1
             " . $post_type_check . " " . $connections_sql_to . " ". $connections_sql_from . " " . $meta_query . " " . $includes_query . " " . $access_query . "
             AND $wpdb->posts.post_type = %s
             AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
-            GROUP BY $wpdb->posts.ID 
+            GROUP BY $wpdb->posts.ID
             ORDER BY " . $sort_sql . "
             LIMIT %d, 100
             ",
@@ -964,8 +977,7 @@ class Disciple_Tools_Posts
      *
      * @return array|mixed
      */
-    public static function get_shared_with( string $post_type, int $post_id, bool $check_permissions = false )
-    {
+    public static function get_shared_with( string $post_type, int $post_id, bool $check_permissions = false ) {
         global $wpdb;
 
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
@@ -1005,8 +1017,7 @@ class Disciple_Tools_Posts
      *
      * @return false|int|WP_Error
      */
-    public static function remove_shared( string $post_type, int $post_id, int $user_id )
-    {
+    public static function remove_shared( string $post_type, int $post_id, int $user_id ) {
         global $wpdb;
 
         if ( !self::can_update( $post_type, $post_id ) ) {
@@ -1068,8 +1079,7 @@ class Disciple_Tools_Posts
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared( string $post_type, int $post_id, int $user_id, $meta = null, bool $send_notifications = true, $check_permissions = true )
-    {
+    public static function add_shared( string $post_type, int $post_id, int $user_id, $meta = null, bool $send_notifications = true, $check_permissions = true ) {
         global $wpdb;
 
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
@@ -1236,5 +1246,40 @@ class Disciple_Tools_Posts
             $users[] = $assigned_to;
         }
         return array_unique( $users );
+    }
+
+    public static function get_multi_select_options( $post_type, $field, $search = ""){
+        if ( !self::can_access( $post_type ) ){
+            return new WP_Error( __FUNCTION__, __( "You do not have access to:" ) . ' ' . $field, [ 'status' => 403 ] );
+        }
+        global $wpdb;
+        $options = $wpdb->get_col( $wpdb->prepare("
+            SELECT DISTINCT $wpdb->postmeta.meta_value FROM $wpdb->postmeta
+            LEFT JOIN $wpdb->posts on $wpdb->posts.ID = $wpdb->postmeta.post_id
+            WHERE $wpdb->postmeta.meta_key = %s
+            AND $wpdb->postmeta.meta_value LIKE %s
+            AND $wpdb->posts.post_type = %s
+            AND $wpdb->posts.post_status = 'publish'
+            ORDER BY $wpdb->postmeta.meta_value ASC
+            LIMIT 20
+        ;", esc_sql( $field ), '%' . esc_sql( $search ) . '%', esc_sql( $post_type )));
+        return $options;
+    }
+
+
+    public static function delete_post( int $post_id, string $post_type ){
+        if ( !self::can_delete( $post_type ) ) {
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+        }
+
+        global $wpdb;
+        $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_notifications WHERE post_id = %s", $post_id ) );
+        $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_share WHERE post_id = %s", $post_id ) );
+        $wpdb->query( $wpdb->prepare( "DELETE p, pm FROM $wpdb->p2p p left join $wpdb->p2pmeta pm on pm.p2p_id = p.p2p_id WHERE (p.p2p_to = %s OR p.p2p_from = %s) ", $post_id, $post_id ) );
+        $wpdb->query( $wpdb->prepare( "DELETE p, pm FROM $wpdb->posts p left join $wpdb->postmeta pm on pm.post_id = p.ID WHERE p.ID = %s", $post_id ) );
+        $wpdb->query( $wpdb->prepare( "DELETE c, cm FROM $wpdb->comments c left join $wpdb->commentmeta cm on cm.comment_id = c.comment_ID WHERE c.comment_post_ID = %s", $post_id ) );
+        $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_activity_log WHERE object_id = %s", $post_id ) );
+
+        return true;
     }
 }

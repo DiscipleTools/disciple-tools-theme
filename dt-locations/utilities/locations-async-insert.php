@@ -21,25 +21,25 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
      *
      * @return array
      */
-    protected function prepare_data( $data )
-    {
+    protected function prepare_data( $data ) {
         return $data;
     }
 
     /**
      * Insert Locations
      */
-    public function insert_location()
-    {
+    public function insert_location() {
         /**
          * Nonce validation is done through a custom nonce process inside Disciple_Tools_Async_Task
          * to allow for asynchronous processing. This is a valid nonce but is not recognized by the WP standards checker.
          *
          */
-        // @codingStandardsIgnoreLine
-        if( isset( $_POST[ 'action' ] ) && sanitize_key( wp_unslash( $_POST[ 'action' ] ) ) == 'dt_async_insert_location' && isset( $_POST[ '_nonce' ] ) && $this->verify_async_nonce( sanitize_key( wp_unslash( $_POST[ '_nonce' ] ) ) ) ) {
+        // WordPress.CSRF.NonceVerification.NoNonceVerification
+        // @phpcs:ignore
+        if ( isset( $_POST['action'] ) && sanitize_key( wp_unslash( $_POST['action'] ) ) == 'dt_async_insert_location' && isset( $_POST['_nonce'] ) && $this->verify_async_nonce( sanitize_key( wp_unslash( $_POST['_nonce'] ) ) ) ) {
 
-            // @codingStandardsIgnoreLine
+            // WordPress.CSRF.NonceVerification.NoNonceVerification
+            // @phpcs:ignore
             $mapped_from_form = array_map( 'sanitize_text_field', wp_unslash( $_POST[0] ) );
 
             // prepare standard fields
@@ -68,7 +68,6 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
 
                     // lookup post parent id
                     if ( isset( $mapped_from_form['post_parent'] ) ) {
-                        // @codingStandardsIgnoreLine
                         $parent_id = get_page_by_title( $mapped_from_form['post_parent'], OBJECT, 'locations' );
                         if ( ! is_null( $parent_id ) ) {
                             $args['post_parent'] = $parent_id->ID;
@@ -126,8 +125,7 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
      * Used when loading long running process with add_action
      * Not used when directly using launch().
      */
-    protected function run_action()
-    {
+    protected function run_action() {
 
     }
 }
@@ -135,8 +133,7 @@ class Disciple_Tools_Async_Insert_Location extends Disciple_Tools_Async_Task
 /**
  * This hook function listens for the prepared async process on every page load.
  */
-function dt_load_async_insert_location()
-{
+function dt_load_async_insert_location() {
     if ( isset( $_POST['_wp_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wp_nonce'] ) ) ) && isset( $_POST['action'] ) && sanitize_key( wp_unslash( $_POST['action'] ) ) == 'dt_async_insert_location' ) {
         try {
             $insert_location = new Disciple_Tools_Async_Insert_Location();

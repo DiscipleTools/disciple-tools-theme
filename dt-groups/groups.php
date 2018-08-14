@@ -27,8 +27,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     /**
      * Disciple_Tools_Groups constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
         add_action(
             'init',
             function() {
@@ -55,8 +54,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return array|\WP_Query
      */
-    public static function get_groups_compact( string $search_string )
-    {
+    public static function get_groups_compact( string $search_string ) {
         return self::get_viewable_compact( 'groups', $search_string );
     }
 
@@ -65,14 +63,16 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return array|\WP_Query
      */
-    public static function get_viewable_groups( int $most_recent = 0 )
-    {
+    public static function get_viewable_groups( int $most_recent = 0 ) {
         return self::get_viewable( 'groups', $most_recent );
     }
 
 
     public static function search_viewable_groups( array $query, bool $check_permissions = true ){
         $viewable = self::search_viewable_post( "groups", $query, $check_permissions );
+        if ( is_wp_error( $viewable ) ){
+            return $viewable;
+        }
         return [
             "groups" => $viewable["posts"],
             "total" => $viewable["total"]
@@ -86,8 +86,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return array|\WP_Error
      */
-    public static function get_group( int $group_id, bool $check_permissions = true )
-    {
+    public static function get_group( int $group_id, bool $check_permissions = true ) {
         if ( $check_permissions && !self::can_view( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
         }
@@ -209,7 +208,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                                 $user = get_user_by( 'id', $id );
                                 if ( $user ) {
                                     $fields[ $key ] = [
-                                        "ID"          => (int) $id,
+                                        "id"          => (int) $id,
                                         "type"        => $type,
                                         "display"     => $user->display_name,
                                         "assigned-to" => $value[0],
@@ -255,8 +254,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @since  0.1.0
      * @return array
      */
-    private static function check_for_invalid_fields( array $fields, int $post_id = null )
-    {
+    private static function check_for_invalid_fields( array $fields, int $post_id = null ) {
         $bad_fields = [];
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( isset( $post_id ), $post_id );
         $group_fields['title'] = "";
@@ -418,8 +416,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @since  0.1.0
      * @return int | WP_Error of group ID
      */
-    public static function update_group( int $group_id, array $fields, bool $check_permissions = true )
-    {
+    public static function update_group( int $group_id, array $fields, bool $check_permissions = true ) {
 
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
@@ -539,8 +536,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_location_to_group( int $group_id, int $location_id )
-    {
+    public static function add_location_to_group( int $group_id, int $location_id ) {
         return p2p_type( 'groups_to_locations' )->connect(
             $location_id, $group_id,
             [ 'date' => current_time( 'mysql' ) ]
@@ -553,8 +549,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_people_group_to_group( $group_id, $people_group_id )
-    {
+    public static function add_people_group_to_group( $group_id, $people_group_id ) {
         return p2p_type( 'groups_to_peoplegroups' )->connect(
             $people_group_id, $group_id,
             [ 'date' => current_time( 'mysql' ) ]
@@ -567,8 +562,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_member_to_group( int $group_id, int $member_id )
-    {
+    public static function add_member_to_group( int $group_id, int $member_id ) {
         // share the group with the owner of the contact.
         $assigned_to = get_post_meta( $member_id, "assigned_to", true );
         if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
@@ -590,8 +584,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_leader_to_group( int $group_id, int $leader_id )
-    {
+    public static function add_leader_to_group( int $group_id, int $leader_id ) {
         return p2p_type( 'groups_to_leaders' )->connect(
             $group_id, $leader_id,
             [ 'date' => current_time( 'mysql' ) ]
@@ -604,8 +597,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_child_group_to_group( int $group_id, int $post_id )
-    {
+    public static function add_child_group_to_group( int $group_id, int $post_id ) {
         return p2p_type( 'groups_to_groups' )->connect(
             $post_id, $group_id,
             [ 'date' => current_time( 'mysql' ) ]
@@ -618,8 +610,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function add_parent_group_to_group( int $group_id, int $post_id )
-    {
+    public static function add_parent_group_to_group( int $group_id, int $post_id ) {
         return p2p_type( 'groups_to_groups' )->connect(
             $group_id, $post_id,
             [ 'date' => current_time( 'mysql' ) ]
@@ -632,8 +623,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_location_from_group( int $group_id, int $location_id )
-    {
+    public static function remove_location_from_group( int $group_id, int $location_id ) {
         return p2p_type( 'groups_to_locations' )->disconnect( $location_id, $group_id );
     }
 
@@ -643,8 +633,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_people_group_from_group( $group_id, $people_group_id )
-    {
+    public static function remove_people_group_from_group( $group_id, $people_group_id ) {
         return p2p_type( 'groups_to_peoplegroups' )->disconnect( $people_group_id, $group_id );
     }
 
@@ -655,8 +644,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_member_from_group( int $group_id, int $member_id )
-    {
+    public static function remove_member_from_group( int $group_id, int $member_id ) {
         return p2p_type( 'contacts_to_groups' )->disconnect( $member_id, $group_id );
     }
 
@@ -666,8 +654,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_leader_from_group( int $group_id, int $leader_id )
-    {
+    public static function remove_leader_from_group( int $group_id, int $leader_id ) {
         return p2p_type( 'groups_to_leaders' )->disconnect( $group_id, $leader_id );
     }
 
@@ -677,8 +664,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_child_group_from_group( int $group_id, int $post_id )
-    {
+    public static function remove_child_group_from_group( int $group_id, int $post_id ) {
         return p2p_type( 'groups_to_groups' )->disconnect( $post_id, $group_id );
     }
 
@@ -688,8 +674,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_parent_group_from_group( int $group_id, int $post_id )
-    {
+    public static function remove_parent_group_from_group( int $group_id, int $post_id ) {
         return p2p_type( 'groups_to_groups' )->disconnect( $group_id, $post_id );
     }
 
@@ -701,8 +686,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return array|mixed|null|string|\WP_Error|\WP_Post
      */
-    public static function add_item_to_field( int $group_id, string $key, string $value, bool $check_permissions )
-    {
+    public static function add_item_to_field( int $group_id, string $key, string $value, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
@@ -727,6 +711,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $connect = self::add_child_group_to_group( $group_id, $value );
         } elseif ( $key === "parent_groups" ) {
             $connect = self::add_parent_group_to_group( $group_id, $value );
+        } else {
+            return new WP_Error( __FUNCTION__, "Field not recognized: " . $key, [ "status" => 400 ] );
         }
         if ( is_wp_error( $connect ) ) {
             return $connect;
@@ -736,9 +722,9 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $connection->guid = get_permalink( $value );
 
             return $connection;
+        } else {
+            return new WP_Error( __FUNCTION__, "Field not parsed or understood: " . $key, [ "status" => 400 ] );
         }
-
-        return new WP_Error( "add_group_detail", "Field not recognized: " . $key, [ "status" => 400 ] );
     }
 
     /**
@@ -749,8 +735,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return int|\WP_Error
      */
-    public static function update_contact_method( int $group_id, string $key, array $values, bool $check_permissions )
-    {
+    public static function update_contact_method( int $group_id, string $key, array $values, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
@@ -792,8 +777,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return bool|mixed|\WP_Error
      */
-    public static function remove_group_connection( int $group_id, string $key, string $value, bool $check_permissions )
-    {
+    public static function remove_group_connection( int $group_id, string $key, string $value, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have have permission for this" ), [ 'status' => 403 ] );
         }
@@ -820,8 +804,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return false|int|\WP_Error
      */
-    public static function add_comment( int $group_id, string $comment )
-    {
+    public static function add_comment( int $group_id, string $comment ) {
         return self::add_post_comment( 'groups', $group_id, $comment );
     }
 
@@ -830,8 +813,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return array|int|\WP_Error
      */
-    public static function get_comments( int $group_id )
-    {
+    public static function get_comments( int $group_id ) {
         return self::get_post_comments( 'groups', $group_id );
     }
 
@@ -867,8 +849,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return array|null|object|\WP_Error
      */
-    public static function get_activity( int $group_id )
-    {
+    public static function get_activity( int $group_id ) {
         $fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( isset( $group_id ), $group_id );
         return self::get_post_activity( 'groups', $group_id, $fields );
     }
@@ -880,8 +861,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return array|mixed
      */
-    public static function get_shared_with_on_group( int $post_id )
-    {
+    public static function get_shared_with_on_group( int $post_id ) {
         return self::get_shared_with( 'groups', $post_id );
     }
 
@@ -893,8 +873,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return false|int|WP_Error
      */
-    public static function remove_shared_on_group( int $post_id, int $user_id )
-    {
+    public static function remove_shared_on_group( int $post_id, int $user_id ) {
         return self::remove_shared( 'groups', $post_id, $user_id );
     }
 
@@ -910,8 +889,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared_on_group( int $post_id, int $user_id, $meta = null, bool $send_notifications = true, bool $check_permissions = true )
-    {
+    public static function add_shared_on_group( int $post_id, int $user_id, $meta = null, bool $send_notifications = true, bool $check_permissions = true ) {
         return self::add_shared( 'groups', $post_id, $user_id, $meta, $send_notifications, $check_permissions );
     }
 
@@ -922,8 +900,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @param  bool|true $check_permissions
      * @return int | WP_Error
      */
-    public static function create_group( array $fields = [], $check_permissions = true )
-    {
+    public static function create_group( array $fields = [], $check_permissions = true ) {
         if ( $check_permissions && ! current_user_can( 'create_groups' ) ) {
             return new WP_Error( __FUNCTION__, __( "You may not public a group" ), [ 'status' => 403 ] );
         }

@@ -29,11 +29,12 @@ function project_overview() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
+    let label = dtMetricsProject.data.translations
 
     console.log( sourceData )
 
     chartDiv.empty().html(`
-        <span class="section-header">`+ sourceData.translations.title_overview +`</span>
+        <span class="section-header">`+ label.title_overview +`</span>
         <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
         <div class="medium reveal" class="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
@@ -41,18 +42,17 @@ function project_overview() {
         <br><br>
         <div class="grid-x grid-padding-x grid-padding-y">
             <div class="cell center callout">
-                <p><span class="section-subheader">Contacts</span></p>
+                <p><span class="section-subheader">`+ label.title_contacts +`</span></p>
                 <div class="grid-x">
                     <div class="medium-4 cell center">
-                        <h4>Total Contacts<br><span id="total_contacts">0</span></h4>
+                        <h4>`+ label.title_active_contacts +`<br><span id="active_contacts">0</span></h4>
                     </div>
                     <div class="medium-4 cell center left-border-grey">
-                        <h4>Waiting on Accept<br><span id="needs_accepted">0</span></h4>
+                        <h4>`+ label.title_waiting_on_accept +`<br><span id="needs_accepted">0</span></h4>
                     </div>
                     <div class="medium-4 cell center left-border-grey">
-                        <h4>Waiting on Update<br><span id="updates_needed">0</span></h4>
+                        <h4>`+ label.title_waiting_on_update +`<br><span id="updates_needed">0</span></h4>
                     </div>
-                    
                 </div>
             </div>
             <div class="cell">
@@ -61,24 +61,28 @@ function project_overview() {
             <div class="cell">
             <br>
                 <div class="cell center callout">
-                    <p><span class="section-subheader">Groups</span></p>
+                    <p><span class="section-subheader">`+ label.title_project_groups +`</span></p>
                     <div class="grid-x">
                         <div class="medium-4 cell center">
-                            <h4>Total Groups<br><span id="total_groups">0</span></h4>
+                            <h4>`+ label.title_total_groups +`<br><span id="total_groups">0</span></h4>
                         </div>
                         <div class="medium-4 cell center left-border-grey">
-                            <h4>Needs Training<br><span id="needs_training">0</span></h4>
+                            <h4>`+ label.title_needs_training +`<br><span id="needs_training">0</span></h4>
                         </div>
-                        <div class="medium-4 cell center left-border-grey">
-                            <h4>Generations<br><span id="generations">0</span></h4>
-                        </div>
+                        <!--<div class="medium-4 cell center left-border-grey">
+                            <h4>`+ label.title_generations +`<br><span id="generations">0</span></h4>
+                        </div>-->
                    </div> 
                 </div>
             </div>
             <div class="cell">
+                <div id="my_groups_health" style="height: 500px;"></div>
+            </div>
+            <div class="cell">
+                <hr>
                 <div class="grid-x">
                     <div class="cell medium-6 center">
-                        <span class="section-subheader">Group Types</span>
+                        <span class="section-subheader">`+ label.title_group_types +`</span>
                         <div id="group_types" style="height: 400px;"></div>
                     </div>
                     <div class="cell medium-6">
@@ -86,25 +90,18 @@ function project_overview() {
                     </div>
                 </div>
             </div>
-            <div class="cell">
-            <hr>
-                <div id="my_groups_health" style="height: 500px;"></div>
-            </div>
-            <div class="cell">
-            <hr>
-                <div id="streams" style="height: 500px;"></div>
-            </div>
+            
         </div>
         `)
 
     let hero = sourceData.hero_stats
-    jQuery('#total_contacts').html( numberWithCommas( hero.total_contacts ) )
+    jQuery('#active_contacts').html( numberWithCommas( hero.active_contacts ) )
     jQuery('#needs_accepted').html( numberWithCommas( hero.needs_accepted ) )
     jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
 
     jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
     jQuery('#needs_training').html( numberWithCommas( hero.needs_training ) )
-    jQuery('#generations').html( numberWithCommas( hero.generations ) )
+    // jQuery('#generations').html( numberWithCommas( hero.generations ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'bar']});
@@ -113,7 +110,6 @@ function project_overview() {
     google.charts.setOnLoadCallback(drawMyGroupHealth);
     google.charts.setOnLoadCallback(drawGroupTypes);
     google.charts.setOnLoadCallback(drawGroupGenerations);
-    google.charts.setOnLoadCallback(drawStreams);
 
     function drawMyContactsProgress() {
 
@@ -127,9 +123,9 @@ function project_overview() {
                 width: "75%",
                 height: "85%" },
             hAxis: {
-                title: 'number of contacts',
+                title: label.label_number_of_contacts,
             },
-            title: "Follow-Up Progress",
+            title: label.label_follow_up_progress,
             legend: {position: "none"},
         };
 
@@ -148,24 +144,19 @@ function project_overview() {
                 width: "85%",
                 height: "75%" },
             vAxis: {
-                title: 'groups',
+                title: label.label_groups,
+                format: '0',
             },
-            title: "Groups Needing Training Attention",
+            hAxis: {
+
+                format: '0',
+            },
+            title: label.label_group_needs_training,
             legend: {position: "none"},
             colors: ['green' ],
         };
 
         let chart = new google.visualization.ColumnChart(document.getElementById('my_groups_health'));
-
-        function selectHandler() {
-            let selectedItem = chart.getSelection()[0];
-            if (selectedItem) {
-                let topping = data.getValue(selectedItem.row, 0);
-                alert('You selected ' + topping);
-            }
-        }
-
-        google.visualization.events.addListener(chart, 'select', selectHandler);
 
         chart.draw(data, options);
     }
@@ -206,7 +197,15 @@ function project_overview() {
                 top: '7%',
                 width: "75%",
                 height: "85%" },
-            title: "Generations",
+            vAxis: {
+                title: label.label_generations,
+                format: '0',
+            },
+            hAxis: {
+                title: label.label_groups_by_type,
+                format: '0',
+            },
+            title: label.title_generations,
             legend: { position: 'bottom', maxLines: 3 },
             isStacked: true,
             colors: [ 'lightgreen', 'limegreen', 'darkgreen' ],
@@ -216,39 +215,13 @@ function project_overview() {
         chart.draw(data, options);
     }
 
-    function drawStreams() {
-
-        let data = google.visualization.arrayToDataTable( sourceData.streams );
-
-        let options = {
-            chartArea: {
-                left: '10%',
-                top: '10%',
-                width: "85%",
-                height: "75%" },
-            vAxis: {
-                title: 'streams',
-                format: '0',
-            },
-            hAxis: {
-                title: 'generations',
-                format: '0',
-            },
-            title: "Streams",
-            legend: {position: "none"},
-            colors: ['green' ],
-        };
-
-        let chart = new google.visualization.ColumnChart(document.getElementById('streams'));
-        chart.draw(data, options);
-    }
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
 
-    chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span> 
+    /*chartDiv.append(`<hr><div><span class="small grey">( `+ label.label_stats_as_of +` )</span>
             <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
             <span class="spinner" style="display: none;"><img src="`+dtMetricsProject.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
-            </div>`)
+            </div>`)*/
 }
 
 function project_timeline() {
@@ -256,6 +229,7 @@ function project_timeline() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
+    let label = dtMetricsProject.data.translations
 
     chartDiv.empty().html(`
         <span class="section-header">`+ sourceData.translations.title_timeline +`</span>
@@ -549,10 +523,10 @@ function project_timeline() {
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
 
-    chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span> 
+    /*chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span>
             <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
             <span class="spinner" style="display: none;"><img src="`+dtMetricsProject.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
-            </div>`)
+            </div>`)*/
 }
 
 function project_critical_path() {
@@ -560,19 +534,29 @@ function project_critical_path() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
+    let label = dtMetricsProject.data.translations
+
+    let height = $(window).height()
+    let chartHeight = height - ( height * .15 )
 
     console.log( sourceData )
 
     chartDiv.empty().html(`
-        <span class="section-header">`+ sourceData.translations.title_critical_path +`</span>
-        <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
-        <div class="medium reveal" id="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button></div>
-        <br>
+        <span class="section-header">`+ label.title_critical_path +`</span>
+        <span style="float:right;">
+        <select id="year_select" onchange="change_critical_path_year($(this).val())">
+            `+year_list()+`
+        </select>
+        </span>
+        
+        <br clear="all">
         <div class="grid-x grid-padding-x">
             <div class="cell">
-                <div id="my_critical_path" style="height: 750px;"></div>
+                <div id="dashboard_div">
+                    <div id="my_critical_path" style="height: `+chartHeight+`px;"></div>
+                    <hr>
+                    <div id="filter_div"></div>
+                </div>
             </div>
         </div>
         `)
@@ -585,35 +569,116 @@ function project_critical_path() {
     jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
 
     // build charts
-    google.charts.load('current', {'packages':['corechart', 'bar']});
+    google.charts.load('current', {'packages':['corechart', 'bar', 'controls']});
 
     google.charts.setOnLoadCallback(drawCriticalPath);
 
-    function drawCriticalPath() {
+    new Foundation.Reveal(jQuery('.dt-project-legend'));
 
-        let data = google.visualization.arrayToDataTable( sourceData.critical_path );
+    /*chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span>
+            <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
+            <span class="spinner" style="display: none;"><img src="`+dtMetricsProject.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
+            </div>`)*/
+}
 
-        let options = {
+function drawCriticalPath( cp_data ) {
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+    let chartDiv = jQuery('#chart')
+    let sourceData = dtMetricsProject.data
+    let label = dtMetricsProject.data.translations
+    let path_data = []
+
+    if ( cp_data ) {
+        path_data = cp_data
+    } else {
+        path_data = sourceData.critical_path
+    }
+
+    let data = google.visualization.arrayToDataTable( path_data );
+    let dashboard = new google.visualization.Dashboard(
+        document.getElementById('dashboard_div')
+    );
+
+    let barChart = new google.visualization.ChartWrapper({
+        'chartType': 'BarChart',
+        'containerId': 'my_critical_path',
+        'options': {
             bars: 'horizontal',
             chartArea: {
                 left: '20%',
                 top: '7%',
                 width: "75%",
                 height: "85%" },
-            title: "Critical Path (Jan 1 - May 10)",
+            hAxis: { scaleType: 'mirrorLog' },
+            title: label.title_critical_path,
             legend: { position: "none"},
-        };
+            animation:{
+                duration: 400,
+                easing: 'out',
+            },
+        }
+    });
 
-        let chart = new google.visualization.BarChart(document.getElementById('my_critical_path'));
-        chart.draw(data, options);
+    var crit_keys = []
+    jQuery.each( sourceData.critical_path, function( index, value ) {
+        crit_keys.push( value[0] )
+
+    })
+
+    let categoryFilter = new google.visualization.ControlWrapper({
+        'controlType': 'CategoryFilter',
+        'containerId': 'filter_div',
+        'options': {
+            'filterColumnLabel': 'Step'
+        },
+        'ui': {
+            'allowMultiple': true,
+            'caption': "Select Path Step...",
+        },
+        'state': { 'selectedValues': crit_keys },
+
+    });
+
+    dashboard.bind(categoryFilter, barChart);
+
+    dashboard.draw( data )
+}
+
+function year_list() {
+    // create array with descending dates
+    let i = 0
+    let fullDate = new Date()
+    let date = fullDate.getFullYear()
+    let options = ''
+    while (i < 15) {
+        options += `<option value="`+date+`">`+date+`</option>`;
+        i++;
+        date--;
     }
 
-    new Foundation.Reveal(jQuery('.dt-project-legend'));
+    return options
+}
 
-    chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span> 
-            <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
-            <span class="spinner" style="display: none;"><img src="`+dtMetricsProject.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
-            </div>`)
+function change_critical_path_year( year ) {
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: dtMetricsProject.root + 'dt/v1/metrics/critical_path_by_year/'+year,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
+        },
+    })
+        .done(function (data) {
+            if ( data ) {
+                drawCriticalPath( data )
+            }
+        })
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+            jQuery("#errors").append(err.responseText)
+        })
 }
 
 function project_outreach() {
@@ -621,6 +686,7 @@ function project_outreach() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
+    let label = dtMetricsProject.data.translations
 
     console.log( sourceData )
 
@@ -666,6 +732,7 @@ function project_follow_up() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
+    let label = dtMetricsProject.data.translations
 
     console.log( sourceData )
 
@@ -733,6 +800,7 @@ function project_training() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
+    let label = dtMetricsProject.data.translations
 
     console.log( sourceData )
 
@@ -797,6 +865,7 @@ function project_multiplication() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
+    let label = dtMetricsProject.data.translations
 
     console.log( sourceData )
 

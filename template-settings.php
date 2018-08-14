@@ -5,8 +5,8 @@ Template Name: Settings
 
 /* Process $_POST content */
 // We're not checking the nonce here because update_user_contact_info will
-// @codingStandardsIgnoreLine
-if( isset( $_POST[ 'user_update_nonce' ] ) ) {
+// phpcs:ignore
+if ( isset( $_POST['user_update_nonce'] ) ) {
     Disciple_Tools_Users::update_user_contact_info();
 }
 
@@ -96,9 +96,9 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                 <ul>
                                     <?php
                                     echo '<li><a href="mailto:' . esc_attr( $dt_user->user_email ) . '">' . esc_html( $dt_user->user_email ) . '</a><br><span class="text-small"> (System Email)</span></li>';
-                                    foreach ( $dt_user_fields as $field ) {
-                                        if ( $field['type'] == 'email' && !empty( $field['value'] ) ) {
-                                            echo '<li><a href="mailto:' . esc_html( $field['value'] ) . '" target="_blank">' . esc_html( $field['value'] ) . '</a> <br><span class="text-small">(' . esc_html( $field['label'] ) . ')</span></li>';
+                                    foreach ( $dt_user_fields as $dt_field ) {
+                                        if ( $dt_field['type'] == 'email' && !empty( $dt_field['value'] ) ) {
+                                            echo '<li><a href="mailto:' . esc_html( $dt_field['value'] ) . '" target="_blank">' . esc_html( $dt_field['value'] ) . '</a> <br><span class="text-small">(' . esc_html( $dt_field['label'] ) . ')</span></li>';
                                         }
                                     }
                                     ?>
@@ -107,9 +107,9 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                 <strong><?php esc_html_e( 'Phone', 'disciple_tools' )?></strong>
                                 <ul>
                                     <?php
-                                    foreach ( $dt_user_fields as $field ) {
-                                        if ( $field['type'] == 'phone' && !empty( $field['value'] ) ) {
-                                            echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
+                                    foreach ( $dt_user_fields as $dt_field ) {
+                                        if ( $dt_field['type'] == 'phone' && !empty( $dt_field['value'] ) ) {
+                                            echo '<li>' . esc_html( $dt_field['value'] ) . ' (' . esc_html( $dt_field['label'] ) . ')</li>';
                                         }
                                     }
                                     ?>
@@ -118,9 +118,9 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                 <strong><?php esc_html_e( 'Address', 'disciple_tools' )?></strong>
                                 <ul>
                                     <?php
-                                    foreach ( $dt_user_fields as $field ) {
-                                        if ( $field['type'] == 'address' && !empty( $field['value'] ) ) {
-                                            echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
+                                    foreach ( $dt_user_fields as $dt_field ) {
+                                        if ( $dt_field['type'] == 'address' && !empty( $dt_field['value'] ) ) {
+                                            echo '<li>' . esc_html( $dt_field['value'] ) . ' (' . esc_html( $dt_field['label'] ) . ')</li>';
                                         }
                                     }
                                     ?>
@@ -129,9 +129,9 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                 <strong><?php esc_html_e( 'Social', 'disciple_tools' )?></strong>
                                 <ul>
                                     <?php
-                                    foreach ( $dt_user_fields as $field ) {
-                                        if ( $field['type'] == 'social' && !empty( $field['value'] ) ) {
-                                            echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
+                                    foreach ( $dt_user_fields as $dt_field ) {
+                                        if ( $dt_field['type'] == 'social' && !empty( $dt_field['value'] ) ) {
+                                            echo '<li>' . esc_html( $dt_field['value'] ) . ' (' . esc_html( $dt_field['label'] ) . ')</li>';
                                         }
                                     }
                                     ?>
@@ -140,9 +140,9 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                 <strong><?php esc_html_e( 'Other', 'disciple_tools' )?></strong>
                                 <ul>
                                     <?php
-                                    foreach ( $dt_user_fields as $field ) {
-                                        if ( $field['type'] == 'other' && !empty( $field['value'] ) ) {
-                                            echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
+                                    foreach ( $dt_user_fields as $dt_field ) {
+                                        if ( $dt_field['type'] == 'other' && !empty( $dt_field['value'] ) ) {
+                                            echo '<li>' . esc_html( $dt_field['value'] ) . ' (' . esc_html( $dt_field['label'] ) . ')</li>';
                                         }
                                     }
                                     ?>
@@ -166,8 +166,8 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                 $dt_user_locations_list = dt_get_user_locations_list( get_current_user_id() );
                                 if ( $dt_user_locations_list ) {
                                     echo '<ul>';
-                                    foreach ( $dt_user_locations_list as $locations_list ) {
-                                        echo '<li><a href="' . esc_url( $locations_list->guid ) . '">' . esc_html( $locations_list->post_title ) . '</a></li>';
+                                    foreach ( $dt_user_locations_list as $dt_locations_list ) {
+                                        echo '<li><a href="' . esc_url( $dt_locations_list->guid ) . '">' . esc_html( $dt_locations_list->post_title ) . '</a></li>';
                                     }
                                     echo '</ul>';
                                 }
@@ -178,12 +178,12 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                 <?php
                                 $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id() );
                                 if ( $dt_user_team_members_list ) {
-                                    foreach ( $dt_user_team_members_list as $team_list ) {
-                                        echo esc_html( $team_list['team_name'] );
-                                        if ( !empty( $team_list['team_members'] ) ) {
+                                    foreach ( $dt_user_team_members_list as $dt_team_list ) {
+                                        echo esc_html( $dt_team_list['team_name'] );
+                                        if ( !empty( $dt_team_list['team_members'] ) ) {
                                             echo '<ul>';
-                                            foreach ( $team_list['team_members'] as $member ) {
-                                                echo '<li><a href="' . esc_url( $member['user_url'] ) . '">' . esc_html( $member['display_name'] ) . '</a></li>';
+                                            foreach ( $dt_team_list['team_members'] as $dt_member ) {
+                                                echo '<li><a href="' . esc_url( $dt_member['user_url'] ) . '">' . esc_html( $dt_member['display_name'] ) . '</a></li>';
                                             }
                                             echo '</ul>';
                                         }
@@ -445,17 +445,17 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                         </tr>
 
                                         <?php // site defined fields
-                                        foreach ( $dt_user_fields as $field ) {
+                                        foreach ( $dt_user_fields as $dt_field ) {
                                             ?>
                                             <tr>
                                                 <td>
-                                                    <label for="<?php echo esc_attr( $field['key'] ) ?>"><?php echo esc_html( $field['label'] ) ?></label>
+                                                    <label for="<?php echo esc_attr( $dt_field['key'] ) ?>"><?php echo esc_html( $dt_field['label'] ) ?></label>
                                                 </td>
                                                 <td><input type="text"
                                                            class="profile-input"
-                                                           id="<?php echo esc_attr( $field['key'], 'disciple_tools' ) ?>"
-                                                           name="<?php echo esc_attr( $field['key'], 'disciple_tools' ) ?>"
-                                                           value="<?php echo esc_html( $field['value'] ) ?>"/>
+                                                           id="<?php echo esc_attr( $dt_field['key'], 'disciple_tools' ) ?>"
+                                                           name="<?php echo esc_attr( $dt_field['key'], 'disciple_tools' ) ?>"
+                                                           value="<?php echo esc_html( $dt_field['value'] ) ?>"/>
                                                 </td>
                                             </tr>
                                             <?php

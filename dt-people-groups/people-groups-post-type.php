@@ -75,8 +75,7 @@ class Disciple_Tools_People_Groups_Post_Type
      * @static
      * @return Disciple_Tools_People_Groups_Post_Type instance
      */
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -90,12 +89,11 @@ class Disciple_Tools_People_Groups_Post_Type
      * @access public
      * @since  0.1.0
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->post_type = 'peoplegroups';
         $this->singular = __( 'People Group', 'disciple_tools' );
         $this->plural = __( 'People Groups', 'disciple_tools' );
-        $this->args = [ 'menu_icon' => dt_svg_icon() ];
+        $this->args = [ 'menu_icon' => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBkYXRhLWNvbG9yPSJjb2xvci0yIiBmaWxsPSIjZmZmZmZmIiBkPSJNMTIsMEM5LjU0MiwwLDcsMS44MDIsNyw0LjgxN2MwLDIuNzE2LDMuODY5LDYuNDg2LDQuMzEsNi45MDdMMTIsMTIuMzgybDAuNjktMC42NTkgQzEzLjEzMSwxMS4zMDMsMTcsNy41MzMsMTcsNC44MTdDMTcsMS44MDIsMTQuNDU4LDAsMTIsMHogTTEyLDdjLTEuMTA1LDAtMi0wLjg5Ni0yLTJjMC0xLjEwNSwwLjg5NS0yLDItMnMyLDAuODk1LDIsMiBDMTQsNi4xMDQsMTMuMTA1LDcsMTIsN3oiPjwvcGF0aD4gPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTkuODg0LDE5LjQ5OUM5LjAyMywxOC44MTUsNy41NjMsMTgsNS41LDE4cy0zLjUyMywwLjgxNS00LjM4MywxLjQ5OEMwLjQwNywyMC4wNjEsMCwyMC45MTMsMCwyMS44MzZWMjRoMTEgdi0yLjE2NEMxMSwyMC45MTMsMTAuNTkzLDIwLjA2MSw5Ljg4NCwxOS40OTl6Ij48L3BhdGg+IDxjaXJjbGUgZmlsbD0iI2ZmZmZmZiIgY3g9IjUuNSIgY3k9IjEzLjUiIHI9IjMuNSI+PC9jaXJjbGU+IDxwYXRoIGZpbGw9IiNmZmZmZmYiIGQ9Ik0yMi44ODQsMTkuNDk5QzIyLjAyMywxOC44MTUsMjAuNTYzLDE4LDE4LjUsMThzLTMuNTIzLDAuODE1LTQuMzgzLDEuNDk4IEMxMy40MDcsMjAuMDYxLDEzLDIwLjkxMywxMywyMS44MzZWMjRoMTF2LTIuMTY0QzI0LDIwLjkxMywyMy41OTMsMjAuMDYxLDIyLjg4NCwxOS40OTl6Ij48L3BhdGg+IDxjaXJjbGUgZmlsbD0iI2ZmZmZmZiIgY3g9IjE4LjUiIGN5PSIxMy41IiByPSIzLjUiPjwvY2lyY2xlPjwvZz48L3N2Zz4=' ];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
 
@@ -115,7 +113,7 @@ class Disciple_Tools_People_Groups_Post_Type
                 }
             }
 
-            add_action( 'admin_init', [ $this, 'remove_add_new_submenu' ] );
+//            add_action( 'admin_init', [ $this, 'remove_add_new_submenu' ] );
         }
     }
 
@@ -125,8 +123,7 @@ class Disciple_Tools_People_Groups_Post_Type
      * @access public
      * @return void
      */
-    public function register_post_type()
-    {
+    public function register_post_type() {
         $labels = [
             'name'                  => _x( 'People Groups', 'People Groups', 'disciple_tools' ),
             'singular_name'         => _x( 'People Group', 'People Group', 'disciple_tools' ),
@@ -200,8 +197,7 @@ class Disciple_Tools_People_Groups_Post_Type
      *
      * @param $column_name
      */
-    public function register_custom_columns( $column_name )
-    {
+    public function register_custom_columns( $column_name ) {
         //        global $post;
 
         switch ( $column_name ) {
@@ -223,8 +219,7 @@ class Disciple_Tools_People_Groups_Post_Type
      * @since  0.1.0
      * @return array
      */
-    public function register_custom_column_headings( $defaults )
-    {
+    public function register_custom_column_headings( $defaults ) {
         //      $new_columns = array( 'image' => __( 'Image', 'disciple_tools' ) );
         $new_columns = []; // TODO: restore above column once we know what columns we need to show.
 
@@ -260,8 +255,7 @@ class Disciple_Tools_People_Groups_Post_Type
      *
      * @return array           Modified array.
      */
-    public function updated_messages( $messages )
-    {
+    public function updated_messages( $messages ) {
         global $post;
 
         $link = '<a target="_blank" href="' . esc_url( get_permalink( $post->ID ) ) .'">' .  __( 'View', 'disciple_tools' ) . '</a>';
@@ -295,25 +289,22 @@ class Disciple_Tools_People_Groups_Post_Type
      * @since  0.1.0
      * @return void
      */
-    public function meta_box_setup()
-    {
+    public function meta_box_setup() {
         //        add_meta_box( $this->post_type . '_data', __( 'People Group Details', 'disciple_tools' ), [ $this, 'load_details_meta_box' ], $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_jp', __( 'Joshua Project Info', 'disciple_tools' ), [ $this, 'load_jp_meta_box' ], $this->post_type, 'normal', 'high' );
+//        add_meta_box( $this->post_type . '_jp', __( 'Joshua Project Info', 'disciple_tools' ), [ $this, 'load_jp_meta_box' ], $this->post_type, 'normal', 'high' );
     } // End meta_box_setup()
 
     /**
      * Load activity metabox
      */
-    public function load_details_meta_box()
-    {
+    public function load_details_meta_box() {
         $this->meta_box_content( 'info' );
     }
 
     /**
      * Load activity metabox
      */
-    public function load_jp_meta_box()
-    {
+    public function load_jp_meta_box() {
         global $wpdb, $post;
 
         echo '<table class="widefat striped"><tbody>';
@@ -339,8 +330,7 @@ class Disciple_Tools_People_Groups_Post_Type
      *
      * @param string $section
      */
-    public function meta_box_content( $section = 'info' )
-    {
+    public function meta_box_content( $section = 'info' ) {
         global $post_id;
         $fields = get_post_custom( $post_id );
         $field_data = $this->get_custom_fields_settings();
@@ -439,8 +429,7 @@ class Disciple_Tools_People_Groups_Post_Type
      *
      * @return mixed
      */
-    public function meta_box_save( $post_id )
-    {
+    public function meta_box_save( $post_id ) {
         // Verify
         $key = 'dt_' . $this->post_type . '_noonce';
         if ( ( get_post_type() != $this->post_type ) || !isset( $_POST[ $key ] ) || !wp_verify_nonce( sanitize_key( $_POST[ $key ] ), 'update_peoplegroup_info' ) ) {
@@ -503,8 +492,7 @@ class Disciple_Tools_People_Groups_Post_Type
      *
      * @return string
      */
-    public function enter_title_here( $title )
-    {
+    public function enter_title_here( $title ) {
         if ( get_post_type() == $this->post_type ) {
             $title = __( 'Enter the People Group title here', 'disciple_tools' );
         }
@@ -519,8 +507,7 @@ class Disciple_Tools_People_Groups_Post_Type
      * @since  0.1.0
      * @return array
      */
-    public function get_custom_fields_settings()
-    {
+    public function get_custom_fields_settings() {
         //        global $post;
         $fields = [];
 
@@ -541,8 +528,7 @@ class Disciple_Tools_People_Groups_Post_Type
      *
      * @return array
      */
-    public function people_group_fields()
-    {
+    public function people_group_fields() {
         global $wpdb, $post;
         $fields = [];
         $current_fields = [];
@@ -582,8 +568,7 @@ class Disciple_Tools_People_Groups_Post_Type
      * @access public
      * @since  0.1.0
      */
-    public function activation()
-    {
+    public function activation() {
         $this->flush_rewrite_rules();
     } // End activation()
 
@@ -593,8 +578,7 @@ class Disciple_Tools_People_Groups_Post_Type
      * @access public
      * @since  0.1.0
      */
-    private function flush_rewrite_rules()
-    {
+    private function flush_rewrite_rules() {
         $this->register_post_type();
         flush_rewrite_rules();
     } // End flush_rewrite_rules()
@@ -602,8 +586,7 @@ class Disciple_Tools_People_Groups_Post_Type
     /**
      * Remove the add new submenu from the locaions menu
      */
-    public function remove_add_new_submenu()
-    {
+    public function remove_add_new_submenu() {
         global $submenu;
         unset(
             $submenu['edit.php?post_type=peoplegroups'][10]

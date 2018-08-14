@@ -19,21 +19,21 @@ $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id(
             <?php
             if ( $dt_user_team_members_list ) {
 
-                foreach ( $dt_user_team_members_list as $team_list ) { ?>
+                foreach ( $dt_user_team_members_list as $dt_team_list ) { ?>
 
                     <div class="bordered-box">
 
-                        <span class="section-header"><?php echo esc_html( $team_list['team_name'] )?></span>
+                        <span class="section-header"><?php echo esc_html( $dt_team_list['team_name'] )?></span>
 
                         <hr size="1" style="max-width:100%"/>
 
                         <div class="grid-container fluid">
 
-                            <?php if ( !empty( $team_list['team_members'] ) ) { ?>
+                            <?php if ( !empty( $dt_team_list['team_members'] ) ) { ?>
 
                                 <div class="grid-x grid-margin-x">
 
-                                    <?php foreach ( $team_list['team_members'] as $member ) {
+                                    <?php foreach ( $dt_team_list['team_members'] as $dt_member ) {
                                         // reset variables
                                         $dt_user = '';
                                         $dt_user_meta = [];
@@ -41,25 +41,25 @@ $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id(
                                         $dt_locations = [];
 
                                         // get member data
-                                        $dt_user = get_user_by( 'id', $member['ID'] ); // Returns WP_User object
-                                        $dt_user_meta = get_user_meta( $member['ID'] ); // Full array of user meta data
+                                        $dt_user = get_user_by( 'id', $dt_member['ID'] ); // Returns WP_User object
+                                        $dt_user_meta = get_user_meta( $dt_member['ID'] ); // Full array of user meta data
                                         $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the site settings in the config area with the fields available in the user meta table.
-                                        $dt_locations = dt_get_user_locations_list( $member['ID'] ); // returns an array of locations for the member
+                                        $dt_locations = dt_get_user_locations_list( $dt_member['ID'] ); // returns an array of locations for the member
                                         ?>
 
                                         <div class="cell small-3">
 
                                             <!-- Card -->
-                                            <div class="card" data-open="reveal-<?php echo esc_html( $member['ID'] )?>">
+                                            <div class="card" data-open="reveal-<?php echo esc_html( $dt_member['ID'] )?>">
 
                                                 <div class="card-image">
 
-                                                    <?php echo get_avatar( $member['ID'], '250' ); ?>
+                                                    <?php echo get_avatar( $dt_member['ID'], '250' ); ?>
 
                                                 </div>
                                                 <div class="card-section center">
 
-                                                    <a data-open="reveal-<?php echo esc_attr( $member['ID'], 'disciple_tools' ); ?>">
+                                                    <a data-open="reveal-<?php echo esc_attr( $dt_member['ID'], 'disciple_tools' ); ?>">
                                                         <?php
                                                         if ( !empty( $dt_user->first_name ) ) {
                                                             echo esc_html( $dt_user->first_name ) . ' ' . esc_html( $dt_user->last_name );
@@ -70,7 +70,7 @@ $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id(
 
                                                     <?php
                                                     if ( isset( $dt_user_meta['dt_avalability'] ) && $dt_user_meta['dt_avalability'] == false ){
-                                                    ?> <strong><?php esc_html_e( 'Not Available', 'disciple_tools' ) ?></strong>
+                                                        ?> <strong><?php esc_html_e( 'Not Available', 'disciple_tools' ) ?></strong>
                                                     <?php } else { ?>
                                                     <strong><?php esc_html_e( 'Not Available', 'disciple_tools' ) ?></strong>
                                                     <?php } ?>
@@ -79,7 +79,7 @@ $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id(
                                             </div>
 
                                             <!-- Reveal -->
-                                            <div class="reveal" id="reveal-<?php echo esc_html( $member['ID'] ); ?>" data-reveal>
+                                            <div class="reveal" id="reveal-<?php echo esc_html( $dt_member['ID'] ); ?>" data-reveal>
 
                                                 <h1>
                                                 <?php
@@ -91,7 +91,7 @@ $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id(
                                                 ?>
                                                 </h1>
 
-                                                <p><?php echo get_avatar( $member['ID'], '150' ); ?></p>
+                                                <p><?php echo get_avatar( $dt_member['ID'], '150' ); ?></p>
                                                 <p>
                                                     <strong>
                                                     <?php ( isset( $dt_user_meta['dt_avalability'] ) && $dt_user_meta['dt_avalability'] == false ) ? esc_html_e( 'Not Available', 'disciple_tools' ) : esc_html_e( 'Available', 'disciple_tools' );  ?>
@@ -112,9 +112,9 @@ $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id(
                                                 <ul>
                                                     <?php
                                                     echo '<li><a href="mailto:' . esc_attr( $dt_user->user_email, 'disciple_tools' ) . '">' . esc_html( $dt_user->user_email ) . '</a> (System Email)</li>';
-                                                    foreach ( $dt_user_fields as $field ) {
-                                                        if ( $field['type'] == 'email' && !empty( $field['value'] ) ) {
-                                                            echo '<li><a href="mailto:' . esc_html( $field['value'] ) . '" target="_blank">' . esc_html( $field['value'] ) . '</a> (' . esc_html( $field['label'] ) . ')</li>';
+                                                    foreach ( $dt_user_fields as $dt_field ) {
+                                                        if ( $dt_field['type'] == 'email' && !empty( $dt_field['value'] ) ) {
+                                                            echo '<li><a href="mailto:' . esc_html( $dt_field['value'] ) . '" target="_blank">' . esc_html( $dt_field['value'] ) . '</a> (' . esc_html( $dt_field['label'] ) . ')</li>';
                                                         }
                                                     }
                                                     ?>
@@ -123,9 +123,9 @@ $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id(
                                                 <strong><?php esc_html_e( 'Phone', 'disciple_tools' )?></strong>
                                                 <ul>
                                                     <?php
-                                                    foreach ( $dt_user_fields as $field ) {
-                                                        if ( $field['type'] == 'phone' && !empty( $field['value'] ) ) {
-                                                            echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
+                                                    foreach ( $dt_user_fields as $dt_field ) {
+                                                        if ( $dt_field['type'] == 'phone' && !empty( $dt_field['value'] ) ) {
+                                                            echo '<li>' . esc_html( $dt_field['value'] ) . ' (' . esc_html( $dt_field['label'] ) . ')</li>';
                                                         }
                                                     }
                                                     ?>
@@ -134,9 +134,9 @@ $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id(
                                                 <strong><?php esc_html_e( 'Address', 'disciple_tools' )?></strong>
                                                 <ul>
                                                     <?php
-                                                    foreach ( $dt_user_fields as $field ) {
-                                                        if ( $field['type'] == 'address' && !empty( $field['value'] ) ) {
-                                                            echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
+                                                    foreach ( $dt_user_fields as $dt_field ) {
+                                                        if ( $dt_field['type'] == 'address' && !empty( $dt_field['value'] ) ) {
+                                                            echo '<li>' . esc_html( $dt_field['value'] ) . ' (' . esc_html( $dt_field['label'] ) . ')</li>';
                                                         }
                                                     }
                                                     ?>
@@ -145,9 +145,9 @@ $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id(
                                                 <strong><?php esc_html_e( 'Social', 'disciple_tools' )?></strong>
                                                 <ul>
                                                     <?php
-                                                    foreach ( $dt_user_fields as $field ) {
-                                                        if ( $field['type'] == 'social' && !empty( $field['value'] ) ) {
-                                                            echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
+                                                    foreach ( $dt_user_fields as $dt_field ) {
+                                                        if ( $dt_field['type'] == 'social' && !empty( $dt_field['value'] ) ) {
+                                                            echo '<li>' . esc_html( $dt_field['value'] ) . ' (' . esc_html( $dt_field['label'] ) . ')</li>';
                                                         }
                                                     }
                                                     ?>
@@ -156,9 +156,9 @@ $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id(
                                                 <strong><?php esc_html_e( 'Other', 'disciple_tools' )?></strong>
                                                 <ul>
                                                     <?php
-                                                    foreach ( $dt_user_fields as $field ) {
-                                                        if ( $field['type'] == 'other' && !empty( $field['value'] ) ) {
-                                                            echo '<li>' . esc_html( $field['value'] ) . ' (' . esc_html( $field['label'] ) . ')</li>';
+                                                    foreach ( $dt_user_fields as $dt_field ) {
+                                                        if ( $dt_field['type'] == 'other' && !empty( $dt_field['value'] ) ) {
+                                                            echo '<li>' . esc_html( $dt_field['value'] ) . ' (' . esc_html( $dt_field['label'] ) . ')</li>';
                                                         }
                                                     }
                                                     ?>
@@ -166,8 +166,8 @@ $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id(
 
                                                 <strong><?php esc_html_e( 'Locations', 'disciple_tools' )?></strong>
                                                 <ul>
-                                                    <?php foreach ( $dt_locations as $location ) {
-                                                        echo '<li>' .  esc_html( $location->post_title ) . '</li>';
+                                                    <?php foreach ( $dt_locations as $dt_location ) {
+                                                        echo '<li>' .  esc_html( $dt_location->post_title ) . '</li>';
 } ?>
                                                 </ul>
 

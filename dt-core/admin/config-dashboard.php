@@ -37,8 +37,7 @@ final class Disciple_Tools_Dashboard
      * @static
      * @return Disciple_Tools_Dashboard
      */
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -52,8 +51,7 @@ final class Disciple_Tools_Dashboard
      * @access public
      * @since  0.1.0
      */
-    public function __construct()
-    {
+    public function __construct() {
         if ( is_admin() ) {
             /* Add dashboard widgets */
             add_action( 'wp_dashboard_setup', [ $this, 'add_widgets' ] );
@@ -70,26 +68,10 @@ final class Disciple_Tools_Dashboard
      * @since  0.1.0
      * @access public
      */
-    public function add_widgets()
-    {
-        add_meta_box( 'funnel_stats_widget', 'Funnel Stats', [ $this, 'funnel_stats_widget' ], 'dashboard', 'normal', 'high' );
+    public function add_widgets() {
         add_filter( 'dashboard_recent_posts_query_args', [ $this, 'add_page_to_dashboard_activity' ] );
     }
 
-    /**
-     * Movement funnel path dashboard widget
-     *
-     * @since  0.1.0
-     * @access public
-     */
-    public function funnel_stats_widget()
-    {
-        echo '<div id="chart"></div><!-- Container for charts -->';
-    }
-
-    protected function enqueue_funnel_chart() {
-
-    }
 
     /**
      * Remove default dashboard widgets
@@ -97,8 +79,7 @@ final class Disciple_Tools_Dashboard
      * @since  0.1.0
      * @access public
      */
-    public function remove_dashboard_meta()
-    {
+    public function remove_dashboard_meta() {
 
         remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'normal' );
         remove_meta_box( 'dashboard_plugins', 'dashboard', 'normal' );
@@ -131,8 +112,7 @@ final class Disciple_Tools_Dashboard
      * @since  0.1.0
      * @access public
      */
-    public function add_page_to_dashboard_activity( $query_args )
-    {
+    public function add_page_to_dashboard_activity( $query_args ) {
         if ( is_array( $query_args['post_type'] ) ) {
             //Set your post type
             $query_args['post_type'][] = 'contacts';

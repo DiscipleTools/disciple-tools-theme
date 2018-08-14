@@ -15,14 +15,14 @@ declare(strict_types=1);
     $current_user_id = get_current_user_id();
     get_header();?>
 
-<?php
-dt_print_details_bar(
-    true,
-    true,
-    false,
-    true,
-    in_array( $current_user_id, $following )
-); ?>
+    <?php
+    dt_print_details_bar(
+        true,
+        true,
+        false,
+        true,
+        in_array( $current_user_id, $following )
+    ); ?>
 
 <div id="errors"> </div>
 
@@ -156,6 +156,18 @@ dt_print_details_bar(
                                         </button>
                                         <p><?php esc_html_e( 'Covenant', 'disciple_tools' )?></p>
                                     </div>
+                                    <?php
+                                    //custom group helth metrics
+                                    $custom_health = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( false );
+                                    foreach ( $custom_health as $key => $val ) :
+                                        if ( strpos( $key, "church_custom_" ) === 0 ) : ?>
+                                            <div class="group-progress-button-wrapper">
+                                                <button class="group-progress-button" style="opacity: .6;" id="<?php echo esc_html( $key );?>">
+                                                </button>
+                                                <p><?php echo esc_html( $val['name'] )?></p>
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
                                 </div>
                                 <div class="grid-x">
                                     <div style="margin-right:auto; margin-left:auto;min-height:302px">
@@ -247,7 +259,7 @@ dt_print_details_bar(
 
 
 
-<?php
+    <?php
 } )();
 
 get_footer();

@@ -16,8 +16,7 @@ class Disciple_Tools_Users_Endpoints
     /**
      * Disciple_Tools_Users_Endpoints constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->namespace = $this->context . "/v" . intval( $this->version );
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
@@ -25,8 +24,7 @@ class Disciple_Tools_Users_Endpoints
     /**
      * Setup for API routes
      */
-    public function add_api_routes()
-    {
+    public function add_api_routes() {
         register_rest_route(
             $this->namespace, '/users/get_users', [
                 'methods'  => 'GET',
@@ -59,6 +57,12 @@ class Disciple_Tools_Users_Endpoints
                 'callback' => [ $this, 'change_password' ]
             ]
         );
+        register_rest_route(
+            $this->namespace, '/users/disable_product_tour', [
+                'methods' => "GET",
+                'callback' => [ $this, 'disable_product_tour' ]
+            ]
+        );
     }
 
     /**
@@ -66,8 +70,7 @@ class Disciple_Tools_Users_Endpoints
      *
      * @return array|\WP_Error
      */
-    public function get_users( WP_REST_Request $request )
-    {
+    public function get_users( WP_REST_Request $request ) {
         $params = $request->get_params();
         $search = "";
         if ( isset( $params['s'] ) ) {
@@ -83,8 +86,7 @@ class Disciple_Tools_Users_Endpoints
      *
      * @return array|\WP_Error
      */
-    public function switch_preference( WP_REST_Request $request )
-    {
+    public function switch_preference( WP_REST_Request $request ) {
         $params = $request->get_params();
         $user_id = get_current_user_id();
         if ( isset( $params['preference_key'] ) ) {
@@ -128,5 +130,12 @@ class Disciple_Tools_Users_Endpoints
             return new WP_Error( "missing_error", "Missing filters", [ 'status', 400 ] );
         }
     }
+
+
+    public function disable_product_tour(){
+        return update_user_meta( get_current_user_id(), 'dt_product_tour', true );
+    }
+
+
 
 }

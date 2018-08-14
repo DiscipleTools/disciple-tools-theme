@@ -34,19 +34,17 @@ else {
     /**
      * Activation, Deactivation, and Multisite
      */
-    register_activation_hook( __FILE__, 'dt_activate' );
-    register_deactivation_hook( __FILE__, 'dt_deactivate' );
+//    register_activation_hook( __FILE__, 'dt_activate' );
+//    register_deactivation_hook( __FILE__, 'dt_deactivate' );
 
     /**
      * Adds the Disciple_Tools Class and runs database and roles version checks.
      */
-    function dt_theme_loaded()
-    {
+    function dt_theme_loaded() {
         /** We want to make sure roles are up-to-date. */
         require_once( get_template_directory() . '/dt-core/admin/class-roles.php' );
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
 
-        disciple_tools();
 
         /**
          * We want to make sure migrations are run on updates.
@@ -59,6 +57,8 @@ else {
         } catch ( Throwable $e ) {
             new WP_Error( 'migration_error', 'Migration engine failed to migrate.' );
         }
+
+        disciple_tools();
 
         /**
          * Load Language Files
@@ -73,8 +73,7 @@ else {
      * @since  0.1.0
      * @return object Disciple_Tools
      */
-    function disciple_tools()
-    {
+    function disciple_tools() {
         return Disciple_Tools::instance();
     }
 
@@ -129,8 +128,7 @@ else {
          * @see    disciple_tools()
          * @return Disciple_Tools instance
          */
-        public static function instance()
-        {
+        public static function instance() {
             if ( is_null( self::$_instance ) ) {
                 self::$_instance = new self();
             }
@@ -144,16 +142,16 @@ else {
          * @access public
          * @since  0.1.0
          */
-        public function __construct()
-        {
+        public function __construct() {
             global $wpdb;
 
             /**
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.8.1';
-            $this->migration_number = 6;
+            $this->version = '0.9.1';
+            $this->migration_number = 7;
+
 
             $this->theme_url = get_template_directory_uri() . '/';
             $this->theme_path = get_template_directory() . '/';
@@ -182,8 +180,8 @@ else {
             /**
              * Rest API Support
              */
-            require_once( get_template_directory() . '/dt-core/integrations/class-api-keys.php' ); // API keys for remote access // @todo remove and integrate with Site_Link_System
-            $this->api_keys = Disciple_Tools_Api_Keys::instance(); // @todo remove and integrate with Site_Link_System
+//            require_once( get_template_directory() . '/dt-core/integrations/class-api-keys.php' ); // API keys for remote access // @todo remove and integrate with Site_Link_System
+//            $this->api_keys = Disciple_Tools_Api_Keys::instance(); // @todo remove and integrate with Site_Link_System
 
             require_once( get_template_directory() . '/dt-core/admin/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
             require_once( get_template_directory() . '/dt-core/admin/restrict-xml-rpc-pingback.php' ); // protect against DDOS attacks.
@@ -203,7 +201,6 @@ else {
             require_once( get_template_directory() . '/dt-assets/functions/cleanup.php' ); // WP Head and other cleanup functions
             require_once( get_template_directory() . '/dt-assets/functions/enqueue-scripts.php' ); // Register scripts and stylesheets
             require_once( get_template_directory() . '/dt-assets/functions/sidebar.php' ); // Register sidebars/widget areas
-            require_once( get_template_directory() . '/dt-assets/functions/comments.php' ); // Makes WordPress comments suck less
             require_once( get_template_directory() . '/dt-assets/functions/page-navi.php' ); // Replace 'older/newer' post links with numbered navigation
             require_once( get_template_directory() . '/dt-assets/functions/private-site.php' ); // Sets site to private
             require_once( get_template_directory() . '/dt-assets/functions/login.php' ); // Customize the WordPress login menu
@@ -348,6 +345,7 @@ else {
             require_once( get_template_directory() . '/dt-users/users-template.php' );
             require_once( get_template_directory() . '/dt-users/users-endpoints.php' );
             $this->endpoints['users'] = new Disciple_Tools_Users_Endpoints();
+            require_once( get_template_directory() . '/dt-users/users-product-tour.php' );
 
             /**
              * dt-notifications
@@ -410,6 +408,7 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-site-links.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-keys.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-locations.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-critical-path.php' );
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-extensions.php' ); // main registers all the menu pages and tabs
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-featured-extensions.php' );
@@ -439,7 +438,7 @@ else {
          * @access private
          * @since  0.1.0
          */
-        public function _log_version_number()
+        public function _log_version_number() // @todo remove. Don't migrations replace this?
         {
             // Log the version number.
             update_option( $this->token . '-version', $this->version );
@@ -451,8 +450,7 @@ else {
          * @access public
          * @since  0.1.0
          */
-        public function __clone()
-        {
+        public function __clone() {
             wp_die( esc_html__( "Cheatin' huh?" ), __FUNCTION__ );
         } // End __clone()
 
@@ -462,8 +460,7 @@ else {
          * @access public
          * @since  0.1.0
          */
-        public function __wakeup()
-        {
+        public function __wakeup() {
             wp_die( esc_html__( "Cheatin' huh?" ), __FUNCTION__ );
         } // End __wakeup()
 
@@ -472,8 +469,7 @@ else {
     /**
      * Deactivation Hook
      */
-    function dt_deactivate()
-    {
+    function dt_deactivate() {
         require_once get_template_directory() . '/dt-core/admin/class-deactivator.php';
         Disciple_Tools_Deactivator::deactivate();
     }
@@ -481,8 +477,7 @@ else {
     /**
      * Activation Hook
      */
-    function dt_activate()
-    {
+    function dt_activate() {
         require_once get_template_directory() . '/dt-core/admin/class-activator.php';
         Disciple_Tools_Activator::activate();
     }
@@ -490,8 +485,7 @@ else {
     /**
      * Route Front Page depending on login role
      */
-    function dt_route_front_page()
-    {
+    function dt_route_front_page() {
         if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
             wp_safe_redirect( home_url( '/contacts' ) );
         } else {
@@ -532,8 +526,7 @@ else {
          *
          * @param $log
          */
-        function dt_write_log( $log )
-        {
+        function dt_write_log( $log ) {
             if ( true === WP_DEBUG ) {
                 if ( is_array( $log ) || is_object( $log ) ) {
                     error_log( print_r( $log, true ) );
@@ -548,8 +541,7 @@ else {
 /**
  * Php Version Alert
  */
-function dt_theme_admin_notice_required_php_version()
-{
+function dt_theme_admin_notice_required_php_version() {
     ?>
     <div class="notice notice-error">
         <p><?php esc_html_e( 'Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:', 'disciple_tools' );

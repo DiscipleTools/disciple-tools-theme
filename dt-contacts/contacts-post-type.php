@@ -80,8 +80,7 @@ class Disciple_Tools_Contact_Post_Type
      * @static
      * @return Disciple_Tools_Contact_Post_Type instance
      */
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -98,12 +97,11 @@ class Disciple_Tools_Contact_Post_Type
      * @param array  $args
      * @param array  $taxonomies
      */
-    public function __construct( $post_type = 'contacts', $singular = '', $plural = '', $args = [], $taxonomies = [] )
-    {
+    public function __construct( $post_type = 'contacts', $singular = '', $plural = '', $args = [], $taxonomies = [] ) {
         $this->post_type = 'contacts';
         $this->singular = _x( 'Contact', 'singular of contact', 'disciple_tools' );
         $this->plural = _x( 'Contacts', 'plural of contact', 'disciple_tools' );
-        $this->args = [ 'menu_icon' => dt_svg_icon() ];
+        $this->args = [ 'menu_icon' => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48ZyBjbGFzcz0ibmMtaWNvbi13cmFwcGVyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNOSwxMmMyLjc1NywwLDUtMi4yNDMsNS01VjVjMC0yLjc1Ny0yLjI0My01LTUtNVM0LDIuMjQzLDQsNXYyQzQsOS43NTcsNi4yNDMsMTIsOSwxMnoiPjwvcGF0aD4gPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTE1LjQyMywxNS4xNDVDMTQuMDQyLDE0LjYyMiwxMS44MDYsMTQsOSwxNHMtNS4wNDIsMC42MjItNi40MjQsMS4xNDZDMS4wMzUsMTUuNzI5LDAsMTcuMjMzLDAsMTguODg2VjI0IGgxOHYtNS4xMTRDMTgsMTcuMjMzLDE2Ljk2NSwxNS43MjksMTUuNDIzLDE1LjE0NXoiPjwvcGF0aD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTYiIHk9IjMiIGZpbGw9IiNmZmZmZmYiIHdpZHRoPSI4IiBoZWlnaHQ9IjIiPjwvcmVjdD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTYiIHk9IjgiIGZpbGw9IiNmZmZmZmYiIHdpZHRoPSI4IiBoZWlnaHQ9IjIiPjwvcmVjdD4gPHJlY3QgZGF0YS1jb2xvcj0iY29sb3ItMiIgeD0iMTkiIHk9IjEzIiBmaWxsPSIjZmZmZmZmIiB3aWR0aD0iNSIgaGVpZ2h0PSIyIj48L3JlY3Q+PC9nPjwvc3ZnPg==' ];
         $this->taxonomies = $taxonomies = [];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
@@ -111,8 +109,6 @@ class Disciple_Tools_Contact_Post_Type
         add_filter( 'post_type_link', [ $this, 'contacts_permalink' ], 1, 3 );
 
         if ( is_admin() ) {
-            add_action( 'admin_menu', [ $this, 'disable_new_contacts_in_admin_area' ] );
-
             add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
             add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
@@ -125,8 +121,7 @@ class Disciple_Tools_Contact_Post_Type
      * @access public
      * @return void
      */
-    public function register_post_type()
-    {
+    public function register_post_type() {
         $labels = [
             'name'                  => $this->plural,
             'singular_name'         => $this->singular,
@@ -169,6 +164,7 @@ class Disciple_Tools_Contact_Post_Type
             'edit_others_posts'   => 'update_any_contacts',
             'publish_posts'       => 'create_contacts',
             'read_private_posts'  => 'view_any_contacts',
+            'create_posts'        => 'do_not_allow'
         ];
         $defaults = [
             'label'                 => __( 'Contact', 'disciple_tools' ),
@@ -211,8 +207,7 @@ class Disciple_Tools_Contact_Post_Type
      *
      * @return array           Modified array.
      */
-    public function updated_messages( $messages )
-    {
+    public function updated_messages( $messages ) {
         global $post;
 
         $link = '<a target="_blank" href="' . esc_url( get_permalink( $post->ID ) ) .'">' .  __( 'View', 'disciple_tools' ) . '</a>';
@@ -246,8 +241,7 @@ class Disciple_Tools_Contact_Post_Type
      * @since  0.1.0
      * @return void
      */
-    public function meta_box_setup()
-    {
+    public function meta_box_setup() {
         add_meta_box( $this->post_type . '_status', __( 'Status', 'disciple_tools' ), [ $this, 'load_status_info_meta_box' ], $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_path', __( 'Milestones', 'disciple_tools' ), [ $this, 'load_milestone_meta_box' ], $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_misc', __( 'Misc', 'disciple_tools' ), [ $this, 'load_misc_meta_box' ], $this->post_type, 'normal', 'high' );
@@ -261,8 +255,7 @@ class Disciple_Tools_Contact_Post_Type
      *
      * @param string $section
      */
-    public function meta_box_content( $section = 'info' )
-    {
+    public function meta_box_content( $section = 'info' ) {
         global $post_id;
         $fields = get_post_custom( $post_id );
         $field_data = $this->get_custom_fields_settings();
@@ -374,7 +367,7 @@ class Disciple_Tools_Contact_Post_Type
                         case 'user_select':
                             echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . esc_attr( $v['name'] ) . '</label></th><td>';
                             echo wp_kses(
-                                $v['default'],
+                                $k === "assigned_to" ? $this->assigned_to_field() : $v['default'],
                                 [
                                     'a'      => [
                                         'id'    => [],
@@ -432,8 +425,7 @@ class Disciple_Tools_Contact_Post_Type
      *
      * @return int $post_id
      */
-    public function meta_box_save( $post_id )
-    {
+    public function meta_box_save( $post_id ) {
         // global $post, $messages;
 
         // Verify
@@ -514,16 +506,14 @@ class Disciple_Tools_Contact_Post_Type
     /**
      * Load activity metabox
      */
-    public function load_activity_meta_box()
-    {
+    public function load_activity_meta_box() {
         dt_activity_metabox()->activity_meta_box( get_the_ID() );
     }
 
     /**
      * Load activity metabox
      */
-    public function load_shared_meta_box()
-    {
+    public function load_shared_meta_box() {
         dt_share_contact_metabox()->content_display( get_the_ID() );
     }
 
@@ -533,8 +523,7 @@ class Disciple_Tools_Contact_Post_Type
      * @access public
      * @since  0.1.0
      */
-    public function load_milestone_meta_box()
-    {
+    public function load_milestone_meta_box() {
         $this->meta_box_content( 'milestone' ); // prints
     }
 
@@ -544,8 +533,7 @@ class Disciple_Tools_Contact_Post_Type
      * @access public
      * @since  0.1.0
      */
-    public function load_status_info_meta_box()
-    {
+    public function load_status_info_meta_box() {
         $this->meta_box_content( 'status' ); // prints
     }
 
@@ -555,8 +543,7 @@ class Disciple_Tools_Contact_Post_Type
      * @access public
      * @since  0.1.0
      */
-    public function load_misc_meta_box()
-    {
+    public function load_misc_meta_box() {
         $this->meta_box_content( 'misc' ); // prints
     }
 
@@ -568,8 +555,7 @@ class Disciple_Tools_Contact_Post_Type
      *
      * @return mixed
      */
-    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null )
-    {
+    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null ) {
         global $post;
         $fields = [];
 
@@ -577,7 +563,7 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Assigned To', 'disciple_tools' ),
             'description' => '',
             'type'        => 'user_select',
-            'default'     => $this->assigned_to_field(),
+            'default'     => '',
             'section'     => 'status',
         ];
         // Status Section
@@ -763,15 +749,7 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Reason Unassaginable' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [
-                'none'         => '',
-                'insufficient' => __( 'Insufficient Contact Information' ),
-                'location'     => __( 'Unknown Location' ),
-                'media'        => __( 'Only wants media' ),
-                'outside_area' => __( 'Outside Area' ),
-                'needs_review' => __( 'Needs Review' ),
-                'awaiting_confirmation' => __( 'Waiting for Confirmation' ),
-            ],
+            'default'     => [],
             'section'     => 'misc',
         ];
 
@@ -779,11 +757,7 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Reason Paused' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [
-                'none'           => '',
-                'vacation'       => __( 'On Vacation', 'disciple_tools' ),
-                'not-responding' => __( 'Not Responding', 'disciple_tools' ),
-            ],
+            'default'     => [],
             'section'     => 'misc',
         ];
 
@@ -791,23 +765,14 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Reason Closed', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [
-                'none'                 => '',
-                'duplicate'            => __( 'Duplicate', 'disciple_tools' ),
-                'hostile_self_gain'     => __( 'Hostile, playing game or self gain', 'disciple_tools' ),
-                'games'                => __( 'Playing games', 'disciple_tools' ),
-                'apologetics'          => __( 'Only wants to argue or debate', 'disciple_tools' ),
-                'insufficient'         => __( 'Insufficient contact info', 'disciple_tools' ),
-                'already_connected'    => __( 'Already in church or connected with Others', 'disciple_tools' ),
-                'no_longer_interested' => __( 'No longer interested', 'disciple_tools' ),
-                'no_longer_responding' => __( 'No longer responding', 'disciple_tools' ),
-                'media_only'           => __( 'Just wanted media or book', 'disciple_tools' ),
-                'denies_submission'    => __( 'Denies submitting contact request', 'disciple_tools' ),
-                'unknown'              => __( 'Unknown', 'disciple_tools' )
-            ],
+            'default'     => [],
             'section'     => 'misc',
         ];
-
+        //add custom fields to reason closed/paused
+        $custom_lists = dt_get_option( 'dt_site_custom_lists' );
+        $fields['reason_closed']['default'] = $custom_lists["custom_reason_closed"];
+        $fields['reason_paused']['default'] = $custom_lists["custom_reason_paused"];
+        $fields['reason_unassignable']['default'] = $custom_lists["custom_reason_unassignable"];
         $fields['accepted'] = [
             'name'        => __( 'Accepted', 'disciple_tools' ),
             'description' => '',
@@ -936,6 +901,40 @@ class Disciple_Tools_Contact_Post_Type
             'default'     => [],
             'section'     => 'misc',
         ];
+        $fields["tags"] = [
+            "name" => __( "Tags", "disciple_tools" ),
+            "type" => "multi_select",
+            "default" => []
+        ];
+
+        //get the custom milestone fields
+
+        $custom_contact_fields = dt_get_option( 'dt_site_custom_lists' );
+        $custom_contact_fields = $custom_contact_fields["custom_milestones"];
+        if ( ! empty( $custom_contact_fields ) ) {
+            foreach ( $custom_contact_fields as $key => $value ){
+                $fields[$key] = [
+
+                    'name'        => $value['name'],
+                    'description' => $value['description'],
+                    'type'        => $value['type'],
+                    'default'     => $value['default'],
+                    'section'     => $value['section'],
+                ];
+            }
+        }
+
+
+        foreach ($custom_lists["custom_dropdown_contact_options"] as $k => $v ){
+            $fields["custom_dropdown_contact_".$k] = [
+                'name'        => $k,
+                 'description' => 'holds ' . $k . ' progress',
+                 'type'        => 'key_select',
+                 'default'     => [],
+                 'section'     => 'misc',
+             ];
+        }
+
 
         return apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
     } // End get_custom_fields_settings()
@@ -945,8 +944,7 @@ class Disciple_Tools_Contact_Post_Type
      *
      * @return array
      */
-    public function contact_fields( int $post_id )
-    {
+    public function contact_fields( int $post_id ) {
         global $wpdb, $post;
 
         $fields = [];
@@ -998,8 +996,7 @@ class Disciple_Tools_Contact_Post_Type
      *
      * @usage Added to the bottom of the Contact Details Metabox.
      */
-    public function add_new_contact_field()
-    {
+    public function add_new_contact_field() {
 
         echo '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-fields\').toggle();"><strong>+ Contact Detail</strong></a></p>';
         echo '<table class="form-table" id="new-fields" style="display: none;"><tbody>' . "\n";
@@ -1040,8 +1037,7 @@ class Disciple_Tools_Contact_Post_Type
      *
      * @return string
      */
-    public function create_channel_metakey( $channel_key, $field_type )
-    {
+    public function create_channel_metakey( $channel_key, $field_type ) {
         return $field_type . '_' . $channel_key . '_' . $this->unique_hash(); // build key
     }
 
@@ -1050,8 +1046,7 @@ class Disciple_Tools_Contact_Post_Type
      *
      * @return bool|string
      */
-    public function unique_hash()
-    {
+    public function unique_hash() {
         return substr( md5( rand( 10000, 100000 ) ), 0, 3 ); // create a unique 3 digit key
     }
 
@@ -1062,8 +1057,7 @@ class Disciple_Tools_Contact_Post_Type
      * @since  0.1.0
      * @return mixed
      */
-    public function get_channels_list()
-    {
+    public function get_channels_list() {
         $channel_list = [
             "phone"     => [
                 "label" => __( 'Phone', 'disciple_tools' ),
@@ -1085,7 +1079,7 @@ class Disciple_Tools_Contact_Post_Type
             ],
             "address" => [
                 "label" => __( "Address", 'disciple_tools' ),
-                "types" => dt_address_metabox()->get_address_type_list( "contacts" )
+                "types" => dt_get_option( "dt_site_custom_lists" )["contact_address_types"]
             ],
             "facebook"  => [
                 "label" => __( 'Facebook', 'disciple_tools' ),
@@ -1125,8 +1119,7 @@ class Disciple_Tools_Contact_Post_Type
     /**
      * Field: The 'Assigned To' dropdown controller
      */
-    public function assigned_to_field()
-    {
+    public function assigned_to_field() {
         global $post;
 
         //        $exclude_group = '';
@@ -1194,8 +1187,7 @@ class Disciple_Tools_Contact_Post_Type
      *
      * @return string
      */
-    public function enter_title_here( $title )
-    {
+    public function enter_title_here( $title ) {
         if ( get_post_type() == $this->post_type ) {
             $title = __( 'Enter the contact name here', 'disciple_tools' );
         }
@@ -1209,8 +1201,7 @@ class Disciple_Tools_Contact_Post_Type
      * @access public
      * @since  0.1.0
      */
-    public function activation()
-    {
+    public function activation() {
         $this->flush_rewrite_rules();
     } // End activation()
 
@@ -1220,8 +1211,7 @@ class Disciple_Tools_Contact_Post_Type
      * @access public
      * @since  0.1.0
      */
-    private function flush_rewrite_rules()
-    {
+    private function flush_rewrite_rules() {
         $this->register_post_type();
         flush_rewrite_rules();
     } // End flush_rewrite_rules()
@@ -1232,8 +1222,7 @@ class Disciple_Tools_Contact_Post_Type
      *
      * @return string
      */
-    public function contacts_permalink( $post_link, $post )
-    {
+    public function contacts_permalink( $post_link, $post ) {
         if ( $post->post_type === "contacts" ) {
             return home_url( "contacts/" . $post->ID . '/' );
         } else {
@@ -1241,21 +1230,8 @@ class Disciple_Tools_Contact_Post_Type
         }
     }
 
-    public function contacts_rewrites_init()
-    {
+    public function contacts_rewrites_init() {
         add_rewrite_rule( 'contacts/([0-9]+)?$', 'index.php?post_type=contacts&p=$matches[1]', 'top' );
-    }
-
-    public function disable_new_contacts_in_admin_area() {
-        echo "<style type='text/css' >
-            #menu-posts-contacts ul { display:none; }
-        </style>";
-        // Hide link on listing page
-        if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'contacts') {
-            echo '<style type="text/css">
-            .page-title-action { display:none; }
-        </style>';
-        }
     }
 
 } // End Class

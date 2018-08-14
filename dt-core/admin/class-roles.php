@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 11;
+    private static $target_roles_version_number = 13;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -42,8 +42,7 @@ class Disciple_Tools_Roles
      * @static
      * @return Disciple_Tools_Roles instance
      */
-    public static function instance()
-    {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -78,8 +77,7 @@ class Disciple_Tools_Roles
      *
      * @return string
      */
-    public function set_roles()
-    {
+    public function set_roles() {
         /* IMPORTANT:
          *
          * If you modify the roles here, make sure to increment
@@ -182,14 +180,19 @@ class Disciple_Tools_Roles
         add_role(
             'marketer', __( 'Marketer' ),
             [
-                'access_contacts'        => true,
-                'create_contacts'        => true,
-                'update_shared_contacts' => true,
-
                 'access_groups' => true,
                 'create_groups' => true,
 
-                'read_location' => true
+                'read_location' => true,
+
+                 /* Add custom caps for contacts */
+                'access_contacts'           => true,
+                'create_contacts'           => true,  //create a new contact
+                'update_shared_contacts'    => true,
+                'view_any_contacts'         => true,    //view any contacts
+                'assign_any_contacts'       => true,  //assign contacts to others
+                'update_any_contacts'       => true,  //update any contacts
+                'delete_any_contacts'       => true,  //delete any contacts
             ]
         );
 
@@ -252,7 +255,7 @@ class Disciple_Tools_Roles
                 'publish_groups'             => true,
                 'read_private_groups'        => true,
 
-                /* Add custom caps for locations */
+                /* Add wp-admin caps for locations */
                 'read_location'             => true,
                 'edit_location'             => true,
                 'delete_location'           => true,
@@ -262,6 +265,9 @@ class Disciple_Tools_Roles
                 'edit_others_locations'     => true,
                 'publish_locations'         => true,
                 'read_private_locations'    => true,
+
+                /* Add custom caps for locations */
+                'delete_any_locations'       => true,
 
                 /* Add custom caps for people groups */
                 'read_peoplegroup'          => true,
@@ -273,6 +279,9 @@ class Disciple_Tools_Roles
                 'edit_others_peoplegroups'   => true,
                 'publish_peoplegroups'       => true,
                 'read_private_peoplegroups' => true,
+
+                /* Add custom caps for people groups */
+                'delete_any_peoplegroup'     => true,
 
             ]
         );
@@ -379,6 +388,9 @@ class Disciple_Tools_Roles
             $role->add_cap( 'publish_locations' );
             $role->add_cap( 'read_private_locations' );
 
+            /* Add custom caps for locations */
+            $role->add_cap( 'delete_any_locations' );
+
             /* Add People Group permissions */
             $role->add_cap( 'edit_peoplegroup' );
             $role->add_cap( 'read_peoplegroup' );
@@ -389,6 +401,9 @@ class Disciple_Tools_Roles
             $role->add_cap( 'edit_others_peoplegroups' );
             $role->add_cap( 'publish_peoplegroups' );
             $role->add_cap( 'read_private_peoplegroups' );
+
+            /* Add custom caps for people groups */
+            $role->add_cap( 'delete_any_peoplegroups' );
         }
 
         update_option( 'dt_roles_number', self::$target_roles_version_number );
@@ -398,8 +413,7 @@ class Disciple_Tools_Roles
     /*
     * Reset Roles on deactivation
     */
-    public function reset_roles()
-    {
+    public function reset_roles() {
         delete_option( 'run_once' );
 
         remove_role( 'dispatcher' );

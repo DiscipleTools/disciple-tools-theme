@@ -11,8 +11,7 @@ if ( !defined( 'ABSPATH' ) ) {
  *
  * @return mixed
  */
-function dt_report_insert( $args = [] )
-{
+function dt_report_insert( $args = [] ) {
     return disciple_tools()->logging_reports_api->insert( $args );
 }
 
@@ -36,8 +35,7 @@ class Disciple_Tools_Reports_API
      *
      * @return int/bool
      */
-    public function insert( $args )
-    {
+    public function insert( $args ) {
         global $wpdb;
 
         $args = wp_parse_args(
@@ -117,8 +115,7 @@ class Disciple_Tools_Reports_API
      *
      * @return void
      */
-    private function add_report_meta( $report_id, $field, $value )
-    {
+    private function add_report_meta( $report_id, $field, $value ) {
         global $wpdb;
 
         $wpdb->insert(
@@ -137,8 +134,7 @@ class Disciple_Tools_Reports_API
      *
      * @return array|null|object
      */
-    public function get_reports_by_source( $report_source )
-    {
+    public function get_reports_by_source( $report_source ) {
         global $wpdb;
 
         $results = $wpdb->get_results(
@@ -163,8 +159,7 @@ class Disciple_Tools_Reports_API
      *
      * @return array
      */
-    public function get_report_by_id( $id )
-    {
+    public function get_report_by_id( $id ) {
         global $wpdb;
 
         // Get all report detals
@@ -209,8 +204,7 @@ class Disciple_Tools_Reports_API
      *
      * @return mixed
      */
-    public function get_meta_value( $id, $key )
-    {
+    public function get_meta_value( $id, $key ) {
         global $wpdb;
 
         // Get all metadata values for the report
@@ -243,8 +237,7 @@ class Disciple_Tools_Reports_API
      * @return int
      * @throws \Exception Type should be one of sum max min and average.
      */
-    public function get_meta_key_total( $date, $source, $meta_key, $type = 'sum' )
-    {
+    public function get_meta_key_total( $date, $source, $meta_key, $type = 'sum' ) {
         global $wpdb;
         $results_int = 0;
 
@@ -257,7 +250,7 @@ class Disciple_Tools_Reports_API
         }
 
         $results = $wpdb->get_results( $wpdb->prepare(
-            "SELECT " // @codingStandardsIgnoreLine
+            "SELECT "
             . " %s AS %s
                 FROM
                     `$wpdb->dt_reports`
@@ -292,8 +285,7 @@ class Disciple_Tools_Reports_API
      *
      * @return array            Returns list of ids that match date and other arguments.
      */
-    public function get_report_ids_by_date( $date, $source = null, $subsource = null )
-    {
+    public function get_report_ids_by_date( $date, $source = null, $subsource = null ) {
         global $wpdb;
 
         if ( !empty( $subsource ) && !empty( $source ) ) {
@@ -349,8 +341,7 @@ class Disciple_Tools_Reports_API
      *
      * @return array
      */
-    public function get_reports_by_date( $date, $source = null, $subsource = null )
-    {
+    public function get_reports_by_date( $date, $source = null, $subsource = null ) {
         $report = [];
         $i = 0;
 
@@ -376,8 +367,7 @@ class Disciple_Tools_Reports_API
      *
      * @return array
      */
-    public function get_month_by_source( $date, $source, $subsource = '', $id_only = true )
-    {
+    public function get_month_by_source( $date, $source, $subsource = '', $id_only = true ) {
 
         global $wpdb;
         $results = [];
@@ -393,15 +383,13 @@ class Disciple_Tools_Reports_API
         if ( !empty( $subsource ) ) {
             // Build full query
             $results = $wpdb->get_results( $wpdb->prepare(
-                "SELECT "
-                // @codingStandardsIgnoreLine
-                . ( $id_only ? "id " : "* " )
-                . " FROM
-                    `$wpdb->dt_reports`
+                "SELECT %s 
+                FROM `$wpdb->dt_reports`
                 WHERE
                     `report_date` LIKE %s
                     AND `report_source` = %s
                     AND `report_subsource` = %s",
+                ( $id_only ? "id " : "* " ),
                 $wpdb->esc_like( $date ) . '%',
                 $source,
                 $subsource
@@ -409,14 +397,12 @@ class Disciple_Tools_Reports_API
         } else {
             // Build full query
             $results = $wpdb->get_results( $wpdb->prepare(
-                "SELECT "
-                // @codingStandardsIgnoreLine
-                . ( $id_only ? "id " : "* " )
-                . " FROM
+                "SELECT %s FROM
                     `$wpdb->dt_reports`
                 WHERE
                     `report_date` LIKE %s
                     AND `report_source` = %s",
+                ( $id_only ? "id " : "* " ),
                 $wpdb->esc_like( $date ) . '%',
                 $source
             ), ARRAY_A );
@@ -434,8 +420,7 @@ class Disciple_Tools_Reports_API
      *
      * @return mixed
      */
-    public function get_month_by_source_full( $date, $source, $subsource )
-    {
+    public function get_month_by_source_full( $date, $source, $subsource ) {
         $report = [];
         $i = 0;
         $results = $this->get_month_by_source( $date, $source, $subsource, true );
@@ -457,8 +442,7 @@ class Disciple_Tools_Reports_API
      *
      * @return bool|int
      */
-    public function get_last_value( $source, $meta_key, $subsource = '' )
-    {
+    public function get_last_value( $source, $meta_key, $subsource = '' ) {
 
         //        global $wpdb;
         //        $today = date( 'Y-m-d' );
@@ -488,8 +472,7 @@ class Disciple_Tools_Reports_API
      *
      * @return bool
      */
-    public static function get_last_record_of_source( $source )
-    {
+    public static function get_last_record_of_source( $source ) {
         global $wpdb;
         if ( empty( $source ) ) {
             return false;
@@ -522,8 +505,7 @@ class Disciple_Tools_Reports_API
      *
      * @return bool
      */
-    public static function get_last_record_of_source_and_subsource( $source, $subsource )
-    {
+    public static function get_last_record_of_source_and_subsource( $source, $subsource ) {
         global $wpdb;
         if ( empty( $source ) ) {
             return false;
