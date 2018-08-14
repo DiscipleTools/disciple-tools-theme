@@ -32,6 +32,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
     } // End __construct()
 
     public function add_submenu() {
+        add_submenu_page( 'edit.php?post_type=locations', __( 'Import', 'disciple_tools' ), __( 'Import', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=locations', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
         add_submenu_page( 'dt_options', __( 'Import Locations', 'disciple_tools' ), __( 'Import Locations', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=locations', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
     }
 
