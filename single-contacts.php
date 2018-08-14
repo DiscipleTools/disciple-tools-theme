@@ -7,12 +7,12 @@ declare( strict_types=1 );
     if (isset( $_POST['unsure_all'] )) {
         $id = (int) $_POST['id'];
         Disciple_Tools_Contacts::unsure_all( $id );
-        header( "Location: /contacts/" . get_the_Id() );
+        header( "location: " . site_url( '/contacts/' . get_the_ID() ) );
     }
     if (isset( $_POST['dismiss_all'] )) {
         $id = (int) $_POST['id'];
         Disciple_Tools_Contacts::dismiss_all( $id );
-        header( "Location: /contacts/" . get_the_Id() );
+        header( "location: " . site_url( '/contacts/' . get_the_ID() ) );
     }
     if (isset( $_POST['merge-submit'] )){
         $contact_id = (int) $_POST["currentid"];

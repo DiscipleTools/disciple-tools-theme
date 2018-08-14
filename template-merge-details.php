@@ -94,7 +94,7 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                   </div>
                 </div>
 
-                <form id='merge-form' onsubmit='merge(event);' method='POST' action='<?php echo esc_url( site_url( '/contacts/' ) ); ?>'>";
+                <form id='merge-form' onsubmit='merge(event);' method='POST' action='<?php echo esc_url( site_url( '/contacts/' ) ); ?>'>
                 <?php
                 foreach ($fields as $key => $field) {
                     foreach ($data[$key] as $idx => $type) {
