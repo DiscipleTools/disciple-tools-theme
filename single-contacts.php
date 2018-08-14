@@ -3,6 +3,111 @@ declare( strict_types=1 );
 
 ( function () {
 
+    
+    if(isset($_POST['unsure_all'])) {
+        $id = (int)$_POST['id'];
+        Disciple_Tools_Contacts::unsure_all($id);
+        header("Location: /contacts/" . get_the_Id());
+    }
+    if(isset($_POST['dismiss_all'])) {
+        $id = (int)$_POST['id'];
+        Disciple_Tools_Contacts::dismiss_all($id);
+        header("Location: /contacts/" . get_the_Id());
+    }
+    if(isset($_POST['merge-submit'])){
+        $contact_id=(int)$_POST["currentid"];
+        $dupe_id = (int)$_POST['duplicateId'];
+        $phones=$_POST['phone'] ?? array();
+        $emails=$_POST['email'] ?? array();
+        $addresses = $_POST['address'] ?? array();
+        $master = $_POST['master-record'];
+
+        $masterId = ($master === 'contact1') ? $contact_id : $dupe_id;
+        $nonMasterId = ($masterId === $contact_id) ? $dupe_id : $contact_id;
+        $contact = Disciple_Tools_Contacts::get_contact( $masterId, true );
+        $nonMaster = Disciple_Tools_Contacts::get_contact($nonMasterId, true);
+
+        $current = array(
+            'contact_phone' => array(),
+            'contact_email' => array(),
+            'contact_address' => array()
+        );
+
+        foreach($contact['contact_phone'] ?? array() as $arrPhone) {
+            $current['contact_phone'][$arrPhone['key']] = $arrPhone['value'];
+        }
+        foreach($contact['contact_email'] ?? array() as $arrEmail) {
+            $current['contact_email'][$arrEmail['key']] = $arrEmail['value'];
+        }
+        foreach($contact['contact_address'] ?? array() as $arrAddress) {
+            $current['contact_address'][$arrAddress['key']] = $arrAddress['value'];
+        }
+        foreach($contact['contact_facebook'] ?? array() as $arrFacebook) {
+            $current['contact_facebook'][$arrFacebook['key']] = $arrFacebook['value'];
+        }
+
+        $update = array(
+            'contact_phone' => array('values' => array()),
+            'contact_email' => array('values' => array()),
+            'contact_address' => array('values' => array()),
+            'contact_facebook' => array('values' => array())
+        );
+
+        $ignore_keys = array();
+
+        foreach($phones as $phone) {
+            $index = array_search($phone, $current['contact_phone']);
+            if($index !== false) { $ignore_keys[] = $index; continue; }
+            array_push($update['contact_phone']['values'], ['value' => $phone]);
+        }
+        foreach($emails as $email) {
+            $index = array_search($email, $current['contact_email']);
+            if($index !== false) { $ignore_keys[] = $index; continue; }
+            array_push($update['contact_email']['values'], ['value' => $email]);
+        }
+        foreach($addresses as $address) {
+            $index = array_search($address, $current['contact_address']);
+            if($index !== false) { $ignore_keys[] = $index; continue; }
+            array_push($update['contact_address']['values'], ['value' => $address]);
+        }
+
+        foreach($nonMaster['contact_facebook'] ?? array() as $arrFacebook) {
+            $index = array_search($arrFacebook['value'], $current['contact_facebook'] ?? array());
+            if($index !== false) { $ignore_keys[] = $index; continue; }
+            array_push($update['contact_facebook']['values'], array(
+                'value' => $arrFacebook['value']
+            ));
+        }
+
+        $deleteFields = array();
+        if($update['contact_phone']['values']) { $deleteFields[] = 'contact_phone'; }
+        if($update['contact_email']['values']) { $deleteFields[] = 'contact_email'; }
+        if($update['contact_address']['values']) { $deleteFields[] = 'contact_address'; }
+        if($update['contact_facebook']['values']) { $deleteFields[] = 'contact_facebook'; }
+
+        if(!empty($deleteFields)) {
+            Disciple_Tools_Contacts::remove_fields($masterId, $deleteFields, $ignore_keys);
+        }
+
+        $closeId = ($masterId === $contact_id) ? $dupe_id : $contact_id;
+
+        Disciple_Tools_Contacts::update_contact( $masterId, $update, true);
+        Disciple_Tools_Contacts::merge_milestones($masterId, $nonMasterId);
+        Disciple_Tools_Contacts::merge_p2p($masterId, $nonMasterId);
+        (new Disciple_Tools_Contacts())->recheck_duplicates($masterId);
+        (new Disciple_Tools_Contacts())->dismiss_duplicate($masterId, $nonMasterId);
+        Disciple_Tools_Contacts::close_account($closeId);
+        //$contact=Disciple_Tools_Contacts::update_contact( $contact_id, $update, true);
+        header("location: /contacts/". get_the_ID());
+
+            // $update = [
+            //     "overall_status" => 'active',
+            //     "accepted" => 'yes'
+            // ];
+            // self::update_contact( $contact_id, $update, true );
+            // return [ "overall_status" => self::$contact_fields["overall_status"]["default"]['active'] ];
+        exit;
+      }
 
     if ( !Disciple_Tools_Contacts::can_view( 'contacts', get_the_ID() )) {
         get_template_part( "403" );
@@ -134,8 +239,7 @@ declare( strict_types=1 );
                     </div>
                 </div>
             </div>
-
-            <section class="hide-for-large small-12 cell">
+                <section class="hide-for-large small-12 cell">
                 <div class="bordered-box">
                     <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
 
@@ -147,8 +251,31 @@ declare( strict_types=1 );
                 </div>
             </section>
             <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell" role="main" style="padding:0">
-                <div class="cell grid-y grid-margin-y" style="display: block">
-                    <section id="contact-details" class="small-12 grid-y grid-margin-y ">
+              <div class="cell grid-y grid-margin-y" style="display: block">
+                <?php
+                $duplicate_post_meta = get_post_meta(get_the_Id(), 'duplicate_data');
+                $duplicates = false;
+                foreach($duplicate_post_meta[0] ?? [] as $key => $array) {
+                    if($key === 'override') { continue; }
+                    if(!empty($array)) {
+                        $duplicates = true;
+                    }
+                }
+                  if ($duplicates){
+                ?>
+                <section id="duplicates" class="small-12 grid-y grid-margin-y cell">
+                <!--                    <div class="bordered-box last-typeahead-in-section">-->
+                    <div class="bordered-box" style="background-color:#ff9800; border:.2rem solid #30c2ff; text-align:center;">
+                        <h3 class="section-header" style="color:white;"><?php esc_html_e( "This contact has possible duplicates.", 'disciple_tools' ) ?></h3>
+                        <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
+                        <button type="button" id="merge-dupe-modal" data-open="merge-dupe-modal" class="button">
+                            <?php esc_html_e( "Go to duplicates", 'disciple_tools' ) ?>
+                        </button>
+                    </div>
+                </section>
+                <?php }
+                ?>
+                    <section id="contact-details" class="small-12 grid-y grid-margin-y cell ">
                         <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
                     </section>
                     <div class="cell small-12">
@@ -431,5 +558,9 @@ declare( strict_types=1 );
 
     <?php
 } )();
+
+if(isset($_POST['merge'])) {
+    echo "<script type='text/javascript'>$(document).ready(function() { $('#merge-dupe-modal').click(); });</script>";
+}
 
 get_footer();
