@@ -83,7 +83,7 @@ class Disciple_Tools_Users
                 $user_id
             ), ARRAY_N );
 
-            $dispatchers = $wpdb->get_results("SELECT user_id FROM $wpdb->usermeta WHERE meta_key = 
+            $dispatchers = $wpdb->get_results("SELECT user_id FROM $wpdb->usermeta WHERE meta_key =
             'wp_capabilities' AND meta_value LIKE '%dispatcher%'");
 
             $assure_unique = [];
@@ -208,9 +208,6 @@ class Disciple_Tools_Users
         if ( isset( $_POST['last_name'] ) ) {
             $args['last_name'] = sanitize_text_field( wp_unslash( $_POST['last_name'] ) );
         }
-        if ( isset( $_POST['display_name'] ) && !empty( $_POST['display_name'] ) ) {
-            $args['display_name'] = sanitize_text_field( wp_unslash( $_POST['display_name'] ) );
-        }
         if ( isset( $_POST['user_email'] ) && !empty( $_POST['user_email'] ) ) {
             $args['user_email'] = sanitize_email( wp_unslash( $_POST['user_email'] ) );
         }
@@ -222,7 +219,11 @@ class Disciple_Tools_Users
         }
         if ( isset( $_POST['locale'] ) ) {
             $args['locale'] = sanitize_text_field( wp_unslash( $_POST['locale'] ) );
-        } else {
+        }
+        if ( isset( $_POST['display_name'] ) && !empty( $_POST['display_name'] ) ) {
+            $args['display_name'] = $args['nickname'];
+        }
+        else {
             $args['locale'] = "en_US";
         }
 
@@ -250,6 +251,13 @@ class Disciple_Tools_Users
                 }
             }
         }
+
+        //set display name to nickname
+        $user_id = wp_update_user( array(
+            'ID' => $args['ID'],
+            'display_name' => $args['nickname']
+            )
+        );
 
         return wp_redirect( get_site_url() ."/settings" );
     }
