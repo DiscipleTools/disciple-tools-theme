@@ -62,7 +62,7 @@
                         <?php if ( user_can( get_current_user_id(), 'read' ) ) : ?>
                             <li><a href="<?php echo esc_url( get_admin_url() ); ?>"><?php esc_html_e( "Admin" ); ?></a></li>
                         <?php endif; ?>
-                        <li><a href="https://disciple-tools.readthedocs.io/en/latest/index.html" target="_blank" rel="noreferrer"><?php esc_html_e('Help') ?></a></li>
+                        <li><a href="https://disciple-tools.readthedocs.io/en/latest/index.html" target="_blank" rel="noreferrer"><?php esc_html_e( 'Help' ) ?></a></li>
 
                         <?php do_action( 'dt_settings_menu_post' ) ?>
 
