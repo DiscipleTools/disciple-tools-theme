@@ -636,6 +636,8 @@ class Disciple_Tools_Notifications
                                     }
                                 } else {
                                     $notification["notification_name"] = "assigned_to_other";
+                                    $notification['field_key'] = "assigned_to";
+                                    $notification['field_value'] = $fields["assigned_to"]["id"];
                                     $notification_type                 = 'changes';
                                     if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
                                         dt_notification_insert( $notification );
