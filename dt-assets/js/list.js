@@ -84,8 +84,8 @@
     })
   }
 
-  let savedFiltersList = $("#saved-filters")
 
+  let savedFiltersList = $("#saved-filters")
   function setupFilters(filters){
     savedFiltersList.empty()
     filters.forEach(filter=>{
@@ -154,6 +154,8 @@
       }
     }).trigger("resize");
   });
+
+
 
   const templates = {
     contacts: _.template(`<tr>
@@ -325,7 +327,11 @@
       query.assigned_to = ["shared"]
       filter.labels = [{ id:"shared", name:"Shared with me", field: "assigned"}]
     }
-    if ( currentView === "assignment_needed" ){
+    if ( currentView === "needs_accepted" ){
+      query.overall_status = ["assigned"]
+      query.accepted = ["no"]
+      filter.labels = [{ id:"needs_accepted", name:"Newly Assigned", field: "accepted"}]
+    } else if ( currentView === "assignment_needed" ){
       query.overall_status = ["unassigned"]
       filter.labels = [{ id:"unassigned", name:"Assignment needed", field: "assigned"}]
     } else if ( currentView === "update_needed" ){
@@ -910,5 +916,21 @@
     }
   })
 
+  if ( wpApiListSettings.current_post_type === "contacts"){
+    $.ajax({
+      url: wpApiListSettings.root + "dt/v1/contact/counts",
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiListSettings.nonce);
+      }
+    }).then(counts=>{
+      $(".js-list-view-count").each(function() {
+        const $el = $(this);
+        let view_id = $el.data("value")
+        if ( counts && counts[view_id] ){
+          $el.text( counts[view_id] );
+        }
+      });
+    })
+  }
 
 })(window.jQuery, window.wpApiListSettings, window.Foundation);
