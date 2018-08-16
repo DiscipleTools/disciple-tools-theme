@@ -254,7 +254,7 @@ class Disciple_Tools_Users
         }
 
         //check that display name is not null and is a new name
-        if( !empty( $args['nickname'] ) && $current_user->display_name != $args['nickname'] ) {
+        if ( !empty( $args['nickname'] ) && $current_user->display_name != $args['nickname'] ) {
             //TODO CHECK FOR DUB NICKNAMES
 
             //change old nickname comment values to new values
@@ -266,7 +266,7 @@ class Disciple_Tools_Users
                     WHERE user_id = %d
                     ",
                     $current_user->display_name, $args['nickname'], $current_user->ID
-                    )
+                )
             );
 
             //set display name to nickname
