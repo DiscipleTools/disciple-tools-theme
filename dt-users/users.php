@@ -191,6 +191,7 @@ class Disciple_Tools_Users
      * @return bool|\WP_Error
      */
     public static function update_user_contact_info() {
+        global $wpdb;
         $current_user = wp_get_current_user();
 
         // validate nonce
@@ -256,7 +257,17 @@ class Disciple_Tools_Users
         if( !empty( $args['nickname'] ) && $current_user->display_name != $args['nickname'] ) {
             //TODO CHECK FOR DUB NICKNAMES
 
-            //TODO change old values to new values
+            //change old nickname comment values to new values
+            $wpdb->query(
+                $wpdb->prepare(
+                    "
+                    UPDATE $wpdb->comments
+                    SET comment_content = REPLACE(comment_content, %s, %s)
+                    WHERE user_id = %d
+                    ",
+                    $current_user->display_name, $args['nickname'], $current_user->ID
+                    )
+            );
 
             //set display name to nickname
             $user_id = wp_update_user( array(
