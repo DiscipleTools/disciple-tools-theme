@@ -18,38 +18,249 @@ if ( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_People_Groups
 {
     /**
-     * Disciple_Tools_People_Groups The single instance of Disciple_Tools_People_Groups.
-     *
-     * @var     object
-     * @access    private
-     * @since     0.1.0
+     * Get JP csv file contents and return as array.
+     * @return array
      */
-    private static $_instance = null;
+    public static function get_jp_source() {
+        $jp_csv = [];
+        if (( $handle = fopen( __DIR__ . "/csv/jp.csv", "r" ) ) !== false) {
+            while (( $data = fgetcsv( $handle, 0, "," ) ) !== false) {
+                $jp_csv[] = $data;
+            }
+            fclose( $handle );
+        }
+        return $jp_csv;
+    }
 
     /**
-     * Main Disciple_Tools_People_Groups Instance
-     * Ensures only one instance of Disciple_Tools_People_Groups is loaded or can be loaded.
-     *
-     * @since 0.1.0
-     * @static
-     * @return Disciple_Tools_People_Groups instance
+     * Get JP csv file contents and return as array.
+     * @return array
      */
-    public static function instance() {
-        if ( is_null( self::$_instance ) ) {
-            self::$_instance = new self();
+    public static function get_imb_source() {
+        $imb_csv = [];
+        if (( $handle = fopen( __DIR__ . "/csv/imb.csv", "r" ) ) !== false) {
+            while (( $data = fgetcsv( $handle, 0, "," ) ) !== false) {
+                $imb_csv[] = $data;
+            }
+            fclose( $handle );
+        }
+        return $imb_csv;
+    }
+
+    public static function search_csv( $search ) { // gets a list by country
+        $data = self::get_jp_source();
+        $result = [];
+        foreach ( $data as $row ) {
+            if ( $row[1] === $search ) {
+                $result[] = $row;
+            }
+        }
+        return $result;
+    }
+
+    public static function search_csv_by_rop3( $search ) { // gets a list by country
+        $data = self::get_jp_source();
+        $result = [];
+        foreach ( $data as $row ) {
+            if ( $row[3] === $search ) {
+                $result[] = $row;
+            }
+        }
+        return $result;
+    }
+
+    public static function get_country_dropdown() {
+        $data = self::get_jp_source();
+        $all_names = array_column( $data, 1 );
+        $unique_names = array_unique( $all_names );
+        unset( $unique_names[0] );
+
+        return $unique_names;
+    }
+
+    /**
+     * Add Single People Group
+     *
+     * @param $rop3
+     *
+     * @return array
+     */
+    public static function add_single_people_group( $rop3, $country ) {
+
+        // get matching rop3 row for JP
+        $data = self::get_jp_source();
+        $columns = $data[0];
+        $rop3_row = '';
+        foreach ( $data as $row ) {
+            if ( $row[3] == $rop3 && $row[1] === $country ) {
+                $rop3_row = $row;
+                break;
+            }
+        }
+        if ( empty( $rop3_row ) || ! is_array( $rop3_row ) ) {
+            return [
+                    'status' => 'Fail',
+                    'message' => 'ROP3 number not found in JP data.'
+            ];
         }
 
-        return self::$_instance;
-    } // End instance()
+        // get matching IMB data
+        $imb_data = self::get_imb_source();
+        $imb_columns = $imb_data[0];
+        $imb_rop3_row = '';
+        foreach ( $imb_data as $imb_row ) {
+            if ( $imb_row[32] == $rop3 && $imb_row[5] === $country ) {
+                $imb_rop3_row = $imb_row;
+                break;
+            }
+        }
+
+
+        // get current people groups
+        // check for duplicate and return fail install because of duplicate.
+        global $wpdb;
+        $duplicate = $wpdb->get_var( $wpdb->prepare( "
+            SELECT count(meta_id) 
+            FROM $wpdb->postmeta 
+            WHERE meta_key = 'ROP3' AND 
+            post_id IN ( SELECT ID FROM $wpdb->posts WHERE post_type = 'peoplegroups' ) AND
+            meta_value = %s",
+        $rop3 ) );
+        if ( $duplicate > 0 ) {
+            return [
+                'status' => 'Duplicate',
+                'message' => 'Duplicate found. Already installed.'
+            ];
+        }
+
+        if ( ! isset( $rop3_row[4] ) ) {
+            return [
+                'status' => 'Fail',
+                'message' => 'ROP3 title not found.',
+            ];
+        }
+
+
+        // if no duplicate, then install full people group
+        $post = [
+              'post_title' => $rop3_row[4] . ' (' . $rop3_row[1] . ' | ' . $rop3_row[3] . ')',
+              'post_type' => 'peoplegroups',
+              'post_status' => 'publish',
+              'comment_status' => 'closed',
+              'ping_status' => 'closed',
+        ];
+        foreach ( $rop3_row as $key => $value ) {
+            $post['meta_input']['jp_'.$columns[$key]] = $value;
+        }
+        if ( ! empty( $imb_rop3_row ) ) { // adds only if match is found
+            foreach ( $imb_rop3_row as $imb_key => $imb_value ) {
+                $post['meta_input']['imb_'.$imb_columns[$imb_key]] = $imb_value;
+            }
+        }
+        $post_id = wp_insert_post( $post );
+
+        // return success
+        if ( ! is_wp_error( $post_id ) ) {
+            return [
+                'status' => 'Success',
+                'message' => 'New people group has been added! ( <a href="'.admin_url() . 'post.php?post=' . $post_id . '&action=edit">View new record</a> )',
+            ];
+        } else {
+            return [
+                'status' => 'Fail',
+                'message' => 'Unable to insert ' . $rop3_row[4],
+            ];
+        }
+    }
 
     /**
-     * Constructor function.
+     * Update current people group
      *
-     * @access  public
-     * @since   0.1.0
+     * @param $rop3
+     * @param $country
+     * @param $post_id
+     *
+     * @return array
      */
-    public function __construct() {
-    } // End __construct()
+    public static function link_or_update( $rop3, $country, $post_id ) {
+
+        // get matching rop3 row for JP
+        $data = self::get_jp_source();
+        $columns = $data[0];
+        $rop3_row = '';
+        foreach ( $data as $row ) {
+            if ( $row[3] == $rop3 && $row[1] === $country ) {
+                $rop3_row = $row;
+                break;
+            }
+        }
+        if ( empty( $rop3_row ) || ! is_array( $rop3_row ) ) {
+            return [
+                'status' => 'Fail',
+                'message' => 'ROP3 number not found in JP data.'
+            ];
+        }
+
+        // get matching IMB data
+        $imb_data = self::get_imb_source();
+        $imb_columns = $imb_data[0];
+        $imb_rop3_row = '';
+        foreach ( $imb_data as $imb_row ) {
+            if ( $imb_row[32] == $rop3 && $imb_row[5] === $country ) {
+                $imb_rop3_row = $imb_row;
+                break;
+            }
+        }
+
+        // remove previous metadata
+        global $wpdb;
+        $wpdb->delete( $wpdb->postmeta, [ 'post_id' => $post_id ] );
+
+        // if no duplicate, then install full people group
+        $post = [
+            'ID' => $post_id,
+            'post_status' => 'publish',
+            'comment_status' => 'closed',
+            'ping_status' => 'closed',
+        ];
+        foreach ( $rop3_row as $key => $value ) {
+            $post['meta_input']['jp_'.$columns[$key]] = $value;
+        }
+        if ( ! empty( $imb_rop3_row ) ) { // adds only if match is found
+            foreach ( $imb_rop3_row as $imb_key => $imb_value ) {
+                $post['meta_input']['imb_'.$imb_columns[$imb_key]] = $imb_value;
+            }
+        }
+        $post_id = wp_update_post( $post );
+
+        // return success
+        if ( ! is_wp_error( $post_id ) ) {
+            return [
+                'status' => 'Success',
+                'message' => 'The current people group data has been updated with this info! <a href="">Refresh to see data</a>',
+            ];
+        } else {
+            return [
+                'status' => 'Fail',
+                'message' => 'Unable to update ' . $rop3_row[4],
+            ];
+        }
+    }
+
+
+    public static function admin_tab_table() {
+        $names = self::get_country_dropdown();
+        ?>
+        <select id="group-search">
+            <?php foreach ( $names as $name ) {
+                echo '<option value="'.esc_attr( $name ).'">'.esc_attr( $name ).'</option>';
+} ?>
+        </select>
+        <button class="button" id="search_button" onclick="group_search()">Get List</button>
+        <br><br>
+        <div id="results"></div>
+        <?php
+    }
 
     /**
      * @param $search
@@ -79,4 +290,6 @@ class Disciple_Tools_People_Groups
         "posts" => $list
         ];
     }
+
+
 }

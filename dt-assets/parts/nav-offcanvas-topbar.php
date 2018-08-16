@@ -54,12 +54,18 @@
                         <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/settings.svg" ?>">
                     </button>
                     <ul class="submenu menu vertical">
+
                         <?php do_action( 'dt_settings_menu_pre' ) ?>
+
                         <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>"><?php esc_html_e( 'Settings', 'disciple_tools' )?></a></li>
+
                         <?php if ( user_can( get_current_user_id(), 'read' ) ) : ?>
                             <li><a href="<?php echo esc_url( get_admin_url() ); ?>"><?php esc_html_e( "Admin" ); ?></a></li>
                         <?php endif; ?>
+                        <li><a href="https://disciple-tools.readthedocs.io/en/latest/index.html" target="_blank" rel="noreferrer"><?php esc_html_e( 'Help' ) ?></a></li>
+
                         <?php do_action( 'dt_settings_menu_post' ) ?>
+
                         <li><a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( 'Log Off', 'disciple_tools' )?></a></li>
                     </ul>
                 </li>
