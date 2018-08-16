@@ -85,7 +85,6 @@
   }
 
   let savedFiltersList = $("#saved-filters")
-
   function setupFilters(filters){
     savedFiltersList.empty()
     filters.forEach(filter=>{
@@ -325,7 +324,11 @@
       query.assigned_to = ["shared"]
       filter.labels = [{ id:"shared", name:"Shared with me", field: "assigned"}]
     }
-    if ( currentView === "assignment_needed" ){
+    if ( currentView === "needs_accepted" ){
+      query.overall_status = ["assigned"]
+      query.accepted = ["no"]
+      filter.labels = [{ id:"needs_accepted", name:"Newly Assigned", field: "accepted"}]
+    } else if ( currentView === "assignment_needed" ){
       query.overall_status = ["unassigned"]
       filter.labels = [{ id:"unassigned", name:"Assignment needed", field: "assigned"}]
     } else if ( currentView === "update_needed" ){

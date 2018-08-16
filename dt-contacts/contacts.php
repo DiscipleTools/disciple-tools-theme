@@ -2046,59 +2046,65 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( is_null( $user_id ) ) {
             $user_id = get_current_user_id();
         }
+
         $personal_counts = $wpdb->get_results( $wpdb->prepare( "
             SELECT (SELECT count(a.ID)
             FROM $wpdb->posts as a
-              JOIN $wpdb->postmeta as b
+              INNER JOIN $wpdb->postmeta as b
                 ON a.ID=b.post_id
-                   AND b.meta_key = 'assigned_to'
-                   AND b.meta_value = CONCAT( 'user-', %s )
-             WHERE a.post_status = 'publish')
+                  AND b.meta_key = 'assigned_to'
+                  AND b.meta_value = CONCAT( 'user-', %s )
+              INNER JOIN $wpdb->postmeta as type
+                ON a.ID=type.post_id AND type.meta_key = 'type' 
+            WHERE a.post_status = 'publish' 
+            AND (( type.meta_value = 'media' OR type.meta_value = 'next_gen' )
+                OR ( type.meta_key IS NULL ))
+            )
             as my_contacts,
             (SELECT count(a.ID)
-             FROM $wpdb->posts as a
-               JOIN $wpdb->postmeta as b
-                 ON a.ID=b.post_id
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
                     AND b.meta_key = 'requires_update'
                     AND b.meta_value = 'yes'
-               JOIN $wpdb->postmeta as c
-                 ON a.ID=c.post_id
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
                     AND c.meta_value = CONCAT( 'user-', %s )
-               JOIN $wpdb->postmeta as d
-                 ON a.ID=d.post_id
+                JOIN $wpdb->postmeta as d
+                  ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
                     AND d.meta_value = 'active'
               WHERE a.post_status = 'publish')
             as update_needed,
             (SELECT count(a.ID)
-             FROM $wpdb->posts as a
-               JOIN $wpdb->postmeta as b
-                 ON a.ID=b.post_id
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
                     AND b.meta_key = 'seeker_path'
-                    AND b.meta_value = 'attempted'
-               JOIN $wpdb->postmeta as c
-                 ON a.ID=c.post_id
+                    AND b.meta_value = 'none'
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
                     AND c.meta_value = CONCAT( 'user-', %s )
-               JOIN $wpdb->postmeta as d
-                 ON a.ID=d.post_id
+                JOIN $wpdb->postmeta as d
+                  ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
                     AND d.meta_value = 'active'
               WHERE a.post_status = 'publish')
-            as contact_attempted,
+            as contact_unattempted,
             (SELECT count(a.ID)
-             FROM $wpdb->posts as a
-               JOIN $wpdb->postmeta as b
-                 ON a.ID=b.post_id
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
                     AND b.meta_key = 'seeker_path'
                     AND b.meta_value = 'scheduled'
-               JOIN $wpdb->postmeta as c
-                 ON a.ID=c.post_id
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
                     AND c.meta_value = CONCAT( 'user-', %s )
-               JOIN $wpdb->postmeta as d
-                 ON a.ID=d.post_id
+                JOIN $wpdb->postmeta as d
+                  ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
                     AND d.meta_value = 'active'
               WHERE a.post_status = 'publish')
@@ -2115,6 +2121,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $user_id,
             $user_id,
             $user_id,
+            $user_id,
+            $user_id,
             $user_id
         ), ARRAY_A );
 
@@ -2127,21 +2135,21 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         if ( user_can( $user_id, 'view_any_contacts' ) ) {
-            $dispatcher_counts = $wpdb->get_results( "
+            $dispatcher_counts = $wpdb->get_results( $wpdb->prepare( "
             SELECT (SELECT count(ID) as all_contacts
                     FROM $wpdb->posts
                     WHERE post_status = 'publish'
                       AND post_type = 'contacts')
                 as all_contacts,
-                  (SELECT count(a.ID) as assignment_needed
+                  (SELECT count(a.ID)
                     FROM $wpdb->posts as a
-                    JOIN $wpdb->postmeta as b
+                    INNER JOIN $wpdb->postmeta as b
                       ON a.ID=b.post_id
                          AND b.meta_key = 'overall_status'
                          AND b.meta_value = 'unassigned'
                     WHERE a.post_status = 'publish')
                 as needs_assigned
-              ", ARRAY_A );
+              ", $user_id), ARRAY_A );
 
             foreach ( $dispatcher_counts[0] as $key => $value ) {
                 $numbers[$key] = $value;
@@ -2151,7 +2159,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $numbers = wp_parse_args( $numbers, [
             'my_contacts' => 0,
             'update_needed' => 0,
-            'contact_attempted' => 0,
+            'needs_accepted' => 0,
+            'contact_unattempted' => 0,
             'meeting_scheduled' => 0,
             'all_contacts' => 0,
             'needs_assigned' => 0,
