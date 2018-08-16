@@ -85,12 +85,17 @@ declare(strict_types=1);
                             <span class="list-view__count js-list-view-count" data-value="my_contacts">.</span>
                         </label>
                         <div class="list-views__sub">
-                            <?php if (user_can( get_current_user_id(), 'view_any_contacts' ) ){ ?>
+                            <label class="list-view">
+                                <input type="radio" name="view" value="needs_accepted" class="js-list-view" autocomplete="off">
+                                <?php esc_html_e( "Newly assigned", "disciple_tools" ); ?>
+                                <span class="list-view__count js-list-view-count" data-value="needs_accepted">.</span>
+                            </label>
 
+                            <?php if (user_can( get_current_user_id(), 'view_any_contacts' ) ){ ?>
                                 <label class="list-view">
                                     <input type="radio" name="view" value="assignment_needed" class="js-list-view">
                                     <?php esc_html_e( "Assignment needed", "disciple_tools" ); ?>
-                                    <span class="list-view__count js-list-view-count" data-value="assignment_needed">.</span>
+                                    <span class="list-view__count js-list-view-count" data-value="needs_assigned">.</span>
                                 </label>
                             <?php } ?>
                             <label class="list-view">
@@ -112,7 +117,7 @@ declare(strict_types=1);
                         <label class="list-view">
                             <input type="radio" name="view" value="shared_with_me" class="js-list-view" autocomplete="off">
                             <?php esc_html_e( "Contacts shared with me", "disciple_tools" ); ?>
-                            <span class="list-view__count js-list-view-count" data-value="contacts_shared_with_me">.</span>
+                            <span class="list-view__count js-list-view-count" data-value="shared_with_me">.</span>
                         </label>
 
                     </div>

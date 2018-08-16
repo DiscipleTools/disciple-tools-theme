@@ -187,6 +187,13 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'get_multi_select_options' ]
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/contact/counts', [
+                "methods" => "GET",
+                "callback" => [ $this, 'get_contact_counts' ]
+            ]
+        );
     }
 
 
@@ -740,5 +747,9 @@ class Disciple_Tools_Contacts_Endpoints
         } else {
             return new WP_Error( 'get_multi_select_options', "Missing field for request", [ 'status' => 400 ] );
         }
+    }
+
+    public function get_contact_counts(){
+        return Disciple_Tools_Contacts::get_count_of_contacts();
     }
 }

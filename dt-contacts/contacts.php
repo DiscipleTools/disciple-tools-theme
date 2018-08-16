@@ -2075,8 +2075,34 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
                     AND d.meta_value = 'active'
+                INNER JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                  AND (( e.meta_key = 'type' 
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) ) 
+                  OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish')
             as update_needed,
+            (SELECT count(a.ID)
+              FROM $wpdb->posts as a
+                INNER JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                    AND b.meta_key = 'accepted'
+                    AND b.meta_value = 'no'
+                INNER JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
+                    AND c.meta_key = 'assigned_to'
+                    AND c.meta_value = CONCAT( 'user-', %s )
+                INNER JOIN $wpdb->postmeta as d
+                  ON a.ID=d.post_id
+                    AND d.meta_key = 'overall_status'
+                    AND d.meta_value = 'assigned'
+                INNER JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                  AND (( e.meta_key = 'type' 
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) ) 
+                  OR e.meta_key IS NULL)
+              WHERE a.post_status = 'publish')
+            as needs_accepted,
             (SELECT count(a.ID)
               FROM $wpdb->posts as a
                 JOIN $wpdb->postmeta as b
@@ -2091,6 +2117,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
                     AND d.meta_value = 'active'
+                INNER JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                  AND (( e.meta_key = 'type' 
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) ) 
+                  OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish')
             as contact_unattempted,
             (SELECT count(a.ID)
@@ -2107,15 +2138,34 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
                     AND d.meta_value = 'active'
+                INNER JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                  AND (( e.meta_key = 'type' 
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) ) 
+                  OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish')
-             as meeting_scheduled,
-            (SELECT count(ID)
-             FROM $wpdb->posts
-             WHERE ID IN (SELECT post_id
-                          FROM $wpdb->dt_share
-                          WHERE user_id = %s)
-                      AND post_status = 'publish' )
-              as shared;
+            as meeting_scheduled,
+            (SELECT count(a.ID)
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
+                    AND c.meta_key = 'assigned_to'
+                    AND c.meta_value != CONCAT( 'user-', %s )
+                INNER JOIN $wpdb->postmeta as type
+                    ON a.ID=type.post_id AND type.meta_key = 'type'
+              WHERE ID IN (SELECT post_id
+                FROM $wpdb->dt_share
+                WHERE user_id = %s)
+              AND post_status = 'publish' 
+              AND ( 
+                (type.meta_key = 'type' AND type.meta_value = 'media') 
+                OR 
+                ( type.meta_key = 'type' AND type.meta_value = 'next_gen' )
+                OR 
+                ( type.meta_key IS NULL )
+              )
+            )
+            as shared_with_me;
             ",
             $user_id,
             $user_id,
@@ -2147,7 +2197,17 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                       ON a.ID=b.post_id
                          AND b.meta_key = 'overall_status'
                          AND b.meta_value = 'unassigned'
-                    WHERE a.post_status = 'publish')
+                    INNER JOIN $wpdb->postmeta as c
+                      ON a.ID=c.post_id
+                         AND c.meta_key = 'assigned_to'
+                         AND c.meta_value = CONCAT( 'user-', %s )
+                    INNER JOIN $wpdb->postmeta as e
+                      ON a.ID=e.post_id
+                      AND (( e.meta_key = 'type'
+                        AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
+                      OR e.meta_key IS NULL)
+                    WHERE a.post_status = 'publish'
+                  )
                 as needs_assigned
               ", $user_id), ARRAY_A );
 

@@ -84,6 +84,7 @@
     })
   }
 
+
   let savedFiltersList = $("#saved-filters")
   function setupFilters(filters){
     savedFiltersList.empty()
@@ -153,6 +154,8 @@
       }
     }).trigger("resize");
   });
+
+
 
   const templates = {
     contacts: _.template(`<tr>
@@ -913,5 +916,21 @@
     }
   })
 
+  if ( wpApiListSettings.current_post_type === "contacts"){
+    $.ajax({
+      url: wpApiListSettings.root + "dt/v1/contact/counts",
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiListSettings.nonce);
+      }
+    }).then(counts=>{
+      $(".js-list-view-count").each(function() {
+        const $el = $(this);
+        let view_id = $el.data("value")
+        if ( counts && counts[view_id] ){
+          $el.text( counts[view_id] );
+        }
+      });
+    })
+  }
 
 })(window.jQuery, window.wpApiListSettings, window.Foundation);
