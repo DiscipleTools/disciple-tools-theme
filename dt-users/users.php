@@ -252,12 +252,20 @@ class Disciple_Tools_Users
             }
         }
 
-        //set display name to nickname
-        $user_id = wp_update_user( array(
-            'ID' => $args['ID'],
-            'display_name' => $args['nickname']
-            )
-        );
+        //check that display name is not null and is a new name
+        if( !empty( $args['nickname'] ) && $current_user->display_name != $args['nickname'] ) {
+            //TODO CHECK FOR DUB NICKNAMES
+
+            //TODO change old values to new values
+
+            //set display name to nickname
+            $user_id = wp_update_user( array(
+                'ID' => $args['ID'],
+                'display_name' => $args['nickname']
+                )
+            );
+
+        }
 
         return wp_redirect( get_site_url() ."/settings" );
     }
