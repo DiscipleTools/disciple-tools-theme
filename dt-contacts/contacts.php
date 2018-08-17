@@ -267,7 +267,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( isset( $fields["assigned_to"] )) {
             $user_id = explode( '-', $fields["assigned_to"] )[1];
             if ( $user_id ) {
-                self::add_shared( "contacts", $post_id, $user_id, null, false, false );
+                self::add_shared( "contacts", $post_id, $user_id, null, false, false, false );
             }
         }
 
@@ -594,7 +594,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 }
                 $user_id = explode( '-', $fields["assigned_to"] )[1];
                 if ( $user_id ){
-                    self::add_shared( "contacts", $contact_id, $user_id, null, false );
+                    self::add_shared( "contacts", $contact_id, $user_id, null, false, false, false );
                 }
                 $fields['accepted'] = 'no';
             }
@@ -796,7 +796,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $user_id = get_post_meta( $subassigned, "corresponds_to_user", true );
         if ( $user_id ){
-            self::add_shared_on_contact( $contact_id, $user_id, null, false, false );
+            self::add_shared_on_contact( $contact_id, $user_id, null, false, false, false );
             Disciple_Tools_Notifications::insert_notification_for_subassigned( $user_id, $contact_id );
         }
 
@@ -1892,11 +1892,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @param bool $send_notifications
      * @param bool $check_permissions
+     * @param bool $insert_activity
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared_on_contact( int $post_id, int $user_id, $meta = null, $send_notifications = true, $check_permissions = true ) {
-        return self::add_shared( 'contacts', $post_id, $user_id, $meta, $send_notifications, $check_permissions );
+    public static function add_shared_on_contact( int $post_id, int $user_id, $meta = null, $send_notifications = true, $check_permissions = true, $insert_activity = true ) {
+        return self::add_shared( 'contacts', $post_id, $user_id, $meta, $send_notifications, $check_permissions, $insert_activity );
     }
 
     public function find_contacts_with( $field, $value, $exclude_id = "" ){

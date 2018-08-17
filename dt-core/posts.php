@@ -1087,12 +1087,12 @@ class Disciple_Tools_Posts
      * @param int $user_id
      * @param array $meta
      * @param bool $send_notifications
-     *
      * @param bool $check_permissions
+     * @param bool $insert_activity
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared( string $post_type, int $post_id, int $user_id, $meta = null, bool $send_notifications = true, $check_permissions = true ) {
+    public static function add_shared( string $post_type, int $post_id, int $user_id, $meta = null, bool $send_notifications = true, $check_permissions = true, bool $insert_activity = true ) {
         global $wpdb;
 
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
@@ -1128,21 +1128,23 @@ class Disciple_Tools_Posts
             // insert share record
             $results = $wpdb->insert( $table, $data, $format );
 
-            // log share activity
-            dt_activity_insert(
-                [
-                    'action'         => 'share',
-                    'object_type'    => get_post_type( $post_id ),
-                    'object_subtype' => 'share',
-                    'object_name'    => get_the_title( $post_id ),
-                    'object_id'      => $post_id,
-                    'meta_id'        => '', // id of the comment
-                    'meta_key'       => '',
-                    'meta_value'     => $user_id,
-                    'meta_parent'    => '',
-                    'object_note'    => strip_tags( get_the_title( $post_id ) ) . ' was shared with ' . dt_get_user_display_name( $user_id ),
-                ]
-            );
+            if ( $insert_activity ){
+                // log share activity
+                dt_activity_insert(
+                    [
+                        'action'         => 'share',
+                        'object_type'    => get_post_type( $post_id ),
+                        'object_subtype' => 'share',
+                        'object_name'    => get_the_title( $post_id ),
+                        'object_id'      => $post_id,
+                        'meta_id'        => '', // id of the comment
+                        'meta_key'       => '',
+                        'meta_value'     => $user_id,
+                        'meta_parent'    => '',
+                        'object_note'    => strip_tags( get_the_title( $post_id ) ) . ' was shared with ' . dt_get_user_display_name( $user_id ),
+                    ]
+                );
+            }
 
             // Add share notification
             if ( $send_notifications ){
