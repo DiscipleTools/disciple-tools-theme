@@ -175,7 +175,7 @@ declare(strict_types=1);
                             if ( $field === "faith_milestones" ) : ?>
                                 <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>">
-                                        <?php echo esc_html( "Faith Milestones" ) ?></a>
+                                        <?php esc_html_e( "Faith Milestones", "disciple_tools" ) ?></a>
                                 </li>
                             <?php elseif ( isset( $dt_contact_field_options[$field]["name"] ) ) : ?>
                                 <li class="tabs-title <?php if ( $index === 0 ){ echo "is-active"; } ?>" data-field="<?php echo esc_html( $field )?>">
@@ -211,6 +211,13 @@ declare(strict_types=1);
                                         </div>
                                     </div>
                                 </div>
+                                <?php if ( $field === "subassigned" ): ?>
+                                <p>
+                                    <label><?php esc_html_e( "Filter for subassigned OR Assigned To", 'disciple_tools' ) ?>
+                                        <input id="combine_subassigned" type="checkbox" value="combine_subassigned" />
+                                    </label>
+                                </p>
+                                <?php endif;?>
                             </div>
 
                         <?php elseif ( $field == "faith_milestones" ) : ?>

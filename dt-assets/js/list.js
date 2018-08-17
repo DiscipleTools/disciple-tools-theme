@@ -412,6 +412,9 @@
       $("#faith_milestones-options input:checked").each(function(){
         searchQuery[$(this).val()] = ["yes"]
       })
+      if ( $("#combine_subassigned").is(":checked") ){
+        searchQuery["combine"] = ["subassigned"]
+      }
     }
     fields = fields.concat(wpApiListSettings.additional_filter_options || [])
     fields.push("tags")
