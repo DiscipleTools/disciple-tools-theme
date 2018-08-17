@@ -163,10 +163,12 @@ jQuery(document).ready(function($) {
           $('#create-group-modal').foundation('open');
         } else {
           API.save_field_api('contact', contactId, {groups: {values:[{value:item.ID}]}})
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
           masonGrid.masonry('layout')
         }
-        node.blur()
-        a.blur()
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.groups
@@ -254,6 +256,10 @@ jQuery(document).ready(function($) {
             onClick: function(node, a, item, event){
               _.pullAllBy(editFieldsUpdate.sources.values, [{value:item.key}], "value")
               editFieldsUpdate.sources.values.push({value:item.key})
+              this.addMultiselectItemLayout(item)
+              event.preventDefault()
+              this.hideLayout();
+              this.resetInput();
             },
             onResult: function (node, query, result, resultCount) {
               resultCount = typeaheadTotals.sources
@@ -262,7 +268,7 @@ jQuery(document).ready(function($) {
             },
             onHideLayout: function () {
               $('#sources-result-container').html("");
-            },
+            }
           }
         });
       }
@@ -309,6 +315,10 @@ jQuery(document).ready(function($) {
             }
             _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
             editFieldsUpdate.locations.values.push({value:item.ID})
+            this.addMultiselectItemLayout(item)
+            event.preventDefault()
+            this.hideLayout();
+            this.resetInput();
           },
           onResult: function (node, query, result, resultCount) {
             resultCount = typeaheadTotals.locations
@@ -317,7 +327,7 @@ jQuery(document).ready(function($) {
           },
           onHideLayout: function () {
             $('#locations-result-container').html("");
-          },
+          }
         }
       });
     }
@@ -362,6 +372,10 @@ jQuery(document).ready(function($) {
           onClick: function(node, a, item, event){
             _.pullAllBy(editFieldsUpdate.people_groups.values, [{value:item.ID}], "value")
             editFieldsUpdate.people_groups.values.push({value:item.ID})
+            this.addMultiselectItemLayout(item)
+            event.preventDefault()
+            this.hideLayout();
+            this.resetInput();
           },
           onResult: function (node, query, result, resultCount) {
             resultCount = typeaheadTotals.people_groups
@@ -370,7 +384,7 @@ jQuery(document).ready(function($) {
           },
           onHideLayout: function () {
             $('#people_groups-result-container').html("");
-          },
+          }
         }
       });
     }
@@ -526,6 +540,10 @@ jQuery(document).ready(function($) {
               <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
             </li>`)
           })
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
           masonGrid.masonry('layout')
         },
         onResult: function (node, query, result, resultCount) {
@@ -606,6 +624,10 @@ jQuery(document).ready(function($) {
     callback: {
       onClick: function(node, a, item, event){
         API.save_field_api('contact', contactId, {tags: {values:[{value:item.name}]}})
+        this.addMultiselectItemLayout(item)
+        event.preventDefault()
+        this.hideLayout();
+        this.resetInput();
       },
       onResult: function (node, query, result, resultCount) {
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)

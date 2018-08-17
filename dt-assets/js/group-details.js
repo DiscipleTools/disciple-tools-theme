@@ -139,6 +139,10 @@ jQuery(document).ready(function($) {
       onClick: function(node, a, item, event){
         _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
         editFieldsUpdate.locations.values.push({value:item.ID})
+        this.addMultiselectItemLayout(item)
+        event.preventDefault()
+        this.hideLayout();
+        this.resetInput();
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.locations
@@ -187,6 +191,10 @@ jQuery(document).ready(function($) {
       onClick: function(node, a, item, event){
         _.pullAllBy(editFieldsUpdate.people_groups.values, [{value:item.ID}], "value")
         editFieldsUpdate.people_groups.values.push({value:item.ID})
+        this.addMultiselectItemLayout(item)
+        event.preventDefault()
+        this.hideLayout();
+        this.resetInput();
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.people_groups
@@ -243,6 +251,10 @@ jQuery(document).ready(function($) {
           $('#create-group-modal').foundation('open');
         } else {
           API.save_field_api('group', groupId, {'parent_groups': {values:[{value:item.ID}]}})
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
           masonGrid.masonry('layout')
         }
       },
@@ -304,6 +316,10 @@ jQuery(document).ready(function($) {
           $('#create-group-modal').foundation('open');
         } else {
           API.save_field_api('group', groupId, {'child_groups': {values:[{value:item.ID}]}})
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
         }
       },
       onResult: function (node, query, result, resultCount) {
@@ -450,6 +466,10 @@ jQuery(document).ready(function($) {
       onClick: function(node, a, item, e){
         _.pullAllBy(editFieldsUpdate.leaders.values, [{value:item.ID}], "value")
         editFieldsUpdate.leaders.values.push({value:item.ID})
+        this.addMultiselectItemLayout(item)
+        event.preventDefault()
+        this.hideLayout();
+        this.resetInput();
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.leaders
