@@ -15,7 +15,9 @@ We are building on the Wordpress platform because of its open-source availabilit
 ## Guidebook
 
 Visit our [online guidebook](https://disciple-tools.readthedocs.io/en/latest/index.html)
-dddheme
+
+
+## Theme
 
 This repository contains only the WordPress theme. There are a growing number of plugin extensions to the theme, but the core of the Disciple Tools system is this theme.
 
