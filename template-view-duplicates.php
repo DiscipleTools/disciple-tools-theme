@@ -23,9 +23,9 @@ Template Name: View Duplicates
                     </button>-->
                     <table id='table-duplicates'>
                         <?php
-                        foreach ($dt_duplicates as $ID => $duplicate) {
+                        foreach ($dt_duplicates as $id => $duplicate) {
                             if ($duplicate['count'] <= 0) { continue; }
-                            echo "<form name='merge_$ID' method='POST' action='".site_url()."/contacts/$ID'><input type='hidden' name='dt_contact_nonce' value='".esc_attr(wp_create_nonce())."'/></form><tr id='$ID'><td><a>{$duplicate['name']}</a></td><td><a>{$duplicate['count']} duplicates</a></td></tr>";
+                            echo "<form name='merge_$id' method='POST' action='".site_url()."/contacts/$id'><input type='hidden' name='dt_contact_nonce' value='".esc_attr(wp_create_nonce())."'/></form><tr id='$id'><td><a>{$duplicate['name']}</a></td><td><a>{$duplicate['count']} duplicates</a></td></tr>";
                         }
                         ?>
                     </table>
@@ -33,7 +33,7 @@ Template Name: View Duplicates
 
 
         </div>
-        
+
         <script type="text/javascript">
             $("#table-duplicates").find('tr').click(function() {
                 var form = $("form[name=merge_" + $(this).prop('id') + "]");
