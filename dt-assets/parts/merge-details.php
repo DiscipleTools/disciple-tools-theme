@@ -97,22 +97,22 @@
 
                 echo "<h5 style='font-weight:bold; color:#3f729b'>".$duplicate_contact_name."</h5>";
                 foreach ($duplicate_contact['contact_phone'] ?? array() as $dphone) {
-                    if (in_array( $dphone['value'], $fields['contact_phone'] )){
+                    if (preg_grep( $dphone['value'], $fields['contact_phone'] )){
                         echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/phone.svg'>&nbsp;".wp_unslash($dphone['value'])."<br>";
                     }
                 }
                 foreach ($duplicate_contact['contact_address'] ?? array() as $daddress) {
-                    if (in_array( $daddress['value'], $fields['contact_address'] )){
+                    if (preg_grep( $daddress['value'], $fields['contact_address'] )){
                         echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/house.svg'>&nbsp;".wp_unslash($daddress['value'])."<br>";
                     }
                 }
                 foreach ($duplicate_contact['contact_email'] ?? array() as $demail) {
-                    if (in_array( $demail['value'], $fields['contact_email'] )){
+                    if (preg_grep( $demail['value'], $fields['contact_email'] )){
                         echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/email.svg'>&nbsp;".wp_unslash($demail['value'])."<br>";
                     }
                 }
                 foreach ($duplicate_contact['contact_facebook'] ?? array() as $dfacebook) {
-                    if (in_array( $dfacebook['value'], $fields['contact_facebook'] )){
+                    if (preg_grep( $dfacebook['value'], $fields['contact_facebook'] )){
                         echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/facebook.svg'>&nbsp;".wp_unslash($dfacebook['value'])."<br>";
                     }
                 }
