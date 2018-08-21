@@ -29,7 +29,7 @@
           );
 
           echo "<div style='background-color:#e1f5fe; padding:2%;'>";
-          echo "<h5 style='font-weight:bold; color:#3f729b'>".wp_unslash($contact_name)."</h5>";
+          echo "<h5 style='font-weight:bold; color:#3f729b'>".esc_html_e($contact_name, 'disciple_tools')."</h5>";
           foreach ($contact['contact_phone'] ?? array() as $phone) {
               if ($phone['value'] !=''){
                   echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/phone.svg'>&nbsp;".esc_html_e($phone['value'], 'disciple_tools' )."<br>";
