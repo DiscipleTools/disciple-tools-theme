@@ -29,27 +29,27 @@
           );
 
           echo "<div style='background-color:#e1f5fe; padding:2%;'>";
-          echo "<h5 style='font-weight:bold; color:#3f729b'>".esc_html_e($contact_name, 'disciple_tools')."</h5>";
+          echo "<h5 style='font-weight:bold; color:#3f729b'>".esc_html( $contact_name )."</h5>";
           foreach ($contact['contact_phone'] ?? array() as $phone) {
               if ($phone['value'] !=''){
-                  echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/phone.svg'>&nbsp;".esc_html_e($phone['value'], 'disciple_tools' )."<br>";
+                  echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/phone.svg'>&nbsp;".esc_html( $phone['value'] )."<br>";
                   array_push( $fields['contact_phone'], $phone['value'] );
                 }
             }
             foreach ($contact['contact_address'] ?? array() as $address) {
                 if ($address['value'] !=''){
-                    echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/house.svg'>&nbsp;".esc_html_e($address['value'], 'disciple_tools' )."<br>";
+                    echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/house.svg'>&nbsp;".esc_html( $address['value'] )."<br>";
                     array_push( $fields['contact_address'], $address['value'] );
                 }
             }
             foreach ($contact['contact_email'] ?? array() as $email) {
                 if ($email['value'] !=''){
-                    echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/email.svg'>&nbsp;".esc_html_e($email['value'], 'disciple_tools' )."<br>";
+                    echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/email.svg'>&nbsp;".esc_html( $email['value'] )."<br>";
                     array_push( $fields['contact_email'], $email['value'] );
                 }
             }
             if ($contact_facebook !=''){
-                echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/facebook.svg'>&nbsp;".esc_html_e($contact_facebook, 'disciple_tools' )."<br>";
+                echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/facebook.svg'>&nbsp;".esc_html( $contact_facebook )."<br>";
                 array_push( $fields['contact_facebook'], $contact_facebook );
             }
             echo "</div>";
@@ -57,10 +57,10 @@
           <h4 style="text-align:center; font-size:1.25rem; font-weight:bold; padding:20px 0px 0px; margin-bottom:0px;"><?php esc_html_e( "Possible Duplicates", 'disciple_tools' ) ?></h4>
           <div style='display: inline-block; width: 100%;'>
               <form method='POST' id='form-unsure-dismiss' action='<?php echo esc_url( site_url( '/contacts/' .get_the_ID() ) ); ?>'>
-                <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr(wp_create_nonce()); ?>"/>
-                <input type='hidden' name='id' value='<?php echo esc_html_e(get_the_Id(), 'disciple_tools'); ?>'/>
-                <a style='float: right; margin-left: 10%;' onclick='dismiss_all();'><?php echo esc_html_e('Dismiss All', 'disciple_tools'); ?>Dismiss All</a>
-                <a style='float: right;' onclick='unsure_all();'><?php echo esc_html_e('Unsure All', 'disciple_tools'); ?>Unsure All</a>
+                <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr( wp_create_nonce() ); ?>"/>
+                <input type='hidden' name='id' value='<?php echo esc_html( get_the_Id(), 'disciple_tools' ); ?>'/>
+                <a style='float: right; margin-left: 10%;' onclick='dismiss_all();'><?php echo esc_html_e( 'Dismiss All', 'disciple_tools' ); ?>Dismiss All</a>
+                <a style='float: right;' onclick='unsure_all();'><?php echo esc_html_e( 'Unsure All', 'disciple_tools' ); ?>Unsure All</a>
                 <input type='submit' id='unsure-dismiss-submit' style='display: none;' value='submit'/>
               </form>
           </div>
@@ -95,36 +95,36 @@
 
                 echo "<div style='background-color:#f2f2f2; padding:2%; overflow:hidden;'>";
 
-                echo "<h5 style='font-weight:bold; color:#3f729b'>".esc_html_e($duplicate_contact_name, 'disciple_tools')."</h5>";
+                echo "<h5 style='font-weight:bold; color:#3f729b'>".esc_html( $duplicate_contact_name )."</h5>";
                 foreach ($duplicate_contact['contact_phone'] ?? array() as $d_phone) {
                     if (preg_grep( $d_phone['value'], $fields['contact_phone'] )){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/phone.svg'>&nbsp;".esc_html_e($d_phone['value'], 'disciple_tools')."<br>";
+                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/phone.svg'>&nbsp;".esc_html( $d_phone['value'] )."<br>";
                     }
                 }
                 foreach ($duplicate_contact['contact_address'] ?? array() as $d_address) {
                     if (preg_grep( $d_address['value'], $fields['contact_address'] )){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/house.svg'>&nbsp;".esc_html_e($d_address['value'], 'disciple_tools')."<br>";
+                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/house.svg'>&nbsp;".esc_html( $d_address['value'] )."<br>";
                     }
                 }
                 foreach ($duplicate_contact['contact_email'] ?? array() as $d_email) {
                     if (preg_grep( $d_email['value'], $fields['contact_email'] )){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/email.svg'>&nbsp;".esc_html_e($d_email['value'], 'disciple_tools')."<br>";
+                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/email.svg'>&nbsp;".esc_html( $d_email['value'] )."<br>";
                     }
                 }
                 foreach ($duplicate_contact['contact_facebook'] ?? array() as $d_facebook) {
                     if (preg_grep( $d_facebook['value'], $fields['contact_facebook'] )){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/facebook.svg'>&nbsp;".esc_html_e($d_facebook['value'], 'disciple_tools')."<br>";
+                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/facebook.svg'>&nbsp;".esc_html( $d_facebook['value'] )."<br>";
                     }
                 }
                 ?>
 
-          <button class='mergelinks' onclick="$('#dismiss-id').val('<?php echo esc_html_e($value, 'disciple_tools'); ?>'); $('#form-dismiss input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>
-          <button class='mergelinks' onclick="$('#unsure-id').val('<?php echo esc_html_e($value, 'disciple_tools'); ?>'); $('#form-unsure input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Unsure", 'disciple_tools' ) ?></a></button>
+          <button class='mergelinks' onclick="$('#dismiss-id').val('<?php echo esc_html( $value ); ?>'); $('#form-dismiss input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>
+          <button class='mergelinks' onclick="$('#unsure-id').val('<?php echo esc_html( $value ); ?>'); $('#form-unsure input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Unsure", 'disciple_tools' ) ?></a></button>
 
           <form action="<?php echo esc_url( site_url( '/contacts/mergedetails' ) ); ?>" method="post">
-            <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr(wp_create_nonce()); ?>"/>
-            <input type='hidden' name='currentid' value='<?php echo esc_html_e($contact['ID'], 'disciple_tools'));?>'/>
-            <input type='hidden' name='dupeid' value='<?php echo esc_html_e($duplicate_contact['ID'], 'disciple_tools')); ?>'/>
+            <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr( wp_create_nonce() ); ?>"/>
+            <input type='hidden' name='currentid' value='<?php echo esc_html( $contact['ID'] );?>'/>
+            <input type='hidden' name='dupeid' value='<?php echo esc_html( $duplicate_contact['ID'] ); ?>'/>
             <button type='submit' style='float:right; padding-left:10%;'><a><?php esc_html_e( "Merge", 'disciple_tools' ) ?></a></button>
           </form></div>
 
@@ -154,30 +154,30 @@
 
                 echo "<div style='background-color:#f2f2f2; padding:2%; overflow:hidden;'>";
 
-                echo "<h5 style='font-weight:bold; color:#3f729b'>".esc_html_e($duplicate_contact_name, 'disciple_tools')."</h5>";
+                echo "<h5 style='font-weight:bold; color:#3f729b'>".esc_html( $duplicate_contact_name )."</h5>";
                 foreach ($duplicate_contact['contact_phone'] ?? array() as $d_phone) {
                     if (preg_grep( $d_phone['value'], $fields['contact_phone'] )){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/phone.svg'>&nbsp;".esc_html_e($d_phone['value'], 'disciple_tools')."<br>";
+                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/phone.svg'>&nbsp;".esc_html( $d_phone['value'] )."<br>";
                     }
                 }
                 foreach ($duplicate_contact['contact_address'] ?? array() as $d_address) {
                     if (preg_grep( $d_address['value'], $fields['contact_address'] )){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/house.svg'>&nbsp;".esc_html_e($d_address['value'], 'disciple_tools')."<br>";
+                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/house.svg'>&nbsp;".esc_html( $d_address['value'] )."<br>";
                     }
                 }
                 foreach ($duplicate_contact['contact_email'] ?? array() as $d_email) {
                     if (preg_grep( $d_email['value'], $fields['contact_email'] )){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/email.svg'>&nbsp;".esc_html_e($d_email['value'], 'disciple_tools')."<br>";
+                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/email.svg'>&nbsp;".esc_html( $d_email['value'] )."<br>";
                     }
                 }
                 foreach ($duplicate_contact['contact_facebook'] ?? array() as $d_facebook) {
                     if (preg_grep( $d_facebook['value'], $fields['contact_facebook'] )){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/facebook.svg'>&nbsp;".esc_html_e($d_facebook['value'], 'disciple_tools')."<br>";
+                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/facebook.svg'>&nbsp;".esc_html( $d_facebook['value'] )."<br>";
                     }
                 }
                 ?>
 
-          <button class='mergelinks' onclick="$('#dismiss-id').val('<?php echo esc_html_e($value, 'disciple_tools'); ?>'); $('#form-dismiss input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>
+          <button class='mergelinks' onclick="$('#dismiss-id').val('<?php echo esc_html( $value ); ?>'); $('#form-dismiss input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>
 
       </div>
 
@@ -186,16 +186,16 @@
             ?>
 
         <form action="<?php echo esc_url( site_url( '/contacts/' . get_the_ID() ) ); ?>" id='form-dismiss' method="POST">
-            <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr(wp_create_nonce()); ?>">
+            <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr( wp_create_nonce() ); ?>">
             <input type='hidden' name='dismiss' value='1'/>
-            <input type='hidden' id="dismiss-id" name='id' value='<?php echo esc_html_e($value, 'disciple_tools'); ?>'/>
+            <input type='hidden' id="dismiss-id" name='id' value='<?php echo esc_html( $value ); ?>'/>
             <input type='hidden' name='currentId' value='<?php echo get_the_ID(); ?>'/>
             <input type='submit' style='display: none' value='Dismiss'/>
         </form>
         <form action="<?php echo esc_url( site_url( '/contacts/' . get_the_ID() ) ); ?>" id='form-unsure' method="POST">
-            <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr(wp_create_nonce()); ?>">
+            <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr( wp_create_nonce() ); ?>">
             <input type='hidden' name='unsure' value='1'/>
-            <input type='hidden' id="unsure-id" name='id' value='<?php echo esc_html_e($value, 'disciple_tools'); ?>'/>
+            <input type='hidden' id="unsure-id" name='id' value='<?php echo esc_html( $value ); ?>'/>
             <input type='hidden' name='currentId' value='<?php echo get_the_ID(); ?>'/>
             <input type='submit' style='display: none' value='Unsure'/>
         </form>

@@ -9,8 +9,8 @@ Template Name: Merge Details
 
 get_header();
 $nonce = $_POST['dt_contact_nonce'];
-if(!wp_verify_nonce($nonce)) {
-    header("Location: /contacts");
+if ( !wp_verify_nonce( $nonce ) ) {
+    header( "Location: /contacts" );
 }
 $current_id =$_POST['currentid'];
 $dupe_id =$_POST['dupeid'];
@@ -60,24 +60,24 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                     &nbsp;
                   </div>
                   <div class="merge-column">
-                    <?php echo "<span class='contact_name'>".esc_html_e($contact_name, 'disciple_tools')."</span>" .esc_html_e($edit_row, 'disciple_tools'); ?><br>
+                    <?php echo "<span class='contact_name'>".esc_html( $contact_name )."</span>" .esc_html( $edit_row ); ?><br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
                   <div class="merge-column">
-                    <?php echo "<span class='contact_name'>".esc_html_e($duplicate_contact_name, 'disciple_tools')."</span> " .esc_html_e($edit_row, 'disciple_tools'); ?><br>
+                    <?php echo "<span class='contact_name'>".esc_html( $duplicate_contact_name )."</span> " .esc_html( $edit_row ); ?><br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
                 </div>
 
                 <form id="merge-form" onsubmit="merge(event);" method="post" action="<?php echo esc_url( site_url( '/contacts/' ) ); ?>" >
-                    <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr(wp_create_nonce()); ?>"/>
-                    <input type='hidden' name='duplicateId' value='<?php echo esc_html_e( $dupe_id, 'disciple_tools'); ?>'/>
+                    <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr( wp_create_nonce() ); ?>"/>
+                    <input type='hidden' name='duplicateId' value='<?php echo esc_html( $dupe_id ); ?>'/>
                 <div class="line-wrap">
                   <div class="merge-column">
                     <span class="bold"><?php esc_html_e( "Master Record", 'disciple_tools' ) ?></span>
                   </div>
                   <div class="merge-column">
-                    <input type="hidden" name="currentid" value="<?php echo esc_html_e( $current_id, 'disciple_tools'); ?>">
+                    <input type="hidden" name="currentid" value="<?php echo esc_html( $current_id ); ?>">
                     <input type="radio" required name="master-record" value="contact1"> <?php esc_html_e( "Use as master", 'disciple_tools' ) ?>
                   </div>
                   <div class="merge-column">
@@ -90,12 +90,12 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                 foreach ($fields as $key => $field) {
                     foreach ($data[$key] as $idx => $type) {
                         echo "<div class='line-wrap'>";
-                            echo "<div class='merge-column'><span class='bold'>" .esc_html_e($field, 'disciple_tools')."</span></div>";
+                            echo "<div class='merge-column'><span class='bold'>" .esc_html( $field )."</span></div>";
                         foreach ($type as $vals) {
                             $value = $vals['value'];
                             echo "<div class='merge-column'>";
                             if ($value) {
-                                echo "<input type='checkbox' name='" . strtolower( $field ) . "[]' value='$value'> $value $edit_row";
+                                echo "<input type='checkbox' name='" . strtolower( $field ) . "[]' value='".esc_html( $value )."'> ".esc_html( $value $edit_row );
                             } else {
                                 echo "<div class='empty'></div>";
                             }
@@ -239,7 +239,7 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                                 break;
                             default: return;
                         }
-                        var id = o.index() === 1 ? '<?php echo esc_html_e($current_id, 'disciple_tools'); ?>' : o.index() === 2 ? '<?php echo esc_html_e($dupe_id, 'disciple_tools'); ?>' : null;
+                        var id = o.index() === 1 ? '<?php echo esc_html( $current_id ); ?>' : o.index() === 2 ? '<?php echo esc_html( $dupe_id ); ?>' : null;
                         if(id) {
                             var post = API.get_post('contact', id);
                             post.done(function(res) {
@@ -296,7 +296,7 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                 function merge(e) {
                     var form = $("#merge-form");
                     var master = form.find('input[name=master-record]:checked').val();
-                    var id = master === 'contact1' ? '<?php echo esc_html_e($current_id, 'disciple_tools'); ?>' : '<?php echo esc_html_e($dupe_id, 'disciple_tools'); ?>';
+                    var id = master === 'contact1' ? '<?php echo esc_html( $current_id ); ?>' : '<?php echo esc_html( $dupe_id ); ?>';
                     form.attr('action', form.attr('action') + id);
                 }
               </script>

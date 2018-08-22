@@ -6,7 +6,7 @@ declare( strict_types=1 );
 
     if (isset( $_POST['unsure_all'] )) {
         $nonce = $_POST['dt_contact_nonce'];
-        if(isset($_POST['id']) && wp_verify_nonce($nonce)) {
+        if (isset( $_POST['id'] ) && wp_verify_nonce( $nonce )) {
             $id = (int) $_POST['id'];
             Disciple_Tools_Contacts::unsure_all( $id );
         }
@@ -14,7 +14,7 @@ declare( strict_types=1 );
     }
     if (isset( $_POST['dismiss_all'] )) {
         $nonce = $_POST['dt_contact_nonce'];
-        if(isset($_POST['id']) && wp_verify_nonce($nonce)) {
+        if (isset( $_POST['id'] ) && wp_verify_nonce( $nonce )) {
             $id = (int) $_POST['id'];
             Disciple_Tools_Contacts::dismiss_all( $id );
         }
@@ -22,18 +22,18 @@ declare( strict_types=1 );
     }
     if (isset( $_POST['dismiss'] )) {
         $nonce = $_POST['dt_contact_nonce'];
-        if(isset($_POST['currentId'], $_POST['id']) && wp_verify_nonce($nonce)) {
-            $current_id = (int)$_POST['currentId'];
-            $id = (int)$_POST['id'];
+        if (isset( $_POST['currentId'], $_POST['id'] ) && wp_verify_nonce( $nonce ) ) {
+            $current_id = (int) $_POST['currentId'];
+            $id = (int) $_POST['id'];
             ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $current_id, $id );
         }
         header( "location: " . site_url( '/contacts/' . $current_id ) );
     }
     if (isset( $_POST['unsure'] )) {
         $nonce = $_POST['dt_contact_nonce'];
-        if(isset($_POST['currentId'], $_POST['id']) && wp_verify_nonce($nonce)) {
-            $current_id = (int)$_POST['currentId'];
-            $id = (int)$_POST['id'];
+        if (isset( $_POST['currentId'], $_POST['id'] ) && wp_verify_nonce( $nonce ) ) {
+            $current_id = (int) $_POST['currentId'];
+            $id = (int) $_POST['id'];
             ( new Disciple_Tools_Contacts() )->unsure_duplicate( $current_id, $id );
         }
         header( "location: " . site_url( '/contacts/' . $current_id ) );
@@ -41,12 +41,12 @@ declare( strict_types=1 );
 
     if (isset( $_POST['merge-submit'] )){
         $nonce = $_POST['dt_contact_nonce'];
-        if(isset($_POST['currentid'], $_POST['duplicateId']) && wp_verify_nonce($nonce)) {
+        if (isset( $_POST['currentid'], $_POST['duplicateId'] ) && wp_verify_nonce( $nonce ) ) {
             $contact_id = (int) $_POST["currentid"];
             $dupe_id = (int) $_POST['duplicateId'];
             $phones =$_POST['phone'] ?? array();
             $emails =$_POST['email'] ?? array();
-            $addresses = wp_unslash($_POST['address']) ?? array();
+            $addresses = wp_unslash( $_POST['address'] ) ?? array();
             $master = $_POST['master-record'];
 
             $master_id = ( $master === 'contact1' ) ? $contact_id : $dupe_id;
@@ -672,7 +672,7 @@ declare( strict_types=1 );
     <?php
 } )();
 
-if (isset( $_POST['merge']) && wp_verify_nonce($_POST['dt_contact_nonce'] ?? null)) {
+if (isset( $_POST['merge'] ) && wp_verify_nonce( $_POST['dt_contact_nonce'] ?? null ) ) {
     echo "<script type='text/javascript'>$(document).ready(function() { $('#merge-dupe-modal').click(); });</script>";
 }
 

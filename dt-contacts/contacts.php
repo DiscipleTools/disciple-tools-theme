@@ -1388,10 +1388,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function merge_milestones( int $master_id, int $non_master_id) {
         if ( !$master_id || !$non_master_id) { return; }
         $master = self::get_contact( $master_id );
-        $non_master= self::get_contact( $non_master_id );
+        $non_master = self::get_contact( $non_master_id );
 
         $update = array();
-        foreach ($non_masteras $key => $val_arr) {
+        foreach ($non_master as $key => $val_arr) {
             if (preg_match( "/^milestone_/", $key ) && ( $master[$key]['key'] ?? 'no' ) !== 'yes') {
                 $value = is_array( $val_arr ) ? $val_arr['key'] : $val_arr;
                 $update[$key] = $value;
@@ -1427,7 +1427,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         global $wpdb;
         if ( !$master_id || !$non_master_id) { return; }
         $master = self::get_contact( $master_id );
-        $non_master= self::get_contact( $non_master_id );
+        $non_master = self::get_contact( $non_master_id );
         $keys = array(
             'groups',
             'baptized_by',
