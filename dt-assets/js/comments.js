@@ -138,7 +138,14 @@ jQuery(document).ready(function($) {
   $(document).on("click", ".open-edit-comment", function () {
     let id = $(this).data("id")
     let comment = _.find(comments, {comment_ID:id.toString()})
-    $('#comment-to-edit').val(comment.comment_content)
+
+    let comment_html = comment.comment_content // eg: "Tom &amp; Jerry"
+
+    // textarea deos not render HTML, so using _.unescape is safe. Note that
+    // _.unescape will silently ignore invalid HTML, for instance,
+    // _.unescape("Tom & Jerry") will return "Tom & Jerry"
+    $('#comment-to-edit').val(_.unescape(comment_html))
+
     $('.edit-comment.callout').hide()
     $('#edit-comment-modal').foundation('open')
     $('#confirm-comment-edit').data("id", id)
