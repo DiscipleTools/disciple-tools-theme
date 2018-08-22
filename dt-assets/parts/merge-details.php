@@ -58,7 +58,7 @@
           <div style='display: inline-block; width: 100%;'>
               <form method='POST' id='form-unsure-dismiss' action='<?php echo esc_url( site_url( '/contacts/' .get_the_ID() ) ); ?>'>
                 <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr(wp_create_nonce()); ?>"/>
-                <input type='hidden' name='id' value='<?php echo get_the_Id(); ?>'/>
+                <input type='hidden' name='id' value='<?php echo esc_html_e(get_the_Id(), 'disciple_tools'); ?>'/>
                 <a style='float: right; margin-left: 10%;' onclick='dismiss_all();'><?php echo esc_html_e('Dismiss All', 'disciple_tools'); ?>Dismiss All</a>
                 <a style='float: right;' onclick='unsure_all();'><?php echo esc_html_e('Unsure All', 'disciple_tools'); ?>Unsure All</a>
                 <input type='submit' id='unsure-dismiss-submit' style='display: none;' value='submit'/>
@@ -118,13 +118,13 @@
                 }
                 ?>
 
-          <button class='mergelinks' onclick="$('#dismiss-id').val('<?php echo $value; ?>'); $('#form-dismiss input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>
-          <button class='mergelinks' onclick="$('#unsure-id').val('<?php echo $value; ?>'); $('#form-unsure input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Unsure", 'disciple_tools' ) ?></a></button>
+          <button class='mergelinks' onclick="$('#dismiss-id').val('<?php echo esc_html_e($value, 'disciple_tools'); ?>'); $('#form-dismiss input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>
+          <button class='mergelinks' onclick="$('#unsure-id').val('<?php echo esc_html_e($value, 'disciple_tools'); ?>'); $('#form-unsure input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Unsure", 'disciple_tools' ) ?></a></button>
 
           <form action="<?php echo esc_url( site_url( '/contacts/mergedetails' ) ); ?>" method="post">
             <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr(wp_create_nonce()); ?>"/>
-            <input type='hidden' name='currentid' value='<?php echo wp_unslash($contact['ID']);?>'/>
-            <input type='hidden' name='dupeid' value='<?php echo wp_unslash($duplicate_contact['ID']); ?>'/>
+            <input type='hidden' name='currentid' value='<?php echo esc_html_e($contact['ID'], 'disciple_tools'));?>'/>
+            <input type='hidden' name='dupeid' value='<?php echo esc_html_e($duplicate_contact['ID'], 'disciple_tools')); ?>'/>
             <button type='submit' style='float:right; padding-left:10%;'><a><?php esc_html_e( "Merge", 'disciple_tools' ) ?></a></button>
           </form></div>
 
@@ -154,7 +154,7 @@
 
                 echo "<div style='background-color:#f2f2f2; padding:2%; overflow:hidden;'>";
 
-                echo "<h5 style='font-weight:bold; color:#3f729b'>".$duplicate_contact_name."</h5>";
+                echo "<h5 style='font-weight:bold; color:#3f729b'>".esc_html_e($duplicate_contact_name, 'disciple_tools')."</h5>";
                 foreach ($duplicate_contact['contact_phone'] ?? array() as $d_phone) {
                     if (preg_grep( $d_phone['value'], $fields['contact_phone'] )){
                         echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/phone.svg'>&nbsp;".esc_html_e($d_phone['value'], 'disciple_tools')."<br>";
@@ -177,7 +177,7 @@
                 }
                 ?>
 
-          <button class='mergelinks' onclick="$('#dismiss-id').val('<?php echo $value; ?>'); $('#form-dismiss input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>
+          <button class='mergelinks' onclick="$('#dismiss-id').val('<?php echo esc_html_e($value, 'disciple_tools'); ?>'); $('#form-dismiss input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>
 
       </div>
 
@@ -188,14 +188,14 @@
         <form action="<?php echo esc_url( site_url( '/contacts/' . get_the_ID() ) ); ?>" id='form-dismiss' method="POST">
             <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr(wp_create_nonce()); ?>">
             <input type='hidden' name='dismiss' value='1'/>
-            <input type='hidden' id="dismiss-id" name='id' value='<?php echo wp_unslash($value); ?>'/>
+            <input type='hidden' id="dismiss-id" name='id' value='<?php echo esc_html_e($value, 'disciple_tools'); ?>'/>
             <input type='hidden' name='currentId' value='<?php echo get_the_ID(); ?>'/>
             <input type='submit' style='display: none' value='Dismiss'/>
         </form>
         <form action="<?php echo esc_url( site_url( '/contacts/' . get_the_ID() ) ); ?>" id='form-unsure' method="POST">
             <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr(wp_create_nonce()); ?>">
             <input type='hidden' name='unsure' value='1'/>
-            <input type='hidden' id="unsure-id" name='id' value='<?php echo wp_unslash($value); ?>'/>
+            <input type='hidden' id="unsure-id" name='id' value='<?php echo esc_html_e($value, 'disciple_tools'); ?>'/>
             <input type='hidden' name='currentId' value='<?php echo get_the_ID(); ?>'/>
             <input type='submit' style='display: none' value='Unsure'/>
         </form>

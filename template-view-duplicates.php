@@ -25,7 +25,8 @@ Template Name: View Duplicates
                         <?php
                         foreach ($dt_duplicates as $id => $duplicate) {
                             if ($duplicate['count'] <= 0) { continue; }
-                            echo "<form name='merge_$id' method='POST' action='".site_url()."/contacts/$id'><input type='hidden' name='dt_contact_nonce' value='".esc_attr(wp_create_nonce())."'/></form><tr id='$id'><td><a>{$duplicate['name']}</a></td><td><a>{$duplicate['count']} duplicates</a></td></tr>";
+                            echo "<form name='merge_".esc_html_e($id, 'disciple_tools')."' method='POST' action='".esc_html_e(site_url(), 'disciple_tools')."/contacts/".esc_html_e($id, 'disciple_tools')."'><input type='hidden' name='dt_contact_nonce' value='".esc_attr(wp_create_nonce())."'/></form><tr id='".esc_html_e($id, 'disciple_tools')."'><td><a>".esc_html_e( $duplicate['name'], 'disciple_tools')."</a></td><td>
+                            <a>".esc_html_e($duplicate['count'], 'disciple_tools')." duplicates</a></td></tr>";
                         }
                         ?>
                     </table>
