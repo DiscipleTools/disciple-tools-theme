@@ -8,34 +8,34 @@ Template Name: Merge Details
 <?php
 
 get_header();
-$nonce = $_POST['dt_contact_nonce'];
-if ( !wp_verify_nonce( $nonce ) ) {
+$nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
+if ( !wp_verify_nonce( $nonce ) || !isset( $_POST['currentid'], $_POST['dupeid'] )) {
     header( "Location: /contacts" );
 }
-$current_id =$_POST['currentid'];
-$dupe_id =$_POST['dupeid'];
-list($current, $duplicate, $data, $fields) = Disciple_Tools_Contacts::get_merge_data( $current_id, $dupe_id );
-$contact = Disciple_Tools_Contacts::get_contact( $current_id, true );
-$channel_list = Disciple_Tools_Contacts::get_channel_list();
-$current_user = wp_get_current_user();
-$contact_fields = Disciple_Tools_Contacts::get_contact_fields();
+$current_id = wp_unslash( $_POST['currentid'] );
+$dupe_id = wp_unslash( $_POST['dupeid'] );
+list($dt_current, $dt_duplicate, $dt_data, $dt_fields) = Disciple_Tools_Contacts::get_merge_data( $current_id, $dupe_id );
+$dt_contact = Disciple_Tools_Contacts::get_contact( $current_id, true );
+$dt_channel_list = Disciple_Tools_Contacts::get_channel_list();
+$dt_current_user = wp_get_current_user();
+$dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 
 
 
-  $contact_name =$contact['title'] ?? null;
-  $contact_address =$contact['contact_address'][0]['value'] ?? null;
-  $contact_phone =$contact['contact_phone'][0]['value'] ?? null;
-  $contact_email =$contact['contact_email'][0]['value'] ?? null;
-  $contact_facebook =$contact['contact_facebook'][0]['value'] ?? null;
+  $contact_name =$dt_contact['title'] ?? null;
+  $contact_address =$dt_contact['contact_address'][0]['value'] ?? null;
+  $contact_phone =$dt_contact['contact_phone'][0]['value'] ?? null;
+  $contact_email =$dt_contact['contact_email'][0]['value'] ?? null;
+  $contact_facebook =$dt_contact['contact_facebook'][0]['value'] ?? null;
 
 
-  $duplicate_contact = Disciple_Tools_Contacts::get_contact( $dupe_id, true );
+  $dt_duplicate_contact = Disciple_Tools_Contacts::get_contact( $dupe_id, true );
 
-  $duplicate_contact_name =$duplicate_contact['title'] ?? null;
-  $duplicate_contact_address =$duplicate_contact['contact_address'][0]['value'] ?? null;
-  $duplicate_contact_phone =$duplicate_contact['contact_phone'][0]['value'] ?? null;
-  $duplicate_contact_email =$duplicate_contact['contact_email'][0]['value'] ?? null;
-  $duplicate_contact_facebook =$duplicate_contact['contact_facebook'][0]['value'] ?? null;
+  $duplicate_contact_name =$dt_duplicate_contact['title'] ?? null;
+  $duplicate_contact_address =$dt_duplicate_contact['contact_address'][0]['value'] ?? null;
+  $duplicate_contact_phone =$dt_duplicate_contact['contact_phone'][0]['value'] ?? null;
+  $duplicate_contact_email =$dt_duplicate_contact['contact_email'][0]['value'] ?? null;
+  $duplicate_contact_facebook =$dt_duplicate_contact['contact_facebook'][0]['value'] ?? null;
 
   $used_values = array(
       'contact_phone' => array(),
@@ -60,11 +60,11 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                     &nbsp;
                   </div>
                   <div class="merge-column">
-                    <?php echo "<span class='contact_name'>".esc_html( $contact_name )."</span>" .esc_html( $edit_row ); ?><br>
+                    <?php echo "<span class='contact_name'>".esc_html( $contact_name )."</span>" . $edit_row; ?><br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
                   <div class="merge-column">
-                    <?php echo "<span class='contact_name'>".esc_html( $duplicate_contact_name )."</span> " .esc_html( $edit_row ); ?><br>
+                    <?php echo "<span class='contact_name'>".esc_html( $duplicate_contact_name )."</span> " . $edit_row; ?><br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
                 </div>
@@ -87,15 +87,15 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                 </div>
 
                 <?php
-                foreach ($fields as $key => $field) {
-                    foreach ($data[$key] as $idx => $type) {
+                foreach ($dt_fields as $key => $field) {
+                    foreach ($dt_data[$key] as $idx => $type) {
                         echo "<div class='line-wrap'>";
                             echo "<div class='merge-column'><span class='bold'>" .esc_html( $field )."</span></div>";
                         foreach ($type as $vals) {
                             $value = $vals['value'];
                             echo "<div class='merge-column'>";
                             if ($value) {
-                                echo "<input type='checkbox' name='" . strtolower( $field ) . "[]' value='".esc_html( $value )."'> ".esc_html( $value $edit_row );
+                                echo "<input type='checkbox' name='" . strtolower( $field ) . "[]' value='".esc_html( $value )."'> ".esc_html( $value ) . $edit_row;
                             } else {
                                 echo "<div class='empty'></div>";
                             }

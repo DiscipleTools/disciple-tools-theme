@@ -59,8 +59,8 @@
               <form method='POST' id='form-unsure-dismiss' action='<?php echo esc_url( site_url( '/contacts/' .get_the_ID() ) ); ?>'>
                 <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr( wp_create_nonce() ); ?>"/>
                 <input type='hidden' name='id' value='<?php echo esc_html( get_the_Id(), 'disciple_tools' ); ?>'/>
-                <a style='float: right; margin-left: 10%;' onclick='dismiss_all();'><?php echo esc_html_e( 'Dismiss All', 'disciple_tools' ); ?>Dismiss All</a>
-                <a style='float: right;' onclick='unsure_all();'><?php echo esc_html_e( 'Unsure All', 'disciple_tools' ); ?>Unsure All</a>
+                <a style='float: right; margin-left: 10%;' onclick='dismiss_all();'><?php echo esc_html_e( 'Dismiss All', 'disciple_tools' ); ?></a>
+                <a style='float: right;' onclick='unsure_all();'><?php echo esc_html_e( 'Unsure All', 'disciple_tools' ); ?></a>
                 <input type='submit' id='unsure-dismiss-submit' style='display: none;' value='submit'/>
               </form>
           </div>
@@ -97,22 +97,22 @@
 
                 echo "<h5 style='font-weight:bold; color:#3f729b'>".esc_html( $duplicate_contact_name )."</h5>";
                 foreach ($duplicate_contact['contact_phone'] ?? array() as $d_phone) {
-                    if (preg_grep( $d_phone['value'], $fields['contact_phone'] )){
+                    if (preg_grep( "/".$d_phone['value']."/", $fields['contact_phone'] )){
                         echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/phone.svg'>&nbsp;".esc_html( $d_phone['value'] )."<br>";
                     }
                 }
                 foreach ($duplicate_contact['contact_address'] ?? array() as $d_address) {
-                    if (preg_grep( $d_address['value'], $fields['contact_address'] )){
+                    if (preg_grep( "/".$d_address['value']."/", $fields['contact_address'] )){
                         echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/house.svg'>&nbsp;".esc_html( $d_address['value'] )."<br>";
                     }
                 }
                 foreach ($duplicate_contact['contact_email'] ?? array() as $d_email) {
-                    if (preg_grep( $d_email['value'], $fields['contact_email'] )){
+                    if (preg_grep( "/".$d_email['value']."/", $fields['contact_email'] )){
                         echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/email.svg'>&nbsp;".esc_html( $d_email['value'] )."<br>";
                     }
                 }
                 foreach ($duplicate_contact['contact_facebook'] ?? array() as $d_facebook) {
-                    if (preg_grep( $d_facebook['value'], $fields['contact_facebook'] )){
+                    if (preg_grep( "/".$d_facebook['value']."/", $fields['contact_facebook'] )){
                         echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/facebook.svg'>&nbsp;".esc_html( $d_facebook['value'] )."<br>";
                     }
                 }
@@ -156,22 +156,22 @@
 
                 echo "<h5 style='font-weight:bold; color:#3f729b'>".esc_html( $duplicate_contact_name )."</h5>";
                 foreach ($duplicate_contact['contact_phone'] ?? array() as $d_phone) {
-                    if (preg_grep( $d_phone['value'], $fields['contact_phone'] )){
+                    if (preg_grep( "/".$d_phone['value']."/", $fields['contact_phone'] )){
                         echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/phone.svg'>&nbsp;".esc_html( $d_phone['value'] )."<br>";
                     }
                 }
                 foreach ($duplicate_contact['contact_address'] ?? array() as $d_address) {
-                    if (preg_grep( $d_address['value'], $fields['contact_address'] )){
+                    if (preg_grep( "/".$d_address['value']."/", $fields['contact_address'] )){
                         echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/house.svg'>&nbsp;".esc_html( $d_address['value'] )."<br>";
                     }
                 }
                 foreach ($duplicate_contact['contact_email'] ?? array() as $d_email) {
-                    if (preg_grep( $d_email['value'], $fields['contact_email'] )){
+                    if (preg_grep( "/".$d_email['value']."/", $fields['contact_email'] )){
                         echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/email.svg'>&nbsp;".esc_html( $d_email['value'] )."<br>";
                     }
                 }
                 foreach ($duplicate_contact['contact_facebook'] ?? array() as $d_facebook) {
-                    if (preg_grep( $d_facebook['value'], $fields['contact_facebook'] )){
+                    if (preg_grep( "/".$d_facebook['value']."/", $fields['contact_facebook'] )){
                         echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/facebook.svg'>&nbsp;".esc_html( $d_facebook['value'] )."<br>";
                     }
                 }

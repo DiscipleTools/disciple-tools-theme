@@ -5,7 +5,7 @@ declare( strict_types=1 );
 
 
     if (isset( $_POST['unsure_all'] )) {
-        $nonce = $_POST['dt_contact_nonce'];
+        $nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
         if (isset( $_POST['id'] ) && wp_verify_nonce( $nonce )) {
             $id = (int) $_POST['id'];
             Disciple_Tools_Contacts::unsure_all( $id );
@@ -13,7 +13,7 @@ declare( strict_types=1 );
         header( "location: " . site_url( '/contacts/' . get_the_ID() ) );
     }
     if (isset( $_POST['dismiss_all'] )) {
-        $nonce = $_POST['dt_contact_nonce'];
+        $nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
         if (isset( $_POST['id'] ) && wp_verify_nonce( $nonce )) {
             $id = (int) $_POST['id'];
             Disciple_Tools_Contacts::dismiss_all( $id );
@@ -21,7 +21,7 @@ declare( strict_types=1 );
         header( "location: " . site_url( '/contacts/' . get_the_ID() ) );
     }
     if (isset( $_POST['dismiss'] )) {
-        $nonce = $_POST['dt_contact_nonce'];
+        $nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
         if (isset( $_POST['currentId'], $_POST['id'] ) && wp_verify_nonce( $nonce ) ) {
             $current_id = (int) $_POST['currentId'];
             $id = (int) $_POST['id'];
@@ -30,7 +30,7 @@ declare( strict_types=1 );
         header( "location: " . site_url( '/contacts/' . $current_id ) );
     }
     if (isset( $_POST['unsure'] )) {
-        $nonce = $_POST['dt_contact_nonce'];
+        $nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
         if (isset( $_POST['currentId'], $_POST['id'] ) && wp_verify_nonce( $nonce ) ) {
             $current_id = (int) $_POST['currentId'];
             $id = (int) $_POST['id'];
@@ -40,7 +40,7 @@ declare( strict_types=1 );
     }
 
     if (isset( $_POST['merge-submit'] )){
-        $nonce = $_POST['dt_contact_nonce'];
+        $nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
         if (isset( $_POST['currentid'], $_POST['duplicateId'] ) && wp_verify_nonce( $nonce ) ) {
             $contact_id = (int) $_POST["currentid"];
             $dupe_id = (int) $_POST['duplicateId'];
