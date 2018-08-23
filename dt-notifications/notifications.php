@@ -79,7 +79,8 @@ class Disciple_Tools_Notifications
      * @since   0.1.0
      */
     public function __construct() {
-
+        include( 'notifications-comments.php' );
+        new Disciple_Tools_Notifications_Comments();
     } // End __construct()
 
     /**

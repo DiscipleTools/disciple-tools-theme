@@ -211,28 +211,42 @@ class Disciple_Tools_Posts
 
     /**
      * @param string $post_type
-     * @param int    $group_id
+     * @param int $post_id
      * @param string $comment
+     * @param bool $check_permissions
+     * @param string $type
+     * @param null $user_id
+     * @param null $author
+     * @param null $date
+     * @param bool $silent
      *
      * @return false|int|\WP_Error
      */
-    public static function add_post_comment( string $post_type, int $group_id, string $comment ) {
-        if ( !self::can_update( $post_type, $group_id ) ) {
+    public static function add_post_comment( string $post_type, int $post_id, string $comment, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date = null, $silent = false ) {
+        if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
         $user = wp_get_current_user();
-        $user_id = get_current_user_id();
+        $user_id = $user_id ?? get_current_user_id();
         $comment_data = [
-            'comment_post_ID'      => $group_id,
+            'comment_post_ID'      => $post_id,
             'comment_content'      => $comment,
             'user_id'              => $user_id,
-            'comment_author'       => $user->display_name,
+            'comment_author'       => $author ?? $user->display_name,
             'comment_author_url'   => $user->user_url,
             'comment_author_email' => $user->user_email,
-            'comment_type'         => 'comment',
+            'comment_type'         => $type,
         ];
+        if ( $date ){
+            $comment_data["comment_date"] = $date;
+            $comment_data["comment_date_gmt"] = $date;
+        }
 
-        return wp_new_comment( $comment_data );
+        $created_comment = wp_new_comment( $comment_data );
+        if ( !$silent && !is_wp_error( $created_comment )){
+            Disciple_Tools_Notifications_Comments::insert_notification_for_comment( $created_comment );
+        }
+        return $created_comment;
     }
 
     public static function format_connection_message( $p2p_id, $action = 'connected to', $activity ){
