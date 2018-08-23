@@ -1018,9 +1018,11 @@ jQuery(document).ready(function($) {
     let sourceHTML = $('.sources-list').empty()
     if ( contact.sources && contact.sources.length > 0 ){
       contact.sources.forEach(source=>{
-        sourceHTML.append(`<li>
-          ${_.escape(_.get(contactsDetailsWpApiSettings, "contacts_custom_fields_settings.sources.default." + source))}
-        </li>`)
+        let translatedSourceHTML = _.escape(_.get(contactsDetailsWpApiSettings, "contacts_custom_fields_settings.sources.default." + source))
+        if (! translatedSourceHTML) {
+          translatedSourceHTML = `<code>${_.escape(source)}</code>`
+        }
+        sourceHTML.append(`<li>${translatedSourceHTML}</li>`)
       })
     } else {
       sourceHTML.append(`<li id="no-source">${contactsDetailsWpApiSettings.translations["not-set"]["source"]}</li>`)
