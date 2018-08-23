@@ -1740,7 +1740,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return false|int|\WP_Error
      */
     public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date = null, $silent = false ) {
-        $result = self::add_post_comment( "contacts", $contact_id, $comment, $check_permissions, $type, $user_id, $author, $date, $silent);
+        $result = self::add_post_comment( "contacts", $contact_id, $comment, $check_permissions, $type, $user_id, $author, $date, $silent );
         if ( $type === "comment" && $user_id && !is_wp_error( $result )){
             self::check_requires_update( $contact_id );
         }
