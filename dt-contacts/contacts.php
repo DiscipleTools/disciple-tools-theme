@@ -1731,15 +1731,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @param int $contact_id
      * @param string $comment
      * @param bool $check_permissions
-     *
      * @param string $type
-     *
      * @param null $user_id
      * @param null $author
+     * @param null $date
+     * @param bool $silent
      *
      * @return false|int|\WP_Error
      */
-    public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null ) {
+    public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date= null, $silent = false ) {
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
@@ -1754,6 +1754,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'comment_author_email' => $user->user_email,
             'comment_type'         => $type,
         ];
+        if ( $date ){
+            $comment_data["comment_date"] = $date;
+            $comment_data["comment_date_gmt"] = $date;
+        }
 
         if ( $type === "comment" && $user_id ){
             self::check_requires_update( $contact_id );
