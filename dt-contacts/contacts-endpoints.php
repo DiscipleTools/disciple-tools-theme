@@ -215,7 +215,7 @@ class Disciple_Tools_Contacts_Endpoints
     public function public_create_contact( WP_REST_Request $request ) {
         $params = $request->get_params();
         $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
-        $silent = isset( $params["silent"] ) && $params["silent"] === "true";
+        $silent = isset( $params["silent"] ) && ( $params["silent"] === "true" || $params["silent"] === true );
         if ( !$site_key ){
             return new WP_Error(
                 "contact_creation_error",

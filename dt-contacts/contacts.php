@@ -163,6 +163,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
         $initial_fields = $fields;
 
+        $continue = apply_filters("dt_create_contact_check_proceed", true, $fields );
+        if ( !$continue ){
+            return new WP_Error( __FUNCTION__, __( "Could not create this contact. Maybe it already exists" ), [ 'status' => 409 ] );
+        }
+
         //required fields
         if ( !isset( $fields["title"] ) ) {
             return new WP_Error( __FUNCTION__, __( "Contact needs a title" ), [ 'fields' => $fields ] );
