@@ -1027,6 +1027,7 @@ jQuery(document).ready(function($) {
       contact.sources.forEach(source=>{
         let translatedSourceHTML = _.escape(_.get(contactsDetailsWpApiSettings, "contacts_custom_fields_settings.sources.default." + source))
         if (! translatedSourceHTML) {
+          alert(`Error: Could not find the label for the source key '${source}', please ask an admin to create it in the Settings (DT) interface`)
           translatedSourceHTML = `<code>${_.escape(source)}</code>`
         }
         sourceHTML.append(`<li>${translatedSourceHTML}</li>`)
