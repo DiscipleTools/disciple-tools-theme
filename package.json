@@ -7,7 +7,7 @@
     "url": "https://github.com/DiscipleTools/disciple-tools-theme.git"
   },
   "author": "Disciple Tools",
-  "license": "GPL-2.0 and later",
+  "license": "GPL-2.0-or-later",
   "homepage": "https://disciple.tools",
   "devDependencies": {
     "babel-preset-env": "^1.7.0",

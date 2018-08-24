@@ -686,7 +686,7 @@ jQuery(document).ready(function($) {
   })
   //for custom fields
   Object.keys(group).forEach(m=>{
-    var m = m.replace("church_custom_", "");
+    m = m.replace("church_custom_", "");
     if (group[`church_custom_${m}`] && ["1", "Yes"].indexOf(group[`church_custom_${m}`]["key"])> -1){
       churchWheel.find(`#${m}`).css("opacity", "1")
       $(`#church_custom_${m}`).css("opacity", "1")
