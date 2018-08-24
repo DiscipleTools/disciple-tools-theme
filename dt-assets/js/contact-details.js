@@ -68,9 +68,16 @@ function updateCriticalPath(key) {
 }
 
 function contactUpdated(updateNeeded) {
-  $('.update-needed-notification').hide()
+  $('.update-needed-notification').toggle(updateNeeded)
   $('#update-needed').prop("checked", updateNeeded)
+}
 
+function commentPosted() {
+  if (_.get(contact, "requires_update.key") === "yes"){
+    API.get_post("contact",  $("#contact-id").text() ).then(contact=>{
+      contactUpdated(_.get(contact, "requires_update.key") === "yes")
+    })
+  }
 }
 function details_accept_contact(contactId, accept){
   let data = {accept:accept}

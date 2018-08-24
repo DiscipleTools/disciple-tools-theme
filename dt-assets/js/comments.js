@@ -20,8 +20,8 @@ jQuery(document).ready(function($) {
           data.comment.date = moment(data.comment.comment_date_gmt + "Z")
           comments.push(data.comment)
           display_activity_comment()
-          if ( typeof contactUpdated === "function"){
-            contactUpdated(false);
+          if ( typeof commentPosted === "function"){
+            commentPosted()
           }
           commentInput.attr("disabled", false)
           commentButton.attr("disabled", false)

@@ -663,7 +663,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( get_current_user_id() ){
             $requires_update = get_post_meta( $contact_id, "requires_update", true );
             if ( $requires_update == "yes" ){
-                update_post_meta( $contact_id, "requires_update", "no" );
+                //don't remove update needed if the user is a dispatcher (and not assigned to the contacts.)
+                if ( self::can_view_all( 'contacts' ) ){
+                    if ( dt_get_user_id_from_assigned_to(get_post_meta($contact_id, "assigned_to", true )) === get_current_user_id() ){
+                        update_post_meta( $contact_id, "requires_update", "no" );
+                    }
+                } else {
+                    update_post_meta( $contact_id, "requires_update", "no" );
+                }
             }
         }
     }
@@ -1746,7 +1753,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date = null, $silent = false ) {
         $result = self::add_post_comment( "contacts", $contact_id, $comment, $check_permissions, $type, $user_id, $author, $date, $silent );
-        if ( $type === "comment" && $user_id && !is_wp_error( $result )){
+        if ( $type === "comment" && !is_wp_error( $result )){
             self::check_requires_update( $contact_id );
         }
         return $result;
