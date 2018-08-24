@@ -62,7 +62,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                 foreach ( $contacts_need_update as $contact ) {
                     $user_name = ( "@" . dt_get_assigned_name( $contact->ID, true ) . " " ) ?? "";
                     $comment = $user_name . $setting["comment"];
-                    Disciple_Tools_Contacts::add_comment( $contact->ID, $comment, false, "comment", 0 );
+                    Disciple_Tools_Contacts::add_comment( $contact->ID, $comment, false, "comment", 0, null, null, true );
                     Disciple_Tools_contacts::update_contact( $contact->ID, [ "requires_update" => "yes" ], false );
                 }
             }
