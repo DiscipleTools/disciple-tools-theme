@@ -5,7 +5,6 @@ require('dotenv').config();
 var gulp  = require('gulp'),
   gutil = require('gulp-util'),
   browserSync = require('browser-sync').create(),
-  filter = require('gulp-filter'),
   plugin = require('gulp-load-plugins')(),
   rename = require('gulp-rename'),
   merge = require('merge-stream');
