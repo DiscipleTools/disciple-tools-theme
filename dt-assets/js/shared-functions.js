@@ -11,7 +11,7 @@ jQuery(document).ready(function($) {
   }
   $(`div.top-bar-left ul.menu [href*=${ref.split('/')[0]}]`).parent().addClass('active');
 })
-let API = {
+window.API = {
   get_post(type, postId){
     return jQuery.ajax({
       type:"GET",
@@ -234,7 +234,7 @@ jQuery( document ).on("click", ".help-button", function () {
     jQuery(`#${section}`).show()
 })
 
-let TYPEAHEADS = {
+window.TYPEAHEADS = {
 
   typeaheadSource : function (field, url) {
     return {
@@ -307,7 +307,7 @@ let TYPEAHEADS = {
         matchOn: ["ID"],
         data: function () {
           var deferred = $.Deferred();
-          return API.get_shared(type, id).then(sharedResult => {
+          return window.API.get_shared(type, id).then(sharedResult => {
             return deferred.resolve(sharedResult.map(g => {
               return {ID: g.user_id, name: g.display_name}
             }))
@@ -316,7 +316,7 @@ let TYPEAHEADS = {
         callback: {
           onCancel: function (node, item) {
             $('#share-result-container').html("");
-            API.remove_shared(type, id, item.ID).catch(err=>{
+            window.API.remove_shared(type, id, item.ID).catch(err=>{
               Typeahead['.js-typeahead-share'].addMultiselectItemLayout(
                 {ID:item.ID, name:item.name}
               )
@@ -327,11 +327,11 @@ let TYPEAHEADS = {
       },
       callback: {
         onClick: function (node, a, item, event) {
-          API.add_shared(type, id, item.ID)
+          window.API.add_shared(type, id, item.ID)
         },
         onResult: function (node, query, result, resultCount) {
           if (query) {
-            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            let text = window.TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $('#share-result-container').html(text);
           }
         },
