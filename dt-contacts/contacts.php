@@ -505,18 +505,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
 
-    //@todo convert this to use update contact function
-    public static function close_account( int $contact_id) {
-        global $wpdb;
-        $wpdb->query($wpdb->prepare("
-            update
-                wp_postmeta
-            set
-                meta_value = %s
-            where
-                post_id = %d and
-                meta_key = %s
-        ", [ 'closed', $contact_id, 'overall_status' ]));
+    public static function close_duplicate_contact( int $contact_id) {
+        self::update_contact( $contact_id, [ "overall_status" => "closed", "reason_closed" => "duplicate"] );
     }
 
 
@@ -916,7 +906,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $sql .= " and meta_key not like %s";
                 array_push( $params, "$ignore_key[0]%" );
             }
-            $wpdb->query( $wpdb->prepare( $sql, $params ) );
+            $wpdb->query( $wpdb->prepare( $sql, $params ) ); // @codingStandardsIgnoreLine
         }
     }
 
@@ -2224,7 +2214,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $dismissed = $contact['duplicate_data']['override'] ?? array();
         $vals = join( '|', $values );
         $flds = join( '|', $fields );
-        $sql = "
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
             select
                 *
             from
@@ -2234,16 +2225,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 ID != %d and
                 (meta_key regexp %s and meta_key not like %s) and
                 meta_value regexp %s
-            ";
-
-        $params = array(
-            $contact_id,
-            "$flds",
-            '%details',
-            "$vals"
-        );
-
-        $results = $wpdb->get_results( $wpdb->prepare( $sql, $params ), ARRAY_A );
+            ",
+            array(
+                $contact_id,
+                "$flds",
+                '%details',
+                "$vals"
+            )
+        ), ARRAY_A );
         $duplicates = array();
         foreach ($results as $result) {
             $key = $result['meta_key'];
@@ -2273,40 +2262,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
 
     public static function save_duplicate_data( int $contact_id, array $duplicates) {
-        global $wpdb;
         if (empty( $duplicates )) { return; }
-        $contact = self::get_contact( $contact_id );
-        if (isset( $contact['duplicate_data'] )) {
-            $sql = "
-                update
-                    wp_postmeta
-                set
-                    meta_value = %s
-                where
-                    meta_key = %s
-                    and post_id = %d
-            ";
-
-            $params = array(
-                serialize( $duplicates ),
-                'duplicate_data',
-                $contact_id
-            );
-        } else {
-            $sql = "
-                insert into wp_postmeta (post_id, meta_key, meta_value) values (
-                    %d, %s, %s
-                )
-            ";
-
-            $params = array(
-                $contact_id,
-                'duplicate_data',
-                serialize( $duplicates )
-            );
-        }
-
-        $wpdb->query( $wpdb->prepare( $sql, $params ) );
+        update_post_meta( $contact_id, "duplicate_data", $duplicates );
     }
 
     public static function unsure_all( int $contact_id) {

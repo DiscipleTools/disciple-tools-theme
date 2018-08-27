@@ -4,50 +4,45 @@ declare( strict_types=1 );
 ( function () {
 
 
-    if (isset( $_POST['unsure_all'] )) {
-        $nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
-        if (isset( $_POST['id'] ) && wp_verify_nonce( $nonce )) {
+    if (isset( $_POST['unsure_all'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
+        if (isset( $_POST['id'] ) ) {
             $id = (int) $_POST['id'];
             Disciple_Tools_Contacts::unsure_all( $id );
         }
         header( "location: " . site_url( '/contacts/' . get_the_ID() ) );
     }
-    if (isset( $_POST['dismiss_all'] )) {
-        $nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
-        if (isset( $_POST['id'] ) && wp_verify_nonce( $nonce )) {
+    if (isset( $_POST['dismiss_all'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
+        if (isset( $_POST['id'] ) ) {
             $id = (int) $_POST['id'];
             Disciple_Tools_Contacts::dismiss_all( $id );
         }
         header( "location: " . site_url( '/contacts/' . get_the_ID() ) );
     }
-    if (isset( $_POST['dismiss'] )) {
-        $nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
-        if (isset( $_POST['currentId'], $_POST['id'] ) && wp_verify_nonce( $nonce ) ) {
+    if (isset( $_POST['dismiss'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
+        if (isset( $_POST['currentId'], $_POST['id'] ) ) {
             $current_id = (int) $_POST['currentId'];
             $id = (int) $_POST['id'];
             ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $current_id, $id );
+            header( "location: " . site_url( '/contacts/' . $current_id ) );
         }
-        header( "location: " . site_url( '/contacts/' . $current_id ) );
     }
-    if (isset( $_POST['unsure'] )) {
-        $nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
-        if (isset( $_POST['currentId'], $_POST['id'] ) && wp_verify_nonce( $nonce ) ) {
+    if (isset( $_POST['unsure'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
+        if (isset( $_POST['currentId'], $_POST['id'] ) ) {
             $current_id = (int) $_POST['currentId'];
             $id = (int) $_POST['id'];
             ( new Disciple_Tools_Contacts() )->unsure_duplicate( $current_id, $id );
+            header( "location: " . site_url( '/contacts/' . $current_id ) );
         }
-        header( "location: " . site_url( '/contacts/' . $current_id ) );
     }
 
-    if (isset( $_POST['merge-submit'] )){
-        $nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
-        if (isset( $_POST['currentid'], $_POST['duplicateId'] ) && wp_verify_nonce( $nonce ) ) {
-            $contact_id = (int) $_POST["currentid"];
+    if (isset( $_POST['merge-submit'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) )){
+        if (isset( $_POST['currentid'], $_POST['duplicateId'] ) ) {
+            $contact_id = (int) sanitize_text_field( wp_unslash( $_POST['currentid'] ) );
             $dupe_id = (int) $_POST['duplicateId'];
-            $phones =$_POST['phone'] ?? array();
-            $emails =$_POST['email'] ?? array();
-            $addresses = wp_unslash( $_POST['address'] ) ?? array();
-            $master = $_POST['master-record'];
+            $phones = isset( $_POST['phone'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['phone'] ) ) : array();
+            $emails = isset( $_POST['email'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['email'] ) ) : array();
+            $addresses = isset( $_POST['address'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['address'] ) ) : array();
+            $master = isset( $_POST['master-record'] ) ? sanitize_text_field( wp_unslash( $_POST['master-record'] ) ) : null;
 
             $master_id = ( $master === 'contact1' ) ? $contact_id : $dupe_id;
             $non_master_id = ( $master_id === $contact_id ) ? $dupe_id : $contact_id;
@@ -127,7 +122,8 @@ declare( strict_types=1 );
             Disciple_Tools_Contacts::merge_p2p( $master_id, $non_master_id );
             ( new Disciple_Tools_Contacts() )->recheck_duplicates( $master_id );
             ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $master_id, $non_master_id );
-            Disciple_Tools_Contacts::close_account( $close_id );
+            ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $non_master_id, $master_id );
+            Disciple_Tools_Contacts::close_duplicate_contact( $close_id );
         }
         header( "location: " . site_url( '/contacts/' .get_the_ID() ) );
         exit;

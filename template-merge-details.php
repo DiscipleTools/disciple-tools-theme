@@ -8,12 +8,11 @@ Template Name: Merge Details
 <?php
 
 get_header();
-$dt_nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
-if ( !wp_verify_nonce( $dt_nonce ) || !isset( $_POST['currentid'], $_POST['dupeid'] )) {
+if ( !isset( $_POST['dt_contact_nonce'] ) || !wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) || !isset( $_POST['currentid'], $_POST['dupeid'] )) {
     header( "Location: /contacts" );
 }
-$dt_current_id = wp_unslash( $_POST['currentid'] );
-$dt_dupe_id = wp_unslash( $_POST['dupeid'] );
+$dt_current_id = sanitize_text_field( wp_unslash( $_POST['currentid'] ) );
+$dt_dupe_id = sanitize_text_field( wp_unslash( $_POST['dupeid'] ) );
 list($dt_current, $dt_duplicate, $dt_data, $dt_fields) = Disciple_Tools_Contacts::get_merge_data( $dt_current_id, $dt_dupe_id );
 $dt_contact = Disciple_Tools_Contacts::get_contact( $dt_current_id, true );
 $dt_channel_list = Disciple_Tools_Contacts::get_channel_list();
@@ -60,11 +59,15 @@ $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                     &nbsp;
                   </div>
                   <div class="merge-column">
-                    <?php echo "<span class='contact_name'>".esc_html( $dt_contact_name )."</span>" . esc_html( $dt_edit_row ); ?><br>
+                    <?php echo "<span class='contact_name'>".esc_html( $dt_contact_name )."</span>" ?>
+                      <span class='row-edit'><a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a><a class='fi-check hide save' title='Save'></a></span>
+                      <br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
                   <div class="merge-column">
-                    <?php echo "<span class='contact_name'>".esc_html( $dt_duplicate_contact_name )."</span> " . esc_html( $dt_edit_row ); ?><br>
+                    <?php echo "<span class='contact_name'>".esc_html( $dt_duplicate_contact_name )."</span> " ?>
+                      <span class='row-edit'><a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a><a class='fi-check hide save' title='Save'></a></span>
+                      <br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
                 </div>
@@ -95,7 +98,9 @@ $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                             $dt_value = $dt_vals['value'];
                             echo "<div class='merge-column'>";
                             if ($dt_value) {
-                                echo "<input type='checkbox' name='" . esc_html( strtolower( $dt_field ) ) . "[]' value='".esc_html( $dt_value )."'> ".esc_html( $dt_value ) . esc_html( $dt_edit_row );
+                                echo "<input type='checkbox' name='" . esc_html( strtolower( $dt_field ) ) . "[]' value='".esc_html( $dt_value )."'> ".esc_html( $dt_value ) .
+                                     "<span class='row-edit'><a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a><a class='fi-check hide save' title='Save'></a></span>";
+
                             } else {
                                 echo "<div class='empty'></div>";
                             }
