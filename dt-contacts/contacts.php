@@ -904,7 +904,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function remove_fields( $contact_id, $fields = [], $ignore = []) {
         global $wpdb;
         foreach ($fields as $field) {
-            $ignoreKey = preg_grep( "/$field/", $ignore );
+            $ignore_key = preg_grep( "/$field/", $ignore );
             $sql = "delete
                 from
                     wp_postmeta
@@ -912,9 +912,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     post_id = %d and
                     meta_key like %s";
             $params = array( $contact_id, "$field%" );
-            if ( !empty( $ignoreKey )) {
+            if ( !empty( $ignore_key )) {
                 $sql .= " and meta_key not like %s";
-                array_push( $params, "$ignoreKey[0]%" );
+                array_push( $params, "$ignore_key[0]%" );
             }
             $wpdb->query( $wpdb->prepare( $sql, $params ) );
         }
@@ -1300,8 +1300,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'contact_facebook' => 'Facebook'
         );
 
-        $cFields = array();
-        $dFields = array();
+        $c_fields = array();
+        $d_fields = array();
 
         $data = array(
             'contact_phone' => array(),
@@ -1312,34 +1312,34 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         foreach (array_keys( $fields ) as $key) {
             foreach ($contact[$key] ?? [] as $vals) {
-                if ( !isset( $cFields[$key] )) {
-                    $cFields[$key] = array();
+                if ( !isset( $c_fields[$key] )) {
+                    $c_fields[$key] = array();
                 }
-                array_push( $cFields[$key], $vals['value'] );
+                array_push( $c_fields[$key], $vals['value'] );
             }
             foreach ($duplicate[$key] ?? [] as $vals) {
-                if ( !isset( $dFields[$key] )) {
-                    $dFields[$key] = array();
+                if ( !isset( $d_fields[$key] )) {
+                    $d_fields[$key] = array();
                 }
-                array_push( $dFields[$key], $vals['value'] );
+                array_push( $d_fields[$key], $vals['value'] );
             }
         }
 
         foreach (array_keys( $fields ) as $field) {
-            $max = max( array( count( $cFields[$field] ?? [] ), count( $dFields[$field] ?? [] ) ) );
+            $max = max( array( count( $c_fields[$field] ?? [] ), count( $d_fields[$field] ?? [] ) ) );
             for ($i = 0; $i < $max; $i++) {
                 $hide = false;
-                $oValue = $cFields[$field][$i] ?? null;
-                $dValue = $dFields[$field][$i] ?? null;
-                if (in_array( $oValue, $dFields[$field] ?? [] )) { $hide = true; }
+                $o_value = $c_fields[$field][$i] ?? null;
+                $d_value = $d_fields[$field][$i] ?? null;
+                if (in_array( $o_value, $d_fields[$field] ?? [] )) { $hide = true; }
                 array_push($data[$field], array(
                     'original' => array(
                         'hide' => $hide,
-                        'value' => $oValue
+                        'value' => $o_value
                     ),
                     'duplicate' => array(
                         'hide' => $hide,
-                        'value' => $dValue
+                        'value' => $d_value
                     )
                 ));
             }
@@ -1385,15 +1385,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     }
 
-    public static function merge_milestones( int $masterId, int $nonMasterId) {
-        if ( !$masterId || !$nonMasterId) { return; }
-        $master = self::get_contact( $masterId );
-        $nonMaster = self::get_contact( $nonMasterId );
+    public static function merge_milestones( int $master_id, int $non_master_id) {
+        if ( !$master_id || !$non_master_id) { return; }
+        $master = self::get_contact( $master_id );
+        $non_master = self::get_contact( $non_master_id );
 
         $update = array();
-        foreach ($nonMaster as $key => $valArr) {
+        foreach ($non_master as $key => $val_arr) {
             if (preg_match( "/^milestone_/", $key ) && ( $master[$key]['key'] ?? 'no' ) !== 'yes') {
-                $value = is_array( $valArr ) ? $valArr['key'] : $valArr;
+                $value = is_array( $val_arr ) ? $val_arr['key'] : $val_arr;
                 $update[$key] = $value;
             }
         }
@@ -1408,26 +1408,26 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'coaching'
         );
 
-        $masterLevel = array_search( $master['seeker_path']['key'] ?? array(), $seeker_paths ) ?: 0;
-        $nonMasterLevel = array_search( $nonMaster['seeker_path']['key'] ?? array(), $seeker_paths ) ?: 0;
-        if ($nonMasterLevel > $masterLevel) {
-            $update['seeker_path'] = $nonMaster['seeker_path']['key'];
+        $master_level = array_search( $master['seeker_path']['key'] ?? array(), $seeker_paths ) ?: 0;
+        $non_master_level = array_search( $non_master['seeker_path']['key'] ?? array(), $seeker_paths ) ?: 0;
+        if ($non_master_level > $master_level) {
+            $update['seeker_path'] = $non_master['seeker_path']['key'];
         }
 
-        if ( !isset( $master['baptism_date'] ) && isset( $nonMaster['baptism_date'] )) {
-            $update['baptism_date'] = $nonMaster['baptism_date'];
+        if ( !isset( $master['baptism_date'] ) && isset( $non_master['baptism_date'] )) {
+            $update['baptism_date'] = $non_master['baptism_date'];
         }
 
         if (empty( $update )) { return; }
 
-        self::update_contact( $masterId, $update );
+        self::update_contact( $master_id, $update );
     }
 
-    public static function merge_p2p( int $master_id, int $nonmaster_id) {
+    public static function merge_p2p( int $master_id, int $non_master_id) {
         global $wpdb;
-        if ( !$master_id || !$nonmaster_id) { return; }
+        if ( !$master_id || !$non_master_id) { return; }
         $master = self::get_contact( $master_id );
-        $nonmaster = self::get_contact( $nonmaster_id );
+        $non_master = self::get_contact( $non_master_id );
         $keys = array(
             'groups',
             'baptized_by',
@@ -1440,7 +1440,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $update = array();
 
         foreach ($keys as $key) {
-            $results = $nonmaster[$key] ?? array();
+            $results = $non_master[$key] ?? array();
             foreach ($results as $result) {
                 if ( !isset( $update[$key] )) {
                     $update[$key] = array();
@@ -2216,8 +2216,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $fields = array( 'contact_phone', 'contact_email', 'contact_address' );
         $values = array();
         foreach ($fields as $field) {
-            foreach ($contact[$field] ?? [] as $arrVal) {
-                $values[] = $arrVal['value'];
+            foreach ($contact[$field] ?? [] as $arr_val) {
+                $values[] = $arr_val['value'];
             }
         }
         $unsure = $contact['duplicate_data']['unsure'] ?? array();
@@ -2225,10 +2225,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $vals = join( '|', $values );
         $flds = join( '|', $fields );
         $sql = "
-            select 
-                * 
-            from 
-                wp_posts p join 
+            select
+                *
+            from
+                wp_posts p join
                 wp_postmeta m on p.ID = m.post_id
             where
                 ID != %d and

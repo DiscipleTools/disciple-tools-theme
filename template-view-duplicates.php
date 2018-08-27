@@ -7,8 +7,8 @@ Template Name: View Duplicates
 <?php
     get_header();
 
-    $contacts = new Disciple_Tools_Contacts();
-    $duplicates = $contacts->get_all_duplicates();
+    $dt_contacts = new Disciple_Tools_Contacts();
+    $dt_duplicates = wp_unslash( $dt_contacts->get_all_duplicates() );
 ?>
 
     <div id="content">
@@ -23,9 +23,10 @@ Template Name: View Duplicates
                     </button>-->
                     <table id='table-duplicates'>
                         <?php
-                        foreach ($duplicates as $ID => $duplicate) {
-                            if ($duplicate['count'] <= 0) { continue; }
-                            echo "<form name='merge_$ID' method='POST' action='".site_url()."/contacts/$ID'></form><tr id='$ID'><td><a>{$duplicate['name']}</a></td><td><a>{$duplicate['count']} duplicates</a></td></tr>";
+                        foreach ($dt_duplicates as $id => $dt_duplicate) {
+                            if ($dt_duplicate['count'] <= 0) { continue; }
+                            echo "<form name='merge_".esc_html( $id )."' method='POST' action='".esc_html( site_url() )."/contacts/".esc_html( $id )."'><input type='hidden' name='dt_contact_nonce' value='".esc_attr( wp_create_nonce() )."'/></form><tr id='".esc_html( $id )."'><td><a>".esc_html( $dt_duplicate['name'] )."</a></td><td>
+                            <a>".esc_html( $dt_duplicate['count'] )." duplicates</a></td></tr>";
                         }
                         ?>
                     </table>
@@ -33,7 +34,7 @@ Template Name: View Duplicates
 
 
         </div>
-        
+
         <script type="text/javascript">
             $("#table-duplicates").find('tr').click(function() {
                 var form = $("form[name=merge_" + $(this).prop('id') + "]");

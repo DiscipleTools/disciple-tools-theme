@@ -6,53 +6,44 @@ Template Name: Merge Details
 
 
 <?php
-if (isset( $_POST['dismiss'] )) {
-    $currentId = $_POST['currentId'];
-    $id = $_POST['id'];
-    ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $currentId, $id );
-    header( "location: " . site_url( '/contacts/' . $currentId ) );
-}
-if (isset( $_POST['unsure'] )) {
-    $currentId = $_POST['currentId'];
-    $id = $_POST['id'];
-    ( new Disciple_Tools_Contacts() )->unsure_duplicate( $currentId, $id );
-    header( "location: " . site_url( '/contacts/' . $currentId ) );
-}
 
 get_header();
-
-$currentid =$_POST['currentid'];
-$dupeid =$_POST['dupeid'];
-list($current, $duplicate, $data, $fields) = Disciple_Tools_Contacts::get_merge_data( $currentid, $dupeid );
-$contact = Disciple_Tools_Contacts::get_contact( $currentid, true );
-$channel_list = Disciple_Tools_Contacts::get_channel_list();
-$current_user = wp_get_current_user();
-$contact_fields = Disciple_Tools_Contacts::get_contact_fields();
-
-
-
-  $contact_name =$contact['title'] ?? null;
-  $contact_address =$contact['contact_address'][0]['value'] ?? null;
-  $contact_phone =$contact['contact_phone'][0]['value'] ?? null;
-  $contact_email =$contact['contact_email'][0]['value'] ?? null;
-  $contact_facebook =$contact['contact_facebook'][0]['value'] ?? null;
+$dt_nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
+if ( !wp_verify_nonce( $dt_nonce ) || !isset( $_POST['currentid'], $_POST['dupeid'] )) {
+    header( "Location: /contacts" );
+}
+$dt_current_id = wp_unslash( $_POST['currentid'] );
+$dt_dupe_id = wp_unslash( $_POST['dupeid'] );
+list($dt_current, $dt_duplicate, $dt_data, $dt_fields) = Disciple_Tools_Contacts::get_merge_data( $dt_current_id, $dt_dupe_id );
+$dt_contact = Disciple_Tools_Contacts::get_contact( $dt_current_id, true );
+$dt_channel_list = Disciple_Tools_Contacts::get_channel_list();
+$dt_current_user = wp_get_current_user();
+$dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 
 
-  $duplicate_contact = Disciple_Tools_Contacts::get_contact( $dupeid, true );
 
-  $duplicate_contact_name =$duplicate_contact['title'] ?? null;
-  $duplicate_contact_address =$duplicate_contact['contact_address'][0]['value'] ?? null;
-  $duplicate_contact_phone =$duplicate_contact['contact_phone'][0]['value'] ?? null;
-  $duplicate_contact_email =$duplicate_contact['contact_email'][0]['value'] ?? null;
-  $duplicate_contact_facebook =$duplicate_contact['contact_facebook'][0]['value'] ?? null;
+  $dt_contact_name =$dt_contact['title'] ?? null;
+  $dt_contact_address =$dt_contact['contact_address'][0]['value'] ?? null;
+  $dt_contact_phone =$dt_contact['contact_phone'][0]['value'] ?? null;
+  $dt_contact_email =$dt_contact['contact_email'][0]['value'] ?? null;
+  $dt_contact_facebook =$dt_contact['contact_facebook'][0]['value'] ?? null;
 
-  $used_values = array(
+
+  $dt_duplicate_contact = Disciple_Tools_Contacts::get_contact( $dt_dupe_id, true );
+
+  $dt_duplicate_contact_name =$dt_duplicate_contact['title'] ?? null;
+  $dt_duplicate_contact_address =$dt_duplicate_contact['contact_address'][0]['value'] ?? null;
+  $dt_duplicate_contact_phone =$dt_duplicate_contact['contact_phone'][0]['value'] ?? null;
+  $dt_duplicate_contact_email =$dt_duplicate_contact['contact_email'][0]['value'] ?? null;
+  $dt_duplicate_contact_facebook =$dt_duplicate_contact['contact_facebook'][0]['value'] ?? null;
+
+  $dt_used_values = array(
       'contact_phone' => array(),
       'contact_address' => array(),
       'contact_email' => array()
   );
 
-  $editRow = "<span class='row-edit'><a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a><a class='fi-check hide save' title='Save'></a></span>";
+  $dt_edit_row = "<span class='row-edit'><a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a><a class='fi-check hide save' title='Save'></a></span>";
     ?>
 
     <div id="content">
@@ -69,23 +60,24 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                     &nbsp;
                   </div>
                   <div class="merge-column">
-                    <?php echo $contact_name; ?><br>
+                    <?php echo "<span class='contact_name'>".esc_html( $dt_contact_name )."</span>" . esc_html( $dt_edit_row ); ?><br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
                   <div class="merge-column">
-                    <?php echo $duplicate_contact_name; ?><br>
+                    <?php echo "<span class='contact_name'>".esc_html( $dt_duplicate_contact_name )."</span> " . esc_html( $dt_edit_row ); ?><br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
                 </div>
 
                 <form id="merge-form" onsubmit="merge(event);" method="post" action="<?php echo esc_url( site_url( '/contacts/' ) ); ?>" >
-                    <input type='hidden' name='duplicateId' value='<?php echo $dupeid; ?>'/>
+                    <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr( wp_create_nonce() ); ?>"/>
+                    <input type='hidden' name='duplicateId' value='<?php echo esc_html( $dt_dupe_id ); ?>'/>
                 <div class="line-wrap">
                   <div class="merge-column">
                     <span class="bold"><?php esc_html_e( "Master Record", 'disciple_tools' ) ?></span>
                   </div>
                   <div class="merge-column">
-                    <input type="hidden" name="currentid" value="<?php echo $currentid; ?>">
+                    <input type="hidden" name="currentid" value="<?php echo esc_html( $dt_current_id ); ?>">
                     <input type="radio" required name="master-record" value="contact1"> <?php esc_html_e( "Use as master", 'disciple_tools' ) ?>
                   </div>
                   <div class="merge-column">
@@ -94,21 +86,16 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                   </div>
                 </div>
 
-                <form id='merge-form' onsubmit='merge(event);' method='POST' action='<?php echo esc_url( site_url( '/contacts/' ) ); ?>'>
                 <?php
-                foreach ($fields as $key => $field) {
-                    foreach ($data[$key] as $idx => $type) {
-                        $class = '';
-                        if ($type['original']['hide'] || ( $idx > 0 )) {
-                            $class = 'hide toggle';
-                        }
-                        echo "<div class='line-wrap $class'>";
-                            echo "<div class='merge-column'><span class='bold'>$field</span></div>";
-                        foreach ($type as $vals) {
-                            $value = $vals['value'];
+                foreach ($dt_fields as $dt_key => $dt_field) {
+                    foreach ($dt_data[$dt_key] as $dt_idx => $type) {
+                        echo "<div class='line-wrap'>";
+                            echo "<div class='merge-column'><span class='bold'>" .esc_html( $dt_field )."</span></div>";
+                        foreach ($type as $dt_vals) {
+                            $dt_value = $dt_vals['value'];
                             echo "<div class='merge-column'>";
-                            if ($value) {
-                                echo "<input type='checkbox' name='" . strtolower( $field ) . "[]' value='$value'> $value $editRow";
+                            if ($dt_value) {
+                                echo "<input type='checkbox' name='" . esc_html( strtolower( $dt_field ) ) . "[]' value='".esc_html( $dt_value )."'> ".esc_html( $dt_value ) . esc_html( $dt_edit_row );
                             } else {
                                 echo "<div class='empty'></div>";
                             }
@@ -117,7 +104,7 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                         echo "</div>";
                     }
                 }
-                echo "<p class='center'>Showing fields with different values.<a onclick='toggleFields(this);'>Show All Fields</a></p>";
+
                 echo "<button class='button' name='merge-submit' type='submit' value='Merge'>Merge</button>";
                 echo "</form>";
                 ?>
@@ -181,16 +168,6 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                       });
                   }
 
-                  function toggleFields(o) {
-                      if($(o).text().match(/Show/)) {
-                          $(".toggle").removeClass('hide');
-                          $(o).text("Hide Additional Fields");
-                      } else {
-                          $(".toggle").not('.hide').addClass('hide');
-                          $(o).text("Show All Fields");
-                      }
-                  }
-
                   $(".merge-column").click(function(e) {
                         var input = $(this).find('input[type=radio], input[type=checkbox]');
                         if($(e.target).is(input) || $(e.target).is('.fi-pencil')) {
@@ -210,6 +187,10 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                   var value = cell.find('input').val();
                   var field = line.find('.merge-column').eq(0).find('.bold').text();
                   var editRow = cell.find('.row-edit');
+                  if(cell.find('.contact_name').text()) {
+                      value = cell.find('.contact_name').text();
+                      field = 'Name';
+                  }
                   $input = $("<input class='shortText' type='text' value='"+value+"'/>").css({
                     margin: 0,
                     display: 'inline-block'
@@ -233,7 +214,6 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                         }
                   });
                   o.find(".cancel").click(function(e) {
-//                    e.stopPropagation();
                     o.html(copy.html());
                     if(!checked) {
                         o.find('input').click();
@@ -254,19 +234,26 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                             case 'address':
                                 key = 'contact_address';
                                 break;
+                            case 'name':
+                                key = 'title';
+                                break;
                             default: return;
                         }
-                        var id = o.index() === 1 ? '<?php echo $currentid; ?>' : o.index() === 2 ? '<?php echo $dupeid; ?>' : null;
+                        var id = o.index() === 1 ? '<?php echo esc_html( $dt_current_id ); ?>' : o.index() === 2 ? '<?php echo esc_html( $dt_dupe_id ); ?>' : null;
                         if(id) {
                             var post = API.get_post('contact', id);
                             post.done(function(res) {
-                                $.each(res[key], function(idx, val) {
-                                    if(val.value == copy.find('input').val()) {
-                                        res[key][idx].value = o.find('input').val();
-                                    }
-                                });
-                                postData[key] = {};
-                                postData[key].values = res[key];
+                                if(key !== 'title') {
+                                    $.each(res[key], function(idx, val) {
+                                        if(val.value == copy.find('input').val()) {
+                                            res[key][idx].value = o.find('input').val();
+                                        }
+                                    });
+                                    postData[key] = {};
+                                    postData[key].values = res[key];
+                                } else {
+                                    postData[key] = o.find('input').val();
+                                }
                                 var save = API.save_field_api('contact', id, postData);
                                 save.done(function(res) {
                                     o.find('input').attr({
@@ -309,7 +296,7 @@ $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                 function merge(e) {
                     var form = $("#merge-form");
                     var master = form.find('input[name=master-record]:checked').val();
-                    var id = master === 'contact1' ? '<?php echo $currentid; ?>' : '<?php echo $dupeid; ?>';
+                    var id = master === 'contact1' ? '<?php echo esc_html( $dt_current_id ); ?>' : '<?php echo esc_html( $dt_dupe_id ); ?>';
                     form.attr('action', form.attr('action') + id);
                 }
               </script>

@@ -5,111 +5,131 @@ declare( strict_types=1 );
 
 
     if (isset( $_POST['unsure_all'] )) {
-        $id = (int) $_POST['id'];
-        Disciple_Tools_Contacts::unsure_all( $id );
+        $nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
+        if (isset( $_POST['id'] ) && wp_verify_nonce( $nonce )) {
+            $id = (int) $_POST['id'];
+            Disciple_Tools_Contacts::unsure_all( $id );
+        }
         header( "location: " . site_url( '/contacts/' . get_the_ID() ) );
     }
     if (isset( $_POST['dismiss_all'] )) {
-        $id = (int) $_POST['id'];
-        Disciple_Tools_Contacts::dismiss_all( $id );
+        $nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
+        if (isset( $_POST['id'] ) && wp_verify_nonce( $nonce )) {
+            $id = (int) $_POST['id'];
+            Disciple_Tools_Contacts::dismiss_all( $id );
+        }
         header( "location: " . site_url( '/contacts/' . get_the_ID() ) );
     }
+    if (isset( $_POST['dismiss'] )) {
+        $nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
+        if (isset( $_POST['currentId'], $_POST['id'] ) && wp_verify_nonce( $nonce ) ) {
+            $current_id = (int) $_POST['currentId'];
+            $id = (int) $_POST['id'];
+            ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $current_id, $id );
+        }
+        header( "location: " . site_url( '/contacts/' . $current_id ) );
+    }
+    if (isset( $_POST['unsure'] )) {
+        $nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
+        if (isset( $_POST['currentId'], $_POST['id'] ) && wp_verify_nonce( $nonce ) ) {
+            $current_id = (int) $_POST['currentId'];
+            $id = (int) $_POST['id'];
+            ( new Disciple_Tools_Contacts() )->unsure_duplicate( $current_id, $id );
+        }
+        header( "location: " . site_url( '/contacts/' . $current_id ) );
+    }
+
     if (isset( $_POST['merge-submit'] )){
-        $contact_id = (int) $_POST["currentid"];
-        $dupe_id = (int) $_POST['duplicateId'];
-        $phones =$_POST['phone'] ?? array();
-        $emails =$_POST['email'] ?? array();
-        $addresses = $_POST['address'] ?? array();
-        $master = $_POST['master-record'];
+        $nonce = wp_unslash( $_POST['dt_contact_nonce'] ) ?? null;
+        if (isset( $_POST['currentid'], $_POST['duplicateId'] ) && wp_verify_nonce( $nonce ) ) {
+            $contact_id = (int) $_POST["currentid"];
+            $dupe_id = (int) $_POST['duplicateId'];
+            $phones =$_POST['phone'] ?? array();
+            $emails =$_POST['email'] ?? array();
+            $addresses = wp_unslash( $_POST['address'] ) ?? array();
+            $master = $_POST['master-record'];
 
-        $masterId = ( $master === 'contact1' ) ? $contact_id : $dupe_id;
-        $nonMasterId = ( $masterId === $contact_id ) ? $dupe_id : $contact_id;
-        $contact = Disciple_Tools_Contacts::get_contact( $masterId, true );
-        $nonMaster = Disciple_Tools_Contacts::get_contact( $nonMasterId, true );
+            $master_id = ( $master === 'contact1' ) ? $contact_id : $dupe_id;
+            $non_master_id = ( $master_id === $contact_id ) ? $dupe_id : $contact_id;
+            $contact = Disciple_Tools_Contacts::get_contact( $master_id, true );
+            $non_master = Disciple_Tools_Contacts::get_contact( $non_master_id, true );
 
-        $current = array(
-            'contact_phone' => array(),
-            'contact_email' => array(),
-            'contact_address' => array()
-        );
+            $current = array(
+                'contact_phone' => array(),
+                'contact_email' => array(),
+                'contact_address' => array()
+            );
 
-        foreach ($contact['contact_phone'] ?? array() as $arrPhone) {
-            $current['contact_phone'][$arrPhone['key']] = $arrPhone['value'];
+            foreach ($contact['contact_phone'] ?? array() as $arr_phone) {
+                $current['contact_phone'][$arr_phone['key']] = $arr_phone['value'];
+            }
+            foreach ($contact['contact_email'] ?? array() as $arr_email) {
+                $current['contact_email'][$arr_email['key']] = $arr_email['value'];
+            }
+            foreach ($contact['contact_address'] ?? array() as $arr_address) {
+                $current['contact_address'][$arr_address['key']] = $arr_address['value'];
+            }
+            foreach ($contact['contact_facebook'] ?? array() as $arr_facebook) {
+                $current['contact_facebook'][$arr_facebook['key']] = $arr_facebook['value'];
+            }
+
+            $update = array(
+                'contact_phone' => array( 'values' => array() ),
+                'contact_email' => array( 'values' => array() ),
+                'contact_address' => array( 'values' => array() ),
+                'contact_facebook' => array( 'values' => array() )
+            );
+
+            $ignore_keys = array();
+
+            foreach ($phones as $phone) {
+                $index = array_search( $phone, $current['contact_phone'] );
+                if ($index !== false) { $ignore_keys[] = $index;
+                    continue; }
+                array_push( $update['contact_phone']['values'], [ 'value' => $phone ] );
+            }
+            foreach ($emails as $email) {
+                $index = array_search( $email, $current['contact_email'] );
+                if ($index !== false) { $ignore_keys[] = $index;
+                    continue; }
+                array_push( $update['contact_email']['values'], [ 'value' => $email ] );
+            }
+            foreach ($addresses as $address) {
+                $index = array_search( $address, $current['contact_address'] );
+                if ($index !== false) { $ignore_keys[] = $index;
+                    continue; }
+                array_push( $update['contact_address']['values'], [ 'value' => $address ] );
+            }
+
+            foreach ($non_master['contact_facebook'] ?? array() as $arr_facebook) {
+                $index = array_search( $arr_facebook['value'], $current['contact_facebook'] ?? array() );
+                if ($index !== false) { $ignore_keys[] = $index;
+                    continue; }
+                array_push($update['contact_facebook']['values'], array(
+                    'value' => $arr_facebook['value']
+                ));
+            }
+
+            $delete_fields = array();
+            if ($update['contact_phone']['values']) { $delete_fields[] = 'contact_phone'; }
+            if ($update['contact_email']['values']) { $delete_fields[] = 'contact_email'; }
+            if ($update['contact_address']['values']) { $delete_fields[] = 'contact_address'; }
+            if ($update['contact_facebook']['values']) { $delete_fields[] = 'contact_facebook'; }
+
+            if ( !empty( $delete_fields )) {
+                Disciple_Tools_Contacts::remove_fields( $master_id, $delete_fields, $ignore_keys );
+            }
+
+            $close_id = ( $master_id === $contact_id ) ? $dupe_id : $contact_id;
+
+            Disciple_Tools_Contacts::update_contact( $master_id, $update, true );
+            Disciple_Tools_Contacts::merge_milestones( $master_id, $non_master_id );
+            Disciple_Tools_Contacts::merge_p2p( $master_id, $non_master_id );
+            ( new Disciple_Tools_Contacts() )->recheck_duplicates( $master_id );
+            ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $master_id, $non_master_id );
+            Disciple_Tools_Contacts::close_account( $close_id );
         }
-        foreach ($contact['contact_email'] ?? array() as $arrEmail) {
-            $current['contact_email'][$arrEmail['key']] = $arrEmail['value'];
-        }
-        foreach ($contact['contact_address'] ?? array() as $arrAddress) {
-            $current['contact_address'][$arrAddress['key']] = $arrAddress['value'];
-        }
-        foreach ($contact['contact_facebook'] ?? array() as $arrFacebook) {
-            $current['contact_facebook'][$arrFacebook['key']] = $arrFacebook['value'];
-        }
-
-        $update = array(
-            'contact_phone' => array( 'values' => array() ),
-            'contact_email' => array( 'values' => array() ),
-            'contact_address' => array( 'values' => array() ),
-            'contact_facebook' => array( 'values' => array() )
-        );
-
-        $ignore_keys = array();
-
-        foreach ($phones as $phone) {
-            $index = array_search( $phone, $current['contact_phone'] );
-            if ($index !== false) { $ignore_keys[] = $index;
-                continue; }
-            array_push( $update['contact_phone']['values'], [ 'value' => $phone ] );
-        }
-        foreach ($emails as $email) {
-            $index = array_search( $email, $current['contact_email'] );
-            if ($index !== false) { $ignore_keys[] = $index;
-                continue; }
-            array_push( $update['contact_email']['values'], [ 'value' => $email ] );
-        }
-        foreach ($addresses as $address) {
-            $index = array_search( $address, $current['contact_address'] );
-            if ($index !== false) { $ignore_keys[] = $index;
-                continue; }
-            array_push( $update['contact_address']['values'], [ 'value' => $address ] );
-        }
-
-        foreach ($nonMaster['contact_facebook'] ?? array() as $arrFacebook) {
-            $index = array_search( $arrFacebook['value'], $current['contact_facebook'] ?? array() );
-            if ($index !== false) { $ignore_keys[] = $index;
-                continue; }
-            array_push($update['contact_facebook']['values'], array(
-                'value' => $arrFacebook['value']
-            ));
-        }
-
-        $deleteFields = array();
-        if ($update['contact_phone']['values']) { $deleteFields[] = 'contact_phone'; }
-        if ($update['contact_email']['values']) { $deleteFields[] = 'contact_email'; }
-        if ($update['contact_address']['values']) { $deleteFields[] = 'contact_address'; }
-        if ($update['contact_facebook']['values']) { $deleteFields[] = 'contact_facebook'; }
-
-        if ( !empty( $deleteFields )) {
-            Disciple_Tools_Contacts::remove_fields( $masterId, $deleteFields, $ignore_keys );
-        }
-
-        $closeId = ( $masterId === $contact_id ) ? $dupe_id : $contact_id;
-
-        Disciple_Tools_Contacts::update_contact( $masterId, $update, true );
-        Disciple_Tools_Contacts::merge_milestones( $masterId, $nonMasterId );
-        Disciple_Tools_Contacts::merge_p2p( $masterId, $nonMasterId );
-        ( new Disciple_Tools_Contacts() )->recheck_duplicates( $masterId );
-        ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $masterId, $nonMasterId );
-        Disciple_Tools_Contacts::close_account( $closeId );
-        //$contact=Disciple_Tools_Contacts::update_contact( $contact_id, $update, true);
         header( "location: " . site_url( '/contacts/' .get_the_ID() ) );
-
-            // $update = [
-            //     "overall_status" => 'active',
-            //     "accepted" => 'yes'
-            // ];
-            // self::update_contact( $contact_id, $update, true );
-            // return [ "overall_status" => self::$contact_fields["overall_status"]["default"]['active'] ];
         exit;
     }
 
@@ -652,7 +672,7 @@ declare( strict_types=1 );
     <?php
 } )();
 
-if (isset( $_POST['merge'] )) {
+if (isset( $_POST['merge'] ) && wp_verify_nonce( $_POST['dt_contact_nonce'] ?? null ) ) {
     echo "<script type='text/javascript'>$(document).ready(function() { $('#merge-dupe-modal').click(); });</script>";
 }
 
