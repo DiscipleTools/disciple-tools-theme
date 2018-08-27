@@ -774,7 +774,7 @@ class Disciple_Tools_Posts
         $access_query = "";
         if ( !isset( $query["assigned_to"] ) || in_array( "all", $query["assigned_to"] ) ){
             $query["assigned_to"] = [ "all" ];
-            if ( !self::can_view_all( 'contacts' ) ){
+            if ( !self::can_view_all( 'contacts' ) && $check_permissions ){
                 $query["assigned_to"] = [ "me" ];
                 if ( !in_array( "shared", $include )){
                     $include[] = "shared";
@@ -807,7 +807,7 @@ class Disciple_Tools_Posts
                         if ( $assigned_to == "me" ){
                             $assigned_to = "user-" . $current_user->ID;
                         } else if ( $assigned_to != "all" && $assigned_to != "shared" ) {
-                            if ( self::can_view_all( 'contacts' ) ){
+                            if ( self::can_view_all( 'contacts' ) || !$check_permissions ){
                                 $assigned_to = "user-" . $assigned_to;
                             } else {
                                 $assigned_to = "user-" . $assigned_to;
