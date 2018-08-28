@@ -224,61 +224,64 @@ jQuery(document).ready(function($) {
    * Sources
    */
   typeaheadTotals.sources = 0;
-  let leadSourcesTypeahead = ()=>{
+  let leadSourcesTypeahead = async function leadSourcesTypeahead() {
     if (!window.Typeahead['.js-typeahead-sources']){
-
+      $(".js-typeahead-sources").attr("disabled", true) // disable while loading AJAX
+      const response = await fetch(contactsDetailsWpApiSettings.root + 'dt/v1/contact/list-sources', {
+        headers: new Headers({'X-WP-Nonce': wpApiShare.nonce}),
+      });
       let sourcesData = []
-      _.forOwn(contactsDetailsWpApiSettings.contacts_custom_fields_settings.sources.default, (sourceValue, sourceKey)=>{
-        sourcesData.push({key:sourceKey, value:sourceValue})
+      _.forOwn(await response.json(), (sourceValue, sourceKey) => {
+         sourcesData.push({key:sourceKey, value:sourceValue || ""})
       })
-      if (contactsDetailsWpApiSettings.can_view_all){
-        $.typeahead({
-          input: '.js-typeahead-sources',
-          minLength: 0,
-          accent: true,
-          searchOnFocus: true,
-          maxItem: 20,
-          source: {
-            data: sourcesData
-          },
-          display: "value",
-          templateValue: "{{value}}",
-          dynamic: true,
-          multiselect: {
-            matchOn: ["key"],
-            data: function () {
-              return (contact.sources || []).map(sourceKey=>{
-                return {
-                  key:sourceKey,
-                  value:_.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings.sources.default.${sourceKey}`) || sourceKey }
-              })
-            }, callback: {
-              onCancel: function (node, item) {
-                _.pullAllBy(editFieldsUpdate.sources.values, [{value:item.key}], "value")
-                editFieldsUpdate.sources.values.push({value:item.key, delete:true})
+      $(".js-typeahead-sources").attr("disabled", false)
+      $.typeahead({
+        input: '.js-typeahead-sources',
+        minLength: 0,
+        accent: true,
+        searchOnFocus: true,
+        maxItem: 20,
+        source: {
+          data: sourcesData
+        },
+        display: "value",
+        templateValue: "{{value}}",
+        dynamic: true,
+        multiselect: {
+          matchOn: ["key"],
+          data: function () {
+            return (contact.sources || []).map(sourceKey=>{
+              return {
+                key:sourceKey,
+                value: _.get(sourcesData, sourceKey) || sourceKey,
               }
-            }
-          },
-          callback: {
-            onClick: function(node, a, item, event){
+            })
+          }, callback: {
+            onCancel: function (node, item) {
               _.pullAllBy(editFieldsUpdate.sources.values, [{value:item.key}], "value")
-              editFieldsUpdate.sources.values.push({value:item.key})
-              this.addMultiselectItemLayout(item)
-              event.preventDefault()
-              this.hideLayout();
-              this.resetInput();
-            },
-            onResult: function (node, query, result, resultCount) {
-              resultCount = typeaheadTotals.sources
-              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-              $('#sources-result-container').html(text);
-            },
-            onHideLayout: function () {
-              $('#sources-result-container').html("");
+              editFieldsUpdate.sources.values.push({value:item.key, delete:true})
             }
           }
-        });
-      }
+        },
+        callback: {
+          onClick: function(node, a, item, event){
+            _.pullAllBy(editFieldsUpdate.sources.values, [{value:item.key}], "value")
+            editFieldsUpdate.sources.values.push({value:item.key})
+            this.addMultiselectItemLayout(item)
+            event.preventDefault()
+            this.hideLayout();
+            this.resetInput();
+          },
+          onResult: function (node, query, result, resultCount) {
+            resultCount = typeaheadTotals.sources
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $('#sources-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('#sources-result-container').html("");
+          }
+        }
+      });
     }
   }
 
@@ -877,7 +880,7 @@ jQuery(document).ready(function($) {
     $('#contact-details-edit').foundation('open');
     loadLocationTypeahead()
     loadPeopleGroupTypeahead()
-    leadSourcesTypeahead()
+    leadSourcesTypeahead().catch(err => { console.log(err) })
   })
 
 

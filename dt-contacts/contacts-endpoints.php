@@ -200,6 +200,13 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'get_contact_counts' ]
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/contact/list-sources', [
+                "methods" => "GET",
+                "callback" => [ $this, 'list_sources' ],
+            ]
+        );
     }
 
 
@@ -790,5 +797,9 @@ class Disciple_Tools_Contacts_Endpoints
 
     public function get_contact_counts(){
         return Disciple_Tools_Contacts::get_count_of_contacts();
+    }
+
+    public function list_sources() {
+        return Disciple_Tools_Contacts::list_sources();
     }
 }

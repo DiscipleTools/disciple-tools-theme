@@ -2228,4 +2228,60 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return $numbers;
     }
 
+
+    /**
+     * Return an associative array of sources for contacts that the current
+     * user can see, (or all sources if the user has permission). The return
+     * value looks like this:
+     *
+     *  $rv = [
+     *      // $source_key => $source_label,
+     *      "facebook" => null, // when a label could not be found for a source
+     *      "phone" => "The phone",
+     *      "partner" => "Our partners",
+     *      "web" => "Website",
+     *  ];
+     *
+     *  @access public
+     *  @return array | WP_Error
+     */
+    public static function list_sources() {
+        global $wpdb;
+        $source_labels = dt_get_option( 'dt_site_custom_lists' )['sources'];
+        $rv = [];
+
+        if ( current_user_can( 'view_any_contacts' ) ) {
+            foreach ( $source_labels as $source_key => $source ) {
+                $rv[$source_key] = $source['label'];
+            }
+            $results = $wpdb->get_results(
+                "SELECT DISTINCT meta_value FROM $wpdb->postmeta WHERE meta_key = 'sources'",
+                ARRAY_N
+            );
+            foreach ( $results as $result ) {
+                if ( ! array_key_exists( $result[0], $rv ) ) {
+                    $rv[ $result[0] ] = null;
+                }
+            }
+        } else {
+            /* TODO: Find a way to do this that is faster, I'm guessing this is slow */
+            $contacts = self::get_viewable_contacts( 0 );
+            if ( is_wp_error( $contacts ) ) {
+                return $contacts;
+            }
+            foreach ( $contacts['contacts'] as $contact ) {
+                foreach ( get_post_meta( $contact->ID, 'sources', false ) as $post_source_key ) {
+                    if ( array_key_exists( $post_source_key, $source_labels ) ) {
+                        $rv[ $post_source_key ] = $source_labels[ $post_source_key ]['label'];
+                    } else {
+                        $rv[ $post_source_key ] = null;
+                    }
+                }
+            }
+        }
+
+        asort( $rv );
+        return $rv;
+    }
+
 }

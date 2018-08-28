@@ -180,6 +180,11 @@ function dt_site_scripts() {
                     'typeahead-jquery',
                     'comments'
                 ) );
+                /* TODO: fix security vulnerability.
+                 * Outputting the return value of get_custom_fields_settings is
+                 * a security vulnerability. It includes a list of all sources,
+                 * for instance, but not all users have permission to view all
+                 * sources. */
                 wp_localize_script(
                     'contact-details', 'contactsDetailsWpApiSettings', array(
                         'contact'                         => $post,
