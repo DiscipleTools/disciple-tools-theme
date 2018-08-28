@@ -884,6 +884,72 @@ jQuery(document).ready(function($) {
   })
 
 
+  $("#merge-dupe-modal").on("click", function() {
+
+    editFieldsUpdate = {
+      locations: {
+        values: []
+      },
+      people_groups: {
+        values: []
+      },
+      sources: {
+        values: []
+      }
+    }
+    let phoneHTML = "";
+    (contact.contact_phone || []).forEach(field => {
+      phoneHTML += `<li style="display: flex">
+          <input type="tel" id="${_.escape(field.key)}" value="${field.value}" data-type="contact_phone" class="contact-input"/>
+          <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_phone" style="color: red">
+            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+          </button>
+      </li>`
+    })
+    $("#edit-contact_phone").html(phoneHTML)
+    let emailHTML = "";
+    (contact.contact_email || []).forEach(field => {
+      emailHTML += `<li style="display: flex">
+        <input class="contact-input" type="email" id="${_.escape(field.key)}" value="${field.value}" data-type="contact_email"/>
+        <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_email">
+            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+        </button>
+      </li>`
+    })
+    $("#edit-contact_email").html(emailHTML)
+    let addressHTML = "";
+    (contact.contact_address || []).forEach(field => {
+      addressHTML += `<li style="display: flex">
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" >${field.value}</textarea>
+        <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
+            <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+        </button>
+      </li>`
+    })
+    $("#edit-contact_address").html(addressHTML)
+
+    let html = ""
+    for (let field in contact) {
+      if (field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field)) {
+        contact[field].forEach(socialField => {
+          html += `<li style="display: flex">
+            <input class="contact-input" type="text" id="${socialField.key}" value="${socialField.value}" data-type="${field}"/>
+            <button class="button clear delete-button" data-id="${socialField.key}" data-type="${field}">
+                <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+            </button>
+          </li>`
+        })
+
+      }
+    }
+    $('#edit-social').html(html)
+
+    $('#merge-dupe-edit').foundation('open');
+    loadLocationTypeahead()
+    loadPeopleGroupTypeahead()
+    leadSourcesTypeahead()
+  })
+
   $('.select-input').on("change", function () {
     let key = $(this).attr('id')
     let val = $(this).val()

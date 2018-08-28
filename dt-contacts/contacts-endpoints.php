@@ -193,7 +193,12 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'get_multi_select_options' ]
             ]
         );
-
+        register_rest_route(
+            $this->namespace, '/contacts/mergedetails', [
+                "methods" => "GET",
+                "callback" => [ $this, 'get_viewable_contacts' ]
+            ]
+        );
         register_rest_route(
             $this->namespace, '/contact/counts', [
                 "methods" => "GET",
