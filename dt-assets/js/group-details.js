@@ -405,7 +405,7 @@ jQuery(document).ready(function($) {
             if (listItems.length === 0){
               $(`.members-list.details-list`).append(`<li id="no-locations">${wpApiGroupsSettings.translations["not-set"]["location"]}</li>`)
             }
-          })
+          }).catch(err => { console.error(err) })
         }
       },
       href: "/contacts/{{ID}}"
@@ -417,7 +417,7 @@ jQuery(document).ready(function($) {
             <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
           </li>`)
           $("#no-locations").remove()
-        })
+        }).catch(err => { console.error(err) })
         masonGrid.masonry('layout')
       },
       onResult: function (node, query, result, resultCount) {

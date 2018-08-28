@@ -81,7 +81,7 @@
       displayRows();
       setupCurrentFilterLabels()
       loading_spinner.removeClass("active")
-    })
+    }).catch(err => { console.error(err) })
   }
 
 
@@ -198,9 +198,9 @@
       <td class="show-for-small-only">
         <a href="<%- permalink %>"><%- post_title %></a>
         <br>
-        <%- status %> <%- type %> <%- member_count %> 
-        <%- locations.join(", ") %> 
-        <%= leader_links %> 
+        <%- status %> <%- type %> <%- member_count %>
+        <%- locations.join(", ") %>
+        <%= leader_links %>
       </td>
       <td class="hide-for-small-only"><a href="<%- permalink %>"><%- post_title %></a></td>
       <td class="hide-for-small-only"><span class="group-status group-status--<%- group_status %>"><%- status %></span></td>
@@ -475,7 +475,7 @@
         setupFilters(savedFilters[wpApiListSettings.current_post_type])
         $(`input[name="view"][value="saved-filters"][data-id='${filterToSave}']`).prop('checked', true);
         getContactForCurrentView()
-      })
+      }).catch(err => { console.error(err) })
     }
   })
 
@@ -484,7 +484,7 @@
     _.pullAllBy(savedFilters[wpApiListSettings.current_post_type], [{ID:filterToDelete}], "ID")
     API.save_filters(savedFilters).then(()=>{
       setupFilters(savedFilters[wpApiListSettings.current_post_type])
-    })
+    }).catch(err => { console.error(err) })
   })
 
 
@@ -933,7 +933,7 @@
           $el.text( counts[view_id] );
         }
       });
-    })
+    }).catch(err => { console.error(err) })
   }
 
 })(window.jQuery, window.wpApiListSettings, window.Foundation);

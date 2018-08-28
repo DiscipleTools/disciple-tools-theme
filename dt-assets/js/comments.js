@@ -332,7 +332,7 @@ jQuery(document).ready(function($) {
           data.push({id:user.ID, name:user.name, type:postType, avatar:user.avatar})
           callback.call(this, data);
         })
-      })
+      }).catch(err => { console.error(err) })
     },
     templates : {
       mentionItemSyntax : function (data) {
@@ -369,7 +369,7 @@ jQuery(document).ready(function($) {
       $(".revert-field").html(field || a.meta_key)
       $(".revert-current-value").html(a.meta_value)
       $(".revert-old-value").html(a.old_value || 0)
-    })
+    }).catch(err => { console.error(err) })
   })
 
   // confirm going back to the old version on the activity
@@ -381,7 +381,7 @@ jQuery(document).ready(function($) {
       if (typeof refresh_quick_action_buttons === 'function'){
         refresh_quick_action_buttons(contactResponse)
       }
-    })
+    }).catch(err => { console.error(err) })
   })
 
 });
