@@ -403,7 +403,7 @@
       fields = ["group_type", "group_status"]
     } else if ( wpApiListSettings.current_post_type === "contacts" ){
       searchQuery.subassigned = _.map(_.get(Typeahead['.js-typeahead-subassigned'], "items"), "ID")
-      fields = ["overall_status", "seeker_path", "requires_update"]
+      fields = ["overall_status", "seeker_path", "requires_update", "sources"]
       _.forOwn( wpApiListSettings.custom_fields_settings, (field, field_key)=>{
         if (field.type === "key_select" && !field_key.includes("milestone_") && !fields.includes(field_key) ){
           fields.push(field_key)
@@ -756,12 +756,71 @@
       });
     }
   }
-  let loadMultiSelectTypeaheads = () =>{
-    $(".multi_select .typeahead__query input").each(function () {
-      let field = $(this).data('field')
+  let loadMultiSelectTypeaheads = async function loadMultiSelectTypeaheads() {
+    for (let input of $(".multi_select .typeahead__query input")) {
+      let field = $(input).data('field')
       let typeahead_name = `.js-typeahead-${field}`
 
-      if ( !window.Typeahead[typeahead_name]){
+      if (window.Typeahead[typeahead_name]) {
+        return
+      }
+
+      if (field == 'sources') {
+        /* Similar code is in contact-details.js, copy-pasted for now. */
+        $(".js-typeahead-sources").attr("disabled", true) // disable while loading AJAX
+        const response = await fetch(wpApiListSettings.root + 'dt/v1/contact/list-sources', {
+          headers: new Headers({'X-WP-Nonce': wpApiShare.nonce}),
+        });
+        let sourcesData = [];
+        _.forOwn(await response.json(), (sourceValue, sourceKey) => {
+          sourcesData.push({
+           key:sourceKey,
+           value:sourceValue || "",
+           name:sourceKey, // name is used for building URL params later
+          })
+        })
+        $(".js-typeahead-sources").attr("disabled", false)
+        $.typeahead({
+          input: '.js-typeahead-sources',
+          minLength: 0,
+          accent: true,
+          searchOnFocus: true,
+          maxItem: 200,
+          source: {
+            data: sourcesData
+          },
+          template: function(query, item) {
+            return `<span>${_.escape(item.value || item.key)}</span>`
+          },
+          display: "value", // the key that will be searched
+          templateValue: "{{value}}",
+          dynamic: true,
+          multiselect: {
+            matchOn: ["value"],
+            data: [],
+            callback: {
+              onCancel: function(node, item) {
+                $(`#${_.escape(item.value)}.${field}`).remove()
+                _.pullAllBy(newFilterLabels, [{id:item.key}], "id")
+              }
+            }
+          },
+          callback: {
+            onClick: function(node, a, item, event) {
+              selectedFilters.append(`<span class="current-filter ${field}" id="${_.escape(item.key)}">${_.escape(item.value || item.key)}</span>`)
+              newFilterLabels.push({id:item.key, name:item.value, field})
+            },
+            onResult: function(node, query, result, resultCount) {
+               let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+               $(`#${field}-result-container`).html(text);
+             },
+             onHideLayout: function () {
+               $(`#${field}-result-container`).html("");
+             },
+          },
+        });
+
+      } else {
         $.typeahead({
           input: `.js-typeahead-${field}`,
           minLength: 0,
@@ -820,7 +879,7 @@
           }
         });
       }
-    })
+    }
   }
 
   /*
@@ -832,12 +891,12 @@
       loadLocationTypeahead()
       loadAssignedToTypeahead()
       // loadLeadersTypeahead()
-      loadMultiSelectTypeaheads()
+      loadMultiSelectTypeaheads().catch(err => { console.error(err) })
     } else if ( wpApiListSettings.current_post_type === "contacts" ){
       loadLocationTypeahead()
       loadAssignedToTypeahead()
       loadSubassignedTypeahead()
-      loadMultiSelectTypeaheads()
+      loadMultiSelectTypeaheads().catch(err => { console.error(err) })
     }
     $("#filter-modal input:checked").each(function () {
       $(this).prop('checked', false)

@@ -226,6 +226,7 @@ jQuery(document).ready(function($) {
   typeaheadTotals.sources = 0;
   let leadSourcesTypeahead = async function leadSourcesTypeahead() {
     if (!window.Typeahead['.js-typeahead-sources']){
+      /* Similar code is in list.js, copy-pasted for now. */
       $(".js-typeahead-sources").attr("disabled", true) // disable while loading AJAX
       const response = await fetch(contactsDetailsWpApiSettings.root + 'dt/v1/contact/list-sources', {
         headers: new Headers({'X-WP-Nonce': wpApiShare.nonce}),

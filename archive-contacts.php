@@ -158,7 +158,7 @@ declare(strict_types=1);
 
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
-                    <?php $fields = [ "assigned_to", "subassigned", "locations", "overall_status", "seeker_path", "faith_milestones", "requires_update", "tags" ];
+                    <?php $fields = [ "assigned_to", "subassigned", "locations", "overall_status", "seeker_path", "faith_milestones", "requires_update", "tags", "sources" ];
                     foreach ( $dt_contact_field_options as $field_key => $field){
 
                         if ( $field["type"] === "key_select" && strpos( $field_key, "milestone_" ) === false && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
@@ -187,6 +187,8 @@ declare(strict_types=1);
                                     <a href="#<?php echo esc_html( $field )?>">
                                         <?php echo esc_html( $connections[$field]["name"] ) ?></a>
                                 </li>
+                            <?php else : ?>
+                                <?php wp_die( "Cannot implement filter options for field " . esc_html( $field ) ); ?>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </ul>
