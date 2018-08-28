@@ -490,7 +490,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             }
             $user_id = explode( '-', $fields["assigned_to"] )[1];
             if ( $user_id ){
-                self::add_shared( "groups", $group_id, $user_id, null, false );
+                self::add_shared( "groups", $group_id, $user_id, null, false, false, false );
             }
         }
         $fields["last_modified"] = time(); //make sure the last modified field is updated.

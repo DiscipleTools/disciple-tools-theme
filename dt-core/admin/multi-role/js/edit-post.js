@@ -133,7 +133,7 @@
 		sections.add( new Section( data ) );
 	}
 
-	sections.forEach( function( section, i ) ) {
+	sections.forEach( function( section, i ) {
 
 		var nav_view     = new Nav_View(     { model : section } );
 		var section_view = new Section_View( { model : section } );
@@ -145,7 +145,7 @@
 		section.set( 'selected', 0 == i );
 	}, this );
 
-	_.each( dt_multi_role_cp_data.controls ), function( data ) {
+	_.each( dt_multi_role_cp_data.controls, function( data ) {
 
 		var control = new Control( data );
 

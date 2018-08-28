@@ -211,28 +211,42 @@ class Disciple_Tools_Posts
 
     /**
      * @param string $post_type
-     * @param int    $group_id
+     * @param int $post_id
      * @param string $comment
+     * @param bool $check_permissions
+     * @param string $type
+     * @param null $user_id
+     * @param null $author
+     * @param null $date
+     * @param bool $silent
      *
      * @return false|int|\WP_Error
      */
-    public static function add_post_comment( string $post_type, int $group_id, string $comment ) {
-        if ( !self::can_update( $post_type, $group_id ) ) {
+    public static function add_post_comment( string $post_type, int $post_id, string $comment, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date = null, $silent = false ) {
+        if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
         $user = wp_get_current_user();
-        $user_id = get_current_user_id();
+        $user_id = $user_id ?? get_current_user_id();
         $comment_data = [
-            'comment_post_ID'      => $group_id,
+            'comment_post_ID'      => $post_id,
             'comment_content'      => $comment,
             'user_id'              => $user_id,
-            'comment_author'       => $user->display_name,
+            'comment_author'       => $author ?? $user->display_name,
             'comment_author_url'   => $user->user_url,
             'comment_author_email' => $user->user_email,
-            'comment_type'         => 'comment',
+            'comment_type'         => $type,
         ];
+        if ( $date ){
+            $comment_data["comment_date"] = $date;
+            $comment_data["comment_date_gmt"] = $date;
+        }
 
-        return wp_new_comment( $comment_data );
+        $created_comment = wp_new_comment( $comment_data );
+        if ( !$silent && !is_wp_error( $created_comment )){
+            Disciple_Tools_Notifications_Comments::insert_notification_for_comment( $created_comment );
+        }
+        return $created_comment;
     }
 
     public static function format_connection_message( $p2p_id, $action = 'connected to', $activity ){
@@ -733,6 +747,11 @@ class Disciple_Tools_Posts
             $offset = esc_sql( sanitize_text_field( $query["offset"] ) );
             unset( $query["offset"] );
         }
+        $combine = [];
+        if ( isset( $query["combine"] )){
+            $combine = $query["combine"];
+            unset( $query["combine"] );
+        }
         $sort = "post_title";
         $sort_dir = "asc";
         if ( isset( $query["sort"] )){
@@ -748,42 +767,6 @@ class Disciple_Tools_Posts
         $connections_sql_to = "";
         $connections_sql_from = "";
 
-        foreach ( $query as $query_key => $query_value ) {
-            if ( in_array( $query_key, array_keys( self::$connection_types ) ) ) {
-                if ( $query_key === "locations" ) {
-                    $location_sql = "";
-                    foreach ( $query_value as $location ) {
-                        $l = get_post( $location );
-                        if ( $l && $l->post_type === "locations" ){
-                            $location_sql .= empty( $location_sql ) ? $l->ID : ( ",".$l->ID );
-                        }
-                    }
-                    if ( !empty( $location_sql ) ){
-                        $connections_sql_to .= "AND ( to_p2p.p2p_type = '" . esc_sql( $post_type ) . "_to_locations' AND to_p2p.p2p_to in (" . esc_sql( $location_sql ) .") )";
-                    }
-                }
-                if ( $query_key === "subassigned" ) {
-                    $subassigned_sql = "";
-                    foreach ( $query_value as $subassigned ) {
-                        $l = get_post( $subassigned );
-                        if ( $l && $l->post_type === "contacts" ){
-                            $subassigned_sql .= empty( $subassigned_sql ) ? $l->ID : ( ",".$l->ID );
-                        }
-                    }
-                    if ( !empty( $subassigned_sql ) ){
-                        $connections_sql_from .= "AND ( from_p2p.p2p_type = 'contacts_to_subassigned' AND from_p2p.p2p_from in (" . esc_sql( $subassigned_sql ) .") )";
-                    }
-                }
-            }
-        }
-        if ( !empty( $connections_sql_to )){
-            $inner_joins .= " INNER JOIN $wpdb->p2p as to_p2p ON ( to_p2p.p2p_from = $wpdb->posts.ID )";
-        }
-        if ( !empty( $connections_sql_from )){
-            $inner_joins .= " INNER JOIN $wpdb->p2p as from_p2p ON ( from_p2p.p2p_to = $wpdb->posts.ID )";
-        }
-
-
         $meta_query = "";
         $includes_query = "";
         $share_joins = "";
@@ -791,7 +774,7 @@ class Disciple_Tools_Posts
         $access_query = "";
         if ( !isset( $query["assigned_to"] ) || in_array( "all", $query["assigned_to"] ) ){
             $query["assigned_to"] = [ "all" ];
-            if ( !self::can_view_all( 'contacts' ) ){
+            if ( !self::can_view_all( 'contacts' ) && $check_permissions ){
                 $query["assigned_to"] = [ "me" ];
                 if ( !in_array( "shared", $include )){
                     $include[] = "shared";
@@ -807,6 +790,10 @@ class Disciple_Tools_Posts
         if ( in_array( "shared", $query["assigned_to"] ) ){
             $share_joins = "LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = $wpdb->posts.ID ) ";
             $access_query = ( !empty( $access_query ) ? "OR" : "" ) ." shares.user_id = $current_user->ID ";
+            if ( !in_array( "me", $query["assigned_to"] ) && !in_array( "all", $query["assigned_to"] ) ){
+                $access_joins = "INNER JOIN $wpdb->postmeta AS assigned_to ON ( $wpdb->posts.ID = assigned_to.post_id ) ";
+                $access_query .= ( !empty( $access_query ) ? "AND" : "" ) ." ( assigned_to.meta_key = 'assigned_to' AND assigned_to.meta_value != 'user-$current_user->ID' )";
+            }
         }
         foreach ( $query as $query_key => $query_value ){
             $meta_field_sql = "";
@@ -820,7 +807,7 @@ class Disciple_Tools_Posts
                         if ( $assigned_to == "me" ){
                             $assigned_to = "user-" . $current_user->ID;
                         } else if ( $assigned_to != "all" && $assigned_to != "shared" ) {
-                            if ( self::can_view_all( 'contacts' ) ){
+                            if ( self::can_view_all( 'contacts' ) || !$check_permissions ){
                                 $assigned_to = "user-" . $assigned_to;
                             } else {
                                 $assigned_to = "user-" . $assigned_to;
@@ -869,6 +856,46 @@ class Disciple_Tools_Posts
             $inner_joins .= "INNER JOIN $wpdb->postmeta AS search ON ( $wpdb->posts.ID = search.post_id ) ";
             $meta_query .= "AND ( ( INSTR( $wpdb->posts.post_title ,'" . esc_sql( $search ) . "' ) > 0 ) OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 ) ) ";
 
+        }
+
+        foreach ( $query as $query_key => $query_value ) {
+            if ( in_array( $query_key, array_keys( self::$connection_types ) ) ) {
+                if ( $query_key === "locations" ) {
+                    $location_sql = "";
+                    foreach ( $query_value as $location ) {
+                        $l = get_post( $location );
+                        if ( $l && $l->post_type === "locations" ){
+                            $location_sql .= empty( $location_sql ) ? $l->ID : ( ",".$l->ID );
+                        }
+                    }
+                    if ( !empty( $location_sql ) ){
+                        $connections_sql_to .= "AND ( to_p2p.p2p_type = '" . esc_sql( $post_type ) . "_to_locations' AND to_p2p.p2p_to in (" . esc_sql( $location_sql ) .") )";
+                    }
+                }
+                if ( $query_key === "subassigned" ) {
+                    $subassigned_sql = "";
+                    foreach ( $query_value as $subassigned ) {
+                        $l = get_post( $subassigned );
+                        if ( $l && $l->post_type === "contacts" ){
+                            $subassigned_sql .= empty( $subassigned_sql ) ? $l->ID : ( ",".$l->ID );
+                        }
+                    }
+                    if ( !empty( $subassigned_sql ) ){
+                        if ( !empty( $access_query ) && in_array( "subassigned", $combine ) ){
+                            $access_query .= "OR ( from_p2p.p2p_type = 'contacts_to_subassigned' AND from_p2p.p2p_from in (" . esc_sql( $subassigned_sql ) .") )";
+                            $connections_sql_from .= " ";
+                        } else {
+                            $connections_sql_from .= "AND ( from_p2p.p2p_type = 'contacts_to_subassigned' AND from_p2p.p2p_from in (" . esc_sql( $subassigned_sql ) .") )";
+                        }
+                    }
+                }
+            }
+        }
+        if ( !empty( $connections_sql_to )){
+            $inner_joins .= " INNER JOIN $wpdb->p2p as to_p2p ON ( to_p2p.p2p_from = $wpdb->posts.ID )";
+        }
+        if ( !empty( $connections_sql_from )){
+            $inner_joins .= " INNER JOIN $wpdb->p2p as from_p2p ON ( from_p2p.p2p_to = $wpdb->posts.ID )";
         }
 
         $access_query = $access_query ? ( "AND ( " . $access_query . " ) " ) : "";
@@ -1074,12 +1101,12 @@ class Disciple_Tools_Posts
      * @param int $user_id
      * @param array $meta
      * @param bool $send_notifications
-     *
      * @param bool $check_permissions
+     * @param bool $insert_activity
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared( string $post_type, int $post_id, int $user_id, $meta = null, bool $send_notifications = true, $check_permissions = true ) {
+    public static function add_shared( string $post_type, int $post_id, int $user_id, $meta = null, bool $send_notifications = true, $check_permissions = true, bool $insert_activity = true ) {
         global $wpdb;
 
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
@@ -1115,21 +1142,23 @@ class Disciple_Tools_Posts
             // insert share record
             $results = $wpdb->insert( $table, $data, $format );
 
-            // log share activity
-            dt_activity_insert(
-                [
-                    'action'         => 'share',
-                    'object_type'    => get_post_type( $post_id ),
-                    'object_subtype' => 'share',
-                    'object_name'    => get_the_title( $post_id ),
-                    'object_id'      => $post_id,
-                    'meta_id'        => '', // id of the comment
-                    'meta_key'       => '',
-                    'meta_value'     => $user_id,
-                    'meta_parent'    => '',
-                    'object_note'    => strip_tags( get_the_title( $post_id ) ) . ' was shared with ' . dt_get_user_display_name( $user_id ),
-                ]
-            );
+            if ( $insert_activity ){
+                // log share activity
+                dt_activity_insert(
+                    [
+                        'action'         => 'share',
+                        'object_type'    => get_post_type( $post_id ),
+                        'object_subtype' => 'share',
+                        'object_name'    => get_the_title( $post_id ),
+                        'object_id'      => $post_id,
+                        'meta_id'        => '', // id of the comment
+                        'meta_key'       => '',
+                        'meta_value'     => $user_id,
+                        'meta_parent'    => '',
+                        'object_note'    => strip_tags( get_the_title( $post_id ) ) . ' was shared with ' . dt_get_user_display_name( $user_id ),
+                    ]
+                );
+            }
 
             // Add share notification
             if ( $send_notifications ){

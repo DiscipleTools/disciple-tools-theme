@@ -124,6 +124,12 @@ class Disciple_Tools_Contacts_Endpoints
             ]
         );
         register_rest_route(
+            $this->namespace, '/dt-public/contact/(?P<id>\d+)/comment', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'public_post_comment' ],
+            ]
+        );
+        register_rest_route(
             $this->namespace, '/contact/(?P<id>\d+)/comment/update', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'update_comment' ],
@@ -193,6 +199,12 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'get_viewable_contacts' ]
             ]
         );
+        register_rest_route(
+            $this->namespace, '/contact/counts', [
+                "methods" => "GET",
+                "callback" => [ $this, 'get_contact_counts' ]
+            ]
+        );
     }
 
 
@@ -208,6 +220,7 @@ class Disciple_Tools_Contacts_Endpoints
     public function public_create_contact( WP_REST_Request $request ) {
         $params = $request->get_params();
         $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+        $silent = isset( $params["silent"] ) && ( $params["silent"] === "true" || $params["silent"] === true );
         if ( !$site_key ){
             return new WP_Error(
                 "contact_creation_error",
@@ -216,7 +229,7 @@ class Disciple_Tools_Contacts_Endpoints
         }
 
         if ( isset( $params["fields"] ) ) {
-            $result = Disciple_Tools_Contacts::create_contact( $params["fields"], false );
+            $result = Disciple_Tools_Contacts::create_contact( $params["fields"], false, $silent );
             return $result; // Could be permission WP_Error
         } else {
             return new WP_Error(
@@ -533,6 +546,38 @@ class Disciple_Tools_Contacts_Endpoints
         }
     }
 
+    /*
+     * @return false|int|\WP_Error|\WP_REST_Response
+     */
+    public function public_post_comment( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        $body = $request->get_json_params();
+        $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+        $silent = isset( $params["silent"] ) && $params["silent"] === true;
+        if ( !$site_key ){
+            return new WP_Error(
+                "contact_creation_error",
+                "Invalid or missing transfer_token", [ 'status' => 401 ]
+            );
+        }
+        if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
+            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"], false, "comment", null, null, $body["date"] ?? null, $silent );
+
+            if ( is_wp_error( $result ) ) {
+                return $result;
+            } else {
+                $comment = get_comment( $result );
+
+                return new WP_REST_Response( [
+                    "comment_id" => $result,
+                    "comment" => $comment
+                ] );
+            }
+        } else {
+            return new WP_Error( "post_comment", "Missing a valid contact id", [ 'status' => 400 ] );
+        }
+    }
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -746,5 +791,9 @@ class Disciple_Tools_Contacts_Endpoints
         } else {
             return new WP_Error( 'get_multi_select_options', "Missing field for request", [ 'status' => 400 ] );
         }
+    }
+
+    public function get_contact_counts(){
+        return Disciple_Tools_Contacts::get_count_of_contacts();
     }
 }

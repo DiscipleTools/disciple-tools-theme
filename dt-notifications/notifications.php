@@ -79,7 +79,8 @@ class Disciple_Tools_Notifications
      * @since   0.1.0
      */
     public function __construct() {
-
+        include( 'notifications-comments.php' );
+        new Disciple_Tools_Notifications_Comments();
     } // End __construct()
 
     /**
@@ -636,6 +637,8 @@ class Disciple_Tools_Notifications
                                     }
                                 } else {
                                     $notification["notification_name"] = "assigned_to_other";
+                                    $notification['field_key'] = "assigned_to";
+                                    $notification['field_value'] = $fields["assigned_to"]["id"];
                                     $notification_type                 = 'changes';
                                     if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
                                         dt_notification_insert( $notification );

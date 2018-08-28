@@ -163,6 +163,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
         $initial_fields = $fields;
 
+        $continue = apply_filters( "dt_create_contact_check_proceed", true, $fields );
+        if ( !$continue ){
+            return new WP_Error( __FUNCTION__, __( "Could not create this contact. Maybe it already exists" ), [ 'status' => 409 ] );
+        }
+
         //required fields
         if ( !isset( $fields["title"] ) ) {
             return new WP_Error( __FUNCTION__, __( "Contact needs a title" ), [ 'fields' => $fields ] );
@@ -267,7 +272,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( isset( $fields["assigned_to"] )) {
             $user_id = explode( '-', $fields["assigned_to"] )[1];
             if ( $user_id ) {
-                self::add_shared( "contacts", $post_id, $user_id, null, false, false );
+                self::add_shared( "contacts", $post_id, $user_id, null, false, false, false );
             }
         }
 
@@ -602,7 +607,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 }
                 $user_id = explode( '-', $fields["assigned_to"] )[1];
                 if ( $user_id ){
-                    self::add_shared( "contacts", $contact_id, $user_id, null, false );
+                    self::add_shared( "contacts", $contact_id, $user_id, null, false, false, false );
                 }
                 $fields['accepted'] = 'no';
             }
@@ -666,7 +671,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( get_current_user_id() ){
             $requires_update = get_post_meta( $contact_id, "requires_update", true );
             if ( $requires_update == "yes" ){
-                update_post_meta( $contact_id, "requires_update", "no" );
+                //don't remove update needed if the user is a dispatcher (and not assigned to the contacts.)
+                if ( self::can_view_all( 'contacts' ) ){
+                    if ( dt_get_user_id_from_assigned_to( get_post_meta( $contact_id, "assigned_to", true ) ) === get_current_user_id() ){
+                        update_post_meta( $contact_id, "requires_update", "no" );
+                    }
+                } else {
+                    update_post_meta( $contact_id, "requires_update", "no" );
+                }
             }
         }
     }
@@ -804,7 +816,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $user_id = get_post_meta( $subassigned, "corresponds_to_user", true );
         if ( $user_id ){
-            self::add_shared_on_contact( $contact_id, $user_id, null, false, false );
+            self::add_shared_on_contact( $contact_id, $user_id, null, false, false, false );
             Disciple_Tools_Notifications::insert_notification_for_subassigned( $user_id, $contact_id );
         }
 
@@ -1888,34 +1900,20 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @param int $contact_id
      * @param string $comment
      * @param bool $check_permissions
-     *
      * @param string $type
-     *
      * @param null $user_id
      * @param null $author
+     * @param null $date
+     * @param bool $silent
      *
      * @return false|int|\WP_Error
      */
-    public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null ) {
-        if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
-        }
-        $user = wp_get_current_user();
-        $user_id = $user_id ?? get_current_user_id();
-        $comment_data = [
-            'comment_post_ID'      => $contact_id,
-            'comment_content'      => $comment,
-            'user_id'              => $user_id,
-            'comment_author'       => $author ?? $user->display_name,
-            'comment_author_url'   => $user->user_url,
-            'comment_author_email' => $user->user_email,
-            'comment_type'         => $type,
-        ];
-
-        if ( $type === "comment" && $user_id ){
+    public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date = null, $silent = false ) {
+        $result = self::add_post_comment( "contacts", $contact_id, $comment, $check_permissions, $type, $user_id, $author, $date, $silent );
+        if ( $type === "comment" && !is_wp_error( $result )){
             self::check_requires_update( $contact_id );
         }
-        return wp_new_comment( $comment_data );
+        return $result;
     }
 
     /**
@@ -2049,11 +2047,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @param bool $send_notifications
      * @param bool $check_permissions
+     * @param bool $insert_activity
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared_on_contact( int $post_id, int $user_id, $meta = null, $send_notifications = true, $check_permissions = true ) {
-        return self::add_shared( 'contacts', $post_id, $user_id, $meta, $send_notifications, $check_permissions );
+    public static function add_shared_on_contact( int $post_id, int $user_id, $meta = null, $send_notifications = true, $check_permissions = true, $insert_activity = true ) {
+        return self::add_shared( 'contacts', $post_id, $user_id, $meta, $send_notifications, $check_permissions, $insert_activity );
     }
 
     public function find_contacts_with( $field, $value, $exclude_id = "" ){
@@ -2385,71 +2384,129 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( is_null( $user_id ) ) {
             $user_id = get_current_user_id();
         }
+
         $personal_counts = $wpdb->get_results( $wpdb->prepare( "
             SELECT (SELECT count(a.ID)
             FROM $wpdb->posts as a
-              JOIN $wpdb->postmeta as b
+              INNER JOIN $wpdb->postmeta as b
                 ON a.ID=b.post_id
-                   AND b.meta_key = 'assigned_to'
-                   AND b.meta_value = CONCAT( 'user-', %s )
-             WHERE a.post_status = 'publish')
+                  AND b.meta_key = 'assigned_to'
+                  AND b.meta_value = CONCAT( 'user-', %s )
+              INNER JOIN $wpdb->postmeta as type
+                ON a.ID=type.post_id AND type.meta_key = 'type' 
+            WHERE a.post_status = 'publish' 
+            AND (( type.meta_value = 'media' OR type.meta_value = 'next_gen' )
+                OR ( type.meta_key IS NULL ))
+            )
             as my_contacts,
             (SELECT count(a.ID)
-             FROM $wpdb->posts as a
-               JOIN $wpdb->postmeta as b
-                 ON a.ID=b.post_id
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
                     AND b.meta_key = 'requires_update'
                     AND b.meta_value = 'yes'
-               JOIN $wpdb->postmeta as c
-                 ON a.ID=c.post_id
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
                     AND c.meta_value = CONCAT( 'user-', %s )
-               JOIN $wpdb->postmeta as d
-                 ON a.ID=d.post_id
+                JOIN $wpdb->postmeta as d
+                  ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
                     AND d.meta_value = 'active'
+                INNER JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                  AND (( e.meta_key = 'type' 
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) ) 
+                  OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish')
             as update_needed,
             (SELECT count(a.ID)
-             FROM $wpdb->posts as a
-               JOIN $wpdb->postmeta as b
-                 ON a.ID=b.post_id
-                    AND b.meta_key = 'seeker_path'
-                    AND b.meta_value = 'attempted'
-               JOIN $wpdb->postmeta as c
-                 ON a.ID=c.post_id
+              FROM $wpdb->posts as a
+                INNER JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                    AND b.meta_key = 'accepted'
+                    AND b.meta_value = 'no'
+                INNER JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
                     AND c.meta_value = CONCAT( 'user-', %s )
-               JOIN $wpdb->postmeta as d
-                 ON a.ID=d.post_id
+                INNER JOIN $wpdb->postmeta as d
+                  ON a.ID=d.post_id
+                    AND d.meta_key = 'overall_status'
+                    AND d.meta_value = 'assigned'
+                INNER JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                  AND (( e.meta_key = 'type' 
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) ) 
+                  OR e.meta_key IS NULL)
+              WHERE a.post_status = 'publish')
+            as needs_accepted,
+            (SELECT count(a.ID)
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                    AND b.meta_key = 'seeker_path'
+                    AND b.meta_value = 'none'
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
+                    AND c.meta_key = 'assigned_to'
+                    AND c.meta_value = CONCAT( 'user-', %s )
+                JOIN $wpdb->postmeta as d
+                  ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
                     AND d.meta_value = 'active'
+                INNER JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                  AND (( e.meta_key = 'type' 
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) ) 
+                  OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish')
-            as contact_attempted,
+            as contact_unattempted,
             (SELECT count(a.ID)
-             FROM $wpdb->posts as a
-               JOIN $wpdb->postmeta as b
-                 ON a.ID=b.post_id
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
                     AND b.meta_key = 'seeker_path'
                     AND b.meta_value = 'scheduled'
-               JOIN $wpdb->postmeta as c
-                 ON a.ID=c.post_id
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
                     AND c.meta_value = CONCAT( 'user-', %s )
-               JOIN $wpdb->postmeta as d
-                 ON a.ID=d.post_id
+                JOIN $wpdb->postmeta as d
+                  ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
                     AND d.meta_value = 'active'
+                INNER JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                  AND (( e.meta_key = 'type' 
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) ) 
+                  OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish')
-             as meeting_scheduled,
-            (SELECT count(ID)
-             FROM $wpdb->posts
-             WHERE ID IN (SELECT post_id
-                          FROM $wpdb->dt_share
-                          WHERE user_id = %s)
-                      AND post_status = 'publish' )
-              as shared;
+            as meeting_scheduled,
+            (SELECT count(a.ID)
+              FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as c
+                  ON a.ID=c.post_id
+                    AND c.meta_key = 'assigned_to'
+                    AND c.meta_value != CONCAT( 'user-', %s )
+                INNER JOIN $wpdb->postmeta as type
+                    ON a.ID=type.post_id AND type.meta_key = 'type'
+              WHERE ID IN (SELECT post_id
+                FROM $wpdb->dt_share
+                WHERE user_id = %s)
+              AND post_status = 'publish' 
+              AND ( 
+                (type.meta_key = 'type' AND type.meta_value = 'media') 
+                OR 
+                ( type.meta_key = 'type' AND type.meta_value = 'next_gen' )
+                OR 
+                ( type.meta_key IS NULL )
+              )
+            )
+            as shared_with_me;
             ",
+            $user_id,
+            $user_id,
             $user_id,
             $user_id,
             $user_id,
@@ -2466,21 +2523,31 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         if ( user_can( $user_id, 'view_any_contacts' ) ) {
-            $dispatcher_counts = $wpdb->get_results( "
+            $dispatcher_counts = $wpdb->get_results( $wpdb->prepare( "
             SELECT (SELECT count(ID) as all_contacts
                     FROM $wpdb->posts
                     WHERE post_status = 'publish'
                       AND post_type = 'contacts')
                 as all_contacts,
-                  (SELECT count(a.ID) as assignment_needed
+                  (SELECT count(a.ID)
                     FROM $wpdb->posts as a
-                    JOIN $wpdb->postmeta as b
+                    INNER JOIN $wpdb->postmeta as b
                       ON a.ID=b.post_id
                          AND b.meta_key = 'overall_status'
                          AND b.meta_value = 'unassigned'
-                    WHERE a.post_status = 'publish')
+                    INNER JOIN $wpdb->postmeta as c
+                      ON a.ID=c.post_id
+                         AND c.meta_key = 'assigned_to'
+                         AND c.meta_value = CONCAT( 'user-', %s )
+                    INNER JOIN $wpdb->postmeta as e
+                      ON a.ID=e.post_id
+                      AND (( e.meta_key = 'type'
+                        AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
+                      OR e.meta_key IS NULL)
+                    WHERE a.post_status = 'publish'
+                  )
                 as needs_assigned
-              ", ARRAY_A );
+              ", $user_id), ARRAY_A );
 
             foreach ( $dispatcher_counts[0] as $key => $value ) {
                 $numbers[$key] = $value;
@@ -2490,7 +2557,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $numbers = wp_parse_args( $numbers, [
             'my_contacts' => 0,
             'update_needed' => 0,
-            'contact_attempted' => 0,
+            'needs_accepted' => 0,
+            'contact_unattempted' => 0,
             'meeting_scheduled' => 0,
             'all_contacts' => 0,
             'needs_assigned' => 0,

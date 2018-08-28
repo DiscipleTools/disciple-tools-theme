@@ -149,7 +149,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.9.1';
+            $this->version = '0.10.0';
             $this->migration_number = 7;
 
 
@@ -409,6 +409,7 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-keys.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-locations.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-critical-path.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-people-groups.php' );
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-extensions.php' ); // main registers all the menu pages and tabs
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-featured-extensions.php' );
@@ -422,8 +423,6 @@ else {
                 $this->config_groups = Disciple_Tools_Groups_Config::instance();
 
                 // People Groups
-                require_once( get_template_directory() . '/dt-people-groups/admin-menu.php' );
-                $this->people_groups_admin = Disciple_Tools_People_Groups_Admin_Menu::instance();
 
                 // Metaboxes
                 require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-activity.php' );

@@ -42,10 +42,8 @@ class Disciple_Tools_Notification_Hooks
         include( 'hooks/abstract-class-hook-base.php' );
 
         // Load all our hooks.
-        include( 'hooks/class-hook-comments.php' );
         include( 'hooks/class-hook-field-updates.php' );
 
-        new Disciple_Tools_Notifications_Hook_Comments();
         new Disciple_Tools_Notifications_Hook_Field_Updates();
     }
 }

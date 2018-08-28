@@ -412,9 +412,9 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                         <tr>
                                             <td><?php esc_html_e( 'System Email', 'disciple_tools' )?></td>
                                             <td><span data-tooltip data-click-open="true" class="top" tabindex="3" title="<?php esc_html_e( 'User email can be changed by site administrator.' ) ?>">
-                                                    <?php echo esc_html( $dt_user->user_email ); ?> <i class="fi-info primary-color" onclick="jQuery('#email-message').toggle()"></i>
-                                                </span>
-                                                <span id="email-message" style="display: none; font-size: .7em;"><br><?php esc_html_e( 'User email can be changed by site administrator.' ) ?></span>
+                                                <input type="text" class="profile-input" id="user_email"
+                                                    name="user_email"
+                                                    value="<?php echo esc_html( $dt_user->user_email ); ?>"/></td>
                                             </td>
                                         </tr>
                                         <tr>

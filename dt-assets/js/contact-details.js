@@ -68,9 +68,16 @@ function updateCriticalPath(key) {
 }
 
 function contactUpdated(updateNeeded) {
-  $('.update-needed-notification').hide()
+  $('.update-needed-notification').toggle(updateNeeded)
   $('#update-needed').prop("checked", updateNeeded)
+}
 
+function commentPosted() {
+  if (_.get(contact, "requires_update.key") === "yes"){
+    API.get_post("contact",  $("#contact-id").text() ).then(contact=>{
+      contactUpdated(_.get(contact, "requires_update.key") === "yes")
+    })
+  }
 }
 function details_accept_contact(contactId, accept){
   let data = {accept:accept}
@@ -163,10 +170,12 @@ jQuery(document).ready(function($) {
           $('#create-group-modal').foundation('open');
         } else {
           API.save_field_api('contact', contactId, {groups: {values:[{value:item.ID}]}})
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
           masonGrid.masonry('layout')
         }
-        node.blur()
-        a.blur()
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.groups
@@ -254,6 +263,10 @@ jQuery(document).ready(function($) {
             onClick: function(node, a, item, event){
               _.pullAllBy(editFieldsUpdate.sources.values, [{value:item.key}], "value")
               editFieldsUpdate.sources.values.push({value:item.key})
+              this.addMultiselectItemLayout(item)
+              event.preventDefault()
+              this.hideLayout();
+              this.resetInput();
             },
             onResult: function (node, query, result, resultCount) {
               resultCount = typeaheadTotals.sources
@@ -262,7 +275,7 @@ jQuery(document).ready(function($) {
             },
             onHideLayout: function () {
               $('#sources-result-container').html("");
-            },
+            }
           }
         });
       }
@@ -309,6 +322,10 @@ jQuery(document).ready(function($) {
             }
             _.pullAllBy(editFieldsUpdate.locations.values, [{value:item.ID}], "value")
             editFieldsUpdate.locations.values.push({value:item.ID})
+            this.addMultiselectItemLayout(item)
+            event.preventDefault()
+            this.hideLayout();
+            this.resetInput();
           },
           onResult: function (node, query, result, resultCount) {
             resultCount = typeaheadTotals.locations
@@ -317,7 +334,7 @@ jQuery(document).ready(function($) {
           },
           onHideLayout: function () {
             $('#locations-result-container').html("");
-          },
+          }
         }
       });
     }
@@ -362,6 +379,10 @@ jQuery(document).ready(function($) {
           onClick: function(node, a, item, event){
             _.pullAllBy(editFieldsUpdate.people_groups.values, [{value:item.ID}], "value")
             editFieldsUpdate.people_groups.values.push({value:item.ID})
+            this.addMultiselectItemLayout(item)
+            event.preventDefault()
+            this.hideLayout();
+            this.resetInput();
           },
           onResult: function (node, query, result, resultCount) {
             resultCount = typeaheadTotals.people_groups
@@ -370,7 +391,7 @@ jQuery(document).ready(function($) {
           },
           onHideLayout: function () {
             $('#people_groups-result-container').html("");
-          },
+          }
         }
       });
     }
@@ -526,6 +547,10 @@ jQuery(document).ready(function($) {
               <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
             </li>`)
           })
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
           masonGrid.masonry('layout')
         },
         onResult: function (node, query, result, resultCount) {
@@ -606,6 +631,10 @@ jQuery(document).ready(function($) {
     callback: {
       onClick: function(node, a, item, event){
         API.save_field_api('contact', contactId, {tags: {values:[{value:item.name}]}})
+        this.addMultiselectItemLayout(item)
+        event.preventDefault()
+        this.hideLayout();
+        this.resetInput();
       },
       onResult: function (node, query, result, resultCount) {
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -1062,9 +1091,11 @@ jQuery(document).ready(function($) {
     let sourceHTML = $('.sources-list').empty()
     if ( contact.sources && contact.sources.length > 0 ){
       contact.sources.forEach(source=>{
-        sourceHTML.append(`<li>
-          ${_.escape(_.get(contactsDetailsWpApiSettings, "contacts_custom_fields_settings.sources.default." + source))}
-        </li>`)
+        let translatedSourceHTML = _.escape(_.get(contactsDetailsWpApiSettings, "contacts_custom_fields_settings.sources.default." + source))
+        if (! translatedSourceHTML) {
+          translatedSourceHTML = `<code>${_.escape(source)}</code>`
+        }
+        sourceHTML.append(`<li>${translatedSourceHTML}</li>`)
       })
     } else {
       sourceHTML.append(`<li id="no-source">${contactsDetailsWpApiSettings.translations["not-set"]["source"]}</li>`)
