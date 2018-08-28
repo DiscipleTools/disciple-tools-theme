@@ -68,7 +68,7 @@
             $duplicate_post_meta = get_post_meta( get_the_Id(), 'duplicate_data' );
             $duplicate_ids = array();
             foreach ($duplicate_post_meta as $array) {
-                foreach (  $array as $key => $vals ) {
+                foreach ( $array as $key => $vals ) {
                     if ($key == 'override' || $key == 'unsure') { continue; }
                     foreach (array_slice( $vals, 0, 100 ) as $val) {
                         array_push( $duplicate_ids, $val );

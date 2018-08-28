@@ -506,7 +506,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
 
     public static function close_duplicate_contact( int $contact_id) {
-        self::update_contact( $contact_id, [ "overall_status" => "closed", "reason_closed" => "duplicate"] );
+        self::update_contact( $contact_id, [
+            "overall_status" => "closed",
+            "reason_closed" => "duplicate"
+        ] );
     }
 
 
