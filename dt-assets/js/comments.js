@@ -9,12 +9,12 @@ jQuery(document).ready(function($) {
   function post_comment(postId) {
     let commentInput = jQuery("#comment-input")
     let commentButton = jQuery("#add-comment-button")
-    getCommentWithMentions(comment=>{
-      if (comment) {
+    getCommentWithMentions(comment_plain_text=>{
+      if (comment_plain_text) {
         commentButton.toggleClass('loading')
         commentInput.attr("disabled", true)
         commentButton.attr("disabled", true)
-        API.post_comment(postType, postId, comment).then(data => {
+        API.post_comment(postType, postId, _.escape(comment_plain_text)).then(data => {
           commentInput.val("").trigger( "change" )
           commentButton.toggleClass('loading')
           data.comment.date = moment(data.comment.comment_date_gmt + "Z")
@@ -88,7 +88,7 @@ jQuery(document).ready(function($) {
     <div class="activity-text">
     <% _.forEach(activity, function(a){
         if (a.comment){ %>
-            <div dir="auto" class="comment-bubble <%- a.comment_ID %>" style="white-space: pre-line"> <%= a.text %> </div>
+            <div dir="auto" class="comment-bubble <%- a.comment_ID %>" style="white-space: pre-line"> <%= a.text /* not escaped on purpose */ %> </div>
             <p class="comment-controls">
                <% if ( a.comment_ID ) { %>
                   <a class="open-edit-comment" data-id="<%- a.comment_ID %>" style="margin-right:5px">
@@ -293,7 +293,14 @@ jQuery(document).ready(function($) {
       const activityData = activityDataStatusJQXHR[0];
       commentData.forEach(comment => {
         comment.date = moment(comment.comment_date_gmt + "Z")
-        comment.comment_content = _.escape(comment.comment_content)
+        /* comment_content should be HTML. However, we want to make sure that
+         * HTML like "<div>Hello" gets transformed to "<div>Hello</div>", that
+         * is, that all tags are closed, so that the comment_content can be
+         * included in HTML without any nasty surprises. This is one way to do
+         * that. This is not sufficient for malicious input, but hopefully we
+         * can trust the contents of the database to have been sanitized
+         * thanks to wp_new_comment . */
+        comment.comment_content = $("<div>").html(comment.comment_content).html()
       })
       comments = commentData
       activity = activityData

@@ -212,7 +212,7 @@ class Disciple_Tools_Posts
     /**
      * @param string $post_type
      * @param int $post_id
-     * @param string $comment
+     * @param string $comment_html
      * @param bool $check_permissions
      * @param string $type
      * @param null $user_id
@@ -222,7 +222,7 @@ class Disciple_Tools_Posts
      *
      * @return false|int|\WP_Error
      */
-    public static function add_post_comment( string $post_type, int $post_id, string $comment, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date = null, $silent = false ) {
+    public static function add_post_comment( string $post_type, int $post_id, string $comment_html, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date = null, $silent = false ) {
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
@@ -230,7 +230,7 @@ class Disciple_Tools_Posts
         $user_id = $user_id ?? get_current_user_id();
         $comment_data = [
             'comment_post_ID'      => $post_id,
-            'comment_content'      => $comment,
+            'comment_content'      => $comment_html,
             'user_id'              => $user_id,
             'comment_author'       => $author ?? $user->display_name,
             'comment_author_url'   => $user->user_url,

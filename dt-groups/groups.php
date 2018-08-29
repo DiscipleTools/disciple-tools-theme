@@ -800,12 +800,12 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     /**
      * @param int    $group_id
-     * @param string $comment
+     * @param string $comment_html
      *
      * @return false|int|\WP_Error
      */
-    public static function add_comment( int $group_id, string $comment ) {
-        return self::add_post_comment( 'groups', $group_id, $comment );
+    public static function add_comment( int $group_id, string $comment_html ) {
+        return self::add_post_comment( 'groups', $group_id, $comment_html );
     }
 
     /**
