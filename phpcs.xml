@@ -43,19 +43,11 @@
   <rule ref="WordPress">
 
 
+    <!-- TODO: enable these rules: -->
 
-    <exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
     <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
-    <exclude name="WordPress.VIP.PostsPerPage.posts_per_page_nopaging" />
-    <exclude name="WordPress.VIP.PostsPerPage.posts_per_page_numberposts" />
     <exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
-    <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_get_user_meta" />
-    <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_add_user_meta" />
-    <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_update_user_meta" />
-    <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_delete_user_meta" />
-    <exclude name="WordPress.VIP.RestrictedVariables.user_meta__wpdb__usermeta" />
     <exclude name="WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar" />
-    <exclude name="WordPress.VIP.FileSystemWritesDisallow" />
 
     <!-- We currently don't want these rules that WordPress imports: -->
 
@@ -153,12 +145,6 @@
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma" />
     <exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceBeforeComma" />
     <exclude name="WordPress.PHP.YodaConditions.NotYoda" />
-    <exclude name="WordPress.VIP.AdminBarRemoval.RemovalDetected" />
-    <exclude name="WordPress.VIP.DirectDatabaseQuery.SchemaChange" />
-    <exclude name="WordPress.VIP.RestrictedFunctions.custom_role_add_role" />
-    <exclude name="WordPress.VIP.RestrictedFunctions.get_page_by_title_get_page_by_title" />
-    <exclude name="WordPress.VIP.RestrictedFunctions.get_term_by_get_term_by" />
-    <exclude name="WordPress.VIP.RestrictedFunctions.switch_to_blog_switch_to_blog" />
     <!-- <exclude name="WordPress.WhiteSpace.CastStructureSpacing.NoSpaceBeforeOpenParenthesis" /> -->
     <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.BlankLineAfterEnd" /> -->
     <!-- <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceAfterCloseParenthesis" /> -->
