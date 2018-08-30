@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 /**
- * Load scripts
+ * Load scripts, in a way that implements cache-busting
  *
  * @param string $handle
  * @param string $rel_src
@@ -19,7 +19,19 @@ function dt_theme_enqueue_script( string $handle, string $rel_src, array $deps =
 }
 
 /**
- * Load styles
+ * Register scripts, in a way that implements cache-busting
+ *
+ */
+function dt_theme_register_script( string $handle, string $rel_src, array $deps = array(), bool $in_footer = false ) {
+    if ( $rel_src[0] === "/" ) {
+        throw new Error( "dt_theme_register_script took \$rel_src argument which unexpectedly started with /" );
+    }
+    return wp_register_script( $handle, get_template_directory_uri() . "/$rel_src", $deps, filemtime( get_template_directory() . "/$rel_src" ), $in_footer );
+}
+
+
+/**
+ * Load styles, in a way that implements cache-busting
  *
  * @param string $handle
  * @param string $rel_src
@@ -35,6 +47,18 @@ function dt_theme_enqueue_style( string $handle, string $rel_src, array $deps = 
     wp_enqueue_style( $handle, get_template_directory_uri() . "/$rel_src", $deps, filemtime( get_template_directory() . "/$rel_src" ), $media );
 }
 
+
+/**
+ * Register styles, in a way that implements cache-busting
+ */
+function dt_theme_register_style( string $handle, string $rel_src, array $deps = array(), string $media = 'all' ) {
+    if ( $rel_src[0] === "/" ) {
+        throw new Error( "dt_theme_register_style took \$rel_src argument which unexpectedly started with /" );
+    }
+    return wp_register_style( $handle, get_template_directory_uri() . "/$rel_src", $deps, filemtime( get_template_directory() . "/$rel_src" ), $media );
+}
+
+
 /**
  * Primary site script loader
  */
@@ -44,8 +68,10 @@ function dt_site_scripts() {
     dt_theme_enqueue_script( 'modernizr-custom', 'dt-assets/js/modernizr-custom.js', [], true );
     dt_theme_enqueue_script( 'check-browser-version', 'dt-assets/js/check-browser-version.js', [ 'modernizr-custom' ], true );
 
+    // phpcs:ignore WordPress.WP.EnqueuedResourceParameters
     wp_enqueue_style( 'foundation-css', 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' );
 
+    // phpcs:ignore WordPress.WP.EnqueuedResourceParameters
     wp_enqueue_style( 'jquery-ui-site-css', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css', array(), '', 'all' );
     wp_deregister_script( 'jquery' );
     wp_register_script( 'jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js', false, '3.2.1' );

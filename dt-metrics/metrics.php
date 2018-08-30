@@ -46,7 +46,9 @@ class Disciple_Tools_Metrics
 
     // Enqueue maps and charts for standard metrics
     public function enqueue_google() {
+        /* phpcs:ignore WordPress.WP.EnqueuedResourceParameters */
         wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', [], false );
+        /* phpcs:ignore WordPress.WP.EnqueuedResourceParameters */
         wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . dt_get_option( 'map_key' ), array(), null, true );
     }
 
