@@ -6,11 +6,11 @@ Template Name: Metrics
 
 <?php get_header(); ?>
 
-    <div id="content">
+    <div style="padding:15px">
 
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
-            <div class="large-3 medium-3 small-12 cell ">
+            <div class="large-2 medium-3 small-12 cell ">
 
                 <section id="" class="medium-12 cell">
 
@@ -34,7 +34,7 @@ Template Name: Metrics
 
             </div>
 
-            <div class="large-9 medium-9 small-12 cell ">
+            <div class="large-10 medium-9 small-12 cell ">
 
                 <section id="" class="medium-12 cell">
 
