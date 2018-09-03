@@ -1577,7 +1577,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                       AND d.meta_value = 'active'
                WHERE a.post_status = 'publish'
                      AND a.post_type = 'groups')
-                as groups
+                as `groups`
             ",
             $user_id,
             $user_id,
@@ -1604,8 +1604,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         }
 
         $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT d.meta_key as health_key, 
-              count(*) as count, 
+            SELECT d.meta_key as health_key,
+              count(*) as count,
               ( SELECT count(*)
               FROM $wpdb->posts as a
                 JOIN $wpdb->postmeta as b
@@ -1646,8 +1646,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         global $wpdb;
 
         $results = $wpdb->get_results($wpdb->prepare( "
-            SELECT d.meta_key as health_key, 
-              count(*) as count, 
+            SELECT d.meta_key as health_key,
+              count(*) as count,
               ( SELECT count(*)
               FROM $wpdb->posts as a
                 JOIN $wpdb->postmeta as c
@@ -1834,7 +1834,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                AND d.meta_value = 'active'
                WHERE a.post_status = 'publish'
                 AND a.post_type = 'groups')
-          as groups
+          as `groups`
         ",
         ARRAY_A );
 
