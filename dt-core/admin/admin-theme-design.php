@@ -132,7 +132,7 @@ if ( !class_exists( 'Disciple_Tools_Three_Column_Screen_Layout' ) ) {
         }
 
         public function admin_scripts() {
-            wp_enqueue_style( 'Disciple_Tools_Three_Column_Screen_Layout-style', disciple_tools()->admin_css_url . 'three-column-screen-layout.min.css?v=4.2' );
+            dt_theme_enqueue_style( 'Disciple_Tools_Three_Column_Screen_Layout-style', 'dt-core/admin/css/three-column-screen-layout.min.css' );
         }
 
         /**

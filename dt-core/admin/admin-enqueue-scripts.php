@@ -62,8 +62,9 @@ function dt_group_page_scripts() {
         wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
 
         wp_enqueue_script( 'jquery' );
-        wp_enqueue_script( 'jquery-ui-datepicker', [ 'jquery' ] );
+        wp_enqueue_script( 'jquery-ui-datepicker' );
 
+        // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
         wp_register_style( 'jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
         wp_enqueue_style( 'jquery-ui' );
     }
@@ -77,6 +78,7 @@ function dt_dashboard_page_scripts() {
 
     if ( is_admin() && 'index.php' === $pagenow ) {
 
+        // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
         wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(), false );
         wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
         wp_enqueue_script( 'dt_dashboard_scripts', disciple_tools()->admin_js_url . 'dt-dashboard.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-dashboard.js' ), true );
