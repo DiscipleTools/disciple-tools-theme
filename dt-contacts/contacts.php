@@ -513,15 +513,16 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * Update an existing Contact
      *
-     * @param  int|null  $contact_id , the post id for the contact
-     * @param  array     $fields     , the meta fields
+     * @param  int|null $contact_id , the post id for the contact
+     * @param  array $fields , the meta fields
      * @param  bool|null $check_permissions
+     * @param bool $silent
      *
+     * @return int | WP_Error of contact ID
      * @access public
      * @since  0.1.0
-     * @return int | WP_Error of contact ID
      */
-    public static function update_contact( int $contact_id, array $fields, $check_permissions = true ) {
+    public static function update_contact( int $contact_id, array $fields, $check_permissions = true, bool $silent = false ) {
 
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
@@ -651,7 +652,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         //hook for signaling that a contact has been updated and which keys have been changed
         if ( !is_wp_error( $contact )){
             do_action( "dt_contact_updated", $contact_id, $initial_fields, $contact );
-            Disciple_Tools_Notifications::insert_notification_for_post_update( "contacts", $contact, $existing_contact, $initial_keys );
+            if ( !$silent ){
+                Disciple_Tools_Notifications::insert_notification_for_post_update( "contacts", $contact, $existing_contact, $initial_keys );
+            }
         }
 
         return $contact;
