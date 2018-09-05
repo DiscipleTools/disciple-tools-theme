@@ -27,11 +27,11 @@ if ( !defined( 'ABSPATH' ) ) {
  *
  * @param $email
  * @param $subject
- * @param $message
+ * @param $message_plain_text
  *
  * @return bool|\WP_Error
  */
-function dt_send_email( $email, $subject, $message ) {
+function dt_send_email( $email, $subject, $message_plain_text ) {
     //@todo, remove this. Even System needs to be able to send emails.
     // Check permission to send email
 //    if ( ! Disciple_Tools_Posts::can_access( 'contacts' ) ) {
@@ -41,7 +41,7 @@ function dt_send_email( $email, $subject, $message ) {
     // Sanitize
     $email = sanitize_email( $email );
     $subject = sanitize_text_field( $subject );
-    $message = sanitize_textarea_field( $message );
+    $message_plain_text = sanitize_textarea_field( $message_plain_text );
 
     $subject = dt_get_option( "dt_email_base_subject" ) . ": " . $subject;
     // Send email
@@ -49,9 +49,9 @@ function dt_send_email( $email, $subject, $message ) {
         $send_email = new Disciple_Tools_Notifications_Email();
         $send_email->launch(
             [
-                'email'   => $email,
-                'subject' => $subject,
-                'message' => $message,
+                'email'              => $email,
+                'subject'            => $subject,
+                'message_plain_text' => $message_plain_text,
             ]
         );
     } catch ( Exception $e ) {
@@ -81,14 +81,14 @@ function dt_send_email( $email, $subject, $message ) {
  *
  * @param string $email
  * @param int    $post_id
- * @param string $message
+ * @param string $message_plain_text
  *
  * @return bool|\WP_Error
  */
-function dt_send_email_about_post( string $email, int $post_id, string $message ) {
+function dt_send_email_about_post( string $email, int $post_id, string $message_plain_text ) {
     $post_type = get_post_type( $post_id );
     $contact_url = home_url( '/' ) . $post_type . '/' . $post_id;
-    $full_message = $message . "\r\n\r\n--\r\n" . __( 'Click here to view or reply', 'disciple_tools' ) . ": $contact_url";
+    $full_message = $message_plain_text . "\r\n\r\n--\r\n" . __( 'Click here to view or reply', 'disciple_tools' ) . ": $contact_url";
     $post_label = Disciple_Tools_Posts::get_label_for_post_type( $post_type, true );
 
     return dt_send_email(
@@ -134,7 +134,7 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
             if ( sanitize_text_field( wp_unslash( $_POST['action'] ) ) == 'dt_async_email_notification' &&
                  isset( $_POST['_nonce'] ) && $this->verify_async_nonce( sanitize_key( wp_unslash( $_POST['_nonce'] ) ) ) ) {
 
-                wp_mail( sanitize_email( $_POST[0]['email'] ), sanitize_text_field( wp_unslash( $_POST[0]['subject'] ) ), sanitize_textarea_field( wp_unslash( $_POST[0]['message'] ) ) );
+                wp_mail( sanitize_email( $_POST[0]['email'] ), sanitize_text_field( wp_unslash( $_POST[0]['subject'] ) ), sanitize_textarea_field( wp_unslash( $_POST[0]['message_plain_text'] ) ) );
 
             }
         }
@@ -149,9 +149,9 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
     protected function run_action() {
         $email = sanitize_email( $_POST[0]['email'] );
         $subject = sanitize_text_field( $_POST[0]['subject'] );
-        $message = sanitize_textarea_field( $_POST[0]['message'] );
+        $message_plain_text = sanitize_textarea_field( $_POST[0]['message_plain_text'] );
 
-        do_action( "dt_async_$this->action", $email, $subject, $message );
+        do_action( "dt_async_$this->action", $email, $subject, $message_plain_text );
 
     }
 }

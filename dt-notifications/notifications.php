@@ -349,7 +349,7 @@ class Disciple_Tools_Notifications
             // user friendly timestamp
             foreach ( $result as $key => $value ) {
                 $result[ $key ]['pretty_time'] = self::pretty_timestamp( $value['date_notified'] );
-                $result[ $key ]["notification_note"] = self::get_notification_message( $value );
+                $result[ $key ]["notification_note"] = self::get_notification_message_html( $value );
             }
 
             return [
@@ -461,11 +461,12 @@ class Disciple_Tools_Notifications
                 'field_key'           => "comments",
                 'field_value'         => ''
             ];
-            $message = self::get_notification_message( $args );
+            $message = self::get_notification_message_html( $args );
 
             dt_notification_insert( $args );
             $user = get_userdata( $user_id );
-            dt_send_email_about_post( $user->user_email, $post_id, $message );
+            $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
+            dt_send_email_about_post( $user->user_email, $post_id, $message_plain_text );
         }
     }
 
@@ -492,11 +493,12 @@ class Disciple_Tools_Notifications
                 'field_key'           => "comments",
                 'field_value'         => ''
             ];
-            $message = self::get_notification_message( $args );
+            $message = self::get_notification_message_html( $args );
 
             dt_notification_insert( $args );
             $user = get_userdata( $user_id );
-            dt_send_email_about_post( $user->user_email, $post_id, $message );
+            $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
+            dt_send_email_about_post( $user->user_email, $post_id, $message_plain_text );
         }
     }
 
@@ -524,11 +526,12 @@ class Disciple_Tools_Notifications
                 'field_key'           => "",
                 'field_value'         => ''
             ];
-            $message = self::get_notification_message( $args );
+            $message = self::get_notification_message_html( $args );
 
             dt_notification_insert( $args );
             $user = get_userdata( $new_assigned_to );
-            dt_send_email_about_post( $user->user_email, $post_id, $message );
+            $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
+            dt_send_email_about_post( $user->user_email, $post_id, $message_plain_text );
         }
     }
 
@@ -560,7 +563,7 @@ class Disciple_Tools_Notifications
                     'field_key'           => $post_type,
                     'field_value'         => '',
                 ];
-                $message = self::get_notification_message( $notification );
+                $message = self::get_notification_message_html( $notification );
 
                 $user_meta = get_user_meta( $user_id );
                 if ( dt_user_notification_is_enabled( 'new_assigned', 'web', $user_meta, $user_id ) ) {
@@ -568,7 +571,8 @@ class Disciple_Tools_Notifications
                 }
                 if ( dt_user_notification_is_enabled( 'new_assigned', 'email', $user_meta, $user_id ) ) {
                     $user = get_userdata( $user_id );
-                    dt_send_email_about_post( $user->user_email, $post_id, $message );
+                    $message_plain_text = wp_specialchars_decode( $message, ENT_QUOTES );
+                    dt_send_email_about_post( $user->user_email, $post_id, $message_plain_text );
                 }
             }
         }
@@ -633,7 +637,7 @@ class Disciple_Tools_Notifications
                                         dt_notification_insert( $notification );
                                     }
                                     if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
-                                        $email .= self::get_notification_message( $notification ) . "\n";
+                                        $email .= self::get_notification_message_html( $notification ) . "\n";
                                     }
                                 } else {
                                     $notification["notification_name"] = "assigned_to_other";
@@ -644,7 +648,7 @@ class Disciple_Tools_Notifications
                                         dt_notification_insert( $notification );
                                     }
                                     if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
-                                        $email .= self::get_notification_message( $notification ) . "\n";
+                                        $email .= self::get_notification_message_html( $notification ) . "\n";
                                     }
                                 }
                             }
@@ -657,7 +661,7 @@ class Disciple_Tools_Notifications
                                     dt_notification_insert( $notification );
                                 }
                                 if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
-                                    $email .= self::get_notification_message( $notification ) . "\n";
+                                    $email .= self::get_notification_message_html( $notification ) . "\n";
                                 }
                             }
                         }
@@ -668,7 +672,7 @@ class Disciple_Tools_Notifications
                                 dt_notification_insert( $notification );
                             }
                             if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
-                                $email .= self::get_notification_message( $notification ) . "\n";
+                                $email .= self::get_notification_message_html( $notification ) . "\n";
                             }
                         }
                         if ( in_array( "contact_info_update", $notification_on_fields ) ) {
@@ -678,15 +682,16 @@ class Disciple_Tools_Notifications
                                 dt_notification_insert( $notification );
                             }
                             if ( dt_user_notification_is_enabled( $notification_type, 'email', $user_meta, $follower ) ) {
-                                $email .= self::get_notification_message( $notification ) . "\n";
+                                $email .= self::get_notification_message_html( $notification ) . "\n";
                             }
                         }
                         if ( $email ) {
                             $user = get_userdata( $follower );
+                            $message_plain_text = wp_specialchars_decode( $email, ENT_QUOTES );
                             dt_send_email_about_post(
                                 $user->user_email,
                                 $fields["ID"],
-                                $email
+                                $message_plain_text
                             );
                         }
                     }
@@ -742,11 +747,14 @@ class Disciple_Tools_Notifications
     }
 
 
-    public static function get_notification_message( $notification ){
+    /**
+     * @return string $notification_note the return value is expected to contain HTML.
+     */
+    public static function get_notification_message_html( $notification ){
         $object_id = $notification["post_id"];
         $post = get_post( $object_id );
         $post_title = isset( $post->post_title ) ? sanitize_text_field( $post->post_title ) : "";
-        $notification_note = $notification["notification_note"];
+        $notification_note = $notification["notification_note"]; // $notification_note is expected to contain HTML
         $link = '<a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . $post_title . '</a>';
         if ( $notification["notification_name"] === "created" ) {
             $notification_note = sprintf( esc_html_x( '%s was created and assigned to you.', '', 'disciple_tools' ), $link );
