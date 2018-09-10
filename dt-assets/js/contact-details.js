@@ -486,8 +486,6 @@ jQuery(document).ready(function($) {
   /**
    * connections to other contacts
    */
-  console.log(contactsDetailsWpApiSettings);
-  console.log(wpApiShare);
   ;["baptized_by", "baptized", "coached_by", "coaching", "subassigned"].forEach(field_id=>{
     typeaheadTotals[field_id] = 0
     $.typeahead({
