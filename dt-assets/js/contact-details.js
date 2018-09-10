@@ -159,7 +159,7 @@ jQuery(document).ready(function($) {
       },
       href: function(item){
         if (item){
-          return `/groups/${item.ID}`
+          return `${window.wpApiShare.site_url}/groups/${item.ID}`
         }
       }
     },
@@ -486,6 +486,8 @@ jQuery(document).ready(function($) {
   /**
    * connections to other contacts
    */
+  console.log(contactsDetailsWpApiSettings);
+  console.log(wpApiShare);
   ;["baptized_by", "baptized", "coached_by", "coaching", "subassigned"].forEach(field_id=>{
     typeaheadTotals[field_id] = 0
     $.typeahead({
@@ -543,7 +545,7 @@ jQuery(document).ready(function($) {
             }).catch(err => { console.error(err) })
           }
         },
-        href: "/contacts/{{ID}}"
+        href: window.wpApiShare.site_url + "/contacts/{{ID}}"
       },
       callback: {
         onClick: function(node, a, item, event){

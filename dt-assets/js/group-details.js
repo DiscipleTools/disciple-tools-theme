@@ -408,7 +408,7 @@ jQuery(document).ready(function($) {
           }).catch(err => { console.error(err) })
         }
       },
-      href: "/contacts/{{ID}}"
+      href: window.wpApiShare.site_url + "/contacts/{{ID}}"
     },
     callback: {
       onClick: function(node, a, item, event){
@@ -460,7 +460,7 @@ jQuery(document).ready(function($) {
           editFieldsUpdate.leaders.values.push({value:item.ID, delete:true})
         }
       },
-      href: "/contacts/{{ID}}"
+      href: window.wpApiShare.site_url + "/contacts/{{ID}}"
     },
     callback: {
       onClick: function(node, a, item, e){
