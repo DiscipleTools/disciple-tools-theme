@@ -342,3 +342,14 @@ window.TYPEAHEADS = {
     });
   }
 }
+
+// nonce timeout fix
+// every 5 minutes will check if nonce timed out
+// if it did then it will redirect to login
+setInterval(function() {
+  //check if timed out
+  get_new_notification_count()
+  .fail(function(x) {
+      window.location.href = "/";
+  });
+}, 300000); //300000 = five minutes

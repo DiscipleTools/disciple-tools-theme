@@ -346,7 +346,7 @@ function dt_get_site_options_defaults() {
                 "status"      => "active",
                 "seeker_path" => "none",
                 "days"        => 3,
-                "comment"     => "This contact is active and nobody has tried to contact them. Please do so."
+                "comment"     => "This contact is active but there is no record of anybody contacting them. Please do contact them.",
             ],
             [
                 "status"      => "active",
