@@ -893,6 +893,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         $raw_baptism_generation_list = self::query_get_baptism_generations( $year );
         $all_baptisms = self::build_baptism_generation_counts( $raw_baptism_generation_list );
         $baptism_generations_this_year = self::build_baptism_generations_this_year( $all_baptisms, $year );
+        $results[0]["total_baptisms"] = array_sum( $baptism_generations_this_year );
 
         // build group generations
         $raw_connections = self::query_get_group_generations();
