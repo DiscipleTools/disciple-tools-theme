@@ -346,7 +346,7 @@ function dt_get_site_options_defaults() {
                 "status"      => "active",
                 "seeker_path" => "none",
                 "days"        => 3,
-                "comment"     => "This contact is active and nobody has tried to contact them. Please do so."
+                "comment"     => "This contact is active but there is no record of anybody contacting them. Please do contact them.",
             ],
             [
                 "status"      => "active",
@@ -401,7 +401,7 @@ function dt_get_site_options_defaults() {
 function dt_get_site_custom_lists( string $list_title = null ) {
     $fields = [];
 
-    $fields['version'] = 6;
+    $fields['version'] = 7;
     //custom fields
     $fields['custom_dropdown_contact_options'] = [];
     $fields['seeker_path'] = [
@@ -527,6 +527,12 @@ function dt_get_site_custom_lists( string $list_title = null ) {
     ];
 
     $fields['sources'] = [
+        'personal'           => [
+            'label'       => 'Personal',
+            'key'         => 'personal',
+            'description' => 'Personal contacts.',
+            'enabled'     => true,
+        ],
         'web'           => [
             'label'       => 'Web',
             'key'         => 'web',
