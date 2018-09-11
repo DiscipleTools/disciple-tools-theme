@@ -756,10 +756,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return mixed
      */
     public static function add_baptized_by_to_contact( $contact_id, $baptized_by ) {
-        return p2p_type( 'baptizer_to_baptized' )->connect(
+        $p2p = p2p_type( 'baptizer_to_baptized' )->connect(
             $contact_id, $baptized_by,
             [ 'date' => current_time( 'mysql' ) ]
         );
+        Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $contact_id );
+        return $p2p;
     }
 
     /**
@@ -769,10 +771,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return mixed
      */
     public static function add_baptized_to_contact( $contact_id, $baptized ) {
-        return p2p_type( 'baptizer_to_baptized' )->connect(
+        $p2p = p2p_type( 'baptizer_to_baptized' )->connect(
             $baptized, $contact_id,
             [ 'date' => current_time( 'mysql' ) ]
         );
+        Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $baptized );
+        return $p2p;
+
     }
 
     /**
@@ -858,7 +863,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return mixed
      */
     public static function remove_baptized_by_from_contact( $contact_id, $baptized_by ) {
-        return p2p_type( 'baptizer_to_baptized' )->disconnect( $contact_id, $baptized_by );
+        $p2p = p2p_type( 'baptizer_to_baptized' )->disconnect( $contact_id, $baptized_by );
+        Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $contact_id );
+        return $p2p;
     }
 
     /**
@@ -868,7 +875,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return mixed
      */
     public static function remove_baptized_from_contact( $contact_id, $baptized ) {
-        return p2p_type( 'baptizer_to_baptized' )->disconnect( $baptized, $contact_id );
+        $p2p = p2p_type( 'baptizer_to_baptized' )->disconnect( $baptized, $contact_id );
+        Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $baptized );
+        return $p2p;
     }
 
     /**

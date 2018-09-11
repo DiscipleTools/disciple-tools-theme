@@ -426,7 +426,7 @@ class Disciple_Tools_Posts
                 } else if ( $activity->meta_key === "_sample"){
                     $message = __( "Created from Demo Plugin", "disciple_tools" );
                 } else {
-                    $message = "Deleted field";
+                    $message = $activity->meta_key . ": " . $activity->meta_value;
                 }
             }
         }
