@@ -427,19 +427,21 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-share-contact.php' );
             }
             /* End Admin configuration section */
+
+
         } // End __construct()
 
-        /**
-         * Log the plugin version number.
-         *
-         * @access private
-         * @since  0.1.0
-         */
-        public function _log_version_number() // @todo remove. Don't migrations replace this?
-        {
-            // Log the version number.
-            update_option( $this->token . '-version', $this->version );
-        } // End _log_version_number()
+//        /**
+//         * Log the plugin version number.
+//         *
+//         * @access private
+//         * @since  0.1.0
+//         */
+//        public function _log_version_number() // @todo remove. Don't migrations replace this?
+//        {
+//            // Log the version number.
+//            update_option( $this->token . '-version', $this->version );
+//        } // End _log_version_number()
 
         /**
          * Cloning is forbidden.
@@ -463,21 +465,6 @@ else {
 
     } // End Class
 
-    /**
-     * Deactivation Hook
-     */
-    function dt_deactivate() {
-        require_once get_template_directory() . '/dt-core/admin/class-deactivator.php';
-        Disciple_Tools_Deactivator::deactivate();
-    }
-
-    /**
-     * Activation Hook
-     */
-    function dt_activate() {
-        require_once get_template_directory() . '/dt-core/admin/class-activator.php';
-        Disciple_Tools_Activator::activate();
-    }
 
     /**
      * Route Front Page depending on login role
@@ -547,3 +534,17 @@ function dt_theme_admin_notice_required_php_version() {
     </div>
     <?php
 }
+
+/** In Multisite, if blog is deleted, this deletes custom tables as well.  */
+function dt_deactivate() {
+    global $wpdb;
+
+    $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_activity_log`;" );
+    $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_reports`;" );
+    $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_reportmeta`;" );
+    $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_share`;" );
+    $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_notifications`;" );
+    $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}p2p`;" );
+    $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}p2pmeta`;" );
+}
+add_action('delete_blog', 'dt_deactivate' );
