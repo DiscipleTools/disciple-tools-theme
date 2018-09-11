@@ -12,15 +12,16 @@ function disciple_tools_login_title() { return get_option( 'blogname' ); }
 
 // calling it only on the login page
 add_action( 'login_enqueue_scripts', 'disciple_tools_login_css', 10 );
-add_filter( 'login_headerurl', 'disciple_tools_login_url' );
-add_filter( 'login_headertitle', 'disciple_tools_login_title' );
-add_filter( 'login_redirect', function( $url, $query, $user ) {
-    if ( $url != admin_url() ){
-        return $url;
-    } else {
-        return home_url();
-    }
-}, 10, 3 );
+add_filter( 'login_redirect',
+    function( $url, $query, $user ) {
+        if ( $url != admin_url() ){
+            return $url;
+        } else {
+            return home_url();
+        }
+    },
+    10,
+3 );
 
 
 /**
@@ -33,8 +34,6 @@ add_filter( 'login_redirect', function( $url, $query, $user ) {
 /*
  * Action and Filters
  */
-add_filter( 'login_headerurl', 'dt_my_login_logo_url', 10 );
-add_filter( 'login_headertitle', 'dt_my_login_logo_url_title', 10 );
 
 /*
  * Functions
@@ -44,7 +43,3 @@ function dt_my_login_logo_url() {
     return home_url();
 }
 
-// Change title
-function dt_my_login_logo_url_title() {
-    return 'Disciple_Tools';
-}
