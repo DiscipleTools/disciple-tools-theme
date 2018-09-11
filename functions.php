@@ -11,7 +11,6 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
-
 /**
  * Test for minimum required PHP version
  */
@@ -431,18 +430,6 @@ else {
 
         } // End __construct()
 
-//        /**
-//         * Log the plugin version number.
-//         *
-//         * @access private
-//         * @since  0.1.0
-//         */
-//        public function _log_version_number() // @todo remove. Don't migrations replace this?
-//        {
-//            // Log the version number.
-//            update_option( $this->token . '-version', $this->version );
-//        } // End _log_version_number()
-
         /**
          * Cloning is forbidden.
          *
@@ -534,17 +521,3 @@ function dt_theme_admin_notice_required_php_version() {
     </div>
     <?php
 }
-
-/** In Multisite, if blog is deleted, this deletes custom tables as well.  */
-function dt_deactivate() {
-    global $wpdb;
-
-    $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_activity_log`;" );
-    $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_reports`;" );
-    $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_reportmeta`;" );
-    $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_share`;" );
-    $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_notifications`;" );
-    $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}p2p`;" );
-    $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}p2pmeta`;" );
-}
-add_action('delete_blog', 'dt_deactivate' );
