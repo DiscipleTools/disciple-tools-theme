@@ -705,6 +705,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     /*border is optional*/
                     cursor: pointer;
                     }
+                    #postbox-container-3 {display:none;}
+                    #postbox-container-4 {display:none;}
             </style>";
         }
 
