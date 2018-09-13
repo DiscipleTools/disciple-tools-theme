@@ -658,57 +658,63 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         }
 
         public function scripts() {
-            echo "<script type='text/javascript'>
+            global $post;
+            if ( $this->post_type === $post->post_type ) {
 
-            function check_link_status( transfer_token, url, id ) {
-
-            let linked = '" . esc_attr__( 'Linked' ) . "';
-            let not_linked = '" . esc_attr__( 'Not Linked' ) . "';
-            let not_found = '" . esc_attr__( 'Failed to connect with the URL provided.' ) . "';
-
-            return jQuery.ajax({
-                type: 'POST',
-                data: JSON.stringify({ \"transfer_token\": transfer_token } ),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                url: 'https://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
-            })
-                .done(function (data) {
-                    if( data ) {
-                        jQuery('#' + id + '-status').html( linked ).attr('class', 'success-green')
-                    } else {
-                        jQuery('#' + id + '-status').html( not_linked ).attr('class', 'fail-red');
-                        jQuery('#' + id + '-message').show();
-                    }
+                echo "<script type='text/javascript'>
+    
+                function check_link_status( transfer_token, url, id ) {
+    
+                let linked = '" . esc_attr__( 'Linked' ) . "';
+                let not_linked = '" . esc_attr__( 'Not Linked' ) . "';
+                let not_found = '" . esc_attr__( 'Failed to connect with the URL provided.' ) . "';
+    
+                return jQuery.ajax({
+                    type: 'POST',
+                    data: JSON.stringify({ \"transfer_token\": transfer_token } ),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    url: 'https://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
                 })
-                .fail(function (err) {
-                    jQuery( document ).ajaxError(function( event, request, settings ) {
-                         if( request.status === 0 ) {
-                            jQuery('#' + id + '-status').html( not_found ).attr('class', 'fail-red')
-                         } else {
-                            jQuery('#' + id + '-status').html( JSON.stringify( request.statusText ) ).attr('class', 'fail-red')
-                         }
+                    .done(function (data) {
+                        if( data ) {
+                            jQuery('#' + id + '-status').html( linked ).attr('class', 'success-green')
+                        } else {
+                            jQuery('#' + id + '-status').html( not_linked ).attr('class', 'fail-red');
+                            jQuery('#' + id + '-message').show();
+                        }
+                    })
+                    .fail(function (err) {
+                        jQuery( document ).ajaxError(function( event, request, settings ) {
+                             if( request.status === 0 ) {
+                                jQuery('#' + id + '-status').html( not_found ).attr('class', 'fail-red')
+                             } else {
+                                jQuery('#' + id + '-status').html( JSON.stringify( request.statusText ) ).attr('class', 'fail-red')
+                             }
+                        });
                     });
-                });
+                }
+                </script>";
+
+                echo "<style>
+                    .success-green { color: limegreen;}
+                    .fail-red { color: red;}
+                    .info-color { color: steelblue; }
+                    .button-like-link-left {
+                        float: left;
+                        background: none !important;
+                        color: inherit;
+                        border: none;
+                        padding: 0 !important;
+                        font: inherit;
+                        /*border is optional*/
+                        cursor: pointer;
+                        }
+                        #postbox-container-3 {display:none;}
+                        #postbox-container-4 {display:none;}
+                        </style>";
+
             }
-            </script>";
-            echo "<style>
-                .success-green { color: limegreen;}
-                .fail-red { color: red;}
-                .info-color { color: steelblue; }
-                .button-like-link-left {
-                    float: left;
-                    background: none !important;
-                    color: inherit;
-                    border: none;
-                    padding: 0 !important;
-                    font: inherit;
-                    /*border is optional*/
-                    cursor: pointer;
-                    }
-                    #postbox-container-3 {display:none;}
-                    #postbox-container-4 {display:none;}
-            </style>";
         }
 
         public function enter_title_here( $title ) {
