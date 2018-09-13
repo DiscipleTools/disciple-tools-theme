@@ -822,7 +822,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                   AND a.post_type = 'contacts'
                 ) as total_baptisms,
                 ( 0 ) as 1st_gen_baptisms,
-                ( SELECT count(*) as count
+                ( SELECT count(DISTINCT(p2p_to)) as count
                     FROM $wpdb->p2p
                     WHERE p2p_from IN (
                       SELECT a.ID
