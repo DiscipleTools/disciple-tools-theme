@@ -21,7 +21,7 @@ function disciple_tools_top_nav_desktop() {
     /**
      * Fires after the top menu
      */
-    do_action('dt_top_nav_desktop' );
+    do_action( 'dt_top_nav_desktop' );
 }
 
 function disciple_tools_top_nav_mobile() {
@@ -34,7 +34,7 @@ function disciple_tools_top_nav_mobile() {
         /**
          * Fires after the mobile nav menu
          */
-        do_action('dt_top_nav_mobile');
+        do_action( 'dt_top_nav_mobile' );
     }
 }
 
