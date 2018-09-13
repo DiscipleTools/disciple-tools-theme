@@ -659,7 +659,15 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
         public function scripts() {
             global $post;
-            if ( $this->post_type === $post->post_type ) {
+            if ( isset( $post->post_type ) ) {
+                $pt = $post->post_type;
+            } elseif ( isset( $_GET['post_type'] ) ) {
+                $pt = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
+            } else {
+                $pt = null;
+            }
+
+            if ( $this->post_type === $pt ) {
 
                 echo "<script type='text/javascript'>
     
