@@ -18,6 +18,10 @@ function disciple_tools_top_nav_desktop() {
     if ( user_can( get_current_user_id(), 'view_any_contacts' ) || user_can( get_current_user_id(), 'view_project_metrics' ) ) {
         ?><li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li><?php
     }
+    /**
+     * Fires after the top menu
+     */
+    do_action('dt_top_nav_desktop' );
 }
 
 function disciple_tools_top_nav_mobile() {
@@ -27,6 +31,10 @@ function disciple_tools_top_nav_mobile() {
         <li><a href="<?php echo esc_url( site_url( '/contacts/' ) ); ?>"><i class="fi-address-book"></i></a></li>
         <li><a href="<?php echo esc_url( site_url( '/' ) ); ?>"><i class="fi-graph-pie"></i></a></li>
         <?php
+        /**
+         * Fires after the mobile nav menu
+         */
+        do_action('dt_top_nav_mobile');
     }
 }
 
@@ -50,98 +58,46 @@ class DT_Topbar_Menu_Walker extends Walker_Nav_Menu
 
 // The Off Canvas Menu
 function disciple_tools_off_canvas_nav() {
+    ?>
+    <ul class="vertical menu sticky is-stuck is-at-top" data-accordion-menu>
 
-    if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-        ?>
-        <ul class="vertical menu sticky is-stuck is-at-top" data-accordion-menu>
-
-            <li>
-                <span class="title"><?php esc_html_e( 'Disciple Tools', 'disciple_tools' )  ?></span>
-            </li>
-            <li>
-                <hr/>
-            </li>
-
-            <?php
-            if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-                ?><li><a href="<?php echo esc_url( site_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li><?php
-            }
-            if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-                ?><li><a href="<?php echo esc_url( site_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li><?php
-            }
-            if ( dt_metrics_visibility( 'tab' ) ) {
-                ?><li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li><?php
-            }
-            ?>
-            <?php if ( dt_get_user_team_members_list( get_current_user_id() ) ) : // check if part of team, if not don't show link ?>
-                <li>
-                    <a href="<?php echo esc_url( site_url( '/team/' ) ); ?>"><?php esc_html_e( "Team" ); ?></a>
-                </li>
-            <?php endif; ?>
-
-            <li>&nbsp;<!-- Spacer--></li>
-            <li>
-                <a href="<?php echo esc_url( site_url( '/notifications/' ) ); ?>"><?php esc_html_e( "Notifications" ); ?></a>
-            </li>
-            <li>
-                <a href="<?php echo esc_url( site_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a>
-            </li>
-            <li>
-                <a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( "Log Off" ); ?></a>
-            </li>
-
-        </ul>
+        <li>
+            <span class="title"><?php esc_html_e( 'Disciple Tools', 'disciple_tools' )  ?></span>
+        </li>
+        <li>
+            <hr/>
+        </li>
 
         <?php
-
-    } elseif ( user_can( get_current_user_id(), 'read_progress' ) ) {
+        if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
+            ?><li><a href="<?php echo esc_url( site_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li><?php
+        }
+        if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
+            ?><li><a href="<?php echo esc_url( site_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li><?php
+        }
+        if ( user_can( get_current_user_id(), 'view_any_contacts' ) ) {
+            ?><li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li><?php
+        }
+        /**
+         * Fires at the end of the off canvas menu
+         */
+        do_action( 'dt_off_canvas_nav' );
 
         ?>
-        <div class="menu-centered">
-            <ul class="vertical medium-horizontal menu sticky is-stuck is-at-top" data-accordion-menu>
+        <li>&nbsp;<!-- Spacer--></li>
+        <li>
+            <a href="<?php echo esc_url( site_url( '/notifications/' ) ); ?>"><?php esc_html_e( "Notifications" ); ?></a>
+        </li>
+        <li>
+            <a href="<?php echo esc_url( site_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a>
+        </li>
+        <li>
+            <a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( "Log Off" ); ?></a>
+        </li>
 
-                <li>
-                    <a href="<?php echo esc_url( site_url( '/about-us/' ) ); ?>"><?php esc_html_e( "About Us" ); ?></a>
-                </li>
-                <li>
-                    <a href="<?php echo esc_url( site_url( '/prayer/' ) ); ?>"><?php esc_html_e( "Prayer Guide" ); ?></a>
-                </li>
-                <li>
-                    <a href="<?php echo esc_url( site_url( '/project/' ) ); ?>"><?php esc_html_e( "Project Updates" ); ?></a>
-                </li>
-                <li>
-                    <a href="<?php echo esc_url( site_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a>
-                </li>
+    </ul>
 
-            </ul>
-        </div>
-        <?php
-
-    } elseif ( user_can( get_current_user_id(), 'read_prayer' ) ) {
-
-        /* user is prayer supporter */
-        ?>
-
-        <div class="menu-centered">
-            <ul class="vertical medium-horizontal menu sticky is-stuck is-at-top" data-accordion-menu>
-
-                <li>
-                    <a href="<?php echo esc_url( site_url( '/about-us/' ) ); ?>"><?php esc_html_e( "About Us" ); ?></a>
-                </li>
-                <li>
-                    <a href="<?php echo esc_url( site_url( '/prayer/' ) ); ?>"><?php esc_html_e( "Prayer Guide" ); ?></a>
-                </li>
-                <li>
-                    <a href="<?php echo esc_url( site_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a>
-                </li>
-
-            </ul>
-        </div>
-
-        <?php
-
-    }
-    /* redirect to registered page */
+    <?php
 }
 
 /**

@@ -9,7 +9,7 @@ if ( !defined( 'ABSPATH' ) ) {
  * All functionality pertaining to project update post types in Site_Link_System.
  * @class Site_Link_System
  *
- * @version 0.1.13
+ * @version 0.1.14
  *
  * @since   0.1.7 Moved to post type
  *          0.1.8 Added key_select, readonly
@@ -18,6 +18,7 @@ if ( !defined( 'ABSPATH' ) ) {
  *          0.1.11 Updated menu position
  *          0.1.12 Added filter to post type args
  *          0.1.13 Added time tolerance for decryption key
+ *          0.1.14 Removed spacing at the top of the admin page
  */
 if ( ! class_exists( 'Site_Link_System' ) ) {
 
@@ -705,6 +706,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     /*border is optional*/
                     cursor: pointer;
                     }
+                    #postbox-container-3 {display:none;}
+                    #postbox-container-4 {display:none;}
             </style>";
         }
 
