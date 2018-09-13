@@ -392,6 +392,12 @@ img {
     p {
         line-height: 1.4;
     }
+
+    .gravatar {
+        img {
+            height: 16px;
+        }
+    }
 }
 
 #add-comment-button {
