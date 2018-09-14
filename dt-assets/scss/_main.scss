@@ -298,16 +298,42 @@ img {
     border-radius: 5px;
     margin-right: 5px;
     margin-bottom: 5px;
+    &:hover {
+        background-color: #4CAF50;
+        opacity: .5;
+        color: white;
+    }
 }
 //unselected options
 .empty-select-button {
     background-color: #eee;
     color: black;
+    &:focus {
+        background-color: #eee;
+        color:black;
+    }
+
 }
 .selected-select-button {
     background-color: #4CAF50;
     color: white;
+    &:focus {
+        background-color: #4CAF50;
+        color:white;
+    }
 }
+#comment-activity-tabs{
+    .button.select-button:hover {
+        background-color: #3f729b;
+    }
+    .selected-select-button {
+        background-color: #3f729b;
+        :focus {
+            background-color: #3f729b;
+        }
+    }
+}
+
 .submitting-select-button {
     opacity: .5;
 }
