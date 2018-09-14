@@ -194,7 +194,8 @@ jQuery(document).ready(function($) {
     activeTabs.each((i, e)=>{
       activeTabIds.push($(e).data("id"))
     })
-    // current_section = section || current_section
+    let possibleTabs = _.union( [ 'activity', 'comment' ], commentsSettings.additional_sections.map((l)=>{return l['key']}))
+
     let commentsWrapper = $("#comments-wrapper")
     commentsWrapper.empty()
     let displayed = []
@@ -203,6 +204,8 @@ jQuery(document).ready(function($) {
     }
     comments.forEach(comment=>{
       if (activeTabIds.includes(comment.comment_type)){
+        displayed.push(comment)
+      } else if ( !possibleTabs.includes(comment.comment_type)){
         displayed.push(comment)
       }
     })
