@@ -293,7 +293,9 @@ jQuery(document).ready(function($) {
       const activityData = activityDataStatusJQXHR[0];
       commentData.forEach(comment => {
         comment.date = moment(comment.comment_date_gmt + "Z")
-        comment.comment_content = _.escape(comment.comment_content)
+        if(comment.comment_content.match(/function|script/)) {
+          comment.comment_content = _.escape(comment.comment_content)
+        }
       })
       comments = commentData
       activity = activityData

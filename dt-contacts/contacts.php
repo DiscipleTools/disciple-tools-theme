@@ -510,11 +510,18 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
 
-    public static function close_duplicate_contact( int $contact_id) {
-        self::update_contact( $contact_id, [
+    public static function close_duplicate_contact( int $duplicate_id, int $contact_id) {
+        $duplicate = self::get_contact($duplicate_id);
+        $contact = self::get_contact($contact_id);
+
+        self::update_contact( $duplicate_id, [
             "overall_status" => "closed",
             "reason_closed" => "duplicate"
         ] );
+
+        $comment = "{$duplicate['title']} is a duplicate and was merged into " .
+            "<a href='/contacts/$contact_id'>{$contact['title']}</a>";
+        self::add_comment($duplicate_id, $comment);
     }
 
 
