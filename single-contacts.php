@@ -109,7 +109,7 @@ declare( strict_types=1 );
                 );
                 foreach($non_master[$new_key] ?? array() as $values) {
                     $index = array_search( $values['value'], $current[$new_key] ?? array() );
-                    if($index !== false) { 
+                    if($index !== false) {
                         $ignore_keys[] = $index;
                         continue;
                     }
@@ -299,7 +299,7 @@ declare( strict_types=1 );
                 <!--                    <div class="bordered-box last-typeahead-in-section">-->
                     <div class="bordered-box" style="background-color:#ff9800; border:.2rem solid #30c2ff; text-align:center;">
                         <h3 class="section-header" style="color:white;"><?php esc_html_e( "This contact has possible duplicates.", 'disciple_tools' ) ?></h3>
-                      <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
+                       <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
                         <button type="button" id="merge-dupe-modal" data-open="merge-dupe-modal" class="button">
                           <?php esc_html_e( "Go to duplicates", 'disciple_tools' ) ?>
                         </button>

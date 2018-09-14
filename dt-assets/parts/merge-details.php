@@ -30,7 +30,7 @@
         <div class="display-fields" style="padding:10px;">
           </div>
 
-                
+
 
         <form action="<?php echo esc_url( site_url( '/contacts/' . get_the_ID() ) ); ?>" id='form-dismiss' method="POST">
             <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr( wp_create_nonce() ); ?>">
@@ -47,7 +47,7 @@
             <input type='submit' style='display: none' value='Unsure'/>
         </form>
         </div>
-    </div>
+    <!-- </div> -->
 
     <script type='text/javascript'>
         loadDuplicates();
@@ -114,7 +114,7 @@
                     $duplicates.append("<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:20px 0px 0px; margin-bottom: 0px;'>Possible Duplicates</h4>");
 
                     var unsure_dismiss_html = "<div style='display:inline-block; width: 100%;'><form method='POST' id='form-unsure-dismiss' action='"+site_url+"/contacts/"+contact_id+"'><input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr(wp_create_nonce());?>'/><input type='hidden' name='id' value='<?php echo get_the_ID(); ?>'/><a style='float: right; margin-left: 10%;' onclick='dismiss_all();'>Dismiss All</a><a style='float: right;' onclick='unsure_all();'>Unsure All</a><input type='submit' id='unsure-dismiss-submit' style='display: none;' value='submit'/></form></div>";
-                    
+
                     $duplicates.append(unsure_dismiss_html);
 
                     $.each(dupes, function(key, id) {
