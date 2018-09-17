@@ -28,177 +28,9 @@
         <h1 style="font-size:1.5rem; padding:10px 0px;"><?php esc_html_e( "Duplicate Contacts", 'disciple_tools' ) ?></h1>
       </div>
         <div class="display-fields" style="padding:10px;">
-          <h4 style="text-align:center; font-size:1.25rem; font-weight:bold; padding:10px 0px 0px; margin-bottom:0px;"><?php esc_html_e( "Original Contact", 'disciple_tools' ) ?></h4>
-          <?php
-            $contact_name =$contact['title'] ?? null;
-//          $contact_address=$contact['contact_address'][0]['value'] ?? null;
-//          $contact_phone=$contact['contact_phone'][0]['value'] ?? null;
-//          $contact_email=$contact['contact_email'][0]['value'] ?? null;
-            $contact_facebook =$contact['contact_facebook'][0]['value'] ?? null;
-
-            $fields = array(
-              'contact_phone' => array(),
-              'contact_address' => array(),
-              'contact_email' => array(),
-              'contact_facebook' => array()
-          );
-
-          echo "<div style='background-color:#e1f5fe; padding:2%;'>";
-          echo "<h5 style='font-weight:bold; color:#3f729b'>".esc_html( $contact_name )."</h5>";
-          foreach ($contact['contact_phone'] ?? array() as $phone) {
-              if ($phone['value'] !=''){
-                  echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/phone.svg'>&nbsp;".esc_html( $phone['value'] )."<br>";
-                  array_push( $fields['contact_phone'], $phone['value'] );
-                }
-            }
-            foreach ($contact['contact_address'] ?? array() as $address) {
-                if ($address['value'] !=''){
-                    echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/house.svg'>&nbsp;".esc_html( $address['value'] )."<br>";
-                    array_push( $fields['contact_address'], $address['value'] );
-                }
-            }
-            foreach ($contact['contact_email'] ?? array() as $email) {
-                if ($email['value'] !=''){
-                    echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/email.svg'>&nbsp;".esc_html( $email['value'] )."<br>";
-                    array_push( $fields['contact_email'], $email['value'] );
-                }
-            }
-            if ($contact_facebook !=''){
-                echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/facebook.svg'>&nbsp;".esc_html( $contact_facebook )."<br>";
-                array_push( $fields['contact_facebook'], $contact_facebook );
-            }
-            echo "</div>";
-            ?>
-          <h4 style="text-align:center; font-size:1.25rem; font-weight:bold; padding:20px 0px 0px; margin-bottom:0px;"><?php esc_html_e( "Possible Duplicates", 'disciple_tools' ) ?></h4>
-          <div style='display: inline-block; width: 100%;'>
-              <form method='POST' id='form-unsure-dismiss' action='<?php echo esc_url( site_url( '/contacts/' .get_the_ID() ) ); ?>'>
-                <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr( wp_create_nonce() ); ?>"/>
-                <input type='hidden' name='id' value='<?php echo esc_html( get_the_Id(), 'disciple_tools' ); ?>'/>
-                <a style='float: right; margin-left: 10%;' onclick='dismiss_all();'><?php echo esc_html_e( 'Dismiss All', 'disciple_tools' ); ?></a>
-                <a style='float: right;' onclick='unsure_all();'><?php echo esc_html_e( 'Unsure All', 'disciple_tools' ); ?></a>
-                <input type='submit' id='unsure-dismiss-submit' style='display: none;' value='submit'/>
-              </form>
           </div>
-          <?php
-            $duplicate_post_meta = get_post_meta( get_the_Id(), 'duplicate_data' );
-            $duplicate_ids = array();
-            foreach ($duplicate_post_meta as $array) {
-                foreach ( $array as $key => $vals ) {
-                    if ($key == 'override' || $key == 'unsure') { continue; }
-                    foreach (array_slice( $vals, 0, 100 ) as $val) {
-                        array_push( $duplicate_ids, $val );
-                    }
-                }
-            }
-            $duplicate_ids = array_merge( array_unique( $duplicate_ids ) );
-            foreach ($duplicate_ids as $value){
-                if (in_array( $value, $duplicate_post_meta['override'] ?? [] )) { continue; }
-                $duplicate_phone =$value;
 
 
-
-              // var_dump($duplicate_post_meta);
-                $duplicate_phone_clean =str_replace( 'int(', '', $duplicate_phone );
-                $possible_duplicate = get_post_meta( $duplicate_phone_clean );
-                $duplicate_contact = Disciple_Tools_Contacts::get_contact( $duplicate_phone_clean, true );
-
-                $duplicate_contact_name =$duplicate_contact['title'] ?? null;
-                $duplicate_contact_address =$duplicate_contact['contact_address'][0]['value'] ?? null;
-                $duplicate_contact_phone =$duplicate_contact['contact_phone'][0]['value'] ?? null;
-                $duplicate_contact_email =$duplicate_contact['contact_email'][0]['value'] ?? null;
-                $duplicate_contact_facebook =$duplicate_contact['contact_facebook'][0]['value'] ?? null;
-
-                echo "<div style='background-color:#f2f2f2; padding:2%; overflow:hidden;'>";
-
-                echo "<h5 style='font-weight:bold; color:#3f729b'>".esc_html( $duplicate_contact_name )."</h5>";
-                foreach ($duplicate_contact['contact_phone'] ?? array() as $d_phone) {
-                    if (array_contains( $fields['contact_phone'], $d_phone['value'] )){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/phone.svg'>&nbsp;".esc_html( $d_phone['value'] )."<br>";
-                    }
-                }
-                foreach ($duplicate_contact['contact_address'] ?? array() as $d_address) {
-                    if (array_contains( $fields['contact_address'], $d_address['value'])){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/house.svg'>&nbsp;".esc_html( $d_address['value'] )."<br>";
-                    }
-                }
-                foreach ($duplicate_contact['contact_email'] ?? array() as $d_email) {
-                    if (array_contains( $fields['contact_email'], $d_email['value'] )){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/email.svg'>&nbsp;".esc_html( $d_email['value'] )."<br>";
-                    }
-                }
-                foreach ($duplicate_contact['contact_facebook'] ?? array() as $d_facebook) {
-                    if (array_contains( $fields['contact_facebook'], $d_facebook['value'] )){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/facebook.svg'>&nbsp;".esc_html( $d_facebook['value'] )."<br>";
-                    }
-                }
-                ?>
-
-          <button class='mergelinks' onclick="$('#dismiss-id').val('<?php echo esc_html( $value ); ?>'); $('#form-dismiss input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>
-          <button class='mergelinks' onclick="$('#unsure-id').val('<?php echo esc_html( $value ); ?>'); $('#form-unsure input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Unsure", 'disciple_tools' ) ?></a></button>
-
-          <form action="<?php echo esc_url( site_url( '/contacts/mergedetails' ) ); ?>" method="post">
-            <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr( wp_create_nonce() ); ?>"/>
-            <input type='hidden' name='currentid' value='<?php echo esc_html( $contact['ID'] );?>'/>
-            <input type='hidden' name='dupeid' value='<?php echo esc_html( $duplicate_contact['ID'] ); ?>'/>
-            <button type='submit' style='float:right; padding-left:10%;'><a><?php esc_html_e( "Merge", 'disciple_tools' ) ?></a></button>
-          </form></div>
-
-                <?php
-            }
-            if ($duplicate_post_meta[0]['unsure'] ?? array()) {
-                ?>
-           <h4 style="text-align:center; font-size:1.25rem; font-weight:bold; padding:20px 0px 0px; margin-bottom:0px;"><?php esc_html_e( "Unsure Duplicates", 'disciple_tools' ) ?></h4>
-                <?php
-            }
-            foreach ($duplicate_post_meta[0]['unsure'] ?? [] as $value){
-                if (in_array( $value, $duplicate_post_meta['override'] ?? [] )) { continue; }
-                $duplicate_phone =$value;
-
-
-
-             // var_dump($duplicate_post_meta);
-                $duplicate_phone_clean =str_replace( 'int(', '', $duplicate_phone );
-                $possible_duplicate = get_post_meta( $duplicate_phone_clean );
-                $duplicate_contact = Disciple_Tools_Contacts::get_contact( $duplicate_phone_clean, true );
-
-                $duplicate_contact_name =$duplicate_contact['title'] ?? null;
-                $duplicate_contact_address =$duplicate_contact['contact_address'][0]['value'] ?? null;
-                $duplicate_contact_phone =$duplicate_contact['contact_phone'][0]['value'] ?? null;
-                $duplicate_contact_email =$duplicate_contact['contact_email'][0]['value'] ?? null;
-                $duplicate_contact_facebook =$duplicate_contact['contact_facebook'][0]['value'] ?? null;
-
-                echo "<div style='background-color:#f2f2f2; padding:2%; overflow:hidden;'>";
-
-                echo "<h5 style='font-weight:bold; color:#3f729b'>".esc_html( $duplicate_contact_name )."</h5>";
-                foreach ($duplicate_contact['contact_phone'] ?? array() as $d_phone) {
-                    if (array_contains( $fields['contact_phone'], $d_phone['value'] )){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/phone.svg'>&nbsp;".esc_html( $d_phone['value'] )."<br>";
-                    }
-                }
-                foreach ($duplicate_contact['contact_address'] ?? array() as $d_address) {
-                    if (array_contains( $fields['contact_address'], $d_address['value'] )){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/house.svg'>&nbsp;".esc_html( $d_address['value'] )."<br>";
-                    }
-                }
-                foreach ($duplicate_contact['contact_email'] ?? array() as $d_email) {
-                    if (array_contains( $fields['contact_email'], $d_email['value'] )){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/email.svg'>&nbsp;".esc_html( $d_email['value'] )."<br>";
-                    }
-                }
-                foreach ($duplicate_contact['contact_facebook'] ?? array() as $d_facebook) {
-                    if (array_contains( $fields['contact_facebook'], $d_facebook['value'] )){
-                        echo "<img src='".esc_url( get_template_directory_uri() )."/dt-assets/images/facebook.svg'>&nbsp;".esc_html( $d_facebook['value'] )."<br>";
-                    }
-                }
-                ?>
-
-          <button class='mergelinks' onclick="$('#dismiss-id').val('<?php echo esc_html( $value ); ?>'); $('#form-dismiss input[type=submit]').click();" style='float:right; padding-left:10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>
-
-      </div>
-
-                <?php
-            }
-            ?>
 
         <form action="<?php echo esc_url( site_url( '/contacts/' . get_the_ID() ) ); ?>" id='form-dismiss' method="POST">
             <input type='hidden' name='dt_contact_nonce' value="<?php echo esc_attr( wp_create_nonce() ); ?>">
@@ -215,9 +47,189 @@
             <input type='submit' style='display: none' value='Unsure'/>
         </form>
         </div>
-    </div>
+    <!-- </div> -->
 
     <script type='text/javascript'>
+        loadDuplicates();
+        function loadDuplicates() {
+            var template_dir = "<?php echo esc_url( get_template_directory_uri() ); ?>";
+            var site_url = "<?php echo esc_url(site_url());?>";
+            var contact_id = "<?php echo get_the_ID(); ?>";
+
+            $display_fields = $(".display-fields");
+            $display_fields.append("<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:10px 0px 0px; margin-bottom: 0px;'>Original Contact</h4>");
+            API.get_post('contact', contact_id).done(function(response) {
+                var contact = response;
+                var duplicates = contact.duplicate_data;
+                var dupes = [];
+                var fields = {};
+                var original_contact_html = "<div style='background-color: #e1f5fe; padding:2%'><h5 style='font-weight: bold; color: #3f729b;'>" + contact.title + "</h5>";
+                $.each(contact, function(key, vals) {
+                    if(!key.match(/^contact_/)) { return true; }
+                    if(!fields[key]) {
+                        fields[key] = [];
+                    }
+                    $.each(vals, function(k, val) {
+                        fields[key].push(val.value);
+                        switch(key) {
+                            case 'contact_phone':
+                                var svg = 'phone.svg';
+                                break;
+                            case 'contact_address':
+                                var svg = 'house.svg';
+                                break;
+                            case 'contact_email':
+                                var svg = 'email.svg';
+                                break;
+                            case 'contact_facebook':
+                                var svg = 'facebook.svg';
+                                break;
+                            case 'contact_twitter':
+                                var svg = 'twitter.svg';
+                                break;
+                            default:
+                                return true; //skip
+                        }
+                        original_contact_html += "<img src='" + template_dir + "/dt-assets/images/" + svg + "'>&nbsp;" + val.value + "<br>";
+                    });
+                });
+                original_contact_html += "</div>";
+
+                $display_fields.append(original_contact_html);
+
+                $display_fields.append("<div id='duplicates_list'></div><div id='unsure_list'></div>");
+
+                $.each(duplicates, function(key, vals) {
+                    if(key !== 'override' && key !== 'unsure') {
+                        $.each(vals, function(k, val) {
+                            if(!dupes.includes(val)) {
+                                dupes.push(val);
+                            }
+                        });
+                    }
+                });
+
+                if(dupes.length) {
+                    $duplicates = $display_fields.find('#duplicates_list');
+                    $duplicates.append("<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding:20px 0px 0px; margin-bottom: 0px;'>Possible Duplicates</h4>");
+
+                    var unsure_dismiss_html = "<div style='display:inline-block; width: 100%;'><form method='POST' id='form-unsure-dismiss' action='"+site_url+"/contacts/"+contact_id+"'><input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr(wp_create_nonce());?>'/><input type='hidden' name='id' value='<?php echo get_the_ID(); ?>'/><a style='float: right; margin-left: 10%;' onclick='dismiss_all();'>Dismiss All</a><a style='float: right;' onclick='unsure_all();'>Unsure All</a><input type='submit' id='unsure-dismiss-submit' style='display: none;' value='submit'/></form></div>";
+
+                    $duplicates.append(unsure_dismiss_html);
+
+                    $.each(dupes, function(key, id) {
+                        API.get_post('contact', id).done(function(dupe) {
+                            var duplicate_contact_html = $("<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'><h5 style='font-weight: bold; color: #3f729b;'></h5>");
+                            duplicate_contact_html.find('h5').text(dupe.title);
+                            $.each(dupe, function(key, vals) {
+                                if(!key.match(/^contact_/)) {
+                                    return true;
+                                }
+                                $.each(vals, function(k, val) {
+                                    if(in_array(fields[key], val.value)) {
+                                        switch(key) {
+                                            case 'contact_phone':
+                                                var svg = 'phone.svg';
+                                                break;
+                                            case 'contact_address':
+                                                var svg = 'house.svg';
+                                                break;
+                                            case 'contact_email':
+                                                var svg = 'email.svg';
+                                                break;
+                                            case 'contact_facebook':
+                                                var svg = 'facebook.svg';
+                                                break;
+                                            case 'contact_twitter':
+                                                var svg = 'twitter.svg';
+                                                break;
+                                            default:
+                                                return true; //skip
+                                        }
+                                        duplicate_contact_html.append("<img src='" + template_dir + "/dt-assets/images/" + svg + "'>&nbsp;" + val.value + "<br>");
+                                    }
+                                });
+                            });
+                            duplicate_contact_html.append("<button class='mergelinks' onclick='$(\"#dismiss-id\").val(" + id + "); $(\"#form-dismiss input[type=submit]\").click();' style='float: right; padding-left: 10%;'><a>Dismiss</a></button>");
+
+                            duplicate_contact_html.append("<button class='mergelinks' onclick='$(\"#unsure-id\").val(" + id + "); $(\"#form-unsure input[type=submit]\").click();' style='float: right; padding-left: 10%;'><a>Unsure</a></button>");
+
+                            duplicate_contact_html.append("<form action='"+site_url+"/contacts/mergedetails' method='post'><input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr(wp_create_nonce()); ?>'/><input type='hidden' name='currentid' value='"+contact_id+"'/><input type='hidden' name='dupeid' value='"+id+"'/><button type='submit' style='float:right; padding-left: 10%;'><a>Merge</a></button></form>");
+
+                            $duplicates.append(duplicate_contact_html);
+                        });
+                    });
+                }
+
+                if(duplicates.unsure) {
+                    $unsure = $display_fields.find('#unsure_list');
+                    $unsure.append("<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding: 20px 0px 0px; margin-bottom: 0px;'>Unsure Duplicates</h4>");
+
+                    $.each(duplicates.unsure, function(key, id) {
+                        API.get_post('contact', id).done(function(dupe) {
+                            var unsure_duplicate_html = $("<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'><h5 style='font-weight: bold; color: #3f729b;'></h5>");
+                            unsure_duplicate_html.find('h5').text(dupe.title);
+                            $.each(dupe, function(key, vals) {
+                                if(!key.match(/^contact_/)) {
+                                    return true;
+                                }
+                                $.each(vals, function(k, val) {
+                                    if(in_array(fields[key], val.value)) {
+                                        switch(key) {
+                                            case 'contact_phone':
+                                                var svg = 'phone.svg';
+                                                break;
+                                            case 'contact_address':
+                                                var svg = 'house.svg';
+                                                break;
+                                            case 'contact_email':
+                                                var svg = 'email.svg';
+                                                break;
+                                            case 'contact_facebook':
+                                                var svg = 'facebook.svg';
+                                                break;
+                                            case 'contact_twitter':
+                                                var svg = 'twitter.svg';
+                                                break;
+                                            default:
+                                                return true; //skip
+                                        }
+                                        unsure_duplicate_html.append("<img src='" + template_dir + "/dt-assets/images/" + svg + "'>&nbsp;" + val.value + "<br>");
+                                    }
+                                });
+                            });
+                            unsure_duplicate_html.append("<button class='mergelinks' onclick='$("+'#dismiss-id'+").val(" + id + "); $("+'#form-dimiss input[type=submit]'+").click();' style='float: right; padding-left: 10%;'><a>Dismiss</a></button>");
+
+                            $unsure.append(unsure_duplicate_html);
+                        });
+                    });
+                }
+            });
+        }
+
+        function in_array(array, string) {
+            if(!$.isArray(array)) {
+                return false;
+            }
+
+            var ret = false;
+            $.each(array, function(k, val) {
+                if($.isArray(val)) {
+                    if(in_array(val, string)) {
+                        ret = true;
+                        return false; //break loop
+                    }
+                } else if(typeof val !== 'object' && val != null) {
+                    if(val.indexOf(string) !== -1) {
+                        ret = true;
+                        return false; //break loop
+                    }
+                }
+            });
+
+            return ret;
+        }
+
         function unsure_all() {
             var form = $("#form-unsure-dismiss");
             var submit = form.find('input[type=submit]');
