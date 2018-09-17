@@ -226,23 +226,31 @@ class Disciple_Tools_Posts
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
+        //limit comment length to 5000
+        $comments = str_split( $comment_html, 4999 );
         $user = wp_get_current_user();
         $user_id = $user_id ?? get_current_user_id();
-        $comment_data = [
-            'comment_post_ID'      => $post_id,
-            'comment_content'      => $comment_html,
-            'user_id'              => $user_id,
-            'comment_author'       => $author ?? $user->display_name,
-            'comment_author_url'   => $author_url ?? $user->user_url,
-            'comment_author_email' => $user->user_email,
-            'comment_type'         => $type,
-        ];
-        if ( $date ){
-            $comment_data["comment_date"] = $date;
-            $comment_data["comment_date_gmt"] = $date;
+        $created_comment = null;
+        foreach ( $comments as $comment ){
+            $comment_data = [
+                'comment_post_ID'      => $post_id,
+                'comment_content'      => $comment,
+                'user_id'              => $user_id,
+                'comment_author'       => $author ?? $user->display_name,
+                'comment_author_url'   => $author_url ?? $user->user_url,
+                'comment_author_email' => $user->user_email,
+                'comment_type'         => $type,
+            ];
+            if ( $date ){
+                $comment_data["comment_date"] = $date;
+                $comment_data["comment_date_gmt"] = $date;
+            }
+            $new_comment = wp_new_comment( $comment_data );
+            if ( !$created_comment ){
+                $created_comment = $new_comment;
+            }
         }
 
-        $created_comment = wp_new_comment( $comment_data );
         if ( !$silent && !is_wp_error( $created_comment )){
             Disciple_Tools_Notifications_Comments::insert_notification_for_comment( $created_comment );
         }
