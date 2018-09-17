@@ -2146,10 +2146,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $all_ids = [];
         $dups = [];
         if ( isset( $contact["duplicate_data"] ) ){
-            foreach( $contact["duplicate_data"] as $dup_ids ){
-                $ids = array_diff( $dup_ids, $all_ids);
+            foreach ( $contact["duplicate_data"] as $dup_ids ){
+                $ids = array_diff( $dup_ids, $all_ids );
                 $all_ids = array_merge( $all_ids, $ids );
-                foreach( $ids as $contact_id ) {
+                foreach ( $ids as $contact_id ) {
                     $dup = self::get_contact( $contact_id );
                     $dups[] = $dup;
                 }
