@@ -91,10 +91,10 @@ $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 
                 <?php
                 foreach ($dt_fields as $dt_key => $dt_field) {
-                    foreach ($dt_data[$dt_key] as $dt_idx => $type) {
+                    foreach ( $dt_data[$dt_key] as $dt_idx => $dt_type ) {
                         echo "<div class='line-wrap'>";
                             echo "<div class='merge-column'><span class='bold'>" .esc_html( $dt_field )."</span></div>";
-                        foreach ($type as $dt_vals) {
+                        foreach ( $dt_type as $dt_vals ) {
                             $dt_value = $dt_vals['value'];
                             echo "<div class='merge-column'>";
                             if ($dt_value) {

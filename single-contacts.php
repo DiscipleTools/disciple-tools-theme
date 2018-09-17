@@ -55,13 +55,17 @@ declare( strict_types=1 );
                 // 'contact_facebook' => array()
             );
 
-            foreach($contact as $key => $fields) {
-                if(strpos($key, "contact_") === false) { continue; }
-                $split = explode("_", $key);
-                if(!isset($split[1])) { continue; }
+            foreach ( $contact as $key => $fields ) {
+                if ( strpos( $key, "contact_" ) === false ) {
+                    continue;
+                }
+                $split = explode( "_", $key );
+                if ( !isset( $split[1] ) ) {
+                    continue;
+                }
                 $new_key = $split[0] . "_" . $split[1];
-                foreach($contact[$new_key] ?? array() as $values) {
-                    $current[$new_key][$values['key']] = $values['value'];
+                foreach ( $contact[ $new_key ] ?? array() as $values ) {
+                    $current[ $new_key ][ $values['key'] ] = $values['value'];
                 }
             }
 
@@ -96,26 +100,30 @@ declare( strict_types=1 );
             /*
                 Merge social media + other contact data
             */
-            foreach ($non_master as $key => $fields) {
-                if(strpos($key, "contact_") === false) {
+            foreach ( $non_master as $key => $fields ) {
+                if ( strpos( $key, "contact_" ) === false ) {
                     continue;
                 }
-                $split = explode("_", $key);
-                if(!isset($split[1])) { continue; }
+                $split = explode( "_", $key );
+                if ( !isset( $split[1] ) ) {
+                    continue;
+                }
                 $new_key = $split[0] . "_" . $split[1];
-                if(in_array($new_key, array_keys($update))) { continue; }
-                $update[$new_key] = array(
+                if ( in_array( $new_key, array_keys( $update ) ) ) {
+                    continue;
+                }
+                $update[ $new_key ] = array(
                     'values' => array()
                 );
-                foreach($non_master[$new_key] ?? array() as $values) {
-                    $index = array_search( $values['value'], $current[$new_key] ?? array() );
-                    if($index !== false) {
+                foreach ( $non_master[ $new_key ] ?? array() as $values ) {
+                    $index = array_search( $values['value'], $current[ $new_key ] ?? array() );
+                    if ( $index !== false ) {
                         $ignore_keys[] = $index;
                         continue;
                     }
-                    array_push($update[$new_key]['values'], array(
+                    array_push( $update[ $new_key ]['values'], array(
                         'value' => $values['value']
-                    ));
+                    ) );
                 }
             }
 
