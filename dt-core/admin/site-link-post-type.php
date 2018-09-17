@@ -237,7 +237,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     </span>
                         <script>
                             jQuery(document).ready(function () {
-                                check_link_status('<?php echo esc_attr( self::create_transfer_token_for_site( $this->get_site_key_by_id( $post->ID ) ) ); ?>', '<?php echo esc_attr( $this->get_non_local_site_by_id( $post->ID ) ); ?>', '<?php echo esc_attr( md5( $post->ID ) ); ?>');
+                                check_link_status('<?php echo esc_attr( self::create_transfer_token_for_site( $this->get_site_key_by_id( $post->ID ) ) ); ?>', '<?php echo esc_attr( self::get_non_local_site_by_id( $post->ID ) ); ?>', '<?php echo esc_attr( md5( $post->ID ) ); ?>');
                             })
                         </script>
                         <?php
@@ -511,7 +511,6 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             $fields = [];
 
             // Public Info
-
             $fields['token'] = [
                 'name'        => __( 'Token' ),
                 'description' => 'If you have a token from another site, just clear token above and replace it.',
@@ -620,7 +619,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                             <script>
                                 jQuery(document).ready(function () {
-                                    check_link_status('<?php echo esc_attr( self::create_transfer_token_for_site( $site_key ) ); ?>', '<?php echo esc_attr( $this->get_non_local_site_by_id( $post_id ) ); ?>', '<?php echo esc_attr( md5( $post_id ) ); ?>');
+                                    check_link_status('<?php echo esc_attr( self::create_transfer_token_for_site( $site_key ) ); ?>', '<?php echo esc_attr( self::get_non_local_site_by_id( $post_id ) ); ?>', '<?php echo esc_attr( md5( $post_id ) ); ?>');
                                 })
                             </script>
                         <?php endif; // check for non-wp ?>
@@ -821,7 +820,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             return get_post_meta( $post_id, 'token', true );
         }
 
-        public function get_non_local_site_by_id( $post_id ) {
+        public static function get_non_local_site_by_id( $post_id ) {
             $site1 = get_post_meta( $post_id, 'site1', true );
             $site2 = get_post_meta( $post_id, 'site2', true );
             return self::get_non_local_site( $site1, $site2 );
