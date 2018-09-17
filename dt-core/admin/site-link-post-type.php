@@ -58,13 +58,26 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         public static $token = 'site_link_system';
 
         /**
-         * GET 'URL' AND 'TRANSFER TOKEN' BY POST_ID
+         * GET 'URL' AND 'TRANSFER TOKEN' BY POST_ID OR SITE KEY
          *
-         * @param $post_id
+         * @param $var
+         * @param $type
          *
          * @return array|\WP_Error
          */
-        public static function get_site_connection_vars( $post_id ) {
+        public static function get_site_connection_vars( $var, $type = 'post_id' ) {
+
+            switch( $type ) {
+                case 'post_id':
+                    $post_id = $var;
+                    break;
+                case 'site_key':
+                    $post_id = self::get_post_id_by_site_key( $var );
+                    break;
+                default:
+                    return new WP_Error( __METHOD__, 'Must be a valid type' );
+                    break;
+            }
 
             $url = Site_Link_System::get_non_local_site_by_id( $post_id );
             if ( empty( $url ) ) {
@@ -620,8 +633,6 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'section'     => 'non_wp',
             ];
 
-
-
             // @phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
             // @codingStandardsIgnoreLine
             return apply_filters( 'site_link_fields_settings', $fields );
@@ -893,6 +904,12 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
         public function get_site_key_by_id( $post_id ) {
             return get_post_meta( $post_id, 'site_key', true );
+        }
+
+        public static function get_post_id_by_site_key( $site_key ) {
+            global $wpdb;
+            $post_id = $wpdb->get_var($wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'site_key' AND meta_value = %s LIMIT 1", $site_key ) );
+            return $post_id;
         }
 
         public function get_token_by_id( $post_id ) {
