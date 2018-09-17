@@ -46,7 +46,9 @@ class Disciple_Tools_Metrics
 
     // Enqueue maps and charts for standard metrics
     public function enqueue_google() {
+        /* phpcs:ignore WordPress.WP.EnqueuedResourceParameters */
         wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', [], false );
+        /* phpcs:ignore WordPress.WP.EnqueuedResourceParameters */
         wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . dt_get_option( 'map_key' ), array(), null, true );
     }
 
@@ -594,6 +596,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     public static function query_get_contact_generations() { // @todo
         global $wpdb;
 
+//        select all the baptized that are not baptizers
         $results = $wpdb->get_results( "
             SELECT
               a.ID as id,
@@ -748,8 +751,9 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             $year = date( 'Y' ); // default to this year
             $year = (int) $year;
         }
-
+        $year_start = DateTime::createFromFormat( "Y", $year )->format( "Y-01-01" );
         $next_year = (int) $year + 1;
+        $year_end = DateTime::createFromFormat( "Y", $next_year )->format( "Y-01-01" );
 
         $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT
@@ -818,7 +822,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                   AND a.post_type = 'contacts'
                 ) as total_baptisms,
                 ( 0 ) as 1st_gen_baptisms,
-                ( SELECT count(*) as count
+                ( SELECT count(DISTINCT(p2p_to)) as count
                     FROM $wpdb->p2p
                     WHERE p2p_from IN (
                       SELECT a.ID
@@ -881,7 +885,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 WHERE p2p_type = 'contacts_to_peoplegroups'
                     OR p2p_type = 'groups_to_peoplegroups'
                 ) ) as people_groups;
-        ", $year, $next_year, $year, $next_year, $year, $next_year, $year, $next_year ), ARRAY_A );
+        ", $year_start, $year_end, $year_start, $year_end, $year_start, $year_end, $year_start, $year_end ), ARRAY_A );
 
         if ( empty( $results ) ) {
             dt_write_log( 'failed query' );
@@ -891,6 +895,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         $raw_baptism_generation_list = self::query_get_baptism_generations( $year );
         $all_baptisms = self::build_baptism_generation_counts( $raw_baptism_generation_list );
         $baptism_generations_this_year = self::build_baptism_generations_this_year( $all_baptisms, $year );
+        $results[0]["total_baptisms"] = array_sum( $baptism_generations_this_year );
 
         // build group generations
         $raw_connections = self::query_get_group_generations();
@@ -1048,10 +1053,27 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         if ( !isset( $counts[$generation] ) ){
             $counts[$generation] = [ (string) $generation , 0, [] ];
         }
-        foreach ($elements as $element) {
+        foreach ($elements as $element_i => $element) {
             if ($element['parent_id'] == $parent_id) {
-                $counts[ $generation ][1]++;
-                $counts[ $generation ][2][] = $element['id'];
+                //find and remove if the baptisms has already been counted on a shorter path
+                //we keep the longer path
+                $already_counted_in_deeper_path = false;
+                foreach ( $counts as $count_i => $count ){
+                    if ( $count_i < $generation ){
+                        if ( in_array( $element['id'], $count[2] ) ){
+                            $counts[ $count_i ][1]--;
+                            unset( $counts[ $count_i ][2][array_search( $element['id'], $count[2] )] );
+                        }
+                    } else {
+                        if (in_array( $element['id'], $count[2] )){
+                            $already_counted_in_deeper_path = true;
+                        }
+                    }
+                }
+                if ( !$already_counted_in_deeper_path ){
+                    $counts[ $generation ][1]++;
+                    $counts[ $generation ][2][] = $element['id'];
+                }
                 $counts = self::build_baptism_generation_counts( $elements, $element['id'], $generation, $counts );
             }
         }
@@ -1575,7 +1597,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                       AND d.meta_value = 'active'
                WHERE a.post_status = 'publish'
                      AND a.post_type = 'groups')
-                as groups
+                as `groups`
             ",
             $user_id,
             $user_id,
@@ -1602,8 +1624,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         }
 
         $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT d.meta_key as health_key, 
-              count(*) as count, 
+            SELECT d.meta_key as health_key,
+              count(*) as count,
               ( SELECT count(*)
               FROM $wpdb->posts as a
                 JOIN $wpdb->postmeta as b
@@ -1644,8 +1666,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         global $wpdb;
 
         $results = $wpdb->get_results($wpdb->prepare( "
-            SELECT d.meta_key as health_key, 
-              count(*) as count, 
+            SELECT d.meta_key as health_key,
+              count(*) as count,
               ( SELECT count(*)
               FROM $wpdb->posts as a
                 JOIN $wpdb->postmeta as c
@@ -1832,7 +1854,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                AND d.meta_value = 'active'
                WHERE a.post_status = 'publish'
                 AND a.post_type = 'groups')
-          as groups
+          as `groups`
         ",
         ARRAY_A );
 

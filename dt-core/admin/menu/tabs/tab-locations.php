@@ -205,7 +205,8 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
         $countries = [ '00' => 'No Countries Loaded' ];
         $file = file_get_contents( Disciple_Tools::instance()->theme_path . 'dt-locations/sources/countries.json' );
         if ( $file ) {
-            $countries = json_decode( $file );
+            $countries = json_decode( $file, true );
+            asort( $countries );
         }
         ?>
 

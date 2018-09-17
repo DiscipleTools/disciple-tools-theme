@@ -51,30 +51,36 @@
             </div>
         </div>
         <div class="cell">
-            <ul class="tabs" data-tabs id="comment-activity-tabs">
-                <li class="tabs-title is-active" data-tab="all"><a href="#all" aria-selected="true"><?php esc_html_e( "All", 'disciple_tools' ) ?></a></li>
+            <ul id="comment-activity-tabs">
+
                 <?php
                 $sections = [
                     [
-                        "key" => "comments",
-                        "label" => __( "Comments", 'disciple_tools' )
+                        "key" => "comment",
+                        "label" => __( "Comments", 'disciple_tools' ),
+                        "selected_by_default" => true
                     ],
                     [
                         "key" => "activity",
-                        "label" => __( "Activity", 'disciple_tools' )
+                        "label" => __( "Activity", 'disciple_tools' ),
+                        "selected_by_default" => true
                     ]
                 ];
                 $sections = apply_filters( 'dt_comments_additional_sections', $sections, "contacts" );
                 foreach ( $sections as $section ) :
-                    if ( isset( $section["key"] ) && isset( $section["label"] ) ) : ?>
-                    <li class="tabs-title" data-tab="<?php echo esc_html( $section["key"] ) ?>">
-                        <a href="#<?php echo esc_html( $section["key"] ) ?>">
+                    if ( isset( $section["key"] ) && isset( $section["label"] ) ) :
+                        $class = ( isset( $section["selected_by_default"] ) && $section["selected_by_default"] === true ) ?
+                            "selected-select-button" : "empty-select-button"
+                        ?>
+                    <li class="tabs-title" >
+                        <button id="tab-button-<?php echo esc_html( $section["key"] ) ?>" data-id="<?php echo esc_html( $section["key"] ) ?>" class="button select-button <?php echo esc_html( $class )?>">
                             <?php echo esc_html( $section["label"] ) ?>
-                        </a>
+                        </button>
                     </li>
                     <?php endif;
                 endforeach; ?>
             </ul>
+            <button id="show_all_tabs"><a><?php esc_html_e( "Show all", 'disciple_tools' ) ?></a></button>
         </div>
 
         <div id="comments-wrapper" class="cell tabs-content">

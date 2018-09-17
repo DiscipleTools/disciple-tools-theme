@@ -528,15 +528,16 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * Update an existing Contact
      *
-     * @param  int|null  $contact_id , the post id for the contact
-     * @param  array     $fields     , the meta fields
+     * @param  int|null $contact_id , the post id for the contact
+     * @param  array $fields , the meta fields
      * @param  bool|null $check_permissions
+     * @param bool $silent
      *
+     * @return int | WP_Error of contact ID
      * @access public
      * @since  0.1.0
-     * @return int | WP_Error of contact ID
      */
-    public static function update_contact( int $contact_id, array $fields, $check_permissions = true ) {
+    public static function update_contact( int $contact_id, array $fields, $check_permissions = true, bool $silent = false ) {
 
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
@@ -666,7 +667,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         //hook for signaling that a contact has been updated and which keys have been changed
         if ( !is_wp_error( $contact )){
             do_action( "dt_contact_updated", $contact_id, $initial_fields, $contact );
-            Disciple_Tools_Notifications::insert_notification_for_post_update( "contacts", $contact, $existing_contact, $initial_keys );
+            if ( !$silent ){
+                Disciple_Tools_Notifications::insert_notification_for_post_update( "contacts", $contact, $existing_contact, $initial_keys );
+            }
         }
 
         return $contact;
@@ -768,10 +771,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return mixed
      */
     public static function add_baptized_by_to_contact( $contact_id, $baptized_by ) {
-        return p2p_type( 'baptizer_to_baptized' )->connect(
+        $p2p = p2p_type( 'baptizer_to_baptized' )->connect(
             $contact_id, $baptized_by,
             [ 'date' => current_time( 'mysql' ) ]
         );
+        Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $contact_id );
+        return $p2p;
     }
 
     /**
@@ -781,10 +786,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return mixed
      */
     public static function add_baptized_to_contact( $contact_id, $baptized ) {
-        return p2p_type( 'baptizer_to_baptized' )->connect(
+        $p2p = p2p_type( 'baptizer_to_baptized' )->connect(
             $baptized, $contact_id,
             [ 'date' => current_time( 'mysql' ) ]
         );
+        Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $baptized );
+        return $p2p;
+
     }
 
     /**
@@ -870,7 +878,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return mixed
      */
     public static function remove_baptized_by_from_contact( $contact_id, $baptized_by ) {
-        return p2p_type( 'baptizer_to_baptized' )->disconnect( $contact_id, $baptized_by );
+        $p2p = p2p_type( 'baptizer_to_baptized' )->disconnect( $contact_id, $baptized_by );
+        Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $contact_id );
+        return $p2p;
     }
 
     /**
@@ -880,7 +890,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return mixed
      */
     public static function remove_baptized_from_contact( $contact_id, $baptized ) {
-        return p2p_type( 'baptizer_to_baptized' )->disconnect( $baptized, $contact_id );
+        $p2p = p2p_type( 'baptizer_to_baptized' )->disconnect( $baptized, $contact_id );
+        Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $baptized );
+        return $p2p;
     }
 
     /**
@@ -1905,7 +1917,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     /**
      * @param int $contact_id
-     * @param string $comment
+     * @param string $comment_html
      * @param bool $check_permissions
      * @param string $type
      * @param null $user_id
@@ -1915,8 +1927,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return false|int|\WP_Error
      */
-    public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date = null, $silent = false ) {
-        $result = self::add_post_comment( "contacts", $contact_id, $comment, $check_permissions, $type, $user_id, $author, $date, $silent );
+    public static function add_comment( int $contact_id, string $comment_html, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date = null, $silent = false, $author_url = null ) {
+        $result = self::add_post_comment( "contacts", $contact_id, $comment_html, $check_permissions, $type, $user_id, $author, $date, $silent, $author_url );
         if ( $type === "comment" && !is_wp_error( $result )){
             self::check_requires_update( $contact_id );
         }
@@ -2400,8 +2412,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   AND b.meta_key = 'assigned_to'
                   AND b.meta_value = CONCAT( 'user-', %s )
               INNER JOIN $wpdb->postmeta as type
-                ON a.ID=type.post_id AND type.meta_key = 'type' 
-            WHERE a.post_status = 'publish' 
+                ON a.ID=type.post_id AND type.meta_key = 'type'
+            WHERE a.post_status = 'publish'
             AND (( type.meta_value = 'media' OR type.meta_value = 'next_gen' )
                 OR ( type.meta_key IS NULL ))
             )
@@ -2422,8 +2434,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     AND d.meta_value = 'active'
                 INNER JOIN $wpdb->postmeta as e
                   ON a.ID=e.post_id
-                  AND (( e.meta_key = 'type' 
-                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) ) 
+                  AND (( e.meta_key = 'type'
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish')
             as update_needed,
@@ -2443,8 +2455,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     AND d.meta_value = 'assigned'
                 INNER JOIN $wpdb->postmeta as e
                   ON a.ID=e.post_id
-                  AND (( e.meta_key = 'type' 
-                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) ) 
+                  AND (( e.meta_key = 'type'
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish')
             as needs_accepted,
@@ -2464,8 +2476,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     AND d.meta_value = 'active'
                 INNER JOIN $wpdb->postmeta as e
                   ON a.ID=e.post_id
-                  AND (( e.meta_key = 'type' 
-                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) ) 
+                  AND (( e.meta_key = 'type'
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish')
             as contact_unattempted,
@@ -2485,8 +2497,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     AND d.meta_value = 'active'
                 INNER JOIN $wpdb->postmeta as e
                   ON a.ID=e.post_id
-                  AND (( e.meta_key = 'type' 
-                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) ) 
+                  AND (( e.meta_key = 'type'
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
               WHERE a.post_status = 'publish')
             as meeting_scheduled,
@@ -2501,12 +2513,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
               WHERE ID IN (SELECT post_id
                 FROM $wpdb->dt_share
                 WHERE user_id = %s)
-              AND post_status = 'publish' 
-              AND ( 
-                (type.meta_key = 'type' AND type.meta_value = 'media') 
-                OR 
+              AND post_status = 'publish'
+              AND (
+                (type.meta_key = 'type' AND type.meta_value = 'media')
+                OR
                 ( type.meta_key = 'type' AND type.meta_value = 'next_gen' )
-                OR 
+                OR
                 ( type.meta_key IS NULL )
               )
             )
@@ -2572,6 +2584,62 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         ] );
 
         return $numbers;
+    }
+
+
+    /**
+     * Return an associative array of sources for contacts that the current
+     * user can see, (or all sources if the user has permission). The return
+     * value looks like this:
+     *
+     *  $rv = [
+     *      // $source_key => $source_label,
+     *      "facebook" => null, // when a label could not be found for a source
+     *      "phone" => "The phone",
+     *      "partner" => "Our partners",
+     *      "web" => "Website",
+     *  ];
+     *
+     *  @access public
+     *  @return array | WP_Error
+     */
+    public static function list_sources() {
+        global $wpdb;
+        $source_labels = dt_get_option( 'dt_site_custom_lists' )['sources'];
+        $rv = [];
+
+        if ( current_user_can( 'view_any_contacts' ) ) {
+            foreach ( $source_labels as $source_key => $source ) {
+                $rv[$source_key] = $source['label'];
+            }
+            $results = $wpdb->get_results(
+                "SELECT DISTINCT meta_value FROM $wpdb->postmeta WHERE meta_key = 'sources'",
+                ARRAY_N
+            );
+            foreach ( $results as $result ) {
+                if ( ! array_key_exists( $result[0], $rv ) ) {
+                    $rv[ $result[0] ] = null;
+                }
+            }
+        } else {
+            /* TODO: Find a way to do this that is faster, I'm guessing this is slow */
+            $contacts = self::get_viewable_contacts( 0 );
+            if ( is_wp_error( $contacts ) ) {
+                return $contacts;
+            }
+            foreach ( $contacts['contacts'] as $contact ) {
+                foreach ( get_post_meta( $contact->ID, 'sources', false ) as $post_source_key ) {
+                    if ( array_key_exists( $post_source_key, $source_labels ) ) {
+                        $rv[ $post_source_key ] = $source_labels[ $post_source_key ]['label'];
+                    } else {
+                        $rv[ $post_source_key ] = null;
+                    }
+                }
+            }
+        }
+
+        asort( $rv );
+        return $rv;
     }
 
 }

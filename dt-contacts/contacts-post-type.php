@@ -718,6 +718,14 @@ class Disciple_Tools_Contact_Post_Type
             'section'     => 'misc',
         ];
 
+        $fields['baptism_generation'] = [
+            'name'        => __( 'Baptism Generation', 'disciple_tools' ),
+            'description' => '',
+            'type'        => 'text',
+            'default'     => '',
+            'section'     => 'misc',
+        ];
+
         // Misc Information fields
 
         $fields['gender'] = [

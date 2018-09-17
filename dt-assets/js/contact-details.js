@@ -76,7 +76,7 @@ function commentPosted() {
   if (_.get(contact, "requires_update.key") === "yes"){
     API.get_post("contact",  $("#contact-id").text() ).then(contact=>{
       contactUpdated(_.get(contact, "requires_update.key") === "yes")
-    })
+    }).catch(err => { console.error(err) })
   }
 }
 function details_accept_contact(contactId, accept){
@@ -159,7 +159,7 @@ jQuery(document).ready(function($) {
       },
       href: function(item){
         if (item){
-          return `/groups/${item.ID}`
+          return `${window.wpApiShare.site_url}/groups/${item.ID}`
         }
       }
     },
@@ -224,61 +224,68 @@ jQuery(document).ready(function($) {
    * Sources
    */
   typeaheadTotals.sources = 0;
-  let leadSourcesTypeahead = ()=>{
+  let leadSourcesTypeahead = async function leadSourcesTypeahead() {
     if (!window.Typeahead['.js-typeahead-sources']){
-
+      /* Similar code is in list.js, copy-pasted for now. */
+      $(".js-typeahead-sources").attr("disabled", true) // disable while loading AJAX
+      const response = await fetch(contactsDetailsWpApiSettings.root + 'dt/v1/contact/list-sources', {
+        credentials: 'same-origin', // needed for Safari
+        headers: {
+          'X-WP-Nonce': wpApiShare.nonce,
+        },
+      });
       let sourcesData = []
-      _.forOwn(contactsDetailsWpApiSettings.contacts_custom_fields_settings.sources.default, (sourceValue, sourceKey)=>{
-        sourcesData.push({key:sourceKey, value:sourceValue})
+      _.forOwn(await response.json(), (sourceValue, sourceKey) => {
+         sourcesData.push({key:sourceKey, value:sourceValue || ""})
       })
-      if (contactsDetailsWpApiSettings.can_view_all){
-        $.typeahead({
-          input: '.js-typeahead-sources',
-          minLength: 0,
-          accent: true,
-          searchOnFocus: true,
-          maxItem: 20,
-          source: {
-            data: sourcesData
-          },
-          display: "value",
-          templateValue: "{{value}}",
-          dynamic: true,
-          multiselect: {
-            matchOn: ["key"],
-            data: function () {
-              return (contact.sources || []).map(sourceKey=>{
-                return {
-                  key:sourceKey,
-                  value:_.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings.sources.default.${sourceKey}`) || sourceKey }
-              })
-            }, callback: {
-              onCancel: function (node, item) {
-                _.pullAllBy(editFieldsUpdate.sources.values, [{value:item.key}], "value")
-                editFieldsUpdate.sources.values.push({value:item.key, delete:true})
+      $(".js-typeahead-sources").attr("disabled", false)
+      $.typeahead({
+        input: '.js-typeahead-sources',
+        minLength: 0,
+        accent: true,
+        searchOnFocus: true,
+        maxItem: 20,
+        source: {
+          data: sourcesData
+        },
+        display: "value",
+        templateValue: "{{value}}",
+        dynamic: true,
+        multiselect: {
+          matchOn: ["key"],
+          data: function () {
+            return (contact.sources || []).map(sourceKey=>{
+              return {
+                key:sourceKey,
+                value: _.get(sourcesData, sourceKey) || sourceKey,
               }
-            }
-          },
-          callback: {
-            onClick: function(node, a, item, event){
+            })
+          }, callback: {
+            onCancel: function (node, item) {
               _.pullAllBy(editFieldsUpdate.sources.values, [{value:item.key}], "value")
-              editFieldsUpdate.sources.values.push({value:item.key})
-              this.addMultiselectItemLayout(item)
-              event.preventDefault()
-              this.hideLayout();
-              this.resetInput();
-            },
-            onResult: function (node, query, result, resultCount) {
-              resultCount = typeaheadTotals.sources
-              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-              $('#sources-result-container').html(text);
-            },
-            onHideLayout: function () {
-              $('#sources-result-container').html("");
+              editFieldsUpdate.sources.values.push({value:item.key, delete:true})
             }
           }
-        });
-      }
+        },
+        callback: {
+          onClick: function(node, a, item, event){
+            _.pullAllBy(editFieldsUpdate.sources.values, [{value:item.key}], "value")
+            editFieldsUpdate.sources.values.push({value:item.key})
+            this.addMultiselectItemLayout(item)
+            event.preventDefault()
+            this.hideLayout();
+            this.resetInput();
+          },
+          onResult: function (node, query, result, resultCount) {
+            resultCount = typeaheadTotals.sources
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $('#sources-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('#sources-result-container').html("");
+          }
+        }
+      });
     }
   }
 
@@ -425,7 +432,7 @@ jQuery(document).ready(function($) {
           setStatus(response)
           assigned_to_input.val(contact.assigned_to.display)
           assigned_to_input.blur()
-        })
+        }).catch(err => { console.error(err) })
       },
       onResult: function (node, query, result, resultCount) {
         resultCount = typeaheadTotals.assigned_to
@@ -533,10 +540,10 @@ jQuery(document).ready(function($) {
                 }
 
               }
-            })
+            }).catch(err => { console.error(err) })
           }
         },
-        href: "/contacts/{{ID}}"
+        href: window.wpApiShare.site_url + "/contacts/{{ID}}"
       },
       callback: {
         onClick: function(node, a, item, event){
@@ -546,7 +553,7 @@ jQuery(document).ready(function($) {
             $(`.${field_id}-list`).append(`<li class="${addedItem.ID}">
               <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
             </li>`)
-          })
+          }).catch(err => { console.error(err) })
           this.addMultiselectItemLayout(item)
           event.preventDefault()
           this.hideLayout();
@@ -768,7 +775,7 @@ jQuery(document).ready(function($) {
     let data = {overall_status:"active"}
     API.save_field_api('contact', contactId, data).then((contact)=>{
       setStatus(contact)
-    })
+    }).catch(err => { console.error(err) })
   })
 
   function setStatus(contact, openModal) {
@@ -815,7 +822,7 @@ jQuery(document).ready(function($) {
       $(this).toggleClass('loading')
       $(`#${field}-contact-modal`).foundation('close')
       setStatus(contactData)
-    })
+    }).catch(err => { console.error(err) })
   })
 
 
@@ -877,7 +884,7 @@ jQuery(document).ready(function($) {
     $('#contact-details-edit').foundation('open');
     loadLocationTypeahead()
     loadPeopleGroupTypeahead()
-    leadSourcesTypeahead()
+    leadSourcesTypeahead().catch(err => { console.log(err) })
   })
 
 
@@ -1050,7 +1057,7 @@ jQuery(document).ready(function($) {
             value = `<a href="${value}" target="_blank" >${_.escape(match[1] || value)}</a>`
           }
           socialHTMLField.append(`<li class="details-list ${_.escape(field.key)}">
-            <object data="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/${fieldDesignator}.svg" 
+            <object data="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/${fieldDesignator}.svg"
               type="image/jpg">${fieldDesignator}:</object>
               ${value}
               <img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
@@ -1093,6 +1100,7 @@ jQuery(document).ready(function($) {
       contact.sources.forEach(source=>{
         let translatedSourceHTML = _.escape(_.get(contactsDetailsWpApiSettings, "contacts_custom_fields_settings.sources.default." + source))
         if (! translatedSourceHTML) {
+          alert(`Error: Could not find the label for the source key '${source}', please ask an admin to create it in the Settings (DT) interface`)
           translatedSourceHTML = `<code>${_.escape(source)}</code>`
         }
         sourceHTML.append(`<li>${translatedSourceHTML}</li>`)

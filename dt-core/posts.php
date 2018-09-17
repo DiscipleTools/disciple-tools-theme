@@ -212,7 +212,7 @@ class Disciple_Tools_Posts
     /**
      * @param string $post_type
      * @param int $post_id
-     * @param string $comment
+     * @param string $comment_html
      * @param bool $check_permissions
      * @param string $type
      * @param null $user_id
@@ -222,27 +222,35 @@ class Disciple_Tools_Posts
      *
      * @return false|int|\WP_Error
      */
-    public static function add_post_comment( string $post_type, int $post_id, string $comment, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date = null, $silent = false ) {
+    public static function add_post_comment( string $post_type, int $post_id, string $comment_html, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date = null, $silent = false, $author_url = null ) {
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
+        //limit comment length to 5000
+        $comments = str_split( $comment_html, 4999 );
         $user = wp_get_current_user();
         $user_id = $user_id ?? get_current_user_id();
-        $comment_data = [
-            'comment_post_ID'      => $post_id,
-            'comment_content'      => $comment,
-            'user_id'              => $user_id,
-            'comment_author'       => $author ?? $user->display_name,
-            'comment_author_url'   => $user->user_url,
-            'comment_author_email' => $user->user_email,
-            'comment_type'         => $type,
-        ];
-        if ( $date ){
-            $comment_data["comment_date"] = $date;
-            $comment_data["comment_date_gmt"] = $date;
+        $created_comment = null;
+        foreach ( $comments as $comment ){
+            $comment_data = [
+                'comment_post_ID'      => $post_id,
+                'comment_content'      => $comment,
+                'user_id'              => $user_id,
+                'comment_author'       => $author ?? $user->display_name,
+                'comment_author_url'   => $author_url ?? $user->user_url,
+                'comment_author_email' => $user->user_email,
+                'comment_type'         => $type,
+            ];
+            if ( $date ){
+                $comment_data["comment_date"] = $date;
+                $comment_data["comment_date_gmt"] = $date;
+            }
+            $new_comment = wp_new_comment( $comment_data );
+            if ( !$created_comment ){
+                $created_comment = $new_comment;
+            }
         }
 
-        $created_comment = wp_new_comment( $comment_data );
         if ( !$silent && !is_wp_error( $created_comment )){
             Disciple_Tools_Notifications_Comments::insert_notification_for_comment( $created_comment );
         }
@@ -426,7 +434,7 @@ class Disciple_Tools_Posts
                 } else if ( $activity->meta_key === "_sample"){
                     $message = __( "Created from Demo Plugin", "disciple_tools" );
                 } else {
-                    $message = "Deleted field";
+                    $message = $activity->meta_key . ": " . $activity->meta_value;
                 }
             }
         }
@@ -545,8 +553,9 @@ class Disciple_Tools_Posts
         ]);
 
         foreach ( $comments as $comment ){
-            $comment->gravatar = get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
-            $comment->comment_author = dt_get_user_display_name( $comment->user_id );
+            $comment->gravatar = $comment->comment_author_url ?? get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
+            $display_name = dt_get_user_display_name( $comment->user_id );
+            $comment->comment_author = !empty( $display_name ) ? $display_name : $comment->comment_author;
         }
 
         return $comments;
@@ -854,7 +863,12 @@ class Disciple_Tools_Posts
 
         if ( !empty( $search )){
             $inner_joins .= "INNER JOIN $wpdb->postmeta AS search ON ( $wpdb->posts.ID = search.post_id ) ";
-            $meta_query .= "AND ( ( INSTR( $wpdb->posts.post_title ,'" . esc_sql( $search ) . "' ) > 0 ) OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 ) ) ";
+            $other_search_fields = apply_filters( "dt_search_extra_post_meta_fields", [] );
+            $meta_query .= "AND ( ( INSTR( $wpdb->posts.post_title ,'" . esc_sql( $search ) . "' ) > 0 ) OR ( search.meta_key LIKE 'contact_%' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0 )  ";
+            foreach ( $other_search_fields as $field ){
+                $meta_query .= " OR ( search.meta_key LIKE '" . esc_sql( $field ) . "' AND INSTR( search.meta_value, '" . esc_sql( $search ) . "' ) > 0  ) ";
+            }
+            $meta_query .= " ) ";
 
         }
 

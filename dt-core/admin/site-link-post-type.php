@@ -9,7 +9,7 @@ if ( !defined( 'ABSPATH' ) ) {
  * All functionality pertaining to project update post types in Site_Link_System.
  * @class Site_Link_System
  *
- * @version 0.1.13
+ * @version 0.1.14
  *
  * @since   0.1.7 Moved to post type
  *          0.1.8 Added key_select, readonly
@@ -18,6 +18,7 @@ if ( !defined( 'ABSPATH' ) ) {
  *          0.1.11 Updated menu position
  *          0.1.12 Added filter to post type args
  *          0.1.13 Added time tolerance for decryption key
+ *          0.1.14 Removed spacing at the top of the admin page
  */
 if ( ! class_exists( 'Site_Link_System' ) ) {
 
@@ -657,55 +658,71 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
         }
 
         public function scripts() {
-            echo "<script type='text/javascript'>
-
-            function check_link_status( transfer_token, url, id ) {
-
-            let linked = '" . esc_attr__( 'Linked' ) . "';
-            let not_linked = '" . esc_attr__( 'Not Linked' ) . "';
-            let not_found = '" . esc_attr__( 'Failed to connect with the URL provided.' ) . "';
-
-            return jQuery.ajax({
-                type: 'POST',
-                data: JSON.stringify({ \"transfer_token\": transfer_token } ),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                url: 'https://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
-            })
-                .done(function (data) {
-                    if( data ) {
-                        jQuery('#' + id + '-status').html( linked ).attr('class', 'success-green')
-                    } else {
-                        jQuery('#' + id + '-status').html( not_linked ).attr('class', 'fail-red');
-                        jQuery('#' + id + '-message').show();
-                    }
-                })
-                .fail(function (err) {
-                    jQuery( document ).ajaxError(function( event, request, settings ) {
-                         if( request.status === 0 ) {
-                            jQuery('#' + id + '-status').html( not_found ).attr('class', 'fail-red')
-                         } else {
-                            jQuery('#' + id + '-status').html( JSON.stringify( request.statusText ) ).attr('class', 'fail-red')
-                         }
-                    });
-                });
+            global $post;
+            if ( isset( $post->post_type ) ) {
+                $pt = $post->post_type;
+            } elseif ( isset( $_GET['post_type'] ) ) {
+                $pt = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
+            } else {
+                $pt = null;
             }
-            </script>";
-            echo "<style>
-                .success-green { color: limegreen;}
-                .fail-red { color: red;}
-                .info-color { color: steelblue; }
-                .button-like-link-left {
-                    float: left;
-                    background: none !important;
-                    color: inherit;
-                    border: none;
-                    padding: 0 !important;
-                    font: inherit;
-                    /*border is optional*/
-                    cursor: pointer;
-                    }
-            </style>";
+
+            if ( $this->post_type === $pt ) {
+
+                echo "<script type='text/javascript'>
+    
+                function check_link_status( transfer_token, url, id ) {
+    
+                let linked = '" . esc_attr__( 'Linked' ) . "';
+                let not_linked = '" . esc_attr__( 'Not Linked' ) . "';
+                let not_found = '" . esc_attr__( 'Failed to connect with the URL provided.' ) . "';
+    
+                return jQuery.ajax({
+                    type: 'POST',
+                    data: JSON.stringify({ \"transfer_token\": transfer_token } ),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    url: 'https://' + url + '/wp-json/dt-public/v1/sites/site_link_check',
+                })
+                    .done(function (data) {
+                        if( data ) {
+                            jQuery('#' + id + '-status').html( linked ).attr('class', 'success-green')
+                        } else {
+                            jQuery('#' + id + '-status').html( not_linked ).attr('class', 'fail-red');
+                            jQuery('#' + id + '-message').show();
+                        }
+                    })
+                    .fail(function (err) {
+                        jQuery( document ).ajaxError(function( event, request, settings ) {
+                             if( request.status === 0 ) {
+                                jQuery('#' + id + '-status').html( not_found ).attr('class', 'fail-red')
+                             } else {
+                                jQuery('#' + id + '-status').html( JSON.stringify( request.statusText ) ).attr('class', 'fail-red')
+                             }
+                        });
+                    });
+                }
+                </script>";
+
+                echo "<style>
+                    .success-green { color: limegreen;}
+                    .fail-red { color: red;}
+                    .info-color { color: steelblue; }
+                    .button-like-link-left {
+                        float: left;
+                        background: none !important;
+                        color: inherit;
+                        border: none;
+                        padding: 0 !important;
+                        font: inherit;
+                        /*border is optional*/
+                        cursor: pointer;
+                        }
+                        #postbox-container-3 {display:none;}
+                        #postbox-container-4 {display:none;}
+                        </style>";
+
+            }
         }
 
         public function enter_title_here( $title ) {

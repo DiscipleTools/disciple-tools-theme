@@ -225,7 +225,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             if ($new){
                 $object_note = 'Added ' . $this->_key_name( $meta_key, $fields ) . ': ' . $this->_value_name( $meta_key, $meta_value, $fields );
             } else if ($deleted){
-                $object_note = $this->_key_name( $meta_key, $fields ) . ' "' . $this->_value_name( $meta_key, $prev_value, $fields ) . '" deleted ';
+                $object_note = $this->_key_name( $meta_key, $fields ) . ' "' . ( $this->_value_name( $meta_key, empty( $prev_value ) ? $meta_value : $prev_value, $fields ) ) . '" deleted ';
             } else {
                 $object_note = $this->_key_name( $meta_key, $fields ) . ' changed '  .
                     ( isset( $prev_value ) ? 'from "' . $this->_value_name( $meta_key, $prev_value, $fields ) .'"' : '' ) .
@@ -235,6 +235,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         }
 
         if ( $deleted ){
+            $prev_value = empty( $prev_value ) ? ( is_array( $meta_value ) ? serialize( $meta_value ) : $meta_value ) : $prev_value;
             $meta_value = "value_deleted";
         }
 
@@ -247,7 +248,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'object_name'       => ( empty( $parent_post['post_title'] ) ) ? 'unknown' : $parent_post['post_title'],
                 'meta_id'           => $meta_id,
                 'meta_key'          => $meta_key,
-                'meta_value'        => ( is_array( $meta_value ) ? serialize( $meta_value ) : $meta_value ) ?? "" ,
+                'meta_value'        => ( is_array( $meta_value ) ? serialize( $meta_value ) : $meta_value ) ?? "",
                 'meta_parent'       => ( empty( $parent_post['post_parent'] ) ) ? 'unknown' : $parent_post['post_parent'],
                 'object_note'       => $object_note,
                 'old_value'         => is_array( $prev_value ) ? serialize( $prev_value ) : $prev_value,

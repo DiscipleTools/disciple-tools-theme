@@ -300,6 +300,7 @@ class Disciple_Tools_Location_Post_Type
         add_meta_box( $this->post_type . '_notes', __( 'Notes', 'disciple_tools' ), [ $this, 'load_notes_meta_box' ], $this->post_type, 'advanced', 'high' );
         add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'advanced', 'low' );
         add_meta_box( $this->post_type . '_levels', __( 'Levels', 'disciple_tools' ), [ $this, 'load_levels_meta_box' ], $this->post_type, 'side', 'high' );
+
     } // End meta_box_setup()
 
     /**
@@ -309,8 +310,18 @@ class Disciple_Tools_Location_Post_Type
         dt_activity_metabox()->activity_meta_box( get_the_ID() );
     }
 
+    /**
+     * Load notes metabox
+     */
     public function load_notes_meta_box() {
         $this->meta_box_content( 'notes' );
+    }
+
+    /**
+     * Load map metabox
+     */
+    public function load_map_meta_box() {
+        $this->display_location_map();
     }
 
     public function load_levels_meta_box( $post ) {
@@ -397,7 +408,7 @@ class Disciple_Tools_Location_Post_Type
                     </p>
                     <p>
                         <a href="<?php echo esc_url( admin_url() ) . 'admin.php?page=dt_options&tab=locations' ?>">
-                            Change Settings
+                            <?php esc_attr_e( 'Change Settings' ) ?>
                         </a>
                     </p>
                 </div>
@@ -407,12 +418,7 @@ class Disciple_Tools_Location_Post_Type
         endif;
     }
 
-    /**
-     * Load activity metabox
-     */
-    public function load_map_meta_box() {
-        $this->display_location_map();
-    }
+
 
     public function geocode_metabox() {
 
@@ -443,7 +449,7 @@ class Disciple_Tools_Location_Post_Type
             <?php
         else :
             ?>
-        You must save post before geocoding.
+            You must save post before geocoding.
             <?php
             endif;
     }
@@ -481,6 +487,12 @@ class Disciple_Tools_Location_Post_Type
                         case 'text':
                             echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label>
                                     </th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                            echo '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
+                            echo '</td><tr/>' . "\n";
+                            break;
+                        case 'number':
+                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label>
+                                    </th><td><input name="' . esc_attr( $k ) . '" type="number" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
                             echo '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
                             echo '</td><tr/>' . "\n";
                             break;
@@ -701,8 +713,6 @@ class Disciple_Tools_Location_Post_Type
             'section'     => 'notes',
         ];
 
-
-
         return apply_filters( 'dt_custom_fields_settings', $fields, "locations" );
     }
 
@@ -755,16 +765,11 @@ class Disciple_Tools_Location_Post_Type
      * Load map metabox
      */
     public function display_location_map() {
-        global $post, $pagenow;
-        $geocode = new Disciple_Tools_Google_Geocode_API();
-        $raw_location = get_post_meta( $post->ID, 'raw', true );
+        global $post;
 
-        if ( 'post-new.php' == $pagenow || empty( $raw_location ) ) {
-            ?>
-            You must geocode address to see map.
-            <?php
-        }
-        elseif ( $raw_location ) {
+        $raw_location = get_post_meta( $post->ID, 'raw', true );
+        if ( $raw_location ) {
+            $geocode = new Disciple_Tools_Google_Geocode_API();
 
             $lat = (float) $geocode::parse_raw_result( $raw_location, 'lat' );
             $lng = (float) $geocode::parse_raw_result( $raw_location, 'lng' );
@@ -855,14 +860,26 @@ class Disciple_Tools_Location_Post_Type
 
                         return Math.min(latZoom, lngZoom, ZOOM_MAX);
                     }
+
+                    <?php
+                    /**
+                     * Add additional elements to the map.
+                     */
+                    do_action( 'dt_locations_map_additions' )
+                    ?>
                 });
 
             </script>
+
             <script
                 src="https://maps.googleapis.com/maps/api/js?key=<?php echo esc_attr( dt_get_option( 'map_key' ) ); ?>">
             </script>
 
             <?php
-        } // endif $pagenow match
+        } else {
+            esc_attr_e( 'You must geocode address to see map.' );
+        }
+
+        // endif $pagenow match
     }
 }

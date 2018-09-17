@@ -346,7 +346,7 @@ function dt_get_site_options_defaults() {
                 "status"      => "active",
                 "seeker_path" => "none",
                 "days"        => 3,
-                "comment"     => "This contact is active and nobody has tried to contact them. Please do so."
+                "comment"     => "This contact is active but there is no record of anybody contacting them. Please do contact them.",
             ],
             [
                 "status"      => "active",
@@ -401,7 +401,7 @@ function dt_get_site_options_defaults() {
 function dt_get_site_custom_lists( string $list_title = null ) {
     $fields = [];
 
-    $fields['version'] = 5;
+    $fields['version'] = 7;
     //custom fields
     $fields['custom_dropdown_contact_options'] = [];
     $fields['seeker_path'] = [
@@ -442,7 +442,13 @@ function dt_get_site_custom_lists( string $list_title = null ) {
     $fields['custom_reason_paused'] = [
         'none'           => '',
         'vacation'       => __( 'On Vacation', 'disciple_tools' ),
-        'not-responding' => __( 'Not Responding', 'disciple_tools' ),
+        'not-responding' => __( 'Not Responding', 'disciple_tools' ), //@todo make lowercase
+        'not_available' => __( 'Not available', 'disciple_tools' ),
+        'little_interest' => __( 'Little interest/hunger', 'disciple_tools' ),
+        'no_initiative' => __( 'No initiative', 'disciple_tools' ),
+        'questionable_motives' => __( 'Questionable motives', 'disciple_tools' ),
+        'ball_in_their_court' => __( 'Ball is in his/her court', 'disciple_tools' ),
+        'wait_and_see' => __( 'Want to see if/how they respond to automated text messages', 'disciple_tools' ),
     ];
     // the prefix dt_user_ assists db meta queries on the user
     $fields['user_fields'] = [
@@ -521,6 +527,12 @@ function dt_get_site_custom_lists( string $list_title = null ) {
     ];
 
     $fields['sources'] = [
+        'personal'           => [
+            'label'       => 'Personal',
+            'key'         => 'personal',
+            'description' => 'Personal contacts.',
+            'enabled'     => true,
+        ],
         'web'           => [
             'label'       => 'Web',
             'key'         => 'web',

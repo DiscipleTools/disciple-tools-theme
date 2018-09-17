@@ -9,12 +9,12 @@ jQuery(document).ready(function($) {
   function post_comment(postId) {
     let commentInput = jQuery("#comment-input")
     let commentButton = jQuery("#add-comment-button")
-    getCommentWithMentions(comment=>{
-      if (comment) {
+    getCommentWithMentions(comment_plain_text=>{
+      if (comment_plain_text) {
         commentButton.toggleClass('loading')
         commentInput.attr("disabled", true)
         commentButton.attr("disabled", true)
-        API.post_comment(postType, postId, comment).then(data => {
+        API.post_comment(postType, postId, _.escape(comment_plain_text)).then(data => {
           commentInput.val("").trigger( "change" )
           commentButton.toggleClass('loading')
           data.comment.date = moment(data.comment.comment_date_gmt + "Z")
@@ -76,7 +76,21 @@ jQuery(document).ready(function($) {
         item.action = ''
       }
     })
+
+    let tab = $(`#tab-button-activity`)
+    let text = tab.text()
+    text = text.substring(0, text.indexOf('(')) || text
+    text += `(${activityData.length})`
+    tab.text(text)
   }
+  $("#show_all_tabs").on("click", function () {
+    let tabs = $('#comment-activity-tabs button.select-button')
+    tabs.each((i, e)=>{
+      $(e).removeClass("empty-select-button")
+      $(e).addClass("selected-select-button")
+    })
+    display_activity_comment()
+  })
 
   let commentTemplate = _.template(`
   <div class="activity-block">
@@ -88,7 +102,7 @@ jQuery(document).ready(function($) {
     <div class="activity-text">
     <% _.forEach(activity, function(a){
         if (a.comment){ %>
-            <div dir="auto" class="comment-bubble <%- a.comment_ID %>" style="white-space: pre-line"> <%= a.text %> </div>
+            <div dir="auto" class="comment-bubble <%- a.comment_ID %>" style="white-space: pre-line"> <%= a.text /* not escaped on purpose */ %> </div>
             <p class="comment-controls">
                <% if ( a.comment_ID ) { %>
                   <a class="open-edit-comment" data-id="<%- a.comment_ID %>" style="margin-right:5px">
@@ -174,26 +188,27 @@ jQuery(document).ready(function($) {
     return date.format("YYYY-MM-DD h:mm a")
   }
 
-  let current_section = "all"
-  function display_activity_comment(section) {
-    current_section = section || current_section
-    let additional_sections = commentsSettings.additional_sections;
+  function display_activity_comment() {
+    let activeTabs = $('#comment-activity-tabs .selected-select-button')
+    let activeTabIds = [];
+    activeTabs.each((i, e)=>{
+      activeTabIds.push($(e).data("id"))
+    })
+    let possibleTabs = _.union( [ 'activity', 'comment' ], commentsSettings.additional_sections.map((l)=>{return l['key']}))
+
     let commentsWrapper = $("#comments-wrapper")
     commentsWrapper.empty()
     let displayed = []
-    if (current_section === "all"){
-      displayed = _.union(comments, activity)
-    } else if (current_section === "comments"){
-      displayed = comments.filter(comment => comment.comment_type === 'comment')
-    } else if ( current_section === "activity"){
-      displayed = activity
-    } else {
-      additional_sections.forEach(section=>{
-        if ( current_section === section.key ){
-          displayed = comments.filter(comment => comment.comment_type === section.key)
-        }
-      })
+    if ( activeTabIds.includes("activity")){
+      displayed = _.union(displayed, activity)
     }
+    comments.forEach(comment=>{
+      if (activeTabIds.includes(comment.comment_type)){
+        displayed.push(comment)
+      } else if ( !possibleTabs.includes(comment.comment_type)){
+        displayed.push(comment)
+      }
+    })
     displayed = _.orderBy(displayed, "date", "desc")
     let array = []
 
@@ -241,7 +256,9 @@ jQuery(document).ready(function($) {
    */
   $( document ).ajaxComplete(function(event, xhr, settings) {
     if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
-      refreshActivity()
+      if (!settings.url.includes("notifications")){
+        refreshActivity()
+      }
     }
   });
 
@@ -291,11 +308,31 @@ jQuery(document).ready(function($) {
     ).then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
       const commentData = commentDataStatusJQXHR[0];
       const activityData = activityDataStatusJQXHR[0];
+      let typesCount = {};
       commentData.forEach(comment => {
         comment.date = moment(comment.comment_date_gmt + "Z")
         if(comment.comment_content.match(/function|script/)) {
           comment.comment_content = _.escape(comment.comment_content)
         }
+        /* comment_content should be HTML. However, we want to make sure that
+         * HTML like "<div>Hello" gets transformed to "<div>Hello</div>", that
+         * is, that all tags are closed, so that the comment_content can be
+         * included in HTML without any nasty surprises. This is one way to do
+         * that. This is not sufficient for malicious input, but hopefully we
+         * can trust the contents of the database to have been sanitized
+         * thanks to wp_new_comment . */
+        comment.comment_content = $("<div>").html(comment.comment_content).html()
+        if (!typesCount[comment.comment_type]){
+          typesCount[comment.comment_type] = 0;
+        }
+        typesCount[comment.comment_type]++;
+      })
+      _.forOwn(typesCount, (val, key)=>{
+        let tab = $(`#tab-button-${key}`)
+        let text = tab.text()
+        text = text.substring(0, text.indexOf('(')) || text
+        text += `(${val})`
+        tab.text(text)
       })
       comments = commentData
       activity = activityData
@@ -313,9 +350,16 @@ jQuery(document).ready(function($) {
     post_comment(postId)
   })
 
-  $('#comment-activity-tabs').on("change.zf.tabs", function () {
-    var tabId = $('#comment-activity-tabs').find('.tabs-title.is-active').data('tab');
-    display_activity_comment(tabId)
+  $('#comment-activity-tabs button').on("click", function () {
+    let id = $(this).data('id')
+    if ($(this).hasClass("selected-select-button")){
+      $(this).removeClass("selected-select-button")
+      $(this).addClass("empty-select-button")
+    } else {
+      $(this).removeClass("empty-select-button")
+      $(this).addClass("selected-select-button")
+    }
+    display_activity_comment()
   })
 
   let searchUsersPromise = null
@@ -334,7 +378,7 @@ jQuery(document).ready(function($) {
           data.push({id:user.ID, name:user.name, type:postType, avatar:user.avatar})
           callback.call(this, data);
         })
-      })
+      }).catch(err => { console.error(err) })
     },
     templates : {
       mentionItemSyntax : function (data) {
@@ -371,7 +415,7 @@ jQuery(document).ready(function($) {
       $(".revert-field").html(field || a.meta_key)
       $(".revert-current-value").html(a.meta_value)
       $(".revert-old-value").html(a.old_value || 0)
-    })
+    }).catch(err => { console.error(err) })
   })
 
   // confirm going back to the old version on the activity
@@ -383,7 +427,7 @@ jQuery(document).ready(function($) {
       if (typeof refresh_quick_action_buttons === 'function'){
         refresh_quick_action_buttons(contactResponse)
       }
-    })
+    }).catch(err => { console.error(err) })
   })
 
 });
