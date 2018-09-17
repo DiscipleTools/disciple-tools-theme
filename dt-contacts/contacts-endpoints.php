@@ -212,6 +212,12 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'list_sources' ],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/duplicates', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_duplicates_on_contact' ],
+            ]
+        );
     }
 
 
@@ -806,5 +812,15 @@ class Disciple_Tools_Contacts_Endpoints
 
     public function list_sources() {
         return Disciple_Tools_Contacts::list_sources();
+    }
+
+    public function get_duplicates_on_contact( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $contact_id = $params["id"] ?? null;
+        if ( $contact_id ){
+            return Disciple_Tools_Contacts::get_duplicates_on_contact( $contact_id );
+        } else {
+            return new WP_Error( 'get_duplicates_on_contact', "Missing field for request", [ 'status' => 400 ] );
+        }
     }
 }

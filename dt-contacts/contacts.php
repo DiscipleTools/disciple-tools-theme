@@ -2140,6 +2140,24 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return $duplicates;
     }
 
+    public static function get_duplicates_on_contact( $contact_id ){
+        global $wpdb;
+        $contact = self::get_contact( $contact_id );
+        $all_ids = [];
+        $dups = [];
+        if ( isset( $contact["duplicate_data"] ) ){
+            foreach( $contact["duplicate_data"] as $dup_ids ){
+                $ids = array_diff( $dup_ids, $all_ids);
+                $all_ids = array_merge( $all_ids, $ids );
+                foreach( $ids as $contact_id ) {
+                    $dup = self::get_contact( $contact_id );
+                    $dups[] = $dup;
+                }
+            }
+        }
+        return $dups;
+    }
+
     private function get_duplicate_data( $contact_id, $field ){
         $duplicate_data = get_post_meta( $contact_id, "duplicate_data", true );
         if ( empty( $duplicate_data )){
