@@ -313,7 +313,7 @@ function dt_get_site_options_defaults() {
             'email' => false
         ],
         'milestones' => [
-            'label' => __( 'Contact Milestones and Group Heath metrics', 'disciple_tools' ),
+            'label' => __( 'Contact Milestones and Group Health metrics', 'disciple_tools' ),
             'web'   => false,
             'email' => false
         ]

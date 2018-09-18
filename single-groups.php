@@ -157,7 +157,7 @@ declare(strict_types=1);
                                         <p><?php esc_html_e( 'Covenant', 'disciple_tools' )?></p>
                                     </div>
                                     <?php
-                                    //custom group helth metrics
+                                    //custom group health metrics
                                     $custom_health = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( false );
                                     foreach ( $custom_health as $key => $val ) :
                                         if ( strpos( $key, "church_custom_" ) === 0 ) : ?>
