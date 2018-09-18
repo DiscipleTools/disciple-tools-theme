@@ -120,9 +120,8 @@
                     <input type='submit' id='unsure-dismiss-submit' style='display: none;' value='submit'/></form></div>`;
 
                     $duplicates.append(unsure_dismiss_html);
-
                     $.each(dupes, function (key, id) {
-                        let dupe = _.find(dups_with_data, {"ID": id})
+                        let dupe = _.find(dups_with_data, {"ID": parseInt( id )})
                         if (dupe) {
                             var duplicate_contact_html = $(
                                 "<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'><h5 style='font-weight: bold; color: #3f729b;'></h5>");
@@ -186,7 +185,7 @@
                         "<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding: 20px 0px 0px; margin-bottom: 0px;'><?php esc_html_e( "Unsure Duplicates", 'disciple_tools' ) ?></h4>");
 
                     $.each(duplicates.unsure, function (key, id) {
-                        let dupe = _.find(dups_with_data, {"ID": id})
+                        let dupe = _.find(dups_with_data, {"ID": parseInt( id )})
 
                         if (dupe) {
                             var unsure_duplicate_html = $(
