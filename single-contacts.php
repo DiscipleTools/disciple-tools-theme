@@ -115,6 +115,11 @@ declare( strict_types=1 );
                 if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "text" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
                     $update[$key] = $fields;
                 }
+                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "array" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
+                    if ( $key != "duplicate_data" ){
+                        $update[$key] = $fields;
+                    }
+                }
 
                 if ( strpos( $key, "contact_" ) === false ) {
                     continue;
