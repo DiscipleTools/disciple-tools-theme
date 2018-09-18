@@ -510,6 +510,25 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
 
+    public static function close_duplicate_contact( int $duplicate_id, int $contact_id) {
+        $duplicate = self::get_contact( $duplicate_id );
+        $contact = self::get_contact( $contact_id );
+
+        self::update_contact( $duplicate_id, [
+            "overall_status" => "closed",
+            "reason_closed" => "duplicate"
+        ] );
+
+        $comment = "{$duplicate['title']} is a duplicate and was merged into " .
+                   "<a href='" . get_permalink( $contact_id ) . "'>{$contact['title']}</a>";
+        self::add_comment( $duplicate_id, $comment );
+
+        //comment on master
+        $comment = "Contact <a href='" . get_permalink( $duplicate_id ) . "'>{$duplicate['title']}</a> was merged into {$contact['title']}";
+        self::add_comment( $contact_id, $comment );
+    }
+
+
     /**
      * Update an existing Contact
      *
@@ -910,6 +929,27 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return p2p_type( 'contacts_to_subassigned' )->disconnect( $subassigned, $contact_id );
     }
 
+    public static function remove_fields( $contact_id, $fields = [], $ignore = []) {
+        global $wpdb;
+        foreach ($fields as $field) {
+            $ignore_keys = preg_grep( "/$field/", $ignore );
+            $sql = "delete
+                from
+                    wp_postmeta
+                where
+                    post_id = %d and
+                    meta_key like %s";
+            $params = array( $contact_id, "$field%" );
+            if ( !empty( $ignore_keys )) {
+                foreach ( $ignore_keys as $key ){
+                    $sql .= " and meta_key not like %s";
+                }
+                array_push( $params, ...$ignore_keys );
+            }
+            $wpdb->query( $wpdb->prepare( $sql, $params ) ); // @codingStandardsIgnoreLine
+        }
+    }
+
     /**
      * @param int       $contact_id
      * @param string    $key
@@ -1211,9 +1251,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $meta_fields = get_post_custom( $contact_id );
             foreach ( $meta_fields as $key => $value ) {
                 //if is contact details and is in a channel
-
-                if ( !isset( self::$channel_list )){
-
+                if ( !( isset( self::$channel_list ) )){
                     self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
                 }
                 if ( strpos( $key, "contact_" ) === 0 && isset( self::$channel_list[ explode( '_', $key )[1] ] ) ) {
@@ -1278,6 +1316,68 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
     }
 
+
+    public static function get_merge_data( int $contact_id, int $duplicate_id) {
+        if ( !$contact_id && !$duplicate_id) { return; }
+
+        $contact = self::get_contact( $contact_id );
+        $duplicate = self::get_contact( $duplicate_id );
+
+        $fields = array(
+            'contact_phone' => 'Phone',
+            'contact_email' => 'Email',
+            'contact_address' => 'Address',
+            'contact_facebook' => 'Facebook'
+        );
+
+        $c_fields = array();
+        $d_fields = array();
+
+        $data = array(
+            'contact_phone' => array(),
+            'contact_email' => array(),
+            'contact_address' => array(),
+            'contact_facebook' => array()
+        );
+
+        foreach (array_keys( $fields ) as $key) {
+            foreach ($contact[$key] ?? [] as $vals) {
+                if ( !isset( $c_fields[$key] )) {
+                    $c_fields[$key] = array();
+                }
+                array_push( $c_fields[$key], $vals['value'] );
+            }
+            foreach ($duplicate[$key] ?? [] as $vals) {
+                if ( !isset( $d_fields[$key] )) {
+                    $d_fields[$key] = array();
+                }
+                array_push( $d_fields[$key], $vals['value'] );
+            }
+        }
+
+        foreach (array_keys( $fields ) as $field) {
+            $max = max( array( count( $c_fields[$field] ?? [] ), count( $d_fields[$field] ?? [] ) ) );
+            for ($i = 0; $i < $max; $i++) {
+                $hide = false;
+                $o_value = $c_fields[$field][$i] ?? null;
+                $d_value = $d_fields[$field][$i] ?? null;
+                if (in_array( $o_value, $d_fields[$field] ?? [] )) { $hide = true; }
+                array_push($data[$field], array(
+                    'original' => array(
+                        'hide' => $hide,
+                        'value' => $o_value
+                    ),
+                    'duplicate' => array(
+                        'hide' => $hide,
+                        'value' => $d_value
+                    )
+                ));
+            }
+        }
+
+        return array( $contact, $duplicate, $data, $fields );
+    }
+
     /**
      * @param $meta_fields
      * @param $type
@@ -1313,6 +1413,82 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function merge_contacts( $base_contact, $duplicate_contact ) {
 
+    }
+
+    public static function merge_milestones( int $master_id, int $non_master_id) {
+        if ( !$master_id || !$non_master_id) { return; }
+        $master = self::get_contact( $master_id );
+        $non_master = self::get_contact( $non_master_id );
+
+        $update = array();
+        foreach ($non_master as $key => $val_arr) {
+            if (preg_match( "/^milestone_/", $key ) && ( $master[$key]['key'] ?? 'no' ) !== 'yes') {
+                $value = is_array( $val_arr ) ? $val_arr['key'] : $val_arr;
+                $update[$key] = $value;
+            }
+        }
+
+        $seeker_paths = array(
+            'none',
+            'attempted',
+            'established',
+            'scheduled',
+            'met',
+            'ongoing',
+            'coaching'
+        );
+
+        $master_level = array_search( $master['seeker_path']['key'] ?? array(), $seeker_paths ) ?: 0;
+        $non_master_level = array_search( $non_master['seeker_path']['key'] ?? array(), $seeker_paths ) ?: 0;
+        if ($non_master_level > $master_level) {
+            $update['seeker_path'] = $non_master['seeker_path']['key'];
+        }
+
+        if ( !isset( $master['baptism_date'] ) && isset( $non_master['baptism_date'] )) {
+            $update['baptism_date'] = $non_master['baptism_date'];
+        }
+
+        if (empty( $update )) { return; }
+
+        self::update_contact( $master_id, $update );
+    }
+
+    public static function merge_p2p( int $master_id, int $non_master_id) {
+        if ( !$master_id || !$non_master_id) { return; }
+        $master = self::get_contact( $master_id );
+        $non_master = self::get_contact( $non_master_id );
+        $keys = array(
+            'groups',
+            'baptized_by',
+            'baptized',
+            'coached_by',
+            'coaching',
+            'locations',
+            'people_groups'
+        );
+
+        $update = array();
+
+        foreach ($keys as $key) {
+            $results = $non_master[$key] ?? array();
+            foreach ($results as $result) {
+                if ( !isset( $update[$key] )) {
+                    $update[$key] = array();
+                    $update[$key]['values'] = array();
+                }
+                if ( in_array( $key, [ "baptized", "coaching" ] ) ){
+                    array_push($update[$key]['values'], array(
+                        'value' => $result->p2p_from
+                    ));
+                } else {
+                    array_push($update[$key]['values'], array(
+                        'value' => $result->p2p_to
+                    ));
+                }
+            }
+        }
+
+        self::update_contact( $master_id, $update );
     }
 
     /**
@@ -1930,12 +2106,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             ),
             ARRAY_N
         );
-        return $contact_ids;
+        // if there are more than 50, it is most likely not a duplicate
+        return sizeof( $contact_ids ) > 50 ? [] : $contact_ids;
     }
 
     public function find_contacts_by_title( $title, $exclude_id ){
         global $wpdb;
-        return $wpdb->get_results(
+        $dups = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT * FROM $wpdb->posts
                 WHERE post_title
@@ -1945,6 +2122,59 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $exclude_id
             ), ARRAY_N
         );
+        // if there are more than 50, it is most likely not a duplicate
+        return sizeof( $dups ) > 50 ? [] : $dups;
+    }
+
+    public function get_all_duplicates() {
+        global $wpdb;
+        $records = $wpdb->get_results(
+            $wpdb->prepare("
+                select
+                    *
+                from
+                    wp_posts p join wp_postmeta m on p.ID = m.post_id
+                where
+                    p.post_type = %s and
+                    m.meta_key = %s
+            ", [ 'contacts', 'duplicate_data' ]), ARRAY_A
+        );
+
+        $duplicates = array();
+        foreach ($records as $record) {
+            $dupes = unserialize( $record['meta_value'] );
+            $count = 0;
+            foreach ($dupes as $key => $dupe) {
+                if ($key === 'override') { continue; }
+                $count += count( $dupe );
+            }
+            $duplicates[$record['ID']]['count'] = $count;
+            $duplicates[$record['ID']]['name'] = $record['post_title'];
+        }
+
+        return $duplicates;
+    }
+
+    public static function get_duplicates_on_contact( $contact_id ){
+        if ( !self::can_view_all( 'contacts' ) ) {
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+        }
+        $contact = self::get_contact( $contact_id );
+        $all_ids = [];
+        $dups = [];
+        if ( isset( $contact["duplicate_data"] ) ){
+            foreach ( $contact["duplicate_data"] as $dup_ids ){
+                $ids = array_diff( $dup_ids, $all_ids );
+                $all_ids = array_merge( $all_ids, $ids );
+                foreach ( $ids as $index => $contact_id ) {
+                    if ( $index < 100 ){
+                        $dup = self::get_contact( $contact_id );
+                        $dups[] = $dup;
+                    }
+                }
+            }
+        }
+        return $dups;
     }
 
     private function get_duplicate_data( $contact_id, $field ){
@@ -2024,6 +2254,159 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 }
             }
         }
+    }
+
+
+    public static function recheck_duplicates( int $contact_id) {
+        global $wpdb;
+        $contact = self::get_contact( $contact_id );
+        if (empty( $contact )) { return; }
+        $fields = array( 'contact_phone', 'contact_email', 'contact_address' );
+        $values = array();
+        foreach ($fields as $field) {
+            foreach ($contact[$field] ?? [] as $arr_val) {
+                $values[] = $arr_val['value'];
+            }
+        }
+        $unsure = $contact['duplicate_data']['unsure'] ?? array();
+        $dismissed = $contact['duplicate_data']['override'] ?? array();
+        $vals = join( '|', $values );
+        $flds = join( '|', $fields );
+
+        $results = $wpdb->get_results( $wpdb->prepare( "
+            select
+                *
+            from
+                wp_posts p join
+                wp_postmeta m on p.ID = m.post_id
+            where
+                ID != %d and
+                (meta_key regexp %s and meta_key not like %s) and
+                meta_value regexp %s
+            ",
+            array(
+                $contact_id,
+                "$flds",
+                '%details',
+                "$vals"
+            )
+        ), ARRAY_A );
+        $duplicates = array();
+        foreach ($results as $result) {
+            $key = $result['meta_key'];
+            if (preg_match( "/contact_/i", $key )) {
+                $keys = explode( "_", $key );
+                $key = "$keys[0]_$keys[1]";
+            }
+            if ( !isset( $duplicates[$key] )) {
+                $duplicates[$key] = array();
+            }
+            if ( !in_array( $result['ID'], $unsure ) && !in_array( $result['ID'], $dismissed )) {
+                array_push( $duplicates[$key], $result['ID'] );
+            }
+        }
+        foreach ($duplicates as $key => $duplicate) {
+            $duplicates[$key] = array_merge( array_unique( $duplicates[$key] ) );
+        }
+        if ( !empty( $unsure )) {
+            $duplicates['unsure'] = $unsure;
+        }
+        if ( !empty( $dismissed )) {
+            $duplicates['override'] = $dismissed;
+        }
+
+        self::save_duplicate_data( $contact_id, $duplicates );
+    }
+
+
+    public static function save_duplicate_data( int $contact_id, array $duplicates) {
+        if (empty( $duplicates )) { return; }
+        update_post_meta( $contact_id, "duplicate_data", $duplicates );
+    }
+
+    public static function unsure_all( int $contact_id) {
+        if ( !$contact_id) { return; }
+        $contact = self::get_contact( $contact_id );
+        $data = isset( $contact['duplicate_data'] ) ? is_array( $contact['duplicate_data'] ) ? $contact['duplicate_data'] : unserialize( $contact['duplicate_data'] ) : array();
+        $duplicates = array();
+        foreach ($data as $key => $duplicate) {
+            if ($key === 'override') { continue; }
+            foreach ($duplicate as $duplicate_id) {
+                $duplicates['unsure'][] = $duplicate_id;
+            }
+        }
+
+        self::save_duplicate_data( $contact_id, $duplicates );
+    }
+
+    public static function unsure_duplicate( int $contact_id, int $unsure_id) {
+        if ( !$contact_id || !$unsure_id) { return; }
+        $contact = self::get_contact( $contact_id );
+        $duplicates = isset( $contact['duplicate_data'] ) ? is_array( $contact['duplicate_data'] ) ? $contact['duplicate_data'] : unserialize( $contact['duplicate_data'] ) : array();
+        $unsure = $duplicates['unsure'] ?? array();
+        $dismissed = $duplicates['override'] ?? array();
+        foreach ($duplicates as $key => $values) {
+            if (preg_match( "/unsure|override/", $key )) { continue; }
+            $index = array_search( $unsure_id, $values );
+            if ($index !== false) {
+                unset( $duplicates[$key][$index] );
+                array_merge( $duplicates[$key] );
+            }
+            if (empty( $duplicates[$key] )) {
+                unset( $duplicates[$key] );
+            }
+        }
+        if ( !in_array( $unsure_id, $unsure )) {
+            if (isset( $duplicates['unsure'] )) {
+                array_push( $duplicates['unsure'], $unsure_id );
+            } else {
+                $duplicates['unsure'] = [ $unsure_id ];
+            }
+        }
+
+        self::save_duplicate_data( $contact_id, $duplicates );
+    }
+
+    public static function dismiss_all( int $contact_id) {
+        if ( !$contact_id) { return; }
+        $contact = self::get_contact( $contact_id );
+        $data = isset( $contact['duplicate_data'] ) ? is_array( $contact['duplicate_data'] ) ? $contact['duplicate_data'] : unserialize( $contact['duplicate_data'] ) : array();
+        $duplicates = array();
+        foreach ($data as $key => $duplicate) {
+            foreach ($duplicate as $duplicate_id) {
+                $duplicates['override'][] = $duplicate_id;
+            }
+        }
+
+        self::save_duplicate_data( $contact_id, $duplicates );
+    }
+
+    public static function dismiss_duplicate( int $contact_id, int $dismiss_id) {
+        if ( !$contact_id || !$dismiss_id) { return; }
+        $contact = self::get_contact( $contact_id );
+        $duplicates = isset( $contact['duplicate_data'] ) ? is_array( $contact['duplicate_data'] ) ? $contact['duplicate_data'] : unserialize( $contact['duplicate_data'] ) : array();
+        $unsure = $duplicates['unsure'] ?? array();
+        $dismissed = $duplicates['override'] ?? array();
+        foreach ($duplicates as $key => $values) {
+            if (preg_match( "/override/", $key )) { continue; }
+            $index = array_search( $dismiss_id, $values );
+            if ($index !== false) {
+                unset( $duplicates[$key][$index] );
+                array_merge( $duplicates[$key] );
+            }
+            if (empty( $duplicates[$key] )) {
+                unset( $duplicates[$key] );
+            }
+        }
+        if ( !in_array( $dismiss_id, $dismissed )) {
+            if (isset( $duplicates['override'] )) {
+                array_push( $duplicates['override'], $dismiss_id );
+            } else {
+                $duplicates['override'] = [ $dismiss_id ];
+            }
+        }
+
+        self::save_duplicate_data( $contact_id, $duplicates );
     }
 
 

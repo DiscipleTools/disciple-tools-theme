@@ -219,6 +219,8 @@ else {
                 'team'          => 'template-team.php',
                 'contacts/new'  => 'template-contacts-new.php',
                 'groups/new'    => 'template-groups-new.php',
+                'contacts/mergedetails'    => 'template-merge-details.php',
+                'view-duplicates'    => 'template-view-duplicates.php',
                 ];
 
                 $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );

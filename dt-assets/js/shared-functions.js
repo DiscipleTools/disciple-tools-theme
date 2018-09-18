@@ -209,7 +209,18 @@ window.API = {
         xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
       }
     })
-  }
+  },
+  get_duplicates_on_post(type, postId){
+    return jQuery.ajax({
+      type:"GET",
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: wpApiShare.root + `dt/v1/${type}/${postId}/duplicates`,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+      }
+    })
+  },
 }
 
 function handelAjaxError(err) {

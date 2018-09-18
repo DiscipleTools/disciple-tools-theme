@@ -311,6 +311,9 @@ jQuery(document).ready(function($) {
       let typesCount = {};
       commentData.forEach(comment => {
         comment.date = moment(comment.comment_date_gmt + "Z")
+        if(comment.comment_content.match(/function|script/)) {
+          comment.comment_content = _.escape(comment.comment_content)
+        }
         /* comment_content should be HTML. However, we want to make sure that
          * HTML like "<div>Hello" gets transformed to "<div>Hello</div>", that
          * is, that all tags are closed, so that the comment_content can be
