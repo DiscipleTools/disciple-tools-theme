@@ -112,6 +112,9 @@ declare( strict_types=1 );
                 if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "key_select" && !isset( $contact[$key] )){
                     $update[$key] = $fields["key"];
                 }
+                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "text" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
+                    $update[$key] = $fields;
+                }
 
                 if ( strpos( $key, "contact_" ) === false ) {
                     continue;
