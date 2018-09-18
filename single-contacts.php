@@ -2,6 +2,8 @@
 declare( strict_types=1 );
 
 ( function () {
+    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
+    $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 
     if (isset( $_POST['unsure_all'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
         if (isset( $_POST['id'] ) ) {
@@ -101,6 +103,16 @@ declare( strict_types=1 );
                 Merge social media + other contact data
             */
             foreach ( $non_master as $key => $fields ) {
+                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "multi_select" ){
+                    $update[$key]["values"] = [];
+                    foreach ( $fields as $field_value ){
+                        $update[$key]["values"][] = [ "value" => $field_value ];
+                    }
+                }
+                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "key_select" && !isset( $contact[$key] )){
+                    $update[$key] = $fields["key"];
+                }
+
                 if ( strpos( $key, "contact_" ) === false ) {
                     continue;
                 }
@@ -131,7 +143,6 @@ declare( strict_types=1 );
             if ($update['contact_phone']['values']) { $delete_fields[] = 'contact_phone'; }
             if ($update['contact_email']['values']) { $delete_fields[] = 'contact_email'; }
             if ($update['contact_address']['values']) { $delete_fields[] = 'contact_address'; }
-            if ($update['contact_facebook']['values']) { $delete_fields[] = 'contact_facebook'; }
 
             if ( !empty( $delete_fields )) {
                 Disciple_Tools_Contacts::remove_fields( $master_id, $delete_fields, $ignore_keys );
@@ -154,8 +165,7 @@ declare( strict_types=1 );
         die();
     }
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
-    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
-    $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
+
 
     get_header(); ?>
 
@@ -293,27 +303,28 @@ declare( strict_types=1 );
             <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell" role="main" style="padding:0">
               <div class="cell grid-y grid-margin-y" style="display: block">
                 <?php
-                $duplicate_post_meta = get_post_meta( get_the_Id(), 'duplicate_data' );
-                $duplicates = false;
-                foreach ($duplicate_post_meta[0] ?? [] as $key => $array) {
-                    if ($key === 'override') { continue; }
-                    if ( !empty( $array )) {
-                        $duplicates = true;
+                if ( current_user_can( "view_any_contacts" ) ){
+                    $duplicate_post_meta = get_post_meta( get_the_Id(), 'duplicate_data' );
+                    $duplicates = false;
+                    foreach ($duplicate_post_meta[0] ?? [] as $key => $array) {
+                        if ($key === 'override') { continue; }
+                        if ( !empty( $array )) {
+                            $duplicates = true;
+                        }
                     }
+                    if ($duplicates){
+                        ?>
+                    <section id="duplicates" class="small-12 grid-y grid-margin-y cell">
+                        <div class="bordered-box" style="background-color:#ff9800; border:.2rem solid #30c2ff; text-align:center;">
+                            <h3 class="section-header" style="color:white;"><?php esc_html_e( "This contact has possible duplicates.", 'disciple_tools' ) ?></h3>
+                           <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
+                            <button type="button" id="merge-dupe-modal" data-open="merge-dupe-modal" class="button">
+                              <?php esc_html_e( "Go to duplicates", 'disciple_tools' ) ?>
+                            </button>
+                        </div>
+                    </section>
+                    <?php }
                 }
-                if ($duplicates){
-                    ?>
-                <section id="duplicates" class="small-12 grid-y grid-margin-y cell">
-                <!--                    <div class="bordered-box last-typeahead-in-section">-->
-                    <div class="bordered-box" style="background-color:#ff9800; border:.2rem solid #30c2ff; text-align:center;">
-                        <h3 class="section-header" style="color:white;"><?php esc_html_e( "This contact has possible duplicates.", 'disciple_tools' ) ?></h3>
-                       <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
-                        <button type="button" id="merge-dupe-modal" data-open="merge-dupe-modal" class="button">
-                          <?php esc_html_e( "Go to duplicates", 'disciple_tools' ) ?>
-                        </button>
-                    </div>
-                </section>
-                <?php }
                 ?>
                     <section id="contact-details" class="small-12 grid-y grid-margin-y cell ">
                         <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>

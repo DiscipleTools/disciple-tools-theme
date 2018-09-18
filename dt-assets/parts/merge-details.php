@@ -89,6 +89,7 @@
             original_contact_html += "</div>";
 
             $display_fields.append(original_contact_html);
+            $display_fields.append(`<div style="display: inline-block" id="duplicates-spinner" class="loading-spinner active"></div>`)
 
             $display_fields.append("<div id='duplicates_list'></div><div id='unsure_list'></div>");
 
@@ -103,6 +104,7 @@
             });
 
             window.API.get_duplicates_on_post("contact", contact.ID).done(dups_with_data=> {
+                $("#duplicates-spinner").removeClass("active")
                 if (dupes.length) {
                     $duplicates = $display_fields.find('#duplicates_list');
                     $duplicates.append(
@@ -254,9 +256,13 @@
             return ret;
         }
 
+        let openedOnce = false
         jQuery(document).ready(function($) {
             $('#merge-dupe-edit').on("open.zf.reveal", function () {
+                if ( !openedOnce ){
                 loadDuplicates();
+                openedOnce = true;
+                }
             })
         })
 

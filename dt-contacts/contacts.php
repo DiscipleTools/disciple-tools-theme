@@ -928,7 +928,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function remove_fields( $contact_id, $fields = [], $ignore = []) {
         global $wpdb;
         foreach ($fields as $field) {
-            $ignore_key = preg_grep( "/$field/", $ignore );
+            $ignore_keys = preg_grep( "/$field/", $ignore );
             $sql = "delete
                 from
                     wp_postmeta
@@ -936,9 +936,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     post_id = %d and
                     meta_key like %s";
             $params = array( $contact_id, "$field%" );
-            if ( !empty( $ignore_key )) {
-                $sql .= " and meta_key not like %s";
-                array_push( $params, "$ignore_key[0]%" );
+            if ( !empty( $ignore_keys )) {
+                foreach ( $ignore_keys as $key ){
+                    $sql .= " and meta_key not like %s";
+                }
+                array_push( $params, ...$ignore_keys );
             }
             $wpdb->query( $wpdb->prepare( $sql, $params ) ); // @codingStandardsIgnoreLine
         }
@@ -1448,7 +1450,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     public static function merge_p2p( int $master_id, int $non_master_id) {
-        global $wpdb;
         if ( !$master_id || !$non_master_id) { return; }
         $master = self::get_contact( $master_id );
         $non_master = self::get_contact( $non_master_id );
@@ -1458,7 +1459,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'baptized',
             'coached_by',
             'coaching',
-            'locations'
+            'locations',
+            'people_groups'
         );
 
         $update = array();
@@ -1470,9 +1472,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $update[$key] = array();
                     $update[$key]['values'] = array();
                 }
-                array_push($update[$key]['values'], array(
-                    'value' => $result->p2p_to
-                ));
+                if ( in_array( $key, [ "baptized", "coaching" ] ) ){
+                    array_push($update[$key]['values'], array(
+                        'value' => $result->p2p_from
+                    ));
+                } else {
+                    array_push($update[$key]['values'], array(
+                        'value' => $result->p2p_to
+                    ));
+                }
             }
         }
 
@@ -2094,12 +2102,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             ),
             ARRAY_N
         );
-        return $contact_ids;
+        // if there are more than 50, it is most likely not a duplicate
+        return sizeof( $contact_ids ) > 50 ? [] : $contact_ids;
     }
 
     public function find_contacts_by_title( $title, $exclude_id ){
         global $wpdb;
-        return $wpdb->get_results(
+        $dups = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT * FROM $wpdb->posts
                 WHERE post_title
@@ -2109,6 +2118,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $exclude_id
             ), ARRAY_N
         );
+        // if there are more than 50, it is most likely not a duplicate
+        return sizeof( $dups ) > 50 ? [] : $dups;
     }
 
     public function get_all_duplicates() {
@@ -2141,7 +2152,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     public static function get_duplicates_on_contact( $contact_id ){
-        global $wpdb;
+        if ( !self::can_view_all( 'contacts' ) ) {
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+        }
         $contact = self::get_contact( $contact_id );
         $all_ids = [];
         $dups = [];
@@ -2149,9 +2162,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             foreach ( $contact["duplicate_data"] as $dup_ids ){
                 $ids = array_diff( $dup_ids, $all_ids );
                 $all_ids = array_merge( $all_ids, $ids );
-                foreach ( $ids as $contact_id ) {
-                    $dup = self::get_contact( $contact_id );
-                    $dups[] = $dup;
+                foreach ( $ids as $index => $contact_id ) {
+                    if ( $index < 100 ){
+                        $dup = self::get_contact( $contact_id );
+                        $dups[] = $dup;
+                    }
                 }
             }
         }
