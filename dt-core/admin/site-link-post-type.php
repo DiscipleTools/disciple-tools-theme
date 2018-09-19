@@ -829,17 +829,21 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             $site_key = get_post_meta( $post_id, 'site_key', true );
 
             if ( ! $token ) {
+                delete_post_meta( $post_id, 'site_key' );
                 return false;
             }
             if ( ! $site1 ) {
+                delete_post_meta( $post_id, 'site_key' );
                 return false;
             }
             if ( ! $site2 ) {
+                delete_post_meta( $post_id, 'site_key' );
                 return false;
             }
 
             $local_site = self::verify_one_site_is_local( $site1, $site2 );
             if ( ! $local_site ) {
+                delete_post_meta( $post_id, 'site_key' );
                 if ( $admin_notice ) {
                     self::admin_notice( 'Local site not found in submission. Either Site1 or Site2 must be this current website', 'error' );
                 }
@@ -847,6 +851,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             }
 
             if ( $site1 == $site2 ) {
+                delete_post_meta( $post_id, 'site_key' );
                 if ( $admin_notice ) {
                     self::admin_notice( 'Sites1 and Site2 cannot be the same site.', 'error' );
                 }
