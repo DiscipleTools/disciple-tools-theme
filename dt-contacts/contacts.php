@@ -2086,7 +2086,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return self::add_shared( 'contacts', $post_id, $user_id, $meta, $send_notifications, $check_permissions, $insert_activity );
     }
 
-    public function find_contacts_with( $field, $value, $exclude_id = "" ){
+    public static function find_contacts_with( $field, $value, $exclude_id = "", $exact_match = false ){
         global $wpdb; //This should allow access to this globally defined var.
         $contact_ids = $wpdb->get_results(
             $wpdb->prepare(
@@ -2100,7 +2100,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         ",
                 [
                     $field .'%',
-                    '%' . $value . '%',
+                    $exact_match ? $value : ('%' . $value . '%'),
                     $exclude_id
                 ]
             ),
