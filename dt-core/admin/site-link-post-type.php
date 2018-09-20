@@ -67,7 +67,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          */
         public static function get_site_connection_vars( $var, $type = 'post_id' ) {
 
-            switch( $type ) {
+            switch ( $type ) {
                 case 'post_id':
                     $post_id = $var;
                     break;
@@ -79,7 +79,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     break;
             }
 
-            $url = Site_Link_System::get_non_local_site_by_id( $post_id );
+            $url = self::get_non_local_site_by_id( $post_id );
             if ( empty( $url ) ) {
                 return new WP_Error( __METHOD__, 'Did not find urls setup properly for this post id.' );
             }
@@ -89,7 +89,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 return new WP_Error( __METHOD__, 'Did not find the site_key setup properly for this post id.' );
             }
 
-            $transfer_token = Site_Link_System::create_transfer_token_for_site( $key );
+            $transfer_token = self::create_transfer_token_for_site( $key );
             if ( empty( $key ) || is_wp_error( $key ) ) {
                 return new WP_Error( __METHOD__, 'Could not create a transfer token for this post id.' );
             }
@@ -565,10 +565,10 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                 if ( 'ip_address' == $field_data[ $f ]['type'] ) {
                     if ( strpos( ${$f}, 'http' ) !== false || strpos( ${$f}, '//' ) !== false || strpos( ${$f}, '/' ) !== false ) {
-                        ${$f} = str_replace('https://', '', ${$f} );
-                        ${$f} = str_replace('http://', '', ${$f} );
-                        ${$f} = str_replace('//', '', ${$f} );
-                        ${$f} = str_replace('/', '', ${$f} );
+                        ${$f} = str_replace( 'https://', '', ${$f} );
+                        ${$f} = str_replace( 'http://', '', ${$f} );
+                        ${$f} = str_replace( '//', '', ${$f} );
+                        ${$f} = str_replace( '/', '', ${$f} );
                         ${$f} = trim( ${$f} );
                     }
                 }
@@ -913,7 +913,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
         public static function get_post_id_by_site_key( $site_key ) {
             global $wpdb;
-            $post_id = $wpdb->get_var($wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'site_key' AND meta_value = %s LIMIT 1", $site_key ) );
+            $post_id = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'site_key' AND meta_value = %s LIMIT 1", $site_key ) );
             return $post_id;
         }
 
