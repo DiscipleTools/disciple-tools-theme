@@ -2100,7 +2100,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         ",
                 [
                     $field .'%',
-                    $exact_match ? $value : ('%' . $value . '%'),
+                    $exact_match ? $value : ( '%' . $value . '%' ),
                     $exclude_id
                 ]
             ),
