@@ -206,11 +206,11 @@
   </rule>
   <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
   <rule ref="PEAR.NamingConventions.ValidClassName"/>
-  <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
-    <properties>
-      <property name="prefixes" type="array" value="dt,Disciple_Tools" />
-    </properties>
-  </rule>
+  <!--<rule ref="WordPress.NamingConventions.PrefixAllGlobals">-->
+    <!--<properties>-->
+      <!--<property name="prefixes" type="array" value="dt,Disciple_Tools" />-->
+    <!--</properties>-->
+  <!--</rule>-->
 
   <!-- Maybe these rules will be enabled in the future: -->
   <!-- <rule ref="Generic.Files.LineLength"/> -->
