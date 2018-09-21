@@ -9,7 +9,7 @@ if ( !defined( 'ABSPATH' ) ) {
  * All functionality pertaining to project update post types in Site_Link_System.
  * @class Site_Link_System
  *
- * @version 0.1.14
+ * @version 0.1.16
  *
  * @since   0.1.7 Moved to post type
  *          0.1.8 Added key_select, readonly
@@ -19,6 +19,8 @@ if ( !defined( 'ABSPATH' ) ) {
  *          0.1.12 Added filter to post type args
  *          0.1.13 Added time tolerance for decryption key
  *          0.1.14 Removed spacing at the top of the admin page
+ *          0.1.15 Added get_site_connection_vars function;
+ *          0.1.16 Added https filter, capability filter for token verification
  */
 if ( ! class_exists( 'Site_Link_System' ) ) {
 
@@ -55,6 +57,53 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          * @var string
          */
         public static $token = 'site_link_system';
+
+        /**
+         * GET 'URL' AND 'TRANSFER TOKEN' BY POST_ID OR SITE KEY
+         *
+         * @param $var
+         * @param $type
+         *
+         * @return array|\WP_Error
+         */
+        public static function get_site_connection_vars( $var, $type = 'post_id' ) {
+
+            switch ( $type ) {
+                case 'post_id':
+                    $post_id = $var;
+                    break;
+                case 'site_key':
+                    $post_id = self::get_post_id_by_site_key( $var );
+                    break;
+                default:
+                    return new WP_Error( __METHOD__, 'Must be a valid type' );
+                    break;
+            }
+
+            if ( empty( $post_id ) ) {
+                return new WP_Error( __METHOD__, 'Did not find post id from this site key.' );
+            }
+
+            $url = self::get_non_local_site_by_id( $post_id );
+            if ( empty( $url ) ) {
+                return new WP_Error( __METHOD__, 'Did not find urls setup properly for this post id.' );
+            }
+
+            $key = get_post_meta( $post_id, 'site_key', true );
+            if ( empty( $key ) ) {
+                return new WP_Error( __METHOD__, 'Did not find the site_key setup properly for this post id.' );
+            }
+
+            $transfer_token = self::create_transfer_token_for_site( $key );
+            if ( empty( $key ) || is_wp_error( $key ) ) {
+                return new WP_Error( __METHOD__, 'Could not create a transfer token for this post id.' );
+            }
+
+            return [
+                'url' => $url,
+                'transfer_token' => $transfer_token,
+            ];
+        }
 
         /**
          * GET THE ARRAY OF SITE KEYS
@@ -96,16 +145,98 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          */
         public static function verify_transfer_token( $transfer_token ): bool
         {
-            if ( ! empty( $transfer_token ) ) {
-                $id_decrypted = self::decrypt_transfer_token( $transfer_token );
-                if ( $id_decrypted ) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
+            // challenge https connection
+            if ( ! isset( $_SERVER['HTTPS'] ) ) {
+                dt_write_log( __METHOD__ . ': Server does not have the HTTPS parameter set.' );
                 return false;
             }
+            elseif ( ! ( 'on' === $_SERVER['HTTPS'] ) ) {
+                dt_write_log( __METHOD__ . ': Failed https challenge' );
+                return false;
+            }
+
+            // challenge empty token
+            if ( empty( $transfer_token ) ) {
+                dt_write_log( __METHOD__ . ': Failed empty token challenge' );
+                return false;
+            }
+
+            // challenge token
+            $decrypted_key = self::decrypt_transfer_token( $transfer_token );
+            if ( ! $decrypted_key ) {
+                dt_write_log( __METHOD__ . ': Failed decrypt transfer token challenge' );
+                return false;
+            }
+
+            // challenge ip address
+            $keys = self::get_site_keys();
+            if ( ! empty( $keys[$decrypted_key]['approved_ip_address'] ) ) {
+                $valid_ip_address = self::verify_ip_address();
+                if ( ! $valid_ip_address ) {
+                    dt_write_log( __METHOD__ . ': Failed approved ip address challenge' );
+                    return false;
+                }
+            }
+
+            // add prepared permissions to the current_user object
+            $connection_type = get_post_meta( self::get_post_id_by_site_key( $decrypted_key ), 'type', true );
+            if ( ! empty( $connection_type ) ) {
+                self::add_capabilities_required_by_type( $connection_type );
+            }
+
+            return true;
+        }
+
+        /**
+         * Adding type capabilities
+         *
+         * @note: You need to add two filters to make this feature work.
+         *      First, add filter 'site_link_type' found in the meta_box_custom_fields_settings function for the type field.
+         *      Second, add this filter add_capabilities_required_by_type to filter for the right type and to add the array of capabilties to the current user
+         *      These combination of functions are used for restricting the current_user (which for an api call is a non-signed in user with empty permissions)
+         *      and giving the current_user the specific permissions needed for the tasks done during the site to site link.
+         *
+         * @param $connection_type
+         */
+        public static function add_capabilities_required_by_type( $connection_type ) {
+            /**
+             * Use the $connection_type to filter for the correct type
+             * Update and return the $capabilities array
+             */
+            $capabilities = apply_filters( 'site_link_type_capabilities', $connection_type, $capabilities = [] );
+
+            // Challenge if $capabilities is a valid array
+            if ( is_array( $capabilities ) && ! empty( $capabilities ) ) {
+                $current_user = wp_get_current_user();
+
+                foreach ( $capabilities as $capability ) {
+                    $current_user->add_cap( $capability );
+                }
+            }
+        }
+
+        /**
+         * CHECKS IF THE IP ADDRESS MATCHES
+         *
+         * @return bool
+         */
+        public static function verify_ip_address() {
+            $requester_ip_address = self::get_real_ip_address();
+
+            if ( empty( $requester_ip_address ) ) {
+                dt_write_log( __METHOD__ . ': Failed to get real ip address challenge' );
+                return false;
+            }
+
+            $keys = self::get_site_keys();
+            foreach ( $keys as $array ) {
+                if ( $requester_ip_address === $array['approved_ip_address'] ) {
+                    return true;
+                }
+            }
+
+            dt_write_log( __METHOD__ . ': Failed to find matching ip address' );
+            return false;
         }
 
         /**
@@ -237,7 +368,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     </span>
                         <script>
                             jQuery(document).ready(function () {
-                                check_link_status('<?php echo esc_attr( self::create_transfer_token_for_site( $this->get_site_key_by_id( $post->ID ) ) ); ?>', '<?php echo esc_attr( $this->get_non_local_site_by_id( $post->ID ) ); ?>', '<?php echo esc_attr( md5( $post->ID ) ); ?>');
+                                check_link_status('<?php echo esc_attr( self::create_transfer_token_for_site( $this->get_site_key_by_id( $post->ID ) ) ); ?>', '<?php echo esc_attr( self::get_non_local_site_by_id( $post->ID ) ); ?>', '<?php echo esc_attr( md5( $post->ID ) ); ?>');
                             })
                         </script>
                         <?php
@@ -373,6 +504,14 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                                 break;
 
+                            case 'ip_address':
+                                echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th>
+                                    <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                                echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
+                                echo '</td><tr/>' . "\n";
+
+                                break;
+
                             case 'text':
                                 echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th>
                                     <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
@@ -469,6 +608,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     delete_post_meta( $post_id, 'site1' );
                     delete_post_meta( $post_id, 'site2' );
                     delete_post_meta( $post_id, 'site_key' );
+                    delete_post_meta( $post_id, 'approved_ip_address' );
 
                     $this->build_cached_option(); // rebuilds cache for options
 
@@ -488,8 +628,18 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                 // Escape and confirm format of the URL fields.
                 if ( 'url' == $field_data[ $f ]['type'] ) {
-                    if ( strpos( ${$f}, 'http' ) !== false || strpos( ${$f}, '//' ) !== false || strpos( ${$f}, '/' ) !== false ){
+                    if ( strpos( ${$f}, 'http' ) !== false || strpos( ${$f}, '//' ) !== false || strpos( ${$f}, '/' ) !== false ) {
                         ${$f} = parse_url( ${$f}, PHP_URL_HOST );
+                    }
+                }
+
+                if ( 'ip_address' == $field_data[ $f ]['type'] ) {
+                    if ( strpos( ${$f}, 'http' ) !== false || strpos( ${$f}, '//' ) !== false || strpos( ${$f}, '/' ) !== false ) {
+                        ${$f} = str_replace( 'https://', '', ${$f} );
+                        ${$f} = str_replace( 'http://', '', ${$f} );
+                        ${$f} = str_replace( '//', '', ${$f} );
+                        ${$f} = str_replace( '/', '', ${$f} );
+                        ${$f} = trim( ${$f} );
                     }
                 }
 
@@ -511,10 +661,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             $fields = [];
 
             // Public Info
-
             $fields['token'] = [
                 'name'        => __( 'Token' ),
-                'description' => 'If you have a token from another site, just clear token above and replace it.',
+                'description' => __( 'If you have a token from another site, just clear token above and replace it.' ),
                 'type'        => 'token',
                 'default'     => self::generate_token(),
                 'section'     => 'site',
@@ -522,7 +671,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             $fields['site1'] = [
                 'name'        => __( 'Site 1' ),
-                'description' => 'Use just the host name. Example: www.website.com',
+                'description' => __( 'Use just the host name. Example: www.website.com' ),
                 'type'        => 'url',
                 'default'     => '',
                 'section'     => 'site',
@@ -530,15 +679,29 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             $fields['site2'] = [
                 'name'        => __( 'Site 2' ),
-                'description' => 'Use just the host name. Example: www.website.com',
+                'description' => __( 'Use just the host name. Example: www.website.com' ),
                 'type'        => 'url',
                 'default'     => '',
                 'section'     => 'site',
             ];
 
+            $fields['approved_ip_address'] = [
+                'name'        => __( 'Approved IP Address' ),
+                'description' => __( 'Enter an approved ip address to restrict responses of this connection. (format: xxx.xxx.xxx.xxx)' ),
+                'type'        => 'ip_address',
+                'default'     => '',
+                'section'     => 'non_wp',
+            ];
+            $fields['type'] = [
+                'name'        => __( 'Connection Type' ),
+                'description' => __( 'This adds permissions needed for the labeled task. If you have trouble with a connection succeeding, and a task failing. This permission setting may be the reason.' ),
+                'type'        => 'select',
+                'default'     => apply_filters( 'site_link_type', $permission = [ "" ] ),
+                'section'     => 'non_wp',
+            ];
             $fields['non_wp'] = [
                 'name'        => __( 'DT Site' ),
-                'description' => 'Is this connection to a Disciple Tools/Wordpress system.',
+                'description' => __( 'Is this connection to a Disciple Tools/Wordpress system.' ),
                 'type'        => 'key_select',
                 'default'     => [
                     0 => __( 'Yes, connected to another DT site (default)' ),
@@ -620,7 +783,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                             <script>
                                 jQuery(document).ready(function () {
-                                    check_link_status('<?php echo esc_attr( self::create_transfer_token_for_site( $site_key ) ); ?>', '<?php echo esc_attr( $this->get_non_local_site_by_id( $post_id ) ); ?>', '<?php echo esc_attr( md5( $post_id ) ); ?>');
+                                    check_link_status('<?php echo esc_attr( self::create_transfer_token_for_site( $site_key ) ); ?>', '<?php echo esc_attr( self::get_non_local_site_by_id( $post_id ) ); ?>', '<?php echo esc_attr( md5( $post_id ) ); ?>');
                                 })
                             </script>
                         <?php endif; // check for non-wp ?>
@@ -743,17 +906,21 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             $site_key = get_post_meta( $post_id, 'site_key', true );
 
             if ( ! $token ) {
+                delete_post_meta( $post_id, 'site_key' );
                 return false;
             }
             if ( ! $site1 ) {
+                delete_post_meta( $post_id, 'site_key' );
                 return false;
             }
             if ( ! $site2 ) {
+                delete_post_meta( $post_id, 'site_key' );
                 return false;
             }
 
             $local_site = self::verify_one_site_is_local( $site1, $site2 );
             if ( ! $local_site ) {
+                delete_post_meta( $post_id, 'site_key' );
                 if ( $admin_notice ) {
                     self::admin_notice( 'Local site not found in submission. Either Site1 or Site2 must be this current website', 'error' );
                 }
@@ -761,6 +928,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             }
 
             if ( $site1 == $site2 ) {
+                delete_post_meta( $post_id, 'site_key' );
                 if ( $admin_notice ) {
                     self::admin_notice( 'Sites1 and Site2 cannot be the same site.', 'error' );
                 }
@@ -784,28 +952,31 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
             $results = $wpdb->get_results(  "
                 SELECT
-                  ID as id,
+                  ID as post_id,
                   post.post_title as label,
                   meta2.meta_value as token,
                   meta3.meta_value as site1,
                   meta4.meta_value as site2,
-                  meta1.meta_value as site_key
+                  meta1.meta_value as site_key,
+                  meta5.meta_value as approved_ip_address
                 FROM $wpdb->posts as post
                   JOIN $wpdb->postmeta as meta1 ON post.ID=meta1.post_id AND meta1.meta_key = 'site_key'
                   JOIN $wpdb->postmeta as meta2 ON post.ID=meta2.post_id AND meta2.meta_key = 'token'
                   JOIN $wpdb->postmeta as meta3 ON post.ID=meta3.post_id AND meta3.meta_key = 'site1'
                   JOIN $wpdb->postmeta as meta4 ON post.ID=meta4.post_id AND meta4.meta_key = 'site2'
+                  LEFT JOIN $wpdb->postmeta as meta5 ON post.ID=meta5.post_id AND meta5.meta_key = 'approved_ip_address'
                 WHERE post.post_status = 'publish' AND post.post_type = 'site_link_system'
             ", ARRAY_A  );
 
             $site_keys = [];
             foreach ( $results as $result ) {
                 $site_keys[$result['site_key']] = [
-                    'id'    => $result['id'],
-                    'label' => $result['label'],
-                    'token' => $result['token'],
-                    'site1' => $result['site1'],
-                    'site2' => $result['site2'],
+                    'post_id'   => $result['post_id'],
+                    'label'     => $result['label'],
+                    'token'     => $result['token'],
+                    'site1'     => $result['site1'],
+                    'site2'     => $result['site2'],
+                    'approved_ip_address' => $result['approved_ip_address'],
                 ];
             }
 
@@ -813,15 +984,24 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             return $site_keys;
         }
 
-        public function get_site_key_by_id( $post_id ) {
+        public function get_site_key_by_id( int $post_id ) {
             return get_post_meta( $post_id, 'site_key', true );
         }
 
-        public function get_token_by_id( $post_id ) {
+        public static function get_post_id_by_site_key( string $site_key ) {
+
+            $keys = self::get_site_keys();
+            if ( isset( $keys[$site_key]['post_id'] ) ) {
+                return $keys[$site_key]['post_id'];
+            }
+            return false;
+        }
+
+        public function get_token_by_id( int $post_id ) {
             return get_post_meta( $post_id, 'token', true );
         }
 
-        public function get_non_local_site_by_id( $post_id ) {
+        public static function get_non_local_site_by_id( $post_id ) {
             $site1 = get_post_meta( $post_id, 'site1', true );
             $site2 = get_post_meta( $post_id, 'site2', true );
             return self::get_non_local_site( $site1, $site2 );
@@ -835,7 +1015,6 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 return $site1;
             }
         }
-
 
         /**
          * Checks if at least one of the sites begin submitted is the local site. This prevents trying to build a link
@@ -942,11 +1121,36 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 if ( $current_hour == $transfer_token
                     || $past_hour == $transfer_token
                     || $next_hour == $transfer_token ) {
+
                     return $key;
                 }
             }
 
             return false;
+        }
+
+        /**
+         * @see https://security.stackexchange.com/questions/32299/is-server-a-safe-source-of-data-in-php
+         * @return string
+         */
+        public static function get_real_ip_address() {
+            $ip = '';
+            if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ))   //check ip from share internet
+            {
+                // @codingStandardsIgnoreLine
+                $ip = $_SERVER['HTTP_CLIENT_IP'];
+            }
+            elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ))   //to check ip is pass from proxy
+            {
+                // @codingStandardsIgnoreLine
+                $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            }
+            elseif ( ! empty( $_SERVER['REMOTE_ADDR'] ) )
+            {
+                // @codingStandardsIgnoreLine
+                $ip = $_SERVER['REMOTE_ADDR'];
+            }
+            return $ip;
         }
 
         public static function filter_for_target_site( $value ) {
