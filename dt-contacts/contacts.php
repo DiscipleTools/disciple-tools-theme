@@ -189,6 +189,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
         }
 
+        $create_date = null;
+        if ( isset( $fields["create_date"] )){
+            $create_date = $fields["create_date"];
+            unset( $fields["create_date"] );
+        }
         $initial_comment = null;
         if ( isset( $fields["initial_comment"] ) ) {
             $initial_comment = $fields["initial_comment"];
@@ -264,7 +269,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             "post_status" => 'publish',
             "meta_input"  => $fields,
         ];
-
+        if ( $create_date ){
+            $post["post_date"] = $create_date;
+        }
 
         $post_id = wp_insert_post( $post );
 
