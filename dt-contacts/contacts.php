@@ -1492,14 +1492,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     public static function copy_comments( int $master_id, int $non_master_id, $check_permissions = true ){
-        if ( $check_permissions  && ( !self::can_update( 'contacts', $master_id ) || !self::can_update( 'contacts', $non_master_id ) )) {
+        if ( $check_permissions && ( !self::can_update( 'contacts', $master_id ) || !self::can_update( 'contacts', $non_master_id ) )) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
         $comments = self::get_comments( $non_master_id );
         foreach ( $comments as $comment ){
             $comment->comment_post_ID = $master_id;
             if ( $comment->comment_type === "comment" ){
-                $comment->comment_content = __( "(From Duplicate): ") . $comment->comment_content;
+                $comment->comment_content = __( "(From Duplicate): ", "disciple_tools" ) . $comment->comment_content;
             }
             if ( $comment->comment_type !== "duplicate" ){
                 wp_insert_comment( (array) $comment );
