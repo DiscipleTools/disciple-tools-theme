@@ -11,3 +11,13 @@
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
+
+class Disciple_Tools_Network {
+
+    public static function admin_tab_content() {
+        ?>
+            Test
+        <?php
+    }
+
+}

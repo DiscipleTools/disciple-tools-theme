@@ -385,6 +385,12 @@ else {
             require_once( get_template_directory() . '/dt-workflows/workflows.php' );
             $this->workflows = Disciple_Tools_Workflows::instance();
 
+            /**
+             * Network
+             */
+            require_once( get_template_directory() . '/dt-network/network.php' );
+            require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
+
 
             /**
              * Admin panel

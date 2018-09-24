@@ -60,10 +60,9 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
 
     public function box_message() {
         $this->box( 'top', 'Enable and Configure Network Connection' );
-        ?>
-        <!-- Add content here -->
 
-        <?php
+        Disciple_Tools_Network::admin_tab_content();
+
         $this->box( 'bottom' );
     }
 }
