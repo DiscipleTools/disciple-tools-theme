@@ -25,23 +25,23 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
      */
     public function __construct() {
         add_action( 'admin_menu', [ $this, 'add_submenu' ], 110 );
-        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 110, 1 );
-        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 110, 1 );
+        add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 110, 1 );
+        add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 110, 1 );
 
         parent::__construct();
     } // End __construct()
 
     public function add_submenu() {
-        add_submenu_page( 'edit.php?post_type=locations', __( 'Import', 'disciple_tools' ), __( 'Import', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=locations', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
-        add_submenu_page( 'dt_options', __( 'Import Locations', 'disciple_tools' ), __( 'Import Locations', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=locations', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'edit.php?post_type=locations', __( 'Import', 'disciple_tools' ), __( 'Import', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=locations', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_utilities', __( 'Import Locations', 'disciple_tools' ), __( 'Import Locations', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=locations', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
     }
 
     public function add_tab( $tab ) {
-        echo '<a href="'. esc_url( admin_url() ).'admin.php?page=dt_options&tab=locations" class="nav-tab ';
+        echo '<a href="'. esc_url( admin_url() ).'admin.php?page=dt_utilities&tab=locations" class="nav-tab ';
         if ( $tab == 'locations' ) {
             echo 'nav-tab-active';
         }
-        echo '">Import Locations</a>';
+        echo '">'. esc_html__( 'Import Locations' ) . '</a>';
     }
 
     public function content( $tab ) {
