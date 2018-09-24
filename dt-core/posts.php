@@ -18,6 +18,7 @@ class Disciple_Tools_Posts
 {
 
     public static $connection_types;
+    public static $channel_list;
 
     /**
      * Disciple_Tools_Posts constructor.
@@ -36,6 +37,7 @@ class Disciple_Tools_Posts
             "parent_groups" => [ "name" => __( "Parent Groups", "disciple_tools" ) ],
             "child_groups" => [ "name" => __( "Child Groups", "disciple_tools" ) ],
         ];
+        self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
     }
 
     /**
@@ -401,7 +403,7 @@ class Disciple_Tools_Posts
                     $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
                 }
             } else {
-                if (strpos( $activity->meta_key, "_details" ) !== false ) {
+                if ( strpos( $activity->meta_key, "_details" ) !== false ) {
                     $meta_value = maybe_unserialize( $activity->meta_value );
                     $original_key = str_replace( "_details", "", $activity->meta_key );
                     $original = get_post_meta( $activity->object_id, $original_key, true );
@@ -409,26 +411,40 @@ class Disciple_Tools_Posts
                         $original = "Not a string";
                     }
                     $name = $fields[ $activity->meta_key ]['name'] ?? "";
-                    $object_note = $name . ' "'. $original .'" ';
-                    if ( is_array( $meta_value ) ){
-                        foreach ($meta_value as $k => $v){
-                            $prev_value = $activity->old_value;
-                            if (is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v){
-                                continue;
+                    if ( !empty( $name ) && !empty( $original ) ){
+                        $object_note = $name . ' "'. $original .'" ';
+                        if ( is_array( $meta_value ) ){
+                            foreach ($meta_value as $k => $v){
+                                $prev_value = $activity->old_value;
+                                if (is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v){
+                                    continue;
+                                }
+                                if ($k === "verified") {
+                                    $object_note .= $v ? __( "verified", 'disciple_tools' ) : __( "not verified", 'disciple_tools' );
+                                }
+                                if ($k === "invalid") {
+                                    $object_note .= $v ? __( "invalidated", 'disciple_tools' ) : __( "not invalidated", 'disciple_tools' );
+                                }
+                                $object_note .= ', ';
                             }
-                            if ($k === "verified") {
-                                $object_note .= $v ? __( "verified", 'disciple_tools' ) : __( "not verified", 'disciple_tools' );
-                            }
-                            if ($k === "invalid") {
-                                $object_note .= $v ? __( "invalidated", 'disciple_tools' ) : __( "not invalidated", 'disciple_tools' );
-                            }
-                            $object_note .= ', ';
+                        } else {
+                            $object_note = $meta_value;
                         }
-                    } else {
-                        $object_note = $meta_value;
+                        $object_note = chop( $object_note, ', ' );
+                        $message = $object_note;
                     }
-                    $object_note = chop( $object_note, ', ' );
-                    $message = $object_note;
+                } else if ( strpos( $activity->meta_key, "contact_" ) === 0 ) {
+                    $channel = explode( '_', $activity->meta_key );
+                    if ( isset( $channel[1] ) && self::$channel_list[ $channel[1] ] ){
+                        $channel = self::$channel_list[ $channel[1] ];
+                        if ( $activity->old_value === "" ){
+                            $message = sprintf( __( 'Added %1$s: %2$s', 'disciple_tools' ), $channel["label"], $activity->meta_value );
+                        } else if ( $activity->meta_value != "value_deleted" ){
+                            $message = sprintf( __( 'Updated %1$s from %2$s to %3$s', 'disciple_tools' ), $channel["label"], $activity->old_value, $activity->meta_value );
+                        } else {
+                            $message = sprintf( __( 'Deleted %1$s: %2$s', 'disciple_tools' ), $channel["label"], $activity->old_value );
+                        }
+                    }
                 } else if ( $activity->meta_key == "title" ){
                     $message = __( "Name changed to:", 'disciple_tools' ) . ' ' . $activity->meta_value;
                 } else if ( $activity->meta_key === "_sample"){

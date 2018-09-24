@@ -973,7 +973,7 @@ jQuery(document).ready(function($) {
     } else {
       editFieldsUpdate[field].values.push({ key, value })
     }
-  }).on('click', '#contact-details-edit .delete-button', function () {
+  }).on('click', '.delete-button', function () {
     let field = $(this).data('type')
     let key = $(this).data('id')
     if ( key !== 'new' ){
