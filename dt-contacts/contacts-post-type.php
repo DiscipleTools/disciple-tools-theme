@@ -914,6 +914,11 @@ class Disciple_Tools_Contact_Post_Type
             "type" => "multi_select",
             "default" => []
         ];
+        $fields["duplicate_of"] = [
+            "name" => __( "Duplicate of", "disciple_tools" ),
+            "type" => "text",
+            "default" => ''
+        ];
 
         //get the custom milestone fields
 

@@ -523,7 +523,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         self::update_contact( $duplicate_id, [
             "overall_status" => "closed",
-            "reason_closed" => "duplicate"
+            "reason_closed" => "duplicate",
+            "duplicate_of" => $contact_id
         ] );
 
         $comment = "{$duplicate['title']} is a duplicate and was merged into " .
@@ -1414,14 +1415,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return $details;
     }
 
-    /**
-     * @param $base_contact
-     * @param $duplicate_contact
-     */
-    public static function merge_contacts( $base_contact, $duplicate_contact ) {
-
-    }
-
     public static function merge_milestones( int $master_id, int $non_master_id) {
         if ( !$master_id || !$non_master_id) { return; }
         $master = self::get_contact( $master_id );
@@ -1496,6 +1489,22 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         self::update_contact( $master_id, $update );
+    }
+
+    public static function copy_comments( int $master_id, int $non_master_id, $check_permissions = true ){
+        if ( $check_permissions  && ( !self::can_update( 'contacts', $master_id ) || !self::can_update( 'contacts', $non_master_id ) )) {
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+        }
+        $comments = self::get_comments( $non_master_id );
+        foreach ( $comments as $comment ){
+            $comment->comment_post_ID = $master_id;
+            if ( $comment->comment_type === "comment" ){
+                $comment->comment_content = __( "(From Duplicate): ") . $comment->comment_content;
+            }
+            if ( $comment->comment_type !== "duplicate" ){
+                wp_insert_comment( (array) $comment );
+            }
+        }
     }
 
     /**
@@ -2095,16 +2104,32 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     public static function find_contacts_with( $field, $value, $exclude_id = "", $exact_match = false ){
         global $wpdb; //This should allow access to this globally defined var.
+        $sql = $wpdb->prepare(
+            "
+                        SELECT post_id
+                        FROM {$wpdb->prefix}postmeta
+                        INNER JOIN $wpdb->posts posts ON ( posts.post_type = 'contacts' AND posts.post_status = 'publish' ) 
+                        WHERE meta_key
+                        LIKE %s
+                        AND meta_value LIKE %s
+                        AND post_id != %s
+                        ",
+            [
+                $field .'%',
+                $exact_match ? $value : ( '%' . $value . '%' ),
+                $exclude_id
+            ]
+        );
         $contact_ids = $wpdb->get_results(
             $wpdb->prepare(
                 "
                         SELECT post_id
                         FROM {$wpdb->prefix}postmeta
+                        INNER JOIN $wpdb->posts posts ON ( posts.ID = post_id AND posts.post_type = 'contacts' AND posts.post_status = 'publish' ) 
                         WHERE meta_key
                         LIKE %s
                         AND meta_value LIKE %s
                         AND post_id != %s
-                        AND post_type = 'contacts' AND post_status = 'publish'
                         ",
                 [
                     $field .'%',

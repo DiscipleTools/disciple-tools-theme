@@ -159,6 +159,7 @@ declare( strict_types=1 );
             Disciple_Tools_Contacts::update_contact( $master_id, $update, true );
             Disciple_Tools_Contacts::merge_milestones( $master_id, $non_master_id );
             Disciple_Tools_Contacts::merge_p2p( $master_id, $non_master_id );
+            Disciple_Tools_Contacts::copy_comments( $master_id, $non_master_id );
             ( new Disciple_Tools_Contacts() )->recheck_duplicates( $master_id );
             ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $master_id, $non_master_id );
             ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $non_master_id, $master_id );
