@@ -2104,6 +2104,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         LIKE %s
                         AND meta_value LIKE %s
                         AND post_id != %s
+                        AND post_type = 'contacts' AND post_status = 'publish'
                         ",
                 [
                     $field .'%',
@@ -2124,7 +2125,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 "SELECT * FROM $wpdb->posts
                 WHERE post_title
                 LIKE %s
-                AND ID != %s",
+                AND ID != %s
+                AND post_type = 'contacts' AND post_status = 'publish'",
                 '%'. $wpdb->esc_like( $title ) .'%',
                 $exclude_id
             ), ARRAY_N

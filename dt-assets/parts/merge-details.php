@@ -123,9 +123,15 @@
                     $.each(dupes, function (key, id) {
                         let dupe = _.find(dups_with_data, {"ID": parseInt( id )})
                         if (dupe) {
-                            var duplicate_contact_html = $(
-                                "<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'><h5 style='font-weight: bold; color: #3f729b;'></h5>");
-                            duplicate_contact_html.find('h5').html(`<a href="${window.wpApiShare.site_url}/contacts/${dupe.ID}" target=_blank>${_.escape(dupe.title)}</a>`);
+                            var duplicate_contact_html = $(`
+                                <div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
+                                    <h5 style='font-weight: bold; color: #3f729b;'>
+                                        <a href="${window.wpApiShare.site_url}/contacts/${dupe.ID}" target=_blank>
+                                            ${ _.escape(dupe.title) }
+                                            <span style="font-weight: normal; font-size:16px"> #${dupe.ID} (${_.get(dupe, "overall_status.label") ||""}) </span>
+                                        </a>
+                                    </h5>`
+                            );
                             $.each(dupe, function (key, vals) {
                                 if (!key.match(/^contact_/)) {
                                     return true;
