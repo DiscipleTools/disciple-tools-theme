@@ -59,15 +59,24 @@ $dt_contact_fields = Disciple_Tools_Contacts::get_contact_fields();
                     &nbsp;
                   </div>
                   <div class="merge-column">
-                    <?php echo "<span class='contact_name'>".esc_html( $dt_contact_name )."</span>" ?>
-                      <span class='row-edit'><a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a><a class='fi-check hide save' title='Save'></a></span>
-                      <br>
+                    <a class='contact_name' href="<?php echo esc_html( get_site_url() . "/contacts/" . $dt_current_id ) ?>"><?php echo esc_html( $dt_contact_name ) ?></a>
+                    <span class='row-edit'>
+                        <a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a>
+                        <a class='fi-check hide save' title='Save'></a>
+                    </span>
+                    <br>
+                    <span><?php echo esc_html( '#' . $dt_contact["ID"] ) ?></span><br>
+                    <span><?php esc_html_e( "Status:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_contact["overall_status"]["label"] ?? "" ) ?></span><br>
+                    <span><?php esc_html_e( "Created:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_contact["created_date"] ?? "" ) ?></span><br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
                   <div class="merge-column">
-                    <?php echo "<span class='contact_name'>".esc_html( $dt_duplicate_contact_name )."</span> " ?>
-                      <span class='row-edit'><a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a><a class='fi-check hide save' title='Save'></a></span>
-                      <br>
+                    <a class='contact_name' href="<?php echo esc_html( get_site_url() . "/contacts/" . $dt_dupe_id ) ?>"><?php echo esc_html( $dt_duplicate_contact_name ) ?></a>
+                    <span class='row-edit'><a onclick='editRow(this, edit);' title='Edit' class='fi-pencil'></a><a class='fi-x hide cancel' title='Cancel'></a><a class='fi-check hide save' title='Save'></a></span>
+                    <br>
+                    <span><?php echo esc_html( '#' . $dt_duplicate_contact["ID"] ) ?></span><br>
+                    <span><?php esc_html_e( "Status:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_duplicate_contact["overall_status"]["label"] ?? "" ) ?></span><br>
+                    <span><?php esc_html_e( "Created:", 'disciple_tools' ) ?> <?php echo esc_html( $dt_duplicate_contact["created_date"] ?? "" ) ?></span><br>
                     <a onclick='selectAll(this);'><?php esc_html_e( "Select All", 'disciple_tools' ) ?></a>
                   </div>
                 </div>

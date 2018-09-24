@@ -1317,6 +1317,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $fields["comments"] = $comments;
             $fields["ID"] = $contact->ID;
             $fields["title"] = $contact->post_title;
+            $fields["created_date"] = $contact->post_date;
 
             return $fields;
         } else {
