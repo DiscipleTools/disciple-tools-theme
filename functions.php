@@ -29,7 +29,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
 }
 else {
 
-    
+
     /**
      * Adds the Disciple_Tools Class and runs database and roles version checks.
      */
