@@ -378,6 +378,12 @@ else {
             require_once( get_template_directory() . '/dt-workflows/workflows.php' );
             $this->workflows = Disciple_Tools_Workflows::instance();
 
+            /**
+             * Network
+             */
+            require_once( get_template_directory() . '/dt-network/network.php' );
+            require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
+
 
             /**
              * Admin panel
@@ -393,18 +399,25 @@ else {
                 $this->config_dashboard = Disciple_Tools_Dashboard::instance();
 
                 // Admin Menus
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/abstract-tabs-base.php' ); // main registers all the menu pages and tabs
-                require_once( get_template_directory() . '/dt-core/admin/menu/menu-settings.php' ); // main registers all the menu pages and tabs
+                /* Note: The load order matters for the menus and submenus. Submenu must load after menu. */
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/abstract-tabs-base.php' ); // registers all the menu pages and tabs
+                require_once( get_template_directory() . '/dt-core/admin/menu/menu-settings.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-general.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-lists.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-site-links.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-keys.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-locations.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-critical-path.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-people-groups.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-network.php' );
 
-                require_once( get_template_directory() . '/dt-core/admin/menu/menu-extensions.php' ); // main registers all the menu pages and tabs
+                require_once( get_template_directory() . '/dt-core/admin/menu/menu-extensions.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-featured-extensions.php' );
+
+                require_once( get_template_directory() . '/dt-core/admin/menu/menu-utilities.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-locations.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-people-groups.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-utilities-overview.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-contact-import.php' );
+                /* End menu tab section */
 
                 require_once( get_template_directory() . '/dt-locations/utilities/locations-async-insert.php' ); // required to load for async listening
 
