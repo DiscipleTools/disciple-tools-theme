@@ -50,8 +50,12 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             self::template( 'begin' );
 
-            $this->network_enable();
-            $this->admin_site_link_box();
+            $this->network_enable_box();
+            if ( get_option( 'dt_network_enabled' ) ) {
+                $this->admin_site_link_box();
+                $this->admin_locations_gname_installed_box();
+            }
+
 
             self::template( 'right_column' );
 
@@ -59,7 +63,7 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
-    public function network_enable() {
+    public function network_enable_box() {
         $this->box( 'top', 'Enable and Configure Network Connection' );
 
         Disciple_Tools_Network::admin_network_enable_box();
@@ -68,14 +72,22 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function admin_site_link_box() {
-        if ( get_option( 'dt_network_enabled' ) ) {
+        $this->box( 'top', 'Site Links for Network Dashboards' );
 
-            $this->box( 'top', 'Site Links for Network Dashboards' );
+        Disciple_Tools_Network::admin_site_link_box();
 
-            Disciple_Tools_Network::admin_site_link_box();
+        $this->box( 'bottom' );
+    }
 
-            $this->box( 'bottom' );
-        }
+    /**
+     * This box displays location list and the gname coded elements
+     */
+    public function admin_locations_gname_installed_box() {
+        $this->box( 'top', 'Locations Status' );
+
+        Disciple_Tools_Network::admin_locations_gname_installed_box();
+
+        $this->box( 'bottom' );
     }
 }
 Disciple_Tools_Network_Tab::instance();

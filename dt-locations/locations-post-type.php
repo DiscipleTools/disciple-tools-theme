@@ -298,17 +298,9 @@ class Disciple_Tools_Location_Post_Type
         add_meta_box( $this->post_type . '_geocode', __( 'Geo-Code', 'disciple_tools' ), [ $this, 'geocode_metabox' ], $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_map', __( 'Map', 'disciple_tools' ), [ $this, 'load_map_meta_box' ], $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_notes', __( 'Notes', 'disciple_tools' ), [ $this, 'load_notes_meta_box' ], $this->post_type, 'advanced', 'high' );
-        add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'advanced', 'low' );
         add_meta_box( $this->post_type . '_levels', __( 'Levels', 'disciple_tools' ), [ $this, 'load_levels_meta_box' ], $this->post_type, 'side', 'high' );
 
     } // End meta_box_setup()
-
-    /**
-     * Load activity metabox
-     */
-    public function load_activity_meta_box() {
-        dt_activity_metabox()->activity_meta_box( get_the_ID() );
-    }
 
     /**
      * Load notes metabox
@@ -449,7 +441,7 @@ class Disciple_Tools_Location_Post_Type
             <?php
         else :
             ?>
-            You must save post before geocoding.
+            <?php esc_html__( 'You must save post before geocoding.' ) ?>
             <?php
             endif;
     }
@@ -487,6 +479,16 @@ class Disciple_Tools_Location_Post_Type
                         case 'text':
                             echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label>
                                     </th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                            echo '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
+                            echo '</td><tr/>' . "\n";
+                            break;
+                        case 'locked':
+                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label>
+                                    </th><td>
+                                    <span class="toggle-' . esc_attr( $k ) . '">' . esc_attr( $data ) . '</span>
+                                    <input style="display:none;" name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" 
+                                    class="regular-text toggle-' . esc_attr( $k ) . '" value="' . esc_attr( $data ) . '" /> 
+                                    <a onclick="jQuery(\'.toggle-'.esc_attr( $k ).'\').toggle();" style="cursor:pointer;"> (' . esc_attr__( 'edit' ) . ')</a>' . "\n";
                             echo '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
                             echo '</td><tr/>' . "\n";
                             break;
