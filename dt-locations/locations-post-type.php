@@ -386,7 +386,7 @@ class Disciple_Tools_Location_Post_Type
                 <p style="text-align:center;">
                     <a class="add-parent-location button" href="javascript:void(0)"
                        onclick="auto_build_levels_from_post( '<?php echo esc_attr( $post->ID ); ?>' )" >
-                        Auto Build
+                        <?php esc_html_e( 'Auto Build' ) ?><span id="auto_build_spinner"></span>
                     </a> <span style="font-size:1.5em; padding-top: 5px;" onclick="jQuery('#auto-build-configuration').toggle();" class="dashicons dashicons-admin-generic"></span><br>
                     <span id="auto-build-results"></span>
                 </p>
