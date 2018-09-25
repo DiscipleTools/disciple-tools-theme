@@ -68,11 +68,14 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function admin_site_link_box() {
-        $this->box( 'top', 'Site Links for Network Dashboards' );
+        if ( get_option( 'dt_network_enabled' ) ) {
 
-        Disciple_Tools_Network::admin_site_link_box();
+            $this->box( 'top', 'Site Links for Network Dashboards' );
 
-        $this->box( 'bottom' );
+            Disciple_Tools_Network::admin_site_link_box();
+
+            $this->box( 'bottom' );
+        }
     }
 }
 Disciple_Tools_Network_Tab::instance();
