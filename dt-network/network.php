@@ -27,6 +27,7 @@ class Disciple_Tools_Network {
 
         if ( is_admin() ) {
 
+
             add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
             add_filter( "dt_custom_fields_settings", [ $this, 'saturation_field_filter' ], 1, 2 );
 
@@ -223,6 +224,226 @@ class Disciple_Tools_Network {
         $children = get_page_children( $post_id, $all_wp_pages );
 
         return $children;
+    }
+
+    public static function report_by_date( $date ) {
+        if ( ! user_can( get_current_user_id(), 'network_reports' ) ) {
+            return new WP_Error( __METHOD__, 'Network report permission error.' );
+        }
+
+        // @todo add real data to response
+        $report_data = [
+            'partner_id' => '',
+            'total_contacts' => 0,
+            'total_groups' => 0,
+            'total_users' => 0,
+            'new_contacts' => 0,
+            'new_groups' => 0,
+            'new_users' => 0,
+            'total_baptisms' => 0,
+            'new_baptisms' => 0,
+            'baptism_generations' => 0,
+            'church_generations' => 0,
+            'locations' => [
+                [
+                    'location_name' => '',
+                    'location_id' => '',
+                    'parent_id' => '',
+                    'geonameid' => '',
+                    'longitude' => '',
+                    'latitude' => '',
+                    'total_contacts' => 0,
+                    'total_groups' => 0,
+                    'total_users' => 0,
+                    'new_contacts' => 0,
+                    'new_groups' => 0,
+                    'new_users' => 0,
+                ],
+                [
+                    'location_name' => '',
+                    'location_id' => '',
+                    'parent_id' => '',
+                    'geonameid' => '',
+                    'longitude' => '',
+                    'latitude' => '',
+                    'total_contacts' => 0,
+                    'total_groups' => 0,
+                    'total_users' => 0,
+                    'new_contacts' => 0,
+                    'new_groups' => 0,
+                    'new_users' => 0,
+                ],
+                [
+                    'location_name' => '',
+                    'location_id' => '',
+                    'parent_id' => '',
+                    'geonameid' => '',
+                    'longitude' => '',
+                    'latitude' => '',
+                    'total_contacts' => 0,
+                    'total_groups' => 0,
+                    'total_users' => 0,
+                    'new_contacts' => 0,
+                    'new_groups' => 0,
+                    'new_users' => 0,
+                ],
+            ],
+            'critical_path' => [
+                'new_inquirers' => 0,
+                'first_meetings' => 0,
+                'ongoing_meetings' => 0,
+                'total_baptisms' => 0,
+                'baptism_generations' => [
+                    1 => 0,
+                    2 => 0,
+                    3 => 0,
+                ],
+                'baptizers' => 0,
+                'total_churches_and_groups' => 0,
+                'active_groups' => 0,
+                'active_churches' => 0,
+                'church_generations' => [
+                    1 => 0,
+                    2 => 0,
+                    3 => 0,
+                ],
+                'church_planters' => 0,
+                'people_groups' => 0,
+            ],
+            'date' => current_time( 'mysql' ),
+        ];
+        if ( true ) {
+            return $report_data;
+        } else {
+            return new WP_Error( __METHOD__, 'Failed to get report' );
+        }
+    }
+
+    /**
+     * @return array|\WP_Error
+     */
+    public static function report_project_total() {
+        if ( ! user_can( get_current_user_id(), 'network_reports' ) ) {
+            return new WP_Error( __METHOD__, 'Network report permission error.' );
+        }
+
+        // @todo add real data to response
+        $report_data = [
+            'partner_id' => '',
+            'total_contacts' => 0,
+            'total_groups' => 0,
+            'total_users' => 0,
+            'new_contacts' => 0,
+            'new_groups' => 0,
+            'new_users' => 0,
+            'total_baptisms' => 0,
+            'new_baptisms' => 0,
+            'baptism_generations' => 0,
+            'church_generations' => 0,
+            'locations' => [
+                [
+                    'location_name' => '',
+                    'location_id' => '',
+                    'parent_id' => '',
+                    'geonameid' => '',
+                    'longitude' => '',
+                    'latitude' => '',
+                    'total_contacts' => 0,
+                    'total_groups' => 0,
+                    'total_users' => 0,
+                    'new_contacts' => 0,
+                    'new_groups' => 0,
+                    'new_users' => 0,
+                ],
+                [
+                    'location_name' => '',
+                    'location_id' => '',
+                    'parent_id' => '',
+                    'geonameid' => '',
+                    'longitude' => '',
+                    'latitude' => '',
+                    'total_contacts' => 0,
+                    'total_groups' => 0,
+                    'total_users' => 0,
+                    'new_contacts' => 0,
+                    'new_groups' => 0,
+                    'new_users' => 0,
+                ],
+                [
+                    'location_name' => '',
+                    'location_id' => '',
+                    'parent_id' => '',
+                    'geonameid' => '',
+                    'longitude' => '',
+                    'latitude' => '',
+                    'total_contacts' => 0,
+                    'total_groups' => 0,
+                    'total_users' => 0,
+                    'new_contacts' => 0,
+                    'new_groups' => 0,
+                    'new_users' => 0,
+                ],
+            ],
+            'critical_path' => [
+                'new_inquirers' => 0,
+                'first_meetings' => 0,
+                'ongoing_meetings' => 0,
+                'total_baptisms' => 0,
+                'baptism_generations' => [
+                    1 => 0,
+                    2 => 0,
+                    3 => 0,
+                ],
+                'baptizers' => 0,
+                'total_churches_and_groups' => 0,
+                'active_groups' => 0,
+                'active_churches' => 0,
+                'church_generations' => [
+                    1 => 0,
+                    2 => 0,
+                    3 => 0,
+                ],
+                'church_planters' => 0,
+                'people_groups' => 0,
+            ],
+            'date' => current_time( 'mysql' ),
+        ];
+        if ( true ) {
+            return $report_data;
+        } else {
+            return new WP_Error( __METHOD__, 'Failed to get report' );
+        }
+    }
+
+    /**
+     * @param $check_sum
+     *
+     * @return \WP_Error
+     */
+    public static function get_locations( $check_sum ) {
+        // @todo finish response
+        // test if the check_sum matches current locations
+
+        // if it does not match, then return a new array of locations for the site to be stored and referred to in the network dashboard.
+
+
+        if ( true ) {
+            return $check_sum;
+        } else {
+            return new WP_Error( __METHOD__, 'Failed to get report' );
+        }
+    }
+
+    public static function set_location_attributes( $collection ) {
+        // @todo finish response
+        // $collection is a list of location ids with updated geonameids and populations.
+
+
+        if ( true ) {
+            return $collection;
+        } else {
+            return new WP_Error( __METHOD__, 'Failed to get report' );
+        }
     }
 
 }

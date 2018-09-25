@@ -51,6 +51,7 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
             self::template( 'begin' );
 
             $this->network_enable_box();
+
             if ( get_option( 'dt_network_enabled' ) ) {
                 $this->admin_site_link_box();
                 $this->admin_locations_gname_installed_box();

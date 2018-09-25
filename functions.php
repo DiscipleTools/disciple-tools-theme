@@ -376,8 +376,10 @@ else {
             /**
              * Network
              */
-            require_once( get_template_directory() . '/dt-network/network.php' );
-            require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
+            if ( get_option( 'dt_network_enabled' ) ) {
+                require_once( get_template_directory() . '/dt-network/network.php' );
+                require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
+            }
 
 
             /**
