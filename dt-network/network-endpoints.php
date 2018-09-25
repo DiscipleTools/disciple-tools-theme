@@ -100,7 +100,7 @@ class Disciple_Tools_Network_Endpoints
         }
 
         if ( isset( $params['date'] ) ) {
-            $result = Disciple_Tools_Network::report_by_date( $params['data'] );
+            $result = Disciple_Tools_Network::api_report_by_date( $params['data'] );
             if ( is_wp_error( $result ) ) {
                 return new WP_Error( __METHOD__, $result->get_error_message() );
             }
@@ -122,7 +122,7 @@ class Disciple_Tools_Network_Endpoints
             return $params;
         }
 
-        $result = Disciple_Tools_Network::report_project_total();
+        $result = Disciple_Tools_Network::api_report_project_total();
         if ( is_wp_error( $result ) ) {
             return new WP_Error( __METHOD__, $result->get_error_message() );
         }
@@ -145,7 +145,7 @@ class Disciple_Tools_Network_Endpoints
             return new WP_Error( __METHOD__, 'Missing parameters.' );
         }
 
-        $result = Disciple_Tools_Network::get_locations( $params['check_sum'] );
+        $result = Disciple_Tools_Network::api_get_locations( $params['check_sum'] );
         if ( is_wp_error( $result ) ) {
             return new WP_Error( __METHOD__, $result->get_error_message() );
         }
@@ -170,7 +170,7 @@ class Disciple_Tools_Network_Endpoints
             return new WP_Error( __METHOD__, 'Missing parameters.' );
         }
 
-        $result = Disciple_Tools_Network::set_location_attributes( $params['collection'] );
+        $result = Disciple_Tools_Network::api_set_location_attributes( $params['collection'] );
         if ( is_wp_error( $result ) ) {
             return new WP_Error( __METHOD__, $result->get_error_message() );
         }
@@ -202,7 +202,7 @@ class Disciple_Tools_Network_Endpoints
         }
 
         // required permission challenge (that this token comes from an approved network report site link)
-        if ( ! user_can( get_current_user_id(), 'network_reports' ) ) {
+        if ( ! user_can( get_current_user_id(), 'network_dashboard' ) ) {
             return new WP_Error( __METHOD__, 'Network report permission error.' );
         }
 

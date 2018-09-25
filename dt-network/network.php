@@ -27,6 +27,10 @@ class Disciple_Tools_Network {
 
         if ( is_admin() ) {
 
+            // set partner details
+            if ( ! get_option( 'dt_site_partner_profile' ) ) {
+                self::create_partner_profile();
+            }
 
             add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
             add_filter( "dt_custom_fields_settings", [ $this, 'saturation_field_filter' ], 1, 2 );
@@ -35,6 +39,20 @@ class Disciple_Tools_Network {
             add_filter( 'site_link_type_capabilities', [ $this, 'dt_saturation_mapping_site_link_capabilities' ], 10, 2 );
 
         }
+    }
+
+    public static function create_partner_profile() {
+        $partner_profile = [
+            'partner_name' => get_option( 'blogname' ),
+            'partner_description' => get_option( 'blogdescription' ),
+            'partner_id' => bin2hex( random_bytes( 10 ) ),
+        ];
+        update_option( 'dt_site_partner_profile', $partner_profile, true );
+        return $partner_profile;
+    }
+
+    public function meta_box_setup() {
+        add_meta_box( 'location_network_box', __( 'Network Dashboard Fields', 'disciple_tools' ), [ $this, 'load_mapping_meta_box' ], 'locations', 'normal', 'high' );
     }
 
     /**
@@ -56,7 +74,7 @@ class Disciple_Tools_Network {
                 <option value="0" <?php echo $enabled ? '' : 'selected' ?>><?php esc_html_e( 'Disabled' ) ?></option>
                 <option value="1" <?php echo $enabled ? 'selected' : '' ?>><?php esc_html_e( 'Enabled' ) ?></option>
             </select>
-            <button type="submit"><?php esc_html_e( 'Save' ) ?></button>
+            <button type="submit" class="button"><?php esc_html_e( 'Save' ) ?></button>
         </form>
 
         <?php
@@ -76,24 +94,88 @@ class Disciple_Tools_Network {
         ", ARRAY_A );
 
         if ( ! is_array( $site_links ) ) {
-            echo 'No Site to Site links found. Go to <a href="'. esc_url( admin_url() ).'edit.php?post_type=site_link_system">Site Links</a> and create a site link, and then select "Network Report" as the type."';
+            echo 'No Site links found. Go to <a href="'. esc_url( admin_url() ).'edit.php?post_type=site_link_system">Site Links</a> and create a site link, and then select "Network Report" as the type."';
         }
 
-        echo '<h2>Reporting to these Networks</h2>';
+        echo '<h2>You are reporting to these Network Dashboards</h2>';
         foreach ( $site_links as $site ) {
-            if ( ! is_null( $site['type'] ) && 'Network Reporting' === $site['type'] ) {
+            if ( ! is_null( $site['type'] ) && 'Network Dashboard' === $site['type'] ) {
                 echo '<dd><a href="'. esc_url( admin_url() ) .'post.php?post='. esc_attr( $site['ID'] ).'&action=edit">' . esc_html( $site['post_title'] ) . '</a></dd>';
             }
         }
 
-        echo '<h2>Other Connected Sites</h2>';
+        echo '<h2>Other System Site-to-Site Links</h2>';
         foreach ( $site_links as $site ) {
             if ( 'Network Reporting' != $site['type'] ) {
                 echo '<dd><a href="'. esc_url( admin_url() ) .'post.php?post='. esc_attr( $site['ID'] ).'&action=edit">' . esc_html( $site['post_title'] ) . '</a></dd>';
             }
         }
 
-        echo '<hr><p style="font-size:.8em;">Note: Network Dashboards are Site Links that have the "Connection Type" of "Network Reporting".</p>';
+        echo '<hr><p style="font-size:.8em;">Note: Network Dashboards are Site Links that have the "Connection Type" of "Network Dashboard".</p>';
+    }
+
+    public static function admin_partner_profile_box() {
+        // process post action
+        if ( isset( $_POST['partner_profile_form'] )
+            && isset( $_POST['_wpnonce'] )
+            && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'partner_profile'.get_current_user_id() )
+            && isset( $_POST['partner_name'] )
+            && isset( $_POST['partner_description'] )
+            && isset( $_POST['partner_id'] )
+        ) {
+            $partner_profile = [
+                'partner_name' => sanitize_text_field( wp_unslash( $_POST['partner_name'] ) ) ?: get_option( 'blogname' ),
+                'partner_description' => sanitize_text_field( wp_unslash( $_POST['partner_description'] ) ) ?: get_option( 'blogdescription' ),
+                'partner_id' => sanitize_text_field( wp_unslash( $_POST['partner_id'] ) ) ?: bin2hex( random_bytes( 10 ) ),
+            ];
+
+            update_option( 'dt_site_partner_profile', $partner_profile, true );
+        }
+        $partner_profile = get_option( 'dt_site_partner_profile' );
+
+        ?>
+        <!-- Box -->
+        <form method="post">
+            <?php wp_nonce_field( 'partner_profile'.get_current_user_id() ); ?>
+            <table class="widefat striped">
+                <thead>
+                <th>Network Profile</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <table class="widefat">
+                            <tbody>
+                            <tr>
+                                <td><label for="partner_name">Your Group Name</label></td>
+                                <td><input type="text" class="regular-text" name="partner_name"
+                                           id="partner_name" value="<?php echo esc_html( $partner_profile['partner_name'] ) ?>" /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="partner_description">Your Group Description</label></td>
+                                <td><input type="text" class="regular-text" name="partner_description"
+                                           id="partner_description" value="<?php echo esc_html( $partner_profile['partner_description'] ) ?>" /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="partner_id">Site ID</label></td>
+                                <td><?php echo esc_attr( $partner_profile['partner_id'] ) ?>
+                                    <input type="hidden" class="regular-text" name="partner_id"
+                                           id="partner_id" value="<?php echo esc_attr( $partner_profile['partner_id'] ) ?>" /></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <p><br>
+                            <button type="submit" id="partner_profile_form" name="partner_profile_form" class="button">Update</button>
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+        <br>
+        <!-- End Box -->
+        <?php
     }
 
     public static function admin_locations_gname_installed_box() {
@@ -102,13 +184,13 @@ class Disciple_Tools_Network {
     }
 
     public function saturation_mapping_site_link_type( $type ) {
-        $type[] = 'Network Reporting';
+        $type[] = 'Network Dashboard';
         return $type;
     }
 
     public function saturation_mapping_site_link_capabilities( $connection_type, $capabilities ) {
-        if ( 'Network Reports' === $connection_type ) {
-            $capabilities[] = 'network_reports';
+        if ( 'Network Dashboard' === $connection_type ) {
+            $capabilities[] = 'network_dashboard';
         }
         return $capabilities;
     }
@@ -166,10 +248,6 @@ class Disciple_Tools_Network {
         return $html;
     }
 
-    public function meta_box_setup() {
-        add_meta_box( 'location_network_box', __( 'Network Dashboard Fields', 'disciple_tools' ), [ $this, 'load_mapping_meta_box' ], 'locations', 'normal', 'high' );
-    }
-
     public function saturation_field_filter( $fields, $post_type ) {
         if ( 'locations' === $post_type ) {
             $fields['gn_geonameid'] = [
@@ -189,6 +267,8 @@ class Disciple_Tools_Network {
         }
         return $fields;
     }
+
+
 
     public function load_mapping_meta_box() {
         Disciple_Tools_Location_Post_Type::instance()->meta_box_content( 'saturation_mapping' );
@@ -226,14 +306,21 @@ class Disciple_Tools_Network {
         return $children;
     }
 
-    public static function report_by_date( $date ) {
-        if ( ! user_can( get_current_user_id(), 'network_reports' ) ) {
+    public static function api_report_by_date( $date ) {
+        if ( ! user_can( get_current_user_id(), 'network_dashboard' ) ) {
             return new WP_Error( __METHOD__, 'Network report permission error.' );
         }
+        $report_data = [];
+
+        $report_data['partner_id'] = dt_get_partner_profile_id();
+
+
+
+
 
         // @todo add real data to response
         $report_data = [
-            'partner_id' => '',
+            'partner_id' => dt_get_partner_profile_id(),
             'total_contacts' => 0,
             'total_groups' => 0,
             'total_users' => 0,
@@ -322,14 +409,19 @@ class Disciple_Tools_Network {
     /**
      * @return array|\WP_Error
      */
-    public static function report_project_total() {
-        if ( ! user_can( get_current_user_id(), 'network_reports' ) ) {
+    public static function api_report_project_total() {
+        if ( ! user_can( get_current_user_id(), 'network_dashboard' ) ) {
             return new WP_Error( __METHOD__, 'Network report permission error.' );
         }
 
+        $report_data['partner_id'] = dt_get_partner_profile_id();
+
+
+
+
         // @todo add real data to response
         $report_data = [
-            'partner_id' => '',
+            'partner_id' => dt_get_partner_profile_id(),
             'total_contacts' => 0,
             'total_groups' => 0,
             'total_users' => 0,
@@ -420,7 +512,11 @@ class Disciple_Tools_Network {
      *
      * @return \WP_Error
      */
-    public static function get_locations( $check_sum ) {
+    public static function api_get_locations( $check_sum ) {
+        if ( ! user_can( get_current_user_id(), 'network_dashboard' ) ) {
+            return new WP_Error( __METHOD__, 'Network report permission error.' );
+        }
+
         // @todo finish response
         // test if the check_sum matches current locations
 
@@ -434,7 +530,11 @@ class Disciple_Tools_Network {
         }
     }
 
-    public static function set_location_attributes( $collection ) {
+    public static function api_set_location_attributes( $collection ) {
+        if ( ! user_can( get_current_user_id(), 'network_dashboard' ) ) {
+            return new WP_Error( __METHOD__, 'Network report permission error.' );
+        }
+
         // @todo finish response
         // $collection is a list of location ids with updated geonameids and populations.
 
@@ -446,5 +546,18 @@ class Disciple_Tools_Network {
         }
     }
 
+
 }
 Disciple_Tools_Network::instance();
+
+/**
+ * Helper function to get the partner profile id.
+ * @return mixed
+ */
+function dt_get_partner_profile_id() {
+    $partner_profile = get_option( 'dt_site_partner_profile' );
+    if ( ! isset( $partner_profile['partner_id'] ) ) {
+        $partner_profile = Disciple_Tools_Network::create_partner_profile();
+    }
+    return $partner_profile['partner_id'];
+}
