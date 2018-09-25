@@ -15,14 +15,14 @@ if ( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Network {
 
     public static function admin_network_enable_box() {
-        if ( isset( $_POST['network_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['network_nonce'] ) ), 'network'.get_current_user_id() ) && isset( $_POST['network_feature'])) {
+        if ( isset( $_POST['network_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['network_nonce'] ) ), 'network'.get_current_user_id() ) && isset( $_POST['network_feature'] )) {
             update_option( 'dt_network_enabled', (int) sanitize_text_field( wp_unslash( $_POST['network_feature'] ) ), true );
         }
-        $enabled = get_option('dt_network_enabled');
+        $enabled = get_option( 'dt_network_enabled' );
         ?>
 
         <form method="post">
-            <?php wp_nonce_field('network'.get_current_user_id(), 'network_nonce', false, true ) ?>
+            <?php wp_nonce_field( 'network'.get_current_user_id(), 'network_nonce', false, true ) ?>
             <label for="network_feature">
                 <?php esc_html_e( 'Network Extension' ) ?>
             </label>

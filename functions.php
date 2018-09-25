@@ -28,7 +28,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
     add_action( 'admin_notices', 'dt_theme_admin_notice_required_php_version' );
 }
 else {
-    
+
     /**
      * Adds the Disciple_Tools Class and runs database and roles version checks.
      */
