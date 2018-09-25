@@ -29,13 +29,6 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
 }
 else {
 
-
-    /**
-     * Activation, Deactivation, and Multisite
-     */
-//    register_activation_hook( __FILE__, 'dt_activate' );
-//    register_deactivation_hook( __FILE__, 'dt_deactivate' );
-
     /**
      * Adds the Disciple_Tools Class and runs database and roles version checks.
      */

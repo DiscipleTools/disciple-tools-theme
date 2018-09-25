@@ -25,6 +25,7 @@ class Disciple_Tools_Users
         add_action( 'wpmu_new_user', [ &$this, 'user_register_hook' ] );
         add_action( 'add_user_to_blog', [ &$this, 'user_register_hook' ] );
         add_action( 'profile_update', [ &$this, 'profile_update_hook' ], 99 );
+        add_action( "after_switch_theme", [ &$this, "create_contacts_for_existing_users" ] );
     }
 
     /**
@@ -296,37 +297,47 @@ class Disciple_Tools_Users
      */
     public static function create_contact_for_user( $user_id ) {
         $user = get_user_by( 'id', $user_id );
+        $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
         if ( $user->has_cap( 'access_contacts' ) ) {
-            $args = [
-                'post_type'  => 'contacts',
-                'relation'   => 'AND',
-                'meta_query' => [
-                    [
-            'key' => "corresponds_to_user",
-            "value" => $user_id
+            if ( empty( $corresponds_to_contact )){
+                $args = [
+                    'post_type'  => 'contacts',
+                    'relation'   => 'AND',
+                    'meta_query' => [
+                        [
+                            'key' => "corresponds_to_user",
+                            "value" => $user_id
+                        ],
+                        [
+                            'key' => "type",
+                            "value" => "user"
+                        ],
                     ],
-                    [
-                    'key' => "type",
-                    "value" => "user"
-                    ],
-                ],
-            ];
-            $contacts = new WP_Query( $args );
-            if ( empty( $contacts->posts ) ) {
-                Disciple_Tools_Contacts::create_contact( [
+                ];
+                $contacts = new WP_Query( $args );
+                if ( isset( $contacts->post->ID ) ){
+                    $corresponds_to_contact = $contacts->post->ID;
+                    update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
+                }
+            }
+
+            if ( empty( $corresponds_to_contact ) ) {
+                $new_id = Disciple_Tools_Contacts::create_contact( [
                     "title"               => $user->display_name,
                     "assigned_to"         => "user-" . $user_id,
                     "type"                => "user",
                     "overall_status"      => "assigned",
                     "corresponds_to_user" => $user_id,
                 ], false );
+                if ( !is_wp_error( $new_id )){
+                    update_user_option( $user_id, "corresponds_to_contact", $new_id );
+                }
             } else {
-                if ( isset( $contacts->post->ID ) ){
-                    if ( $contacts->post->post_title != $user->display_name ){
-                        Disciple_Tools_Contacts::update_contact( $contacts->post->ID, [
-                            "title" => $user->display_name
-                        ], false);
-                    }
+                $contact = get_post( $corresponds_to_contact );
+                if ( $contact && $contact->post_title != $user->display_name ){
+                    Disciple_Tools_Contacts::update_contact( $corresponds_to_contact, [
+                        "title" => $user->display_name
+                    ], false, true );
                 }
             }
         }
@@ -349,6 +360,17 @@ class Disciple_Tools_Users
     public static function profile_update_hook( $user_id ) {
         self::create_contact_for_user( $user_id );
     }
+
+    public static function create_contacts_for_existing_users(){
+        if ( is_user_logged_in() ){
+            $users = get_users();
+            foreach ( $users as $user ){
+                self::create_contact_for_user( $user->ID );
+            }
+        }
+    }
+
+
 
     /**
      * Get the base user for the system
