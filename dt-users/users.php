@@ -21,7 +21,7 @@ class Disciple_Tools_Users
      * Disciple_Tools_Users constructor.
      */
     public function __construct() {
-        add_action( 'wp_login', [ &$this, 'user_register_hook' ] );
+        add_action( 'wp_login', [ &$this, 'user_login_hook' ], 10, 2 );
         add_action( 'user_register', [ &$this, 'user_register_hook' ] );
         add_action( 'wpmu_new_user', [ &$this, 'user_register_hook' ] );
         add_action( 'add_user_to_blog', [ &$this, 'user_register_hook' ] );
@@ -300,7 +300,7 @@ class Disciple_Tools_Users
     public static function create_contact_for_user( $user_id ) {
         $user = get_user_by( 'id', $user_id );
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
-        if ( $user->has_cap( 'access_contacts' ) ) {
+        if ( $user && $user->has_cap( 'access_contacts' ) ) {
             if ( empty( $corresponds_to_contact )){
                 $args = [
                     'post_type'  => 'contacts',
@@ -352,8 +352,15 @@ class Disciple_Tools_Users
      */
     public static function user_register_hook( $user_id ) {
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
-        if ( !$corresponds_to_contact ){
+        if ( empty( $corresponds_to_contact ) ){
             self::create_contact_for_user( $user_id );
+        }
+    }
+
+    public static function user_login_hook( $user_name, $user ){
+        $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user->ID );
+        if ( empty( $corresponds_to_contact ) ){
+            self::create_contact_for_user( $user->ID );
         }
     }
 
