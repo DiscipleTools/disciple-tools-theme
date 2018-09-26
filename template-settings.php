@@ -79,7 +79,7 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
 
                                 <?php if ( ! empty( $dt_user->nickname ) ) : ?>
                                     <p>
-                                        <strong><?php esc_html_e( 'Nickname', 'disciple_tools' )?></strong><br>
+                                        <strong><?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' )?></strong><br>
                                         <?php echo esc_html( $dt_user->nickname ); ?>
                                     </p>
                                 <?php endif; ?>
@@ -439,7 +439,7 @@ $dt_available_languges = get_available_languages( get_template_directory() .'/dt
                                                        value="<?php echo esc_html( $dt_user->last_name ); ?>"/></td>
                                         </tr>
                                         <tr>
-                                            <td><label for="nickname"><?php esc_html_e( 'Nickname', 'disciple_tools' )?></label></td>
+                                            <td><label for="nickname"><?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' )?></label></td>
                                             <td><input type="text" class="profile-input" id="nickname" name="nickname"
                                                        value=" <?php echo esc_html( $dt_user->nickname ); ?>"/></td>
                                         </tr>
