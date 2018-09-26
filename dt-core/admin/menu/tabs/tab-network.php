@@ -50,7 +50,8 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             self::template( 'begin' );
 
-            $this->box_message();
+            $this->network_enable();
+            $this->admin_site_link_box();
 
             self::template( 'right_column' );
 
@@ -58,10 +59,18 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
-    public function box_message() {
+    public function network_enable() {
         $this->box( 'top', 'Enable and Configure Network Connection' );
 
-        Disciple_Tools_Network::admin_tab_content();
+        Disciple_Tools_Network::admin_network_enable_box();
+
+        $this->box( 'bottom' );
+    }
+
+    public function admin_site_link_box() {
+        $this->box( 'top', 'Site Links for Network Dashboards' );
+
+        Disciple_Tools_Network::admin_site_link_box();
 
         $this->box( 'bottom' );
     }
