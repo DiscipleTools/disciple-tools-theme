@@ -26,6 +26,7 @@ class Disciple_Tools_Users
         add_action( 'add_user_to_blog', [ &$this, 'user_register_hook' ] );
         add_action( 'profile_update', [ &$this, 'profile_update_hook' ], 99 );
         add_action( "after_switch_theme", [ &$this, "create_contacts_for_existing_users" ] );
+        add_action( "wpmu_new_blog", [ &$this, "create_contacts_for_existing_users" ] );
     }
 
     /**
