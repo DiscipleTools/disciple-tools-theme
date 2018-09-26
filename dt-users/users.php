@@ -21,6 +21,7 @@ class Disciple_Tools_Users
      * Disciple_Tools_Users constructor.
      */
     public function __construct() {
+        add_action( 'wp_login', [ &$this, 'user_register_hook' ] );
         add_action( 'user_register', [ &$this, 'user_register_hook' ] );
         add_action( 'wpmu_new_user', [ &$this, 'user_register_hook' ] );
         add_action( 'add_user_to_blog', [ &$this, 'user_register_hook' ] );
@@ -350,7 +351,10 @@ class Disciple_Tools_Users
      * @param $user_id
      */
     public static function user_register_hook( $user_id ) {
-        self::create_contact_for_user( $user_id );
+        $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
+        if ( !$corresponds_to_contact ){
+            self::create_contact_for_user( $user_id );
+        }
     }
 
     /**
