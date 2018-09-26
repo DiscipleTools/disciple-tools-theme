@@ -361,11 +361,11 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         <span >
                         <?php esc_html_e( 'Status:' ) ?>
                             <strong>
-                            <span id="<?php echo esc_attr( md5( $post->ID ) ); ?>-status">
-                                <?php esc_html_e( 'Checking Status' ) ?>
-                            </span>
-                        </strong>
-                    </span>
+                                <span id="<?php echo esc_attr( md5( $post->ID ) ); ?>-status">
+                                    <?php esc_html_e( 'Checking Status' ) ?>
+                                </span>
+                            </strong>
+                        </span>
                         <script>
                             jQuery(document).ready(function () {
                                 check_link_status('<?php echo esc_attr( self::create_transfer_token_for_site( $this->get_site_key_by_id( $post->ID ) ) ); ?>', '<?php echo esc_attr( self::get_non_local_site_by_id( $post->ID ) ); ?>', '<?php echo esc_attr( md5( $post->ID ) ); ?>');

@@ -28,7 +28,7 @@ if ( version_compare( phpversion(), '7.0', '<' ) ) {
     add_action( 'admin_notices', 'dt_theme_admin_notice_required_php_version' );
 }
 else {
-    
+
     /**
      * Adds the Disciple_Tools Class and runs database and roles version checks.
      */
@@ -376,8 +376,10 @@ else {
             /**
              * Network
              */
-            require_once( get_template_directory() . '/dt-network/network.php' );
-            require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
+            if ( get_option( 'dt_network_enabled' ) ) {
+                require_once( get_template_directory() . '/dt-network/network.php' );
+                require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
+            }
 
 
             /**

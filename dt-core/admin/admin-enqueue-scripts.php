@@ -114,6 +114,7 @@ function dt_location_page_scripts() {
                 'current_user_id' => get_current_user_id(),
                 'theme_uri' => get_stylesheet_directory_uri(),
                 'images_uri' => disciple_tools()->admin_img_url,
+                'spinner' => ' <img src="'.disciple_tools()->admin_img_url.'spinner.svg" width="12px" />'
             )
         );
         wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
@@ -151,7 +152,7 @@ function dt_people_groups_post_type_scripts() {
  * Loads scripts and styles for the assets page.
  */
 function dt_options_scripts() {
-    if ( isset( $_GET["page"] ) && $_GET["page"] === 'dt_options' ) {
+    if ( isset( $_GET["page"] ) && ( $_GET["page"] === 'dt_options' || $_GET["page"] === 'dt_utilities' || $_GET["page"] === 'dt_extensions' ) ) {
         wp_enqueue_script( 'dt_options_script', disciple_tools()->admin_js_url . 'dt-options.js', [
             'jquery',
             'jquery-ui-core',

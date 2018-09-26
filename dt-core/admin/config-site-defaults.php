@@ -180,7 +180,7 @@ function dt_get_option( string $name ) {
         case 'auto_location':
             $setting = get_option( 'dt_auto_location' );
             if ( false === $setting ) {
-                update_option( 'dt_auto_location', '0', false );
+                update_option( 'dt_auto_location', '1', false );
                 $setting = get_option( 'dt_auto_location' );
             }
             return $setting;
@@ -600,7 +600,7 @@ function dt_get_location_levels() {
     $fields['location_levels'] = [
         'country' => 1,
         'administrative_area_level_1' => 1,
-        'administrative_area_level_2' => 0,
+        'administrative_area_level_2' => 1,
         'administrative_area_level_3' => 0,
         'administrative_area_level_4' => 0,
         'locality' => 0,
@@ -610,7 +610,7 @@ function dt_get_location_levels() {
     $fields['location_levels_labels'] = [
         'country' => 'Country',
         'administrative_area_level_1' => 'Admin Level 1 (ex. state / province) ',
-        'administrative_area_level_2' => 'Admin Level 2',
+        'administrative_area_level_2' => 'Admin Level 2 (ex. county)',
         'administrative_area_level_3' => 'Admin Level 3',
         'administrative_area_level_4' => 'Admin Level 4',
         'locality' => 'Locality (ex. city name)',

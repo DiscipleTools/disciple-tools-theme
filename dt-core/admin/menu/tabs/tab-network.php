@@ -34,7 +34,7 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
 
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'Network', 'disciple_tools' ), __( 'Network', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=network', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_options', __( 'Network Dashboards', 'disciple_tools' ), __( 'Network Dashboards', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=network', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
     }
 
     public function add_tab( $tab ) {
@@ -42,16 +42,25 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
         if ( $tab == 'network' ) {
             echo 'nav-tab-active';
         }
-        echo '">'. esc_attr__( 'Network', 'disciple_tools' ) .'</a>';
+        echo '">'. esc_attr__( 'Network Dashboards', 'disciple_tools' ) .'</a>';
     }
 
     public function content( $tab ) {
         if ( 'network' == $tab ) {
 
+            require_once( get_template_directory() . '/dt-network/network.php' );
+            require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
+
             self::template( 'begin' );
 
-            $this->network_enable();
-            $this->admin_site_link_box();
+            $this->network_enable_box();
+
+            if ( get_option( 'dt_network_enabled' ) ) {
+                $this->partner_profile_metabox();
+                $this->admin_site_link_box();
+                $this->admin_locations_gname_installed_box();
+            }
+
 
             self::template( 'right_column' );
 
@@ -59,7 +68,7 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
         }
     }
 
-    public function network_enable() {
+    public function network_enable_box() {
         $this->box( 'top', 'Enable and Configure Network Connection' );
 
         Disciple_Tools_Network::admin_network_enable_box();
@@ -68,11 +77,28 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function admin_site_link_box() {
-        $this->box( 'top', 'Site Links for Network Dashboards' );
+        $this->box( 'top', 'Network Dashboards' );
 
         Disciple_Tools_Network::admin_site_link_box();
 
         $this->box( 'bottom' );
     }
+
+    /**
+     * This box displays location list and the gname coded elements
+     */
+    public function admin_locations_gname_installed_box() {
+        $this->box( 'top', 'Locations Status' );
+
+        Disciple_Tools_Network::admin_locations_gname_installed_box();
+
+        $this->box( 'bottom' );
+    }
+
+    public function partner_profile_metabox() {
+        Disciple_Tools_Network::admin_partner_profile_box();
+    }
+
+
 }
 Disciple_Tools_Network_Tab::instance();

@@ -100,6 +100,8 @@ function auto_build_location( post_id ) {
 }
 
 function auto_build_levels_from_post( post_id ) {
+    let spinner = jQuery('#auto_build_spinner')
+    spinner.append(dtLocAPI.spinner)
     let data = { "post_id": post_id }
     jQuery.ajax({
         type: "POST",
@@ -115,6 +117,7 @@ function auto_build_levels_from_post( post_id ) {
             // check if multiple results
             jQuery.each(data, function( index, value ) {
                 jQuery('#'+value.id).html( value.link )
+                spinner.empty()
                 console.log( value )
             })
         })
