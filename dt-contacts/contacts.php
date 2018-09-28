@@ -1472,7 +1472,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'people_groups'
         );
 
-        $update = array();
+        $update = [];
+        $to_remove = [];
 
         foreach ($keys as $key) {
             $results = $non_master[$key] ?? array();
@@ -1481,19 +1482,30 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $update[$key] = array();
                     $update[$key]['values'] = array();
                 }
+                if ( !isset( $to_remove[$key] )) {
+                    $to_remove[$key] = array();
+                    $to_remove[$key]['values'] = array();
+                }
                 if ( in_array( $key, [ "baptized", "coaching" ] ) ){
                     array_push($update[$key]['values'], array(
                         'value' => $result->p2p_from
                     ));
+                    array_push($to_remove[$key]['values'], array(
+                        'value' => $result->p2p_from, 'delete' => true
+                    ));
                 } else {
                     array_push($update[$key]['values'], array(
                         'value' => $result->p2p_to
+                    ));
+                    array_push($to_remove[$key]['values'], array(
+                        'value' => $result->p2p_to, 'delete' => true
                     ));
                 }
             }
         }
 
         self::update_contact( $master_id, $update );
+        self::update_contact( $non_master_id, $to_remove );
     }
 
     public static function copy_comments( int $master_id, int $non_master_id, $check_permissions = true ){
