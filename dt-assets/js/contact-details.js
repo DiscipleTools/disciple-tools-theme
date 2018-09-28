@@ -500,6 +500,7 @@ jQuery(document).ready(function($) {
       matcher: function (item) {
         return item.ID !== contact.ID
       },
+      filter: false,
       source: {
         contacts: {
           display: "name",
