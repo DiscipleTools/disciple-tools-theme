@@ -34,6 +34,7 @@ class Disciple_Tools_Users
         add_action( "edit_user_profile", [ &$this, "custom_user_profile_fields" ] );
         add_action( "edit_user_created_user", [ $this, "edit_user_created_user" ] );
         add_action( "edit_user_profile_update", [ $this, "edit_user_created_user" ] );
+        add_action( "dt_contact_merged", [ $this, "dt_contact_merged" ], 10, 2 );
 
     }
 
@@ -523,5 +524,30 @@ class Disciple_Tools_Users
             </tr>
         </table>
         <?php
+    }
+
+
+    public function dt_contact_merged( $master_id, $non_master_id){
+        //check to make sure both contacts don't point to a user
+        $corresponds_to_user = get_post_meta( $master_id, "corresponds_to_user", true );
+        if ( $corresponds_to_user ){
+            $contact_id = get_user_option( "corresponds_to_contact", $corresponds_to_user );
+            //make sure the user points to the right contact
+            if ( $contact_id != $master_id ){
+                update_user_option( $corresponds_to_user, "corresponds_to_contact", $master_id );
+            }
+            $dup_corresponds_to_contact = get_post_meta( $non_master_id, "corresponds_to_user", true );
+            if ( $dup_corresponds_to_contact ){
+                delete_post_meta( $non_master_id, "corresponds_to_user" );
+            }
+        }
+
+        $master_contact_type = get_post_meta( $master_id, "type", true );
+        if ( $master_contact_type === "user"){
+            $non_master_contact_type = get_post_meta( $non_master_id, "type", true );
+            if ( !empty( $non_master_contact_type ) && $non_master_contact_type != "user" ){
+                update_post_meta( $master_id, "type", $non_master_contact_type );
+            }
+        }
     }
 }

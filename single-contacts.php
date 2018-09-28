@@ -115,6 +115,9 @@ declare( strict_types=1 );
                 if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "text" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
                     $update[$key] = $fields;
                 }
+                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "number" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
+                    $update[$key] = $fields;
+                }
                 if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "array" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
                     if ( $key != "duplicate_data" ){
                         $update[$key] = $fields;
@@ -164,6 +167,8 @@ declare( strict_types=1 );
             ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $master_id, $non_master_id );
             ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $non_master_id, $master_id );
             Disciple_Tools_Contacts::close_duplicate_contact( $non_master_id, $master_id );
+
+            do_action( "dt_contact_merged", $master_id, $non_master_id );
         }
         header( "location: " . site_url( '/contacts/' .get_the_ID() ) );
         exit;
