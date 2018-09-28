@@ -706,6 +706,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     public static function get_contact_for_user( $user ){
+        $contact_id = get_user_option( "corresponds_to_contact", $user->ID );
+        if ( !empty( $contact_id )){
+            return $contact_id;
+        }
 //        if ( $user->has_cap( 'access_contacts' ) ) {
         $args = [
             'post_type'  => 'contacts',
