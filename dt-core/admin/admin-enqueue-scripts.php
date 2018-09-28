@@ -20,6 +20,7 @@ add_action( 'admin_enqueue_scripts', 'dt_location_page_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_dismiss_notice_callback_script' );
 add_action( 'admin_enqueue_scripts', 'dt_people_groups_post_type_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_options_scripts' );
+add_action( 'admin_enqueue_scripts', 'dt_new_user_scripts' );
 
 /*
  * Functions
@@ -180,5 +181,17 @@ function dt_dismiss_notice_callback_script() {
     global $pagenow;
     if ( is_admin() && $pagenow === 'options-general.php' ) {
         wp_enqueue_script( 'disciple-tools-admin_script', disciple_tools()->admin_js_url . 'disciple-tools-admin.js', [ 'jquery' ], filemtime( disciple_tools()->admin_js_path . 'disciple-tools-admin.js' ), true );
+    }
+}
+
+function dt_new_user_scripts(){
+    global $pagenow;
+    if ( is_admin() && ( $pagenow === 'user-new.php' || $pagenow === 'user-edit.php' ) ) {
+        wp_enqueue_script( 'jquery' );
+
+        // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+        wp_register_style( 'jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
+        wp_enqueue_style( 'jquery-ui' );
+        wp_enqueue_script( 'jquery-ui-autocomplete' );
     }
 }
