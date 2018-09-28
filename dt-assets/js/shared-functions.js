@@ -221,6 +221,18 @@ window.API = {
       }
     })
   },
+  create_user( user ){
+    return jQuery.ajax({
+      type:"POST",
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      data: JSON.stringify( user ),
+      url: wpApiShare.root + `dt/v1/users/create`,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+      }
+    })
+  }
 }
 
 function handelAjaxError(err) {

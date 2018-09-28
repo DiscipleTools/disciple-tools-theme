@@ -282,22 +282,30 @@ class Disciple_Tools_Users
 
 
     public static function get_contact_for_user( $user_id ){
+        $contact_id = get_user_option( "corresponds_to_contact", $user_id );
+        if ( !empty( $contact_id )){
+            return $contact_id;
+        }
         $args = [
             'post_type'  => 'contacts',
             'relation'   => 'AND',
             'meta_query' => [
                 [
-        'key' => "corresponds_to_user",
-        "value" => $user_id
+                    'key' => "corresponds_to_user",
+                    "value" => $user_id
                 ],
                 [
-                'key' => "type",
-                "value" => "user"
+                    'key' => "type",
+                    "value" => "user"
                 ],
             ],
         ];
         $contacts = new WP_Query( $args );
-        return $contacts->post;
+        if ( isset( $contacts->post->ID ) ){
+            return $contacts->post->ID;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -456,7 +464,7 @@ class Disciple_Tools_Users
         } else {
             check_admin_referer( 'update-user_' . $user_id );
         }
-        if ( isset( $_POST["corresponds_to_contact_id"] )){
+        if ( !empty( $_POST["corresponds_to_contact_id"] )){
             $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
             update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
             Disciple_Tools_Contacts::update_contact( $corresponds_to_contact, [
@@ -549,5 +557,36 @@ class Disciple_Tools_Users
                 update_post_meta( $master_id, "type", $non_master_contact_type );
             }
         }
+    }
+
+
+    public static function create_user( $user_name, $user_email, $display_name, $corresponds_to_contact = null ){
+        if ( !current_user_can( "create_users" ) ){
+            return new WP_Error( "create_user", __( "You don't have permissions to create users", 'disciple_tools' ), [ 'status', 401 ] );
+        }
+
+        $user_id = username_exists( $user_name );
+        if ( $user_id ){
+            return new WP_Error( "create_user", __( "Username already exists", 'disciple_tools' ), [ 'status', 403 ] );
+        }
+        $email_exists = email_exists( $user_email );
+        if ( $email_exists ){
+            return new WP_Error( "create_user", __( "Email already exists", 'disciple_tools' ), [ 'status', 403 ] );
+        }
+
+        $random_password = wp_generate_password( $length = 12, $include_standard_special_chars = false );
+        $user_id = wp_create_user( $user_name, $random_password, $user_email );
+        if ( is_wp_error( $user_id )){
+            return $user_id;
+        }
+        $user = get_user_by( 'id', $user_id );
+        $user->display_name = $display_name;
+        $user->roles = [ "multiplier" ];
+        wp_update_user( $user );
+        if ( $corresponds_to_contact ){
+            update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
+            update_post_meta( $corresponds_to_contact, "corresponds_to_user", $user_id );
+        }
+        return $user_id;
     }
 }

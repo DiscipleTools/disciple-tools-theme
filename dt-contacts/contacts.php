@@ -462,7 +462,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         if ( filter_var( $connection_value["value"], FILTER_VALIDATE_EMAIL ) ){
                             $user = get_user_by( "email", $connection_value["value"] );
                             if ( $user ){
-                                $corresponding_contact = self::get_contact_for_user( $user );
+                                $corresponding_contact = Disciple_Tools_Users::get_contact_for_user( $user->ID );
                                 if ( $corresponding_contact ){
                                     $connection_value["value"] = $corresponding_contact;
                                 }
@@ -705,33 +705,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
     }
 
-    public static function get_contact_for_user( $user ){
-        $contact_id = get_user_option( "corresponds_to_contact", $user->ID );
-        if ( !empty( $contact_id )){
-            return $contact_id;
-        }
-//        if ( $user->has_cap( 'access_contacts' ) ) {
-        $args = [
-            'post_type'  => 'contacts',
-            'relation'   => 'AND',
-            'meta_query' => [
-                [
-                    'key' => "corresponds_to_user",
-                    "value" => $user->ID
-                ],
-                [
-                    'key' => "type",
-                    "value" => "user"
-                ],
-            ],
-        ];
-        $contacts = new WP_Query( $args );
-        if ( isset( $contacts->post->ID ) ){
-            return $contacts->post->ID;
-        } else {
-            return null;
-        }
-    }
 
     /**
      * @param $contact_id
@@ -1491,14 +1464,16 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         'value' => $result->p2p_from
                     ));
                     array_push($to_remove[$key]['values'], array(
-                        'value' => $result->p2p_from, 'delete' => true
+                        'value' => $result->p2p_from,
+                        'delete' => true
                     ));
                 } else {
                     array_push($update[$key]['values'], array(
                         'value' => $result->p2p_to
                     ));
                     array_push($to_remove[$key]['values'], array(
-                        'value' => $result->p2p_to, 'delete' => true
+                        'value' => $result->p2p_to,
+                        'delete' => true
                     ));
                 }
             }
