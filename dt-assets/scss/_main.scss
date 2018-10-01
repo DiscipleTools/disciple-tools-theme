@@ -322,7 +322,7 @@ img {
         color:white;
     }
 }
-#comment-activity-tabs{
+#comment-activity-section{
     .button.select-button:hover {
         background-color: #3f729b;
     }
@@ -335,6 +335,32 @@ img {
     li {
          list-style-type: none;
     }
+
+    .tabs-title {
+        margin-right: 10px;
+        input {
+            margin: 0;
+        }
+        button {
+            color: #3f729b;
+            font-size: 12px;
+        }
+    }
+
+    .tabs-content {
+        border: none;
+    }
+
+    p {
+        line-height: 1.4;
+    }
+
+    .gravatar {
+        img {
+            height: 16px;
+        }
+    }
+
 }
 
 .submitting-select-button {
@@ -386,49 +412,6 @@ img {
     }
 }
 
-.comment-activity-section {
-
-    //display:flex;
-    //flex-direction:column;
-    //@media screen and (min-width : map-get($breakpoints, large )){
-    //    position:fixed;
-    //    top:118px;
-    //    bottom:0;
-    //    margin-left:-10px !important;
-    //}
-
-    .section-selector {
-        text-align: center;
-        .section-button.selected {
-            .section-button-text {
-                color: #366184;
-                font-weight: bold;
-            }
-        }
-    }
-
-    .tabs-title > a {
-        padding: .5rem 1rem;
-    }
-
-    .tabs-content {
-        border: none;
-    }
-
-    .tabs {
-        border: none;
-    }
-    p {
-        line-height: 1.4;
-    }
-
-    .gravatar {
-        img {
-            height: 16px;
-        }
-    }
-}
-
 #add-comment-button {
     margin-bottom: 0;
     //height: 30px;
@@ -460,7 +443,7 @@ img {
 .comment-date {
     text-align: right;
     margin-right: 20px;
-    font-size:10px;
+    font-size:12px;
 }
 
 .activity-block {

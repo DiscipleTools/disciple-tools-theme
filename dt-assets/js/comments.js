@@ -83,12 +83,9 @@ jQuery(document).ready(function($) {
     text += `(${activityData.length})`
     tab.text(text)
   }
-  $("#show_all_tabs").on("click", function () {
-    let tabs = $('#comment-activity-tabs button.select-button')
-    tabs.each((i, e)=>{
-      $(e).removeClass("empty-select-button")
-      $(e).addClass("selected-select-button")
-    })
+  $(".show-tabs").on("click", function () {
+    let id = $(this).attr("id")
+    $('.tabs-section').prop('checked', id === 'show-all-tabs')
     display_activity_comment()
   })
 
@@ -189,7 +186,7 @@ jQuery(document).ready(function($) {
   }
 
   function display_activity_comment() {
-    let activeTabs = $('#comment-activity-tabs .selected-select-button')
+    let activeTabs = $('#comment-activity-tabs .tabs-section:checked')
     let activeTabIds = [];
     activeTabs.each((i, e)=>{
       activeTabIds.push($(e).data("id"))
@@ -350,15 +347,7 @@ jQuery(document).ready(function($) {
     post_comment(postId)
   })
 
-  $('#comment-activity-tabs button').on("click", function () {
-    let id = $(this).data('id')
-    if ($(this).hasClass("selected-select-button")){
-      $(this).removeClass("selected-select-button")
-      $(this).addClass("empty-select-button")
-    } else {
-      $(this).removeClass("empty-select-button")
-      $(this).addClass("selected-select-button")
-    }
+  $('#comment-activity-tabs .tabs-section').on("change", function () {
     display_activity_comment()
   })
 
