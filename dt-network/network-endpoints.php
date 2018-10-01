@@ -62,6 +62,12 @@ class Disciple_Tools_Network_Endpoints
 
     public function add_api_routes() {
         register_rest_route(
+            $this->public_namespace, '/network/trigger_transfer', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'trigger_transfer' ],
+            ]
+        );
+        register_rest_route(
             $this->public_namespace, '/network/report_by_date', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'report_by_date' ],
@@ -85,6 +91,35 @@ class Disciple_Tools_Network_Endpoints
                 'callback' => [ $this, 'set_location_attributes' ],
             ]
         );
+
+    }
+
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return array|WP_Error
+     */
+    public function trigger_transfer( WP_REST_Request $request ) {
+
+        $params = $this->process_token( $request );
+        if ( is_wp_error( $params ) ) {
+            return $params;
+        }
+
+        if ( ! isset( $params['type'] ) || ! isset( $params['site_post_id'] )  ) {
+            return new WP_Error( __METHOD__, 'Missing parameter: type or matching site_post_id.' );
+        }
+
+        switch ( $params['type'] ) {
+
+            case 'project_totals':
+                return Disciple_Tools_Network::send_project_totals( $params['site_post_id'] );
+                break;
+
+            default:
+                return new WP_Error( __METHOD__, 'No trigger type recognized.' );
+                break;
+        }
     }
 
     /**
@@ -193,18 +228,23 @@ class Disciple_Tools_Network_Endpoints
             return new WP_Error( __METHOD__, 'Missing parameters.' );
         }
 
-        $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+        $valid_token = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
 
         // required valid token challenge
-        if ( ! $site_key ) {
-            dt_write_log( $site_key );
+        if ( ! $valid_token ) {
+            dt_write_log( $valid_token );
             return new WP_Error( __METHOD__, 'Invalid transfer token' );
         }
 
         // required permission challenge (that this token comes from an approved network report site link)
-        if ( ! user_can( get_current_user_id(), 'network_dashboard' ) ) {
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
             return new WP_Error( __METHOD__, 'Network report permission error.' );
         }
+
+        // Add post id for site to site link
+        $decrypted_key = Site_Link_System::decrypt_transfer_token( $params['transfer_token'] );
+        $keys = Site_Link_System::get_site_keys();
+        $params['site_post_id'] = $keys[$decrypted_key]['post_id'];
 
         return $params;
     }

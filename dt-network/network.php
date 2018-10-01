@@ -25,6 +25,9 @@ class Disciple_Tools_Network {
 
     public function __construct() {
 
+        add_filter( 'site_link_type', [ $this, 'site_link_type' ], 10, 1 );
+        add_filter( 'site_link_type_capabilities', [ $this, 'site_link_capabilities' ], 10, 2 );
+
         if ( is_admin() ) {
 
             // set partner details
@@ -34,9 +37,6 @@ class Disciple_Tools_Network {
 
             add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
             add_filter( "dt_custom_fields_settings", [ $this, 'saturation_field_filter' ], 1, 2 );
-
-            add_filter( 'site_link_type', [ $this, 'saturation_mapping_site_link_type' ], 10, 1 );
-            add_filter( 'site_link_type_capabilities', [ $this, 'dt_saturation_mapping_site_link_capabilities' ], 10, 2 );
 
         }
     }
@@ -183,14 +183,14 @@ class Disciple_Tools_Network {
         echo self::load_current_locations();
     }
 
-    public function saturation_mapping_site_link_type( $type ) {
-        $type[] = 'Network Dashboard';
+    public function site_link_type( $type ) {
+        $type[] = 'Network Dashboard (Remote)';
         return $type;
     }
 
-    public function saturation_mapping_site_link_capabilities( $connection_type, $capabilities ) {
-        if ( 'Network Dashboard' === $connection_type ) {
-            $capabilities[] = 'network_dashboard';
+    public function site_link_capabilities( $connection_type, $capabilities ) {
+        if ( 'Network Dashboard (Remote)' === $connection_type ) {
+            $capabilities[] = 'network_dashboard_transfer';
         }
         return $capabilities;
     }
@@ -307,7 +307,7 @@ class Disciple_Tools_Network {
     }
 
     public static function api_report_by_date( $date ) {
-        if ( ! user_can( get_current_user_id(), 'network_dashboard' ) ) {
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
             return new WP_Error( __METHOD__, 'Network report permission error.' );
         }
         $report_data = [];
@@ -410,13 +410,11 @@ class Disciple_Tools_Network {
      * @return array|\WP_Error
      */
     public static function api_report_project_total() {
-        if ( ! user_can( get_current_user_id(), 'network_dashboard' ) ) {
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
             return new WP_Error( __METHOD__, 'Network report permission error.' );
         }
 
         $report_data['partner_id'] = dt_get_partner_profile_id();
-
-
 
 
         // @todo add real data to response
@@ -513,7 +511,7 @@ class Disciple_Tools_Network {
      * @return \WP_Error
      */
     public static function api_get_locations( $check_sum ) {
-        if ( ! user_can( get_current_user_id(), 'network_dashboard' ) ) {
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
             return new WP_Error( __METHOD__, 'Network report permission error.' );
         }
 
@@ -531,7 +529,7 @@ class Disciple_Tools_Network {
     }
 
     public static function api_set_location_attributes( $collection ) {
-        if ( ! user_can( get_current_user_id(), 'network_dashboard' ) ) {
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
             return new WP_Error( __METHOD__, 'Network report permission error.' );
         }
 
@@ -544,6 +542,33 @@ class Disciple_Tools_Network {
         } else {
             return new WP_Error( __METHOD__, 'Failed to get report' );
         }
+    }
+    
+    public static function send_project_totals( $site_post_id ) {
+        
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
+            return new WP_Error( __METHOD__, 'Network report permission error.' );
+        }
+
+        // Trigger Remote Report from Site
+        $site = Site_Link_System::get_site_connection_vars( $site_post_id );
+        if ( is_wp_error( $site ) ) {
+            return new WP_Error( __METHOD__, 'Error creating site connection details.' );
+        }
+        $args = [
+            'method' => 'POST',
+            'body' => [
+                'transfer_token' => $site['transfer_token'],
+                'report_data' => [ 'partner_id' => dt_get_partner_profile_id() ], // @todo add real data
+            ]
+        ];
+        $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/network/collect/project_totals', $args );
+        if ( is_wp_error( $result ) ) {
+            return new WP_Error( 'failed_remote_post', $result->get_error_message() );
+        } else {
+            return $result;
+        }
+
     }
 
 
