@@ -596,6 +596,23 @@ class Disciple_Tools_Posts
         $shared_with_user = [];
         $users_interacted_with =[];
         $posts = [];
+
+        //search by post_id
+        if ( is_numeric( $search_string ) ){
+            $post = get_post( $search_string );
+            if ( $post && self::can_view( $post_type, $post->ID ) ){
+                return [
+                    "total" => "1",
+                    "posts" => [
+                        [
+                            "ID" => (string) $post->ID,
+                            "name" => $post->post_title
+                        ]
+                    ]
+                ];
+            }
+        }
+
         if ( !self::can_view_all( $post_type ) ) {
 //            @todo better way to get the contact records for users my contacts are shared with
             $users_interacted_with = Disciple_Tools_Users::get_assignable_users_compact( $search_string );

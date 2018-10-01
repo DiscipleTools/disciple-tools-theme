@@ -28,6 +28,14 @@ class Disciple_Tools_Users
         add_action( 'profile_update', [ &$this, 'profile_update_hook' ], 99 );
         add_action( "after_switch_theme", [ &$this, "create_contacts_for_existing_users" ] );
         add_action( "wpmu_new_blog", [ &$this, "create_contacts_for_existing_users" ] );
+
+        add_action( "user_new_form", [ &$this, "custom_user_profile_fields" ] );
+        add_action( "show_user_profile", [ &$this, "custom_user_profile_fields" ] );
+        add_action( "edit_user_profile", [ &$this, "custom_user_profile_fields" ] );
+        add_action( "edit_user_created_user", [ $this, "edit_user_created_user" ] );
+        add_action( "edit_user_profile_update", [ $this, "edit_user_created_user" ] );
+        add_action( "dt_contact_merged", [ $this, "dt_contact_merged" ], 10, 2 );
+
     }
 
     /**
@@ -274,22 +282,30 @@ class Disciple_Tools_Users
 
 
     public static function get_contact_for_user( $user_id ){
+        $contact_id = get_user_option( "corresponds_to_contact", $user_id );
+        if ( !empty( $contact_id )){
+            return $contact_id;
+        }
         $args = [
             'post_type'  => 'contacts',
             'relation'   => 'AND',
             'meta_query' => [
                 [
-        'key' => "corresponds_to_user",
-        "value" => $user_id
+                    'key' => "corresponds_to_user",
+                    "value" => $user_id
                 ],
                 [
-                'key' => "type",
-                "value" => "user"
+                    'key' => "type",
+                    "value" => "user"
                 ],
             ],
         ];
         $contacts = new WP_Query( $args );
-        return $contacts->post;
+        if ( isset( $contacts->post->ID ) ){
+            return $contacts->post->ID;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -442,4 +458,135 @@ class Disciple_Tools_Users
         return $filters;
     }
 
+    public function edit_user_created_user( $user_id ){
+        if ( isset( $_REQUEST['action'] ) && 'createuser' == $_REQUEST['action'] ) {
+            check_admin_referer( 'create-user', '_wpnonce_create-user' );
+        } else {
+            check_admin_referer( 'update-user_' . $user_id );
+        }
+        if ( !empty( $_POST["corresponds_to_contact_id"] )){
+            $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
+            update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
+            Disciple_Tools_Contacts::update_contact( $corresponds_to_contact, [
+                "corresponds_to_user" => $user_id
+            ], false, true );
+        }
+    }
+
+    public function custom_user_profile_fields( $user ){
+        $contact_id = "";
+        $contact_title = "";
+        if ( $user != "add-new-user" ) {
+            $contact_id   = get_user_option( "corresponds_to_contact", $user->ID );
+            if ( $contact_id ){
+                $contact = get_post( $contact_id );
+                if ( $contact ){
+                    $contact_title = $contact->post_title;
+                }
+            }
+        }
+        ?>
+        <script type="application/javascript">
+            jQuery(document).ready(function($) {
+                jQuery("#corresponds_to_contact").autocomplete({
+                    source: function (request, response) {
+                        jQuery.ajax({
+                            url: '<?php echo esc_html( rest_url() ) ?>dt/v1/contacts/compact',
+                            data: {
+                                s: request.term
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader('X-WP-Nonce',
+                                    "<?php echo esc_html( wp_create_nonce( 'wp_rest' ) ) ?>");
+                            }
+                        }).then(data=>{
+                            response(data.posts);
+                        })
+                    },
+                    minLength: 2,
+                    select: function (event, ui) {
+                        $( "#corresponds_to_contact" ).val( ui.item.name );
+                        $( "#corresponds_to_contact_id" ).val( ui.item.ID );
+                        return false;
+                    }
+                }).autocomplete( "instance" )._renderItem = function( ul, item ) {
+                    return $( "<li>" )
+                        .append( `<div>${item.name} (${item.ID})</div>` )
+                        .appendTo( ul );
+                };
+            });
+        </script>
+        <h3><?php esc_html_e( "Extra D.T Information", 'disciple_tools' ) ?></h3>
+        <table class="form-table">
+            <tr>
+                <th><label for="contact"><?php esc_html_e( "Corresponds to Contact", 'disciple_tools' ) ?></label></th>
+                <td>
+                    <input type="text" class="regular-text" name="corresponds_to_contact" value="<?php echo esc_html( $contact_title )?>" id="corresponds_to_contact" /><br />
+                    <input type="hidden" class="regular-text" name="corresponds_to_contact_id" value="<?php echo esc_html( $contact_id )?>" id="corresponds_to_contact_id" />
+                    <?php if ( $contact_id ) : ?>
+                        <span class="description"><a href="<?php echo esc_html( get_site_url() . '/contacts/' . $contact_id )?>" target="_blank"><?php esc_html_e( "View contact", 'disciple_tools' ) ?></a></span>
+                    <?php else :?>
+                        <span class="description"><?php esc_html_e( "Is this user already a contact in D.T?", 'disciple_tools' ) ?></span>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        </table>
+        <?php
+    }
+
+
+    public function dt_contact_merged( $master_id, $non_master_id){
+        //check to make sure both contacts don't point to a user
+        $corresponds_to_user = get_post_meta( $master_id, "corresponds_to_user", true );
+        if ( $corresponds_to_user ){
+            $contact_id = get_user_option( "corresponds_to_contact", $corresponds_to_user );
+            //make sure the user points to the right contact
+            if ( $contact_id != $master_id ){
+                update_user_option( $corresponds_to_user, "corresponds_to_contact", $master_id );
+            }
+            $dup_corresponds_to_contact = get_post_meta( $non_master_id, "corresponds_to_user", true );
+            if ( $dup_corresponds_to_contact ){
+                delete_post_meta( $non_master_id, "corresponds_to_user" );
+            }
+        }
+
+        $master_contact_type = get_post_meta( $master_id, "type", true );
+        if ( $master_contact_type === "user"){
+            $non_master_contact_type = get_post_meta( $non_master_id, "type", true );
+            if ( !empty( $non_master_contact_type ) && $non_master_contact_type != "user" ){
+                update_post_meta( $master_id, "type", $non_master_contact_type );
+            }
+        }
+    }
+
+
+    public static function create_user( $user_name, $user_email, $display_name, $corresponds_to_contact = null ){
+        if ( !current_user_can( "create_users" ) ){
+            return new WP_Error( "create_user", __( "You don't have permissions to create users", 'disciple_tools' ), [ 'status', 401 ] );
+        }
+
+        $user_id = username_exists( $user_name );
+        if ( $user_id ){
+            return new WP_Error( "create_user", __( "Username already exists", 'disciple_tools' ), [ 'status', 403 ] );
+        }
+        $email_exists = email_exists( $user_email );
+        if ( $email_exists ){
+            return new WP_Error( "create_user", __( "Email already exists", 'disciple_tools' ), [ 'status', 403 ] );
+        }
+
+        $random_password = wp_generate_password( $length = 12, $include_standard_special_chars = false );
+        $user_id = wp_create_user( $user_name, $random_password, $user_email );
+        if ( is_wp_error( $user_id )){
+            return $user_id;
+        }
+        $user = get_user_by( 'id', $user_id );
+        $user->display_name = $display_name;
+        $user->roles = [ "multiplier" ];
+        wp_update_user( $user );
+        if ( $corresponds_to_contact ){
+            update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
+            update_post_meta( $corresponds_to_contact, "corresponds_to_user", $user_id );
+        }
+        return $user_id;
+    }
 }

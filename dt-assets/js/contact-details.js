@@ -500,6 +500,7 @@ jQuery(document).ready(function($) {
       matcher: function (item) {
         return item.ID !== contact.ID
       },
+      filter: false,
       source: {
         contacts: {
           display: "name",
@@ -1139,6 +1140,27 @@ jQuery(document).ready(function($) {
       numberIndicator.text(newNumber)
     }
   })
+
+  $("#create-user-return").on("click", function (e) {
+    e.preventDefault();
+    $(this).toggleClass("loading")
+    let $inputs = $('#create-user-form :input');
+    let values = {};
+    $inputs.each(function() {
+        values[this.name] = $(this).val();
+    });
+    values["corresponds_to_contact"] = contact["ID"];
+    window.API.create_user(values).then(resp=>{
+      $(this).removeClass("loading")
+      $(`#make_user_from_contact`).foundation('close')
+      location.reload();
+    }).catch(err=>{
+      $(this).removeClass("loading")
+      $('#create-user-errors').html(_.get(err, "responseJSON.message", "Something went wrong"))
+    })
+    return false;
+  })
+
 
   //leave at the end
   masonGrid.masonry({
