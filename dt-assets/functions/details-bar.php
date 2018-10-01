@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @param bool $update_needed
  * @param bool $following
  * @param bool $disable_following_toggle_function
+ * @param array $dispatcher_actions
  */
 function dt_print_details_bar(
     bool $share_button = false,
@@ -16,7 +17,8 @@ function dt_print_details_bar(
     bool $show_update_needed = false,
     bool $update_needed = false,
     bool $following = false,
-    bool $disable_following_toggle_function = false
+    bool $disable_following_toggle_function = false,
+    array $dispatcher_actions = []
 ) {
     ?>
 
@@ -42,6 +44,22 @@ function dt_print_details_bar(
                                 </label>
                             </div>
                             <?php } ?>
+                            <?php if ( sizeof( $dispatcher_actions ) > 0 ): ?>
+                            <ul class="dropdown menu" data-dropdown-menu dropdownmenu-arrow-color="white">
+                                <li style="border-radius: 5px">
+                                    <a class="button menu-white-dropdown-arrow"
+                                       style="background-color: #00897B; color: white;">
+                                        <?php esc_html_e( "Dispatcher actions", 'disciple_tools' ) ?></a>
+                                    <ul class="menu">
+                                        <?php foreach ( $dispatcher_actions as $action ) :
+                                            if ( $action == "make_user_from_contact" ) : ?>
+                                            <li><a data-open="make_user_from_contact"><?php esc_html_e( "Make a user from this contact", 'disciple_tools' ) ?></a></li>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="cell small-4 center hide-for-small-only">

@@ -462,7 +462,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         if ( filter_var( $connection_value["value"], FILTER_VALIDATE_EMAIL ) ){
                             $user = get_user_by( "email", $connection_value["value"] );
                             if ( $user ){
-                                $corresponding_contact = self::get_contact_for_user( $user );
+                                $corresponding_contact = Disciple_Tools_Users::get_contact_for_user( $user->ID );
                                 if ( $corresponding_contact ){
                                     $connection_value["value"] = $corresponding_contact;
                                 }
@@ -705,29 +705,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
     }
 
-    public static function get_contact_for_user( $user ){
-//        if ( $user->has_cap( 'access_contacts' ) ) {
-        $args = [
-            'post_type'  => 'contacts',
-            'relation'   => 'AND',
-            'meta_query' => [
-                [
-                    'key' => "corresponds_to_user",
-                    "value" => $user->ID
-                ],
-                [
-                    'key' => "type",
-                    "value" => "user"
-                ],
-            ],
-        ];
-        $contacts = new WP_Query( $args );
-        if ( isset( $contacts->post->ID ) ){
-            return $contacts->post->ID;
-        } else {
-            return null;
-        }
-    }
 
     /**
      * @param $contact_id
@@ -1468,7 +1445,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'people_groups'
         );
 
-        $update = array();
+        $update = [];
+        $to_remove = [];
 
         foreach ($keys as $key) {
             $results = $non_master[$key] ?? array();
@@ -1477,19 +1455,32 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $update[$key] = array();
                     $update[$key]['values'] = array();
                 }
+                if ( !isset( $to_remove[$key] )) {
+                    $to_remove[$key] = array();
+                    $to_remove[$key]['values'] = array();
+                }
                 if ( in_array( $key, [ "baptized", "coaching" ] ) ){
                     array_push($update[$key]['values'], array(
                         'value' => $result->p2p_from
                     ));
+                    array_push($to_remove[$key]['values'], array(
+                        'value' => $result->p2p_from,
+                        'delete' => true
+                    ));
                 } else {
                     array_push($update[$key]['values'], array(
                         'value' => $result->p2p_to
+                    ));
+                    array_push($to_remove[$key]['values'], array(
+                        'value' => $result->p2p_to,
+                        'delete' => true
                     ));
                 }
             }
         }
 
         self::update_contact( $master_id, $update );
+        self::update_contact( $non_master_id, $to_remove );
     }
 
     public static function copy_comments( int $master_id, int $non_master_id, $check_permissions = true ){

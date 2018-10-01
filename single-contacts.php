@@ -115,6 +115,9 @@ declare( strict_types=1 );
                 if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "text" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
                     $update[$key] = $fields;
                 }
+                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "number" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
+                    $update[$key] = $fields;
+                }
                 if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "array" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
                     if ( $key != "duplicate_data" ){
                         $update[$key] = $fields;
@@ -164,6 +167,8 @@ declare( strict_types=1 );
             ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $master_id, $non_master_id );
             ( new Disciple_Tools_Contacts() )->dismiss_duplicate( $non_master_id, $master_id );
             Disciple_Tools_Contacts::close_duplicate_contact( $non_master_id, $master_id );
+
+            do_action( "dt_contact_merged", $master_id, $non_master_id );
         }
         header( "location: " . site_url( '/contacts/' .get_the_ID() ) );
         exit;
@@ -181,13 +186,18 @@ declare( strict_types=1 );
     <?php
     $current_user_id = get_current_user_id();
     $following = Disciple_Tools_Posts::get_users_following_post( "contacts", get_the_ID() );
+    $dispatcher_actions = [];
+    if ( current_user_can( "create_users" )){
+        $dispatcher_actions[] = "make_user_from_contact";
+    }
     dt_print_details_bar(
         true,
         true,
         current_user_can( "assign_any_contacts" ),
         isset( $contact["requires_update"] ) && $contact["requires_update"]["key"] === "yes",
         in_array( $current_user_id, $following ),
-        isset( $contact["assigned_to"]["id"] ) ? $contact["assigned_to"]["id"] == $current_user_id : false
+        isset( $contact["assigned_to"]["id"] ) ? $contact["assigned_to"]["id"] == $current_user_id : false,
+        $dispatcher_actions
     ); ?>
 
     <div id="errors"></div>
@@ -703,6 +713,47 @@ declare( strict_types=1 );
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
+    </div>
+
+    <div class="reveal" id="make_user_from_contact" data-reveal data-reset-on-close>
+
+        <p class="lead"><?php esc_html_e( 'Create User', 'disciple_tools' )?></p>
+
+        <?php if ( isset( $contact['corresponds_to_user'] ) ) : ?>
+            <p><?php esc_html_e( "This contact already represents a user", 'disciple_tools' ) ?></p>
+        <?php else : ?>
+
+        <p><?php esc_html_e( "This will invite this contact to D.T as a multiplier", 'disciple_tools' ) ?></p>
+
+        <form id="create-user-form">
+            <label for="user-email">
+                <?php esc_html_e( "Email", "disciple_tools" ); ?>
+            </label>
+            <input name="user-email" id="user-email" type="email" placeholder="user@example.com" required aria-describedby="email-help-text">
+            <p class="help-text" id="email-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
+            <label for="user-display">
+                <?php esc_html_e( "Display Name", "disciple_tools" ); ?>
+                <input name="user-display" id="user-display" type="text"
+                       value="<?php the_title_attribute(); ?>"
+                       placeholder="<?php esc_html_e( "Display name", 'disciple_tools' ) ?>">
+            </label>
+
+            <div class="grid-x">
+                <p id="create-user-errors" style="color: red"></p>
+            </div>
+            <div class="grid-x">
+                <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                    <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+                </button>
+                <button class="button loader" type="submit" id="create-user-return">
+                    <?php esc_html_e( 'Create user', 'disciple_tools' ); ?>
+                </button>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </form>
+        <?php endif; ?>
     </div>
 
     <?php

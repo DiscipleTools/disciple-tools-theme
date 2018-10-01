@@ -199,12 +199,12 @@ function dt_get_option( string $name ) {
             return $seeker_list["seeker_path"];
         case 'overall_status':
             $status = [
-                'unassigned'   => _x( 'Unassigned', 'Contact Status', 'disciple_tools' ),
-                'assigned'     => _X( "Assigned", 'Contact Status', 'disciple_tools' ),
+                'unassigned'   => _x( 'Dispatch Needed', 'Contact Status', 'disciple_tools' ),
+                'assigned'     => _X( "Waiting to be Accepted", 'Contact Status', 'disciple_tools' ),
                 'active'       => _X( 'Active', 'Contact Status', 'disciple_tools' ),
                 'paused'       => _x( 'Paused', 'Contact Status', 'disciple_tools' ),
                 'closed'       => _x( 'Closed', 'Contact Status', 'disciple_tools' ),
-                'unassignable' => _x( 'Unassignable', 'Contact Status', 'disciple_tools' ),
+                'unassignable' => _x( 'Not Ready', 'Contact Status', 'disciple_tools' ),
             ];
             $custom = dt_get_option( "dt_site_custom_lists" );
             $custom = $custom["custom_status"];
