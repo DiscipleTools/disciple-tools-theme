@@ -561,7 +561,7 @@ jQuery(document).ready(function($) {
       editFieldsUpdate[field].values.push({key, delete:true})
     }
     $(this).parent().remove()
-  }).on('change', '.text-input', function () {
+  }).on('change', '.edit-text-input', function () {
     let field = $(this).attr('id')
     editFieldsUpdate[field] = $(this).val()
   })
