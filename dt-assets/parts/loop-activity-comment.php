@@ -51,7 +51,10 @@
             </div>
         </div>
         <div class="cell">
-            <ul id="comment-activity-tabs">
+            <h3 class="section-header"><?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?></h3>
+            <div>
+            <span style="display: inline-block; margin-right:5px; vertical-align:top; font-weight: bold"><?php esc_html_e( "Showing:", 'disciple_tools' ) ?></span>
+            <ul id="comment-activity-tabs" style="display: inline-block; margin: 0">
 
                 <?php
                 $sections = [
@@ -73,14 +76,28 @@
                             "selected-select-button" : "empty-select-button"
                         ?>
                     <li class="tabs-title" >
-                        <button id="tab-button-<?php echo esc_html( $section["key"] ) ?>" data-id="<?php echo esc_html( $section["key"] ) ?>" class="button select-button <?php echo esc_html( $class )?>">
+                        <label for="tab-button-<?php echo esc_html( $section["key"] ) ?>">
+                            <input type="checkbox"
+                                   name="<?php echo esc_html( $section["key"] ) ?>"
+                                   id="tab-button-<?php echo esc_html( $section["key"] ) ?>"
+                                   data-id="<?php echo esc_html( $section["key"] ) ?>"
+                                   class="tabs-section"
+                                   <?php echo esc_html( ( isset( $section["selected_by_default"] ) && $section["selected_by_default"] === true ) ? 'checked' : '' ) ?>
+                            >
                             <?php echo esc_html( $section["label"] ) ?>
-                        </button>
+                        </label>
+
                     </li>
                     <?php endif;
                 endforeach; ?>
+                <li class="tabs-title">
+                    <button id="show-all-tabs" class="show-tabs"><?php esc_html_e( "show all", 'disciple_tools' ) ?></button>
+                </li>
+                <li class="tabs-title">
+                    <button id="hide-all-tabs" class="show-tabs"><?php esc_html_e( "hide all", 'disciple_tools' ) ?></button>
+                </li>
             </ul>
-            <button id="show_all_tabs"><a><?php esc_html_e( "Show all", 'disciple_tools' ) ?></a></button>
+            </div>
         </div>
 
         <div id="comments-wrapper" class="cell tabs-content">
