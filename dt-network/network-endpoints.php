@@ -67,31 +67,6 @@ class Disciple_Tools_Network_Endpoints
                 'callback' => [ $this, 'trigger_transfer' ],
             ]
         );
-        register_rest_route(
-            $this->public_namespace, '/network/report_by_date', [
-                'methods'  => 'POST',
-                'callback' => [ $this, 'report_by_date' ],
-            ]
-        );
-        register_rest_route(
-            $this->public_namespace, '/network/report_project_total', [
-                'methods'  => 'POST',
-                'callback' => [ $this, 'report_project_total' ],
-            ]
-        );
-        register_rest_route(
-            $this->public_namespace, '/network/get_locations', [
-                'methods'  => 'POST',
-                'callback' => [ $this, 'get_locations' ],
-            ]
-        );
-        register_rest_route(
-            $this->public_namespace, '/network/set_location_attributes', [
-                'methods'  => 'POST',
-                'callback' => [ $this, 'set_location_attributes' ],
-            ]
-        );
-
     }
 
     /**

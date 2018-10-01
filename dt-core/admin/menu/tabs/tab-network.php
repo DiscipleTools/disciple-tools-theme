@@ -64,6 +64,8 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             self::template( 'right_column' );
 
+            $this->admin_test_send_box();;
+
             self::template( 'end' );
         }
     }
@@ -80,6 +82,14 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
         $this->box( 'top', 'Network Dashboards' );
 
         Disciple_Tools_Network::admin_site_link_box();
+
+        $this->box( 'bottom' );
+    }
+
+    public function admin_test_send_box() {
+        $this->box( 'top', 'Test Report Send' );
+
+        Disciple_Tools_Network::admin_test_send_box();
 
         $this->box( 'bottom' );
     }
