@@ -197,12 +197,12 @@ class Disciple_Tools_Network {
     }
 
     public function site_link_type( $type ) {
-        $type[] = 'Network Dashboard (Remote)';
+        $type['network_dashboard'] = __( 'Network Dashboard' );
         return $type;
     }
 
     public function site_link_capabilities( $connection_type, $capabilities ) {
-        if ( 'Network Dashboard (Remote)' === $connection_type ) {
+        if ( 'network_dashboard' === $connection_type ) {
             $capabilities[] = 'network_dashboard_transfer';
         }
         return $capabilities;

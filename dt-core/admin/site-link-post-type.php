@@ -424,6 +424,10 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     }
                     break;
 
+                case 'type':
+                    echo esc_html( ucwords( str_replace( '_', ' ', get_post_meta( $post->ID, 'type', true ) ) ) );
+                    break;
+
                 default:
                     break;
             }
@@ -431,9 +435,16 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
         public function register_custom_column_headings( $defaults ) {
 
-            $new_columns = array( 'linked' => __( 'Linked' ) );
+            $new_columns = array(
+            'linked' => __( 'Linked' ),
+            'type' => __( 'Type' )
+            );
 
             $last_item = [];
+
+            if ( isset( $defaults['date'] ) ) {
+                unset( $defaults['date'] );
+            }
 
             if ( count( $defaults ) > 2 ) {
                 $last_item = array_slice( $defaults, -1 );
@@ -1228,17 +1239,6 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             return trim( $url );
         }
 
-        public function admin_table_head( $defaults ) {
-            $defaults['type']  = 'Type';
-            return $defaults;
-        }
-
-        public function admin_table_content( $column_name, $post_id ) {
-            if ($column_name == 'type') {
-                echo esc_html( get_post_meta( $post_id, 'type', true ) );
-            }
-        }
-
         private function flush_rewrite_rules() {
             $this->register_post_type();
             flush_rewrite_rules();
@@ -1252,7 +1252,6 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             $prefix = self::$token;
             delete_option( $prefix . '_api_keys' );
         }
-
 
         /**
          * Variables and Singleton
@@ -1294,8 +1293,6 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 add_action( 'save_post', [ $this, 'meta_box_save' ] );
                 add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
                 add_filter( 'post_updated_messages', [ $this, 'post_type_updated_messages' ] );
-                add_filter( 'manage_'.$this->post_type.'_posts_columns', [ $this, 'admin_table_head' ] );
-                add_action( 'manage_'.$this->post_type.'_posts_custom_column', [ $this, 'admin_table_content' ], 10, 2 );
 
                 if ( isset( $_GET['post_type'] ) ) {
                     $pt = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );

@@ -43,6 +43,11 @@ class Disciple_Tools_Contacts_Transfer
         return $capabilities;
     }
 
+    /**
+     * Section to display in the share panel for the transfer function
+     *
+     * @param $post_type
+     */
     public function share_panel( $post_type ) {
         if ( 'contacts' === $post_type ) {
             ?>
@@ -56,7 +61,7 @@ class Disciple_Tools_Contacts_Transfer
     }
 
     public function get_available_transfer_sites() {
-        return Site_Link_System::get_list_of_sites_by_type( [ 'Contact Sharing', 'Contact Sending' ] );
+        return Site_Link_System::get_list_of_sites_by_type( [ 'contact_sharing', 'contact_sending' ] );
     }
 }
 Disciple_Tools_Contacts_Transfer::instance();
