@@ -9,7 +9,7 @@ if ( !defined( 'ABSPATH' ) ) {
  * All functionality pertaining to project update post types in Site_Link_System.
  * @class Site_Link_System
  *
- * @version 0.1.16
+ * @version 0.1.17
  *
  * @since   0.1.7 Moved to post type
  *          0.1.8 Added key_select, readonly
@@ -21,6 +21,7 @@ if ( !defined( 'ABSPATH' ) ) {
  *          0.1.14 Removed spacing at the top of the admin page
  *          0.1.15 Added get_site_connection_vars function;
  *          0.1.16 Added https filter, capability filter for token verification
+ *          0.1.17 Added type column to admin list
  */
 if ( ! class_exists( 'Site_Link_System' ) ) {
 
@@ -1181,6 +1182,17 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             return trim( $url );
         }
 
+        public function admin_table_head( $defaults ) {
+            $defaults['type']  = 'Type';
+            return $defaults;
+        }
+
+        public function admin_table_content( $column_name, $post_id ) {
+            if ($column_name == 'type') {
+                echo esc_html( get_post_meta( $post_id, 'type', true ) );
+            }
+        }
+
         private function flush_rewrite_rules() {
             $this->register_post_type();
             flush_rewrite_rules();
@@ -1236,6 +1248,8 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 add_action( 'save_post', [ $this, 'meta_box_save' ] );
                 add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
                 add_filter( 'post_updated_messages', [ $this, 'post_type_updated_messages' ] );
+                add_filter( 'manage_'.$this->post_type.'_posts_columns', [ $this, 'admin_table_head' ] );
+                add_action( 'manage_'.$this->post_type.'_posts_custom_column', [ $this, 'admin_table_content' ], 10, 2 );
 
                 if ( isset( $_GET['post_type'] ) ) {
                     $pt = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
