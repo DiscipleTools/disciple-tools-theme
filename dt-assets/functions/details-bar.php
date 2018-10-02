@@ -56,6 +56,8 @@ function dt_print_details_bar(
                                                 <li><a data-open="make_user_from_contact"><?php esc_html_e( "Make a user from this contact", 'disciple_tools' ) ?></a></li>
                                             <?php elseif ( $action == "link_to_user") : ?>
                                                 <li><a data-open="link_to_user"><?php esc_html_e( "Link to an existing user", 'disciple_tools' ) ?></a></li>
+                                            <?php elseif ( $action == "merge_with_contact") : ?>
+                                                <li><a id="open_merge_with_contact"><?php esc_html_e( "Merge with another contact", 'disciple_tools' ) ?></a></li>
                                             <?php endif; ?>
                                         <?php endforeach; ?>
                                     </ul>

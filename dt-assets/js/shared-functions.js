@@ -302,16 +302,37 @@ window.TYPEAHEADS = {
       }
     }
   },
+  typeaheadContactsSource : function (){
+    return {
+      contacts: {
+        display: "name",
+        ajax: {
+          url: contactsDetailsWpApiSettings.root + 'dt/v1/contacts/compact',
+          data: {
+            s: "{{query}}"
+          },
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+          },
+          callback: {
+            done: function (data) {
+              return data.posts
+            }
+          }
+        }
+      }
+    }
+  },
   typeaheadHelpText : function (resultCount, query, result){
-    var text = "";
+    let text = "";
     if (result.length > 0 && result.length < resultCount) {
-      text = "Showing <strong>" + result.length + "</strong> of <strong>" + resultCount + '</strong> ' + (query ? 'elements matching "' + query + '"' : '');
+      text = `Showing <strong>${result.length}</strong> of <strong>${resultCount}</strong>(${query ? 'elements matching ' + query : ''})`
     } else if (result.length > 0 && query) {
-      text = 'Showing <strong>' + result.length + '</strong> items matching "' + query + '"';
+      text = `Showing <strong>${result.length}</strong> items matching ${query}`;
     } else if (result.length > 0) {
-      text = 'Showing <strong>' + result.length + '</strong> items';
+      text = `Showing <strong>${result.length}</strong> items`;
     } else {
-      text = 'No results matching "' + query + '"';
+      text = `No results matching ${query}`
     }
     return text
   },
