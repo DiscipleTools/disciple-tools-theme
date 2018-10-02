@@ -294,10 +294,10 @@ class Disciple_Tools_Posts
             }
         } else if ($p2p_type === "contacts_to_groups"){
             if ($action == "connected to"){
-                $object_note_to = __( 'Added to group', 'disciple_tools' ) . ' ' . $to_title;
+                $object_note_to = sprintf( __( 'Added %s to group', 'disciple_tools' ), $from_title );
                 $object_note_from = __( 'Added to group', 'disciple_tools' ) . ' ' . $to_title;
             } else {
-                $object_note_to = __( 'Removed from group', 'disciple_tools' ) . ' ' . $to_title;
+                $object_note_to = sprintf( __( 'Removed %s from group', 'disciple_tools' ), $from_title );
                 $object_note_from = __( 'Removed from group', 'disciple_tools' ) . ' ' . $to_title;
             }
         }
@@ -345,10 +345,10 @@ class Disciple_Tools_Posts
         } else {
             if ($action == "connected to"){
                 $object_note_to = __( 'Connected to', 'disciple_tools' ) . ' ' . $to_title;
-                $object_note_from = __( 'Connected on', 'disciple_tools' ) . ' ' . $to_title;
+                $object_note_from = __( 'Connected to', 'disciple_tools' ) . ' ' . $to_title;
             } else {
-                $object_note_to = __( 'Removed from', 'disciple_tools' ) . ' ' . $to_title;
-                $object_note_from = __( 'Removed from', 'disciple_tools' ) . ' ' . $to_title;
+                $object_note_to = __( 'Removed connection to', 'disciple_tools' ) . ' ' . $to_title;
+                $object_note_from = __( 'Removed connection to', 'disciple_tools' ) . ' ' . $to_title;
             }
         }
 
