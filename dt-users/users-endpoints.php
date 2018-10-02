@@ -69,6 +69,12 @@ class Disciple_Tools_Users_Endpoints
                 'callback' => [ $this, 'create_user' ]
             ]
         );
+        register_rest_route(
+            $this->namespace, '/users/contact-id', [
+                'methods' => "GET",
+                'callback' => [ $this, 'get_user_contact_id' ]
+            ]
+        );
     }
 
     /**
@@ -148,6 +154,15 @@ class Disciple_Tools_Users_Endpoints
 
         if ( isset( $params["user-email"], $params["user-display"], $params["corresponds_to_contact"] ) ){
             return Disciple_Tools_Users::create_user( $params["user-email"], $params["user-email"], $params["user-display"], $params["corresponds_to_contact"] );
+        } else {
+            return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
+        }
+    }
+
+    public function get_user_contact_id( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if ( isset( $params["user_id"] ) ){
+            return Disciple_Tools_Users::get_contact_for_user( $params["user_id"] );
         } else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
         }

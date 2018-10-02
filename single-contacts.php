@@ -189,6 +189,7 @@ declare( strict_types=1 );
     $dispatcher_actions = [];
     if ( current_user_can( "create_users" )){
         $dispatcher_actions[] = "make_user_from_contact";
+        $dispatcher_actions[] = "link_to_user";
     }
     dt_print_details_bar(
         true,
@@ -754,6 +755,63 @@ declare( strict_types=1 );
             </div>
         </form>
         <?php endif; ?>
+    </div>
+
+
+    <div class="reveal" id="link_to_user" data-reveal data-reset-on-close style="min-height:500px">
+
+        <p class="lead"><?php esc_html_e( 'Link this contact to an existing user', 'disciple_tools' )?></p>
+
+        <p><?php esc_html_e( "First, find the user", 'disciple_tools' ) ?></p>
+
+        <div class="user-select details">
+            <var id="user-select-result-container" class="result-container user-select-result-container"></var>
+            <div id="user-select_t" name="form-user-select">
+                <div class="typeahead__container">
+                    <div class="typeahead__field">
+                        <span class="typeahead__query">
+                            <input class="js-typeahead-user-select input-height"
+                                   name="user-select[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
+                                   autocomplete="off">
+                        </span>
+                        <span class="typeahead__button">
+                            <button type="button" class="search_user-select typeahead__image_button input-height" data-id="user-select_t">
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="confirm-merge-with-user" style="display: none">
+            <p><?php esc_html_e( "To finish the linking, merge this contact with the existing user details.", 'disciple_tools' ) ?></p>
+
+            <form action='<?php echo esc_url( site_url() );?>/contacts/mergedetails' method='post'>
+                <input type='hidden' name='dt_contact_nonce' value='<?php echo esc_attr( wp_create_nonce() ); ?>'/>
+                <input type='hidden' name='currentid' value='<?php echo esc_html( $contact["ID"] );?>'/>
+                <input id="confirm-merge-with-user-dupe-id" type='hidden' name='dupeid' value=''/>
+                <button type='submit' class="button">
+                    <?php esc_html_e( 'Merge', 'disciple_tools' ) ?>
+                </button>
+            </form>
+        </div>
+
+
+
+        <form id="create-user-form">
+            <div class="grid-x">
+                <p id="create-user-errors" style="color: red"></p>
+            </div>
+            <div class="grid-x">
+                <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
+                    <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
+                </button>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </form>
     </div>
 
     <?php

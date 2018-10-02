@@ -1160,6 +1160,57 @@ jQuery(document).ready(function($) {
     return false;
   })
 
+  /**
+   * User-select
+   */
+  $.typeahead({
+    input: '.js-typeahead-user-select',
+    minLength: 0,
+    accent: true,
+    searchOnFocus: true,
+    source: TYPEAHEADS.typeaheadUserSource(),
+    templateValue: "{{name}}",
+    template: function (query, item) {
+      return `<span class="row">
+        <span class="avatar"><img src="{{avatar}}"/> </span>
+        <span>${item.name}</span>
+      </span>`
+    },
+    dynamic: true,
+    hint: true,
+    emptyTemplate: 'No users found "{{query}}"',
+    callback: {
+      onClick: function(node, a, item, event){
+        jQuery.ajax({
+          type: "GET",
+          data: {"user_id":item.ID},
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          url: contactsDetailsWpApiSettings.root + 'dt/v1/users/contact-id',
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', contactsDetailsWpApiSettings.nonce);
+          }
+        }).then(user_contact_id=>{
+          $('#confirm-merge-with-user').show()
+          $('#confirm-merge-with-user-dupe-id').val(user_contact_id)
+        })
+      },
+      onResult: function (node, query, result, resultCount) {
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+        $('#user-select-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('.user-select-result-container').html("");
+      },
+    },
+  });
+  let user_select_input = $(`.js-typeahead-user-select`)
+  $('.search_user-select').on('click', function () {
+    user_select_input.val("")
+    user_select_input.trigger('input.typeahead')
+    user_select_input.focus()
+  })
+  
 
   //leave at the end
   masonGrid.masonry({
