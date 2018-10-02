@@ -91,78 +91,20 @@ class Disciple_Tools_Network_Endpoints
                 return Disciple_Tools_Network::send_project_totals( $params['site_post_id'] );
                 break;
 
+            case 'site_profile':
+                return Disciple_Tools_Network::send_site_profile( $params['site_post_id'] );
+                break;
+
+            case 'site_locations':
+                return Disciple_Tools_Network::send_site_locations( $params['site_post_id'] );
+                break;
+
             default:
                 return new WP_Error( __METHOD__, 'No trigger type recognized.' );
                 break;
         }
     }
 
-    /**
-     * @param \WP_REST_Request $request
-     *
-     * @return array|WP_Error
-     */
-    public function report_by_date( WP_REST_Request $request ) {
-
-        $params = $this->process_token( $request );
-        if ( is_wp_error( $params ) ) {
-            return $params;
-        }
-
-        if ( isset( $params['date'] ) ) {
-            $result = Disciple_Tools_Network::api_report_by_date( $params['data'] );
-            if ( is_wp_error( $result ) ) {
-                return new WP_Error( __METHOD__, $result->get_error_message() );
-            }
-            return $result;
-        } else {
-            return new WP_Error( __METHOD__, 'Missing parameters.' );
-        }
-    }
-
-    /**
-     * @param \WP_REST_Request $request
-     *
-     * @return array|WP_Error
-     */
-    public function report_project_total( WP_REST_Request $request ) {
-
-        $params = $this->process_token( $request );
-        if ( is_wp_error( $params ) ) {
-            return $params;
-        }
-
-        $result = Disciple_Tools_Network::api_report_project_total();
-        if ( is_wp_error( $result ) ) {
-            return new WP_Error( __METHOD__, $result->get_error_message() );
-        }
-        return $result;
-    }
-
-    /**
-     * @param \WP_REST_Request $request
-     *
-     * @return array|WP_Error
-     */
-    public function get_locations( WP_REST_Request $request ) {
-
-        $params = $this->process_token( $request );
-        if ( is_wp_error( $params ) ) {
-            return $params;
-        }
-
-        if ( ! isset( $params['check_sum'] ) ) {
-            return new WP_Error( __METHOD__, 'Missing parameters.' );
-        }
-
-        $result = Disciple_Tools_Network::api_get_locations( $params['check_sum'] );
-        if ( is_wp_error( $result ) ) {
-            return new WP_Error( __METHOD__, $result->get_error_message() );
-        }
-
-        return $result;
-
-    }
 
     /**
      * @param \WP_REST_Request $request

@@ -594,6 +594,119 @@ class Disciple_Tools_Network {
         ];
     }
 
+    public static function send_site_profile( $site_post_id ) {
+
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
+            return new WP_Error( __METHOD__, 'Network report permission error.' );
+        }
+
+        // Trigger Remote Report from Site
+        $site = Site_Link_System::get_site_connection_vars( $site_post_id );
+        if ( is_wp_error( $site ) ) {
+            return new WP_Error( __METHOD__, 'Error creating site connection details.' );
+        }
+        $args = [
+            'method' => 'POST',
+            'body' => [
+                'transfer_token' => $site['transfer_token'],
+                'report_data' => self::get_site_profile(),
+            ]
+        ];
+        $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/network/collect/site_profile', $args );
+        if ( is_wp_error( $result ) ) {
+            return new WP_Error( 'failed_remote_post', $result->get_error_message() );
+        } else {
+            return $result['body'];
+        }
+
+    }
+
+    public static function get_site_profile () {
+        return [
+            'partner_id' => dt_get_partner_profile_id(),
+            'site_profile' => get_option( 'dt_site_partner_profile' ),
+            'date' => current_time( 'mysql' ),
+        ];
+    }
+
+    public static function send_site_locations( $site_post_id ) {
+
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
+            return new WP_Error( __METHOD__, 'Network report permission error.' );
+        }
+
+        // Trigger Remote Report from Site
+        $site = Site_Link_System::get_site_connection_vars( $site_post_id );
+        if ( is_wp_error( $site ) ) {
+            return new WP_Error( __METHOD__, 'Error creating site connection details.' );
+        }
+        $args = [
+            'method' => 'POST',
+            'body' => [
+                'transfer_token' => $site['transfer_token'],
+                'report_data' => self::get_site_locations(),
+            ]
+        ];
+        $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/network/collect/site_locations', $args );
+        if ( is_wp_error( $result ) ) {
+            return new WP_Error( 'failed_remote_post', $result->get_error_message() );
+        } else {
+            return $result['body'];
+        }
+
+    }
+
+    public static function get_site_locations() {
+        return [
+            'partner_id' => dt_get_partner_profile_id(),
+            'locations' => [
+                [
+                    'location_name' => '',
+                    'location_id' => '',
+                    'parent_id' => '',
+                    'geonameid' => '',
+                    'longitude' => '',
+                    'latitude' => '',
+                    'total_contacts' => 0,
+                    'total_groups' => 0,
+                    'total_users' => 0,
+                    'new_contacts' => 0,
+                    'new_groups' => 0,
+                    'new_users' => 0,
+                ],
+                [
+                    'location_name' => '',
+                    'location_id' => '',
+                    'parent_id' => '',
+                    'geonameid' => '',
+                    'longitude' => '',
+                    'latitude' => '',
+                    'total_contacts' => 0,
+                    'total_groups' => 0,
+                    'total_users' => 0,
+                    'new_contacts' => 0,
+                    'new_groups' => 0,
+                    'new_users' => 0,
+                ],
+                [
+                    'location_name' => '',
+                    'location_id' => '',
+                    'parent_id' => '',
+                    'geonameid' => '',
+                    'longitude' => '',
+                    'latitude' => '',
+                    'total_contacts' => 0,
+                    'total_groups' => 0,
+                    'total_users' => 0,
+                    'new_contacts' => 0,
+                    'new_groups' => 0,
+                    'new_users' => 0,
+                ],
+            ],
+            'date' => current_time( 'mysql' ),
+        ];
+    }
+
 
 }
 Disciple_Tools_Network::instance();
