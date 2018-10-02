@@ -33,8 +33,10 @@ class Disciple_Tools_Users
         add_action( "show_user_profile", [ &$this, "custom_user_profile_fields" ] );
         add_action( "edit_user_profile", [ &$this, "custom_user_profile_fields" ] );
         add_action( "edit_user_created_user", [ $this, "edit_user_created_user" ] );
-        add_action( "edit_user_profile_update", [ $this, "edit_user_created_user" ] );
         add_action( "dt_contact_merged", [ $this, "dt_contact_merged" ], 10, 2 );
+        add_filter( 'user_row_actions', [ $this, 'dt_edit_user_row_actions' ], 10, 2 );
+        add_filter( 'manage_users_columns', [ $this, 'new_modify_user_table' ] );
+        add_filter( 'manage_users_custom_column', [ $this, 'new_modify_user_table_row' ], 10, 3 );
 
     }
 
@@ -458,20 +460,6 @@ class Disciple_Tools_Users
         return $filters;
     }
 
-    public function edit_user_created_user( $user_id ){
-        if ( isset( $_REQUEST['action'] ) && 'createuser' == $_REQUEST['action'] ) {
-            check_admin_referer( 'create-user', '_wpnonce_create-user' );
-        } else {
-            check_admin_referer( 'update-user_' . $user_id );
-        }
-        if ( !empty( $_POST["corresponds_to_contact_id"] )){
-            $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
-            update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
-            Disciple_Tools_Contacts::update_contact( $corresponds_to_contact, [
-                "corresponds_to_user" => $user_id
-            ], false, true );
-        }
-    }
 
     public function custom_user_profile_fields( $user ){
         $contact_id = "";
@@ -485,7 +473,7 @@ class Disciple_Tools_Users
                 }
             }
         }
-        ?>
+        if ( empty( $contact_title ) ) : ?>
         <script type="application/javascript">
             jQuery(document).ready(function($) {
                 jQuery("#corresponds_to_contact").autocomplete({
@@ -516,17 +504,22 @@ class Disciple_Tools_Users
                 };
             });
         </script>
+        <?php endif; ?>
         <h3><?php esc_html_e( "Extra D.T Information", 'disciple_tools' ) ?></h3>
         <table class="form-table">
             <tr>
                 <th><label for="contact"><?php esc_html_e( "Corresponds to Contact", 'disciple_tools' ) ?></label></th>
                 <td>
-                    <input type="text" class="regular-text" name="corresponds_to_contact" value="<?php echo esc_html( $contact_title )?>" id="corresponds_to_contact" /><br />
-                    <input type="hidden" class="regular-text" name="corresponds_to_contact_id" value="<?php echo esc_html( $contact_id )?>" id="corresponds_to_contact_id" />
-                    <?php if ( $contact_id ) : ?>
-                        <span class="description"><a href="<?php echo esc_html( get_site_url() . '/contacts/' . $contact_id )?>" target="_blank"><?php esc_html_e( "View contact", 'disciple_tools' ) ?></a></span>
-                    <?php else :?>
-                        <span class="description"><?php esc_html_e( "Is this user already a contact in D.T?", 'disciple_tools' ) ?></span>
+                    <?php if ( !empty( $contact_title ) ) : ?>
+                        <a href="<?php echo esc_html( get_permalink( $contact_id ) ) ?>"><?php echo esc_html( $contact_title ) ?></a>
+                    <?php else : ?>
+                        <input type="text" class="regular-text" name="corresponds_to_contact" value="<?php echo esc_html( $contact_title )?>" id="corresponds_to_contact" /><br />
+                        <input type="hidden" class="regular-text" name="corresponds_to_contact_id" value="<?php echo esc_html( $contact_id )?>" id="corresponds_to_contact_id" />
+                        <?php if ( $contact_id ) : ?>
+                            <span class="description"><a href="<?php echo esc_html( get_site_url() . '/contacts/' . $contact_id )?>" target="_blank"><?php esc_html_e( "View contact", 'disciple_tools' ) ?></a></span>
+                        <?php else :?>
+                            <span class="description"><?php esc_html_e( "Is this user already a contact in D.T?", 'disciple_tools' ) ?></span>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </td>
             </tr>
@@ -588,5 +581,31 @@ class Disciple_Tools_Users
             update_post_meta( $corresponds_to_contact, "corresponds_to_user", $user_id );
         }
         return $user_id;
+    }
+
+
+    public function dt_edit_user_row_actions( $actions, $user ){
+        $contact_id = self::get_contact_for_user( $user->ID );
+        if ( $contact_id ){
+            $link = get_permalink( $contact_id );
+            $actions["view"] = '<a href="' . $link . '" aria-label="View contact">' . __( "View", "Disciple Tools" ) . ' ' . get_the_title( $contact_id ) .  '</a>';
+        }
+        return $actions;
+    }
+    public function new_modify_user_table( $column ) {
+        $column = array_slice( $column, 0, 3, true ) +
+        array( "display_name" => "Display Name" ) +
+        array_slice( $column, 3, null, true );
+        return $column;
+    }
+
+    public function new_modify_user_table_row( $val, $column_name, $user_id ) {
+        switch ( $column_name ) {
+            case 'display_name' :
+                return dt_get_user_display_name( $user_id );
+                break;
+            default:
+        }
+        return $val;
     }
 }
