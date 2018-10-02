@@ -492,6 +492,9 @@ class Disciple_Tools_Posts
         ) );
         $activity_simple = [];
         foreach ( $activity as $a ) {
+            if ( isset( $a->meta_key, $fields[$a->meta_key]["hidden"] ) && $fields[$a->meta_key]["hidden"] === true ){
+                continue;
+            }
             $a->object_note = self::format_activity_message( $a, $fields );
             if ( isset( $a->user_id ) && $a->user_id > 0 ) {
                 $user = get_user_by( "id", $a->user_id );
