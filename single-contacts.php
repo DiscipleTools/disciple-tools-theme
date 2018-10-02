@@ -762,6 +762,11 @@ declare( strict_types=1 );
 
         <p class="lead"><?php esc_html_e( 'Link this contact to an existing user', 'disciple_tools' )?></p>
 
+        <?php if ( isset( $contact['corresponds_to_user'] ) ) : ?>
+            <p><?php esc_html_e( "This contact already represents a user", 'disciple_tools' ) ?></p>
+        <?php else : ?>
+
+
         <p><?php esc_html_e( "First, find the user", 'disciple_tools' ) ?></p>
 
         <div class="user-select details">
@@ -796,6 +801,8 @@ declare( strict_types=1 );
                 </button>
             </form>
         </div>
+
+        <?php endif; ?>
 
 
 
