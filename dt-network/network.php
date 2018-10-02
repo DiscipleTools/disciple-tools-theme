@@ -116,7 +116,7 @@ class Disciple_Tools_Network {
 
     public static function admin_test_send_box() {
         if ( isset( $_POST['test_send_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['test_send_nonce'] ) ), 'test_send_'.get_current_user_id() ) ) {
-            dt_write_log('Test Send');
+            dt_write_log( 'Test Send' );
         }
         ?>
 
@@ -556,9 +556,9 @@ class Disciple_Tools_Network {
             return new WP_Error( __METHOD__, 'Failed to get report' );
         }
     }
-    
+
     public static function send_project_totals( $site_post_id ) {
-        
+
         if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
             return new WP_Error( __METHOD__, 'Network report permission error.' );
         }
@@ -584,7 +584,7 @@ class Disciple_Tools_Network {
 
     }
 
-    public static function get_project_totals () {
+    public static function get_project_totals() {
         return [
             'partner_id' => dt_get_partner_profile_id(),
             'total_contacts' => 200,// @todo add real data
@@ -621,7 +621,7 @@ class Disciple_Tools_Network {
 
     }
 
-    public static function get_site_profile () {
+    public static function get_site_profile() {
         return [
             'partner_id' => dt_get_partner_profile_id(),
             'site_profile' => get_option( 'dt_site_partner_profile' ),

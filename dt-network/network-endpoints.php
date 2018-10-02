@@ -81,7 +81,7 @@ class Disciple_Tools_Network_Endpoints
             return $params;
         }
 
-        if ( ! isset( $params['type'] ) || ! isset( $params['site_post_id'] )  ) {
+        if ( ! isset( $params['type'] ) || ! isset( $params['site_post_id'] ) ) {
             return new WP_Error( __METHOD__, 'Missing parameter: type or matching site_post_id.' );
         }
 

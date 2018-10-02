@@ -64,7 +64,8 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             self::template( 'right_column' );
 
-            $this->admin_test_send_box();;
+            $this->admin_test_send_box();
+            ;
 
             self::template( 'end' );
         }
