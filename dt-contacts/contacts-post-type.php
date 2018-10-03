@@ -754,7 +754,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
 
         $fields["reason_unassignable"] = [
-            'name'        => __( 'Reason not ready' ),
+            'name'        => __( 'Reason Unassaginable' ),
             'description' => '',
             'type'        => 'key_select',
             'default'     => [],
