@@ -466,7 +466,7 @@ class Disciple_Tools_Users
     public function custom_user_profile_fields( $user ){
         $contact_id = "";
         $contact_title = "";
-        if ( $user != "add-new-user" ) {
+        if ( $user != "add-new-user" && $user != "add-existing-user" && isset( $user->ID ) ) {
             $contact_id   = get_user_option( "corresponds_to_contact", $user->ID );
             if ( $contact_id ){
                 $contact = get_post( $contact_id );
