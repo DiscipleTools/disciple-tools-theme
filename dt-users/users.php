@@ -239,7 +239,10 @@ class Disciple_Tools_Users
         if ( isset( $_POST['display_name'] ) && !empty( $_POST['display_name'] ) ) {
             $args['display_name'] = $args['nickname'];
         }
-        else {
+        //locale
+        if ( isset( $_POST['locale'] ) ) {
+            $args['locale'] = sanitize_text_field( wp_unslash( $_POST['locale'] ) );
+        } else {
             $args['locale'] = "en_US";
         }
 
