@@ -495,15 +495,14 @@ jQuery(document).ready(function($) {
       maxItem: 30,
       searchOnFocus: true,
       template: function (query, item) {
-        return `<span>${_.escape(item.name)}</span>`
+        return `<span>${_.escape(item.name)} (#${item.ID})</span>`
       },
       matcher: function (item) {
         return item.ID !== contact.ID
       },
-      filter: false,
       source: {
         contacts: {
-          display: "name",
+          display: ["name", "ID"],
           ajax: {
             url: contactsDetailsWpApiSettings.root + 'dt/v1/contacts/compact',
             data: {

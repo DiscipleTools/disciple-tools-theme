@@ -186,16 +186,18 @@ class Disciple_Tools_Posts
      *
      * @return array
      */
-    public static function get_posts_shared_with_user( string $post_type, int $user_id ) {
+    public static function get_posts_shared_with_user( string $post_type, int $user_id, $search_for_post_name = '' ) {
         global $wpdb;
         $shares = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT * FROM $wpdb->dt_share as shares
                 INNER JOIN $wpdb->posts as posts
                 WHERE user_id = %d
+                AND posts.post_title LIKE %s
                 AND shares.post_id = posts.ID
                 AND posts.post_type = %s",
                 $user_id,
+                "%$search_for_post_name%",
                 $post_type
             ),
             ARRAY_A
@@ -619,7 +621,7 @@ class Disciple_Tools_Posts
         if ( !self::can_view_all( $post_type ) ) {
 //            @todo better way to get the contact records for users my contacts are shared with
             $users_interacted_with = Disciple_Tools_Users::get_assignable_users_compact( $search_string );
-            $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID );
+            $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID, $search_string );
             $query_args['meta_key'] = 'assigned_to';
             $query_args['meta_value'] = "user-" . $current_user->ID;
             $posts = $wpdb->get_results( $wpdb->prepare( "
@@ -658,23 +660,23 @@ class Disciple_Tools_Posts
             },
             $posts
         );
+        foreach ( $users_interacted_with as $user ) {
+            $contact_id = Disciple_Tools_Users::get_contact_for_user( $user["ID"] );
+            if ( $contact_id ){
+                if ( !in_array( $contact_id, $post_ids ) ) {
+                    $compact[] = [
+                        "ID" => $contact_id,
+                        "name" => $user["name"]
+                    ];
+                }
+            }
+        }
         foreach ( $shared_with_user as $shared ) {
             if ( !in_array( $shared->ID, $post_ids ) ) {
                 $compact[] = [
                 "ID" => $shared->ID,
                 "name" => $shared->post_title
                 ];
-            }
-        }
-        foreach ( $users_interacted_with as $user ) {
-            $contact = Disciple_Tools_Users::get_contact_for_user( $user["ID"] );
-            if ( $contact ){
-                if ( !in_array( $contact->ID, $post_ids ) ) {
-                    $compact[] = [
-                        "ID" => $contact->ID,
-                        "name" => $user["name"]
-                    ];
-                }
             }
         }
         foreach ( $posts as $post ) {
@@ -685,8 +687,8 @@ class Disciple_Tools_Posts
         }
 
         return [
-        "total" => $wpdb->get_var( "SELECT found_rows();" ),
-        "posts" => $compact
+            "total" => sizeof( $compact ),
+            "posts" => array_slice( $compact, 0, 50 )
         ];
     }
 
