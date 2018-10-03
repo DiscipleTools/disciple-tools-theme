@@ -26,7 +26,7 @@ class Disciple_Tools_Network {
     public function __construct() {
 
         add_filter( 'site_link_type', [ $this, 'site_link_type' ], 10, 1 );
-        add_filter( 'site_link_type_capabilities', [ $this, 'site_link_capabilities' ], 10, 2 );
+        add_filter( 'site_link_type_capabilities', [ $this, 'site_link_capabilities' ], 10, 1 );
 
         if ( is_admin() ) {
 
@@ -201,11 +201,15 @@ class Disciple_Tools_Network {
         return $type;
     }
 
-    public function site_link_capabilities( $connection_type, $capabilities ) {
-        if ( 'network_dashboard' === $connection_type ) {
-            $capabilities[] = 'network_dashboard_transfer';
+    public function site_link_capabilities( $args ) {
+        dt_write_log(__METHOD__);
+//        dt_write_log( $connection_type );
+
+        if ( 'network_dashboard' == $args['connection_type'] ) {
+            dt_write_log('made it in');
+            $args['capabilities'][] = 'network_dashboard_transfer';
         }
-        return $capabilities;
+        return $args;
     }
 
     public static function load_current_locations() {

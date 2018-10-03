@@ -130,31 +130,39 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          *
          * @return array
          */
-        public static function get_list_of_sites_by_type( array $type_name, $format = 'name_list' ) {
+        public static function get_list_of_sites_by_type(array $type_name, $format = 'name_list' ) {
             global $wpdb;
+
+            if ( ! is_array( $type_name ) ) {
+                dt_write_log( new WP_Error( __METHOD__, '$type_name is not an array.' ) );
+                return [];
+            }
+
+            $type_string = array_map( 'sanitize_text_field', wp_unslash( $type_name ) );
+            $type_string = "'" . implode("','", $type_string ) . "'";
 
             switch ( $format ) {
 
                 case 'name_list':
-                    $results = $wpdb->get_results( $wpdb->prepare(
+                    $results = $wpdb->get_results(
                         "SELECT ID as id, post_title as name 
                         FROM $wpdb->posts 
                           JOIN $wpdb->postmeta 
                           ON $wpdb->posts.ID=$wpdb->postmeta.post_id 
                             AND meta_key = 'type' 
-                        WHERE meta_value IN (%s)", $type_name ), ARRAY_A );
+                        WHERE meta_value IN ($type_string)", ARRAY_A );
 
                     return $results;
                     break;
 
                 case 'post_ids':
-                    $results = $wpdb->get_col( $wpdb->prepare(
+                    $results = $wpdb->get_col(
                         "SELECT id 
                         FROM $wpdb->posts 
                           JOIN $wpdb->postmeta 
                           ON $wpdb->posts.ID=$wpdb->postmeta.post_id 
                             AND meta_key = 'type' 
-                        WHERE meta_value IN (%s)", $type_name ) );
+                        WHERE meta_value IN ($type_string)" );
 
                     return $results;
                     break;
@@ -228,6 +236,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             // add prepared permissions to the current_user object
             $connection_type = get_post_meta( self::get_post_id_by_site_key( $decrypted_key ), 'type', true );
             if ( ! empty( $connection_type ) ) {
+                dt_write_log(__METHOD__);
                 self::add_capabilities_required_by_type( $connection_type );
             }
 
@@ -250,7 +259,14 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
              * Use the $connection_type to filter for the correct type
              * Update and return the $capabilities array
              */
-            $capabilities = apply_filters( 'site_link_type_capabilities', $connection_type, $capabilities = [] );
+            dt_write_log(__METHOD__);
+            dt_write_log($connection_type);
+            $args = [
+                'connection_type' => $connection_type,
+                'capabilities' => [],
+            ];
+            $args = apply_filters( 'site_link_type_capabilities', $args );
+            $capabilities = $args['capabilities'];
 
             // Challenge if $capabilities is a valid array
             if ( is_array( $capabilities ) && ! empty( $capabilities ) ) {

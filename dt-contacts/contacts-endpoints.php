@@ -40,6 +40,7 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function __construct() {
         $this->namespace = $this->context . "/v" . intval( $this->version );
+        $this->public_namespace = 'dt-public/v1';
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
 
         require_once( 'contacts.php' );
@@ -216,6 +217,18 @@ class Disciple_Tools_Contacts_Endpoints
             $this->namespace, '/contact/(?P<id>\d+)/duplicates', [
                 "methods"  => "GET",
                 "callback" => [ $this, 'get_duplicates_on_contact' ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/contact/transfer', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'contact_transfer' ],
+            ]
+        );
+        register_rest_route(
+            $this->public_namespace, '/contact/transfer', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'public_contact_transfer' ],
             ]
         );
     }
@@ -822,5 +835,70 @@ class Disciple_Tools_Contacts_Endpoints
         } else {
             return new WP_Error( 'get_duplicates_on_contact', "Missing field for request", [ 'status' => 400 ] );
         }
+    }
+
+    public function contact_transfer( WP_REST_Request $request ){
+
+        if ( ! ( current_user_can( 'view_all_contacts' ) || current_user_can( 'manage_dt' ) ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions' );
+        }
+
+        $params = $request->get_params();
+        if ( ! isset( $params['contact_id'] ) || ! isset( $params['site_post_id']) ){
+            return new WP_Error( __METHOD__, "Missing required parameters.", [ 'status' => 400 ] );
+        }
+
+        return Disciple_Tools_Contacts_Transfer::contact_transfer( $params['contact_id'], $params['site_post_id'] );
+
+    }
+
+    public function public_contact_transfer( WP_REST_Request $request ){
+
+        $params = $this->process_token( $request );
+        if ( is_wp_error( $params ) ) {
+            return $params;
+        }
+
+        if ( ! current_user_can( 'create_contacts' ) ) {
+            return new WP_Error( __METHOD__, 'Permission error.' );
+        }
+
+        if ( isset( $params['contact_data'] ) ) {
+            dt_write_log('Made it');
+            dt_write_log(__METHOD__);
+            dt_write_log( $params['contact_data'] );
+
+            return 'success';
+        } else {
+            return new WP_Error( __METHOD__, 'Missing required parameter: contact_data.' );
+        }
+
+    }
+
+    /**
+     * Public key processing utility. Use this at the beginning of public endpoints
+     *
+     * @param \WP_REST_Request $request
+     *
+     * @return array|\WP_Error
+     */
+    public function process_token( WP_REST_Request $request ) {
+
+        $params = $request->get_params();
+
+        // required token parameter challenge
+        if ( ! isset( $params['transfer_token'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing parameters.' );
+        }
+
+        $valid_token = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+
+        // required valid token challenge
+        if ( ! $valid_token ) {
+            dt_write_log( $valid_token );
+            return new WP_Error( __METHOD__, 'Invalid transfer token' );
+        }
+
+        return $params;
     }
 }

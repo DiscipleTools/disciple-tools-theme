@@ -222,7 +222,8 @@ function dt_site_scripts() {
                         'txt_created'                     => __( "Created contact at {}" ),
                         'translations'                    => $translations,
                         'can_view_all'                    => user_can( get_current_user_id(), 'view_any_contacts' ),
-                        'current_user_id'                 => get_current_user_id()
+                        'current_user_id'                 => get_current_user_id(),
+                        'spinner_url'                     => get_template_directory_uri() . '/dt-assets/images/ajax-loader.gif',
                     )
                 );
             }

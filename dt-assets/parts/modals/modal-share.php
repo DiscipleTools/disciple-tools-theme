@@ -28,11 +28,7 @@
         </div>
     </div>
 
-    <div class="grid-x">
-        <button class="button" data-close aria-label="Close reveal" type="button">
-            <?php esc_html_e( 'Close', 'disciple_tools' )?>
-        </button>
-    </div>
+
 
     <?php
         /**
@@ -41,6 +37,18 @@
         global $post;
         do_action( 'dt_share_panel', $post->post_type );
     ?>
+
+
+    <div class="grid-x pin-to-bottom">
+        <div class="cell">
+            <hr size="1px">
+            <span style="float:right; bottom: 0;">
+            <button class="button" data-close aria-label="Close reveal" type="button">
+                <?php esc_html_e( 'Close', 'disciple_tools' )?>
+            </button>
+        </span>
+        </div>
+    </div>
 
     <button class="close-button" data-close aria-label="Close modal" type="button">
         <span aria-hidden="true">&times;</span>
