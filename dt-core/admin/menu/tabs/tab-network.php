@@ -34,7 +34,7 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
 
 
     public function add_submenu() {
-        add_submenu_page( 'dt_options', __( 'Network Dashboards', 'disciple_tools' ), __( 'Network Dashboards', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=network', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
+        add_submenu_page( 'dt_options', __( 'Network Dashboard', 'disciple_tools' ), __( 'Network Dashboard', 'disciple_tools' ), 'manage_dt', 'dt_options&tab=network', [ 'Disciple_Tools_Settings_Menu', 'content' ] );
     }
 
     public function add_tab( $tab ) {
@@ -42,7 +42,7 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
         if ( $tab == 'network' ) {
             echo 'nav-tab-active';
         }
-        echo '">'. esc_attr__( 'Network Dashboards', 'disciple_tools' ) .'</a>';
+        echo '">'. esc_attr__( 'Network Dashboard', 'disciple_tools' ) .'</a>';
     }
 
     public function content( $tab ) {
@@ -64,6 +64,9 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             self::template( 'right_column' );
 
+            $this->admin_test_send_box();
+            ;
+
             self::template( 'end' );
         }
     }
@@ -80,6 +83,14 @@ class Disciple_Tools_Network_Tab extends Disciple_Tools_Abstract_Menu_Base
         $this->box( 'top', 'Network Dashboards' );
 
         Disciple_Tools_Network::admin_site_link_box();
+
+        $this->box( 'bottom' );
+    }
+
+    public function admin_test_send_box() {
+        $this->box( 'top', 'Test Report Send' );
+
+        Disciple_Tools_Network::admin_test_send_box();
 
         $this->box( 'bottom' );
     }

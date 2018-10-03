@@ -85,33 +85,46 @@ class Disciple_Tools_Network {
 
         $site_links = $wpdb->get_results( "
         SELECT p.ID, p.post_title, pm.meta_value as type
-            FROM wp_4_posts as p
-              LEFT JOIN wp_4_postmeta as pm
+            FROM $wpdb->posts as p
+              LEFT JOIN $wpdb->postmeta as pm
               ON p.ID=pm.post_id
-              AND meta_key = 'type'
+              AND pm.meta_key = 'type'
             WHERE p.post_type = 'site_link_system'
               AND p.post_status = 'publish'
         ", ARRAY_A );
 
         if ( ! is_array( $site_links ) ) {
-            echo 'No Site links found. Go to <a href="'. esc_url( admin_url() ).'edit.php?post_type=site_link_system">Site Links</a> and create a site link, and then select "Network Report" as the type."';
+            echo 'No site links found. Go to <a href="'. esc_url( admin_url() ).'edit.php?post_type=site_link_system">Site Links</a> and create a site link, and then select "Network Report" as the type."';
         }
 
         echo '<h2>You are reporting to these Network Dashboards</h2>';
         foreach ( $site_links as $site ) {
-            if ( ! is_null( $site['type'] ) && 'Network Dashboard' === $site['type'] ) {
+            if ( 'Network Dashboard (Remote)' === $site['type'] ) {
                 echo '<dd><a href="'. esc_url( admin_url() ) .'post.php?post='. esc_attr( $site['ID'] ).'&action=edit">' . esc_html( $site['post_title'] ) . '</a></dd>';
             }
         }
 
         echo '<h2>Other System Site-to-Site Links</h2>';
         foreach ( $site_links as $site ) {
-            if ( 'Network Reporting' != $site['type'] ) {
+            if ( ! ( 'Network Reporting (Remote)' === $site['type'] ) ) {
                 echo '<dd><a href="'. esc_url( admin_url() ) .'post.php?post='. esc_attr( $site['ID'] ).'&action=edit">' . esc_html( $site['post_title'] ) . '</a></dd>';
             }
         }
 
         echo '<hr><p style="font-size:.8em;">Note: Network Dashboards are Site Links that have the "Connection Type" of "Network Dashboard".</p>';
+    }
+
+    public static function admin_test_send_box() {
+        if ( isset( $_POST['test_send_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['test_send_nonce'] ) ), 'test_send_'.get_current_user_id() ) ) {
+            dt_write_log( 'Test Send' );
+        }
+        ?>
+
+        <form method="post">
+            <?php wp_nonce_field( 'test_send_'.get_current_user_id(), 'test_send_nonce', false, true ) ?>
+            <button type="submit" name="send_test" class="button"><?php esc_html_e( 'Send Test' ) ?></button>
+        </form>
+        <?php
     }
 
     public static function admin_partner_profile_box() {
@@ -184,12 +197,12 @@ class Disciple_Tools_Network {
     }
 
     public function site_link_type( $type ) {
-        $type[] = 'Network Dashboard (Remote)';
+        $type['network_dashboard'] = __( 'Network Dashboard' );
         return $type;
     }
 
     public function site_link_capabilities( $connection_type, $capabilities ) {
-        if ( 'Network Dashboard (Remote)' === $connection_type ) {
+        if ( 'network_dashboard' === $connection_type ) {
             $capabilities[] = 'network_dashboard_transfer';
         }
         return $capabilities;
@@ -543,9 +556,9 @@ class Disciple_Tools_Network {
             return new WP_Error( __METHOD__, 'Failed to get report' );
         }
     }
-    
+
     public static function send_project_totals( $site_post_id ) {
-        
+
         if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
             return new WP_Error( __METHOD__, 'Network report permission error.' );
         }
@@ -559,16 +572,139 @@ class Disciple_Tools_Network {
             'method' => 'POST',
             'body' => [
                 'transfer_token' => $site['transfer_token'],
-                'report_data' => [ 'partner_id' => dt_get_partner_profile_id() ], // @todo add real data
+                'report_data' => self::get_project_totals(),
             ]
         ];
         $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/network/collect/project_totals', $args );
         if ( is_wp_error( $result ) ) {
             return new WP_Error( 'failed_remote_post', $result->get_error_message() );
         } else {
-            return $result;
+            return $result['body'];
         }
 
+    }
+
+    public static function get_project_totals() {
+        return [
+            'partner_id' => dt_get_partner_profile_id(),
+            'total_contacts' => 200,// @todo add real data
+            'total_groups' => 10,// @todo add real data
+            'total_users' => 5,// @todo add real data
+            'date' => current_time( 'mysql' ),
+        ];
+    }
+
+    public static function send_site_profile( $site_post_id ) {
+
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
+            return new WP_Error( __METHOD__, 'Network report permission error.' );
+        }
+
+        // Trigger Remote Report from Site
+        $site = Site_Link_System::get_site_connection_vars( $site_post_id );
+        if ( is_wp_error( $site ) ) {
+            return new WP_Error( __METHOD__, 'Error creating site connection details.' );
+        }
+        $args = [
+            'method' => 'POST',
+            'body' => [
+                'transfer_token' => $site['transfer_token'],
+                'report_data' => self::get_site_profile(),
+            ]
+        ];
+        $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/network/collect/site_profile', $args );
+        if ( is_wp_error( $result ) ) {
+            return new WP_Error( 'failed_remote_post', $result->get_error_message() );
+        } else {
+            return $result['body'];
+        }
+
+    }
+
+    public static function get_site_profile() {
+        return [
+            'partner_id' => dt_get_partner_profile_id(),
+            'site_profile' => get_option( 'dt_site_partner_profile' ),
+            'date' => current_time( 'mysql' ),
+        ];
+    }
+
+    public static function send_site_locations( $site_post_id ) {
+
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
+            return new WP_Error( __METHOD__, 'Network report permission error.' );
+        }
+
+        // Trigger Remote Report from Site
+        $site = Site_Link_System::get_site_connection_vars( $site_post_id );
+        if ( is_wp_error( $site ) ) {
+            return new WP_Error( __METHOD__, 'Error creating site connection details.' );
+        }
+        $args = [
+            'method' => 'POST',
+            'body' => [
+                'transfer_token' => $site['transfer_token'],
+                'report_data' => self::get_site_locations(),
+            ]
+        ];
+        $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/network/collect/site_locations', $args );
+        if ( is_wp_error( $result ) ) {
+            return new WP_Error( 'failed_remote_post', $result->get_error_message() );
+        } else {
+            return $result['body'];
+        }
+
+    }
+
+    public static function get_site_locations() {
+        return [
+            'partner_id' => dt_get_partner_profile_id(),
+            'locations' => [
+                [
+                    'location_name' => '',
+                    'location_id' => '',
+                    'parent_id' => '',
+                    'geonameid' => '',
+                    'longitude' => '',
+                    'latitude' => '',
+                    'total_contacts' => 0,
+                    'total_groups' => 0,
+                    'total_users' => 0,
+                    'new_contacts' => 0,
+                    'new_groups' => 0,
+                    'new_users' => 0,
+                ],
+                [
+                    'location_name' => '',
+                    'location_id' => '',
+                    'parent_id' => '',
+                    'geonameid' => '',
+                    'longitude' => '',
+                    'latitude' => '',
+                    'total_contacts' => 0,
+                    'total_groups' => 0,
+                    'total_users' => 0,
+                    'new_contacts' => 0,
+                    'new_groups' => 0,
+                    'new_users' => 0,
+                ],
+                [
+                    'location_name' => '',
+                    'location_id' => '',
+                    'parent_id' => '',
+                    'geonameid' => '',
+                    'longitude' => '',
+                    'latitude' => '',
+                    'total_contacts' => 0,
+                    'total_groups' => 0,
+                    'total_users' => 0,
+                    'new_contacts' => 0,
+                    'new_groups' => 0,
+                    'new_users' => 0,
+                ],
+            ],
+            'date' => current_time( 'mysql' ),
+        ];
     }
 
 

@@ -4,13 +4,13 @@
 
     <p class="lead"><?php esc_html_e( 'Share settings', 'disciple_tools' )?></p>
     <h6>
-    <?php
-    if ( is_singular( "groups" ) ){
-        esc_html_e( 'This group is shared with:', 'disciple_tools' );
-    } else if ( is_singular( "contacts" ) ) {
-        esc_html_e( 'This contact is shared with:', 'disciple_tools' );
-    }
-    ?>
+        <?php
+        if ( is_singular( "groups" ) ){
+            esc_html_e( 'This group is shared with:', 'disciple_tools' );
+        } else if ( is_singular( "contacts" ) ) {
+            esc_html_e( 'This contact is shared with:', 'disciple_tools' );
+        }
+        ?>
     </h6>
 
     <div class="share details">
@@ -32,8 +32,17 @@
         <button class="button" data-close aria-label="Close reveal" type="button">
             <?php esc_html_e( 'Close', 'disciple_tools' )?>
         </button>
-        <button class="close-button" data-close aria-label="Close modal" type="button">
-            <span aria-hidden="true">&times;</span>
-        </button>
     </div>
+
+    <?php
+        /**
+         * This fires below the share section, and can add additional share based elements.
+         */
+        global $post;
+        do_action( 'dt_share_panel', $post->post_type );
+    ?>
+
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
 </div>
