@@ -45,7 +45,7 @@ class Disciple_Tools_Network {
         $partner_profile = [
             'partner_name' => get_option( 'blogname' ),
             'partner_description' => get_option( 'blogdescription' ),
-            'partner_id' => bin2hex( random_bytes( 10 ) ),
+            'partner_id' => Site_Link_System::generate_token( 40 ),
         ];
         update_option( 'dt_site_partner_profile', $partner_profile, true );
         return $partner_profile;
@@ -139,7 +139,7 @@ class Disciple_Tools_Network {
             $partner_profile = [
                 'partner_name' => sanitize_text_field( wp_unslash( $_POST['partner_name'] ) ) ?: get_option( 'blogname' ),
                 'partner_description' => sanitize_text_field( wp_unslash( $_POST['partner_description'] ) ) ?: get_option( 'blogdescription' ),
-                'partner_id' => sanitize_text_field( wp_unslash( $_POST['partner_id'] ) ) ?: bin2hex( random_bytes( 10 ) ),
+                'partner_id' => sanitize_text_field( wp_unslash( $_POST['partner_id'] ) ) ?: Site_Link_System::generate_token( 40 ),
             ];
 
             update_option( 'dt_site_partner_profile', $partner_profile, true );
@@ -202,11 +202,7 @@ class Disciple_Tools_Network {
     }
 
     public function site_link_capabilities( $args ) {
-        dt_write_log(__METHOD__);
-//        dt_write_log( $connection_type );
-
         if ( 'network_dashboard' == $args['connection_type'] ) {
-            dt_write_log('made it in');
             $args['capabilities'][] = 'network_dashboard_transfer';
         }
         return $args;
@@ -604,6 +600,8 @@ class Disciple_Tools_Network {
             return new WP_Error( __METHOD__, 'Network report permission error.' );
         }
 
+        $site_profile = self::get_site_profile();
+
         // Trigger Remote Report from Site
         $site = Site_Link_System::get_site_connection_vars( $site_post_id );
         if ( is_wp_error( $site ) ) {
@@ -613,7 +611,7 @@ class Disciple_Tools_Network {
             'method' => 'POST',
             'body' => [
                 'transfer_token' => $site['transfer_token'],
-                'report_data' => self::get_site_profile(),
+                'report_data' => $site_profile,
             ]
         ];
         $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/network/collect/site_profile', $args );
@@ -622,15 +620,12 @@ class Disciple_Tools_Network {
         } else {
             return $result['body'];
         }
-
     }
 
     public static function get_site_profile() {
-        return [
-            'partner_id' => dt_get_partner_profile_id(),
-            'site_profile' => get_option( 'dt_site_partner_profile' ),
-            'date' => current_time( 'mysql' ),
-        ];
+        $site_profile = get_option( 'dt_site_partner_profile' );
+        $site_profile['check_sum'] = md5( serialize( $site_profile ) );
+        return $site_profile;
     }
 
     public static function send_site_locations( $site_post_id ) {
@@ -648,9 +643,11 @@ class Disciple_Tools_Network {
             'method' => 'POST',
             'body' => [
                 'transfer_token' => $site['transfer_token'],
+                'partner_id' => dt_get_partner_profile_id(),
                 'report_data' => self::get_site_locations(),
             ]
         ];
+
         $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/network/collect/site_locations', $args );
         if ( is_wp_error( $result ) ) {
             return new WP_Error( 'failed_remote_post', $result->get_error_message() );
@@ -661,56 +658,27 @@ class Disciple_Tools_Network {
     }
 
     public static function get_site_locations() {
-        return [
-            'partner_id' => dt_get_partner_profile_id(),
-            'locations' => [
-                [
-                    'location_name' => '',
-                    'location_id' => '',
-                    'parent_id' => '',
-                    'geonameid' => '',
-                    'longitude' => '',
-                    'latitude' => '',
-                    'total_contacts' => 0,
-                    'total_groups' => 0,
-                    'total_users' => 0,
-                    'new_contacts' => 0,
-                    'new_groups' => 0,
-                    'new_users' => 0,
-                ],
-                [
-                    'location_name' => '',
-                    'location_id' => '',
-                    'parent_id' => '',
-                    'geonameid' => '',
-                    'longitude' => '',
-                    'latitude' => '',
-                    'total_contacts' => 0,
-                    'total_groups' => 0,
-                    'total_users' => 0,
-                    'new_contacts' => 0,
-                    'new_groups' => 0,
-                    'new_users' => 0,
-                ],
-                [
-                    'location_name' => '',
-                    'location_id' => '',
-                    'parent_id' => '',
-                    'geonameid' => '',
-                    'longitude' => '',
-                    'latitude' => '',
-                    'total_contacts' => 0,
-                    'total_groups' => 0,
-                    'total_users' => 0,
-                    'new_contacts' => 0,
-                    'new_groups' => 0,
-                    'new_users' => 0,
-                ],
-            ],
-            'date' => current_time( 'mysql' ),
-        ];
-    }
+        global $wpdb;
 
+        $query_results = $wpdb->get_results( "
+            SELECT a.ID as id, a.post_parent as parent_id, a.post_title as name, b.meta_value as raw, c.meta_value as address
+            FROM $wpdb->posts as a
+            JOIN $wpdb->postmeta as b
+                ON a.ID=b.post_id
+                AND b.meta_key = 'raw'
+            JOIN $wpdb->postmeta as c
+                ON a.ID=c.post_id
+                AND c.meta_key = 'location_address'
+            WHERE post_type = 'locations' AND post_status = 'publish'
+        ", ARRAY_A );
+
+        $locations = [
+            'locations' => $query_results,
+            'check_sum' => md5( serialize( $query_results ) ),
+        ];
+
+        return $locations;
+    }
 
 }
 Disciple_Tools_Network::instance();

@@ -236,7 +236,6 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             // add prepared permissions to the current_user object
             $connection_type = get_post_meta( self::get_post_id_by_site_key( $decrypted_key ), 'type', true );
             if ( ! empty( $connection_type ) ) {
-                dt_write_log(__METHOD__);
                 self::add_capabilities_required_by_type( $connection_type );
             }
 
@@ -259,8 +258,6 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
              * Use the $connection_type to filter for the correct type
              * Update and return the $capabilities array
              */
-            dt_write_log(__METHOD__);
-            dt_write_log($connection_type);
             $args = [
                 'connection_type' => $connection_type,
                 'capabilities' => [],
