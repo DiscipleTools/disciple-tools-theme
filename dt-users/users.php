@@ -37,6 +37,8 @@ class Disciple_Tools_Users
         add_filter( 'user_row_actions', [ $this, 'dt_edit_user_row_actions' ], 10, 2 );
         add_filter( 'manage_users_columns', [ $this, 'new_modify_user_table' ] );
         add_filter( 'manage_users_custom_column', [ $this, 'new_modify_user_table_row' ], 10, 3 );
+        add_action( 'delete_user', [ $this, 'user_deleted' ], 10, 1 );
+        add_action( 'remove_user_from_blog', [ $this, 'user_deleted' ], 10, 2 );
 
     }
 
@@ -237,7 +239,10 @@ class Disciple_Tools_Users
         if ( isset( $_POST['display_name'] ) && !empty( $_POST['display_name'] ) ) {
             $args['display_name'] = $args['nickname'];
         }
-        else {
+        //locale
+        if ( isset( $_POST['locale'] ) ) {
+            $args['locale'] = sanitize_text_field( wp_unslash( $_POST['locale'] ) );
+        } else {
             $args['locale'] = "en_US";
         }
 
@@ -464,7 +469,7 @@ class Disciple_Tools_Users
     public function custom_user_profile_fields( $user ){
         $contact_id = "";
         $contact_title = "";
-        if ( $user != "add-new-user" ) {
+        if ( $user != "add-new-user" && $user != "add-existing-user" && isset( $user->ID ) ) {
             $contact_id   = get_user_option( "corresponds_to_contact", $user->ID );
             if ( $contact_id ){
                 $contact = get_post( $contact_id );
@@ -607,5 +612,13 @@ class Disciple_Tools_Users
             default:
         }
         return $val;
+    }
+
+
+    public function user_deleted( $user_id, $blog_id = null ){
+        $corresponds_to_contact = self::get_contact_for_user( $user_id );
+        if ( $corresponds_to_contact ){
+            delete_post_meta( $corresponds_to_contact, "corresponds_to_user" );
+        }
     }
 }
