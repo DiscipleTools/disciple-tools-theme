@@ -70,11 +70,11 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
      * Save baptism generation number on all contact who have been baptized.
      */
     public static function save_all_contact_generations(){
-        $raw_baptism_generation_list = Disciple_Tools_Metrics_Hooks_Base::query_get_baptism_generations();
+        $raw_baptism_generation_list = Disciple_Tools_Metrics_Hooks_Base::query_get_all_baptism_connections();
         $all_baptisms = Disciple_Tools_Metrics_Hooks_Base::build_baptism_generation_counts( $raw_baptism_generation_list );
         foreach ( $all_baptisms as $baptism_generation ){
-            $generation = $baptism_generation[0];
-            $baptisms = $baptism_generation[2];
+            $generation = $baptism_generation["generation"];
+            $baptisms = $baptism_generation["ids"];
             foreach ( $baptisms as $contact ){
                 update_post_meta( $contact, 'baptism_generation', $generation );
             }
