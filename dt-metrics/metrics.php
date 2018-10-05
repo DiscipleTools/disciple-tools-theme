@@ -599,14 +599,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $counts;
     }
 
-    public static function query_get_groups_id_list( $start_date = 0, $end_date = null ) {
+    public static function query_get_groups_id_list( $start_date = 0, $end_date = PHP_INT_MAX ) {
         global $wpdb;
-        if ( empty( $end_date ) ){
-            $end_date = "9999-01-01";
-        }
-        if ( empty( $start_date )){
-            $start_date = 0;
-        }
 
         $results = $wpdb->get_col( $wpdb->prepare( "
             SELECT
@@ -623,8 +617,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                    AND d.meta_key = 'end_date'
             WHERE a.post_type = 'groups'
               AND a.post_status = 'publish'
-              AND ( status.meta_value = 'active' OR c.meta_value < %s )
-              AND ( status.meta_value = 'active' OR d.meta_value > %s ) 
+              AND ( status.meta_value = 'active' OR c.meta_value < %d )
+              AND ( status.meta_value = 'active' OR d.meta_value > %d ) 
         ", $end_date, $start_date ) );
 
         return $results;
@@ -680,14 +674,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $results;
     }
 
-    public static function query_get_baptisms_id_list( $year = null ) {
+    public static function query_get_baptisms_id_list( $start_date = 0, $end_date = PHP_INT_MAX ) {
         global $wpdb;
-
-        if ( empty( $year ) ) {
-            $year = date( 'Y' ); // default to this year
-        }
-
-        $next_year = $year + 1;
 
         $results = $wpdb->get_col( $wpdb->prepare( "
             SELECT
@@ -700,7 +688,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                    AND c.meta_value < %d
             WHERE a.post_type = 'contacts'
                   AND a.post_status = 'publish'
-        ", $year, $next_year ) );
+        ", $start_date, $end_date ) );
 
         return $results;
     }
@@ -900,7 +888,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             $year_start, $year_end, //new inquires
             $year_start_in_seconds, $year_end_in_seconds, //first meeting
             $year_end_in_seconds, $year_start_in_seconds, //ongoing
-            $year_start, $year_end //baptizers
+            $year_start_in_seconds, $year_end_in_seconds //baptizers
         ), ARRAY_A );
 
         if ( empty( $results ) ) {
@@ -913,7 +901,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         // build baptism generations
         $raw_baptism_generation_list = self::query_get_all_baptism_connections();
         $all_baptisms = self::build_baptism_generation_counts( $raw_baptism_generation_list );
-        $baptism_generations_this_year = self::build_baptism_generations_this_year( $all_baptisms, $year );
+        $baptism_generations_this_year = self::build_baptism_generations_this_year( $all_baptisms, $year_start_in_seconds, $year_end_in_seconds );
         $results[0]["total_baptisms"] = array_sum( $baptism_generations_this_year );
 
         //hide extra generations that are only 0;
@@ -927,7 +915,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         // build group generations
         $raw_connections = self::query_get_all_group_connections();
-        $groups_in_time_range = self::query_get_groups_id_list( $year_start, $year_end );
+        $groups_in_time_range = self::query_get_groups_id_list( $year_end_in_seconds, $year_end_in_seconds );
         $church_generation = self::build_group_generation_counts( $raw_connections, 0, 0, [], $groups_in_time_range );
         $results[0]["total_churches_and_groups"] = 0;
         $results[0]["active_groups"] = 0;
@@ -1013,25 +1001,20 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
      * Returns array with index of generation and count of baptisms as the value
      *
      * @param      $all_baptisms
-     * @param null $year
+     * @param null $start_date
+     * @param $end_date
      *
      * @return array
      */
-    public static function build_baptism_generations_this_year( $all_baptisms, $year = null ) {
+    public static function build_baptism_generations_this_year( $all_baptisms, $start_date = null, $end_date = null ) {
 
         $count = [];
         foreach ( $all_baptisms as $k => $v ) {
             $count[$k] = 0;
         }
 
-        if ( is_null( $year ) ) {
-            $year = date( 'Y' ); // default to this year
-            $year = (int) $year;
-        }
-
-
         // get master list of ids for baptisms this year
-        $list = self::query_get_baptisms_id_list( $year );
+        $list = self::query_get_baptisms_id_list( $start_date, $end_date );
 
         // redact counts according to baptisms this year
         foreach ( $list as $baptism ) {

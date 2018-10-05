@@ -221,6 +221,11 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     $fields[ $key ] = $value;
                 } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'array' ){
                     $fields[ $key ] = maybe_unserialize( $value[0] );
+                } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'date' ){
+                    $fields[ $key ] = [
+                        "timestamp" => $value[0],
+                        "formatted" => dt_format_date( $value[0] ),
+                    ];
                 } else {
                     $fields[ $key ] = $value[0];
                 }
@@ -498,6 +503,9 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             if ( !self::is_key_contact_method_or_connection( $field_id )){
                 $field_type = self::$group_fields[$field_id]["type"] ?? '';
                 //we handle multi_select above.
+                if ( $field_type === 'date' && !is_numeric( $value )){
+                    $value = strtotime( $value );
+                }
                 if ( $field_type && $field_type !== "multi_select" ){
                     update_post_meta( $group_id, $field_id, $value );
                 }
@@ -939,6 +947,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             if ( self::is_key_contact_method_or_connection( $field_key )){
                 $contact_methods_and_connections[$field_key] = $field_value;
                 unset( $fields[$field_key] );
+            }
+            $field_type = self::$group_fields[$field_key]["type"] ?? '';
+            if ( $field_type === 'date' && !is_numeric( $field_value )){
+                $fields[$field_value] = strtotime( $field_value );
             }
         }
 

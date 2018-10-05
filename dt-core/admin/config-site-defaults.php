@@ -748,3 +748,26 @@ function dt_get_url_path() {
     }
     return trim( str_replace( get_site_url(), "", $url ), '/' );
 }
+
+/**
+ * @param $date
+ * @param string $format  options are short, long, or [custom]
+ *
+ * @return bool|int|string
+ */
+
+function dt_format_date( $date, $format = 'short' ){
+    $date_format = get_option( 'date_format' );
+    $time_format = get_option( 'time_format' );
+    if ( $format === 'short' ){
+        $format = $date_format;
+    } else if ( $format === 'long') {
+        $format = $date_format . ' ' . $time_format;
+    }
+    if ( is_numeric( $date ) ){
+        $formatted = date_i18n( $format, $date );
+    } else {
+        $formatted = mysql2date( $format, $date );
+    }
+    return $formatted;
+}

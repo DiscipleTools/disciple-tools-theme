@@ -256,10 +256,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $contact_methods_and_connections[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
-            if ( isset( self::$contact_fields[$field_key] ) &&
-                 self::$contact_fields[$field_key]["type"] === "multi_select" ){
+            $field_type = self::$contact_fields[$field_key]["type"] ?? '';
+            if ( $field_type === "multi_select" ){
                 $multi_select_fields[$field_key] = $field_value;
                 unset( $fields[$field_key] );
+            }
+            if ( $field_type === 'date' && !is_numeric( $field_value )){
+                $fields[$field_value] = strtotime( $field_value );
             }
         }
 
@@ -660,6 +663,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
                 $field_type = self::$contact_fields[$field_id]["type"] ?? '';
                 //we handle multi_select above.
+                if ( $field_type === 'date' && !is_numeric( $value )){
+                    $value = strtotime( $value );
+                }
+
                 if ( $field_type && $field_type !== "multi_select" ){
                     update_post_meta( $contact_id, $field_id, $value );
                 }
@@ -1285,6 +1292,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $fields[ $key ] = $value;
                 } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'array' ){
                     $fields[ $key ] = maybe_unserialize( $value[0] );
+                } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'date' ){
+                    $fields[ $key ] = [
+                        "timestamp" => $value[0],
+                        "formatted" => dt_format_date( $value[0] ),
+                    ];
                 } else {
                     $fields[ $key ] = $value[0];
                 }

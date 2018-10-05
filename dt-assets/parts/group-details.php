@@ -130,7 +130,7 @@
             <div class="section-subheader"><?php esc_html_e( 'Start Date', 'disciple_tools' )?></div>
             <ul class="start_date details-list"><?php
             if ( isset( $group["start_date"] ) ) {
-                echo esc_html( $group["start_date"] );
+                echo esc_html( $group["start_date"]["formatted"] );
             } else {
                 esc_html_e( "No start date", 'disciple_tools' );
             } ?>
@@ -138,7 +138,7 @@
             <div class="section-subheader"><?php esc_html_e( 'End Date', 'disciple_tools' )?></div>
             <ul class="end_date details-list"><?php
             if ( isset( $group["end_date"] ) ) {
-                echo esc_html( $group["end_date"] );
+                echo esc_html( $group["end_date"]["formatted"] );
             } else {
                 esc_html_e( "No end date", 'disciple_tools' );
             } ?>

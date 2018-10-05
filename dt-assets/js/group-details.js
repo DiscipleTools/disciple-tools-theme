@@ -14,6 +14,7 @@ jQuery(document).ready(function($) {
    */
   let endDatePicker = $('.end_date #end-date-picker')
   endDatePicker.datepicker({
+    dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
       editFieldsUpdate.end_date = date
     },
@@ -26,6 +27,7 @@ jQuery(document).ready(function($) {
    */
   let startDatePicker = $('.start_date #start-date-picker')
   startDatePicker.datepicker({
+    dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
       editFieldsUpdate.start_date = date
     },
@@ -488,10 +490,10 @@ jQuery(document).ready(function($) {
    */
 
   if (group.end_date){
-    endDatePicker.datepicker('setDate', group.end_date)
+    endDatePicker.datepicker('setDate', moment.unix(group.end_date).format("YYYY-MM-DD"))
   }
   if (group.start_date){
-    startDatePicker.datepicker('setDate', group.start_date)
+    startDatePicker.datepicker('setDate', moment.unix(group.start_date).format("YYYY-MM-DD"))
   }
   if (group.assigned_to){
     $('.current-assigned').text(_.get(group, "assigned_to.display"))
@@ -621,7 +623,7 @@ jQuery(document).ready(function($) {
     let dates = ["start_date", "end_date"]
     dates.forEach(dateField=>{
       if ( group[dateField] ){
-        $(`.${dateField}.details-list`).html(group[dateField])
+        $(`.${dateField}.details-list`).html(group[dateField]["formatted"])
       } else {
         $(`.${dateField}.details-list`).html(wpApiGroupsSettings.translations["not-set"][dateField])
       }
