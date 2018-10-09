@@ -12,6 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  */
 class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
 
+    private static $generations;
+
     /**
      * Constructor function.
      *
@@ -23,95 +25,186 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
     } // End __construct()
 
 
-
     /**
      * Returns count of contacts for different statuses
      * Primary 'countable'
      *
      * @param string $status
-     * @param int    $year
+     * @param int $start
+     * @param int $end
      *
-     * @return int
+     * @return int|array
      */
-    public static function get_groups_count( string $status = '', int $year = null ) {
+    public static function get_groups_count( string $status, int $start, int $end ) {
 
         $status = strtolower( $status );
 
-        if ( empty( $year ) ) {
-            $year = date( 'Y' ); // default to this year
-        }
-
         switch ( $status ) {
 
-            case 'active_churches':
-                $query = new WP_Query(
-                    [
-                        'post_type'  => 'groups',
-                        'date_query' =>
-                            [
-                                'year' => $year,
-                            ],
-                        'meta_query' => [
-                            [
-                                'key' => 'group_status',
-                                'value' => 'active',
-                                'compare' => '=',
-                            ],
-                            [
-                                'key' => 'group_type',
-                                'value' => 'church',
-                                'compare' => '=',
-                            ]
-                        ],
-                    ]
-                );
+            case 'generations':
+                return self::get_group_generations( $start, $end );
+                break;
+            case 'church_generations':
+                $generations = self::get_group_generations( $start, $end );
+                $church_generations = [];
+                foreach ( $generations as $gen_key => $gen_val ){
+                    $church_generations[$gen_key] = $gen_val["church"];
+                }
+                return $church_generations;
+                break;
+            case 'churches_and_groups':
+                $generations = self::get_group_generations( $start, $end );
+                $total = 0;
+                foreach ( $generations as $gen ){
+                    $total += $gen["group"] + $gen["church"];
+                }
+                return $total;
+                break;
 
-                return $query->found_posts;
+            case 'active_churches':
+                $generations = self::get_group_generations( $start, $end );
+                $total = 0;
+                foreach ( $generations as $gen ){
+                    $total += $gen["church"];
+                }
+                return $total;
                 break;
 
             case 'active_groups':
-                $query = new WP_Query(
-                    [
-                        'post_type'  => 'groups',
-                        'date_query' =>
-                            [
-                                'year' => $year,
-                            ],
-                        'meta_query' => [
-                            [
-                                'key' => 'group_status',
-                                'value' => 'active',
-                                'compare' => '=',
-                            ],
-                            [
-                                'key' => 'group_type',
-                                'value' => 'group',
-                                'compare' => '=',
-                            ]
-                        ],
-                    ]
-                );
-
-                return $query->found_posts;
-                break;
-
-            case 'uncountable':
-                $count = wp_count_posts( 'groups' );
-                $other = $count->draft;
-                $other = $other + $count->pending;
-                $other = $other + $count->private;
-                $other = $other + $count->trash;
-
-                return (int) $other;
+                $generations = self::get_group_generations( $start, $end );
+                $total = 0;
+                foreach ( $generations as $gen ){
+                    $total += $gen["group"];
+                }
+                return $total;
                 break;
 
             default: // countable contacts
-                $count = wp_count_posts( 'groups' );
-                $count = $count->publish;
-
-                return $count;
-                break;
+                return 0;
         }
     }
+
+
+    public static function get_group_generations( $start, $end ){
+        if ( !isset( self::$generations[$start.$end] ) ){
+            $raw_connections = self::query_get_all_group_connections();
+            $groups_in_time_range = self::query_get_groups_id_list( $start, $end );
+            $church_generation = self::build_group_generation_counts( $raw_connections, 0, 0, [], $groups_in_time_range );
+            $generations = [];
+            foreach ( $church_generation as $k => $v ){
+                $generations[] = $v;
+            }
+            $church_generation = $generations;
+            self::$generations[$start.$end] = $church_generation;
+            return $church_generation;
+        } else {
+            return self::$generations[$start.$end];
+        }
+    }
+
+
+    public static function query_get_all_group_connections() {
+        global $wpdb;
+        //get all group connections with parent_id, group_id, group_type, group_status
+        //first get groups with no parent as parent_id 0
+        $results = $wpdb->get_results( "
+            SELECT
+              a.ID         as id,
+              0            as parent_id,
+              d.meta_value as group_type,
+              c.meta_value as group_status
+            FROM $wpdb->posts as a
+              JOIN $wpdb->postmeta as c
+                ON a.ID = c.post_id
+                   AND c.meta_key = 'group_status'
+              LEFT JOIN $wpdb->postmeta as d
+                ON a.ID = d.post_id
+                   AND d.meta_key = 'group_type'
+            WHERE a.post_status = 'publish'
+                  AND a.post_type = 'groups'
+                  AND a.ID NOT IN (
+                      SELECT DISTINCT (p2p_from)
+                      FROM $wpdb->p2p
+                      WHERE p2p_type = 'groups_to_groups'
+                      GROUP BY p2p_from
+                  )
+            UNION
+            SELECT
+              p.p2p_from                          as id,
+              p.p2p_to                            as parent_id,
+              (SELECT meta_value
+               FROM $wpdb->postmeta
+               WHERE post_id = p.p2p_from
+                     AND meta_key = 'group_type') as group_type,
+               (SELECT meta_value
+               FROM $wpdb->postmeta
+               WHERE post_id = p.p2p_from
+                     AND meta_key = 'group_status') as group_status
+            FROM $wpdb->p2p as p
+            WHERE p.p2p_type = 'groups_to_groups'
+        ", ARRAY_A );
+
+        return $results;
+    }
+
+    public static function query_get_groups_id_list( $start_date = 0, $end_date = PHP_INT_MAX ) {
+        global $wpdb;
+
+        $results = $wpdb->get_col( $wpdb->prepare( "
+            SELECT
+              a.ID
+            FROM $wpdb->posts as a
+              JOIN $wpdb->postmeta as status
+                ON a.ID = status.post_id
+                   AND status.meta_key = 'group_status'
+              LEFT JOIN $wpdb->postmeta as c
+                ON a.ID = c.post_id
+                   AND c.meta_key = 'start_date'
+              LEFT JOIN $wpdb->postmeta as d
+                ON a.ID = d.post_id
+                   AND d.meta_key = 'end_date'
+            WHERE a.post_type = 'groups'
+              AND a.post_status = 'publish'
+              AND ( status.meta_value = 'active' AND c.meta_value < %d )
+              AND ( status.meta_value = 'active' OR d.meta_value > %d ) 
+        ", $end_date, $start_date ) );
+
+        return $results;
+    }
+
+    public static function build_group_generation_counts( array $elements, $parent_id = 0, $generation = 0, $counts = [], $ids_to_include = [] ) {
+
+        $generation++;
+        if ( !isset( $counts[$generation] ) ){
+            $counts[$generation] = [
+                "generation" => (string) $generation,
+                "pre-group" => 0,
+                "group" => 0,
+                "church" => 0,
+                "total" => 0
+            ];
+        }
+        foreach ($elements as $element) {
+
+            if ($element['parent_id'] == $parent_id) {
+                if ( in_array( $element['id'], $ids_to_include ) ) {
+                    if ( $element["group_status"] === "active" ) {
+                        if ( $element["group_type"] === "pre-group" ) {
+                            $counts[ $generation ]["pre-group"] ++;
+                        } elseif ( $element["group_type"] === "group" ) {
+                            $counts[ $generation ]["group"] ++;
+                        } elseif ( $element["group_type"] === "church" ) {
+                            $counts[ $generation ]["church"] ++;
+                        }
+                        $counts[ $generation ]["total"] ++;
+                    }
+                }
+                $counts = self::build_group_generation_counts( $elements, $element['id'], $generation, $counts );
+            }
+        }
+
+        return $counts;
+    }
+
 
 }

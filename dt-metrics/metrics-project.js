@@ -9,18 +9,6 @@ jQuery(document).ready(function() {
     if( '#project_critical_path' === window.location.hash  ) {
         project_critical_path()
     }
-    if( '#project_outreach' === window.location.hash  ) {
-        project_outreach()
-    }
-    if( '#project_follow_up' === window.location.hash  ) {
-        project_follow_up()
-    }
-    if( '#project_training' === window.location.hash  ) {
-        project_training()
-    }
-    if( '#project_multiplication' === window.location.hash  ) {
-        project_multiplication()
-    }
 
 })
 
@@ -36,7 +24,7 @@ function project_overview() {
     chartDiv.empty().html(`
         <span class="section-header">`+ label.title_overview +`</span>
         <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
-        <div class="medium reveal" class="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
+        <div class="medium reveal" id="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button></div>
         <br><br>
@@ -188,7 +176,13 @@ function project_overview() {
 
     function drawGroupGenerations() {
 
-        let data = google.visualization.arrayToDataTable( sourceData.group_generations );
+        let formattedData = [[ "Generations", "Pre-Group", "Group", "Church", {role: 'annotation'} ]]
+      console.log(sourceData.group_generations);
+      sourceData.group_generations.forEach( row=>{
+          formattedData.push( [row["generation"], row["pre-group"], row["group"], row["church"], row["total"]] )
+        })
+
+        let data = google.visualization.arrayToDataTable( formattedData );
 
         let options = {
             bars: 'horizontal',
@@ -525,7 +519,7 @@ function project_timeline() {
 
     /*chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span>
             <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
-            <span class="spinner" style="display: none;"><img src="`+dtMetricsProject.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
+            <span class="spinner" style="display: none;"><img src="`+dtMetricsProject.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span>
             </div>`)*/
 }
 
@@ -539,46 +533,33 @@ function project_critical_path() {
     let height = $(window).height()
     let chartHeight = height - ( height * .15 )
 
-    console.log( sourceData )
-
     chartDiv.empty().html(`
-        <span class="section-header">`+ label.title_critical_path +`</span>
-        <span style="float:right;">
+        <span class="section-header">${label.title_critical_path}</span>
+        <div style="width:fit-content">
+        ${label.label_select_year} 
         <select id="year_select" onchange="change_critical_path_year($(this).val())">
-            `+year_list()+`
+            ${year_list()}
         </select>
-        </span>
+        </div>
         
         <br clear="all">
         <div class="grid-x grid-padding-x">
             <div class="cell">
                 <div id="dashboard_div">
-                    <div id="my_critical_path" style="height: `+chartHeight+`px;"></div>
+                    <div id="my_critical_path" style="min-height: 700px; height: ${chartHeight}px;"></div>
                     <hr>
                     <div id="filter_div"></div>
                 </div>
             </div>
         </div>
-        `)
+    `)
 
-    let hero = sourceData.hero_stats
-    jQuery('#total_contacts').html( numberWithCommas( hero.total_contacts ) )
-    jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
-    jQuery('#attempts_needed').html( numberWithCommas( hero.attempts_needed ) )
-
-    jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'bar', 'controls']});
-
     google.charts.setOnLoadCallback(drawCriticalPath);
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
-
-    /*chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span>
-            <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
-            <span class="spinner" style="display: none;"><img src="`+dtMetricsProject.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
-            </div>`)*/
 }
 
 function drawCriticalPath( cp_data ) {
@@ -593,8 +574,12 @@ function drawCriticalPath( cp_data ) {
     } else {
         path_data = sourceData.critical_path
     }
+    let formattedData = [ [ 'Step', 'Contacts', {role: 'annotation'} ]]
+    path_data.forEach(row=>{
+      formattedData.push( [row.label, parseInt(row.value), row.value] );
 
-    let data = google.visualization.arrayToDataTable( path_data );
+    })
+    let data = google.visualization.arrayToDataTable( formattedData );
     let dashboard = new google.visualization.Dashboard(
         document.getElementById('dashboard_div')
     );
@@ -609,7 +594,7 @@ function drawCriticalPath( cp_data ) {
                 top: '7%',
                 width: "75%",
                 height: "85%" },
-            hAxis: { scaleType: 'mirrorLog' },
+            hAxis: { scaleType: 'mirrorLog', viewWindow: {min:.5} },
             title: label.title_critical_path,
             legend: { position: "none"},
             animation:{
@@ -649,9 +634,10 @@ function year_list() {
     let i = 0
     let fullDate = new Date()
     let date = fullDate.getFullYear()
-    let options = ''
+    let currentYear = fullDate.getFullYear()
+    let options = `<option value="all">${dtMetricsProject.data.translations.label_all_time}</option>`
     while (i < 15) {
-        options += `<option value="`+date+`">`+date+`</option>`;
+        options += `<option value="${date}" ${ date === currentYear && 'selected'}>${date}</option>`;
         i++;
         date--;
     }
@@ -681,249 +667,6 @@ function change_critical_path_year( year ) {
         })
 }
 
-function project_outreach() {
-    "use strict";
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
-    let chartDiv = jQuery('#chart')
-    let sourceData = dtMetricsProject.data
-    let label = dtMetricsProject.data.translations
-
-    console.log( sourceData )
-
-    chartDiv.empty().html(`
-        <span class="section-header">`+ sourceData.translations.title_outreach +`</span>
-        <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
-        <div class="medium reveal" id="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button></div>
-        <br><br>
-        <div class="grid-x grid-padding-x grid-padding-y">
-            <div class="cell center callout">
-                These are outreach activities that are collecting contacts. Media lead generation. Other lead generation.
-            </div>
-            <div class="cell">
-            </div>
-            
-        </div>
-        `)
-
-    let hero = sourceData.hero_stats
-    jQuery('#total_contacts').html( numberWithCommas( hero.total_contacts ) )
-    jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
-    jQuery('#attempts_needed').html( numberWithCommas( hero.attempts_needed ) )
-
-    jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
-
-    // build charts
-    google.charts.load('current', {'packages':['corechart', 'bar']});
-
-
-
-    new Foundation.Reveal(jQuery('.dt-project-legend'));
-
-    chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span> 
-            <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
-            <span class="spinner" style="display: none;"><img src="`+dtMetricsProject.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
-            </div>`)
-}
-
-function project_follow_up() {
-    "use strict";
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
-    let chartDiv = jQuery('#chart')
-    let sourceData = dtMetricsProject.data
-    let label = dtMetricsProject.data.translations
-
-    console.log( sourceData )
-
-    chartDiv.empty().html(`
-        <span class="section-header">`+ sourceData.translations.title_follow_up +`</span>
-        <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
-        <div class="medium reveal" id="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button></div>
-        <br><br>
-        <div class="grid-x grid-padding-x grid-padding-y">
-            <div class="cell center callout">
-                These are follow-up activities statistics.
-            </div>
-            <div class="cell">
-            Recently Accepted
-            Waiting to be Accepted
-            
-            </div>
-            
-        </div>
-        `)
-
-    let hero = sourceData.hero_stats
-    jQuery('#total_contacts').html( numberWithCommas( hero.total_contacts ) )
-    jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
-    jQuery('#attempts_needed').html( numberWithCommas( hero.attempts_needed ) )
-
-    jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
-
-    // build charts
-    google.charts.load('current', {'packages':['corechart', 'bar']});
-
-    google.charts.setOnLoadCallback(drawCriticalPath);
-
-    function drawCriticalPath() {
-
-        let data = google.visualization.arrayToDataTable( sourceData.critical_path );
-
-        let options = {
-            bars: 'horizontal',
-            chartArea: {
-                left: '20%',
-                top: '7%',
-                width: "75%",
-                height: "85%" },
-            title: "Critical Path",
-            legend: {position: "none"},
-        };
-
-        let chart = new google.visualization.BarChart(document.getElementById('my_critical_path'));
-        chart.draw(data, options);
-    }
-
-    new Foundation.Reveal(jQuery('.dt-project-legend'));
-
-    chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span> 
-            <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
-            <span class="spinner" style="display: none;"><img src="`+dtMetricsProject.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
-            </div>`)
-}
-
-function project_training() {
-    "use strict";
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
-    let chartDiv = jQuery('#chart')
-    let sourceData = dtMetricsProject.data
-    let label = dtMetricsProject.data.translations
-
-    console.log( sourceData )
-
-    chartDiv.empty().html(`
-        <span class="section-header">`+ sourceData.translations.title_training +`</span>
-        <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
-        <div class="medium reveal" id="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button></div>
-        <br><br>
-        <div class="grid-x grid-padding-x grid-padding-y">
-            <div class="cell center callout">
-                This is coaching, group training, and group health.
-            </div>
-            <div class="cell">
-            </div>
-            
-        </div>
-        `)
-
-    let hero = sourceData.hero_stats
-    jQuery('#total_contacts').html( numberWithCommas( hero.total_contacts ) )
-    jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
-    jQuery('#attempts_needed').html( numberWithCommas( hero.attempts_needed ) )
-
-    jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
-
-    // build charts
-    google.charts.load('current', {'packages':['corechart', 'bar']});
-
-    google.charts.setOnLoadCallback(drawCriticalPath);
-
-    function drawCriticalPath() {
-
-        let data = google.visualization.arrayToDataTable( sourceData.critical_path );
-
-        let options = {
-            bars: 'horizontal',
-            chartArea: {
-                left: '20%',
-                top: '7%',
-                width: "75%",
-                height: "85%" },
-            title: "Critical Path",
-            legend: {position: "none"},
-        };
-
-        let chart = new google.visualization.BarChart(document.getElementById('my_critical_path'));
-        chart.draw(data, options);
-    }
-
-    new Foundation.Reveal(jQuery('.dt-project-legend'));
-
-    chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span> 
-            <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
-            <span class="spinner" style="display: none;"><img src="`+dtMetricsProject.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
-            </div>`)
-}
-
-function project_multiplication() {
-    "use strict";
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
-    let chartDiv = jQuery('#chart')
-    let sourceData = dtMetricsProject.data
-    let label = dtMetricsProject.data.translations
-
-    console.log( sourceData )
-
-    chartDiv.empty().html(`
-        <span class="section-header">`+ sourceData.translations.title_multiplication +`</span>
-        <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
-        <div class="medium reveal" id="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button></div>
-        <br><br>
-        <div class="grid-x grid-padding-x grid-padding-y">
-            <div class="cell center callout">
-                This includes multiplication statistics.
-            </div>
-            <div class="cell">
-            </div>
-            
-        </div>
-        `)
-
-    let hero = sourceData.hero_stats
-    jQuery('#total_contacts').html( numberWithCommas( hero.total_contacts ) )
-    jQuery('#updates_needed').html( numberWithCommas( hero.updates_needed ) )
-    jQuery('#attempts_needed').html( numberWithCommas( hero.attempts_needed ) )
-
-    jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
-
-    // build charts
-    google.charts.load('current', {'packages':['corechart', 'bar']});
-
-    google.charts.setOnLoadCallback(drawCriticalPath);
-
-    function drawCriticalPath() {
-
-        let data = google.visualization.arrayToDataTable( sourceData.critical_path );
-
-        let options = {
-            bars: 'horizontal',
-            chartArea: {
-                left: '20%',
-                top: '7%',
-                width: "75%",
-                height: "85%" },
-            title: "Critical Path",
-            legend: {position: "none"},
-        };
-
-        let chart = new google.visualization.BarChart(document.getElementById('my_critical_path'));
-        chart.draw(data, options);
-    }
-
-    new Foundation.Reveal(jQuery('.dt-project-legend'));
-
-    chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span> 
-            <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
-            <span class="spinner" style="display: none;"><img src="`+dtMetricsProject.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
-            </div>`)
-}
 
 function legend() {
     return `<h2>Chart Legend</h2><hr>

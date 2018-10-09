@@ -30,182 +30,117 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
      * Primary 'countable'
      *
      * @param string $status
-     * @param int    $year
+     * @param int $start
+     * @param null $end
      *
      * @return int
      */
-    public static function get_contacts_count( string $status = '', int $year = null ) {
-
+    public static function get_contacts_count( string $status = '', $start = 0, $end = null ) {
+        global $wpdb;
         $status = strtolower( $status );
-
-        if ( empty( $year ) ) {
-            $year = date( 'Y' ); // default to this year
+        if ( !$end || $end === PHP_INT_MAX ) {
+            $end = strtotime( "2100-01-01" );
         }
 
         switch ( $status ) {
 
             case 'new_contacts':
-                $query = new WP_Query(
-                    [
-                        'post_type'  => 'contacts',
-                        'date_query' => [ 'year' => $year ],
-                    ]
-                );
-
-                return $query->found_posts;
+                $res = $wpdb->get_var( $wpdb->prepare( "
+                SELECT count(ID) as count
+                FROM $wpdb->posts
+                WHERE post_type = 'contacts'
+                  AND post_status = 'publish'
+                  AND post_date >= %s
+                  AND post_date < %s
+                  AND ID NOT IN (
+                    SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND  meta_value = 'user'
+                    GROUP BY post_id
+                )", dt_format_date( $start, 'Y-m-d' ), dt_format_date( $end, 'Y-m-d' ) ));
+                return $res;
                 break;
 
             case 'contacts_attempted':
-                $query = new WP_Query(
-                    [
-                        'post_type'  => 'contacts',
-                        'date_query' =>
-                            [
-                                'year' => $year,
-                            ],
-                        'meta_query' => [
-                            'relation' => 'OR',
-                            [
-                                'key' => 'seeker_path',
-                                'value' => 'attempted',
-                                'compare' => '=',
-                            ],
-                            [
-                                'key' => 'seeker_path',
-                                'value' => 'scheduled',
-                                'compare' => '=',
-                            ],
-                            [
-                                'key' => 'seeker_path',
-                                'value' => 'met',
-                                'compare' => '=',
-                            ],
-                            [
-                                'key' => 'seeker_path',
-                                'value' => 'ongoing',
-                                'compare' => '=',
-                            ],
-                            [
-                                'key' => 'seeker_path',
-                                'value' => 'coaching',
-                                'compare' => '=',
-                            ],
-                        ],
-                    ]
-                );
 
-                return $query->found_posts;
+                return 0;
                 break;
 
             case 'contacts_established':
-                $query = new WP_Query(
-                    [
-                        'post_type'  => 'contacts',
-                        'date_query' =>
-                            [
-                                'year' => $year,
-                            ],
-                        'meta_query' => [
-                            'relation' => 'OR',
-                            [
-                                'key' => 'seeker_path',
-                                'value' => 'scheduled',
-                                'compare' => '=',
-                            ],
-                            [
-                                'key' => 'seeker_path',
-                                'value' => 'met',
-                                'compare' => '=',
-                            ],
-                            [
-                                'key' => 'seeker_path',
-                                'value' => 'ongoing',
-                                'compare' => '=',
-                            ],
-                            [
-                                'key' => 'seeker_path',
-                                'value' => 'coaching',
-                                'compare' => '=',
-                            ],
-                        ],
-                    ]
-                );
 
-                return $query->found_posts;
+                return 0;
                 break;
 
             case 'first_meetings':
-                $query = new WP_Query(
-                    [
-                        'post_type'  => 'contacts',
-                        'date_query' =>
-                            [
-                                'year' => $year,
-                            ],
-                        'meta_query' => [
-                            'relation' => 'OR',
-                            [
-                                'key' => 'seeker_path',
-                                'value' => 'met',
-                                'compare' => '=',
-                            ],
-                            [
-                                'key' => 'seeker_path',
-                                'value' => 'ongoing',
-                                'compare' => '=',
-                            ],
-                            [
-                                'key' => 'seeker_path',
-                                'value' => 'coaching',
-                                'compare' => '=',
-                            ],
-                        ],
-                    ]
-                );
-
-                return $query->found_posts;
+                $res = $wpdb->get_var( $wpdb->prepare( "
+                SELECT count(DISTINCT(a.ID)) as count
+                FROM $wpdb->posts as a
+                JOIN ( 
+                    SELECT object_id, MIN( c.hist_time ) min_time 
+                        FROM $wpdb->dt_activity_log c
+                        WHERE c.object_type = 'contacts'
+                        AND c.meta_key = 'seeker_path'
+                        AND ( c.meta_value = 'met' OR c.meta_value = 'ongoing' OR c.meta_value = 'coaching' )
+                        GROUP BY c.object_id  
+                ) b 
+                ON a.ID = b.object_id
+                WHERE a.post_status = 'publish'
+                  AND b.min_time  BETWEEN %s and %s 
+                  AND a.post_type = 'contacts'
+                  AND a.ID NOT IN (
+                    SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND  meta_value = 'user'
+                    GROUP BY post_id
+                  )", $start, $end ));
+                return $res;
                 break;
+
+            case 'ongoing_meetings':
+                $res = $wpdb->get_var( $wpdb->prepare( "
+                SELECT
+                count(DISTINCT(a.ID))  as count
+                FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as b
+                ON a.ID = b.post_id
+                   AND b.meta_key = 'seeker_path'
+                   AND ( b.meta_value = 'ongoing' OR b.meta_value = 'coaching' )
+                JOIN $wpdb->dt_activity_log time 
+                ON
+                    time.object_id = a.ID
+                    AND time.object_type = 'contacts'
+                    AND time.meta_key = 'seeker_path'
+                    AND ( time.meta_value = 'ongoing' OR time.meta_value = 'coaching' )
+                    AND time.hist_time < %s  
+                LEFT JOIN $wpdb->postmeta as d
+                   ON a.ID=d.post_id
+                   AND d.meta_key = 'overall_status'
+                LEFT JOIN ( 
+                    SELECT object_id, MAX( c.hist_time ) max_time 
+                        FROM $wpdb->dt_activity_log c
+                        WHERE c.object_type = 'contacts'
+                        AND c.meta_key = 'overall_status'
+                        AND c.old_value = 'active'
+                        GROUP BY c.object_id  
+                ) close
+                ON close.object_id = a.ID
+                WHERE a.post_status = 'publish'
+                  AND a.post_type = 'contacts'
+                  AND ( d.meta_value = 'active' OR close.max_time > %s ) 
+                  AND a.ID NOT IN (
+                    SELECT post_id
+                    FROM $wpdb->postmeta
+                    WHERE meta_key = 'type' AND  meta_value = 'user'
+                    GROUP BY post_id
+                )", $end, $start ));
+                return $res;
 
             case 'church_planters':
-                /**
-                 * Definition: A church planter is a contact whom is coaching another contact and that 'coached' contact is in an active church.
-                 */
-                global $wpdb;
-                $result = $wpdb->get_var( "
-                    SELECT COUNT( DISTINCT p2p_to ) AS church_planters
-                    FROM $wpdb->p2p
-                    WHERE p2p_type = 'contacts_to_contacts'
-                          AND p2p_from IN (
-                                SELECT p2p_from as coached
-                                FROM $wpdb->p2p
-                                WHERE p2p_type = 'contacts_to_groups'
-                                    AND p2p_to IN (
-                                        SELECT post_id AS church 
-                                        FROM $wpdb->postmeta 
-                                        WHERE meta_key = 'group_status' 
-                                            AND meta_value = 'active_church'
-                                    )
-                                GROUP BY p2p_from
-                          )
-                    " );
-                return $result;
+//                @todo implement church planter field on group/church
+                return 0;
                 break;
-
-            case 'uncountable':
-                $count = wp_count_posts( 'contacts' );
-                $other = $count->draft;
-                $other = $other + $count->pending;
-                $other = $other + $count->private;
-                $other = $other + $count->trash;
-
-                return (int) $other;
-                break;
-
-            default: // countable contacts
-                $count = wp_count_posts( 'contacts' );
-                $count = $count->publish;
-
-                return $count;
+            default:
+                return 0;
                 break;
         }
     }

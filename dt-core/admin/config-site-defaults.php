@@ -771,3 +771,17 @@ function dt_format_date( $date, $format = 'short' ){
     }
     return $formatted;
 }
+
+function dt_date_start_of_year(){
+    $this_year = date( 'Y' );
+    $timestamp = strtotime( $this_year . '-01-01' );
+    return $timestamp;
+}
+function dt_date_end_of_year(){
+    $this_year = (int) date( 'Y' );
+    return strtotime( ( $this_year + 1 ) . '-01-01' );
+}
+
+function dt_get_year_from_timestamp( int $time ){
+    return date( "Y", $time );
+}

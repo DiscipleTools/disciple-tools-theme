@@ -44,9 +44,13 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function scripts() {
+        wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
+        wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_enqueue_script( 'dt_metrics_project_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-project.js', [
             'jquery',
             'jquery-ui-core',
+            'amcharts-core',
+            'amcharts-charts',
         ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-project.js' ), true );
 
         wp_localize_script(
@@ -95,9 +99,11 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'label_groups_by_type' => strtolower( __( 'groups by type' ) ),
                 'label_streams' => strtolower( __( 'streams' ) ),
                 'label_stats_as_of' => strtolower( __( 'stats as of' ) ),
+                'label_select_year' => __( 'Select All time or a specific year to display' ),
+                'label_all_time' => __( 'All time' ),
             ],
             'hero_stats' => self::chart_project_hero_stats(),
-            'critical_path' => self::chart_critical_path(),
+            'critical_path' => self::chart_critical_path( dt_date_start_of_year(), dt_date_end_of_year() ),
             'contacts_progress' => self::chart_contacts_progress( 'project' ),
             'group_types' => self::chart_group_types( 'project' ),
             'group_health' => self::chart_group_health( 'project' ),
