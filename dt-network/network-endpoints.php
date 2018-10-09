@@ -152,7 +152,6 @@ class Disciple_Tools_Network_Endpoints
             dt_write_log( $valid_token );
             return new WP_Error( __METHOD__, 'Invalid transfer token' );
         }
-
         // required permission challenge (that this token comes from an approved network report site link)
         if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
             return new WP_Error( __METHOD__, 'Network report permission error.' );

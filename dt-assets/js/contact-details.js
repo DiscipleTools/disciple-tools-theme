@@ -1284,7 +1284,23 @@ jQuery(document).ready(function($) {
     // })
     $('#merge_with_contact_modal').foundation('open');
   })
-  
+
+    $('#transfer_confirm_button').on('click',function() {
+        let status_spinner = $('#transfer_spinner')
+        status_spinner.append('<img src="'+contactsDetailsWpApiSettings.spinner_url+'" width="20px" />')
+        let siteId = $('#transfer_contact').val()
+        if ( ! siteId ) {
+            return;
+        }
+        API.transfer_contact( contactId, siteId )
+            .then(data=>{
+                console.log(data);
+            }).catch(err=>{
+            console.log("error")
+            console.log(err)
+            jQuery("#errors").append(err.responseText)
+        })
+    });
 
   //leave at the end
   masonGrid.masonry({
