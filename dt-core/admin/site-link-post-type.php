@@ -130,7 +130,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          *
          * @return array
          */
-        public static function get_list_of_sites_by_type(array $type_name, $format = 'name_list' ) {
+        public static function get_list_of_sites_by_type( array $type_name, $format = 'name_list' ) {
             global $wpdb;
 
             if ( ! is_array( $type_name ) ) {
@@ -139,7 +139,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             }
 
             $type_string = array_map( 'sanitize_text_field', wp_unslash( $type_name ) );
-            $type_string = "'" . implode("','", $type_string ) . "'";
+            $type_string = "'" . implode( "','", $type_string ) . "'";
 
             switch ( $format ) {
 
@@ -150,7 +150,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                           JOIN $wpdb->postmeta 
                           ON $wpdb->posts.ID=$wpdb->postmeta.post_id 
                             AND meta_key = 'type' 
-                        WHERE meta_value IN ($type_string)", ARRAY_A );
+                        WHERE meta_value IN ($type_string)", ARRAY_A ); //@phpcs:ignore
 
                     return $results;
                     break;
@@ -162,7 +162,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                           JOIN $wpdb->postmeta 
                           ON $wpdb->posts.ID=$wpdb->postmeta.post_id 
                             AND meta_key = 'type' 
-                        WHERE meta_value IN ($type_string)" );
+                        WHERE meta_value IN ($type_string)" ); //@phpcs:ignore
 
                     return $results;
                     break;

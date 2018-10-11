@@ -50,7 +50,7 @@ class Disciple_Tools_Contacts_Transfer
      */
     public function share_panel( $post_type ) {
         if ( 'contacts' === $post_type && current_user_can( 'view_all_contacts' ) ) {
-            $list = Site_Link_System::get_list_of_sites_by_type( ['contact_sharing', 'contact_sending'] );
+            $list = Site_Link_System::get_list_of_sites_by_type( [ 'contact_sharing', 'contact_sending' ] );
             if ( empty( $list ) ) {
                 return;
             }
@@ -59,18 +59,18 @@ class Disciple_Tools_Contacts_Transfer
             <hr size="1px">
             <div class="grid-x">
                 <div class="cell">
-                    <h6><?php esc_html_e( 'Transfer this contact to:') ?></h6>
+                    <h6><?php esc_html_e( 'Transfer this contact to:' ) ?></h6>
                     <select name="transfer_contact" id="transfer_contact" onchange="jQuery('#transfer_button_div').show();">
                         <option value=""></option>
                         <?php
-                            foreach ( $list as $site ) {
-                                echo '<option value="'.esc_attr( $site['id'] ).'">'.esc_html( $site['name']).'</option>';
-                            }
+                        foreach ( $list as $site ) {
+                            echo '<option value="'.esc_attr( $site['id'] ).'">'.esc_html( $site['name'] ).'</option>';
+                        }
                         ?>
                     </select>
                 </div>
                 <div class="cell" id="transfer_button_div" style="display:none;">
-                    <button id="transfer_confirm_button" class="button" type="button"><?php esc_html_e( 'Confirm Transfer', 'disciple_tools') ?></button> <span id="transfer_spinner"></span>
+                    <button id="transfer_confirm_button" class="button" type="button"><?php esc_html_e( 'Confirm Transfer', 'disciple_tools' ) ?></button> <span id="transfer_spinner"></span>
                 </div>
             </div>
 
@@ -93,14 +93,14 @@ class Disciple_Tools_Contacts_Transfer
             'body' => [
                 'transfer_token' => $site['transfer_token'],
                 'contact_data' => [
-                    'post' => get_post( $contact_id, ARRAY_A),
+                    'post' => get_post( $contact_id, ARRAY_A ),
                     'postmeta' => get_post_meta( $contact_id ),
                     'dt_activity_log' => self::get_activity_log_for_id( $contact_id )
                 ],
             ]
         ];
-        dt_write_log(__METHOD__);
-        dt_write_log($args);
+        dt_write_log( __METHOD__ );
+        dt_write_log( $args );
         $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/contact/transfer', $args );
         if ( is_wp_error( $result ) ) {
             return new WP_Error( 'failed_remote_post', $result->get_error_message() );
