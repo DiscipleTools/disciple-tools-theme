@@ -32,17 +32,18 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
      * @param string $status
      * @param int $start
      * @param int $end
+     * @param array $args
      *
      * @return int|array
      */
-    public static function get_groups_count( string $status, int $start, int $end ) {
+    public static function get_groups_count( string $status, int $start, int $end, $args = [] ) {
 
         $status = strtolower( $status );
 
         switch ( $status ) {
 
             case 'generations':
-                return self::get_group_generations( $start, $end );
+                return self::get_group_generations( $start, $end, $args );
                 break;
             case 'church_generations':
                 $generations = self::get_group_generations( $start, $end );
@@ -90,10 +91,10 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
     }
 
 
-    public static function get_group_generations( $start, $end ){
+    public static function get_group_generations( $start, $end, $args = [] ){
         if ( !isset( self::$generations[$start.$end] ) ){
             $raw_connections = self::query_get_all_group_connections();
-            $groups_in_time_range = self::query_get_groups_id_list( $start, $end );
+            $groups_in_time_range = self::query_get_groups_id_list( $start, $end, $args );
             $church_generation = self::build_group_generation_counts( $raw_connections, 0, 0, [], $groups_in_time_range );
             $generations = [];
             foreach ( $church_generation as $k => $v ){
@@ -152,7 +153,7 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
         return $results;
     }
 
-    public static function query_get_groups_id_list( $start_date = 0, $end_date = PHP_INT_MAX ) {
+    public static function query_get_groups_id_list( $start_date = 0, $end_date = PHP_INT_MAX, $args = [] ) {
         global $wpdb;
 
         $results = $wpdb->get_col( $wpdb->prepare( "
@@ -162,6 +163,10 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
               JOIN $wpdb->postmeta as status
                 ON a.ID = status.post_id
                    AND status.meta_key = 'group_status'
+              JOIN $wpdb->postmeta as assigned_to
+                ON a.ID = assigned_to.post_id
+                AND assigned_to.meta_key = 'assigned_to'
+                AND assigned_to.meta_value LIKE %s 
               LEFT JOIN $wpdb->postmeta as c
                 ON a.ID = c.post_id
                    AND c.meta_key = 'start_date'
@@ -172,7 +177,7 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
               AND a.post_status = 'publish'
               AND ( status.meta_value = 'active' AND c.meta_value < %d )
               AND ( status.meta_value = 'active' OR d.meta_value > %d ) 
-        ", $end_date, $start_date ) );
+        ", isset( $args['assigned_to'] ) ? 'user-' . $args['assigned_to'] : '%%', $end_date, $start_date ) );
 
         return $results;
     }
@@ -201,10 +206,9 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
                         } elseif ( $element["group_type"] === "church" ) {
                             $counts[ $generation ]["church"] ++;
                         }
-                        $counts[ $generation ]["total"] ++;
                     }
                 }
-                $counts = self::build_group_generation_counts( $elements, $element['id'], $generation, $counts );
+                $counts = self::build_group_generation_counts( $elements, $element['id'], $generation, $counts, $ids_to_include );
             }
         }
 

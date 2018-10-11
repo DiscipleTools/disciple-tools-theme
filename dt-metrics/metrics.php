@@ -352,7 +352,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         switch ( $type ) {
             case 'personal':
-                $generation_tree  = Disciple_Tools_Counter::critical_path( 'all_group_generations', 0, PHP_INT_MAX );
+                $user_id = get_current_user_id();
+                $generation_tree  = Disciple_Tools_Counter::critical_path( 'all_group_generations', 0, PHP_INT_MAX, [ 'assigned_to' => $user_id ] );
                 break;
             case 'project':
                 $generation_tree  = Disciple_Tools_Counter::critical_path( 'all_group_generations', 0, PHP_INT_MAX );

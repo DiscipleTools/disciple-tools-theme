@@ -46,10 +46,11 @@ class Disciple_Tools_Counter
      * @param string $step_name
      * @param null $start , unix time stamp
      * @param null $end
+     * @param array $args
      *
      * @return int|array
      */
-    public static function critical_path( string $step_name = 'all', $start = null, $end = null ) {
+    public static function critical_path( string $step_name = 'all', $start = null, $end = null, $args = [] ) {
 
         if ( $start === null){
             $start = 0;
@@ -98,7 +99,7 @@ class Disciple_Tools_Counter
                 return Disciple_Tools_Counter_Groups::get_groups_count( 'church_generations', $start, $end );
                 break;
             case 'all_group_generations':
-                return Disciple_Tools_Counter_Groups::get_groups_count( 'generations', $start, $end );
+                return Disciple_Tools_Counter_Groups::get_groups_count( 'generations', $start, $end, $args );
                 break;
             case 'church_planters':
                 return Disciple_Tools_Counter_Groups::get_groups_count( 'church_planters', $start, $end );
@@ -189,6 +190,18 @@ class Disciple_Tools_Counter
                 break;
             default:
                 return 0;
+        }
+    }
+
+
+
+
+    public static function counts_at_date( string $stat_name, int $unix_time_stamp = null ){
+        $unix_time_stamp = $unix_time_stamp ?? time();
+
+        switch ( $stat_name ){
+            case 'total_contacts':
+
         }
     }
 
