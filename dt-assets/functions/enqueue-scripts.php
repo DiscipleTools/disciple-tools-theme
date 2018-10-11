@@ -237,6 +237,7 @@ function dt_site_scripts() {
                 wp_localize_script(
                     'group-details', 'wpApiGroupsSettings', array(
                         'group'             => $post,
+                        'groups_custom_fields_settings' => Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( false ),
                         'group_author_name' => isset( $post->post_author ) && (int) $post->post_author > 0 ? get_user_by( 'id', intval( $post->post_author ) )->display_name : "",
                         'root'              => esc_url_raw( rest_url() ),
                         'nonce'             => wp_create_nonce( 'wp_rest' ),

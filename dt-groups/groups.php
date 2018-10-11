@@ -933,11 +933,19 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 $fields["assigned_to"] = "user-" . $fields["assigned_to"];
             }
         }
+        $bad_fields = self::check_for_invalid_fields( $fields );
+        if ( !empty( $bad_fields ) ) {
+            return new WP_Error( __FUNCTION__, __( "One or more fields do not exist" ), [
+                'bad_fields' => $bad_fields,
+                'status' => 400
+            ] );
+        }
 
         $defaults = [
             "group_status" => "active",
             "group_type" => "pre-group",
             "assigned_to" => sprintf( "user-%d", get_current_user_id() ),
+            "start_date" => time()
         ];
 
         $fields = array_merge( $defaults, $fields );

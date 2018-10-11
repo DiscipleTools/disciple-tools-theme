@@ -45,6 +45,9 @@ declare(strict_types=1);
                         <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item" >
                             <div class="bordered-box">
                                 <span class="section-header"><?php esc_html_e( 'Members', 'disciple_tools' )?></span>
+                                <div class="section-subheader"><?php esc_html_e( "Member Count", 'disciple_tools' ) ?></div>
+                                <input id="member_count" class="text-input" type="text" value="<?php echo esc_html( $group["member_count"] ?? "" ) ?>">
+                                <div class="section-subheader"><?php esc_html_e( "Member List", 'disciple_tools' ) ?></div>
                                 <div class="members">
                                     <var id="members-result-container" class="result-container"></var>
                                     <div id="members_t" name="form-members" class="scrollable-typeahead">

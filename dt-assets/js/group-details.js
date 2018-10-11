@@ -1,4 +1,4 @@
-/* global jQuery:false, wpApiGroupsSettings:false */
+/* global jQuery:false, wpApiGroupsSettings:false, _:false */
 
 let typeaheadTotals = {}
 jQuery(document).ready(function($) {
@@ -8,31 +8,26 @@ jQuery(document).ready(function($) {
   let groupId = group.ID
   let editFieldsUpdate = {}
 
-
-  /**
-   * End Date picker
-   */
-  let endDatePicker = $('.end_date #end-date-picker')
-  endDatePicker.datepicker({
-    dateFormat: 'yy-mm-dd',
-    onSelect: function (date) {
-      editFieldsUpdate.end_date = date
-    },
-    changeMonth: true,
-    changeYear: true
+  let dateFields = []
+  _.forOwn(wpApiGroupsSettings.groups_custom_fields_settings, (field, key)=>{
+    if ( field.type === 'date'){
+      dateFields.push( key)
+    }
   })
-
   /**
-   * Start date picker
+   * Date pickers
    */
-  let startDatePicker = $('.start_date #start-date-picker')
-  startDatePicker.datepicker({
-    dateFormat: 'yy-mm-dd',
-    onSelect: function (date) {
-      editFieldsUpdate.start_date = date
-    },
-    changeMonth: true,
-    changeYear: true
+  dateFields.forEach(key=>{
+    let datePicker = $(`#${key}.date-picker`)
+    datePicker.datepicker({
+      dateFormat: 'yy-mm-dd',
+      onSelect: function (date) {
+        editFieldsUpdate[key] = date
+      },
+      changeMonth: true,
+      changeYear: true
+    })
+
   })
   /**
    * Assigned_to
@@ -57,7 +52,7 @@ jQuery(document).ready(function($) {
     hint: true,
     emptyTemplate: 'No users found "{{query}}"',
     callback: {
-      onClick: function(node, a, item, event){
+      onClick: function(node, a, item){
         editFieldsUpdate.assigned_to = item.ID
       },
       onResult: function (node, query, result, resultCount) {
@@ -106,7 +101,6 @@ jQuery(document).ready(function($) {
     API.save_field_api( "group", groupId, update)
   })
 
-  let locationsList = $('.locations-list')
   /**
    * Locations
    */
@@ -489,12 +483,13 @@ jQuery(document).ready(function($) {
    * Setup group fields
    */
 
-  if (group.end_date){
-    endDatePicker.datepicker('setDate', moment.unix(group.end_date).format("YYYY-MM-DD"))
-  }
-  if (group.start_date){
-    startDatePicker.datepicker('setDate', moment.unix(group.start_date).format("YYYY-MM-DD"))
-  }
+  //initialize date pickers
+  dateFields.forEach(key=>{
+    if ( group[key] ){
+      $(`#${key}.date-picker`).datepicker('setDate', moment.unix(group[key]).format("YYYY-MM-DD"))
+    }
+  })
+
   if (group.assigned_to){
     $('.current-assigned').text(_.get(group, "assigned_to.display"))
   }
@@ -620,8 +615,8 @@ jQuery(document).ready(function($) {
       assignedHtml.html(wpApiGroupsSettings.translations["not-set"]["assigned_to"])
     }
 
-    let dates = ["start_date", "end_date"]
-    dates.forEach(dateField=>{
+
+    dateFields.forEach(dateField=>{
       if ( group[dateField] ){
         $(`.${dateField}.details-list`).html(group[dateField]["formatted"])
       } else {
