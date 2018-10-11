@@ -101,7 +101,7 @@ class Disciple_Tools_Counter
                 return Disciple_Tools_Counter_Groups::get_groups_count( 'generations', $start, $end );
                 break;
             case 'church_planters':
-                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'church_planters', $start, $end );
+                return Disciple_Tools_Counter_Groups::get_groups_count( 'church_planters', $start, $end );
                 break;
             case 'people_groups':
 

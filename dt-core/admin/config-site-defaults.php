@@ -214,7 +214,9 @@ function dt_get_option( string $name ) {
                 }
             }
             return $status;
-
+        case 'group_type':
+            $site_options = dt_get_option( "dt_site_custom_lists" );
+            return $site_options["group_type"];
         default:
             return false;
             break;
@@ -401,7 +403,7 @@ function dt_get_site_options_defaults() {
 function dt_get_site_custom_lists( string $list_title = null ) {
     $fields = [];
 
-    $fields['version'] = 7;
+    $fields['version'] = 8;
     //custom fields
     $fields['custom_dropdown_contact_options'] = [];
     $fields['seeker_path'] = [
@@ -583,6 +585,12 @@ function dt_get_site_custom_lists( string $list_title = null ) {
         "other" => [ "label" => __( 'Other', 'disciple_tools' ) ],
     ];
 
+
+    $fields["group_type"] = [
+        'pre-group' => __( 'Pre-Group', 'disciple_tools' ),
+        'group'     => __( 'Group', 'disciple_tools' ),
+        'church'    => __( 'Church', 'disciple_tools' ),
+    ];
     // $fields = apply_filters( 'dt_site_custom_lists', $fields );
 
     if ( is_null( $list_title ) ) {

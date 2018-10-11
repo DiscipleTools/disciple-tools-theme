@@ -215,6 +215,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             'needs_update' => $results['needs_update'],
             'groups' => $results['groups'],
             'needs_training' => $needs_training,
+            'fully_practicing' => (int) $results['groups'] - (int) $needs_training,
         ];
 
         return $chart;
@@ -234,13 +235,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 }
                 break;
             case 'project':
-                $results = self::query_project_contacts_progress();
+                $chart = self::query_project_contacts_progress();
 
-                $chart[] = [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ];
-
-                foreach ( $results as $value ) {
-                    $chart[] = [ $value['label'], $value['count'], $value['count'] ];
-                }
                 break;
             default:
                 $chart = [
@@ -263,19 +259,23 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         $chart = [];
 
+        $types = $status = dt_get_option( 'group_type' );
+
         switch ( $type ) {
             case 'personal':
                 $results = self::query_my_group_types();
                 $chart[] = [ 'Group Type', 'Number' ];
                 foreach ( $results as $result ) {
-                    $chart[] = [ $result['type'], intval( $result['count'] ) ];
+                    $label = $types[$result['type']] ?? $result['type'];
+                    $chart[] = [ $label, intval( $result['count'] ) ];
                 }
                 break;
             case 'project':
                 $results = self::query_project_group_types();
                 $chart[] = [ 'Group Type', 'Number' ];
                 foreach ( $results as $result ) {
-                    $chart[] = [ $result['type'], intval( $result['count'] ) ];
+                    $label = $types[$result['type']] ?? $result['type'];
+                    $chart[] = [ $label, intval( $result['count'] ) ];
                 }
                 break;
             default:
@@ -327,7 +327,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 foreach ( $labels as $k_label => $v_label ) {
                     if ( $k_label === $result['health_key'] ) {
                         $value = intval( $result['out_of'] ) - intval( $result['count'] );
-                        $chart[] = [ $v_label, intval( $value ), intval( $value ) ];
+                        $chart[] = [ $v_label, intval( $result['count'] ), intval( $value ), '' ];
                         unset( $labels[ $k_label ] ); // remove established value from list
                         break;
                     }
@@ -340,10 +340,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         // Create remaining rows at full value
         foreach ( $labels as $k_label => $v_label ) {
-            $chart[] = [ $v_label, $out_of, $out_of ];
+            $chart[] = [ $v_label, 0, $out_of, '' ];
         }
 
-        array_unshift( $chart, [ 'Step', 'Groups', [ 'role' => 'annotation' ] ] ); // add top row
+        array_unshift( $chart, [ 'Step', 'Practicing', 'Not Practicing', [ 'role' => 'annotation' ] ] ); // add top row
 
         return $chart;
     }
@@ -401,11 +401,13 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         }
 
         $results = [
+            'total_contacts' => $stats["total_contacts"],
             'active_contacts' => $stats['active_contacts'],
             'needs_accepted' => $stats['needs_accept'],
             'updates_needed' => $stats['needs_update'],
             'total_groups' => $stats['groups'],
             'needs_training' => $needs_training,
+            'fully_practicing' => (int) $stats['groups'] - (int) $needs_training,
             'generations' => 0,
         ];
 
@@ -728,14 +730,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     public static function query_project_contacts_progress() {
         global $wpdb;
 
-        $defaults = [];
-        $status = dt_get_option( 'seeker_path' );
-        foreach ( $status as $key => $label ) {
-            $defaults[$key] = [
-                'label' => $label,
-                'count' => 0,
-            ];
-        }
 
         $results = $wpdb->get_results( "
             SELECT b.meta_value as status, count( a.ID ) as count
@@ -761,18 +755,29 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         $query_results = [];
 
-        if ( ! empty( $results ) ) {
+        $status = dt_get_option( 'seeker_path' );
+        foreach ( $status as $status_key => $status_label ){
+            $added = false;
             foreach ( $results as $result ) {
-                if ( isset( $defaults[$result['status']] ) ) {
-                    $query_results[$result['status']] = [
-                        'label' => $defaults[$result['status']]['label'],
-                        'count' => intval( $result['count'] ),
+                if ( $result["status"] == $status_key ){
+                    $query_results[] = [
+                        'key' => $status_key,
+                        'label' => $status_label,
+                        'value' => intval( $result['count'] )
                     ];
+                    $added = true;
                 }
+            }
+            if ( !$added ){
+                $query_results[] = [
+                    'key' => $status_key,
+                    'label' => $status_label,
+                    'value' => 0
+                ];
             }
         }
 
-        return wp_parse_args( $query_results, $defaults );
+        return $query_results;
     }
 
     public static function query_logins_by_day() {
@@ -1085,6 +1090,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
     public static function query_project_hero_stats() {
         global $wpdb;
+
+        $numbers = [];
+        $numbers["total_contacts"] = Disciple_Tools_Counter::critical_path( 'new_contacts' );
+
 
         $results = $wpdb->get_results( "
             SELECT (

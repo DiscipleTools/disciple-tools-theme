@@ -135,10 +135,6 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                 )", $end, $start ));
                 return $res;
 
-            case 'church_planters':
-//                @todo implement church planter field on group/church
-                return 0;
-                break;
             default:
                 return 0;
                 break;

@@ -619,11 +619,7 @@ class Disciple_Tools_Groups_Post_Type
             'name'        => __( 'Group Type', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [
-                'pre-group' => __( 'Pre-Group', 'disciple_tools' ),
-                'group'     => __( 'Group', 'disciple_tools' ),
-                'church'    => __( 'Church', 'disciple_tools' ),
-            ],
+            'default'     => dt_get_option( 'group_type' ),
             'section'     => 'info',
         ];
 
