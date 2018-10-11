@@ -81,7 +81,6 @@ function dt_dashboard_page_scripts() {
 
         // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
         wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(), false );
-        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->admin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->admin_js_path . 'dt-shared.js' ), true );
         wp_localize_script(
             'dt_dashboard_scripts', 'wpApiDashboard', array(
                 'root' => esc_url_raw( rest_url() ),

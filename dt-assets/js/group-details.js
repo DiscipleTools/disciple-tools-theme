@@ -483,13 +483,6 @@ jQuery(document).ready(function($) {
    * Setup group fields
    */
 
-  //initialize date pickers
-  dateFields.forEach(key=>{
-    if ( group[key] ){
-      $(`#${key}.date-picker`).datepicker('setDate', moment.unix(group[key]).format("YYYY-MM-DD"))
-    }
-  })
-
   if (group.assigned_to){
     $('.current-assigned').text(_.get(group, "assigned_to.display"))
   }
@@ -618,6 +611,7 @@ jQuery(document).ready(function($) {
 
     dateFields.forEach(dateField=>{
       if ( group[dateField] ){
+        $(`#${dateField}.date-picker`).datepicker('setDate', moment.unix(group[dateField]["timestamp"]).format("YYYY-MM-DD"))
         $(`.${dateField}.details-list`).html(group[dateField]["formatted"])
       } else {
         $(`.${dateField}.details-list`).html(wpApiGroupsSettings.translations["not-set"][dateField])
@@ -640,7 +634,10 @@ jQuery(document).ready(function($) {
       'group',
       groupId,
       {[id]:val}
-    ).catch(err=>{
+    ).then(resp=>{
+      group = resp
+      resetDetailsFields(group);
+    }).catch(err=>{
       console.log(err)
     })
   })

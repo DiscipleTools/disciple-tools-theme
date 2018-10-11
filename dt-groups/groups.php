@@ -498,6 +498,13 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 self::add_shared( "groups", $group_id, $user_id, null, false, false, false );
             }
         }
+        if ( isset( $fields["group_type"] ) && empty( $fields["church_start_date"] ) && empty( $existing_group["church_start_date"] ) && $fields["group_type"] === 'church' ){
+            $fields["church_start_date"] = time();
+        }
+        if ( isset( $fields["group_status"] ) && empty( $fields["end_date"] ) && empty( $existing_group["end_date"] ) && $fields["group_status"] === 'inactive' ){
+            $fields["end_date"] = time();
+        }
+
         $fields["last_modified"] = time(); //make sure the last modified field is updated.
         foreach ( $fields as $field_id => $value ) {
             if ( !self::is_key_contact_method_or_connection( $field_id )){
@@ -947,6 +954,9 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             "assigned_to" => sprintf( "user-%d", get_current_user_id() ),
             "start_date" => time()
         ];
+        if ( isset( $field["group_type"] ) && !isset( $fields["church_start_date"] ) && $fields["group_type"] === 'church' ){
+            $fields["church_start_date"] = time();
+        }
 
         $fields = array_merge( $defaults, $fields );
 
