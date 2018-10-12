@@ -190,27 +190,23 @@ class Disciple_Tools_Posts
         global $wpdb;
         $shares = $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT * FROM $wpdb->dt_share as shares
+                "SELECT * 
+                FROM $wpdb->dt_share as shares
                 INNER JOIN $wpdb->posts as posts
                 WHERE user_id = %d
                 AND posts.post_title LIKE %s
                 AND shares.post_id = posts.ID
-                AND posts.post_type = %s",
+                AND posts.post_type = %s
+                AND posts.post_status = 'publish'",
                 $user_id,
                 "%$search_for_post_name%",
                 $post_type
             ),
-            ARRAY_A
+            OBJECT
         );
-        $list = [];
-        foreach ( $shares as $share ) {
-            $post = get_post( $share["post_id"] );
-            if ( isset( $post->post_type ) && $post->post_type === $post_type ) {
-                $list[] = $post;
-            }
-        }
 
-        return $list;
+
+        return $shares;
     }
 
     /**
@@ -639,15 +635,17 @@ class Disciple_Tools_Posts
             ), OBJECT );
         } else {
             $posts = $wpdb->get_results( $wpdb->prepare( "
-                SELECT * FROM $wpdb->posts WHERE 1=1 AND
-                INSTR( $wpdb->posts.post_title, %s ) > 0
+                SELECT * FROM $wpdb->posts
+                LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = $wpdb->posts.ID AND pm.meta_key= 'corresponds_to_user' ) 
+                WHERE INSTR( $wpdb->posts.post_title, %s ) > 0
                 AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
                 ORDER BY  CASE
-                    WHEN INSTR( $wpdb->posts.post_title, %s ) = 1 then 1
-                    ELSE 2
+                    WHEN CHAR_LENGTH(%s) > 0 && INSTR( $wpdb->posts.post_title, %s ) = 1 then 1
+                    WHEN pm.meta_value > 0 then 2
+                    ELSE 3
                 END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
                 LIMIT 0, 30
-            ", $search_string, $post_type, $search_string
+            ", $search_string, $post_type, $search_string, $search_string
             ), OBJECT );
         }
         if ( is_wp_error( $posts ) ) {

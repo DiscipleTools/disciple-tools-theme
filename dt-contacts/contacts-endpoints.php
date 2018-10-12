@@ -844,7 +844,7 @@ class Disciple_Tools_Contacts_Endpoints
         }
 
         $params = $request->get_params();
-        if ( ! isset( $params['contact_id'] ) || ! isset( $params['site_post_id']) ){
+        if ( ! isset( $params['contact_id'] ) || ! isset( $params['site_post_id'] ) ){
             return new WP_Error( __METHOD__, "Missing required parameters.", [ 'status' => 400 ] );
         }
 
@@ -864,8 +864,8 @@ class Disciple_Tools_Contacts_Endpoints
         }
 
         if ( isset( $params['contact_data'] ) ) {
-            dt_write_log('Made it');
-            dt_write_log(__METHOD__);
+            dt_write_log( 'Made it' );
+            dt_write_log( __METHOD__ );
             dt_write_log( $params['contact_data'] );
 
             return 'success';
