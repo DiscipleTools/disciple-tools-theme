@@ -69,7 +69,8 @@
                         "selected_by_default" => true
                     ]
                 ];
-                $sections = apply_filters( 'dt_comments_additional_sections', $sections, "contacts" );
+                $post_type = get_post_type();
+                $sections = apply_filters( 'dt_comments_additional_sections', $sections, $post_type );
                 foreach ( $sections as $section ) :
                     if ( isset( $section["key"] ) && isset( $section["label"] ) ) :
                         $class = ( isset( $section["selected_by_default"] ) && $section["selected_by_default"] === true ) ?
