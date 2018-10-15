@@ -1,4 +1,4 @@
-/* global jQuery:false, wpApiGroupsSettings:false */
+/* global jQuery:false, wpApiGroupsSettings:false, _:false */
 
 let typeaheadTotals = {}
 jQuery(document).ready(function($) {
@@ -8,29 +8,26 @@ jQuery(document).ready(function($) {
   let groupId = group.ID
   let editFieldsUpdate = {}
 
-
-  /**
-   * End Date picker
-   */
-  let endDatePicker = $('.end_date #end-date-picker')
-  endDatePicker.datepicker({
-    onSelect: function (date) {
-      editFieldsUpdate.end_date = date
-    },
-    changeMonth: true,
-    changeYear: true
+  let dateFields = []
+  _.forOwn(wpApiGroupsSettings.groups_custom_fields_settings, (field, key)=>{
+    if ( field.type === 'date'){
+      dateFields.push( key)
+    }
   })
-
   /**
-   * Start date picker
+   * Date pickers
    */
-  let startDatePicker = $('.start_date #start-date-picker')
-  startDatePicker.datepicker({
-    onSelect: function (date) {
-      editFieldsUpdate.start_date = date
-    },
-    changeMonth: true,
-    changeYear: true
+  dateFields.forEach(key=>{
+    let datePicker = $(`#${key}.date-picker`)
+    datePicker.datepicker({
+      dateFormat: 'yy-mm-dd',
+      onSelect: function (date) {
+        editFieldsUpdate[key] = date
+      },
+      changeMonth: true,
+      changeYear: true
+    })
+
   })
   /**
    * Assigned_to
@@ -55,7 +52,7 @@ jQuery(document).ready(function($) {
     hint: true,
     emptyTemplate: 'No users found "{{query}}"',
     callback: {
-      onClick: function(node, a, item, event){
+      onClick: function(node, a, item){
         editFieldsUpdate.assigned_to = item.ID
       },
       onResult: function (node, query, result, resultCount) {
@@ -104,7 +101,6 @@ jQuery(document).ready(function($) {
     API.save_field_api( "group", groupId, update)
   })
 
-  let locationsList = $('.locations-list')
   /**
    * Locations
    */
@@ -240,7 +236,7 @@ jQuery(document).ready(function($) {
       },
       href: function(item){
         if (item){
-          return `/groups/${item.ID}`
+          return `${window.wpApiShare.site_url}/groups/${item.ID}`
         }
       }
     },
@@ -305,7 +301,7 @@ jQuery(document).ready(function($) {
       },
       href: function(item){
         if (item){
-          return `/groups/${item.ID}`
+          return `${window.wpApiShare.site_url}/groups/${item.ID}`
         }
       }
     },
@@ -347,7 +343,7 @@ jQuery(document).ready(function($) {
   $(".js-create-group").on("submit", function(e) {
     e.preventDefault();
     let title = $(".js-create-group input[name=title]").val()
-    API.create_group(title, null, groupId)
+    API.create_group({title, parent_group_id: groupId, group_type:"group"})
       .then((newGroup)=>{
         $(".reveal-after-group-create").show()
         $("#new-group-link").html(`<a href="${newGroup.permalink}">${title}</a>`)
@@ -400,11 +396,7 @@ jQuery(document).ready(function($) {
       }, callback: {
         onCancel: function (node, item) {
           API.save_field_api('group', groupId, {'members': {values:[{value:item.ID, delete:true}]}}).then(()=>{
-            $(`.members-list .${item.ID}`).remove()
-            let listItems = $(`.members-list li`)
-            if (listItems.length === 0){
-              $(`.members-list.details-list`).append(`<li id="no-locations">${wpApiGroupsSettings.translations["not-set"]["location"]}</li>`)
-            }
+
           }).catch(err => { console.error(err) })
         }
       },
@@ -413,10 +405,6 @@ jQuery(document).ready(function($) {
     callback: {
       onClick: function(node, a, item, event){
         API.save_field_api('group', groupId, {'members': {values:[{value:item.ID}]}}).then((addedItem)=>{
-          $('.members-list').append(`<li class="${addedItem.ID}">
-            <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
-          </li>`)
-          $("#no-locations").remove()
         }).catch(err => { console.error(err) })
         masonGrid.masonry('layout')
       },
@@ -427,6 +415,54 @@ jQuery(document).ready(function($) {
       },
       onHideLayout: function () {
         $('#members-result-container').html("");
+      }
+    }
+  });
+  
+  /**
+   * coaches
+   */
+  typeaheadTotals.coaches = 0;
+  $.typeahead({
+    input: '.js-typeahead-coaches',
+    minLength: 0,
+    accent: true,
+    searchOnFocus: true,
+    maxItem: 20,
+    template: function (query, item) {
+      return `<span>${_.escape(item.name)}</span>`
+    },
+    source: TYPEAHEADS.typeaheadSource('coaches', 'dt/v1/contacts/compact/'),
+    display: "name",
+    templateValue: "{{name}}",
+    dynamic: true,
+    multiselect: {
+      matchOn: ["ID"],
+      data: function () {
+        return (group.coaches || []).map(g=>{
+          return {ID:g.ID, name:g.post_title}
+        })
+      }, callback: {
+        onCancel: function (node, item) {
+          API.save_field_api('group', groupId, {'coaches': {values:[{value:item.ID, delete:true}]}}).then(()=>{
+          }).catch(err => { console.error(err) })
+        }
+      },
+      href: window.wpApiShare.site_url + "/contacts/{{ID}}"
+    },
+    callback: {
+      onClick: function(node, a, item, event){
+        API.save_field_api('group', groupId, {'coaches': {values:[{value:item.ID}]}}).then((addedItem)=>{
+        }).catch(err => { console.error(err) })
+        masonGrid.masonry('layout')
+      },
+      onResult: function (node, query, result, resultCount) {
+        resultCount = typeaheadTotals.coaches
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+        $('#coaches-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('#coaches-result-container').html("");
       }
     }
   });
@@ -487,12 +523,6 @@ jQuery(document).ready(function($) {
    * Setup group fields
    */
 
-  if (group.end_date){
-    endDatePicker.datepicker('setDate', group.end_date)
-  }
-  if (group.start_date){
-    startDatePicker.datepicker('setDate', group.start_date)
-  }
   if (group.assigned_to){
     $('.current-assigned').text(_.get(group, "assigned_to.display"))
   }
@@ -618,10 +648,11 @@ jQuery(document).ready(function($) {
       assignedHtml.html(wpApiGroupsSettings.translations["not-set"]["assigned_to"])
     }
 
-    let dates = ["start_date", "end_date"]
-    dates.forEach(dateField=>{
+
+    dateFields.forEach(dateField=>{
       if ( group[dateField] ){
-        $(`.${dateField}.details-list`).html(group[dateField])
+        $(`#${dateField}.date-picker`).datepicker('setDate', moment.unix(group[dateField]["timestamp"]).format("YYYY-MM-DD"))
+        $(`.${dateField}.details-list`).html(group[dateField]["formatted"])
       } else {
         $(`.${dateField}.details-list`).html(wpApiGroupsSettings.translations["not-set"][dateField])
       }
@@ -643,7 +674,10 @@ jQuery(document).ready(function($) {
       'group',
       groupId,
       {[id]:val}
-    ).catch(err=>{
+    ).then(resp=>{
+      group = resp
+      resetDetailsFields(group);
+    }).catch(err=>{
       console.log(err)
     })
   })

@@ -128,17 +128,25 @@
 
         <div class="medium-4 cell">
             <div class="section-subheader"><?php esc_html_e( 'Start Date', 'disciple_tools' )?></div>
-            <ul class="start_date details-list"><?php
+            <ul class="date-list start_date details-list"><?php
             if ( isset( $group["start_date"] ) ) {
-                echo esc_html( $group["start_date"] );
+                echo esc_html( $group["start_date"]["formatted"] );
             } else {
                 esc_html_e( "No start date", 'disciple_tools' );
             } ?>
             </ul>
+            <div class="section-subheader"><?php esc_html_e( 'Church Start Date', 'disciple_tools' )?></div>
+            <ul class="date-list church_start_date details-list"><?php
+            if ( isset( $group["church_start_date"] ) ) {
+                echo esc_html( $group["church_start_date"]["formatted"] );
+            } else {
+                esc_html_e( "No church start date", 'disciple_tools' );
+            } ?>
+            </ul>
             <div class="section-subheader"><?php esc_html_e( 'End Date', 'disciple_tools' )?></div>
-            <ul class="end_date details-list"><?php
+            <ul class="date-list end_date details-list"><?php
             if ( isset( $group["end_date"] ) ) {
-                echo esc_html( $group["end_date"] );
+                echo esc_html( $group["end_date"]["formatted"] );
             } else {
                 esc_html_e( "No end date", 'disciple_tools' );
             } ?>
@@ -225,14 +233,21 @@
             <div class="section-subheader cell">
                 <?php esc_html_e( 'Start Date', 'disciple_tools' )?>
             </div>
-            <div class="start_date"><input type="text" id="start-date-picker"></div>
+            <div class="start_date"><input type="text" class="date-picker" id="start_date"></div>
+        </div>
+
+        <div class="grix-x">
+            <div class="section-subheader cell">
+                <?php esc_html_e( 'Church Start Date', 'disciple_tools' )?>
+            </div>
+            <div class="church_start_date"><input type="text" class="date-picker" id="church_start_date"></div>
         </div>
 
         <div class="grix-x">
             <div class="section-subheader cell">
                 <?php esc_html_e( 'End Date', 'disciple_tools' )?>
             </div>
-            <div class="end_date"><input type="text" id="end-date-picker"></div>
+            <div class="end_date"><input type="text" class="date-picker" id="end_date"></div>
         </div>
 
 

@@ -39,7 +39,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     "child_groups",
                     "locations",
                     "people_groups",
-                    "leaders"
+                    "leaders",
+                    "coaches"
                 ];
                 self::$channel_list = [
                     "address"
@@ -95,86 +96,30 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         if ( $group ) {
             $fields = [];
 
-            $locations = get_posts(
-                [
-                    'connected_type'   => 'groups_to_locations',
+            $connection_types = [
+                [ "groups_to_locations", "locations", "any" ],
+                [ "groups_to_peoplegroups", "people_groups", "any" ],
+                [ "contacts_to_groups", "members", "to" ],
+                [ "groups_to_leaders", "leaders", "any" ],
+                [ "groups_to_coaches", "coaches", "any" ],
+                [ "groups_to_groups", "child_groups", "to" ],
+                [ "groups_to_groups", "parent_groups", "from" ],
+            ];
+
+            foreach ( $connection_types as $type ){
+                $args = [
+                    'connected_type'   => $type[0],
+                    'connected_direction' => $type[2],
                     'connected_items'  => $group,
                     'nopaging'         => true,
                     'suppress_filters' => false,
-                ]
-            );
-            foreach ( $locations as $l ) {
-                $l->permalink = get_permalink( $l->ID );
+                ];
+                $connections = get_posts( $args );
+                foreach ( $connections as $c ){
+                    $c->permalink = get_permalink( $c->ID );
+                }
+                $fields[$type[1]] = $connections;
             }
-            $fields["locations"] = $locations;
-
-
-            $people_groups = get_posts(
-                [
-                    'connected_type'   => 'groups_to_peoplegroups',
-                    'connected_items'  => $group,
-                    'nopaging'         => true,
-                    'suppress_filters' => false,
-                ]
-            );
-            foreach ( $people_groups as $g ) {
-                $g->permalink = get_permalink( $g->ID );
-            }
-            $fields["people_groups"] = $people_groups;
-
-            $members = get_posts(
-                [
-                    'connected_type'   => 'contacts_to_groups',
-                    'connected_items'  => $group,
-                    'nopaging'         => true,
-                    'suppress_filters' => false,
-                ]
-            );
-            foreach ( $members as $l ) {
-                $l->permalink = get_permalink( $l->ID );
-            }
-            $fields["members"] = $members;
-
-            $leaders = get_posts(
-                [
-                    'connected_type'   => 'groups_to_leaders',
-                    'connected_items'  => $group,
-                    'nopaging'         => true,
-                    'suppress_filters' => false,
-                ]
-            );
-            foreach ( $leaders as $l ) {
-                $l->permalink = get_permalink( $l->ID );
-            }
-            $fields["leaders"] = $leaders;
-
-            $child_groups = get_posts(
-                [
-                    'connected_type'   => 'groups_to_groups',
-                    'connected_direction' => 'to',
-                    'connected_items'  => $group,
-                    'nopaging'         => true,
-                    'suppress_filters' => false,
-                ]
-            );
-            foreach ( $child_groups as $g ) {
-                $g->permalink = get_permalink( $g->ID );
-            }
-            $fields["child_groups"] = $child_groups;
-
-            $parent_groups = get_posts(
-                [
-                    'connected_type'   => 'groups_to_groups',
-                    'connected_direction' => 'from',
-                    'connected_items'  => $group,
-                    'nopaging'         => true,
-                    'suppress_filters' => false,
-                ]
-            );
-            foreach ( $parent_groups as $g ) {
-                $g->permalink = get_permalink( $g->ID );
-            }
-            $fields["parent_groups"] = $parent_groups;
 
             $meta_fields = get_post_custom( $group_id );
             foreach ( $meta_fields as $key => $value ) {
@@ -221,6 +166,11 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     $fields[ $key ] = $value;
                 } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'array' ){
                     $fields[ $key ] = maybe_unserialize( $value[0] );
+                } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'date' ){
+                    $fields[ $key ] = [
+                        "timestamp" => $value[0],
+                        "formatted" => dt_format_date( $value[0] ),
+                    ];
                 } else {
                     $fields[ $key ] = $value[0];
                 }
@@ -247,19 +197,20 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * Make sure there are no extra or misspelled fields
      * Make sure the field values are the correct format
      *
-     * @param array    $fields  , the group meta fields
+     * @param array $fields , the group meta fields
      * @param int|null $post_id , the id of the group
+     * @param array $allowed_fields
      *
+     * @return array
      * @access private
      * @since  0.1.0
-     * @return array
      */
-    private static function check_for_invalid_fields( array $fields, int $post_id = null ) {
+    private static function check_for_invalid_fields( array $fields, int $post_id = null, $allowed_fields = [] ) {
         $bad_fields = [];
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( isset( $post_id ), $post_id );
         $group_fields['title'] = "";
         foreach ( $fields as $field => $value ) {
-            if ( !isset( $group_fields[ $field ] ) && !self::is_key_contact_method_or_connection( $field ) ) {
+            if ( !isset( $group_fields[ $field ] ) && !self::is_key_contact_method_or_connection( $field ) && !in_array( $field, $allowed_fields ) ) {
                 $bad_fields[] = $field;
             }
         }
@@ -493,11 +444,21 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 self::add_shared( "groups", $group_id, $user_id, null, false, false, false );
             }
         }
+        if ( isset( $fields["group_type"] ) && empty( $fields["church_start_date"] ) && empty( $existing_group["church_start_date"] ) && $fields["group_type"] === 'church' ){
+            $fields["church_start_date"] = time();
+        }
+        if ( isset( $fields["group_status"] ) && empty( $fields["end_date"] ) && empty( $existing_group["end_date"] ) && $fields["group_status"] === 'inactive' ){
+            $fields["end_date"] = time();
+        }
+
         $fields["last_modified"] = time(); //make sure the last modified field is updated.
         foreach ( $fields as $field_id => $value ) {
             if ( !self::is_key_contact_method_or_connection( $field_id )){
                 $field_type = self::$group_fields[$field_id]["type"] ?? '';
                 //we handle multi_select above.
+                if ( $field_type === 'date' && !is_numeric( $value )){
+                    $value = strtotime( $value );
+                }
                 if ( $field_type && $field_type !== "multi_select" ){
                     update_post_meta( $group_id, $field_id, $value );
                 }
@@ -593,6 +554,19 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     /**
      * @param int $group_id
+     * @param int $coach_id
+     *
+     * @return mixed
+     */
+    public static function add_coach_to_group( int $group_id, int $coach_id ) {
+        return p2p_type( 'groups_to_coaches' )->connect(
+            $group_id, $coach_id,
+            [ 'date' => current_time( 'mysql' ) ]
+        );
+    }
+
+    /**
+     * @param int $group_id
      * @param int $post_id
      *
      * @return mixed
@@ -660,6 +634,16 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     /**
      * @param int $group_id
+     * @param int $coach_id
+     *
+     * @return mixed
+     */
+    public static function remove_coach_from_group( int $group_id, int $coach_id ) {
+        return p2p_type( 'groups_to_coaches' )->disconnect( $group_id, $coach_id );
+    }
+
+    /**
+     * @param int $group_id
      * @param int $post_id
      *
      * @return mixed
@@ -707,6 +691,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $connect = self::add_people_group_to_group( $group_id, $value );
         } elseif ( $key === "leaders" ) {
             $connect = self::add_leader_to_group( $group_id, $value );
+        } elseif ( $key === "coaches" ) {
+            $connect = self::add_coach_to_group( $group_id, $value );
         } elseif ( $key === "child_groups" ) {
             $connect = self::add_child_group_to_group( $group_id, $value );
         } elseif ( $key === "parent_groups" ) {
@@ -787,6 +773,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return self::remove_member_from_group( $group_id, $value );
         } elseif ( $key === "leaders" ) {
             return self::remove_leader_from_group( $group_id, $value );
+        } elseif ( $key === "coaches" ) {
+            return self::remove_coach_from_group( $group_id, $value );
         } elseif ( $key === "people_groups" ) {
             return self::remove_people_group_from_group( $group_id, $value );
         } elseif ( $key === "child_groups" ) {
@@ -925,12 +913,24 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 $fields["assigned_to"] = "user-" . $fields["assigned_to"];
             }
         }
+        $allowed_fields = [ "parent_group_id", "created_from_contact_id" ];
+        $bad_fields = self::check_for_invalid_fields( $fields, null, $allowed_fields );
+        if ( !empty( $bad_fields ) ) {
+            return new WP_Error( __FUNCTION__, __( "One or more fields do not exist" ), [
+                'bad_fields' => $bad_fields,
+                'status' => 400
+            ] );
+        }
 
         $defaults = [
             "group_status" => "active",
             "group_type" => "pre-group",
             "assigned_to" => sprintf( "user-%d", get_current_user_id() ),
+            "start_date" => time()
         ];
+        if ( isset( $field["group_type"] ) && !isset( $fields["church_start_date"] ) && $fields["group_type"] === 'church' ){
+            $fields["church_start_date"] = time();
+        }
 
         $fields = array_merge( $defaults, $fields );
 
@@ -939,6 +939,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             if ( self::is_key_contact_method_or_connection( $field_key )){
                 $contact_methods_and_connections[$field_key] = $field_value;
                 unset( $fields[$field_key] );
+            }
+            $field_type = self::$group_fields[$field_key]["type"] ?? '';
+            if ( $field_type === 'date' && !is_numeric( $field_value )){
+                $fields[$field_value] = strtotime( $field_value );
             }
         }
 

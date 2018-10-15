@@ -36,7 +36,6 @@ class Disciple_Tools_Counter
         require_once( 'counters/counter-baptism.php' );
         require_once( 'counters/counter-groups.php' );
         require_once( 'counters/counter-contacts.php' );
-        require_once( 'counters/counter-prayer.php' );
         require_once( 'counters/counter-outreach.php' );
     } // End __construct
 
@@ -45,73 +44,172 @@ class Disciple_Tools_Counter
      * The steps of the critical path can be called direction, or the entire array for the critical path can be called with 'full'.
      *
      * @param string $step_name
+     * @param null $start , unix time stamp
+     * @param null $end
+     * @param array $args
      *
      * @return int|array
      */
-    public static function critical_path( string $step_name = '' ) {
+    public static function critical_path( string $step_name = 'all', $start = null, $end = null, $args = [] ) {
+
+        if ( $start === null){
+            $start = 0;
+        }
+        if ( $end === null ){
+            $end = PHP_INT_MAX;
+        }
 
         $step_name = strtolower( $step_name );
 
         switch ( $step_name ) {
-
-            case 'prayer':
-                return Disciple_Tools_Counter_Prayer::get_prayer_count( 'prayer_network' );
-                break;
-            case 'social_engagement':
-                return Disciple_Tools_Counter_Outreach::get_outreach_count( 'social_engagement' );
-                break;
-            case 'website_visitors':
-                return Disciple_Tools_Counter_Outreach::get_outreach_count( 'website_visitors' );
-                break;
             case 'new_contacts':
-                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'new_contacts' );
+                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'new_contacts', $start, $end );
                 break;
             case 'contacts_attempted':
-                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'contacts_attempted' );
+//                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'contacts_attempted' );
                 break;
             case 'contacts_established':
-                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'contacts_established' );
+//                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'contacts_established' );
                 break;
             case 'first_meetings':
-                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'first_meetings' );
+                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'first_meetings', $start, $end );
+                break;
+            case 'ongoing_meetings':
+                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'ongoing_meetings', $start, $end );
                 break;
             case 'baptisms':
-                return Disciple_Tools_Counter_Baptism::get_number_of_baptisms();
+                return Disciple_Tools_Counter_Baptism::get_number_of_baptisms( $start, $end );
+                break;
+            case 'baptism_generations':
+                return Disciple_Tools_Counter_Baptism::get_baptism_generations( $start, $end );
                 break;
             case 'baptizers':
-                return Disciple_Tools_Counter_Baptism::get_number_of_baptizers();
+                return Disciple_Tools_Counter_Baptism::get_number_of_baptizers( $start, $end );
+                break;
+            case 'churches_and_groups':
+                return Disciple_Tools_Counter_Groups::get_groups_count( 'churches_and_groups', $start, $end );
                 break;
             case 'active_groups':
-                return Disciple_Tools_Counter_Groups::get_groups_count( 'active_groups' );
+                return Disciple_Tools_Counter_Groups::get_groups_count( 'active_groups', $start, $end );
                 break;
             case 'active_churches':
-                return Disciple_Tools_Counter_Groups::get_groups_count( 'active_churches' );
+                return Disciple_Tools_Counter_Groups::get_groups_count( 'active_churches', $start, $end );
+                break;
+            case 'church_generations':
+                return Disciple_Tools_Counter_Groups::get_groups_count( 'church_generations', $start, $end );
+                break;
+            case 'all_group_generations':
+                return Disciple_Tools_Counter_Groups::get_groups_count( 'generations', $start, $end, $args );
                 break;
             case 'church_planters':
-                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'church_planters' );
+                return Disciple_Tools_Counter_Groups::get_groups_count( 'church_planters', $start, $end );
+                break;
+            case 'people_groups':
+
+            case 'manual_additions':
+                return Disciple_Tools_Counter_Outreach::get_outreach_count( 'manual_additions', $start, $end );
+            case 'all':
+                $manual_additions = self::critical_path( 'manual_additions', $start, $end );
+                $data = [];
+                foreach ( $manual_additions as $addition ){
+                    if ( $addition["section"] == "before") {
+                        $data[] = [
+                            "key" => $addition["source"],
+                            "label" => $addition["label"],
+                            "value" => $addition["total"]
+                        ];
+                    }
+                }
+                $data[] = [
+                    "key" => "new_contacts",
+                    "label" => __( "New Contacts", "disciple_tools" ),
+                    "value" => self::critical_path( 'new_contacts', $start, $end )
+                ];
+                $data[] = [
+                    "key" => "first_meetings",
+                    "label" => __( "First Meetings", "disciple_tools" ),
+                    "value" => self::critical_path( 'first_meetings', $start, $end )
+                    ];
+                $data[] = [
+                    "key" => "ongoing_meetings",
+                    "label" => __( "Ongoing Meetings", "disciple_tools" ),
+                    "value" => self::critical_path( 'ongoing_meetings', $start, $end )
+                    ];
+                $data[] = [
+                    "key" => "baptisms",
+                    "label" => __( "Total Baptisms", "disciple_tools" ),
+                    "value" => self::critical_path( 'baptisms', $start, $end )
+                ];
+                $data[] = [
+                    "key" => "baptizers",
+                    "label" => __( "Total Baptizers", "disciple_tools" ),
+                    "value" => self::critical_path( 'baptizers', $start, $end )
+                ];
+                $baptism_generations = self::critical_path( 'baptism_generations', $start, $end );
+                foreach ( $baptism_generations as $generation => $num ){
+                    $data[] = [
+                        "key" => "baptism_generation_$generation",
+                        "label" => __( "Baptism Generation", "disciple_tools" ) . ' ' . $generation,
+                        "value" => $num
+                    ];
+                }
+                $data[] = [
+                    "key" => "churches_and_groups",
+                    "label" => __( "Total Churches and Groups", "disciple_tools" ),
+                    "value" => self::critical_path( 'churches_and_groups', $start, $end )
+                ];
+                $data[] = [
+                    "key" => "active_groups",
+                    "label" => __( "Active Groups", "disciple_tools" ),
+                    "value" => self::critical_path( 'active_groups', $start, $end )
+                ];
+                $data[] = [
+                    "key" => "active_churches",
+                    "label" => __( "Active Churches", "disciple_tools" ),
+                    "value" => self::critical_path( 'active_churches', $start, $end )
+                ];
+                $church_generations = self::critical_path( 'church_generations', $start, $end );
+                foreach ( $church_generations as $generation => $num ){
+                    $data[] = [
+                        "key" => "church_generation_$generation",
+                        "label" => __( "Church Generation", "disciple_tools" ) . ' ' . $generation,
+                        "value" => $num
+                    ];
+                }
+                $data[] = [
+                    "key" => "church_planters",
+                    "label" => __( "Church Planters", "disciple_tools" ),
+                    "value" => self::critical_path( 'church_planters', $start, $end )
+                ];
+//                @todo ppl groups
+                foreach ( $manual_additions as $addition ){
+                    if ( $addition["section"] == "after") {
+                        $data[] = [
+                            "key" => $addition["source"],
+                            "label" => $addition["label"],
+                            "value" => $addition["total"]
+                        ];
+                    }
+                }
+                return $data;
                 break;
             default:
-                return [
-                    // Prayer
-                    'prayer'               => self::critical_path( 'prayer' ),
-                    // Outreach
-                    'social_engagement'    => self::critical_path( 'social_engagement' ),
-                    'website_visitors'     => self::critical_path( 'website_visitors' ),
-                    // Follow-up
-                    'new_contacts'         => self::critical_path( 'new_contacts' ),
-                    'contacts_attempted'   => self::critical_path( 'contacts_attempted' ),
-                    'contacts_established' => self::critical_path( 'contacts_established' ),
-                    'first_meetings'       => self::critical_path( 'first_meetings' ),
-                    // Multiplication
-                    'baptisms'             => self::critical_path( 'baptisms' ),
-                    'baptizers'            => self::critical_path( 'baptizers' ),
-                    'active_groups'        => self::critical_path( 'active_groups' ),
-                    'active_churches'      => self::critical_path( 'active_churches' ),
-                    'church_planters'      => self::critical_path( 'church_planters' ),
-                ];
-                break;
+                return 0;
         }
     }
+
+
+
+
+    public static function counts_at_date( string $stat_name, int $unix_time_stamp = null ){
+        $unix_time_stamp = $unix_time_stamp ?? time();
+
+        switch ( $stat_name ){
+            case 'total_contacts':
+
+        }
+    }
+
 
     /**
      * Counts the meta_data attached to a P2P connection
@@ -167,31 +265,6 @@ class Disciple_Tools_Counter
         ] );
 
         return $query->found_posts;
-    }
-
-    /**
-     * Counts baptisms
-     *
-     * @param $type
-     *
-     * @return null|string
-     */
-    public function get_baptisms( $type ) {
-        switch ( $type ) {
-            case 'baptisms':
-                $count = new Disciple_Tools_Counter_Baptism();
-                $result = $count->get_number_of_baptisms();
-                break;
-            case 'baptizers':
-                $count = new Disciple_Tools_Counter_Baptism();
-                $result = $count->get_number_of_baptizers();
-                break;
-            default:
-                $result = '';
-                break;
-        }
-
-        return $result;
     }
 
     /**

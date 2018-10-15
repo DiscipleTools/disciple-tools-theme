@@ -10,47 +10,48 @@ function my_stats() {
     "use strict";
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsPersonal.data
-    let label = dtMetricsPersonal.data.translations
+    let translations = dtMetricsPersonal.data.translations
 
     chartDiv.empty().html(`
-        <span class="section-header">`+ label.title +`</span>
-        <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
-        <div class="medium reveal" class="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button></div>
+        <div class="cell center">
+            <h3 >${ translations.title }</h3>
+        </div>
         <br><br>
         <div class="grid-x grid-padding-x grid-padding-y">
+        <h3 class="section-header">${ translations.title_contacts }</h3>
             <div class="cell center callout">
-                <p><span class="section-subheader">`+ label.title_contacts +`</span></p>
                 <div class="grid-x">
-                    <div class="medium-4 cell center">
-                        <h4>`+ label.label_active_contacts +`<br><span id="contacts">0</span></h4>
+                    <div class="medium-4 cell center ">
+                        <h5>${ translations.title_waiting_on_accept }<br><span id="needs_accepted">0</span></h5>
                     </div>
                     <div class="medium-4 cell center left-border-grey">
-                        <h4>`+ label.title_waiting_on_accept +`<br><span id="needs_accepted">0</span></h4>
+                        <h5>${ translations.title_waiting_on_update }<br><span id="updates_needed">0</span></h5>
                     </div>
                     <div class="medium-4 cell center left-border-grey">
-                        <h4>`+ label.title_waiting_on_update +`<br><span id="updates_needed">0</span></h4>
+                        <h5>${ translations.label_active_contacts }<br><span id="contacts">0</span></h5>
                     </div>
                 </div>
             </div>
             <div class="cell">
-                <div id="my_contacts_progress" style="height: 350px;"></div>
+                <div id="my_contacts_progress" style="height: 350px; width=100%"></div>
             </div>
+            <h3 class="section-header" style="margin-top:40px;">${ translations.title_groups }</h3>
             <div class="cell">
-            <br>
                 <div class="cell center callout">
-                    <p><span class="section-subheader">`+ label.title_groups +`</span></p>
                     <div class="grid-x">
                         <div class="medium-4 cell center">
-                            <h4>`+ label.title_total_groups +`<br><span id="total_groups">0</span></h4>
+                            <h5>${ translations.title_total_groups }<br><span id="total_groups">0</span></h5>
                         </div>
                         <div class="medium-4 cell center left-border-grey">
-                            <h4>`+ label.title_needs_training +`<br><span id="needs_training">0</span></h4>
+                            <h5>${ translations.title_needs_training }<br><span id="needs_training">0</span></h5>
+                        </div>
+                        <div class="medium-4 cell center left-border-grey">
+                            <h5>${ translations.title_fully_practicing }<br><span id="fully_practicing">0</span></h5>
                         </div>
                    </div> 
                 </div>
             </div>
+            
             <div class="cell">
                 <div id="my_groups_health" style="height: 500px;"></div>
             </div>
@@ -58,8 +59,11 @@ function my_stats() {
             <hr>
                 <div class="grid-x">
                     <div class="cell medium-6 center">
-                        <span class="section-subheader">`+ label.title_group_types +`</span>
+                        <span class="section-subheader">${ translations.title_group_types }</span>
                         <div id="group_types" style="height: 400px;"></div>
+                    </div>
+                    <div class="cell medium-6">
+                        <div id="group_generations" style="height: 400px;"></div>
                     </div>
                 </div>
             </div>
@@ -74,6 +78,7 @@ function my_stats() {
 
     jQuery('#total_groups').html( numberWithCommas( hero.groups ) )
     jQuery('#needs_training').html( numberWithCommas( hero.needs_training ) )
+    jQuery('#fully_practicing').html( numberWithCommas( hero.fully_practicing ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'bar']});
@@ -95,9 +100,9 @@ function my_stats() {
                 width: "75%",
                 height: "85%" },
             hAxis: {
-                title: label.label_number_of_contacts,
+                title: translations.label_number_of_contacts,
             },
-            title: label.label_my_follow_up_progress,
+            title: translations.label_my_follow_up_progress,
             legend: {position: "none"},
         };
 
@@ -116,15 +121,14 @@ function my_stats() {
                 width: "85%",
                 height: "75%" },
             vAxis: {
-                title: 'groups',
                 format: 'decimal',
             },
             hAxis: {
                 format: 'decimal',
             },
-            title: label.label_group_needing_training,
-            legend: {position: "none"},
-            colors: ['green' ],
+            title: translations.label_group_needing_training,
+          legend: {position: "bottom"},
+          isStacked: true
         };
 
         let chart = new google.visualization.ColumnChart(document.getElementById('my_groups_health'));
@@ -147,7 +151,7 @@ function my_stats() {
 
         let options = {
             legend: 'bottom',
-            pieSliceText: 'groups',
+            pieSliceText: 'label',
             pieStartAngle: 135,
             slices: {
                 0: { color: 'lightgreen' },
@@ -160,7 +164,6 @@ function my_stats() {
                 top: '7%',
                 width: "100%",
                 height: "80%" },
-            fontSize: '20',
         };
 
         let chart = new google.visualization.PieChart(document.getElementById('group_types'));
@@ -169,7 +172,11 @@ function my_stats() {
 
     function drawGroupGenerations() {
 
-        let data = google.visualization.arrayToDataTable( sourceData.group_generations );
+        let formattedData = [[ "Generations", "Pre-Group", "Group", "Church", {role: 'annotation'} ]]
+        sourceData.group_generations.forEach( row=>{
+          formattedData.push( [row["generation"], row["pre-group"], row["group"], row["church"], ''] )
+        })
+      let data = google.visualization.arrayToDataTable( formattedData );
 
         let options = {
             bars: 'horizontal',
@@ -177,13 +184,13 @@ function my_stats() {
                 left: '20%',
                 top: '7%',
                 width: "75%",
-                height: "85%" },
-            title: "Generations",
+                height: "85%", },
+            title: translations.title_generations,
             vAxis: {
-                title: label.label_generations,
                 format: '0'
             },
             hAxis: {
+                title: translations.label_groups_by_type,
                 format: '0'
             },
             legend: { position: 'bottom', maxLines: 3 },
@@ -197,23 +204,6 @@ function my_stats() {
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
 
-    /*chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span>
-            <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
-            <span class="spinner" style="display: none;"><img src="`+dtMetricsPersonal.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
-            </div>`)*/
-}
-
-function legend() {
-    return `<h2>Chart Legend</h2><hr>
-            <dl>
-            <dt>Registered</dt><dd>Groups or people who have registered on Zumeproject.com</dd>
-            <dt>Engaged</dt><dd>Groups or people who have registered on Zumeproject.com</dd>
-            <dt>Trained</dt><dd>Trained groups and people have been through the entire Zúme training.</dd>
-            <dt>Active</dt><dd>Active groups and people have finished a session in the last 30 days. Active in month charts measure according to the month listed. It is the same 'active' behavior, but broken up into different time units.</dd>
-            <dt>Hours of Training</dt><dd>Hours of completed sessions for groups or people.</dd>
-            <dt>Countries</dt><dd>In the overview page, "Countries" counts number of countries with trained groups.</dd>
-            <dt>Translations</dt><dd>Translations counts the number of translations installed in ZúmeProject.com.</dd>
-            </dl>`
 }
 
 function numberWithCommas(x) {

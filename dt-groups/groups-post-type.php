@@ -619,11 +619,7 @@ class Disciple_Tools_Groups_Post_Type
             'name'        => __( 'Group Type', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [
-                'pre-group' => __( 'Pre-Group', 'disciple_tools' ),
-                'group'     => __( 'Group', 'disciple_tools' ),
-                'church'    => __( 'Church', 'disciple_tools' ),
-            ],
+            'default'     => dt_get_option( 'group_type' ),
             'section'     => 'info',
         ];
 
@@ -759,8 +755,13 @@ class Disciple_Tools_Groups_Post_Type
             'name'        => __( 'Start Date', 'disciple_tools' ),
             'description' => '',
             'type'        => 'date',
-            'default'     => date( 'Y-m-d' ),
+            'default'     => time(),
             'section'     => 'info',
+        ];
+        $fields['church_start_date'] =[
+            'name' => __( 'Church Start Date', 'disciple_tools' ),
+            'type' => 'date',
+            'default'     => time()
         ];
         $fields['end_date'] = [
             'name'        => __( 'End Date', 'disciple_tools' ),
@@ -789,6 +790,11 @@ class Disciple_Tools_Groups_Post_Type
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
+        ];
+        $fields["member_count"] = [
+            'name' => __( 'Member Count', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => ''
         ];
 
 

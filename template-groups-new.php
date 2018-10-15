@@ -7,6 +7,7 @@ if ( ! current_user_can( 'create_groups' ) ) {
 
 get_header();
 
+$group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
 ?>
 
 <div id="content">
@@ -20,6 +21,16 @@ get_header();
                 </label>
                 <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
                 <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
+
+                <div class="section-subheader">
+                    <?php esc_html_e( 'Group Type', 'disciple_tools' )?>
+                </div>
+                <select class="select-field" id="group_type" name="group_name">
+                    <?php
+                    foreach ($group_fields["group_type"]["default"] as $key => $value){ ?>
+                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
+                    <?php } ?>
+                </select>
 
                 <div style="text-align: center">
                     <button class="button loader js-create-group-button" type="submit" disabled><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
@@ -45,6 +56,7 @@ get_header();
             dataType: "json",
             data: JSON.stringify({
                 title: $(".js-create-group input[name=title]").val(),
+                group_type: $(`.js-create-group #group_type`).val()
             }),
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);

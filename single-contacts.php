@@ -470,7 +470,7 @@ declare( strict_types=1 );
                                     <div class="baptism_date">
                                         <div class="section-subheader"><?php esc_html_e( 'Baptism Date', 'disciple_tools' )?></div>
                                         <div class="baptism_date">
-                                            <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"] ?? '' )?>" id="baptism-date-picker">
+                                            <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" id="baptism-date-picker">
                                         </div>
                                     </div>
 

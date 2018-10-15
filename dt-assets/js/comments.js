@@ -182,7 +182,7 @@ jQuery(document).ready(function($) {
   })
 
   function formatDate(date) {
-    return date.format("YYYY-MM-DD h:mm a")
+    return date.format("MMM M, YYYY h:mm a")
   }
 
   function display_activity_comment() {
