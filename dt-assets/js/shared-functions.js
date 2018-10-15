@@ -164,10 +164,10 @@ window.API = {
     })
   },
 
-  create_group(title, created_from_contact_id, parent_group_id){
+  create_group(fields){
     return jQuery.ajax({
       type: "POST",
-      data: JSON.stringify({title, created_from_contact_id, parent_group_id}),
+      data: JSON.stringify(fields),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       url: wpApiShare.root + `dt/v1/group/create`,

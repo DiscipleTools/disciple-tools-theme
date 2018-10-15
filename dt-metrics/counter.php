@@ -176,7 +176,12 @@ class Disciple_Tools_Counter
                         "value" => $num
                     ];
                 }
-//                @todo church planters && ppl groups
+                $data[] = [
+                    "key" => "church_planters",
+                    "label" => __( "Church Planters", "disciple_tools" ),
+                    "value" => self::critical_path( 'church_planters', $start, $end )
+                ];
+//                @todo ppl groups
                 foreach ( $manual_additions as $addition ){
                     if ( $addition["section"] == "after") {
                         $data[] = [

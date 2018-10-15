@@ -197,19 +197,20 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * Make sure there are no extra or misspelled fields
      * Make sure the field values are the correct format
      *
-     * @param array    $fields  , the group meta fields
+     * @param array $fields , the group meta fields
      * @param int|null $post_id , the id of the group
+     * @param array $allowed_fields
      *
+     * @return array
      * @access private
      * @since  0.1.0
-     * @return array
      */
-    private static function check_for_invalid_fields( array $fields, int $post_id = null ) {
+    private static function check_for_invalid_fields( array $fields, int $post_id = null, $allowed_fields = [] ) {
         $bad_fields = [];
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( isset( $post_id ), $post_id );
         $group_fields['title'] = "";
         foreach ( $fields as $field => $value ) {
-            if ( !isset( $group_fields[ $field ] ) && !self::is_key_contact_method_or_connection( $field ) ) {
+            if ( !isset( $group_fields[ $field ] ) && !self::is_key_contact_method_or_connection( $field ) && !in_array( $field, $allowed_fields ) ) {
                 $bad_fields[] = $field;
             }
         }
@@ -550,7 +551,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             [ 'date' => current_time( 'mysql' ) ]
         );
     }
-    
+
     /**
      * @param int $group_id
      * @param int $coach_id
@@ -912,7 +913,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 $fields["assigned_to"] = "user-" . $fields["assigned_to"];
             }
         }
-        $bad_fields = self::check_for_invalid_fields( $fields );
+        $allowed_fields = [ "parent_group_id", "created_from_contact_id" ];
+        $bad_fields = self::check_for_invalid_fields( $fields, null, $allowed_fields );
         if ( !empty( $bad_fields ) ) {
             return new WP_Error( __FUNCTION__, __( "One or more fields do not exist" ), [
                 'bad_fields' => $bad_fields,

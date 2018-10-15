@@ -293,7 +293,7 @@ function drawCriticalPath( cp_data ) {
                 top: '7%',
                 width: "75%",
                 height: "85%" },
-            hAxis: { scaleType: 'mirrorLog', viewWindow: {min:.5} },
+            hAxis: { scaleType: 'mirrorLog' },
             title: translations.title_critical_path,
             legend: { position: "none"},
             animation:{
@@ -304,9 +304,8 @@ function drawCriticalPath( cp_data ) {
     });
 
     var crit_keys = []
-    jQuery.each( sourceData.critical_path, function( index, value ) {
-        crit_keys.push( value[0] )
-
+    jQuery.each( path_data, function( index, value ) {
+      crit_keys.push( value["label"] )
     })
 
     let categoryFilter = new google.visualization.ControlWrapper({

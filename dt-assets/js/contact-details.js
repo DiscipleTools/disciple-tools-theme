@@ -202,7 +202,7 @@ jQuery(document).ready(function($) {
   $(".js-create-group").on("submit", function(e) {
     e.preventDefault();
     let title = $("#create-group-modal .js-create-group input[name=title]").val()
-    API.create_group(title,contactId)
+    API.create_group({title,created_from_contact_id:contactId})
       .then((newGroup)=>{
         $(".reveal-after-group-create").show()
         $("#new-group-link").html(`<a href="${newGroup.permalink}">${_.escape(title)}</a>`)

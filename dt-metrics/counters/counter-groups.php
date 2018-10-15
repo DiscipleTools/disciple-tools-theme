@@ -81,8 +81,7 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
                 break;
 
             case 'church_planters':
-//                @todo implement church planter field on group/church
-                return 0;
+                return self::query_church_planters( $start, $end );
                 break;
 
             default: // countable contacts
@@ -175,8 +174,8 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
                    AND d.meta_key = 'end_date'
             WHERE a.post_type = 'groups'
               AND a.post_status = 'publish'
-              AND ( status.meta_value = 'active' AND c.meta_value < %d )
-              AND ( status.meta_value = 'active' OR d.meta_value > %d ) 
+              AND c.meta_value < %d
+              AND ( status.meta_value = 'active' OR d.meta_value > %d )
         ", isset( $args['assigned_to'] ) ? 'user-' . $args['assigned_to'] : '%%', $end_date, $start_date ) );
 
         return $results;
@@ -198,14 +197,12 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
 
             if ($element['parent_id'] == $parent_id) {
                 if ( in_array( $element['id'], $ids_to_include ) ) {
-                    if ( $element["group_status"] === "active" ) {
-                        if ( $element["group_type"] === "pre-group" ) {
-                            $counts[ $generation ]["pre-group"] ++;
-                        } elseif ( $element["group_type"] === "group" ) {
-                            $counts[ $generation ]["group"] ++;
-                        } elseif ( $element["group_type"] === "church" ) {
-                            $counts[ $generation ]["church"] ++;
-                        }
+                    if ( $element["group_type"] === "pre-group" ) {
+                        $counts[ $generation ]["pre-group"] ++;
+                    } elseif ( $element["group_type"] === "group" ) {
+                        $counts[ $generation ]["group"] ++;
+                    } elseif ( $element["group_type"] === "church" ) {
+                        $counts[ $generation ]["church"] ++;
                     }
                 }
                 $counts = self::build_group_generation_counts( $elements, $element['id'], $generation, $counts, $ids_to_include );
@@ -213,6 +210,25 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
         }
 
         return $counts;
+    }
+
+    public static function query_church_planters( $start, $end ){
+        global $wpdb;
+        $count = $wpdb->get_var( $wpdb->prepare("
+            SELECT COUNT(DISTINCT(p2p.p2p_to))
+            FROM $wpdb->posts as p
+            JOIN $wpdb->postmeta pm ON ( 
+                p.ID = pm.post_id 
+                AND pm.meta_key = 'church_start_date' 
+                AND pm.meta_value > %s 
+                AND pm.meta_value < %s
+            )
+            JOIN $wpdb->p2p p2p ON (
+                p2p.p2p_from = p.ID
+            )
+            WHERE p.post_type = 'groups'
+        ", $start, $end ));
+        return $count;
     }
 
 

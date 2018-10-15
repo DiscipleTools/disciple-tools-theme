@@ -73,61 +73,6 @@ class Disciple_Tools_Metrics
         return $current;
     }
 
-    /**
-     * Bundles the basic critical path numbers in a google chart format
-     *
-     * @param $check_permissions
-     *
-     * @return array|\WP_Error
-     */
-    public static function chart_critical_path_chart_data( $check_permissions ) {
-
-        $current_user = get_current_user();
-        if ( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
-        }
-
-        // Check for transient cache
-        $current = self::chart_critical_path();
-        if ( is_wp_error( $current ) ) {
-            return $current;
-        }
-
-        $report = [
-            [ 'Critical Path', 'Current', [ 'role' => 'annotation' ] ],
-            // Prayer
-//            [ 'Prayers Network', (int) $current['prayer'], (int) $current['prayer'] ], // TODO Disabled until counting strategy is defined.
-            // Outreach
-//            [ 'Social Engagement', (int) $current['social_engagement'], (int) $current['social_engagement'] ], // TODO Disabled until counting strategy is defined.
-//            [ 'Website Visitors', (int) $current['website_visitors'], (int) $current['website_visitors'] ], // TODO Disabled until counting strategy is defined.
-            // Follow-up
-            [ 'New Contacts', (int) $current['new_contacts'], (int) $current['new_contacts'] ],
-            [ 'Contacts Attempted', (int) $current['contacts_attempted'], (int) $current['contacts_attempted'] ],
-            [ 'Contacts Established', (int) $current['contacts_established'], (int) $current['contacts_established'] ],
-            [ 'First Meetings', (int) $current['first_meetings'], (int) $current['first_meetings'] ],
-            // Multiplication
-            [ 'Baptisms', (int) $current['baptisms'], (int) $current['baptisms'] ],
-            [ 'Baptizers', (int) $current['baptizers'], (int) $current['baptizers'] ],
-            [ 'Active Groups', (int) $current['active_groups'], (int) $current['active_groups'] ],
-            [ 'Active Churches', (int) $current['active_churches'], (int) $current['active_churches'] ],
-            [ 'Church Planters', (int) $current['church_planters'], (int) $current['church_planters'] ],
-        ];
-
-        if ( !empty( $report ) ) {
-            return [
-                'status' => true,
-                'data'   => [
-                    'chart' => $report,
-                    'timestamp' => $current['timestamp'],
-                    ]
-            ];
-        } else {
-            return [
-                'status'  => false,
-                'message' => 'Failed to build critical path data.',
-            ];
-        }
-    }
 
 
     /**
