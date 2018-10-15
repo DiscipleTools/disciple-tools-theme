@@ -161,7 +161,10 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
             FROM $wpdb->posts as a
               JOIN $wpdb->postmeta as status
                 ON a.ID = status.post_id
-                   AND status.meta_key = 'group_status'
+                AND status.meta_key = 'group_status'
+              JOIN $wpdb->postmeta as type
+                ON a.ID = type.post_id
+                AND type.meta_key = 'group_type'
               JOIN $wpdb->postmeta as assigned_to
                 ON a.ID = assigned_to.post_id
                 AND assigned_to.meta_key = 'assigned_to'
@@ -171,12 +174,22 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
                    AND c.meta_key = 'start_date'
               LEFT JOIN $wpdb->postmeta as d
                 ON a.ID = d.post_id
-                   AND d.meta_key = 'end_date'
+                AND d.meta_key = 'end_date'
+              LEFT JOIN $wpdb->postmeta as e
+                ON a.ID = e.post_id
+                AND e.meta_key = 'church_start_date'
             WHERE a.post_type = 'groups'
               AND a.post_status = 'publish'
-              AND c.meta_value < %d
-              AND ( status.meta_value = 'active' OR d.meta_value > %d )
-        ", isset( $args['assigned_to'] ) ? 'user-' . $args['assigned_to'] : '%%', $end_date, $start_date ) );
+              AND ( 
+                type.meta_value = 'pre-group' 
+                OR ( type.meta_value = 'group'  
+                  AND c.meta_value < %d
+                  AND ( status.meta_value = 'active' OR d.meta_value > %d ) )
+                OR ( type.meta_value = 'church'  
+                  AND e.meta_value < %d
+                  AND ( status.meta_value = 'active' OR d.meta_value > %d ) )
+              )
+        ", isset( $args['assigned_to'] ) ? 'user-' . $args['assigned_to'] : '%%', $end_date, $start_date, $end_date, $start_date ) );
 
         return $results;
     }

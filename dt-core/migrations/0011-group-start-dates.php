@@ -32,7 +32,7 @@ class Disciple_Tools_Migration_0011 extends Disciple_Tools_Migration {
         ", ARRAY_A);
 
         foreach ( $churches_no_start_date as $church ){
-            update_post_meta( $church['ID'], 'church_start_date', get_post_meta( $church["ID"], "start_date" ) );
+            update_post_meta( $church['ID'], 'church_start_date', get_post_meta( $church["ID"], "start_date", true ) );
         }
     }
 
