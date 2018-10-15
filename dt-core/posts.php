@@ -34,6 +34,7 @@ class Disciple_Tools_Posts
             "coaching" => [ "name" => __( "Coaching", "disciple_tools" ) ],
             "subassigned" => [ "name" => __( "Sub Assigned", "disciple_tools" ) ],
             "leaders" => [ "name" => __( "Leaders", "disciple_tools" ) ],
+            "coaches" => [ "name" => __( "Coaches/Church planters", "disciple_tools" ) ],
             "parent_groups" => [ "name" => __( "Parent Groups", "disciple_tools" ) ],
             "child_groups" => [ "name" => __( "Child Groups", "disciple_tools" ) ],
         ];
@@ -263,11 +264,15 @@ class Disciple_Tools_Posts
 
         if ( !$p2p_record ){
             if ($activity->field_type === "connection from"){
-                $from_title = get_the_title( $activity->object_id );
-                $to_title = get_the_title( $activity->meta_value );
+                $from = get_post( $activity->object_id );
+                $to = get_post( $activity->meta_value );
+                $from_title = $from->post_title;
+                $to_title = $to->post_title ?? '#' . $activity->meta_value;
             } elseif ( $activity->field_type === "connection to"){
-                $from_title = get_the_title( $activity->meta_value );
-                $to_title = get_the_title( $activity->object_id );
+                $to = get_post( $activity->object_id );
+                $from = get_post( $activity->meta_value );
+                $to_title = $to->post_title;
+                $from_title = $from->post_title ?? '#' . $activity->meta_value;
             } else {
                 return "CONNECTION DESTROYED";
             }
@@ -292,20 +297,11 @@ class Disciple_Tools_Posts
             }
         } else if ($p2p_type === "contacts_to_groups"){
             if ($action == "connected to"){
-                $object_note_to = sprintf( __( 'Added %s to group', 'disciple_tools' ), $from_title );
+                $object_note_to = sprintf( __( '%s added to members', 'disciple_tools' ), $from_title );
                 $object_note_from = __( 'Added to group', 'disciple_tools' ) . ' ' . $to_title;
             } else {
                 $object_note_to = sprintf( __( 'Removed %s from group', 'disciple_tools' ), $from_title );
                 $object_note_from = __( 'Removed from group', 'disciple_tools' ) . ' ' . $to_title;
-            }
-        }
-        else if ($p2p_type === "contacts_to_peoplegroups"){
-            if ($action == "connected to"){
-                $object_note_to = __( 'Added to people group:', 'disciple_tools' ) . ' ' . $to_title;
-                $object_note_from = __( 'Added to people group:', 'disciple_tools' ) . ' ' . $to_title;
-            } else {
-                $object_note_to = __( 'Removed from people group:', 'disciple_tools' ) . ' ' . $to_title;
-                $object_note_from = __( 'Removed from people group:', 'disciple_tools' ) . ' ' . $to_title;
             }
         }
         else if ( $p2p_type === "contacts_to_contacts"){
@@ -324,21 +320,45 @@ class Disciple_Tools_Posts
                 $object_note_to = __( 'Removed sub-assigned', 'disciple_tools' ) . ' ' . $from_title;
                 $object_note_from = __( 'No longed sub-assigned on', 'disciple_tools' ) . ' ' . $to_title;
             }
-        } else if ( $p2p_type === "contacts_to_locations"){
+        } else if ( $p2p_type === "contacts_to_locations" || $p2p_type === "groups_to_locations"){
             if ($action == "connected to"){
-                $object_note_to = __( 'Added to location', 'disciple_tools' ) . ' ' . $to_title;
-                $object_note_from = __( 'Added to location', 'disciple_tools' ) . ' ' . $to_title;
+                $object_note_to = sprintf( __( '%1$s added as location on %2$s', 'disciple_tools' ), $to_title, $from_title );
+                $object_note_from = sprintf( __( '%s added to locations', 'disciple_tools' ), $to_title );
             } else {
-                $object_note_to = __( 'Removed from location', 'disciple_tools' ) . ' ' . $to_title;
-                $object_note_from = __( 'Removed from location', 'disciple_tools' ) . ' ' . $to_title;
+                $object_note_to = sprintf( __( '%1$s removed from locations on %2$s', 'disciple_tools' ), $to_title, $from_title );
+                $object_note_from = sprintf( __( '%s removed from locations', 'disciple_tools' ), $to_title );
+            }
+        } else if ( $p2p_type === "contacts_to_peoplegroups" || $p2p_type === "groups_to_peoplegroups"){
+            if ($action == "connected to"){
+                $object_note_to = sprintf( __( '%1$s added as people group on %2$s', 'disciple_tools' ), $to_title, $from_title );
+                $object_note_from = sprintf( __( '%s added to people groups', 'disciple_tools' ), $to_title );
+            } else {
+                $object_note_to = sprintf( __( '%1$s removed from people groups on %2$s', 'disciple_tools' ), $to_title, $from_title );
+                $object_note_from = sprintf( __( '%s removed from people groups', 'disciple_tools' ), $to_title );
             }
         } else if ( $p2p_type === "groups_to_leaders"){
             if ($action == "connected to"){
-                $object_note_to = __( 'Added to leaders in group', 'disciple_tools' ) . ': ' . $from_title;
-                $object_note_from = $to_title . ' ' . __( 'added to leaders', 'disciple_tools' );
+                $object_note_to = sprintf( __( '%1$s added as leader on %2$s', 'disciple_tools' ), $to_title, $from_title );
+                $object_note_from = sprintf( __( '%s added to leaders', 'disciple_tools' ), $to_title );
             } else {
-                $object_note_to = __( 'Removed from leaders in group', 'disciple_tools' ) . ': ' . $from_title;
-                $object_note_from = $to_title . ' ' . __( 'Removed from leaders', 'disciple_tools' );
+                $object_note_to = sprintf( __( '%1$s removed from leaders on %2$s', 'disciple_tools' ), $to_title, $from_title );
+                $object_note_from = sprintf( __( '%s removed from leaders', 'disciple_tools' ), $to_title );
+            }
+        } else if ( $p2p_type === "groups_to_coaches"){
+            if ($action == "connected to"){
+                $object_note_to = sprintf( __( '%1$s added as coach on %2$s', 'disciple_tools' ), $to_title, $from_title );
+                $object_note_from = sprintf( __( '%s added to coaches', 'disciple_tools' ), $to_title );
+            } else {
+                $object_note_to = sprintf( __( '%1$s removed from coaches on %2$s', 'disciple_tools' ), $to_title, $from_title );
+                $object_note_from = sprintf( __( '%s removed from coaches', 'disciple_tools' ), $to_title );
+            }
+        } else if ( $p2p_type === "groups_to_groups"){
+            if ($action == "connected to"){
+                $object_note_to = sprintf( __( '%1$s added to child groups', 'disciple_tools' ), $from_title );
+                $object_note_from = sprintf( __( '%s added to parent groups', 'disciple_tools' ), $to_title );
+            } else {
+                $object_note_to = sprintf( __( '%1$s removed from child groups', 'disciple_tools' ), $from_title );
+                $object_note_from = sprintf( __( '%s removed from parent groups', 'disciple_tools' ), $to_title );
             }
         } else {
             if ($action == "connected to"){

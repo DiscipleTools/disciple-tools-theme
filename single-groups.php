@@ -47,6 +47,23 @@ declare(strict_types=1);
                                 <span class="section-header"><?php esc_html_e( 'Members', 'disciple_tools' )?></span>
                                 <div class="section-subheader"><?php esc_html_e( "Member Count", 'disciple_tools' ) ?></div>
                                 <input id="member_count" class="text-input" type="text" value="<?php echo esc_html( $group["member_count"] ?? "" ) ?>">
+                                
+                                <div class="section-subheader"><?php esc_html_e( "Group Coach / Church Planter", 'disciple_tools' ) ?></div>
+                                <div class="coaches">
+                                    <var id="coaches-result-container" class="result-container"></var>
+                                    <div id="coaches_t" name="form-coaches" class="scrollable-typeahead">
+                                        <div class="typeahead__container">
+                                            <div class="typeahead__field">
+                                                <span class="typeahead__query">
+                                                    <input class="js-typeahead-coaches"
+                                                           name="coaches[query]" placeholder="Search Coaches"
+                                                           autocomplete="off">
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 <div class="section-subheader"><?php esc_html_e( "Member List", 'disciple_tools' ) ?></div>
                                 <div class="members">
                                     <var id="members-result-container" class="result-container"></var>

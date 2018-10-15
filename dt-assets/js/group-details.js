@@ -236,7 +236,7 @@ jQuery(document).ready(function($) {
       },
       href: function(item){
         if (item){
-          return `/groups/${item.ID}`
+          return `${window.wpApiShare.site_url}/groups/${item.ID}`
         }
       }
     },
@@ -301,7 +301,7 @@ jQuery(document).ready(function($) {
       },
       href: function(item){
         if (item){
-          return `/groups/${item.ID}`
+          return `${window.wpApiShare.site_url}/groups/${item.ID}`
         }
       }
     },
@@ -396,11 +396,7 @@ jQuery(document).ready(function($) {
       }, callback: {
         onCancel: function (node, item) {
           API.save_field_api('group', groupId, {'members': {values:[{value:item.ID, delete:true}]}}).then(()=>{
-            $(`.members-list .${item.ID}`).remove()
-            let listItems = $(`.members-list li`)
-            if (listItems.length === 0){
-              $(`.members-list.details-list`).append(`<li id="no-locations">${wpApiGroupsSettings.translations["not-set"]["location"]}</li>`)
-            }
+
           }).catch(err => { console.error(err) })
         }
       },
@@ -409,10 +405,6 @@ jQuery(document).ready(function($) {
     callback: {
       onClick: function(node, a, item, event){
         API.save_field_api('group', groupId, {'members': {values:[{value:item.ID}]}}).then((addedItem)=>{
-          $('.members-list').append(`<li class="${addedItem.ID}">
-            <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
-          </li>`)
-          $("#no-locations").remove()
         }).catch(err => { console.error(err) })
         masonGrid.masonry('layout')
       },
@@ -423,6 +415,54 @@ jQuery(document).ready(function($) {
       },
       onHideLayout: function () {
         $('#members-result-container').html("");
+      }
+    }
+  });
+  
+  /**
+   * coaches
+   */
+  typeaheadTotals.coaches = 0;
+  $.typeahead({
+    input: '.js-typeahead-coaches',
+    minLength: 0,
+    accent: true,
+    searchOnFocus: true,
+    maxItem: 20,
+    template: function (query, item) {
+      return `<span>${_.escape(item.name)}</span>`
+    },
+    source: TYPEAHEADS.typeaheadSource('coaches', 'dt/v1/contacts/compact/'),
+    display: "name",
+    templateValue: "{{name}}",
+    dynamic: true,
+    multiselect: {
+      matchOn: ["ID"],
+      data: function () {
+        return (group.coaches || []).map(g=>{
+          return {ID:g.ID, name:g.post_title}
+        })
+      }, callback: {
+        onCancel: function (node, item) {
+          API.save_field_api('group', groupId, {'coaches': {values:[{value:item.ID, delete:true}]}}).then(()=>{
+          }).catch(err => { console.error(err) })
+        }
+      },
+      href: window.wpApiShare.site_url + "/contacts/{{ID}}"
+    },
+    callback: {
+      onClick: function(node, a, item, event){
+        API.save_field_api('group', groupId, {'coaches': {values:[{value:item.ID}]}}).then((addedItem)=>{
+        }).catch(err => { console.error(err) })
+        masonGrid.masonry('layout')
+      },
+      onResult: function (node, query, result, resultCount) {
+        resultCount = typeaheadTotals.coaches
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+        $('#coaches-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('#coaches-result-container').html("");
       }
     }
   });

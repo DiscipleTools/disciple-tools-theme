@@ -39,7 +39,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     "child_groups",
                     "locations",
                     "people_groups",
-                    "leaders"
+                    "leaders",
+                    "coaches"
                 ];
                 self::$channel_list = [
                     "address"
@@ -95,86 +96,30 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         if ( $group ) {
             $fields = [];
 
-            $locations = get_posts(
-                [
-                    'connected_type'   => 'groups_to_locations',
+            $connection_types = [
+                [ "groups_to_locations", "locations", "any" ],
+                [ "groups_to_peoplegroups", "people_groups", "any" ],
+                [ "contacts_to_groups", "members", "to" ],
+                [ "groups_to_leaders", "leaders", "any" ],
+                [ "groups_to_coaches", "coaches", "any" ],
+                [ "groups_to_groups", "child_groups", "to" ],
+                [ "groups_to_groups", "parent_groups", "from" ],
+            ];
+
+            foreach ( $connection_types as $type ){
+                $args = [
+                    'connected_type'   => $type[0],
+                    'connected_direction' => $type[2],
                     'connected_items'  => $group,
                     'nopaging'         => true,
                     'suppress_filters' => false,
-                ]
-            );
-            foreach ( $locations as $l ) {
-                $l->permalink = get_permalink( $l->ID );
+                ];
+                $connections = get_posts( $args );
+                foreach ( $connections as $c ){
+                    $c->permalink = get_permalink( $c->ID );
+                }
+                $fields[$type[1]] = $connections;
             }
-            $fields["locations"] = $locations;
-
-
-            $people_groups = get_posts(
-                [
-                    'connected_type'   => 'groups_to_peoplegroups',
-                    'connected_items'  => $group,
-                    'nopaging'         => true,
-                    'suppress_filters' => false,
-                ]
-            );
-            foreach ( $people_groups as $g ) {
-                $g->permalink = get_permalink( $g->ID );
-            }
-            $fields["people_groups"] = $people_groups;
-
-            $members = get_posts(
-                [
-                    'connected_type'   => 'contacts_to_groups',
-                    'connected_items'  => $group,
-                    'nopaging'         => true,
-                    'suppress_filters' => false,
-                ]
-            );
-            foreach ( $members as $l ) {
-                $l->permalink = get_permalink( $l->ID );
-            }
-            $fields["members"] = $members;
-
-            $leaders = get_posts(
-                [
-                    'connected_type'   => 'groups_to_leaders',
-                    'connected_items'  => $group,
-                    'nopaging'         => true,
-                    'suppress_filters' => false,
-                ]
-            );
-            foreach ( $leaders as $l ) {
-                $l->permalink = get_permalink( $l->ID );
-            }
-            $fields["leaders"] = $leaders;
-
-            $child_groups = get_posts(
-                [
-                    'connected_type'   => 'groups_to_groups',
-                    'connected_direction' => 'to',
-                    'connected_items'  => $group,
-                    'nopaging'         => true,
-                    'suppress_filters' => false,
-                ]
-            );
-            foreach ( $child_groups as $g ) {
-                $g->permalink = get_permalink( $g->ID );
-            }
-            $fields["child_groups"] = $child_groups;
-
-            $parent_groups = get_posts(
-                [
-                    'connected_type'   => 'groups_to_groups',
-                    'connected_direction' => 'from',
-                    'connected_items'  => $group,
-                    'nopaging'         => true,
-                    'suppress_filters' => false,
-                ]
-            );
-            foreach ( $parent_groups as $g ) {
-                $g->permalink = get_permalink( $g->ID );
-            }
-            $fields["parent_groups"] = $parent_groups;
 
             $meta_fields = get_post_custom( $group_id );
             foreach ( $meta_fields as $key => $value ) {
@@ -605,6 +550,19 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             [ 'date' => current_time( 'mysql' ) ]
         );
     }
+    
+    /**
+     * @param int $group_id
+     * @param int $coach_id
+     *
+     * @return mixed
+     */
+    public static function add_coach_to_group( int $group_id, int $coach_id ) {
+        return p2p_type( 'groups_to_coaches' )->connect(
+            $group_id, $coach_id,
+            [ 'date' => current_time( 'mysql' ) ]
+        );
+    }
 
     /**
      * @param int $group_id
@@ -675,6 +633,16 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     /**
      * @param int $group_id
+     * @param int $coach_id
+     *
+     * @return mixed
+     */
+    public static function remove_coach_from_group( int $group_id, int $coach_id ) {
+        return p2p_type( 'groups_to_coaches' )->disconnect( $group_id, $coach_id );
+    }
+
+    /**
+     * @param int $group_id
      * @param int $post_id
      *
      * @return mixed
@@ -722,6 +690,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $connect = self::add_people_group_to_group( $group_id, $value );
         } elseif ( $key === "leaders" ) {
             $connect = self::add_leader_to_group( $group_id, $value );
+        } elseif ( $key === "coaches" ) {
+            $connect = self::add_coach_to_group( $group_id, $value );
         } elseif ( $key === "child_groups" ) {
             $connect = self::add_child_group_to_group( $group_id, $value );
         } elseif ( $key === "parent_groups" ) {
@@ -802,6 +772,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return self::remove_member_from_group( $group_id, $value );
         } elseif ( $key === "leaders" ) {
             return self::remove_leader_from_group( $group_id, $value );
+        } elseif ( $key === "coaches" ) {
+            return self::remove_coach_from_group( $group_id, $value );
         } elseif ( $key === "people_groups" ) {
             return self::remove_people_group_from_group( $group_id, $value );
         } elseif ( $key === "child_groups" ) {
