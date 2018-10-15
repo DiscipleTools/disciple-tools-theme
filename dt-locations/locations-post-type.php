@@ -611,8 +611,6 @@ class Disciple_Tools_Location_Post_Type
         if ( ( isset( $_POST['location_address'] ) && empty( $_POST['location_address'] ) ) || isset( $_POST['delete'] ) ) {
 
             delete_post_meta( $post_id, 'location_address' );
-            delete_post_meta( $post_id, 'lat' );
-            delete_post_meta( $post_id, 'lng' );
             delete_post_meta( $post_id, 'base_name' );
             delete_post_meta( $post_id, 'types' );
             delete_post_meta( $post_id, 'raw' );
@@ -630,8 +628,6 @@ class Disciple_Tools_Location_Post_Type
                 if ( $geocode::check_valid_request_result( $raw_response ) ) {
 
                     update_post_meta( $post_id, 'location_address', $geocode::parse_raw_result( $raw_response, 'location_address' ) );
-                    update_post_meta( $post_id, 'lat', $geocode::parse_raw_result( $raw_response, 'lat' ) );
-                    update_post_meta( $post_id, 'lng', $geocode::parse_raw_result( $raw_response, 'lng' ) );
                     update_post_meta( $post_id, 'base_name', $geocode::parse_raw_result( $raw_response, 'base_name' ) );
                     update_post_meta( $post_id, 'types', $geocode::parse_raw_result( $raw_response, 'types' ) );
                     update_post_meta( $post_id, 'raw', $raw_response );
