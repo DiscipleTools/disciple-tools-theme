@@ -740,8 +740,8 @@ function dt_custom_password_reset( $message, $key, $user_login, $user_data ){
  * @return string
  */
 function dt_get_url_path() {
-    if ( isset( $_SERVER["SERVER_NAME"] ) ) {
-        $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["SERVER_NAME"] ) );
+    if ( isset( $_SERVER["HTTP_HOST"] ) ) {
+        $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
         if ( isset( $_SERVER["REQUEST_URI"] ) ) {
             $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
         }
