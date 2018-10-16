@@ -305,42 +305,47 @@ jQuery(document).ready(function($) {
     ).then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
       const commentData = commentDataStatusJQXHR[0];
       const activityData = activityDataStatusJQXHR[0];
-      let typesCount = {};
-      commentData.forEach(comment => {
-        comment.date = moment(comment.comment_date_gmt + "Z")
-        if(comment.comment_content.match(/function|script/)) {
-          comment.comment_content = _.escape(comment.comment_content)
-        }
-        /* comment_content should be HTML. However, we want to make sure that
-         * HTML like "<div>Hello" gets transformed to "<div>Hello</div>", that
-         * is, that all tags are closed, so that the comment_content can be
-         * included in HTML without any nasty surprises. This is one way to do
-         * that. This is not sufficient for malicious input, but hopefully we
-         * can trust the contents of the database to have been sanitized
-         * thanks to wp_new_comment . */
-        comment.comment_content = $("<div>").html(comment.comment_content).html()
-        if (!typesCount[comment.comment_type]){
-          typesCount[comment.comment_type] = 0;
-        }
-        typesCount[comment.comment_type]++;
-      })
-      _.forOwn(typesCount, (val, key)=>{
-        let tab = $(`#tab-button-${key}`)
-        let text = tab.text()
-        text = text.substring(0, text.indexOf('(')) || text
-        text += `(${val})`
-        tab.text(text)
-      })
-      comments = commentData
-      activity = activityData
-      prepareActivityData(activity)
-      display_activity_comment("all")
+      prepareData(commentData, activityData)
     }).catch(err => {
       console.error(err);
       jQuery("#errors").append(err.responseText)
     })
   }
-  get_all();
+
+
+  let prepareData = function(commentData, activityData){
+    let typesCount = {};
+    commentData.forEach(comment => {
+      comment.date = moment(comment.comment_date_gmt + "Z")
+      if(comment.comment_content.match(/function|script/)) {
+        comment.comment_content = _.escape(comment.comment_content)
+      }
+      /* comment_content should be HTML. However, we want to make sure that
+       * HTML like "<div>Hello" gets transformed to "<div>Hello</div>", that
+       * is, that all tags are closed, so that the comment_content can be
+       * included in HTML without any nasty surprises. This is one way to do
+       * that. This is not sufficient for malicious input, but hopefully we
+       * can trust the contents of the database to have been sanitized
+       * thanks to wp_new_comment . */
+      comment.comment_content = $("<div>").html(comment.comment_content).html()
+      if (!typesCount[comment.comment_type]){
+        typesCount[comment.comment_type] = 0;
+      }
+      typesCount[comment.comment_type]++;
+    })
+    _.forOwn(typesCount, (val, key)=>{
+      let tab = $(`#tab-button-${key}`)
+      let text = tab.text()
+      text = text.substring(0, text.indexOf('(')) || text
+      text += `(${val})`
+      tab.text(text)
+    })
+    comments = commentData
+    activity = activityData
+    prepareActivityData(activity)
+    display_activity_comment("all")
+  }
+  prepareData( commentsSettings.comments, commentsSettings.activity )
 
 
   jQuery('#add-comment-button').on('click', function () {

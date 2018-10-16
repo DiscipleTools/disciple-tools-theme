@@ -406,6 +406,6 @@ setInterval(function() {
   //check if timed out
   get_new_notification_count()
   .fail(function(x) {
-      window.location.href = "/";
+      window.location.href = wpApiShare.site_url;
   });
 }, 300000); //300000 = five minutes
