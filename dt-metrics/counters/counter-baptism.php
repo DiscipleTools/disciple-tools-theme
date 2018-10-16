@@ -201,11 +201,11 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
         }
         foreach ($elements as $element_i => $element) {
             if ($element['parent_id'] == $parent_id) {
-                //find and remove if the baptisms has already been counted on a shorter path
-                //we keep the longer path
+                //find and remove if the baptisms has already been counted on a longer path
+                //we keep the shorter path
                 $already_counted_in_deeper_path = false;
                 foreach ( $counts as $count_i => $count ){
-                    if ( $count_i < $generation ){
+                    if ( $count_i > $generation ){
                         if ( in_array( $element['id'], $count["ids"] ) ){
                             $counts[ $count_i ]["total"]--;
                             unset( $counts[ $count_i ]["ids"][array_search( $element['id'], $count["ids"] )] );
@@ -231,8 +231,8 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
      * Save baptism generation number on all contact who have been baptized.
      */
     public static function save_all_contact_generations(){
-        $raw_baptism_generation_list = Disciple_Tools_Metrics_Hooks_Base::query_get_all_baptism_connections();
-        $all_baptisms = Disciple_Tools_Metrics_Hooks_Base::build_baptism_generation_counts( $raw_baptism_generation_list );
+        $raw_baptism_generation_list = self::query_get_all_baptism_connections();
+        $all_baptisms = self::build_baptism_generation_counts( $raw_baptism_generation_list );
         foreach ( $all_baptisms as $baptism_generation ){
             $generation = $baptism_generation["generation"];
             $baptisms = $baptism_generation["ids"];

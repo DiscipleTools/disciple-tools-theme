@@ -311,25 +311,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return $generation_tree;
     }
 
-
-    public static function chart_streams() {
-        $tree = dt_get_generation_tree();
-
-        $streams = Disciple_Tools_Counter_Base::get_stream_count( $tree );
-
-        ksort( $streams );
-
-        $chart = [
-            [ 'Generations', 'Streams' ],
-        ];
-
-        foreach ( $streams as $row_key => $row_value ) {
-            $chart[] = [ (string) $row_key . ' gen' , intval( $row_value ) ];
-        }
-
-        return $chart;
-    }
-
     public static function chart_project_hero_stats() {
         $stats = self::query_project_hero_stats();
 

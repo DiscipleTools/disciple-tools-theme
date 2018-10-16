@@ -99,7 +99,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'label_groups' => strtolower( __( 'groups' ) ),
                 'label_generations' => strtolower( __( 'generations' ) ),
                 'label_groups_by_type' => strtolower( __( 'groups by type' ) ),
-                'label_streams' => strtolower( __( 'streams' ) ),
                 'label_stats_as_of' => strtolower( __( 'stats as of' ) ),
                 'label_select_year' => __( 'Select All time or a specific year to display' ),
                 'label_all_time' => __( 'All time' ),
@@ -112,7 +111,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             'group_health' => self::chart_group_health( 'project' ),
             'group_generations' => self::chart_group_generations( 'project' ),
             'timeline' => self::chart_timeline(),
-            'streams' => self::chart_streams(),
         ];
     }
 }
