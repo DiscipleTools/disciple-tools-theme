@@ -458,9 +458,8 @@ declare( strict_types=1 );
                                                 $class = ( isset( $contact[ $field ] ) && $contact[ $field ]['key'] === 'yes' ) ?
                                                     "selected-select-button" : "empty-select-button";
                                                 ?>
-                                                <button onclick="save_seeker_milestones( <?php echo esc_html( get_the_ID() ) ?> , '<?php echo esc_html( $field ) ?>')"
-                                                        id="<?php echo esc_html( $field ) ?>"
-                                                        class="<?php echo esc_html( $class ) ?> select-button button ">
+                                                <button id="<?php echo esc_html( $field ) ?>"
+                                                        class="seeker-milestone-button <?php echo esc_html( $class ) ?> select-button button ">
                                                     <?php echo esc_html( $contact_fields[ $field ]["name"] ) ?>
                                                 </button>
                                             <?php }?>
@@ -712,6 +711,48 @@ declare( strict_types=1 );
             </button>
             <button class="button" data-close type="button" id="create-tag-return">
                 <?php esc_html_e( 'Create and apply tag', 'disciple_tools' ); ?>
+            </button>
+            <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="reveal" id="baptism-modal" data-reveal>
+
+        <p class="lead"><?php esc_html_e( 'Baptized', 'disciple_tools' )?></p>
+
+        <div>
+            <div class="section-subheader">
+                <?php esc_html_e( 'Baptized By', 'disciple_tools' )?>
+            </div>
+            <div class="modal_baptized_by details">
+                <var id="modal_baptized_by-result-container" class="result-container modal_baptized_by-result-container"></var>
+                <div id="modal_baptized_by_t" name="form-modal_baptized_by" class="scrollable-typeahead typeahead-margin-when-active">
+                    <div class="typeahead__container">
+                        <div class="typeahead__field">
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-modal_baptized_by input-height"
+                                       name="modal_baptized_by[query]"
+                                       placeholder="<?php esc_html_e( "Search multipliers and contacts", 'disciple_tools' ) ?>"
+                                       autocomplete="off">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <span class="section-subheader"><?php esc_html_e( "Baptism Date", 'disciple_tools' ) ?></span>
+            <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" id="modal-baptism-date-picker">
+
+<!--            <span class="section-subheader">--><?php //esc_html_e( "Baptism Generation", 'disciple_tools' ) ?><!--</span>-->
+<!--            <input type="number" value="" id="modal-baptism_generation">-->
+        </div>
+
+
+        <div class="grid-x">
+            <button class="button" data-close type="button" id="close-baptism-modal">
+                <?php esc_html_e( 'Close', 'disciple_tools' )?>
             </button>
             <button class="close-button" data-close aria-label="Close modal" type="button">
                 <span aria-hidden="true">&times;</span>

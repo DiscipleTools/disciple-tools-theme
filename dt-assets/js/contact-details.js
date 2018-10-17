@@ -1,29 +1,6 @@
 /* global jQuery:false, contactsDetailsWpApiSettings:false, moment:false, _:false */
 
-function save_seeker_milestones(contactId, fieldKey, fieldValue){
-  let data = {}
-  let field = jQuery("#" + fieldKey)
-  field.addClass("submitting-select-button")
-  if (field.hasClass("selected-select-button")){
-    fieldValue = "no"
-  } else {
-    field.removeClass("empty-select-button")
-    field.addClass("selected-select-button")
-    fieldValue = "yes"
-  }
-  data[fieldKey] = fieldValue
-  API.save_field_api('contact', contactId, data).then(()=>{
-    field.removeClass("submitting-select-button selected-select-button")
-    field.blur()
-    field.addClass( fieldValue === "no" ? "empty-select-button" : "selected-select-button")
-  }).catch(err=>{
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").text(err.responseText)
-      field.removeClass("submitting-select-button selected-select-button")
-      field.addClass( fieldValue === "yes" ? "empty-select-button" : "selected-select-button")
-  })
-}
+
 
 let refresh_quick_action_buttons = (contact)=>{
   Object.keys(contactsDetailsWpApiSettings.contacts_custom_fields_settings).forEach(field=>{
@@ -137,7 +114,7 @@ jQuery(document).ready(function($) {
     searchOnFocus: true,
     maxItem: 20,
     template: function (query, item) {
-      if (item.ID == "new-item"){
+      if (item.ID === "new-item"){
         return "Create new Group"
       }
       return `<span>${_.escape(item.name)}</span>`
@@ -225,9 +202,10 @@ jQuery(document).ready(function($) {
    */
   typeaheadTotals.sources = 0;
   let leadSourcesTypeahead = async function leadSourcesTypeahead() {
+    let sourceTypeahead =  $(".js-typeahead-sources");
     if (!window.Typeahead['.js-typeahead-sources']){
       /* Similar code is in list.js, copy-pasted for now. */
-      $(".js-typeahead-sources").attr("disabled", true) // disable while loading AJAX
+      sourceTypeahead.attr("disabled", true) // disable while loading AJAX
       const response = await fetch(contactsDetailsWpApiSettings.root + 'dt/v1/contact/list-sources', {
         credentials: 'same-origin', // needed for Safari
         headers: {
@@ -238,7 +216,7 @@ jQuery(document).ready(function($) {
       _.forOwn(await response.json(), (sourceValue, sourceKey) => {
          sourcesData.push({key:sourceKey, value:sourceValue || ""})
       })
-      $(".js-typeahead-sources").attr("disabled", false)
+      sourceTypeahead.attr("disabled", false)
       $.typeahead({
         input: '.js-typeahead-sources',
         minLength: 0,
@@ -426,7 +404,7 @@ jQuery(document).ready(function($) {
     hint: true,
     emptyTemplate: 'No users found "{{query}}"',
     callback: {
-      onClick: function(node, a, item, event){
+      onClick: function(node, a, item){
         API.save_field_api('contact', contactId, {assigned_to: 'user-' + item.ID}).then(function (response) {
           _.set(contact, "assigned_to", response.assigned_to)
           setStatus(response)
@@ -548,11 +526,9 @@ jQuery(document).ready(function($) {
       callback: {
         onClick: function(node, a, item, event){
           API.save_field_api('contact', contactId, {[field_id]: {values:[{"value":item.ID}]}}).then((addedItem)=>{
-            if (field_id === "subassigned")
-            $(`#no-${field_id}`).remove()
-            $(`.${field_id}-list`).append(`<li class="${addedItem.ID}">
-              <a href="${addedItem.permalink}">${_.escape(addedItem.post_title)}</a>
-            </li>`)
+            if (field_id === "baptized_by"){
+              openBaptismModal(addedItem)
+            }
           }).catch(err => { console.error(err) })
           this.addMultiselectItemLayout(item)
           event.preventDefault()
@@ -562,7 +538,7 @@ jQuery(document).ready(function($) {
         },
         onResult: function (node, query, result, resultCount) {
           resultCount = typeaheadTotals[field_id]
-          var text = "";
+          let text = "";
           if (result.length > 0 && result.length < resultCount) {
             text = "Showing <strong>" + result.length + "</strong> of <strong>" + resultCount + '</strong> ' + (query ? 'elements matching "' + query + '"' : '');
           } else if (result.length > 0) {
@@ -668,6 +644,35 @@ jQuery(document).ready(function($) {
    * Contact details
    */
 
+  $('.seeker-milestone-button').on( 'click', function(){
+    let fieldKey = $(this).attr('id')
+    let fieldValue = ""
+    let data = {}
+    let field = jQuery("#" + fieldKey)
+    field.addClass("submitting-select-button")
+    if (field.hasClass("selected-select-button")){
+      fieldValue = "no"
+    } else {
+      field.removeClass("empty-select-button")
+      field.addClass("selected-select-button")
+      fieldValue = "yes"
+    }
+    data[fieldKey] = fieldValue
+    API.save_field_api('contact', contactId, data).then((resp)=>{
+      field.removeClass("submitting-select-button selected-select-button")
+      field.blur()
+      field.addClass( fieldValue === "no" ? "empty-select-button" : "selected-select-button")
+      if ( fieldKey === 'milestone_baptized' && fieldValue === 'yes' ){
+        openBaptismModal(resp)
+      }
+    }).catch(err=>{
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").text(err.responseText)
+      field.removeClass("submitting-select-button selected-select-button")
+      field.addClass( fieldValue === "yes" ? "empty-select-button" : "selected-select-button")
+    })
+  })
 
   $(document).on('change', 'div.reason-field select', e => {
     const $select = $(e.currentTarget)
@@ -677,7 +682,7 @@ jQuery(document).ready(function($) {
     API.save_field_api('contact', contactId, { [field]: value }).catch(handelAjaxError)
   })
 
-  $('button#add-social-media').click(e => {
+  $('button#add-social-media').on('click', () => {
     const channel_type = 'contact_' + $('select#social-channels').val()
     const $inputForNewValue = $('input#new-social-media')
     const text = $inputForNewValue.val()
@@ -724,14 +729,16 @@ jQuery(document).ready(function($) {
   $('input#baptism-date-picker').datepicker({
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
-      API.save_field_api('contact', contactId, { baptism_date: date }).catch(handelAjaxError)
+      API.save_field_api('contact', contactId, { baptism_date: date }).then(res=>{
+        openBaptismModal(res)
+      }).catch(handelAjaxError)
     },
     changeMonth: true,
     changeYear: true
   })
 
   // Clicking plus sign for new address
-  $('button#add-new-address').click(e => {
+  $('button#add-new-address').on('click', () => {
     $('#edit-contact_address').append(`
       <li style="display: flex">
         <textarea rows="3" class="contact-input" data-type="contact_address"></textarea>
@@ -742,7 +749,7 @@ jQuery(document).ready(function($) {
   })
 
   // Clicking the plus sign next to the field label
-  $('button.add-button').click(e => {
+  $('button.add-button').on('click', e => {
     const listClass = $(e.currentTarget).data('list-class')
     const $list = $(`#edit-${listClass}`)
 
@@ -755,7 +762,7 @@ jQuery(document).ready(function($) {
   })
 
 
-  $('button.show-button').click(e => {
+  $('button.show-button').on('click', e => {
     $(e.currentTarget).toggleClass('showing-more')
     $('.show-content').toggle()
   })
@@ -763,7 +770,7 @@ jQuery(document).ready(function($) {
   /**
    * Update Needed
    */
-  $('.update-needed.switch-input').change(function (a,b) {
+  $('.update-needed.switch-input').change(function () {
     let updateNeeded = $(this).is(':checked')
     API.save_field_api( "contact", contactId, {"requires_update":updateNeeded})
   })
@@ -771,7 +778,7 @@ jQuery(document).ready(function($) {
   /**
    * Status
    */
-  $('.make-active').click(function () {
+  $('.make-active').on('click', function () {
     let data = {overall_status:"active"}
     API.save_field_api('contact', contactId, data).then((contact)=>{
       setStatus(contact)
@@ -779,11 +786,12 @@ jQuery(document).ready(function($) {
   })
 
   function setStatus(contact, openModal) {
+    let statusSelect = $('#overall_status')
     let status = _.get(contact, "overall_status.key")
     let reasonLabel = _.get(contact, `reason_${status}.label`)
     let statusColor = _.get(contactsDetailsWpApiSettings,
       `contacts_custom_fields_settings.overall_status.colors.${status}`)
-    $('#overall_status').val(status)
+    statusSelect.val(status)
 
     if (openModal){
       if (status === "paused"){
@@ -796,9 +804,9 @@ jQuery(document).ready(function($) {
     }
 
     if (statusColor){
-      $('#overall_status').css("background-color", statusColor)
+      statusSelect.css("background-color", statusColor)
     } else {
-      $('#overall_status').css("background-color", "#366184")
+      statusSelect.css("background-color", "#366184")
     }
 
     $('#reason').text(reasonLabel ? `(${reasonLabel})` : '')
@@ -866,7 +874,7 @@ jQuery(document).ready(function($) {
     $("#edit-contact_address").html(addressHTML)
 
     let html = ""
-    for( let field in contact ){
+    _.forOwn( contact, field=>{
       if ( field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field) ){
         contact[field].forEach(socialField=>{
           html += `<li style="display: flex">
@@ -878,7 +886,7 @@ jQuery(document).ready(function($) {
         })
 
       }
-    }
+    })
     $('#edit-social').html(html)
 
     $('#contact-details-edit').foundation('open');
@@ -933,7 +941,7 @@ jQuery(document).ready(function($) {
     $("#edit-contact_address").html(addressHTML)
 
     let html = ""
-    for (let field in contact) {
+    _.forOwn( contact, field =>{
       if (field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field)) {
         contact[field].forEach(socialField => {
           html += `<li style="display: flex">
@@ -945,7 +953,7 @@ jQuery(document).ready(function($) {
         })
 
       }
-    }
+    })
     $('#edit-social').html(html)
 
     $('#merge-dupe-edit').foundation('open');
@@ -956,8 +964,7 @@ jQuery(document).ready(function($) {
 
   $('.select-input').on("change", function () {
     let key = $(this).attr('id')
-    let val = $(this).val()
-    editFieldsUpdate[key] = val
+    editFieldsUpdate[key] = $(this).val()
   })
 
   $('#contact-details-edit').on('change', '.contact-input', function() {
@@ -1023,9 +1030,9 @@ jQuery(document).ready(function($) {
           allEmptyValues = false
         }
         let link = _.escape(field.value);
-        if (contact_method == "contact_email") {
+        if (contact_method === "contact_email") {
           link = `<a href="mailto:${_.escape(field.value)}">${_.escape(field.value)}</a>`
-        } else if (contact_method == "contact_phone") {
+        } else if (contact_method === "contact_phone") {
           link = `<a href="tel:${_.escape(field.value)}">${_.escape(field.value)}</a>`
         }
         htmlField.append(`<li class="details-list ${_.escape(field.key)}">
@@ -1148,7 +1155,7 @@ jQuery(document).ready(function($) {
         values[this.name] = $(this).val();
     });
     values["corresponds_to_contact"] = contact["ID"];
-    window.API.create_user(values).then(resp=>{
+    window.API.create_user(values).then(()=>{
       $(this).removeClass("loading")
       $(`#make_user_from_contact`).foundation('close')
       location.reload();
@@ -1179,7 +1186,7 @@ jQuery(document).ready(function($) {
     hint: true,
     emptyTemplate: 'No users found "{{query}}"',
     callback: {
-      onClick: function(node, a, item, event){
+      onClick: function(node, a, item){
         jQuery.ajax({
           type: "GET",
           data: {"user_id":item.ID},
@@ -1211,96 +1218,151 @@ jQuery(document).ready(function($) {
   })
   
   $('#open_merge_with_contact').on("click", function () {
-    $.typeahead({
-      input: '.js-typeahead-merge_with',
-      minLength: 0,
-      accent: true,
-      searchOnFocus: true,
-      source: TYPEAHEADS.typeaheadContactsSource(),
-      templateValue: "{{name}}",
-      template: function (query, item) {
-        return `<span class="row">
-          <span>${item.name} (#${item.ID})</span>
-        </span>`
-      },
-      dynamic: true,
-      hint: true,
-      emptyTemplate: 'No users found "{{query}}"',
-      callback: {
-        onClick: function(node, a, item, event){
-          console.log(item);
-          $('.confirm-merge-with-contact').show()
-          $('#confirm-merge-with-contact-id').val(item.ID)
-          $('#name-of-contact-to-merge').html(item.name)
+    if (!window.Typeahead['.js-typeahead-merge_with']) {
+      $.typeahead({
+        input: '.js-typeahead-merge_with',
+        minLength: 0,
+        accent: true,
+        searchOnFocus: true,
+        source: TYPEAHEADS.typeaheadContactsSource(),
+        templateValue: "{{name}}",
+        template: function (query, item) {
+          return `<span class="row">
+            <span>${item.name} (#${item.ID})</span>
+          </span>`
         },
-        onResult: function (node, query, result, resultCount) {
-          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-          $('#merge_with-result-container').html(text);
+        dynamic: true,
+        hint: true,
+        emptyTemplate: 'No users found "{{query}}"',
+        callback: {
+          onClick: function (node, a, item) {
+            console.log(item);
+            $('.confirm-merge-with-contact').show()
+            $('#confirm-merge-with-contact-id').val(item.ID)
+            $('#name-of-contact-to-merge').html(item.name)
+          },
+          onResult: function (node, query, result, resultCount) {
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $('#merge_with-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('.merge_with-result-container').html("");
+          },
         },
-        onHideLayout: function () {
-          $('.merge_with-result-container').html("");
-        },
-      },
-    });
+      });
+    }
     let user_select_input = $(`.js-typeahead-merge_with`)
     $('.search_merge_with').on('click', function () {
       user_select_input.val("")
       user_select_input.trigger('input.typeahead')
       user_select_input.focus()
     })
-    // $.typeahead({
-    //   input: `.js-typeahead-merge_with`,
-    //   minLength: 0,
-    //   accent: true,
-    //   maxItem: 30,
-    //   searchOnFocus: true,
-    //   template: function (query, item) {
-    //     return `<span>${_.escape(item.name)}</span>`
-    //   },
-    //   matcher: function (item) {
-    //     return item.ID !== contact.ID
-    //   },
-    //   filter: false,
-    //   source: window.TYPEAHEADS.typeaheadContactsSource(),
-    //   display: "name",
-    //   templateValue: "{{name}}",
-    //   dynamic: true,
-    //   multiselect: {
-    //     matchOn: ["ID"],
-    //     href: window.wpApiShare.site_url + "/contacts/{{ID}}"
-    //   },
-    //   callback: {
-    //     onClick: function(node, a, item, event){
-    //
-    //     },
-    //     onResult: function (node, query, result, resultCount) {
-    //       let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-    //       $(`#merge_with-result-container`).html(text);
-    //     },
-    //     onHideLayout: function () {
-    //       $(`#merge_with-result-container`).html("");
-    //     }
-    //   }
-    // })
     $('#merge_with_contact_modal').foundation('open');
   })
 
-    $('#transfer_confirm_button').on('click',function() {
-        let status_spinner = $('#transfer_spinner')
-        status_spinner.append('<img src="'+contactsDetailsWpApiSettings.spinner_url+'" width="20px" />')
-        let siteId = $('#transfer_contact').val()
-        if ( ! siteId ) {
-            return;
-        }
-        API.transfer_contact( contactId, siteId )
-            .then(data=>{
-                console.log(data);
-            }).catch(err=>{
-            console.log("error")
-            console.log(err)
-            jQuery("#errors").append(err.responseText)
-        })
-    });
+  $('#transfer_confirm_button').on('click',function() {
+      let status_spinner = $('#transfer_spinner')
+      status_spinner.append('<img src="'+contactsDetailsWpApiSettings.spinner_url+'" width="20px" />')
+      let siteId = $('#transfer_contact').val()
+      if ( ! siteId ) {
+          return;
+      }
+      API.transfer_contact( contactId, siteId )
+          .then(data=>{
+              console.log(data);
+          }).catch(err=>{
+          console.log("error")
+          console.log(err)
+          jQuery("#errors").append(err.responseText)
+      })
+  });
+
+  // Baptism date
+  let modalBaptismDatePicker = $('input#modal-baptism-date-picker')
+  modalBaptismDatePicker.datepicker({
+    dateFormat: 'yy-mm-dd',
+    onSelect: function (date) {
+      API.save_field_api('contact', contactId, { baptism_date: date }).catch(handelAjaxError)
+    },
+    changeMonth: true,
+    changeYear: true
+  })
+  let openBaptismModal = function( newContact ){
+    let modalBaptismGeneration = $('#modal-baptism_generation')
+    if ( !contact.baptism_date || _.get(contact, 'milestone_baptized.key') !== 'yes' || (contact.baptized_by || []).length === 0 ){
+      $('#baptism-modal').foundation('open');
+      if (!window.Typeahead['.js-typeahead-modal_baptized_by']) {
+        $.typeahead({
+          input: '.js-typeahead-modal_baptized_by',
+          minLength: 0,
+          accent: true,
+          searchOnFocus: true,
+          source: TYPEAHEADS.typeaheadContactsSource(),
+          templateValue: "{{name}}",
+          template: function (query, item) {
+            return `<span class="row">
+              <span>${item.name} (#${item.ID})</span>
+            </span>`
+          },
+          matcher: function (item) {
+            return item.ID !== contact.ID
+          },
+          dynamic: true,
+          hint: true,
+          emptyTemplate: 'No users found "{{query}}"',
+          multiselect: {
+            matchOn: ["ID"],
+            data: function () {
+              return (contact["baptized_by"] || [] ).map(g=>{
+                return {ID:g.ID, name:g.post_title}
+              })
+            }, callback: {
+              onCancel: function (node, item) {
+                API.save_field_api('contact', contactId, {"baptized_by": {values:[{value:item.ID, delete:true}]}})
+                  .catch(err => { console.error(err) })
+              }
+            },
+            href: window.wpApiShare.site_url + "/contacts/{{ID}}"
+          },
+          callback: {
+            onClick: function (node, a, item) {
+              API.save_field_api('contact', contactId, {"baptized_by": {values:[{"value":item.ID}]}})
+                .catch(err => { console.error(err) })
+              console.log(item);
+              this.addMultiselectItemLayout(item)
+              event.preventDefault()
+              this.hideLayout();
+              this.resetInput();
+            },
+            onResult: function (node, query, result, resultCount) {
+              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+              $('#modal_baptized_by-result-container').html(text);
+            },
+            onHideLayout: function () {
+              $('.modal_baptized_by-result-container').html("");
+            },
+          },
+        });
+      }
+      if ( _.get(newContact, "baptism_date.timestamp", 0) > 0){
+        modalBaptismDatePicker.datepicker('setDate', moment.unix(newContact['baptism_date']["timestamp"]).format("YYYY-MM-DD"))
+      }
+      modalBaptismGeneration.val(newContact["baptism_generation"] || 0)
+    }
+    contact = newContact
+  }
+  $('#close-baptism-modal').on('click', function () {
+    location.reload()
+  })
+  $('#modal-baptism_generation').change(function () {
+    console.log($(this).val());
+    API.save_field_api( "contact", contactId, {
+      baptism_generation: $(this).val(),
+      fixed_baptism_generation: true
+    })
+  })
+
+
 
   //leave at the end
   masonGrid.masonry({

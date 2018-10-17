@@ -33,6 +33,7 @@ class Disciple_Tools_Contacts_Endpoints
     private $version = 1;
     private $context = "dt";
     private $namespace;
+    private $public_namespace;
     private $contacts_instance;
 
     /**
@@ -450,7 +451,7 @@ class Disciple_Tools_Contacts_Endpoints
      * @param string $yes_no
      *
      * @return bool
-     * @throws \Error|bool 'Expected yes or no'.
+     * @throws WP_Error|bool 'Expected yes or no'.
      */
     private static function yes_no_to_boolean( string $yes_no ) {
         if ( $yes_no === 'yes' ) {
@@ -720,7 +721,7 @@ class Disciple_Tools_Contacts_Endpoints
         $params = $request->get_params();
         $body = $request->get_json_params();
         if ( isset( $params['id'] ) ) {
-            $result = Disciple_Tools_Contacts::accept_contact( $params['id'], $body["accept"], true );
+            $result = Disciple_Tools_Contacts::accept_contact( $params['id'], $body["accept"] );
 
             if ( is_wp_error( $result ) ) {
                 return $result;

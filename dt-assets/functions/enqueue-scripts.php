@@ -174,7 +174,7 @@ function dt_site_scripts() {
                     'current_user_id' => get_current_user_id(),
                     'additional_sections' => apply_filters( 'dt_comments_additional_sections', [], $post_type ),
                     'comments' => Disciple_Tools_Posts::get_post_comments( $post_type, $post["ID"], true ),
-                    'activity' => $post_type === 'comments' ? Disciple_Tools_Contacts::get_activity( $post["ID"] ) : Disciple_Tools_Groups::get_activity( $post["ID"] )
+                    'activity' => $post_type === 'contacts' ? Disciple_Tools_Contacts::get_activity( $post["ID"] ) : Disciple_Tools_Groups::get_activity( $post["ID"] )
                 ]
             );
 

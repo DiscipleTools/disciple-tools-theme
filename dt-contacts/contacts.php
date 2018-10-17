@@ -771,6 +771,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $contact_id, $baptized_by,
             [ 'date' => current_time( 'mysql' ) ]
         );
+//        $baptism_date = get_post_meta( $contact_id, 'baptism_date', true );
+//        if ( empty( $baptism_date )){
+//            update_post_meta( $contact_id, "baptism_date", time() );
+//        }
+        $baptism = get_post_meta( $contact_id, 'milestone_baptized', true );
+        if ( empty( $baptism ) || $baptism === 'no' ){
+            update_post_meta( $contact_id, "milestone_baptized", 'yes');
+        }
         Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $contact_id );
         return $p2p;
     }
@@ -1102,13 +1110,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     /**
-     * @param int    $contact_id
+     * @param int $contact_id
      * @param string $key
+     * @param bool $check_permissions
      *
      * @return bool|\WP_Error
      */
-    public static function delete_contact_field( int $contact_id, string $key, $check_persmissions = true ){
-        if ( $check_persmissions && !self::can_update( 'contacts', $contact_id )){
+    public static function delete_contact_field( int $contact_id, string $key, $check_permissions = true ){
+        if ( $check_permissions && !self::can_update( 'contacts', $contact_id )){
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 401 ] );
         }
         delete_post_meta( $contact_id, $key .'_details' );
@@ -2009,11 +2018,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * @param int  $contact_id
      * @param bool $accepted
-     * @param bool $check_permissions
      *
      * @return array|\WP_Error
      */
-    public static function accept_contact( int $contact_id, bool $accepted, bool $check_permissions ) {
+    public static function accept_contact( int $contact_id, bool $accepted ) {
         if ( !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
@@ -2107,23 +2115,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     public static function find_contacts_with( $field, $value, $exclude_id = "", $exact_match = false ){
-        global $wpdb; //This should allow access to this globally defined var.
-        $sql = $wpdb->prepare(
-            "
-                        SELECT post_id
-                        FROM {$wpdb->prefix}postmeta
-                        INNER JOIN $wpdb->posts posts ON ( posts.post_type = 'contacts' AND posts.post_status = 'publish' ) 
-                        WHERE meta_key
-                        LIKE %s
-                        AND meta_value LIKE %s
-                        AND post_id != %s
-                        ",
-            [
-                $field .'%',
-                $exact_match ? $value : ( '%' . $value . '%' ),
-                $exclude_id
-            ]
-        );
+        global $wpdb;
         $contact_ids = $wpdb->get_results(
             $wpdb->prepare(
                 "
@@ -2382,7 +2374,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $contact = self::get_contact( $contact_id );
         $duplicates = isset( $contact['duplicate_data'] ) ? is_array( $contact['duplicate_data'] ) ? $contact['duplicate_data'] : unserialize( $contact['duplicate_data'] ) : array();
         $unsure = $duplicates['unsure'] ?? array();
-        $dismissed = $duplicates['override'] ?? array();
         foreach ($duplicates as $key => $values) {
             if (preg_match( "/unsure|override/", $key )) { continue; }
             $index = array_search( $unsure_id, $values );
@@ -2423,7 +2414,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( !$contact_id || !$dismiss_id) { return; }
         $contact = self::get_contact( $contact_id );
         $duplicates = isset( $contact['duplicate_data'] ) ? is_array( $contact['duplicate_data'] ) ? $contact['duplicate_data'] : unserialize( $contact['duplicate_data'] ) : array();
-        $unsure = $duplicates['unsure'] ?? array();
         $dismissed = $duplicates['override'] ?? array();
         foreach ($duplicates as $key => $values) {
             if (preg_match( "/override/", $key )) { continue; }
