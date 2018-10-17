@@ -777,7 +777,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 //        }
         $baptism = get_post_meta( $contact_id, 'milestone_baptized', true );
         if ( empty( $baptism ) || $baptism === 'no' ){
-            update_post_meta( $contact_id, "milestone_baptized", 'yes');
+            update_post_meta( $contact_id, "milestone_baptized", 'yes' );
         }
         Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $contact_id );
         return $p2p;
