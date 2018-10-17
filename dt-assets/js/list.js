@@ -934,6 +934,9 @@
 
       }
     })
+    ;(filter.query.combine || []).forEach(c=>{
+      $(`#combine_${c}`).prop('checked', true)
+    })
     $('#confirm-filter-contacts').hide()
     $('#save-filter-edits').data("filter-id", filter.ID).show()
   }

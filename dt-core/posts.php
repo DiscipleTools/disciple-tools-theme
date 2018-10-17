@@ -965,7 +965,7 @@ class Disciple_Tools_Posts
             $inner_joins .= " INNER JOIN $wpdb->p2p as to_p2p ON ( to_p2p.p2p_from = $wpdb->posts.ID )";
         }
         if ( !empty( $connections_sql_from )){
-            $inner_joins .= " INNER JOIN $wpdb->p2p as from_p2p ON ( from_p2p.p2p_to = $wpdb->posts.ID )";
+            $inner_joins .= " LEFT JOIN $wpdb->p2p as from_p2p ON ( from_p2p.p2p_to = $wpdb->posts.ID )";
         }
 
         $access_query = $access_query ? ( "AND ( " . $access_query . " ) " ) : "";
