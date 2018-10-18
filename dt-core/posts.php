@@ -660,8 +660,8 @@ class Disciple_Tools_Posts
                 WHERE INSTR( $wpdb->posts.post_title, %s ) > 0
                 AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
                 ORDER BY  CASE
-                    WHEN CHAR_LENGTH(%s) > 0 && INSTR( $wpdb->posts.post_title, %s ) = 1 then 1
-                    WHEN pm.meta_value > 0 then 2
+                    WHEN pm.meta_value > 0 then 1
+                    WHEN CHAR_LENGTH(%s) > 0 && INSTR( $wpdb->posts.post_title, %s ) = 1 then 2
                     ELSE 3
                 END, CHAR_LENGTH($wpdb->posts.post_title), $wpdb->posts.post_title
                 LIMIT 0, 30
