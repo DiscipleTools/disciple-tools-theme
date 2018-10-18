@@ -874,7 +874,7 @@ jQuery(document).ready(function($) {
     $("#edit-contact_address").html(addressHTML)
 
     let html = ""
-    _.forOwn( contact, field=>{
+    _.forOwn( contact, (fieldVal, field)=>{
       if ( field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field) ){
         contact[field].forEach(socialField=>{
           html += `<li style="display: flex">
@@ -941,7 +941,7 @@ jQuery(document).ready(function($) {
     $("#edit-contact_address").html(addressHTML)
 
     let html = ""
-    _.forOwn( contact, field =>{
+    _.forOwn( contact, (fieldVal ,field) =>{
       if (field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field)) {
         contact[field].forEach(socialField => {
           html += `<li style="display: flex">
