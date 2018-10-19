@@ -1,5 +1,5 @@
 jQuery(document).ready(function() {
-    console.log( dtMetricsPersonal )
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
 
     if( ! window.location.hash || '#my_stats' === window.location.hash  ) {
         my_stats()

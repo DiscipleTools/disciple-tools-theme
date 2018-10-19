@@ -348,13 +348,13 @@ function dt_get_site_options_defaults() {
                 "status"      => "active",
                 "seeker_path" => "none",
                 "days"        => 3,
-                "comment"     => "This contact is active but there is no record of anybody contacting them. Please do contact them.",
+                "comment"     => __( "This contact is active but there is no record of anybody contacting them. Please do contact them.", 'disciple_tools' )
             ],
             [
                 "status"      => "active",
                 "seeker_path" => "attempted",
                 "days"        => 7,
-                "comment"     => "Please try connecting with this contact again."
+                "comment"     => __( "Please try connecting with this contact again.", 'disciple_tools' )
             ],
             [
                 "status"      => "active",
@@ -755,6 +755,21 @@ function dt_get_url_path() {
         }
     }
     return trim( str_replace( get_site_url(), "", $url ), '/' );
+}
+
+/**
+ * check is the current url is a rest api request
+ * @return bool
+ */
+function dt_is_rest_url() {
+    $is_rest = false;
+    if ( function_exists( 'rest_url' ) && !empty( $_SERVER['REQUEST_URI'] ) ) {
+        $rest_url_base = get_rest_url( get_current_blog_id(), '/' );
+        $rest_path = trim( parse_url( $rest_url_base, PHP_URL_PATH ), '/' );
+        $request_path = trim( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/' );
+        $is_rest = ( strpos( $request_path, $rest_path ) === 0 );
+    }
+    return $is_rest;
 }
 
 /**

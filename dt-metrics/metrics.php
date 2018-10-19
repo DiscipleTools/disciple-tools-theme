@@ -30,17 +30,13 @@ class Disciple_Tools_Metrics
 
     public function __construct() {
         $url_path = dt_get_url_path();
-        if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
+        if ( strpos( $url_path, "metrics" ) !== false ) {
 
             add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_google' ], 10 );
 
-            if ( user_can( get_current_user_id(), 'manage_dt' ) || current_user_can( "view_project_metrics" ) ) {
-
-                // load basic charts
-                require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
-                require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
-//                require_once( get_template_directory() . '/dt-metrics/metrics-users.php' );
-            }
+            // load basic charts
+            require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
+            require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
         }
     }
 
@@ -107,23 +103,6 @@ class Disciple_Tools_Metrics
 
 }
 
-/**
- * This builds and gets the generation tree, and for speed caches today's snapshot
- *
- * @param bool $reset (This allows the ability to reset the cache)
- *
- * @return array|mixed
- */
-function dt_get_generation_tree( $reset = false ) {
-
-    $generation_tree = get_transient( 'dt_generation_tree' );
-
-    if ( ! $generation_tree || $reset ) {
-        $generation_tree  =Disciple_Tools_Counter::critical_path( 'all_group_generations', 0, PHP_INT_MAX );
-        set_transient( 'dt_generation_tree', $generation_tree, dt_get_time_until_midnight() );
-    }
-    return $generation_tree;
-}
 
 function dt_get_time_until_midnight() {
     $midnight = mktime( 0, 0, 0, date( 'n' ), date( 'j' ) +1, date( 'Y' ) );
@@ -132,7 +111,19 @@ function dt_get_time_until_midnight() {
 
 abstract class Disciple_Tools_Metrics_Hooks_Base
 {
+    public $permissions = [];
+
     public function __construct() {}
+
+    public function has_permission(){
+        $pass = false;
+        foreach ( $this->permissions as $permission ){
+            if ( current_user_can( $permission ) ){
+                $pass = true;
+            }
+        }
+        return $pass;
+    }
 
     public static function chart_my_hero_stats( $user_id = null ) {
         if ( is_null( $user_id ) || empty( $user_id ) ) {
@@ -360,235 +351,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         $chart = apply_filters( 'dt_chart_critical_path', $chart, $start, $end );
 
         return $chart;
-    }
-
-
-
-    // @todo
-    public static function chart_timeline() {
-        $default = [
-            'May' => [
-                [
-                    'day' => '20',
-                    'content' => [
-                        [
-                            'count' => 0,
-                            'tag' => 'new contacts',
-                        ],
-                        [
-                            'count' => 0,
-                            'tag' => 'new groups',
-                        ],
-                        [
-                            'count' => 0,
-                            'tag' => 'seeker steps increased',
-                        ],
-
-                    ],
-                ],
-                [
-                    'day' => '19',
-                    'content' => [
-                        [
-                            'count' => 0,
-                            'tag' => 'new contacts',
-                        ],
-                        [
-                            'count' => 0,
-                            'tag' => 'new groups',
-                        ],
-                        [
-                            'count' => 0,
-                            'tag' => 'seeker steps increased',
-                        ],
-
-                    ],
-                ],
-                [
-                    'day' => '17',
-                    'content' => [
-                        [
-                            'count' => 0,
-                            'tag' => 'new contacts',
-                        ],
-                        [
-                            'count' => 0,
-                            'tag' => 'new groups',
-                        ],
-                        [
-                            'count' => 0,
-                            'tag' => 'seeker steps increased',
-                        ],
-
-                    ],
-                ],
-                [
-                    'day' => '16',
-                    'content' => [
-                        [
-                            'count' => 0,
-                            'tag' => 'new contacts',
-                        ],
-                        [
-                            'count' => 0,
-                            'tag' => 'new groups',
-                        ],
-                        [
-                            'count' => 0,
-                            'tag' => 'seeker steps increased',
-                        ],
-
-                    ],
-                ],
-                [
-                    'day' => '01',
-                    'content' => [
-                        [
-                            'count' => 0,
-                            'tag' => 'new contacts',
-                        ],
-                        [
-                            'count' => 0,
-                            'tag' => 'new groups',
-                        ],
-                        [
-                            'count' => 0,
-                            'tag' => 'seeker steps increased',
-                        ],
-
-                    ],
-                ],
-            ],
-            'April' => [
-                [
-                    'day' => '30',
-                    'content' => [
-                        [
-                            'count' => 0,
-                            'tag' => 'new contacts',
-                        ],
-                        [
-                            'count' => 0,
-                            'tag' => 'new groups',
-                        ],
-                        [
-                            'count' => 0,
-                            'tag' => 'seeker steps increased',
-                        ],
-
-                    ],
-                ],
-                [
-                    'day' => '29',
-                    'content' => [
-                        [
-                            'count' => 0,
-                            'tag' => 'new contacts',
-                        ],
-                        [
-                            'count' => 0,
-                            'tag' => 'new groups',
-                        ],
-                        [
-                            'count' => 0,
-                            'tag' => 'seeker steps increased',
-                        ],
-
-                    ],
-                ],
-            ],
-        ];
-
-        $results = [];
-
-        return wp_parse_args( $results, $default );
-    }
-
-    /**
-     * USERS METRICS
-     */
-    public static function chart_user_hero_stats() {
-        $default = [
-            'multipliers' => 0,
-            'dispatchers' => 0,
-            'other' => 0,
-            'total' => 0,
-        ];
-
-        $system_users = count_users();
-        $dispatchers = $system_users['avail_roles']['dispatcher'];
-        $multiplier = $system_users['avail_roles']['multiplier'];
-        $total_users = $system_users['total_users'];
-
-        $other = $total_users - ( $dispatchers + $multiplier );
-
-        $results = [
-            'multipliers' => $multiplier,
-            'dispatchers' => $dispatchers,
-            'other' => $other,
-            'total' => $system_users['total_users'],
-        ];
-
-        return wp_parse_args( $results, $default );
-    }
-
-    public static function chart_user_logins_by_day() {
-
-        $results = self::query_logins_by_day();
-
-        $logins = [
-            [ 'Day', 'Logins' ]
-        ];
-
-        foreach ( $results as $result ) {
-            $logins[] = [ $result['day'] . ' ' . $result['month'], intval( $result['logins'] ) ];
-        }
-
-        return $logins;
-    }
-
-    // @todo
-    public static function chart_user_contacts_per_user() {
-
-        $default = [
-            [ 'User', 'Active Contacts', 'Attempt Needed', 'Attempted', 'Established', '1st Scheduled', '1st Complete', 'Ongoing', 'Being Coached' ],
-            [ 'Chris', 100, 4, 0, 4, 8, 0, 0, 9 ],
-            [ 'Kara', 100, 4, 0, 4, 8, 0, 0, 9 ],
-        ];
-
-        $results = [];
-
-        return wp_parse_args( $results, $default );
-    }
-
-    // @todo
-    public static function chart_user_least_active() {
-
-        $default = [
-            [ 'User', 'Login (Days Ago)' ],
-            [ 'Chris', 34 ],
-            [ 'Kara', 14 ],
-            [ 'Mason', 9 ],
-        ];
-
-        $results = [];
-
-        return wp_parse_args( $results, $default );
-    }
-
-    // @todo
-    public static function chart_user_most_active() {
-
-        $default = [
-            [ 'User', 'Logins' ],
-            [ 'Chris', 34 ],
-            [ 'Kara', 14 ],
-            [ 'Mason', 9 ],
-        ];
-
-        $results = [];
-
-        return wp_parse_args( $results, $default );
     }
 
 
@@ -963,7 +725,6 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         return $results;
     }
-
 
     public static function query_my_group_generations( $user_id = null ) {
         global $wpdb;

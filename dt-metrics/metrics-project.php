@@ -3,6 +3,7 @@
 Disciple_Tools_Metrics_Project::instance();
 class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 {
+    public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
     private static $_instance = null;
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
@@ -12,8 +13,11 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
     } // End instance()
 
     public function __construct() {
+        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+        if ( !$this->has_permission() ){
+            return;
+        }
         $url_path = dt_get_url_path();
-
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
 
             add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
@@ -34,9 +38,8 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
         $content .= '
             <li><a href="" >' .  esc_html__( 'Project', 'disciple_tools' ) . '</a>
                 <ul class="menu vertical nested" id="project-menu">
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_overview" onclick="project_overview()">'. esc_html__( 'Overview' ) .'</a></li>
-                    <!-- <li><a href="'. site_url( '/metrics/project/' ) .'#project_timeline" onclick="project_timeline()">'. esc_html__( 'Timeline' ) .'</a></li> -->
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_critical_path" onclick="project_critical_path()">'. esc_html__( 'Critical Path' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_overview">'. esc_html__( 'Overview' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_critical_path">'. esc_html__( 'Critical Path' ) .'</a></li>
                 </ul>
             </li>
             ';
@@ -110,7 +113,50 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             'group_types' => self::chart_group_types( 'project' ),
             'group_health' => self::chart_group_health( 'project' ),
             'group_generations' => self::chart_group_generations( 'project' ),
-            'timeline' => self::chart_timeline(),
         ];
+    }
+
+    /**
+     * API Routes
+     */
+    public function add_api_routes() {
+        $version = '1';
+        $namespace = 'dt/v' . $version;
+
+        register_rest_route(
+            $namespace, '/metrics/critical_path_by_year/(?P<id>[\w-]+)', [
+                [
+                    'methods'  => WP_REST_Server::READABLE,
+                    'callback' => [ $this, 'critical_path_by_year' ],
+                ],
+            ]
+        );
+
+    }
+
+
+    public function critical_path_by_year( WP_REST_Request $request ) {
+        if ( !$this->has_permission() ){
+            return new WP_Error( "critical_path_by_year", "Missing Permissions", [ 'status' => 400 ] );
+        }
+        $params = $request->get_params();
+        if ( isset( $params['id'] ) ) {
+            if ( $params['id'] == 'all'){
+                $start = 0;
+                $end = PHP_INT_MAX;
+            } else {
+                $year = (int) $params['id'];
+                $start = DateTime::createFromFormat( "Y-m-d", $year . '-01-01' )->getTimestamp();
+                $end = DateTime::createFromFormat( "Y-m-d", ( $year + 1 ) . '-01-01' )->getTimestamp();
+            }
+            $result = Disciple_Tools_Metrics_Hooks_Base::chart_critical_path( $start, $end );
+            if ( is_wp_error( $result ) ) {
+                return $result;
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( "critical_path_by_year", "Missing a valid contact id", [ 'status' => 400 ] );
+        }
     }
 }

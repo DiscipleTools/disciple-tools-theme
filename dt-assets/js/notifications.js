@@ -23,7 +23,9 @@ function get_new_notification_count(){
       jQuery("#errors").append(err.responseText)
     })
 }
-get_new_notification_count()
+setTimeout(()=>{
+  get_new_notification_count()
+}, 2000)
 
 let notificationRead = (notification_id)=>`
   <a id="read-button-${notification_id}" class="read-button button hollow small" style="border-radius:100px; margin: .7em 0 0;"

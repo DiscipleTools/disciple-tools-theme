@@ -3,6 +3,8 @@
 Disciple_Tools_Metrics_Personal::instance();
 class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
 {
+    public $permissions = [ 'access_contacts' ];
+
     private static $_instance = null;
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
@@ -12,6 +14,9 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
     } // End instance()
 
     public function __construct() {
+        if ( !$this->has_permission() ){
+            return;
+        }
         $url_path = dt_get_url_path();
 
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
@@ -26,7 +31,7 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
 
     public function add_overview_menu( $content ) {
         $content .= '
-            <li><a href="'. site_url( '/metrics/' ) .'#my_stats" onclick="my_stats()">' .  esc_html__( 'Personal', 'disciple_tools' ) . '</a></li>
+            <li><a href="'. site_url( '/metrics/' ) .'#my_stats" >' .  esc_html__( 'Personal', 'disciple_tools' ) . '</a></li>
             ';
         return $content;
     }
