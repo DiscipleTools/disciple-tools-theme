@@ -79,9 +79,11 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
 
     $is_public = apply_filters( 'dt_allow_rest_access', $is_public );
 
-    $auth_token = $_SERVER['HTTP_AUTHORIZATION'];
-    $site_link_token = str_replace( 'Bearer ', '', $auth_token);
-    $site_key = Site_Link_System::verify_transfer_token( $site_link_token );
+    if ( isset( $_SERVER['HTTP_AUTHORIZATION'] ) ) {
+        $auth_token = sanitize_text_field( wp_unslash( $_SERVER['HTTP_AUTHORIZATION'] ) );
+        $site_link_token = str_replace( 'Bearer ', '', $auth_token );
+        $site_key = Site_Link_System::verify_transfer_token( $site_link_token );
+    }
 
     /**
      * All other requests to the REST API require a person to be logged in to make a REST Request.
