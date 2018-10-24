@@ -79,10 +79,14 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
 
     $is_public = apply_filters( 'dt_allow_rest_access', $is_public );
 
+    $auth_token = $_SERVER['HTTP_AUTHORIZATION'];
+    $site_link_token = str_replace( 'Bearer ', '', $auth_token);
+    $site_key = Site_Link_System::verify_transfer_token( $site_link_token );
+
     /**
      * All other requests to the REST API require a person to be logged in to make a REST Request.
      */
-    if ( !is_user_logged_in() && !$is_public ) {
+    if ( !is_user_logged_in() && !$is_public && !$site_key ) {
         return new WP_Error( 'rest_cannot_access', __( 'Only authenticated users can access the REST API.', 'disciple_tools' ), [ 'status' => rest_authorization_required_code() ] );
     }
 

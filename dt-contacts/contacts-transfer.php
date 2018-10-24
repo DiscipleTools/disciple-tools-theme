@@ -34,7 +34,13 @@ class Disciple_Tools_Contacts_Transfer
     // Add the specific capabilities needed for the site to site linking.
     public function site_link_capabilities( $args ) {
         if ( 'contact_sharing' === $args['connection_type'] ) {
+            $args['capabilities'][] = 'access_contacts';
             $args['capabilities'][] = 'create_contacts';
+            $args['capabilities'][] = 'delete_any_contacts';
+            $args['capabilities'][] = 'update_any_contacts';
+            $args['capabilities'][] = 'view_any_contacts';
+
+            $args['capabilities'][] = 'read_location';
         }
         if ( 'contact_receiving' === $args['connection_type'] ) {
             $args['capabilities'][] = 'create_contacts';
