@@ -24,6 +24,7 @@ add_filter( 'pre_comment_approved', 'dt_filter_handler', '99', 2 );
 add_filter( 'comment_notification_recipients', 'dt_override_comment_notice_recipients', 10, 2 );
 add_filter( 'language_attributes', 'dt_custom_dir_attr' );
 add_filter( 'retrieve_password_message', 'dt_custom_password_reset', 99, 4 );
+add_filter( 'wpmu_signup_blog_notification_email', 'dt_wpmu_signup_blog_notification_email', 10, 8 );
 
 
 /*********************************************************************************************
@@ -807,4 +808,9 @@ function dt_date_end_of_year(){
 
 function dt_get_year_from_timestamp( int $time ){
     return date( "Y", $time );
+}
+
+
+function dt_wpmu_signup_blog_notification_email( $message, $domain, $path, $title, $user, $user_email, $key, $meta ){
+    return str_replace( "blog", "site", $message );
 }
