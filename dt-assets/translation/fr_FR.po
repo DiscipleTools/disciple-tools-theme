@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Disciple Tools\n"
 "POT-Creation-Date: 2018-10-29 14:10+0100\n"
-"PO-Revision-Date: 2018-10-29 14:11+0100\n"
+"PO-Revision-Date: 2018-10-29 14:14+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -22,10 +22,8 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
 #: 403.php:9
-#, fuzzy
-#| msgid "Epic 403 - Permission denied"
 msgid "Permission denied"
-msgstr "Epic 403 - Permission refusée"
+msgstr "Permission refusée"
 
 #: 403.php:18
 msgid "contact"
@@ -50,7 +48,7 @@ msgstr ""
 #: dt-core/admin/menu/tabs/tab-contact-import.php:114
 #: dt-core/admin/menu/tabs/tab-contact-import.php:386
 msgid "Back"
-msgstr ""
+msgstr "Retour"
 
 #: 404.php:12
 msgid "Epic 404 - Not Found"
@@ -137,10 +135,8 @@ msgid "Contacts shared with me"
 msgstr "Contacts partagé avec moi"
 
 #: archive-contacts.php:128 archive-groups.php:92
-#, fuzzy
-#| msgid "Filters"
 msgid "Custom Filters"
-msgstr "Filtres"
+msgstr "Filtres personnalisés"
 
 #: archive-contacts.php:130 archive-groups.php:94
 msgid "Add new filter"
@@ -165,10 +161,8 @@ msgid "Faith Milestones"
 msgstr "Les grandes étapes de la foi"
 
 #: archive-contacts.php:213 archive-groups.php:164
-#, fuzzy
-#| msgid "Search"
 msgid "Type to Search"
-msgstr "Recherche"
+msgstr "Entrer votre recherche"
 
 #: archive-contacts.php:222
 msgid "Filter for subassigned OR Assigned To"
@@ -219,10 +213,8 @@ msgid "Create new group"
 msgstr "Créer un nouveau groupe"
 
 #: archive-groups.php:20 archive-groups.php:38
-#, fuzzy
-#| msgid "Filters"
 msgid "Filter groups"
-msgstr "Filtres"
+msgstr "Groupes de filtres"
 
 #: archive-groups.php:42 dt-core/config-p2p.php:119 dt-core/config-p2p.php:153
 #: dt-core/config-p2p.php:187 dt-core/config-p2p.php:257
@@ -232,16 +224,12 @@ msgid "Search groups"
 msgstr "Rechercher des groupes"
 
 #: archive-groups.php:78
-#, fuzzy
-#| msgid "group"
 msgid "All groups"
-msgstr "groupe"
+msgstr "Tous les groupes"
 
 #: archive-groups.php:83
-#, fuzzy
-#| msgid "group"
 msgid "My groups"
-msgstr "groupe"
+msgstr "Mes structures"
 
 #: archive-groups.php:88
 #, fuzzy
@@ -250,10 +238,8 @@ msgid "Groups shared with me"
 msgstr "Contacts partagé avec moi"
 
 #: archive-groups.php:220
-#, fuzzy
-#| msgid "Child Groups"
 msgid "Filter Groups"
-msgstr "Groupes enfants"
+msgstr "Filtre : Groupe"
 
 #: dt-assets/functions/cleanup.php:110
 msgid "Read"
@@ -346,13 +332,13 @@ msgstr "Créer un nouveau contact"
 
 #: dt-assets/functions/details-bar.php:75
 msgid "Following"
-msgstr ""
+msgstr "Abonnements"
 
 #: dt-assets/functions/details-bar.php:77
 #: dt-assets/functions/details-bar.php:82
 #: dt-contacts/contacts-post-type.php:899 dt-groups/groups-post-type.php:781
 msgid "Follow"
-msgstr ""
+msgstr "Suivre"
 
 #: dt-assets/functions/details-bar.php:93
 #: dt-assets/functions/details-bar.php:121
@@ -380,7 +366,7 @@ msgstr "Contact créé à {}"
 #: dt-assets/functions/enqueue-scripts.php:171
 #: dt-locations/locations-post-type.php:491
 msgid "edit"
-msgstr ""
+msgstr "modifier"
 
 #: dt-assets/functions/enqueue-scripts.php:172
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:759
@@ -389,10 +375,8 @@ msgstr ""
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:1082
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:1444
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:1453
-#, fuzzy
-#| msgid "%s deleted."
 msgid "delete"
-msgstr "%s supprimé."
+msgstr "supprimer"
 
 #: dt-assets/functions/enqueue-scripts.php:185
 #: dt-assets/parts/contact-details.php:164
@@ -500,10 +484,8 @@ msgstr "Éditer"
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:1118
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:1138
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:1437
-#, fuzzy
-#| msgid "Delete item"
 msgid "Delete"
-msgstr "Effacer l’article"
+msgstr "Effacer"
 
 #: dt-assets/functions/enqueue-scripts.php:287
 #, fuzzy
@@ -697,10 +679,8 @@ msgid "Source"
 msgstr "Source"
 
 #: dt-assets/parts/contact-details.php:174
-#, fuzzy
-#| msgid "Contact"
 msgid "Edit Contact"
-msgstr "Contact"
+msgstr "Modifier le Contact"
 
 #: dt-assets/parts/contact-details.php:178
 #: dt-assets/parts/content-contacts.php:34
@@ -781,12 +761,12 @@ msgstr "Trier"
 #: dt-assets/parts/content-contacts.php:15
 #: dt-assets/parts/content-groups.php:15
 msgid "Newest"
-msgstr ""
+msgstr "Plus récent"
 
 #: dt-assets/parts/content-contacts.php:18
 #: dt-assets/parts/content-groups.php:18
 msgid "Oldest"
-msgstr ""
+msgstr "Le plus ancien"
 
 #: dt-assets/parts/content-contacts.php:21
 #: dt-assets/parts/content-groups.php:21
@@ -978,10 +958,8 @@ msgid "No end date"
 msgstr "Pas de date de fin"
 
 #: dt-assets/parts/group-details.php:163
-#, fuzzy
-#| msgid "Edit new Group"
 msgid "Edit Group"
-msgstr "Modifier un nouveau groupe"
+msgstr "Modifier le groupe"
 
 #: dt-assets/parts/group-details.php:184
 #: dt-assets/parts/modals/modal-share.php:23
@@ -1001,16 +979,12 @@ msgid "Write your comment or note here"
 msgstr "Écrivez votre commentaire ou note ici"
 
 #: dt-assets/parts/loop-activity-comment.php:22
-#, fuzzy
-#| msgid "Locations"
 msgid "Quick actions"
-msgstr "Emplacements"
+msgstr "Actions rapides"
 
 #: dt-assets/parts/loop-activity-comment.php:49
-#, fuzzy
-#| msgid "Initial comment"
 msgid "Submit comment"
-msgstr "Commentaire initial"
+msgstr "Envoyer un commentaire"
 
 #: dt-assets/parts/loop-activity-comment.php:54
 #, fuzzy
@@ -1019,10 +993,8 @@ msgid "Comments and Activity"
 msgstr "Faire retour à l’activité"
 
 #: dt-assets/parts/loop-activity-comment.php:56
-#, fuzzy
-#| msgid "Show"
 msgid "Showing:"
-msgstr "Montrer"
+msgstr "Afficher :"
 
 #: dt-assets/parts/loop-activity-comment.php:68
 #: dt-contacts/contacts-post-type.php:249 dt-groups/groups-post-type.php:303
@@ -1032,7 +1004,7 @@ msgstr "Activité"
 
 #: dt-assets/parts/loop-activity-comment.php:95
 msgid "show all"
-msgstr ""
+msgstr "tout afficher"
 
 #: dt-assets/parts/loop-activity-comment.php:98
 msgid "hide all"
@@ -1114,16 +1086,16 @@ msgstr ""
 
 #: dt-assets/parts/merge-details.php:168 dt-assets/parts/merge-details.php:232
 msgid "Dismiss"
-msgstr ""
+msgstr "Rejeter"
 
 #: dt-assets/parts/merge-details.php:171
 msgid "Unsure"
-msgstr ""
+msgstr "Incertain"
 
 #: dt-assets/parts/merge-details.php:178 single-contacts.php:852
 #: single-contacts.php:901
 msgid "Merge"
-msgstr ""
+msgstr "Fusionner"
 
 #: dt-assets/parts/merge-details.php:191
 #, fuzzy
@@ -1133,10 +1105,8 @@ msgstr "Dupliquer"
 
 #: dt-assets/parts/modals/modal-filters.php:3
 #: dt-assets/parts/modals/modal-filters.php:12
-#, fuzzy
-#| msgid "Filter"
 msgid "Save Filter"
-msgstr "Filtre"
+msgstr "Sauvegarder le filtre"
 
 #: dt-assets/parts/modals/modal-filters.php:4
 #, fuzzy
@@ -1225,7 +1195,7 @@ msgstr "Profil"
 
 #: dt-assets/parts/nav-offcanvas-topbar.php:65
 msgid "Help"
-msgstr ""
+msgstr "Aide"
 
 #: dt-contacts/contacts-post-type.php:102
 msgctxt "singular of contact"
@@ -1453,8 +1423,6 @@ msgstr "%1$s planifié pour: %2$s."
 #: dt-contacts/contacts-post-type.php:229 dt-groups/groups-post-type.php:284
 #: dt-locations/locations-post-type.php:282
 #: dt-people-groups/people-groups-post-type.php:277
-#, fuzzy
-#| msgid "M j, Y @ G:i"
 msgctxt "Publish box date format, see http://php.net/date"
 msgid "M j, Y @ G:i"
 msgstr "M j, Y @ G:i"
@@ -1578,10 +1546,8 @@ msgid "Accepted"
 msgstr "Accepté"
 
 #: dt-contacts/contacts-post-type.php:801
-#, fuzzy
-#| msgid "Source"
 msgid "Sources"
-msgstr "Source"
+msgstr "Sources"
 
 #: dt-contacts/contacts-post-type.php:809
 msgid "Source Details"
@@ -1620,7 +1586,7 @@ msgstr "Contact tenté"
 
 #: dt-contacts/contacts-post-type.php:870
 msgid "Media"
-msgstr ""
+msgstr "Média"
 
 #: dt-contacts/contacts-post-type.php:871
 #, fuzzy
@@ -1636,30 +1602,24 @@ msgstr "Utilisateur"
 
 #: dt-contacts/contacts-post-type.php:873
 msgid "Partner"
-msgstr ""
+msgstr "Partenaire"
 
 #: dt-contacts/contacts-post-type.php:885 dt-groups/groups-post-type.php:774
-#, fuzzy
-#| msgid "Duplicate"
 msgid "Duplicates"
-msgstr "Dupliquer"
+msgstr "Doublons"
 
 #: dt-contacts/contacts-post-type.php:892
 #: dt-contacts/contacts-post-type.php:913
-#, fuzzy
-#| msgid "Tags:"
 msgid "Tags"
-msgstr "Étiquettes :"
+msgstr "Étiquettes"
 
 #: dt-contacts/contacts-post-type.php:906 dt-groups/groups-post-type.php:788
 msgid "Un-Follow"
 msgstr ""
 
 #: dt-contacts/contacts-post-type.php:918
-#, fuzzy
-#| msgid "Duplicate"
 msgid "Duplicate of"
-msgstr "Dupliquer"
+msgstr "Duplication de"
 
 #: dt-contacts/contacts-post-type.php:1077 template-settings.php:107
 #: template-team.php:123
@@ -1755,10 +1715,8 @@ msgid "Transfer this contact to:"
 msgstr "Informations de contact insuffisantes"
 
 #: dt-contacts/contacts-transfer.php:73
-#, fuzzy
-#| msgid "Confirm"
 msgid "Confirm Transfer"
-msgstr "Confirmer"
+msgstr "Confirmer le transfert"
 
 #: dt-contacts/contacts.php:79
 #, php-format
@@ -2109,8 +2067,6 @@ msgid "Not Responding"
 msgstr "Ne répond pas"
 
 #: dt-core/admin/config-site-defaults.php:448
-#, fuzzy
-#| msgid "Not Available"
 msgid "Not available"
 msgstr "Non disponible"
 
@@ -2150,6 +2106,8 @@ msgstr "direction du texte"
 #: dt-core/admin/config-site-defaults.php:732
 msgid "Someone has requested a password reset for the following account:"
 msgstr ""
+"Nous avons reçu une demande de réinitialisation du mot de passe pour le "
+"compte suivant :"
 
 #. translators: %s: site name
 #: dt-core/admin/config-site-defaults.php:734
@@ -2160,18 +2118,19 @@ msgstr "Prénom"
 
 #. translators: %s: user login
 #: dt-core/admin/config-site-defaults.php:736
-#, fuzzy, php-format
-#| msgid "Username"
+#, php-format
 msgid "Username: %s"
-msgstr "Nom d’Utilisateur"
+msgstr "Nom d’utilisateur : %s"
 
 #: dt-core/admin/config-site-defaults.php:737
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
+"S'il s'agit d'une erreur, ignorez simplement cet email et rien ne se "
+"produira."
 
 #: dt-core/admin/config-site-defaults.php:738
 msgid "To reset your password, visit the following address:"
-msgstr ""
+msgstr "Pour réinitialiser votre mot de passe, visitez l'adresse suivante :"
 
 #: dt-core/admin/menu/menu-extensions.php:32
 msgid "Extensions (DT)"
@@ -2187,7 +2146,7 @@ msgstr ""
 
 #: dt-core/admin/menu/menu-utilities.php:35
 msgid "Utilities"
-msgstr ""
+msgstr "Utilitaires"
 
 #: dt-core/admin/menu/menu-utilities.php:35
 #, fuzzy
@@ -2201,10 +2160,8 @@ msgstr ""
 
 #: dt-core/admin/menu/tabs/tab-contact-import.php:37
 #: dt-core/admin/menu/tabs/tab-contact-import.php:45
-#, fuzzy
-#| msgid "Contacts"
 msgid "Import Contacts"
-msgstr "Contactes"
+msgstr "Importer des contacts"
 
 #: dt-core/admin/menu/tabs/tab-contact-import.php:67
 msgid "Your csv file needs to have the following columns:"
@@ -2247,16 +2204,12 @@ msgid ""
 msgstr ""
 
 #: dt-core/admin/menu/tabs/tab-contact-import.php:154
-#, fuzzy
-#| msgid "Types"
 msgid "yes"
-msgstr "Les types"
+msgstr "oui"
 
 #: dt-core/admin/menu/tabs/tab-contact-import.php:155
-#, fuzzy
-#| msgid "Info"
 msgid "no"
-msgstr "Info"
+msgstr "non"
 
 #: dt-core/admin/menu/tabs/tab-contact-import.php:163
 msgid "Where did these contacts come from? Add a source."
@@ -2270,36 +2223,28 @@ msgstr "Pourquoi voulez-vous mettre ce contact en pause?"
 
 #: dt-core/admin/menu/tabs/tab-contact-import.php:205
 msgid "Upload"
-msgstr ""
+msgstr "Télécharger"
 
 #: dt-core/admin/menu/tabs/tab-contact-import.php:288
 msgid "Is This Data In The Correct Fields?"
 msgstr ""
 
 #: dt-core/admin/menu/tabs/tab-contact-import.php:292
-#, fuzzy
-#| msgid "DT contact shared"
 msgid "Contact Phone"
-msgstr "DT contact partagé"
+msgstr "Téléphone"
 
 #: dt-core/admin/menu/tabs/tab-contact-import.php:293
-#, fuzzy
-#| msgid "Contact Details"
 msgid "Contact Email"
-msgstr "Détails du contact"
+msgstr "Email de contact"
 
 #: dt-core/admin/menu/tabs/tab-contact-import.php:294
-#, fuzzy
-#| msgid "Contacts"
 msgid "Contact Address"
-msgstr "Contactes"
+msgstr "Adresse de contact"
 
 #: dt-core/admin/menu/tabs/tab-contact-import.php:296
 #: dt-locations/locations-post-type.php:300
-#, fuzzy
-#| msgid "Note"
 msgid "Notes"
-msgstr "Remarque"
+msgstr "Notes"
 
 #: dt-core/admin/menu/tabs/tab-contact-import.php:383
 #, php-format
@@ -2318,22 +2263,20 @@ msgid "Year"
 msgstr "Année"
 
 #: dt-core/admin/menu/tabs/tab-critical-path.php:194
-#, fuzzy
-#| msgid "Action"
 msgid "Section"
-msgstr "Action"
+msgstr "Section"
 
 #: dt-core/admin/menu/tabs/tab-critical-path.php:196
 msgid "Before"
-msgstr ""
+msgstr "Avant"
 
 #: dt-core/admin/menu/tabs/tab-critical-path.php:197
 msgid "After"
-msgstr ""
+msgstr "Après"
 
 #: dt-core/admin/menu/tabs/tab-critical-path.php:204
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #: dt-core/admin/menu/tabs/tab-critical-path.php:316
 msgid ""
@@ -2344,7 +2287,7 @@ msgstr ""
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:46
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:54
 msgid "Custom Lists"
-msgstr ""
+msgstr "Listes personnalisées"
 
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:152
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:283
@@ -2355,7 +2298,7 @@ msgstr ""
 #: dt-core/admin/menu/tabs/tab-general.php:108
 #: dt-core/admin/menu/tabs/tab-general.php:184
 msgid "reset"
-msgstr ""
+msgstr "réinitialiser"
 
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:153
 msgid "You can add or remove types of contact fields for worker profiles."
@@ -2378,7 +2321,7 @@ msgstr ""
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:1118
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:1436
 msgid "Label"
-msgstr ""
+msgstr "Label"
 
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:511
 msgid "Add or remove custom milestones for new contacts."
@@ -2391,7 +2334,7 @@ msgstr ""
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:743
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:1435
 msgid "Move"
-msgstr ""
+msgstr "Déplacer"
 
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:849
 msgid "Add or remove reason_closed for new contacts."
@@ -2416,10 +2359,8 @@ msgid "Add or remove custom_dropdown_field for new contacts."
 msgstr ""
 
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:1461
-#, fuzzy
-#| msgid "Add Baptism"
 msgid "Add Option"
-msgstr "Ajouter baptême"
+msgstr "Ajouter une option"
 
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:1477
 msgid "Add Dropdown Field"
@@ -2444,10 +2385,8 @@ msgid "Description"
 msgstr "Description"
 
 #: dt-core/admin/menu/tabs/tab-featured-extensions.php:111
-#, fuzzy
-#| msgid "Action"
 msgid "Actions"
-msgstr "Action"
+msgstr "Actions"
 
 #: dt-core/admin/menu/tabs/tab-featured-extensions.php:133
 #: dt-core/admin/menu/tabs/tab-featured-extensions.php:185
@@ -2466,16 +2405,12 @@ msgid "Activate"
 msgstr "Activer"
 
 #: dt-core/admin/menu/tabs/tab-featured-extensions.php:143
-#, fuzzy
-#| msgid "Activate"
 msgid "Activated"
-msgstr "Activer"
+msgstr "Activé"
 
 #: dt-core/admin/menu/tabs/tab-featured-extensions.php:155
-#, fuzzy
-#| msgid "Recommended"
 msgid "Recommended Plugins"
-msgstr "Recommandé"
+msgstr "Plugins recommandées"
 
 #: dt-core/admin/menu/tabs/tab-featured-extensions.php:156
 msgid ""
@@ -2489,21 +2424,22 @@ msgstr "Action"
 
 #: dt-core/admin/menu/tabs/tab-featured-extensions.php:174
 msgid "UpdraftPlus - Backup/Restore"
-msgstr ""
+msgstr "UpdraftPlus - sauvegarde / restauration"
 
 #: dt-core/admin/menu/tabs/tab-featured-extensions.php:177
 msgid ""
 "Backup and restore: take backups locally, or backup to Amazon S3, Dropbox, "
 "Google Drive, Rackspace, (S)FTP, WebDAV & email, on automatic schedules."
 msgstr ""
+"Sauvegarde et restauration&nbsp;: sauvegarder localement, ou sur Amazon S3, "
+"Dropbox, Google Drive, Rackspace, (S)FTP, WebDAV & email, en planification "
+"automatique."
 
 #: dt-core/admin/menu/tabs/tab-featured-extensions.php:197
 #: dt-core/admin/menu/tabs/tab-featured-extensions.php:229
 #: dt-core/admin/menu/tabs/tab-featured-extensions.php:261
-#, fuzzy
-#| msgid "Install"
 msgid "Installed"
-msgstr "Installer"
+msgstr "Installé"
 
 #: dt-core/admin/menu/tabs/tab-featured-extensions.php:206
 msgid "Two Factor Authentication"
@@ -2528,10 +2464,8 @@ msgid ""
 msgstr ""
 
 #: dt-core/admin/menu/tabs/tab-general.php:47
-#, fuzzy
-#| msgid "Settings"
 msgid "General Settings"
-msgstr "Réglages"
+msgstr "Réglages généraux"
 
 #: dt-core/admin/menu/tabs/tab-general.php:109
 msgid ""
@@ -2573,15 +2507,12 @@ msgid "Days to wait"
 msgstr ""
 
 #: dt-core/admin/menu/tabs/tab-general.php:336
-#, fuzzy
-#| msgctxt "noun"
-#| msgid "Comment"
 msgid "Comment"
 msgstr "Commentaire"
 
 #: dt-core/admin/menu/tabs/tab-keys.php:42
 msgid "Google Map API"
-msgstr ""
+msgstr "API Google Map"
 
 #: dt-core/admin/menu/tabs/tab-locations.php:35
 #: dt-core/admin/menu/tabs/tab-locations.php:243
@@ -2593,10 +2524,8 @@ msgstr "Importer"
 
 #: dt-core/admin/menu/tabs/tab-locations.php:36
 #: dt-core/admin/menu/tabs/tab-locations.php:44
-#, fuzzy
-#| msgid "Team Locations"
 msgid "Import Locations"
-msgstr "Emplacements d’équipe"
+msgstr "Importer des lieux"
 
 #: dt-core/admin/menu/tabs/tab-network.php:37
 #: dt-core/admin/menu/tabs/tab-network.php:45 dt-network/network.php:200
@@ -2621,14 +2550,11 @@ msgstr ""
 #: dt-core/admin/menu/tabs/tab-utilities-overview.php:45
 #: dt-metrics/metrics-project.php:41
 msgid "Overview"
-msgstr ""
+msgstr "Vidéo d'aperçu analytique"
 
 #: dt-core/admin/metaboxes/box-activity.php:105
-#, fuzzy
-#| msgctxt "as in: \"version nr unknown\""
-#| msgid "unknown"
 msgid "unknown"
-msgstr "inconnue"
+msgstr "inconnu"
 
 #: dt-core/admin/metaboxes/box-address.php:112
 #: dt-core/admin/metaboxes/box-address.php:120
@@ -2693,21 +2619,17 @@ msgstr "Nouveau"
 
 #: dt-core/admin/site-link-post-type.php:380
 msgid "Nothing found in the Database."
-msgstr ""
+msgstr "Aucun résultat trouvé dans la base de données."
 
 #: dt-core/admin/site-link-post-type.php:381
-#, fuzzy
-#| msgid "No %s Found In Trash"
 msgid "Nothing found in Trash"
-msgstr "Non %s trouvé dans la corbeille"
+msgstr "Rien n’a été trouvé dans la corbeille"
 
 #: dt-core/admin/site-link-post-type.php:422
 #: dt-core/admin/site-link-post-type.php:816 template-merge-details.php:69
 #: template-merge-details.php:78
-#, fuzzy
-#| msgid "Status"
 msgid "Status:"
-msgstr "Statut"
+msgstr "Statut :"
 
 #: dt-core/admin/site-link-post-type.php:425
 #: dt-core/admin/site-link-post-type.php:819
@@ -2717,12 +2639,10 @@ msgstr ""
 #: dt-core/admin/site-link-post-type.php:452
 #: dt-core/admin/site-link-post-type.php:910
 msgid "Linked"
-msgstr ""
+msgstr "Lié"
 
 #. translators: Publish box date format, see http://php.net/date
 #: dt-core/admin/site-link-post-type.php:501
-#, fuzzy
-#| msgid "M j, Y @ G:i"
 msgid "M j, Y @ G:i"
 msgstr "M j, Y @ G:i"
 
@@ -2731,14 +2651,12 @@ msgid "Manage Site Link"
 msgstr ""
 
 #: dt-core/admin/site-link-post-type.php:514
-#, fuzzy
-#| msgid "Information"
 msgid "Configuration"
-msgstr "Information"
+msgstr "Configuration"
 
 #: dt-core/admin/site-link-post-type.php:736
 msgid "Token"
-msgstr ""
+msgstr "Jeton"
 
 #: dt-core/admin/site-link-post-type.php:737
 msgid ""
@@ -2769,10 +2687,8 @@ msgid ""
 msgstr ""
 
 #: dt-core/admin/site-link-post-type.php:767
-#, fuzzy
-#| msgid "Connection Types"
 msgid "Connection Type"
-msgstr "Types de Connexion"
+msgstr "Type de connexion"
 
 #: dt-core/admin/site-link-post-type.php:768
 msgid ""
@@ -2820,34 +2736,28 @@ msgid ""
 msgstr ""
 
 #: dt-core/admin/site-link-post-type.php:864
-#, fuzzy
-#| msgid "Current Value"
 msgid "Current Site"
-msgstr "Valeur actuelle"
+msgstr "Site actuel"
 
 #: dt-core/admin/site-link-post-type.php:866
 msgid "Timestamp"
-msgstr ""
+msgstr "Horodatage"
 
 #: dt-core/admin/site-link-post-type.php:868
 msgid "Compare this number to linked site. It should be identical."
 msgstr ""
 
 #: dt-core/admin/site-link-post-type.php:911
-#, fuzzy
-#| msgid "Footer Links"
 msgid "Not Linked"
-msgstr "Liens pied de page"
+msgstr "Non Lié"
 
 #: dt-core/admin/site-link-post-type.php:912
 msgid "Failed to connect with the URL provided."
 msgstr ""
 
 #: dt-core/admin/site-link-post-type.php:964
-#, fuzzy
-#| msgid "Enter the location title here"
 msgid "Enter the title here"
-msgstr "Entrez le lieu ici"
+msgstr "Entrez le titre de popover ici."
 
 #: dt-core/admin/user-groups/class-user-taxonomy.php:363
 #: dt-core/admin/user-groups/class-user-taxonomy.php:481
@@ -3111,10 +3021,8 @@ msgid "Added coach:"
 msgstr "Added to group"
 
 #: dt-core/config-p2p.php:192 dt-core/config-p2p.php:200
-#, fuzzy
-#| msgid "Coaching"
 msgid "Coach"
-msgstr "Coaching"
+msgstr "Car"
 
 #: dt-core/config-p2p.php:194
 #, fuzzy
@@ -4182,6 +4090,10 @@ msgstr "Communion"
 #: dt-groups/groups-post-type.php:677 single-groups.php:122
 msgid "Fellowship"
 msgstr ""
+"FORMAT de groupe de 3/3 — un groupe de 3/3 est une façon pour les disciples "
+"de Jésus à rencontrer, prier, apprendre, grandir, bourse et pratique "
+"obéissant et partage ce qu’ils ont appris. De cette façon, un groupe de 3/3 "
+"n’est pas seulement un petit groupe mais une église Simple. (80 minutes)"
 
 #: dt-groups/groups-post-type.php:687 single-groups.php:128
 msgid "Giving"
@@ -4262,10 +4174,8 @@ msgstr "Créer un nouveau formulaire"
 
 #: dt-locations/locations-post-type.php:227
 #: dt-locations/locations-post-type.php:301
-#, fuzzy
-#| msgid "Level"
 msgid "Levels"
-msgstr "Niveau"
+msgstr "Niveaux"
 
 #: dt-locations/locations-post-type.php:228
 #: dt-locations/locations-post-type.php:299
@@ -4278,7 +4188,7 @@ msgstr "Géo-code"
 
 #: dt-locations/locations-post-type.php:334
 msgid "(no parent)"
-msgstr ""
+msgstr "(aucun parent)"
 
 #: dt-locations/locations-post-type.php:340
 msgid "Parent"
@@ -4286,17 +4196,15 @@ msgstr "Parent"
 
 #: dt-locations/locations-post-type.php:347
 msgid "Order"
-msgstr ""
+msgstr "Trié par"
 
 #: dt-locations/locations-post-type.php:381
 msgid "Auto Build"
 msgstr ""
 
 #: dt-locations/locations-post-type.php:403
-#, fuzzy
-#| msgid "Share settings"
 msgid "Change Settings"
-msgstr "Paramètres de partage"
+msgstr "Changer les paramètres"
 
 #: dt-locations/locations-post-type.php:444
 msgid "You must save post before geocoding."
@@ -4413,7 +4321,7 @@ msgstr "Rechercher des membres"
 
 #: dt-metrics/metrics-personal.php:34
 msgid "Personal"
-msgstr ""
+msgstr "Personnel"
 
 #: dt-metrics/metrics-personal.php:61
 msgid "My Overview"
@@ -4429,10 +4337,8 @@ msgstr ""
 
 #: dt-metrics/metrics-personal.php:66 dt-metrics/metrics-personal.php:72
 #: dt-metrics/metrics-project.php:94
-#, fuzzy
-#| msgid "People Groups"
 msgid "Total Groups"
-msgstr "Groupes de personnes"
+msgstr "Totales groupes"
 
 #: dt-metrics/metrics-personal.php:67 dt-metrics/metrics-project.php:95
 msgid "Needs Training"
@@ -4443,10 +4349,8 @@ msgid "Fully Practicing"
 msgstr ""
 
 #: dt-metrics/metrics-personal.php:69 dt-metrics/metrics-project.php:108
-#, fuzzy
-#| msgid "Group Type"
 msgid "Group Types"
-msgstr "Type de Groupe"
+msgstr "Types de groupe"
 
 #: dt-metrics/metrics-personal.php:70 dt-metrics/metrics-project.php:97
 msgid "Group and Church Generations"
@@ -4497,14 +4401,12 @@ msgid "stats as of"
 msgstr ""
 
 #: dt-metrics/metrics-project.php:39
-#, fuzzy
-#| msgid "Project Updates"
 msgid "Project"
-msgstr "Mises à jour du projet"
+msgstr "Projet"
 
 #: dt-metrics/metrics-project.php:80
 msgid "Project Overview"
-msgstr ""
+msgstr "Aperçu de la mission"
 
 #: dt-metrics/metrics-project.php:81
 #, fuzzy
@@ -4514,7 +4416,7 @@ msgstr "Faire retour à l’activité"
 
 #: dt-metrics/metrics-project.php:83
 msgid "Outreach"
-msgstr ""
+msgstr "Vulgarisation"
 
 #: dt-metrics/metrics-project.php:84
 msgid "Follow Up"
@@ -4522,7 +4424,7 @@ msgstr ""
 
 #: dt-metrics/metrics-project.php:85
 msgid "Training"
-msgstr ""
+msgstr "Formation"
 
 #: dt-metrics/metrics-project.php:88
 #, fuzzy
@@ -4531,8 +4433,6 @@ msgid "Multiplication"
 msgstr "Multiplicateur"
 
 #: dt-metrics/metrics-project.php:89
-#, fuzzy
-#| msgid "All contacts"
 msgid "All Contacts"
 msgstr "Tous les contacts"
 
@@ -4559,10 +4459,8 @@ msgid "Active Groups Health Metrics"
 msgstr "Métriques de Santé"
 
 #: dt-metrics/metrics-project.php:102
-#, fuzzy
-#| msgid "group"
 msgid "groups"
-msgstr "groupe"
+msgstr "groupes"
 
 #: dt-metrics/metrics-project.php:103
 #, fuzzy
@@ -4576,7 +4474,7 @@ msgstr ""
 
 #: dt-metrics/metrics-project.php:107
 msgid "All time"
-msgstr ""
+msgstr "Tout le temps"
 
 #: dt-metrics/metrics-users.php:66
 #, fuzzy
@@ -4596,17 +4494,15 @@ msgstr "L’image aux traits spéciaux"
 
 #: dt-network/network.php:74
 msgid "Disabled"
-msgstr ""
+msgstr "Désactivé"
 
 #: dt-network/network.php:75
-#, fuzzy
-#| msgid "Enable"
 msgid "Enabled"
-msgstr "Activer"
+msgstr "Activé"
 
 #: dt-network/network.php:125
 msgid "Send Test"
-msgstr ""
+msgstr "Envoyer un test"
 
 #: dt-network/network.php:268
 msgid ""
@@ -4657,7 +4553,7 @@ msgstr "Sous-assigné à"
 #: dt-notifications/notifications.php:826
 #: dt-notifications/notifications.php:842
 msgid "System"
-msgstr ""
+msgstr "Système"
 
 #: dt-notifications/notifications.php:772
 #, php-format
@@ -4797,10 +4693,8 @@ msgid "Corresponds to Contact"
 msgstr "Correspond à l’utilisateur"
 
 #: dt-users/users.php:536
-#, fuzzy
-#| msgid "New contact"
 msgid "View contact"
-msgstr "Nouveau contact"
+msgstr "Voir le contact"
 
 #: dt-users/users.php:538
 msgid "Is this user already a contact in D.T?"
@@ -4818,7 +4712,7 @@ msgstr ""
 
 #: dt-users/users.php:584
 msgid "Email already exists"
-msgstr ""
+msgstr "L'email existe déjà"
 
 #: functions.php:446 functions.php:456
 msgid "Cheatin' huh?"
@@ -4886,10 +4780,8 @@ msgid "Progress"
 msgstr "Progrès"
 
 #: single-contacts.php:528
-#, fuzzy
-#| msgid "Search %a"
 msgid "Search Tags"
-msgstr "Rechercher %a"
+msgstr "Rechercher des étiquettes"
 
 #: single-contacts.php:582
 msgid "Close Contact"
@@ -4926,24 +4818,20 @@ msgid "Create Tag"
 msgstr "Créer un contact"
 
 #: single-contacts.php:702
-#, fuzzy
-#| msgid "Tags:"
 msgid "Tag"
-msgstr "Étiquettes :"
+msgstr "Tag"
 
 #: single-contacts.php:704
 msgid "tag"
-msgstr ""
+msgstr "tag"
 
 #: single-contacts.php:713
 msgid "Create and apply tag"
 msgstr ""
 
 #: single-contacts.php:765
-#, fuzzy
-#| msgid "Create Group"
 msgid "Create User"
-msgstr "Créer un groupe"
+msgstr "Create User (Créer un utilisateur)"
 
 #: single-contacts.php:768 single-contacts.php:810
 #, fuzzy
@@ -4956,20 +4844,16 @@ msgid "This will invite this contact to D.T as a multiplier"
 msgstr ""
 
 #: single-contacts.php:780
-#, fuzzy
-#| msgid "First Name"
 msgid "Display Name"
-msgstr "Prénom"
+msgstr "Afficher le nom"
 
 #: single-contacts.php:783
 msgid "Display name"
-msgstr ""
+msgstr "Afficher le nom"
 
 #: single-contacts.php:794
-#, fuzzy
-#| msgid "Create Group"
 msgid "Create user"
-msgstr "Créer un groupe"
+msgstr "Création d'utilisateur"
 
 #: single-contacts.php:807
 msgid "Link this contact to an existing user"
@@ -4991,10 +4875,8 @@ msgid "Merge this contact with another contact"
 msgstr ""
 
 #: single-contacts.php:888
-#, fuzzy
-#| msgid "%s deleted."
 msgid "selected."
-msgstr "%s supprimé."
+msgstr "Sélectionné."
 
 #: single-contacts.php:889
 #, fuzzy
@@ -5007,10 +4889,8 @@ msgid "Group Coach / Church Planter"
 msgstr ""
 
 #: single-groups.php:67
-#, fuzzy
-#| msgid "Members"
 msgid "Member List"
-msgstr "Membres"
+msgstr "Liste des membres"
 
 #: single-groups.php:112
 msgid "Health Metrics"
@@ -5069,10 +4949,8 @@ msgid ""
 msgstr ""
 
 #: template-merge-details.php:70 template-merge-details.php:79
-#, fuzzy
-#| msgid "related"
 msgid "Created:"
-msgstr "lié"
+msgstr "Créé :"
 
 #: template-merge-details.php:89
 #, fuzzy
@@ -5114,7 +4992,7 @@ msgstr "Nom d’Utilisateur"
 
 #: template-settings.php:82 template-settings.php:442
 msgid "Nickname (Display Name)"
-msgstr ""
+msgstr "Pseudo (votre nom affiché sur ce site)"
 
 #: template-settings.php:129 template-team.php:145
 msgid "Social"
@@ -5137,14 +5015,12 @@ msgid "Type of Notification"
 msgstr "Type de Notification"
 
 #: template-settings.php:225 template-settings.php:241
-#, fuzzy
-#| msgid "Required"
 msgid "required"
-msgstr "Requis"
+msgstr "requis"
 
 #: template-settings.php:276
 msgid "Set Away"
-msgstr ""
+msgstr "Ensemble de suite"
 
 #: template-settings.php:282
 msgid "Enable"
@@ -5190,7 +5066,7 @@ msgstr ""
 
 #: template-settings.php:421
 msgid "Password"
-msgstr ""
+msgstr "Mot de passe"
 
 #: template-settings.php:422
 msgid "Use this email reset form to create a new password."
@@ -5235,14 +5111,12 @@ msgid "You are not part of any teams"
 msgstr "Vous ne faites partie d’aucune équipe"
 
 #. Theme URI of the plugin/theme
-#, fuzzy
-#| msgid "Disciple Tools"
 msgid "http://disciple.tools"
-msgstr "Outils de disciple"
+msgstr "http://disciple.Tools"
 
 #. Plugin URI of the plugin/theme
 msgid "https://github.com/DiscipleTools/disciple-tools"
-msgstr ""
+msgstr "https://github.com/DiscipleTools/disciple-Tools"
 
 #. Description of the plugin/theme
 msgid ""
@@ -5252,7 +5126,7 @@ msgstr ""
 
 #. Author URI of the plugin/theme
 msgid "https://github.com/DiscipleTools"
-msgstr ""
+msgstr "https://github.com/DiscipleTools"
 
 #. Template Name of the plugin/theme
 msgid "About"
