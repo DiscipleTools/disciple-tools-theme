@@ -179,7 +179,7 @@
                 <div class="cell section-subheader">
                     <?php esc_html_e( 'Name', 'disciple_tools' ) ?>
                 </div>
-                <input type="text" id="title" class="edit-text-input" value="<?php the_title_attribute(); ?>">
+                <input type="text" id="title" class="edit-text-input" dir="auto" value="<?php the_title_attribute(); ?>">
 
             </div>
 
