@@ -478,6 +478,21 @@ class Disciple_Tools_Users
     }
 
 
+    public function edit_user_created_user( $user_id ){
+        if ( isset( $_REQUEST['action'] ) && 'createuser' == $_REQUEST['action'] ) {
+            check_admin_referer( 'create-user', '_wpnonce_create-user' );
+        } else {
+            check_admin_referer( 'update-user_' . $user_id );
+        }
+        if ( isset( $_POST["corresponds_to_contact_id"] )){
+            $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
+            update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
+            Disciple_Tools_Contacts::update_contact( $corresponds_to_contact, [
+                "corresponds_to_user" => $user_id
+            ], false, true );
+        }
+    }
+
     public function custom_user_profile_fields( $user ){
         $contact_id = "";
         $contact_title = "";
