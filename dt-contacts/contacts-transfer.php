@@ -114,6 +114,23 @@ class Disciple_Tools_Contacts_Transfer
         $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->dt_activity_log WHERE object_id = %s", $id ), ARRAY_A );
         return $results;
     }
+
+    public static function receive_transferred_contact( $contact_data ) {
+        dt_write_log( 'Made it' );
+        dt_write_log( __METHOD__ );
+        dt_write_log( $contact_data );
+
+        // Install contact
+        // Install contact meta
+        // Install activity
+
+        $foreign_key = Site_Link_System::generate_token();
+        // create, save, and return transfer success key/ foreign key
+        // save to meta
+
+        // return
+        return $foreign_key;
+    }
 }
 Disciple_Tools_Contacts_Transfer::instance();
 
