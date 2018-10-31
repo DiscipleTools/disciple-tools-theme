@@ -517,8 +517,8 @@ class Disciple_Tools_Posts
             if ( isset( $a->user_id ) && $a->user_id > 0 ) {
                 $user = get_user_by( "id", $a->user_id );
                 if ( $user ){
-                    $a->name =$user->display_name;
-                    $a->gravatar = get_avatar_url( $user->ID, [ 'size' => '16' ] );
+                    $a->name =$user->data->display_name;
+                    $a->gravatar = get_avatar_url( $user->data->ID, [ 'size' => '16' ] );
                 }
             }
             $activity_simple[] = [
