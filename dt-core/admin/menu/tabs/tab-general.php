@@ -224,7 +224,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         $base_user = dt_get_base_user();
         $potential_user_list = get_users(
             [
-                'role__in' => [ 'dispatcher', 'administrator', 'multiplier', 'marketer', 'strategist' ],
+                'role__in' => [ 'dispatcher', 'administrator', 'dt_admin', 'multiplier', 'marketer', 'strategist' ],
                 'order'    => 'ASC',
                 'orderby'  => 'display_name',
             ]

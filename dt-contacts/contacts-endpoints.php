@@ -865,7 +865,7 @@ class Disciple_Tools_Contacts_Endpoints
         }
 
         if ( isset( $params['contact_data'] ) ) {
-            return Disciple_Tools_Contacts_Transfer::receive_transferred_contact( $params['contact_data']  );
+            return Disciple_Tools_Contacts_Transfer::receive_transferred_contact( $params['contact_data'] );
         } else {
             return new WP_Error( __METHOD__, 'Missing required parameter: contact_data.' );
         }
