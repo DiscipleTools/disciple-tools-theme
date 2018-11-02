@@ -244,8 +244,8 @@
       ['planting', 'in_group', 'sharing', 'can_share'],
       function(key) { return contact["milestone_" + key]; }
     );
-    let status = ccfs.overall_status.default[contact.overall_status];
-    let seeker_path = ccfs.seeker_path.default[contact.seeker_path];
+    let status = ccfs.overall_status.default[contact.overall_status]["label"];
+    let seeker_path = ccfs.seeker_path.default[contact.seeker_path]["label"];
     // if (contact.overall_status === "active") {
     //   status = ccfs.seeker_path.default[contact.seeker_path];
     // } else {
@@ -275,8 +275,8 @@
       return '<a href="' + _.escape(leader.permalink) + '">' + _.escape(leader.post_title) + "</a>";
     }).join(", ");
     const gcfs = wpApiListSettings.custom_fields_settings;
-    const status = gcfs.group_status.default[group.group_status || "active"];
-    const type = gcfs.group_type.default[group.group_type || "active"];
+    const status = gcfs.group_status.default[group.group_status || "active"]["label"];
+    const type = gcfs.group_type.default[group.group_type || "active"]["label"];
     const context = _.assign({}, group, wpApiListSettings, {
       leader_links,
       status,
@@ -975,7 +975,7 @@
     let optionId = $(this).val()
     if ($(this).is(":checked")){
       let field_options = _.get( wpApiListSettings, `custom_fields_settings.${field_key}.default` )
-      let optionName = field_options[optionId]
+      let optionName = field_options[optionId]["label"]
       newFilterLabels.push({id:$(this).val(), name:optionName, field:field_key})
       selectedFilters.append(`<span class="current-filter ${field_key}" id="${optionId}">${optionName}</span>`)
     } else {

@@ -97,7 +97,8 @@ declare(strict_types=1);
                                 <select class="select-field" id="group_type">
                                     <?php
 
-                                    foreach ($group_fields["group_type"]["default"] as $key => $value){
+                                    foreach ($group_fields["group_type"]["default"] as $key => $option){
+                                        $value = $option["label"] ?? "";
                                         if ( $group["group_type"]["key"] === $key ) {
                                             ?>
                                             <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>

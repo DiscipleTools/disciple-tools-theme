@@ -157,7 +157,7 @@
                         foreach ($contact['sources'] ?? [] as $value){
                             ?>
                             <li class="<?php echo esc_html( $value )?>">
-                                <?php echo esc_html( $contact_fields['sources']['default'][$value] ?? $value ) ?>
+                                <?php echo esc_html( $contact_fields['sources']['default'][$value]["label"] ?? $value ) ?>
                             </li>
                         <?php }
                         if ( !isset( $contact['sources'] ) || sizeof( $contact['sources'] ) === 0){
@@ -291,7 +291,8 @@
                 </div>
                 <select id="gender" class="select-input">
                     <?php
-                    foreach ( $contact_fields['gender']['default'] as $gender_key => $gender_value ) {
+                    foreach ( $contact_fields['gender']['default'] as $gender_key => $option ) {
+                        $gender_value = $option["label"] ?? "";
                         if ( isset( $contact['gender'] ) &&
                              $contact['gender']['key'] === $gender_key){
                             echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
@@ -309,7 +310,8 @@
                 </div>
                 <select id="age" class="select-input">
                     <?php
-                    foreach ( $contact_fields["age"]["default"] as $age_key => $age_value ) {
+                    foreach ( $contact_fields["age"]["default"] as $age_key => $option ) {
+                        $age_value = $option["label"] ?? "";
                         if ( isset( $contact["age"] ) &&
                              $contact["age"]["key"] === $age_key){
                             echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';

@@ -402,14 +402,14 @@ class Disciple_Tools_Posts
                     }
 
                     if ( isset( $fields[$activity->meta_key]["default"][$value] ) ){
-                        $message .= " " . $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$value] ?? $value;
+                        $message .= " " . $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$value]["label"] ?? $value;
                     } else {
                         $message .= " " . $fields[$activity->meta_key]["name"] . ": " . $value;
                     }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "key_select" ){
                     if ( isset( $fields[$activity->meta_key]["default"][$activity->meta_value] ) ){
-                        $message = $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$activity->meta_value] ?? $activity->meta_value;
+                        $message = $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$activity->meta_value]["label"] ?? $activity->meta_value;
                     } else {
                         $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
                     }

@@ -126,6 +126,12 @@ function dt_get_option( string $name ) {
             return get_option( 'dt_site_custom_lists' );
             break;
 
+        case 'dt_field_customizations':
+            return get_option( 'dt_field_customizations', [
+                "contacts" => [],
+                "groups" => []
+            ]);
+
         case 'base_user':
             if ( ! get_option( 'dt_base_user' ) ) { // options doesn't exist, create new.
                 // set base users to system admin
@@ -404,55 +410,10 @@ function dt_get_site_options_defaults() {
 function dt_get_site_custom_lists( string $list_title = null ) {
     $fields = [];
 
-    $fields['version'] = 8;
+    $fields['version'] = 9;
     //custom fields
-    $fields['custom_dropdown_contact_options'] = [];
-    $fields['seeker_path'] = [
-        'none'        => __( 'Contact Attempt Needed' ),
-        'attempted'   => __( 'Contact Attempted' ),
-        'established' => __( 'Contact Established' ),
-        'scheduled'   => __( 'First Meeting Scheduled' ),
-        'met'         => __( 'First Meeting Complete' ),
-        'ongoing'     => __( 'Ongoing Meetings' ),
-        'coaching'    => __( 'Being Coached' ),
-    ];
     $fields['custom_milestones'] = [];
     $fields['custom_church'] = [];
-    $fields['custom_reason_closed'] = [
-        'none'                 => '',
-        'duplicate'            => __( 'Duplicate', 'disciple_tools' ),
-        'hostile_self_gain'     => __( 'Hostile, playing game or self gain', 'disciple_tools' ),
-        'games'                => __( 'Playing games', 'disciple_tools' ),
-        'apologetics'          => __( 'Only wants to argue or debate', 'disciple_tools' ),
-        'insufficient'         => __( 'Insufficient contact info', 'disciple_tools' ),
-        'already_connected'    => __( 'Already in church or connected with Others', 'disciple_tools' ),
-        'no_longer_interested' => __( 'No longer interested', 'disciple_tools' ),
-        'no_longer_responding' => __( 'No longer responding', 'disciple_tools' ),
-        'media_only'           => __( 'Just wanted media or book', 'disciple_tools' ),
-        'denies_submission'    => __( 'Denies submitting contact request', 'disciple_tools' ),
-        'unknown'              => __( 'Unknown', 'disciple_tools' )
-    ];
-    $fields['custom_status'] = [];
-    $fields['custom_reason_unassignable'] =[
-        'none'         => '',
-        'insufficient' => __( 'Insufficient Contact Information' ),
-        'location'     => __( 'Unknown Location' ),
-        'media'        => __( 'Only wants media' ),
-        'outside_area' => __( 'Outside Area' ),
-        'needs_review' => __( 'Needs Review' ),
-        'awaiting_confirmation' => __( 'Waiting for Confirmation' ),
-    ];
-    $fields['custom_reason_paused'] = [
-        'none'           => '',
-        'vacation'       => __( 'On Vacation', 'disciple_tools' ),
-        'not-responding' => __( 'Not Responding', 'disciple_tools' ), //@todo make lowercase
-        'not_available' => __( 'Not available', 'disciple_tools' ),
-        'little_interest' => __( 'Little interest/hunger', 'disciple_tools' ),
-        'no_initiative' => __( 'No initiative', 'disciple_tools' ),
-        'questionable_motives' => __( 'Questionable motives', 'disciple_tools' ),
-        'ball_in_their_court' => __( 'Ball is in his/her court', 'disciple_tools' ),
-        'wait_and_see' => __( 'Want to see if/how they respond to automated text messages', 'disciple_tools' ),
-    ];
     // the prefix dt_user_ assists db meta queries on the user
     $fields['user_fields'] = [
         'dt_user_personal_phone'   => [
@@ -587,18 +548,9 @@ function dt_get_site_custom_lists( string $list_title = null ) {
     ];
 
 
-    $fields["group_type"] = [
-        'pre-group' => __( 'Pre-Group', 'disciple_tools' ),
-        'group'     => __( 'Group', 'disciple_tools' ),
-        'church'    => __( 'Church', 'disciple_tools' ),
-    ];
     // $fields = apply_filters( 'dt_site_custom_lists', $fields );
 
-    if ( is_null( $list_title ) ) {
-        return $fields;
-    } else {
-        return $fields[ $list_title ];
-    }
+        return $fields[ $list_title ] ?? $fields;
 }
 
 function dt_get_location_levels() {

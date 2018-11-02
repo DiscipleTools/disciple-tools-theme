@@ -547,16 +547,8 @@ class Disciple_Tools_Contact_Post_Type
         $this->meta_box_content( 'misc' ); // prints
     }
 
-    /**
-     * Get the settings for the custom fields.
-     *
-     * @param bool     $include_current_post
-     * @param int|null $post_id
-     *
-     * @return mixed
-     */
-    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null ) {
-        global $post;
+
+    public function get_contact_fields( $post_id = null, $include_current_post = null ){
         $fields = [];
 
         $fields['assigned_to'] = [
@@ -571,16 +563,34 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Overall Status', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => dt_get_option( 'overall_status' ),
+            'default'     => [
+                'unassigned'   => [
+                    "label" => _x( 'Unassigned', 'Contact Status', 'disciple_tools' ),
+                    "color" => "#F43636"
+                ],
+                'assigned'     => [
+                    "color" => "#FF9800",
+                    "label" => _X( "Assigned", 'Contact Status', 'disciple_tools' )
+                ],
+                'active'       => [
+                    "color" => "#4CAF50",
+                    "label" => _X( 'Active', 'Contact Status', 'disciple_tools' )
+                ],
+                'paused'       => [
+                    "color" => "#FF9800",
+                    "label" => _x( 'Paused', 'Contact Status', 'disciple_tools' )
+                ],
+                'closed'       => [
+                    "color" => "#F43636",
+                    "label" => _x( 'Closed', 'Contact Status', 'disciple_tools' )
+                ],
+                'unassignable' => [
+                    "color" => "#2196F3",
+                    "label" => _x( 'Unassignable', 'Contact Status', 'disciple_tools' )
+                ],
+            ],
             'section'     => 'status',
-            'colors' => [
-                "unassigned" => "#F43636",  //(red)
-                "assigned" => "#FF9800", //(orange)
-                "active" => "#4CAF50", //(green)
-                "paused" => "#FF9800", //(orange)
-                "closed" => "#F43636", //(red)
-                "unassignable" => "#2196F3" //(blue)
-            ]
+            'customizable' => 'add_only'
         ];
 
         //these fields must stay in order of importance
@@ -588,16 +598,25 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Seeker Path', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => dt_get_option( 'seeker_path' ),
-            'section'     => 'status'
+            'default'     => [
+                'none'        => [ "label" => __( 'Contact Attempt Needed' ) ],
+                'attempted'   => [ "label" => __( 'Contact Attempted' ) ],
+                'established' => [ "label" => __( 'Contact Established' ) ],
+                'scheduled'   => [ "label" => __( 'First Meeting Scheduled' ) ],
+                'met'         => [ "label" => __( 'First Meeting Complete' ) ],
+                'ongoing'     => [ "label" => __( 'Ongoing Meetings' ) ],
+                'coaching'    => [ "label" => __( 'Being Coached' ) ],
+            ],
+            'section'     => 'status',
+            'customizable' => 'add_only'
         ];
         $fields['requires_update'] = [
             'name'        => __( 'Requires Update', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'no' => __( 'No', 'disciple_tools' ),
-                'yes' => __( 'Yes', 'disciple_tools' )
+                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
+                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'status',
         ];
@@ -618,14 +637,26 @@ class Disciple_Tools_Contact_Post_Type
         }
 
 
+//        $fields["milestones"] =[
+//            "name" =>  __( 'Milestones', 'disciple_tools' ),
+//            "type" => "multi_select",
+//            "default" => [
+//                "milestone_has_bible" => [ "label" => __( 'Has Bible', 'disciple_tools' ) ],
+//                "milestone_reading_bible" => [ "label" => __( 'Reading Bible', 'disciple_tools' )],
+//                "" => [ "label" => ],
+//                "" => [ "label" => ],
+//                "" => [ "label" => ],
+//            ]
+//        ];
+
         // Status information section
         $fields['milestone_has_bible'] = [
             'name'        => __( 'Has Bible', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'no' => __( 'No', 'disciple_tools' ),
-                'yes' => __( 'Yes', 'disciple_tools' )
+                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
+                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'milestone',
         ];
@@ -634,8 +665,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'no' => __( 'No', 'disciple_tools' ),
-                'yes' => __( 'Yes', 'disciple_tools' )
+                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
+                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'milestone',
         ];
@@ -644,8 +675,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'no' => __( 'No', 'disciple_tools' ),
-                'yes' => __( 'Yes', 'disciple_tools' )
+                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
+                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'milestone',
         ];
@@ -654,8 +685,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'no' => __( 'No', 'disciple_tools' ),
-                'yes' => __( 'Yes', 'disciple_tools' )
+                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
+                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'milestone',
         ];
@@ -664,8 +695,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'no' => __( 'No', 'disciple_tools' ),
-                'yes' => __( 'Yes', 'disciple_tools' )
+                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
+                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'milestone',
         ];
@@ -674,8 +705,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'no' => __( 'No', 'disciple_tools' ),
-                'yes' => __( 'Yes', 'disciple_tools' )
+                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
+                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'milestone',
         ];
@@ -684,8 +715,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'no' => __( 'No', 'disciple_tools' ),
-                'yes' => __( 'Yes', 'disciple_tools' )
+                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
+                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'milestone',
         ];
@@ -694,8 +725,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'no' => __( 'No', 'disciple_tools' ),
-                'yes' => __( 'Yes', 'disciple_tools' )
+                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
+                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'milestone',
         ];
@@ -704,8 +735,8 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'no' => __( 'No', 'disciple_tools' ),
-                'yes' => __( 'Yes', 'disciple_tools' )
+                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
+                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'milestone',
         ];
@@ -733,9 +764,9 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'not-set' => '',
-                'male'    => __( 'Male', 'disciple_tools' ),
-                'female'  => __( 'Female', 'disciple_tools' ),
+                'not-set' => [ "label" => '' ],
+                'male'    => [ "label" => __( 'Male', 'disciple_tools' ) ],
+                'female'  => [ "label" => __( 'Female', 'disciple_tools' ) ],
             ],
             'section'     => 'misc',
         ];
@@ -744,11 +775,11 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'not-set' => '',
-                '<19'     => __( 'Under 18 years old', 'disciple_tools' ),
-                '<26'     => __( '18-25 years old', 'disciple_tools' ),
-                '<41'     => __( '26-40 years old', 'disciple_tools' ),
-                '>41'     => __( 'Over 40 years old', 'disciple_tools' ),
+                'not-set' => [ "label" => '' ],
+                '<19'     => [ "label" => __( 'Under 18 years old', 'disciple_tools' ) ],
+                '<26'     => [ "label" => __( '18-25 years old', 'disciple_tools' ) ],
+                '<41'     => [ "label" => __( '26-40 years old', 'disciple_tools' ) ],
+                '>41'     => [ "label" => __( 'Over 40 years old', 'disciple_tools' ) ],
             ],
             'section'     => 'misc',
         ];
@@ -757,44 +788,73 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Reason Unassaginable' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [],
+            'default'     => [
+                'none'         => [ "label" => '', ],
+                'insufficient' => [ "label" => __( 'Insufficient Contact Information' ) ],
+                'location'     => [ "label" => __( 'Unknown Location' ) ],
+                'media'        => [ "label" => __( 'Only wants media' ) ],
+                'outside_area' => [ "label" => __( 'Outside Area' ) ],
+                'needs_review' => [ "label" => __( 'Needs Review' ) ],
+                'awaiting_confirmation' => [ "label" => __( 'Waiting for Confirmation' ) ],
+            ],
             'section'     => 'misc',
+            'customizable' => 'all'
         ];
 
         $fields['reason_paused'] = [
             'name'        => __( 'Reason Paused' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [],
+            'default' => [
+                'none'                 => [ "label" => '' ],
+                'vacation'             => [ "label" => __( 'On Vacation', 'disciple_tools' ) ],
+                'not-responding'       => [ "label" => __( 'Not Responding', 'disciple_tools' ) ], //@todo make lowercase
+                'not_available'        => [ "label" => __( 'Not available', 'disciple_tools' ) ],
+                'little_interest'      => [ "label" => __( 'Little interest/hunger', 'disciple_tools' ) ],
+                'no_initiative'        => [ "label" => __( 'No initiative', 'disciple_tools' ) ],
+                'questionable_motives' => [ "label" => __( 'Questionable motives', 'disciple_tools' ) ],
+                'ball_in_their_court'  => [ "label" => __( 'Ball is in his/her court', 'disciple_tools' ) ],
+                'wait_and_see'         => [ "label" => __( 'Want to see if/how they respond to automated text messages', 'disciple_tools' ) ],
+            ],
             'section'     => 'misc',
+            'customizable' => 'all'
         ];
 
         $fields['reason_closed'] = [
             'name'        => __( 'Reason Closed', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => [],
+            'default'     => [
+                'none'                 => [ "label" => '' ],
+                'duplicate'            => [ "label" => __( 'Duplicate', 'disciple_tools' ) ],
+                'hostile_self_gain'    => [ "label" => __( 'Hostile, playing game or self gain', 'disciple_tools' ) ],
+                'games'                => [ "label" => __( 'Playing games', 'disciple_tools' ) ],
+                'apologetics'          => [ "label" => __( 'Only wants to argue or debate', 'disciple_tools' ) ],
+                'insufficient'         => [ "label" => __( 'Insufficient contact info', 'disciple_tools' ) ],
+                'already_connected'    => [ "label" => __( 'Already in church or connected with Others', 'disciple_tools' ) ],
+                'no_longer_interested' => [ "label" => __( 'No longer interested', 'disciple_tools' ) ],
+                'no_longer_responding' => [ "label" => __( 'No longer responding', 'disciple_tools' ) ],
+                'media_only'           => [ "label" => __( 'Just wanted media or book', 'disciple_tools' ) ],
+                'denies_submission'    => [ "label" => __( 'Denies submitting contact request', 'disciple_tools' ) ],
+                'unknown'              => [ "label" => __( 'Unknown', 'disciple_tools' ) ]
+            ],
             'section'     => 'misc',
+            'customizable' => 'all'
         ];
-        //add custom fields to reason closed/paused
-        $custom_lists = dt_get_option( 'dt_site_custom_lists' );
-        $fields['reason_closed']['default'] = $custom_lists["custom_reason_closed"];
-        $fields['reason_paused']['default'] = $custom_lists["custom_reason_paused"];
-        $fields['reason_unassignable']['default'] = $custom_lists["custom_reason_unassignable"];
         $fields['accepted'] = [
             'name'        => __( 'Accepted', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'no' => __( 'No', 'disciple_tools' ),
-                'yes' => __( 'Yes', 'disciple_tools' )
+                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
+                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'status',
         ];
 
         $sources_default = [];
         foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $key => $value ) {
-            $sources_default[ $key ] = $value['label'];
+            $sources_default[ $key ] = $value;
         }
 
         $fields['sources'] = [
@@ -863,16 +923,16 @@ class Disciple_Tools_Contact_Post_Type
             'section' => 'misc'
         ];
         $fields["type"] = [
-            'name' => __( 'Contact type', 'disciple_tools' ),
+            'name'        => __( 'Contact type', 'disciple_tools' ),
             'description' => '',
-            'type' => 'key_select',
-            'default' => [
-                'media' => __( 'Media', 'disciple_tools' ),
-                'next_gen' => __( 'Next Generation', 'disciple_tools' ),
-                'user' => __( 'User', 'disciple_tools' ),
-                'partner' => __( 'Partner', 'disciple_tools' )
+            'type'        => 'key_select',
+            'default'     => [
+                'media'    => [ "label" => __( 'Media', 'disciple_tools' ) ],
+                'next_gen' => [ "label" => __( 'Next Generation', 'disciple_tools' ) ],
+                'user'     => [ "label" => __( 'User', 'disciple_tools' ) ],
+                'partner'  => [ "label" => __( 'Partner', 'disciple_tools' ) ],
             ],
-            'section' => 'misc'
+            'section'     => 'misc'
         ];
         $fields["last_modified"] =[
             'name' => __( 'Last modified', 'disciple_tools' ),
@@ -922,7 +982,6 @@ class Disciple_Tools_Contact_Post_Type
         ];
 
         //get the custom milestone fields
-
         $custom_contact_fields = dt_get_option( 'dt_site_custom_lists' );
         $custom_contact_fields = $custom_contact_fields["custom_milestones"];
         if ( ! empty( $custom_contact_fields ) ) {
@@ -938,19 +997,76 @@ class Disciple_Tools_Contact_Post_Type
             }
         }
 
+        return $fields;
+    }
 
-        foreach ($custom_lists["custom_dropdown_contact_options"] as $k => $v ){
-            $fields["custom_dropdown_contact_".$k] = [
-                'name'        => $k,
-                 'description' => 'holds ' . $k . ' progress',
-                 'type'        => 'key_select',
-                 'default'     => [],
-                 'section'     => 'misc',
-             ];
+    /**
+     * Get the settings for the custom fields.
+     *
+     * @param bool     $include_current_post
+     * @param int|null $post_id
+     *
+     * @return mixed
+     */
+    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false ) {
+
+        $fields = $this->get_contact_fields( $post_id, $include_current_post );
+//        $custom_fields = get_option( "custom_contact_fields", [] );
+//        $fields = array_merge( $fields, $custom_fields );
+        $fields = apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
+        foreach ( $fields as $field_key => $field ){
+            if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
+                foreach ( $field["default"] as $option_key => $option_value ){
+                    if ( !is_array( $option_value )){
+                        $fields[$field_key]["default"][$option_key] = [ "label" => $option_value ];
+                    }
+                }
+            }
+        }
+//        $fields = array_merge( $fields, $fields_filtered );
+        $custom_field_options = dt_get_option( "dt_field_customizations" );
+        if ( isset( $custom_field_options["contacts"] )){
+            foreach ( $custom_field_options["contacts"] as $key => $field ){
+                $field_type = $field["type"] ?? $fields[$key]["type"];
+                if ( !isset( $fields[$key] )){
+                    $fields[$key] = $field;
+                } else {
+                    if ( isset( $field["name"] )){
+                        $fields[$key]["name"] = $field["name"];
+                    }
+                    if ( $field_type === "key_select" || $field_type === "multi_select" ){
+                        if ( isset( $field["default"] )){
+                            $fields[$key]["default"] = array_merge( $fields[$key]["default"], $field["default"] );
+                        }
+                    }
+                }
+                if ( $field_type === "key_select" || $field_type === "multi_select" ){
+                    if ( isset( $field["order"] )){
+                        $with_order = [];
+                        foreach ( $field["order"] as $ordered_key ){
+                            $with_order[$ordered_key] = [];
+                        }
+                        foreach ( $fields[$key]["default"] as $option_key => $option_value ){
+                            $with_order[$option_key] = $option_value;
+                        }
+                        $fields[$key]["default"] = $with_order;
+                    }
+                }
+            }
+        }
+        if ( $with_deleted_options === false ){
+            foreach ( $fields as $field_key => $field ){
+                if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
+                    foreach ( $field["default"] as $option_key => $option_value ){
+                        if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ){
+                            unset( $fields[$field_key]["default"][$option_key] );
+                        }
+                    }
+                }
+            }
         }
 
-
-        return apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
+        return $fields;
     } // End get_custom_fields_settings()
 
     /**

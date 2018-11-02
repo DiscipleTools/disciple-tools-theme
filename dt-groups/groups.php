@@ -138,7 +138,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                         $fields["contact_address"][] = $details;
                     }
                 } elseif ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]["type"] == "key_select" ) {
-                    $label = self::$group_fields[ $key ]["default"][ $value[0] ] ?? current( self::$group_fields[ $key ]["default"] );
+                    $label = self::$group_fields[ $key ]["default"][ $value[0] ]["label"] ?? current( self::$group_fields[ $key ]["default"] );
                     $fields[ $key ] = [
                     "key" => $value[0],
                     "label" => $label

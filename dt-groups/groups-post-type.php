@@ -610,8 +610,8 @@ class Disciple_Tools_Groups_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'inactive' => __( 'Inactive', 'disciple_tools' ),
-                'active'   => __( 'Active', 'disciple_tools' ),
+                'inactive' => [ "label" => __( 'Inactive', 'disciple_tools' ) ],
+                'active'   => [ "label" => __( 'Active', 'disciple_tools' ) ],
             ],
             'section'     => 'info',
         ];
@@ -619,7 +619,11 @@ class Disciple_Tools_Groups_Post_Type
             'name'        => __( 'Group Type', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => dt_get_option( 'group_type' ),
+            'default'     => [
+                'pre-group' => [ "label" => __( 'Pre-Group', 'disciple_tools' ) ],
+                'group'     => [ "label" => __( 'Group', 'disciple_tools' ) ],
+                'church'    => [ "label" => __( 'Church', 'disciple_tools' ) ],
+            ],
             'section'     => 'info',
         ];
 
@@ -637,8 +641,8 @@ class Disciple_Tools_Groups_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
+                '0' => [ "label" => __( 'No', 'disciple_tools' ) ],
+                '1' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'church',
         ];
@@ -648,8 +652,8 @@ class Disciple_Tools_Groups_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
+                '0' => [ "label" => __( 'No', 'disciple_tools' ) ],
+                '1' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'church_hidden',
         ];
@@ -658,8 +662,8 @@ class Disciple_Tools_Groups_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
+                '0' => [ "label" => __( 'No', 'disciple_tools' ) ],
+                '1' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'church_hidden',
         ];
@@ -668,8 +672,8 @@ class Disciple_Tools_Groups_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
+                '0' => [ "label" => __( 'No', 'disciple_tools' ) ],
+                '1' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'church_hidden',
         ];
@@ -678,8 +682,8 @@ class Disciple_Tools_Groups_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
+                '0' => [ "label" => __( 'No', 'disciple_tools' ) ],
+                '1' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'church_hidden',
         ];
@@ -688,8 +692,8 @@ class Disciple_Tools_Groups_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
+                '0' => [ "label" => __( 'No', 'disciple_tools' ) ],
+                '1' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'church_hidden',
         ];
@@ -698,8 +702,8 @@ class Disciple_Tools_Groups_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
+                '0' => [ "label" => __( 'No', 'disciple_tools' ) ],
+                '1' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'church_hidden',
         ];
@@ -708,8 +712,8 @@ class Disciple_Tools_Groups_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
+                '0' => [ "label" => __( 'No', 'disciple_tools' ) ],
+                '1' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'church_hidden',
         ];
@@ -718,8 +722,8 @@ class Disciple_Tools_Groups_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
+                '0' => [ "label" => __( 'No', 'disciple_tools' ) ],
+                '1' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'church_hidden',
         ];
@@ -728,8 +732,8 @@ class Disciple_Tools_Groups_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
+                '0' => [ "label" => __( 'No', 'disciple_tools' ) ],
+                '1' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'church_hidden',
         ];
@@ -738,8 +742,8 @@ class Disciple_Tools_Groups_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
+                '0' => [ "label" => __( 'No', 'disciple_tools' ) ],
+                '1' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
             ],
             'section'     => 'church_hidden',
         ];
