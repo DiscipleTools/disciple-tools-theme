@@ -996,13 +996,12 @@ class Disciple_Tools_Posts
                 $all_field_keys = array_keys( $contact_fields );
                 $sort_sql = "CASE ";
                 $sort_join = "";
-                foreach ( array_reverse( $all_field_keys ) as $field_index => $field_key ){
-                    if ( strpos( $field_key, "milestone_" ) === 0 ){
-                        $alias = 'faith_' . esc_sql( $field_key );
-                        $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON
-                    ( $wpdb->posts.ID = $alias.post_id AND $alias.meta_key = '" . esc_sql( $field_key ) . "' AND $alias.meta_value = 'yes') ";
-                        $sort_sql .= "WHEN ( $alias.meta_key = '" . esc_sql( $field_key ) . "' ) THEN $field_index ";
-                    }
+                $milestone_keys = array_reverse( array_keys( $contact_fields["milestones"]["default"] ) );
+                foreach ( $milestone_keys as $index  => $key ){
+                    $alias = 'faith_' . esc_sql( $key );
+                    $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON
+                    ( $wpdb->posts.ID = $alias.post_id AND $alias.meta_key = 'milestones' AND $alias.meta_value = '" . esc_sql( $key ) . "') ";
+                    $sort_sql .= "WHEN ( $alias.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
                 }
                 $sort_sql .= "else 1000 end ";
                 $sort_sql .= $sort_dir;

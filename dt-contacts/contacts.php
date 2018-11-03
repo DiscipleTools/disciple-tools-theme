@@ -775,9 +775,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 //        if ( empty( $baptism_date )){
 //            update_post_meta( $contact_id, "baptism_date", time() );
 //        }
-        $baptism = get_post_meta( $contact_id, 'milestone_baptized', true );
-        if ( empty( $baptism ) || $baptism === 'no' ){
-            update_post_meta( $contact_id, "milestone_baptized", 'yes' );
+        $milestones = get_post_meta( $contact_id, 'milestones' );
+        if ( empty( $milestones ) || !in_array( "milestone_baptized", $milestones ) ){
+            add_post_meta( $contact_id, "milestones", "milestone_baptized" );
         }
         Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $contact_id );
         return $p2p;
@@ -1275,11 +1275,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         $fields["address"][] = $details;
                     }
                 } elseif ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]["type"] == "key_select" ) {
-                    $label = self::$contact_fields[ $key ]["default"][ $value[0] ]["label"] ?? current( self::$contact_fields[ $key ]["default"] );
-                    $fields[ $key ] = [
-                    "key" => $value[0],
-                    "label" => $label
-                    ];
+                    if ( !empty( $value[0] )){
+                        $label = self::$contact_fields[ $key ]["default"][ $value[0] ]["label"] ?? current( self::$contact_fields[ $key ]["default"] );
+                        $fields[ $key ] = [
+                            "key" => $value[0],
+                            "label" => $label
+                        ];
+                    }
                 } elseif ( $key === "assigned_to" ) {
                     if ( $value ) {
                         $meta_array = explode( '-', $value[0] ); // Separate the type and id
@@ -1412,44 +1414,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         return $details;
-    }
-
-    public static function merge_milestones( int $master_id, int $non_master_id) {
-        if ( !$master_id || !$non_master_id) { return; }
-        $master = self::get_contact( $master_id );
-        $non_master = self::get_contact( $non_master_id );
-
-        $update = array();
-        foreach ($non_master as $key => $val_arr) {
-            if (preg_match( "/^milestone_/", $key ) && ( $master[$key]['key'] ?? 'no' ) !== 'yes') {
-                $value = is_array( $val_arr ) ? $val_arr['key'] : $val_arr;
-                $update[$key] = $value;
-            }
-        }
-
-        $seeker_paths = array(
-            'none',
-            'attempted',
-            'established',
-            'scheduled',
-            'met',
-            'ongoing',
-            'coaching'
-        );
-
-        $master_level = array_search( $master['seeker_path']['key'] ?? array(), $seeker_paths ) ?: 0;
-        $non_master_level = array_search( $non_master['seeker_path']['key'] ?? array(), $seeker_paths ) ?: 0;
-        if ($non_master_level > $master_level) {
-            $update['seeker_path'] = $non_master['seeker_path']['key'];
-        }
-
-        if ( !isset( $master['baptism_date'] ) && isset( $non_master['baptism_date'] )) {
-            $update['baptism_date'] = $non_master['baptism_date'];
-        }
-
-        if (empty( $update )) { return; }
-
-        self::update_contact( $master_id, $update );
     }
 
     public static function merge_p2p( int $master_id, int $non_master_id) {

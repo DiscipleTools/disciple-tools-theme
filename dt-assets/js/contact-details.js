@@ -644,35 +644,6 @@ jQuery(document).ready(function($) {
    * Contact details
    */
 
-  $('.seeker-milestone-button').on( 'click', function(){
-    let fieldKey = $(this).attr('id')
-    let fieldValue = ""
-    let data = {}
-    let field = jQuery("#" + fieldKey)
-    field.addClass("submitting-select-button")
-    if (field.hasClass("selected-select-button")){
-      fieldValue = "no"
-    } else {
-      field.removeClass("empty-select-button")
-      field.addClass("selected-select-button")
-      fieldValue = "yes"
-    }
-    data[fieldKey] = fieldValue
-    API.save_field_api('contact', contactId, data).then((resp)=>{
-      field.removeClass("submitting-select-button selected-select-button")
-      field.blur()
-      field.addClass( fieldValue === "no" ? "empty-select-button" : "selected-select-button")
-      if ( fieldKey === 'milestone_baptized' && fieldValue === 'yes' ){
-        openBaptismModal(resp)
-      }
-    }).catch(err=>{
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").text(err.responseText)
-      field.removeClass("submitting-select-button selected-select-button")
-      field.addClass( fieldValue === "yes" ? "empty-select-button" : "selected-select-button")
-    })
-  })
 
   $(document).on('change', 'div.reason-field select', e => {
     const $select = $(e.currentTarget)
@@ -722,6 +693,37 @@ jQuery(document).ready(function($) {
 
     API.save_field_api('contact', contactId, { [id]: val })
       .catch(handelAjaxError)
+  })
+  $('button.multi_select').on('click',function () {
+    let fieldKey = $(this).attr('id')
+    let fieldValue = {}
+    let data = {}
+    let field = jQuery("#" + fieldKey)
+    field.addClass("submitting-select-button")
+    let action = "add"
+    if (field.hasClass("selected-select-button")){
+      fieldValue = {values:[{value:fieldKey,delete:true}]}
+      action = "delete"
+    } else {
+      field.removeClass("empty-select-button")
+      field.addClass("selected-select-button")
+      fieldValue = {values:[{value:fieldKey}]}
+    }
+    data[fieldKey] = fieldValue
+    API.save_field_api('contact', contactId, {milestones: fieldValue}).then((resp)=>{
+      field.removeClass("submitting-select-button selected-select-button")
+      field.blur();
+      field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
+      if ( fieldKey === 'milestone_baptized' && action === 'add' ){
+        openBaptismModal(resp)
+      }
+    }).catch(err=>{
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").text(err.responseText)
+      field.removeClass("submitting-select-button selected-select-button")
+      field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
+    })
   })
 
 
@@ -1289,7 +1291,7 @@ jQuery(document).ready(function($) {
   })
   let openBaptismModal = function( newContact ){
     let modalBaptismGeneration = $('#modal-baptism_generation')
-    if ( !contact.baptism_date || _.get(contact, 'milestone_baptized.key') !== 'yes' || (contact.baptized_by || []).length === 0 ){
+    if ( !contact.baptism_date || !(contact.milestones || []).includes('milestone_baptized') || (contact.baptized_by || []).length === 0 ){
       $('#baptism-modal').foundation('open');
       if (!window.Typeahead['.js-typeahead-modal_baptized_by']) {
         $.typeahead({

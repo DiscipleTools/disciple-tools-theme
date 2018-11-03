@@ -637,109 +637,23 @@ class Disciple_Tools_Contact_Post_Type
         }
 
 
-//        $fields["milestones"] =[
-//            "name" =>  __( 'Milestones', 'disciple_tools' ),
-//            "type" => "multi_select",
-//            "default" => [
-//                "milestone_has_bible" => [ "label" => __( 'Has Bible', 'disciple_tools' ) ],
-//                "milestone_reading_bible" => [ "label" => __( 'Reading Bible', 'disciple_tools' )],
-//                "" => [ "label" => ],
-//                "" => [ "label" => ],
-//                "" => [ "label" => ],
-//            ]
-//        ];
+        $fields["milestones"] = [
+            "name"    => __( 'Faith Milestones', 'disciple_tools' ),
+            "type"    => "multi_select",
+            "default" => [
+                "milestone_has_bible"     => [ "label" => __( 'Has Bible', 'disciple_tools' ) ],
+                "milestone_reading_bible" => [ "label" => __( 'Reading Bible', 'disciple_tools' ) ],
+                "milestone_belief"        => [ "label" => __( 'States Belief', 'disciple_tools' ) ],
+                "milestone_can_share"     => [ "label" => __( 'Can Share Gospel/Testimony', 'disciple_tools' ) ],
+                "milestone_sharing"       => [ "label" => __( 'Sharing Gospel/Testimony', 'disciple_tools' ) ],
+                "milestone_baptized"      => [ "label" => __( 'Baptized', 'disciple_tools' ) ],
+                "milestone_baptizing"     => [ "label" => __( 'Baptizing', 'disciple_tools' ) ],
+                "milestone_in_group"      => [ "label" => __( 'In Church/Group', 'disciple_tools' ) ],
+                "milestone_planting"      => [ "label" => __( 'Starting Churches', 'disciple_tools' ) ],
+            ],
+            "customizable" => "add_only"
+        ];
 
-        // Status information section
-        $fields['milestone_has_bible'] = [
-            'name'        => __( 'Has Bible', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
-                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
-            ],
-            'section'     => 'milestone',
-        ];
-        $fields['milestone_reading_bible'] = [
-            'name'        => __( 'Reading Bible', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
-                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
-            ],
-            'section'     => 'milestone',
-        ];
-        $fields['milestone_belief'] = [
-            'name'        => __( 'States Belief', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
-                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
-            ],
-            'section'     => 'milestone',
-        ];
-        $fields['milestone_can_share'] = [
-            'name'        => __( 'Can Share Gospel/Testimony', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
-                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
-            ],
-            'section'     => 'milestone',
-        ];
-        $fields['milestone_sharing'] = [
-            'name'        => __( 'Sharing Gospel/Testimony', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
-                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
-            ],
-            'section'     => 'milestone',
-        ];
-        $fields['milestone_baptized'] = [
-            'name'        => __( 'Baptized', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
-                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
-            ],
-            'section'     => 'milestone',
-        ];
-        $fields['milestone_baptizing'] = [
-            'name'        => __( 'Baptizing', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
-                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
-            ],
-            'section'     => 'milestone',
-        ];
-        $fields['milestone_in_group'] = [
-            'name'        => __( 'In Church/Group', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
-                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
-            ],
-            'section'     => 'milestone',
-        ];
-        $fields['milestone_planting'] = [
-            'name'        => __( 'Starting Churches', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
-                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
-            ],
-            'section'     => 'milestone',
-        ];
 
         $fields['baptism_date'] = [
             'name'        => __( 'Baptism Date', 'disciple_tools' ),

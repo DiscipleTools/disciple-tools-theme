@@ -595,8 +595,7 @@ class Disciple_Tools_Notifications
             } elseif ( strpos( $key, "contact_" ) === 0 && isset( $fields[$key] ) &&
                 ( !isset( $old_fields[$key] ) || $old_fields[$key] != $fields[$key] )){
                 $notification_on_fields[] = "contact_info_update";
-            } elseif ( strpos( $key, "milestone_" ) === 0 && isset( $fields[$key] ) && $fields[$key]["key"] === "yes" &&
-                ( !isset( $old_fields[$key] ) || $old_fields[$key] != $fields[$key] )){
+            } elseif ( $key === "milestones" && isset( $fields[$key] ) && sizeof( $fields[$key] ) > sizeof( $old_fields[$key] ?? [] ) ){
                 $notification_on_fields[] = "milestone";
             } elseif ( strpos( $key, "church_" ) === 0 && isset( $fields[$key]["key"] ) && $fields[$key]["key"] === "1" &&
                 ( !isset( $old_fields[$key] ) || $old_fields[$key] != $fields[$key] )){
@@ -668,6 +667,11 @@ class Disciple_Tools_Notifications
                         if ( in_array( "milestone", $notification_on_fields ) ) {
                             $notification["notification_name"] = "milestone";
                             $notification_type                 = 'milestones';
+                            $notification["field_key"] = "milestones";
+                            $diff = array_diff( $fields["milestones"] ?? [], $old_fields["milestones"] ?? [] );
+                            foreach ( $diff as $k => $v ){
+                                $notification["field_value"] = $v;
+                            }
                             if ( dt_user_notification_is_enabled( $notification_type, 'web', $user_meta, $follower ) ) {
                                 dt_notification_insert( $notification );
                             }
@@ -789,7 +793,7 @@ class Disciple_Tools_Notifications
         } elseif ( $notification["notification_name"] ==="milestone" ){
             $meta_key = $notification["field_key"] ?? '';
             $meta_value = $notification["field_value"] ?? '';
-            switch ( $meta_key ) {
+            switch ( $meta_value ) {
                 case 'milestone_belief':
                     $element = __( '"Belief" Milestone', 'disciple_tools' );
                     break;
@@ -815,13 +819,13 @@ class Disciple_Tools_Notifications
                     $element = __( 'A Milestone', 'disciple_tools' );
                     break;
             }
-            if ( $meta_value === "added" ){
-                $element .= ' ' . __( 'has been added to', 'disciple_tools' );
-            } elseif ( $meta_value === "removed") {
-                $element .= ' ' . __( 'has been removed from', 'disciple_tools' );
-            } else {
-                $element .= ' ' . __( 'was changed for', 'disciple_tools' );
-            }
+            $element .= ' ' . __( 'has been added to', 'disciple_tools' );
+//            if ( $meta_value === "added" ){
+//            } elseif ( $meta_value === "removed") {
+//                $element .= ' ' . __( 'has been removed from', 'disciple_tools' );
+//            } else {
+//                $element .= ' ' . __( 'was changed for', 'disciple_tools' );
+//            }
             $source_user = get_userdata( $notification["source_user_id"] );
             $display_name = $source_user ? $source_user->display_name : __( "System", "disciple_tools" );
             $notification_note = $element . ' ' . $link  . ' ' . __( 'by', 'disciple_tools' ) . ' ' .

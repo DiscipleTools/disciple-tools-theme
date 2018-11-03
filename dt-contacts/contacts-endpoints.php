@@ -403,8 +403,8 @@ class Disciple_Tools_Contacts_Endpoints
             foreach ( $meta_fields as $meta_key => $meta_value ) {
                 if ( strpos( $meta_key, "contact_phone" ) === 0 && strpos( $meta_key, "details" ) === false ) {
                     $contact_array['phone_numbers'] = array_merge( $contact_array['phone_numbers'], $meta_value );
-                } elseif ( strpos( $meta_key, "milestone_" ) === 0 ) {
-                    $contact_array[ $meta_key ] = $this->yes_no_to_boolean( $meta_value[0] );
+                } elseif ( $meta_key === "milestones" ) {
+                    $contact_array["milestones"] = $meta_value;
                 } elseif ( $meta_key === "seeker_path" ) {
                     $contact_array[ $meta_key ] = $meta_value[0] ? $meta_value[0] : "none";
                 } elseif ( $meta_key == "assigned_to" ) {

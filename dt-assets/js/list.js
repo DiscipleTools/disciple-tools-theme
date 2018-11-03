@@ -234,15 +234,15 @@
     const ccfs = wpApiListSettings.custom_fields_settings;
     const access_milestone_key = _.find(
       ["has_bible", "reading_bible"],
-      function (key) { return contact["milestone_" + key]; }
+      function (key) { return contact["milestones"].includes(`milestone_${key}`); }
     )
     const belief_milestone_key = _.find(
       ['baptizing', 'baptized', 'belief'],
-      function(key) { return contact["milestone_" + key]; }
+      function(key) { return contact["milestones"].includes(`milestone_${key}`); }
     );
     const sharing_milestone_key = _.find(
       ['planting', 'in_group', 'sharing', 'can_share'],
-      function(key) { return contact["milestone_" + key]; }
+      function(key) { return contact["milestones"].includes(`milestone_${key}`); }
     );
     let status = ccfs.overall_status.default[contact.overall_status]["label"];
     let seeker_path = ccfs.seeker_path.default[contact.seeker_path]["label"];
@@ -261,9 +261,9 @@
       sharing_milestone_key,
       access_milestone_key,
       seeker_path,
-      access_milestone: (ccfs["milestone_" + access_milestone_key] || {}).name || "",
-      belief_milestone: (ccfs["milestone_" + belief_milestone_key] || {}).name || "",
-      sharing_milestone: (ccfs["milestone_" + sharing_milestone_key] || {}).name || "",
+      access_milestone: _.get(ccfs, `milestones.default["milestone_${access_milestone_key}"].label`, ""),
+      belief_milestone: _.get(ccfs, `milestones.default["milestone_${belief_milestone_key}"].label`, ""),
+      sharing_milestone: _.get(ccfs, `milestones.default["milestone_${sharing_milestone_key}"].label`, ""),
       group_links,
     });
     return $.parseHTML(template(context));
@@ -405,7 +405,7 @@
       searchQuery.subassigned = _.map(_.get(Typeahead['.js-typeahead-subassigned'], "items"), "ID")
       fields = ["overall_status", "seeker_path", "requires_update", "sources"]
       _.forOwn( wpApiListSettings.custom_fields_settings, (field, field_key)=>{
-        if (field.type === "key_select" && !field_key.includes("milestone_") && !fields.includes(field_key) ){
+        if ( ( field.type === "key_select"  || field.type === "multi_select" ) && !fields.includes(field_key) ){
           fields.push(field_key)
         }
       })
@@ -417,7 +417,6 @@
       }
     }
     fields = fields.concat(wpApiListSettings.additional_filter_options || [])
-    fields.push("tags")
     //get checked field options
     fields.forEach(field=>{
       searchQuery[field] =[]

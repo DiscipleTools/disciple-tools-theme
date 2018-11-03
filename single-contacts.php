@@ -118,6 +118,9 @@ declare( strict_types=1 );
                 if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "number" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
                     $update[$key] = $fields;
                 }
+                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "date" && ( !isset( $contact[$key] ) || empty( $contact[$key]["timestamp"] ) )){
+                    $update[$key] = $fields["timestamp"] ?? "";
+                }
                 if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "array" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
                     if ( $key != "duplicate_data" ){
                         $update[$key] = $fields;
@@ -160,7 +163,6 @@ declare( strict_types=1 );
             }
 
             Disciple_Tools_Contacts::update_contact( $master_id, $update, true );
-            Disciple_Tools_Contacts::merge_milestones( $master_id, $non_master_id );
             Disciple_Tools_Contacts::merge_p2p( $master_id, $non_master_id );
             Disciple_Tools_Contacts::copy_comments( $master_id, $non_master_id );
             ( new Disciple_Tools_Contacts() )->recheck_duplicates( $master_id );
@@ -453,18 +455,14 @@ declare( strict_types=1 );
                                         </button>
                                     </div>
                                     <div class="small button-group" style="display: inline-block">
-
-                                        <?php foreach ( $contact_fields as $field => $val ): ?>
+                                        <?php foreach ( $contact_fields["milestones"]["default"] as $option_key => $option_value ): ?>
                                             <?php
-                                            if (strpos( $field, "milestone_" ) === 0) {
-                                                $class = ( isset( $contact[ $field ] ) && $contact[ $field ]['key'] === 'yes' ) ?
-                                                    "selected-select-button" : "empty-select-button";
-                                                ?>
-                                                <button id="<?php echo esc_html( $field ) ?>"
-                                                        class="seeker-milestone-button <?php echo esc_html( $class ) ?> select-button button ">
-                                                    <?php echo esc_html( $contact_fields[ $field ]["name"] ) ?>
+                                                $class = ( in_array( $option_key, $contact["milestones"] ?? [] ) ) ?
+                                                    "selected-select-button" : "empty-select-button"; ?>
+                                                <button id="<?php echo esc_html( $option_key ) ?>"
+                                                        class="multi_select <?php echo esc_html( $class ) ?> select-button button ">
+                                                    <?php echo esc_html( $contact_fields["milestones"]["default"][$option_key]["label"] ) ?>
                                                 </button>
-                                            <?php }?>
                                         <?php endforeach; ?>
                                     </div>
 
