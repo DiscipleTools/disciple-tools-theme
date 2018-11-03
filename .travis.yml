@@ -16,6 +16,8 @@ cache:
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS testdb'
   - mysql -e "GRANT ALL ON testdb.* TO 'travis'@'localhost'"
+  - nvm install --lts
+  - nvm use --lts
   - npm install -g gulp-cli eslint
   - npm install
 before_script:
