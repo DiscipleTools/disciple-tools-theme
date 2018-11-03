@@ -14,10 +14,8 @@ cache:
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS testdb'
   - mysql -e "GRANT ALL ON testdb.* TO 'travis'@'localhost'"
-  - nvm install 8.12.0
-  - nvm use 8.12.0 #set node version
-install
   - npm install -g gulp-cli eslint
+install
   - npm install
 before_script:
   - composer install
