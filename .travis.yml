@@ -4,6 +4,8 @@ php:
   - '7.1'
   - '7.2'
 dist: xenial
+node_js:
+  - 'lts/*'
 sudo: required # this seems to be required for some reason to get MySQL to work
 services:
   - mysql
