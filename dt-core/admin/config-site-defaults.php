@@ -412,8 +412,6 @@ function dt_get_site_custom_lists( string $list_title = null ) {
 
     $fields['version'] = 9;
     //custom fields
-    $fields['custom_milestones'] = [];
-    $fields['custom_church'] = [];
     // the prefix dt_user_ assists db meta queries on the user
     $fields['user_fields'] = [
         'dt_user_personal_phone'   => [

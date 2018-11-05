@@ -895,38 +895,21 @@ class Disciple_Tools_Contact_Post_Type
             "hidden" => true
         ];
 
-        //get the custom milestone fields
-        $custom_contact_fields = dt_get_option( 'dt_site_custom_lists' );
-        $custom_contact_fields = $custom_contact_fields["custom_milestones"];
-        if ( ! empty( $custom_contact_fields ) ) {
-            foreach ( $custom_contact_fields as $key => $value ){
-                $fields[$key] = [
-
-                    'name'        => $value['name'],
-                    'description' => $value['description'],
-                    'type'        => $value['type'],
-                    'default'     => $value['default'],
-                    'section'     => $value['section'],
-                ];
-            }
-        }
-
         return $fields;
     }
 
     /**
      * Get the settings for the custom fields.
      *
-     * @param bool     $include_current_post
+     * @param bool $include_current_post
      * @param int|null $post_id
+     * @param bool $with_deleted_options
      *
      * @return mixed
      */
     public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false ) {
 
         $fields = $this->get_contact_fields( $post_id, $include_current_post );
-//        $custom_fields = get_option( "custom_contact_fields", [] );
-//        $fields = array_merge( $fields, $custom_fields );
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
         foreach ( $fields as $field_key => $field ){
             if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
@@ -937,7 +920,6 @@ class Disciple_Tools_Contact_Post_Type
                 }
             }
         }
-//        $fields = array_merge( $fields, $fields_filtered );
         $custom_field_options = dt_get_option( "dt_field_customizations" );
         if ( isset( $custom_field_options["contacts"] )){
             foreach ( $custom_field_options["contacts"] as $key => $field ){

@@ -230,12 +230,11 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     public static function chart_group_health( $type = 'personal' ) {
 
         // Make key list
-        $default_key_list = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+        $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
         $labels = [];
-        foreach ( $default_key_list as $key => $list ) {
-            if ( 'church' == substr( $key, 0, 6 ) ) {
-                $labels[$key] = $list['name'];
-            }
+
+        foreach ( $group_fields["church_health"]["default"] as $key => $option ) {
+            $labels[$key] = $option["label"];
         }
 
         $chart = [];
@@ -685,12 +684,12 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                   ON a.ID=d.post_id
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
-                    AND d.meta_key LIKE %s
+                    AND d.meta_key = %s
               GROUP BY d.meta_key
         ",
             'user-' . $user_id,
             'user-' . $user_id,
-        $wpdb->esc_like( 'church_' ) . '%' ), ARRAY_A );
+        $wpdb->esc_like( 'church_health' )  ), ARRAY_A );
 
         return $results;
     }
@@ -719,9 +718,9 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                   ON a.ID=d.post_id
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
-                    AND d.meta_key LIKE %s
+                    AND d.meta_key = %s
               GROUP BY d.meta_key
-        ", $wpdb->esc_like( 'church_' ) . '%' ), ARRAY_A );
+        ", $wpdb->esc_like( 'church_health' ) ), ARRAY_A );
 
         return $results;
     }
