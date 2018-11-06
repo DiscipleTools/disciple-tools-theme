@@ -41,6 +41,7 @@ function dt_start() {
     // Disable emoji
     add_action( 'init', 'dt_disable_wp_emoji' );
 
+
     // Remove feeds
     add_action( 'do_feed', 'wpb_disable_feed', 1 );
     add_action( 'do_feed_rdf', 'wpb_disable_feed', 1 );
@@ -49,6 +50,7 @@ function dt_start() {
     add_action( 'do_feed_atom', 'wpb_disable_feed', 1 );
     add_action( 'do_feed_rss2_comments', 'wpb_disable_feed', 1 );
     add_action( 'do_feed_atom_comments', 'wpb_disable_feed', 1 );
+
 }
 
 /**
@@ -56,9 +58,9 @@ function dt_start() {
  */
 function dt_head_cleanup() {
     // Remove category feeds
-     remove_action( 'wp_head', 'feed_links_extra', 3 );
+    remove_action( 'wp_head', 'feed_links_extra', 3 );
     // Remove post and comment feeds
-     remove_action( 'wp_head', 'feed_links', 2 );
+    remove_action( 'wp_head', 'feed_links', 2 );
     // Remove EditURI link
     remove_action( 'wp_head', 'rsd_link' );
     // Remove Windows live writer
@@ -93,8 +95,11 @@ function dt_remove_wp_widget_recent_comments_style() {
  */
 function dt_remove_recent_comments_style() {
     global $wp_widget_factory;
-    if (isset( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'] )) {
-        remove_action( 'wp_head', array( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ) );
+    if ( isset( $wp_widget_factory->widgets['WP_Widget_Recent_Comments'] ) ) {
+        remove_action( 'wp_head', array(
+            $wp_widget_factory->widgets['WP_Widget_Recent_Comments'],
+            'recent_comments_style'
+        ) );
     }
 }
 
@@ -118,8 +123,9 @@ function dt_gallery_style( $css ) {
  */
 function dt_excerpt_more( $more ) {
     global $post;
+
     // edit here if you like
-    return '<a class="excerpt-read-more" href="'. get_permalink( $post->ID ) . '" title="'. __( 'Read', 'disciple_tools' ) . esc_html( get_the_title( $post->ID, 'disciple_tools' ) ).'">'. __( '... Read more &raquo;', 'disciple_tools' ) .'</a>';
+    return '<a class="excerpt-read-more" href="' . get_permalink( $post->ID ) . '" title="' . __( 'Read', 'disciple_tools' ) . esc_html( get_the_title( $post->ID, 'disciple_tools' ) ) . '">' . __( '... Read more &raquo;', 'disciple_tools' ) . '</a>';
 }
 
 /**
@@ -130,7 +136,7 @@ function dt_excerpt_more( $more ) {
  * @return array
  */
 function dt_remove_sticky_class( $classes ) {
-    if (in_array( 'sticky', $classes )) {
+    if ( in_array( 'sticky', $classes ) ) {
         $classes = array_diff( $classes, array( "sticky" ) );
         $classes[] = 'wp-sticky';
     }
@@ -155,6 +161,7 @@ function dt_get_the_author_posts_link() {
         esc_attr( sprintf( __( 'Posts by %s', 'disciple_tools' ), get_the_author() ), 'disciple_tools' ), // No further l10n needed, core will take care of this one
         get_the_author()
     );
+
     return $link;
 }
 
@@ -203,14 +210,14 @@ function dt_change_admin_color( $result ) {
  *
  * @note Removing the posts menu is to clean the admin menu and because it is unnecissary to the disciple tools system.
  */
-function dt_remove_post_admin_menus(){
+function dt_remove_post_admin_menus() {
 
     remove_menu_page( 'edit.php' );                   //Posts
     remove_menu_page( 'upload.php' );                 //Media
     remove_menu_page( 'edit.php?post_type=page' );    //Pages
     remove_menu_page( 'edit-comments.php' );          //Comments
 
-    if ( ! is_admin() ) { // add menu items to hide from all but admin
+    if ( !is_admin() ) { // add menu items to hide from all but admin
         remove_menu_page( 'tools.php' );                  //Tools
     }
 }

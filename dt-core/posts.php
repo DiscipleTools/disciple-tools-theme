@@ -590,7 +590,7 @@ class Disciple_Tools_Posts
         ]);
 
         foreach ( $comments as $comment ){
-            $comment->gravatar = $comment->comment_author_url ?? get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
+            $comment->gravatar = !empty( $comment->comment_author_url ) ? $comment->comment_author_url : get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
             $display_name = dt_get_user_display_name( $comment->user_id );
             $comment->comment_author = !empty( $display_name ) ? $display_name : $comment->comment_author;
         }

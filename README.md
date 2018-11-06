@@ -69,7 +69,7 @@ To apply your changes to the plugin, update the contents of the `wp-content/them
 
 Make sure tests are passing!
 
-[Read more in `CONTRIBUTING.md`](./CONTRIBUTING.md)
+[Read more in `CONTRIBUTING`](https://github.com/DiscipleTools/disciple-tools-theme/wiki/Contribution-guidelines)
 
 
 ## How to responsibly disclose a security vulnerability

@@ -4,6 +4,8 @@ php:
   - '7.1'
   - '7.2'
 dist: xenial
+node_js:
+  - '8'
 sudo: required # this seems to be required for some reason to get MySQL to work
 services:
   - mysql
@@ -14,6 +16,8 @@ cache:
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS testdb'
   - mysql -e "GRANT ALL ON testdb.* TO 'travis'@'localhost'"
+  - nvm install --lts
+  - nvm use --lts
   - npm install -g gulp-cli eslint
   - npm install
 before_script:
