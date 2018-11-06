@@ -82,7 +82,14 @@ class Disciple_Tools_Contacts_Transfer
         return Site_Link_System::get_list_of_sites_by_type( [ 'contact_sharing', 'contact_sending' ] );
     }
 
+    public static function simplify_meta_array( $id ) {
+        return array_map( function ( $a ) { return $a[0];
+        }, get_post_meta( $id ) );
+    }
+
     public static function contact_transfer( $contact_id, $site_post_id ) {
+
+        $simplified_post_meta = self::simplify_meta_array( $contact_id );
 
         $site = Site_Link_System::get_site_connection_vars( $site_post_id );
         if ( is_wp_error( $site ) ) {
@@ -94,13 +101,11 @@ class Disciple_Tools_Contacts_Transfer
                 'transfer_token' => $site['transfer_token'],
                 'contact_data' => [
                     'post' => get_post( $contact_id, ARRAY_A ),
-                    'postmeta' => get_post_meta( $contact_id ),
+                    'postmeta' => $simplified_post_meta,
                     'dt_activity_log' => self::get_activity_log_for_id( $contact_id )
                 ],
             ]
         ];
-        dt_write_log( __METHOD__ );
-        dt_write_log( $args );
         $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/contact/transfer', $args );
         if ( is_wp_error( $result ) ) {
             return new WP_Error( 'failed_remote_post', $result->get_error_message() );
@@ -119,6 +124,23 @@ class Disciple_Tools_Contacts_Transfer
         dt_write_log( 'Made it' );
         dt_write_log( __METHOD__ );
         dt_write_log( $contact_data );
+
+        $post_args = $contact_data['post'];
+        $post_args['meta_input'] = $contact_data['postmeta'];
+
+        // convert user and assignment
+        $post_args['post_author'] = dt_get_base_user();
+        $post_args['meta_input']['assigned_to'] = "user-" . dt_get_base_user();
+        $post_args['meta_input']['overall_status'] = "unassigned" . dt_get_base_user();
+
+
+        $post_args['meta_input']['transfer_id'] = $post_args['ID'];
+        unset( $post_args['ID'] );
+        $post_args['meta_input']['transfer_guid'] = $post_args['guid'];
+        unset( $post_args['guid'] );
+
+
+        $post_id = wp_insert_post( $post_args );
 
         // Install contact
         // Install contact meta

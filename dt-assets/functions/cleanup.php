@@ -41,14 +41,14 @@ function dt_start() {
     // Disable emoji
     add_action( 'init', 'dt_disable_wp_emoji' );
 
-    add_action('do_feed', 'wpb_disable_feed', 1);
-    add_action('do_feed_rdf', 'wpb_disable_feed', 1);
-    add_action('do_feed_rss', 'wpb_disable_feed', 1);
-    add_action('do_feed_rss2', 'wpb_disable_feed', 1);
-    add_action('do_feed_atom', 'wpb_disable_feed', 1);
-    add_action('do_feed_rss2_comments', 'wpb_disable_feed', 1);
-    add_action('do_feed_atom_comments', 'wpb_disable_feed', 1);
-
+    // Remove feeds
+    add_action( 'do_feed', 'wpb_disable_feed', 1 );
+    add_action( 'do_feed_rdf', 'wpb_disable_feed', 1 );
+    add_action( 'do_feed_rss', 'wpb_disable_feed', 1 );
+    add_action( 'do_feed_rss2', 'wpb_disable_feed', 1 );
+    add_action( 'do_feed_atom', 'wpb_disable_feed', 1 );
+    add_action( 'do_feed_rss2_comments', 'wpb_disable_feed', 1 );
+    add_action( 'do_feed_atom_comments', 'wpb_disable_feed', 1 );
 }
 
 /**
@@ -76,7 +76,7 @@ function dt_head_cleanup() {
 } /* end Joints head cleanup */
 
 function wpb_disable_feed() {
-    wp_die( __('No feed available,please visit our <a href="'. get_bloginfo('url') .'">homepage</a>!') );
+    wp_die( esc_html__( 'No feed available.' ) );
 }
 
 /**
