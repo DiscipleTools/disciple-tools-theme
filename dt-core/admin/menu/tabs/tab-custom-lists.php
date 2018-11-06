@@ -78,20 +78,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* end Sources */
 
-            /* milestones */
-            $this->box( 'top', 'Milestones' );
-            $this->process_milestones_box();
-            $this->milestones_box(); // prints
-            $this->box( 'bottom' );
-            /* end milestones */
-
-            /* health  */
-            $this->box( 'top', 'Health' );
-            $this->process_health_box();
-            $this->health_box(); // prints
-            $this->box( 'bottom' );
-            /* end health */
-
             $this->template( 'right_column' );
 
             $this->template( 'end' );

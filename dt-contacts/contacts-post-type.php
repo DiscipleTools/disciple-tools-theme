@@ -923,29 +923,31 @@ class Disciple_Tools_Contact_Post_Type
         $custom_field_options = dt_get_option( "dt_field_customizations" );
         if ( isset( $custom_field_options["contacts"] )){
             foreach ( $custom_field_options["contacts"] as $key => $field ){
-                $field_type = $field["type"] ?? $fields[$key]["type"];
-                if ( !isset( $fields[$key] )){
-                    $fields[$key] = $field;
-                } else {
-                    if ( isset( $field["name"] )){
-                        $fields[$key]["name"] = $field["name"];
-                    }
-                    if ( $field_type === "key_select" || $field_type === "multi_select" ){
-                        if ( isset( $field["default"] )){
-                            $fields[$key]["default"] = array_merge( $fields[$key]["default"], $field["default"] );
+                $field_type = $field["type"] ?? $fields[$key]["type"] ?? "";
+                if ( $field_type ) {
+                    if ( !isset( $fields[ $key ] ) ) {
+                        $fields[ $key ] = $field;
+                    } else {
+                        if ( isset( $field["name"] ) ) {
+                            $fields[ $key ]["name"] = $field["name"];
+                        }
+                        if ( $field_type === "key_select" || $field_type === "multi_select" ) {
+                            if ( isset( $field["default"] ) ) {
+                                $fields[ $key ]["default"] = array_merge( $fields[ $key ]["default"], $field["default"] );
+                            }
                         }
                     }
-                }
-                if ( $field_type === "key_select" || $field_type === "multi_select" ){
-                    if ( isset( $field["order"] )){
-                        $with_order = [];
-                        foreach ( $field["order"] as $ordered_key ){
-                            $with_order[$ordered_key] = [];
+                    if ( $field_type === "key_select" || $field_type === "multi_select" ) {
+                        if ( isset( $field["order"] ) ) {
+                            $with_order = [];
+                            foreach ( $field["order"] as $ordered_key ) {
+                                $with_order[ $ordered_key ] = [];
+                            }
+                            foreach ( $fields[ $key ]["default"] as $option_key => $option_value ) {
+                                $with_order[ $option_key ] = $option_value;
+                            }
+                            $fields[ $key ]["default"] = $with_order;
                         }
-                        foreach ( $fields[$key]["default"] as $option_key => $option_value ){
-                            $with_order[$option_key] = $option_value;
-                        }
-                        $fields[$key]["default"] = $with_order;
                     }
                 }
             }

@@ -233,7 +233,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
         $labels = [];
 
-        foreach ( $group_fields["church_health"]["default"] as $key => $option ) {
+        foreach ( $group_fields["health_metrics"]["default"] as $key => $option ) {
             $labels[$key] = $option["label"];
         }
 
@@ -275,7 +275,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         // Create remaining rows at full value
         foreach ( $labels as $k_label => $v_label ) {
-            $chart[] = [ $v_label, 0, $out_of, '' ];
+            $chart[] = [ $v_label, 0, (int) $out_of, '' ];
         }
 
         array_unshift( $chart, [ 'Step', 'Practicing', 'Not Practicing', [ 'role' => 'annotation' ] ] ); // add top row
@@ -656,8 +656,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         }
 
         $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT d.meta_key as health_key,
-              count(*) as count,
+            SELECT d.meta_value as health_key,
+              count(distinct(a.ID)) as count,
               ( SELECT count(*)
               FROM $wpdb->posts as a
                 JOIN $wpdb->postmeta as b
@@ -689,7 +689,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         ",
             'user-' . $user_id,
             'user-' . $user_id,
-        $wpdb->esc_like( 'church_health' )  ), ARRAY_A );
+        'health_metrics' ), ARRAY_A );
 
         return $results;
     }
@@ -698,8 +698,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         global $wpdb;
 
         $results = $wpdb->get_results($wpdb->prepare( "
-            SELECT d.meta_key as health_key,
-              count(*) as count,
+            SELECT d.meta_value as health_key,
+              count(distinct(a.ID)) as count,
               ( SELECT count(*)
               FROM $wpdb->posts as a
                 JOIN $wpdb->postmeta as c
@@ -719,8 +719,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
                     AND d.meta_key = %s
-              GROUP BY d.meta_key
-        ", $wpdb->esc_like( 'church_health' ) ), ARRAY_A );
+              GROUP BY d.meta_value
+        ", 'health_metrics' ), ARRAY_A );
 
         return $results;
     }

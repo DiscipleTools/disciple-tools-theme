@@ -137,6 +137,7 @@ function project_overview() {
 
     function drawMyGroupHealth() {
 
+      console.log(sourceData.group_health);
         let data = google.visualization.arrayToDataTable( sourceData.group_health );
 
         let options = {

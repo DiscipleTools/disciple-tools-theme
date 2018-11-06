@@ -628,20 +628,50 @@ class Disciple_Tools_Groups_Post_Type
             'section'     => 'info',
         ];
 
-        $fields['church_health'] = [
+        $fields['health_metrics'] = [
             "name" => __( 'Church Health', 'disciple_tools' ),
             "type" => "multi_select",
             "default" => [
-                "church_baptism" => [ "label" => __( "Baptism", 'disciple_tools' ) ],
-                "church_bible" => [ "label" => __( "Bible Study", 'disciple_tools' ) ],
-                "church_communion" => [ "label" => __( "Communion", 'disciple_tools' ) ],
-                "church_fellowship" => [ "label" => __( "Fellowship", 'disciple_tools' ) ],
-                "church_giving" => [ "label" => __( "Giving", 'disciple_tools' ) ],
-                "church_prayer" => [ "label" => __( "Prayer", 'disciple_tools' ) ],
-                "church_praise" => [ "label" => __( "Praise", 'disciple_tools' ) ],
-                "church_sharing" => [ "label" => __( "Sharing the Gospel", 'disciple_tools' ) ],
-                "church_leaders" => [ "label" => __( "Leaders", 'disciple_tools' ) ],
-                "church_commitment" => [ "label" => __( "Church Commitment", 'disciple_tools' ) ],
+                "church_baptism" => [
+                    "label" => __( "Baptism", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/baptism.svg'
+                ],
+                "church_bible" => [
+                    "label" => __( "Bible Study", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/word.svg'
+                ],
+                "church_communion" => [
+                    "label" => __( "Communion", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/communion.svg'
+                ],
+                "church_fellowship" => [
+                    "label" => __( "Fellowship", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/heart.svg'
+                ],
+                "church_giving" => [
+                    "label" => __( "Giving", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/giving.svg'
+                ],
+                "church_prayer" => [
+                    "label" => __( "Prayer", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/prayer.svg'
+                ],
+                "church_praise" => [
+                    "label" => __( "Praise", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/praise.svg'
+                ],
+                "church_sharing" => [
+                    "label" => __( "Sharing the Gospel", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/evangelism.svg'
+                ],
+                "church_leaders" => [
+                    "label" => __( "Leaders", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/leadership.svg'
+                ],
+                "church_commitment" => [
+                    "label" => __( "Church Commitment", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg'
+                ],
             ],
             "customizable" => "add_only"
         ];
@@ -737,29 +767,31 @@ class Disciple_Tools_Groups_Post_Type
         $custom_field_options = dt_get_option( "dt_field_customizations" );
         if ( isset( $custom_field_options["groups"] )){
             foreach ( $custom_field_options["groups"] as $key => $field ){
-                $field_type = $field["type"] ?? $fields[$key]["type"];
-                if ( !isset( $fields[$key] )){
-                    $fields[$key] = $field;
-                } else {
-                    if ( isset( $field["name"] )){
-                        $fields[$key]["name"] = $field["name"];
+                $field_type = $field["type"] ?? $fields[$key]["type"] ?? "";
+                if ( $field_type ){
+                    if ( !isset( $fields[$key] )){
+                        $fields[$key] = $field;
+                    } else {
+                        if ( isset( $field["name"] )){
+                            $fields[$key]["name"] = $field["name"];
+                        }
+                        if ( $field_type === "key_select" || $field_type === "multi_select" ){
+                            if ( isset( $field["default"] )){
+                                $fields[$key]["default"] = array_merge( $fields[$key]["default"], $field["default"] );
+                            }
+                        }
                     }
                     if ( $field_type === "key_select" || $field_type === "multi_select" ){
-                        if ( isset( $field["default"] )){
-                            $fields[$key]["default"] = array_merge( $fields[$key]["default"], $field["default"] );
+                        if ( isset( $field["order"] )){
+                            $with_order = [];
+                            foreach ( $field["order"] as $ordered_key ){
+                                $with_order[$ordered_key] = [];
+                            }
+                            foreach ( $fields[$key]["default"] as $option_key => $option_value ){
+                                $with_order[$option_key] = $option_value;
+                            }
+                            $fields[$key]["default"] = $with_order;
                         }
-                    }
-                }
-                if ( $field_type === "key_select" || $field_type === "multi_select" ){
-                    if ( isset( $field["order"] )){
-                        $with_order = [];
-                        foreach ( $field["order"] as $ordered_key ){
-                            $with_order[$ordered_key] = [];
-                        }
-                        foreach ( $fields[$key]["default"] as $option_key => $option_value ){
-                            $with_order[$option_key] = $option_value;
-                        }
-                        $fields[$key]["default"] = $with_order;
                     }
                 }
             }

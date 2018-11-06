@@ -21,36 +21,36 @@ class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
 
             $wpdb->query( $sql ); // @phpcs:ignore
         }
-        $wpdb->query( "
-            DELETE FROM $wpdb->postmeta 
-            WHERE `meta_key` LIKE 'milestone_%'
-            AND `meta_key` != 'milestones'
-        " );
+//        $wpdb->query( "
+//            DELETE FROM $wpdb->postmeta
+//            WHERE `meta_key` LIKE 'milestone_%'
+//            AND `meta_key` != 'milestones'
+//        " );
 
-        $church_health = $wpdb->get_results("
+        $health_metrics = $wpdb->get_results("
             SELECT * 
             FROM $wpdb->postmeta 
             WHERE meta_key LIKE 'church_%'
-            AND `meta_key` != 'church_health'
+            AND `meta_key` != 'health_metrics'
             AND `meta_key` != 'church_start_date'
-            AND meta_value = 'yes'
+            AND meta_value = '1'
         ", ARRAY_A);
-        if ( sizeof( $church_health ) > 0 ){
+        if ( sizeof( $health_metrics ) > 0 ){
             $sql = "INSERT INTO $wpdb->postmeta(post_id, meta_key, meta_value) VALUES ";
-            foreach ( $church_health as $value ){
-                $sql .= "('" . $value['post_id'] . "', 'church_health', '" .  $value["meta_key"]  . "'),";
+            foreach ( $health_metrics as $value ){
+                $sql .= "('" . $value['post_id'] . "', 'health_metrics', '" .  $value["meta_key"]  . "'),";
             }
             $sql .= ";";
             $sql = str_replace( ",;", ";", $sql );
 
             $wpdb->query( $sql ); // @phpcs:ignore
         }
-        $wpdb->query( "
-            DELETE FROM $wpdb->postmeta 
-            WHERE `meta_key` LIKE 'church_%'
-            AND `meta_key` != 'church_health'
-            AND `meta_key` != 'church_start_date'
-        " );
+//        $wpdb->query( "
+//            DELETE FROM $wpdb->postmeta
+//            WHERE `meta_key` LIKE 'church_%'
+//            AND `meta_key` != 'health_metrics'
+//            AND `meta_key` != 'church_start_date'
+//        " );
 
 
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( null, null, true );
@@ -74,14 +74,14 @@ class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( null, null, true );
         $custom_church = $custom_lists["custom_church"] ?? [];
         foreach ( $custom_church as $k => $v ){
-            if ( ! isset( $custom_field_options["groups"]["group_health"] ) ) {
-                $custom_field_options["groups"]["group_health"] = [
+            if ( ! isset( $custom_field_options["groups"]["health_metrics"] ) ) {
+                $custom_field_options["groups"]["health_metrics"] = [
                     "default" => []
                 ];
             }
-            if ( !isset( $group_fields["group_health"]["default"][$k] ) &&
-                 !isset( $custom_field_options["groups"]["group_health"]["default"][$k] ) ){
-                $custom_field_options["groups"]["group_health"]["default"][$k] = [
+            if ( !isset( $group_fields["health_metrics"]["default"][$k] ) &&
+                 !isset( $custom_field_options["groups"]["health_metrics"]["default"][$k] ) ){
+                $custom_field_options["groups"]["health_metrics"]["default"][$k] = [
                     "label" => $v["name"]
                 ];
             }
