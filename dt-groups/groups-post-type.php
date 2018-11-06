@@ -106,7 +106,7 @@ class Disciple_Tools_Groups_Post_Type
         if ( is_admin() ) {
             global $pagenow;
 
-            add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
+//            add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
             add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
             //            add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );

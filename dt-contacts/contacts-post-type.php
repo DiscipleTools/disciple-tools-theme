@@ -188,7 +188,7 @@ class Disciple_Tools_Contact_Post_Type
             'can_export'            => true,
             'exclude_from_search'   => false,
             'show_in_rest'          => true,
-            'register_meta_box_cb'  => [ $this, 'meta_box_setup' ],
+//            'register_meta_box_cb'  => [ $this, 'meta_box_setup' ],
             'rest_base'             => 'contacts',
             'rest_controller_class' => 'WP_REST_Posts_Controller',
         ];
