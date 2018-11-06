@@ -399,12 +399,16 @@ function dt_get_site_options_defaults() {
  *
  * @param string|null $list_title
  *
+ * @version 1 - initialized
+ *          9 - added "transfer" to source list
+ *          10 - added "transfer" to custom reason closed
+ *
  * @return array|mixed
  */
 function dt_get_site_custom_lists( string $list_title = null ) {
     $fields = [];
 
-    $fields['version'] = 8;
+    $fields['version'] = 10;
     //custom fields
     $fields['custom_dropdown_contact_options'] = [];
     $fields['seeker_path'] = [
@@ -425,11 +429,12 @@ function dt_get_site_custom_lists( string $list_title = null ) {
         'games'                => __( 'Playing games', 'disciple_tools' ),
         'apologetics'          => __( 'Only wants to argue or debate', 'disciple_tools' ),
         'insufficient'         => __( 'Insufficient contact info', 'disciple_tools' ),
-        'already_connected'    => __( 'Already in church or connected with Others', 'disciple_tools' ),
+        'already_connected'    => __( 'Already in church or connected with others', 'disciple_tools' ),
         'no_longer_interested' => __( 'No longer interested', 'disciple_tools' ),
         'no_longer_responding' => __( 'No longer responding', 'disciple_tools' ),
         'media_only'           => __( 'Just wanted media or book', 'disciple_tools' ),
         'denies_submission'    => __( 'Denies submitting contact request', 'disciple_tools' ),
+        'transfer'             => __( 'Transferred contact to partner', 'disciple_tools' ),
         'unknown'              => __( 'Unknown', 'disciple_tools' )
     ];
     $fields['custom_status'] = [];
@@ -576,6 +581,12 @@ function dt_get_site_custom_lists( string $list_title = null ) {
             'label'       => 'Advertisement',
             'key'         => 'advertisement',
             'description' => 'Contacts coming an advertisement campaign.',
+            'enabled'     => true,
+        ],
+        'transfer' => [
+            'label'       => 'Transfer',
+            'key'         => 'transfer',
+            'description' => 'Contacts coming an contact transfer partnership with another DT site.',
             'enabled'     => true,
         ],
 

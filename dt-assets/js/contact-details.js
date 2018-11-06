@@ -1269,7 +1269,10 @@ jQuery(document).ready(function($) {
       }
       API.transfer_contact( contactId, siteId )
           .then(data=>{
-              console.log(data);
+              if ( data ) {
+                jQuery('#transfer_spinner').empty()
+                  location.reload();
+              }
           }).catch(err=>{
           console.log("error")
           console.log(err)
