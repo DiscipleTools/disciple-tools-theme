@@ -45,6 +45,8 @@
     </section>
     <?php } ?>
 
+    <?php do_action( 'dt_contact_detail_notification', $contact ); ?>
+
     <section class="cell">
         <div class="bordered-box">
             <div class="item-details-header-row">
