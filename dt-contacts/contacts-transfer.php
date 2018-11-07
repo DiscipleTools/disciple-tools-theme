@@ -46,7 +46,6 @@ class Disciple_Tools_Contacts_Transfer
 
     public function contact_transfer_notification( $contact ) {
         if ( isset( $contact['reason_closed']['key'] ) && $contact['reason_closed']['key'] === 'transfer' ) {
-            dt_write_log( $contact );
             ?>
             <section class="cell small-12 update-needed-notification">
                 <div class="bordered-box">
@@ -105,11 +104,16 @@ class Disciple_Tools_Contacts_Transfer
     public static function contact_transfer( $contact_id, $site_post_id ) {
         $errors = new WP_Error();
 
+        /**************************************************************************************************************
+         * Transfer current contact
+         ***************************************************************************************************************/
+
         $site = Site_Link_System::get_site_connection_vars( $site_post_id );
         if ( is_wp_error( $site ) ) {
             $errors->add( __METHOD__, 'Error creating site connection details.' );
             return $errors;
         }
+        $contact = Disciple_Tools_Contacts::get_contact( $contact_id );
         $args = [
             'method' => 'POST',
             'body' => [
@@ -119,11 +123,16 @@ class Disciple_Tools_Contacts_Transfer
                     'postmeta' => get_post_meta( $contact_id ),
                     'dt_activity_log' => self::get_activity_log_for_id( $contact_id ),
                     'comments' => get_comments( [ 'post_id' => $contact_id ] ),
-                    'locations' => '', // @todo add locations titles so that they can be added to a commment
-                    'people_groups' => '', // @todo add people groups plain text so that they can be added to a commment
+                    'locations' => $contact['locations'],
+                    'people_groups' => $contact['people_groups'],
+                    'transfer_foreign_key' => $contact['transfer_foreign_key'] ?? 0,
                 ],
             ]
         ];
+
+        // redact personal system data before transfer
+
+
         $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/contact/transfer', $args );
 
         if ( is_wp_error( $result ) ) {
@@ -131,11 +140,10 @@ class Disciple_Tools_Contacts_Transfer
             return $errors;
         }
 
-        /**
+        /**************************************************************************************************************
          * Close current contact
-         */
+         **************************************************************************************************************/
         $result_body = json_decode( $result['body'] );
-        dt_write_log( $result_body );
 
         // log foreign key
         if ( isset( $result_body->foreign_key ) ) {
@@ -210,13 +218,12 @@ class Disciple_Tools_Contacts_Transfer
         $lagging_meta_input = [];
         $errors = new WP_Error();
 
-        /**
-         * Insert contact record
-         */
+    /**
+     * Insert contact record
+     */
 
         // get site connection data
-        $site_key = Site_Link_System::decrypt_transfer_token( $params['transfer_token'] );
-        $site_link_post_id = Site_Link_System::get_post_id_by_site_key( $site_key );
+        $site_link_post_id = Site_Link_System::get_post_id_by_site_key( Site_Link_System::decrypt_transfer_token( $params['transfer_token'] ) );
 
         // set post elements
         $post_args = $contact_data['post'];
@@ -266,9 +273,9 @@ class Disciple_Tools_Contacts_Transfer
             }
         }
 
-        /**
-         * Insert comments
-         */
+    /**
+     * Insert comments
+     */
         if ( ! empty( $comment_data ) ) {
             foreach ( $comment_data as $comment ) {
                 $comment['comment_post_ID'] = $post_id;
