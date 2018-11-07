@@ -21,7 +21,7 @@ class Disciple_Tools_Contacts_Transfer
         add_action( 'dt_share_panel', [ $this, 'share_panel' ], 10, 1 );
         add_filter( 'site_link_type', [ $this, 'site_link_type' ], 10, 1 );
         add_filter( 'site_link_type_capabilities', [ $this, 'site_link_capabilities' ], 10, 1 );
-        add_action( 'dt_contact_detail_notification', [$this, 'contact_transfer_notification'] );
+        add_action( 'dt_contact_detail_notification', [ $this, 'contact_transfer_notification' ] );
     }
 
     // Adds the type of connection to the site link system
@@ -54,7 +54,7 @@ class Disciple_Tools_Contacts_Transfer
                     <p><?php esc_html_e( 'This contact has been transferred to', 'disciple_tools' )?>: <?php echo isset( $contact['transfer_site_link_post_id'] ) ? esc_html( get_the_title( $contact['transfer_site_link_post_id'] ) ) : ''; ?></p>
                 </div>
             </section>
-           <?php
+            <?php
         }
     }
 
