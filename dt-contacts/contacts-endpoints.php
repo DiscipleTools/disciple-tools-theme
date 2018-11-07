@@ -246,13 +246,12 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function public_create_contact( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $possible_error = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+        $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
         $silent = isset( $params["silent"] ) && ( $params["silent"] === "true" || $params["silent"] === true );
-        if ( is_wp_error( $possible_error ) ) {
+        if ( !$site_key ){
             return new WP_Error(
                 "contact_creation_error",
-                "Invalid or missing transfer_token: " . $possible_error->get_error_message(),
-                [ 'status' => 401 ]
+                "Invalid or missing transfer_token", [ 'status' => 401 ]
             );
         }
 
@@ -349,12 +348,11 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function public_update_contact( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $possible_error = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
-        if ( is_wp_error( $possible_error ) ) {
+        $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+        if ( !$site_key ){
             return new WP_Error(
                 "contact_creation_error",
-                "Invalid or missing transfer_token: " . $possible_error->get_error_message(),
-                [ 'status' => 401 ]
+                "Invalid or missing transfer_token", [ 'status' => 401 ]
             );
         }
         if ( isset( $params["fields"] ) && isset( $params["contact_id"] ) ) {
@@ -581,13 +579,12 @@ class Disciple_Tools_Contacts_Endpoints
     public function public_post_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
         $body = $request->get_json_params();
-        $possible_error = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+        $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
         $silent = isset( $params["silent"] ) && $params["silent"] === true;
-        if ( is_wp_error( $possible_error ) ) {
+        if ( !$site_key ){
             return new WP_Error(
                 "contact_creation_error",
-                "Invalid or missing transfer_token: " . $possible_error->get_error_message(),
-                [ 'status' => 401 ]
+                "Invalid or missing transfer_token", [ 'status' => 401 ]
             );
         }
         if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
@@ -891,12 +888,12 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( __METHOD__, 'Missing parameters.' );
         }
 
-        $possible_error = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+        $valid_token = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
 
         // required valid token challenge
-        if ( is_wp_error( $possible_error ) ) {
-            dt_write_log( $possible_error );
-            return $possible_error;
+        if ( ! $valid_token ) {
+            dt_write_log( $valid_token );
+            return new WP_Error( __METHOD__, 'Invalid transfer token' );
         }
 
         return $params;

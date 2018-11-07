@@ -194,33 +194,33 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
          *
          * @since 1.0
          *
-         * @param $transfer_token string
+         * @param $transfer_token
          *
-         * @return \WP_Error|null
+         * @return bool
          */
-        public static function verify_transfer_token( string $transfer_token ): ?WP_Error
+        public static function verify_transfer_token( $transfer_token ): bool
         {
             // challenge https connection
             if ( ! isset( $_SERVER['HTTPS'] ) ) {
                 dt_write_log( __METHOD__ . ': Server does not have the HTTPS parameter set.' );
-                return new WP_Error( __METHOD__, "Server does not have the HTTPS parameter set" );
+                return false;
             }
             elseif ( ! ( 'on' === $_SERVER['HTTPS'] ) ) {
                 dt_write_log( __METHOD__ . ': Failed https challenge' );
-                return new WP_Error( __METHOD__, "Server does not have HTTPS set to 'on'" );
+                return false;
             }
 
             // challenge empty token
             if ( empty( $transfer_token ) ) {
                 dt_write_log( __METHOD__ . ': Failed empty token challenge' );
-                return new WP_Error( __METHOD__, "Token is empty" );
+                return false;
             }
 
             // challenge token
             $decrypted_key = self::decrypt_transfer_token( $transfer_token );
             if ( ! $decrypted_key ) {
                 dt_write_log( __METHOD__ . ': Failed decrypt transfer token challenge' );
-                return new WP_Error( __METHOD__, "Token invalid or IP address blocked" );
+                return false;
             }
 
             // challenge ip address
@@ -229,7 +229,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 $valid_ip_address = self::verify_ip_address();
                 if ( ! $valid_ip_address ) {
                     dt_write_log( __METHOD__ . ': Failed approved ip address challenge' );
-                    return new WP_Error( __METHOD__, "Token invalid or IP address blocked" );
+                    return false;
                 }
             }
 
@@ -239,7 +239,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 self::add_capabilities_required_by_type( $connection_type );
             }
 
-            return null;
+            return true;
         }
 
         /**
@@ -1145,8 +1145,12 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             $params = $request->get_params();
 
             if ( isset( $params['transfer_token'] ) ) {
-                $possible_error = self::verify_transfer_token( $params['transfer_token'] );
-                return ! is_wp_error( $possible_error );
+                $status = self::verify_transfer_token( $params['transfer_token'] );
+                if ( $status ) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return new WP_Error( "site_check_error", "Malformed request", [ 'status' => 400 ] );
             }
