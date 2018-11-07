@@ -145,12 +145,12 @@ class Disciple_Tools_Network_Endpoints
             return new WP_Error( __METHOD__, 'Missing parameters.' );
         }
 
-        $valid_token = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
+        $possible_error = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
 
         // required valid token challenge
-        if ( ! $valid_token ) {
-            dt_write_log( $valid_token );
-            return new WP_Error( __METHOD__, 'Invalid transfer token' );
+        if ( is_wp_error( $possible_error ) ) {
+            dt_write_log( $possible_error->get_error_message() );
+            return new WP_Error( __METHOD__, 'Invalid transfer token: ' . $possible_error->get_error_message() );
         }
         // required permission challenge (that this token comes from an approved network report site link)
         if ( ! current_user_can( 'network_dashboard_transfer' ) ) {

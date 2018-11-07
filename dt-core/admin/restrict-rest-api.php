@@ -78,18 +78,23 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
     }
 
     $is_public = apply_filters( 'dt_allow_rest_access', $is_public );
+    $possible_error = null;
 
     if ( isset( $_SERVER['HTTP_AUTHORIZATION'] ) ) {
         $auth_token = sanitize_text_field( wp_unslash( $_SERVER['HTTP_AUTHORIZATION'] ) );
         $site_link_token = str_replace( 'Bearer ', '', $auth_token );
-        $site_key = Site_Link_System::verify_transfer_token( $site_link_token );
+        $possible_error = Site_Link_System::verify_transfer_token( $site_link_token );
     }
 
     /**
      * All other requests to the REST API require a person to be logged in to make a REST Request.
      */
-    if ( !is_user_logged_in() && !$is_public && !$site_key ) {
-        return new WP_Error( 'rest_cannot_access', __( 'Only authenticated users can access the REST API.', 'disciple_tools' ), [ 'status' => rest_authorization_required_code() ] );
+    if ( !is_user_logged_in() && !$is_public && is_wp_error( $possible_error ) ) {
+        $message = __( 'Valid authentication required to access the REST API.', 'disciple_tools' );
+        if ( is_wp_error( $possible_error ) ) {
+            $message = "$message: " . $possible_error->get_error_message();
+        }
+        return new WP_Error( 'rest_cannot_access', $message, [ 'status' => rest_authorization_required_code() ] );
     }
 
     return $access;
