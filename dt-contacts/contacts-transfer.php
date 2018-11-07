@@ -101,6 +101,12 @@ class Disciple_Tools_Contacts_Transfer
         return Site_Link_System::get_list_of_sites_by_type( [ 'contact_sharing', 'contact_sending' ] );
     }
 
+    public static function get_activity_log_for_id( $id ) {
+        global $wpdb;
+        $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->dt_activity_log WHERE object_id = %s", $id ), ARRAY_A );
+        return $results;
+    }
+
     public static function contact_transfer( $contact_id, $site_post_id ) {
         $errors = new WP_Error();
 
@@ -131,6 +137,7 @@ class Disciple_Tools_Contacts_Transfer
         ];
 
         // redact personal system data before transfer
+        $args = dt_redact_user_data( $args );
 
 
         $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/contact/transfer', $args );
@@ -189,23 +196,6 @@ class Disciple_Tools_Contacts_Transfer
         dt_write_log( $errors );
 
         return true;
-    }
-
-    public static function get_activity_log_for_id( $id ) {
-        global $wpdb;
-        $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->dt_activity_log WHERE object_id = %s", $id ), ARRAY_A );
-        return $results;
-    }
-
-    public static function simplify_meta_array( $array ) {
-        return array_map( function ( $a ) {
-            if ( isset( $a[1] ) ) {
-                return $a;
-            } else {
-                return $a[0];
-            }
-
-        }, $array );
     }
 
     public static function receive_transferred_contact( $params ) {
@@ -310,6 +300,7 @@ class Disciple_Tools_Contacts_Transfer
             'errors' => $errors
         ];
     }
+
 }
 Disciple_Tools_Contacts_Transfer::instance();
 

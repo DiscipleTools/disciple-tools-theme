@@ -382,6 +382,7 @@ else {
                 require_once( get_template_directory() . '/dt-network/network.php' );
             }
 
+            require_once ( get_template_directory() . '/dt-core/admin/gdpr.php' );
 
             /**
              * Admin panel
