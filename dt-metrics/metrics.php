@@ -195,14 +195,15 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         $chart = [];
 
-        $types = $status = dt_get_option( 'group_type' );
+        $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+        $types = $group_fields["group_type"]["default"];
 
         switch ( $type ) {
             case 'personal':
                 $results = self::query_my_group_types();
                 $chart[] = [ 'Group Type', 'Number' ];
                 foreach ( $results as $result ) {
-                    $label = $types[$result['type']] ?? $result['type'];
+                    $label = $types[$result['type']]["label"] ?? $result['type'];
                     $chart[] = [ $label, intval( $result['count'] ) ];
                 }
                 break;
@@ -210,7 +211,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 $results = self::query_project_group_types();
                 $chart[] = [ 'Group Type', 'Number' ];
                 foreach ( $results as $result ) {
-                    $label = $types[$result['type']] ?? $result['type'];
+                    $label = $types[$result['type']]["label"] ?? $result['type'];
                     $chart[] = [ $label, intval( $result['count'] ) ];
                 }
                 break;
@@ -364,16 +365,17 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         }
 
         $defaults = [];
-        $status = dt_get_option( 'seeker_path' );
-        foreach ( $status as $key => $label ) {
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $seeker_path_options = $contact_fields["seeker_path"]["default"];
+        foreach ( $seeker_path_options as $key => $option ) {
             $defaults[$key] = [
-                'label' => $label,
+                'label' => $option["label"],
                 'count' => 0,
             ];
         }
 
         $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT b.meta_value as status, count( a.ID ) as count
+            SELECT b.meta_value as seeker_path, count( a.ID ) as count
              FROM $wpdb->posts as a
                JOIN $wpdb->postmeta as b
                  ON a.ID=b.post_id
@@ -403,9 +405,9 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         if ( ! empty( $results ) ) {
             foreach ( $results as $result ) {
-                if ( isset( $defaults[$result['status']] ) ) {
-                    $query_results[$result['status']] = [
-                        'label' => $defaults[$result['status']]['label'],
+                if ( isset( $defaults[$result['seeker_path']] ) ) {
+                    $query_results[$result['seeker_path']] = [
+                        'label' => $defaults[$result['seeker_path']]['label'],
                         'count' => intval( $result['count'] ),
                     ];
                 }
@@ -420,7 +422,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
 
         $results = $wpdb->get_results( "
-            SELECT b.meta_value as status, count( a.ID ) as count
+            SELECT b.meta_value as seeker_path, count( a.ID ) as count
              FROM $wpdb->posts as a
                JOIN $wpdb->postmeta as b
                  ON a.ID=b.post_id
@@ -443,14 +445,16 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         $query_results = [];
 
-        $status = dt_get_option( 'seeker_path' );
-        foreach ( $status as $status_key => $status_label ){
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $seeker_path_options = $contact_fields["seeker_path"]["default"];
+
+        foreach ( $seeker_path_options as $seeker_path_key => $seeker_path_option ){
             $added = false;
             foreach ( $results as $result ) {
-                if ( $result["status"] == $status_key ){
+                if ( $result["seeker_path"] == $seeker_path_key ){
                     $query_results[] = [
-                        'key' => $status_key,
-                        'label' => $status_label,
+                        'key' => $seeker_path_key,
+                        'label' => $seeker_path_option['label'],
                         'value' => intval( $result['count'] )
                     ];
                     $added = true;
@@ -458,8 +462,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             }
             if ( !$added ){
                 $query_results[] = [
-                    'key' => $status_key,
-                    'label' => $status_label,
+                    'key' => $seeker_path_key,
+                    'label' => $seeker_path_option['label'],
                     'value' => 0
                 ];
             }
@@ -549,19 +553,19 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         }
         $personal_counts = $wpdb->get_results( $wpdb->prepare( "
             SELECT (
-             SELECT count(a.ID)
-             FROM $wpdb->posts as a
-              JOIN $wpdb->postmeta as d
-                   ON a.ID=d.post_id
+              SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                  JOIN $wpdb->postmeta as d
+                    ON a.ID=d.post_id
                       AND d.meta_key = 'overall_status'
                       AND d.meta_value = 'active'
-              JOIN $wpdb->postmeta as b
-                 ON a.ID=b.post_id
-                    AND b.meta_key = 'assigned_to'
-                    AND b.meta_value = CONCAT( 'user-', %s )
-             WHERE a.post_status = 'publish'
-              AND a.post_type = 'contacts'
-              AND a.ID NOT IN (
+                  JOIN $wpdb->postmeta as b
+                    ON a.ID=b.post_id
+                      AND b.meta_key = 'assigned_to'
+                      AND b.meta_value = CONCAT( 'user-', %s )
+                WHERE a.post_status = 'publish'
+                AND a.post_type = 'contacts'
+                AND a.ID NOT IN (
                     SELECT post_id
                     FROM $wpdb->postmeta
                     WHERE meta_key = 'corresponds_to_user'
@@ -570,65 +574,65 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 ))
               as contacts,
               (SELECT count(a.ID)
-               FROM $wpdb->posts as a
-                 JOIN $wpdb->postmeta as b
-                   ON a.ID=b.post_id
+                FROM $wpdb->posts as a
+                  JOIN $wpdb->postmeta as b
+                    ON a.ID=b.post_id
                       AND b.meta_key = 'accepted'
-                      AND b.meta_value = 'no'
-                 JOIN $wpdb->postmeta as c
-                   ON a.ID=c.post_id
+                      AND b.meta_value = ''
+                  JOIN $wpdb->postmeta as c
+                    ON a.ID=c.post_id
                       AND c.meta_key = 'assigned_to'
                       AND c.meta_value = CONCAT( 'user-', %s )
-                 JOIN $wpdb->postmeta as d
-                   ON a.ID=d.post_id
+                  JOIN $wpdb->postmeta as d
+                    ON a.ID=d.post_id
                       AND d.meta_key = 'overall_status'
-                      AND d.meta_value = 'active'
-               WHERE a.post_status = 'publish'
-                     AND a.post_type = 'contacts'
-                     AND a.ID NOT IN (
+                      AND d.meta_value = 'assigned'
+                WHERE a.post_status = 'publish'
+                  AND a.post_type = 'contacts'
+                  AND a.ID NOT IN (
                     SELECT post_id
                     FROM $wpdb->postmeta
                     WHERE meta_key = 'corresponds_to_user'
                       AND meta_value != 0
                     GROUP BY post_id
-                ))
-                as needs_accept,
+                  )
+              ) as needs_accept,
               (SELECT count(a.ID)
-               FROM $wpdb->posts as a
-                 JOIN $wpdb->postmeta as b
-                   ON a.ID=b.post_id
+                FROM $wpdb->posts as a
+                  JOIN $wpdb->postmeta as b
+                    ON a.ID=b.post_id
                       AND b.meta_key = 'requires_update'
-                      AND b.meta_value = 'yes'
-                 JOIN $wpdb->postmeta as c
-                   ON a.ID=c.post_id
+                      AND b.meta_value = '1'
+                  JOIN $wpdb->postmeta as c
+                    ON a.ID=c.post_id
                       AND c.meta_key = 'assigned_to'
                       AND c.meta_value = CONCAT( 'user-', %s )
-                 JOIN $wpdb->postmeta as d
-                   ON a.ID=d.post_id
+                  JOIN $wpdb->postmeta as d
+                    ON a.ID=d.post_id
                       AND d.meta_key = 'overall_status'
                       AND d.meta_value = 'active'
-               WHERE a.post_status = 'publish'
-                     AND a.post_type = 'contacts'
-                     AND a.ID NOT IN (
-                    SELECT post_id
+                WHERE a.post_status = 'publish'
+                AND a.post_type = 'contacts'
+                AND a.ID NOT IN (
+                  SELECT post_id
                     FROM $wpdb->postmeta
                     WHERE meta_key = 'corresponds_to_user'
                       AND meta_value != 0
                     GROUP BY post_id
-                ))
-                as needs_update,
+                )
+              ) as needs_update,
               (SELECT count(a.ID)
-               FROM $wpdb->posts as a
-                 JOIN $wpdb->postmeta as c
-                   ON a.ID=c.post_id
+                FROM $wpdb->posts as a
+                  JOIN $wpdb->postmeta as c
+                    ON a.ID=c.post_id
                       AND c.meta_key = 'assigned_to'
                       AND c.meta_value = CONCAT( 'user-', %s )
-                 JOIN $wpdb->postmeta as d
-                   ON a.ID=d.post_id
+                  JOIN $wpdb->postmeta as d
+                    ON a.ID=d.post_id
                       AND d.meta_key = 'group_status'
                       AND d.meta_value = 'active'
-               WHERE a.post_status = 'publish'
-                     AND a.post_type = 'groups')
+                WHERE a.post_status = 'publish'
+                  AND a.post_type = 'groups')
                 as `groups`
             ",
             $user_id,
@@ -680,16 +684,16 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                   ON a.ID=c.post_id
                      AND c.meta_key = 'group_status'
                      AND c.meta_value = 'active'
-                JOIN $wpdb->postmeta as d
-                  ON a.ID=d.post_id
+                LEFT JOIN $wpdb->postmeta as d
+                  ON ( a.ID=d.post_id
+                  AND d.meta_key = 'health_metrics' )
               WHERE a.post_status = 'publish'
-                    AND a.post_type = 'groups'
-                    AND d.meta_key = %s
+                  AND a.post_type = 'groups'
               GROUP BY d.meta_key
         ",
             'user-' . $user_id,
-            'user-' . $user_id,
-        'health_metrics' ), ARRAY_A );
+            'user-' . $user_id
+        ), ARRAY_A );
 
         return $results;
     }
@@ -715,10 +719,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                      AND c.meta_key = 'group_status'
                      AND c.meta_value = 'active'
                 JOIN $wpdb->postmeta as d
-                  ON a.ID=d.post_id
+                  ON ( a.ID=d.post_id
+                    AND d.meta_key = %s )
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
-                    AND d.meta_key = %s
               GROUP BY d.meta_value
         ", 'health_metrics' ), ARRAY_A );
 
@@ -799,33 +803,33 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 AND meta_value != 0
                 GROUP BY bb.post_id )
                 )
-          as active_contacts,
-               (SELECT count(a.ID)
+            as active_contacts,
+            (SELECT count(a.ID)
                 FROM $wpdb->posts as a
-                            JOIN $wpdb->postmeta as b
-                            ON a.ID=b.post_id
-                               AND b.meta_key = 'accepted'
-                                     AND b.meta_value = 'no'
+                    JOIN $wpdb->postmeta as b
+                    ON a.ID=b.post_id
+                       AND b.meta_key = 'accepted'
+                       AND b.meta_value = ''
                JOIN $wpdb->postmeta as d
                ON a.ID=d.post_id
-                      AND d.meta_key = 'overall_status'
-               AND d.meta_value = 'active'
+                   AND d.meta_key = 'overall_status'
+                   AND d.meta_value = 'assigned'
                WHERE a.post_status = 'publish'
-                AND a.post_type = 'contacts'
-                AND a.ID NOT IN (
-                    SELECT post_id
-                    FROM $wpdb->postmeta
-                    WHERE meta_key = 'corresponds_to_user'
-                      AND meta_value != 0
-                    GROUP BY post_id
+               AND a.post_type = 'contacts'
+               AND a.ID NOT IN (
+                   SELECT post_id
+                   FROM $wpdb->postmeta
+                   WHERE meta_key = 'corresponds_to_user'
+                   AND meta_value != 0
+                   GROUP BY post_id
                 ))
-          as needs_accept,
-               (SELECT count(a.ID)
+            as needs_accept,
+            (SELECT count(a.ID)
                 FROM $wpdb->posts as a
                             JOIN $wpdb->postmeta as b
                             ON a.ID=b.post_id
                                AND b.meta_key = 'requires_update'
-                                     AND b.meta_value = 'yes'
+                               AND b.meta_value = '1'
                JOIN $wpdb->postmeta as d
                ON a.ID=d.post_id
                       AND d.meta_key = 'overall_status'
@@ -839,16 +843,16 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                       AND meta_value != 0
                     GROUP BY post_id
                 ))
-          as needs_update,
-               (SELECT count(a.ID)
+            as needs_update,
+            (SELECT count(a.ID)
                 FROM $wpdb->posts as a
-               JOIN $wpdb->postmeta as d
-               ON a.ID=d.post_id
-                      AND d.meta_key = 'group_status'
-               AND d.meta_value = 'active'
-               WHERE a.post_status = 'publish'
+                JOIN $wpdb->postmeta as d
+                ON a.ID=d.post_id
+                    AND d.meta_key = 'group_status'
+                AND d.meta_value = 'active'
+                WHERE a.post_status = 'publish'
                 AND a.post_type = 'groups')
-          as `groups`
+            as `groups`
         ",
         ARRAY_A );
 

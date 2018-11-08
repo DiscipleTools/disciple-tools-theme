@@ -454,7 +454,7 @@ class Disciple_Tools_Contacts_Endpoints
      * @throws WP_Error|bool 'Expected yes or no'.
      */
     private static function yes_no_to_boolean( string $yes_no ) {
-        if ( $yes_no === 'yes' ) {
+        if ( $yes_no === 'yes' || $yes_no === '1' ) {
             return true;
         } elseif ( $yes_no === 'no' ) {
             return false;

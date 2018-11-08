@@ -588,8 +588,8 @@ class Disciple_Tools_Notifications
             if ( $key === "assigned_to" && isset( $fields["assigned_to"] ) &&
                 ( !isset( $old_fields["assigned_to"] ) || $old_fields["assigned_to"] != $fields["assigned_to"] ) ){
                 $notification_on_fields[] = "assigned_to";
-            } elseif ( $key === "requires_update" && isset( $fields["requires_update"]["key"] ) &&
-                ( $fields["requires_update"]["key"] === 'yes' || $fields["requires_update"]["key"] === '1' ) &&
+            } elseif ( $key === "requires_update" && isset( $fields["requires_update"] ) &&
+                ( $fields["requires_update"] === true || $fields["requires_update"] === '1' ) &&
                 ( !isset( $old_fields["requires_update"] ) || $old_fields["requires_update"] != $fields["requires_update"] ) ){
                 $notification_on_fields[] = "requires_update";
             } elseif ( strpos( $key, "contact_" ) === 0 && isset( $fields[$key] ) &&

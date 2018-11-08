@@ -15,7 +15,7 @@
 
     <?php
 //    <!-- Requires update block -->
-    if ( isset( $contact['requires_update'] ) && $contact['requires_update']['key'] === 'yes' ) { ?>
+    if ( isset( $contact['requires_update'] ) && $contact['requires_update'] === true ) { ?>
     <section class="cell small-12 update-needed-notification">
         <div class="bordered-box">
             <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This contact needs an update', 'disciple_tools' ) ?>.</h4>

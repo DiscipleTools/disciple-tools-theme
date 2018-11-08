@@ -50,9 +50,9 @@ function contactUpdated(updateNeeded) {
 }
 
 function commentPosted() {
-  if (_.get(contact, "requires_update.key") === "yes"){
+  if (_.get(contact, "requires_update") === true ){
     API.get_post("contact",  $("#contact-id").text() ).then(contact=>{
-      contactUpdated(_.get(contact, "requires_update.key") === "yes")
+      contactUpdated(_.get(contact, "requires_update") === true )
     }).catch(err => { console.error(err) })
   }
 }
@@ -96,8 +96,7 @@ jQuery(document).ready(function($) {
     if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
       if (_.get(xhr, "responseJSON.ID")){
         contact = xhr.responseJSON
-        let updateNeeded = _.get(contact, "requires_update.key") === "yes"
-        console.log("set to: " + updateNeeded)
+        let updateNeeded = _.get(contact, "requires_update") === true
         contactUpdated(updateNeeded)
       }
     }

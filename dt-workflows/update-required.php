@@ -48,7 +48,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     LEFT JOIN $wpdb->postmeta AS mt3 ON ( $wpdb->posts.ID = mt3.post_id )
                     LEFT JOIN $wpdb->postmeta AS mt4 ON ( $wpdb->posts.ID = mt4.post_id )
                     LEFT JOIN $wpdb->postmeta AS contact_type ON ( $wpdb->posts.ID = contact_type.post_id AND contact_type.meta_key = 'type' )
-                    WHERE ( mt1.meta_value = 'no' OR mt1.meta_key IS NULL )
+                    WHERE ( mt1.meta_value = '' OR mt1.meta_value = '0' OR mt1.meta_key IS NULL )
                     AND ( mt2.meta_key = 'overall_status' AND mt2.meta_value = %s )
                     AND ( mt3.meta_key = 'last_modified' AND mt3.meta_value <= %s )
                     AND ( mt4.meta_key = 'seeker_path' AND mt4.meta_value = %s )
@@ -63,7 +63,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     $user_name = ( "@" . dt_get_assigned_name( $contact->ID, true ) . " " ) ?? "";
                     $comment_html = esc_html( $user_name . $setting["comment"] );
                     Disciple_Tools_Contacts::add_comment( $contact->ID, $comment_html, "comment", [ "user_id" => 0 ], false, true );
-                    Disciple_Tools_contacts::update_contact( $contact->ID, [ "requires_update" => "yes" ], false );
+                    Disciple_Tools_contacts::update_contact( $contact->ID, [ "requires_update" => true ], false );
                 }
             }
         }

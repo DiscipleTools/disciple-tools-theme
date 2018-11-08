@@ -200,7 +200,7 @@ declare( strict_types=1 );
         true,
         true,
         current_user_can( "assign_any_contacts" ),
-        isset( $contact["requires_update"] ) && $contact["requires_update"]["key"] === "yes",
+        isset( $contact["requires_update"] ) && $contact["requires_update"] === true,
         in_array( $current_user_id, $following ),
         isset( $contact["assigned_to"]["id"] ) ? $contact["assigned_to"]["id"] == $current_user_id : false,
         $dispatcher_actions

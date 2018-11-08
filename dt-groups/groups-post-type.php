@@ -593,7 +593,7 @@ class Disciple_Tools_Groups_Post_Type
     }
 
 
-    public function get_group_fields( $post_id = null, $include_current_post = null ){
+    public function get_group_field_defaults( $post_id = null, $include_current_post = null ){
         global $post;
 
         $fields = [];
@@ -753,7 +753,7 @@ class Disciple_Tools_Groups_Post_Type
      * @return mixed
      */
     public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false ) {
-        $fields = $this->get_group_fields( $post_id, $include_current_post );
+        $fields = $this->get_group_field_defaults( $post_id, $include_current_post );
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, "groups" );
         foreach ( $fields as $field_key => $field ){
             if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){

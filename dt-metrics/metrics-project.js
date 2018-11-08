@@ -114,8 +114,7 @@ function project_overview() {
           formattedData.push( [row.label, parseInt(row.value), row.value] );
 
         })
-
-        let data = google.visualization.arrayToDataTable( formattedData );
+      let data = google.visualization.arrayToDataTable( formattedData );
 
         let options = {
             bars: 'horizontal',
@@ -137,7 +136,6 @@ function project_overview() {
 
     function drawMyGroupHealth() {
 
-      console.log(sourceData.group_health);
         let data = google.visualization.arrayToDataTable( sourceData.group_health );
 
         let options = {

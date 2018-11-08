@@ -276,7 +276,7 @@
     }).join(", ");
     const gcfs = wpApiListSettings.custom_fields_settings;
     const status = gcfs.group_status.default[group.group_status || "active"]["label"];
-    const type = gcfs.group_type.default[group.group_type || "active"]["label"];
+    const type = gcfs.group_type.default[group.group_type || "group"]["label"];
     const context = _.assign({}, group, wpApiListSettings, {
       leader_links,
       status,
@@ -329,14 +329,14 @@
     }
     if ( currentView === "needs_accepted" ){
       query.overall_status = ["assigned"]
-      query.accepted = ["no"]
+      query.accepted = [false]
       filter.labels = [{ id:"needs_accepted", name:"Newly Assigned", field: "accepted"}]
     } else if ( currentView === "assignment_needed" ){
       query.overall_status = ["unassigned"]
       filter.labels = [{ id:"unassigned", name:"Assignment needed", field: "assigned"}]
     } else if ( currentView === "update_needed" ){
       filter.labels = [{ id:"update_needed", name:"Update needed", field: "requires_update"}]
-      query.requires_update = ["yes"]
+      query.requires_update = [true]
     } else if ( currentView === "meeting_scheduled" ){
       query.overall_status = ["active"]
       query.seeker_path = ["scheduled"]

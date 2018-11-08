@@ -413,6 +413,13 @@ class Disciple_Tools_Posts
                         $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
                     }
                 }
+                if ( $fields[$activity->meta_key]["type"] === "boolean" ){
+                    if ( $activity->meta_value === true || $activity->meta_value === '1' ){
+                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "yes", 'disciple_tools' );
+                    } else {
+                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "no", 'disciple_tools' );
+                    }
+                }
                 if ($fields[$activity->meta_key]["type"] === "number"){
                     $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
                 }
@@ -796,6 +803,13 @@ class Disciple_Tools_Posts
         global $wpdb;
         $current_user = wp_get_current_user();
 
+        $post_fields = [];
+        if ( $post_type === "contacts" ){
+            $post_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        } elseif ( $post_type === "groups" ){
+            $post_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+        }
+
         $include = [];
         if ( isset( $query["include"] ) ){
             $include = $query["include"];
@@ -891,6 +905,14 @@ class Disciple_Tools_Posts
                 } else {
                     $connector = " OR ";
                     foreach ( $query_value as $value ){
+                        if ( isset( $post_fields[$query_key]["type"] ) && $post_fields[$query_key]["type"] === "boolean" ){
+                            if ( $value === "1" || $value === "yes" || $value === "true" ){
+                                $value = true;
+                            } elseif ( $value === "0" || $value === "no" || $value === "false" ){
+                                $value = false;
+                            }
+                        }
+
                         //allow negative searches
                         $equality = "=";
                         if ( strpos( $value, "-" ) === 0 ){

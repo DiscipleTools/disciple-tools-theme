@@ -211,9 +211,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         $defaults = null;
         if ( $post_type === "contacts" ){
-            $defaults = Disciple_Tools_Contact_Post_Type::instance()->get_contact_fields();
+            $defaults = Disciple_Tools_Contact_Post_Type::instance()->get_contact_field_defaults();
         } elseif ( $post_type === "groups" ){
-            $defaults = Disciple_Tools_Groups_Post_Type::instance()->get_group_fields();
+            $defaults = Disciple_Tools_Groups_Post_Type::instance()->get_group_field_defaults();
         }
 
         $field_options = $field["default"];

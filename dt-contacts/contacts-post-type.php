@@ -548,7 +548,7 @@ class Disciple_Tools_Contact_Post_Type
     }
 
 
-    public function get_contact_fields( $post_id = null, $include_current_post = null ){
+    public function get_contact_field_defaults( $post_id = null, $include_current_post = null ){
         $fields = [];
 
         $fields['assigned_to'] = [
@@ -613,11 +613,8 @@ class Disciple_Tools_Contact_Post_Type
         $fields['requires_update'] = [
             'name'        => __( 'Requires Update', 'disciple_tools' ),
             'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
-                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
-            ],
+            'type'        => 'boolean',
+            'default'     => false,
             'section'     => 'status',
         ];
 
@@ -758,11 +755,8 @@ class Disciple_Tools_Contact_Post_Type
         $fields['accepted'] = [
             'name'        => __( 'Accepted', 'disciple_tools' ),
             'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-                'no'  => [ "label" => __( 'No', 'disciple_tools' ) ],
-                'yes' => [ "label" => __( 'Yes', 'disciple_tools' ) ],
-            ],
+            'type'        => 'boolean',
+            'default'     => false,
             'section'     => 'status',
         ];
 
@@ -909,7 +903,7 @@ class Disciple_Tools_Contact_Post_Type
      */
     public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false ) {
 
-        $fields = $this->get_contact_fields( $post_id, $include_current_post );
+        $fields = $this->get_contact_field_defaults( $post_id, $include_current_post );
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
         foreach ( $fields as $field_key => $field ){
             if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){

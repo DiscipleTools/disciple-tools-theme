@@ -164,6 +164,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     }
                 } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'multi_select' ){
                     $fields[ $key ] = $value;
+                } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'boolean' ) {
+                    $fields[ $key ] = $value[0] === "1";
                 } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'array' ){
                     $fields[ $key ] = maybe_unserialize( $value[0] );
                 } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'date' ){

@@ -632,7 +632,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 if ( $user_id ){
                     self::add_shared( "contacts", $contact_id, $user_id, null, false, false, false );
                 }
-                $fields['accepted'] = 'no';
+                $fields['accepted'] = false;
             }
         }
 
@@ -655,11 +655,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         foreach ( $fields as $field_id => $value ) {
             if ( !self::is_key_contact_method_or_connection( $field_id ) ) {
                 // Boolean contact field are stored as yes/no
-                if ( $value === true ) {
-                    $value = "yes";
-                } elseif ( $value === false ) {
-                    $value = "no";
-                }
 
                 $field_type = self::$contact_fields[$field_id]["type"] ?? '';
                 //we handle multi_select above.
@@ -699,14 +694,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     private static function check_requires_update( $contact_id ){
         if ( get_current_user_id() ){
             $requires_update = get_post_meta( $contact_id, "requires_update", true );
-            if ( $requires_update == "yes" ){
+            if ( $requires_update == "yes" || $requires_update == true || $requires_update = "1"){
                 //don't remove update needed if the user is a dispatcher (and not assigned to the contacts.)
                 if ( self::can_view_all( 'contacts' ) ){
                     if ( dt_get_user_id_from_assigned_to( get_post_meta( $contact_id, "assigned_to", true ) ) === get_current_user_id() ){
-                        update_post_meta( $contact_id, "requires_update", "no" );
+                        update_post_meta( $contact_id, "requires_update", false );
                     }
                 } else {
-                    update_post_meta( $contact_id, "requires_update", "no" );
+                    update_post_meta( $contact_id, "requires_update", false );
                 }
             }
         }
@@ -1301,6 +1296,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     }
                 } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'multi_select' ){
                     $fields[ $key ] = $value;
+                } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'boolean' ){
+                    $fields[ $key ] = $value[0] === "1";
                 } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'array' ){
                     $fields[ $key ] = maybe_unserialize( $value[0] );
                 } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'date' ){
@@ -1991,7 +1988,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( $accepted ) {
             $update = [
                 "overall_status" => 'active',
-                "accepted" => 'yes'
+                "accepted" => true
             ];
             self::update_contact( $contact_id, $update, true );
             return [ "overall_status" => self::$contact_fields["overall_status"]["default"]['active'] ];
@@ -2453,7 +2450,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 JOIN $wpdb->postmeta as b
                   ON a.ID=b.post_id
                     AND b.meta_key = 'requires_update'
-                    AND b.meta_value = 'yes'
+                    AND b.meta_value = '1'
                 JOIN $wpdb->postmeta as c
                   ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
@@ -2474,7 +2471,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 INNER JOIN $wpdb->postmeta as b
                   ON a.ID=b.post_id
                     AND b.meta_key = 'accepted'
-                    AND b.meta_value = 'no'
+                    AND b.meta_value = ''
                 INNER JOIN $wpdb->postmeta as c
                   ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
@@ -2575,6 +2572,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $dispatcher_counts = $wpdb->get_results( $wpdb->prepare( "
             SELECT (SELECT count(ID) as all_contacts
                     FROM $wpdb->posts
+                    INNER JOIN $wpdb->postmeta as e
+                      ON $wpdb->posts.ID=e.post_id
+                      AND (( e.meta_key = 'type'
+                        AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
+                      OR e.meta_key IS NULL)
                     WHERE post_status = 'publish'
                       AND post_type = 'contacts')
                 as all_contacts,
