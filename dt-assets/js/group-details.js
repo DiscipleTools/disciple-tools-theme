@@ -8,15 +8,10 @@ jQuery(document).ready(function($) {
   let groupId = group.ID
   let editFieldsUpdate = {}
 
-  let dateFields = []
-  _.forOwn(wpApiGroupsSettings.groups_custom_fields_settings, (field, key)=>{
-    if ( field.type === 'date'){
-      dateFields.push( key)
-    }
-  })
   /**
    * Date pickers
    */
+  let dateFields = [ "start_date", "church_start_date", "end_date" ]
   dateFields.forEach(key=>{
     let datePicker = $(`#${key}.date-picker`)
     datePicker.datepicker({
@@ -743,6 +738,45 @@ jQuery(document).ready(function($) {
       }).catch(err=>{
         console.log(err)
     })
+  })
+
+  $('button.dt_multi_select').on('click',function () {
+    let fieldKey = $(this).data("field-key")
+    let optionKey = $(this).attr('id')
+    let fieldValue = {}
+    let data = {}
+    let field = jQuery("#" + optionKey)
+    field.addClass("submitting-select-button")
+    let action = "add"
+    if (field.hasClass("selected-select-button")){
+      fieldValue = {values:[{value:optionKey,delete:true}]}
+      action = "delete"
+    } else {
+      field.removeClass("empty-select-button")
+      field.addClass("selected-select-button")
+      fieldValue = {values:[{value:optionKey}]}
+    }
+    data[optionKey] = fieldValue
+    API.save_field_api('group', groupId, {[fieldKey]: fieldValue}).then((resp)=>{
+      field.removeClass("submitting-select-button selected-select-button")
+      field.blur();
+      field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
+    }).catch(err=>{
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").text(err.responseText)
+      field.removeClass("submitting-select-button selected-select-button")
+      field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
+    })
+  })
+  $('.dt_date_picker').datepicker({
+    dateFormat: 'yy-mm-dd',
+    onSelect: function (date) {
+      let id = $(this).attr('id')
+      API.save_field_api('group', groupId, { [id]: date }).catch(handelAjaxError)
+    },
+    changeMonth: true,
+    changeYear: true
   })
 
 

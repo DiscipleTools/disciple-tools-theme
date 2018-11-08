@@ -82,7 +82,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 }
                 if ( isset( $_POST["show_add_new_field"] ) ){
                     $show_add_field = true;
-                } else if ( isset( $_POST["field-select"] ) ){
+                } else if ( !empty( $_POST["field-select"] ) ){
                     $field = explode( "_", sanitize_text_field( wp_unslash( $_POST["field-select"] ) ), 2 );
                     $field_key = $field[1];
                     $post_type = $field[0];
@@ -162,10 +162,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         ?>
         <form method="post">
             <input type="hidden" name="field_select_nonce" id="field_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_select' ) ) ?>" />
-            <button type="submit" class="button" name="show_add_new_field"><?php esc_html_e( "Add a new field", 'disciple_tools' ) ?></button>
-            <label for="field-select"><?php esc_html_e( "Or modify an existing field", 'disciple_tools' ) ?></label>
+            <label for="field-select"><?php esc_html_e( "Modify an existing field", 'disciple_tools' ) ?></label>
 
-            <label for="field-select">Contacts</label>
             <select id="field-select" name="field-select">
                 <option></option>
                 <option disabled>---Contact Fields---</option>
@@ -182,6 +180,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 <?php endforeach; ?>
             </select>
             <button type="submit" class="button" name="field_selected"><?php esc_html_e( "Select", 'disciple_tools' ) ?></button>
+            <br>
+            <?php esc_html_e( "Or", 'disciple_tools' ) ?> <button type="submit" class="button" name="show_add_new_field"><?php esc_html_e( "Add a new field", 'disciple_tools' ) ?></button>
         </form>
 
     <?php }
@@ -203,6 +203,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         $field_options = $field["default"];
         $first = true;
+        $tile_options = dt_get_option( "dt_custom_tiles" );
+        $sections = apply_filters( 'dt_details_additional_section_ids', [], $post_type );
+        foreach ( $sections as $section_id ){
+            $tile_options[$post_type][$section_id] = [];
+        }
         ?>
         <form method="post" name="field_edit_form">
         <input type="hidden" name="field_key" value="<?php echo esc_html( $field_key )?>">
@@ -210,15 +215,58 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         <input type="hidden" name="field-select" value="<?php echo esc_html( $post_type . "_" . $field_key )?>">
         <input type="hidden" name="field_select_nonce" id="field_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_select' ) ) ?>" />
         <input type="hidden" name="field_edit_nonce" id="field_edit_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_edit' ) ) ?>" />
+
+        <h3><?php esc_html_e( "Field Settings", 'disciple_tools' ) ?></h3>
+        <table class="widefat">
+            <thead>
+            <tr>
+                <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( "Tile", 'disciple_tools' ) ?></td>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <?php echo esc_html( $field_key ) ?>
+                    </td>
+                    <td>
+                        <input name="field_key_<?php echo esc_html( $field_key )?>" type="text" value="<?php echo esc_html( $field["name"] ) ?>"/>
+                    </td>
+                    <td>
+                        <select name="tile_select">
+                            <option>No tile</option>
+                            <?php foreach ( $tile_options[$post_type] as $tile_key => $tile_option ) :
+                                $select = isset( $field["tile"] ) && $field["tile"] === $tile_key;
+                                ?>
+                                <option value="<?php echo esc_html( $tile_key ) ?>" <?php echo esc_html( $select ? "selected" : "" )?>>
+                                    <?php echo esc_html( $tile_option["label"] ?? $tile_key ) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br>
+        <button type="submit" style="float:right;" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
+
             <?php if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
                 ?>
 
-                <div id="add_option" style="">
-                    <?php esc_html_e( "Add new option", 'disciple_tools' ) ?>
-                    <br>
-                    <input type="text" name="add_option" placeholder="label" />&nbsp;
-                    <button type="submit" class="button"><?php echo esc_html( __( 'Add', 'disciple_tools' ) ) ?></button>
-                </div>
+                <h3><?php esc_html_e( "Field Options", 'disciple_tools' ) ?></h3>
+                <table id="add_option" style="">
+                    <tr>
+                        <td style="vertical-align: middle">
+                            <?php esc_html_e( "Add new option", 'disciple_tools' ) ?>
+                        </td>
+                        <td>
+                            <input type="text" name="add_option" placeholder="label" />
+                            <button type="submit" class="button"><?php echo esc_html( __( 'Add', 'disciple_tools' ) ) ?></button>
+                        </td>
+                    </tr>
+                </table>
                 <br>
                 <table class="widefat">
                     <thead>
@@ -238,7 +286,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     <?php echo esc_html( $key ) ?>
                                 </td>
                                 <td>
-                                    <input name="field_key_<?php echo esc_html( $key )?>" type="text" value="<?php echo esc_html( $label ) ?>"/>
+                                    <input name="field_option_<?php echo esc_html( $key )?>" type="text" value="<?php echo esc_html( $label ) ?>"/>
                                 </td>
                                 <td>
                                     <?php if ( !$first ) : ?>
@@ -280,27 +328,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
             <?php } else { ?>
 
-                <table class="widefat">
-                    <thead>
-                    <tr>
-                        <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input name="field_key_<?php echo esc_html( $field_key )?>" type="text" value="<?php echo esc_html( $field["name"] ) ?>"/>
-                            </td>
-                            <td>
-                                <?php echo esc_html( $field_key ) ?>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
 
-                <br>
-                <button type="submit" style="float:right;" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
         <?php }
 
     }
@@ -319,10 +347,19 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             $custom_field = $field_customizations[$post_type][$field_key];
             $field = $post_fields[$field_key];
             $field_options = $field["default"];
+            if ( isset( $post_fields[$field_key] ) ){
+                //update name
+                if ( isset( $post_submission["field_key_" . $field_key] ) ){
+                    $custom_field["name"] = $post_submission["field_key_" . $field_key];
+                }
+                if ( isset( $post_submission["tile_select"] ) ){
+                    $custom_field["tile"] = $post_submission["tile_select"];
+                }
+            }
             if ( $field["type"] === 'multi_select' || $field["type"] === "key_select" ){
                 foreach ( $post_submission as $key => $val ){
-                    if ( strpos( $key, "field_key_" ) === 0 ){
-                        $option_key = substr( $key, 10 );
+                    if ( strpos( $key, "field_option_" ) === 0 ){
+                        $option_key = substr( $key, 13 );
                         if ( $field_options[$option_key]["label"] != $val ){
                             $custom_field["default"][$option_key]["label"] = $val;
                         }
@@ -343,15 +380,21 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 if ( isset( $post_submission["move_up"] ) || isset( $post_submission["move_down"] )){
                     $option_key = $post_submission["move_up"] ?? $post_submission["move_down"];
                     $direction = isset( $post_submission["move_up"] ) ? -1 : 1;
-                    $pos = (int) array_search( $option_key, array_keys( $field_options ) ) + $direction;
-                    $val = $field_options[ $option_key ];
-                    unset( $field_options[ $option_key ] );
-                    $field_options = array_merge(
-                        array_slice( $field_options, 0, $pos ),
+                    $active_field_options = [];
+                    foreach ( $field_options as $field_option_key => $field_option_val ){
+                        if ( !( isset( $field_option_val["deleted"] ) && $field_option_val["deleted"] == true ) ){
+                            $active_field_options[$field_option_key] = $field_option_val;
+                        }
+                    }
+                    $pos = (int) array_search( $option_key, array_keys( $active_field_options ) ) + $direction;
+                    $val = $active_field_options[ $option_key ];
+                    unset( $active_field_options[ $option_key ] );
+                    $active_field_options = array_merge(
+                        array_slice( $active_field_options, 0, $pos ),
                         [ $option_key => $val ],
-                        array_slice( $field_options, $pos )
+                        array_slice( $active_field_options, $pos )
                     );
-                    $order = array_keys( $field_options );
+                    $order = array_keys( $active_field_options );
                     $custom_field["order"] = $order;
                 }
                 /*
@@ -366,13 +409,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         }
                     } else {
                         self::admin_notice( __( "This option already exists", 'disciple_tools' ), "error" );
-                    }
-                }
-            } elseif ( $field["type"] === 'date' || $field["type"] === 'text' ){
-                if ( isset( $post_fields[$field_key] ) ){
-                    //update name
-                    if ( isset( $post_submission["field_key_" . $field_key] ) ){
-                        $custom_field["name"] = $post_submission["field_key_" . $field_key];
                     }
                 }
             }
@@ -390,6 +426,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
 
     private function add_field(){
+        $tile_options = dt_get_option( "dt_custom_tiles" );
+        $sections = apply_filters( 'dt_details_additional_section_ids', [], "contacts" );
+        foreach ( $sections as $section_id ){
+            $tile_options["contacts"][$section_id] = [];
+        }
+        $sections = apply_filters( 'dt_details_additional_section_ids', [], "groups" );
+        foreach ( $sections as $section_id ){
+            $tile_options["groups"][$section_id] = [];
+        }
 
         ?>
         <form method="post">
@@ -409,10 +454,23 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 <option value="text"><?php esc_html_e( "Text", 'disciple_tools' ) ?></option>
                 <option value="date"><?php esc_html_e( "Date", 'disciple_tools' ) ?></option>
             </select>
-<!--            <label>Tile</label>-->
-<!--            <select>-->
-<!---->
-<!--            </select>-->
+            <label>Tile</label>
+            <select name="new_field_tile">
+                <option>No tile</option>
+                <option disabled>---Contact Tiles---</option>
+                <?php foreach ( $tile_options["contacts"] as $option_key => $option_value ) : ?>
+                    <option value="<?php echo esc_html( $option_key ) ?>">
+                        <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
+                    </option>
+                <?php endforeach; ?>
+                <option disabled>---Group Tiles---</option>
+                <?php foreach ( $tile_options["groups"] as $option_key => $option_value ) : ?>
+                    <option value="<?php echo esc_html( $option_key ) ?>">
+                        <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
+                    </option>
+                <?php endforeach; ?>
+
+            </select>
             <button type="submit" class="button"><?php esc_html_e( "add", 'disciple_tools' ) ?></button>
         </form>
         <?php
@@ -435,7 +493,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'name' => $post_submission["new_field_name"],
                     'default' => [],
                     'type' => 'key_select',
-                    'section' => $field_tile,
+                    'tile' => $field_tile,
                     'customizable' => 'all'
                 ];
             } elseif ( $field_type === "multi_select" ){
@@ -443,7 +501,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'name' => $post_submission["new_field_name"],
                     'default' => [],
                     'type' => 'multi_select',
-                    'section' => $field_tile,
+                    'tile' => $field_tile,
                     'customizable' => 'all'
                 ];
             } elseif ( $field_type === "date" ){
@@ -451,7 +509,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'name'        => $post_submission["new_field_name"],
                     'type'        => 'date',
                     'default'     => '',
-                    'section'     => $field_tile,
+                    'tile'     => $field_tile,
                     'customizable' => 'all'
                 ];
             } elseif ( $field_type === "text" ){
@@ -459,7 +517,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'name'        => $post_submission["new_field_name"],
                     'type'        => 'text',
                     'default'     => '',
-                    'section'     => $field_tile,
+                    'tile'     => $field_tile,
                     'customizable' => 'all'
                 ];
             }

@@ -234,15 +234,15 @@
     const ccfs = wpApiListSettings.custom_fields_settings;
     const access_milestone_key = _.find(
       ["has_bible", "reading_bible"],
-      function (key) { return contact["milestones"].includes(`milestone_${key}`); }
+      function (key) { return (contact["milestones"] || []).includes(`milestone_${key}`); }
     )
     const belief_milestone_key = _.find(
       ['baptizing', 'baptized', 'belief'],
-      function(key) { return contact["milestones"].includes(`milestone_${key}`); }
+      function(key) { return (contact["milestones"] || []).includes(`milestone_${key}`); }
     );
     const sharing_milestone_key = _.find(
       ['planting', 'in_group', 'sharing', 'can_share'],
-      function(key) { return contact["milestones"].includes(`milestone_${key}`); }
+      function(key) { return (contact["milestones"] || []).includes(`milestone_${key}`); }
     );
     let status = ccfs.overall_status.default[contact.overall_status]["label"];
     let seeker_path = ccfs.seeker_path.default[contact.seeker_path]["label"];

@@ -131,6 +131,11 @@ function dt_get_option( string $name ) {
                 "contacts" => [],
                 "groups" => []
             ]);
+        case 'dt_custom_tiles':
+            return get_option( 'dt_custom_tiles', [
+                "contacts" => [],
+                "groups" => []
+            ]);
 
         case 'base_user':
             if ( ! get_option( 'dt_base_user' ) ) { // options doesn't exist, create new.
@@ -201,26 +206,6 @@ function dt_get_option( string $name ) {
             return $subject_base;
             break;
 
-        case 'seeker_path':
-            $seeker_list = dt_get_option( "dt_site_custom_lists" );
-            return $seeker_list["seeker_path"];
-        case 'overall_status':
-            $status = [
-                'unassigned'   => _x( 'Unassigned', 'Contact Status', 'disciple_tools' ),
-                'assigned'     => _X( "Assigned", 'Contact Status', 'disciple_tools' ),
-                'active'       => _X( 'Active', 'Contact Status', 'disciple_tools' ),
-                'paused'       => _x( 'Paused', 'Contact Status', 'disciple_tools' ),
-                'closed'       => _x( 'Closed', 'Contact Status', 'disciple_tools' ),
-                'unassignable' => _x( 'Unassignable', 'Contact Status', 'disciple_tools' ),
-            ];
-            $custom = dt_get_option( "dt_site_custom_lists" );
-            $custom = $custom["custom_status"];
-            if ( ! empty( $custom ) ) {
-                foreach ( $custom as $key => $value ) {
-                    $status[$key] = $value;
-                }
-            }
-            return $status;
         case 'group_type':
             $site_options = dt_get_option( "dt_site_custom_lists" );
             return $site_options["group_type"];

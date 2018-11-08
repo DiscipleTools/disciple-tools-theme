@@ -694,27 +694,28 @@ jQuery(document).ready(function($) {
     API.save_field_api('contact', contactId, { [id]: val })
       .catch(handelAjaxError)
   })
-  $('button.multi_select').on('click',function () {
-    let fieldKey = $(this).attr('id')
+  $('button.dt_multi_select').on('click',function () {
+    let fieldKey = $(this).data("field-key")
+    let optionKey = $(this).attr('id')
     let fieldValue = {}
     let data = {}
-    let field = jQuery("#" + fieldKey)
+    let field = jQuery("#" + optionKey)
     field.addClass("submitting-select-button")
     let action = "add"
     if (field.hasClass("selected-select-button")){
-      fieldValue = {values:[{value:fieldKey,delete:true}]}
+      fieldValue = {values:[{value:optionKey,delete:true}]}
       action = "delete"
     } else {
       field.removeClass("empty-select-button")
       field.addClass("selected-select-button")
-      fieldValue = {values:[{value:fieldKey}]}
+      fieldValue = {values:[{value:optionKey}]}
     }
-    data[fieldKey] = fieldValue
-    API.save_field_api('contact', contactId, {milestones: fieldValue}).then((resp)=>{
+    data[optionKey] = fieldValue
+    API.save_field_api('contact', contactId, {[fieldKey]: fieldValue}).then((resp)=>{
       field.removeClass("submitting-select-button selected-select-button")
       field.blur();
       field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
-      if ( fieldKey === 'milestone_baptized' && action === 'add' ){
+      if ( optionKey === 'milestone_baptized' && action === 'add' ){
         openBaptismModal(resp)
       }
     }).catch(err=>{
@@ -734,6 +735,16 @@ jQuery(document).ready(function($) {
       API.save_field_api('contact', contactId, { baptism_date: date }).then(res=>{
         openBaptismModal(res)
       }).catch(handelAjaxError)
+    },
+    changeMonth: true,
+    changeYear: true
+  })
+
+  $('.dt_date_picker').datepicker({
+    dateFormat: 'yy-mm-dd',
+    onSelect: function (date) {
+      let id = $(this).attr('id')
+      API.save_field_api('contact', contactId, { [id]: date }).catch(handelAjaxError)
     },
     changeMonth: true,
     changeYear: true

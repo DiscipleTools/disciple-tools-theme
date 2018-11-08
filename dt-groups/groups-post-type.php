@@ -775,6 +775,9 @@ class Disciple_Tools_Groups_Post_Type
                         if ( isset( $field["name"] )){
                             $fields[$key]["name"] = $field["name"];
                         }
+                        if ( isset( $field["tile"] ) ) {
+                            $fields[ $key ]["tile"] = $field["tile"];
+                        }
                         if ( $field_type === "key_select" || $field_type === "multi_select" ){
                             if ( isset( $field["default"] )){
                                 $fields[$key]["default"] = array_merge( $fields[$key]["default"], $field["default"] );
