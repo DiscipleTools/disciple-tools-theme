@@ -21,18 +21,15 @@ class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
 
             $wpdb->query( $sql ); // @phpcs:ignore
         }
-//        $wpdb->query( "
-//            DELETE FROM $wpdb->postmeta
-//            WHERE `meta_key` LIKE 'milestone_%'
-//            AND `meta_key` != 'milestones'
-//        " );
+        $wpdb->query( "
+            DELETE FROM $wpdb->postmeta
+            WHERE `meta_key` IN ( 'milestone_has_bible', 'milestone_reading_bible', 'milestone_belief', 'milestone_can_share', 'milestone_sharing', 'milestone_baptized', 'milestone_baptizing', 'milestone_in_group', 'milestone_planting' )
+        " );
 
         $health_metrics = $wpdb->get_results("
             SELECT * 
             FROM $wpdb->postmeta 
-            WHERE meta_key LIKE 'church_%'
-            AND `meta_key` != 'health_metrics'
-            AND `meta_key` != 'church_start_date'
+            WHERE meta_key IN ( 'church_baptism', 'church_bible', 'church_communion', 'church_fellowship', 'church_giving', 'church_prayer', 'church_praise', 'church_sharing', 'church_leaders', 'church_commitment')
             AND meta_value = '1'
         ", ARRAY_A);
         if ( sizeof( $health_metrics ) > 0 ){
@@ -45,12 +42,11 @@ class Disciple_Tools_Migration_0014 extends Disciple_Tools_Migration {
 
             $wpdb->query( $sql ); // @phpcs:ignore
         }
-//        $wpdb->query( "
-//            DELETE FROM $wpdb->postmeta
-//            WHERE `meta_key` LIKE 'church_%'
-//            AND `meta_key` != 'health_metrics'
-//            AND `meta_key` != 'church_start_date'
-//        " );
+        $wpdb->query( "
+            DELETE FROM $wpdb->postmeta
+            WHERE `meta_key` IN ( 'church_baptism', 'church_bible', 'church_communion', 'church_fellowship', 'church_giving', 'church_prayer', 'church_praise', 'church_sharing', 'church_leaders', 'church_commitment')
+            AND ( `meta_value` = '1' OR `meta_value` = '0' ) 
+        " );
 
 
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( null, null, true );
