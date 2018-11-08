@@ -127,7 +127,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
 
             if ( $show_add_field ){
-                $this->box( 'top', __( "Add new field", 'disciple_tools' ) );
+                $this->box( 'top', __( "Create new field", 'disciple_tools' ) );
                 $this->add_field();
                 $this->box( 'bottom' );
             }
@@ -162,26 +162,41 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         ?>
         <form method="post">
             <input type="hidden" name="field_select_nonce" id="field_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_select' ) ) ?>" />
-            <label for="field-select"><?php esc_html_e( "Modify an existing field", 'disciple_tools' ) ?></label>
+            <table>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <label for="field-select"><?php esc_html_e( "Modify an existing field", 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                        <select id="field-select" name="field-select">
+                            <option></option>
+                            <option disabled>---Contact Fields---</option>
+                            <?php foreach ( $select_options as $option ) : ?>
+                                <option value="contacts_<?php echo esc_html( $option ) ?>">
+                                    <?php echo esc_html( isset( $contact_fields[$option]["name"] ) ? $contact_fields[$option]["name"] : $option ) ?>
+                                </option>
+                            <?php endforeach; ?>
+                            <option disabled>---Group Fields---</option>
+                            <?php foreach ( $group_select_options as $option ) : ?>
+                                <option value="groups_<?php echo esc_html( $option ) ?>">
+                                    <?php echo esc_html( isset( $group_fields[$option]["name"] ) ? $group_fields[$option]["name"] : $option ) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <button type="submit" class="button" name="field_selected"><?php esc_html_e( "Select", 'disciple_tools' ) ?></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <?php esc_html_e( "Create a new field", 'disciple_tools' ) ?>
+                    </td>
+                    <td>
+                        <button type="submit" class="button" name="show_add_new_field"><?php esc_html_e( "Create new field", 'disciple_tools' ) ?></button>
+                    </td>
+                </tr>
+            </table>
 
-            <select id="field-select" name="field-select">
-                <option></option>
-                <option disabled>---Contact Fields---</option>
-                <?php foreach ( $select_options as $option ) : ?>
-                    <option value="contacts_<?php echo esc_html( $option ) ?>">
-                        <?php echo esc_html( isset( $contact_fields[$option]["name"] ) ? $contact_fields[$option]["name"] : $option ) ?>
-                    </option>
-                <?php endforeach; ?>
-                <option disabled>---Group Fields---</option>
-                <?php foreach ( $group_select_options as $option ) : ?>
-                    <option value="groups_<?php echo esc_html( $option ) ?>">
-                        <?php echo esc_html( isset( $group_fields[$option]["name"] ) ? $group_fields[$option]["name"] : $option ) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <button type="submit" class="button" name="field_selected"><?php esc_html_e( "Select", 'disciple_tools' ) ?></button>
             <br>
-            <?php esc_html_e( "Or", 'disciple_tools' ) ?> <button type="submit" class="button" name="show_add_new_field"><?php esc_html_e( "Add a new field", 'disciple_tools' ) ?></button>
         </form>
 
     <?php }
@@ -234,16 +249,18 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <input name="field_key_<?php echo esc_html( $field_key )?>" type="text" value="<?php echo esc_html( $field["name"] ) ?>"/>
                     </td>
                     <td>
-                        <select name="tile_select">
-                            <option>No tile</option>
-                            <?php foreach ( $tile_options[$post_type] as $tile_key => $tile_option ) :
-                                $select = isset( $field["tile"] ) && $field["tile"] === $tile_key;
-                                ?>
-                                <option value="<?php echo esc_html( $tile_key ) ?>" <?php echo esc_html( $select ? "selected" : "" )?>>
-                                    <?php echo esc_html( $tile_option["label"] ?? $tile_key ) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
+                        <?php if ( !isset( $defaults[$field_key] ) ) : ?>
+                            <select name="tile_select">
+                                <option><?php esc_html_e( "No tile / hidden", 'disciple_tools' ) ?></option>
+                                <?php foreach ( $tile_options[$post_type] as $tile_key => $tile_option ) :
+                                    $select = isset( $field["tile"] ) && $field["tile"] === $tile_key;
+                                    ?>
+                                    <option value="<?php echo esc_html( $tile_key ) ?>" <?php echo esc_html( $select ? "selected" : "" )?>>
+                                        <?php echo esc_html( $tile_option["label"] ?? $tile_key ) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        <?php endif; ?>
                     </td>
                 </tr>
             </tbody>
@@ -439,40 +456,78 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         ?>
         <form method="post">
             <input type="hidden" name="field_add_nonce" id="field_add_nonce" value="<?php echo esc_attr( wp_create_nonce( 'field_add' ) ) ?>" />
-
-            <select name="post_type">
-                <option value="contacts">Contacts</option>
-                <option value="groups">Groups</option>
-            </select>
-            <label for="new_field_name"><?php esc_html_e( "New Field Name", 'disciple_tools' ) ?></label>
-            <input name="new_field_name" id="new_field_name" required>
-            <label><?php esc_html_e( "Field type", 'disciple_tools' ) ?></label>
-            <select name="new_field_type" required>
-                <option></option>
-                <option value="key_select"><?php esc_html_e( "Dropdown", 'disciple_tools' ) ?></option>
-                <option value="multi_select"><?php esc_html_e( "Multi Select", 'disciple_tools' ) ?></option>
-                <option value="text"><?php esc_html_e( "Text", 'disciple_tools' ) ?></option>
-                <option value="date"><?php esc_html_e( "Date", 'disciple_tools' ) ?></option>
-            </select>
-            <label>Tile</label>
-            <select name="new_field_tile">
-                <option>No tile</option>
-                <option disabled>---Contact Tiles---</option>
-                <?php foreach ( $tile_options["contacts"] as $option_key => $option_value ) : ?>
-                    <option value="<?php echo esc_html( $option_key ) ?>">
-                        <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
-                    </option>
-                <?php endforeach; ?>
-                <option disabled>---Group Tiles---</option>
-                <?php foreach ( $tile_options["groups"] as $option_key => $option_value ) : ?>
-                    <option value="<?php echo esc_html( $option_key ) ?>">
-                        <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
-                    </option>
-                <?php endforeach; ?>
-
-            </select>
-            <button type="submit" class="button"><?php esc_html_e( "add", 'disciple_tools' ) ?></button>
+            <table>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <?php esc_html_e( "Page type", 'disciple_tools' ) ?>
+                    </td>
+                    <td>
+                        <select name="post_type">
+                            <option value="contacts">Contacts</option>
+                            <option value="groups">Groups</option>
+                        </select>
+                    </td>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <label for="new_field_name"><?php esc_html_e( "New Field Name", 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                        <input name="new_field_name" id="new_field_name" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <label><?php esc_html_e( "Field type", 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                        <select name="new_field_type" required>
+                            <option></option>
+                            <option value="key_select"><?php esc_html_e( "Dropdown", 'disciple_tools' ) ?></option>
+                            <option value="multi_select"><?php esc_html_e( "Multi Select", 'disciple_tools' ) ?></option>
+                            <option value="text"><?php esc_html_e( "Text", 'disciple_tools' ) ?></option>
+                            <option value="date"><?php esc_html_e( "Date", 'disciple_tools' ) ?></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <label><?php esc_html_e( "Tile", 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                        <select name="new_field_tile">
+                            <option><?php esc_html_e( "No tile", 'disciple_tools' ) ?></option>
+                            <option disabled>---Contact Tiles---</option>
+                            <?php foreach ( $tile_options["contacts"] as $option_key => $option_value ) : ?>
+                                <option value="<?php echo esc_html( $option_key ) ?>">
+                                    <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
+                                </option>
+                            <?php endforeach; ?>
+                            <option disabled>---Group Tiles---</option>
+                            <?php foreach ( $tile_options["groups"] as $option_key => $option_value ) : ?>
+                                <option value="<?php echo esc_html( $option_key ) ?>">
+                                    <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                    </td>
+                    <td>
+                        <button type="submit" class="button"><?php esc_html_e( "Create Field", 'disciple_tools' ) ?></button>
+                    </td>
+                </tr>
+            </table>
         </form>
+        <br>
+        Field types:
+        <ul style="list-style: disc; padding-left:40px">
+            <li><strong>Dropdown:</strong> Select an option for a dropdown list</li>
+            <li><strong>Multi Select:</strong> A field like the milestones to track items like course progress</li>
+            <li><strong>Text:</strong> This is just a normal text field</li>
+            <li><strong>Date:</strong> A field that uses a date picker to choose dates (like baptism date)</li>
+        </ul>
         <?php
     }
 

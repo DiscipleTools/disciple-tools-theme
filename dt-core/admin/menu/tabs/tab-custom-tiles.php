@@ -369,6 +369,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         }
         update_option( "dt_custom_tiles", $tile_options );
     }
+
     public function create_field_key( $s ){
         $string = str_replace( ' ', '_', $s ); // Replaces all spaces with hyphens.
         $ret = preg_replace( '/[^A-Za-z0-9\-_]/', '', $string ); // Removes special chars.
