@@ -556,7 +556,7 @@ class Disciple_Tools_Contacts_Endpoints
         $params = $request->get_params();
         $body = $request->get_json_params();
         if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
-            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"], true );
+            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"] );
 
             if ( is_wp_error( $result ) ) {
                 return $result;
@@ -588,7 +588,7 @@ class Disciple_Tools_Contacts_Endpoints
             );
         }
         if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
-            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"], false, "comment", null, null, $body["date"] ?? null, $silent );
+            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"], "comment", [ "comment_date" => $body["date"] ?? null ], false, $silent );
 
             if ( is_wp_error( $result ) ) {
                 return $result;

@@ -214,37 +214,36 @@ class Disciple_Tools_Posts
      * @param string $post_type
      * @param int $post_id
      * @param string $comment_html
+     * @param string $type      normally 'comment', different comment types can have their own section in the comments activity
+     * @param array $args       [user_id, comment_date, comment_author etc]
      * @param bool $check_permissions
-     * @param string $type
-     * @param null $user_id
-     * @param null $author
-     * @param null $date
      * @param bool $silent
      *
      * @return false|int|\WP_Error
      */
-    public static function add_post_comment( string $post_type, int $post_id, string $comment_html, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date = null, $silent = false, $author_url = null ) {
+    public static function add_post_comment( string $post_type, int $post_id, string $comment_html, string $type = "comment", array $args = [], bool $check_permissions = true, $silent = false ) {
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
         //limit comment length to 5000
         $comments = str_split( $comment_html, 4999 );
         $user = wp_get_current_user();
-        $user_id = $user_id ?? get_current_user_id();
+        $user_id = $args["user_id"] ?? get_current_user_id();
+
         $created_comment = null;
         foreach ( $comments as $comment ){
             $comment_data = [
                 'comment_post_ID'      => $post_id,
                 'comment_content'      => $comment,
                 'user_id'              => $user_id,
-                'comment_author'       => $author ?? $user->display_name,
-                'comment_author_url'   => $author_url ?? $user->user_url,
+                'comment_author'       => $args["comment_author"] ?? $user->display_name,
+                'comment_author_url'   => $args["comment_author_url"] ?? $user->user_url,
                 'comment_author_email' => $user->user_email,
                 'comment_type'         => $type,
             ];
-            if ( $date ){
-                $comment_data["comment_date"] = $date;
-                $comment_data["comment_date_gmt"] = $date;
+            if ( isset( $args["comment_date"] ) ){
+                $comment_data["comment_date"] = $args["comment_date"];
+                $comment_data["comment_date_gmt"] = $args["comment_date"];
             }
             $new_comment = wp_new_comment( $comment_data );
             if ( !$created_comment ){

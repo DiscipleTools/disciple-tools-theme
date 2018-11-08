@@ -302,7 +302,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         if ( $initial_comment ) {
-            $potential_error = self::add_comment( $post_id, $initial_comment, false );
+            $potential_error = self::add_comment( $post_id, $initial_comment, "comment", [], false );
             if ( is_wp_error( $potential_error ) ) {
                 return $potential_error;
             }
@@ -314,7 +314,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
             $error = new WP_Error();
             foreach ( $notes as $note ) {
-                $potential_error = self::add_comment( $post_id, $note, false );
+                $potential_error = self::add_comment( $post_id, $note, "comment", [], false );
                 if ( is_wp_error( $potential_error ) ) {
                     $error->add( 'comment_fail', $potential_error->get_error_message() );
                 }
@@ -532,11 +532,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $comment = "{$duplicate['title']} is a duplicate and was merged into " .
                    "<a href='" . get_permalink( $contact_id ) . "'>{$contact['title']}</a>";
-        self::add_comment( $duplicate_id, $comment, true, "duplicate", null, null, null, true );
+        self::add_comment( $duplicate_id, $comment, "duplicate", null, true, true );
 
         //comment on master
         $comment = "Contact <a href='" . get_permalink( $duplicate_id ) . "'>{$duplicate['title']}</a> was merged into {$contact['title']}";
-        self::add_comment( $contact_id, $comment, true, "duplicate", null, null, null, true );
+        self::add_comment( $contact_id, $comment, "duplicate", null, true, true );
     }
 
 
@@ -1923,17 +1923,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * @param int $contact_id
      * @param string $comment_html
+     * @param string $type      normally 'comment', different comment types can have their own section in the comments activity
+     * @param array $args       [user_id, comment_date, comment_author etc]
      * @param bool $check_permissions
-     * @param string $type
-     * @param null $user_id
-     * @param null $author
-     * @param null $date
      * @param bool $silent
      *
      * @return false|int|\WP_Error
      */
-    public static function add_comment( int $contact_id, string $comment_html, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date = null, $silent = false, $author_url = null ) {
-        $result = self::add_post_comment( "contacts", $contact_id, $comment_html, $check_permissions, $type, $user_id, $author, $date, $silent, $author_url );
+    public static function add_comment( int $contact_id, string $comment_html, string $type = "comment", array $args = [], bool $check_permissions = true, $silent = false ) {
+        $result = self::add_post_comment( "contacts", $contact_id, $comment_html, $type, $args, $check_permissions, $silent );
         if ( $type === "comment" && !is_wp_error( $result )){
             self::check_requires_update( $contact_id );
         }
@@ -2214,7 +2212,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 if ( $has_unconfirmed_duplicates > 5 ){
                     $message .= "- " . $has_unconfirmed_duplicates . " " . __( "more duplicates not shown", "disciple_tools" );
                 }
-                self::add_comment( $contact_id, $message, false, "duplicate", 0, "Duplicate Checker" );
+                self::add_comment( $contact_id, $message,"duplicate", [
+                    "user_id" => 0,
+                    "comment_author" => "Duplicate Checker"
+                ], false );
                 update_post_meta( $contact_id, "duplicate_data", $duplicate_data );
             }
         }

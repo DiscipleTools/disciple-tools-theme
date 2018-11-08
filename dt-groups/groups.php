@@ -787,13 +787,17 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     /**
-     * @param int    $group_id
+     * @param int $group_id
      * @param string $comment_html
+     * @param string $type
+     * @param array $args
+     * @param bool $check_permissions
+     * @param bool $silent
      *
      * @return false|int|\WP_Error
      */
-    public static function add_comment( int $group_id, string $comment_html ) {
-        return self::add_post_comment( 'groups', $group_id, $comment_html );
+    public static function add_comment( int $group_id, string $comment_html, string $type = "comment", array $args = [], bool $check_permissions = true, $silent = false ) {
+        return self::add_post_comment( 'groups', $group_id, $comment_html, $type, $args, $check_permissions, $silent );
     }
 
     /**
