@@ -722,7 +722,7 @@ class Disciple_Tools_Contact_Post_Type
             'default' => [
                 'none'                 => [ "label" => '' ],
                 'vacation'             => [ "label" => __( 'On Vacation', 'disciple_tools' ) ],
-                'not-responding'       => [ "label" => __( 'Not Responding', 'disciple_tools' ) ], //@todo make lowercase
+                'not_responding'       => [ "label" => __( 'Not Responding', 'disciple_tools' ) ],
                 'not_available'        => [ "label" => __( 'Not available', 'disciple_tools' ) ],
                 'little_interest'      => [ "label" => __( 'Little interest/hunger', 'disciple_tools' ) ],
                 'no_initiative'        => [ "label" => __( 'No initiative', 'disciple_tools' ) ],
