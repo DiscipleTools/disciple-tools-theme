@@ -507,11 +507,19 @@ declare( strict_types=1 );
                             </section>
 
                             <?php
+                            //get sections added by plugins
                             $sections = apply_filters( 'dt_details_additional_section_ids', [], "contacts" );
+                            //get custom sections
                             $custom_tiles = dt_get_option( "dt_custom_tiles" );
                             foreach ( $custom_tiles["contacts"] as $tile_key => $tile_options ){
                                 if ( !in_array( $tile_key, $sections ) ){
                                     $sections[] = $tile_key;
+                                }
+                                //remove section if hidden
+                                if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
+                                    if ( ( $index = array_search( $tile_key, $sections ) ) !== false) {
+                                        unset( $sections[ $index ] );
+                                    }
                                 }
                             }
 
@@ -520,13 +528,15 @@ declare( strict_types=1 );
                                 <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
                                     <div class="bordered-box">
                                         <?php
+                                        // let the plugin add section content
                                         do_action( "dt_details_additional_section", $section, "contacts" );
-
+                                        //setup tile label if see by customizations
                                         if ( isset( $custom_tiles["contacts"][$section]["label"] ) ){ ?>
                                             <label class="section-header">
                                                 <?php echo esc_html( $custom_tiles["contacts"][$section]["label"] )?>
                                             </label>
                                         <?php }
+                                        //setup the order of the tile fields
                                         $order = $custom_tiles["contacts"][$section]["order"] ?? [];
                                         foreach ( $contact_fields as $key => $option ){
                                             if ( isset( $option["tile"] ) && $option["tile"] === $section ){
@@ -540,7 +550,7 @@ declare( strict_types=1 );
                                                 continue;
                                             }
                                             $field = $contact_fields[$field_key];
-                                            if ( isset( $field["tile"] ) && $field["tile"] === $section ){ ?>
+                                            if ( isset( $field["tile"] ) && $field["tile"] === $section){ ?>
                                                 <div class="section-subheader">
                                                     <?php echo esc_html( $field["name"] )?>
                                                 </div>

@@ -160,26 +160,40 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         ?>
         <form method="post">
             <input type="hidden" name="tile_select_nonce" id="tile_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_select' ) ) ?>" />
-            <label for="tile-select"><?php esc_html_e( "Modify an existing tile", 'disciple_tools' ) ?></label>
-
-            <select id="tile-select" name="tile-select">
-                <option></option>
-                <option disabled>---Contact tiles---</option>
-                <?php foreach ( $tile_options["contacts"] as $option_key => $option_value ) : ?>
-                    <option value="contacts_<?php echo esc_html( $option_key ) ?>">
-                        <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
-                    </option>
-                <?php endforeach; ?>
-                <option disabled>---Group Tiles---</option>
-                <?php foreach ( $tile_options["groups"] as $option_key => $option_value ) : ?>
-                    <option value="groups_<?php echo esc_html( $option_key ) ?>">
-                        <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <button type="submit" class="button" name="tile_selected"><?php esc_html_e( "Select", 'disciple_tools' ) ?></button>
+            <table>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <label for="tile-select"><?php esc_html_e( "Modify an existing tile", 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                        <select id="tile-select" name="tile-select">
+                            <option></option>
+                            <option disabled>---Contact tiles---</option>
+                            <?php foreach ( $tile_options["contacts"] as $option_key => $option_value ) : ?>
+                                <option value="contacts_<?php echo esc_html( $option_key ) ?>">
+                                    <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
+                                </option>
+                            <?php endforeach; ?>
+                            <option disabled>---Group Tiles---</option>
+                            <?php foreach ( $tile_options["groups"] as $option_key => $option_value ) : ?>
+                                <option value="groups_<?php echo esc_html( $option_key ) ?>">
+                                    <?php echo esc_html( $option_value["label"] ?? $option_key ) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <button type="submit" class="button" name="tile_selected"><?php esc_html_e( "Select", 'disciple_tools' ) ?></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <?php esc_html_e( "Create a new tile", 'disciple_tools' ) ?>
+                    </td>
+                    <td>
+                        <button type="submit" class="button" name="show_add_new_tile"><?php esc_html_e( "Add a new tile", 'disciple_tools' ) ?></button>
+                    </td>
+                </tr>
+            </table>
             <br>
-            <?php esc_html_e( "Or", 'disciple_tools' ) ?> <button type="submit" class="button" name="show_add_new_tile"><?php esc_html_e( "Add a new tile", 'disciple_tools' ) ?></button>
         </form>
 
     <?php }
@@ -211,12 +225,17 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         <input type="hidden" name="tile_select_nonce" id="tile_select_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_select' ) ) ?>" />
         <input type="hidden" name="tile_edit_nonce" id="tile_edit_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_edit' ) ) ?>" />
 
-        <h3><?php esc_html_e( "tile Settings", 'disciple_tools' ) ?></h3>
+        <h4><?php esc_html_e( "Tile Settings", 'disciple_tools' ) ?></h4>
+        <?php if ( isset( $tile["hidden"] ) && $tile["hidden"] === true ): ?>
+            <p><?php esc_html_e( "Note: This tile is hidden and will not show on the record page", 'disciple_tools' ) ?></p>
+        <?php endif; ?>
+
         <table class="widefat">
             <thead>
             <tr>
                 <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                 <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
+                <td><?php esc_html_e( "Hide", 'disciple_tools' ) ?></td>
             </tr>
             </thead>
             <tbody>
@@ -226,16 +245,22 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <input name="tile_label" type="text" value="<?php echo esc_html( $tile["label"] ?? $tile_key ) ?>"/>
+                        <button type="submit" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
+                    </td>
+                    <td>
+                        <?php if ( isset( $tile["hidden"] ) && $tile["hidden"] === true ): ?>
+                            <button type="submit" name="restore_tile" class="button"><?php esc_html_e( "Restore tile", 'disciple_tools' ) ?></button>
+                        <?php else : ?>
+                            <button type="submit" name="hide_tile" class="button"><?php esc_html_e( "Hide tile on page", 'disciple_tools' ) ?></button>
+                        <?php endif; ?>
                     </td>
                 </tr>
             </tbody>
         </table>
 
         <br>
-        <button type="submit" style="float:right;" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
 
-        <h3><?php esc_html_e( "Tile Fields", 'disciple_tools' ) ?></h3>
-        <br>
+        <h4><?php esc_html_e( "Tile Fields", 'disciple_tools' ) ?></h4>
         <table class="widefat">
             <thead>
             <tr>
@@ -278,7 +303,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         </table>
 
         <br>
-        <button type="submit" style="float:right;" class="button"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button>
+<!--        <button type="submit" style="float:right;" class="button">--><?php //esc_html_e( "Save", 'disciple_tools' ) ?><!--</button>-->
 
 
     <?php }
@@ -307,6 +332,12 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
         if ( isset( $post_submission["tile_label"] ) && $post_submission["tile_label"] != ( $custom_tile["label"] ?? $tile_key )){
             $custom_tile["label"] = $post_submission["tile_label"];
+        }
+        if ( isset( $post_submission["hide_tile"] ) ){
+            $custom_tile["hidden"] = true;
+        }
+        if ( isset( $post_submission["restore_tile"] ) ){
+            $custom_tile["hidden"] = false;
         }
 
         //move option  up or down
@@ -359,15 +390,35 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
         ?>
         <form method="post">
             <input type="hidden" name="tile_add_nonce" id="tile_add_nonce" value="<?php echo esc_attr( wp_create_nonce( 'tile_add' ) ) ?>" />
+            <table>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <?php esc_html_e( "Page type", 'disciple_tools' ) ?>
+                    </td>
+                    <td>
+                        <select name="post_type">
+                            <option value="contacts"><?php esc_html_e( "Contacts", 'disciple_tools' ) ?></option>
+                            <option value="groups"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <label for="new_tile_name"><?php esc_html_e( "New Tile Name", 'disciple_tools' ) ?></label>
+                    </td>
+                    <td>
+                        <input name="new_tile_name" id="new_tile_name" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                    </td>
+                    <td>
+                        <button type="submit" class="button"><?php esc_html_e( "Create Tile", 'disciple_tools' ) ?></button>
+                    </td>
+                </tr>
+            </table>
 
-            <select name="post_type">
-                <option value="contacts">Contacts</option>
-                <option value="groups">Groups</option>
-            </select>
-            <label for="new_tile_name"><?php esc_html_e( "New Tile Name", 'disciple_tools' ) ?></label>
-            <input name="new_tile_name" id="new_tile_name" required>
-            
-            <button type="submit" class="button"><?php esc_html_e( "add", 'disciple_tools' ) ?></button>
         </form>
         <?php
     }

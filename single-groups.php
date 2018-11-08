@@ -177,11 +177,19 @@ declare(strict_types=1);
 
 
                         <?php
+                        //get sections added by plugins
                         $sections = apply_filters( 'dt_details_additional_section_ids', [], "groups" );
+                        //get custom sections
                         $custom_tiles = dt_get_option( "dt_custom_tiles" );
                         foreach ( $custom_tiles["groups"] as $tile_key => $tile_options ){
                             if ( !in_array( $tile_key, $sections ) ){
                                 $sections[] = $tile_key;
+                            }
+                            //remove section if hidden
+                            if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
+                                if ( ( $index = array_search( $tile_key, $sections ) ) !== false) {
+                                    unset( $sections[ $index ] );
+                                }
                             }
                         }
                         foreach ( $sections as $section ){
@@ -189,13 +197,15 @@ declare(strict_types=1);
                             <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box">
                                     <?php
+                                    // let the plugin add section content
                                     do_action( "dt_details_additional_section", $section );
-
+                                    //setup tile label if see by customizations
                                     if ( isset( $custom_tiles["groups"][$section]["label"] ) ){ ?>
                                         <label class="section-header">
                                             <?php echo esc_html( $custom_tiles["groups"][$section]["label"] )?>
                                         </label>
                                     <?php }
+                                    //setup the order of the tile fields
                                     $order = $custom_tiles["groups"][$section]["order"] ?? [];
                                     foreach ( $group_fields as $key => $option ){
                                         if ( isset( $option["tile"] ) && $option["tile"] === $section ){
