@@ -2212,7 +2212,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 if ( $has_unconfirmed_duplicates > 5 ){
                     $message .= "- " . $has_unconfirmed_duplicates . " " . __( "more duplicates not shown", "disciple_tools" );
                 }
-                self::add_comment( $contact_id, $message,"duplicate", [
+                self::add_comment( $contact_id, $message, "duplicate", [
                     "user_id" => 0,
                     "comment_author" => "Duplicate Checker"
                 ], false );
