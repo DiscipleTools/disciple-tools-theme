@@ -747,6 +747,7 @@ class Disciple_Tools_Contact_Post_Type
                 'no_longer_responding' => [ "label" => __( 'No longer responding', 'disciple_tools' ) ],
                 'media_only'           => [ "label" => __( 'Just wanted media or book', 'disciple_tools' ) ],
                 'denies_submission'    => [ "label" => __( 'Denies submitting contact request', 'disciple_tools' ) ],
+                'transfer'             => [ "label" => __( 'Transferred contact to partner', 'disciple_tools' ) ],
                 'unknown'              => [ "label" => __( 'Unknown', 'disciple_tools' ) ]
             ],
             'section'     => 'misc',
