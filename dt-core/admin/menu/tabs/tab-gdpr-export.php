@@ -5,9 +5,9 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class Disciple_Tools_Utilities_Overview_Tab
+ * Class Disciple_Tools_GDPR_Export_Tab
  */
-class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu_Base
+class Disciple_Tools_GDPR_Export_Tab extends Disciple_Tools_Abstract_Menu_Base
 {
     private static $_instance = null;
     public static function instance() {
@@ -24,9 +24,9 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
      * @since   0.1.0
      */
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 10 );
-        add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 20, 1 ); // use the priority setting to control load order
-        add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 10, 1 );
+        add_action( 'admin_menu', [ $this, 'add_submenu' ], 120 );
+        add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 120, 1 ); // use the priority setting to control load order
+        add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 120, 1 );
 
 
         parent::__construct();
@@ -34,19 +34,19 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
 
 
     public function add_submenu() {
-        add_submenu_page( 'dt_utilities', __( 'Overview', 'disciple_tools' ), __( 'Overview', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=overview', [ 'Disciple_Tools_Utilities_Menu', 'content' ] );
+        add_submenu_page( 'dt_utilities', __( 'GDPR Export', 'disciple_tools' ), __( 'GDPR Export', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=gdpr', [ 'Disciple_Tools_Utilities_Menu', 'content' ] );
     }
 
     public function add_tab( $tab ) {
-        echo '<a href="'. esc_url( admin_url() ).'admin.php?page=dt_utilities&tab=overview" class="nav-tab ';
-        if ( $tab == 'overview' ) {
+        echo '<a href="'. esc_url( admin_url() ).'admin.php?page=dt_utilities&tab=gdpr-export" class="nav-tab ';
+        if ( $tab == 'gdpr-export' ) {
             echo 'nav-tab-active';
         }
-        echo '">'. esc_attr__( 'Overview', 'disciple_tools' ) .'</a>';
+        echo '">'. esc_attr__( 'GDPR Export', 'disciple_tools' ) .'</a>';
     }
 
     public function content( $tab ) {
-        if ( 'overview' == $tab ) {
+        if ( 'gdpr-export' == $tab ) {
 
             self::template( 'begin' );
 
@@ -66,4 +66,4 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         $this->box( 'bottom' );
     }
 }
-Disciple_Tools_Utilities_Overview_Tab::instance();
+Disciple_Tools_GDPR_Export_Tab::instance();

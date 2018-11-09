@@ -57,3 +57,6 @@ function dt_get_comments_with_redacted_user_data( $post_id ) {
     return $comments;
 }
 
+/**
+ * wp_privacy_anonymize_data
+ */
