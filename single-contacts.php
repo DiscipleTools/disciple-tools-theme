@@ -421,7 +421,7 @@ declare( strict_types=1 );
             <!--                            </button>-->
                                     </label>
                                     <div class="section-subheader">
-                                        <?php esc_html_e( 'Seeker Path', 'disciple_tools' )?>
+                                        <?php echo esc_html( $contact_fields["seeker_path"]["name"] )?>
                                         <button class="help-button" data-section="seeker-path-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>
@@ -449,7 +449,7 @@ declare( strict_types=1 );
                                     </div>
 
                                     <div class="section-subheader">
-                                        <?php esc_html_e( 'Faith Milestones', 'disciple_tools' )?>
+                                        <?php echo esc_html( $contact_fields["milestones"]["name"] )?>
                                         <button class="help-button" data-section="faith-milestones-help-text">
                                             <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                         </button>

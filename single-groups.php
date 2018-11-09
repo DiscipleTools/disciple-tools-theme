@@ -88,7 +88,8 @@ declare(strict_types=1);
 
                                 <label class="section-header" ><?php esc_html_e( 'Progress', 'disciple_tools' )?></label>
                                 <div class="section-subheader">
-                                    <?php esc_html_e( 'Group Type', 'disciple_tools' )?>
+                                    <?php echo esc_html( $group_fields["group_type"]["name"] )?>
+
 <!--                                    <button class="help-button" data-section="group-type-help-text">-->
 <!--                                        <img class="help-icon" src="--><?php //echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?><!--"/>-->
 <!--                                    </button>-->
@@ -110,7 +111,7 @@ declare(strict_types=1);
                                 </select>
 
                                 <div class="section-subheader ">
-                                    <?php esc_html_e( 'Health Metrics', 'disciple_tools' )?>
+                                    <?php echo esc_html( $group_fields["health_metrics"]["name"] )?>
                                     <button class="help-button" data-section="health-metrics-help-text">
                                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                                     </button>
