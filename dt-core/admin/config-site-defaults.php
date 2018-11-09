@@ -390,13 +390,16 @@ function dt_get_site_options_defaults() {
  *
  * @param string|null $list_title
  *
+ * @version 1 - initialized
+ *          9 - added "transfer" to source list
+ *
  * @return array|mixed
  */
 function dt_get_site_custom_lists( string $list_title = null ) {
     $fields = [];
 
     $fields['version'] = 9;
-    //custom fields
+
     // the prefix dt_user_ assists db meta queries on the user
     $fields['user_fields'] = [
         'dt_user_personal_phone'   => [
@@ -520,6 +523,12 @@ function dt_get_site_custom_lists( string $list_title = null ) {
             'label'       => 'Advertisement',
             'key'         => 'advertisement',
             'description' => 'Contacts coming an advertisement campaign.',
+            'enabled'     => true,
+        ],
+        'transfer' => [
+            'label'       => 'Transfer',
+            'key'         => 'transfer',
+            'description' => 'Contacts coming an contact transfer partnership with another DT site.',
             'enabled'     => true,
         ],
 

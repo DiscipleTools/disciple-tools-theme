@@ -753,7 +753,7 @@ jQuery(document).ready(function($) {
   $('button#add-new-address').on('click', () => {
     $('#edit-contact_address').append(`
       <li style="display: flex">
-        <textarea rows="3" class="contact-input" data-type="contact_address"></textarea>
+        <textarea rows="3" class="contact-input" data-type="contact_address" dir="auto"></textarea>
         <button class="button clear delete-button" data-id="new">
           <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
@@ -1228,7 +1228,7 @@ jQuery(document).ready(function($) {
     user_select_input.trigger('input.typeahead')
     user_select_input.focus()
   })
-  
+
   $('#open_merge_with_contact').on("click", function () {
     if (!window.Typeahead['.js-typeahead-merge_with']) {
       $.typeahead({
@@ -1281,7 +1281,10 @@ jQuery(document).ready(function($) {
       }
       API.transfer_contact( contactId, siteId )
           .then(data=>{
-              console.log(data);
+              if ( data ) {
+                jQuery('#transfer_spinner').empty()
+                  location.reload();
+              }
           }).catch(err=>{
           console.log("error")
           console.log(err)

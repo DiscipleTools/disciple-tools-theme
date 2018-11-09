@@ -349,4 +349,8 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
             "posts" => $return_list
         ];
     }
+
+    public static function get_locations_for_contact_id() {
+
+    }
 }
