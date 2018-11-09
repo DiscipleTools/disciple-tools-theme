@@ -41,6 +41,8 @@ function dt_start() {
     // Disable emoji
     add_action( 'init', 'dt_disable_wp_emoji' );
 
+
+    // Remove feeds
     add_action( 'do_feed', 'wpb_disable_feed', 1 );
     add_action( 'do_feed_rdf', 'wpb_disable_feed', 1 );
     add_action( 'do_feed_rss', 'wpb_disable_feed', 1 );
@@ -76,7 +78,7 @@ function dt_head_cleanup() {
 } /* end Joints head cleanup */
 
 function wpb_disable_feed() {
-    wp_die( 'No feed available,please visit our <a href="' . esc_html( get_bloginfo( 'url' ) ) . '">homepage</a>!' );
+    wp_die( esc_html__( 'No feed available.' ) );
 }
 
 /**

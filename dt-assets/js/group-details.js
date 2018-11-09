@@ -8,15 +8,10 @@ jQuery(document).ready(function($) {
   let groupId = group.ID
   let editFieldsUpdate = {}
 
-  let dateFields = []
-  _.forOwn(wpApiGroupsSettings.groups_custom_fields_settings, (field, key)=>{
-    if ( field.type === 'date'){
-      dateFields.push( key)
-    }
-  })
   /**
    * Date pickers
    */
+  let dateFields = [ "start_date", "church_start_date", "end_date" ]
   dateFields.forEach(key=>{
     let datePicker = $(`#${key}.date-picker`)
     datePicker.datepicker({
@@ -692,44 +687,22 @@ jQuery(document).ready(function($) {
   /**
    * Church fields
    */
-  let metrics = [
-    'baptism',
-    'fellowship',
-    'communion',
-    'prayer',
-    'praise',
-    'giving',
-    'bible',
-    'leaders',
-    'sharing',
-    'commitment'
-  ]
+  let health_keys = Object.keys(wpApiGroupsSettings.groups_custom_fields_settings.health_metrics.default)
 
   function fillOutChurchHealthMetrics() {
     let svgItem = document.getElementById("church-svg-wrapper").contentDocument
 
     let churchWheel = $(svgItem).find('svg')
-    metrics.forEach(m=>{
-      if (group[`church_${m}`] && ["1", "Yes"].indexOf(group[`church_${m}`]["key"])> -1){
-        churchWheel.find(`#${m}`).css("opacity", "1")
-        $(`#church_${m}`).css("opacity", "1")
+    health_keys.forEach(m=>{
+      if (group[`health_metrics`] && group.health_metrics.includes(m) ){
+        churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", "1")
+        $(`#${m}`).css("opacity", "1")
       } else {
-        churchWheel.find(`#${m}`).css("opacity", ".1")
-        $(`#church_${m}`).css("opacity", ".4")
+        churchWheel.find(`#${m.replace("church_", "")}`).css("opacity", ".1")
+        $(`#${m}`).css("opacity", ".4")
       }
-  })
-  //for custom fields
-  Object.keys(group).forEach(m=>{
-    m = m.replace("church_custom_", "");
-    if (group[`church_custom_${m}`] && ["1", "Yes"].indexOf(group[`church_custom_${m}`]["key"])> -1){
-      churchWheel.find(`#${m}`).css("opacity", "1")
-      $(`#church_custom_${m}`).css("opacity", "1")
-    } else {
-      churchWheel.find(`#${m}`).css("opacity", ".1")
-      $(`#church_custom_${m}`).css("opacity", ".4")
-    }
-})
-    if (!group["church_commitment"] || group["church_commitment"]["key"] === '0'){
+    })
+    if ( !(group.health_metrics ||[]).includes("church_commitment") ){
       churchWheel.find('#group').css("opacity", "1")
       $(`#church_commitment`).css("opacity", ".4")
     } else {
@@ -741,8 +714,11 @@ jQuery(document).ready(function($) {
   }
 
   //check if we still need to wait for the svg to load.
-  if ($('#church-svg-wrapper')[0].contentDocument == null) {
-    $('#church-svg-wrapper').on('load', function() { fillOutChurchHealthMetrics() })
+  let svgWrapper = $('#church-svg-wrapper')[0].contentDocument
+  if (svgWrapper == null || _.get(svgWrapper, "length", 0) === 0) {
+    $('#church-svg-wrapper').on('load', function() {
+      fillOutChurchHealthMetrics()
+    })
   } else {
     fillOutChurchHealthMetrics()
   }
@@ -750,14 +726,57 @@ jQuery(document).ready(function($) {
   $('.group-progress-button').on('click', function () {
     let fieldId = $(this).attr('id')
     $(this).css('opacity', ".6");
-    let field = _.get(group, `[${fieldId}]['key']`) === "1" ? "0" : "1"
-    API.save_field_api('group', groupId, {[fieldId]: field})
+    let already_set = _.get(group, `health_metrics`, []).includes(fieldId)
+    let update = {values:[{value:fieldId}]}
+    if ( already_set ){
+      update.values[0].delete = true;
+    }
+    API.save_field_api('group', groupId, {"health_metrics": update })
       .then(groupData=>{
         group = groupData
         fillOutChurchHealthMetrics()
       }).catch(err=>{
         console.log(err)
     })
+  })
+
+  $('button.dt_multi_select').on('click',function () {
+    let fieldKey = $(this).data("field-key")
+    let optionKey = $(this).attr('id')
+    let fieldValue = {}
+    let data = {}
+    let field = jQuery("#" + optionKey)
+    field.addClass("submitting-select-button")
+    let action = "add"
+    if (field.hasClass("selected-select-button")){
+      fieldValue = {values:[{value:optionKey,delete:true}]}
+      action = "delete"
+    } else {
+      field.removeClass("empty-select-button")
+      field.addClass("selected-select-button")
+      fieldValue = {values:[{value:optionKey}]}
+    }
+    data[optionKey] = fieldValue
+    API.save_field_api('group', groupId, {[fieldKey]: fieldValue}).then((resp)=>{
+      field.removeClass("submitting-select-button selected-select-button")
+      field.blur();
+      field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
+    }).catch(err=>{
+      console.log("error")
+      console.log(err)
+      jQuery("#errors").text(err.responseText)
+      field.removeClass("submitting-select-button selected-select-button")
+      field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
+    })
+  })
+  $('.dt_date_picker').datepicker({
+    dateFormat: 'yy-mm-dd',
+    onSelect: function (date) {
+      let id = $(this).attr('id')
+      API.save_field_api('group', groupId, { [id]: date }).catch(handelAjaxError)
+    },
+    changeMonth: true,
+    changeYear: true
   })
 
 

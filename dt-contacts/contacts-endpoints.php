@@ -403,8 +403,8 @@ class Disciple_Tools_Contacts_Endpoints
             foreach ( $meta_fields as $meta_key => $meta_value ) {
                 if ( strpos( $meta_key, "contact_phone" ) === 0 && strpos( $meta_key, "details" ) === false ) {
                     $contact_array['phone_numbers'] = array_merge( $contact_array['phone_numbers'], $meta_value );
-                } elseif ( strpos( $meta_key, "milestone_" ) === 0 ) {
-                    $contact_array[ $meta_key ] = $this->yes_no_to_boolean( $meta_value[0] );
+                } elseif ( $meta_key === "milestones" ) {
+                    $contact_array["milestones"] = $meta_value;
                 } elseif ( $meta_key === "seeker_path" ) {
                     $contact_array[ $meta_key ] = $meta_value[0] ? $meta_value[0] : "none";
                 } elseif ( $meta_key == "assigned_to" ) {
@@ -454,7 +454,7 @@ class Disciple_Tools_Contacts_Endpoints
      * @throws WP_Error|bool 'Expected yes or no'.
      */
     private static function yes_no_to_boolean( string $yes_no ) {
-        if ( $yes_no === 'yes' ) {
+        if ( $yes_no === 'yes' || $yes_no === '1' ) {
             return true;
         } elseif ( $yes_no === 'no' ) {
             return false;
@@ -556,7 +556,7 @@ class Disciple_Tools_Contacts_Endpoints
         $params = $request->get_params();
         $body = $request->get_json_params();
         if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
-            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"], true );
+            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"] );
 
             if ( is_wp_error( $result ) ) {
                 return $result;
@@ -588,7 +588,7 @@ class Disciple_Tools_Contacts_Endpoints
             );
         }
         if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
-            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"], false, "comment", null, null, $body["date"] ?? null, $silent );
+            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"], "comment", [ "comment_date" => $body["date"] ?? null ], false, $silent );
 
             if ( is_wp_error( $result ) ) {
                 return $result;
@@ -865,7 +865,7 @@ class Disciple_Tools_Contacts_Endpoints
         }
 
         if ( isset( $params['contact_data'] ) ) {
-            return Disciple_Tools_Contacts_Transfer::receive_transferred_contact( $params['contact_data'] );
+            return Disciple_Tools_Contacts_Transfer::receive_transferred_contact( $params );
         } else {
             return new WP_Error( __METHOD__, 'Missing required parameter: contact_data.' );
         }

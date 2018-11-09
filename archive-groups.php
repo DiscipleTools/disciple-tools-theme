@@ -189,11 +189,12 @@ declare(strict_types=1);
                             <div class="tabs-panel" id="<?php echo esc_html( $field ) ?>">
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "key_select" ) :
-                                        foreach ( $dt_group_field_options[$field]["default"] as $option_key => $option_value ) : ?>
+                                        foreach ( $dt_group_field_options[$field]["default"] as $option_key => $option_value ) :
+                                            $label = $option_value["label"] ?>
                                             <div class="key_select_options">
                                                 <label style="cursor: pointer">
                                                     <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
-                                                           value="<?php echo esc_html( $option_key ) ?>"> <?php echo esc_html( $option_value ) ?>
+                                                           value="<?php echo esc_html( $option_key ) ?>"> <?php echo esc_html( $label ) ?>
                                                 </label>
                                             </div>
                                         <?php endforeach; ?>

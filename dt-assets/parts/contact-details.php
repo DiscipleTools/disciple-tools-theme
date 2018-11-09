@@ -15,7 +15,7 @@
 
     <?php
 //    <!-- Requires update block -->
-    if ( isset( $contact['requires_update'] ) && $contact['requires_update']['key'] === 'yes' ) { ?>
+    if ( isset( $contact['requires_update'] ) && $contact['requires_update'] === true ) { ?>
     <section class="cell small-12 update-needed-notification">
         <div class="bordered-box">
             <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This contact needs an update', 'disciple_tools' ) ?>.</h4>
@@ -44,6 +44,8 @@
         </div>
     </section>
     <?php } ?>
+
+    <?php do_action( 'dt_contact_detail_notification', $contact ); ?>
 
     <section class="cell">
         <div class="bordered-box">
@@ -157,7 +159,7 @@
                         foreach ($contact['sources'] ?? [] as $value){
                             ?>
                             <li class="<?php echo esc_html( $value )?>">
-                                <?php echo esc_html( $contact_fields['sources']['default'][$value] ?? $value ) ?>
+                                <?php echo esc_html( $contact_fields['sources']['default'][$value]["label"] ?? $value ) ?>
                             </li>
                         <?php }
                         if ( !isset( $contact['sources'] ) || sizeof( $contact['sources'] ) === 0){
@@ -177,7 +179,7 @@
                 <div class="cell section-subheader">
                     <?php esc_html_e( 'Name', 'disciple_tools' ) ?>
                 </div>
-                <input type="text" id="title" class="edit-text-input" value="<?php the_title_attribute(); ?>">
+                <input type="text" id="title" class="edit-text-input" dir="auto" value="<?php the_title_attribute(); ?>">
 
             </div>
 
@@ -291,7 +293,8 @@
                 </div>
                 <select id="gender" class="select-input">
                     <?php
-                    foreach ( $contact_fields['gender']['default'] as $gender_key => $gender_value ) {
+                    foreach ( $contact_fields['gender']['default'] as $gender_key => $option ) {
+                        $gender_value = $option["label"] ?? "";
                         if ( isset( $contact['gender'] ) &&
                              $contact['gender']['key'] === $gender_key){
                             echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
@@ -309,7 +312,8 @@
                 </div>
                 <select id="age" class="select-input">
                     <?php
-                    foreach ( $contact_fields["age"]["default"] as $age_key => $age_value ) {
+                    foreach ( $contact_fields["age"]["default"] as $age_key => $option ) {
+                        $age_value = $option["label"] ?? "";
                         if ( isset( $contact["age"] ) &&
                              $contact["age"]["key"] === $age_key){
                             echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';

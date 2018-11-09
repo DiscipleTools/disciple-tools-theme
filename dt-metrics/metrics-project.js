@@ -114,8 +114,7 @@ function project_overview() {
           formattedData.push( [row.label, parseInt(row.value), row.value] );
 
         })
-
-        let data = google.visualization.arrayToDataTable( formattedData );
+      let data = google.visualization.arrayToDataTable( formattedData );
 
         let options = {
             bars: 'horizontal',

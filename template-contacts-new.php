@@ -19,7 +19,7 @@ get_header();
             <form class="js-create-contact bordered-box" style="margin-bottom:200px">
                 <label>
                     <?php esc_html_e( "Name of contact", "disciple_tools" ); ?>
-                    <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required aria-describedby="name-help-text">
+                    <input name="title" type="text" placeholder="<?php esc_html_e( "Name", "disciple_tools" ); ?>" required dir="auto" aria-describedby="name-help-text">
                 </label>
                 <p class="help-text" id="name-help-text"><?php esc_html_e( "This is required", "disciple_tools" ); ?></p>
 
@@ -62,7 +62,7 @@ get_header();
                 </div>
                 <label>
                     <?php esc_html_e( "Initial comment", "disciple_tools" ); ?>
-                    <textarea name="initial_comment" placeholder="<?php esc_html_e( "Initial comment", "disciple_tools" ); ?>"></textarea>
+                    <textarea name="initial_comment" dir="auto" placeholder="<?php esc_html_e( "Initial comment", "disciple_tools" ); ?>"></textarea>
                 </label>
 
                 <div style="text-align: center">

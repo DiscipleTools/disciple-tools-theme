@@ -302,7 +302,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         if ( $initial_comment ) {
-            $potential_error = self::add_comment( $post_id, $initial_comment, false );
+            $potential_error = self::add_comment( $post_id, $initial_comment, "comment", [], false );
             if ( is_wp_error( $potential_error ) ) {
                 return $potential_error;
             }
@@ -314,7 +314,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
             $error = new WP_Error();
             foreach ( $notes as $note ) {
-                $potential_error = self::add_comment( $post_id, $note, false );
+                $potential_error = self::add_comment( $post_id, $note, "comment", [], false );
                 if ( is_wp_error( $potential_error ) ) {
                     $error->add( 'comment_fail', $potential_error->get_error_message() );
                 }
@@ -532,11 +532,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $comment = "{$duplicate['title']} is a duplicate and was merged into " .
                    "<a href='" . get_permalink( $contact_id ) . "'>{$contact['title']}</a>";
-        self::add_comment( $duplicate_id, $comment, true, "duplicate", null, null, null, true );
+        self::add_comment( $duplicate_id, $comment, "duplicate", null, true, true );
 
         //comment on master
         $comment = "Contact <a href='" . get_permalink( $duplicate_id ) . "'>{$duplicate['title']}</a> was merged into {$contact['title']}";
-        self::add_comment( $contact_id, $comment, true, "duplicate", null, null, null, true );
+        self::add_comment( $contact_id, $comment, "duplicate", null, true, true );
     }
 
 
@@ -632,7 +632,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 if ( $user_id ){
                     self::add_shared( "contacts", $contact_id, $user_id, null, false, false, false );
                 }
-                $fields['accepted'] = 'no';
+                $fields['accepted'] = false;
             }
         }
 
@@ -655,11 +655,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         foreach ( $fields as $field_id => $value ) {
             if ( !self::is_key_contact_method_or_connection( $field_id ) ) {
                 // Boolean contact field are stored as yes/no
-                if ( $value === true ) {
-                    $value = "yes";
-                } elseif ( $value === false ) {
-                    $value = "no";
-                }
 
                 $field_type = self::$contact_fields[$field_id]["type"] ?? '';
                 //we handle multi_select above.
@@ -699,14 +694,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     private static function check_requires_update( $contact_id ){
         if ( get_current_user_id() ){
             $requires_update = get_post_meta( $contact_id, "requires_update", true );
-            if ( $requires_update == "yes" ){
+            if ( $requires_update == "yes" || $requires_update == true || $requires_update = "1"){
                 //don't remove update needed if the user is a dispatcher (and not assigned to the contacts.)
                 if ( self::can_view_all( 'contacts' ) ){
                     if ( dt_get_user_id_from_assigned_to( get_post_meta( $contact_id, "assigned_to", true ) ) === get_current_user_id() ){
-                        update_post_meta( $contact_id, "requires_update", "no" );
+                        update_post_meta( $contact_id, "requires_update", false );
                     }
                 } else {
-                    update_post_meta( $contact_id, "requires_update", "no" );
+                    update_post_meta( $contact_id, "requires_update", false );
                 }
             }
         }
@@ -775,9 +770,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 //        if ( empty( $baptism_date )){
 //            update_post_meta( $contact_id, "baptism_date", time() );
 //        }
-        $baptism = get_post_meta( $contact_id, 'milestone_baptized', true );
-        if ( empty( $baptism ) || $baptism === 'no' ){
-            update_post_meta( $contact_id, "milestone_baptized", 'yes' );
+        $milestones = get_post_meta( $contact_id, 'milestones' );
+        if ( empty( $milestones ) || !in_array( "milestone_baptized", $milestones ) ){
+            add_post_meta( $contact_id, "milestones", "milestone_baptized" );
         }
         Disciple_Tools_Counter_Baptism::reset_baptism_generations_on_contact_tree( $contact_id );
         return $p2p;
@@ -1275,11 +1270,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         $fields["address"][] = $details;
                     }
                 } elseif ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]["type"] == "key_select" ) {
-                    $label = self::$contact_fields[ $key ]["default"][ $value[0] ] ?? current( self::$contact_fields[ $key ]["default"] );
-                    $fields[ $key ] = [
-                    "key" => $value[0],
-                    "label" => $label
-                    ];
+                    if ( !empty( $value[0] )){
+                        $label = self::$contact_fields[ $key ]["default"][ $value[0] ]["label"] ?? current( self::$contact_fields[ $key ]["default"] );
+                        $fields[ $key ] = [
+                            "key" => $value[0],
+                            "label" => $label
+                        ];
+                    }
                 } elseif ( $key === "assigned_to" ) {
                     if ( $value ) {
                         $meta_array = explode( '-', $value[0] ); // Separate the type and id
@@ -1299,6 +1296,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     }
                 } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'multi_select' ){
                     $fields[ $key ] = $value;
+                } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'boolean' ){
+                    $fields[ $key ] = $value[0] === "1";
                 } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'array' ){
                     $fields[ $key ] = maybe_unserialize( $value[0] );
                 } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'date' ){
@@ -1412,44 +1411,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         return $details;
-    }
-
-    public static function merge_milestones( int $master_id, int $non_master_id) {
-        if ( !$master_id || !$non_master_id) { return; }
-        $master = self::get_contact( $master_id );
-        $non_master = self::get_contact( $non_master_id );
-
-        $update = array();
-        foreach ($non_master as $key => $val_arr) {
-            if (preg_match( "/^milestone_/", $key ) && ( $master[$key]['key'] ?? 'no' ) !== 'yes') {
-                $value = is_array( $val_arr ) ? $val_arr['key'] : $val_arr;
-                $update[$key] = $value;
-            }
-        }
-
-        $seeker_paths = array(
-            'none',
-            'attempted',
-            'established',
-            'scheduled',
-            'met',
-            'ongoing',
-            'coaching'
-        );
-
-        $master_level = array_search( $master['seeker_path']['key'] ?? array(), $seeker_paths ) ?: 0;
-        $non_master_level = array_search( $non_master['seeker_path']['key'] ?? array(), $seeker_paths ) ?: 0;
-        if ($non_master_level > $master_level) {
-            $update['seeker_path'] = $non_master['seeker_path']['key'];
-        }
-
-        if ( !isset( $master['baptism_date'] ) && isset( $non_master['baptism_date'] )) {
-            $update['baptism_date'] = $non_master['baptism_date'];
-        }
-
-        if (empty( $update )) { return; }
-
-        self::update_contact( $master_id, $update );
     }
 
     public static function merge_p2p( int $master_id, int $non_master_id) {
@@ -1959,17 +1920,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * @param int $contact_id
      * @param string $comment_html
+     * @param string $type      normally 'comment', different comment types can have their own section in the comments activity
+     * @param array $args       [user_id, comment_date, comment_author etc]
      * @param bool $check_permissions
-     * @param string $type
-     * @param null $user_id
-     * @param null $author
-     * @param null $date
      * @param bool $silent
      *
      * @return false|int|\WP_Error
      */
-    public static function add_comment( int $contact_id, string $comment_html, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date = null, $silent = false, $author_url = null ) {
-        $result = self::add_post_comment( "contacts", $contact_id, $comment_html, $check_permissions, $type, $user_id, $author, $date, $silent, $author_url );
+    public static function add_comment( int $contact_id, string $comment_html, string $type = "comment", array $args = [], bool $check_permissions = true, $silent = false ) {
+        $result = self::add_post_comment( "contacts", $contact_id, $comment_html, $type, $args, $check_permissions, $silent );
         if ( $type === "comment" && !is_wp_error( $result )){
             self::check_requires_update( $contact_id );
         }
@@ -2029,7 +1988,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( $accepted ) {
             $update = [
                 "overall_status" => 'active',
-                "accepted" => 'yes'
+                "accepted" => true
             ];
             self::update_contact( $contact_id, $update, true );
             return [ "overall_status" => self::$contact_fields["overall_status"]["default"]['active'] ];
@@ -2250,7 +2209,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 if ( $has_unconfirmed_duplicates > 5 ){
                     $message .= "- " . $has_unconfirmed_duplicates . " " . __( "more duplicates not shown", "disciple_tools" );
                 }
-                self::add_comment( $contact_id, $message, false, "duplicate", 0, "Duplicate Checker" );
+                self::add_comment( $contact_id, $message, "duplicate", [
+                    "user_id" => 0,
+                    "comment_author" => "Duplicate Checker"
+                ], false );
                 update_post_meta( $contact_id, "duplicate_data", $duplicate_data );
             }
         }
@@ -2488,7 +2450,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 JOIN $wpdb->postmeta as b
                   ON a.ID=b.post_id
                     AND b.meta_key = 'requires_update'
-                    AND b.meta_value = 'yes'
+                    AND b.meta_value = '1'
                 JOIN $wpdb->postmeta as c
                   ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
@@ -2509,7 +2471,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 INNER JOIN $wpdb->postmeta as b
                   ON a.ID=b.post_id
                     AND b.meta_key = 'accepted'
-                    AND b.meta_value = 'no'
+                    AND b.meta_value = ''
                 INNER JOIN $wpdb->postmeta as c
                   ON a.ID=c.post_id
                     AND c.meta_key = 'assigned_to'
@@ -2610,6 +2572,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $dispatcher_counts = $wpdb->get_results( $wpdb->prepare( "
             SELECT (SELECT count(ID) as all_contacts
                     FROM $wpdb->posts
+                    INNER JOIN $wpdb->postmeta as e
+                      ON $wpdb->posts.ID=e.post_id
+                      AND (( e.meta_key = 'type'
+                        AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
+                      OR e.meta_key IS NULL)
                     WHERE post_status = 'publish'
                       AND post_type = 'contacts')
                 as all_contacts,

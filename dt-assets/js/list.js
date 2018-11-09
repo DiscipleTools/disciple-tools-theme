@@ -234,18 +234,18 @@
     const ccfs = wpApiListSettings.custom_fields_settings;
     const access_milestone_key = _.find(
       ["has_bible", "reading_bible"],
-      function (key) { return contact["milestone_" + key]; }
+      function (key) { return (contact["milestones"] || []).includes(`milestone_${key}`); }
     )
     const belief_milestone_key = _.find(
       ['baptizing', 'baptized', 'belief'],
-      function(key) { return contact["milestone_" + key]; }
+      function(key) { return (contact["milestones"] || []).includes(`milestone_${key}`); }
     );
     const sharing_milestone_key = _.find(
       ['planting', 'in_group', 'sharing', 'can_share'],
-      function(key) { return contact["milestone_" + key]; }
+      function(key) { return (contact["milestones"] || []).includes(`milestone_${key}`); }
     );
-    let status = ccfs.overall_status.default[contact.overall_status];
-    let seeker_path = ccfs.seeker_path.default[contact.seeker_path];
+    let status = ccfs.overall_status.default[contact.overall_status]["label"];
+    let seeker_path = ccfs.seeker_path.default[contact.seeker_path]["label"];
     // if (contact.overall_status === "active") {
     //   status = ccfs.seeker_path.default[contact.seeker_path];
     // } else {
@@ -261,9 +261,9 @@
       sharing_milestone_key,
       access_milestone_key,
       seeker_path,
-      access_milestone: (ccfs["milestone_" + access_milestone_key] || {}).name || "",
-      belief_milestone: (ccfs["milestone_" + belief_milestone_key] || {}).name || "",
-      sharing_milestone: (ccfs["milestone_" + sharing_milestone_key] || {}).name || "",
+      access_milestone: _.get(ccfs, `milestones.default["milestone_${access_milestone_key}"].label`, ""),
+      belief_milestone: _.get(ccfs, `milestones.default["milestone_${belief_milestone_key}"].label`, ""),
+      sharing_milestone: _.get(ccfs, `milestones.default["milestone_${sharing_milestone_key}"].label`, ""),
       group_links,
     });
     return $.parseHTML(template(context));
@@ -275,8 +275,8 @@
       return '<a href="' + _.escape(leader.permalink) + '">' + _.escape(leader.post_title) + "</a>";
     }).join(", ");
     const gcfs = wpApiListSettings.custom_fields_settings;
-    const status = gcfs.group_status.default[group.group_status || "active"];
-    const type = gcfs.group_type.default[group.group_type || "active"];
+    const status = gcfs.group_status.default[group.group_status || "active"]["label"];
+    const type = gcfs.group_type.default[group.group_type || "group"]["label"];
     const context = _.assign({}, group, wpApiListSettings, {
       leader_links,
       status,
@@ -329,14 +329,14 @@
     }
     if ( currentView === "needs_accepted" ){
       query.overall_status = ["assigned"]
-      query.accepted = ["no"]
+      query.accepted = [false]
       filter.labels = [{ id:"needs_accepted", name:"Newly Assigned", field: "accepted"}]
     } else if ( currentView === "assignment_needed" ){
       query.overall_status = ["unassigned"]
       filter.labels = [{ id:"unassigned", name:"Assignment needed", field: "assigned"}]
     } else if ( currentView === "update_needed" ){
       filter.labels = [{ id:"update_needed", name:"Update needed", field: "requires_update"}]
-      query.requires_update = ["yes"]
+      query.requires_update = [true]
     } else if ( currentView === "meeting_scheduled" ){
       query.overall_status = ["active"]
       query.seeker_path = ["scheduled"]
@@ -405,7 +405,7 @@
       searchQuery.subassigned = _.map(_.get(Typeahead['.js-typeahead-subassigned'], "items"), "ID")
       fields = ["overall_status", "seeker_path", "requires_update", "sources"]
       _.forOwn( wpApiListSettings.custom_fields_settings, (field, field_key)=>{
-        if (field.type === "key_select" && !field_key.includes("milestone_") && !fields.includes(field_key) ){
+        if ( ( field.type === "key_select"  || field.type === "multi_select" ) && !fields.includes(field_key) ){
           fields.push(field_key)
         }
       })
@@ -417,7 +417,6 @@
       }
     }
     fields = fields.concat(wpApiListSettings.additional_filter_options || [])
-    fields.push("tags")
     //get checked field options
     fields.forEach(field=>{
       searchQuery[field] =[]
@@ -975,7 +974,7 @@
     let optionId = $(this).val()
     if ($(this).is(":checked")){
       let field_options = _.get( wpApiListSettings, `custom_fields_settings.${field_key}.default` )
-      let optionName = field_options[optionId]
+      let optionName = field_options[optionId]["label"]
       newFilterLabels.push({id:$(this).val(), name:optionName, field:field_key})
       selectedFilters.append(`<span class="current-filter ${field_key}" id="${optionId}">${optionName}</span>`)
     } else {

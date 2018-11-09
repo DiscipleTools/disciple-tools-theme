@@ -138,7 +138,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                         $fields["contact_address"][] = $details;
                     }
                 } elseif ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]["type"] == "key_select" ) {
-                    $label = self::$group_fields[ $key ]["default"][ $value[0] ] ?? current( self::$group_fields[ $key ]["default"] );
+                    $label = self::$group_fields[ $key ]["default"][ $value[0] ]["label"] ?? current( self::$group_fields[ $key ]["default"] );
                     $fields[ $key ] = [
                     "key" => $value[0],
                     "label" => $label
@@ -164,6 +164,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     }
                 } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'multi_select' ){
                     $fields[ $key ] = $value;
+                } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'boolean' ) {
+                    $fields[ $key ] = $value[0] === "1";
                 } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'array' ){
                     $fields[ $key ] = maybe_unserialize( $value[0] );
                 } else if ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]['type'] === 'date' ){
@@ -787,13 +789,17 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     /**
-     * @param int    $group_id
+     * @param int $group_id
      * @param string $comment_html
+     * @param string $type
+     * @param array $args
+     * @param bool $check_permissions
+     * @param bool $silent
      *
      * @return false|int|\WP_Error
      */
-    public static function add_comment( int $group_id, string $comment_html ) {
-        return self::add_post_comment( 'groups', $group_id, $comment_html );
+    public static function add_comment( int $group_id, string $comment_html, string $type = "comment", array $args = [], bool $check_permissions = true, $silent = false ) {
+        return self::add_post_comment( 'groups', $group_id, $comment_html, $type, $args, $check_permissions, $silent );
     }
 
     /**
