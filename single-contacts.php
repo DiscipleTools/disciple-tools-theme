@@ -118,6 +118,9 @@ declare( strict_types=1 );
                 if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "number" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
                     $update[$key] = $fields;
                 }
+                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "date" && ( !isset( $contact[$key] ) || empty( $contact[$key]["timestamp"] ) )){
+                    $update[$key] = $fields["timestamp"] ?? "";
+                }
                 if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "array" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
                     if ( $key != "duplicate_data" ){
                         $update[$key] = $fields;
@@ -160,7 +163,6 @@ declare( strict_types=1 );
             }
 
             Disciple_Tools_Contacts::update_contact( $master_id, $update, true );
-            Disciple_Tools_Contacts::merge_milestones( $master_id, $non_master_id );
             Disciple_Tools_Contacts::merge_p2p( $master_id, $non_master_id );
             Disciple_Tools_Contacts::copy_comments( $master_id, $non_master_id );
             ( new Disciple_Tools_Contacts() )->recheck_duplicates( $master_id );
@@ -198,7 +200,7 @@ declare( strict_types=1 );
         true,
         true,
         current_user_can( "assign_any_contacts" ),
-        isset( $contact["requires_update"] ) && $contact["requires_update"]["key"] === "yes",
+        isset( $contact["requires_update"] ) && $contact["requires_update"] === true,
         in_array( $current_user_id, $following ),
         isset( $contact["assigned_to"]["id"] ) ? $contact["assigned_to"]["id"] == $current_user_id : false,
         $dispatcher_actions
@@ -228,12 +230,13 @@ declare( strict_types=1 );
                     <?php
                     $active_color = "#366184";
                     $current_key = $contact["overall_status"]["key"] ?? "";
-                    if ( isset( $contact_fields["overall_status"]["colors"][ $current_key ] )){
-                        $active_color = $contact_fields["overall_status"]["colors"][$current_key];
+                    if ( isset( $contact_fields["overall_status"]["default"][ $current_key ]["color"] )){
+                        $active_color = $contact_fields["overall_status"]["default"][ $current_key ]["color"];
                     }
                     ?>
                     <select id="overall_status" class="select-field" style="width:fit-content; margin-bottom:0px; background-color: <?php echo esc_html( $active_color ) ?>">
-                    <?php foreach ($contact_fields["overall_status"]["default"] as $key => $value){
+                    <?php foreach ($contact_fields["overall_status"]["default"] as $key => $option){
+                        $value = $option["label"] ?? "";
                         if ( $contact["overall_status"]["key"] === $key ) {
                             ?>
                             <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
@@ -427,7 +430,8 @@ declare( strict_types=1 );
                                     <select class="select-field" id="seeker_path" style="margin-bottom: 0px">
                                     <?php
 
-                                    foreach ($contact_fields["seeker_path"]["default"] as $key => $value){
+                                    foreach ($contact_fields["seeker_path"]["default"] as $key => $option){
+                                        $value = $option["label"] ?? "";
                                         if ( $contact["seeker_path"]["key"] === $key ) {
                                             ?>
                                             <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
@@ -451,18 +455,14 @@ declare( strict_types=1 );
                                         </button>
                                     </div>
                                     <div class="small button-group" style="display: inline-block">
-
-                                        <?php foreach ( $contact_fields as $field => $val ): ?>
+                                        <?php foreach ( $contact_fields["milestones"]["default"] as $option_key => $option_value ): ?>
                                             <?php
-                                            if (strpos( $field, "milestone_" ) === 0) {
-                                                $class = ( isset( $contact[ $field ] ) && $contact[ $field ]['key'] === 'yes' ) ?
-                                                    "selected-select-button" : "empty-select-button";
-                                                ?>
-                                                <button id="<?php echo esc_html( $field ) ?>"
-                                                        class="seeker-milestone-button <?php echo esc_html( $class ) ?> select-button button ">
-                                                    <?php echo esc_html( $contact_fields[ $field ]["name"] ) ?>
+                                                $class = ( in_array( $option_key, $contact["milestones"] ?? [] ) ) ?
+                                                    "selected-select-button" : "empty-select-button"; ?>
+                                                <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="milestones"
+                                                        class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
+                                                    <?php echo esc_html( $contact_fields["milestones"]["default"][$option_key]["label"] ) ?>
                                                 </button>
-                                            <?php }?>
                                         <?php endforeach; ?>
                                     </div>
 
@@ -472,41 +472,6 @@ declare( strict_types=1 );
                                             <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" id="baptism-date-picker">
                                         </div>
                                     </div>
-
-                                    <!-- custom sections -->
-                                    <?php $custom_sections = dt_get_option( 'dt_site_custom_lists' );
-                                    $custom_sections = $custom_sections["custom_dropdown_contact_options"];
-                                    foreach ( $custom_sections as $key => $value ) :
-                                        ?>
-                                            <div class="custom_progress">
-                                                <!-- drop down section -->
-                                                <div class="section-subheader">
-                                                    <?php echo esc_html( $value["label"] ); ?>
-                                                </div>
-                                                <!-- the id is what makes the blue progress bar go up -->
-                                                <select class="select-field" id=<?php echo esc_html( "custom_dropdown_contact_" . $key ); ?> style="margin-bottom: 0px">
-                                                <?php
-                                                //this section fills the drop down with the data
-                                                foreach ($value as $s_key => $s_value){
-                                                    if ($s_key != "label") {
-                                                        if ( isset( $contact["custom_dropdown_contact_" . $key]["key"] ) ) {
-                                                            if ( $contact["custom_dropdown_contact_" . $key]["key"] === $s_value ) {
-                                                                ?>
-                                                                <option value="<?php echo esc_html( $s_value ) ?>" selected><?php echo esc_html( $s_value ); ?></option>
-                                                            <?php }
-                                                            else {
-                                                                ?>
-                                                                <option value="<?php echo esc_html( $s_value ) ?>"><?php echo esc_html( $s_value ); ?></option>
-                                                            <?php }
-                                                        } else { ?>
-                                                                <option value="<?php echo esc_html( $s_value ) ?>"><?php echo esc_html( $s_value ); ?></option>
-                                                            <?php }
-                                                    }
-                                                }
-                                                ?>
-                                                </select>
-                                            </div>
-                                    <?php endforeach; ?>
 
                                 </div>
                             </section>
@@ -542,15 +507,91 @@ declare( strict_types=1 );
                             </section>
 
                             <?php
+                            //get sections added by plugins
                             $sections = apply_filters( 'dt_details_additional_section_ids', [], "contacts" );
+                            //get custom sections
+                            $custom_tiles = dt_get_option( "dt_custom_tiles" );
+                            foreach ( $custom_tiles["contacts"] as $tile_key => $tile_options ){
+                                if ( !in_array( $tile_key, $sections ) ){
+                                    $sections[] = $tile_key;
+                                }
+                                //remove section if hidden
+                                if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
+                                    if ( ( $index = array_search( $tile_key, $sections ) ) !== false) {
+                                        unset( $sections[ $index ] );
+                                    }
+                                }
+                            }
 
                             foreach ( $sections as $section ){
                                 ?>
                                 <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
                                     <div class="bordered-box">
                                         <?php
-                                        do_action( "dt_details_additional_section", $section )
+                                        // let the plugin add section content
+                                        do_action( "dt_details_additional_section", $section, "contacts" );
+                                        //setup tile label if see by customizations
+                                        if ( isset( $custom_tiles["contacts"][$section]["label"] ) ){ ?>
+                                            <label class="section-header">
+                                                <?php echo esc_html( $custom_tiles["contacts"][$section]["label"] )?>
+                                            </label>
+                                        <?php }
+                                        //setup the order of the tile fields
+                                        $order = $custom_tiles["contacts"][$section]["order"] ?? [];
+                                        foreach ( $contact_fields as $key => $option ){
+                                            if ( isset( $option["tile"] ) && $option["tile"] === $section ){
+                                                if ( !in_array( $key, $order )){
+                                                    $order[] = $key;
+                                                }
+                                            }
+                                        }
+                                        foreach ( $order as $field_key ) {
+                                            if ( !isset( $contact_fields[$field_key] ) ){
+                                                continue;
+                                            }
+                                            $field = $contact_fields[$field_key];
+                                            if ( isset( $field["tile"] ) && $field["tile"] === $section){ ?>
+                                                <div class="section-subheader">
+                                                    <?php echo esc_html( $field["name"] )?>
+                                                </div>
+                                                <?php
+                                                /**
+                                                 * Key Select
+                                                 */
+                                                if ( $field["type"] === "key_select" ) : ?>
+                                                    <select class="select-field" id="<?php echo esc_html( $field_key ); ?>">
+                                                    <?php foreach ($field["default"] as $option_key => $option_value):
+                                                        $selected = isset( $contact[$field_key]["key"] ) && $contact[$field_key]["key"] === $option_key; ?>
+                                                        <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
+                                                            <?php echo esc_html( $option_value["label"] ) ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                    </select>
+                                                <?php elseif ( $field["type"] === "multi_select" ) : ?>
+                                                    <div class="small button-group" style="display: inline-block">
+                                                        <?php foreach ( $contact_fields[$field_key]["default"] as $option_key => $option_value ): ?>
+                                                            <?php
+                                                                $class = ( in_array( $option_key, $contact[$field_key] ?? [] ) ) ?
+                                                                    "selected-select-button" : "empty-select-button"; ?>
+                                                                <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( $field_key ) ?>"
+                                                                        class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
+                                                                    <?php echo esc_html( $contact_fields[$field_key]["default"][$option_key]["label"] ) ?>
+                                                                </button>
+                                                        <?php endforeach; ?>
+                                                    </div>
+                                                <?php elseif ( $field["type"] === "text" ) :?>
+                                                    <input id="<?php echo esc_html( $field_key ) ?>" type="text"
+                                                           class="text-input"
+                                                           value="<?php echo esc_html( $contact[$field_key] ?? "" ) ?>"/>
+                                                <?php elseif ( $field["type"] === "date" ) :?>
+                                                    <input type="text" class="date-picker dt_date_picker"
+                                                           id="<?php echo esc_html( $field_key ) ?>"
+                                                           value="<?php echo esc_html( $contact[$field_key]["formatted"] ?? '' )?>">
+                                                <?php endif;
+                                            }
+                                        }
                                         ?>
+
                                     </div>
                                 </section>
                                 <?php
@@ -584,10 +625,10 @@ declare( strict_types=1 );
 
         <select id="reason-closed-options">
             <?php
-            foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $reason_label ) {
+            foreach ( $contact_fields["reason_closed"]["default"] as $reason_key => $option ) {
                 $selected = ( $reason_key === ( $contact["reason_closed"]["key"] ?? "" ) ) ? "selected" : "";
                 ?>
-                <option value="<?php echo esc_attr( $reason_key )?>" <?php echo esc_html( $selected ) ?>> <?php echo esc_html( $reason_label )?></option>
+                <option value="<?php echo esc_attr( $reason_key )?>" <?php echo esc_html( $selected ) ?>> <?php echo esc_html( $option["label"] ?? "" )?></option>
                 <?php
             }
             ?>
@@ -609,11 +650,11 @@ declare( strict_types=1 );
 
         <select id="reason-paused-options">
             <?php
-            foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $reason_label ) {
+            foreach ( $contact_fields["reason_paused"]["default"] as $reason_key => $option ) {
                 ?>
                 <option value="<?php echo esc_attr( $reason_key )?>"
                     <?php if ( ( $contact["reason_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
-                    <?php echo esc_html( $reason_label )?>
+                    <?php echo esc_html( $option["label"] ?? "" )?>
                 </option>
                 <?php
             }
@@ -635,11 +676,11 @@ declare( strict_types=1 );
 
         <select id="reason-unassignable-options">
             <?php
-            foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $reason_label ) {
+            foreach ( $contact_fields["reason_unassignable"]["default"] as $reason_key => $option ) {
                 ?>
                 <option value="<?php echo esc_attr( $reason_key )?>"
                     <?php if ( ( $contact["unassignable_paused"]["key"] ?? "" ) === $reason_key ){echo "selected";} ?>>
-                    <?php echo esc_html( $reason_label )?>
+                    <?php echo esc_html( $option["label"] ?? "" )?>
                 </option>
                 <?php
             }

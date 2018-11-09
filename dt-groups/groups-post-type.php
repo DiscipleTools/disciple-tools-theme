@@ -106,7 +106,7 @@ class Disciple_Tools_Groups_Post_Type
         if ( is_admin() ) {
             global $pagenow;
 
-            add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
+//            add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
             add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
             //            add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
@@ -592,15 +592,8 @@ class Disciple_Tools_Groups_Post_Type
         return ob_get_clean();
     }
 
-    /**
-     * Get the settings for the custom fields.
-     *
-     * @param          $include_current_post
-     * @param int|null $post_id
-     *
-     * @return mixed
-     */
-    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null ) {
+
+    public function get_group_field_defaults( $post_id = null, $include_current_post = null ){
         global $post;
 
         $fields = [];
@@ -610,8 +603,8 @@ class Disciple_Tools_Groups_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'inactive' => __( 'Inactive', 'disciple_tools' ),
-                'active'   => __( 'Active', 'disciple_tools' ),
+                'inactive' => [ "label" => __( 'Inactive', 'disciple_tools' ) ],
+                'active'   => [ "label" => __( 'Active', 'disciple_tools' ) ],
             ],
             'section'     => 'info',
         ];
@@ -619,7 +612,11 @@ class Disciple_Tools_Groups_Post_Type
             'name'        => __( 'Group Type', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
-            'default'     => dt_get_option( 'group_type' ),
+            'default'     => [
+                'pre-group' => [ "label" => __( 'Pre-Group', 'disciple_tools' ) ],
+                'group'     => [ "label" => __( 'Group', 'disciple_tools' ) ],
+                'church'    => [ "label" => __( 'Church', 'disciple_tools' ) ],
+            ],
             'section'     => 'info',
         ];
 
@@ -631,125 +628,53 @@ class Disciple_Tools_Groups_Post_Type
             'section'     => 'info',
         ];
 
-        // Church
-        $fields['is_church'] = [
-            'name'        => __( 'Is a Church', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
+        $fields['health_metrics'] = [
+            "name" => __( 'Church Health', 'disciple_tools' ),
+            "type" => "multi_select",
+            "default" => [
+                "church_baptism" => [
+                    "label" => __( "Baptism", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/baptism.svg'
+                ],
+                "church_bible" => [
+                    "label" => __( "Bible Study", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/word.svg'
+                ],
+                "church_communion" => [
+                    "label" => __( "Communion", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/communion.svg'
+                ],
+                "church_fellowship" => [
+                    "label" => __( "Fellowship", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/heart.svg'
+                ],
+                "church_giving" => [
+                    "label" => __( "Giving", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/giving.svg'
+                ],
+                "church_prayer" => [
+                    "label" => __( "Prayer", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/prayer.svg'
+                ],
+                "church_praise" => [
+                    "label" => __( "Praise", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/praise.svg'
+                ],
+                "church_sharing" => [
+                    "label" => __( "Sharing the Gospel", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/evangelism.svg'
+                ],
+                "church_leaders" => [
+                    "label" => __( "Leaders", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/leadership.svg'
+                ],
+                "church_commitment" => [
+                    "label" => __( "Church Commitment", 'disciple_tools' ),
+                    "image" => get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg'
+                ],
             ],
-            'section'     => 'church',
+            "customizable" => "add_only"
         ];
-
-        $fields['church_baptism'] = [
-            'name'        => __( 'Baptism', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
-            ],
-            'section'     => 'church_hidden',
-        ];
-        $fields['church_bible'] = [
-            'name'        => __( 'Bible Study', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
-            ],
-            'section'     => 'church_hidden',
-        ];
-        $fields['church_communion'] = [
-            'name'        => __( 'Communion', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
-            ],
-            'section'     => 'church_hidden',
-        ];
-        $fields['church_fellowship'] = [
-            'name'        => __( 'Fellowship', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
-            ],
-            'section'     => 'church_hidden',
-        ];
-        $fields['church_giving'] = [
-            'name'        => __( 'Giving', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
-            ],
-            'section'     => 'church_hidden',
-        ];
-        $fields['church_prayer'] = [
-            'name'        => __( 'Prayer', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
-            ],
-            'section'     => 'church_hidden',
-        ];
-        $fields['church_praise'] = [
-            'name'        => __( 'Praise', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
-            ],
-            'section'     => 'church_hidden',
-        ];
-        $fields['church_sharing'] = [
-            'name'        => __( 'Sharing the Gospel', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
-            ],
-            'section'     => 'church_hidden',
-        ];
-        $fields['church_leaders'] = [
-            'name'        => __( 'Leaders', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
-            ],
-            'section'     => 'church_hidden',
-        ];
-        $fields['church_commitment'] = [
-            'name'        => __( 'Church Commitment', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'key_select',
-            'default'     => [
-        '0' => __( 'No', 'disciple_tools' ),
-        '1' => __( 'Yes', 'disciple_tools' )
-            ],
-            'section'     => 'church_hidden',
-        ];
-        $health = dt_get_option( 'dt_site_custom_lists' );
-        $health = $health['custom_church'];
-        if ( ! empty( $health ) ) {
-            foreach ( $health as $key => $value ) {
-                $fields[$key] = $value;
-            }
-        }
 
         $fields['start_date'] = [
             'name'        => __( 'Start Date', 'disciple_tools' ),
@@ -800,8 +725,8 @@ class Disciple_Tools_Groups_Post_Type
 
         $id = isset( $post->ID ) ? $post->ID : $post_id;
         if ( $include_current_post &&
-            ( $id ||
-                ( isset( $post->ID ) && $post->post_status != 'auto-draft' ) ) ) { // if being called for a specific record or new record.
+             ( $id ||
+               ( isset( $post->ID ) && $post->post_status != 'auto-draft' ) ) ) { // if being called for a specific record or new record.
             // Address
             $addresses = dt_address_metabox()->address_fields( $id );
             foreach ( $addresses as $k => $v ) { // sets all others third
@@ -815,7 +740,78 @@ class Disciple_Tools_Groups_Post_Type
             }
         }
 
-        return apply_filters( 'dt_custom_fields_settings', $fields, "groups" );
+        return $fields;
+    }
+
+    /**
+     * Get the settings for the custom fields.
+     *
+     * @param bool $include_current_post
+     * @param int|null $post_id
+     * @param bool $with_deleted_options
+     *
+     * @return mixed
+     */
+    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false ) {
+        $fields = $this->get_group_field_defaults( $post_id, $include_current_post );
+        $fields = apply_filters( 'dt_custom_fields_settings', $fields, "groups" );
+        foreach ( $fields as $field_key => $field ){
+            if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
+                foreach ( $field["default"] as $option_key => $option_value ){
+                    if ( !is_array( $option_value )){
+                        $fields[$field_key]["default"][$option_key] = [ "label" => $option_value ];
+                    }
+                }
+            }
+        }
+        $custom_field_options = dt_get_option( "dt_field_customizations" );
+        if ( isset( $custom_field_options["groups"] )){
+            foreach ( $custom_field_options["groups"] as $key => $field ){
+                $field_type = $field["type"] ?? $fields[$key]["type"] ?? "";
+                if ( $field_type ){
+                    if ( !isset( $fields[$key] )){
+                        $fields[$key] = $field;
+                    } else {
+                        if ( isset( $field["name"] )){
+                            $fields[$key]["name"] = $field["name"];
+                        }
+                        if ( isset( $field["tile"] ) ) {
+                            $fields[ $key ]["tile"] = $field["tile"];
+                        }
+                        if ( $field_type === "key_select" || $field_type === "multi_select" ){
+                            if ( isset( $field["default"] )){
+                                $fields[$key]["default"] = array_merge( $fields[$key]["default"], $field["default"] );
+                            }
+                        }
+                    }
+                    if ( $field_type === "key_select" || $field_type === "multi_select" ){
+                        if ( isset( $field["order"] )){
+                            $with_order = [];
+                            foreach ( $field["order"] as $ordered_key ){
+                                $with_order[$ordered_key] = [];
+                            }
+                            foreach ( $fields[$key]["default"] as $option_key => $option_value ){
+                                $with_order[$option_key] = $option_value;
+                            }
+                            $fields[$key]["default"] = $with_order;
+                        }
+                    }
+                }
+            }
+        }
+        if ( $with_deleted_options === false ){
+            foreach ( $fields as $field_key => $field ){
+                if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
+                    foreach ( $field["default"] as $option_key => $option_value ){
+                        if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ){
+                            unset( $fields[$field_key]["default"][$option_key] );
+                        }
+                    }
+                }
+            }
+        }
+
+        return $fields;
     } // End get_custom_fields_settings()
 
     /**

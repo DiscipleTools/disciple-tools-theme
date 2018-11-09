@@ -291,7 +291,11 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             if ( !is_array( $fields[ $meta_key ]['default'] )) { // test if array
                 return $meta_value;
             } else {
-                return $fields[ $meta_key ]['default'][ $meta_value ];
+                if ( is_array( $fields[ $meta_key ]['default'][ $meta_value ] ) ){
+                    return $fields[ $meta_key ]['default'][ $meta_value ]["label"] ?? "";
+                } else {
+                    return $fields[ $meta_key ]['default'][ $meta_value ];
+                }
             }
         } else { // if field not set
             return $meta_value;

@@ -21,10 +21,10 @@
         <i class="fi-torsos-all large"></i>
         <span class="item-details-header details-list title" ><?php the_title_attribute(); ?></span>
         <select id="group_status" class="status select-field" style="width:fit-content;">
-            <?php foreach ( $group_fields["group_status"]["default"] as $status_key => $status_label ) { ?>
+            <?php foreach ( $group_fields["group_status"]["default"] as $status_key => $option ) { ?>
                 <option value="<?php echo esc_attr( $status_key, 'disciple_tools' ); ?>"
                 <?php echo esc_attr( $status_key === $group['group_status']['key'] ? 'selected' : '', 'disciple_tools' ); ?>>
-                    <?php echo esc_html( $status_label ) ?>
+                    <?php echo esc_html( $option["label"] ?? "" ) ?>
                 </option>
             <?php } ?>
         </select>

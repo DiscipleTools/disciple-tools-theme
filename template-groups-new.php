@@ -27,8 +27,8 @@ $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_s
                 </div>
                 <select class="select-field" id="group_type" name="group_name">
                     <?php
-                    foreach ($group_fields["group_type"]["default"] as $key => $value){ ?>
-                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
+                    foreach ($group_fields["group_type"]["default"] as $key => $option){ ?>
+                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $option["label"] ?? "" ); ?></option>
                     <?php } ?>
                 </select>
 

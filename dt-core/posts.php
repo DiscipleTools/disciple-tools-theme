@@ -214,37 +214,36 @@ class Disciple_Tools_Posts
      * @param string $post_type
      * @param int $post_id
      * @param string $comment_html
+     * @param string $type      normally 'comment', different comment types can have their own section in the comments activity
+     * @param array $args       [user_id, comment_date, comment_author etc]
      * @param bool $check_permissions
-     * @param string $type
-     * @param null $user_id
-     * @param null $author
-     * @param null $date
      * @param bool $silent
      *
      * @return false|int|\WP_Error
      */
-    public static function add_post_comment( string $post_type, int $post_id, string $comment_html, bool $check_permissions = true, $type = "comment", $user_id = null, $author = null, $date = null, $silent = false, $author_url = null ) {
+    public static function add_post_comment( string $post_type, int $post_id, string $comment_html, string $type = "comment", array $args = [], bool $check_permissions = true, $silent = false ) {
         if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
         //limit comment length to 5000
         $comments = str_split( $comment_html, 4999 );
         $user = wp_get_current_user();
-        $user_id = $user_id ?? get_current_user_id();
+        $user_id = $args["user_id"] ?? get_current_user_id();
+
         $created_comment = null;
         foreach ( $comments as $comment ){
             $comment_data = [
                 'comment_post_ID'      => $post_id,
                 'comment_content'      => $comment,
                 'user_id'              => $user_id,
-                'comment_author'       => $author ?? $user->display_name,
-                'comment_author_url'   => $author_url ?? $user->user_url,
+                'comment_author'       => $args["comment_author"] ?? $user->display_name,
+                'comment_author_url'   => $args["comment_author_url"] ?? $user->user_url,
                 'comment_author_email' => $user->user_email,
                 'comment_type'         => $type,
             ];
-            if ( $date ){
-                $comment_data["comment_date"] = $date;
-                $comment_data["comment_date_gmt"] = $date;
+            if ( isset( $args["comment_date"] ) ){
+                $comment_data["comment_date"] = $args["comment_date"];
+                $comment_data["comment_date_gmt"] = $args["comment_date"];
             }
             $new_comment = wp_new_comment( $comment_data );
             if ( !$created_comment ){
@@ -402,16 +401,23 @@ class Disciple_Tools_Posts
                     }
 
                     if ( isset( $fields[$activity->meta_key]["default"][$value] ) ){
-                        $message .= " " . $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$value] ?? $value;
+                        $message .= " " . $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$value]["label"] ?? $value;
                     } else {
                         $message .= " " . $fields[$activity->meta_key]["name"] . ": " . $value;
                     }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "key_select" ){
                     if ( isset( $fields[$activity->meta_key]["default"][$activity->meta_value] ) ){
-                        $message = $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$activity->meta_value] ?? $activity->meta_value;
+                        $message = $fields[$activity->meta_key]["name"] . ": " . $fields[$activity->meta_key]["default"][$activity->meta_value]["label"] ?? $activity->meta_value;
                     } else {
                         $message = $fields[$activity->meta_key]["name"] . ": " . $activity->meta_value;
+                    }
+                }
+                if ( $fields[$activity->meta_key]["type"] === "boolean" ){
+                    if ( $activity->meta_value === true || $activity->meta_value === '1' ){
+                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "yes", 'disciple_tools' );
+                    } else {
+                        $message = $fields[$activity->meta_key]["name"] . ": " . __( "no", 'disciple_tools' );
                     }
                 }
                 if ($fields[$activity->meta_key]["type"] === "number"){
@@ -797,6 +803,13 @@ class Disciple_Tools_Posts
         global $wpdb;
         $current_user = wp_get_current_user();
 
+        $post_fields = [];
+        if ( $post_type === "contacts" ){
+            $post_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        } elseif ( $post_type === "groups" ){
+            $post_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+        }
+
         $include = [];
         if ( isset( $query["include"] ) ){
             $include = $query["include"];
@@ -892,6 +905,14 @@ class Disciple_Tools_Posts
                 } else {
                     $connector = " OR ";
                     foreach ( $query_value as $value ){
+                        if ( isset( $post_fields[$query_key]["type"] ) && $post_fields[$query_key]["type"] === "boolean" ){
+                            if ( $value === "1" || $value === "yes" || $value === "true" ){
+                                $value = true;
+                            } elseif ( $value === "0" || $value === "no" || $value === "false" ){
+                                $value = false;
+                            }
+                        }
+
                         //allow negative searches
                         $equality = "=";
                         if ( strpos( $value, "-" ) === 0 ){
@@ -996,13 +1017,12 @@ class Disciple_Tools_Posts
                 $all_field_keys = array_keys( $contact_fields );
                 $sort_sql = "CASE ";
                 $sort_join = "";
-                foreach ( array_reverse( $all_field_keys ) as $field_index => $field_key ){
-                    if ( strpos( $field_key, "milestone_" ) === 0 ){
-                        $alias = 'faith_' . esc_sql( $field_key );
-                        $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON
-                    ( $wpdb->posts.ID = $alias.post_id AND $alias.meta_key = '" . esc_sql( $field_key ) . "' AND $alias.meta_value = 'yes') ";
-                        $sort_sql .= "WHEN ( $alias.meta_key = '" . esc_sql( $field_key ) . "' ) THEN $field_index ";
-                    }
+                $milestone_keys = array_reverse( array_keys( $contact_fields["milestones"]["default"] ) );
+                foreach ( $milestone_keys as $index  => $key ){
+                    $alias = 'faith_' . esc_sql( $key );
+                    $sort_join .= "LEFT JOIN $wpdb->postmeta as $alias ON
+                    ( $wpdb->posts.ID = $alias.post_id AND $alias.meta_key = 'milestones' AND $alias.meta_value = '" . esc_sql( $key ) . "') ";
+                    $sort_sql .= "WHEN ( $alias.meta_value = '" . esc_sql( $key ) . "' ) THEN $index ";
                 }
                 $sort_sql .= "else 1000 end ";
                 $sort_sql .= $sort_dir;

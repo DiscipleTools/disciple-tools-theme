@@ -338,8 +338,8 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 </thead>
                 <?php foreach ( $update_required_options as $option_key => $option ) : ?>
                     <tr>
-                        <td><?php echo esc_html( $field_options["overall_status"]['default'][$option['status']] ) ?></td>
-                        <td><?php echo esc_html( $field_options["seeker_path"]['default'][$option['seeker_path']] ) ?></td>
+                        <td><?php echo esc_html( $field_options["overall_status"]['default'][$option['status']]["label"] ) ?></td>
+                        <td><?php echo esc_html( $field_options["seeker_path"]['default'][$option['seeker_path']]["label"] ) ?></td>
                         <td>
                             <input name="<?php echo esc_html( $option_key ) ?>_days" type="number"
                                 value="<?php echo esc_html( $option["days"] ) ?>"  />

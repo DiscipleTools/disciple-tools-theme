@@ -162,10 +162,10 @@ declare(strict_types=1);
 
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
-                    <?php $fields = [ "assigned_to", "subassigned", "locations", "overall_status", "seeker_path", "faith_milestones", "requires_update", "tags", "sources" ];
+                    <?php $fields = [ "assigned_to", "subassigned", "locations", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
                     foreach ( $dt_contact_field_options as $field_key => $field){
 
-                        if ( $field["type"] === "key_select" && strpos( $field_key, "milestone_" ) === false && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
+                        if ( $field["type"] === "key_select" && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
 
                             $fields[] = $field_key;
                         }
@@ -176,12 +176,7 @@ declare(strict_types=1);
                     ?>
                     <ul class="vertical tabs" data-tabs id="example-tabs">
                         <?php foreach ( $fields as $index => $field ) :
-                            if ( $field === "faith_milestones" ) : ?>
-                                <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
-                                    <a href="#<?php echo esc_html( $field )?>">
-                                        <?php esc_html_e( "Faith Milestones", "disciple_tools" ) ?></a>
-                                </li>
-                            <?php elseif ( isset( $dt_contact_field_options[$field]["name"] ) ) : ?>
+                            if ( isset( $dt_contact_field_options[$field]["name"] ) ) : ?>
                                 <li class="tabs-title <?php if ( $index === 0 ){ echo "is-active"; } ?>" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>" <?php if ( $index === 0 ){ echo 'aria-selected="true"'; } ?>>
                                         <?php echo esc_html( $dt_contact_field_options[$field]["name"] ) ?></a>
@@ -226,30 +221,16 @@ declare(strict_types=1);
                                 <?php endif;?>
                             </div>
 
-                        <?php elseif ( $field == "faith_milestones" ) : ?>
-                            <div class="tabs-panel" id="faith_milestones">
-                                <div id="faith_milestones-options">
-                                    <?php foreach ( $dt_contact_field_options as $dt_field_key => $dt_field_value ) :
-                                        if ( strpos( $dt_field_key, "milestone_" ) === 0 ) : ?>
-                                            <div>
-                                                <label style="cursor: pointer;">
-                                                    <input type="checkbox" value="<?php echo esc_html( $dt_field_key ) ?>" class="milestone-filter" autocomplete="off">
-                                                    <?php echo esc_html( $dt_field_value["name"] ) ?>
-                                                </label>
-                                            </div>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
-                                </div>
-                            </div>
                         <?php else : ?>
                             <div class="tabs-panel" id="<?php echo esc_html( $field ) ?>">
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $dt_contact_field_options[$field] ) && $dt_contact_field_options[$field]["type"] == "key_select" ) :
-                                        foreach ( $dt_contact_field_options[$field]["default"] as $option_key => $option_value ) : ?>
+                                        foreach ( $dt_contact_field_options[$field]["default"] as $option_key => $option_value ) :
+                                            $label = $option_value["label"]?>
                                             <div class="key_select_options">
                                                 <label style="cursor: pointer">
                                                     <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
-                                                           value="<?php echo esc_html( $option_key ) ?>"> <?php echo esc_html( $option_value ) ?>
+                                                           value="<?php echo esc_html( $option_key ) ?>"> <?php echo esc_html( $label ) ?>
                                                 </label>
                                             </div>
                                         <?php endforeach; ?>

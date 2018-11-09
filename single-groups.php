@@ -97,7 +97,8 @@ declare(strict_types=1);
                                 <select class="select-field" id="group_type">
                                     <?php
 
-                                    foreach ($group_fields["group_type"]["default"] as $key => $value){
+                                    foreach ($group_fields["group_type"]["default"] as $key => $option){
+                                        $value = $option["label"] ?? "";
                                         if ( $group["group_type"]["key"] === $key ) {
                                             ?>
                                             <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
@@ -115,79 +116,15 @@ declare(strict_types=1);
                                     </button>
                                 </div>
                                 <div style="display:flex;flex-wrap:wrap;margin-top:10px">
-                                    <div class="group-progress-button-wrapper">
-                                        <button  class="group-progress-button" id="church_fellowship">
-                                            <img src="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/heart.svg', 'disciple_tools' ); ?>">
+                                    <?php foreach ( $group_fields["health_metrics"]["default"] as $key => $option ) : ?>
+                                        <div class="group-progress-button-wrapper">
+                                        <button  class="group-progress-button" id="<?php echo esc_html( $key ) ?>">
+                                            <img src="<?php echo esc_html( $option["image"] ?? "" ) ?>">
                                         </button>
-                                        <p><?php esc_html_e( 'Fellowship', 'disciple_tools' )?> </p>
+                                        <p><?php echo esc_html( $option["label"] ) ?> </p>
                                     </div>
-                                    <div class="group-progress-button-wrapper">
-                                        <button class="group-progress-button" id="church_giving">
-                                            <img src="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/giving.svg', 'disciple_tools' ); ?>">
-                                        </button>
-                                        <p><?php esc_html_e( 'Giving', 'disciple_tools' )?></p>
-                                    </div>
-                                    <div class="group-progress-button-wrapper">
-                                        <button class="group-progress-button" id="church_communion">
-                                            <img src="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/communion.svg', 'disciple_tools' ); ?>">
-                                        </button>
-                                        <p><?php esc_html_e( 'Communion', 'disciple_tools' )?></p>
-                                    </div>
-                                    <div class="group-progress-button-wrapper">
-                                        <button class="group-progress-button" id="church_baptism">
-                                            <img src="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/baptism.svg', 'disciple_tools' ); ?>">
-                                        </button>
-                                        <p><?php esc_html_e( 'Baptism', 'disciple_tools' )?></p>
-
-                                    </div>
-                                    <div class="group-progress-button-wrapper">
-                                        <button class="cell auto group-progress-button" id="church_prayer">
-                                            <img src="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/prayer.svg', 'disciple_tools' ); ?>">
-                                        </button>
-                                        <p><?php esc_html_e( 'Prayer', 'disciple_tools' )?></p>
-                                    </div>
-                                    <div class="group-progress-button-wrapper">
-                                        <button class="group-progress-button" id="church_leaders">
-                                            <img src="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/leadership.svg', 'disciple_tools' ); ?>">
-                                        </button>
-                                        <p><?php esc_html_e( 'Leaders', 'disciple_tools' )?></p>
-                                    </div>
-                                    <div class="group-progress-button-wrapper">
-                                        <button class="group-progress-button" id="church_bible">
-                                            <img src="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/word.svg', 'disciple_tools' ); ?>">
-                                        </button>
-                                        <p><?php esc_html_e( 'Word', 'disciple_tools' )?></p>
-                                    </div>
-                                    <div class="group-progress-button-wrapper">
-                                        <button class="group-progress-button" id="church_praise">
-                                            <img src="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/praise.svg', 'disciple_tools' ); ?>">
-                                        </button>
-                                        <p><?php esc_html_e( 'Praise', 'disciple_tools' )?> </p>
-                                    </div>
-                                    <div class="group-progress-button-wrapper">
-                                        <button class="group-progress-button" id="church_sharing">
-                                            <img src="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/evangelism.svg', 'disciple_tools' ); ?>">
-                                        </button>
-                                        <p><?php esc_html_e( 'Evangelism', 'disciple_tools' )?></p>
-                                    </div>
-                                    <div class="group-progress-button-wrapper">
-                                        <button class="group-progress-button" id="church_commitment">
-                                            <img src="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg', 'disciple_tools' ); ?>">
-                                        </button>
-                                        <p><?php esc_html_e( 'Covenant', 'disciple_tools' )?></p>
-                                    </div>
-                                    <?php
-                                    //custom group health metrics
-                                    $custom_health = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( false );
-                                    foreach ( $custom_health as $key => $val ) :
-                                        if ( strpos( $key, "church_custom_" ) === 0 ) : ?>
-                                            <div class="group-progress-button-wrapper">
-                                                <button class="group-progress-button" style="opacity: .6;" id="<?php echo esc_html( $key );?>">
-                                                </button>
-                                                <p><?php echo esc_html( $val['name'] )?></p>
-                                            </div>
-                                        <?php endif; ?>
                                     <?php endforeach; ?>
+
                                 </div>
                                 <div class="grid-x">
                                     <div style="margin-right:auto; margin-left:auto;min-height:302px">
@@ -240,14 +177,88 @@ declare(strict_types=1);
 
 
                         <?php
+                        //get sections added by plugins
                         $sections = apply_filters( 'dt_details_additional_section_ids', [], "groups" );
-
+                        //get custom sections
+                        $custom_tiles = dt_get_option( "dt_custom_tiles" );
+                        foreach ( $custom_tiles["groups"] as $tile_key => $tile_options ){
+                            if ( !in_array( $tile_key, $sections ) ){
+                                $sections[] = $tile_key;
+                            }
+                            //remove section if hidden
+                            if ( isset( $tile_options["hidden"] ) && $tile_options["hidden"] == true ){
+                                if ( ( $index = array_search( $tile_key, $sections ) ) !== false) {
+                                    unset( $sections[ $index ] );
+                                }
+                            }
+                        }
                         foreach ( $sections as $section ){
                             ?>
                             <section id="<?php echo esc_html( $section ) ?>" class="xlarge-6 large-12 medium-6 cell grid-item">
                                 <div class="bordered-box">
                                     <?php
-                                    do_action( "dt_details_additional_section", $section )
+                                    // let the plugin add section content
+                                    do_action( "dt_details_additional_section", $section );
+                                    //setup tile label if see by customizations
+                                    if ( isset( $custom_tiles["groups"][$section]["label"] ) ){ ?>
+                                        <label class="section-header">
+                                            <?php echo esc_html( $custom_tiles["groups"][$section]["label"] )?>
+                                        </label>
+                                    <?php }
+                                    //setup the order of the tile fields
+                                    $order = $custom_tiles["groups"][$section]["order"] ?? [];
+                                    foreach ( $group_fields as $key => $option ){
+                                        if ( isset( $option["tile"] ) && $option["tile"] === $section ){
+                                            if ( !in_array( $key, $order )){
+                                                $order[] = $key;
+                                            }
+                                        }
+                                    }
+                                    foreach ( $order as $field_key ) {
+                                        if ( !isset( $group_fields[$field_key] ) ){
+                                            continue;
+                                        }
+                                        $field = $group_fields[$field_key];
+                                        if ( isset( $field["tile"] ) && $field["tile"] === $section ){ ?>
+                                            <div class="section-subheader">
+                                                <?php echo esc_html( $field["name"] )?>
+                                            </div>
+                                            <?php
+                                            /**
+                                             * Key Select
+                                             */
+                                            if ( $field["type"] === "key_select" ) : ?>
+                                                <select class="select-field" id="<?php echo esc_html( $field_key ); ?>">
+                                                    <?php foreach ($field["default"] as $option_key => $option_value):
+                                                        $selected = isset( $group[$field_key]["key"] ) && $group[$field_key]["key"] === $option_key; ?>
+                                                        <option value="<?php echo esc_html( $option_key )?>" <?php echo esc_html( $selected ? "selected" : "" )?>>
+                                                            <?php echo esc_html( $option_value["label"] ) ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            <?php elseif ( $field["type"] === "multi_select" ) : ?>
+                                                <div class="small button-group" style="display: inline-block">
+                                                    <?php foreach ( $group_fields[$field_key]["default"] as $option_key => $option_value ): ?>
+                                                        <?php
+                                                        $class = ( in_array( $option_key, $group[$field_key] ?? [] ) ) ?
+                                                            "selected-select-button" : "empty-select-button"; ?>
+                                                        <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( $field_key ) ?>"
+                                                                class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
+                                                            <?php echo esc_html( $group_fields[$field_key]["default"][$option_key]["label"] ) ?>
+                                                        </button>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            <?php elseif ( $field["type"] === "text" ) :?>
+                                                <input id="<?php echo esc_html( $field_key ) ?>" type="text"
+                                                       class="text-input"
+                                                       value="<?php echo esc_html( $group[$field_key] ?? "" ) ?>"/>
+                                            <?php elseif ( $field["type"] === "date" ) :?>
+                                                <input type="text" class="date-picker dt_date_picker"
+                                                       id="<?php echo esc_html( $field_key ) ?>"
+                                                       value="<?php echo esc_html( $group[$field_key]["formatted"] ?? '' )?>">
+                                            <?php endif;
+                                        }
+                                    }
                                     ?>
                                 </div>
                             </section>
