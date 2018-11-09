@@ -487,7 +487,7 @@ class Disciple_Tools_Users
         if ( isset( $_POST["corresponds_to_contact_id"] )){
             $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
             update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
-            Disciple_Tools_Contacts::update_contact( $corresponds_to_contact, [
+            Disciple_Tools_Contacts::update_contact( (int) $corresponds_to_contact, [
                 "corresponds_to_user" => $user_id
             ], false, true );
         }
