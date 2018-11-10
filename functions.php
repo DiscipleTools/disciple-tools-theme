@@ -382,6 +382,7 @@ else {
                 require_once( get_template_directory() . '/dt-network/network.php' );
             }
 
+            require_once( get_template_directory() . '/dt-core/admin/gdpr.php' );
 
             /**
              * Admin panel
@@ -417,6 +418,8 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-people-groups.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-utilities-overview.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-contact-import.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-erase.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-export.php' );
                 /* End menu tab section */
 
                 require_once( get_template_directory() . '/dt-locations/utilities/locations-async-insert.php' ); // required to load for async listening

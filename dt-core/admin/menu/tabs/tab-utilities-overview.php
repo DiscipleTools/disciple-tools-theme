@@ -59,7 +59,7 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
     }
 
     public function box_message() {
-        $this->box( 'top', 'Site links are configured through the Site Links System admin menu' );
+        $this->box( 'top', '' );
         ?>
 
         <?php

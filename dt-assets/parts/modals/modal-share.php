@@ -1,4 +1,6 @@
-
+<?php
+global $post;
+?>
 
 <div class="reveal" id="share-contact-modal" data-reveal style="min-height:500px">
 
@@ -34,8 +36,7 @@
         /**
          * This fires below the share section, and can add additional share based elements.
          */
-        global $post;
-        do_action( 'dt_share_panel', $post->post_type );
+        do_action( 'dt_share_panel', $post );
     ?>
 
 
