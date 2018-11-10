@@ -94,11 +94,11 @@ class Disciple_Tools_Contacts_Transfer
                 <div class="cell" id="transfer-warning">
                     <h6><?php esc_html_e( 'Already transfered to' ) ?> <?php echo esc_html( $site_title ) ?></h6>
                     <p><?php esc_html_e( 'NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?', 'disciple_tools' ) ?></p>
-                    <p><button type="button" onclick="jQuery('#transfer-form').show();jQuery('#transfer-warning').hide();" class="button"><?php esc_html_e('Override and Continue') ?></button></p>
+                    <p><button type="button" onclick="jQuery('#transfer-form').show();jQuery('#transfer-warning').hide();" class="button"><?php esc_html_e( 'Override and Continue' ) ?></button></p>
                 </div>
                 <?php endif; ?>
 
-                <div class="cell" id="transfer-form" <?php if( $foreign_key_exists ) { echo 'style="display:none;"'; }?>>
+                <div class="cell" id="transfer-form" <?php if ( $foreign_key_exists ) { echo 'style="display:none;"'; }?>>
                     <h6><?php esc_html_e( 'Transfer this contact to:' ) ?></h6>
                     <select name="transfer_contact" id="transfer_contact" onchange="jQuery('#transfer_button_div').show();">
                         <option value=""></option>
@@ -309,7 +309,7 @@ class Disciple_Tools_Contacts_Transfer
             foreach ( $comment_data as $comment ) {
                 // set variables
                 $comment['comment_post_ID'] = $post_id;
-                $comment['comment_author'] = __('Transfer Bot') . ' (' . $comment['user_id'] . ')';
+                $comment['comment_author'] = __( 'Transfer Bot' ) . ' (' . $comment['user_id'] . ')';
                 $comment['user_id'] = 0;
                 $comment['comment_approved'] = 1;
                 unset( $comment['comment_ID'] );
@@ -326,7 +326,7 @@ class Disciple_Tools_Contacts_Transfer
         $transfer_comment = wp_insert_comment([
                 'user_id' => 0,
                 'comment_post_ID' => $post_id,
-                'comment_author' => __('Transfer Bot'),
+                'comment_author' => __( 'Transfer Bot' ),
                 'comment_approved' => 1,
                 'comment_content' => __( 'Contact transferred from site' ) . ' "' . esc_html( get_the_title( $site_link_post_id ) ) . '"',
         ]);
@@ -343,9 +343,9 @@ class Disciple_Tools_Contacts_Transfer
             $transfer_comment = wp_insert_comment([
                 'user_id' => 0,
                 'comment_post_ID' => $post_id,
-                'comment_author' => __('Transfer Bot'),
+                'comment_author' => __( 'Transfer Bot' ),
                 'comment_approved' => 1,
-                'comment_content' =>  $message,
+                'comment_content' => $message,
             ]);
             if ( is_wp_error( $transfer_comment ) ) {
                 $errors->add( 'comment_insert_fail', 'Comment insert fail for transfer notation.' );
