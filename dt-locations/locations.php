@@ -350,7 +350,4 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
         ];
     }
 
-    public static function get_locations_for_contact_id() {
-
-    }
 }
