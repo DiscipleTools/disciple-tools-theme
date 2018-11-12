@@ -171,7 +171,7 @@ else {
 
 
             require_once( get_template_directory() . '/dt-core/admin/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
-            require_once( get_template_directory() . '/dt-core/admin/restrict-xml-rpc-pingback.php' ); // protect against DDOS attacks.
+            require_once( get_template_directory() . '/dt-core/admin/restrict-site-access.php' ); // protect against DDOS attacks.
 
             /**
              * User Groups & Multi Roles
@@ -189,7 +189,6 @@ else {
             require_once( get_template_directory() . '/dt-assets/functions/enqueue-scripts.php' ); // Register scripts and stylesheets
             require_once( get_template_directory() . '/dt-assets/functions/sidebar.php' ); // Register sidebars/widget areas
             require_once( get_template_directory() . '/dt-assets/functions/page-navi.php' ); // Replace 'older/newer' post links with numbered navigation
-            require_once( get_template_directory() . '/dt-assets/functions/private-site.php' ); // Sets site to private
             require_once( get_template_directory() . '/dt-assets/functions/login.php' ); // Customize the WordPress login menu
             require_once( get_template_directory() . '/dt-assets/functions/menu.php' ); // Register menus and menu walkers
             require_once( get_template_directory() . '/dt-assets/functions/details-bar.php' ); // Breadcrumbs bar
