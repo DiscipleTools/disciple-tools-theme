@@ -221,7 +221,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         foreach ( $fields as $field_key => $field ){
             if ( isset( self::$group_fields[$field_key] ) && self::$group_fields[$field_key]["type"] === "multi_select" ){
                 if ( !isset( $field["values"] )){
-                    return new WP_Error( __FUNCTION__, "missing values field on:" . " " . $field_key );
+                    return new WP_Error( __FUNCTION__, "missing values field on:" . $field_key );
                 }
                 if ( isset( $field["force_values"] ) && $field["force_values"] === true ){
                     delete_post_meta( $contact_id, $field_key );
@@ -237,7 +237,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                             }
                         }
                     } else {
-                        return new WP_Error( __FUNCTION__, "Something wrong on field:" . " " . $field_key );
+                        return new WP_Error( __FUNCTION__, "Something wrong on field:" . $field_key );
                     }
                 }
             }
@@ -269,7 +269,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             foreach ( $values as $field ){
                 if ( isset( $field["delete"] ) && $field["delete"] == true){
                     if ( !isset( $field["key"] )){
-                        return new WP_Error( __FUNCTION__, "missing key on:" . " " . $details_key );
+                        return new WP_Error( __FUNCTION__, "missing key on: " . $details_key );
                     }
                     //delete field
                     $potential_error = self::delete_group_field( $group_id, $field["key"] );
@@ -282,7 +282,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     $potential_error = self::add_item_to_field( $group_id, $field["key"], $field["value"], false );
 
                 } else {
-                    return new WP_Error( __FUNCTION__, "Is not an array or missing value on:" . " " . $details_key );
+                    return new WP_Error( __FUNCTION__, "Is not an array or missing value on: " . $details_key );
                 }
                 if ( isset( $potential_error ) && is_wp_error( $potential_error ) ) {
                     return $potential_error;
@@ -297,7 +297,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         foreach ( self::$group_connection_types as $connection_type ){
             if ( isset( $fields[$connection_type] ) ){
                 if ( !isset( $fields[$connection_type]["values"] )){
-                    return new WP_Error( __FUNCTION__, "Missing values field on connection:" . " " . $connection_type, [ 'status' => 500 ] );
+                    return new WP_Error( __FUNCTION__, "Missing values field on connection: " . $connection_type, [ 'status' => 500 ] );
                 }
                 $existing_connections = [];
                 if ( isset( $existing_group[$connection_type] ) ){
@@ -336,7 +336,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                             }
                         }
                     } else {
-                         return new WP_Error( __FUNCTION__, "Cannot determine target on connection:" . " " . $connection_type, [ 'status' => 500 ] );
+                         return new WP_Error( __FUNCTION__, "Cannot determine target on connection: " . $connection_type, [ 'status' => 500 ] );
                     }
                 }
                 //check for deleted connections
