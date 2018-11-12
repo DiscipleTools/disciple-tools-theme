@@ -44,7 +44,7 @@ if ( ! class_exists( 'DT_Extensions_Menu' ) ) {
 
             ?>
             <div class="wrap">
-                <h2><?php esc_html_e('DISCIPLE TOOLS : EXTENSIONS') ?></h2>
+                <h2><?php esc_html_e( 'DISCIPLE TOOLS : EXTENSIONS' ) ?></h2>
 
                 <h2 class="nav-tab-wrapper">
                     <?php do_action( 'dt_extensions_tab_menu', $tab ); ?>
