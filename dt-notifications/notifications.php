@@ -537,9 +537,6 @@ class Disciple_Tools_Notifications
         }
     }
 
-
-
-
     public static function insert_notification_for_new_post( $post_type, $fields, $post_id ){
         // Don't fire off notifications when the contact represents a user.
         if ( $post_type === "contacts" ){
