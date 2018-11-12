@@ -203,7 +203,7 @@ class Disciple_Tools_Locations_Endpoints
         if ( isset( $params['data'] ) && isset( $params['type'] ) ){
 
             if ( !current_user_can( 'publish_locations' ) ) {
-                return new WP_Error( __FUNCTION__, __( "You may not publish a location" ), [ 'status' => 403 ] );
+                return new WP_Error( __FUNCTION__, "You may not publish a location", [ 'status' => 403 ] );
             }
 
             $components = $params['components'] ?? [];
@@ -230,7 +230,7 @@ class Disciple_Tools_Locations_Endpoints
         if ( isset( $params['title'] ) ){
 
             if ( !current_user_can( 'publish_locations' ) ) {
-                return new WP_Error( __FUNCTION__, __( "You may not publish a location" ), [ 'status' => 403 ] );
+                return new WP_Error( __FUNCTION__, "You may not publish a location", [ 'status' => 403 ] );
             }
 
             $args = [
@@ -251,7 +251,7 @@ class Disciple_Tools_Locations_Endpoints
         if ( isset( $params['post_id'] ) ){
 
             if ( !current_user_can( 'publish_locations' ) ) {
-                return new WP_Error( __FUNCTION__, __( "You may not publish a location" ), [ 'status' => 403 ] );
+                return new WP_Error( __FUNCTION__, "You may not publish a location", [ 'status' => 403 ] );
             }
 
             $result = Disciple_Tools_Locations::auto_build_location( $params['post_id'], 'post_id' );
