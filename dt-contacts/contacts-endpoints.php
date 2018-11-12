@@ -84,12 +84,6 @@ class Disciple_Tools_Contacts_Endpoints
         );
 
         register_rest_route(
-            $this->namespace, '/user/(?P<user_id>\d+)/contacts', [
-                "methods"  => "GET",
-                "callback" => [ $this, 'get_user_contacts' ],
-            ]
-        );
-        register_rest_route(
             $this->namespace, '/contacts', [
                 "methods"  => "GET",
                 "callback" => [ $this, 'get_viewable_contacts' ],
@@ -467,29 +461,6 @@ class Disciple_Tools_Contacts_Endpoints
 
 
     /**
-     * Get Contacts assigned to a user
-     *
-     * @param  WP_REST_Request $request
-     *
-     * @access public
-     * @since  0.1.0
-     * @return array|WP_Error return the user's contacts
-     */
-    public function get_user_contacts( WP_REST_Request $request ) {
-        $params = $request->get_params();
-        if ( isset( $params['user_id'] ) ) {
-            $contacts = Disciple_Tools_Contacts::get_user_contacts( (int) $params['user_id'], true );
-            if ( is_wp_error( $contacts ) ) {
-                return $contacts;
-            }
-
-            return $this->add_related_info_to_contacts( $contacts->posts );
-        } else {
-            return new WP_Error( "get_user_contacts", "Missing a valid user id", [ 'status' => 400 ] );
-        }
-    }
-
-    /**
      * Get Contacts viewable by a user
      *
      * @param  WP_REST_Request $request
@@ -535,16 +506,16 @@ class Disciple_Tools_Contacts_Endpoints
      * @since  0.1.0
      * @return array|WP_Error return the user's team's contacts
      */
-    public function get_team_contacts( WP_REST_Request $request ) {
-        $params = $request->get_params();
-        if ( isset( $params['user_id'] ) ) {
-            $result = Disciple_Tools_Contacts::get_team_contacts( $params['user_id'], true );
-
-            return $result; // Could be permission WP_Error
-        } else {
-            return new WP_Error( "get_team_contacts", "Missing a valid user id", [ 'status' => 400 ] );
-        }
-    }
+//    public function get_team_contacts( WP_REST_Request $request ) {
+//        $params = $request->get_params();
+//        if ( isset( $params['user_id'] ) ) {
+//            $result = Disciple_Tools_Contacts::get_team_contacts( $params['user_id'], true );
+//
+//            return $result; // Could be permission WP_Error
+//        } else {
+//            return new WP_Error( "get_team_contacts", "Missing a valid user id", [ 'status' => 400 ] );
+//        }
+//    }
 
 
     /**

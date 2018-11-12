@@ -1629,15 +1629,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $contacts[] = $shared;
             }
         }
-        $team_contacts = self::get_team_contacts( $current_user->ID, true, true, $most_recent );
-        if ( isset( $team_contacts["contacts"] ) ){
-            foreach ( $team_contacts["contacts"] as $team_contact ){
-                if ( !in_array( $team_contact->ID, $contact_ids ) ) {
-                    $team_contact->is_team_contact = true;
-                    $contacts[] = $team_contact;
-                }
-            }
-        }
+//        $team_contacts = self::get_team_contacts( $current_user->ID, true, true, $most_recent );
+//        if ( isset( $team_contacts["contacts"] ) ){
+//            foreach ( $team_contacts["contacts"] as $team_contact ){
+//                if ( !in_array( $team_contact->ID, $contact_ids ) ) {
+//                    $team_contact->is_team_contact = true;
+//                    $contacts[] = $team_contact;
+//                }
+//            }
+//        }
 
         $delete_contacts = [];
         if ($most_recent){
@@ -1761,78 +1761,78 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @access public
      * @since  0.1.0
      */
-    public static function get_team_contacts( int $user_id, bool $check_permissions = true, $exclude_current_user = false, $most_recent = 0 ) {
-        if ( $check_permissions ) {
-            $current_user = wp_get_current_user();
-            // TODO: the current permissions required don't make sense
-            if ( !self::can_access( 'contacts' )
-                || ( $user_id != $current_user->ID && !current_user_can( 'edit_team_contacts' ) ) ) {
-                return new WP_Error( __FUNCTION__, __( "You do not have permission" ), [ 'status' => 404 ] );
-            }
-        }
-        $user_connections = [];
-        $user_connections['relation'] = 'OR';
-
-        $members = self::get_team_members();
-
-        $query_args = [
-            'relation' => "AND",
-            [
-                'relation' => "OR",
-                [
-                    'relation' => "AND",
-                    [
-                        'key' => 'type',
-                        'value' => "user",
-                        'compare' => '!='
-                    ],
-                    [
-                        'key' => 'type',
-                        'value' => "partner",
-                        'compare' => '!='
-                    ],
-                ],
-                [
-                    'key' => 'type',
-                    'compare' => 'NOT EXISTS'
-                ]
-            ],
-            [
-                'key' => "last_modified",
-                'value' => $most_recent,
-                'compare' => '>'
-            ]
-        ];
-
-        if ( sizeof( $members ) === 0 ){
-            return [
-                "members"  => $user_connections,
-                "contacts" => [],
-            ];
-        }
-        foreach ( $members as $member ) {
-            if ( !$exclude_current_user || ( $exclude_current_user && $member != $user_id ) ){
-                $user_connections[] = [
-                'key' => 'assigned_to',
-                'value' => 'user-' . $member
-                ];
-            };
-        }
-        $query_args[] = $user_connections;
-
-
-        $args = [
-            'post_type'  => 'contacts',
-            'nopaging'   => true,
-            'meta_query' => $query_args,
-        ];
-        $query2 = new WP_Query( $args );
-
-        return [
-            "members"  => $user_connections,
-            "contacts" => $query2->posts,
-        ];
-    }
+//    public static function get_team_contacts( int $user_id, bool $check_permissions = true, $exclude_current_user = false, $most_recent = 0 ) {
+//        if ( $check_permissions ) {
+//            $current_user = wp_get_current_user();
+//            // TODO: the current permissions required don't make sense
+//            if ( !self::can_access( 'contacts' )
+//                || ( $user_id != $current_user->ID && !current_user_can( 'edit_team_contacts' ) ) ) {
+//                return new WP_Error( __FUNCTION__, __( "You do not have permission" ), [ 'status' => 404 ] );
+//            }
+//        }
+//        $user_connections = [];
+//        $user_connections['relation'] = 'OR';
+//
+//        $members = self::get_team_members();
+//
+//        $query_args = [
+//            'relation' => "AND",
+//            [
+//                'relation' => "OR",
+//                [
+//                    'relation' => "AND",
+//                    [
+//                        'key' => 'type',
+//                        'value' => "user",
+//                        'compare' => '!='
+//                    ],
+//                    [
+//                        'key' => 'type',
+//                        'value' => "partner",
+//                        'compare' => '!='
+//                    ],
+//                ],
+//                [
+//                    'key' => 'type',
+//                    'compare' => 'NOT EXISTS'
+//                ]
+//            ],
+//            [
+//                'key' => "last_modified",
+//                'value' => $most_recent,
+//                'compare' => '>'
+//            ]
+//        ];
+//
+//        if ( sizeof( $members ) === 0 ){
+//            return [
+//                "members"  => $user_connections,
+//                "contacts" => [],
+//            ];
+//        }
+//        foreach ( $members as $member ) {
+//            if ( !$exclude_current_user || ( $exclude_current_user && $member != $user_id ) ){
+//                $user_connections[] = [
+//                'key' => 'assigned_to',
+//                'value' => 'user-' . $member
+//                ];
+//            };
+//        }
+//        $query_args[] = $user_connections;
+//
+//
+//        $args = [
+//            'post_type'  => 'contacts',
+//            'nopaging'   => true,
+//            'meta_query' => $query_args,
+//        ];
+//        $query2 = new WP_Query( $args );
+//
+//        return [
+//            "members"  => $user_connections,
+//            "contacts" => $query2->posts,
+//        ];
+//    }
 
     /**
      * @param int    $contact_id
@@ -2425,6 +2425,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_count_of_contacts( $user_id = null ) {
         global $wpdb;
+        if ( !self::can_access( "contacts" ) ) {
+            return new WP_Error( __FUNCTION__, __( "Permission denied." ), [ 'status' => 403 ] );
+        }
+
         $numbers = [];
 
         if ( is_null( $user_id ) ) {
@@ -2636,6 +2640,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *  @return array | WP_Error
      */
     public static function list_sources() {
+        if ( !self::can_access( "contacts" ) ) {
+            return new WP_Error( __FUNCTION__, __( "Permission denied." ), [ 'status' => 403 ] );
+        }
         global $wpdb;
         $source_labels = dt_get_option( 'dt_site_custom_lists' )['sources'];
         $rv = [];

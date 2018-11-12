@@ -139,7 +139,7 @@ class Disciple_Tools_Notifications_Endpoints
      */
     public function mark_all_viewed( WP_REST_Request $request ) {
         $params = $request->get_params();
-        if ( isset( $params['user_id'] ) ) {
+        if ( isset( $params['user_id'] ) && $params['user_id'] == get_current_user_id() ) {
             $result = Disciple_Tools_Notifications::mark_all_viewed( $params['user_id'] );
             if ( $result["status"] ) {
                 return $result['rows_affected'];

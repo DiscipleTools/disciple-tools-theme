@@ -156,10 +156,6 @@ class Disciple_Tools_People_Groups_Endpoints
 
     public function link_or_update( WP_REST_Request $request ) {
 
-        if ( ! user_can( get_current_user_id(), 'manage_dt' ) ) {
-            return new WP_Error( __METHOD__, 'You do not have permission to add people groups', [] );
-        }
-
         $params = $request->get_params();
         if ( isset( $params['rop3'] ) && isset( $params['country'] ) && isset( $params['post_id'] ) ) {
             $result = Disciple_Tools_People_Groups::link_or_update( $params['rop3'], $params['country'], $params['post_id'] );

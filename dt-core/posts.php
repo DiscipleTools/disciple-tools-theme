@@ -1138,8 +1138,7 @@ class Disciple_Tools_Posts
         global $wpdb;
 
         if ( !self::can_update( $post_type, $post_id ) ) {
-            $name = dt_get_user_display_name( $user_id );
-            return new WP_Error( __FUNCTION__, __( "You do not have permission to unshare with" ) . " " . $name, [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, __( "You do not have permission to unshare" ), [ 'status' => 403 ] );
         }
 
         $assigned_to_meta = get_post_meta( $post_id, "assigned_to", true );

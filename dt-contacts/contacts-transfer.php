@@ -26,9 +26,9 @@ class Disciple_Tools_Contacts_Transfer
 
     // Adds the type of connection to the site link system
     public function site_link_type( $type ) {
-        $type['contact_sharing'] = __( 'Contact Sharing', 'disciple_tools' );
-        $type['contact_sending'] = __( 'Contact Sending Only', 'disciple_tools' );
-        $type['contact_receiving'] = __( 'Contact Receiving Only', 'disciple_tools' );
+        $type['contact_sharing'] = __( 'Contact Transfer Both Ways', 'disciple_tools' );
+        $type['contact_sending'] = __( 'Contact Transfer Sending Only', 'disciple_tools' );
+        $type['contact_receiving'] = __( 'Contact Transfer Receiving Only', 'disciple_tools' );
         return $type;
     }
 

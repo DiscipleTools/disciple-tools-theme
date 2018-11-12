@@ -48,6 +48,9 @@ class Disciple_Tools_People_Groups
     }
 
     public static function search_csv( $search ) { // gets a list by country
+        if ( ! current_user_can( 'manage_dt' ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
+        }
         $data = self::get_jp_source();
         $result = [];
         foreach ( $data as $row ) {
@@ -59,6 +62,9 @@ class Disciple_Tools_People_Groups
     }
 
     public static function search_csv_by_rop3( $search ) { // gets a list by country
+        if ( ! current_user_can( 'manage_dt' ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
+        }
         $data = self::get_jp_source();
         $result = [];
         foreach ( $data as $row ) {
@@ -70,6 +76,9 @@ class Disciple_Tools_People_Groups
     }
 
     public static function get_country_dropdown() {
+        if ( ! current_user_can( 'manage_dt' ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
+        }
         $data = self::get_jp_source();
         $all_names = array_column( $data, 1 );
         $unique_names = array_unique( $all_names );
@@ -82,10 +91,14 @@ class Disciple_Tools_People_Groups
      * Add Single People Group
      *
      * @param $rop3
+     * @param $country
      *
-     * @return array
+     * @return array|WP_Error
      */
     public static function add_single_people_group( $rop3, $country ) {
+        if ( ! current_user_can( 'manage_dt' ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
+        }
 
         // get matching rop3 row for JP
         $data = self::get_jp_source();
@@ -180,9 +193,12 @@ class Disciple_Tools_People_Groups
      * @param $country
      * @param $post_id
      *
-     * @return array
+     * @return array|WP_Error
      */
     public static function link_or_update( $rop3, $country, $post_id ) {
+        if ( ! current_user_can( 'manage_dt' ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
+        }
 
         // get matching rop3 row for JP
         $data = self::get_jp_source();
@@ -265,10 +281,12 @@ class Disciple_Tools_People_Groups
     /**
      * @param $search
      *
-     * @return array
+     * @return array|WP_Error
      */
     public static function get_people_groups_compact( $search ) {
-        //        @todo check permissions
+        if ( !current_user_can( "access_contacts" )){
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+        }
         $query_args = [
             'post_type' => 'peoplegroups',
             'orderby'   => 'title',

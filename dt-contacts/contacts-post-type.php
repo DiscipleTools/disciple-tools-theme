@@ -742,7 +742,7 @@ class Disciple_Tools_Contact_Post_Type
                 'games'                => [ "label" => __( 'Playing games', 'disciple_tools' ) ],
                 'apologetics'          => [ "label" => __( 'Only wants to argue or debate', 'disciple_tools' ) ],
                 'insufficient'         => [ "label" => __( 'Insufficient contact info', 'disciple_tools' ) ],
-                'already_connected'    => [ "label" => __( 'Already in church or connected with Others', 'disciple_tools' ) ],
+                'already_connected'    => [ "label" => __( 'Already in church or connected with others', 'disciple_tools' ) ],
                 'no_longer_interested' => [ "label" => __( 'No longer interested', 'disciple_tools' ) ],
                 'no_longer_responding' => [ "label" => __( 'No longer responding', 'disciple_tools' ) ],
                 'media_only'           => [ "label" => __( 'Just wanted media or book', 'disciple_tools' ) ],

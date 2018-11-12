@@ -51,8 +51,6 @@ class Disciple_Tools_Users
      */
 
     public static function get_assignable_users_compact( string $search_string = null ) {
-        //        @todo better permissions?
-        //        @todo return only the users the user has the permission to assign to
         if ( !current_user_can( "access_contacts" ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to assign" ), [ 'status' => 403 ] );
         }
@@ -74,41 +72,6 @@ class Disciple_Tools_Users
                 ",
                 $user_id
             ), ARRAY_N );
-
-//            @todo remove redundant sql
-            // users that my posts are shared with
-            // users that are assigned to contacts that are shared with me.
-            // assigned to of posts that are assigned to me
-//            UNION DISTINCT
-//                SELECT user_id
-//                FROM $wpdb->dt_share
-//                WHERE post_id IN (SELECT DISTINCT(post_id)
-//                      FROM $wpdb->postmeta
-//                      WHERE meta_key = 'assigned_to'
-//                            AND meta_value = CONCAT('user-', %1\$s )
-//                      )
-//                GROUP BY user_id
-//                UNION DISTINCT
-//                SELECT REPLACE( meta_value, 'user-', '' ) as user_id
-//                FROM $wpdb->postmeta
-//                WHERE post_id IN (
-//                SELECT post_id
-//                      FROM $wpdb->dt_share
-//                      WHERE user_id = %1\$s
-//                )
-//                AND meta_key = 'assigned_to'
-//                GROUP BY user_id
-//                UNION DISTINCT
-//                SELECT REPLACE( meta_value, 'user-', '' ) as user_id
-//                FROM $wpdb->postmeta
-//                WHERE post_id IN (SELECT DISTINCT(post_id)
-//                      FROM $wpdb->postmeta
-//                      WHERE meta_key = 'assigned_to'
-//                            AND meta_value = CONCAT('user-',%1\$s)
-//                      )
-//                      AND meta_key = 'assigned_to'
-//                GROUP BY user_id
-
 
             $dispatchers = $wpdb->get_results("SELECT user_id FROM $wpdb->usermeta WHERE meta_key =
             'wp_capabilities' AND meta_value LIKE '%dispatcher%'");
@@ -214,8 +177,6 @@ class Disciple_Tools_Users
 
     /**
      * Processes updates posted for current user details.
-     *
-     * @return bool|\WP_Error
      */
     public static function update_user_contact_info() {
         global $wpdb;
@@ -285,8 +246,6 @@ class Disciple_Tools_Users
 
         //check that display name is not null and is a new name
         if ( !empty( $args['nickname'] ) && $current_user->display_name != $args['nickname'] ) {
-            //TODO CHECK FOR DUB NICKNAMES
-
             //set display name to nickname
             $user_id = wp_update_user( array(
                 'ID' => $args['ID'],
@@ -301,6 +260,9 @@ class Disciple_Tools_Users
 
 
     public static function get_contact_for_user( $user_id ){
+        if ( !current_user_can( "access_contacts" )){
+            return new WP_Error( 'no_permission', __( "Insufficient permissions" ), [ 'status' => 403 ] );
+        }
         $contact_id = get_user_option( "corresponds_to_contact", $user_id );
         if ( !empty( $contact_id )){
             return $contact_id;

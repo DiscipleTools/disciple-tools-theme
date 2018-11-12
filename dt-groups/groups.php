@@ -896,7 +896,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function create_group( array $fields = [], $check_permissions = true ) {
         if ( $check_permissions && ! current_user_can( 'create_groups' ) ) {
-            return new WP_Error( __FUNCTION__, __( "You may not public a group" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, __( "You may not create a group" ), [ 'status' => 403 ] );
         }
         $initial_fields = $fields;
 

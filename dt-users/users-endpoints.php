@@ -101,7 +101,7 @@ class Disciple_Tools_Users_Endpoints
     public function switch_preference( WP_REST_Request $request ) {
         $params = $request->get_params();
         $user_id = get_current_user_id();
-        if ( isset( $params['preference_key'] ) ) {
+        if ( isset( $params['preference_key'] ) && $user_id ) {
             $result = Disciple_Tools_Users::switch_preference( $user_id, $params['preference_key'], $params['type'] ?? null );
             if ( $result["status"] ) {
                 return $result["response"];
@@ -130,8 +130,8 @@ class Disciple_Tools_Users_Endpoints
     public function change_password( WP_REST_Request $request ){
         $params = $request->get_params();
 
-        if ( isset( $params["password"] ) ){
-            $user_id = get_current_user_id();
+        $user_id = get_current_user_id();
+        if ( isset( $params["password"] ) && $user_id){
             dt_write_log( $params["password"] );
 
             wp_set_password( $params["password"], $user_id );

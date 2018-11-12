@@ -246,6 +246,7 @@ class Disciple_Tools_Notifications
             ],
             [
                 'id' => $notification_id,
+                'user_id' => get_current_user_id()
             ]
         );
 
@@ -275,6 +276,7 @@ class Disciple_Tools_Notifications
             ],
             [
                 'id' => $notification_id,
+                'user_id' => get_current_user_id()
             ]
         );
 

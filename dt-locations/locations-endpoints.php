@@ -72,10 +72,6 @@ class Disciple_Tools_Locations_Endpoints
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [ $this, 'get_locations' ],
             ],
-            '/locations-compact' => [ // @todo remove, redundant and out of pattern
-                'methods' => WP_REST_Server::READABLE,
-                'callback' => [ $this, 'get_locations_compact' ],
-            ],
             $base.'/compact' => [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [ $this, 'get_locations_compact' ],
@@ -142,8 +138,6 @@ class Disciple_Tools_Locations_Endpoints
      * @return array|\WP_Error
      */
     public function get_locations() {
-        //        $params = $request->get_params();
-        //        @TODO check permissions
         $locations = Disciple_Tools_Locations::get_locations();
 
         return $locations;
@@ -182,6 +176,9 @@ class Disciple_Tools_Locations_Endpoints
      * @return string|WP_Error The contact on success
      */
     public function validate_address( WP_REST_Request $request ){
+        if ( ! current_user_can( 'manage_dt' ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
+        }
         $params = $request->get_json_params();
         if ( isset( $params['address'] ) ){
 
