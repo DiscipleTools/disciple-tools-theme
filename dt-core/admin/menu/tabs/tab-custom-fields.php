@@ -463,8 +463,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <select name="post_type">
-                            <option value="contacts">Contacts</option>
-                            <option value="groups">Groups</option>
+                            <option value="contacts"><?php esc_html_e( "Contacts", 'disciple_tools' ) ?></option>
+                            <option value="groups"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></option>
                         </select>
                     </td>
                 <tr>
@@ -521,12 +521,12 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             </table>
         </form>
         <br>
-        Field types:
+        <?php esc_html_e( "Field types:", 'disciple_tools' ) ?>
         <ul style="list-style: disc; padding-left:40px">
-            <li><strong>Dropdown:</strong> Select an option for a dropdown list</li>
-            <li><strong>Multi Select:</strong> A field like the milestones to track items like course progress</li>
-            <li><strong>Text:</strong> This is just a normal text field</li>
-            <li><strong>Date:</strong> A field that uses a date picker to choose dates (like baptism date)</li>
+            <li><?php esc_html_e( "Dropdown: Select an option for a dropdown list", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Multi Select: A field like the milestones to track items like course progress", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Text: This is just a normal text field", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Date: A field that uses a date picker to choose dates (like baptism date)", 'disciple_tools' ) ?></li>
         </ul>
         <?php
     }

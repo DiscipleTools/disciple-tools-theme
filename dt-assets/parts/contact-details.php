@@ -236,7 +236,8 @@
                     <select id="social-channels">
                         <?php
                         foreach ($channel_list as $key => $channel) {
-                            if ( $key !== 'phone' && $key !== 'email' && $key !== 'address' ) {
+                            $enabled = !isset( $channel['enabled'] ) || $channel['enabled'] !== false;
+                            if ( $key !== 'phone' && $key !== 'email' && $key !== 'address' && $enabled) {
                                 ?><option value="<?php echo esc_html( $key ); ?>"> <?php echo esc_html( $channel['label'] ) ?></option><?php
                             }
                         }

@@ -136,6 +136,8 @@ function dt_get_option( string $name ) {
                 "contacts" => [],
                 "groups" => []
             ]);
+        case 'dt_custom_channels':
+            return get_option( 'dt_custom_channels', [] );
 
         case 'base_user':
             if ( ! get_option( 'dt_base_user' ) ) { // options doesn't exist, create new.
