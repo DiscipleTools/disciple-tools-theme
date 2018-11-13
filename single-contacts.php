@@ -382,6 +382,7 @@ declare( strict_types=1 );
 
                                     <?php
                                     $connections = [
+                                        "relation" => esc_html__( "Connection or Relation", 'disciple_tools' ),
                                         "baptized_by" => esc_html__( "Baptized By", 'disciple_tools' ),
                                         "baptized" => esc_html__( "Baptized", 'disciple_tools' ),
                                         "coached_by" => esc_html__( "Coached By", 'disciple_tools' ),

@@ -463,7 +463,7 @@ jQuery(document).ready(function($) {
   /**
    * connections to other contacts
    */
-  ;["baptized_by", "baptized", "coached_by", "coaching", "subassigned"].forEach(field_id=>{
+  ;["relation", "baptized_by", "baptized", "coached_by", "coaching", "subassigned"].forEach(field_id=>{
     typeaheadTotals[field_id] = 0
     $.typeahead({
       input: `.js-typeahead-${field_id}`,

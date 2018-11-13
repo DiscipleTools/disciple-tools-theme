@@ -34,7 +34,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             "baptized",
             "coached_by",
             "coaching",
-            "subassigned"
+            "subassigned",
+            "relation"
         ];
         add_action( "dt_contact_created", [ $this, "check_for_duplicates" ], 10, 2 );
         add_action( "dt_contact_updated", [ $this, "check_for_duplicates" ], 10, 2 );
@@ -820,6 +821,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         );
     }
 
+    public static function add_relation_to_contact( $contact_id, $relation ) {
+        return p2p_type( 'contacts_to_relation' )->connect(
+            $contact_id, $relation,
+            [ 'date' => current_time( 'mysql' ) ]
+        );
+    }
+
     /**
      * @param $contact_id
      * @param $subassigned
@@ -924,6 +932,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return p2p_type( 'contacts_to_subassigned' )->disconnect( $subassigned, $contact_id );
     }
 
+    public static function remove_relation_from_contact( $contact_id, $relation ) {
+        return p2p_type( 'contacts_to_relation' )->disconnect( $contact_id, $relation );
+    }
+
     public static function remove_fields( $contact_id, $fields = [], $ignore = []) {
         global $wpdb;
         foreach ($fields as $field) {
@@ -988,6 +1000,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $connect = self::add_coaching_to_contact( $contact_id, $value );
         } elseif ( $key === "subassigned" ){
             $connect = self::add_subassigned_to_contact( $contact_id, $value );
+        } elseif ( $key === "relation" ){
+            $connect = self::add_relation_to_contact( $contact_id, $value );
         } else {
             return new WP_Error( __FUNCTION__, "Field not recognized: " . $key, [ "status" => 400 ] );
         }
@@ -1099,6 +1113,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return self::remove_people_group_from_contact( $contact_id, $value );
         } elseif ( $key === "subassigned" ) {
             return self::remove_subassigned_from_contact( $contact_id, $value );
+        } elseif ( $key === "relation" ) {
+            return self::remove_relation_from_contact( $contact_id, $value );
         }
 
         return false;
@@ -1243,6 +1259,19 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $c->permalink = get_permalink( $c->ID );
             }
             $fields["subassigned"] = $subassigned;
+            $relation = get_posts(
+                [
+                    'connected_type'      => 'contacts_to_relation',
+                    'connected_direction' => 'from',
+                    'connected_items'     => $contact,
+                    'nopaging'            => true,
+                    'suppress_filters'    => false,
+                ]
+            );
+            foreach ( $relation as $c ) {
+                $c->permalink = get_permalink( $c->ID );
+            }
+            $fields["relation"] = $relation;
 
             $meta_fields = get_post_custom( $contact_id );
             foreach ( $meta_fields as $key => $value ) {
