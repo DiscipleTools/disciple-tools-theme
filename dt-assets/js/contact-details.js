@@ -56,30 +56,6 @@ function commentPosted() {
     }).catch(err => { console.error(err) })
   }
 }
-function details_accept_contact(contactId, accept){
-  let data = {accept:accept}
-  jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: contactsDetailsWpApiSettings.root + 'dt/v1/contact/' + contactId + "/accept",
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', contactsDetailsWpApiSettings.nonce);
-    }
-  }).then(function (data) {
-    jQuery('#accept-contact').hide()
-    if (data && data['overall_status']){
-      jQuery('#overall-status').text(data['overall_status'])
-    }
-    if(data && data["assigned_to"]){
-      jQuery('.current-assigned').text(data["assigned_to"])
-    }
-  }).catch(err=>{
-    jQuery("#errors").append(err.responseText)
-  })
-}
-
 
 
 let contact = {}
@@ -195,6 +171,28 @@ jQuery(document).ready(function($) {
       });
   })
 
+  /**
+   * Accept or decline a contact
+   */
+  $('.accept-decline').on('click', function () {
+    let action = $(this).data("action")
+    let data = {accept:action === "accept"}
+    jQuery.ajax({
+      type: "POST",
+      data: JSON.stringify(data),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: contactsDetailsWpApiSettings.root + 'dt/v1/contact/' + contactId + "/accept",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', contactsDetailsWpApiSettings.nonce);
+      }
+    }).then(function (resp) {
+      setStatus(resp)
+      jQuery('#accept-contact').hide()
+    }).catch(err=>{
+      jQuery("#errors").append(err.responseText)
+    })
+  })
 
   /**
    * Sources
@@ -802,7 +800,7 @@ jQuery(document).ready(function($) {
     let status = _.get(contact, "overall_status.key")
     let reasonLabel = _.get(contact, `reason_${status}.label`)
     let statusColor = _.get(contactsDetailsWpApiSettings,
-      `contacts_custom_fields_settings.overall_status.colors.${status}`)
+      `contacts_custom_fields_settings.overall_status.default.${status}.color`)
     statusSelect.val(status)
 
     if (openModal){

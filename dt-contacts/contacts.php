@@ -2020,7 +2020,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 "accepted" => true
             ];
             self::update_contact( $contact_id, $update, true );
-            return [ "overall_status" => self::$contact_fields["overall_status"]["default"]['active'] ];
+            return self::get_contact( $contact_id );
         } else {
             $assign_to_id = 0;
             $last_activity = self::get_most_recent_activity_for_field( $contact_id, "assigned_to" );
@@ -2055,10 +2055,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 ]
             );
             Disciple_Tools_Notifications::insert_notification_for_assignment_declined( $current_user->ID, $assign_to_id, $contact_id );
-            return [
-                "assigned_to" => $assign->display_name,
-                "overall_status" => 'unassigned'
-            ];
+            return self::get_contact( $contact_id );
         }
     }
 
