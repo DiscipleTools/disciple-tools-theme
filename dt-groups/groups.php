@@ -89,7 +89,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function get_group( int $group_id, bool $check_permissions = true ) {
         if ( $check_permissions && !self::can_view( 'groups', $group_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "No permissions to read group", [ 'status' => 403 ] );
         }
 
         $group = get_post( $group_id );
@@ -183,7 +183,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
             return $fields;
         } else {
-            return new WP_Error( __FUNCTION__, __( "No group found with ID" ), [ 'contact_id' => $group_id ] );
+            return new WP_Error( __FUNCTION__, "No group found with ID", [ 'contact_id' => $group_id ] );
         }
     }
 
@@ -223,7 +223,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         foreach ( $fields as $field_key => $field ){
             if ( isset( self::$group_fields[$field_key] ) && self::$group_fields[$field_key]["type"] === "multi_select" ){
                 if ( !isset( $field["values"] )){
-                    return new WP_Error( __FUNCTION__, __( "missing values field on:" ) . " " . $field_key );
+                    return new WP_Error( __FUNCTION__, "missing values field on:" . $field_key );
                 }
                 if ( isset( $field["force_values"] ) && $field["force_values"] === true ){
                     delete_post_meta( $contact_id, $field_key );
@@ -239,7 +239,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                             }
                         }
                     } else {
-                        return new WP_Error( __FUNCTION__, __( "Something wrong on field:" ) . " " . $field_key );
+                        return new WP_Error( __FUNCTION__, "Something wrong on field:" . $field_key );
                     }
                 }
             }
@@ -271,7 +271,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             foreach ( $values as $field ){
                 if ( isset( $field["delete"] ) && $field["delete"] == true){
                     if ( !isset( $field["key"] )){
-                        return new WP_Error( __FUNCTION__, __( "missing key on:" ) . " " . $details_key );
+                        return new WP_Error( __FUNCTION__, "missing key on: " . $details_key );
                     }
                     //delete field
                     $potential_error = self::delete_group_field( $group_id, $field["key"] );
@@ -284,7 +284,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     $potential_error = self::add_item_to_field( $group_id, $field["key"], $field["value"], false );
 
                 } else {
-                    return new WP_Error( __FUNCTION__, __( "Is not an array or missing value on:" ) . " " . $details_key );
+                    return new WP_Error( __FUNCTION__, "Is not an array or missing value on: " . $details_key );
                 }
                 if ( isset( $potential_error ) && is_wp_error( $potential_error ) ) {
                     return $potential_error;
@@ -299,7 +299,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         foreach ( self::$group_connection_types as $connection_type ){
             if ( isset( $fields[$connection_type] ) ){
                 if ( !isset( $fields[$connection_type]["values"] )){
-                    return new WP_Error( __FUNCTION__, __( "Missing values field on connection:" ) . " " . $connection_type, [ 'status' => 500 ] );
+                    return new WP_Error( __FUNCTION__, "Missing values field on connection: " . $connection_type, [ 'status' => 500 ] );
                 }
                 $existing_connections = [];
                 if ( isset( $existing_group[$connection_type] ) ){
@@ -338,7 +338,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                             }
                         }
                     } else {
-                         return new WP_Error( __FUNCTION__, __( "Cannot determine target on connection:" ) . " " . $connection_type, [ 'status' => 500 ] );
+                         return new WP_Error( __FUNCTION__, "Cannot determine target on connection: " . $connection_type, [ 'status' => 500 ] );
                     }
                 }
                 //check for deleted connections
@@ -372,7 +372,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     public static function update_group( int $group_id, array $fields, bool $check_permissions = true ) {
 
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
 
         $field_keys = array_keys( $fields );
@@ -382,11 +382,11 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         }
 
         if ( !$post ) {
-            return new WP_Error( __FUNCTION__, __( "Group does not exist" ) );
+            return new WP_Error( __FUNCTION__, "Group does not exist" );
         }
         $bad_fields = self::check_for_invalid_fields( $fields, $group_id );
         if ( !empty( $bad_fields ) ) {
-            return new WP_Error( __FUNCTION__, __( "One or more fields do not exist" ), [
+            return new WP_Error( __FUNCTION__, "One or more fields do not exist", [
                 'bad_fields' => $bad_fields,
                 'status' => 400
             ] );
@@ -433,7 +433,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 if ( $user ) {
                     $fields["assigned_to"] = $user->ID;
                 } else {
-                    return new WP_Error( __FUNCTION__, __( "Unrecognized user" ), $fields["assigned_to"] );
+                    return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
                 }
             }
             //make sure the assigned to is in the right format (user-1)
@@ -487,7 +487,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function delete_group_field( int $group_id, string $key, $check_permissions = true ){
         if ( $check_permissions && !self::can_update( 'groups', $group_id )){
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 401 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 401 ] );
         }
         delete_post_meta( $group_id, $key .'_details' );
         return delete_post_meta( $group_id, $key );
@@ -674,7 +674,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function add_item_to_field( int $group_id, string $key, string $value, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         if ( $key === "new-address" ) {
             $new_meta_key = dt_address_metabox()->create_channel_metakey( "address" );
@@ -725,7 +725,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function update_contact_method( int $group_id, string $key, array $values, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         if ( ( strpos( $key, "contact_" ) === 0 || strpos( $key, "address_" ) === 0 ) &&
               strpos( $key, "_details" ) === false

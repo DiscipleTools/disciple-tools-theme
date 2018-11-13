@@ -31,7 +31,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         ?>
         <script type="text/javascript">
             function install(plug) {
-                jQuery("#wpbody-content").replaceWith("<p>installing...</p>");
+                jQuery("#wpbody-content").replaceWith("<p><?php esc_html_e( 'installing' ) ?>...</p>");
                 jQuery.post("",
                     {
                         install: plug,
@@ -44,7 +44,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
             }
 
             function activate(plug) {
-                jQuery("#wpbody-content").replaceWith("<p>activating...</p>");
+                jQuery("#wpbody-content").replaceWith("<p><?php esc_html_e( 'activating' ) ?>...</p>");
                 jQuery.post("",
                     {
                         activate: plug,
