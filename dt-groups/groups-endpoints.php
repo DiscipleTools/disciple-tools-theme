@@ -135,6 +135,12 @@ class Disciple_Tools_Groups_Endpoints
                 "callback" => [ $this, 'create_group' ],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/group/counts', [
+                "methods" => "GET",
+                "callback" => [ $this, 'get_group_default_filter_counts' ],
+            ]
+        );
     }
 
     /**
@@ -433,6 +439,10 @@ class Disciple_Tools_Groups_Endpoints
             "post_id" => (int) $result,
             "permalink" => get_post_permalink( $result ),
         );
+    }
+
+    public function get_group_default_filter_counts(){
+        return Disciple_Tools_Groups::get_group_default_filter_counts();
     }
 
 }
