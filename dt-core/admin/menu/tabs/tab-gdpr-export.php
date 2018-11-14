@@ -24,9 +24,9 @@ class Disciple_Tools_GDPR_Export_Tab extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
-//        add_action( 'admin_menu', [ $this, 'add_submenu' ], 119 );
-//        add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 119, 1 ); // use the priority setting to control load order
-//        add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 119, 1 );
+        add_action( 'admin_menu', [ $this, 'add_submenu' ], 119 );
+        add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 119, 1 ); // use the priority setting to control load order
+        add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 119, 1 );
 
         parent::__construct();
     } // End __construct()

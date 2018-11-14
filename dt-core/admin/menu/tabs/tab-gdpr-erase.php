@@ -24,9 +24,9 @@ class Disciple_Tools_GDPR_Erase_Tab extends Disciple_Tools_Abstract_Menu_Base
      * @since   0.1.0
      */
     public function __construct() {
-//        add_action( 'admin_menu', [ $this, 'add_submenu' ], 120 );
-//        add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 120, 1 ); // use the priority setting to control load order
-//        add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 120, 1 );
+        add_action( 'admin_menu', [ $this, 'add_submenu' ], 120 );
+        add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 120, 1 ); // use the priority setting to control load order
+        add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 120, 1 );
 
 
         parent::__construct();
