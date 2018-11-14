@@ -983,21 +983,23 @@
     }
   })
 
-  if ( wpApiListSettings.current_post_type === "contacts"){
-    $.ajax({
-      url: wpApiListSettings.root + "dt/v1/contact/counts",
-      beforeSend: function (xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiListSettings.nonce);
-      }
-    }).then(counts=>{
-      $(".js-list-view-count").each(function() {
-        const $el = $(this);
-        let view_id = $el.data("value")
-        if ( counts && counts[view_id] ){
-          $el.text( counts[view_id] );
-        }
-      });
-    }).catch(err => { console.error(err) })
+  let type = "contact"
+  if ( wpApiListSettings.current_post_type === "groups"){
+    type = "group"
   }
+  $.ajax({
+    url: `${wpApiListSettings.root}dt/v1/${type}/counts`,
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('X-WP-Nonce', wpApiListSettings.nonce);
+    }
+  }).then(counts=>{
+    $(".js-list-view-count").each(function() {
+      const $el = $(this);
+      let view_id = $el.data("value")
+      if ( counts && counts[view_id] ){
+        $el.text( counts[view_id] );
+      }
+    });
+  }).catch(err => { console.error(err) })
 
 })(window.jQuery, window.wpApiListSettings, window.Foundation);

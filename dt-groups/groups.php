@@ -993,4 +993,57 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         return $post_id;
     }
 
+
+    public static function get_group_default_filter_counts(){
+        if ( !self::can_access( "groups" ) ) {
+            return new WP_Error( __FUNCTION__, __( "Permission denied." ), [ 'status' => 403 ] );
+        }
+        $user_id = get_current_user_id();
+        global $wpdb;
+        $personal_counts = $wpdb->get_results( $wpdb->prepare( "
+            SELECT (
+                SELECT COUNT(DISTINCT(a.ID))
+                FROM $wpdb->posts as a
+                INNER JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                    AND b.meta_key = 'assigned_to'
+                    AND b.meta_value = CONCAT( 'user-', %s )
+                WHERE a.post_status = 'publish'
+                AND a.post_type = 'groups'
+            ) as my_groups,
+            (SELECT COUNT(DISTINCT(a.ID))
+                FROM $wpdb->posts as a
+                INNER JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                    AND b.meta_key = 'assigned_to'
+                    AND b.meta_value != CONCAT( 'user-', %s )
+                WHERE a.post_status = 'publish'
+                AND a.post_type = 'groups'
+                AND a.ID IN (
+                    SELECT post_id 
+                    FROM $wpdb->dt_share
+                    WHERE user_id = %s
+                )
+            ) as shared_with_me
+        ", $user_id, $user_id, $user_id ), ARRAY_A );
+
+        $all_groups = (int) $personal_counts[0]["my_groups"] + (int) $personal_counts[0]["shared_with_me"];
+        if ( current_user_can( "view_any_groups" ) ){
+            $dispatcher_counts = $wpdb->get_results( "
+                SELECT COUNT(a.ID) as all_groups
+                FROM $wpdb->posts as a
+                WHERE a.post_status = 'publish'
+                AND a.post_type = 'groups'
+                ", ARRAY_A
+            );
+            $all_groups = $dispatcher_counts[0]["all_groups"];
+        }
+
+        return [
+            'all_groups' => $all_groups,
+            'my_groups' => $personal_counts[0]["my_groups"],
+            'groups_shared_with_me' => $personal_counts[0]["shared_with_me"]
+        ];
+
+    }
 }

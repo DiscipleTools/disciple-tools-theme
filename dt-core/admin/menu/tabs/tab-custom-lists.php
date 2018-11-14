@@ -78,6 +78,13 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             $this->box( 'bottom' );
             /* end Sources */
 
+            /* Sources */
+            $this->box( 'top', __( 'Contact Communication Channels', 'disciple_tools' ) );
+            $this->process_channels_box();
+            $this->channels_box(); // prints
+            $this->box( 'bottom' );
+            /* end Sources */
+
             $this->template( 'right_column' );
 
             $this->template( 'end' );
@@ -351,16 +358,116 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     }
 
 
-    /**
-     * Process custom path settings
-     */
+    public function channels_box(){
+        $channels = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
+        ?>
+        <form method="post" name="channels_box">
+            <input type="hidden" name="channels_box_nonce" value="<?php echo esc_attr( wp_create_nonce( 'channels_box' ) ) ?>" />
+            <table class="widefat">
+                <thead>
+                    <tr>
+                        <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( "Enabled", 'disciple_tools' ) ?></td>
 
-    public function sanatize_all( $s ){
-        $string = str_replace( ' ', '_', $s ); // Replaces all spaces with hyphens.
-        $ret = preg_replace( '/[^A-Za-z0-9\-_]/', '', $string ); // Removes special chars.
-        return $ret;
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ( $channels as $channel_key => $channel_option ) :
+                        $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
+                        if ( $channel_key == 'phone' || $channel_key == 'email' || $channel_key == 'address' ){
+                            continue;
+                        } ?>
+
+                    <tr>
+                        <td><input type="text" name="channel_label[<?php echo esc_html( $channel_key ) ?>]" value="<?php echo esc_html( $channel_option["label"] ?? $channel_key ) ?>"></td>
+                        <td><?php echo esc_html( $channel_key ) ?></td>
+                        <td><input name="channel_enabled[<?php echo esc_html( $channel_key ) ?>]"
+                                   type="checkbox" <?php echo esc_html( $enabled ? "checked" : "" ) ?> />
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <br><button type="button" onclick="jQuery('#add_channel').toggle();" class="button"><?php esc_html_e( "Add new channel", 'disciple_tools' ) ?></button>
+            <button type="submit" class="button" style="float:right;">
+                <?php esc_html_e( "Save", 'disciple_tools' ) ?>
+            </button>
+            <div id="add_channel" style="display:none;">
+                <hr>
+                <input type="text" name="add_channel" placeholder="channel" />
+                <button type="submit"><?php esc_html_e( "Add", 'disciple_tools' ) ?></button>
+            </div>
+        </form>
+        <?php
     }
 
+    public function process_channels_box(){
+
+        if ( isset( $_POST["channels_box_nonce"] ) ){
+            $channels = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
+            $custom_channels = dt_get_option( "dt_custom_channels" );
+            if ( !wp_verify_nonce( sanitize_key( $_POST['channels_box_nonce'] ), 'channels_box' ) ){
+                self::admin_notice( __( "Something went wrong", 'disciple_tools' ), "error" );
+                return;
+            }
+
+
+            foreach ( $channels as $channel_key => $channel_options ){
+                if ( !isset( $custom_channels[$channel_key] ) ){
+                    $custom_channels[$channel_key] = [];
+                }
+                if ( isset( $_POST["channel_label"][$channel_key] ) ){
+                    $label = sanitize_text_field( wp_unslash( $_POST["channel_label"][$channel_key] ) );
+                    if ( $channel_options["label"] != $label ){
+                        $custom_channels[$channel_key]["label"] = $label;
+                    }
+                }
+                if ( isset( $_POST["channel_enabled"][$channel_key] ) ){
+                    $custom_channels[$channel_key]["enabled"] = true;
+                } else {
+                    $custom_channels[$channel_key]["enabled"] = false;
+                }
+            }
+            if ( !empty( $_POST["add_channel"] ) ){
+                $label = sanitize_text_field( wp_unslash( $_POST["add_channel"] ) );
+                $key = $this->create_field_key( $label );
+                if ( !empty( $key ) ){
+                    if ( isset( $channels[$key] ) ){
+                        self::admin_notice( __( "This channel already exists", 'disciple_tools' ), "error" );
+                    } else {
+                        $custom_channels[$key] = [
+                            "label" => $label,
+                            "enabled" => true
+                        ];
+                    }
+                }
+            }
+
+
+            update_option( "dt_custom_channels", $custom_channels );
+        }
+    }
+
+
+    public function create_field_key( $s ){
+        $string = str_replace( ' ', '_', $s ); // Replaces all spaces with hyphens.
+        $ret = preg_replace( '/[^A-Za-z0-9\-_]/', '', $string ); // Removes special chars.
+        return strtolower( $ret );
+    }
+
+     /**
+     * Display admin notice
+     * @param $notice string
+     * @param $type string error|success|warning
+     */
+    public static function admin_notice( string $notice, string $type ) {
+        ?>
+        <div class="notice notice-<?php echo esc_attr( $type ) ?> is-dismissible">
+            <p><?php echo esc_html( $notice ) ?></p>
+        </div>
+        <?php
+    }
 }
 Disciple_Tools_Tab_Custom_Lists::instance();
 

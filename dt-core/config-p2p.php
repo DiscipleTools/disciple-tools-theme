@@ -35,6 +35,14 @@ function dt_my_connection_types() {
 
     p2p_register_connection_type(
         [
+            'name'        => 'contacts_to_relation',
+            'from'        => 'contacts',
+            'to'          => 'contacts'
+        ]
+    );
+
+    p2p_register_connection_type(
+        [
             'name'        => 'contacts_to_subassigned',
             'from'        => 'contacts',
             'to'          => 'contacts',

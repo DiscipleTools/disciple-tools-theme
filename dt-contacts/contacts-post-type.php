@@ -1139,6 +1139,10 @@ class Disciple_Tools_Contact_Post_Type
             ],
         ];
 
+        $custom_channels = dt_get_option( "dt_custom_channels" );
+        foreach ( $custom_channels as $custom_key => $custom_value ){
+            $channel_list[$custom_key] = array_merge( $channel_list[$custom_key] ?? [], $custom_value );
+        }
         return apply_filters( 'dt_custom_channels', $channel_list );
     }
 

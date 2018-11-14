@@ -31,8 +31,8 @@
     <section class="cell accept-contact" id="accept-contact">
         <div class="bordered-box">
             <h4><?php esc_html_e( 'This contact has been assigned to you.', 'disciple_tools' )?></h4>
-            <button class="accept-button button small" onclick="details_accept_contact(<?php echo get_the_ID() ?>, true)"><?php esc_html_e( 'Accept', 'disciple_tools' )?></button>
-            <button class="decline-button button small" onclick="details_accept_contact(<?php echo get_the_ID() ?>, false)"><?php esc_html_e( 'Decline', 'disciple_tools' )?></button>
+            <button class="accept-button button small accept-decline" data-action="accept"><?php esc_html_e( 'Accept', 'disciple_tools' )?></button>
+            <button class="decline-button button small accept-decline" data-action="decline"><?php esc_html_e( 'Decline', 'disciple_tools' )?></button>
         </div>
     </section>
     <?php } ?>
@@ -236,7 +236,8 @@
                     <select id="social-channels">
                         <?php
                         foreach ($channel_list as $key => $channel) {
-                            if ( $key !== 'phone' && $key !== 'email' && $key !== 'address' ) {
+                            $enabled = !isset( $channel['enabled'] ) || $channel['enabled'] !== false;
+                            if ( $key !== 'phone' && $key !== 'email' && $key !== 'address' && $enabled) {
                                 ?><option value="<?php echo esc_html( $key ); ?>"> <?php echo esc_html( $channel['label'] ) ?></option><?php
                             }
                         }

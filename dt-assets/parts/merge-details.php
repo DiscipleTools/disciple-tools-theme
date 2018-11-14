@@ -188,15 +188,22 @@
                 if (duplicates.unsure) {
                     let $unsure = $display_fields.find('#unsure_list');
                     $unsure.append(
-                        "<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding: 20px 0px 0px; margin-bottom: 0px;'><?php esc_html_e( "Unsure Duplicates", 'disciple_tools' ) ?></h4>");
+                        `<h4 style='text-align: center; font-size: 1.25rem; font-weight: bold; padding: 20px 0px 0px; margin-bottom: 0px;'>
+                        <?php esc_html_e( "Unsure Duplicates", 'disciple_tools' ) ?>
+                        </h4>`
+                    );
 
                     $.each(duplicates.unsure, function (key, id) {
                         let dupe = _.find(dups_with_data, {"ID": parseInt( id )})
 
                         if (dupe) {
-                            var unsure_duplicate_html = $(
-                                "<div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'><h5 style='font-weight: bold; color: #3f729b;'></h5>");
-                            unsure_duplicate_html.find('h5').html(`<a href="${window.wpApiShare.site_url}/contacts/${dupe.ID}" target=_blank>${_.escape(dupe.title)}</a>`);
+                            var unsure_duplicate_html = $(`
+                                <div style='background-color: #f2f2f2; padding:2%; overflow: hidden;'>
+                                <h5 style='font-weight: bold; color: #3f729b;'></h5>`
+                            );
+                            unsure_duplicate_html.find('h5').html(`
+                                <a href="${window.wpApiShare.site_url}/contacts/${dupe.ID}" target=_blank>${_.escape(dupe.title)}</a>`
+                            );
                             $.each(dupe, function (key, vals) {
                                 if (!key.match(/^contact_/)) {
                                     return true;
@@ -229,7 +236,7 @@
                                 });
                             });
                             unsure_duplicate_html.append(
-                                `<button class='mergelinks' onclick='$("#dismiss-id").val(${id}); $("#form-dimiss input[type=submit]").click();' style='float: right; padding-left: 10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>`);
+                                `<button class='mergelinks' onclick='$("#dismiss-id").val(${id}); $("#form-dismiss input[type=submit]").click();' style='float: right; padding-left: 10%;'><a><?php esc_html_e( "Dismiss", 'disciple_tools' ) ?></a></button>`);
 
                             $unsure.append(unsure_duplicate_html);
                         }
