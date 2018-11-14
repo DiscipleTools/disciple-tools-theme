@@ -44,6 +44,11 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
     $message_plain_text = sanitize_textarea_field( $message_plain_text );
 
     $subject = dt_get_option( "dt_email_base_subject" ) . ": " . $subject;
+
+    $continue = apply_filters( "dt_sent_email_check", true, $email, $subject, $message_plain_text );
+    if ( !$continue ){
+        return false;
+    }
     // Send email
     try {
         $send_email = new Disciple_Tools_Notifications_Email();
