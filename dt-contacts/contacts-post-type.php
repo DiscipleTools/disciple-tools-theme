@@ -564,13 +564,21 @@ class Disciple_Tools_Contact_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
+                'new'   => [
+                    "label" => _x( 'New Contact', 'Contact Status', 'disciple_tools' ),
+                    "color" => "#F43636"
+                ],
+                'unassignable' => [
+                    "color" => "#FF9800",
+                    "label" => _x( 'Not Ready', 'Contact Status', 'disciple_tools' )
+                ],
                 'unassigned'   => [
-                    "label" => _x( 'Unassigned', 'Contact Status', 'disciple_tools' ),
+                    "label" => _x( 'Dispatch Needed', 'Contact Status', 'disciple_tools' ),
                     "color" => "#F43636"
                 ],
                 'assigned'     => [
                     "color" => "#FF9800",
-                    "label" => _X( "Assigned", 'Contact Status', 'disciple_tools' )
+                    "label" => _X( "Waiting to be accepted", 'Contact Status', 'disciple_tools' )
                 ],
                 'active'       => [
                     "color" => "#4CAF50",
@@ -583,10 +591,6 @@ class Disciple_Tools_Contact_Post_Type
                 'closed'       => [
                     "color" => "#F43636",
                     "label" => _x( 'Closed', 'Contact Status', 'disciple_tools' )
-                ],
-                'unassignable' => [
-                    "color" => "#2196F3",
-                    "label" => _x( 'Unassignable', 'Contact Status', 'disciple_tools' )
                 ],
             ],
             'section'     => 'status',
@@ -696,7 +700,7 @@ class Disciple_Tools_Contact_Post_Type
         ];
 
         $fields["reason_unassignable"] = [
-            'name'        => __( 'Reason Unassaginable' ),
+            'name'        => __( 'Reason Not Ready' ),
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
