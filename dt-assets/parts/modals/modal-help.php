@@ -3,15 +3,16 @@
 
     <!--    Contact Status-->
     <div class="help-section" id="overall-status-help-text" style="display: none">
-        <h3 class="lead">Contact Status</h3>
-        <p>This is where you set the current status of the contact.</p>
+        <h3 class="lead"><?php esc_html_e( "Contact Status", 'disciple_tools' ) ?></h3>
+        <p><?php esc_html_e( "This is where you set the current status of the contact.", 'disciple_tools' ) ?></p>
         <ul>
-            <li>Unassigned - The contact is new in the system and/or has not been assigned to someone.</li>
-            <li>Assigned - The contact has been assigned to someone, but has not yet been accepted by that person.</li>
-            <li>Active - The contact is progressing and/or continually being updated. </li>
-            <li>Paused - This contact is currently on hold (i.e. on vacation or not responding). </li>
-            <li>Closed - This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.</li>
-            <li>Unassignable - There is not enough information to move forward with the contact at this time.</li>
+            <li><?php esc_html_e( "New Contact - The contact is new in the system", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Not Ready - There is not enough information to move forward with the contact at this time.", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Dispatch Needed - This contact needs to be assigned to a multiplier.", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Waiting to be accepted - The contact has been assigned to someone, but has not yet been accepted by that person.", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Active - The contact is progressing and/or continually being updated.", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Paused - This contact is currently on hold (i.e. on vacation or not responding).", 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( "Closed - This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.", 'disciple_tools' ) ?></li>
         </ul>
     </div>
 

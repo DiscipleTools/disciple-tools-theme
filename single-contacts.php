@@ -673,8 +673,8 @@ declare( strict_types=1 );
         </button>
     </div>
     <div class="reveal" id="unassignable-contact-modal" data-reveal>
-        <h1><?php esc_html_e( 'Contact Unassignable', 'disciple_tools' )?></h1>
-        <p class="lead"><?php esc_html_e( 'How is this contact unassignable', 'disciple_tools' )?></p>
+        <h1><?php echo esc_html( $contact_fields["reason_unassignable"]["name"] )?></h1>
+<!--        <p class="lead">--><?php //esc_html_e( 'How is this contact unassignable', 'disciple_tools' )?><!--</p>-->
 
         <select id="reason-unassignable-options">
             <?php
