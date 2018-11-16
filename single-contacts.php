@@ -359,8 +359,7 @@ declare( strict_types=1 );
                         <div class="grid-x grid-margin-x grid-margin-y grid">
                             <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item">
             <!--                    <div class="bordered-box last-typeahead-in-section">-->
-                                <div class="bordered-box">
-                                    <h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?></h3>
+                                <div class="bordered-box"><h3 class="section-header"><?php esc_html_e( "Connections", 'disciple_tools' ) ?></h3>
                                     <div class="section-subheader"><?php esc_html_e( "Groups", 'disciple_tools' ) ?></div>
                                     <var id="groups-result-container" class="result-container"></var>
                                     <div id="groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
@@ -390,21 +389,23 @@ declare( strict_types=1 );
                                     ];
                                     foreach ( $connections as $connection => $connection_label ) {
                                         ?>
-                                        <div class="section-subheader"><?php echo esc_html( $connection_label ) ?></div>
-                                        <var id="<?php echo esc_html( $connection ) ?>-result-container" class="result-container"></var>
-                                        <div id="<?php echo esc_html( $connection ) ?>_t" name="form-<?php echo esc_html( $connection ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
-                                            <div class="typeahead__container">
-                                                <div class="typeahead__field">
-                                                    <span class="typeahead__query">
-                                                        <input class="js-typeahead-<?php echo esc_html( $connection ) ?>"
-                                                               name="<?php echo esc_html( $connection ) ?>[query]" placeholder="<?php esc_html_e( "Search multipliers and contacts", 'disciple_tools' ) ?>"
-                                                               autocomplete="off">
-                                                    </span>
-            <!--                                        <span class="typeahead__button">-->
-            <!--                                            <button>-->
-            <!--                                                <i class="typeahead__search-icon"></i>-->
-            <!--                                            </button>-->
-            <!--                                        </span>-->
+                                        <div id="<?php echo esc_attr( $connection . '_connection' ) ?>">
+                                            <div class="section-subheader"><?php echo esc_html( $connection_label ) ?></div>
+                                            <var id="<?php echo esc_html( $connection ) ?>-result-container" class="result-container"></var>
+                                            <div id="<?php echo esc_html( $connection ) ?>_t" name="form-<?php echo esc_html( $connection ) ?>" class="scrollable-typeahead typeahead-margin-when-active">
+                                                <div class="typeahead__container">
+                                                    <div class="typeahead__field">
+                                                        <span class="typeahead__query">
+                                                            <input class="js-typeahead-<?php echo esc_html( $connection ) ?>"
+                                                                   name="<?php echo esc_html( $connection ) ?>[query]" placeholder="<?php esc_html_e( "Search multipliers and contacts", 'disciple_tools' ) ?>"
+                                                                   autocomplete="off">
+                                                        </span>
+                <!--                                        <span class="typeahead__button">-->
+                <!--                                            <button>-->
+                <!--                                                <i class="typeahead__search-icon"></i>-->
+                <!--                                            </button>-->
+                <!--                                        </span>-->
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
