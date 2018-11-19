@@ -409,9 +409,6 @@
           fields.push(field_key)
         }
       })
-      $("#faith_milestones-options input:checked").each(function(){
-        searchQuery[$(this).val()] = ["yes"]
-      })
       if ( $("#combine_subassigned").is(":checked") ){
         searchQuery["combine"] = ["subassigned"]
       }
@@ -421,7 +418,7 @@
     fields.forEach(field=>{
       searchQuery[field] =[]
       if ( _.get(wpApiListSettings, `custom_fields_settings.${field}.type` ) === "multi_select" ){
-        searchQuery[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "name")
+        searchQuery[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "id")
       } else {
         $(`#${field}-options input:checked`).each(function(){
           searchQuery[field].push($(this).val())
@@ -823,17 +820,18 @@
         });
 
       } else {
+        let fieldOptions = _.get(wpApiListSettings, `custom_fields_settings.${field}.default`, {})
         $.typeahead({
           input: `.js-typeahead-${field}`,
           minLength: 0,
           maxItem: 20,
           searchOnFocus: true,
           template: function (query, item) {
-            return `<span>${_.escape(item.name)}</span>`
+            return `<span>${_.escape(item.label)}</span>`
           },
           source: {
             tags: {
-              display: ["name"],
+              display: ["label"],
               ajax: {
                 url: `${wpApiListSettings.root}dt/v1/contact/multi-select-options`,
                 data: {
@@ -846,30 +844,31 @@
                 callback: {
                   done: function (data) {
                     return (data || []).map(tag=>{
-                      return {name:tag}
+                      let label = _.get( fieldOptions, tag + ".label", tag )
+                      return {label:label, id:tag}
                     })
                   }
                 }
               }
             }
           },
-          display: "name",
-          templateValue: "{{name}}",
+          display: "label",
+          templateValue: "{{label}}",
           dynamic: true,
           multiselect: {
-            matchOn: ["name"],
+            matchOn: ["id"],
             data: [],
             callback: {
               onCancel: function (node, item) {
-                $(`#${item.name}.${field}`).remove()
-                _.pullAllBy(newFilterLabels, [{id:item.name}], "id")
+                $(`#${item.id}.${field}`).remove()
+                _.pullAllBy(newFilterLabels, [{id:item.id}], "id")
               }
             }
           },
           callback: {
             onClick: function(node, a, item, event){
-              selectedFilters.append(`<span class="current-filter ${field}" id="${item.name}">${item.name}</span>`)
-              newFilterLabels.push({id:item.name, name:item.name, field})
+              selectedFilters.append(`<span class="current-filter ${field}" id="${item.id}">${item.label}</span>`)
+              newFilterLabels.push({id:item.id, name:item.label, field})
             },
             onResult: function (node, query, result, resultCount) {
               let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -924,9 +923,9 @@
     connectionTypeKeys.push("assigned_to")
     newFilterLabels.forEach(label=>{
       selectedFilters.append(`<span class="current-filter ${label.field}" id="${label.id}">${label.name}</span>`)
-      if ( label.field === "faith_milestones" || _.get(wpApiListSettings, `custom_fields_settings.${label.field}.type`) === "key_select" ){
+      if ( _.get(wpApiListSettings, `custom_fields_settings.${label.field}.type`) === "key_select" ){
         $(`#filter-modal #${label.field}-options input[value="${label.id}"]`).prop('checked', true)
-      } else if ( connectionTypeKeys.includes(label.field) ){
+      } else if ( connectionTypeKeys.includes( label.field ) ){
         Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
       } else if ( _.get(wpApiListSettings, `custom_fields_settings.${label.field}.type`) === "multi_select" ){
         Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
@@ -956,18 +955,6 @@
     }
   })
 
-  //watch milestone checkboxes
-  $(".milestone-filter").on("click", function () {
-    let field = $(this).val()
-    let name = _.get(wpApiListSettings, `custom_fields_settings.${field}.name`) || ""
-    if ($(this).is(":checked")){
-      newFilterLabels.push({id:field, name:name, field:"faith_milestones"})
-      selectedFilters.append(`<span class="current-filter faith_milestones" id="${field}">${name}</span>`)
-    } else {
-      $(`#${field}.faith_milestones`).remove()
-      _.pullAllBy(newFilterLabels, [{id:field}], "id")
-    }
-  })
   //watch all other checkboxes
   $('#filter-modal .key_select_options input').on("change", function() {
     let field_key = $(this).data('field');
