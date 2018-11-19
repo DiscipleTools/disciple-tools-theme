@@ -540,7 +540,7 @@ class Disciple_Tools_Contacts_Endpoints
                 ] );
             }
         } else {
-            return new WP_Error( "post_comment", "Missing a valid contact id", [ 'status' => 400 ] );
+            return new WP_Error( "post_comment", 'Missing a valid contact id or "comment" field', [ 'status' => 400 ] );
         }
     }
 
@@ -572,7 +572,7 @@ class Disciple_Tools_Contacts_Endpoints
                 ] );
             }
         } else {
-            return new WP_Error( "post_comment", "Missing a valid contact id", [ 'status' => 400 ] );
+            return new WP_Error( "post_comment", 'Missing a valid contact id or "comment" field', [ 'status' => 400 ] );
         }
     }
 
