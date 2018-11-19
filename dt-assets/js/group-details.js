@@ -713,15 +713,9 @@ jQuery(document).ready(function($) {
     $(".js-progress-bordered-box").removeClass("half-opacity")
   }
 
-  //check if we still need to wait for the svg to load.
-  let svgWrapper = $('#church-svg-wrapper')[0].contentDocument
-  if (svgWrapper == null || _.get(svgWrapper, "length", 0) === 0) {
-    $('#church-svg-wrapper').on('load', function() {
-      fillOutChurchHealthMetrics()
-    })
-  } else {
+  $('#church-svg-wrapper').on('load', function() {
     fillOutChurchHealthMetrics()
-  }
+  })
 
   $('.group-progress-button').on('click', function () {
     let fieldId = $(this).attr('id')
