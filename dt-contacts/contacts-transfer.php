@@ -72,7 +72,7 @@ class Disciple_Tools_Contacts_Transfer
             global $post;
         }
 
-        if ( isset( $post->post_type ) && 'contacts' === $post->post_type && current_user_can( 'view_all_contacts' ) ) {
+        if ( isset( $post->post_type ) && 'contacts' === $post->post_type && current_user_can( 'view_any_contacts' ) ) {
             $list = Site_Link_System::get_list_of_sites_by_type( [ 'contact_sharing', 'contact_sending' ] );
             if ( empty( $list ) ) {
                 return;

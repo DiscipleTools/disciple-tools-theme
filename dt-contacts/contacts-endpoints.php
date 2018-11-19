@@ -811,7 +811,7 @@ class Disciple_Tools_Contacts_Endpoints
 
     public function contact_transfer( WP_REST_Request $request ){
 
-        if ( ! ( current_user_can( 'view_all_contacts' ) || current_user_can( 'manage_dt' ) ) ) {
+        if ( ! ( current_user_can( 'view_any_contacts' ) || current_user_can( 'manage_dt' ) ) ) {
             return new WP_Error( __METHOD__, 'Insufficient permissions' );
         }
 
