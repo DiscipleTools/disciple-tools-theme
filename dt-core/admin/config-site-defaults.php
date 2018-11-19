@@ -450,7 +450,7 @@ function dt_get_site_custom_lists( string $list_title = null ) {
             'label'       => 'Work WhatsApp',
             'key'         => 'dt_user_work_whatsapp',
             'type'        => 'other',
-            'description' => 'Work Facebook is for distribution to contacts and seekers.',
+            'description' => 'Work WhatsApp is for distribution to contacts and seekers.',
             'enabled'     => true,
         ],
     ];
