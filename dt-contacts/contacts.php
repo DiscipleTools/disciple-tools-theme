@@ -1262,7 +1262,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $relation = get_posts(
                 [
                     'connected_type'      => 'contacts_to_relation',
-                    'connected_direction' => 'from',
+                    'connected_direction' => 'any',
                     'connected_items'     => $contact,
                     'nopaging'            => true,
                     'suppress_filters'    => false,
