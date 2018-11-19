@@ -696,7 +696,7 @@ jQuery(document).ready(function($) {
     let optionKey = $(this).attr('id')
     let fieldValue = {}
     let data = {}
-    let field = jQuery("#" + optionKey)
+    let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
     field.addClass("submitting-select-button")
     let action = "add"
     if (field.hasClass("selected-select-button")){
