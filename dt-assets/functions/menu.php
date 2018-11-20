@@ -10,13 +10,13 @@ register_nav_menus(
 // The Top Menu
 function disciple_tools_top_nav_desktop() {
     if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-        ?><li><a href="<?php echo esc_url( site_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li><?php
+        ?><li><a href="<?php echo esc_url( site_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts", "disciple_tools" ); ?></a></li><?php
     }
     if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-        ?><li><a href="<?php echo esc_url( site_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li><?php
+        ?><li><a href="<?php echo esc_url( site_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups", "disciple_tools" ); ?></a></li><?php
     }
     if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-        ?><li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li><?php
+        ?><li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics", "disciple_tools" ); ?></a></li><?php
     }
     /**
      * Fires after the top menu

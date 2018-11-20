@@ -705,12 +705,12 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'key_select',
             'default'     => [
                 'none'         => [ "label" => '', ],
-                'insufficient' => [ "label" => __( 'Insufficient Contact Information' ) ],
-                'location'     => [ "label" => __( 'Unknown Location' ) ],
-                'media'        => [ "label" => __( 'Only wants media' ) ],
-                'outside_area' => [ "label" => __( 'Outside Area' ) ],
-                'needs_review' => [ "label" => __( 'Needs Review' ) ],
-                'awaiting_confirmation' => [ "label" => __( 'Waiting for Confirmation' ) ],
+                'insufficient' => [ "label" => __( 'Insufficient Contact Information', "disciple_tools" ) ],
+                'location'     => [ "label" => __( 'Unknown Location', "disciple_tools" ) ],
+                'media'        => [ "label" => __( 'Only wants media', "disciple_tools" ) ],
+                'outside_area' => [ "label" => __( 'Outside Area', "disciple_tools" ) ],
+                'needs_review' => [ "label" => __( 'Needs Review', "disciple_tools" ) ],
+                'awaiting_confirmation' => [ "label" => __( 'Waiting for Confirmation', "disciple_tools" ) ],
             ],
             'section'     => 'misc',
             'customizable' => 'all'
