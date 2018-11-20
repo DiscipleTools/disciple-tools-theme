@@ -238,7 +238,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
                     <?php echo esc_html__( "Inactive Logout", 'disciple_tools' ); ?>
                 </td>
                 <td>
-                    <?php echo esc_html__( "Inactive logout provides functionality to log out any idle users defined specified time showing a message. Works for frontend as well.", 'disciple_tools' ); ?>
+                    <?php echo esc_html__( "Inactive logout provides functionality to automatically log out any idle users after a defined period.", 'disciple_tools' ); ?>
                 </td>
                 <td>
                     <?php
