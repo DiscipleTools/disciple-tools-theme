@@ -279,12 +279,14 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             $chart[] = [ $v_label, 0, (int) $out_of, '' ];
         }
 
-        array_unshift( $chart, [ 'Step', 'Practicing', 'Not Practicing', [ 'role' => 'annotation' ] ] ); // add top row
+        array_unshift( $chart, [ 'Step', __( 'Practicing', 'disciple_tools' ), __( 'Not Practicing', 'disciple_tools' ), [ 'role' => 'annotation' ] ] ); // add top row
 
         return $chart;
     }
 
     public static function chart_group_generations( $type = 'personal' ) {
+
+        $groups_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
 
         switch ( $type ) {
             case 'personal':
@@ -298,8 +300,18 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 $generation_tree = [ "Generations", "Pre-Group", "Group", "Church", [ "role" => "Annotation" ] ];
                 break;
         }
-
-        return $generation_tree;
+        $first_row = [ "Generations" ];
+        foreach ( $generation_tree[0] as $key => $label ){
+            if ( $key != "generation" && $key != "total" ){
+                if ( isset( $groups_fields["group_type"]["default"][$key]["label"] ) ){
+                    $first_row[] = $groups_fields["group_type"]["default"][$key]["label"];
+                } else {
+                    $first_row[] = $key;
+                }
+            }
+        }
+        $first_row[] = [ "role" => "Annotation" ];
+        return array_merge( [ $first_row ], $generation_tree );
     }
 
     public static function chart_project_hero_stats() {

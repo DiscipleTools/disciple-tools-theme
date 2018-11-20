@@ -31,7 +31,7 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
 
     public function add_overview_menu( $content ) {
         $content .= '
-            <li><a href="'. site_url( '/metrics/' ) .'#my_stats" >' .  esc_html__( 'Personal', 'disciple_tools' ) . '</a></li>
+            <li><a href="'. site_url( '/metrics/' ) .'" >' .  esc_html__( 'Personal', 'disciple_tools' ) . '</a></li>
             ';
         return $content;
     }
@@ -58,25 +58,25 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
     public function overview() {
         $data = [
             'translations' => [
-                'title' => __( 'My Overview' ),
-                'title_waiting_on_accept' => __( 'Waiting on Accept' ),
-                'title_waiting_on_update' => __( 'Waiting on Update' ),
-                'title_contacts' => __( 'Contacts' ),
-                'title_groups' => __( 'Groups' ),
-                'title_total_groups' => __( 'Total Groups' ),
-                'title_needs_training' => __( 'Needs Training' ),
-                'title_fully_practicing' => __( 'Fully Practicing' ),
-                'title_group_types' => __( 'Group Types' ),
-                'title_generations' => __( 'Group and Church Generations' ),
-                'label_active_contacts'  => __( 'Active Contacts' ),
-                'total_groups'    => __( 'Total Groups' ),
-                'updates_needed'  => __( 'Updates Needed' ),
-                'attempts_needed' => __( 'Attempts Needed' ),
-                'label_groups_by_type' => strtolower( __( 'groups by type' ) ),
-                'label_number_of_contacts' => __( 'number of contacts' ),
-                'label_my_follow_up_progress' => __( 'Follow-up of my active contacts' ),
-                'label_group_needing_training' => __( 'Active Group Health Metrics' ),
-                'label_stats_as_of' => strtolower( __( 'stats as of' ) ),
+                'title' => __( 'My Overview', 'disciple_tools' ),
+                'title_waiting_on_accept' => __( 'Waiting on Accept', 'disciple_tools' ),
+                'title_waiting_on_update' => __( 'Waiting on Update', 'disciple_tools' ),
+                'title_contacts' => __( 'Contacts', 'disciple_tools' ),
+                'title_groups' => __( 'Groups', 'disciple_tools' ),
+                'title_total_groups' => __( 'Total Groups', 'disciple_tools' ),
+                'title_needs_training' => __( 'Needs Training', 'disciple_tools' ),
+                'title_fully_practicing' => __( 'Fully Practicing', 'disciple_tools' ),
+                'title_group_types' => __( 'Group Types', 'disciple_tools' ),
+                'title_generations' => __( 'Group and Church Generations', 'disciple_tools' ),
+                'label_active_contacts'  => __( 'Active Contacts', 'disciple_tools' ),
+                'total_groups'    => __( 'Total Groups', 'disciple_tools' ),
+                'updates_needed'  => __( 'Updates Needed', 'disciple_tools' ),
+                'attempts_needed' => __( 'Attempts Needed', 'disciple_tools' ),
+                'label_groups_by_type' => strtolower( __( 'groups by type', 'disciple_tools' ) ),
+                'label_number_of_contacts' => __( 'number of contacts', 'disciple_tools' ),
+                'label_my_follow_up_progress' => __( 'Follow-up of my active contacts', 'disciple_tools' ),
+                'label_group_needing_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
+                'label_stats_as_of' => strtolower( __( 'stats as of', 'disciple_tools' ) ),
             ],
             'hero_stats'        => self::chart_my_hero_stats(),
             'contacts_progress' => self::chart_contacts_progress(),

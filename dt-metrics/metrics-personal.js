@@ -111,8 +111,8 @@ function my_stats() {
     }
 
     function drawMyGroupHealth() {
-
-        let data = google.visualization.arrayToDataTable( sourceData.group_health );
+      console.log( sourceData );
+      let data = google.visualization.arrayToDataTable( sourceData.group_health );
 
         let options = {
             chartArea: {
@@ -172,10 +172,12 @@ function my_stats() {
 
     function drawGroupGenerations() {
 
-        let formattedData = [[ "Generations", "Pre-Group", "Group", "Church", {role: 'annotation'} ]]
-        sourceData.group_generations.forEach( row=>{
+      let formattedData = [sourceData.group_generations[0]]
+      sourceData.group_generations.forEach( (row, index)=>{
+        if ( index !== 0 ){
           formattedData.push( [row["generation"], row["pre-group"], row["group"], row["church"], ''] )
-        })
+        }
+      })
       let data = google.visualization.arrayToDataTable( formattedData );
 
         let options = {

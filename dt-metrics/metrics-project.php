@@ -38,8 +38,8 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
         $content .= '
             <li><a href="" >' .  esc_html__( 'Project', 'disciple_tools' ) . '</a>
                 <ul class="menu vertical nested" id="project-menu">
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_overview" onclick="project_overview()">'. esc_html__( 'Overview' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_critical_path" onclick="project_critical_path()">'. esc_html__( 'Critical Path' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_overview" onclick="project_overview()">'. esc_html__( 'Overview', 'disciple_tools' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_critical_path" onclick="project_critical_path()">'. esc_html__( 'Critical Path', 'disciple_tools' ) .'</a></li>
                 </ul>
             </li>
             ';
@@ -77,35 +77,35 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 
         return [
             'translations' => [
-                'title_overview' => __( 'Project Overview' ),
-                'title_timeline' => __( 'Timeline Activity' ),
-                'title_critical_path' => __( 'Critical Path' ),
-                'title_outreach' => __( 'Outreach' ),
-                'title_follow_up' => __( 'Follow Up' ),
-                'title_training' => __( 'Training' ),
-                'title_contacts' => __( 'Contacts' ),
-                'title_groups' => __( 'Groups' ),
-                'title_multiplication' => __( 'Multiplication' ),
-                'title_all_contacts' => __( 'All Contacts' ),
-                'title_active_contacts' => __( 'Active Contacts' ),
-                'title_waiting_on_accept' => __( 'Waiting on Accept' ),
-                'title_waiting_on_update' => __( 'Waiting on Update' ),
-                'title_project_groups' => __( 'Project Groups' ),
-                'title_total_groups' => __( 'Total Groups' ),
-                'title_needs_training' => __( 'Needs Training' ),
-                'title_fully_practicing' => __( 'Fully Practicing' ),
-                'title_generations' => __( 'Group and Church Generations' ),
-                'title_group_types' => __( 'Groups Types' ),
-                'label_number_of_contacts' => strtolower( __( 'number of contacts' ) ),
-                'label_follow_up_progress' => __( 'Follow-up progress of current active contacts' ),
-                'label_group_needs_training' => __( 'Active Groups Health Metrics' ),
-                'label_groups' => strtolower( __( 'groups' ) ),
-                'label_generations' => strtolower( __( 'generations' ) ),
-                'label_groups_by_type' => strtolower( __( 'groups by type' ) ),
-                'label_stats_as_of' => strtolower( __( 'stats as of' ) ),
-                'label_select_year' => __( 'Select All time or a specific year to display' ),
-                'label_all_time' => __( 'All time' ),
-                'label_group_types' => __( 'Group Types' ),
+                'title_overview' => __( 'Project Overview', 'disciple_tools' ),
+                'title_timeline' => __( 'Timeline Activity', 'disciple_tools' ),
+                'title_critical_path' => __( 'Critical Path', 'disciple_tools' ),
+                'title_outreach' => __( 'Outreach', 'disciple_tools' ),
+                'title_follow_up' => __( 'Follow Up', 'disciple_tools' ),
+                'title_training' => __( 'Training', 'disciple_tools' ),
+                'title_contacts' => __( 'Contacts', 'disciple_tools' ),
+                'title_groups' => __( 'Groups', 'disciple_tools' ),
+                'title_multiplication' => __( 'Multiplication', 'disciple_tools' ),
+                'title_all_contacts' => __( 'All Contacts', 'disciple_tools' ),
+                'title_active_contacts' => __( 'Active Contacts', 'disciple_tools' ),
+                'title_waiting_on_accept' => __( 'Waiting on Accept', 'disciple_tools' ),
+                'title_waiting_on_update' => __( 'Waiting on Update', 'disciple_tools' ),
+                'title_project_groups' => __( 'Project Groups', 'disciple_tools' ),
+                'title_total_groups' => __( 'Total Groups', 'disciple_tools' ),
+                'title_needs_training' => __( 'Needs Training', 'disciple_tools' ),
+                'title_fully_practicing' => __( 'Fully Practicing', 'disciple_tools' ),
+                'title_generations' => __( 'Group and Church Generations', 'disciple_tools' ),
+                'title_group_types' => __( 'Groups Types', 'disciple_tools' ),
+                'label_number_of_contacts' => strtolower( __( 'number of contacts', 'disciple_tools' ) ),
+                'label_follow_up_progress' => __( 'Follow-up progress of current active contacts', 'disciple_tools' ),
+                'label_group_needs_training' => __( 'Active Groups Health Metrics', 'disciple_tools' ),
+                'label_groups' => strtolower( __( 'groups', 'disciple_tools' ) ),
+                'label_generations' => strtolower( __( 'generations', 'disciple_tools' ) ),
+                'label_groups_by_type' => strtolower( __( 'groups by type', 'disciple_tools' ) ),
+                'label_stats_as_of' => strtolower( __( 'stats as of', 'disciple_tools' ) ),
+                'label_select_year' => __( 'Select All time or a specific year to display', 'disciple_tools' ),
+                'label_all_time' => __( 'All time', 'disciple_tools' ),
+                'label_group_types' => __( 'Group Types', 'disciple_tools' ),
             ],
             'hero_stats' => self::chart_project_hero_stats(),
             'critical_path' => self::chart_critical_path( dt_date_start_of_year(), dt_date_end_of_year() ),

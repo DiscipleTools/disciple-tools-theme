@@ -188,10 +188,12 @@ function project_overview() {
 
     function drawGroupGenerations() {
 
-        let formattedData = [[ "Generations", "Pre-Group", "Group", "Church", {role: 'annotation'} ]]
-        sourceData.group_generations.forEach( row=>{
-            formattedData.push( [row["generation"], row["pre-group"], row["group"], row["church"], ''] )
-        })
+      let formattedData = [sourceData.group_generations[0]]
+      sourceData.group_generations.forEach( (row, index)=>{
+        if ( index !== 0 ){
+          formattedData.push( [row["generation"], row["pre-group"], row["group"], row["church"], ''] )
+        }
+      })
 
         let data = google.visualization.arrayToDataTable( formattedData );
 
