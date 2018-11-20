@@ -359,6 +359,14 @@ class Disciple_Tools_Posts
                 $object_note_to = sprintf( __( '%1$s removed from child groups', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( __( '%s removed from parent groups', 'disciple_tools' ), $to_title );
             }
+        } else if ( $p2p_type === "contacts_to_relation"){
+            if ($action == "connected to"){
+                $object_note_to = sprintf( __( 'Connected to %s', 'disciple_tools' ), $from_title );
+                $object_note_from = sprintf( __( 'Connected to %s', 'disciple_tools' ), $to_title );
+            } else {
+                $object_note_to = sprintf( __( 'Removed connection to %s', 'disciple_tools' ), $from_title );
+                $object_note_from = sprintf( __( 'Removed connection to %s', 'disciple_tools' ), $to_title );
+            }
         } else {
             if ($action == "connected to"){
                 $object_note_to = __( 'Connected to', 'disciple_tools' ) . ' ' . $to_title;

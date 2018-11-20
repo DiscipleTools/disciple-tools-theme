@@ -933,7 +933,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     public static function remove_relation_from_contact( $contact_id, $relation ) {
-        return p2p_type( 'contacts_to_relation' )->disconnect( $contact_id, $relation );
+        $success = p2p_type( 'contacts_to_relation' )->disconnect( $contact_id, $relation );
+        if ( $success === 0 ){
+            $success = p2p_type( 'contacts_to_relation' )->disconnect( $relation, $contact_id );
+        }
+        return $success;
     }
 
     public static function remove_fields( $contact_id, $fields = [], $ignore = []) {
