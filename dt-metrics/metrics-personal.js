@@ -111,8 +111,7 @@ function my_stats() {
     }
 
     function drawMyGroupHealth() {
-      console.log( sourceData );
-      let data = google.visualization.arrayToDataTable( sourceData.group_health );
+        let data = google.visualization.arrayToDataTable( sourceData.group_health );
 
         let options = {
             chartArea: {

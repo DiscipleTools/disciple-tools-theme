@@ -237,7 +237,7 @@ class Disciple_Tools_Posts
                 'comment_content'      => $comment,
                 'user_id'              => $user_id,
                 'comment_author'       => $args["comment_author"] ?? $user->display_name,
-                'comment_author_url'   => $args["comment_author_url"] ?? $user->user_url,
+                'comment_author_url'   => $args["comment_author_url"] ?? "",
                 'comment_author_email' => $user->user_email,
                 'comment_type'         => $type,
             ];
@@ -596,7 +596,8 @@ class Disciple_Tools_Posts
         ]);
 
         foreach ( $comments as $comment ){
-            $comment->gravatar = !empty( $comment->comment_author_url ) ? $comment->comment_author_url : get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
+            $url = !empty( $comment->comment_author_url ) ? $comment->comment_author_url : get_avatar_url( $comment->user_id, [ 'size' => '16' ] );
+            $comment->gravatar = preg_replace( "/^http:/i", "https:", $url );
             $display_name = dt_get_user_display_name( $comment->user_id );
             $comment->comment_author = !empty( $display_name ) ? $display_name : $comment->comment_author;
         }
