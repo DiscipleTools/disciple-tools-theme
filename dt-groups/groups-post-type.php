@@ -618,6 +618,7 @@ class Disciple_Tools_Groups_Post_Type
                 'church'    => [ "label" => __( 'Church', 'disciple_tools' ) ],
             ],
             'section'     => 'info',
+            "customizable" => "add_only"
         ];
 
         $fields['assigned_to'] = [
