@@ -1580,8 +1580,8 @@ html[dir='rtl'] {
     margin-right: auto;
 }
 
-.update-needed-notification .bordered-box{
-    background-color: #F43636;
+
+.detail-notification-box {
     border: none;
     color: white;
     text-align: center;
@@ -1592,14 +1592,9 @@ html[dir='rtl'] {
         margin: 0 10px;
     }
 }
+
 .accept-contact .bordered-box{
     background-color: #3F729B;
-    border: none;
-    color: white;
-    text-align: center;
-    h4 {
-        font-weight: bold;
-    }
     .accept-button {
         background-color: #4CAF50;
     }

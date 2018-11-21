@@ -17,7 +17,7 @@
 //    <!-- Requires update block -->
     if ( isset( $contact['requires_update'] ) && $contact['requires_update'] === true ) { ?>
     <section class="cell small-12 update-needed-notification">
-        <div class="bordered-box">
+        <div class="bordered-box detail-notification-box" style="background-color:#F43636">
             <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This contact needs an update', 'disciple_tools' ) ?>.</h4>
             <p><?php esc_html_e( 'It has been a while since this contact was updated. Please do so', 'disciple_tools' )?>.</p>
         </div>
@@ -29,7 +29,7 @@
     if ( isset( $contact['overall_status'] ) && $contact['overall_status']['key'] == 'assigned' &&
         isset( $contact['assigned_to'] ) && $contact['assigned_to']['id'] == $current_user->ID ) { ?>
     <section class="cell accept-contact" id="accept-contact">
-        <div class="bordered-box">
+        <div class="bordered-box detail-notification-box">
             <h4><?php esc_html_e( 'This contact has been assigned to you.', 'disciple_tools' )?></h4>
             <button class="accept-button button small accept-decline" data-action="accept"><?php esc_html_e( 'Accept', 'disciple_tools' )?></button>
             <button class="decline-button button small accept-decline" data-action="decline"><?php esc_html_e( 'Decline', 'disciple_tools' )?></button>
@@ -38,8 +38,8 @@
     <?php } ?>
 
     <?php if ( isset( $contact['corresponds_to_user'] ) ) { ?>
-    <section class="cell accept-contact" id="contact-is-user">
-        <div class="bordered-box">
+    <section class="cell" id="contact-is-user">
+        <div class="bordered-box detail-notification-box" style="background-color:#3F729B">
             <h4><?php esc_html_e( 'This contact represents a user.', 'disciple_tools' )?></h4>
         </div>
     </section>

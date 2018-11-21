@@ -341,8 +341,8 @@ declare( strict_types=1 );
                     if ($duplicates){
                         ?>
                     <section id="duplicates" class="small-12 grid-y grid-margin-y cell">
-                        <div class="bordered-box" style="background-color:#ff9800; border:.2rem solid #30c2ff; text-align:center;">
-                            <h3 class="section-header" style="color:white;"><?php esc_html_e( "This contact has possible duplicates.", 'disciple_tools' ) ?></h3>
+                        <div class="bordered-box detail-notification-box" style="background-color:#ff9800">
+                            <h4 class="section-header" style="color:white;"><?php esc_html_e( "This contact has possible duplicates.", 'disciple_tools' ) ?></h4>
                            <?php get_template_part( 'dt-assets/parts/merge', 'details' ); ?>
                             <button type="button" id="merge-dupe-modal" data-open="merge-dupe-modal" class="button">
                               <?php esc_html_e( "Go to duplicates", 'disciple_tools' ) ?>
