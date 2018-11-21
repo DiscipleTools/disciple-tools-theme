@@ -77,10 +77,10 @@ jQuery(document).ready(function($) {
       }
     })
 
-    let tab = $(`#tab-button-activity`)
+    let tab = $(`[data-id="activity"].tab-button-label`)
     let text = tab.text()
     text = text.substring(0, text.indexOf('(')) || text
-    text += `(${activityData.length})`
+    text += ` (${activityData.length})`
     tab.text(text)
   }
   $(".show-tabs").on("click", function () {
@@ -186,12 +186,24 @@ jQuery(document).ready(function($) {
   }
 
   function display_activity_comment() {
-    let activeTabs = $('#comment-activity-tabs .tabs-section:checked')
+    let savedTabs = window.SHAREDFUNCTIONS.getCookie("contact_details_tabs")
     let activeTabIds = [];
-    activeTabs.each((i, e)=>{
-      activeTabIds.push($(e).data("id"))
-    })
+    try {
+      activeTabIds = JSON.parse(savedTabs)
+    } catch (e) {}
+    if ( activeTabIds.length === 0 ){
+      let activeTabs = $('#comment-activity-tabs .tabs-section:checked')
+      activeTabs.each((i, e)=>{
+        activeTabIds.push($(e).data("id"))
+      })
+    } else {
+      activeTabIds.forEach(tab=>{
+      })
+    }
     let possibleTabs = _.union( [ 'activity', 'comment' ], commentsSettings.additional_sections.map((l)=>{return l['key']}))
+    possibleTabs.forEach(tab=>{
+        $(`#tab-button-${tab}`).prop('checked', activeTabIds.includes(tab))
+    })
 
     let commentsWrapper = $("#comments-wrapper")
     commentsWrapper.empty()
@@ -334,10 +346,10 @@ jQuery(document).ready(function($) {
       typesCount[comment.comment_type]++;
     })
     _.forOwn(typesCount, (val, key)=>{
-      let tab = $(`#tab-button-${key}`)
+      let tab = $(`[data-id="${key}"].tab-button-label`)
       let text = tab.text()
       text = text.substring(0, text.indexOf('(')) || text
-      text += `(${val})`
+      text += ` (${val})`
       tab.text(text)
     })
     comments = commentData
@@ -353,6 +365,12 @@ jQuery(document).ready(function($) {
   })
 
   $('#comment-activity-tabs .tabs-section').on("change", function () {
+    let activeTabs = $('#comment-activity-tabs .tabs-section:checked')
+    let activeTabIds = [];
+    activeTabs.each((i, e)=>{
+      activeTabIds.push($(e).data("id"))
+    })
+    document.cookie = `contact_details_tabs=${JSON.stringify(activeTabIds)};path=/;expires=Fri, 31 Dec 9999 23:59:59 GMT"`
     display_activity_comment()
   })
 

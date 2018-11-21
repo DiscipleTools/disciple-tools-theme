@@ -77,7 +77,7 @@
                             "selected-select-button" : "empty-select-button"
                         ?>
                     <li class="tabs-title" >
-                        <label for="tab-button-<?php echo esc_html( $section["key"] ) ?>">
+                        <label for="tab-button-<?php echo esc_html( $section["key"] ) ?>" >
                             <input type="checkbox"
                                    name="<?php echo esc_html( $section["key"] ) ?>"
                                    id="tab-button-<?php echo esc_html( $section["key"] ) ?>"
@@ -85,7 +85,7 @@
                                    class="tabs-section"
                                    <?php echo esc_html( ( isset( $section["selected_by_default"] ) && $section["selected_by_default"] === true ) ? 'checked' : '' ) ?>
                             >
-                            <?php echo esc_html( $section["label"] ) ?>
+                            <span class="tab-button-label" data-id="<?php echo esc_html( $section["key"] ) ?>"> <?php echo esc_html( $section["label"] ) ?></span>
                         </label>
 
                     </li>
