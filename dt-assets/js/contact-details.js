@@ -802,7 +802,8 @@ jQuery(document).ready(function($) {
     let status = _.get(contact, "overall_status.key")
     let reasonLabel = _.get(contact, `reason_${status}.label`)
     let statusColor = _.get(contactsDetailsWpApiSettings,
-      `contacts_custom_fields_settings.overall_status.default.${status}.color`)
+      `contacts_custom_fields_settings.overall_status.default.${status}.color`
+    )
     statusSelect.val(status)
 
     if (openModal){
@@ -821,11 +822,11 @@ jQuery(document).ready(function($) {
       statusSelect.css("background-color", "#366184")
     }
 
-    $('#reason').text(reasonLabel ? `(${reasonLabel})` : '')
-
-    if (reasonLabel){
+    if (["paused", "closed", "unassignable"].includes(status)){
+      $('#reason').text(`(${reasonLabel})`)
       $(`#edit-reason`).show()
     } else {
+      $('#reason').text(``)
       $(`#edit-reason`).hide()
     }
   }
