@@ -370,7 +370,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Enabled", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Hide domain if a url", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Icon link", 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( "Icon link (must be https)", 'disciple_tools' ) ?></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -392,7 +392,12 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                             <input name="channel_hide_domain[<?php echo esc_html( $channel_key ) ?>]"
                                    type="checkbox" <?php echo esc_html( $hide_domain ? "checked" : "" ) ?> />
                         </td>
-                        <td><input type="text" name="channel_icon[<?php echo esc_html( $channel_key ) ?>]" value="<?php echo esc_html( $channel_option["icon"] ?? "" ) ?>"></td>
+                        <td>
+                            <input type="text" name="channel_icon[<?php echo esc_html( $channel_key ) ?>]" value="<?php echo esc_html( $channel_option["icon"] ?? "" ) ?>">
+                            <?php if ( !empty( $channel_option["icon"] ) ) : ?>
+                            <button type="submit" class="button" name="channel_reset_icon[<?php echo esc_html( $channel_key ) ?>]"><?php esc_html_e( "Reset link", 'disciple_tools' ) ?></button>
+                            <?php endif; ?>
+                        </td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -446,6 +451,9 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     $custom_channels[$channel_key]["hide_domain"] = true;
                 } else {
                     $custom_channels[$channel_key]["hide_domain"] = false;
+                }
+                if ( isset( $_POST["channel_reset_icon"][$channel_key] ) ){
+                    unset( $custom_channels[$channel_key]["icon"] );
                 }
             }
             if ( !empty( $_POST["add_channel"] ) ){
