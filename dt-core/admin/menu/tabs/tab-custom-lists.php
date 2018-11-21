@@ -369,12 +369,14 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Enabled", 'disciple_tools' ) ?></td>
-
+                        <td><?php esc_html_e( "Hide domain if a url", 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( "Icon link", 'disciple_tools' ) ?></td>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ( $channels as $channel_key => $channel_option ) :
                         $enabled = !isset( $channel_option['enabled'] ) || $channel_option['enabled'] !== false;
+                        $hide_domain = isset( $channel_option['hide_domain'] ) && $channel_option['hide_domain'] == true;
                         if ( $channel_key == 'phone' || $channel_key == 'email' || $channel_key == 'address' ){
                             continue;
                         } ?>
@@ -382,9 +384,15 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <tr>
                         <td><input type="text" name="channel_label[<?php echo esc_html( $channel_key ) ?>]" value="<?php echo esc_html( $channel_option["label"] ?? $channel_key ) ?>"></td>
                         <td><?php echo esc_html( $channel_key ) ?></td>
-                        <td><input name="channel_enabled[<?php echo esc_html( $channel_key ) ?>]"
+                        <td>
+                            <input name="channel_enabled[<?php echo esc_html( $channel_key ) ?>]"
                                    type="checkbox" <?php echo esc_html( $enabled ? "checked" : "" ) ?> />
                         </td>
+                        <td>
+                            <input name="channel_hide_domain[<?php echo esc_html( $channel_key ) ?>]"
+                                   type="checkbox" <?php echo esc_html( $hide_domain ? "checked" : "" ) ?> />
+                        </td>
+                        <td><input type="text" name="channel_icon[<?php echo esc_html( $channel_key ) ?>]" value="<?php echo esc_html( $channel_option["icon"] ?? "" ) ?>"></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -423,10 +431,21 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                         $custom_channels[$channel_key]["label"] = $label;
                     }
                 }
+                if ( isset( $_POST["channel_icon"][$channel_key] ) ){
+                    $icon = sanitize_text_field( wp_unslash( $_POST["channel_icon"][$channel_key] ) );
+                    if ( !isset( $channel_options["icon"] ) || $channel_options["icon"] != $icon ){
+                        $custom_channels[$channel_key]["icon"] = $icon;
+                    }
+                }
                 if ( isset( $_POST["channel_enabled"][$channel_key] ) ){
                     $custom_channels[$channel_key]["enabled"] = true;
                 } else {
                     $custom_channels[$channel_key]["enabled"] = false;
+                }
+                if ( isset( $_POST["channel_hide_domain"][$channel_key] ) ){
+                    $custom_channels[$channel_key]["hide_domain"] = true;
+                } else {
+                    $custom_channels[$channel_key]["hide_domain"] = false;
                 }
             }
             if ( !empty( $_POST["add_channel"] ) ){

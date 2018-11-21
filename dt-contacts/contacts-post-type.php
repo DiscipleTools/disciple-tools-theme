@@ -1114,14 +1114,20 @@ class Disciple_Tools_Contact_Post_Type
             "facebook"  => [
                 "label" => __( 'Facebook', 'disciple_tools' ),
                 "types" => [
-                    "facebook" => [ "label" => __( 'Facebook', 'disciple_tools' ) ],
+                    "facebook" => [
+                        "label" => __( 'Facebook', 'disciple_tools' ),
+                    ],
                 ],
+                "icon" => get_template_directory_uri() . "/dt-assets/images/facebook.svg",
+                "hide_domain" => true
             ],
             "twitter"   => [
                 "label" => __( 'Twitter', 'disciple_tools' ),
                 "types" => [
                     "twitter" => [ "label" => __( 'Twitter', 'disciple_tools' ) ],
                 ],
+                "icon" => get_template_directory_uri() . "/dt-assets/images/twitter.svg",
+                "hide_domain" => true
             ],
             "instagram" => [
                 "label" => __( 'Instagram', 'disciple_tools' ),

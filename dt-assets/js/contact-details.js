@@ -1023,9 +1023,18 @@ jQuery(document).ready(function($) {
     setStatus(contact, true)
   })
 
+  let upgradeUrl = (url)=>{
+    if ( !url.includes("http")){
+      url = "https://" + url
+    }
+    if ( !url.startsWith(contactsDetailsWpApiSettings.template_dir)){
+      url = url.replace( 'http://', 'https://' )
+    }
+    return url
+  }
 
   let urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi
-
+  let protocolRegex = /^(?:https?:\/\/)?(?:www.)?/gi
   let resetDetailsFields = (contact=>{
     $('.title').html(_.escape(contact.title))
     let contact_methods = ["contact_email", "contact_phone", "contact_address"]
@@ -1061,23 +1070,34 @@ jQuery(document).ready(function($) {
     _.forOwn(contact, ( value, contact_method)=>{
       if ( contact_method.indexOf("contact_") === 0 && !contact_methods.includes( contact_method )){
         let fieldDesignator = contact_method.replace('contact_', '')
+        let channel = _.get(contactsDetailsWpApiSettings, `channels.${fieldDesignator}`, {})
         let fields = contact[contact_method]
         fields.forEach(field=>{
           socialIsEmpty = false
           let value = _.escape(field.value)
-          let match = new RegExp(urlRegex).exec(value)
-          if (match){
-            if (!value.includes("http")){
-              value = `https://${value}`
+          let validURL = new RegExp(urlRegex).exec(value)
+          let prefix = new RegExp(protocolRegex).exec(value)
+          if (validURL && prefix){
+            let urlToDisplay = ""
+            if ( channel.hide_domain && channel.hide_domain === true ){
+              urlToDisplay = validURL[1] || value
+            } else {
+              urlToDisplay = value.replace(prefix[0], "")
             }
-            value = `<a href="${value}" target="_blank" >${_.escape(match[1] || value)}</a>`
+            value = upgradeUrl( value )
+            value = `<a href="${value}" target="_blank" >${_.escape(urlToDisplay)}</a>`
+          }
+          let label = _.get( channel, "label", fieldDesignator ) + ": "
+          if ( channel.icon ){
+            channel.icon = upgradeUrl( channel.icon )
+            label = `<object data="${channel.icon}" height="10px" width="10px"
+              type="image/jpg">${label}</object>`
           }
           socialHTMLField.append(`<li class="details-list ${_.escape(field.key)}">
-            <object data="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/${fieldDesignator}.svg"
-              type="image/jpg">${fieldDesignator}:</object>
+            ${label}
               ${value}
-              <img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>
-              <img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>
+              <!--<img id="${_.escape(field.key)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>-->
+              <!--<img id="${_.escape(field.key)}-invalid" class="details-status" ${!field.invalid ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/broken.svg"/>-->
             </li>
           `)
         })
