@@ -615,10 +615,12 @@ jQuery(document).ready(function($) {
         event.preventDefault()
         this.hideLayout();
         this.resetInput();
+        masonGrid.masonry('layout')
       },
       onResult: function (node, query, result, resultCount) {
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#tags-result-container').html(text);
+        masonGrid.masonry('layout')
       },
       onHideLayout: function () {
         $('#tags-result-container').html("");
