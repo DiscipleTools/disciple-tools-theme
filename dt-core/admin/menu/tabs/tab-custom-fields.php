@@ -291,7 +291,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <td><?php esc_html_e( "Key", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Label", 'disciple_tools' ) ?></td>
                         <td><?php esc_html_e( "Move", 'disciple_tools' ) ?></td>
-                        <td><?php esc_html_e( "Delete", 'disciple_tools' ) ?></td>
+                        <td><?php esc_html_e( "Hide/Archive", 'disciple_tools' ) ?></td>
                     </tr>
                     </thead>
                     <tbody>
@@ -314,7 +314,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                     <td>
                                         <?php if ( ( isset( $defaults[$field_key]["customizable"] ) && $defaults[$field_key]["customizable"] === "all" )
                                             || !isset( $defaults[$field_key]["default"][$key] )) : ?>
-                                        <button type="submit" name="delete_option" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "delete", 'disciple_tools' ) ?></button>
+                                        <button type="submit" name="delete_option" value="<?php echo esc_html( $key ) ?>" class="button small" ><?php esc_html_e( "Hide", 'disciple_tools' ) ?></button>
                                         <?php endif; ?>
                                     </td>
                             </tr>
