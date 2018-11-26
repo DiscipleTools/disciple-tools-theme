@@ -163,10 +163,10 @@ declare(strict_types=1);
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
                     <?php $fields = [ "assigned_to", "subassigned", "locations", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
+                    $allowed_types = [ "multi_select", "key_select", "boolean" ];
                     foreach ( $dt_contact_field_options as $field_key => $field){
 
-                        if ( $field["type"] === "key_select" && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
-
+                        if ( in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
                             $fields[] = $field_key;
                         }
                     }
@@ -234,8 +234,19 @@ declare(strict_types=1);
                                                 </label>
                                             </div>
                                         <?php endforeach; ?>
-                                    <?php elseif ( isset( $dt_contact_field_options[$field] ) && $dt_contact_field_options[$field]["type"] == "key_select" ) : ?>
-
+                                    <?php elseif ( isset( $dt_contact_field_options[$field] ) && $dt_contact_field_options[$field]["type"] == "boolean" ) : ?>
+                                        <div class="boolean_options">
+                                            <label style="cursor: pointer">
+                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>" data-label="<?php esc_html_e( "No", 'disciple_tools' ) ?>"
+                                                       value="0"> <?php esc_html_e( "No", 'disciple_tools' ) ?>
+                                            </label>
+                                        </div>
+                                        <div class="boolean_options">
+                                            <label style="cursor: pointer">
+                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>" data-label="<?php esc_html_e( "Yes", 'disciple_tools' ) ?>"
+                                                       value="1"> <?php esc_html_e( "Yes", 'disciple_tools' ) ?>
+                                            </label>
+                                        </div>
                                     <?php endif; ?>
                                 </div>
                             </div>

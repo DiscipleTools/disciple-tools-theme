@@ -403,7 +403,7 @@
       fields = ["group_type", "group_status"]
     } else if ( wpApiListSettings.current_post_type === "contacts" ){
       searchQuery.subassigned = _.map(_.get(Typeahead['.js-typeahead-subassigned'], "items"), "ID")
-      fields = ["overall_status", "seeker_path", "requires_update", "sources"]
+      fields = ["overall_status", "seeker_path", "requires_update"]
       _.forOwn( wpApiListSettings.custom_fields_settings, (field, field_key)=>{
         if ( ( field.type === "key_select"  || field.type === "multi_select" ) && !fields.includes(field_key) ){
           fields.push(field_key)
@@ -418,7 +418,7 @@
     fields.forEach(field=>{
       searchQuery[field] =[]
       if ( _.get(wpApiListSettings, `custom_fields_settings.${field}.type` ) === "multi_select" ){
-        searchQuery[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "id")
+        searchQuery[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "key")
       } else {
         $(`#${field}-options input:checked`).each(function(){
           searchQuery[field].push($(this).val())
@@ -595,8 +595,9 @@
             $('#locations-result-container').html("");
           },
           onClick: function (node, a, item) {
-            newFilterLabels.push({id: item.ID, name: item.name, field: "locations"})
-            selectedFilters.append(`<span class="current-filter locations" id="${item.ID}">${item.name}</span>`)
+            let name = _.get(wpApiListSettings, `custom_fields_settings.locations.name`, 'locations')
+            newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "locations"})
+            selectedFilters.append(`<span class="current-filter locations" id="${item.ID}">${name}:${item.name}</span>`)
           }
         }
       });
@@ -685,8 +686,9 @@
             $('#subassigned-result-container').html("");
           },
           onClick: function (node, a, item, event) {
-            newFilterLabels.push({id: item.ID, name: item.name, field: "subassigned"})
-            selectedFilters.append(`<span class="current-filter subassigned" id="${item.ID}">${item.name}</span>`)
+            let name = _.get(wpApiListSettings, `custom_fields_settings.subassigned.name`, 'subassigned')
+            newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "subassigned"})
+            selectedFilters.append(`<span class="current-filter subassigned" id="${item.ID}">${name}:${item.name}</span>`)
           }
         }
       });
@@ -744,8 +746,9 @@
             $('#assigned_to-result-container').html(text);
           },
           onClick: function(node, a, item, event) {
-            selectedFilters.append(`<span class="current-filter assigned_to" id="${item.ID}">${item.name}</span>`)
-            newFilterLabels.push({id:item.ID, name:item.name, field:"assigned_to"})
+            let name = _.get(wpApiListSettings, `custom_fields_settings.assigned_to.name`, 'assigned_to')
+            selectedFilters.append(`<span class="current-filter assigned_to" id="${item.ID}">${name}:${item.name}</span>`)
+            newFilterLabels.push({id:item.ID, name:`${name}:${item.name}`, field:"assigned_to"})
 
           }
         }
@@ -761,6 +764,8 @@
         return
       }
 
+      let sourceData =  { data: [] }
+      let fieldOptions = _.get(wpApiListSettings, `custom_fields_settings.${field}.default`, {})
       if (field == 'sources') {
         /* Similar code is in contact-details.js, copy-pasted for now. */
         $(".js-typeahead-sources").attr("disabled", true) // disable while loading AJAX
@@ -770,116 +775,84 @@
             'X-WP-Nonce': wpApiShare.nonce,
           },
         });
-        let sourcesData = [];
         _.forOwn(await response.json(), (sourceValue, sourceKey) => {
-          sourcesData.push({
-           key:sourceKey,
-           value:sourceValue || "",
-           name:sourceKey, // name is used for building URL params later
+          sourceData.data.push({
+            key: sourceKey,
+            value: sourceValue || "",
+            name: sourceKey, // name is used for building URL params later
           })
         })
         $(".js-typeahead-sources").attr("disabled", false)
-        $.typeahead({
-          input: '.js-typeahead-sources',
-          minLength: 0,
-          accent: true,
-          searchOnFocus: true,
-          maxItem: 200,
-          source: {
-            data: sourcesData
-          },
-          template: function(query, item) {
-            return `<span>${_.escape(item.value || item.key)}</span>`
-          },
-          display: "value", // the key that will be searched
-          templateValue: "{{value}}",
-          dynamic: true,
-          multiselect: {
-            matchOn: ["value"],
-            data: [],
-            callback: {
-              onCancel: function(node, item) {
-                $(`#${_.escape(item.value)}.${field}`).remove()
-                _.pullAllBy(newFilterLabels, [{id:item.key}], "id")
-              }
-            }
-          },
-          callback: {
-            onClick: function(node, a, item, event) {
-              selectedFilters.append(`<span class="current-filter ${field}" id="${_.escape(item.key)}">${_.escape(item.value || item.key)}</span>`)
-              newFilterLabels.push({id:item.key, name:item.value, field})
-            },
-            onResult: function(node, query, result, resultCount) {
-               let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-               $(`#${field}-result-container`).html(text);
-             },
-             onHideLayout: function () {
-               $(`#${field}-result-container`).html("");
-             },
-          },
-        });
-
+      } else if ( Object.keys(fieldOptions).length > 0 ){
+        _.forOwn(fieldOptions, (val, key)=>{
+            sourceData.data.push({
+              key: key,
+              name:key,
+              value: val.label || key
+            })
+          })
       } else {
-        let fieldOptions = _.get(wpApiListSettings, `custom_fields_settings.${field}.default`, {})
-        $.typeahead({
-          input: `.js-typeahead-${field}`,
-          minLength: 0,
-          maxItem: 20,
-          searchOnFocus: true,
-          template: function (query, item) {
-            return `<span>${_.escape(item.label)}</span>`
-          },
-          source: {
-            tags: {
-              display: ["label"],
-              ajax: {
-                url: `${wpApiListSettings.root}dt/v1/contact/multi-select-options`,
-                data: {
-                  s: "{{query}}",
-                  field
-                },
-                beforeSend: function (xhr) {
-                  xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-                },
-                callback: {
-                  done: function (data) {
-                    return (data || []).map(tag=>{
-                      let label = _.get( fieldOptions, tag + ".label", tag )
-                      return {label:label, id:tag}
-                    })
-                  }
+        sourceData = {
+          [field]: {
+            display: ["value"],
+            ajax: {
+              url: `${wpApiListSettings.root}dt/v1/contact/multi-select-options`,
+              data: {
+                s: "{{query}}",
+                field
+              },
+              beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+              },
+              callback: {
+                done: function (data) {
+                  return (data || []).map(tag => {
+                    let label = _.get(fieldOptions, tag + ".label", tag)
+                    return {value: label, key: tag}
+                  })
                 }
               }
             }
-          },
-          display: "label",
-          templateValue: "{{label}}",
-          dynamic: true,
-          multiselect: {
-            matchOn: ["id"],
-            data: [],
-            callback: {
-              onCancel: function (node, item) {
-                $(`#${item.id}.${field}`).remove()
-                _.pullAllBy(newFilterLabels, [{id:item.id}], "id")
-              }
-            }
-          },
+          }
+        }
+      }
+      $.typeahead({
+        input: `.js-typeahead-${field}`,
+        minLength: 0,
+        maxItem: 20,
+        searchOnFocus: true,
+        template: function (query, item) {
+          return `<span>${_.escape(item.value)}</span>`
+        },
+        source: sourceData,
+        display: "value",
+        templateValue: "{{value}}",
+        dynamic: true,
+        multiselect: {
+          matchOn: ["key"],
+          data: [],
           callback: {
-            onClick: function(node, a, item, event){
-              selectedFilters.append(`<span class="current-filter ${field}" id="${item.id}">${item.label}</span>`)
-              newFilterLabels.push({id:item.id, name:item.label, field})
-            },
-            onResult: function (node, query, result, resultCount) {
-              let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-              $(`#${field}-result-container`).html(text);
-            },
-            onHideLayout: function () {
-              $(`#${field}-result-container`).html("");
+            onCancel: function (node, item) {
+              $(`#${item.key}.${field}`).remove()
+              _.pullAllBy(newFilterLabels, [{id:item.key}], "id")
             }
           }
-        });
-      }
+        },
+        callback: {
+          onClick: function(node, a, item, event){
+            let name = _.get(wpApiListSettings, `custom_fields_settings.${field}.name`, field)
+            selectedFilters.append(`<span class="current-filter ${field}" id="${item.key}">${name}:${item.value}</span>`)
+            newFilterLabels.push({id:item.key, name:`${name}:${item.value}`, field})
+          },
+          onResult: function (node, query, result, resultCount) {
+            let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+            $(`#${field}-result-container`).html(text);
+          },
+          onHideLayout: function () {
+            $(`#${field}-result-container`).html("");
+          }
+        }
+      });
     }
   }
 
@@ -962,8 +935,23 @@
     if ($(this).is(":checked")){
       let field_options = _.get( wpApiListSettings, `custom_fields_settings.${field_key}.default` )
       let optionName = field_options[optionId]["label"]
-      newFilterLabels.push({id:$(this).val(), name:optionName, field:field_key})
-      selectedFilters.append(`<span class="current-filter ${field_key}" id="${optionId}">${optionName}</span>`)
+      let name = _.get(wpApiListSettings, `custom_fields_settings.${field_key}.name`, field_key)
+      newFilterLabels.push({id:$(this).val(), name:`${name}:${optionName}`, field:field_key})
+      selectedFilters.append(`<span class="current-filter ${field_key}" id="${optionId}">${name}:${optionName}</span>`)
+    } else {
+      $(`#${$(this).val()}.${field_key}`).remove()
+      _.pullAllBy(newFilterLabels, [{id:optionId}], "id")
+    }
+  })
+  //watch bool checkboxes
+  $('#filter-modal .boolean_options input').on("change", function() {
+    let field_key = $(this).data('field');
+    let optionId = $(this).val()
+    let label = $(this).data('label');
+    if ($(this).is(":checked")){
+      let field = _.get( wpApiListSettings, `custom_fields_settings.${field_key}` )
+      newFilterLabels.push({id:$(this).val(), name:`${field.name}:${label}`, field:field_key})
+      selectedFilters.append(`<span class="current-filter ${field_key}" id="${optionId}">${field.name}:${label}</span>`)
     } else {
       $(`#${$(this).val()}.${field_key}`).remove()
       _.pullAllBy(newFilterLabels, [{id:optionId}], "id")

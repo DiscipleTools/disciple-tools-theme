@@ -874,6 +874,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
+            'hidden'      => true
         ];
         $fields["unfollow"] = [
             'name'        => __( 'Un-Follow', 'disciple_tools' ),
@@ -881,6 +882,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
+            'hidden'      => true
         ];
         $fields["tags"] = [
             "name" => __( "Tags", "disciple_tools" ),
@@ -892,6 +894,14 @@ class Disciple_Tools_Contact_Post_Type
             "type" => "text",
             "default" => '',
             "hidden" => true
+        ];
+        $fields["locations"] = [
+            "name" => __( "Locations", "disciple_tools" ),
+            "type" => "connection"
+        ];
+        $fields["subassigned"] = [
+            "name" => __( "Sub-assigned to", "disciple_tools" ),
+            "type" => "connection"
         ];
 
         return $fields;
