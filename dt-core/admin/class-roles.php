@@ -90,7 +90,7 @@ class Disciple_Tools_Roles
             remove_role( 'strategist' );
         }
         add_role(
-            'strategist', __( 'Strategist' ),
+            'strategist', __( 'Strategist', "disciple_tools" ),
             [
                 'view_project_metrics' => true
             ]
@@ -100,7 +100,7 @@ class Disciple_Tools_Roles
             remove_role( 'dispatcher' );
         }
         add_role(
-            'dispatcher', __( 'Dispatcher' ),
+            'dispatcher', __( 'Dispatcher', "disciple_tools" ),
             [
                 'read'                      => true, //access to admin
 
@@ -178,7 +178,7 @@ class Disciple_Tools_Roles
             remove_role( 'marketer' );
         }
         add_role(
-            'marketer', __( 'Marketer' ),
+            'marketer', __( 'Digital Responder', "disciple_tools" ),
             [
                 'access_groups' => true,
                 'create_groups' => true,
@@ -200,7 +200,7 @@ class Disciple_Tools_Roles
             remove_role( 'dt_admin' );
         }
         add_role(
-            'dt_admin', __( 'DT Admin' ),
+            'dt_admin', __( 'DT Admin', "disciple_tools" ),
             [
                 'read'                      => true, //access to admin
 
@@ -290,7 +290,7 @@ class Disciple_Tools_Roles
             remove_role( 'multiplier' );
         }
         add_role(
-            'multiplier', __( 'Multiplier' ),
+            'multiplier', __( 'Multiplier', "disciple_tools" ),
             [
                 'access_contacts'        => true,
                 'create_contacts'        => true,
@@ -307,7 +307,7 @@ class Disciple_Tools_Roles
             remove_role( 'registered' );
         }
         add_role(
-            'registered', __( 'Registered' ),
+            'registered', __( 'Registered', "disciple_tools" ),
             [
                 // No capabilities to this role. Must be moved to another role for permission.
             ]
@@ -427,7 +427,7 @@ class Disciple_Tools_Roles
         remove_role( 'project_supporter' );
 
         add_role(
-            'subscriber', __( 'Subscriber' ),
+            'subscriber', __( 'Subscriber', "disciple_tools" ),
             [
                 'delete_others_posts'    => true,
                 'delete_pages'           => true,
