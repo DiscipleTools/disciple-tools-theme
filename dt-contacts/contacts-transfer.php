@@ -94,12 +94,12 @@ class Disciple_Tools_Contacts_Transfer
                 <div class="cell" id="transfer-warning">
                     <h6><?php esc_html_e( 'Already transfered to' ) ?> <?php echo esc_html( $site_title ) ?></h6>
                     <p><?php esc_html_e( 'NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?', 'disciple_tools' ) ?></p>
-                    <p><button type="button" onclick="jQuery('#transfer-form').show();jQuery('#transfer-warning').hide();" class="button"><?php esc_html_e( 'Override and Continue' ) ?></button></p>
+                    <p><button type="button" onclick="jQuery('#transfer-form').show();jQuery('#transfer-warning').hide();" class="button"><?php esc_html_e( 'Override and Continue', "disciple_tools" ) ?></button></p>
                 </div>
                 <?php endif; ?>
 
                 <div class="cell" id="transfer-form" <?php if ( $foreign_key_exists ) { echo 'style="display:none;"'; }?>>
-                    <h6><?php esc_html_e( 'Transfer this contact to:' ) ?></h6>
+                    <h6><?php esc_html_e( 'Transfer this contact to:', "disciple_tools" ) ?></h6>
                     <select name="transfer_contact" id="transfer_contact" onchange="jQuery('#transfer_button_div').show();">
                         <option value=""></option>
                         <?php
@@ -368,10 +368,10 @@ class Disciple_Tools_Contacts_Transfer
     public static function duplicate_check( $transfer_foreign_key ) {
         global $wpdb;
         $duplicate = $wpdb->get_var( $wpdb->prepare( "
-            SELECT post_id 
-            FROM $wpdb->postmeta 
-            WHERE meta_value = %s 
-              AND meta_key = 'transfer_foreign_key' 
+            SELECT post_id
+            FROM $wpdb->postmeta
+            WHERE meta_value = %s
+              AND meta_key = 'transfer_foreign_key'
             LIMIT 1", $transfer_foreign_key ) );
         if ( $duplicate ) {
             return $duplicate;

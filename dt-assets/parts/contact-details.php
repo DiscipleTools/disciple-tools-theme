@@ -256,7 +256,7 @@
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
-                    <?php esc_html_e( 'Source' ); ?>
+                    <?php esc_html_e( 'Source', "disciple_tools" ); ?>
                 </div>
                 <?php if ( user_can( get_current_user_id(), 'view_any_contacts' ) ) : ?>
                     <span id="sources-result-container" class="result-container"></span>
