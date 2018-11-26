@@ -244,8 +244,8 @@
       ['planting', 'in_group', 'sharing', 'can_share'],
       function(key) { return (contact["milestones"] || []).includes(`milestone_${key}`); }
     );
-    let status = ccfs.overall_status.default[contact.overall_status]["label"];
-    let seeker_path = ccfs.seeker_path.default[contact.seeker_path]["label"];
+    let status = _.get( ccfs, `overall_status.default[${contact.overall_status}]["label"]`, contact.overall_status )
+    let seeker_path = _.get( ccfs, `seeker_path.default[${contact.seeker_path}]["label"]`, contact.seeker_path )
     // if (contact.overall_status === "active") {
     //   status = ccfs.seeker_path.default[contact.seeker_path];
     // } else {
@@ -275,8 +275,8 @@
       return '<a href="' + _.escape(leader.permalink) + '">' + _.escape(leader.post_title) + "</a>";
     }).join(", ");
     const gcfs = wpApiListSettings.custom_fields_settings;
-    const status = gcfs.group_status.default[group.group_status || "active"]["label"];
-    const type = gcfs.group_type.default[group.group_type || "group"]["label"];
+    const status = _.get( gcfs, `group_status.default[${group.group_status || "active"}]["label"]`, group.group_status )
+    const type = _.get( gcfs, `gcfs.group_type.default[${group.group_type || "group"}]["label"]`, group.group_type )
     const context = _.assign({}, group, wpApiListSettings, {
       leader_links,
       status,
