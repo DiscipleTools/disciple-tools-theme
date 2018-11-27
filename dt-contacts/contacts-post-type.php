@@ -109,7 +109,6 @@ class Disciple_Tools_Contact_Post_Type
         add_filter( 'post_type_link', [ $this, 'contacts_permalink' ], 1, 3 );
 
         if ( is_admin() ) {
-            add_action( 'admin_menu', [ $this, 'disable_new_contacts_in_admin_area' ] );
             add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
             add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
@@ -156,6 +155,7 @@ class Disciple_Tools_Contact_Post_Type
             'feeds'      => false,
         ];
         $capabilities = [
+            'create_posts'        => 'do_not_allow',
             'edit_post'           => 'access_contacts',
             'read_post'           => 'access_contacts',
             'delete_post'         => 'delete_any_contacts',
@@ -1284,16 +1284,5 @@ class Disciple_Tools_Contact_Post_Type
         add_rewrite_rule( 'contacts/([0-9]+)?$', 'index.php?post_type=contacts&p=$matches[1]', 'top' );
     }
 
-    public function disable_new_contacts_in_admin_area() {
-        echo "<style type='text/css' >
-            #menu-posts-contacts ul { display:none; }
-        </style>";
-        // Hide link on listing page
-        if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'contacts') {
-            echo '<style type="text/css">
-            .page-title-action { display:none; }
-        </style>';
-        }
-    }
 
 } // End Class

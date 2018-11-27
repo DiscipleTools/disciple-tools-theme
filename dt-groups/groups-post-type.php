@@ -110,7 +110,6 @@ class Disciple_Tools_Groups_Post_Type
             add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
             //            add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
-            add_action( 'admin_menu', [ $this, 'disable_new_groups_in_admin_area' ] );
 
             if ( $pagenow == 'edit.php' && isset( $_GET['post_type'] ) && esc_attr( sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) ) == $this->post_type ) {
                 add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
@@ -153,6 +152,7 @@ class Disciple_Tools_Groups_Post_Type
             'filter_items_list'     => sprintf( __( 'Filter %s list', 'disciple_tools' ), $this->plural ),
         ];
         $capabilities = [
+            'create_posts'        => 'do_not_allow',
             'edit_post'           => 'access_groups',
             'read_post'           => 'access_groups',
             'delete_post'         => 'delete_any_groups',
@@ -872,17 +872,5 @@ class Disciple_Tools_Groups_Post_Type
         add_rewrite_rule( 'groups/([0-9]+)?$', 'index.php?post_type=groups&p=$matches[1]', 'top' );
     }
 
-    public function disable_new_groups_in_admin_area() {
-        // Hide sidebar link
-        echo "<style type='text/css' >
-            #menu-posts-groups ul { display:none; }
-        </style>";
-        // Hide link on listing page
-        if ( ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'groups' ) ) {
-            echo '<style type="text/css">
-            .page-title-action { display:none; }
-        </style>';
-        }
-    }
 
 } // End Class
