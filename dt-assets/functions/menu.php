@@ -70,10 +70,18 @@ function disciple_tools_off_canvas_nav() {
 
         <?php
         if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-            ?><li><a href="<?php echo esc_url( site_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts" ); ?></a></li><?php
+            ?><li><a href="<?php echo esc_url( site_url( '/contacts/' ) ); ?>"><?php esc_html_e( "Contacts", "disciple_tools" ); ?></a></li>
+            <li><a class="button dt-green" style="margin-bottom:0" href="<?php echo esc_url( home_url( '/' ) ) . "contacts/new" ?>">
+                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
+                    <span class="no-hide-for-small-only"><?php esc_html_e( "Create new contact", "disciple_tools" ); ?></span>
+                </a></li><?php
         }
         if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
-            ?><li><a href="<?php echo esc_url( site_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups" ); ?></a></li><?php
+            ?><li><a href="<?php echo esc_url( site_url( '/groups/' ) ); ?>"><?php esc_html_e( "Groups", "disciple_tools" ); ?></a></li>
+            <li><a class="button dt-green" style="margin-bottom:0" href="<?php echo esc_url( home_url( '/' ) ) . "groups/new" ?>">
+                    <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
+                    <span class="no-hide-for-small-only"><?php esc_html_e( "Create new group", "disciple_tools" ); ?></span>
+                </a></li><?php
         }
         if ( user_can( get_current_user_id(), 'view_any_contacts' ) || user_can( get_current_user_id(), 'view_project_metrics' ) ) {
             ?><li><a href="<?php echo esc_url( site_url( '/metrics/' ) ); ?>"><?php esc_html_e( "Metrics" ); ?></a></li><?php
@@ -86,16 +94,16 @@ function disciple_tools_off_canvas_nav() {
         ?>
         <li>&nbsp;<!-- Spacer--></li>
         <li>
-            <a href="<?php echo esc_url( site_url( '/notifications/' ) ); ?>"><?php esc_html_e( "Notifications" ); ?></a>
+            <a href="<?php echo esc_url( site_url( '/notifications/' ) ); ?>"><?php esc_html_e( "Notifications", "disciple_tools" ); ?></a>
         </li>
         <li>
-            <a href="<?php echo esc_url( site_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings" ); ?></a>
+            <a href="<?php echo esc_url( site_url( '/settings/' ) ); ?>"><?php esc_html_e( "Settings", "disciple_tools" ); ?></a>
         </li>
         <?php if ( user_can( get_current_user_id(), 'manage_dt' ) ) : ?>
-            <li><a href="<?php echo esc_url( get_admin_url() ); ?>"><?php esc_html_e( "Admin" ); ?></a></li>
+            <li><a href="<?php echo esc_url( get_admin_url() ); ?>"><?php esc_html_e( "Admin", "disciple_tools" ); ?></a></li>
         <?php endif; ?>
         <li>
-            <a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( "Log Off" ); ?></a>
+            <a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( "Log Off", "disciple_tools" ); ?></a>
         </li>
 
     </ul>
