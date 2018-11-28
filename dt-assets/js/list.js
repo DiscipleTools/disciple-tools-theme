@@ -42,7 +42,7 @@
   let loading_spinner = $(".loading-spinner")
   let tableHeaderRow = $('.js-list thead .sortable th')
   let getContactsPromise = null
-  let selectedFilterTab = "my"
+  let selectedFilterTab = "all"
 
   function get_contacts( offset = 0, sort ) {
     loading_spinner.addClass("active")
@@ -136,13 +136,15 @@
     } else if ( cachedFilter.type==="default" ){
       if ( cachedFilter.tab ){
         selectedFilterTab = cachedFilter.tab
-        $(`#list-filter-tabs [data-id='${cachedFilter.tab}'] a`).click()
       }
       $("input[name=view][value=" + cachedFilter.ID + "]").prop('checked', true);
     } else if ( cachedFilter.type === "custom_filter" ){
       addCustomFilter(cachedFilter.name, "default", cachedFilter.query, cachedFilter.labels)
     }
+  } else {
+    $('input[name="view"][value="no_filter"].js-list-view').prop("checked", true)
   }
+  $(`#list-filter-tabs [data-id='${selectedFilterTab}'] a`).click()
 
 
   $(function() {
