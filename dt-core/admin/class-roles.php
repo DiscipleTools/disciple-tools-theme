@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 13;
+    private static $target_roles_version_number = 14;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -203,6 +203,7 @@ class Disciple_Tools_Roles
             'dt_admin', __( 'DT Admin', "disciple_tools" ),
             [
                 'read'                      => true, //access to admin
+                'edit_posts'                => true, //edit custom post types
 
                 /* Manage DT Options */
                 'manage_dt'                 => true, // key capability for wp-admin dt administration
