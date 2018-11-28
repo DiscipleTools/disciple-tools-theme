@@ -1146,6 +1146,20 @@ CONTACTS
     }
 }
 
+#list-filter-tabs {
+    .tabs-title > a {
+        padding: 10px 10px;
+        width: min-content;
+        text-align: center;
+        > span {
+            font-size:10px;
+        }
+    }
+    margin-bottom: 5px;
+    margin-left:-10px;
+    margin-right:-10px;
+}
+
 .social-details-options-button {
     vertical-align: middle;
     padding: 0 3px;

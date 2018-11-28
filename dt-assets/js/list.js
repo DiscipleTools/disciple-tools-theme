@@ -7,10 +7,10 @@
     let ca = decodedCookie.split(';');
     for(let i = 0; i <ca.length; i++) {
       let c = ca[i];
-      while (c.charAt(0) == ' ') {
+      while (c.charAt(0) === ' ') {
         c = c.substring(1);
       }
-      if (c.indexOf(name) == 0) {
+      if (c.indexOf(name) === 0) {
         return c.substring(name.length, c.length);
       }
     }
@@ -42,7 +42,7 @@
   let loading_spinner = $(".loading-spinner")
   let tableHeaderRow = $('.js-list thead .sortable th')
   let getContactsPromise = null
-
+  let selectedFilterTab = "my"
 
   function get_contacts( offset = 0, sort ) {
     loading_spinner.addClass("active")
@@ -134,6 +134,10 @@
         $(`input[name=view][value=saved-filters][data-id='${cachedFilter.ID}']`).prop('checked', true);
       }
     } else if ( cachedFilter.type==="default" ){
+      if ( cachedFilter.tab ){
+        selectedFilterTab = cachedFilter.tab
+        $(`#list-filter-tabs [data-id='${cachedFilter.tab}'] a`).click()
+      }
       $("input[name=view][value=" + cachedFilter.ID + "]").prop('checked', true);
     } else if ( cachedFilter.type === "custom_filter" ){
       addCustomFilter(cachedFilter.name, "default", cachedFilter.query, cachedFilter.labels)
@@ -155,6 +159,18 @@
     }).trigger("resize");
   });
 
+
+
+  $("#list-filter-tabs").on("change.zf.tabs", function (a, b) {
+    let tab = b.data("id")
+    selectedFilterTab = tab
+    let checked = $(".js-list-view:checked")
+    if ( checked.val() === "custom_filter" ){
+      $('input[name="view"][value="no_filter"].js-list-view').prop("checked", true)
+    }
+    getContactForCurrentView()
+    get_filter_counts()
+  })
 
 
   const templates = {
@@ -299,7 +315,7 @@
       })
     } else {
       let query = filter.query
-      for( let query_key in query ) {
+      _.forOwn( query, query_key=> {
         if (Array.isArray(query[query_key])) {
 
           query[query_key].forEach(q => {
@@ -309,7 +325,7 @@
         } else {
           html += `<span class="current-filter search">${query[query_key]}</span>`
         }
-      }
+      })
     }
     currentFilters.html(html)
   }
@@ -318,33 +334,50 @@
     let checked = $(".js-list-view:checked")
     let currentView = checked.val()
     let filterId = checked.data("id") || currentView
-    let query = {assigned_to:["me"]}
-    let filter = {type:"default", ID:currentView, query:{}, labels:[{ id:"me", name:"My Contacts", field: "assigned"}]}
-    if ( currentView === "all" ){
-      query.assigned_to = ["all"]
-      filter.labels = [{ id:"all", name:"All", field: "assigned"}]
-    } else if ( currentView === "shared_with_me" ){
-      query.assigned_to = ["shared"]
-      filter.labels = [{ id:"shared", name:"Shared with me", field: "assigned"}]
+    let query = {}
+    let filter = {
+      type:"default",
+      ID:currentView,
+      query:{},
+      labels:[{ id:"all", name:wpApiListSettings.translations.filter_all, field: "assigned"}]
     }
+
+    if ( currentView !== "custom_filter"){
+      filter.tab = selectedFilterTab
+      if ( selectedFilterTab === "all" ){
+        query.assigned_to = ["all"]
+        filter.labels = [{ id:"all", name:wpApiListSettings.translations.filter_all, field: "assigned"}]
+      } else if ( selectedFilterTab === "shared" ){
+        query.assigned_to = ["shared"]
+        filter.labels = [{ id:"shared", name:wpApiListSettings.translations.filter_shared, field: "assigned"}]
+      } else if ( selectedFilterTab === "subassigned" ){
+        query.subassigned = [wpApiListSettings.current_user_contact_id]
+        filter.labels = [{ id:"subbassigned", name:wpApiListSettings.translations.filter_subassigned, field: "assigned"}]
+      }
+      else if ( selectedFilterTab === "my" ){
+        query.assigned_to = ["me"]
+        filter.labels = [{ id:"me", name:wpApiListSettings.translations.filter_my, field: "assigned"}]
+      }
+    }
+    let filter_name = wpApiListSettings.translations[`filter_${currentView}`]
     if ( currentView === "needs_accepted" ){
       query.overall_status = ["assigned"]
       query.accepted = [false]
-      filter.labels = [{ id:"needs_accepted", name:"Newly Assigned", field: "accepted"}]
+      filter.labels = [{ id:"needs_accepted", name:filter_name, field: "accepted"}]
     } else if ( currentView === "assignment_needed" ){
       query.overall_status = ["unassigned"]
-      filter.labels = [{ id:"unassigned", name:"Assignment needed", field: "assigned"}]
+      filter.labels = [{ id:"unassigned", name:filter_name, field: "assigned"}]
     } else if ( currentView === "update_needed" ){
-      filter.labels = [{ id:"update_needed", name:"Update needed", field: "requires_update"}]
+      filter.labels = [{ id:"update_needed", name:filter_name, field: "requires_update"}]
       query.requires_update = [true]
     } else if ( currentView === "meeting_scheduled" ){
       query.overall_status = ["active"]
       query.seeker_path = ["scheduled"]
-      filter.labels = [{ id:"active", name:"Meeting scheduled", field: "seeker_path"}]
+      filter.labels = [{ id:"active", name:filter_name, field: "seeker_path"}]
     } else if ( currentView === "contact_unattempted" ){
       query.overall_status = ["active"]
       query.seeker_path = ["none"]
-      filter.labels = [{ id:"all", name:"Contact attempt needed", field: "seeker_path"}]
+      filter.labels = [{ id:"all", name:filter_name, field: "seeker_path"}]
     } else if ( currentView === "custom_filter"){
       let filterId = checked.data("id")
       filter = _.find(customFilters, {ID:filterId})
@@ -962,19 +995,32 @@
   if ( wpApiListSettings.current_post_type === "groups"){
     type = "group"
   }
-  $.ajax({
-    url: `${wpApiListSettings.root}dt/v1/${type}/counts`,
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiListSettings.nonce);
-    }
-  }).then(counts=>{
-    $(".js-list-view-count").each(function() {
-      const $el = $(this);
-      let view_id = $el.data("value")
-      if ( counts && counts[view_id] ){
-        $el.text( counts[view_id] );
+  let get_filter_counts = ()=>{
+    $.ajax({
+      url: `${wpApiListSettings.root}dt/v1/${type}/counts?tab=${selectedFilterTab}`,
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiListSettings.nonce);
       }
-    });
-  }).catch(err => { console.error(err) })
+    }).then(counts=>{
+      $(".js-list-view-count").each(function() {
+        const $el = $(this);
+        let view_id = $el.data("value")
+        if ( counts && counts[view_id] ){
+          $el.text( counts[view_id] );
+        }
+      });
+      $(".tab-count-span").each(function () {
+        const $el = $(this)
+        let tab = $el.data("tab")
+        if ( counts && counts[tab] ){
+          $el.text( ` (${counts[tab]})` )
+        }
+      })
+      if ( wpApiListSettings.translations[`filter_${selectedFilterTab}`]){
+        $(`#total_filter_label`).text(wpApiListSettings.translations[`filter_${selectedFilterTab}`])
+      }
+    }).catch(err => { console.error(err) })
+  }
+  get_filter_counts()
 
 })(window.jQuery, window.wpApiListSettings, window.Foundation);

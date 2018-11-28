@@ -166,7 +166,7 @@ class Disciple_Tools_Posts
         return false;
     }
 
-    public static function get_label_for_post_type( $post_type, $singular ){
+    public static function get_label_for_post_type( $post_type, $singular = false ){
         switch ( $post_type ) {
             case "contacts":
             case "contact":

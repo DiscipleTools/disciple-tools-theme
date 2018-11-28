@@ -994,56 +994,87 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
 
-    public static function get_group_default_filter_counts(){
+    public static function get_group_default_filter_counts( $tab = "all" ){
         if ( !self::can_access( "groups" ) ) {
             return new WP_Error( __FUNCTION__, __( "Permission denied." ), [ 'status' => 403 ] );
         }
         $user_id = get_current_user_id();
         global $wpdb;
-        $personal_counts = $wpdb->get_results( $wpdb->prepare( "
+
+        $access_sql = "";
+        $user_post = Disciple_Tools_Users::get_contact_for_user( $user_id ) ?? 0;
+        // contacts assigned to me
+        $my_access = "INNER JOIN $wpdb->postmeta as assigned_to
+            ON a.ID=assigned_to.post_id
+              AND assigned_to.meta_key = 'assigned_to'
+              AND assigned_to.meta_value = CONCAT( 'user-', " . $user_id . " )";
+        //contacts subassigned to me
+        $subassigned_access = "INNER JOIN $wpdb->p2p as from_p2p 
+            ON ( from_p2p.p2p_to = a.ID 
+                AND from_p2p.p2p_type = 'contacts_to_subassigned' 
+                AND from_p2p.p2p_from = " . $user_post. ")";
+        //contacts shared with me
+        $shared_access = "
+            INNER JOIN $wpdb->dt_share AS shares 
+            ON ( shares.post_id = a.ID  
+                AND shares.user_id = " . $user_id . "
+                AND a.ID NOT IN (
+                    SELECT assigned_to.post_id 
+                    FROM $wpdb->postmeta as assigned_to
+                    WHERE a.ID = assigned_to.post_id
+                      AND assigned_to.meta_key = 'assigned_to'
+                      AND assigned_to.meta_value = CONCAT( 'user-', " . $user_id . " )
+                )
+            )";
+        $all_access = "";
+        //contacts shared with me.
+        if ( !self::can_view_all( "contacts" ) ){
+            $all_access = "INNER JOIN $wpdb->dt_share AS shares 
+            ON ( shares.post_id = a.ID
+                 AND shares.user_id = " . $user_id . " ) ";
+        }
+        if ( $tab === "my" ){
+            $access_sql = $my_access;
+        } elseif ( $tab === "subassigned" ){
+            $access_sql = $subassigned_access;
+        } elseif ( $tab === "shared" ){
+            $access_sql = $shared_access;
+        } elseif ( $tab === "all" ){
+            $access_sql = $all_access;
+        }
+
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepare
+        $personal_counts = $wpdb->get_results( "
             SELECT (
                 SELECT COUNT(DISTINCT(a.ID))
                 FROM $wpdb->posts as a
-                INNER JOIN $wpdb->postmeta as b
-                  ON a.ID=b.post_id
-                    AND b.meta_key = 'assigned_to'
-                    AND b.meta_value = CONCAT( 'user-', %s )
+                " . $access_sql . "
                 WHERE a.post_status = 'publish'
                 AND a.post_type = 'groups'
-            ) as my_groups,
+            ) as total_count,
             (SELECT COUNT(DISTINCT(a.ID))
                 FROM $wpdb->posts as a
-                INNER JOIN $wpdb->postmeta as b
-                  ON a.ID=b.post_id
-                    AND b.meta_key = 'assigned_to'
-                    AND b.meta_value != CONCAT( 'user-', %s )
+                " . $my_access . "
                 WHERE a.post_status = 'publish'
                 AND a.post_type = 'groups'
-                AND a.ID IN (
-                    SELECT post_id 
-                    FROM $wpdb->dt_share
-                    WHERE user_id = %s
-                )
-            ) as shared_with_me
-        ", $user_id, $user_id, $user_id ), ARRAY_A );
-
-        $all_groups = (int) $personal_counts[0]["my_groups"] + (int) $personal_counts[0]["shared_with_me"];
-        if ( current_user_can( "view_any_groups" ) ){
-            $dispatcher_counts = $wpdb->get_results( "
-                SELECT COUNT(a.ID) as all_groups
+            ) as total_my,
+            (SELECT COUNT(DISTINCT(a.ID))
                 FROM $wpdb->posts as a
+                " . $shared_access . "
                 WHERE a.post_status = 'publish'
                 AND a.post_type = 'groups'
-                ", ARRAY_A
-            );
-            $all_groups = $dispatcher_counts[0]["all_groups"];
-        }
+            ) as total_shared,
+            (SELECT COUNT(DISTINCT(a.ID))
+                FROM $wpdb->posts as a
+                " . $all_access . "
+                WHERE a.post_status = 'publish'
+                AND a.post_type = 'groups'
+            ) as total_all
+        ", ARRAY_A );
+        // phpcs:enable
 
-        return [
-            'all_groups' => $all_groups,
-            'my_groups' => $personal_counts[0]["my_groups"],
-            'groups_shared_with_me' => $personal_counts[0]["shared_with_me"]
-        ];
+        return $personal_counts[0] ?? [];
 
     }
 }
