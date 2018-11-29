@@ -23,6 +23,8 @@
   } catch (e) {
     cachedFilter = {}
   }
+  let showClosedCookie = getCookie("show_closed")
+  let showClosedCheckbox = $('#show_closed')
   let currentFilter = {}
   let items = []
   let customFilters = []
@@ -54,7 +56,7 @@
       data.sort = sort
       data.offset = 0
     } else if (!data.sort) {
-      data.sort = wpApiListSettings.current_post_type === "contacts" ? "overall_status" : "status";
+      data.sort = wpApiListSettings.current_post_type === "contacts" ? "overall_status" : "group_type";
     }
     currentFilter.query = data
     document.cookie = `last_view=${JSON.stringify(currentFilter)}`
@@ -91,7 +93,7 @@
     filters.forEach(filter=>{
       if (filter){
         let deleteFilter = $(`<span style="float:right" data-filter="${filter.ID}">
-            <img style="padding: 0 4px"src="${wpApiShare.template_dir}/dt-assets/images/trash.svg">
+            <img style="padding: 0 4px" src="${wpApiShare.template_dir}/dt-assets/images/trash.svg">
         </span>`).on("click", function () {
           $(`.delete-filter-name`).html(filter.name)
           $('#delete-filter-modal').foundation('open');
@@ -103,6 +105,7 @@
           editSavedFilter( filter )
           filterToEdit = filter.ID;
         })
+        let filterName =  `<span class="filter-list-name" data-filter="${filter.ID}">${filter.name}</span>`
         const radio = $(`<input name='view' class='js-list-view' autocomplete='off' data-id="${filter.ID}" >`)
           .attr("type", "radio")
           .val("saved-filters")
@@ -116,7 +119,7 @@
               // .data("filter-type", filterType)
               .data("filter-value", status)
               .append(radio)
-              .append(document.createTextNode(filter.name))
+              .append(filterName)
               .append(deleteFilter)
               .append(editFilter)
 
@@ -126,6 +129,10 @@
     })
   }
 
+  //set the "show closed" checkbox
+  if ( showClosedCookie === "true" ){
+    showClosedCheckbox.prop('checked', true)
+  }
   setupFilters(savedFilters[wpApiListSettings.current_post_type])
   //look at the cookie to see what was the last selected view
   if ( cachedFilter && !_.isEmpty(cachedFilter)){
@@ -164,8 +171,7 @@
 
 
   $("#list-filter-tabs").on("change.zf.tabs", function (a, b) {
-    let tab = b.data("id")
-    selectedFilterTab = tab
+    selectedFilterTab = b.data("id")
     let checked = $(".js-list-view:checked")
     if ( checked.val() === "custom_filter" ){
       $('input[name="view"][value="no_filter"].js-list-view').prop("checked", true)
@@ -329,18 +335,25 @@
         }
       })
     }
-    let sortLabel = filter.query.sort
-    if ( sortLabel.includes('last_modified') ){
-      sortLabel = wpApiListSettings.translations.date_modified
-    } else if (  sortLabel.includes('post_date') ) {
-      sortLabel = wpApiListSettings.translations.creation_date
-    } else {
-      //get label for table header
-      sortLabel = $(`.sortable [data-id="${sortLabel.replace('-', '')}"]`).text()
+
+    if ( filter.includeClosed === false ){
+      let excluded_closed = wpApiListSettings.current_post_type === "contacts" ? wpApiListSettings.translations.closed_excluded : wpApiListSettings.translations.inactive_excluded
+      html += `<span class="current-filter show-closed" style="border-color: red">${excluded_closed}</span>`
     }
-    html += `<span class="current-filter" data-id="sort">
-        ${wpApiListSettings.translations.sorting_by}: ${sortLabel}
-    </span>`
+    if ( filter.query.sort ){
+      let sortLabel = filter.query.sort
+      if ( sortLabel.includes('last_modified') ){
+        sortLabel = wpApiListSettings.translations.date_modified
+      } else if (  sortLabel.includes('post_date') ) {
+        sortLabel = wpApiListSettings.translations.creation_date
+      } else  {
+        //get label for table header
+        sortLabel = $(`.sortable [data-id="${sortLabel.replace('-', '')}"]`).text()
+      }
+      html += `<span class="current-filter" data-id="sort">
+          ${wpApiListSettings.translations.sorting_by}: ${sortLabel}
+      </span>`
+    }
     currentFilters.html(html)
   }
 
@@ -355,7 +368,7 @@
       query:{},
       labels:[{ id:"all", name:wpApiListSettings.translations.filter_all, field: "assigned"}]
     }
-
+    let showClosed = showClosedCheckbox.prop("checked")
     if ( currentView !== "custom_filter"){
       filter.tab = selectedFilterTab
       if ( selectedFilterTab === "all" ){
@@ -403,6 +416,20 @@
       filter.type = currentView
       query = filter.query
     }
+    if ( !showClosed && !["custom_filter", "saved-filters"].includes(currentView) || ( ["custom_filter", "saved-filters"].includes(currentView) && filter.includeClosed === false ) ){
+      if ( wpApiListSettings.current_post_type === "contacts" ){
+        if ( !query.overall_status ){
+          query.overall_status = [];
+        }
+        query.overall_status.push( "-closed" )
+      } else {
+        if ( !query.group_status ){
+          query.group_status = [];
+        }
+        query.group_status.push( "-inactive" )
+      }
+    }
+
     filter.query = query
     let sortField = "overall_status";
     if ( _.get( cachedFilter, "query.sort") && cachedFilter.type === filter.type && cachedFilter.ID === filterId ){
@@ -412,9 +439,10 @@
     //reset sorting in table header
     tableHeaderRow.removeClass("sorting_asc")
     tableHeaderRow.removeClass("sorting_desc")
-    $(`.js-list thead .sortable th[data-id="${sortField}"]`).addClass("sorting_asc")
+    let headerCell = $(`.js-list thead .sortable th[data-id="${sortField}"]`)
+    headerCell.addClass("sorting_asc")
     tableHeaderRow.data("sort", '')
-    $(`.js-list thead .sortable th[data-id="${sortField}"]`).data("sort", 'asc')
+    headerCell.data("sort", 'asc')
 
     currentFilter = JSON.parse(JSON.stringify(filter))
     get_contacts()
@@ -422,9 +450,6 @@
   if (!getContactsPromise){
     getContactForCurrentView()
   }
-
-
-
 
 
 
@@ -437,7 +462,8 @@
   let selectedFilters = $("#selected-filters")
   $("#confirm-filter-contacts").on("click", function () {
     let searchQuery = getSearchQuery()
-    addCustomFilter("Custom Filter", "custom-filter", searchQuery, newFilterLabels)
+    let filterName = $('#new-filter-name').val()
+    addCustomFilter( filterName || "Custom Filter", "custom-filter", searchQuery, newFilterLabels)
   })
 
   let getSearchQuery = ()=>{
@@ -446,7 +472,7 @@
     fieldsFiltered.forEach(field=>{
       searchQuery[field] =[]
       let type = _.get(wpApiListSettings, `custom_fields_settings.${field}.type` )
-      if ( type === "connection" ){
+      if ( type === "connection" || type === "user_select" ){
         searchQuery[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID")
       }  if ( type === "multi_select" ){
         searchQuery[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "key")
@@ -465,6 +491,11 @@
           searchQuery[field].push($(this).val())
         })
       }
+      if ( wpApiListSettings.current_post_type === "contacts" ){
+        if ( $("#combine_subassigned").is(":checked") ){
+          searchQuery["combine"] = ["subassigned"]
+        }
+      }
     })
     return searchQuery
   }
@@ -474,13 +505,14 @@
   function addCustomFilter(name, type, query, labels) {
     query = query || currentFilter.query
     let ID = new Date().getTime() / 1000
-
-    currentFilter = {ID, type, name, query:JSON.parse(JSON.stringify(query)), labels:labels}
+    let includeClosed = $('#filter-include-closed').is(':checked')
+    currentFilter = {ID, type, name, query:JSON.parse(JSON.stringify(query)), labels:labels, includeClosed}
     customFilters.push(JSON.parse(JSON.stringify(currentFilter)))
 
     let saveFilter = $(`<span style="float:right" data-filter="${ID}">
         ${wpApiListSettings.translations.save}
     </span>`).on("click", function () {
+      $("#filter-name").val(name)
       $('#save-filter-modal').foundation('open');
       filterToSave = ID;
     })
@@ -499,19 +531,15 @@
   $(`#confirm-filter-save`).on('click', function () {
     let filterName = $('#filter-name').val()
     let filter = _.find(customFilters, {ID:filterToSave})
+    filter.name = filterName
     if (filter.query){
-      let newFilter = {
-        name: filterName,
-        ID: filterToSave,
-        query:filter.query,
-        labels: filter.labels
-      };
-      savedFilters[wpApiListSettings.current_post_type].push(newFilter)
+      savedFilters[wpApiListSettings.current_post_type].push(filter)
       API.save_filters(savedFilters).then(()=>{
         $(`.custom-filters [class*="list-view ${filterToSave}`).remove()
         setupFilters(savedFilters[wpApiListSettings.current_post_type])
         $(`input[name="view"][value="saved-filters"][data-id='${filterToSave}']`).prop('checked', true);
         getContactForCurrentView()
+        $('#filter-name').val("")
       }).catch(err => { console.error(err) })
     }
   })
@@ -567,7 +595,7 @@
   })
 
   //sort the table by clicking the header
-  $('.js-list th').click(function () {
+  $('.js-list th').on("click", function () {
     let id = $(this).data('id')
     let sort = $(this).data('sort')
     tableHeaderRow.removeClass("sorting_asc")
@@ -586,7 +614,7 @@
     get_contacts(0, id)
   })
 
-  $('.js-sort-by').click(function () {
+  $('.js-sort-by').on("click", function () {
     tableHeaderRow.removeClass("sorting_asc")
     tableHeaderRow.removeClass("sorting_desc")
     let dir = $(this).data('order')
@@ -796,6 +824,7 @@
       });
     }
   }
+  let sourcesTypeahead = $(".js-typeahead-sources")
   let loadMultiSelectTypeaheads = async function loadMultiSelectTypeaheads() {
     for (let input of $(".multi_select .typeahead__query input")) {
       let field = $(input).data('field')
@@ -807,9 +836,9 @@
 
       let sourceData =  { data: [] }
       let fieldOptions = _.get(wpApiListSettings, `custom_fields_settings.${field}.default`, {})
-      if (field == 'sources') {
+      if (field === 'sources') {
         /* Similar code is in contact-details.js, copy-pasted for now. */
-        $(".js-typeahead-sources").attr("disabled", true) // disable while loading AJAX
+        sourcesTypeahead.attr("disabled", true) // disable while loading AJAX
         const response = await fetch(wpApiListSettings.root + 'dt/v1/contact/list-sources', {
           credentials: 'same-origin', // needed for Safari
           headers: {
@@ -823,7 +852,7 @@
             name: sourceKey, // name is used for building URL params later
           })
         })
-        $(".js-typeahead-sources").attr("disabled", false)
+        sourcesTypeahead.attr("disabled", false)
       } else if ( Object.keys(fieldOptions).length > 0 ){
         _.forOwn(fieldOptions, (val, key)=>{
             sourceData.data.push({
@@ -913,6 +942,7 @@
       loadSubassignedTypeahead()
       loadMultiSelectTypeaheads().catch(err => { console.error(err) })
     }
+    $('#new-filter-name').val('')
     $("#filter-modal input.dt_date_picker").each(function () {
       $(this).val('')
     })
@@ -955,6 +985,10 @@
     ;(filter.query.combine || []).forEach(c=>{
       $(`#combine_${c}`).prop('checked', true)
     })
+    if ( filter.includeClosed === true ){
+      $('#filter-include-closed').prop('checked', true)
+    }
+    $('#new-filter-name').val(filter.name)
     $('#confirm-filter-contacts').hide()
     $('#save-filter-edits').data("filter-id", filter.ID).show()
   }
@@ -962,6 +996,9 @@
     let searchQuery = getSearchQuery()
     let filterId = $('#save-filter-edits').data("filter-id")
     let filter = _.find(savedFilters[wpApiListSettings.current_post_type], {ID:filterId})
+    filter.name = $('#new-filter-name').val()
+    $(`.filter-list-name[data-filter="${filterId}"]`).text(filter.name)
+    filter.includeClosed = $('#filter-include-closed').is(':checked')
     filter.query = searchQuery
     filter.label = newFilterLabels
     API.save_filters(savedFilters)
@@ -1002,7 +1039,7 @@
       newFilterLabels.push({id:$(this).val(), name:`${field.name}:${label}`, field:field_key})
       selectedFilters.append(`<span class="current-filter ${field_key}" data-id="${optionId}">${field.name}:${label}</span>`)
     } else {
-      $(`current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
+      $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
       _.pullAllBy(newFilterLabels, [{id:optionId}], "id")
     }
   })
@@ -1043,8 +1080,9 @@
     type = "group"
   }
   let get_filter_counts = ()=>{
+    let showClosed = showClosedCheckbox.prop("checked")
     $.ajax({
-      url: `${wpApiListSettings.root}dt/v1/${type}/counts?tab=${selectedFilterTab}`,
+      url: `${wpApiListSettings.root}dt/v1/${type}/counts?tab=${selectedFilterTab}&closed=${showClosed}`,
       beforeSend: function (xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiListSettings.nonce);
       }
@@ -1069,5 +1107,10 @@
     }).catch(err => { console.error(err) })
   }
   get_filter_counts()
+  showClosedCheckbox.on("click", function () {
+    document.cookie = `show_closed=${$(this).prop('checked')}`
+    get_filter_counts()
+    getContactForCurrentView()
+  })
 
 })(window.jQuery, window.wpApiListSettings, window.Foundation);

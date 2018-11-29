@@ -994,7 +994,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
 
-    public static function get_group_default_filter_counts( $tab = "all" ){
+    public static function get_group_default_filter_counts( $tab = "all", $show_closed = false ){
         if ( !self::can_access( "groups" ) ) {
             return new WP_Error( __FUNCTION__, __( "Permission denied." ), [ 'status' => 403 ] );
         }
@@ -1042,6 +1042,13 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         } elseif ( $tab === "all" ){
             $access_sql = $all_access;
         }
+        $closed = "";
+        if ( !$show_closed ){
+            $closed = " INNER JOIN $wpdb->postmeta as status
+              ON ( a.ID=status.post_id 
+              AND status.meta_key = 'group_status'
+              AND status.meta_value != 'inactive' )";
+        }
 
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepare
@@ -1049,25 +1056,25 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             SELECT (
                 SELECT COUNT(DISTINCT(a.ID))
                 FROM $wpdb->posts as a
-                " . $access_sql . "
+                " . $access_sql . $closed . "
                 WHERE a.post_status = 'publish'
                 AND a.post_type = 'groups'
             ) as total_count,
             (SELECT COUNT(DISTINCT(a.ID))
                 FROM $wpdb->posts as a
-                " . $my_access . "
+                " . $my_access . $closed . "
                 WHERE a.post_status = 'publish'
                 AND a.post_type = 'groups'
             ) as total_my,
             (SELECT COUNT(DISTINCT(a.ID))
                 FROM $wpdb->posts as a
-                " . $shared_access . "
+                " . $shared_access . $closed . "
                 WHERE a.post_status = 'publish'
                 AND a.post_type = 'groups'
             ) as total_shared,
             (SELECT COUNT(DISTINCT(a.ID))
                 FROM $wpdb->posts as a
-                " . $all_access . "
+                " . $all_access . $closed . "
                 WHERE a.post_status = 'publish'
                 AND a.post_type = 'groups'
             ) as total_all

@@ -929,8 +929,9 @@ class Disciple_Tools_Posts
                     $connector = " OR ";
                     foreach ( $query_value as $value_key => $value ){
                         $equality = "=";
+                        $field_type = isset( $post_fields[$query_key]["type"] ) ? $post_fields[$query_key]["type"] : null;
                         // boolean fields
-                        if ( isset( $post_fields[$query_key]["type"] ) && $post_fields[$query_key]["type"] === "boolean" ){
+                        if ( $field_type === "boolean" ){
                             if ( $value === "1" || $value === "yes" || $value === "true" ){
                                 $value = true;
                             } elseif ( $value === "0" || $value === "no" || $value === "false" ){
@@ -938,7 +939,7 @@ class Disciple_Tools_Posts
                             }
                         }
                         //date fields
-                        if ( isset( $post_fields[$query_key]["type"] ) && $post_fields[$query_key]["type"] === "date" ){
+                        if ( $field_type === "date" ){
                             $connector = "AND";
                             if ( $value_key === "start" ){
                                 $value = strtotime( $value );
@@ -959,7 +960,7 @@ class Disciple_Tools_Posts
                         if ( !empty( $meta_field_sql ) ){
                             $meta_field_sql .= $connector;
                         }
-                        if ($equality === "!="){
+                        if ($equality === "!=" && $field_type === "multi_select"){
                             //find one with the value to exclude
                             $meta_query .= " AND not exists (select 1 from $wpdb->postmeta where $wpdb->postmeta.post_id = $wpdb->posts.ID and $wpdb->postmeta.meta_key = '" . esc_sql( $query_key ) ."'  and $wpdb->postmeta.meta_value = '" . esc_sql( $value ) . "') ";
                         } else {

@@ -71,7 +71,10 @@ declare(strict_types=1);
 
             <div class="reveal js-filters-modal" id="filters-modal">
                 <div class="js-filters-modal-content">
-                    <h5 class="hide-for-small-only"><?php esc_html_e( "Filters", "disciple_tools" ); ?></h5>
+                    <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( "Group Filters", "disciple_tools" ); ?></h5>
+                    <label style="display: inline-block; float:right"><?php esc_html_e( "Show Inactive", 'disciple_tools' ) ?>
+                        <input type="checkbox" id="show_closed">
+                    </label>
 
                     <ul class="tabs" data-tabs id="list-filter-tabs" style="margin-bottom: 5px">
                       <li class="tabs-title is-active" data-id="my"><a href="#panel1" aria-selected="true"><?php esc_html_e( "Assigned", 'disciple_tools' ) ?><span class="tab-count-span" data-tab="total_my"></span></a></li>
@@ -109,8 +112,9 @@ declare(strict_types=1);
     <div class="reveal" id="filter-modal" data-reveal>
         <div class="grid-container" >
             <div class="grid-x">
-                <div class="cell small-4">
-                    <h3><?php esc_html_e( 'New Filter', 'disciple_tools' )?></h3>
+                <div class="cell small-4" style="padding: 0 5px 5px 5px">
+                    <strong><?php esc_html_e( "Filter name", 'disciple_tools' ) ?></strong>
+                    <input id="new-filter-name" placeholder="<?php esc_html_e( 'New Filter', 'disciple_tools' )?>" />
                 </div>
                 <div class="cell small-8">
                     <div id="selected-filters"></div>
@@ -237,10 +241,16 @@ declare(strict_types=1);
                 </button>
             </div>
             <div class="cell small-8 filter-modal-right confirm-buttons">
-                <button class="button loader confirm-filter-contacts" type="button" id="confirm-filter-contacts" data-close >
+                <label style="display: inline-block">
+                    <?php esc_html_e( "Include inactive groups", 'disciple_tools' ) ?>
+                    <input type="checkbox" id="filter-include-closed">
+                </label>
+                <button style="display: inline-block" class="button loader confirm-filter-contacts"
+                        type="button" id="confirm-filter-contacts" data-close >
                     <?php esc_html_e( 'Filter Groups', 'disciple_tools' )?>
                 </button>
-                <button class="button loader confirm-filter-contacts" type="button" id="save-filter-edits" data-close style="display: none">
+                <button class="button loader confirm-filter-contacts"
+                        type="button" id="save-filter-edits" data-close style="display: none">
                     <?php esc_html_e( 'Save', 'disciple_tools' )?>
                 </button>
             </div>

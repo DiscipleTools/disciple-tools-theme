@@ -299,7 +299,9 @@ function dt_site_scripts() {
                 'range_end' => __( 'end', 'disciple_tools' ),
                 'sorting_by' => __( 'Sorting By', 'disciple_tools' ),
                 'creation_date' => __( 'Creation Date', 'disciple_tools' ),
-                'date_modified' => __( 'Date Modified', 'disciple_tools' )
+                'date_modified' => __( 'Date Modified', 'disciple_tools' ),
+                'closed_excluded' => __( 'Excluded: closed', 'disciple_tools' ),
+                'inactive_excluded' => __( 'Excluded: inactive', 'disciple_tools' )
             ],
             'txt_infoEmpty' => __( 'Showing 0 to 0 of 0 entries', 'disciple_tools' ),
             'txt_infoFiltered' => _x( '(filtered from _MAX_ total entries)', 'just copy `_MAX_`', 'disciple_tools' ),

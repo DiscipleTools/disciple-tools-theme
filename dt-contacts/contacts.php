@@ -2450,10 +2450,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * all_contacts and needs assigned array elements.
      *
      * @param string $tab
+     * @param bool $show_closed
      *
      * @return array|\WP_Error
      */
-    public static function get_count_of_contacts( $tab = "my" ) {
+    public static function get_count_of_contacts( $tab = "my", $show_closed = false ) {
         global $wpdb;
         if ( !self::can_access( "contacts" ) ) {
             return new WP_Error( __FUNCTION__, __( "Permission denied." ), [ 'status' => 403 ] );
@@ -2488,6 +2489,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 )
             )";
         $all_access = "";
+        $closed = "";
+        if ( !$show_closed ){
+            $closed = " INNER JOIN $wpdb->postmeta as status
+              ON ( a.ID=status.post_id 
+              AND status.meta_key = 'overall_status'
+              AND status.meta_value != 'closed' )";
+        }
         //contacts shared with me.
         if ( !self::can_view_all( "contacts" ) ){
             $all_access = "INNER JOIN $wpdb->dt_share AS shares 
@@ -2510,7 +2518,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $personal_counts = $wpdb->get_results("
             SELECT (SELECT count(a.ID)
             FROM $wpdb->posts as a
-              " . $access_sql . "
+              " . $access_sql . $closed . "
               INNER JOIN $wpdb->postmeta as type
                 ON a.ID=type.post_id AND type.meta_key = 'type'
             WHERE a.post_status = 'publish'
@@ -2521,7 +2529,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             as total_count,
             (SELECT count(a.ID)
             FROM $wpdb->posts as a
-            " . $my_access . "
+            " . $my_access . $closed . "
             INNER JOIN $wpdb->postmeta as type
               ON a.ID=type.post_id AND type.meta_key = 'type'
             WHERE a.post_status = 'publish'
@@ -2532,7 +2540,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             as total_my,
             (SELECT count(a.ID)
             FROM $wpdb->posts as a
-            " . $subassigned_access . "
+            " . $subassigned_access . $closed . "
             INNER JOIN $wpdb->postmeta as type
               ON a.ID=type.post_id AND type.meta_key = 'type'
             WHERE a.post_status = 'publish'
@@ -2543,7 +2551,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             as total_subassigned,
             (SELECT count(a.ID)
             FROM $wpdb->posts as a
-            " . $shared_access . "
+            " . $shared_access . $closed . "
             INNER JOIN $wpdb->postmeta as type
               ON a.ID=type.post_id AND type.meta_key = 'type'
             WHERE a.post_status = 'publish'
@@ -2554,7 +2562,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             as total_shared,
             (SELECT count(a.ID)
             FROM $wpdb->posts as a
-            " . $all_access . "
+            " . $all_access . $closed . "
             INNER JOIN $wpdb->postmeta as type
               ON a.ID=type.post_id AND type.meta_key = 'type'
             WHERE a.post_status = 'publish'
@@ -2565,7 +2573,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             as total_all,
             (SELECT count(a.ID)
               FROM $wpdb->posts as a
-                " . $access_sql . "
+                " . $access_sql . $closed . "
                 JOIN $wpdb->postmeta as b
                   ON a.ID=b.post_id
                     AND b.meta_key = 'requires_update'
@@ -2584,7 +2592,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   ON a.ID=b.post_id
                     AND b.meta_key = 'accepted'
                     AND b.meta_value = ''
-                " . $access_sql . "
+                " . $access_sql . $closed . "
                 INNER JOIN $wpdb->postmeta as d
                   ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
@@ -2603,7 +2611,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   ON a.ID=b.post_id
                     AND b.meta_key = 'seeker_path'
                     AND b.meta_value = 'none'
-                " . $access_sql . "
+                " . $access_sql . $closed . "
                 JOIN $wpdb->postmeta as d
                   ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
@@ -2622,7 +2630,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   ON a.ID=b.post_id
                     AND b.meta_key = 'seeker_path'
                     AND b.meta_value = 'scheduled'
-                " . $access_sql . "
+                " . $access_sql . $closed . "
                 JOIN $wpdb->postmeta as d
                   ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
