@@ -102,7 +102,7 @@ declare(strict_types=1);
                         <?php if (user_can( get_current_user_id(), 'view_any_contacts' ) ){ ?>
                             <label class="list-view">
                                 <input type="radio" name="view" value="assignment_needed" class="js-list-view">
-                                <?php esc_html_e( "Assignment needed", "disciple_tools" ); ?>
+                                <?php esc_html_e( "Dispatch needed", "disciple_tools" ); ?>
                                 <span class="list-view__count js-list-view-count" data-value="needs_assigned">.</span>
                             </label>
                         <?php } ?>
