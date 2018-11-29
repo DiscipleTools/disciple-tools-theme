@@ -268,13 +268,13 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
         <form method="post" action="">
             <?php wp_nonce_field( 'dt_simple_import_levels'. get_current_user_id(), 'dt_simple_import_levels_nonce', false, true ) ?>
             <tr class="dt_simple_import_levels">
-                <td><!-- !@#$ text below needs replacing -->
+                <td><!-- @todo text below needs replacing -->
                     <p>Import a list of simple location titles. One location per line.</p>
                     <em>Note: These will not be geocoded. To import a geocoded list, select "Auto GeoCode and Build Location Levels" in the Auto Build Locations box.</em>
                 </td>
             </tr>
             <tr class="dt_simple_import_levels">
-                <td><!-- !@#$ text below needs replacing -->
+                <td><!-- @todo text below needs replacing -->
                     <label>List of Locations</label>
                     <textarea name="import-list" id="import-list" rows="10" style="width:100%;"></textarea>
                 </td>
