@@ -2023,6 +2023,20 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 "overall_status" => 'active',
                 "accepted" => true
             ];
+            dt_activity_insert(
+                [
+                    'action'         => 'assignment_accepted',
+                    'object_type'    => get_post_type( $contact_id ),
+                    'object_subtype' => '',
+                    'object_name'    => get_the_title( $contact_id ),
+                    'object_id'      => $contact_id,
+                    'meta_id'        => '', // id of the comment
+                    'meta_key'       => '',
+                    'meta_value'     => '',
+                    'meta_parent'    => '',
+                    'object_note'    => '',
+                ]
+            );
             self::update_contact( $contact_id, $update, true );
             return self::get_contact( $contact_id );
         } else {
@@ -2042,11 +2056,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 "overall_status" => 'unassigned'
             ];
             self::update_contact( $contact_id, $update, true );
-            $assign = get_user_by( 'id', $assign_to_id );
             $current_user = wp_get_current_user();
             dt_activity_insert(
                 [
-                    'action'         => 'decline',
+                    'action'         => 'assignment_decline',
                     'object_type'    => get_post_type( $contact_id ),
                     'object_subtype' => 'decline',
                     'object_name'    => get_the_title( $contact_id ),
@@ -2055,7 +2068,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'meta_key'       => '',
                     'meta_value'     => '',
                     'meta_parent'    => '',
-                    'object_note'    => $current_user->display_name . " declined assignment",
+                    'object_note'    => ''
                 ]
             );
             Disciple_Tools_Notifications::insert_notification_for_assignment_declined( $current_user->ID, $assign_to_id, $contact_id );

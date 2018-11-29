@@ -396,7 +396,9 @@ class Disciple_Tools_Posts
                     }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "text"){
-                    $message = $fields[$activity->meta_key]["name"] . " " . __( "changed to", 'disciple_tools' ) . ": " .$activity->meta_value;
+                    if ( !empty( $activity->meta_value ) && !empty( $activity->old_value ) ){
+                        $message = $fields[$activity->meta_key]["name"] . " " . __( "changed to", 'disciple_tools' ) . ": " .$activity->meta_value;
+                    }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "multi_select" ){
                     $message = "";
@@ -485,16 +487,22 @@ class Disciple_Tools_Posts
                     $message = $activity->meta_key . ": " . $activity->meta_value;
                 }
             }
-        }
-        if ( $activity->object_subtype === "p2p" ){
+        } elseif ( $activity->action === "assignment_decline" ){
+            $user = get_user_by( "ID", $activity->user_id );
+            $message = sprintf( __( "%s declined assignment", 'disciple_tools' ), $user->display_name ?? __( "A user", "disciple_tools" ) );
+        } elseif ( $activity->action === "assignment_accepted" ){
+            $user = get_user_by( "ID", $activity->user_id );
+            $message = sprintf( __( "%s accepted assignment", 'disciple_tools' ), $user->display_name ?? __( "A user", "disciple_tools" ) );
+        } elseif ( $activity->object_subtype === "p2p" ){
             $message = self::format_connection_message( $activity->meta_id, $activity->action, $activity );
-        }
-        if ( $activity->object_subtype === "share" ){
+        } elseif ( $activity->object_subtype === "share" ){
             if ($activity->action === "share"){
                 $message = __( "Shared with", "disciple_tools" ) . ' ' . dt_get_user_display_name( $activity->meta_value );
             } else if ( $activity->action === "remove" ){
                 $message = __( "Unshared with", "disciple_tools" ) . ' ' . dt_get_user_display_name( $activity->meta_value );
             }
+        } else {
+            $message = $activity->object_note;
         }
 
         return $message;
