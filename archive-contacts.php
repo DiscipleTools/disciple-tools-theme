@@ -183,7 +183,7 @@ declare(strict_types=1);
                             <?php elseif ( $field === "created_on" ) : ?>
                                 <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>">
-                                        <?php esc_html_e( "Created On", 'disciple_tools' ) ?></a>
+                                        <?php esc_html_e( "Creation Date", 'disciple_tools' ) ?></a>
                                 </li>
                             <?php else : ?>
                                 <?php wp_die( "Cannot implement filter options for field " . esc_html( $field ) ); ?>

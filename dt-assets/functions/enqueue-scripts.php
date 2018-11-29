@@ -297,7 +297,9 @@ function dt_site_scripts() {
                 'filter_assignment_needed' => __( 'Assignment needed', 'disciple_tools' ),
                 'range_start' => __( 'start', 'disciple_tools' ),
                 'range_end' => __( 'end', 'disciple_tools' ),
-                'created_on' => __( 'Created On', 'disciple_tools' )
+                'sorting_by' => __( 'Sorting By', 'disciple_tools' ),
+                'creation_date' => __( 'Creation Date', 'disciple_tools' ),
+                'date_modified' => __( 'Date Modified', 'disciple_tools' )
             ],
             'txt_infoEmpty' => __( 'Showing 0 to 0 of 0 entries', 'disciple_tools' ),
             'txt_infoFiltered' => _x( '(filtered from _MAX_ total entries)', 'just copy `_MAX_`', 'disciple_tools' ),

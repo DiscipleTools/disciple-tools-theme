@@ -329,6 +329,18 @@
         }
       })
     }
+    let sortLabel = filter.query.sort
+    if ( sortLabel.includes('last_modified') ){
+      sortLabel = wpApiListSettings.translations.date_modified
+    } else if (  sortLabel.includes('post_date') ) {
+      sortLabel = wpApiListSettings.translations.creation_date
+    } else {
+      //get label for table header
+      sortLabel = $(`.sortable [data-id="${sortLabel.replace('-', '')}"]`).text()
+    }
+    html += `<span class="current-filter" data-id="sort">
+        ${wpApiListSettings.translations.sorting_by}: ${sortLabel}
+    </span>`
     currentFilters.html(html)
   }
 
@@ -1002,7 +1014,7 @@
       let delimiterLabel = wpApiListSettings.translations[`range_${delimiter}`]
       let fieldName = _.get( wpApiListSettings, `custom_fields_settings.${id}.name` , id)
       if ( id === "created_on" ){
-        fieldName = wpApiListSettings.translations['created_on']
+        fieldName = wpApiListSettings.translations.creation_date
       }
       //remove existing filters
       _.pullAllBy(newFilterLabels, [{id:`${id}_${delimiter}`}], "id")
