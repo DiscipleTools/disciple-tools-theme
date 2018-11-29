@@ -285,6 +285,8 @@ function dt_site_scripts() {
                 'edit' => __( 'Edit', 'disciple_tools' ),
                 'delete' => __( 'Delete', 'disciple_tools' ),
                 'txt_info' => _x( 'Showing _START_ of _TOTAL_', 'just copy as they are: _START_ and _TOTAL_', 'disciple_tools' ),
+                'range_start' => __( 'start', 'disciple_tools' ),
+                'range_end' => __( 'end', 'disciple_tools' )
             ],
             'txt_infoEmpty' => __( 'Showing 0 to 0 of 0 entries', 'disciple_tools' ),
             'txt_infoFiltered' => _x( '(filtered from _MAX_ total entries)', 'just copy `_MAX_`', 'disciple_tools' ),

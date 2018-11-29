@@ -913,7 +913,8 @@ class Disciple_Tools_Posts
                     }
                 } else {
                     $connector = " OR ";
-                    foreach ( $query_value as $value ){
+                    foreach ( $query_value as $value_key => $value ){
+                        $equality = "=";
                         if ( isset( $post_fields[$query_key]["type"] ) && $post_fields[$query_key]["type"] === "boolean" ){
                             if ( $value === "1" || $value === "yes" || $value === "true" ){
                                 $value = true;
@@ -921,9 +922,19 @@ class Disciple_Tools_Posts
                                 $value = false;
                             }
                         }
+                        if ( isset( $post_fields[$query_key]["type"] ) && $post_fields[$query_key]["type"] === "date" ){
+                            $connector = "AND";
+                            if ( $value_key === "start" ){
+                                $value = strtotime( $value );
+                                $equality = ">";
+                            }
+                            if ( $value_key === "end" ){
+                                $value = strtotime( $value );
+                                $equality = "<";
+                            }
+                        }
 
                         //allow negative searches
-                        $equality = "=";
                         if ( strpos( $value, "-" ) === 0 ){
                             $equality = "!=";
                             $value = ltrim( $value, "-" );

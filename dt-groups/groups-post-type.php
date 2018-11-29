@@ -709,6 +709,7 @@ class Disciple_Tools_Groups_Post_Type
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
+            'hidden'      => true
         ];
         $fields["unfollow"] = [
             'name'        => __( 'Un-Follow', 'disciple_tools' ),
@@ -716,11 +717,16 @@ class Disciple_Tools_Groups_Post_Type
             'type'        => 'multi_select',
             'default'     => [],
             'section'     => 'misc',
+            'hidden'      => true
         ];
         $fields["member_count"] = [
             'name' => __( 'Member Count', 'disciple_tools' ),
             'type' => 'text',
             'default' => ''
+        ];
+        $fields["locations"] = [
+            "name" => __( "Locations", "disciple_tools" ),
+            "type" => "connection"
         ];
 
 

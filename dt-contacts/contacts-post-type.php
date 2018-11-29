@@ -845,7 +845,8 @@ class Disciple_Tools_Contact_Post_Type
                 'user'     => [ "label" => __( 'User', 'disciple_tools' ) ],
                 'partner'  => [ "label" => __( 'Partner', 'disciple_tools' ) ],
             ],
-            'section'     => 'misc'
+            'section'     => 'misc',
+            'hidden'      => true
         ];
         $fields["last_modified"] =[
             'name' => __( 'Last modified', 'disciple_tools' ),

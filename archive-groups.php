@@ -124,17 +124,18 @@ declare(strict_types=1);
                 <div class="cell small-4 filter-modal-left">
                     <?php $fields = [ "assigned_to", "group_status", "group_type", "locations" ];
                     $fields = apply_filters( 'dt_filters_additional_fields', $fields, "groups" );
+                    $allowed_types = [ "multi_select", "key_select", "boolean", "date" ];
+                    foreach ( $dt_group_field_options as $field_key => $field){
+                        if ( in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
+                            $fields[] = $field_key;
+                        }
+                    }
                     $connections = Disciple_Tools_Posts::$connection_types;
                     $connections["assigned_to"] = [ "name" => __( "Assigned To", 'disciple_tools' ) ];
                     ?>
-                    <ul class="vertical tabs" data-tabs id="example-tabs">
+                    <ul class="vertical tabs" data-tabs id="filter-tabs">
                         <?php foreach ( $fields as $index => $field ) :
-                            if ( $field === "health_metrics" ) : ?>
-                                <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
-                                    <a href="#<?php echo esc_html( $field )?>">
-                                        <?php echo esc_html( "Health Metrics" ) ?></a>
-                                </li>
-                            <?php elseif ( isset( $dt_group_field_options[$field]["name"] ) ) : ?>
+                            if ( isset( $dt_group_field_options[$field]["name"] ) ) : ?>
                                 <li class="tabs-title <?php if ( $index === 0 ){ echo "is-active"; } ?>" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>" <?php if ( $index === 0 ){ echo 'aria-selected="true"'; } ?>>
                                         <?php echo esc_html( $dt_group_field_options[$field]["name"] ) ?></a>
@@ -149,7 +150,7 @@ declare(strict_types=1);
                     </ul>
                 </div>
 
-                <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="example-tabs">
+                <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="filter-tabs">
                     <?php foreach ( $fields as $index => $field ) :
                         $is_multi_select = isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "multi_select";
                         if ( in_array( $field, array_keys( $connections ) ) || $is_multi_select ) : ?>
@@ -170,21 +171,6 @@ declare(strict_types=1);
                                 </div>
                             </div>
 
-                        <?php elseif ( $field == "health_metrics" ) : ?>
-                            <div class="tabs-panel" id="health_metrics">
-                                <div id="health_metrics-options">
-                                    <?php foreach ( $dt_group_field_options as $dt_field_key => $dt_field_value ) :
-                                        if ( strpos( $dt_field_key, "church_" ) === 0 ) : ?>
-                                            <div>
-                                                <label style="cursor: pointer;">
-                                                    <input type="checkbox" value="<?php echo esc_html( $dt_field_key ) ?>" class="milestone-filter" autocomplete="off">
-                                                    <?php echo esc_html( $dt_field_value["name"] ) ?>
-                                                </label>
-                                            </div>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
-                                </div>
-                            </div>
                         <?php else : ?>
                             <div class="tabs-panel" id="<?php echo esc_html( $field ) ?>">
                                 <div id="<?php echo esc_html( $field ) ?>-options">
@@ -198,7 +184,40 @@ declare(strict_types=1);
                                                 </label>
                                             </div>
                                         <?php endforeach; ?>
-                                    <?php elseif ( isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "key_select" ) : ?>
+                                    <?php elseif ( isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "boolean" ) : ?>
+                                        <div class="boolean_options">
+                                            <label style="cursor: pointer">
+                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>" data-label="<?php esc_html_e( "No", 'disciple_tools' ) ?>"
+                                                       value="0"> <?php esc_html_e( "No", 'disciple_tools' ) ?>
+                                            </label>
+                                        </div>
+                                        <div class="boolean_options">
+                                            <label style="cursor: pointer">
+                                                <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>" data-label="<?php esc_html_e( "Yes", 'disciple_tools' ) ?>"
+                                                       value="1"> <?php esc_html_e( "Yes", 'disciple_tools' ) ?>
+                                            </label>
+                                        </div>
+                                    <?php elseif ( isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "date" ) : ?>
+                                        <strong><?php esc_html_e( "Range Start", 'disciple_tools' ) ?></strong>
+                                        <button class="clear-date-picker" style="color:firebrick"
+                                                data-for="<?php echo esc_html( $field ) ?>_start">
+                                            <?php esc_html_e( "Clear", 'disciple_tools' ) ?></button>
+                                        <input id="<?php echo esc_html( $field ) ?>_start"
+                                               autocomplete="off"
+                                               type="text" data-date-format='yy-mm-dd'
+                                               class="dt_date_picker" data-delimit="start"
+                                               data-field="<?php echo esc_html( $field ) ?>">
+                                        <br>
+                                        <strong><?php esc_html_e( "Range end", 'disciple_tools' ) ?></strong>
+                                        <button class="clear-date-picker"
+                                                style="color:firebrick"
+                                                data-for="<?php echo esc_html( $field ) ?>_end">
+                                            <?php esc_html_e( "Clear", 'disciple_tools' ) ?></button>
+                                        <input id="<?php echo esc_html( $field ) ?>_end"
+                                               autocomplete="off" type="text"
+                                               data-date-format='yy-mm-dd'
+                                               class="dt_date_picker" data-delimit="end"
+                                               data-field="<?php echo esc_html( $field ) ?>">
 
                                     <?php endif; ?>
                                 </div>
