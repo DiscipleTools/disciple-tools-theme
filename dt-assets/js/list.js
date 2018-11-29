@@ -430,30 +430,24 @@
 
   let getSearchQuery = ()=>{
     let searchQuery = {}
-    searchQuery.assigned_to = _.map(_.get(Typeahead['.js-typeahead-assigned_to'], "items"), "ID")
-    searchQuery.locations = _.map(_.get(Typeahead['.js-typeahead-locations'], "items"), "ID")
-    let fields = []
-    if (wpApiListSettings.current_post_type === "groups"){
-      // searchQuery.leaders = _.map(_.get(Typeahead['.js-typeahead-leaders'], "items"), "ID")
-      fields = ["group_type", "group_status"]
-    } else if ( wpApiListSettings.current_post_type === "contacts" ){
-      searchQuery.subassigned = _.map(_.get(Typeahead['.js-typeahead-subassigned'], "items"), "ID")
-      fields = ["overall_status", "seeker_path", "requires_update"]
-      _.forOwn( wpApiListSettings.custom_fields_settings, (field, field_key)=>{
-        if ( ( field.type === "key_select"  || field.type === "multi_select" ) && !fields.includes(field_key) ){
-          fields.push(field_key)
-        }
-      })
-      if ( $("#combine_subassigned").is(":checked") ){
-        searchQuery["combine"] = ["subassigned"]
-      }
-    }
-    fields = fields.concat(wpApiListSettings.additional_filter_options || [])
-    //get checked field options
-    fields.forEach(field=>{
+    let fieldsFiltered = newFilterLabels.map(f=>f.field)
+    fieldsFiltered.forEach(field=>{
       searchQuery[field] =[]
-      if ( _.get(wpApiListSettings, `custom_fields_settings.${field}.type` ) === "multi_select" ){
+      let type = _.get(wpApiListSettings, `custom_fields_settings.${field}.type` )
+      if ( type === "connection" ){
+        searchQuery[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID")
+      }  if ( type === "multi_select" ){
         searchQuery[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "key")
+      } else if ( type === "date") {
+        searchQuery[field] = {}
+        let start = $(`.dt_date_picker[data-field="${field}"][data-delimit="start"]`).val()
+        if ( start ){
+          searchQuery[field]["start"] = start
+        }
+        let end = $(`.dt_date_picker[data-field="${field}"][data-delimit="end"]`).val()
+        if ( end ){
+          searchQuery[field]["end"]  = end
+        }
       } else {
         $(`#${field}-options input:checked`).each(function(){
           searchQuery[field].push($(this).val())
@@ -616,7 +610,7 @@
           data: [],
           callback: {
             onCancel: function (node, item) {
-              $(`#${item.ID}.locations`).remove()
+              $(`.current-filter[data-id="${item.ID}"].locations`).remove()
               _.pullAllBy(newFilterLabels, [{id: item.ID}], "id")
             }
           }
@@ -632,7 +626,7 @@
           onClick: function (node, a, item) {
             let name = _.get(wpApiListSettings, `custom_fields_settings.locations.name`, 'locations')
             newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "locations"})
-            selectedFilters.append(`<span class="current-filter locations" id="${item.ID}">${name}:${item.name}</span>`)
+            selectedFilters.append(`<span class="current-filter locations" data-id="${item.ID}">${name}:${item.name}</span>`)
           }
         }
       });
@@ -662,7 +656,7 @@
           data: [],
           callback: {
             onCancel: function (node, item) {
-              $(`#${item.ID}.leaders`).remove()
+              $(`.current-filter[data-id="${item.ID}"].leaders`).remove()
               _.pullAllBy(newFilterLabels, [{id: item.ID}], "id")
             }
           }
@@ -677,7 +671,7 @@
           },
           onClick: function (node, a, item, event) {
             newFilterLabels.push({id: item.ID, name: item.name, field: "leaders"})
-            selectedFilters.append(`<span class="current-filter leaders" id="${item.ID}">${item.name}</span>`)
+            selectedFilters.append(`<span class="current-filter leaders" data-id="${item.ID}">${item.name}</span>`)
           }
         }
       });
@@ -707,7 +701,7 @@
           data: [],
           callback: {
             onCancel: function (node, item) {
-              $(`#${item.ID}.subassigned`).remove()
+              $(`.current-filter[data-id="${item.ID}"].subassigned`).remove()
               _.pullAllBy(newFilterLabels, [{id: item.ID}], "id")
             }
           }
@@ -723,7 +717,7 @@
           onClick: function (node, a, item, event) {
             let name = _.get(wpApiListSettings, `custom_fields_settings.subassigned.name`, 'subassigned')
             newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "subassigned"})
-            selectedFilters.append(`<span class="current-filter subassigned" id="${item.ID}">${name}:${item.name}</span>`)
+            selectedFilters.append(`<span class="current-filter subassigned" data-id="${item.ID}">${name}:${item.name}</span>`)
           }
         }
       });
@@ -745,7 +739,7 @@
           data: [],
           callback: {
             onCancel: function (node, item) {
-              $(`#${item.ID}.assigned_to`).remove()
+              $(`.current-filter[data-id="${item.ID}"].assigned_to`).remove()
               _.pullAllBy(newFilterLabels, [{id:item.ID}], "id")
             }
           }
@@ -782,7 +776,7 @@
           },
           onClick: function(node, a, item, event) {
             let name = _.get(wpApiListSettings, `custom_fields_settings.assigned_to.name`, 'assigned_to')
-            selectedFilters.append(`<span class="current-filter assigned_to" id="${item.ID}">${name}:${item.name}</span>`)
+            selectedFilters.append(`<span class="current-filter assigned_to" data-id="${item.ID}">${name}:${item.name}</span>`)
             newFilterLabels.push({id:item.ID, name:`${name}:${item.name}`, field:"assigned_to"})
 
           }
@@ -868,7 +862,7 @@
           data: [],
           callback: {
             onCancel: function (node, item) {
-              $(`#${item.key}.${field}`).remove()
+              $(`.current-filter[data-id="${item.key}"].${field}`).remove()
               _.pullAllBy(newFilterLabels, [{id:item.key}], "id")
             }
           }
@@ -876,7 +870,7 @@
         callback: {
           onClick: function(node, a, item, event){
             let name = _.get(wpApiListSettings, `custom_fields_settings.${field}.name`, field)
-            selectedFilters.append(`<span class="current-filter ${field}" id="${item.key}">${name}:${item.value}</span>`)
+            selectedFilters.append(`<span class="current-filter ${field}" data-id="${item.key}">${name}:${item.value}</span>`)
             newFilterLabels.push({id:item.key, name:`${name}:${item.value}`, field})
           },
           onResult: function (node, query, result, resultCount) {
@@ -907,6 +901,9 @@
       loadSubassignedTypeahead()
       loadMultiSelectTypeaheads().catch(err => { console.error(err) })
     }
+    $("#filter-modal input.dt_date_picker").each(function () {
+      $(this).val('')
+    })
     $("#filter-modal input:checked").each(function () {
       $(this).prop('checked', false)
     })
@@ -930,12 +927,15 @@
     let connectionTypeKeys = Object.keys(wpApiListSettings.connection_types)
     connectionTypeKeys.push("assigned_to")
     newFilterLabels.forEach(label=>{
-      selectedFilters.append(`<span class="current-filter ${label.field}" id="${label.id}">${label.name}</span>`)
-      if ( _.get(wpApiListSettings, `custom_fields_settings.${label.field}.type`) === "key_select" ){
+      selectedFilters.append(`<span class="current-filter ${label.field}" data-id="${label.id}">${label.name}</span>`)
+      let type = _.get(wpApiListSettings, `custom_fields_settings.${label.field}.type`)
+      if ( type === "key_select" || type === "boolean" ){
         $(`#filter-modal #${label.field}-options input[value="${label.id}"]`).prop('checked', true)
+      } else if ( type === "date" ){
+        $(`#filter-modal #${label.field}-options #${label.id}`).datepicker('setDate', label.date)
       } else if ( connectionTypeKeys.includes( label.field ) ){
         Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
-      } else if ( _.get(wpApiListSettings, `custom_fields_settings.${label.field}.type`) === "multi_select" ){
+      } else if ( type === "multi_select" ){
         Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
 
       }
@@ -956,8 +956,10 @@
     getContactForCurrentView()
   })
 
-  $('#example-tabs').on('change.zf.tabs', function (a, b) {
+  $('#filter-tabs').on('change.zf.tabs', function (a, b) {
     let field = $(b).data("field")
+    $(`.tabs-panel`).removeClass('is-active')
+    $(`#${field}.tabs-panel`).addClass('is-active')
     if (field &&  Typeahead[`.js-typeahead-${field}`]){
       Typeahead[`.js-typeahead-${field}`].adjustInputSize()
     }
@@ -972,9 +974,9 @@
       let optionName = field_options[optionId]["label"]
       let name = _.get(wpApiListSettings, `custom_fields_settings.${field_key}.name`, field_key)
       newFilterLabels.push({id:$(this).val(), name:`${name}:${optionName}`, field:field_key})
-      selectedFilters.append(`<span class="current-filter ${field_key}" id="${optionId}">${name}:${optionName}</span>`)
+      selectedFilters.append(`<span class="current-filter ${field_key}" data-id="${optionId}">${name}:${optionName}</span>`)
     } else {
-      $(`#${$(this).val()}.${field_key}`).remove()
+      $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
       _.pullAllBy(newFilterLabels, [{id:optionId}], "id")
     }
   })
@@ -986,11 +988,37 @@
     if ($(this).is(":checked")){
       let field = _.get( wpApiListSettings, `custom_fields_settings.${field_key}` )
       newFilterLabels.push({id:$(this).val(), name:`${field.name}:${label}`, field:field_key})
-      selectedFilters.append(`<span class="current-filter ${field_key}" id="${optionId}">${field.name}:${label}</span>`)
+      selectedFilters.append(`<span class="current-filter ${field_key}" data-id="${optionId}">${field.name}:${label}</span>`)
     } else {
-      $(`#${$(this).val()}.${field_key}`).remove()
+      $(`current-filter[data-id="${$(this).val()}"].${field_key}`).remove()
       _.pullAllBy(newFilterLabels, [{id:optionId}], "id")
     }
+  })
+  $('#filter-modal .dt_date_picker').datepicker({
+    dateFormat: 'yy-mm-dd',
+    onSelect: function (date) {
+      let id = $(this).data('field')
+      let delimiter = $(this).data('delimit')
+      let delimiterLabel = wpApiListSettings.translations[`range_${delimiter}`]
+      let field = _.get( wpApiListSettings, `custom_fields_settings.${id}` )
+      _.pullAllBy(newFilterLabels, [{id:`${id}_${delimiter}`}], "id")
+      $(`.current-filter[data-id="${id}_${delimiter}"]`).remove()
+      newFilterLabels.push({id:`${id}_${delimiter}`, name:`${field.name} ${delimiterLabel}:${date}`, field:id, date:date})
+      selectedFilters.append(`
+        <span class="current-filter ${id}_${delimiter}" 
+              data-id="${id}_${delimiter}">
+                ${field.name} ${delimiterLabel}:${date}
+        </span>
+      `)
+    },
+    changeMonth: true,
+    changeYear: true
+  })
+  $('#filter-modal .clear-date-picker').on('click', function () {
+      let id = $(this).data('for')
+      $(`#filter-modal #${id}`).datepicker('setDate', null)
+      _.pullAllBy(newFilterLabels, [{id:`${id}`}], "id")
+      $(`.current-filter[data-id="${id}"]`).remove()
   })
 
   let type = "contact"

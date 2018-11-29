@@ -158,9 +158,8 @@ declare(strict_types=1);
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
                     <?php $fields = [ "assigned_to", "subassigned", "locations", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
-                    $allowed_types = [ "multi_select", "key_select", "boolean" ];
+                    $allowed_types = [ "multi_select", "key_select", "boolean", "date" ];
                     foreach ( $dt_contact_field_options as $field_key => $field){
-
                         if ( in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
                             $fields[] = $field_key;
                         }
@@ -169,7 +168,7 @@ declare(strict_types=1);
                     $connections = Disciple_Tools_Posts::$connection_types;
                     $connections["assigned_to"] = [ "name" => __( "Assigned To", 'disciple_tools' ) ];
                     ?>
-                    <ul class="vertical tabs" data-tabs id="example-tabs">
+                    <ul class="vertical tabs" data-tabs id="filter-tabs">
                         <?php foreach ( $fields as $index => $field ) :
                             if ( isset( $dt_contact_field_options[$field]["name"] ) ) : ?>
                                 <li class="tabs-title <?php if ( $index === 0 ){ echo "is-active"; } ?>" data-field="<?php echo esc_html( $field )?>">
@@ -188,7 +187,7 @@ declare(strict_types=1);
                     </ul>
                 </div>
 
-                <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="example-tabs">
+                <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="filter-tabs">
                     <?php foreach ( $fields as $index => $field ) :
                         $is_multi_select = isset( $dt_contact_field_options[$field] ) && $dt_contact_field_options[$field]["type"] == "multi_select";
                         if ( in_array( $field, array_keys( $connections ) ) || $is_multi_select ) : ?>
@@ -242,6 +241,28 @@ declare(strict_types=1);
                                                        value="1"> <?php esc_html_e( "Yes", 'disciple_tools' ) ?>
                                             </label>
                                         </div>
+                                    <?php elseif ( isset( $dt_contact_field_options[$field] ) && $dt_contact_field_options[$field]["type"] == "date" ) : ?>
+                                        <strong><?php esc_html_e( "Range Start", 'disciple_tools' ) ?></strong>
+                                        <button class="clear-date-picker" style="color:firebrick"
+                                                data-for="<?php echo esc_html( $field ) ?>_start">
+                                            <?php esc_html_e( "Clear", 'disciple_tools' ) ?></button>
+                                        <input id="<?php echo esc_html( $field ) ?>_start"
+                                               autocomplete="off"
+                                               type="text" data-date-format='yy-mm-dd'
+                                               class="dt_date_picker" data-delimit="start"
+                                               data-field="<?php echo esc_html( $field ) ?>">
+                                        <br>
+                                        <strong><?php esc_html_e( "Range end", 'disciple_tools' ) ?></strong>
+                                        <button class="clear-date-picker"
+                                                style="color:firebrick"
+                                                data-for="<?php echo esc_html( $field ) ?>_end">
+                                            <?php esc_html_e( "Clear", 'disciple_tools' ) ?></button>
+                                        <input id="<?php echo esc_html( $field ) ?>_end"
+                                               autocomplete="off" type="text"
+                                               data-date-format='yy-mm-dd'
+                                               class="dt_date_picker" data-delimit="end"
+                                               data-field="<?php echo esc_html( $field ) ?>">
+
                                     <?php endif; ?>
                                 </div>
                             </div>
