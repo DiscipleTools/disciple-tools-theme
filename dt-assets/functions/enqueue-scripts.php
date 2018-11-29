@@ -296,7 +296,8 @@ function dt_site_scripts() {
                 'filter_contact_unattempted' => __( 'Contact attempt needed', 'disciple_tools' ),
                 'filter_assignment_needed' => __( 'Assignment needed', 'disciple_tools' ),
                 'range_start' => __( 'start', 'disciple_tools' ),
-                'range_end' => __( 'end', 'disciple_tools' )
+                'range_end' => __( 'end', 'disciple_tools' ),
+                'created_on' => __( 'Created On', 'disciple_tools' )
             ],
             'txt_infoEmpty' => __( 'Showing 0 to 0 of 0 entries', 'disciple_tools' ),
             'txt_infoFiltered' => _x( '(filtered from _MAX_ total entries)', 'just copy `_MAX_`', 'disciple_tools' ),

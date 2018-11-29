@@ -74,7 +74,7 @@ declare(strict_types=1);
                 </div>
             </aside>
 
-            <div class="js-filters-modal" id="filters-modal">
+            <div class="reveal js-filters-modal" id="filters-modal">
                 <div class="js-filters-modal-content">
                     <h5 class="hide-for-small-only"><?php esc_html_e( 'My Contact Filters', "disciple_tools" ); ?></h5>
 
@@ -157,7 +157,7 @@ declare(strict_types=1);
 
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
-                    <?php $fields = [ "assigned_to", "subassigned", "locations", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
+                    <?php $fields = [ "assigned_to", "subassigned",  "created_on", "locations", "overall_status", "seeker_path", "milestones", "requires_update", "tags", "sources" ];
                     $allowed_types = [ "multi_select", "key_select", "boolean", "date" ];
                     foreach ( $dt_contact_field_options as $field_key => $field){
                         if ( in_array( $field["type"], $allowed_types ) && !in_array( $field_key, $fields ) && !( isset( $field["hidden"] ) && $field["hidden"] )){
@@ -179,6 +179,11 @@ declare(strict_types=1);
                                 <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>">
                                         <?php echo esc_html( $connections[$field]["name"] ) ?></a>
+                                </li>
+                            <?php elseif ( $field === "created_on" ) : ?>
+                                <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
+                                    <a href="#<?php echo esc_html( $field )?>">
+                                        <?php esc_html_e( "Created On", 'disciple_tools' ) ?></a>
                                 </li>
                             <?php else : ?>
                                 <?php wp_die( "Cannot implement filter options for field " . esc_html( $field ) ); ?>
@@ -241,7 +246,7 @@ declare(strict_types=1);
                                                        value="1"> <?php esc_html_e( "Yes", 'disciple_tools' ) ?>
                                             </label>
                                         </div>
-                                    <?php elseif ( isset( $dt_contact_field_options[$field] ) && $dt_contact_field_options[$field]["type"] == "date" ) : ?>
+                                    <?php elseif ( $field === "created_on" || isset( $dt_contact_field_options[$field] ) && $dt_contact_field_options[$field]["type"] == "date" ) : ?>
                                         <strong><?php esc_html_e( "Range Start", 'disciple_tools' ) ?></strong>
                                         <button class="clear-date-picker" style="color:firebrick"
                                                 data-for="<?php echo esc_html( $field ) ?>_start">

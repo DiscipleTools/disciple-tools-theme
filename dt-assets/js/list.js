@@ -438,7 +438,7 @@
         searchQuery[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID")
       }  if ( type === "multi_select" ){
         searchQuery[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "key")
-      } else if ( type === "date") {
+      } else if ( type === "date" || field === "created_on" ) {
         searchQuery[field] = {}
         let start = $(`.dt_date_picker[data-field="${field}"][data-delimit="start"]`).val()
         if ( start ){
@@ -1000,14 +1000,19 @@
       let id = $(this).data('field')
       let delimiter = $(this).data('delimit')
       let delimiterLabel = wpApiListSettings.translations[`range_${delimiter}`]
-      let field = _.get( wpApiListSettings, `custom_fields_settings.${id}` )
+      let fieldName = _.get( wpApiListSettings, `custom_fields_settings.${id}.name` , id)
+      if ( id === "created_on" ){
+        fieldName = wpApiListSettings.translations['created_on']
+      }
+      //remove existing filters
       _.pullAllBy(newFilterLabels, [{id:`${id}_${delimiter}`}], "id")
       $(`.current-filter[data-id="${id}_${delimiter}"]`).remove()
-      newFilterLabels.push({id:`${id}_${delimiter}`, name:`${field.name} ${delimiterLabel}:${date}`, field:id, date:date})
+      //add new filters
+      newFilterLabels.push({id:`${id}_${delimiter}`, name:`${fieldName} ${delimiterLabel}:${date}`, field:id, date:date})
       selectedFilters.append(`
         <span class="current-filter ${id}_${delimiter}" 
               data-id="${id}_${delimiter}">
-                ${field.name} ${delimiterLabel}:${date}
+                ${fieldName} ${delimiterLabel}:${date}
         </span>
       `)
     },

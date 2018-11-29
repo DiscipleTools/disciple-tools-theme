@@ -118,7 +118,7 @@ declare(strict_types=1);
             </div>
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
-                    <?php $fields = [ "assigned_to", "group_status", "group_type", "locations" ];
+                    <?php $fields = [ "assigned_to", "created_on", "group_status", "group_type", "locations" ];
                     $fields = apply_filters( 'dt_filters_additional_fields', $fields, "groups" );
                     $allowed_types = [ "multi_select", "key_select", "boolean", "date" ];
                     foreach ( $dt_group_field_options as $field_key => $field){
@@ -140,6 +140,11 @@ declare(strict_types=1);
                                 <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
                                     <a href="#<?php echo esc_html( $field )?>">
                                         <?php echo esc_html( $connections[$field]["name"] ) ?></a>
+                                </li>
+                            <?php elseif ( $field === "created_on" ) : ?>
+                                <li class="tabs-title" data-field="<?php echo esc_html( $field )?>">
+                                    <a href="#<?php echo esc_html( $field )?>">
+                                        <?php esc_html_e( "Created On", 'disciple_tools' ) ?></a>
                                 </li>
                             <?php endif; ?>
                         <?php endforeach; ?>
@@ -193,7 +198,7 @@ declare(strict_types=1);
                                                        value="1"> <?php esc_html_e( "Yes", 'disciple_tools' ) ?>
                                             </label>
                                         </div>
-                                    <?php elseif ( isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "date" ) : ?>
+                                    <?php elseif ( $field === "created_on" || isset( $dt_group_field_options[$field] ) && $dt_group_field_options[$field]["type"] == "date" ) : ?>
                                         <strong><?php esc_html_e( "Range Start", 'disciple_tools' ) ?></strong>
                                         <button class="clear-date-picker" style="color:firebrick"
                                                 data-for="<?php echo esc_html( $field ) ?>_start">

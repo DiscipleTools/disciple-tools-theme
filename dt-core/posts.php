@@ -882,6 +882,20 @@ class Disciple_Tools_Posts
                 $access_query .= ( !empty( $access_query ) ? "AND" : "" ) ." ( assigned_to.meta_key = 'assigned_to' AND assigned_to.meta_value != 'user-$current_user->ID' )";
             }
         }
+
+        /**
+         * Filter by creation date
+         */
+        if ( isset( $query["created_on"] ) ){
+            if ( isset( $query["created_on"]["start"] ) ){
+                $meta_query .= "AND $wpdb->posts.post_date >= '" . esc_sql( $query["created_on"]["start"] ) . "' ";
+            }
+            if ( isset( $query["created_on"]["end"] ) ){
+                $meta_query .= "AND $wpdb->posts.post_date <= '" . esc_sql( $query["created_on"]["end"] ) . "' ";
+            }
+            unset( $query["created_on"] );
+        }
+
         foreach ( $query as $query_key => $query_value ){
             $meta_field_sql = "";
             if ( !is_array( $query_value )){
@@ -915,6 +929,7 @@ class Disciple_Tools_Posts
                     $connector = " OR ";
                     foreach ( $query_value as $value_key => $value ){
                         $equality = "=";
+                        // boolean fields
                         if ( isset( $post_fields[$query_key]["type"] ) && $post_fields[$query_key]["type"] === "boolean" ){
                             if ( $value === "1" || $value === "yes" || $value === "true" ){
                                 $value = true;
@@ -922,15 +937,16 @@ class Disciple_Tools_Posts
                                 $value = false;
                             }
                         }
+                        //date fields
                         if ( isset( $post_fields[$query_key]["type"] ) && $post_fields[$query_key]["type"] === "date" ){
                             $connector = "AND";
                             if ( $value_key === "start" ){
                                 $value = strtotime( $value );
-                                $equality = ">";
+                                $equality = ">=";
                             }
                             if ( $value_key === "end" ){
                                 $value = strtotime( $value );
-                                $equality = "<";
+                                $equality = "<=";
                             }
                         }
 
