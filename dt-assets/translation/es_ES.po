@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Disciple Tools\n"
 "POT-Creation-Date: 2018-11-20 10:31+0100\n"
-"PO-Revision-Date: 2018-11-20 10:31+0100\n"
+"PO-Revision-Date: 2018-11-26 09:01-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -672,10 +672,11 @@ msgstr "Estado"
 msgid "Seeker Path"
 msgstr "Camino del Buscador"
 
+# Could be either Hitos or Pilares
 #: dt-assets/parts/content-contacts.php:37
 #: dt-contacts/contacts-post-type.php:642
 msgid "Faith Milestones"
-msgstr "Hitos de la fe"
+msgstr "Pilares de la fe"
 
 #: dt-assets/parts/content-contacts.php:38 dt-assets/parts/group-details.php:96
 #: dt-core/posts.php:387 single-contacts.php:274
@@ -960,52 +961,60 @@ msgid "Delete Filter"
 msgstr "Eliminar Filtro"
 
 #: dt-assets/parts/modals/modal-help.php:6
-#, fuzzy
-#| msgid "Contacts"
 msgid "Contact Status"
-msgstr "Contactos"
+msgstr "Estado de contacto"
 
 #: dt-assets/parts/modals/modal-help.php:7
 msgid "This is where you set the current status of the contact."
-msgstr ""
+msgstr "Aquí es donde se establece el estado actual del contacto."
 
 #: dt-assets/parts/modals/modal-help.php:9
 msgid "New Contact - The contact is new in the system"
-msgstr ""
+msgstr "Nuevo contacto - El contacto es nuevo en el sistema"
 
 #: dt-assets/parts/modals/modal-help.php:10
 msgid ""
 "Not Ready - There is not enough information to move forward with the contact "
 "at this time."
 msgstr ""
+"No está listo: no hay suficiente información para avanzar con el contacto en "
+"este momento."
 
 #: dt-assets/parts/modals/modal-help.php:11
-#, fuzzy
-#| msgid "This contact has been assigned to you."
 msgid "Dispatch Needed - This contact needs to be assigned to a multiplier."
-msgstr "Este contacto ha sido asignado a ti."
+msgstr ""
+"Asignación necesaria - Este contacto necesita ser asignado a un "
+"multiplicador."
 
 #: dt-assets/parts/modals/modal-help.php:12
 msgid ""
 "Waiting to be accepted - The contact has been assigned to someone, but has "
 "not yet been accepted by that person."
 msgstr ""
+"En espera de ser aceptado: el contacto ha sido asignado a alguien, pero aún "
+"no ha sido aceptado por esa persona."
 
 #: dt-assets/parts/modals/modal-help.php:13
 msgid "Active - The contact is progressing and/or continually being updated."
 msgstr ""
+"Activo: el contacto está progresando y / o se está actualizando "
+"continuamente."
 
 #: dt-assets/parts/modals/modal-help.php:14
 msgid ""
 "Paused - This contact is currently on hold (i.e. on vacation or not "
 "responding)."
 msgstr ""
+"En pausa: este contacto está actualmente en espera (es decir, de vacaciones "
+"o no responde)."
 
 #: dt-assets/parts/modals/modal-help.php:15
 msgid ""
 "Closed - This contact has made it known that they no longer want to continue "
 "or you have decided not to continue with him/her."
 msgstr ""
+"Cerrado: este contacto ha informado que ya no desea continuar o tu has "
+"decidido no continuar con él / ella."
 
 #: dt-assets/parts/modals/modal-new-group.php:3
 #: dt-assets/parts/modals/modal-new-group.php:13
@@ -1316,6 +1325,7 @@ msgstr "M j, Y @ G:i"
 msgid "%s draft updated."
 msgstr "%s borrador actualizado."
 
+# This could be either Hitos or Pilares depending on the context.
 #: dt-contacts/contacts-post-type.php:246
 msgid "Milestones"
 msgstr "Hitos"
@@ -1333,25 +1343,19 @@ msgid "Overall Status"
 msgstr "Estado General"
 
 #: dt-contacts/contacts-post-type.php:568
-#, fuzzy
-#| msgid "New Contacts"
 msgctxt "Contact Status"
 msgid "New Contact"
-msgstr "Nuevos Contactos"
+msgstr "Nuevo Contacto"
 
 #: dt-contacts/contacts-post-type.php:573
-#, fuzzy
-#| msgid "Not Linked"
 msgctxt "Contact Status"
 msgid "Not Ready"
-msgstr "No Enlazado"
+msgstr "No está listo"
 
 #: dt-contacts/contacts-post-type.php:576
-#, fuzzy
-#| msgid "Dispatcher"
 msgctxt "Contact Status"
 msgid "Dispatch Needed"
-msgstr "Despachador"
+msgstr "Asignación necesaria"
 
 #: dt-contacts/contacts-post-type.php:589
 msgctxt "Contact Status"
@@ -1467,10 +1471,8 @@ msgid "Over 40 years old"
 msgstr "Mayor de 40 años"
 
 #: dt-contacts/contacts-post-type.php:703
-#, fuzzy
-#| msgid "Reason Closed"
 msgid "Reason Not Ready"
-msgstr "Razón Cerrado"
+msgstr "La razón que no está listo"
 
 #: dt-contacts/contacts-post-type.php:708
 msgid "Insufficient Contact Information"
@@ -1557,10 +1559,8 @@ msgid "Insufficient contact info"
 msgstr "Información de contacto insuficiente"
 
 #: dt-contacts/contacts-post-type.php:749
-#, fuzzy
-#| msgid "Already in church or connected with Others"
 msgid "Already in church or connected with others"
-msgstr "Ya en la iglesia o conectado con otros"
+msgstr "Ya está en una iglesia o conectado con otros"
 
 #: dt-contacts/contacts-post-type.php:750
 msgid "No longer interested"
@@ -1579,10 +1579,8 @@ msgid "Denies submitting contact request"
 msgstr "Deniega enviar solicitud de contacto"
 
 #: dt-contacts/contacts-post-type.php:754
-#, fuzzy
-#| msgid "Transfer this contact to:"
 msgid "Transferred contact to partner"
-msgstr "Transfiere este contacto a:"
+msgstr "Contacto transferido a la pareja"
 
 #: dt-contacts/contacts-post-type.php:755
 msgid "Unknown"
@@ -1727,39 +1725,31 @@ msgstr "Ingrese el nombre del contacto aquí"
 
 #: dt-contacts/contacts-transfer.php:29
 msgid "Contact Transfer Both Ways"
-msgstr ""
+msgstr "Transferencia de Contacto en Ambos Sentidos"
 
 #: dt-contacts/contacts-transfer.php:30
-#, fuzzy
-#| msgid "Contact Sending Only"
 msgid "Contact Transfer Sending Only"
-msgstr "Solo Enviando Contacto"
+msgstr "Solo Envío de Transferencia de Contacto"
 
 #: dt-contacts/contacts-transfer.php:31
-#, fuzzy
-#| msgid "Contact Receiving Only"
 msgid "Contact Transfer Receiving Only"
-msgstr "Solo Recibiendo Contacto"
+msgstr "Solo Recibo de Transferencia de Contacto"
 
 #: dt-contacts/contacts-transfer.php:52
-#, fuzzy
-#| msgid "This contact has been assigned to you."
 msgid "This contact has been transferred"
-msgstr "Este contacto ha sido asignado a ti."
+msgstr "Este contacto ha sido transferido"
 
 #: dt-contacts/contacts-transfer.php:53
-#, fuzzy
-#| msgid "This contact has been assigned to you."
 msgid "This contact has been transferred to"
-msgstr "Este contacto ha sido asignado a ti."
+msgstr "Este contacto ha sido transferido a"
 
 #: dt-contacts/contacts-transfer.php:86
 msgid "another site"
-msgstr ""
+msgstr "otro sitio"
 
 #: dt-contacts/contacts-transfer.php:95
 msgid "Already transfered to"
-msgstr ""
+msgstr "Ya transferido a"
 
 #: dt-contacts/contacts-transfer.php:96
 msgid ""
@@ -1767,12 +1757,13 @@ msgid ""
 "create duplicates. Do you still want to override this warning and continue "
 "with your transfer?"
 msgstr ""
+"NOTA: Ya has transferido este contacto. Transferir de nuevo podría crear "
+"duplicados. ¿Aún desea anular esta advertencia y continuar con su "
+"transferencia?"
 
 #: dt-contacts/contacts-transfer.php:97
-#, fuzzy
-#| msgid "Save and continue editing"
 msgid "Override and Continue"
-msgstr "Guardar y continuar editando"
+msgstr "Anular y Continuar"
 
 #: dt-contacts/contacts-transfer.php:102
 msgid "Transfer this contact to:"
@@ -1785,17 +1776,15 @@ msgstr "Confirmar transferencia"
 #: dt-contacts/contacts-transfer.php:312 dt-contacts/contacts-transfer.php:329
 #: dt-contacts/contacts-transfer.php:346
 msgid "Transfer Bot"
-msgstr ""
+msgstr "Bot de transferencia"
 
 #: dt-contacts/contacts-transfer.php:331
-#, fuzzy
-#| msgid "Contact needs a title"
 msgid "Contact transferred from site"
-msgstr "Contacto necesita un título"
+msgstr "Contacto transferido desde el sitio"
 
 #: dt-contacts/contacts-transfer.php:338
 msgid "ALERT: Possible duplicate contact from a previous transfer."
-msgstr ""
+msgstr "ALERTA: Posible contacto duplicado de una transferencia previa."
 
 #: dt-contacts/contacts.php:80
 #, php-format
@@ -1900,10 +1889,8 @@ msgstr "más duplicados no se muestran"
 
 #: dt-contacts/contacts.php:2455 dt-contacts/contacts.php:2670
 #: dt-groups/groups.php:999
-#, fuzzy
-#| msgid "Permission denied"
 msgid "Permission denied."
-msgstr "Permiso denegado"
+msgstr "Permiso denegado."
 
 #: dt-core/admin/admin-theme-design.php:43
 #, php-format
@@ -1975,7 +1962,7 @@ msgstr "Información de contacto modificada"
 #: dt-core/admin/config-site-defaults.php:312
 #: dt-core/migrations/0012-typo-rename.php:7
 msgid "Contact Milestones and Group Health metrics"
-msgstr "Hitos del Contacto y Métricas de Salud del Grupo"
+msgstr "Progreso del Contacto y Métricas de Salud del Grupo"
 
 #: dt-core/admin/config-site-defaults.php:345
 msgid ""
@@ -2034,111 +2021,100 @@ msgstr "Para restablecer tu contraseña, visita la siguiente dirección:"
 
 #: dt-core/admin/gdpr.php:23
 msgid "redacted email"
-msgstr ""
+msgstr "correo electrónico redactado"
 
 #: dt-core/admin/gdpr.php:24
 msgid "redacted name"
-msgstr ""
+msgstr "nombre redactado"
 
 #: dt-core/admin/gdpr.php:25
 msgid "redacted"
-msgstr ""
+msgstr "redactado"
 
 #: dt-core/admin/gdpr.php:70
 msgid "Sorry, you are not allowed to export personal data on this site."
 msgstr ""
+"Lo sentimos, no está permitido exportar datos personales en este sitio."
 
 #: dt-core/admin/gdpr.php:87
 msgid "Export Personal Data"
-msgstr ""
+msgstr "Exportar Datos Personales"
 
 #: dt-core/admin/gdpr.php:93
 msgid "Add Data Export Request"
-msgstr ""
+msgstr "Añadir Solicitud de Exportación de Datos"
 
 #: dt-core/admin/gdpr.php:94 dt-core/admin/gdpr.php:161
 msgid ""
 "An email will be sent to the user at this email address asking them to "
 "verify the request."
 msgstr ""
+"Se enviará un correo electrónico al usuario a esta dirección de correo "
+"electrónico pidiéndole que verifique la solicitud."
 
 #: dt-core/admin/gdpr.php:97 dt-core/admin/gdpr.php:164
-#, fuzzy
-#| msgid "Username already exists"
 msgid "Username or email address"
-msgstr "El nombre de usuario ya existe"
+msgstr "Nombre de usuario o correo electrónico"
 
 #: dt-core/admin/gdpr.php:99 dt-core/admin/gdpr.php:166
-#, fuzzy
-#| msgid "Send Test"
 msgid "Send Request"
-msgstr "Enviar prueba"
+msgstr "Enviar Solicitud"
 
 #: dt-core/admin/gdpr.php:110 dt-core/admin/gdpr.php:177
-#, fuzzy
-#| msgid "Search sources"
 msgid "Search Requests"
-msgstr "Buscar fuentes"
+msgstr "Buscar Solicitudes"
 
 #: dt-core/admin/gdpr.php:135
 msgid "Sorry, you are not allowed to erase data on this site."
-msgstr ""
+msgstr "Lo sentimos, no está permitido borrar datos en este sitio."
 
 #: dt-core/admin/gdpr.php:154 dt-core/admin/gdpr.php:965
 msgid "Erase Personal Data"
-msgstr ""
+msgstr "Borrar Datos Personales"
 
 #: dt-core/admin/gdpr.php:160
 msgid "Add Data Erasure Request"
-msgstr ""
+msgstr "Añadir Solicitud de Borrado de Datos"
 
 #: dt-core/admin/gdpr.php:208
-#, fuzzy
-#| msgid "Invalid"
 msgid "Invalid request."
-msgstr "No válido"
+msgstr "Solicitud no válida."
 
 #: dt-core/admin/gdpr.php:216 dt-core/admin/gdpr.php:307
 msgid "Unable to initiate confirmation request."
-msgstr ""
+msgstr "No se puede iniciar la solicitud de confirmación."
 
 #: dt-core/admin/gdpr.php:240
 msgid "Confirmation request sent again successfully."
-msgstr ""
+msgstr "Solicitud de confirmación enviada de nuevo con éxito."
 
 #: dt-core/admin/gdpr.php:256 dt-core/admin/gdpr.php:268
-#, fuzzy
-#| msgid "Invalid"
 msgid "Invalid action."
-msgstr "No válido"
+msgstr "Acción no válida."
 
 #: dt-core/admin/gdpr.php:279
 msgid ""
 "Unable to add this request. A valid email address or username must be "
 "supplied."
 msgstr ""
+"No se puede agregar esta solicitud. Se debe proporcionar una dirección de "
+"correo electrónico o nombre de usuario válido."
 
 #: dt-core/admin/gdpr.php:318
-#, fuzzy
-#| msgid "Plugin activated successfully."
 msgid "Confirmation request initiated successfully."
-msgstr "Complemento activado exitosamente."
+msgstr "Se inició exitosamente la solicitud de confirmación."
 
 #: dt-core/admin/gdpr.php:400
-#, fuzzy
-#| msgid "Requires Update"
 msgid "Requester"
-msgstr "Actualización Requerida"
+msgstr "Solicitante"
 
 #: dt-core/admin/gdpr.php:402
-#, fuzzy
-#| msgid "Required"
 msgid "Requested"
-msgstr "Requerido"
+msgstr "Solicitado"
 
 #: dt-core/admin/gdpr.php:403
 msgid "Next Steps"
-msgstr ""
+msgstr "Próximos Pasos"
 
 #: dt-core/admin/gdpr.php:483 dt-core/admin/site-link-post-type.php:372
 #: template-notifications.php:38
@@ -2146,131 +2122,114 @@ msgid "All"
 msgstr "Todo"
 
 #: dt-core/admin/gdpr.php:502
-#, fuzzy
-#| msgid "Removed from"
 msgid "Remove"
-msgstr "Eliminado de"
+msgstr "Eliminar"
 
 #: dt-core/admin/gdpr.php:503
 msgid "Resend email"
-msgstr ""
+msgstr "Reenviar email"
 
 #. translators: %d: number of requests
 #: dt-core/admin/gdpr.php:534
-#, fuzzy, php-format
-#| msgid "Deleted %1$s: %2$s"
+#, php-format
 msgid "Deleted %d request"
 msgid_plural "Deleted %d requests"
-msgstr[0] "Eliminado %1$s: %2$s"
-msgstr[1] "Eliminado %1$s: %2$s"
+msgstr[0] "Se eliminó %d solicitud"
+msgstr[1] "Se eliminaron %d solicitudes"
 
 #. translators: %d: number of requests
 #: dt-core/admin/gdpr.php:551
 #, php-format
 msgid "Re-sent %d request"
 msgid_plural "Re-sent %d requests"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Re-enviado %d solicitud"
+msgstr[1] "Re-enviado %d solicitudes"
 
 #. translators: human readable timestamp
 #: dt-core/admin/gdpr.php:694
 #, php-format
 msgid "%s ago"
-msgstr ""
+msgstr "hace %s"
 
 #: dt-core/admin/gdpr.php:808
 msgid "Download Personal Data"
-msgstr ""
+msgstr "Descargar Datos Personales"
 
 #: dt-core/admin/gdpr.php:809
-#, fuzzy
-#| msgid "Loading..."
 msgid "Downloading Data..."
 msgstr "Cargando…"
 
 #: dt-core/admin/gdpr.php:810
 msgid "Download Personal Data Again"
-msgstr ""
+msgstr "Descargar Datos Personales De Nuevo"
 
 #: dt-core/admin/gdpr.php:811
 msgid "Download has failed."
-msgstr ""
+msgstr "La descarga ha fallado."
 
 #: dt-core/admin/gdpr.php:811 dt-core/admin/gdpr.php:854
 #: dt-core/admin/gdpr.php:860 dt-core/admin/gdpr.php:924
 #: dt-core/admin/gdpr.php:967 dt-core/admin/gdpr.php:974
 msgid "Retry"
-msgstr ""
+msgstr "Procesar de nuevo"
 
 #: dt-core/admin/gdpr.php:834 dt-core/admin/gdpr.php:948
-#, fuzzy
-#| msgid "Waiting for Confirmation"
 msgid "Waiting for confirmation"
 msgstr "Esperando confirmación"
 
 #: dt-core/admin/gdpr.php:851
-#, fuzzy
-#| msgid "Email"
 msgid "Email Data"
-msgstr "Correo"
+msgstr "Datos de Correo Electrónico"
 
 #: dt-core/admin/gdpr.php:852
 msgid "Sending Email..."
-msgstr ""
+msgstr "Enviando email…"
 
 #: dt-core/admin/gdpr.php:853
-#, fuzzy
-#| msgid "No email set"
 msgid "Email sent."
-msgstr "Sin correo electrónico establecido"
+msgstr "Email enviado."
 
 #: dt-core/admin/gdpr.php:854
-#, fuzzy
-#| msgid "The comment could not be deleted."
 msgid "Email could not be sent."
-msgstr "El comentario no pudo ser eliminado."
+msgstr "No se pudo mandar el correo electrónico."
 
 #: dt-core/admin/gdpr.php:866 dt-core/admin/gdpr.php:980
-#, fuzzy
-#| msgid "Removed from"
 msgid "Remove request"
-msgstr "Eliminado de"
+msgstr "Eliminar solicitud"
 
 #: dt-core/admin/gdpr.php:922
 msgid "Force Erase Personal Data"
-msgstr ""
+msgstr "Forzar Borrar Datos Personales"
 
 #: dt-core/admin/gdpr.php:923 dt-core/admin/gdpr.php:966
 msgid "Erasing Data..."
-msgstr ""
+msgstr "Borrando datos…"
 
 #: dt-core/admin/gdpr.php:924
 msgid "Force Erase has failed."
-msgstr ""
+msgstr "El borrado de fuerza ha fallado."
 
 #: dt-core/admin/gdpr.php:967
 msgid "Erasing Data has failed."
-msgstr ""
+msgstr "El borrado de datos ha fallado."
 
 #: dt-core/admin/gdpr.php:1005
 msgid "Invalid email address."
-msgstr ""
+msgstr "Dirección de correo electrónico no válida."
 
 #: dt-core/admin/gdpr.php:1009
 msgid "Invalid action name."
-msgstr ""
+msgstr "Nombre de acción no válido."
 
 #: dt-core/admin/gdpr.php:1025
 msgid "A request for this email address already exists."
-msgstr ""
+msgstr "Ya existe una solicitud para esta dirección de correo electrónico."
 
 #: dt-core/admin/menu/menu-extensions.php:32
 msgid "Extensions (DT)"
 msgstr "Extensiones (DT)"
 
 #: dt-core/admin/menu/menu-extensions.php:47
-#, fuzzy
-#| msgid "DISCIPLE TOOLS : SETTINGS"
 msgid "DISCIPLE TOOLS : EXTENSIONS"
 msgstr "DISCIPLE TOOLS : AJUSTES"
 
@@ -2426,53 +2385,43 @@ msgstr ""
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:46
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:53
-#, fuzzy
-#| msgid "Custom Filters"
 msgid "Custom Fields"
-msgstr "Filtros personalizados"
+msgstr "Campos Personalizados"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:124
 msgid "Add new fields or modify existing ones on Contacts or Groups"
-msgstr ""
+msgstr "Agrega nuevos campos o modifica los existentes en Contactos o Grupos"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:130
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:194
 #, fuzzy
-#| msgid "Create new group"
 msgid "Create new field"
-msgstr "Crear un grupo nuevo"
+msgstr "Crear un campo nuevo"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:168
-#, fuzzy
-#| msgid "Link to an existing user"
 msgid "Modify an existing field"
-msgstr "Enlace este contacto a un usuario existente"
+msgstr "Modificar un campo existente"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:186
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:184
-#, fuzzy
-#| msgid "Select All"
 msgid "Select"
-msgstr "Seleccionar todo"
+msgstr "Seleccionar"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:191
 #, fuzzy
-#| msgid "Data preview fields"
 msgid "Create a new field"
-msgstr "Campos de vista previa de datos"
+msgstr "Crear un campo nuevo"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:234
-#, fuzzy
-#| msgid "General Settings"
 msgid "Field Settings"
-msgstr "Configuración general"
+msgstr "Ajustes de Campos"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:238
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:291
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:370
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:236
 msgid "Key"
-msgstr ""
+msgstr "Clave"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:239
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:292
@@ -2485,23 +2434,19 @@ msgstr "Etiqueta"
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:240
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:494
 msgid "Tile"
-msgstr ""
+msgstr "Azulejo"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:254
 msgid "No tile / hidden"
-msgstr ""
+msgstr "Sin azulejo / oculto"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:275
-#, fuzzy
-#| msgid "Add Option"
 msgid "Field Options"
-msgstr "Añadir Opción"
+msgstr "Opciones de Campos"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:279
-#, fuzzy
-#| msgid "Add Option"
 msgid "Add new option"
-msgstr "Añadir Opción"
+msgstr "Añadir nueva opción"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:293
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:268
@@ -2510,98 +2455,82 @@ msgstr "Mover"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:333
 msgid "Restore"
-msgstr ""
+msgstr "Restaurar"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:428
-#, fuzzy
-#| msgid "Email already exists"
 msgid "This option already exists"
-msgstr "Este correo electrónico ya existe"
+msgstr "Esta opción ya existe"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:462
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:397
 msgid "Page type"
-msgstr ""
+msgstr "Tipo de página"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:472
-#, fuzzy
-#| msgid "New %s Name"
 msgid "New Field Name"
-msgstr "Nuevo %s Nombre"
+msgstr "Nombre de Nuevo Campo"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:480
-#, fuzzy
-#| msgid "Field"
 msgid "Field type"
-msgstr "Campo"
+msgstr "Tipo de Campo"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:485
-#, fuzzy
-#| msgid "Add Dropdown Field"
 msgid "Dropdown"
-msgstr "Añadir Campo Desplegable"
+msgstr "Desplegable"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:486
-#, fuzzy
-#| msgid "Multiplier"
 msgid "Multi Select"
-msgstr "Multiplicador"
+msgstr "Selección múltiple"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:487
 msgid "Text"
-msgstr ""
+msgstr "Texto"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:488
-#, fuzzy
-#| msgid "End Date"
 msgid "Date"
-msgstr "Fecha de finalización"
+msgstr "Fecha"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:498
-#, fuzzy
-#| msgid "(no title)"
 msgid "No tile"
-msgstr "(sin título)"
+msgstr "Sin azulejo"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:518
-#, fuzzy
-#| msgid "Created:"
 msgid "Create Field"
-msgstr "Creado:"
+msgstr "Crear Campo"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:524
 msgid "Field types:"
-msgstr ""
+msgstr "Tipos de campos:"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:526
 msgid "Dropdown: Select an option for a dropdown list"
-msgstr ""
+msgstr "Menú desplegable: Seleccione una opción para una lista desplegable"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:527
 msgid ""
 "Multi Select: A field like the milestones to track items like course progress"
 msgstr ""
+"Selección múltiple: un campo como los hitos para rastrear elementos como el "
+"progreso del curso"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:528
 msgid "Text: This is just a normal text field"
-msgstr ""
+msgstr "Texto: esto es solo un campo de texto normal"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:529
 msgid ""
 "Date: A field that uses a date picker to choose dates (like baptism date)"
 msgstr ""
+"Fecha: un campo que usa un selector de fecha para elegir fechas (como la "
+"fecha de bautismo)"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:542
-#, fuzzy
-#| msgid "Email already exists"
 msgid "Field already exists"
-msgstr "Este correo electrónico ya existe"
+msgstr "Este campo ya existe"
 
 #: dt-core/admin/menu/tabs/tab-custom-fields.php:583
-#, fuzzy
-#| msgid "Plugin activated successfully."
 msgid "Field added successfully"
-msgstr "Complemento activado exitosamente."
+msgstr "Campo agregado exitosamente"
 
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:46
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:54
@@ -2609,10 +2538,8 @@ msgid "Custom Lists"
 msgstr "Listas Personalizadas"
 
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:82
-#, fuzzy
-#| msgid "Contact Info Changed"
 msgid "Contact Communication Channels"
-msgstr "Información de contacto modificada"
+msgstr "Contactar Canales de Comunicación"
 
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:101
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:232
@@ -2636,128 +2563,97 @@ msgid "Enabled"
 msgstr "Habilitado"
 
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:392
-#, fuzzy
-#| msgid "Add new filter"
 msgid "Add new channel"
-msgstr "Añadir nuevo filtro"
+msgstr "Añadir nuevo canal"
 
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:411
-#, fuzzy
-#| msgid "Sorry, something went wrong"
 msgid "Something went wrong"
-msgstr "Perdón, algo salió mal"
+msgstr "Algo salió mal"
 
 #: dt-core/admin/menu/tabs/tab-custom-lists.php:437
-#, fuzzy
-#| msgid "Email already exists"
 msgid "This channel already exists"
-msgstr "Este correo electrónico ya existe"
+msgstr "Este canal ya existe"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:46
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:53
-#, fuzzy
-#| msgid "Custom Filters"
 msgid "Custom Tiles"
-msgstr "Filtros personalizados"
+msgstr "Azulejos Personalizados"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:127
-#, fuzzy
-#| msgid "Check for updates"
 msgid "Create or update tiles"
-msgstr "Buscar actualizaciones"
+msgstr "Crear o actualizar azulejos"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:133
 #, fuzzy
-#| msgid "Add new filter"
 msgid "Add new tile"
-msgstr "Añadir nuevo filtro"
+msgstr "Añadir nuevo azulejo"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:166
-#, fuzzy
-#| msgid "Link to an existing user"
 msgid "Modify an existing tile"
-msgstr "Enlace este contacto a un usuario existente"
+msgstr "Modificar un azulejo existente"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:189
-#, fuzzy
-#| msgid "Create new contact"
 msgid "Create a new tile"
-msgstr "Crear nuevo contacto"
+msgstr "Crear nuevo azulejo"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:192
 #, fuzzy
-#| msgid "Add new filter"
 msgid "Add a new tile"
-msgstr "Añadir nuevo filtro"
+msgstr "Añadir nuevo azulejo"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:211
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:324
 msgid "Tile not found"
-msgstr ""
+msgstr "Azulejo no encontrado"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:228
-#, fuzzy
-#| msgid "Settings"
 msgid "Tile Settings"
-msgstr "Configuraciones"
+msgstr "Ajustes de Azulejos"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:230
 msgid "Note: This tile is hidden and will not show on the record page"
 msgstr ""
+"Nota: este azulejo está oculto y no se mostrará en la página de registro"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:238
 msgid "Hide"
-msgstr ""
+msgstr "Ocultar"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:252
 msgid "Restore tile"
-msgstr ""
+msgstr "Restaurar azulejo"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:254
 msgid "Hide tile on page"
-msgstr ""
+msgstr "Ocultar azulejo en la página"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:263
-#, fuzzy
-#| msgid "Field"
 msgid "Tile Fields"
-msgstr "Campo"
+msgstr "Campos de Azulejos"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:408
-#, fuzzy
-#| msgid "New %s Name"
 msgid "New Tile Name"
-msgstr "Nuevo %s Nombre"
+msgstr "Nombre de Nuevo Azulejo"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:418
-#, fuzzy
-#| msgid "Create Tag"
 msgid "Create Tile"
-msgstr "Crear etiqueta"
+msgstr "Crear Azulejo"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:434
-#, fuzzy
-#| msgid "Email already exists"
 msgid "tile already exists"
-msgstr "Este correo electrónico ya existe"
+msgstr "el azulejo ya existe"
 
 #: dt-core/admin/menu/tabs/tab-custom-tiles.php:440
-#, fuzzy
-#| msgid "Plugin activated successfully."
 msgid "tile added successfully"
-msgstr "Complemento activado exitosamente."
+msgstr "azulejo agregado exitosamente"
 
 #: dt-core/admin/menu/tabs/tab-featured-extensions.php:34
-#, fuzzy
-#| msgid "Install"
 msgid "installing"
-msgstr "Instalar"
+msgstr "instalando"
 
 #: dt-core/admin/menu/tabs/tab-featured-extensions.php:47
-#, fuzzy
-#| msgid "Activate"
 msgid "activating"
-msgstr "Activar"
+msgstr "activando"
 
 #: dt-core/admin/menu/tabs/tab-featured-extensions.php:63
 msgid "Featured Extensions"
@@ -2861,12 +2757,12 @@ msgstr ""
 #: dt-core/admin/menu/tabs/tab-gdpr-erase.php:37
 #: dt-core/admin/menu/tabs/tab-gdpr-erase.php:45
 msgid "GDPR Erase"
-msgstr ""
+msgstr "Borrar GDPR"
 
 #: dt-core/admin/menu/tabs/tab-gdpr-export.php:36
 #: dt-core/admin/menu/tabs/tab-gdpr-export.php:44
 msgid "GDPR Export"
-msgstr ""
+msgstr "Exportar GDPR"
 
 #: dt-core/admin/menu/tabs/tab-general.php:47
 msgid "General Settings"
@@ -3011,7 +2907,7 @@ msgstr "Solo los usuarios autenticados pueden acceder a la REST API."
 #: dt-core/admin/restrict-site-access.php:20
 #: dt-core/admin/restrict-site-access.php:34
 msgid "Feed restricted."
-msgstr ""
+msgstr "Feed restringido."
 
 #: dt-core/admin/site-link-post-type.php:373
 #: dt-core/admin/site-link-post-type.php:374
@@ -3496,9 +3392,9 @@ msgid "%s removed from coaches"
 msgstr "% s eliminado de entrenadores"
 
 #: dt-core/posts.php:356
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s added to child groups"
-msgstr "%s añadido al subsiguientes grupos"
+msgstr "%1$s añadido al subsiguientes grupos"
 
 #: dt-core/posts.php:357
 #, php-format
@@ -3506,9 +3402,9 @@ msgid "%s added to parent groups"
 msgstr "%s fue añadido al grupo matriz"
 
 #: dt-core/posts.php:359
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s removed from child groups"
-msgstr "%s eliminado del subsiguientes grupos"
+msgstr "%1$s eliminado del subsiguientes grupos"
 
 #: dt-core/posts.php:360
 #, php-format
@@ -3612,10 +3508,8 @@ msgid "Filter queries must be arrays"
 msgstr "Las consultas de filtros deben ser matrices"
 
 #: dt-core/posts.php:1141
-#, fuzzy
-#| msgid "You do not have permission to unshare with"
 msgid "You do not have permission to unshare"
-msgstr "No tienes permiso para no-compartir con"
+msgstr "No tienes permiso para no-compartir"
 
 #: dt-core/posts.php:1150
 msgid "You do not have permission to unshare with"
@@ -3677,10 +3571,8 @@ msgid "Church"
 msgstr "Iglesia"
 
 #: dt-groups/groups-post-type.php:632
-#, fuzzy
-#| msgid "Church Generation"
 msgid "Church Health"
-msgstr "Generación de la Iglesia"
+msgstr "Salúd de la Iglesia"
 
 #: dt-groups/groups-post-type.php:636
 msgid "Baptism"
@@ -3731,10 +3623,8 @@ msgid "You do not have have permission for this"
 msgstr "No tienes permiso para esto"
 
 #: dt-groups/groups.php:899
-#, fuzzy
-#| msgid "You may not public a group"
 msgid "You may not create a group"
-msgstr "No puedes publicar un grupo"
+msgstr "No puedes crear un grupo"
 
 #: dt-groups/groups.php:904
 msgid "Group needs a title"
@@ -4020,16 +3910,12 @@ msgid "Users Activity"
 msgstr "Actividad de Usuarios"
 
 #: dt-metrics/metrics.php:282
-#, fuzzy
-#| msgid "Fully Practicing"
 msgid "Practicing"
-msgstr "Practicando Completamente"
+msgstr "Practicando"
 
 #: dt-metrics/metrics.php:282
-#, fuzzy
-#| msgid "Fully Practicing"
 msgid "Not Practicing"
-msgstr "Practicando Completamente"
+msgstr "No Practicando"
 
 #: dt-network/network.php:55
 msgid "Network Dashboard Fields"
@@ -4213,10 +4099,8 @@ msgid "No permissions to assign"
 msgstr "No hay permisos para asignar"
 
 #: dt-users/users.php:264
-#, fuzzy
-#| msgid "Insufficient Contact Information"
 msgid "Insufficient permissions"
-msgstr "Información de contacto insuficiente"
+msgstr "Permisos insuficientes"
 
 #: dt-users/users.php:502
 msgid "Extra D.T Information"
@@ -4307,10 +4191,8 @@ msgid "Connections"
 msgstr "Conexiones"
 
 #: single-contacts.php:384
-#, fuzzy
-#| msgid "Connect Location"
 msgid "Connection or Relation"
-msgstr "Conectar Ubicación"
+msgstr "Conexión o Relación"
 
 #: single-contacts.php:420 single-groups.php:89
 msgid "Progress"

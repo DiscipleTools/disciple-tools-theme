@@ -90,7 +90,7 @@ function dt_print_details_bar(
                         <div class="cell shrink center-items ">
                             <button class="center-items open-share">
                                 <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
-                                <span style="margin:0 10px 0 10px"><?php esc_html_e( "Share" ); ?></span>
+                                <span style="margin:0 10px 0 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
                             </button>
                         </div>
                         <?php endif; ?>
@@ -109,7 +109,7 @@ function dt_print_details_bar(
                 <button  id="nav-view-comments" class="center-items">
                     <a href="#comment-activity-section" class="center-items" style="color:black">
                         <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/view-comments.svg" ); ?>">
-                        <span style="margin:0 10px 0 10px"><?php esc_html_e( "Comments" ); ?></span>
+                        <span style="margin:0 10px 0 10px"><?php esc_html_e( "Comments", "disciple_tools" ); ?></span>
                     </a>
                 </button>
             </div>
@@ -118,7 +118,7 @@ function dt_print_details_bar(
             <div class="cell shrink">
                 <button class="center-items open-share">
                     <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
-                    <span style="margin:0 10px 0 10px"><?php esc_html_e( "Share" ); ?></span>
+                    <span style="margin:0 10px 0 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
                 </button>
             </div>
         </div>

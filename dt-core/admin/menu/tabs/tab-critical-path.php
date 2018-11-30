@@ -257,7 +257,7 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
             LEFT JOIN wp_dt_reportmeta as h
               ON a.id=h.report_id
                  AND h.meta_key = 'total'
-            WHERE a.category = 'manual' 
+            WHERE a.category = 'manual'
             AND a.id IN ( SELECT MAX( bb.report_id )
                 FROM wp_dt_reportmeta as bb
                   LEFT JOIN wp_dt_reportmeta as d
@@ -313,7 +313,7 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function sources_box() {
-        esc_html_e( 'Sources can be edited on the custom lists tab. Disabled list items will show up in source selection as well.' );
+        esc_html_e( 'Sources can be edited on the custom lists tab. Disabled list items will show up in source selection as well.', "disciple_tools" );
     }
 
     /**

@@ -44,7 +44,7 @@ class Disciple_Tools_Settings_Menu
 
         ?>
         <div class="wrap">
-            <h2><?php esc_html_e( 'DISCIPLE TOOLS : SETTINGS' ) ?></h2>
+            <h2><?php esc_html_e( 'DISCIPLE TOOLS : SETTINGS', "disciple_tools" ) ?></h2>
 
             <h2 class="nav-tab-wrapper">
                 <?php do_action( 'dt_settings_tab_menu', $tab ); ?>
