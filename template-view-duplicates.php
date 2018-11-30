@@ -3,12 +3,14 @@
 Template Name: View Duplicates
 */
 
-?>
-<?php
-    get_header();
+if ( ! current_user_can( 'access_contacts' ) ) {
+    wp_safe_redirect( '/settings' );
+}
 
-    $dt_contacts = new Disciple_Tools_Contacts();
-    $dt_duplicates = wp_unslash( $dt_contacts->get_all_duplicates() );
+get_header();
+
+$dt_contacts = new Disciple_Tools_Contacts();
+$dt_duplicates = wp_unslash( $dt_contacts->get_all_duplicates() );
 ?>
 
     <div id="content">

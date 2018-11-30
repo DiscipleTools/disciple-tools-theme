@@ -2,6 +2,10 @@
 declare(strict_types=1);
 
 ( function () {
+    if ( ! current_user_can( 'access_groups' ) ) {
+        wp_safe_redirect( '/settings' );
+    }
+
     $dt_group_field_options = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( false );
     get_header(); ?>
 

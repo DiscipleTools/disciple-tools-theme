@@ -2,11 +2,13 @@
 declare(strict_types=1);
 
 ( function () {
+    if ( ! current_user_can( 'access_contacts' ) ) {
+        wp_safe_redirect( '/settings' );
+    }
+
     $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false );
 
     get_header(); ?>
-
-
 
     <div id="errors"> </div>
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
