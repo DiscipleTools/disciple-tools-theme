@@ -2,6 +2,10 @@
 declare(strict_types=1);
 
 ( function () {
+    if ( ! current_user_can( 'access_groups' ) ) {
+        wp_safe_redirect( '/settings' );
+    }
+
     $dt_group_field_options = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( false );
     get_header(); ?>
 
@@ -61,7 +65,7 @@ declare(strict_types=1);
             <aside class="cell padding-bottom show-for-small-only">
                 <div class="bordered-box" style="padding-top:5px;padding-bottom:5px">
                     <div class="js-list-filter filter--closed">
-                        <div class="filter__title js-list-filter-title" style="margin-bottom:0"><?php esc_html_e( "Filters" ); ?>
+                        <div class="filter__title js-list-filter-title" style="margin-bottom:0"><?php esc_html_e( "Filters", "disciple_tools" ); ?>
                             <div style="display: inline-block" class="loading-spinner active"></div>
                         </div>
                         <div class="js-filters-accordion"></div>

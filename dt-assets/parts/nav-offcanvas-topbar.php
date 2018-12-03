@@ -14,11 +14,11 @@
     </div>
     <div class="title-bar-right">
         <a href="<?php echo esc_url( site_url( '/notifications' ) ); ?>">
-            <img title="<?php esc_html_e( "Notifications" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
+            <img title="<?php esc_html_e( "Notifications", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
             <span class="badge alert notification-count" style="display:none"></span>
         </a>
         <a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>">
-            <img title="<?php esc_html_e( "Settings" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/gear.svg" ?>">
+            <img title="<?php esc_html_e( "Settings", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/gear.svg" ?>">
         </a>
     </div>
 </div>
@@ -39,7 +39,7 @@
             <ul class="dropdown menu" data-dropdown-menu>
                 <li class="image-menu-nav">
                     <a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>">
-                        <img title="<?php esc_html_e( "Profile" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/profile.svg" ?>">
+                        <img title="<?php esc_html_e( "Profile", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/profile.svg" ?>">
                         <?php echo esc_html( wp_get_current_user()->display_name ); ?>
                     </a>
                 </li>
@@ -60,9 +60,9 @@
                         <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>"><?php esc_html_e( 'Settings', 'disciple_tools' )?></a></li>
 
                         <?php if ( user_can( get_current_user_id(), 'manage_dt' ) ) : ?>
-                            <li><a href="<?php echo esc_url( get_admin_url() ); ?>"><?php esc_html_e( "Admin" ); ?></a></li>
+                            <li><a href="<?php echo esc_url( get_admin_url() ); ?>"><?php esc_html_e( "Admin", "disciple_tools" ); ?></a></li>
                         <?php endif; ?>
-                        <li><a href="https://disciple-tools.readthedocs.io/en/latest/index.html" target="_blank" rel="noreferrer"><?php esc_html_e( 'Help' ) ?></a></li>
+                        <li><a href="https://disciple-tools.readthedocs.io/en/latest/index.html" target="_blank" rel="noreferrer"><?php esc_html_e( 'Help', "disciple_tools" ) ?></a></li>
 
                         <?php do_action( 'dt_settings_menu_post' ) ?>
 
