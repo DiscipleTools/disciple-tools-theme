@@ -1,6 +1,10 @@
 <?php
 declare(strict_types=1);
 
+if ( ! current_user_can( 'access_groups' ) ) {
+    wp_safe_redirect( '/settings' );
+}
+
 ( function() {
 
     if ( !Disciple_Tools_Groups::can_view( 'groups', get_the_ID() )){
