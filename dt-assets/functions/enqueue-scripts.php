@@ -198,7 +198,8 @@ function dt_site_scripts() {
                 "invalid"     => __( 'Invalid', 'disciple_tools' ),
                 "unconfirmed" => __( 'Unconfirmed', 'disciple_tools' ),
                 'delete'      => __( 'Delete item', 'disciple_tools' ),
-                'email'       => __( 'email' )
+                'email'       => __( 'email' ),
+                'transfer_error' => __( 'Transfer failed. Check site-to-site configuration.', 'disciple_tools' )
             ];
             if ( is_singular( "contacts" ) ) {
                 dt_theme_enqueue_script( 'contact-details', 'dt-assets/js/contact-details.js', array(

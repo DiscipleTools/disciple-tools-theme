@@ -170,22 +170,36 @@ class Disciple_Tools_Contacts_Transfer
         ];
 
         $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/contact/transfer', $args );
+        $result_body = json_decode( $result['body'] );
 
-        if ( is_wp_error( $result ) || empty( $result['body'] ) ) {
-            $errors->add( 'failed_remote_post', $result->get_error_message() );
+        if ( ! ( isset( $result_body->status ) && 'OK' === $result_body->status ) ) {
+            $errors->add( 'transfer', $result_body->error ?? __( 'Unknown error.' ) );
             return $errors;
+        }
+
+        if ( ! empty( $result_body->error ) ) {
+            foreach ( $result_body->error->errors as $key => $value ) {
+                $time = current_time( 'mysql' );
+                wp_insert_comment([
+                    'comment_post_ID' => $contact_id,
+                    'comment_content' => __( 'Minor transfer error.', 'disciple_tools' ) . ' ' . $key,
+                    'comment_type' => '',
+                    'comment_parent' => 0,
+                    'user_id' => get_current_user_id(),
+                    'comment_date' => $time,
+                    'comment_approved' => 1,
+                ]);
+            }
         }
 
         /**************************************************************************************************************
          * Close current contact
          **************************************************************************************************************/
-        $result_body = json_decode( $result['body'] );
-
         // log foreign key
         if ( isset( $result_body->transfer_foreign_key ) ) {
             $key_result = update_post_meta( $contact_id, 'transfer_foreign_key', $result_body->transfer_foreign_key );
             if ( is_wp_error( $key_result ) ) {
-                $errors->add( __METHOD__, $result->get_error_message() );
+                $errors->add( 'error_transfer_foreign_key', $result->get_error_message() );
             }
         }
 
@@ -232,7 +246,7 @@ class Disciple_Tools_Contacts_Transfer
      *
      * @param $params
      *
-     * @return array
+     * @return array|WP_Error
      */
     public static function receive_transferred_contact( $params ) {
         dt_write_log( __METHOD__ );
@@ -287,11 +301,7 @@ class Disciple_Tools_Contacts_Transfer
         $post_id = wp_insert_post( $post_args );
         if ( is_wp_error( $post_id ) ) {
             $errors->add( 'transfer_insert_fail', 'Failed to create transfer contact for '. $post_args['ID'] );
-            return [
-                'status' => 'FAIL',
-                'transfer_foreign_key' => '',
-                'errors' => $errors,
-            ];
+            return $errors;
         }
 
         // insert lagging post meta
@@ -318,6 +328,7 @@ class Disciple_Tools_Contacts_Transfer
                 $comment_id = wp_insert_comment( $comment );
                 if ( is_wp_error( $comment_id ) ) {
                     $errors->add( 'comment_insert_fail', 'Comment insert fail for '. $comment['comment_ID'] );
+                    return $errors;
                 }
             }
         }
@@ -351,7 +362,6 @@ class Disciple_Tools_Contacts_Transfer
                 $errors->add( 'comment_insert_fail', 'Comment insert fail for transfer notation.' );
             }
         }
-
 
         return [
             'status' => 'OK',

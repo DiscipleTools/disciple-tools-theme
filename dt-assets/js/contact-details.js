@@ -1343,9 +1343,10 @@ jQuery(document).ready(function($) {
                   location.reload();
               }
           }).catch(err=>{
+          jQuery('#transfer_spinner').empty().append(err.responseJSON.message).append('&nbsp;' + contactsDetailsWpApiSettings.translations.transfer_error )
+          jQuery("#errors").empty()
           console.log("error")
           console.log(err)
-          jQuery("#errors").append(err.responseText)
       })
   });
 
