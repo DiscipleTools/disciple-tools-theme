@@ -174,7 +174,7 @@
 
     <div class="reveal" id="contact-details-edit" data-reveal>
         <h1><?php esc_html_e( "Edit Contact", 'disciple_tools' ) ?></h1>
-        <div class="display-fields">
+        <div class="display-fields details-edit-fields">
             <div class="grid-x">
                 <div class="cell section-subheader">
                     <?php esc_html_e( 'Name', 'disciple_tools' ) ?>
@@ -225,31 +225,13 @@
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <?php esc_html_e( 'Social Media', 'disciple_tools' ) ?>
+                    <button id="add-new-social-media">
+                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
+                    </button>
                 </div>
                 <ul id="edit-social" class="cell">
 
                 </ul>
-                <div class="cell">
-                    <label for="social-channels">
-                        <?php esc_html_e( 'Add another contact method', 'disciple_tools' )?>
-                    </label>
-                    <select id="social-channels">
-                        <?php
-                        foreach ($channel_list as $key => $channel) {
-                            $enabled = !isset( $channel['enabled'] ) || $channel['enabled'] !== false;
-                            if ( $key !== 'phone' && $key !== 'email' && $key !== 'address' && $enabled) {
-                                ?><option value="<?php echo esc_html( $key ); ?>"> <?php echo esc_html( $channel['label'] ) ?></option><?php
-                            }
-                        }
-                        ?>
-                    </select>
-                    <div class="new-social-media">
-                        <input type="text" id="new-social-media" placeholder="facebook.com/user1">
-                        <button id="add-social-media" class="button small loader">
-                            <?php esc_html_e( 'Add', 'disciple_tools' ) ?>
-                        </button>
-                    </div>
-                </div>
             </div>
 
 
@@ -287,43 +269,45 @@
                     </ul>
                 <?php endif; ?>
             </div>
-            <div class="grix-x">
-                <div class="section-subheader cell">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/gender.svg' ?>">
-                    <?php esc_html_e( 'Gender', 'disciple_tools' )?>
-                </div>
-                <select id="gender" class="select-input">
-                    <?php
-                    foreach ( $contact_fields['gender']['default'] as $gender_key => $option ) {
-                        $gender_value = $option["label"] ?? "";
-                        if ( isset( $contact['gender'] ) &&
-                             $contact['gender']['key'] === $gender_key){
-                            echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
-                        } else {
-                            echo '<option value="'. esc_html( $gender_key ) . '">' . esc_html( $gender_value ). '</option>';
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-6">
+                    <div class="section-subheader cell">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/gender.svg' ?>">
+                        <?php esc_html_e( 'Gender', 'disciple_tools' )?>
+                    </div>
+                    <select id="gender" class="select-input">
+                        <?php
+                        foreach ( $contact_fields['gender']['default'] as $gender_key => $option ) {
+                            $gender_value = $option["label"] ?? "";
+                            if ( isset( $contact['gender'] ) &&
+                                 $contact['gender']['key'] === $gender_key){
+                                echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
+                            } else {
+                                echo '<option value="'. esc_html( $gender_key ) . '">' . esc_html( $gender_value ). '</option>';
+                            }
                         }
-                    }
-                    ?>
-                </select>
-            </div>
-            <div class="grix-x">
-                <div class="section-subheader cell">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/contact-age.svg" ?>">
-                    <?php esc_html_e( 'Age', 'disciple_tools' )?>
+                        ?>
+                    </select>
                 </div>
-                <select id="age" class="select-input">
-                    <?php
-                    foreach ( $contact_fields["age"]["default"] as $age_key => $option ) {
-                        $age_value = $option["label"] ?? "";
-                        if ( isset( $contact["age"] ) &&
-                             $contact["age"]["key"] === $age_key){
-                            echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
-                        } else {
-                            echo '<option value="'. esc_html( $age_key ) . '">' . esc_html( $age_value ). '</option>';
+                <div class="cell small-6">
+                    <div class="section-subheader cell">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/contact-age.svg" ?>">
+                        <?php esc_html_e( 'Age', 'disciple_tools' )?>
+                    </div>
+                    <select id="age" class="select-input">
+                        <?php
+                        foreach ( $contact_fields["age"]["default"] as $age_key => $option ) {
+                            $age_value = $option["label"] ?? "";
+                            if ( isset( $contact["age"] ) &&
+                                 $contact["age"]["key"] === $age_key){
+                                echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
+                            } else {
+                                echo '<option value="'. esc_html( $age_key ) . '">' . esc_html( $age_value ). '</option>';
+                            }
                         }
-                    }
-                    ?>
-                </select>
+                        ?>
+                    </select>
+                </div>
             </div>
             <div class="grix-x">
                 <div class="section-subheader cell">

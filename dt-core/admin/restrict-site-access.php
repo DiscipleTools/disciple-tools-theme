@@ -9,7 +9,7 @@ function dt_please_log_in() {
     }
     if ( is_multisite() ) { // tests if user has access to current site in multisite
         global $wpdb;
-        if ( empty( get_user_meta( get_current_user_id(),$wpdb->prefix . 'capabilities', true ) ) ) {
+        if ( empty( get_user_meta( get_current_user_id(), $wpdb->prefix . 'capabilities', true ) ) ) {
             wp_destroy_current_session();
             wp_clear_auth_cookie();
             auth_redirect();
