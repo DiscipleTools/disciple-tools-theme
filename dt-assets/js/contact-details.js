@@ -652,22 +652,6 @@ jQuery(document).ready(function($) {
     API.save_field_api('contact', contactId, { [field]: value }).catch(handelAjaxError)
   })
 
-  $('button#add-social-media').on('click', () => {
-    const channel_type = 'contact_' + $('select#social-channels').val()
-    const $inputForNewValue = $('input#new-social-media')
-    const text = $inputForNewValue.val()
-
-    $('#edit-social').append(`<li style="display: flex">
-        <input type="text" class="contact-input" data-type="${channel_type}" value="${text}"/>
-        <button class="button clear delete-button" data-id="new">
-          <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
-        </button>
-    </li>`)
-    if (!editFieldsUpdate[channel_type]){
-      editFieldsUpdate[channel_type] = { values: [] }
-    }
-    editFieldsUpdate[channel_type].values.push({value:text})
-  })
 
   $('select.select-field').change(e => {
     const id = $(e.currentTarget).attr('id')
@@ -758,6 +742,36 @@ jQuery(document).ready(function($) {
           <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
     </li>`)
+  })
+
+  let idOfNextNewField = 1
+  $('button#add-new-social-media').on('click', ()=>{
+    let channelOptions = ``
+    _.forOwn( contactsDetailsWpApiSettings.channels, (val, key)=>{
+      if ( ![ "phone", "email", "address"].includes( key ) ){
+        channelOptions += `<option value="${key}">${val.label}</option>`
+      }
+    })
+    idOfNextNewField++
+    $('#edit-social').append(`
+      <div class="grid-x grid-margin-x social-media-row" data-id="${idOfNextNewField}">
+        <div class="cell small-4 new-social-type">
+          <select data-id="${idOfNextNewField}">
+            ${channelOptions}
+          </select>
+        </div>
+        <div class="cell small-8" style="display:flex">
+          <input type="text" class="new-social-text" data-id="${idOfNextNewField}">
+          <button class="button clear delete-social-media" data-id="${idOfNextNewField}">
+              <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+          </button>
+        </div>
+      </div>
+    `)
+  })
+  $(document).on('click', '.delete-social-media', function () {
+    let tempId = $(this).data('id')
+    $(`.social-media-row[data-id="${tempId}"]`).remove()
   })
 
   // Clicking the plus sign next to the field label
@@ -889,13 +903,20 @@ jQuery(document).ready(function($) {
     let html = ""
     _.forOwn( contact, (fieldVal, field)=>{
       if ( field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field) ){
+        let channel = field.replace("contact_", "")
         contact[field].forEach(socialField=>{
-          html += `<li style="display: flex">
-            <input class="contact-input" type="text" id="${socialField.key}" value="${socialField.value}" data-type="${field}"/>
-            <button class="button clear delete-button" data-id="${socialField.key}" data-type="${field}">
-                <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
-            </button>
-          </li>`
+          html += `<div class="grid-x grid-margin-x social-media-row" data-id="${socialField.key}">
+              <div class="cell small-4">
+                  ${_.get(contactsDetailsWpApiSettings, 'channels[' + channel + '].label' ,field)}
+              </div>
+              <div class="cell small-8" style="display: flex">
+                <input class="contact-input" type="text" id="${socialField.key}" value="${socialField.value}" data-type="${field}"/>
+                <button class="button clear delete-social-media delete-button" data-id="${socialField.key}" data-type="${field}">
+                    <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+                </button>
+              </div>
+          </div>
+          `
         })
 
       }
@@ -1014,6 +1035,19 @@ jQuery(document).ready(function($) {
    */
   $('#save-edit-details').on('click', function () {
     $(this).toggleClass("loading")
+
+    let newSocialEntries = $(".new-social-text")
+    newSocialEntries.each((index, entry) =>{
+      let val = $(entry).val()
+      let tempId = $(entry).data('id')
+      let channelType = $(`.new-social-type [data-id=${tempId}]`).val()
+      if ( val && tempId && channelType ){
+        if ( !editFieldsUpdate[`contact_${channelType}`]){
+          editFieldsUpdate[`contact_${channelType}`] = {values:[]}
+        }
+        editFieldsUpdate[`contact_${channelType}`].values.push({value:val})
+      }
+    })
     API.save_field_api( "contact", contactId, editFieldsUpdate).then((updatedContact)=>{
       contact = updatedContact
       $(this).toggleClass("loading")

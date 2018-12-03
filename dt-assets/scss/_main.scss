@@ -501,6 +501,19 @@ img {
         height: 15px;
     }
 }
+.details-edit-fields {
+    input {
+        margin-bottom: 5px
+    }
+    .section-subheader {
+        margin-top: 10px
+    }
+    .delete-button{
+        margin-bottom: 0;
+    }
+    margin-left: 10px;
+    margin-right: 10px;
+}
 
 .show-more-button {
     text-align: center;
