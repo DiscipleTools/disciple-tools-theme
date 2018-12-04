@@ -4,10 +4,46 @@ declare(strict_types=1);
 ( function () {
     $dt_contact_field_options = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false );
 
-    get_header(); ?>
+    get_header();
 
+    function print_filters(){ ?>
+        <div class="list-views">
+            <label class="list-view">
+                <input type="radio" name="view" value="no_filter" class="js-list-view" autocomplete="off">
+                <span id="total_filter_label"><?php esc_html_e( "All", "disciple_tools" ); ?></span>
+                <span class="list-view__count js-list-view-count" data-value="total_count">.</span>
+            </label>
+            <label class="list-view">
+                <input type="radio" name="view" value="needs_accepted" class="js-list-view" autocomplete="off">
+                <?php esc_html_e( "Waiting to be accepted", "disciple_tools" ); ?>
+                <span class="list-view__count js-list-view-count" data-value="needs_accepted">.</span>
+            </label>
+            <?php if (user_can( get_current_user_id(), 'view_any_contacts' ) ){ ?>
+                <label class="list-view">
+                    <input type="radio" name="view" value="assignment_needed" class="js-list-view">
+                    <?php esc_html_e( "Dispatch needed", "disciple_tools" ); ?>
+                    <span class="list-view__count js-list-view-count" data-value="needs_assigned">.</span>
+                </label>
+            <?php } ?>
+            <label class="list-view">
+                <input type="radio" name="view" value="update_needed" class="js-list-view" autocomplete="off">
+                <?php esc_html_e( "Update needed", "disciple_tools" ); ?>
+                <span class="list-view__count js-list-view-count" data-value="update_needed">.</span>
+            </label>
+            <label class="list-view">
+                <input type="radio" name="view" value="meeting_scheduled" class="js-list-view" autocomplete="off">
+                <?php esc_html_e( "Meeting scheduled", "disciple_tools" ); ?>
+                <span class="list-view__count js-list-view-count" data-value="meeting_scheduled">.</span>
+            </label>
+            <label class="list-view">
+                <input type="radio" name="view" value="contact_unattempted" class="js-list-view" autocomplete="off">
+                <?php esc_html_e( "Contact attempt needed", "disciple_tools" ); ?>
+                <span class="list-view__count js-list-view-count" data-value="contact_unattempted">.</span>
+            </label>
+        </div>
+    <?php }
 
-
+    ?>
     <div id="errors"> </div>
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
         <nav aria-label="<?php esc_attr_e( "You are here:" ); ?>" role="navigation"
@@ -76,52 +112,58 @@ declare(strict_types=1);
 
             <div class="reveal js-filters-modal" id="filters-modal">
                 <div class="js-filters-modal-content">
-                    <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( 'Contact Filters', "disciple_tools" ); ?></h5>
-                    <label style="display: inline-block; float:right"><?php esc_html_e( "Show closed", 'disciple_tools' ) ?>
-                        <input type="checkbox" id="show_closed">
-                    </label>
-
-                    <ul class="tabs" data-tabs id="list-filter-tabs" style="margin-bottom: 5px">
-                      <li class="tabs-title is-active" data-id="my"><a href="#panel1" aria-selected="true"><?php esc_html_e( "Assigned", 'disciple_tools' ) ?><span class="tab-count-span" data-tab="total_my"></span></a></li>
-                      <li class="tabs-title" data-id="subassigned"><a data-tabs-target="panel2" href="#panel2"><?php esc_html_e( "Subassigned", 'disciple_tools' ) ?><span class="tab-count-span" data-tab="total_subassigned"></span></a></li>
-                      <li class="tabs-title" data-id="shared"><a data-tabs-target="panel3" href="#panel3"><?php esc_html_e( "Shared", 'disciple_tools' ) ?><span class="tab-count-span" data-tab="total_shared"></span></a></li>
-                      <li class="tabs-title" data-id="all"><a data-tabs-target="panel4" href="#panel4"><?php esc_html_e( "All", 'disciple_tools' ) ?><span class="tab-count-span" data-tab="total_all"></span></a></li>
-                    </ul>
-                    <div class="list-views">
-                        <label class="list-view">
-                            <input type="radio" name="view" value="no_filter" class="js-list-view" autocomplete="off">
-                            <span id="total_filter_label"><?php esc_html_e( "All", "disciple_tools" ); ?></span>
-                            <span class="list-view__count js-list-view-count" data-value="total_count">.</span>
-                        </label>
-                        <label class="list-view">
-                            <input type="radio" name="view" value="needs_accepted" class="js-list-view" autocomplete="off">
-                            <?php esc_html_e( "Waiting to be accepted", "disciple_tools" ); ?>
-                            <span class="list-view__count js-list-view-count" data-value="needs_accepted">.</span>
-                        </label>
-
-                        <?php if (user_can( get_current_user_id(), 'view_any_contacts' ) ){ ?>
-                            <label class="list-view">
-                                <input type="radio" name="view" value="assignment_needed" class="js-list-view">
-                                <?php esc_html_e( "Dispatch needed", "disciple_tools" ); ?>
-                                <span class="list-view__count js-list-view-count" data-value="needs_assigned">.</span>
-                            </label>
-                        <?php } ?>
-                        <label class="list-view">
-                            <input type="radio" name="view" value="update_needed" class="js-list-view" autocomplete="off">
-                            <?php esc_html_e( "Update needed", "disciple_tools" ); ?>
-                            <span class="list-view__count js-list-view-count" data-value="update_needed">.</span>
-                        </label>
-                        <label class="list-view">
-                            <input type="radio" name="view" value="meeting_scheduled" class="js-list-view" autocomplete="off">
-                            <?php esc_html_e( "Meeting scheduled", "disciple_tools" ); ?>
-                            <span class="list-view__count js-list-view-count" data-value="meeting_scheduled">.</span>
-                        </label>
-                        <label class="list-view">
-                            <input type="radio" name="view" value="contact_unattempted" class="js-list-view" autocomplete="off">
-                            <?php esc_html_e( "Contact attempt needed", "disciple_tools" ); ?>
-                            <span class="list-view__count js-list-view-count" data-value="contact_unattempted">.</span>
-                        </label>
+                    <div class="list-filters-header">
+                        <div class="list-filter-header-item" style="flex-shrink: 1">
+                            <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( 'Contact Filters', "disciple_tools" ); ?></h5>
+                        </div>
+                        <div style="flex-grow: 1; text-align: right">
+                            <?php esc_html_e( "Show closed", 'disciple_tools' ) ?>
+                            <div class="switch tiny">
+                                <input class="switch-input" id="show_closed" type="checkbox" name="testGroup">
+                                <label class="switch-paddle" for="show_closed"></label>
+                            </div>
+                        </div>
                     </div>
+
+                    <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion">
+                        <li class="accordion-item" data-accordion-item data-id="my">
+                            <a href="#" class="accordion-title">
+                                <?php esc_html_e( "Contacts Assigned to me", 'disciple_tools' ) ?>
+                                <span class="tab-count-span" data-tab="total_my"></span>
+                            </a>
+                            <div class="accordion-content" data-tab-content>
+                                <?php print_filters() ?>
+                            </div>
+                        </li>
+                        <li class="accordion-item" data-accordion-item data-id="subassigned">
+                            <a href="#" class="accordion-title">
+                                <?php esc_html_e( "Contacts Subassigned to me", 'disciple_tools' ) ?>
+                                <span class="tab-count-span" data-tab="total_subassigned"></span>
+                            </a>
+                            <div class="accordion-content" data-tab-content>
+                                <?php print_filters() ?>
+                            </div>
+                        </li>
+                        <li class="accordion-item" data-accordion-item data-id="shared">
+                            <a href="#" class="accordion-title">
+                                <?php esc_html_e( "Contacts Shared with me", 'disciple_tools' ) ?>
+                                <span class="tab-count-span" data-tab="total_shared"></span>
+                            </a>
+                            <div class="accordion-content" data-tab-content>
+                                <?php print_filters() ?>
+                            </div>
+                        </li>
+                        <li class="accordion-item" data-accordion-item data-id="all">
+                            <a href="#" class="accordion-title">
+                                <?php esc_html_e( "All my contacts", 'disciple_tools' ) ?>
+                                <span class="tab-count-span" data-tab="total_all"></span>
+                            </a>
+                            <div class="accordion-content" data-tab-content>
+                                <?php print_filters() ?>
+                            </div>
+                        </li>
+                    </ul>
+
 
                     <h5><?php esc_html_e( 'Custom Filters', "disciple_tools" ); ?></h5>
                     <div style="margin-bottom: 5px">
@@ -151,8 +193,9 @@ declare(strict_types=1);
         <div class="grid-container">
             <div class="grid-x">
                 <div class="cell small-4" style="padding: 0 5px 5px 5px">
-                    <strong><?php esc_html_e( "Filter name", 'disciple_tools' ) ?></strong>
-                    <input id="new-filter-name" placeholder="<?php esc_html_e( 'New Filter', 'disciple_tools' )?>" />
+                    <input type="text" id="new-filter-name"
+                           placeholder="<?php esc_html_e( 'Filter Name', 'disciple_tools' )?>"
+                           style="margin-bottom: 0"/>
                 </div>
                 <div class="cell small-8">
                     <div id="selected-filters"></div>

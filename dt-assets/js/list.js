@@ -135,6 +135,7 @@
   }
   setupFilters(savedFilters[wpApiListSettings.current_post_type])
   //look at the cookie to see what was the last selected view
+  let selectedFilter = ""
   if ( cachedFilter && !_.isEmpty(cachedFilter)){
     if (cachedFilter.type==="saved-filters"){
       if ( _.find(savedFilters[wpApiListSettings.current_post_type], {ID: cachedFilter.ID})){
@@ -144,14 +145,15 @@
       if ( cachedFilter.tab ){
         selectedFilterTab = cachedFilter.tab
       }
-      $("input[name=view][value=" + cachedFilter.ID + "]").prop('checked', true);
+      selectedFilter = cachedFilter.ID
     } else if ( cachedFilter.type === "custom_filter" ){
       addCustomFilter(cachedFilter.name, "default", cachedFilter.query, cachedFilter.labels)
     }
-  } else {
-    $('input[name="view"][value="no_filter"].js-list-view').prop("checked", true)
   }
   $(`#list-filter-tabs [data-id='${selectedFilterTab}'] a`).click()
+  if ( selectedFilter ){
+    $(`.is-active input[name=view][value="${selectedFilter}"].js-list-view`).prop('checked', true);
+  }
 
 
   $(function() {
@@ -170,12 +172,15 @@
 
 
 
-  $("#list-filter-tabs").on("change.zf.tabs", function (a, b) {
-    selectedFilterTab = b.data("id")
-    let checked = $(".js-list-view:checked")
-    if ( checked.val() === "custom_filter" ){
-      $('input[name="view"][value="no_filter"].js-list-view').prop("checked", true)
+  $("#list-filter-tabs .accordion-item").on("click", function (a, b) {
+
+    selectedFilterTab = $(this).data("id")
+    let checked = $(".js-list-view:checked").val()
+    if ( checked === "saved-filters" || checked === "custom-filter"){
+      checked = "no_filter"
     }
+    $(".js-list-view-count").text("")
+    $(`.is-active input[name="view"][value="${checked}"].js-list-view`).prop("checked", true)
     getContactForCurrentView()
     get_filter_counts()
   })
@@ -453,7 +458,7 @@
 
 
 
-  $('.tabs-title a').on("click", function () {
+  $('#filter-modal .tabs-title a').on("click", function () {
     let id = $(this).attr('href').replace('#', '')
     $(`.js-typeahead-${id}`).trigger('input')
   })
@@ -1101,9 +1106,9 @@
           $el.text( ` (${counts[tab]})` )
         }
       })
-      if ( wpApiListSettings.translations[`filter_${selectedFilterTab}`]){
-        $(`#total_filter_label`).text(wpApiListSettings.translations[`filter_${selectedFilterTab}`])
-      }
+      // if ( wpApiListSettings.translations[`filter_${selectedFilterTab}`]){
+      //   $(`.is-active #total_filter_label`).text(wpApiListSettings.translations[`filter_${selectedFilterTab}`])
+      // }
     }).catch(err => { console.error(err) })
   }
   get_filter_counts()
