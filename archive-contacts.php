@@ -112,18 +112,7 @@ declare(strict_types=1);
 
             <div class="reveal js-filters-modal" id="filters-modal">
                 <div class="js-filters-modal-content">
-                    <div class="list-filters-header">
-                        <div class="list-filter-header-item" style="flex-shrink: 1">
-                            <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( 'Contact Filters', "disciple_tools" ); ?></h5>
-                        </div>
-                        <div style="flex-grow: 1; text-align: right">
-                            <?php esc_html_e( "Show closed", 'disciple_tools' ) ?>
-                            <div class="switch tiny">
-                                <input class="switch-input" id="show_closed" type="checkbox" name="testGroup">
-                                <label class="switch-paddle" for="show_closed"></label>
-                            </div>
-                        </div>
-                    </div>
+                    <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( 'Contact Filters', "disciple_tools" ); ?></h5>
 
                     <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion">
                         <li class="accordion-item" data-accordion-item data-id="my">
@@ -332,10 +321,6 @@ declare(strict_types=1);
                 </button>
             </div>
             <div class="cell small-8 filter-modal-right confirm-buttons">
-                <label style="display: inline-block">
-                    <?php esc_html_e( "Include closed contacts", 'disciple_tools' ) ?>
-                    <input type="checkbox" id="filter-include-closed">
-                </label>
                 <button style="display: inline-block" class="button loader confirm-filter-contacts" type="button" id="confirm-filter-contacts" data-close >
                     <?php esc_html_e( 'Filter Contacts', 'disciple_tools' )?>
                 </button>

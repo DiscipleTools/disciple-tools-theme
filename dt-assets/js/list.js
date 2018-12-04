@@ -60,6 +60,20 @@
     }
     currentFilter.query = data
     document.cookie = `last_view=${JSON.stringify(currentFilter)}`
+    let showClosed = showClosedCheckbox.prop("checked")
+    if ( !showClosed ){
+      if ( wpApiListSettings.current_post_type === "contacts" ){
+        if ( !data.overall_status ){
+          data.overall_status = [];
+        }
+        data.overall_status.push( "-closed" )
+      } else {
+        if ( !data.group_status ){
+          data.group_status = [];
+        }
+        data.group_status.push( "-inactive" )
+      }
+    }
 
     //abort previous promise if it is not finished.
     if (getContactsPromise && _.get(getContactsPromise, "readyState") !== 4){
@@ -341,10 +355,6 @@
       })
     }
 
-    if ( filter.includeClosed === false ){
-      let excluded_closed = wpApiListSettings.current_post_type === "contacts" ? wpApiListSettings.translations.closed_excluded : wpApiListSettings.translations.inactive_excluded
-      html += `<span class="current-filter show-closed" style="border-color: red">${excluded_closed}</span>`
-    }
     if ( filter.query.sort ){
       let sortLabel = filter.query.sort
       if ( sortLabel.includes('last_modified') ){
@@ -373,8 +383,10 @@
       query:{},
       labels:[{ id:"all", name:wpApiListSettings.translations.filter_all, field: "assigned"}]
     }
-    let showClosed = showClosedCheckbox.prop("checked")
     if ( currentView !== "custom_filter"){
+      if ( wpApiListSettings.current_post_type === "groups" ){
+        selectedFilterTab = currentView
+      }
       filter.tab = selectedFilterTab
       if ( selectedFilterTab === "all" ){
         query.assigned_to = ["all"]
@@ -420,19 +432,6 @@
       filter = _.find(savedFilters[wpApiListSettings.current_post_type], {ID:filterId})
       filter.type = currentView
       query = filter.query
-    }
-    if ( !showClosed && !["custom_filter", "saved-filters"].includes(currentView) || ( ["custom_filter", "saved-filters"].includes(currentView) && filter.includeClosed === false ) ){
-      if ( wpApiListSettings.current_post_type === "contacts" ){
-        if ( !query.overall_status ){
-          query.overall_status = [];
-        }
-        query.overall_status.push( "-closed" )
-      } else {
-        if ( !query.group_status ){
-          query.group_status = [];
-        }
-        query.group_status.push( "-inactive" )
-      }
     }
 
     filter.query = query
@@ -510,8 +509,7 @@
   function addCustomFilter(name, type, query, labels) {
     query = query || currentFilter.query
     let ID = new Date().getTime() / 1000
-    let includeClosed = $('#filter-include-closed').is(':checked')
-    currentFilter = {ID, type, name, query:JSON.parse(JSON.stringify(query)), labels:labels, includeClosed}
+    currentFilter = {ID, type, name, query:JSON.parse(JSON.stringify(query)), labels:labels}
     customFilters.push(JSON.parse(JSON.stringify(currentFilter)))
 
     let saveFilter = $(`<span style="float:right" data-filter="${ID}">
@@ -990,9 +988,6 @@
     ;(filter.query.combine || []).forEach(c=>{
       $(`#combine_${c}`).prop('checked', true)
     })
-    if ( filter.includeClosed === true ){
-      $('#filter-include-closed').prop('checked', true)
-    }
     $('#new-filter-name').val(filter.name)
     $('#confirm-filter-contacts').hide()
     $('#save-filter-edits').data("filter-id", filter.ID).show()
@@ -1003,7 +998,6 @@
     let filter = _.find(savedFilters[wpApiListSettings.current_post_type], {ID:filterId})
     filter.name = $('#new-filter-name').val()
     $(`.filter-list-name[data-filter="${filterId}"]`).text(filter.name)
-    filter.includeClosed = $('#filter-include-closed').is(':checked')
     filter.query = searchQuery
     filter.label = newFilterLabels
     API.save_filters(savedFilters)
@@ -1103,7 +1097,11 @@
         const $el = $(this)
         let tab = $el.data("tab")
         if ( counts && counts[tab] ){
-          $el.text( ` (${counts[tab]})` )
+          if ( wpApiListSettings.current_post_type === "groups" ){
+            $el.text( ` ${counts[tab]}` )
+          } else {
+            $el.text( ` (${counts[tab]})` )
+          }
         }
       })
       // if ( wpApiListSettings.translations[`filter_${selectedFilterTab}`]){

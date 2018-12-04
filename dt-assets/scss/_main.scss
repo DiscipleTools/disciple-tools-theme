@@ -1146,21 +1146,27 @@ CONTACTS
     }
 }
 
-.list-filters-header {
-    display: flex;
-    align-items: baseline;
-    .list-filter-header-item {
-
-    }
-    .switch {
-        display:inline-block;
-        margin-bottom: .5rem;
-        vertical-align: middle;
-    }
-}
 
 #list-filter-tabs {
     margin-top: 10px;
+    .is-active a {
+        background-color: #3f729b;
+        color:white;
+        &:focus {
+            background-color: #3f729b;
+            color: white;
+        }
+    }
+}
+
+
+.show-closed-switch {
+    display: inline-block;
+    .switch {
+        display: inline-block;
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
 }
 
 .social-details-options-button {

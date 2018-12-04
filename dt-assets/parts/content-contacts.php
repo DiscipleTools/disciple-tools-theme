@@ -27,7 +27,13 @@ declare(strict_types=1);
             </li>
         </ul>
     </div>
-
+    <div class="show-closed-switch">
+        <?php esc_html_e( "Closed Contacts", 'disciple_tools' ) ?>
+        <div class="switch tiny">
+            <input class="switch-input" id="show_closed" type="checkbox" name="testGroup">
+            <label class="switch-paddle" for="show_closed"></label>
+        </div>
+    </div>
     <table class="table-remove-top-border js-list stack striped">
         <thead>
             <tr class="sortable">
