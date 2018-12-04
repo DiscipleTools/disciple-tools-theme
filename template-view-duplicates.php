@@ -3,12 +3,14 @@
 Template Name: View Duplicates
 */
 
-?>
-<?php
-    get_header();
+if ( ! current_user_can( 'access_contacts' ) ) {
+    wp_safe_redirect( '/settings' );
+}
 
-    $dt_contacts = new Disciple_Tools_Contacts();
-    $dt_duplicates = wp_unslash( $dt_contacts->get_all_duplicates() );
+get_header();
+
+$dt_contacts = new Disciple_Tools_Contacts();
+$dt_duplicates = wp_unslash( $dt_contacts->get_all_duplicates() );
 ?>
 
     <div id="content">
@@ -17,23 +19,21 @@ Template Name: View Duplicates
 
             <main id="main" class="large-12 medium-12 cell" role="main">
                 <div class="bordered-box">
-                    <h3>Duplicate Contacts</h3>
-<!--                    <button type="button" id="merge-dupe-modal" data-open="merge-dupe-modal" class="button">
-                        <?php // esc_html_e( "Go to duplicates", 'disciple_tools' ) ?>
-                    </button>-->
+                    <h3><?php esc_html_e( 'Duplicate Contacts', 'zume' ) ?></h3>
+
                     <table id='table-duplicates'>
                         <?php
                         foreach ( $dt_duplicates as $dt_id => $dt_duplicate ) {
                             if ($dt_duplicate['count'] <= 0) { continue; }
                             echo "<form name='merge_".esc_html( $dt_id )."' method='POST' action='".esc_html( site_url() )."/contacts/".esc_html( $dt_id )."'><input type='hidden' name='dt_contact_nonce' value='".esc_attr( wp_create_nonce() )."'/></form><tr id='".esc_html( $dt_id )."'><td><a>".esc_html( $dt_duplicate['name'] )."</a></td><td>
-                            <a>".esc_html( $dt_duplicate['count'] )." duplicates</a></td></tr>";
+                            <a>" . esc_html( $dt_duplicate['count'] ). esc_html_e( 'duplicates' ) . "</a></td></tr>";
                         }
                         ?>
                     </table>
                 </div>
+            </main> <!-- end #main -->
 
-
-        </div>
+        </div> <!-- end #inner-content -->
 
         <script type="text/javascript">
             $("#table-duplicates").find('tr').click(function() {
@@ -42,10 +42,6 @@ Template Name: View Duplicates
                 form.submit();
             });
         </script>
-
-            </main> <!-- end #main -->
-
-        </div> <!-- end #inner-content -->
 
     </div> <!-- end #content -->
 

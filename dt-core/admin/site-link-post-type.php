@@ -145,11 +145,11 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                 case 'name_list':
                     $results = $wpdb->get_results(
-                        "SELECT ID as id, post_title as name 
-                        FROM $wpdb->posts 
-                          JOIN $wpdb->postmeta 
-                          ON $wpdb->posts.ID=$wpdb->postmeta.post_id 
-                            AND meta_key = 'type' 
+                        "SELECT ID as id, post_title as name
+                        FROM $wpdb->posts
+                          JOIN $wpdb->postmeta
+                          ON $wpdb->posts.ID=$wpdb->postmeta.post_id
+                            AND meta_key = 'type'
                         WHERE meta_value IN ($type_string)", ARRAY_A ); //@phpcs:ignore
 
                     return $results;
@@ -157,11 +157,11 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
 
                 case 'post_ids':
                     $results = $wpdb->get_col(
-                        "SELECT id 
-                        FROM $wpdb->posts 
-                          JOIN $wpdb->postmeta 
-                          ON $wpdb->posts.ID=$wpdb->postmeta.post_id 
-                            AND meta_key = 'type' 
+                        "SELECT id
+                        FROM $wpdb->posts
+                          JOIN $wpdb->postmeta
+                          ON $wpdb->posts.ID=$wpdb->postmeta.post_id
+                            AND meta_key = 'type'
                         WHERE meta_value IN ($type_string)" ); //@phpcs:ignore
 
                     return $results;
@@ -419,10 +419,10 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         ?>
 
                         <span >
-                        <?php esc_html_e( 'Status:' ) ?>
+                        <?php esc_html_e( 'Status:', "disciple_tools" ) ?>
                             <strong>
                                 <span id="<?php echo esc_attr( md5( $post->ID ) ); ?>-status">
-                                    <?php esc_html_e( 'Checking Status' ) ?>
+                                    <?php esc_html_e( 'Checking Status', "disciple_tools" ) ?>
                                 </span>
                             </strong>
                         </span>
@@ -904,13 +904,13 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             if ( $this->post_type === $pt ) {
 
                 echo "<script type='text/javascript'>
-    
+
                 function check_link_status( transfer_token, url, id ) {
-    
+
                 let linked = '" . esc_attr__( 'Linked' ) . "';
                 let not_linked = '" . esc_attr__( 'Not Linked' ) . "';
                 let not_found = '" . esc_attr__( 'Failed to connect with the URL provided.' ) . "';
-    
+
                 return jQuery.ajax({
                     type: 'POST',
                     data: JSON.stringify({ \"transfer_token\": transfer_token } ),

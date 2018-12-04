@@ -97,7 +97,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
             </tr>
             <tr>
                 <td colspan="2">
-                    <button class="button" type="submit" style="float:right"><?php esc_html_e( 'Save' ) ?></button>
+                    <button class="button" type="submit" style="float:right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
                 </td>
             </tr>
         </form>
@@ -156,7 +156,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
 
                 <tr>
                     <td colspan="2">
-                        <button class="button" type="submit" style="float:right"><?php esc_html_e( 'Save' ) ?></button>
+                        <button class="button" type="submit" style="float:right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
                     </td>
                 </tr>
         </form>
@@ -240,7 +240,7 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
             </tr>
             <tr class="dt_import_levels">
                 <td>
-                    <button class="button" type="button" onclick="import_list()" style="float:right"><?php esc_html_e( 'Import' ) ?></button><br>
+                    <button class="button" type="button" onclick="import_list()" style="float:right"><?php esc_html_e( 'Import', 'disciple_tools' ) ?></button><br>
                 </td>
             </tr>
             <tr class="dt_import_levels" style="display: none;">
@@ -268,20 +268,20 @@ class Disciple_Tools_Tab_Locations extends Disciple_Tools_Abstract_Menu_Base
         <form method="post" action="">
             <?php wp_nonce_field( 'dt_simple_import_levels'. get_current_user_id(), 'dt_simple_import_levels_nonce', false, true ) ?>
             <tr class="dt_simple_import_levels">
-                <td>
+                <td><!-- @todo text below needs replacing -->
                     <p>Import a list of simple location titles. One location per line.</p>
                     <em>Note: These will not be geocoded. To import a geocoded list, select "Auto GeoCode and Build Location Levels" in the Auto Build Locations box.</em>
                 </td>
             </tr>
             <tr class="dt_simple_import_levels">
-                <td>
+                <td><!-- @todo text below needs replacing -->
                     <label>List of Locations</label>
                     <textarea name="import-list" id="import-list" rows="10" style="width:100%;"></textarea>
                 </td>
             </tr>
             <tr class="dt_simple_import_levels">
                 <td>
-                    <button class="button" type="button" onclick="import_simple_list()" style="float:right"><?php esc_html_e( 'Import' ) ?></button><br>
+                    <button class="button" type="button" onclick="import_simple_list()" style="float:right"><?php esc_html_e( 'Import', 'disciple_tools' ) ?></button><br>
 
                 </td>
             </tr>

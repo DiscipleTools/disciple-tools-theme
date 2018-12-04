@@ -9,7 +9,7 @@ declare(strict_types=1);
     <div class="js-sort-dropdown" style="display: inline-block">
         <ul class="dropdown menu" data-dropdown-menu>
             <li>
-                <a href="#"><?php esc_html_e( "Sort" ); ?></a>
+                <a href="#"><?php esc_html_e( "Sort", "disciple_tools" ); ?></a>
                 <ul class="menu">
                     <li><a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="post_date">
                         <?php esc_html_e( "Newest", "disciple_tools" ); ?>
@@ -37,7 +37,7 @@ declare(strict_types=1);
     <table class="table-remove-top-border js-list stack striped">
         <thead>
             <tr class="sortable">
-                <th class="all" data-id="name"><?php esc_html_e( "Name" ); ?></th>
+                <th class="all" data-id="name"><?php esc_html_e( "Name", "disciple_tools" ); ?></th>
                 <th class="not-mobile" data-id="overall_status" data-sort="asc"><?php esc_html_e( "Status", "disciple_tools" ); ?></th>
                 <th class="not-mobile" data-id="seeker_path"><?php esc_html_e( "Seeker Path", "disciple_tools" ); ?></th>
                 <th class="desktop" data-id="faith_milestones"><?php esc_html_e( "Faith Milestones", "disciple_tools" ); ?></th>

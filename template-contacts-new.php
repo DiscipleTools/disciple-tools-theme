@@ -7,9 +7,7 @@ if ( ! current_user_can( 'create_contacts' ) ) {
 
 get_header();
 
-( function() {
-
-    ?>
+( function() { ?>
 
 <div id="content">
     <div id="inner-content" class="grid-x grid-margin-x">
@@ -68,12 +66,12 @@ get_header();
                 <div style="text-align: center">
                     <button class="button loader js-create-contact-button" type="submit" disabled><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
                 </div>
-            </div>
-
+            </form>
         </div>
 
-        <div class="large-2 medium-12 small-12 cell"></div>
-    </div>
+     </div> <!-- inner content -->
+
+     <div class="large-2 medium-12 small-12 cell"></div>
 </div>
 
 <script>jQuery(function($) {
@@ -168,8 +166,8 @@ get_header();
             },
         }
     });
-});</script>
-
+});
+</script>
 
     <?php
 

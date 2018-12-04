@@ -183,7 +183,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             <button type="submit" class="button-like-link" name="reset_extension_modules" value="1"><?php echo esc_html__( 'reset' ) ?></button>
 
-            <p><?php esc_html_e( 'Configure which groups see metrics' ) ?></p>
+            <p><?php esc_html_e( 'Configure which groups see metrics', 'disciple_tools' ) ?></p>
 
             <input type="hidden" name="extension_modules_nonce" id="extension_modules_nonce" value="<?php echo esc_attr( wp_create_nonce( 'metrics' . get_current_user_id() ) ) ?>" />
 
