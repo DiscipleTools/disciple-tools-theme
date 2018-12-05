@@ -41,6 +41,8 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_overview" onclick="project_overview()">'. esc_html__( 'Overview', 'disciple_tools' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_critical_path" onclick="project_critical_path()">'. esc_html__( 'Critical Path', 'disciple_tools' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#group_tree" onclick="project_group_tree()">'. esc_html__( 'Group Tree', 'disciple_tools' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#baptism_tree" onclick="project_baptism_tree()">'. esc_html__( 'Baptism Tree', 'disciple_tools' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#coaching_tree" onclick="project_coaching_tree()">'. esc_html__( 'Coaching Tree', 'disciple_tools' ) .'</a></li>
                 </ul>
             </li>
             ';
@@ -98,6 +100,8 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'title_generations' => __( 'Group and Church Generations', 'disciple_tools' ),
                 'title_group_types' => __( 'Groups Types', 'disciple_tools' ),
                 'title_group_tree' => __( 'Group Generation Tree', 'disciple_tools' ),
+                'title_baptism_tree' => __( 'Baptism Generation Tree', 'disciple_tools' ),
+                'title_coaching_tree' => __( 'Coaching Generation Tree', 'disciple_tools' ),
                 'label_number_of_contacts' => strtolower( __( 'number of contacts', 'disciple_tools' ) ),
                 'label_follow_up_progress' => __( 'Follow-up progress of current active contacts', 'disciple_tools' ),
                 'label_group_needs_training' => __( 'Active Groups Health Metrics', 'disciple_tools' ),
@@ -115,7 +119,9 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             'group_types' => self::chart_group_types( 'project' ),
             'group_health' => self::chart_group_health( 'project' ),
             'group_generations' => self::chart_group_generations( 'project' ),
-            'generation_map' => $this->get_generations(),
+            'group_generation_tree' => $this->get_generations_tree(),
+            'baptism_generation_tree' => $this->get_baptism_generations_tree(),
+            'coaching_generation_tree' => $this->get_coaching_generations_tree(),
         ];
     }
 
@@ -186,7 +192,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
         return $html;
     }
 
-    public function get_generations(){
+    public function get_generations_tree(){
         global $wpdb;
         $query = $wpdb->get_results("
             SELECT
@@ -208,6 +214,86 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
               (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
             FROM $wpdb->p2p as p
             WHERE p.p2p_type = 'groups_to_groups'
+        ", ARRAY_A );
+
+        // prepare special array with parent-child relations
+        $menu_data = array(
+            'items' => array(),
+            'parents' => array()
+        );
+
+        foreach ( $query as $menu_item )
+        {
+            $menu_data['items'][$menu_item['id']] = $menu_item;
+            $menu_data['parents'][$menu_item['parent_id']][] = $menu_item['id'];
+        }
+
+        // output the menu
+        return $this->build_menu( 0, $menu_data, 0 );
+    }
+
+    public function get_baptism_generations_tree(){
+        global $wpdb;
+        $query = $wpdb->get_results("
+            SELECT
+              a.ID         as id,
+              0            as parent_id,
+              a.post_title as name
+            FROM $wpdb->posts as a
+            WHERE a.post_status = 'publish'
+            AND a.post_type = 'contacts'
+            AND a.ID NOT IN (
+            SELECT DISTINCT (p2p_from)
+            FROM $wpdb->p2p
+            WHERE p2p_type = 'baptizer_to_baptized'
+            GROUP BY p2p_from)
+            UNION
+            SELECT
+              p.p2p_from                          as id,
+              p.p2p_to                            as parent_id,
+              (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
+            FROM $wpdb->p2p as p
+            WHERE p.p2p_type = 'baptizer_to_baptized'
+        ", ARRAY_A );
+
+        // prepare special array with parent-child relations
+        $menu_data = array(
+            'items' => array(),
+            'parents' => array()
+        );
+
+        foreach ( $query as $menu_item )
+        {
+            $menu_data['items'][$menu_item['id']] = $menu_item;
+            $menu_data['parents'][$menu_item['parent_id']][] = $menu_item['id'];
+        }
+
+        // output the menu
+        return $this->build_menu( 0, $menu_data, 0 );
+    }
+
+    public function get_coaching_generations_tree(){
+        global $wpdb;
+        $query = $wpdb->get_results("
+            SELECT
+              a.ID         as id,
+              0            as parent_id,
+              a.post_title as name
+            FROM $wpdb->posts as a
+            WHERE a.post_status = 'publish'
+            AND a.post_type = 'contacts'
+            AND a.ID NOT IN (
+            SELECT DISTINCT (p2p_from)
+            FROM $wpdb->p2p
+            WHERE p2p_type = 'contacts_to_contacts'
+            GROUP BY p2p_from)
+            UNION
+            SELECT
+              p.p2p_from                          as id,
+              p.p2p_to                            as parent_id,
+              (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
+            FROM $wpdb->p2p as p
+            WHERE p.p2p_type = 'contacts_to_contacts'
         ", ARRAY_A );
 
         // prepare special array with parent-child relations
