@@ -32,7 +32,6 @@ function project_overview() {
             <h3 >${ translations.title_overview }</h3>
         </div>
         <!--<span class="section-header">${ translations.title_overview }</span>-->
-        <!--<span style="float:right; font-size:1.5em;color:#3f729b;"><button data-open="dt-project-legend"><i class="fi-info"></i></button></span>-->
         <div class="medium reveal" id="dt-project-legend" data-reveal>
             <button class="close-button" data-close aria-label="Close modal" type="button">
                 <span aria-hidden="true">&times;</span>
@@ -399,8 +398,15 @@ function project_group_tree() {
         <br clear="all">
         <div class="grid-x grid-padding-x">
         <div class="cell">
-            <button class="button hollow toggle-singles" onclick="toggle_singles();">Multiplying Only</button>
-            <button class="button toggle-singles" style="display:none;" onclick="toggle_singles();">Multiplying Only</button>
+            <span>
+                <button class="button hollow toggle-singles" id="multiplying-only" onclick="toggle_multiplying_only();">Multiplying Only</button>
+            </span>
+             <span>
+                <button class="button hollow toggle-singles" id="highlight-active" onclick="highlight_active();">Highlight Active</button>
+            </span>
+            <span>
+                <button class="button hollow toggle-singles" id="highlight-churches" onclick="highlight_churches();">Highlight Churches</button>
+            </span>
         </div>
             <div class="cell">
                 <div class="scrolling-wrapper" id="generation_map">
@@ -438,13 +444,99 @@ function project_group_tree() {
             #generation_map .li-gen-1 {
                 margin-top:.5em;
             }
-    </style>
+            .inactive-gray, .inactive-gray a {
+                color:lightgray;
+            }
+            .not-church-gray, .not-church-gray a {
+                color:lightgray;
+            }
+        </style>
+        <div id="modal" class="reveal" data-reveal></div>
     `)
 
     jQuery('#generation_map').html(sourceData.group_generation_tree)
     jQuery('#generation_map li:last-child').addClass('last');
 
+
+    new Foundation.Reveal(jQuery('#modal'))
     new Foundation.Reveal(jQuery('.dt-project-legend'));
+}
+function open_modal_details( id ) {
+    let modal = jQuery('#modal')
+    let spinner = `<img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" />`
+    modal.empty().html(spinner).foundation('open')
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: dtMetricsProject.root + 'dt/v1/group/'+id,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
+        },
+    })
+        .done(function (data) {
+            if( data ) {
+                console.log(data)
+                let list = '<dt>Members</dt><ul>'
+                jQuery.each(data.members, function(i, v)  { list += '<li><a href="/contacts/'+data.members[i].ID+'">' + data.members[i].post_title + '</a></li>' } )
+                list += '</ul>'
+                let content = `
+                <div class="grid-x">
+                    <div class="cell"><span class="section-header">${data.name}</span><hr style="max-width:100%;"></div>
+                    <div class="cell">
+                        <dl>
+                            <dd><strong>Status: </strong>${data.group_status.label}</dd>
+                            <dd><strong>Assigned to: </strong>${data.assigned_to['display']}</dd>
+                            <dd><strong>Total Members: </strong>${data.member_count}</dd>
+                            ${list}
+                        </dl>
+                    </div>
+                    <div class="cell center"><hr><a href="/groups/${id}">View Group</a></div>
+                </div>
+                `
+                modal.empty().html(content)
+            }
+        })
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+            jQuery("#errors").append(err.responseText)
+        })
+}
+function toggle_multiplying_only () {
+    let list = jQuery('#generation_map .li-gen-1:not(:has(li.li-gen-2))')
+    let button = jQuery('#multiplying-only')
+    if( button.hasClass('hollow') ) {
+        list.hide()
+        button.removeClass('hollow')
+    } else {
+        button.addClass('hollow')
+        list.show()
+    }
+}
+
+function highlight_active() {
+    let list = jQuery('.inactive')
+    let button = jQuery('#highlight-active')
+    if( button.hasClass('hollow') ) {
+        list.addClass('inactive-gray')
+        button.removeClass('hollow')
+    } else {
+        button.addClass('hollow')
+        list.removeClass('inactive-gray')
+    }
+}
+
+function highlight_churches() {
+    let list = jQuery('#generation_map span:not(.church)')
+    let button = jQuery('#highlight-churches')
+    if( button.hasClass('hollow') ) {
+        list.addClass('not-church-gray')
+        button.removeClass('hollow')
+    } else {
+        button.addClass('hollow')
+        list.removeClass('not-church-gray')
+    }
 }
 
 function project_baptism_tree() {
@@ -463,8 +555,7 @@ function project_baptism_tree() {
         <br clear="all">
         <div class="grid-x grid-padding-x">
         <div class="cell">
-            <button class="button hollow toggle-singles" onclick="toggle_singles();">Multiplying Only</button>
-            <button class="button toggle-singles" style="display:none;" onclick="toggle_singles();">Multiplying Only</button>
+            <button class="button hollow toggle-singles" id="multiplying-only" onclick="toggle_multiplying_only();">Multiplying Only</button>
         </div>
             <div class="cell">
                 <div class="scrolling-wrapper" id="generation_map">
@@ -502,12 +593,7 @@ function project_baptism_tree() {
             #generation_map .li-gen-1 {
                 margin-top:.5em;
             }
-            #generation_map .li-gen-2 {
-            }
-            #generation_map .li-gen-3 {
-            }
-            #generation_map .li-gen-4 {
-            }
+            
     </style>
     `)
 
@@ -533,8 +619,7 @@ function project_coaching_tree() {
         <br clear="all">
         <div class="grid-x grid-padding-x">
         <div class="cell">
-            <button class="button hollow toggle-singles" onclick="toggle_singles();">Multiplying Only</button>
-            <button class="button toggle-singles" style="display:none;" onclick="toggle_singles();">Multiplying Only</button>
+            <button class="button hollow toggle-singles" id="multiplying-only" onclick="toggle_multiplying_only();">Multiplying Only</button>
         </div>
             <div class="cell">
                 <div class="scrolling-wrapper" id="generation_map">
@@ -581,9 +666,4 @@ function project_coaching_tree() {
 
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
-}
-
-function toggle_singles() {
-    jQuery('#generation_map .li-gen-1:not(:has(li.li-gen-2))').toggle()
-    jQuery('.toggle-singles').toggle()
 }

@@ -174,7 +174,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
     public function get_group_generations_tree(){
         $query = dt_queries()->tree( 'group_all' );
         $menu_data = $this->prepare_menu_array( $query );
-        return $this->build_menu( 0, $menu_data, 0 );
+        return $this->build_group_tree( 0, $menu_data, 0 );
     }
 
     public function get_baptism_generations_tree(){
@@ -235,6 +235,29 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 
                 // find childitems recursively
                 $html .= $this->build_menu( $item_id, $menu_data, $gen );
+
+                $html .= '</li>';
+            }
+            $html .= '</ul>';
+
+        }
+        return $html;
+    }
+
+    public function build_group_tree( $parent_id, $menu_data, $gen) {
+        $html = '';
+
+        if (isset( $menu_data['parents'][$parent_id] ))
+        {
+            $html = '<ul class="ul-gen-'.$gen.'">';
+            $gen++;
+            foreach ($menu_data['parents'][$parent_id] as $item_id)
+            {
+                $html .= '<li class="gen-node li-gen-'.$gen.'">';
+                $html .= '<span class="'.$menu_data['items'][$item_id]['group_status'].' '.$menu_data['items'][$item_id]['group_type'].'">('.$gen.') ';
+                $html .= '<a onclick="open_modal_details('.$item_id.');">'. $menu_data['items'][$item_id]['name'] . '</a></span>';
+
+                $html .= $this->build_group_tree( $item_id, $menu_data, $gen );
 
                 $html .= '</li>';
             }
