@@ -793,11 +793,7 @@ jQuery(document).ready(function($) {
         </div>`
       memberList.append(memberHTML)
     })
-    let memberCount = (group.members || []).length
-    memberCountInput.attr("placeholder", memberCount || 0 )
-    if ( memberCount > memberCountInput.val() ){
-      memberCountInput.val( memberCount )
-    }
+    memberCountInput.val( group.member_count )
   }
   populateMembersList()
 
@@ -850,6 +846,9 @@ jQuery(document).ready(function($) {
         $(".hide-after-contact-create").hide()
         $('#go-to-contact').attr('href', newContact.permalink);
         group.members.push({post_title:title, ID:newContact.post_id})
+        if ( group.members.length > group.member_count ){
+          group.member_count = group.members.length
+        }
         populateMembersList()
         masonGrid.masonry('layout')
       })

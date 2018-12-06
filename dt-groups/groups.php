@@ -47,6 +47,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 ];
             }
         );
+        add_action( 'group_member_count', [ $this, 'update_group_member_count' ], 10, 2 );
         parent::__construct();
     }
 
@@ -545,18 +546,40 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function add_member_to_group( int $group_id, int $member_id ) {
         // share the group with the owner of the contact.
-        $assigned_to = get_post_meta( $member_id, "assigned_to", true );
-        if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
-            $user_id = explode( "-", $assigned_to )[1];
-            if ( $user_id ){
-                self::add_shared_on_group( $group_id, $user_id, null, false, false );
-            }
-        }
-
-        return p2p_type( 'contacts_to_groups' )->connect(
+        $added = p2p_type( 'contacts_to_groups' )->connect(
             $member_id, $group_id,
             [ 'date' => current_time( 'mysql' ) ]
         );
+        if ( !is_wp_error( $added )){
+            $assigned_to = get_post_meta( $member_id, "assigned_to", true );
+            if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
+                $user_id = explode( "-", $assigned_to )[1];
+                if ( $user_id ){
+                    self::add_shared_on_group( $group_id, $user_id, null, false, false );
+                }
+            }
+            do_action( 'group_member_count', $group_id, "added" );
+        }
+        return $added;
+    }
+
+    public function update_group_member_count( $group_id, $action = "added" ){
+        $group = get_post( $group_id );
+
+        $args = [
+            'connected_type'   => "contacts_to_groups",
+            'connected_direction' => 'to',
+            'connected_items'  => $group,
+            'nopaging'         => true,
+            'suppress_filters' => false,
+        ];
+        $members = get_posts( $args );
+        $member_count = get_post_meta( $group_id, 'member_count', true );
+        if ( sizeof( $members ) > intval( $member_count ) ){
+            update_post_meta( $group_id, 'member_count', sizeof( $members ) );
+        } elseif ( $action === "removed" ){
+            update_post_meta( $group_id, 'member_count', $member_count - 1 );
+        }
     }
 
     /**
@@ -639,7 +662,11 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @return mixed
      */
     public static function remove_member_from_group( int $group_id, int $member_id ) {
-        return p2p_type( 'contacts_to_groups' )->disconnect( $member_id, $group_id );
+        $removed = p2p_type( 'contacts_to_groups' )->disconnect( $member_id, $group_id );
+        if ( !is_wp_error( $removed ) ){
+            do_action( 'group_member_count', $group_id, "removed" );
+        }
+        return $removed;
     }
 
     /**
