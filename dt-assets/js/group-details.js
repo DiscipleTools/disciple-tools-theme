@@ -637,6 +637,13 @@ jQuery(document).ready(function($) {
     API.save_field_api('group', groupId, { [id]: val })
       .catch(handelAjaxError)
   })
+  $('input.number-input').on("blur", function(){
+    const id = $(this).attr('id')
+    const val = $(this).val()
+
+    API.save_field_api('group', groupId, { [id]: val })
+      .catch(handelAjaxError)
+  })
 
   /**
    * Church fields
@@ -729,6 +736,7 @@ jQuery(document).ready(function($) {
   })
 
   let memberList = $('.member-list')
+  let memberCountInput = $('#member_count')
   let populateMembersList = ()=>{
     memberList.empty()
 
@@ -758,6 +766,11 @@ jQuery(document).ready(function($) {
         </div>`
       memberList.append(memberHTML)
     })
+    let memberCount = (group.members || []).length
+    memberCountInput.attr("placeholder", memberCount || 0 )
+    if ( memberCount > memberCountInput.val() ){
+      memberCountInput.val( memberCount )
+    }
   }
   populateMembersList()
 

@@ -46,7 +46,10 @@ declare(strict_types=1);
                             <div class="bordered-box">
                                 <span class="section-header"><?php esc_html_e( 'Members', 'disciple_tools' )?></span>
                                 <div class="section-subheader"><?php esc_html_e( "Member Count", 'disciple_tools' ) ?></div>
-                                <input id="member_count" class="text-input" type="text" value="<?php echo esc_html( $group["member_count"] ?? "" ) ?>">
+                                <input id="member_count"
+                                       class="number-input" type="number" min="0"
+                                       placeholder="<?php echo esc_html( sizeof( $group["members"] ) )?>"
+                                       value="<?php echo esc_html( $group["member_count"] ?? "" ) ?>">
                                 
                                 <div class="section-subheader"><?php esc_html_e( "Group Coach / Church Planter", 'disciple_tools' ) ?></div>
                                 <div class="coaches">
