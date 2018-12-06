@@ -828,19 +828,38 @@ class Disciple_Tools_Contacts_Endpoints
 
         $params = $this->process_token( $request );
         if ( is_wp_error( $params ) ) {
-            return $params;
+            return [
+                'status' => 'FAIL',
+                'error' => __( 'Transfer token error.', 'disciple_tools' ),
+            ];
         }
 
         if ( ! current_user_can( 'create_contacts' ) ) {
-            return new WP_Error( __METHOD__, 'Permission error.' );
+            return [
+                'status' => 'FAIL',
+                'error' => __( 'Permission error.', 'disciple_tools' ),
+            ];
         }
 
         if ( isset( $params['contact_data'] ) ) {
-            return Disciple_Tools_Contacts_Transfer::receive_transferred_contact( $params );
+            $result = Disciple_Tools_Contacts_Transfer::receive_transferred_contact( $params );
+            if ( is_wp_error( $result ) ) {
+                return [
+                    'status' => 'FAIL',
+                    'error' => $result->get_error_message(),
+                ];
+            } else {
+                return [
+                    'status' => 'OK',
+                    'error' => $result['errors'],
+                ];
+            }
         } else {
-            return new WP_Error( __METHOD__, 'Missing required parameter: contact_data.' );
+            return [
+                'status' => 'FAIL',
+                'error' => __( 'Missing required parameter', 'disciple_tools' ),
+            ];
         }
-
     }
 
     /**
