@@ -302,6 +302,26 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             update_option( 'dt_site_options', $site_options, true );
         }
 
+        if ( isset( $_POST['group_update_required_nonce'] ) &&
+             wp_verify_nonce( sanitize_key( wp_unslash( $_POST['group_update_required_nonce'] ) ), 'group_update_required' ) ) {
+            $site_options = dt_get_option( "dt_site_options" );
+
+            if ( isset( $_POST["run_update_required"] ) ){
+                do_action( "dt_find_contacts_that_need_an_update" );
+            }
+            $site_options["group_update_required"]["enabled"] = isset( $_POST["triggers_enabled"] );
+
+            foreach ( $site_options["group_update_required"]["options"] as $option_index => $option ){
+                if ( isset( $_POST[$option_index . "_days"] ) ){
+                    $site_options["group_update_required"]["options"][$option_index]["days"] = sanitize_text_field( wp_unslash( $_POST[$option_index . "_days"] ) );
+                }
+                if ( isset( $_POST[$option_index . "_comment"] ) ){
+                    $site_options["group_update_required"]["options"][$option_index]["comment"] = wp_unslash( sanitize_text_field( wp_unslash( $_POST[$option_index . "_comment"] ) ) );
+                }
+            }
+            update_option( 'dt_site_options', $site_options, true );
+        }
+
     }
 
     public function update_required_options(){
@@ -309,6 +329,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         $update_required_options = $site_options['update_required']["options"];
         $field_options = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false )
         ?>
+        <h3><?php esc_html_e( "Contacts", 'disciple_tools' ) ?></h3>
         <form method="post" name="update_required-form">
             <button type="submit" class="button-like-link" name="run_update_required" value="1"><?php esc_html_e( "Run checker now", 'disciple_tools' ) ?></button>
             <p><?php esc_html_e( "Change how long to wait before a contact needs an update", 'disciple_tools' ) ?></p>
@@ -337,7 +358,49 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                                 value="<?php echo esc_html( $option["days"] ) ?>"  />
                         </td>
                         <td>
-                            <input name="<?php echo esc_html( $option_key ) ?>_comment" type="text" value="<?php echo esc_html( $option["comment"] ) ?>">
+                            <textarea name="<?php echo esc_html( $option_key ) ?>_comment"
+                                      style="width:100%"><?php echo esc_html( $option["comment"] ) ?></textarea>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+
+            </table>
+            <br>
+            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Save", 'disciple_tools' ) ?></button> </span>
+        </form>
+
+        <?php
+        $update_required_options = $site_options['group_update_required']["options"];
+        $field_options = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( false )
+        ?>
+        <h3><?php esc_html_e( "Groups", 'disciple_tools' ) ?></h3>
+        <form method="post" name="group_update_required-form" style="margin-top: 50px">
+            <p><?php esc_html_e( "Change how long to wait before a group needs an update", 'disciple_tools' ) ?></p>
+            <p>
+                <?php esc_html_e( "Update needed triggers enabled", 'disciple_tools' ) ?>
+                <input type="checkbox" name="triggers_enabled" <?php echo esc_html( $site_options['group_update_required']["enabled"] ) ? 'checked' : '' ?> />
+            </p>
+
+            <input type="hidden" name="group_update_required_nonce" id="group_update_required_nonce" value="' <?php echo esc_attr( wp_create_nonce( 'group_update_required' ) ) ?>'" />
+
+            <table class="widefat">
+                <thead>
+                    <tr>
+                        <th><?php esc_html_e( "Group Status", 'disciple_tools' ) ?></th>
+                        <th><?php esc_html_e( "Days to wait", 'disciple_tools' ) ?></th>
+                        <th><?php esc_html_e( "Comment", 'disciple_tools' ) ?></th>
+                    </tr>
+                </thead>
+                <?php foreach ( $update_required_options as $option_key => $option ) : ?>
+                    <tr>
+                        <td><?php echo esc_html( $field_options["group_status"]['default'][$option['status']]["label"] ) ?></td>
+                        <td>
+                            <input name="<?php echo esc_html( $option_key ) ?>_days" type="number"
+                                value="<?php echo esc_html( $option["days"] ) ?>"  />
+                        </td>
+                        <td>
+                            <textarea name="<?php echo esc_html( $option_key ) ?>_comment"
+                                      style="width:100%"><?php echo esc_html( $option["comment"] ) ?></textarea>
                         </td>
                     </tr>
                 <?php endforeach; ?>

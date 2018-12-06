@@ -1409,7 +1409,7 @@ button.loader{
 }
 
 .typeahead-margin-when-active .typeahead__container.result .typeahead__result {
-    margin-bottom: 300px;
+    margin-bottom: 350px;
 }
 
 .typeahead__container {
@@ -1454,6 +1454,38 @@ Groups
 //     margin-bottom: 1rem;
 // }
 
+.members-section {
+    border: 1px solid #ccc;
+    .member-row {
+        padding: 10px 10px;
+        display: flex;
+        &:hover {
+            background-color: rgba(204, 204, 204, 0.5);
+        }
+        .member-row-actions {
+            margin: 0;
+            padding: 0 5px;
+            color: grey;
+        }
+        i {
+            padding: 0 2px;
+        }
+    }
+}
+.members-header {
+    button {
+        height: 36px;
+        width: max-content;
+        border: 1px solid #ccc;
+        vertical-align: bottom;
+        border-bottom: 2px solid white;
+        margin-bottom: -1px;
+        padding: 5px 10px;
+        img {
+            margin-left: 2px;
+        }
+    }
+}
 
 
 table.table-remove-top-border thead {

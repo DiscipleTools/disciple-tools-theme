@@ -23,8 +23,8 @@ if ( ! current_user_can( 'access_groups' ) ) {
     dt_print_details_bar(
         true,
         true,
-        false,
         true,
+        isset( $group["requires_update"] ) && $group["requires_update"] === true,
         in_array( $current_user_id, $following )
     ); ?>
 
@@ -39,7 +39,17 @@ if ( ! current_user_can( 'access_groups' ) ) {
 
         <main id="main" class="large-7 medium-12 small-12 cell" role="main" style="padding:0">
             <div class="cell grid-y grid-margin-y" style="display: block">
-                <section id="contact-details" class="cell small-12  grid-margin-y">
+                <?php
+                //    <!-- Requires update block -->
+                if ( isset( $group['requires_update'] ) && $group['requires_update'] === true ) { ?>
+                    <section class="cell small-12 update-needed-notification">
+                        <div class="bordered-box detail-notification-box" style="background-color:#F43636">
+                            <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This group needs an update', 'disciple_tools' ) ?>.</h4>
+                            <p><?php esc_html_e( 'It has been a while since this group was updated. Please do so', 'disciple_tools' )?>.</p>
+                        </div>
+                    </section>
+                <?php } ?>
+                <section id="contact-details" class="cell small-12 grid-margin-y">
                     <div class="cell">
                         <?php get_template_part( 'dt-assets/parts/group', 'details' ); ?>
                     </div>
@@ -50,7 +60,10 @@ if ( ! current_user_can( 'access_groups' ) ) {
                             <div class="bordered-box">
                                 <span class="section-header"><?php esc_html_e( 'Members', 'disciple_tools' )?></span>
                                 <div class="section-subheader"><?php esc_html_e( "Member Count", 'disciple_tools' ) ?></div>
-                                <input id="member_count" class="text-input" type="text" value="<?php echo esc_html( $group["member_count"] ?? "" ) ?>">
+                                <input id="member_count"
+                                       class="number-input" type="number" min="0"
+                                       placeholder="<?php echo esc_html( sizeof( $group["members"] ) )?>"
+                                       value="<?php echo esc_html( $group["member_count"] ?? "" ) ?>">
                                 
                                 <div class="section-subheader"><?php esc_html_e( "Group Coach / Church Planter", 'disciple_tools' ) ?></div>
                                 <div class="coaches">
@@ -60,7 +73,7 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                             <div class="typeahead__field">
                                                 <span class="typeahead__query">
                                                     <input class="js-typeahead-coaches"
-                                                           name="coaches[query]" placeholder="Search Coaches"
+                                                           name="coaches[query]" placeholder="<?php esc_html_e( "Search Users and Contacts", 'disciple_tools' ) ?>"
                                                            autocomplete="off">
                                                 </span>
                                             </div>
@@ -68,19 +81,25 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                     </div>
                                 </div>
                                 
-                                <div class="section-subheader"><?php esc_html_e( "Member List", 'disciple_tools' ) ?></div>
-                                <div class="members">
-                                    <var id="members-result-container" class="result-container"></var>
-                                    <div id="members_t" name="form-members" class="scrollable-typeahead">
-                                        <div class="typeahead__container">
-                                            <div class="typeahead__field">
-                                                <span class="typeahead__query">
-                                                    <input class="js-typeahead-members"
-                                                           name="members[query]" placeholder="Search Members"
-                                                           autocomplete="off">
-                                                </span>
-                                            </div>
-                                        </div>
+
+
+                                <div class="section-subheader members-header" style="padding-top: 10px">
+                                    <div style="padding-bottom: 5px; margin-right:10px; display: inline-block">
+                                        <?php esc_html_e( "Member List", 'disciple_tools' ) ?>
+                                    </div>
+                                    <button type="button" data-open="create-contact-modal" style="height: 36px;">
+                                        <?php esc_html_e( "Create", 'disciple_tools' ) ?>
+                                        <img style="height: 14px; width: 14px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
+                                    </button>
+                                    <button type="button"
+                                            class="add-new-member">
+                                        <?php esc_html_e( "Select", 'disciple_tools' ) ?>
+                                        <img style="height: 16px; width: 16px" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group.svg' ) ?>"/>
+                                    </button>
+                                </div>
+                                <div class="members-section">
+                                    <div class="member-list">
+
                                     </div>
                                 </div>
                             </div>
@@ -290,8 +309,39 @@ if ( ! current_user_can( 'access_groups' ) ) {
 <!--    Modals-->
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'share' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-group' ); ?>
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-contact' ); ?>
 
-
+    <div class="reveal" id="add-new-group-member" data-reveal style="min-height:500px">
+        <p class="lead"><?php esc_html_e( 'Add members from existing contacts', 'disciple_tools' )?></p>
+        <div class="section-subheader"><?php esc_html_e( "Members List", 'disciple_tools' ) ?></div>
+        <div class="members">
+            <var id="members-result-container" class="result-container"></var>
+            <div id="members_t" name="form-members" class="scrollable-typeahead typeahead-margin-when-active">
+                <div class="typeahead__container">
+                    <div class="typeahead__field">
+                        <span class="typeahead__query">
+                            <input class="js-typeahead-members"
+                                   name="members[query]" placeholder="<?php esc_html_e( "Search Contacts", 'disciple_tools' ) ?>"
+                                   autocomplete="off">
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid-x pin-to-bottom">
+            <div class="cell">
+                <hr size="1px">
+                <span style="float:right; bottom: 0;">
+                    <button class="button" data-close aria-label="Close reveal" type="button">
+                        <?php esc_html_e( 'Close', 'disciple_tools' )?>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
 
 
