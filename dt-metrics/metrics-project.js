@@ -449,7 +449,7 @@ function project_group_tree() {
 
 function project_baptism_tree() {
     "use strict";
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu')).foundation('down', jQuery('#trees'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
     let translations = dtMetricsProject.data.translations
@@ -519,7 +519,7 @@ function project_baptism_tree() {
 
 function project_coaching_tree() {
     "use strict";
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu')).foundation('down', jQuery('#trees'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
     let translations = dtMetricsProject.data.translations

@@ -29,7 +29,6 @@ class Disciple_Tools_Metrics_Queries
 
     public function __construct() {
         // Load required files
-
     } // End __construct
 
     public function tree( $query_name, $args = [] ) {
@@ -100,7 +99,7 @@ class Disciple_Tools_Metrics_Queries
                 return $query;
                 break;
 
-            case 'tree_group_all':
+            case 'group_all':
                 $query = $wpdb->get_results("
                     SELECT
                       a.ID         as id,
@@ -125,7 +124,7 @@ class Disciple_Tools_Metrics_Queries
                 return $query;
                 break;
 
-            case 'tree_group_multiplying_only':
+            case 'group_multiplying_only':
                 $query = $wpdb->get_results("
                     SELECT
                       a.ID         as id,

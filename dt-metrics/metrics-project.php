@@ -172,9 +172,9 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function get_group_generations_tree(){
-        $query = dt_queries()->tree( 'tree_group_all' );
+        $query = dt_queries()->tree( 'group_all' );
         $menu_data = $this->prepare_menu_array( $query );
-        return $this->build_menu( 0, $menu_data, 0 );;
+        return $this->build_menu( 0, $menu_data, 0 );
     }
 
     public function get_baptism_generations_tree(){
