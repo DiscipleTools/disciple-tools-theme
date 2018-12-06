@@ -104,8 +104,16 @@ class Disciple_Tools_Metrics_Queries
                     SELECT
                       a.ID         as id,
                       0            as parent_id,
-                      a.post_title as name
+                      a.post_title as name,
+                      gs1.meta_value as group_status,
+                      type1.meta_value as group_type
                     FROM $wpdb->posts as a
+                      LEFT JOIN $wpdb->postmeta as gs1
+                      ON gs1.post_id=a.ID
+                      AND gs1.meta_key = 'group_status'
+                      LEFT JOIN $wpdb->postmeta as type1
+                      ON type1.post_id=a.ID
+                      AND type1.meta_key = 'group_type'
                     WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
                     AND a.ID NOT IN (
@@ -117,7 +125,9 @@ class Disciple_Tools_Metrics_Queries
                     SELECT
                       p.p2p_from                          as id,
                       p.p2p_to                            as parent_id,
-                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
+                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name,
+                      (SELECT gsmeta.meta_value FROM $wpdb->postmeta as gsmeta WHERE gsmeta.post_id = p.p2p_from AND gsmeta.meta_key = 'group_status' LIMIT 1 ) as group_status,
+                      (SELECT gsmeta.meta_value FROM $wpdb->postmeta as gsmeta WHERE gsmeta.post_id = p.p2p_from AND gsmeta.meta_key = 'group_type' LIMIT 1 ) as group_type
                     FROM $wpdb->p2p as p
                     WHERE p.p2p_type = 'groups_to_groups'
                 ", ARRAY_A );
