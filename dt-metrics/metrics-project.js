@@ -6,6 +6,15 @@ jQuery(document).ready(function() {
     if( '#project_critical_path' === window.location.hash  ) {
         project_critical_path()
     }
+    if( '#group_tree' === window.location.hash  ) {
+        project_group_tree()
+    }
+    if( '#baptism_tree' === window.location.hash  ) {
+        project_baptism_tree()
+    }
+    if( '#coaching_tree' === window.location.hash  ) {
+        project_coaching_tree()
+    }
 
 })
 
@@ -372,4 +381,209 @@ function numberWithCommas(x) {
     while (pattern.test(x))
         x = x.replace(pattern, "$1,$2");
     return x;
+}
+
+function project_group_tree() {
+    "use strict";
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu')).foundation('down', jQuery('#trees'));
+    let chartDiv = jQuery('#chart')
+    let sourceData = dtMetricsProject.data
+    let translations = dtMetricsProject.data.translations
+
+    let height = $(window).height()
+    let chartHeight = height - ( height * .15 )
+
+    chartDiv.empty().html(`
+        <span class="section-header">${translations.title_group_tree}</span><hr>
+        
+        <br clear="all">
+        <div class="grid-x grid-padding-x">
+        <div class="cell">
+            <button class="button hollow toggle-singles" onclick="toggle_singles();">Multiplying Only</button>
+            <button class="button toggle-singles" style="display:none;" onclick="toggle_singles();">Multiplying Only</button>
+        </div>
+            <div class="cell">
+                <div class="scrolling-wrapper" id="generation_map">
+                </div>
+            </div>
+        </div>
+        
+        <style>
+            .scrolling-wrapper {
+                overflow-x: scroll;
+                overflow-y: hidden;
+                white-space: nowrap;
+            }
+            #generation_map ul {
+                list-style: none;
+                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/vline.png) repeat-y;
+                margin: 0;
+                padding: 0;
+                margin-left:50px;
+            }
+           #generation_map ul.ul-gen-0 {
+                margin-left: 0;
+           }
+            #generation_map li {
+                margin: 0;
+                padding: 0 12px;
+                line-height: 20px;
+                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/node.png) no-repeat;
+                color: #369;
+                font-weight: bold;
+            }
+            #generation_map ul li.last {
+                background: #fff url(${dtMetricsProject.theme_uri}/dt-assets/images/lastnode.png) no-repeat;
+            }
+            #generation_map .li-gen-1 {
+                margin-top:.5em;
+            }
+    </style>
+    `)
+
+    jQuery('#generation_map').html(sourceData.group_generation_tree)
+    jQuery('#generation_map li:last-child').addClass('last');
+
+    new Foundation.Reveal(jQuery('.dt-project-legend'));
+}
+
+function project_baptism_tree() {
+    "use strict";
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu')).foundation('down', jQuery('#trees'));
+    let chartDiv = jQuery('#chart')
+    let sourceData = dtMetricsProject.data
+    let translations = dtMetricsProject.data.translations
+
+    let height = $(window).height()
+    let chartHeight = height - ( height * .15 )
+
+    chartDiv.empty().html(`
+        <span class="section-header">${translations.title_baptism_tree}</span><hr>
+        
+        <br clear="all">
+        <div class="grid-x grid-padding-x">
+        <div class="cell">
+            <button class="button hollow toggle-singles" onclick="toggle_singles();">Multiplying Only</button>
+            <button class="button toggle-singles" style="display:none;" onclick="toggle_singles();">Multiplying Only</button>
+        </div>
+            <div class="cell">
+                <div class="scrolling-wrapper" id="generation_map">
+                </div>
+            </div>
+        </div>
+        
+        <style>
+            .scrolling-wrapper {
+                overflow-x: scroll;
+                overflow-y: hidden;
+                white-space: nowrap;
+            }
+            #generation_map ul {
+                list-style: none;
+                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/vline.png) repeat-y;
+                margin: 0;
+                padding: 0;
+                margin-left:50px;
+            }
+           #generation_map ul.ul-gen-0 {
+                margin-left: 0;
+           }
+            #generation_map li {
+                margin: 0;
+                padding: 0 12px;
+                line-height: 20px;
+                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/node.png) no-repeat;
+                color: #369;
+                font-weight: bold;
+            }
+            #generation_map ul li.last {
+                background: #fff url(${dtMetricsProject.theme_uri}/dt-assets/images/lastnode.png) no-repeat;
+            }
+            #generation_map .li-gen-1 {
+                margin-top:.5em;
+            }
+            #generation_map .li-gen-2 {
+            }
+            #generation_map .li-gen-3 {
+            }
+            #generation_map .li-gen-4 {
+            }
+    </style>
+    `)
+
+    jQuery('#generation_map').html(sourceData.baptism_generation_tree)
+    jQuery('#generation_map li:last-child').addClass('last');
+
+    new Foundation.Reveal(jQuery('.dt-project-legend'));
+}
+
+function project_coaching_tree() {
+    "use strict";
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu')).foundation('down', jQuery('#trees'));
+    let chartDiv = jQuery('#chart')
+    let sourceData = dtMetricsProject.data
+    let translations = dtMetricsProject.data.translations
+
+    let height = $(window).height()
+    let chartHeight = height - ( height * .15 )
+
+    chartDiv.empty().html(`
+        <span class="section-header">${translations.title_coaching_tree}</span><hr>
+        
+        <br clear="all">
+        <div class="grid-x grid-padding-x">
+        <div class="cell">
+            <button class="button hollow toggle-singles" onclick="toggle_singles();">Multiplying Only</button>
+            <button class="button toggle-singles" style="display:none;" onclick="toggle_singles();">Multiplying Only</button>
+        </div>
+            <div class="cell">
+                <div class="scrolling-wrapper" id="generation_map">
+                </div>
+            </div>
+        </div>
+        
+        <style>
+            .scrolling-wrapper {
+                overflow-x: scroll;
+                overflow-y: hidden;
+                white-space: nowrap;
+            }
+            #generation_map ul {
+                list-style: none;
+                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/vline.png) repeat-y;
+                margin: 0;
+                padding: 0;
+                margin-left:50px;
+            }
+           #generation_map ul.ul-gen-0 {
+                margin-left: 0;
+           }
+            #generation_map li {
+                margin: 0;
+                padding: 0 12px;
+                line-height: 20px;
+                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/node.png) no-repeat;
+                color: #369;
+                font-weight: bold;
+            }
+            #generation_map ul li.last {
+                background: #fff url(${dtMetricsProject.theme_uri}/dt-assets/images/lastnode.png) no-repeat;
+            }
+            #generation_map .li-gen-1 {
+                margin-top:.5em;
+            }
+            
+    </style>
+    `)
+
+    jQuery('#generation_map').html(sourceData.coaching_generation_tree)
+    jQuery('#generation_map li:last-child').addClass('last');
+
+
+    new Foundation.Reveal(jQuery('.dt-project-legend'));
+}
+
+function toggle_singles() {
+    jQuery('#generation_map .li-gen-1:not(:has(li.li-gen-2))').toggle()
+    jQuery('.toggle-singles').toggle()
 }

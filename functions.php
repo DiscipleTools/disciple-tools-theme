@@ -314,6 +314,7 @@ else {
             /**
              * dt-metrics
              */
+            require_once( get_template_directory() . '/dt-metrics/queries.php' );
             require_once( get_template_directory() . '/dt-metrics/counter.php' );
             $this->counter = Disciple_Tools_Counter::instance();
             require_once( get_template_directory() . '/dt-metrics/metrics-template.php' );
