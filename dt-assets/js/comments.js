@@ -1,6 +1,10 @@
 /* global jQuery:false, moment:false, _:false, commentsSettings:false */
 
 jQuery(document).ready(function($) {
+
+  let commentPostedEvent = document.createEvent('Event');
+  commentPostedEvent.initEvent('comment_posted', true, true);
+
   let postId = $("#post-id").text()
   let postType = $("#post-type").text()
 
@@ -20,9 +24,8 @@ jQuery(document).ready(function($) {
           data.comment.date = moment(data.comment.comment_date_gmt + "Z")
           comments.push(data.comment)
           display_activity_comment()
-          if ( typeof commentPosted === "function"){
-            commentPosted()
-          }
+          // fire comment posted event
+          $('#update-needed')[0].dispatchEvent(commentPostedEvent);
           commentInput.attr("disabled", false)
           commentButton.attr("disabled", false)
           $('textarea.mention').mentionsInput('reset')

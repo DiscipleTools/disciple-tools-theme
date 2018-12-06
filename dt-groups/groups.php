@@ -479,6 +479,24 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     }
 
+    //check to see if the group is marked as needing an update
+    //if yes: mark as updated
+    private static function check_requires_update( $group_id ){
+        if ( get_current_user_id() ){
+            $requires_update = get_post_meta( $group_id, "requires_update", true );
+            if ( $requires_update == "yes" || $requires_update == true || $requires_update = "1"){
+                //don't remove update needed if the user is a dispatcher (and not assigned to the groups.)
+                if ( self::can_view_all( 'groups' ) ){
+                    if ( dt_get_user_id_from_assigned_to( get_post_meta( $group_id, "assigned_to", true ) ) === get_current_user_id() ){
+                        update_post_meta( $group_id, "requires_update", false );
+                    }
+                } else {
+                    update_post_meta( $group_id, "requires_update", false );
+                }
+            }
+        }
+    }
+
     /**
      * @param int    $group_id
      * @param string $key
@@ -799,7 +817,11 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @return false|int|\WP_Error
      */
     public static function add_comment( int $group_id, string $comment_html, string $type = "comment", array $args = [], bool $check_permissions = true, $silent = false ) {
-        return self::add_post_comment( 'groups', $group_id, $comment_html, $type, $args, $check_permissions, $silent );
+        $result = self::add_post_comment( 'groups', $group_id, $comment_html, $type, $args, $check_permissions, $silent );
+        if ( $type === "comment" && !is_wp_error( $result )){
+            self::check_requires_update( $group_id );
+        }
+        return $result;
     }
 
     /**

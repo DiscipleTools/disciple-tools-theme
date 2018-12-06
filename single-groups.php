@@ -19,8 +19,8 @@ declare(strict_types=1);
     dt_print_details_bar(
         true,
         true,
-        false,
         true,
+        isset( $group["requires_update"] ) && $group["requires_update"] === true,
         in_array( $current_user_id, $following )
     ); ?>
 
@@ -35,7 +35,17 @@ declare(strict_types=1);
 
         <main id="main" class="large-7 medium-12 small-12 cell" role="main" style="padding:0">
             <div class="cell grid-y grid-margin-y" style="display: block">
-                <section id="contact-details" class="cell small-12  grid-margin-y">
+                <?php
+                //    <!-- Requires update block -->
+                if ( isset( $group['requires_update'] ) && $group['requires_update'] === true ) { ?>
+                    <section class="cell small-12 update-needed-notification">
+                        <div class="bordered-box detail-notification-box" style="background-color:#F43636">
+                            <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This group needs an update', 'disciple_tools' ) ?>.</h4>
+                            <p><?php esc_html_e( 'It has been a while since this group was updated. Please do so', 'disciple_tools' )?>.</p>
+                        </div>
+                    </section>
+                <?php } ?>
+                <section id="contact-details" class="cell small-12 grid-margin-y">
                     <div class="cell">
                         <?php get_template_part( 'dt-assets/parts/group', 'details' ); ?>
                     </div>

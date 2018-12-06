@@ -96,6 +96,27 @@ jQuery(document).ready(function($) {
     API.save_field_api( "group", groupId, update)
   })
 
+
+  /**
+   * Update Needed
+   */
+  $('.update-needed.switch-input').change(function () {
+    let updateNeeded = $(this).is(':checked')
+    $('.update-needed-notification').toggle(updateNeeded)
+    API.save_field_api( "group", groupId, {"requires_update":updateNeeded})
+  })
+  $('#update-needed')[0].addEventListener('comment_posted', function (e) {
+    if ( $(e.target).prop('checked') ){
+      API.get_post("group",  groupId ).then(g=>{
+        group = g
+        $('.update-needed-notification').toggle(group.requires_update === true)
+        $('#update-needed').prop("checked", group.requires_update === true)
+
+      }).catch(err => { console.error(err) })
+    }
+  }, false);
+
+
   /**
    * Locations
    */
@@ -209,7 +230,7 @@ jQuery(document).ready(function($) {
     searchOnFocus: true,
     maxItem: 20,
     template: function (query, item) {
-      if (item.ID == "new-item"){
+      if (item.ID === "new-item"){
         return "Create new Group"
       }
       return `<span>${_.escape(item.name)}</span>`
@@ -274,7 +295,7 @@ jQuery(document).ready(function($) {
     searchOnFocus: true,
     maxItem: 20,
     template: function (query, item) {
-      if (item.ID == "new-item"){
+      if (item.ID === "new-item"){
         return "Create new Group"
       }
       return `<span>${_.escape(item.name)}</span>`
@@ -333,6 +354,12 @@ jQuery(document).ready(function($) {
     $(".reveal-after-group-create").hide()
     $(".hide-after-group-create").show()
   })
+  //reset new group modal on close.
+  $('#create-contact-modal').on("closed.zf.reveal", function () {
+    $(".reveal-after-contact-create").hide()
+    $("#create-contact-modal input[name='title']").val('')
+    $(".hide-after-contact-create").show()
+  })
 
   //create new group
   $(".js-create-group").on("submit", function(e) {
@@ -355,7 +382,7 @@ jQuery(document).ready(function($) {
       });
   })
 
-  $("#add-new-address").click(function () {
+  $("#add-new-address").on("click", function () {
     $('#edit-contact_address').append(`
       <li style="display: flex">
         <textarea rows="3" class="contact-input" data-type="contact_address"></textarea>
