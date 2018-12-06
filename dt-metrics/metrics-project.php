@@ -36,13 +36,17 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 
     public function add_menu( $content ) {
         $content .= '
-            <li><a href="" >' .  esc_html__( 'Project', 'disciple_tools' ) . '</a>
+            <li><a href="">' .  esc_html__( 'Project', 'disciple_tools' ) . '</a>
                 <ul class="menu vertical nested" id="project-menu">
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_overview" onclick="project_overview()">'. esc_html__( 'Overview', 'disciple_tools' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_critical_path" onclick="project_critical_path()">'. esc_html__( 'Critical Path', 'disciple_tools' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#group_tree" onclick="project_group_tree()">'. esc_html__( 'Group Tree', 'disciple_tools' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#baptism_tree" onclick="project_baptism_tree()">'. esc_html__( 'Baptism Tree', 'disciple_tools' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#coaching_tree" onclick="project_coaching_tree()">'. esc_html__( 'Coaching Tree', 'disciple_tools' ) .'</a></li>
+                    <li><a href="" >' .  esc_html__( 'Trees', 'disciple_tools' ) . '</a>
+                        <ul class="menu vertical nested" id="trees">
+                            <li><a href="'. site_url( '/metrics/project/' ) .'#group_tree" onclick="project_group_tree()">'. esc_html__( 'Group Tree', 'disciple_tools' ) .'</a></li>
+                            <li><a href="'. site_url( '/metrics/project/' ) .'#baptism_tree" onclick="project_baptism_tree()">'. esc_html__( 'Baptism Tree', 'disciple_tools' ) .'</a></li>
+                            <li><a href="'. site_url( '/metrics/project/' ) .'#coaching_tree" onclick="project_coaching_tree()">'. esc_html__( 'Coaching Tree', 'disciple_tools' ) .'</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
             ';
@@ -119,7 +123,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             'group_types' => self::chart_group_types( 'project' ),
             'group_health' => self::chart_group_health( 'project' ),
             'group_generations' => self::chart_group_generations( 'project' ),
-            'group_generation_tree' => $this->get_generations_tree(),
+            'group_generation_tree' => $this->get_group_generations_tree(),
             'baptism_generation_tree' => $this->get_baptism_generations_tree(),
             'coaching_generation_tree' => $this->get_coaching_generations_tree(),
         ];
@@ -140,7 +144,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 ],
             ]
         );
-
     }
 
     public function critical_path_by_year( WP_REST_Request $request ) {
@@ -168,6 +171,55 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
         }
     }
 
+    public function get_group_generations_tree(){
+        $query = dt_queries()->tree( 'tree_group_all' );
+        $menu_data = $this->prepare_menu_array( $query );
+        return $this->build_menu( 0, $menu_data, 0 );;
+    }
+
+    public function get_baptism_generations_tree(){
+        $query = dt_queries()->tree( 'tree_baptisms_all' );
+        $menu_data = $this->prepare_menu_array( $query );
+        return $this->build_menu( 0, $menu_data, 0 );
+    }
+
+    public function get_coaching_generations_tree(){
+        $query = dt_queries()->tree( 'tree_coaching_all' );
+        $menu_data = $this->prepare_menu_array( $query );
+        return $this->build_menu( 0, $menu_data, 0 );
+    }
+
+    /**
+     * Prepares the id, parent_id list into a nested array
+     *
+     * @param $query
+     *
+     * @return array
+     */
+    public function prepare_menu_array( $query) {
+        // prepare special array with parent-child relations
+        $menu_data = array(
+            'items' => array(),
+            'parents' => array()
+        );
+
+        foreach ( $query as $menu_item )
+        {
+            $menu_data['items'][$menu_item['id']] = $menu_item;
+            $menu_data['parents'][$menu_item['parent_id']][] = $menu_item['id'];
+        }
+        return $menu_data;
+    }
+
+    /**
+     * Recursively builds html tree from nested array data.
+     *
+     * @param $parent_id
+     * @param $menu_data
+     * @param $gen
+     *
+     * @return string
+     */
     public function build_menu( $parent_id, $menu_data, $gen) {
         $html = '';
 
@@ -190,126 +242,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 
         }
         return $html;
-    }
-
-    public function get_generations_tree(){
-        global $wpdb;
-        $query = $wpdb->get_results("
-            SELECT
-              a.ID         as id,
-              0            as parent_id,
-              a.post_title as name
-            FROM $wpdb->posts as a
-            WHERE a.post_status = 'publish'
-            AND a.post_type = 'groups'
-            AND a.ID NOT IN (
-            SELECT DISTINCT (p2p_from)
-            FROM $wpdb->p2p
-            WHERE p2p_type = 'groups_to_groups'
-            GROUP BY p2p_from)
-            UNION
-            SELECT
-              p.p2p_from                          as id,
-              p.p2p_to                            as parent_id,
-              (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
-            FROM $wpdb->p2p as p
-            WHERE p.p2p_type = 'groups_to_groups'
-        ", ARRAY_A );
-
-        // prepare special array with parent-child relations
-        $menu_data = array(
-            'items' => array(),
-            'parents' => array()
-        );
-
-        foreach ( $query as $menu_item )
-        {
-            $menu_data['items'][$menu_item['id']] = $menu_item;
-            $menu_data['parents'][$menu_item['parent_id']][] = $menu_item['id'];
-        }
-
-        // output the menu
-        return $this->build_menu( 0, $menu_data, 0 );
-    }
-
-    public function get_baptism_generations_tree(){
-        global $wpdb;
-        $query = $wpdb->get_results("
-            SELECT
-              a.ID         as id,
-              0            as parent_id,
-              a.post_title as name
-            FROM $wpdb->posts as a
-            WHERE a.post_status = 'publish'
-            AND a.post_type = 'contacts'
-            AND a.ID NOT IN (
-            SELECT DISTINCT (p2p_from)
-            FROM $wpdb->p2p
-            WHERE p2p_type = 'baptizer_to_baptized'
-            GROUP BY p2p_from)
-            UNION
-            SELECT
-              p.p2p_from                          as id,
-              p.p2p_to                            as parent_id,
-              (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
-            FROM $wpdb->p2p as p
-            WHERE p.p2p_type = 'baptizer_to_baptized'
-        ", ARRAY_A );
-
-        // prepare special array with parent-child relations
-        $menu_data = array(
-            'items' => array(),
-            'parents' => array()
-        );
-
-        foreach ( $query as $menu_item )
-        {
-            $menu_data['items'][$menu_item['id']] = $menu_item;
-            $menu_data['parents'][$menu_item['parent_id']][] = $menu_item['id'];
-        }
-
-        // output the menu
-        return $this->build_menu( 0, $menu_data, 0 );
-    }
-
-    public function get_coaching_generations_tree(){
-        global $wpdb;
-        $query = $wpdb->get_results("
-            SELECT
-              a.ID         as id,
-              0            as parent_id,
-              a.post_title as name
-            FROM $wpdb->posts as a
-            WHERE a.post_status = 'publish'
-            AND a.post_type = 'contacts'
-            AND a.ID NOT IN (
-            SELECT DISTINCT (p2p_from)
-            FROM $wpdb->p2p
-            WHERE p2p_type = 'contacts_to_contacts'
-            GROUP BY p2p_from)
-            UNION
-            SELECT
-              p.p2p_from                          as id,
-              p.p2p_to                            as parent_id,
-              (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
-            FROM $wpdb->p2p as p
-            WHERE p.p2p_type = 'contacts_to_contacts'
-        ", ARRAY_A );
-
-        // prepare special array with parent-child relations
-        $menu_data = array(
-            'items' => array(),
-            'parents' => array()
-        );
-
-        foreach ( $query as $menu_item )
-        {
-            $menu_data['items'][$menu_item['id']] = $menu_item;
-            $menu_data['parents'][$menu_item['parent_id']][] = $menu_item['id'];
-        }
-
-        // output the menu
-        return $this->build_menu( 0, $menu_data, 0 );
     }
 
 

@@ -385,7 +385,7 @@ function numberWithCommas(x) {
 
 function project_group_tree() {
     "use strict";
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu')).foundation('down', jQuery('#trees'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
     let translations = dtMetricsProject.data.translations
@@ -437,12 +437,6 @@ function project_group_tree() {
             }
             #generation_map .li-gen-1 {
                 margin-top:.5em;
-            }
-            #generation_map .li-gen-2 {
-            }
-            #generation_map .li-gen-3 {
-            }
-            #generation_map .li-gen-4 {
             }
     </style>
     `)
@@ -584,7 +578,6 @@ function project_coaching_tree() {
 
     jQuery('#generation_map').html(sourceData.coaching_generation_tree)
     jQuery('#generation_map li:last-child').addClass('last');
-
 
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
