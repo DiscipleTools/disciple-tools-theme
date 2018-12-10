@@ -223,6 +223,19 @@ class Disciple_Tools_Metrics_Queries
                 return $query;
                 break;
 
+            case 'locations':
+                $query = $wpdb->get_results("
+                    SELECT
+                      a.ID as id,
+                      a.post_parent  as parent_id,
+                      a.post_title as name
+                    FROM $wpdb->posts as a
+                    WHERE a.post_status = 'publish'
+                    AND a.post_type = 'locations'
+                ", ARRAY_A );
+                return $query;
+                break;
+
             default:
                 return false;
                 break;

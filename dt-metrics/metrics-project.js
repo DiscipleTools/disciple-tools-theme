@@ -15,6 +15,9 @@ jQuery(document).ready(function() {
     if( '#coaching_tree' === window.location.hash  ) {
         project_coaching_tree()
     }
+    if( '#project_locations' === window.location.hash  ) {
+        project_locations()
+    }
 
 })
 
@@ -605,7 +608,7 @@ function project_baptism_tree() {
 
 function project_coaching_tree() {
     "use strict";
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu')).foundation('down', jQuery('#trees'));
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
     let translations = dtMetricsProject.data.translations
@@ -666,4 +669,115 @@ function project_coaching_tree() {
 
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
+}
+
+function project_locations() {
+    "use strict";
+    let chartDiv = jQuery('#chart')
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+    let sourceData = dtMetricsProject.data
+    chartDiv.empty().html(`
+        <span class="section-header">${sourceData.translations.title_locations}</span><hr>
+        
+        <div class="grid-x grid-padding-x grid-padding-y">
+            <div class="cell center callout">
+                <div class="grid-x">
+                    <div class="medium-3 cell center">
+                        <h4>Total Locations<br><span id="total_locations">0</span></h4>
+                    </div>
+                    <div class="medium-3 cell center left-border-grey">
+                        <h4>Active Locations<br><span id="total_active_locations">0</span></h4>
+                    </div>
+                    <div class="medium-3 cell center left-border-grey">
+                        <h4>Inactive Locations<br><span id="total_inactive_locations">0</span></h4>
+                    </div>
+                    <div class="medium-3 cell center left-border-grey">
+                        <h4>Countries/States<br><span id="total_countries">0</span>/<span id="total_states">0</span></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="cell">
+                <span class="section-subheader">Location Tree</span>
+                <div id="location_tree" class="scrolling-wrapper"></div>
+            </div>
+        </div>
+        <div id="modal" class="reveal" data-reveal></div>
+        <style>
+            .scrolling-wrapper {
+                overflow-x: scroll;
+                overflow-y: hidden;
+                white-space: nowrap;
+            }
+            #location_tree ul {
+                list-style: none;
+                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/vline.png) repeat-y;
+                margin: 0;
+                padding: 0;
+                margin-left:50px;
+            }
+           #location_tree ul.ul-gen-0 {
+                margin-left: 0;
+           }
+            #location_tree li {
+                margin: 0;
+                padding: 0 12px;
+                line-height: 20px;
+                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/node.png) no-repeat;
+                color: #369;
+                font-weight: bold;
+            }
+            #location_tree ul li.last {
+                background: #fff url(${dtMetricsProject.theme_uri}/dt-assets/images/lastnode.png) no-repeat;
+            }
+            #location_tree .li-gen-1 {
+                margin-top:.5em;
+            }
+        `)
+
+    let hero = sourceData.location_hero_stats
+    jQuery('#total_locations').html( numberWithCommas( hero.total_locations ) )
+    jQuery('#total_active_locations').html( numberWithCommas( hero.total_active_locations ) )
+    jQuery('#total_inactive_locations').html( numberWithCommas( hero.total_inactive_locations ) )
+    jQuery('#total_countries').html( numberWithCommas( hero.total_countries ) )
+
+    new Foundation.Reveal(jQuery('#modal'))
+    jQuery('#location_tree').empty().html( sourceData.location_tree )
+
+
+}
+function open_location_modal_details( id ) {
+    let modal = jQuery('#modal')
+    let spinner = `<img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" />`
+    modal.empty().html(spinner).foundation('open')
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: dtMetricsProject.root + 'dt/v1/group/'+id,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
+        },
+    })
+        .done(function (data) {
+            if( data ) {
+                console.log(data)
+                let content = `
+                <div class="grid-x">
+                    <div class="cell"><span class="section-header">Name</span><hr style="max-width:100%;"></div>
+                    <div class="cell">
+                        Roll Up Data
+                    </div>
+                </div>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                `
+                modal.empty().html(content)
+            }
+        })
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+            jQuery("#errors").append(err.responseText)
+        })
 }
