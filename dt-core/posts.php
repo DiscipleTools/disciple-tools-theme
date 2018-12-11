@@ -1356,6 +1356,12 @@ class Disciple_Tools_Posts
         return $users;
     }
 
+    /**
+     * @param $post_type
+     * @param $post_id
+     *
+     * @return array an array of user ids
+     */
     public static function get_users_following_post( $post_type, $post_id ){
         $users = [];
         $assigned_to_meta = get_post_meta( $post_id, "assigned_to", true );
