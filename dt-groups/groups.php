@@ -182,7 +182,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $fields["name"] = $group->post_title;
             $fields["title"] = $group->post_title;
 
-            return $fields;
+            return apply_filters( 'dt_groups_fields_post_filter', $fields );
         } else {
             return new WP_Error( __FUNCTION__, "No group found with ID", [ 'contact_id' => $group_id ] );
         }
