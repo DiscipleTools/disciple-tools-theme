@@ -1355,7 +1355,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $fields["title"] = $contact->post_title;
             $fields["created_date"] = $contact->post_date;
 
-            return $fields;
+            return apply_filters( 'dt_contact_fields_post_filter', $fields );
         } else {
             return new WP_Error( __FUNCTION__, __( "No contact found with ID" ), [ 'contact_id' => $contact_id ] );
         }

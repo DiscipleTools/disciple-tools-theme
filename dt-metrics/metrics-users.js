@@ -4,11 +4,13 @@ jQuery(document).ready(function() {
     if( ! window.location.hash || '#users_activity' === window.location.hash  ) {
         users_activity()
     }
+
 })
 
 function users_activity() {
     "use strict";
     let chartDiv = jQuery('#chart')
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#users-menu'));
     let sourceData = dtMetricsUsers.data
     chartDiv.empty().html(`
         <span class="section-header">`+ sourceData.translations.title_activity +`</span>
@@ -21,16 +23,16 @@ function users_activity() {
             <div class="cell center callout">
                 <div class="grid-x">
                     <div class="medium-3 cell center">
-                        <h4>Total Users<br><span id="total">0</span></h4>
+                        <h4>Total Users<br><span id="total_users">0</span></h4>
                     </div>
                     <div class="medium-3 cell center left-border-grey">
-                        <h4>Multipliers<br><span id="multipliers">0</span></h4>
+                        <h4>Multipliers<br><span id="total_multipliers">0</span></h4>
                     </div>
                     <div class="medium-3 cell center left-border-grey">
-                        <h4>Dispatchers<br><span id="dispatchers">0</span></h4>
+                        <h4>Dispatchers<br><span id="total_dispatchers">0</span></h4>
                     </div>
                     <div class="medium-3 cell center left-border-grey">
-                        <h4>Other<br><span id="other">0</span></h4>
+                        <h4>Other<br><span id="total_other">0</span></h4>
                     </div>
                     
                 </div>
@@ -61,10 +63,10 @@ function users_activity() {
         `)
 
     let hero = sourceData.hero_stats
-    jQuery('#multipliers').html( numberWithCommas( hero.multipliers ) )
-    jQuery('#dispatchers').html( numberWithCommas( hero.dispatchers ) )
-    jQuery('#other').html( numberWithCommas( hero.other ) )
-    jQuery('#total').html( numberWithCommas( hero.total ) )
+    jQuery('#total_users').html( numberWithCommas( hero.total_users ) )
+    jQuery('#total_multipliers').html( numberWithCommas( hero.total_multipliers ) )
+    jQuery('#total_dispatchers').html( numberWithCommas( hero.total_dispatchers ) )
+    jQuery('#total_other').html( numberWithCommas( hero.total_other ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'line', 'table']});
@@ -75,14 +77,22 @@ function users_activity() {
     google.charts.setOnLoadCallback(drawMostActive);
 
     function drawLineChartLogins() {
-        let chartData = google.visualization.arrayToDataTable( sourceData.logins_by_day );
+        let chartData = google.visualization.arrayToDataTable( [
+            ['Year', 'Logins', 'Updates', 'Status Changes'],
+            ['June',  1000, 400, 100],
+            ['July',  1000, 400, 100],
+            ['Aug',  1000, 400, 100],
+            ['Sept',  1000, 400, 100],
+            ['Oct',  1170, 460, 150],
+            ['Nov',  660, 1120, 12],
+        ] );
         let options = {
             vAxis: {title: 'logins'},
-            chartArea: {
-                left: '5%',
-                top: '7%',
-                width: "90%",
-                height: "85%" },
+            // chartArea: {
+            //     left: '5%',
+            //     top: '7%',
+            //     width: "90%",
+            //     height: "85%" },
             legend: { position: 'bottom' }
         };
         let chart = new google.visualization.LineChart( document.getElementById('chart_line_logins') );
@@ -91,7 +101,24 @@ function users_activity() {
     }
 
     function drawContactsPerUser() {
-        let chartData = google.visualization.arrayToDataTable( sourceData.contacts_per_user );
+        let chartData = google.visualization.arrayToDataTable( [
+            ['Name', 'Total', 'Attempt Needed', 'Attempted', 'Established', 'Meeting Scheduled', 'Meeting Complete', 'Ongoing', 'Being Coached'],
+            ['Chris', 20, 4, 3, 0, 10, 5, 6, 7 ],
+            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
+            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
+            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
+            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
+            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
+            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
+            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
+            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
+            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
+            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
+            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
+            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
+            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
+            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
+        ] );
         let options = {
             chartArea: {
                 left: '5%',
@@ -111,7 +138,11 @@ function users_activity() {
     }
 
     function drawLeastActive() {
-        let chartData = google.visualization.arrayToDataTable( sourceData.least_active );
+        let chartData = google.visualization.arrayToDataTable( [
+            ['Name', 'Logins Last 30', 'Updates Last 30'],
+            ['Jimmy', 3, 0 ],
+            ['Lazardo', 0, 0 ]
+        ] );
         let options = {
             chartArea: {
                 left: '5%',
@@ -131,7 +162,11 @@ function users_activity() {
     }
 
     function drawMostActive() {
-        let chartData = google.visualization.arrayToDataTable( sourceData.most_active );
+        let chartData = google.visualization.arrayToDataTable( [
+            ['Name', 'Logins Last 30', 'Updates Last 30'],
+            ['Over Achiever', 34, 23 ],
+            ['Lazardo', 24, 34 ]
+        ] );
         let options = {
             chartArea: {
                 left: '5%',
@@ -153,10 +188,6 @@ function users_activity() {
 
     new Foundation.Reveal(jQuery('.dt-project-legend'));
 
-    chartDiv.append(`<hr><div><span class="small grey">( stats as of  )</span> 
-            <a onclick="refresh_stats_data( 'show_zume_groups' ); jQuery('.spinner').show();">Refresh</a>
-            <span class="spinner" style="display: none;"><img src="`+dtMetricsUsers.theme_uri+`/dt-assets/images/ajax-loader.gif" /></span> 
-            </div>`)
 }
 
 function legend() {
@@ -179,3 +210,4 @@ function numberWithCommas(x) {
         x = x.replace(pattern, "$1,$2");
     return x;
 }
+
