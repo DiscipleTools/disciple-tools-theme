@@ -49,13 +49,6 @@ function contactUpdated(updateNeeded) {
   $('#update-needed').prop("checked", updateNeeded)
 }
 
-function commentPosted() {
-  if (_.get(contact, "requires_update") === true ){
-    API.get_post("contact",  $("#contact-id").text() ).then(contact=>{
-      contactUpdated(_.get(contact, "requires_update") === true )
-    }).catch(err => { console.error(err) })
-  }
-}
 
 
 let contact = {}
@@ -798,8 +791,16 @@ jQuery(document).ready(function($) {
    */
   $('.update-needed.switch-input').change(function () {
     let updateNeeded = $(this).is(':checked')
+    $('.update-needed-notification').toggle(updateNeeded)
     API.save_field_api( "contact", contactId, {"requires_update":updateNeeded})
   })
+  $('#update-needed')[0].addEventListener('comment_posted', function (e) {
+    if ( $(e.target).prop('checked') ){
+      API.get_post("contact",  contactId ).then(contact=>{
+        contactUpdated(_.get(contact, "requires_update") === true )
+      }).catch(err => { console.error(err) })
+    }
+  }, false);
 
   /**
    * Status
@@ -1343,9 +1344,10 @@ jQuery(document).ready(function($) {
                   location.reload();
               }
           }).catch(err=>{
+          jQuery('#transfer_spinner').empty().append(err.responseJSON.message).append('&nbsp;' + contactsDetailsWpApiSettings.translations.transfer_error )
+          jQuery("#errors").empty()
           console.log("error")
           console.log(err)
-          jQuery("#errors").append(err.responseText)
       })
   });
 

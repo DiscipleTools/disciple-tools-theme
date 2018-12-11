@@ -737,10 +737,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 self::add_shared( "groups", $group_id, $user_id, null, false, false );
             }
         }
-        return p2p_type( 'contacts_to_groups' )->connect(
+        $added = p2p_type( 'contacts_to_groups' )->connect(
             $group_id, $contact_id,
             [ 'date' => current_time( 'mysql' ) ]
         );
+        do_action( 'group_member_count', $group_id, "added" );
+        return $added;
     }
 
     /**
@@ -864,8 +866,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_group_from_contact( $contact_id, $people_group_id ) {
-        return p2p_type( 'contacts_to_groups' )->disconnect( $people_group_id, $contact_id );
+    public static function remove_group_from_contact( $contact_id, $group_id ) {
+        $removed = p2p_type( 'contacts_to_groups' )->disconnect( $group_id, $contact_id );
+        if ( !is_wp_error( $removed ) ){
+            do_action( 'group_member_count', $group_id, "removed" );
+        }
+        return $removed;
     }
 
     /**

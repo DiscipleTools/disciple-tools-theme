@@ -142,7 +142,7 @@ else {
              */
             $this->token = 'disciple_tools';
             $this->version = '0.14.2';
-            $this->migration_number = 16;
+            $this->migration_number = 17;
 
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -314,6 +314,7 @@ else {
             /**
              * dt-metrics
              */
+            require_once( get_template_directory() . '/dt-metrics/queries.php' );
             require_once( get_template_directory() . '/dt-metrics/counter.php' );
             $this->counter = Disciple_Tools_Counter::instance();
             require_once( get_template_directory() . '/dt-metrics/metrics-template.php' );

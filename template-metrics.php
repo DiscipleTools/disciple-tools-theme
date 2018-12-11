@@ -15,7 +15,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 
             <div class="large-2 medium-3 small-12 cell ">
 
-                <section id="" class="medium-12 cell">
+                <section id="metrics-side-section" class="medium-12 cell">
 
                     <div class="bordered-box">
 

@@ -47,6 +47,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 ];
             }
         );
+        add_action( 'group_member_count', [ $this, 'update_group_member_count' ], 10, 2 );
         parent::__construct();
     }
 
@@ -479,6 +480,24 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     }
 
+    //check to see if the group is marked as needing an update
+    //if yes: mark as updated
+    private static function check_requires_update( $group_id ){
+        if ( get_current_user_id() ){
+            $requires_update = get_post_meta( $group_id, "requires_update", true );
+            if ( $requires_update == "yes" || $requires_update == true || $requires_update = "1"){
+                //don't remove update needed if the user is a dispatcher (and not assigned to the groups.)
+                if ( self::can_view_all( 'groups' ) ){
+                    if ( dt_get_user_id_from_assigned_to( get_post_meta( $group_id, "assigned_to", true ) ) === get_current_user_id() ){
+                        update_post_meta( $group_id, "requires_update", false );
+                    }
+                } else {
+                    update_post_meta( $group_id, "requires_update", false );
+                }
+            }
+        }
+    }
+
     /**
      * @param int    $group_id
      * @param string $key
@@ -527,18 +546,40 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function add_member_to_group( int $group_id, int $member_id ) {
         // share the group with the owner of the contact.
-        $assigned_to = get_post_meta( $member_id, "assigned_to", true );
-        if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
-            $user_id = explode( "-", $assigned_to )[1];
-            if ( $user_id ){
-                self::add_shared_on_group( $group_id, $user_id, null, false, false );
-            }
-        }
-
-        return p2p_type( 'contacts_to_groups' )->connect(
+        $added = p2p_type( 'contacts_to_groups' )->connect(
             $member_id, $group_id,
             [ 'date' => current_time( 'mysql' ) ]
         );
+        if ( !is_wp_error( $added )){
+            $assigned_to = get_post_meta( $member_id, "assigned_to", true );
+            if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
+                $user_id = explode( "-", $assigned_to )[1];
+                if ( $user_id ){
+                    self::add_shared_on_group( $group_id, $user_id, null, false, false );
+                }
+            }
+            do_action( 'group_member_count', $group_id, "added" );
+        }
+        return $added;
+    }
+
+    public function update_group_member_count( $group_id, $action = "added" ){
+        $group = get_post( $group_id );
+
+        $args = [
+            'connected_type'   => "contacts_to_groups",
+            'connected_direction' => 'to',
+            'connected_items'  => $group,
+            'nopaging'         => true,
+            'suppress_filters' => false,
+        ];
+        $members = get_posts( $args );
+        $member_count = get_post_meta( $group_id, 'member_count', true );
+        if ( sizeof( $members ) > intval( $member_count ) ){
+            update_post_meta( $group_id, 'member_count', sizeof( $members ) );
+        } elseif ( $action === "removed" ){
+            update_post_meta( $group_id, 'member_count', $member_count - 1 );
+        }
     }
 
     /**
@@ -621,7 +662,11 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @return mixed
      */
     public static function remove_member_from_group( int $group_id, int $member_id ) {
-        return p2p_type( 'contacts_to_groups' )->disconnect( $member_id, $group_id );
+        $removed = p2p_type( 'contacts_to_groups' )->disconnect( $member_id, $group_id );
+        if ( !is_wp_error( $removed ) ){
+            do_action( 'group_member_count', $group_id, "removed" );
+        }
+        return $removed;
     }
 
     /**
@@ -799,7 +844,11 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @return false|int|\WP_Error
      */
     public static function add_comment( int $group_id, string $comment_html, string $type = "comment", array $args = [], bool $check_permissions = true, $silent = false ) {
-        return self::add_post_comment( 'groups', $group_id, $comment_html, $type, $args, $check_permissions, $silent );
+        $result = self::add_post_comment( 'groups', $group_id, $comment_html, $type, $args, $check_permissions, $silent );
+        if ( $type === "comment" && !is_wp_error( $result )){
+            self::check_requires_update( $group_id );
+        }
+        return $result;
     }
 
     /**

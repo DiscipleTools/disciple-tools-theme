@@ -728,6 +728,11 @@ class Disciple_Tools_Groups_Post_Type
             "name" => __( "Locations", "disciple_tools" ),
             "type" => "connection"
         ];
+        $fields["requires_update"] = [
+            'name'        => __( 'Requires Update', 'disciple_tools' ),
+            'type'        => 'boolean',
+            'default'     => false,
+        ];
 
 
         $id = isset( $post->ID ) ? $post->ID : $post_id;

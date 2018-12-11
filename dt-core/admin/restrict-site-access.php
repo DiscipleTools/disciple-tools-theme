@@ -7,15 +7,19 @@ function dt_please_log_in() {
         auth_redirect();
         exit;
     }
-    if ( is_multisite() ) { // tests if user has access to current site in multisite
+    if ( is_multisite() ) { // tests if user has access to current site in multi-site
         global $wpdb;
-        if ( empty( get_user_meta( get_current_user_id(), $wpdb->prefix . 'capabilities', true ) ) ) {
+        if ( is_super_admin( get_current_user_id() ) ) {
+            return 1;
+        }
+        else if ( empty( get_user_meta( get_current_user_id(), $wpdb->prefix . 'capabilities', true ) ) ) {
             wp_destroy_current_session();
             wp_clear_auth_cookie();
             auth_redirect();
             exit;
         }
     }
+    return 1;
 }
 add_action( 'wp', 'dt_please_log_in', 0 );
 
