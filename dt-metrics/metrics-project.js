@@ -387,7 +387,7 @@ function numberWithCommas(x) {
 
 function project_group_tree() {
     "use strict";
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu')).foundation('down', jQuery('#trees'));
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
     let translations = dtMetricsProject.data.translations
@@ -401,9 +401,6 @@ function project_group_tree() {
         <br clear="all">
         <div class="grid-x grid-padding-x">
         <div class="cell">
-            <span>
-                <button class="button hollow toggle-singles" id="multiplying-only" onclick="toggle_multiplying_only();">Multiplying Only</button>
-            </span>
              <span>
                 <button class="button hollow toggle-singles" id="highlight-active" onclick="highlight_active();">Highlight Active</button>
             </span>
@@ -412,57 +409,36 @@ function project_group_tree() {
             </span>
         </div>
             <div class="cell">
-                <div class="scrolling-wrapper" id="generation_map">
-                </div>
+                <div class="scrolling-wrapper" id="generation_map"><img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
             </div>
         </div>
-        
-        <style>
-            .scrolling-wrapper {
-                overflow-x: scroll;
-                overflow-y: hidden;
-                white-space: nowrap;
-            }
-            #generation_map ul {
-                list-style: none;
-                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/vline.png) repeat-y;
-                margin: 0;
-                padding: 0;
-                margin-left:50px;
-            }
-           #generation_map ul.ul-gen-0 {
-                margin-left: 0;
-           }
-            #generation_map li {
-                margin: 0;
-                padding: 0 12px;
-                line-height: 20px;
-                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/node.png) no-repeat;
-                color: #369;
-                font-weight: bold;
-            }
-            #generation_map ul li.last {
-                background: #fff url(${dtMetricsProject.theme_uri}/dt-assets/images/lastnode.png) no-repeat;
-            }
-            #generation_map .li-gen-1 {
-                margin-top:.5em;
-            }
-            .inactive-gray, .inactive-gray a {
-                color:lightgray;
-            }
-            .not-church-gray, .not-church-gray a {
-                color:lightgray;
-            }
-        </style>
         <div id="modal" class="reveal" data-reveal></div>
     `)
 
-    jQuery('#generation_map').html(sourceData.group_generation_tree)
-    jQuery('#generation_map li:last-child').addClass('last');
-
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        data:JSON.stringify({ "type": "groups" }),
+        dataType: "json",
+        url: dtMetricsProject.root + 'dt/v1/metrics/project/tree/',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
+        },
+    })
+        .done(function (data) {
+            if( data ) {
+                console.log(data)
+                jQuery('#generation_map').empty().html(data)
+                jQuery('#generation_map li:last-child').addClass('last');
+            }
+        })
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+            jQuery("#errors").append(err.responseText)
+        })
 
     new Foundation.Reveal(jQuery('#modal'))
-    new Foundation.Reveal(jQuery('.dt-project-legend'));
 }
 function open_modal_details( id ) {
     let modal = jQuery('#modal')
@@ -505,6 +481,7 @@ function open_modal_details( id ) {
             console.log(err)
             jQuery("#errors").append(err.responseText)
         })
+
 }
 function toggle_multiplying_only () {
     let list = jQuery('#generation_map .li-gen-1:not(:has(li.li-gen-2))')
@@ -544,7 +521,7 @@ function highlight_churches() {
 
 function project_baptism_tree() {
     "use strict";
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu')).foundation('down', jQuery('#trees'));
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
     let sourceData = dtMetricsProject.data
     let translations = dtMetricsProject.data.translations
@@ -557,53 +534,37 @@ function project_baptism_tree() {
         
         <br clear="all">
         <div class="grid-x grid-padding-x">
-        <div class="cell">
-            <button class="button hollow toggle-singles" id="multiplying-only" onclick="toggle_multiplying_only();">Multiplying Only</button>
-        </div>
             <div class="cell">
-                <div class="scrolling-wrapper" id="generation_map">
-                </div>
+                <div class="scrolling-wrapper" id="generation_map"><img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
             </div>
         </div>
-        
-        <style>
-            .scrolling-wrapper {
-                overflow-x: scroll;
-                overflow-y: hidden;
-                white-space: nowrap;
-            }
-            #generation_map ul {
-                list-style: none;
-                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/vline.png) repeat-y;
-                margin: 0;
-                padding: 0;
-                margin-left:50px;
-            }
-           #generation_map ul.ul-gen-0 {
-                margin-left: 0;
-           }
-            #generation_map li {
-                margin: 0;
-                padding: 0 12px;
-                line-height: 20px;
-                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/node.png) no-repeat;
-                color: #369;
-                font-weight: bold;
-            }
-            #generation_map ul li.last {
-                background: #fff url(${dtMetricsProject.theme_uri}/dt-assets/images/lastnode.png) no-repeat;
-            }
-            #generation_map .li-gen-1 {
-                margin-top:.5em;
-            }
-            
-    </style>
+        <div id="modal" class="reveal" data-reveal></div>
     `)
 
-    jQuery('#generation_map').html(sourceData.baptism_generation_tree)
-    jQuery('#generation_map li:last-child').addClass('last');
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        data:JSON.stringify({ "type": "baptisms" }),
+        dataType: "json",
+        url: dtMetricsProject.root + 'dt/v1/metrics/project/tree/',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
+        },
+    })
+        .done(function (data) {
+            if( data ) {
+                console.log(data)
+                jQuery('#generation_map').empty().html(data)
+                jQuery('#generation_map li:last-child').addClass('last');
+            }
+        })
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+            jQuery("#errors").append(err.responseText)
+        })
 
-    new Foundation.Reveal(jQuery('.dt-project-legend'));
+    new Foundation.Reveal(jQuery('#modal'))
 }
 
 function project_coaching_tree() {
@@ -621,54 +582,36 @@ function project_coaching_tree() {
         
         <br clear="all">
         <div class="grid-x grid-padding-x">
-        <div class="cell">
-            <button class="button hollow toggle-singles" id="multiplying-only" onclick="toggle_multiplying_only();">Multiplying Only</button>
-        </div>
             <div class="cell">
-                <div class="scrolling-wrapper" id="generation_map">
-                </div>
+                <div class="scrolling-wrapper" id="generation_map"><img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
             </div>
         </div>
-        
-        <style>
-            .scrolling-wrapper {
-                overflow-x: scroll;
-                overflow-y: hidden;
-                white-space: nowrap;
-            }
-            #generation_map ul {
-                list-style: none;
-                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/vline.png) repeat-y;
-                margin: 0;
-                padding: 0;
-                margin-left:50px;
-            }
-           #generation_map ul.ul-gen-0 {
-                margin-left: 0;
-           }
-            #generation_map li {
-                margin: 0;
-                padding: 0 12px;
-                line-height: 20px;
-                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/node.png) no-repeat;
-                color: #369;
-                font-weight: bold;
-            }
-            #generation_map ul li.last {
-                background: #fff url(${dtMetricsProject.theme_uri}/dt-assets/images/lastnode.png) no-repeat;
-            }
-            #generation_map .li-gen-1 {
-                margin-top:.5em;
-            }
-            
-    </style>
+        <div id="modal" class="reveal" data-reveal></div>
     `)
 
-    jQuery('#generation_map').html(sourceData.coaching_generation_tree)
-    jQuery('#generation_map li:last-child').addClass('last');
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        data:JSON.stringify({ "type": "coaching" }),
+        dataType: "json",
+        url: dtMetricsProject.root + 'dt/v1/metrics/project/tree/',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
+        },
+    })
+        .done(function (data) {
+            if( data ) {
+                console.log(data)
+                jQuery('#generation_map').empty().html(data)
+                jQuery('#generation_map li:last-child').addClass('last');
+            }
+        })
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+            jQuery("#errors").append(err.responseText)
+        })
 
-
-    new Foundation.Reveal(jQuery('.dt-project-legend'));
 }
 
 function project_locations() {
@@ -698,40 +641,11 @@ function project_locations() {
             </div>
             <div class="cell">
                 <span class="section-subheader">Location Tree</span>
-                <div id="location_tree" class="scrolling-wrapper"></div>
+                <div id="generation_map" class="scrolling-wrapper"><img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
             </div>
         </div>
         <div id="modal" class="reveal" data-reveal></div>
-        <style>
-            .scrolling-wrapper {
-                overflow-x: scroll;
-                overflow-y: hidden;
-                white-space: nowrap;
-            }
-            #location_tree ul {
-                list-style: none;
-                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/vline.png) repeat-y;
-                margin: 0;
-                padding: 0;
-                margin-left:50px;
-            }
-           #location_tree ul.ul-gen-0 {
-                margin-left: 0;
-           }
-            #location_tree li {
-                margin: 0;
-                padding: 0 12px;
-                line-height: 20px;
-                background: url(${dtMetricsProject.theme_uri}/dt-assets/images/node.png) no-repeat;
-                color: #369;
-                font-weight: bold;
-            }
-            #location_tree ul li.last {
-                background: #fff url(${dtMetricsProject.theme_uri}/dt-assets/images/lastnode.png) no-repeat;
-            }
-            #location_tree .li-gen-1 {
-                margin-top:.5em;
-            }
+        
         `)
 
     let hero = sourceData.location_hero_stats
@@ -740,9 +654,29 @@ function project_locations() {
     jQuery('#total_inactive_locations').html( numberWithCommas( hero.total_inactive_locations ) )
     jQuery('#total_countries').html( numberWithCommas( hero.total_countries ) )
 
-    new Foundation.Reveal(jQuery('#modal'))
-    jQuery('#location_tree').empty().html( sourceData.location_tree )
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        data:JSON.stringify({ "type": "location" }),
+        dataType: "json",
+        url: dtMetricsProject.root + 'dt/v1/metrics/project/tree/',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
+        },
+    })
+        .done(function (data) {
+            if( data ) {
+                jQuery('#generation_map').empty().html(data)
+                jQuery('#generation_map li:last-child').addClass('last');
+            }
+        })
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+            jQuery("#errors").append(err.responseText)
+        })
 
+    new Foundation.Reveal(jQuery('#modal'))
 
 }
 function open_location_modal_details( id ) {
