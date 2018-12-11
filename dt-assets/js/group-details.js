@@ -668,8 +668,9 @@ jQuery(document).ready(function($) {
     const id = $(this).attr('id')
     const val = $(this).val()
 
-    API.save_field_api('group', groupId, { [id]: val })
-      .catch(handelAjaxError)
+    API.save_field_api('group', groupId, { [id]: val }).then((groupResp)=>{
+      group = groupResp
+    }).catch(handelAjaxError)
   })
 
   /**
