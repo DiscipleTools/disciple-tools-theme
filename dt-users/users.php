@@ -582,7 +582,7 @@ class Disciple_Tools_Users
         $contact_id = self::get_contact_for_user( $user->ID );
         if ( $contact_id ){
             $link = get_permalink( $contact_id );
-            $actions["view"] = '<a href="' . $link . '" aria-label="View contact">' . __( "View", "Disciple Tools" ) . ' ' . get_the_title( $contact_id ) .  '</a>';
+            $actions["view"] = '<a href="' . $link . '" aria-label="View contact">' . __( "View contact record", "Disciple Tools" ) . '</a>';
         }
         return $actions;
     }
