@@ -82,7 +82,7 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
     $auth_token = null;
     if ( isset( $_SERVER['HTTP_AUTHORIZATION'] ) ){
         $auth_token = sanitize_text_field( wp_unslash( $_SERVER['HTTP_AUTHORIZATION'] ) );
-    } elseif ( isset( apache_request_headers()['authorization'] )){
+    } elseif ( function_exists( "apache_request_headers" ) && isset( apache_request_headers()['authorization'] ) ){
         $auth_token = sanitize_text_field( wp_unslash( apache_request_headers()['authorization'] ) );
     }
 
