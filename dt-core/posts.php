@@ -670,8 +670,9 @@ class Disciple_Tools_Posts
             ), OBJECT );
         } else {
             $posts = $wpdb->get_results( $wpdb->prepare( "
-                SELECT * FROM $wpdb->posts
-                LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = $wpdb->posts.ID AND pm.meta_key= 'corresponds_to_user' ) 
+                SELECT ID, post_title, pm.meta_value as corresponds_to_user 
+                FROM $wpdb->posts
+                LEFT JOIN $wpdb->postmeta pm ON ( pm.post_id = $wpdb->posts.ID AND pm.meta_key = 'corresponds_to_user' ) 
                 WHERE INSTR( $wpdb->posts.post_title, %s ) > 0
                 AND $wpdb->posts.post_type = %s AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')
                 ORDER BY  CASE
@@ -699,7 +700,8 @@ class Disciple_Tools_Posts
                 if ( !in_array( $contact_id, $post_ids ) ) {
                     $compact[] = [
                         "ID" => $contact_id,
-                        "name" => $user["name"]
+                        "name" => $user["name"],
+                        "user" => true
                     ];
                 }
             }
@@ -715,7 +717,8 @@ class Disciple_Tools_Posts
         foreach ( $posts as $post ) {
             $compact[] = [
                 "ID" => $post->ID,
-                "name" => $post->post_title
+                "name" => $post->post_title,
+                "user" => $post->corresponds_to_user > 1
             ];
         }
 

@@ -594,6 +594,18 @@ ul.social li {
     text-decoration: none;
 }
 
+.typeahead__item {
+    .typeahead-user-row {
+        img {
+            width: 20px;
+            background-color: #3f729b;
+            border-radius: 3px;
+            vertical-align: text-bottom;
+            padding: 1px;
+        }
+    }
+}
+
 //default height for foundation inputs.
 .input-height {
     $height: ($input-font-size * unitless-calc($input-line-height)) + (get-side($input-padding, 'top') + get-side($input-padding, 'bottom')) - rem-calc(1);

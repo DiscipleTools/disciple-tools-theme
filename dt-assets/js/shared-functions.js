@@ -306,7 +306,6 @@ window.TYPEAHEADS = {
           },
           callback: {
             done: function (data) {
-              typeaheadTotals["assigned_id"] = data.total || data.length
               return data.posts || data
             }
           }
@@ -317,9 +316,9 @@ window.TYPEAHEADS = {
   typeaheadContactsSource : function (){
     return {
       contacts: {
-        display: "name",
+        display: [ "name", "ID" ],
         ajax: {
-          url: contactsDetailsWpApiSettings.root + 'dt/v1/contacts/compact',
+          url: wpApiShare.root + 'dt/v1/contacts/compact',
           data: {
             s: "{{query}}"
           },
@@ -348,6 +347,15 @@ window.TYPEAHEADS = {
     }
     return text
   },
+  contactListRowTemplate: function (query, item){
+    let img = item.user ? `<img src="${wpApiShare.template_dir}/dt-assets/images/profile.svg">` : ''
+    return `<span dir="auto">
+      <span class="typeahead-user-row" style="width:20px">${img}</span>
+      ${_.escape(item.name)} 
+      <span dir="auto">(#${item.ID})</span>
+    </span>`
+  },
+
 
   share(type, id){
     return $.typeahead({

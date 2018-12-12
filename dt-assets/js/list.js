@@ -38,7 +38,6 @@
   let filterToEdit = ""
   let currentFilters = $("#current-filters")
   let newFilterLabels = []
-  let typeaheadTotals = {}
   let loading_spinner = $(".loading-spinner")
   let tableHeaderRow = $('.js-list thead .sortable th')
   let getContactsPromise = null
@@ -609,10 +608,8 @@
         accent: true,
         searchOnFocus: true,
         maxItem: 20,
-        template: function (query, item) {
-          return `<span>${_.escape(item.name)}</span>`
-        },
-        source: TYPEAHEADS.typeaheadSource('leaders', 'dt/v1/contacts/compact'),
+        template: window.TYPEAHEADS.contactListRowTemplate,
+        source: TYPEAHEADS.typeaheadContactsSource(),
         display: "name",
         templateValue: "{{name}}",
         dynamic: true,
@@ -654,10 +651,8 @@
         accent: true,
         searchOnFocus: true,
         maxItem: 20,
-        template: function (query, item) {
-          return `<span>${_.escape(item.name)}</span>`
-        },
-        source: TYPEAHEADS.typeaheadSource('subassigned', 'dt/v1/contacts/compact'),
+        template: window.TYPEAHEADS.contactListRowTemplate,
+        source: TYPEAHEADS.typeaheadContactsSource(),
         display: "name",
         templateValue: "{{name}}",
         dynamic: true,

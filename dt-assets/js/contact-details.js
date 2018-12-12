@@ -52,7 +52,6 @@ function contactUpdated(updateNeeded) {
 
 
 let contact = {}
-let typeaheadTotals = {};
 
 jQuery(document).ready(function($) {
   let contactId = $("#contact-id").text()
@@ -74,7 +73,6 @@ jQuery(document).ready(function($) {
   /**
    * Groups
    */
-  typeaheadTotals.groups = 0;
   $.typeahead({
     input: '.js-typeahead-groups',
     minLength: 0,
@@ -123,7 +121,6 @@ jQuery(document).ready(function($) {
         }
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.groups
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         result.push({
           ID: "new-item",
@@ -190,7 +187,6 @@ jQuery(document).ready(function($) {
   /**
    * Sources
    */
-  typeaheadTotals.sources = 0;
   let leadSourcesTypeahead = async function leadSourcesTypeahead() {
     let sourceTypeahead =  $(".js-typeahead-sources");
     if (!window.Typeahead['.js-typeahead-sources']){
@@ -245,7 +241,6 @@ jQuery(document).ready(function($) {
             this.resetInput();
           },
           onResult: function (node, query, result, resultCount) {
-            resultCount = typeaheadTotals.sources
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $('#sources-result-container').html(text);
           },
@@ -261,7 +256,6 @@ jQuery(document).ready(function($) {
     /**
    * Locations
    */
-  typeaheadTotals.locations = 0;
   let loadLocationTypeahead = ()=>{
     if (!window.Typeahead['.js-typeahead-locations']){
       $.typeahead({
@@ -303,7 +297,6 @@ jQuery(document).ready(function($) {
             this.resetInput();
           },
           onResult: function (node, query, result, resultCount) {
-            resultCount = typeaheadTotals.locations
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $('#locations-result-container').html(text);
           },
@@ -319,7 +312,6 @@ jQuery(document).ready(function($) {
   /**
    * People_groups
    */
-  typeaheadTotals.people_groups = 0;
   let loadPeopleGroupTypeahead = ()=>{
     if (!window.Typeahead['.js-typeahead-people_groups']){
 
@@ -360,7 +352,6 @@ jQuery(document).ready(function($) {
             this.resetInput();
           },
           onResult: function (node, query, result, resultCount) {
-            resultCount = typeaheadTotals.people_groups
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $('#people_groups-result-container').html(text);
           },
@@ -376,7 +367,6 @@ jQuery(document).ready(function($) {
    * Assigned_to
    */
   let assigned_to_input = $(`.js-typeahead-assigned_to`)
-  typeaheadTotals.assigned_to = 0;
   $.typeahead({
     input: '.js-typeahead-assigned_to',
     minLength: 0,
@@ -385,7 +375,7 @@ jQuery(document).ready(function($) {
     source: TYPEAHEADS.typeaheadUserSource(),
     templateValue: "{{name}}",
     template: function (query, item) {
-      return `<span class="row">
+      return `<span class="row" dir="auto">
         <span class="avatar"><img src="{{avatar}}"/> </span>
         <span>${item.name}</span>
       </span>`
@@ -403,7 +393,6 @@ jQuery(document).ready(function($) {
         }).catch(err => { console.error(err) })
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.assigned_to
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#assigned_to-result-container').html(text);
       },
@@ -455,39 +444,17 @@ jQuery(document).ready(function($) {
    * connections to other contacts
    */
   ;["relation", "baptized_by", "baptized", "coached_by", "coaching", "subassigned"].forEach(field_id=>{
-    typeaheadTotals[field_id] = 0
     $.typeahead({
       input: `.js-typeahead-${field_id}`,
       minLength: 0,
       accent: true,
       maxItem: 30,
       searchOnFocus: true,
-      template: function (query, item) {
-        return `<span>${_.escape(item.name)} (#${item.ID})</span>`
-      },
+      template: window.TYPEAHEADS.contactListRowTemplate,
       matcher: function (item) {
         return item.ID !== contact.ID
       },
-      source: {
-        contacts: {
-          display: ["name", "ID"],
-          ajax: {
-            url: contactsDetailsWpApiSettings.root + 'dt/v1/contacts/compact',
-            data: {
-              s: "{{query}}"
-            },
-            beforeSend: function(xhr) {
-              xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-            },
-            callback: {
-              done: function (data) {
-                typeaheadTotals[field_id] = data.total
-                return data.posts
-              }
-            }
-          }
-        }
-      },
+      source: window.TYPEAHEADS.typeaheadContactsSource(),
       display: "name",
       templateValue: "{{name}}",
       dynamic: true,
@@ -527,15 +494,7 @@ jQuery(document).ready(function($) {
           masonGrid.masonry('layout')
         },
         onResult: function (node, query, result, resultCount) {
-          resultCount = typeaheadTotals[field_id]
-          let text = "";
-          if (result.length > 0 && result.length < resultCount) {
-            text = "Showing <strong>" + result.length + "</strong> of <strong>" + resultCount + '</strong> ' + (query ? 'elements matching "' + query + '"' : '');
-          } else if (result.length > 0) {
-            text = 'Showing <strong>' + result.length + '</strong> contacts matching "' + query + '"';
-          } else {
-            text = 'No results matching "' + query + '"';
-          }
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $(`#${field_id}-result-container`).html(text);
         },
         onHideLayout: function () {
@@ -1296,11 +1255,7 @@ jQuery(document).ready(function($) {
         searchOnFocus: true,
         source: TYPEAHEADS.typeaheadContactsSource(),
         templateValue: "{{name}}",
-        template: function (query, item) {
-          return `<span class="row">
-            <span>${item.name} (#${item.ID})</span>
-          </span>`
-        },
+        template: window.TYPEAHEADS.contactListRowTemplate,
         dynamic: true,
         hint: true,
         emptyTemplate: 'No users found "{{query}}"',
@@ -1373,11 +1328,7 @@ jQuery(document).ready(function($) {
           searchOnFocus: true,
           source: TYPEAHEADS.typeaheadContactsSource(),
           templateValue: "{{name}}",
-          template: function (query, item) {
-            return `<span class="row">
-              <span>${item.name} (#${item.ID})</span>
-            </span>`
-          },
+          template: window.TYPEAHEADS.contactListRowTemplate,
           matcher: function (item) {
             return item.ID !== contact.ID
           },

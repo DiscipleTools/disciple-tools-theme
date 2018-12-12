@@ -284,7 +284,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             <div class="typeahead__container">
                                 <div class="typeahead__field">
                                     <span class="typeahead__query">
-                                        <input class="js-typeahead-assigned_to input-height"
+                                        <input class="js-typeahead-assigned_to input-height" dir="auto"
                                                name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
                                                autocomplete="off">
                                     </span>

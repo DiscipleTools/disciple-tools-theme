@@ -1,6 +1,5 @@
 /* global jQuery:false, wpApiGroupsSettings:false, _:false */
 
-let typeaheadTotals = {}
 jQuery(document).ready(function($) {
 
   let group = wpApiGroupsSettings.group
@@ -28,7 +27,6 @@ jQuery(document).ready(function($) {
    * Assigned_to
    */
   let assignedToInput = $('.js-typeahead-assigned_to');
-  typeaheadTotals.assigned_to = 0;
   $.typeahead({
     input: '.js-typeahead-assigned_to',
     minLength: 0,
@@ -51,7 +49,6 @@ jQuery(document).ready(function($) {
         editFieldsUpdate.assigned_to = item.ID
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.assigned_to
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#assigned_to-result-container').html(text);
       },
@@ -120,7 +117,6 @@ jQuery(document).ready(function($) {
   /**
    * Locations
    */
-  typeaheadTotals.locations = 0;
   $.typeahead({
     input: '.js-typeahead-locations',
     minLength: 0,
@@ -157,7 +153,6 @@ jQuery(document).ready(function($) {
         this.resetInput();
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.locations
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#locations-result-container').html(text);
       },
@@ -171,7 +166,6 @@ jQuery(document).ready(function($) {
   /**
    * People_groups
    */
-  typeaheadTotals.people_groups = 0;
   $.typeahead({
     input: '.js-typeahead-people_groups',
     minLength: 0,
@@ -209,7 +203,6 @@ jQuery(document).ready(function($) {
         this.resetInput();
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.people_groups
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#people_groups-result-container').html(text);
       },
@@ -222,7 +215,6 @@ jQuery(document).ready(function($) {
   /**
    * parent Groups
    */
-  typeaheadTotals.groups = 0;
   $.typeahead({
     input: '.js-typeahead-parent_groups',
     minLength: 0,
@@ -271,7 +263,6 @@ jQuery(document).ready(function($) {
         }
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.groups
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         result.push({
           ID: "new-item",
@@ -287,7 +278,6 @@ jQuery(document).ready(function($) {
   /**
    * Child Groups
    */
-  typeaheadTotals.groups = 0;
   $.typeahead({
     input: '.js-typeahead-child_groups',
     minLength: 0,
@@ -335,7 +325,6 @@ jQuery(document).ready(function($) {
         }
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.groups
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         result.push({
           ID: "new-item",
@@ -395,17 +384,14 @@ jQuery(document).ready(function($) {
   /**
    * members
    */
-  typeaheadTotals.members = 0;
   $.typeahead({
     input: '.js-typeahead-members',
     minLength: 0,
     accent: true,
     searchOnFocus: true,
     maxItem: 20,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
-    source: TYPEAHEADS.typeaheadSource('members', 'dt/v1/contacts/compact/'),
+    template: window.TYPEAHEADS.contactListRowTemplate,
+    source: TYPEAHEADS.typeaheadContactsSource(),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -436,7 +422,6 @@ jQuery(document).ready(function($) {
         masonGrid.masonry('layout')
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.members
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#members-result-container').html(text);
       },
@@ -449,17 +434,14 @@ jQuery(document).ready(function($) {
   /**
    * coaches
    */
-  typeaheadTotals.coaches = 0;
   $.typeahead({
     input: '.js-typeahead-coaches',
     minLength: 0,
     accent: true,
     searchOnFocus: true,
     maxItem: 20,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
-    source: TYPEAHEADS.typeaheadSource('coaches', 'dt/v1/contacts/compact/'),
+    template: window.TYPEAHEADS.contactListRowTemplate,
+    source: TYPEAHEADS.typeaheadContactsSource(),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -484,7 +466,6 @@ jQuery(document).ready(function($) {
         masonGrid.masonry('layout')
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.coaches
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#coaches-result-container').html(text);
       },
