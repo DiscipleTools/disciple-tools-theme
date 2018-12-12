@@ -313,17 +313,30 @@ jQuery(document).ready(function($) {
     return comment
   })
 
+  let getAllPromise = null
+  let getCommentsPromise = null
+  let getActivityPromise = null
   function get_all() {
-    $.when(
-      API.get_comments(postType, postId),
-      API.get_activity(postType, postId)
-    ).then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
+    //abort previous promise if it is not finished.
+    if (getAllPromise && _.get(getAllPromise, "readyState") !== 4){
+      getActivityPromise.abort()
+      getCommentsPromise.abort()
+    }
+    getCommentsPromise =  API.get_comments(postType, postId)
+    getActivityPromise = API.get_activity(postType, postId)
+    getAllPromise = $.when(
+      getCommentsPromise,
+      getActivityPromise
+    )
+    getAllPromise.then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
       const commentData = commentDataStatusJQXHR[0];
       const activityData = activityDataStatusJQXHR[0];
       prepareData(commentData, activityData)
     }).catch(err => {
-      console.error(err);
-      jQuery("#errors").append(err.responseText)
+      if ( !_.get( err, "statusText" ) === "abort" ) {
+        console.error(err);
+        jQuery("#errors").append(err.responseText)
+      }
     })
   }
 
