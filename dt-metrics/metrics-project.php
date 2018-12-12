@@ -344,7 +344,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             foreach ($menu_data['parents'][$parent_id] as $item_id)
             {
                 $html .= '<li class="gen-node li-gen-'.$gen.'">';
-                $html .= '<span class="'.$menu_data['items'][$item_id]['group_status'].' '.$menu_data['items'][$item_id]['group_type'].'">('.$gen.') ';
+                $html .= '<span class="'.$menu_data['items'][$item_id]['group_status'].' '.$menu_data['items'][$item_id]['group_type'].'">';
                 $html .= '<a onclick="open_location_modal_details('.$item_id.');">'. $menu_data['items'][$item_id]['name'] . '</a></span>';
 
                 $html .= $this->build_location_tree( $item_id, $menu_data, $gen );

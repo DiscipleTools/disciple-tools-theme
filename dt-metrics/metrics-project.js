@@ -470,6 +470,9 @@ function open_modal_details( id ) {
                     </div>
                     <div class="cell center"><hr><a href="/groups/${id}">View Group</a></div>
                 </div>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 `
                 modal.empty().html(content)
             }
