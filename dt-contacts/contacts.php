@@ -1308,14 +1308,20 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         }
                         $fields["address"][] = $details;
                     }
-                } elseif ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]["type"] == "key_select" ) {
-                    if ( !empty( $value[0] )){
-                        $label = self::$contact_fields[ $key ]["default"][ $value[0] ]["label"] ?? current( self::$contact_fields[ $key ]["default"] );
-                        $fields[ $key ] = [
-                            "key" => $value[0],
-                            "label" => $label
-                        ];
+                } elseif ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]["type"] == "key_select" && !empty( $value[0] )) {
+                    $value_options = self::$contact_fields[ $key ]["default"][ $value[0] ] ?? $value[0];
+                    if ( isset( $value_options["label"] ) ){
+                        $label = $value_options["label"];
+                    } elseif ( is_string( $value_options ) ) {
+                        $label = $value_options;
+                    } else {
+                        $label = $value[0];
                     }
+//                        $label = self::$contact_fields[ $key ]["default"][ $value[0] ]["label"] ?? $value[0];
+                    $fields[ $key ] = [
+                        "key" => $value[0],
+                        "label" => $label
+                    ];
                 } elseif ( $key === "assigned_to" ) {
                     if ( $value ) {
                         $meta_array = explode( '-', $value[0] ); // Separate the type and id
