@@ -63,22 +63,59 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     public function users() {
         return [
             'translations' => [
-                'title_activity' => __( 'Users Activity' ),
+                'title_activity' => __( 'Users Activity', 'disciple_tools' ),
+                'title_recent_activity' => __( 'Recent Activity', 'disciple_tools' ),
+                'label_total_users' => __( 'Total Users', 'disciple_tools'  ),
+                'label_total_multipliers' => __( 'Multipliers', 'disciple_tools'  ),
+                'label_total_dispatchers' => __( 'Dispatchers', 'disciple_tools'  ),
+                'label_contacts_per_user' => __( 'Contacts Per User', 'disciple_tools'  ),
+                'label_least_active' => __( 'Least Active', 'disciple_tools'  ),
+                'label_most_active' => __( 'Most Active', 'disciple_tools'  ),
             ],
             'hero_stats' => $this->chart_user_hero_stats(),
-//            'logins_by_day' => self::chart_user_logins_by_day(),
-//            'contacts_per_user' => self::chart_user_contacts_per_user(),
-//            'least_active' => self::chart_user_least_active(),
-//            'most_active' => self::chart_user_most_active(),
+            'recent_activity' => $this->chart_recent_activity(),
         ];
     }
 
     public function chart_user_hero_stats() {
+        $result = count_users();
+
         return [
-            'total_users' => 5,
-            'total_multipliers' => 20,
-            'total_dispatchers' => 3,
-            'total_other' => 3,
+            'total_users' => $result['total_users'] ?? 0,
+            'total_dispatchers' => $result['avail_roles']['dispatcher'] ?? 0,
+            'total_multipliers' => $result['avail_roles']['multiplier'] ?? 0,
+            'all_roles' => $result['avail_roles'],
         ];
+    }
+
+    public function chart_recent_activity() {
+        $chart = [];
+        $chart[] = ['Year', 'Logins'];
+
+        $results = Disciple_Tools_Queries::instance()->tree( 'recent_logins' );
+        if ( empty( $results ) ) {
+            return $chart;
+        }
+
+        $results = array_reverse($results);
+        foreach ( $results as $result ) {
+            $date = date_create($result['report_date']);
+            $chart[] = [ date_format($date,"M d"), (int) $result['total'] ];
+        }
+
+        return $chart;
+    }
+
+    public function chart_contacts_per_user() {
+        $chart = [];
+
+        $chart[] = ['Name', 'Total', 'Attempt Needed', 'Attempted', 'Established', 'Meeting Scheduled', 'Meeting Complete', 'Ongoing', 'Being Coached'];
+
+        $results = Disciple_Tools_Queries::instance()->query( 'contacts_per_user' );
+        if ( empty( $results ) ) {
+            return $chart;
+        }
+
+        return $chart;
     }
 }

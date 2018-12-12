@@ -323,7 +323,7 @@ class Disciple_Tools_Location_Post_Type
         /***************************************************************************************************************
          * Free parenting of non-geocoded locations section
          */
-        if ( ! $raw ) :
+
             // WordPress.XSS.EscapeOutput.OutputNotEscaped
             // phpcs:disable
             $pages = wp_dropdown_pages( [
@@ -343,20 +343,17 @@ class Disciple_Tools_Location_Post_Type
                 // @phpcs:ignore
                 echo $pages;
             endif; // end empty pages check?>
-
-            <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="menu_order"><?php esc_html_e( 'Order' ); ?></label></p>
-            <input name="menu_order" type="text" size="4" id="menu_order" value="<?php echo esc_attr( $post->menu_order ); ?>" />
-
-
+            <hr>
             <?php
         /**************************************************************************************************************
          * Geocoded section
          */
-        else : // end non-geocoded "free location" section
+        if ( ! empty( $raw ) ) :
+         // end non-geocoded "free location" section
             $levels = Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw, 'political' );
             if ( $levels ) :
                 $levels = array_reverse( $levels, true );?>
-
+                <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="parent_id"><?php esc_html_e( 'Hierarchy' ); ?></label></p>
             <p style="text-align:center">
                 <?php
                 foreach ( $levels as $key => $level ) :
@@ -464,6 +461,9 @@ class Disciple_Tools_Location_Post_Type
             echo '<tbody>' . "\n";
 
             foreach ( $field_data as $k => $v ) {
+                if ( ! isset( $v['section'] ) ) {
+                    continue;
+                }
 
                 if ( $v['section'] == $section || $section == 'all' ) {
 

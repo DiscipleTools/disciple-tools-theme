@@ -427,7 +427,6 @@ function project_group_tree() {
     })
         .done(function (data) {
             if( data ) {
-                console.log(data)
                 jQuery('#generation_map').empty().html(data)
                 jQuery('#generation_map li:last-child').addClass('last');
             }
@@ -455,7 +454,6 @@ function open_modal_details( id ) {
     })
         .done(function (data) {
             if( data ) {
-                console.log(data)
                 let list = '<dt>Members</dt><ul>'
                 jQuery.each(data.members, function(i, v)  { list += '<li><a href="/contacts/'+data.members[i].ID+'">' + data.members[i].post_title + '</a></li>' } )
                 list += '</ul>'
@@ -553,7 +551,6 @@ function project_baptism_tree() {
     })
         .done(function (data) {
             if( data ) {
-                console.log(data)
                 jQuery('#generation_map').empty().html(data)
                 jQuery('#generation_map li:last-child').addClass('last');
             }
@@ -601,7 +598,6 @@ function project_coaching_tree() {
     })
         .done(function (data) {
             if( data ) {
-                console.log(data)
                 jQuery('#generation_map').empty().html(data)
                 jQuery('#generation_map li:last-child').addClass('last');
             }
@@ -625,22 +621,32 @@ function project_locations() {
         <div class="grid-x grid-padding-x grid-padding-y">
             <div class="cell center callout">
                 <div class="grid-x">
-                    <div class="medium-3 cell center">
-                        <h4>Total Locations<br><span id="total_locations">0</span></h4>
+                    <div class="medium-4 cell center">
+                        <h4>${sourceData.translations.label_total_locations}<br><span id="total_locations">0</span></h4>
                     </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Active Locations<br><span id="total_active_locations">0</span></h4>
+                    <div class="medium-4 cell center left-border-grey">
+                        <h4>${sourceData.translations.label_active_locations}<br><span id="total_active_locations">0</span></h4>
                     </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Inactive Locations<br><span id="total_inactive_locations">0</span></h4>
+                    <div class="medium-4 cell center left-border-grey">
+                        <h4>${sourceData.translations.label_inactive_locations}<br><span id="total_inactive_locations">0</span></h4>
                     </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Countries/States<br><span id="total_countries">0</span>/<span id="total_states">0</span></h4>
+                </div>
+            </div>
+            <div class="cell center callout">
+                <div class="grid-x">
+                    <div class="medium-4 cell center">
+                        <h4>${sourceData.translations.label_countries}<br><span id="total_countries">0</span></h4>
+                    </div>
+                    <div class="medium-4 cell center left-border-grey">
+                        <h4>${sourceData.translations.label_states}<br><span id="total_states">0</span></h4>
+                    </div>
+                    <div class="medium-4 cell center left-border-grey">
+                        <h4>${sourceData.translations.label_counties}<br><span id="total_counties">0</span></h4>
                     </div>
                 </div>
             </div>
             <div class="cell">
-                <span class="section-subheader">Location Tree</span>
+                <span class="section-subheader">${sourceData.translations.title_locations_tree}</span>
                 <div id="generation_map" class="scrolling-wrapper"><img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
             </div>
         </div>
@@ -653,6 +659,8 @@ function project_locations() {
     jQuery('#total_active_locations').html( numberWithCommas( hero.total_active_locations ) )
     jQuery('#total_inactive_locations').html( numberWithCommas( hero.total_inactive_locations ) )
     jQuery('#total_countries').html( numberWithCommas( hero.total_countries ) )
+    jQuery('#total_states').html( numberWithCommas( hero.total_states ) )
+    jQuery('#total_counties').html( numberWithCommas( hero.total_counties ) )
 
     jQuery.ajax({
         type: "POST",
@@ -694,7 +702,6 @@ function open_location_modal_details( id ) {
     })
         .done(function (data) {
             if( data ) {
-                console.log(data)
                 let content = `
                 <div class="grid-x">
                     <div class="cell"><span class="section-header">Name</span><hr style="max-width:100%;"></div>
