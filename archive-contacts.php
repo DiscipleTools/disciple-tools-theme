@@ -119,19 +119,10 @@ declare(strict_types=1);
                     <h5 class="hide-for-small-only" style="display: inline-block"><?php esc_html_e( 'Contact Filters', "disciple_tools" ); ?></h5>
 
                     <ul class="accordion" id="list-filter-tabs" data-responsive-accordion-tabs="accordion medium-tabs large-accordion">
-                        <li class="accordion-item" data-accordion-item data-id="my">
+                        <li class="accordion-item" data-accordion-item data-id="all">
                             <a href="#" class="accordion-title">
-                                <?php esc_html_e( "Contacts Assigned to me", 'disciple_tools' ) ?>
-                                <span class="tab-count-span" data-tab="total_my"></span>
-                            </a>
-                            <div class="accordion-content" data-tab-content>
-                                <?php print_filters() ?>
-                            </div>
-                        </li>
-                        <li class="accordion-item" data-accordion-item data-id="subassigned">
-                            <a href="#" class="accordion-title">
-                                <?php esc_html_e( "Contacts Subassigned to me", 'disciple_tools' ) ?>
-                                <span class="tab-count-span" data-tab="total_subassigned"></span>
+                                <?php esc_html_e( "All contacts", 'disciple_tools' ) ?>
+                                <span class="tab-count-span" data-tab="total_all"></span>
                             </a>
                             <div class="accordion-content" data-tab-content>
                                 <?php print_filters() ?>
@@ -146,10 +137,19 @@ declare(strict_types=1);
                                 <?php print_filters() ?>
                             </div>
                         </li>
-                        <li class="accordion-item" data-accordion-item data-id="all">
+                        <li class="accordion-item" data-accordion-item data-id="subassigned">
                             <a href="#" class="accordion-title">
-                                <?php esc_html_e( "All my contacts", 'disciple_tools' ) ?>
-                                <span class="tab-count-span" data-tab="total_all"></span>
+                                <?php esc_html_e( "Contacts Subassigned to me", 'disciple_tools' ) ?>
+                                <span class="tab-count-span" data-tab="total_subassigned"></span>
+                            </a>
+                            <div class="accordion-content" data-tab-content>
+                                <?php print_filters() ?>
+                            </div>
+                        </li>
+                        <li class="accordion-item" data-accordion-item data-id="my">
+                            <a href="#" class="accordion-title">
+                                <?php esc_html_e( "Contacts Assigned to me", 'disciple_tools' ) ?>
+                                <span class="tab-count-span" data-tab="total_my"></span>
                             </a>
                             <div class="accordion-content" data-tab-content>
                                 <?php print_filters() ?>

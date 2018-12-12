@@ -97,7 +97,11 @@
       displayRows();
       setupCurrentFilterLabels()
       loading_spinner.removeClass("active")
-    }).catch(err => { console.error(err) })
+    }).catch(err => {
+      if ( !_.get( err, "statusText" ) === "abort" ) {
+        console.error(err)
+      }
+    })
   }
 
 
@@ -159,10 +163,12 @@
       if ( cachedFilter.tab ){
         selectedFilterTab = cachedFilter.tab
       }
-      selectedFilter = cachedFilter.ID
+      selectedFilter = cachedFilter.ID || "no_filter"
     } else if ( cachedFilter.type === "custom_filter" ){
       addCustomFilter(cachedFilter.name, "default", cachedFilter.query, cachedFilter.labels)
     }
+  } else {
+    selectedFilter = "no_filter"
   }
   $(`#list-filter-tabs [data-id='${selectedFilterTab}'] a`).click()
   if ( selectedFilter ){
@@ -188,15 +194,18 @@
 
   $("#list-filter-tabs .accordion-item").on("click", function (a, b) {
 
-    selectedFilterTab = $(this).data("id")
-    let checked = $(".js-list-view:checked").val()
-    if ( checked === "saved-filters" || checked === "custom-filter"){
-      checked = "no_filter"
+    let newFilterTab = $(this).data("id")
+    if ( selectedFilterTab !== newFilterTab ){
+      selectedFilterTab = newFilterTab
+      let checked = $(".js-list-view:checked").val() || "no_filter"
+      if ( checked === "saved-filters" || checked === "custom-filter"){
+        checked = "no_filter"
+      }
+      $(".js-list-view-count").text("")
+      $(`.is-active input[name="view"][value="${checked}"].js-list-view`).prop("checked", true)
+      getContactForCurrentView()
+      get_filter_counts()
     }
-    $(".js-list-view-count").text("")
-    $(`.is-active input[name="view"][value="${checked}"].js-list-view`).prop("checked", true)
-    getContactForCurrentView()
-    get_filter_counts()
   })
 
 
@@ -1078,14 +1087,20 @@
   if ( wpApiListSettings.current_post_type === "groups"){
     type = "group"
   }
+
+  let getFilterCountsPromise = null
   let get_filter_counts = ()=>{
     let showClosed = showClosedCheckbox.prop("checked")
-    $.ajax({
+    if ( getFilterCountsPromise && _.get( getFilterCountsPromise, "readyState") !== 4 ){
+      getFilterCountsPromise.abort()
+    }
+    getFilterCountsPromise = $.ajax({
       url: `${wpApiListSettings.root}dt/v1/${type}/counts?tab=${selectedFilterTab}&closed=${showClosed}`,
       beforeSend: function (xhr) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiListSettings.nonce);
       }
-    }).then(counts=>{
+    })
+    getFilterCountsPromise.then(counts=>{
       $(".js-list-view-count").each(function() {
         const $el = $(this);
         let view_id = $el.data("value")
@@ -1104,10 +1119,11 @@
           }
         }
       })
-      // if ( wpApiListSettings.translations[`filter_${selectedFilterTab}`]){
-      //   $(`.is-active #total_filter_label`).text(wpApiListSettings.translations[`filter_${selectedFilterTab}`])
-      // }
-    }).catch(err => { console.error(err) })
+    }).catch(err => {
+      if ( !_.get( err, "statusText" ) === "abort" ){
+        console.error(err)
+      }
+    })
   }
   get_filter_counts()
   showClosedCheckbox.on("click", function () {
