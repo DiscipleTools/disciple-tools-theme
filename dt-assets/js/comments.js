@@ -458,4 +458,10 @@ jQuery(document).ready(function($) {
     }).catch(err => { console.error(err) })
   })
 
+  window.onbeforeunload = function() {
+    if ( $('textarea.mention').val() ){
+      return true;
+    }
+  };
+
 });
