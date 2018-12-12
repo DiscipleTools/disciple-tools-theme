@@ -37,6 +37,7 @@ class Disciple_Tools_Metrics
             // load basic charts
             require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
             require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
+            require_once( get_template_directory() . '/dt-metrics/metrics-users.php' );
         }
     }
 
@@ -69,8 +70,6 @@ class Disciple_Tools_Metrics
         return $current;
     }
 
-
-
     /**
      * Check permissions for if the user can view a certain report
      *
@@ -99,11 +98,8 @@ class Disciple_Tools_Metrics
                 break;
         }
     }
-
-
-
-
 }
+Disciple_Tools_Metrics::instance();
 
 
 function dt_get_time_until_midnight() {

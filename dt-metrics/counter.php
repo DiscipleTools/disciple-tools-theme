@@ -18,6 +18,7 @@ function dt_counter() {
 /**
  * Class Disciple_Tools_Counter_Factory
  */
+Disciple_Tools_Counter::instance();
 class Disciple_Tools_Counter
 {
     private static $_instance = null;

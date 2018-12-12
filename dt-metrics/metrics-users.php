@@ -32,8 +32,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
     public function add_menu( $content ) {
         $content .= '
-            <li><a href="" id="projects-menu">' .  esc_html__( 'Users', 'disciple_tools' ) . '</a>
-                <ul class="menu vertical nested" >
+            <li><a href="">' .  esc_html__( 'Users', 'disciple_tools' ) . '</a>
+                <ul class="menu vertical nested" id="users-menu" >
                     <li><a href="'. site_url( '/metrics/users/' ) .'#users_activity" onclick="users_activity()">'. esc_html__( 'Activity' ) .'</a></li>
                 </ul>
             </li>
@@ -65,11 +65,20 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             'translations' => [
                 'title_activity' => __( 'Users Activity' ),
             ],
-            'hero_stats' => self::chart_user_hero_stats(),
-            'logins_by_day' => self::chart_user_logins_by_day(),
-            'contacts_per_user' => self::chart_user_contacts_per_user(),
-            'least_active' => self::chart_user_least_active(),
-            'most_active' => self::chart_user_most_active(),
+            'hero_stats' => $this->chart_user_hero_stats(),
+//            'logins_by_day' => self::chart_user_logins_by_day(),
+//            'contacts_per_user' => self::chart_user_contacts_per_user(),
+//            'least_active' => self::chart_user_least_active(),
+//            'most_active' => self::chart_user_most_active(),
+        ];
+    }
+
+    public function chart_user_hero_stats() {
+        return [
+            'total_users' => 5,
+            'total_multipliers' => 20,
+            'total_dispatchers' => 3,
+            'total_other' => 3,
         ];
     }
 }

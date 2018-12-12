@@ -257,6 +257,21 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                             </tbody>
                         </table>
 
+                        <?php if ( current_user_can( "view_any_contacts" ) ): ?>
+                        <p>
+                            <strong><?php esc_html_e( 'Follow all contacts', 'disciple_tools' )?>:</strong>
+                        </p>
+                        <div class="switch large">
+                            <input class="switch-input" id="follow_all" type="checkbox" name="follow_all"
+                                   onclick="switch_preference('dt_follow_all');" <?php ( isset( $dt_user_meta['dt_follow_all'] ) && $dt_user_meta['dt_follow_all'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
+                            <label class="switch-paddle" for="follow_all">
+                                <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
+                                <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
+                                <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
+                            </label>
+                        </div>
+                        <?php endif; ?>
+
 
                     </div> <!-- End Notifications -->
 

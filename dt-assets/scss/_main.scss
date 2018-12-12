@@ -1813,3 +1813,41 @@ select#overall_status {
         border-left: 1px solid $light-gray;
     }
 }
+
+/* Metrics section */
+.scrolling-wrapper {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+#generation_map ul {
+    list-style: none;
+    background: url('../../../dt-assets/images/vline.png') repeat-y;
+    margin: 0;
+    padding: 0;
+    margin-left:50px;
+}
+#generation_map ul.ul-gen-0 {
+    margin-left: 0;
+}
+#generation_map li {
+    margin: 0;
+    padding: 0 12px;
+    line-height: 20px;
+    background: url('../../../dt-assets/images/node.png') no-repeat;
+    color: #369;
+    font-weight: bold;
+}
+#generation_map ul li.last {
+    background: #fff url('../../../dt-assets/images/lastnode.png') no-repeat;
+}
+#generation_map .li-gen-1 {
+    margin-top:.5em;
+}
+.inactive-gray, .inactive-gray a {
+    color:lightgray;
+}
+.not-church-gray, .not-church-gray a {
+    color:lightgray;
+}
+/* End Metrics section */

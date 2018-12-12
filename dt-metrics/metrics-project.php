@@ -36,17 +36,14 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 
     public function add_menu( $content ) {
         $content .= '
+            <li><a href="'. site_url( '/metrics/project/' ) .'#project_critical_path" onclick="project_critical_path()">'. esc_html__( 'Critical Path', 'disciple_tools' ) .'</a></li>
             <li><a href="">' .  esc_html__( 'Project', 'disciple_tools' ) . '</a>
                 <ul class="menu vertical nested" id="project-menu">
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_overview" onclick="project_overview()">'. esc_html__( 'Overview', 'disciple_tools' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_critical_path" onclick="project_critical_path()">'. esc_html__( 'Critical Path', 'disciple_tools' ) .'</a></li>
-                    <li><a href="" >' .  esc_html__( 'Trees', 'disciple_tools' ) . '</a>
-                        <ul class="menu vertical nested" id="trees">
-                            <li><a href="'. site_url( '/metrics/project/' ) .'#group_tree" onclick="project_group_tree()">'. esc_html__( 'Group Tree', 'disciple_tools' ) .'</a></li>
-                            <li><a href="'. site_url( '/metrics/project/' ) .'#baptism_tree" onclick="project_baptism_tree()">'. esc_html__( 'Baptism Tree', 'disciple_tools' ) .'</a></li>
-                            <li><a href="'. site_url( '/metrics/project/' ) .'#coaching_tree" onclick="project_coaching_tree()">'. esc_html__( 'Coaching Tree', 'disciple_tools' ) .'</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#group_tree" onclick="project_group_tree()">'. esc_html__( 'Group Tree', 'disciple_tools' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#baptism_tree" onclick="project_baptism_tree()">'. esc_html__( 'Baptism Tree', 'disciple_tools' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#coaching_tree" onclick="project_coaching_tree()">'. esc_html__( 'Coaching Tree', 'disciple_tools' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_locations" onclick="project_locations()">'. esc_html__( 'Locations' ) .'</a></li>
                 </ul>
             </li>
             ';
@@ -106,6 +103,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'title_group_tree' => __( 'Group Generation Tree', 'disciple_tools' ),
                 'title_baptism_tree' => __( 'Baptism Generation Tree', 'disciple_tools' ),
                 'title_coaching_tree' => __( 'Coaching Generation Tree', 'disciple_tools' ),
+                'title_locations' => __( 'Locations', 'disciple_tools' ),
                 'label_number_of_contacts' => strtolower( __( 'number of contacts', 'disciple_tools' ) ),
                 'label_follow_up_progress' => __( 'Follow-up progress of current active contacts', 'disciple_tools' ),
                 'label_group_needs_training' => __( 'Active Groups Health Metrics', 'disciple_tools' ),
@@ -126,6 +124,8 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             'group_generation_tree' => $this->get_group_generations_tree(),
             'baptism_generation_tree' => $this->get_baptism_generations_tree(),
             'coaching_generation_tree' => $this->get_coaching_generations_tree(),
+            'location_hero_stats' => $this->location_hero_stats(),
+
         ];
     }
 
@@ -141,6 +141,14 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'critical_path_by_year' ],
+                ],
+            ]
+        );
+        register_rest_route(
+            $namespace, '/metrics/project/tree', [
+                [
+                    'methods'  => WP_REST_Server::CREATABLE,
+                    'callback' => [ $this, 'tree' ],
                 ],
             ]
         );
@@ -171,22 +179,74 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
         }
     }
 
+    public function tree( WP_REST_Request $request ) {
+        if ( !$this->has_permission() ){
+            return new WP_Error( __METHOD__, "Missing Permissions", [ 'status' => 400 ] );
+        }
+        $params = $request->get_params();
+
+        if ( isset( $params['type'] ) ) {
+            switch ( $params['type'] ) {
+                case 'groups':
+                    return $this->get_group_generations_tree();
+                    break;
+                case 'baptisms':
+                    return $this->get_baptism_generations_tree();
+                    break;
+                case 'coaching':
+                    return $this->get_coaching_generations_tree();
+                    break;
+                case 'location':
+                    return $this->get_locations_tree();
+                    break;
+                default:
+                    return new WP_Error( __METHOD__, "No matching type set.", [ 'status' => 400 ] );
+                    break;
+            }
+        } else {
+            return new WP_Error( __METHOD__, "No type set.", [ 'status' => 400 ] );
+        }
+    }
+
     public function get_group_generations_tree(){
-        $query = dt_queries()->tree( 'group_all' );
+        $query = dt_queries()->tree( 'multiplying_groups_only' );
+        dt_write_log( $query );
+        if ( empty( $query ) ) {
+            return $this->_no_results();
+        }
         $menu_data = $this->prepare_menu_array( $query );
         return $this->build_group_tree( 0, $menu_data, 0 );
     }
 
     public function get_baptism_generations_tree(){
-        $query = dt_queries()->tree( 'tree_baptisms_all' );
+        $query = dt_queries()->tree( 'multiplying_baptisms_only' );
+        if ( empty( $query ) ) {
+            return $this->_no_results();
+        }
         $menu_data = $this->prepare_menu_array( $query );
         return $this->build_menu( 0, $menu_data, 0 );
     }
 
     public function get_coaching_generations_tree(){
-        $query = dt_queries()->tree( 'tree_coaching_all' );
+        $query = dt_queries()->tree( 'multiplying_coaching_only' );
+        if ( empty( $query ) ) {
+            return $this->_no_results();
+        }
         $menu_data = $this->prepare_menu_array( $query );
         return $this->build_menu( 0, $menu_data, 0 );
+    }
+
+    public function get_locations_tree() {
+        $query = dt_queries()->tree( 'locations' );
+        if ( empty( $query ) ) {
+            return $this->_no_results();
+        }
+        $menu_data = $this->prepare_menu_array( $query );
+        return $this->build_location_tree( 0, $menu_data, 0 );
+    }
+
+    public function _no_results() {
+        return '<div>'. esc_attr( 'No Results', 'disciple_tools' ) .'</div>';
     }
 
     /**
@@ -265,6 +325,39 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 
         }
         return $html;
+    }
+
+    public function build_location_tree( $parent_id, $menu_data, $gen) {
+        $html = '';
+
+        if (isset( $menu_data['parents'][$parent_id] ))
+        {
+            $html = '<ul class="ul-gen-'.$gen.'">';
+            $gen++;
+            foreach ($menu_data['parents'][$parent_id] as $item_id)
+            {
+                $html .= '<li class="gen-node li-gen-'.$gen.'">';
+                $html .= '<span class="'.$menu_data['items'][$item_id]['group_status'].' '.$menu_data['items'][$item_id]['group_type'].'">('.$gen.') ';
+                $html .= '<a onclick="open_location_modal_details('.$item_id.');">'. $menu_data['items'][$item_id]['name'] . '</a></span>';
+
+                $html .= $this->build_location_tree( $item_id, $menu_data, $gen );
+
+                $html .= '</li>';
+            }
+            $html .= '</ul>';
+
+        }
+        return $html;
+    }
+
+    public function location_hero_stats() {
+        return [
+          'total_locations' => 0,
+          'total_active_locations' => 5,
+          'total_inactive_locations' => 10,
+          'total_countries' => 1,
+          'total_states' => 35,
+        ];
     }
 
 
