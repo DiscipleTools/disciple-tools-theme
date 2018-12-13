@@ -14,11 +14,13 @@ if ( !defined( 'ABSPATH' ) ) {
 function dt_counter() {
     return Disciple_Tools_Counter::instance();
 }
+function dt_queries() {
+    return Disciple_Tools_Queries::instance();
+}
 
 /**
  * Class Disciple_Tools_Counter_Factory
  */
-Disciple_Tools_Counter::instance();
 class Disciple_Tools_Counter
 {
     private static $_instance = null;
@@ -38,6 +40,7 @@ class Disciple_Tools_Counter
         require_once( 'counters/counter-groups.php' );
         require_once( 'counters/counter-contacts.php' );
         require_once( 'counters/counter-outreach.php' );
+        require_once( 'counters/counter-locations.php' );
     } // End __construct
 
     /**
@@ -198,19 +201,6 @@ class Disciple_Tools_Counter
                 return 0;
         }
     }
-
-
-
-
-    public static function counts_at_date( string $stat_name, int $unix_time_stamp = null ){
-        $unix_time_stamp = $unix_time_stamp ?? time();
-
-        switch ( $stat_name ){
-            case 'total_contacts':
-
-        }
-    }
-
 
     /**
      * Counts the meta_data attached to a P2P connection
@@ -382,6 +372,407 @@ class Disciple_Tools_Counter
         }
 
         return $type;
+    }
+
+}
+Disciple_Tools_Counter::instance();
+
+
+
+/**
+ * Class Disciple_Tools_Counter_Factory
+ */
+class Disciple_Tools_Queries
+{
+    private static $_instance = null;
+    public static function instance() {
+        if ( is_null( self::$_instance ) ) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    } // End instance()
+
+    public function __construct() {
+        // Load required files
+    } // End __construct
+
+    public function tree( $query_name, $args = [] ) {
+        global $wpdb;
+
+        switch ( $query_name ) {
+
+            case 'baptisms_all':
+                /**
+                 * Query returns a generation tree with all baptisms in the system, whether multiplying or not.
+                 * @columns id
+                 *          parent_id
+                 *          name
+                 */
+                $query = $wpdb->get_results("
+                    SELECT
+                      a.ID         as id,
+                      0            as parent_id,
+                      a.post_title as name
+                    FROM $wpdb->posts as a
+                    WHERE a.post_status = 'publish'
+                    AND a.post_type = 'contacts'
+                    AND a.ID NOT IN (
+                    SELECT DISTINCT (p2p_from)
+                    FROM $wpdb->p2p
+                    WHERE p2p_type = 'baptizer_to_baptized'
+                    GROUP BY p2p_from)
+                    UNION
+                    SELECT
+                      p.p2p_from  as id,
+                      p.p2p_to    as parent_id,
+                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
+                    FROM $wpdb->p2p as p
+                    WHERE p.p2p_type = 'baptizer_to_baptized'
+                ", ARRAY_A );
+                return $query;
+                break;
+
+            case 'multiplying_baptisms_only':
+                $query = $wpdb->get_results("
+                    SELECT
+                      a.ID         as id,
+                      0            as parent_id,
+                      a.post_title as name
+                    FROM $wpdb->posts as a
+                    WHERE a.post_status = 'publish'
+                    AND a.post_type = 'contacts'
+                    AND a.ID NOT IN (
+                      SELECT DISTINCT (p2p_from)
+                      FROM $wpdb->p2p
+                      WHERE p2p_type = 'baptizer_to_baptized'
+                      GROUP BY p2p_from
+                    )
+                      AND a.ID IN (
+                      SELECT DISTINCT (p2p_to)
+                      FROM $wpdb->p2p
+                      WHERE p2p_type = 'baptizer_to_baptized'
+                      GROUP BY p2p_to
+                    )
+                    UNION
+                    SELECT
+                      p.p2p_from  as id,
+                      p.p2p_to    as parent_id,
+                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
+                    FROM $wpdb->p2p as p
+                    WHERE p.p2p_type = 'baptizer_to_baptized'
+                ", ARRAY_A );
+                return $query;
+                break;
+
+            case 'group_all':
+                $query = $wpdb->get_results("
+                    SELECT
+                      a.ID         as id,
+                      0            as parent_id,
+                      a.post_title as name,
+                      gs1.meta_value as group_status,
+                      type1.meta_value as group_type
+                    FROM $wpdb->posts as a
+                      LEFT JOIN $wpdb->postmeta as gs1
+                      ON gs1.post_id=a.ID
+                      AND gs1.meta_key = 'group_status'
+                      LEFT JOIN $wpdb->postmeta as type1
+                      ON type1.post_id=a.ID
+                      AND type1.meta_key = 'group_type'
+                    WHERE a.post_status = 'publish'
+                    AND a.post_type = 'groups'
+                    AND a.ID NOT IN (
+                    SELECT DISTINCT (p2p_from)
+                    FROM $wpdb->p2p
+                    WHERE p2p_type = 'groups_to_groups'
+                    GROUP BY p2p_from)
+                    UNION
+                    SELECT
+                      p.p2p_from                          as id,
+                      p.p2p_to                            as parent_id,
+                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name,
+                      (SELECT gsmeta.meta_value FROM $wpdb->postmeta as gsmeta WHERE gsmeta.post_id = p.p2p_from AND gsmeta.meta_key = 'group_status' LIMIT 1 ) as group_status,
+                      (SELECT gsmeta.meta_value FROM $wpdb->postmeta as gsmeta WHERE gsmeta.post_id = p.p2p_from AND gsmeta.meta_key = 'group_type' LIMIT 1 ) as group_type
+                    FROM $wpdb->p2p as p
+                    WHERE p.p2p_type = 'groups_to_groups'
+                ", ARRAY_A );
+                return $query;
+                break;
+
+            case 'multiplying_groups_only':
+                $query = $wpdb->get_results("
+                    SELECT
+                      a.ID         as id,
+                      0            as parent_id,
+                      a.post_title as name,
+                      gs1.meta_value as group_status,
+                      type1.meta_value as group_type
+                    FROM $wpdb->posts as a
+                     LEFT JOIN $wpdb->postmeta as gs1
+                      ON gs1.post_id=a.ID
+                      AND gs1.meta_key = 'group_status'
+                      LEFT JOIN $wpdb->postmeta as type1
+                      ON type1.post_id=a.ID
+                      AND type1.meta_key = 'group_type'
+                    WHERE a.post_status = 'publish'
+                    AND a.post_type = 'groups'
+                    AND a.ID NOT IN (
+                      SELECT DISTINCT (p2p_from)
+                      FROM $wpdb->p2p
+                      WHERE p2p_type = 'groups_to_groups'
+                      GROUP BY p2p_from
+                    )
+                      AND a.ID IN (
+                      SELECT DISTINCT (p2p_to)
+                      FROM $wpdb->p2p
+                      WHERE p2p_type = 'groups_to_groups'
+                      GROUP BY p2p_to
+                    )
+                    UNION
+                    SELECT
+                      p.p2p_from  as id,
+                      p.p2p_to    as parent_id,
+                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name,
+                      (SELECT gsmeta.meta_value FROM $wpdb->postmeta as gsmeta WHERE gsmeta.post_id = p.p2p_from AND gsmeta.meta_key = 'group_status' LIMIT 1 ) as group_status,
+                      (SELECT gsmeta.meta_value FROM $wpdb->postmeta as gsmeta WHERE gsmeta.post_id = p.p2p_from AND gsmeta.meta_key = 'group_type' LIMIT 1 ) as group_type
+                    FROM $wpdb->p2p as p
+                    WHERE p.p2p_type = 'groups_to_groups'
+                ", ARRAY_A );
+                return $query;
+                break;
+
+            case 'coaching_all':
+                $query = $wpdb->get_results("
+                    SELECT
+                      a.ID         as id,
+                      0            as parent_id,
+                      a.post_title as name
+                    FROM $wpdb->posts as a
+                    WHERE a.post_status = 'publish'
+                    AND a.post_type = 'contacts'
+                    AND a.ID NOT IN (
+                    SELECT DISTINCT (p2p_from)
+                    FROM $wpdb->p2p
+                    WHERE p2p_type = 'contacts_to_contacts'
+                    GROUP BY p2p_from)
+                    UNION
+                    SELECT
+                      p.p2p_from                          as id,
+                      p.p2p_to                            as parent_id,
+                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
+                    FROM $wpdb->p2p as p
+                    WHERE p.p2p_type = 'contacts_to_contacts'
+                ", ARRAY_A );
+                return $query;
+                break;
+
+            case 'multiplying_coaching_only':
+                $query = $wpdb->get_results("
+                    SELECT
+                      a.ID         as id,
+                      0            as parent_id,
+                      a.post_title as name
+                    FROM $wpdb->posts as a
+                    WHERE a.post_status = 'publish'
+                    AND a.post_type = 'contacts'
+                    AND a.ID NOT IN (
+                      SELECT DISTINCT (p2p_from)
+                      FROM $wpdb->p2p
+                      WHERE p2p_type = 'contacts_to_contacts'
+                      GROUP BY p2p_from
+                    )
+                      AND a.ID IN (
+                      SELECT DISTINCT (p2p_to)
+                      FROM $wpdb->p2p
+                      WHERE p2p_type = 'contacts_to_contacts'
+                      GROUP BY p2p_to
+                    )
+                    UNION
+                    SELECT
+                      p.p2p_from  as id,
+                      p.p2p_to    as parent_id,
+                      (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.p2p_from ) as name
+                    FROM $wpdb->p2p as p
+                    WHERE p.p2p_type = 'contacts_to_contacts'
+                ", ARRAY_A );
+                return $query;
+                break;
+
+            case 'locations':
+                $query = $wpdb->get_results("
+                    SELECT
+                      a.ID as id,
+                      a.post_parent  as parent_id,
+                      a.post_title as name
+                    FROM $wpdb->posts as a
+                    WHERE a.post_status = 'publish'
+                    AND a.post_type = 'locations'
+                ", ARRAY_A );
+                return $query;
+                break;
+
+            case 'total_locations':
+                $query = $wpdb->get_var("
+                    SELECT
+                      COUNT( a.ID )
+                    FROM $wpdb->posts as a
+                    WHERE a.post_status = 'publish'
+                    AND a.post_type = 'locations'
+                ");
+                return $query;
+                break;
+
+            case 'locations_hero_stats':
+                $query = $wpdb->get_row("
+                    SELECT
+                      (
+                        SELECT
+                          COUNT( a.ID )
+                        FROM $wpdb->posts as a
+                                    WHERE a.post_status = 'publish'
+                                    AND a.post_type = 'locations'
+                      ) as total_locations,
+                      (
+                        SELECT
+                          COUNT( DISTINCT a.ID )
+                        FROM $wpdb->posts as a
+                        WHERE a.post_status = 'publish'
+                              AND a.ID IN ( SELECT p2p_to FROM $wpdb->p2p WHERE p2p_type = 'contacts_to_locations' OR p2p_type = 'groups_to_locations' )
+                              AND a.post_type = 'locations'
+                      ) as total_active_locations,
+                      (
+                        SELECT
+                          COUNT( DISTINCT a.ID )
+                        FROM $wpdb->posts as a
+                        WHERE a.post_status = 'publish'
+                              AND a.ID NOT IN ( SELECT p2p_to FROM $wpdb->p2p WHERE p2p_type = 'contacts_to_locations' OR p2p_type = 'groups_to_locations' )
+                              AND a.post_type = 'locations'
+                      ) as total_inactive_locations,
+                      (
+                        SELECT
+                          COUNT( DISTINCT a.ID )
+                        FROM $wpdb->posts as a
+                        WHERE a.post_status = 'publish'
+                              AND a.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'types' AND meta_value = 'country' )
+                              AND a.post_type = 'locations'
+                      ) as total_countries,
+                      (
+                        SELECT
+                          COUNT( DISTINCT a.ID )
+                        FROM $wpdb->posts as a
+                        WHERE a.post_status = 'publish'
+                              AND a.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'types' AND meta_value = 'administrative_area_level_1' )
+                              AND a.post_type = 'locations'
+                      ) as total_states,
+                      (
+                        SELECT
+                          COUNT( DISTINCT a.ID )
+                        FROM $wpdb->posts as a
+                        WHERE a.post_status = 'publish'
+                              AND a.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'types' AND meta_value = 'administrative_area_level_2' )
+                              AND a.post_type = 'locations'
+                      ) as total_counties;
+                ");
+                return $query;
+                break;
+
+            case 'user_hero_stats':
+                $query = $wpdb->get_row("
+                    SELECT
+                      (
+                        SELECT
+                          COUNT( a.ID )
+                        FROM $wpdb->posts as a
+                                    WHERE a.post_status = 'publish'
+                                    AND a.post_type = 'locations'
+                      ) as total_locations,
+                      (
+                        SELECT
+                          COUNT( DISTINCT a.ID )
+                        FROM $wpdb->posts as a
+                        WHERE a.post_status = 'publish'
+                              AND a.ID IN ( SELECT p2p_to FROM $wpdb->p2p WHERE p2p_type = 'contacts_to_locations' OR p2p_type = 'groups_to_locations' )
+                              AND a.post_type = 'locations'
+                      ) as total_active_locations,
+                      (
+                        SELECT
+                          COUNT( DISTINCT a.ID )
+                        FROM $wpdb->posts as a
+                        WHERE a.post_status = 'publish'
+                              AND a.ID NOT IN ( SELECT p2p_to FROM $wpdb->p2p WHERE p2p_type = 'contacts_to_locations' OR p2p_type = 'groups_to_locations' )
+                              AND a.post_type = 'locations'
+                      ) as total_inactive_locations,
+                      (
+                        SELECT
+                          COUNT( DISTINCT a.ID )
+                        FROM $wpdb->posts as a
+                        WHERE a.post_status = 'publish'
+                              AND a.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'types' AND meta_value = 'country' )
+                              AND a.post_type = 'locations'
+                      ) as total_countries,
+                      (
+                        SELECT
+                          COUNT( DISTINCT a.ID )
+                        FROM $wpdb->posts as a
+                        WHERE a.post_status = 'publish'
+                              AND a.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'types' AND meta_value = 'administrative_area_level_1' )
+                              AND a.post_type = 'locations'
+                      ) as total_states,
+                      (
+                        SELECT
+                          COUNT( DISTINCT a.ID )
+                        FROM $wpdb->posts as a
+                        WHERE a.post_status = 'publish'
+                              AND a.ID IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'types' AND meta_value = 'administrative_area_level_2' )
+                              AND a.post_type = 'locations'
+                      ) as total_counties;
+                ");
+                return $query;
+                break;
+
+            case 'recent_logins':
+                $query = $wpdb->get_results("
+                    SELECT
+                      DATE(FROM_UNIXTIME(hist_time)) AS report_date,
+                      COUNT(DISTINCT object_id) as total
+                    FROM $wpdb->dt_activity_log
+                    WHERE object_type = 'User'
+                          AND action = 'logged_in'
+                    GROUP BY DATE(FROM_UNIXTIME(hist_time))
+                    ORDER BY report_date DESC
+                    LIMIT 30;
+                ", ARRAY_A);
+                return $query;
+                break;
+
+            default:
+                return false;
+                break;
+        }
+    }
+
+    public function query( $query_name, $args = [] ) {
+        global $wpdb;
+
+        switch ( $query_name ) {
+            case 'contacts_per_user':
+                $query = $wpdb->get_results("
+                    SELECT 
+                        () as name, 
+                        () as total, 
+                        () as attempt_needed, 
+                        () as attempted, 
+                        () as established, 
+                        () as meeting_scheduled, 
+                        () as meeting_complete, 
+                        () as ongoing, 
+                        () as being_coached
+                ", ARRAY_A);
+                return $query;
+                break;
+            default:
+                break;
+        }
     }
 
 }

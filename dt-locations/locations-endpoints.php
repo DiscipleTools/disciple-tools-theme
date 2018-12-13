@@ -104,6 +104,10 @@ class Disciple_Tools_Locations_Endpoints
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [ $this, 'auto_build_levels_from_post' ],
             ],
+            $base.'/get_location_with_connections' => [
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => [ $this, 'get_location_with_connections' ],
+            ],
         ];
 
         // Register each route
@@ -183,6 +187,25 @@ class Disciple_Tools_Locations_Endpoints
         if ( isset( $params['address'] ) ){
 
             $result = Disciple_Tools_Google_Geocode_API::query_google_api( $params['address'] );
+
+            if ( $result['status'] == 'OK' ){
+                return $result;
+            } else {
+                return new WP_Error( "status_error", 'Zero Results', array( 'status' => 400 ) );
+            }
+        } else {
+            return new WP_Error( "param_error", "Please provide a valid address", array( 'status' => 400 ) );
+        }
+    }
+
+    public function get_location_with_connections( WP_REST_Request $request ){
+        if ( ! current_user_can( 'read_location' ) ) {
+            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
+        }
+        $params = $request->get_json_params();
+        if ( isset( $params['id'] ) ){
+
+            $result = Disciple_Tools_Locations::get_location_with_connections( $params['id'] );
 
             if ( $result['status'] == 'OK' ){
                 return $result;

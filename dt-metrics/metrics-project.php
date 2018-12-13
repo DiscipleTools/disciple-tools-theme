@@ -104,6 +104,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'title_baptism_tree' => __( 'Baptism Generation Tree', 'disciple_tools' ),
                 'title_coaching_tree' => __( 'Coaching Generation Tree', 'disciple_tools' ),
                 'title_locations' => __( 'Locations', 'disciple_tools' ),
+                'title_locations_tree' => __( 'Location Tree', 'disciple_tools' ),
                 'label_number_of_contacts' => strtolower( __( 'number of contacts', 'disciple_tools' ) ),
                 'label_follow_up_progress' => __( 'Follow-up progress of current active contacts', 'disciple_tools' ),
                 'label_group_needs_training' => __( 'Active Groups Health Metrics', 'disciple_tools' ),
@@ -114,6 +115,12 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'label_select_year' => __( 'Select All time or a specific year to display', 'disciple_tools' ),
                 'label_all_time' => __( 'All time', 'disciple_tools' ),
                 'label_group_types' => __( 'Group Types', 'disciple_tools' ),
+                'label_total_locations' => __( 'Total Locations', 'disciple_tools' ),
+                'label_active_locations' => __( 'Active Locations', 'disciple_tools' ),
+                'label_inactive_locations' => __( 'Inactive Locations', 'disciple_tools' ),
+                'label_countries' => __( 'Countries', 'disciple_tools' ),
+                'label_states' => __( 'States', 'disciple_tools' ),
+                'label_counties' => __( 'Counties', 'disciple_tools' ),
             ],
             'hero_stats' => self::chart_project_hero_stats(),
             'critical_path' => self::chart_critical_path( dt_date_start_of_year(), dt_date_end_of_year() ),
@@ -124,7 +131,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             'group_generation_tree' => $this->get_group_generations_tree(),
             'baptism_generation_tree' => $this->get_baptism_generations_tree(),
             'coaching_generation_tree' => $this->get_coaching_generations_tree(),
-            'location_hero_stats' => $this->location_hero_stats(),
+            'location_hero_stats' => Disciple_Tools_Queries::instance()->tree( 'locations_hero_stats' ),
 
         ];
     }
@@ -210,7 +217,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 
     public function get_group_generations_tree(){
         $query = dt_queries()->tree( 'multiplying_groups_only' );
-        dt_write_log( $query );
         if ( empty( $query ) ) {
             return $this->_no_results();
         }
@@ -246,7 +252,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function _no_results() {
-        return '<div>'. esc_attr( 'No Results', 'disciple_tools' ) .'</div>';
+        return '<p>'. esc_attr( 'No Results', 'disciple_tools' ) .'</p>';
     }
 
     /**
@@ -337,8 +343,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             foreach ($menu_data['parents'][$parent_id] as $item_id)
             {
                 $html .= '<li class="gen-node li-gen-'.$gen.'">';
-                $html .= '<span class="'.$menu_data['items'][$item_id]['group_status'].' '.$menu_data['items'][$item_id]['group_type'].'">('.$gen.') ';
-                $html .= '<a onclick="open_location_modal_details('.$item_id.');">'. $menu_data['items'][$item_id]['name'] . '</a></span>';
+                $html .= '<a onclick="open_location_modal_details('.$item_id.');">'. $menu_data['items'][$item_id]['name'] . '</a>';
 
                 $html .= $this->build_location_tree( $item_id, $menu_data, $gen );
 
@@ -349,17 +354,4 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
         }
         return $html;
     }
-
-    public function location_hero_stats() {
-        return [
-          'total_locations' => 0,
-          'total_active_locations' => 5,
-          'total_inactive_locations' => 10,
-          'total_countries' => 1,
-          'total_states' => 35,
-        ];
-    }
-
-
 }
-

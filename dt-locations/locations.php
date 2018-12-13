@@ -302,6 +302,71 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
         ];
     }
 
+    public static function get_location_with_connections( $id ) {
+        global $wpdb;
+        $location_with_connections = [];
+
+        $location = get_post( $id, ARRAY_A );
+        if ( empty( $location ) ) {
+            return new WP_Error( __METHOD__, 'No location found' );
+        }
+        $location_meta = get_post_meta( $id );
+        if ( empty( $location_meta ) ) {
+            return new WP_Error( __METHOD__, 'No location found' );
+        }
+
+        $location_with_connections['post_title'] = $location['post_title'];
+        $location_with_connections['id'] = $id;
+
+        if ( isset( $location_meta['raw'][0] ) && ! empty( $location_meta['raw'][0] ) ) {
+            $raw = maybe_unserialize( $location_meta['raw'][0] );
+            $google = new Disciple_Tools_Google_Geocode_API();
+            $location_with_connections['api_key'] = $google::key();
+            $location_with_connections['latitude'] = $google::parse_raw_result( $raw, 'lat' );
+            $location_with_connections['longitude'] = $google::parse_raw_result( $raw, 'lng' );
+            $location_with_connections['raw'] = $google::parse_raw_result( $raw, 'full' );
+            $location_with_connections['zoom'] = 7; // @todo find a way to define this on the fly
+        }
+
+        $connections = $wpdb->get_results( $wpdb->prepare( "
+            SELECT
+              ID as id,
+              post_title as name,
+              p2p_type,
+              b.meta_value as type
+            FROM $wpdb->p2p
+              INNER JOIN $wpdb->posts
+                ON $wpdb->p2p.p2p_from=$wpdb->posts.ID
+              JOIN $wpdb->postmeta as a
+                ON a.post_id=$wpdb->p2p.p2p_from
+                   AND ( meta_key = 'overall_status' OR meta_key = 'group_status' )
+                   AND meta_value = 'active'
+              LEFT JOIN $wpdb->postmeta as b
+                ON b.post_id=$wpdb->p2p.p2p_from
+                   AND b.meta_key = 'group_type'
+            WHERE p2p_to = %s
+            ORDER BY post_title ASC
+        ", $id ), ARRAY_A );
+
+        $location_with_connections['total_contacts'] = 0;
+        $location_with_connections['total_groups'] = 0;
+        if ( ! empty( $connections ) ) {
+            foreach ( $connections as $connection ) {
+                if ( $connection['p2p_type'] === 'contacts_to_locations' ) {
+                    $location_with_connections['contacts'][] = $connection;
+                    $location_with_connections['total_contacts']++;
+                } else {
+                    $location_with_connections['groups'][] = $connection;
+                    $location_with_connections['total_groups']++;
+                }
+            }
+        }
+
+        $location_with_connections['status'] = 'OK';
+
+        return $location_with_connections;
+    }
+
     public static function get_all_locations_grouped(){
         if ( !current_user_can( 'read_location' )){
             return new WP_Error( __FUNCTION__, "No permissions to read locations", [ 'status' => 403 ] );

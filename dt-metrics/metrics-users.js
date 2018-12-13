@@ -13,48 +13,41 @@ function users_activity() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#users-menu'));
     let sourceData = dtMetricsUsers.data
     chartDiv.empty().html(`
-        <span class="section-header">`+ sourceData.translations.title_activity +`</span>
-        <span style="float:right; font-size:1.5em;color:#3f729b;"><a data-open="dt-project-legend"><i class="fi-info"></i></a></span>
-        <div class="medium reveal" id="dt-project-legend" data-reveal>`+ legend() +`<button class="close-button" data-close aria-label="Close modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button></div>
+        <span class="section-header">${sourceData.translations.title_activity}</span>
+        
         <br><br>
         <div class="grid-x grid-padding-x grid-padding-y">
             <div class="cell center callout">
                 <div class="grid-x">
-                    <div class="medium-3 cell center">
-                        <h4>Total Users<br><span id="total_users">0</span></h4>
+                    <div class="medium-4 cell center">
+                        <h4>${sourceData.translations.label_total_users}<br><span id="total_users">0</span></h4>
                     </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Multipliers<br><span id="total_multipliers">0</span></h4>
+                    <div class="medium-4 cell center left-border-grey">
+                        <h4>${sourceData.translations.label_total_multipliers}<br><span id="total_multipliers">0</span></h4>
                     </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Dispatchers<br><span id="total_dispatchers">0</span></h4>
+                    <div class="medium-4 cell center left-border-grey">
+                        <h4>${sourceData.translations.label_total_dispatchers}<br><span id="total_dispatchers">0</span></h4>
                     </div>
-                    <div class="medium-3 cell center left-border-grey">
-                        <h4>Other<br><span id="total_other">0</span></h4>
-                    </div>
-                    
                 </div>
             </div>
             <div class="cell">
-                <span class="section-subheader">Recent Logins</span>
+                <span class="section-subheader">${sourceData.translations.title_recent_activity}</span>
                 <div id="chart_line_logins" style="height:300px"></div>
             </div>
             <div class="cell">
             <hr>
-                <p><span class="section-subheader">Contacts Per User</span></p>
+                <p><span class="section-subheader">${sourceData.translations.label_contacts_per_user}</span></p>
                 <div id="contacts_per_user" ></div>
             </div>
             <div class="cell">
                 <hr>
                 <div class="grid-x grid-padding-x">
                     <div class="cell medium-6">
-                        <span class="section-subheader">Least Active</span>
+                        <span class="section-subheader">${sourceData.translations.label_least_active}</span>
                         <div id="least_active"></div>
                     </div>
                     <div class="cell medium-6">
-                        <span class="section-subheader">Most Active</span>
+                        <span class="section-subheader">${sourceData.translations.label_most_active}</span>
                         <div id="most_active"></div>
                     </div>
                 </div>
@@ -66,7 +59,6 @@ function users_activity() {
     jQuery('#total_users').html( numberWithCommas( hero.total_users ) )
     jQuery('#total_multipliers').html( numberWithCommas( hero.total_multipliers ) )
     jQuery('#total_dispatchers').html( numberWithCommas( hero.total_dispatchers ) )
-    jQuery('#total_other').html( numberWithCommas( hero.total_other ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'line', 'table']});
@@ -77,21 +69,11 @@ function users_activity() {
     google.charts.setOnLoadCallback(drawMostActive);
 
     function drawLineChartLogins() {
-        let chartData = google.visualization.arrayToDataTable( [
-            ['Year', 'Logins', 'Updates', 'Status Changes'],
-            ['June',  1000, 400, 100],
-            ['July',  1000, 400, 100],
-            ['Aug',  1000, 400, 100],
-            ['Sept',  1000, 400, 100],
-            ['Oct',  1170, 460, 150],
-            ['Nov',  660, 1120, 12],
-        ] );
+        let chartData = google.visualization.arrayToDataTable( sourceData.recent_activity );
         let options = {
             vAxis: {title: 'logins'},
             // chartArea: {
-            //     left: '5%',
-            //     top: '7%',
-            //     width: "90%",
+            //     width: "100%",
             //     height: "85%" },
             legend: { position: 'bottom' }
         };
@@ -185,23 +167,9 @@ function users_activity() {
         chart.draw(chartData, options);
     }
 
-
-    new Foundation.Reveal(jQuery('.dt-project-legend'));
-
 }
 
-function legend() {
-    return `<h2>Chart Legend</h2><hr>
-            <dl>
-            <dt>Registered</dt><dd>Groups or people who have registered on Zumeproject.com</dd>
-            <dt>Engaged</dt><dd>Groups or people who have registered on Zumeproject.com</dd>
-            <dt>Trained</dt><dd>Trained groups and people have been through the entire Zúme training.</dd>
-            <dt>Active</dt><dd>Active groups and people have finished a session in the last 30 days. Active in month charts measure according to the month listed. It is the same 'active' behavior, but broken up into different time units.</dd>
-            <dt>Hours of Training</dt><dd>Hours of completed sessions for groups or people.</dd>
-            <dt>Countries</dt><dd>In the overview page, "Countries" counts number of countries with trained groups.</dd>
-            <dt>Translations</dt><dd>Translations counts the number of translations installed in ZúmeProject.com.</dd>
-            </dl>`
-}
+
 
 function numberWithCommas(x) {
     x = x.toString();
