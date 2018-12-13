@@ -65,12 +65,12 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             'translations' => [
                 'title_activity' => __( 'Users Activity', 'disciple_tools' ),
                 'title_recent_activity' => __( 'Recent Activity', 'disciple_tools' ),
-                'label_total_users' => __( 'Total Users', 'disciple_tools'  ),
-                'label_total_multipliers' => __( 'Multipliers', 'disciple_tools'  ),
-                'label_total_dispatchers' => __( 'Dispatchers', 'disciple_tools'  ),
-                'label_contacts_per_user' => __( 'Contacts Per User', 'disciple_tools'  ),
-                'label_least_active' => __( 'Least Active', 'disciple_tools'  ),
-                'label_most_active' => __( 'Most Active', 'disciple_tools'  ),
+                'label_total_users' => __( 'Total Users', 'disciple_tools' ),
+                'label_total_multipliers' => __( 'Multipliers', 'disciple_tools' ),
+                'label_total_dispatchers' => __( 'Dispatchers', 'disciple_tools' ),
+                'label_contacts_per_user' => __( 'Contacts Per User', 'disciple_tools' ),
+                'label_least_active' => __( 'Least Active', 'disciple_tools' ),
+                'label_most_active' => __( 'Most Active', 'disciple_tools' ),
             ],
             'hero_stats' => $this->chart_user_hero_stats(),
             'recent_activity' => $this->chart_recent_activity(),
@@ -90,17 +90,17 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
     public function chart_recent_activity() {
         $chart = [];
-        $chart[] = ['Year', 'Logins'];
+        $chart[] = [ 'Year', 'Logins' ];
 
         $results = Disciple_Tools_Queries::instance()->tree( 'recent_logins' );
         if ( empty( $results ) ) {
             return $chart;
         }
 
-        $results = array_reverse($results);
+        $results = array_reverse( $results );
         foreach ( $results as $result ) {
-            $date = date_create($result['report_date']);
-            $chart[] = [ date_format($date,"M d"), (int) $result['total'] ];
+            $date = date_create( $result['report_date'] );
+            $chart[] = [ date_format( $date, "M d" ), (int) $result['total'] ];
         }
 
         return $chart;
@@ -109,7 +109,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     public function chart_contacts_per_user() {
         $chart = [];
 
-        $chart[] = ['Name', 'Total', 'Attempt Needed', 'Attempted', 'Established', 'Meeting Scheduled', 'Meeting Complete', 'Ongoing', 'Being Coached'];
+        $chart[] = [ 'Name', 'Total', 'Attempt Needed', 'Attempted', 'Established', 'Meeting Scheduled', 'Meeting Complete', 'Ongoing', 'Being Coached' ];
 
         $results = Disciple_Tools_Queries::instance()->query( 'contacts_per_user' );
         if ( empty( $results ) ) {

@@ -619,7 +619,7 @@ function project_locations() {
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let sourceData = dtMetricsProject.data
     chartDiv.empty().html(`
-        <span class="section-header">${sourceData.translations.title_locations}</span><hr>
+        <span class="section-header">${sourceData.translations.title_locations}</span><br><br>
         
         <div class="grid-x grid-padding-x grid-padding-y">
             <div class="cell center callout">
@@ -635,36 +635,22 @@ function project_locations() {
                     </div>
                 </div>
             </div>
-            <div class="cell center callout">
-                <div class="grid-x">
-                    <div class="medium-4 cell center">
-                        <h4>${sourceData.translations.label_countries}<br><span id="total_countries">0</span></h4>
-                    </div>
-                    <div class="medium-4 cell center left-border-grey">
-                        <h4>${sourceData.translations.label_states}<br><span id="total_states">0</span></h4>
-                    </div>
-                    <div class="medium-4 cell center left-border-grey">
-                        <h4>${sourceData.translations.label_counties}<br><span id="total_counties">0</span></h4>
-                    </div>
-                </div>
-            </div>
             <div class="cell">
                 <span class="section-subheader">${sourceData.translations.title_locations_tree}</span>
                 <div id="generation_map" class="scrolling-wrapper"><img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
             </div>
         </div>
-        <div id="modal" class="reveal" data-reveal></div>
+        <div id="modal" class="large reveal" data-reveal data-v-offset="20px"></div>
         
         `)
 
+    /* Load hero stats */
     let hero = sourceData.location_hero_stats
     jQuery('#total_locations').html( numberWithCommas( hero.total_locations ) )
     jQuery('#total_active_locations').html( numberWithCommas( hero.total_active_locations ) )
     jQuery('#total_inactive_locations').html( numberWithCommas( hero.total_inactive_locations ) )
-    jQuery('#total_countries').html( numberWithCommas( hero.total_countries ) )
-    jQuery('#total_states').html( numberWithCommas( hero.total_states ) )
-    jQuery('#total_counties').html( numberWithCommas( hero.total_counties ) )
 
+    /* Get tree data */
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -687,7 +673,7 @@ function project_locations() {
             jQuery("#errors").append(err.responseText)
         })
 
-    new Foundation.Reveal(jQuery('#modal'))
+    new Foundation.Reveal(jQuery('#modal') )
 
 }
 function open_location_modal_details( id ) {
@@ -695,27 +681,86 @@ function open_location_modal_details( id ) {
     let spinner = `<img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" />`
     modal.empty().html(spinner).foundation('open')
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({"id": id } ),
         dataType: "json",
-        url: dtMetricsProject.root + 'dt/v1/group/'+id,
+        url: dtMetricsProject.root + 'dt/v1/locations/get_location_with_connections/',
         beforeSend: function(xhr) {
             xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
         },
     })
         .done(function (data) {
             if( data ) {
+                console.log(data)
+                let columns = 4
+                let map = ''
+                if ( data.latitude && data.longitude && data.api_key ) {
+                    map += `<div class="cell medium-3">
+                                <img src="https://maps.googleapis.com/maps/api/staticmap?center=${data.latitude},${data.longitude}&zoom=${data.zoom}&size=400x500&markers=color:red|${data.latitude},${data.longitude}&key=${data.api_key}"/>
+                            </div>`
+                    columns = 3
+                }
+
+                let groups = ''
+                if ( data.groups ) {
+                    jQuery.each( data.groups, function(i,v) {
+                        groups += `- <a href="/groups/${v.id}">` + v.name + `</a>`
+                        if ( v.type === 'church' ) {
+                            groups += ` <i class="fi-home"></i>`
+                        }
+                        groups += `<br>`
+                    })
+                }
+
+                let contacts = ''
+                if ( data.contacts ) {
+                    jQuery.each( data.contacts, function(i,v) {
+                        contacts += `- <a href="/contacts/${v.id}">` + v.name + `</a><br>`
+                    })
+                }
+
+                let workers = ''
+                if ( data.workers ) {
+                    workers += `<div class="cell medium-${columns}">
+                                <strong>Workers (${data.total_workers})</strong><br><br>`
+                    jQuery.each( data.workers, function(i,v) {
+                        workers += `- <a href="/contacts/${v.id}">` + v.name + `</a><br>`
+                    })
+                    workers += `</div>`
+                }
+
                 let content = `
                 <div class="grid-x">
-                    <div class="cell"><span class="section-header">Name</span><hr style="max-width:100%;"></div>
+                    <div class="cell"><span class="section-header">${data.post_title}</span><hr style="max-width:100%;"></div>
+                    
                     <div class="cell">
-                        Roll Up Data
+                        <div class="grid-x grid-padding-x grid-padding-y">
+                            ${map}
+                            ${workers}
+                            <div class="cell medium-${columns}">
+                                <strong>Groups (${data.total_groups})</strong><br><br>
+                                ${groups}
+                            </div>
+                            <div class="cell medium-${columns}">
+                                <strong>Contacts (${data.total_contacts})</strong><br><br>
+                                 ${contacts}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="cell center">
+                        <hr>
+                        <button data-close aria-label="Close modal" class="button" type="button">
+                            <span aria-hidden="true">Close</span>
+                          </button>
                     </div>
                 </div>
                 <button class="close-button" data-close aria-label="Close modal" type="button">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 `
+
                 modal.empty().html(content)
             }
         })

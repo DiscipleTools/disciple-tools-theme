@@ -336,7 +336,7 @@ class Disciple_Tools_Location_Post_Type
                 'echo'             => 0,
             ] );
             // phpcs:enable
-            if ( ! empty( $pages ) ) : ?>
+        if ( ! empty( $pages ) ) : ?>
                 <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="parent_id"><?php esc_html_e( 'Parent' ); ?></label></p>
                 <?php
                 // WordPress.XSS.EscapeOutput.OutputNotEscaped
@@ -348,29 +348,29 @@ class Disciple_Tools_Location_Post_Type
         /**************************************************************************************************************
          * Geocoded section
          */
-        if ( ! empty( $raw ) ) :
-         // end non-geocoded "free location" section
-            $levels = Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw, 'political' );
-            if ( $levels ) :
-                $levels = array_reverse( $levels, true );?>
+            if ( ! empty( $raw ) ) :
+             // end non-geocoded "free location" section
+                $levels = Disciple_Tools_Google_Geocode_API::parse_raw_result( $raw, 'political' );
+                if ( $levels ) :
+                    $levels = array_reverse( $levels, true );?>
                 <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="parent_id"><?php esc_html_e( 'Hierarchy' ); ?></label></p>
             <p style="text-align:center">
-                <?php
-                foreach ( $levels as $key => $level ) :
+                    <?php
+                    foreach ( $levels as $key => $level ) :
 
-                    if ( ! ( 0 == $key ) ) { // removes itself from the list
-                        $location_id = Disciple_Tools_Locations::does_location_exist( $locations_result, $level['long_name'], $level['types'][0] );
-                        if ( $location_id ) {
-                            echo '<a href="'. esc_url( admin_url() . 'post.php?post=' . esc_attr( $location_id ) . '&action=edit' ).'" rel="nofollow">'. esc_attr( $level['long_name'] ) . '</a><br>|<br>';
-                        } else {
-                            echo '<span id="'. esc_attr( md5( $level['long_name'] ) ).'">' . esc_attr( $level['long_name'] ) . '</span><br>|<br>';
+                        if ( ! ( 0 == $key ) ) { // removes itself from the list
+                            $location_id = Disciple_Tools_Locations::does_location_exist( $locations_result, $level['long_name'], $level['types'][0] );
+                            if ( $location_id ) {
+                                echo '<a href="'. esc_url( admin_url() . 'post.php?post=' . esc_attr( $location_id ) . '&action=edit' ).'" rel="nofollow">'. esc_attr( $level['long_name'] ) . '</a><br>|<br>';
+                            } else {
+                                echo '<span id="'. esc_attr( md5( $level['long_name'] ) ).'">' . esc_attr( $level['long_name'] ) . '</span><br>|<br>';
+                            }
                         }
-                    }
-                endforeach;
-                ?>
+                    endforeach;
+                    ?>
                 <strong><?php echo esc_attr( $post->post_title ); ?></strong>
             </p>
-                <?php if ( user_can( get_current_user_id(), 'manage_dt' ) && dt_get_option( 'auto_location' ) ) : ?>
+                    <?php if ( user_can( get_current_user_id(), 'manage_dt' ) && dt_get_option( 'auto_location' ) ) : ?>
                 <hr>
                 <p style="text-align:center;">
                     <a class="add-parent-location button" href="javascript:void(0)"
@@ -401,8 +401,8 @@ class Disciple_Tools_Location_Post_Type
                         </a>
                     </p>
                 </div>
-                    <?php
-                endif; // if political
+                        <?php
+                    endif; // if political
             endif; // user permission check on auto build
         endif;
     }
