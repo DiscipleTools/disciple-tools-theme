@@ -40,7 +40,7 @@
                 <li class="image-menu-nav">
                     <a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>">
                         <img title="<?php esc_html_e( "Profile", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/profile.svg" ?>">
-                        <?php echo esc_html( wp_get_current_user()->display_name ); ?>
+                        <span dir="auto"><?php echo esc_html( wp_get_current_user()->display_name ); ?></span>
                     </a>
                 </li>
                 <li class="image-menu-nav">

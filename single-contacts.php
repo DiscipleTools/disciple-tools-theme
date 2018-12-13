@@ -305,7 +305,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                     </div>
                     <div class="subassigned details">
                         <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
-                        <div id="subassigned_t" name="form-subassigned">
+                        <div id="subassigned_t" name="form-subassigned" class="scrollable-typeahead">
                             <div class="typeahead__container">
                                 <div class="typeahead__field">
                                     <span class="typeahead__query">

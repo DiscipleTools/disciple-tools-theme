@@ -754,6 +754,20 @@ class Disciple_Tools_Notifications
      * @return string $notification_note the return value is expected to contain HTML.
      */
     public static function get_notification_message_html( $notification ){
+        // load the local for the destination usr so emails are sent our correctly.
+        $destination_user_locale = get_user_locale( $notification["user_id"] );
+        $current_user_locale = get_user_locale( get_current_user_id() );
+        add_filter( "determine_locale", function ( $locale ) use ( $destination_user_locale ) {
+            if ( $destination_user_locale ){
+                $locale = $destination_user_locale;
+            }
+            return $locale;
+        }, 10, 1 );
+        if ( $destination_user_locale !== $current_user_locale ){
+            unload_textdomain( "disciple_tools" );
+            load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
+        }
+
         $object_id = $notification["post_id"];
         $post = get_post( $object_id );
         $post_title = isset( $post->post_title ) ? sanitize_text_field( $post->post_title ) : "";
