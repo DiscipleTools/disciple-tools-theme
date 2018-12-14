@@ -568,7 +568,7 @@ class Disciple_Tools_Users
         }
         $user = get_user_by( 'id', $user_id );
         $user->display_name = $display_name;
-        $user->roles = [ "multiplier" ];
+        $user->set_role( "multiplier" );
         wp_update_user( $user );
         if ( $corresponds_to_contact ){
             update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
