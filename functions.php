@@ -313,7 +313,6 @@ else {
             /**
              * dt-metrics
              */
-            require_once( get_template_directory() . '/dt-metrics/queries.php' );
             require_once( get_template_directory() . '/dt-metrics/counter.php' );
             require_once( get_template_directory() . '/dt-metrics/metrics.php' );
 
