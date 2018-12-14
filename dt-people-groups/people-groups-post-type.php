@@ -103,7 +103,7 @@ class Disciple_Tools_People_Groups_Post_Type
             add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
             add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
-            add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
+//            add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
 
             if ( $pagenow == 'edit.php' && isset( $_GET['post_type'] ) ) {
                 $pt = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
@@ -125,30 +125,10 @@ class Disciple_Tools_People_Groups_Post_Type
      */
     public function register_post_type() {
         $labels = [
-            'name'                  => _x( 'People Groups', 'People Groups', 'disciple_tools' ),
-            'singular_name'         => _x( 'People Group', 'People Group', 'disciple_tools' ),
-            'add_new'               => _x( 'Add New', 'People Groups', 'disciple_tools' ),
-            'add_new_item'          => sprintf( __( 'Add New %s', 'disciple_tools' ), $this->singular ),
-            'edit_item'             => sprintf( __( 'Edit %s', 'disciple_tools' ), $this->singular ),
-            'update_item'           => sprintf( __( 'Update %s', 'disciple_tools' ), $this->singular ),
-            'new_item'              => sprintf( __( 'New %s', 'disciple_tools' ), $this->singular ),
-            'all_items'             => sprintf( __( 'All %s', 'disciple_tools' ), $this->plural ),
-            'view_item'             => sprintf( __( 'View %s', 'disciple_tools' ), $this->singular ),
-            'view_items'            => sprintf( __( 'View %s', 'disciple_tools' ), $this->plural ),
-            'search_items'          => sprintf( __( 'Search %a', 'disciple_tools' ), $this->plural ),
-            'not_found'             => sprintf( __( 'No %s Found', 'disciple_tools' ), $this->plural ),
-            'not_found_in_trash'    => sprintf( __( 'No %s Found In Trash', 'disciple_tools' ), $this->plural ),
-            'parent_item_colon'     => '',
+            'name'                  => $this->plural,
+            'singular_name'         => $this->singular,
             'menu_name'             => $this->plural,
-            'featured_image'        => sprintf( __( 'Featured Image', 'disciple_tools' ), $this->plural ),
-            'set_featured_image'    => sprintf( __( 'Set featured image', 'disciple_tools' ), $this->plural ),
-            'remove_featured_image' => sprintf( __( 'Remove featured image', 'disciple_tools' ), $this->plural ),
-            'use_featured_image'    => sprintf( __( 'Use as featured image', 'disciple_tools' ), $this->plural ),
-            'insert_into_item'      => sprintf( __( 'Insert %s', 'disciple_tools' ), $this->plural ),
-            'uploaded_to_this_item' => sprintf( __( 'Uploaded to this %s', 'disciple_tools' ), $this->plural ),
-            'items_list'            => sprintf( __( '%s list', 'disciple_tools' ), $this->plural ),
-            'items_list_navigation' => sprintf( __( '%s list navigation', 'disciple_tools' ), $this->plural ),
-            'filter_items_list'     => sprintf( __( 'Filter %s list', 'disciple_tools' ), $this->plural ),
+            'search_items'          => sprintf( __( 'Search %s', 'disciple_tools' ), $this->plural ),
         ];
 
         $rewrite = [
@@ -255,32 +235,32 @@ class Disciple_Tools_People_Groups_Post_Type
      *
      * @return array           Modified array.
      */
-    public function updated_messages( $messages ) {
-        global $post;
-
-        $link = '<a target="_blank" href="' . esc_url( get_permalink( $post->ID ) ) .'">' .  __( 'View', 'disciple_tools' ) . '</a>';
-
-        $messages[ $this->post_type ] = [
-            0  => '', // Unused. Messages start at index 1.
-            1  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ) ,
-            2  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
-            3  => sprintf( __( '%s deleted.', 'disciple_tools' ), $this->singular ),
-            4  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
-            /* translators: %s: date and time of the revision */
-            5  => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-            6  => sprintf( __( '%s published.', 'disciple_tools' ), $this->singular ) ,
-            7  => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
-            8  => sprintf( __( '%s submitted.', 'disciple_tools' ), $this->singular ) ,
-            9  => sprintf(
-                __( '%1$s scheduled for: %2$s.', 'disciple_tools' ),
-                $this->singular,
-                '<strong>' . date_i18n( _x( 'M j, Y @ G:i', 'Publish box date format, see http://php.net/date', 'disciple_tools' ), strtotime( $post->post_date ) ) . '</strong>'
-            ) ,
-            10  => sprintf( __( '%s draft updated.', 'disciple_tools' ), $this->singular ) ,
-        ];
-
-        return $messages;
-    } // End updated_messages()
+//    public function updated_messages( $messages ) {
+//        global $post;
+//
+//        $link = '<a target="_blank" href="' . esc_url( get_permalink( $post->ID ) ) .'">' .  __( 'View', 'disciple_tools' ) . '</a>';
+//
+//        $messages[ $this->post_type ] = [
+//            0  => '', // Unused. Messages start at index 1.
+//            1  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ) ,
+//            2  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
+//            3  => sprintf( __( '%s deleted.', 'disciple_tools' ), $this->singular ),
+//            4  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
+//            /* translators: %s: date and time of the revision */
+//            5  => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+//            6  => sprintf( __( '%s published.', 'disciple_tools' ), $this->singular ) ,
+//            7  => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
+//            8  => sprintf( __( '%s submitted.', 'disciple_tools' ), $this->singular ) ,
+//            9  => sprintf(
+//                __( '%1$s scheduled for: %2$s.', 'disciple_tools' ),
+//                $this->singular,
+//                '<strong>' . date_i18n( _x( 'M j, Y @ G:i', 'Publish box date format, see http://php.net/date', 'disciple_tools' ), strtotime( $post->post_date ) ) . '</strong>'
+//            ) ,
+//            10  => sprintf( __( '%s draft updated.', 'disciple_tools' ), $this->singular ) ,
+//        ];
+//
+//        return $messages;
+//    } // End updated_messages()
 
     /**
      * Setup the meta box.

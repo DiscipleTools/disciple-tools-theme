@@ -549,7 +549,7 @@ class Disciple_Tools_Users
 
     public static function create_user( $user_name, $user_email, $display_name, $corresponds_to_contact = null ){
         if ( !current_user_can( "create_users" ) ){
-            return new WP_Error( "create_user", __( "You don't have permissions to create users", 'disciple_tools' ), [ 'status', 401 ] );
+            return new WP_Error( "create_user", "You don't have permissions to create users", [ 'status', 401 ] );
         }
 
         $user_id = username_exists( $user_name );

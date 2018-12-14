@@ -285,7 +285,7 @@ class Disciple_Tools_People_Groups
      */
     public static function get_people_groups_compact( $search ) {
         if ( !current_user_can( "access_contacts" )){
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         $query_args = [
             'post_type' => 'peoplegroups',

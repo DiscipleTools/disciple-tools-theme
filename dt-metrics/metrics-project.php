@@ -99,7 +99,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'title_needs_training' => __( 'Needs Training', 'disciple_tools' ),
                 'title_fully_practicing' => __( 'Fully Practicing', 'disciple_tools' ),
                 'title_generations' => __( 'Group and Church Generations', 'disciple_tools' ),
-                'title_group_types' => __( 'Groups Types', 'disciple_tools' ),
+                'title_group_types' => __( 'Group Types', 'disciple_tools' ),
                 'title_group_tree' => __( 'Group Generation Tree', 'disciple_tools' ),
                 'title_baptism_tree' => __( 'Baptism Generation Tree', 'disciple_tools' ),
                 'title_coaching_tree' => __( 'Coaching Generation Tree', 'disciple_tools' ),

@@ -503,7 +503,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                     </table>
 
                                     <div class="alert alert-box" style="display:none;" id="alert">
-                                        <strong><?php esc_html_e( 'Oh snap!', 'disciple_tools' ) ?></strong>
+                                        <strong><?php echo esc_html( 'Oh snap!' ) ?></strong>
                                     </div>
 
                                     <button class="button" type="submit"><?php esc_html_e( 'Save', 'disciple_tools' )?></button>

@@ -176,8 +176,8 @@ else {
             /**
              * User Groups & Multi Roles
              */
-            require_once( get_template_directory() . '/dt-core/admin/user-groups/class-user-taxonomy.php' );
-            require_once( get_template_directory() . '/dt-core/admin/user-groups/user-groups-taxonomies.php' );
+//            require_once( get_template_directory() . '/dt-core/admin/user-groups/class-user-taxonomy.php' );
+//            require_once( get_template_directory() . '/dt-core/admin/user-groups/user-groups-taxonomies.php' );
             require_once( get_template_directory() . '/dt-core/admin/multi-role/multi-role.php' );
             $this->multi = Disciple_Tools_Multi_Roles::instance();
 
@@ -187,8 +187,8 @@ else {
             require_once( get_template_directory() . '/dt-assets/functions/theme-support.php' ); // Theme support options
             require_once( get_template_directory() . '/dt-assets/functions/cleanup.php' ); // WP Head and other cleanup functions
             require_once( get_template_directory() . '/dt-assets/functions/enqueue-scripts.php' ); // Register scripts and stylesheets
-            require_once( get_template_directory() . '/dt-assets/functions/sidebar.php' ); // Register sidebars/widget areas
-            require_once( get_template_directory() . '/dt-assets/functions/page-navi.php' ); // Replace 'older/newer' post links with numbered navigation
+//            require_once( get_template_directory() . '/dt-assets/functions/sidebar.php' ); // Register sidebars/widget areas
+//            require_once( get_template_directory() . '/dt-assets/functions/page-navi.php' ); // Replace 'older/newer' post links with numbered navigation
             require_once( get_template_directory() . '/dt-assets/functions/login.php' ); // Customize the WordPress login menu
             require_once( get_template_directory() . '/dt-assets/functions/menu.php' ); // Register menus and menu walkers
             require_once( get_template_directory() . '/dt-assets/functions/details-bar.php' ); // Breadcrumbs bar
@@ -260,7 +260,6 @@ else {
              * @service    Post to Post connections
              * @service    User groups via taxonomies
              */
-            require_once( get_template_directory() . '/dt-core/class-taxonomy.php' );
 
             require_once( get_template_directory() . '/dt-core/admin/site-link-post-type.php' );
             Site_Link_System::instance( 100, 'dashicons-admin-links' );
@@ -442,7 +441,7 @@ else {
          * @since  0.1.0
          */
         public function __clone() {
-            wp_die( esc_html__( "Cheatin' huh?" ), __FUNCTION__ );
+            wp_die( esc_html( "Cheatin' huh?" ), __FUNCTION__ );
         } // End __clone()
 
         /**
@@ -452,7 +451,7 @@ else {
          * @since  0.1.0
          */
         public function __wakeup() {
-            wp_die( esc_html__( "Cheatin' huh?" ), __FUNCTION__ );
+            wp_die( esc_html( "Cheatin' huh?" ), __FUNCTION__ );
         } // End __wakeup()
 
     } // End Class
@@ -522,7 +521,7 @@ function dt_theme_admin_notice_required_php_version() {
     <div class="notice notice-error">
         <p><?php esc_html_e( 'Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:', 'disciple_tools' );
             echo esc_html( phpversion() );
-            esc_html_e( ' Please upgrade PHP or uninstall this theme', "disciple_tools" ); ?></p>
+            esc_html_e( 'Please upgrade PHP or uninstall this theme', "disciple_tools" ); ?></p>
     </div>
     <?php
 }

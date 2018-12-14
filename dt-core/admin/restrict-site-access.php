@@ -30,7 +30,7 @@ add_filter( 'the_content_feed', 'dt_remove_filtered_feed', 999 );
 add_filter( 'the_excerpt_rss', 'dt_remove_filtered_feed', 999 );
 add_filter( 'comment_text_rss', 'dt_remove_filtered_feed', 999 );
 function dt_remove_filtered_feed() {
-    return esc_html__( 'Feed restricted.' );
+    return 'Feed restricted.';
 }
 
 /**
@@ -44,7 +44,7 @@ add_action( 'do_feed_atom', 'dt_remove_action_feed', 1 );
 add_action( 'do_feed_rss2_comments', 'dt_remove_action_feed', 1 );
 add_action( 'do_feed_atom_comments', 'dt_remove_action_feed', 1 );
 function dt_remove_action_feed() {
-    wp_die( esc_html__( 'Feed restricted.' ) );
+    wp_die( 'Feed restricted.' );
 }
 
 /**

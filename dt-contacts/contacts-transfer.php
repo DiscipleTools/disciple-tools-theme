@@ -92,7 +92,8 @@ class Disciple_Tools_Contacts_Transfer
 
                 <?php if ( $foreign_key_exists ) : ?>
                 <div class="cell" id="transfer-warning">
-                    <h6><?php esc_html_e( 'Already transfered to' ) ?> <?php echo esc_html( $site_title ) ?></h6>
+
+                    <h6><?php echo sprintf( esc_html__( 'Already transfered to %s' ), esc_html( $site_title ) ) ?></h6>
                     <p><?php esc_html_e( 'NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?', 'disciple_tools' ) ?></p>
                     <p><button type="button" onclick="jQuery('#transfer-form').show();jQuery('#transfer-warning').hide();" class="button"><?php esc_html_e( 'Override and Continue', "disciple_tools" ) ?></button></p>
                 </div>

@@ -458,7 +458,7 @@ class Disciple_Tools_Roles
         );
 
         add_role(
-            'editor', __( 'Editor' ),
+            'editor', 'Editor',
             [
                 'delete_others_posts'    => true,
                 'delete_pages'           => true,
@@ -488,7 +488,7 @@ class Disciple_Tools_Roles
             ]
         );
         add_role(
-            'author', __( 'Author' ),
+            'author', 'Author',
             [
                 'delete_posts'           => true,
                 'delete_published_posts' => true,
@@ -501,7 +501,7 @@ class Disciple_Tools_Roles
         );
 
         add_role(
-            'contributor', __( 'Contributor' ),
+            'contributor', 'Contributor',
             [
                 'delete_posts' => true,
                 'edit_posts'   => true,

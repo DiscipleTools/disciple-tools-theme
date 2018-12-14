@@ -402,7 +402,8 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            <br><button type="button" onclick="jQuery('#add_channel').toggle();" class="button"><?php esc_html_e( "Add new channel", 'disciple_tools' ) ?></button>
+            <br><button type="button" onclick="jQuery('#add_channel').toggle();" class="button">
+                <?php esc_html_x( "Add new channel", 'communication channel (phone, email, facebook)', 'disciple_tools' ) ?></button>
             <button type="submit" class="button" style="float:right;">
                 <?php esc_html_e( "Save", 'disciple_tools' ) ?>
             </button>
