@@ -333,7 +333,8 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
               ID as id,
               post_title as name,
               p2p_type,
-              b.meta_value as type
+              b.meta_value as type,
+              IF( c.meta_value, true, false) as is_user
             FROM $wpdb->p2p
               INNER JOIN $wpdb->posts
                 ON $wpdb->p2p.p2p_from=$wpdb->posts.ID
@@ -344,15 +345,23 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
               LEFT JOIN $wpdb->postmeta as b
                 ON b.post_id=$wpdb->p2p.p2p_from
                    AND b.meta_key = 'group_type'
+              LEFT JOIN wp_postmeta as c
+                ON c.post_id=wp_p2p.p2p_from
+                   AND c.meta_key = 'corresponds_to_user'
             WHERE p2p_to = %s
             ORDER BY post_title ASC
         ", $id ), ARRAY_A );
 
         $location_with_connections['total_contacts'] = 0;
         $location_with_connections['total_groups'] = 0;
+        $location_with_connections['total_workers'] = 0;
         if ( ! empty( $connections ) ) {
             foreach ( $connections as $connection ) {
-                if ( $connection['p2p_type'] === 'contacts_to_locations' ) {
+                if ( $connection['is_user'] ) {
+                    $location_with_connections['workers'][] = $connection;
+                    $location_with_connections['total_workers']++;
+                }
+                else if ( $connection['p2p_type'] === 'contacts_to_locations' ) {
                     $location_with_connections['contacts'][] = $connection;
                     $location_with_connections['total_contacts']++;
                 } else {
