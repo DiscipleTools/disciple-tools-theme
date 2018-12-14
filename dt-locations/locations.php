@@ -330,26 +330,26 @@ class Disciple_Tools_Locations extends Disciple_Tools_Posts
 
         $connections = $wpdb->get_results( $wpdb->prepare( "
             SELECT
-              ID as id,
-              post_title as name,
-              p2p_type,
+              d.ID as id,
+              d.post_title as name,
+              a.p2p_type,
               b.meta_value as type,
               IF( c.meta_value, true, false) as is_user
-            FROM $wpdb->p2p
-              INNER JOIN $wpdb->posts
-                ON $wpdb->p2p.p2p_from=$wpdb->posts.ID
-              JOIN $wpdb->postmeta as a
-                ON a.post_id=$wpdb->p2p.p2p_from
-                   AND ( meta_key = 'overall_status' OR meta_key = 'group_status' )
-                   AND meta_value = 'active'
+            FROM $wpdb->p2p a
+              INNER JOIN $wpdb->posts as d
+                ON a.p2p_from=d.ID
+              JOIN $wpdb->postmeta as e
+                ON e.post_id=a.p2p_from
+                   AND ( e.meta_key = 'overall_status' OR e.meta_key = 'group_status' )
+                   AND e.meta_value = 'active'
               LEFT JOIN $wpdb->postmeta as b
-                ON b.post_id=$wpdb->p2p.p2p_from
+                ON b.post_id=a.p2p_from
                    AND b.meta_key = 'group_type'
-              LEFT JOIN wp_postmeta as c
-                ON c.post_id=wp_p2p.p2p_from
+              LEFT JOIN $wpdb->postmeta as c
+                ON c.post_id=a.p2p_from
                    AND c.meta_key = 'corresponds_to_user'
-            WHERE p2p_to = %s
-            ORDER BY post_title ASC
+            WHERE a.p2p_to = %s
+            ORDER BY d.post_title ASC
         ", $id ), ARRAY_A );
 
         $location_with_connections['total_contacts'] = 0;
