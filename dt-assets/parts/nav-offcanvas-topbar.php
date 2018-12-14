@@ -43,6 +43,15 @@
                         <span dir="auto"><?php echo esc_html( wp_get_current_user()->display_name ); ?></span>
                     </a>
                 </li>
+                <li class="has-submenu center-items">
+                    <button>
+                        <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add.svg" ?>" style="width:21px;">
+                    </button>
+                    <ul class="submenu menu vertical">
+                        <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'contacts/new'; ?>"><?php esc_html_e( 'New Contact', 'disciple_tools' )?></a></li>
+                        <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'groups/new'; ?>"><?php esc_html_e( 'New Group', 'disciple_tools' )?></a></li>
+                    </ul>
+                </li>
                 <li class="image-menu-nav">
                     <a href="<?php echo esc_url( site_url( '/notifications' ) ); ?>">
                         <img title="<?php esc_html_e( "Notifications" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
