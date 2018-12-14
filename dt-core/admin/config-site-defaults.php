@@ -661,9 +661,11 @@ function dt_custom_dir_attr( $lang ){
 
     $current_user = wp_get_current_user();
     $user_language = $current_user->locale;
-    $dir = _x( 'text direction', 'either rtl or ltr', 'disciple_tools' );
-    if ( $dir === 'text direction' || !$dir || empty( $dir ) ){
+    $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
+    if ( $dir === 'ltr' || $dir === 'text direction' || !$dir || empty( $dir ) ){
         $dir = "ltr";
+    } else {
+        $dir = "rtl";
     }
     $dir_attr = 'dir="' . $dir . '"';
     return 'lang="' . $user_language .'" ' .$dir_attr;

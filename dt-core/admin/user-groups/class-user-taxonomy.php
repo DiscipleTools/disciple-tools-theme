@@ -360,7 +360,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             unset( $columns['posts'] );
 
             // Add the "Users" column
-            $columns['users'] = esc_html__( 'Users', 'disciple-tools-user-groups' );
+            $columns['users'] = esc_html__( 'Users', 'disciple_tools' );
 
             // Return modified columns
             return $columns;
@@ -422,7 +422,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             if ( !isset( $GLOBALS['disciple_tools_taxonomies'] ) ) : ?>
 
                 <h3 id="<?php echo esc_html( $this->taxonomy ); ?>">
-                    <?php esc_html_e( 'Relationships', 'disciple-tools-user-groups' ); ?>
+                    <?php esc_html_e( 'Relationships', 'disciple_tools' ); ?>
                 </h3>
 
                 <?php
@@ -470,15 +470,15 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                 <tr>
                     <td id="cb" class="manage-column column-cb check-column">
                         <label class="screen-reader-text"
-                               for="cb-select-all-1"><?php esc_html_e( 'Select All', 'disciple-tools-user-groups' ); ?></label>
+                               for="cb-select-all-1"><?php esc_html_e( 'Select All', 'disciple_tools' ); ?></label>
                         <input id="cb-select-all-1" type="checkbox">
                     </td>
                     <th scope="col"
-                        class="manage-column column-name column-primary"><?php esc_html_e( 'Name', 'disciple-tools-user-groups' ); ?></th>
+                        class="manage-column column-name column-primary"><?php esc_html_e( 'Name', 'disciple_tools' ); ?></th>
                     <th scope="col"
-                        class="manage-column column-description"><?php esc_html_e( 'Description', 'disciple-tools-user-groups' ); ?></th>
+                        class="manage-column column-description"><?php esc_html_e( 'Description', 'disciple_tools' ); ?></th>
                     <th scope="col"
-                        class="manage-column column-users"><?php esc_html_e( 'Users', 'disciple-tools-user-groups' ); ?></th>
+                        class="manage-column column-users"><?php esc_html_e( 'Users', 'disciple_tools' ); ?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -541,15 +541,15 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                 <tr>
                     <td class="manage-column column-cb check-column">
                         <label class="screen-reader-text"
-                               for="cb-select-all-2"><?php esc_html_e( 'Select All', 'disciple-tools-user-groups' ); ?></label>
+                               for="cb-select-all-2"><?php esc_html_e( 'Select All', 'disciple_tools' ); ?></label>
                         <input id="cb-select-all-2" type="checkbox">
                     </td>
                     <th scope="col"
-                        class="manage-column column-name column-primary"><?php esc_html_e( 'Name', 'disciple-tools-user-groups' ); ?></th>
+                        class="manage-column column-name column-primary"><?php esc_html_e( 'Name', 'disciple_tools' ); ?></th>
                     <th scope="col"
-                        class="manage-column column-description"><?php esc_html_e( 'Description', 'disciple-tools-user-groups' ); ?></th>
+                        class="manage-column column-description"><?php esc_html_e( 'Description', 'disciple_tools' ); ?></th>
                     <th scope="col"
-                        class="manage-column column-users"><?php esc_html_e( 'Users', 'disciple-tools-user-groups' ); ?></th>
+                        class="manage-column column-users"><?php esc_html_e( 'Users', 'disciple_tools' ); ?></th>
                 </tr>
                 </tfoot>
             </table>
@@ -575,7 +575,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                 $args = [ $tax->name => $term->slug ];
                 $users = admin_url( 'users.php' );
                 $url = add_query_arg( $args, $users );
-                $actions[] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'View', 'disciple-tools-user-groups' ) . '</a>';
+                $actions[] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'View', 'disciple_tools' ) . '</a>';
             }
 
             // Edit term
@@ -588,7 +588,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                 ];
                 $edit_tags = admin_url( 'edit-tags.php' );
                 $url = add_query_arg( $args, $edit_tags );
-                $actions[] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Edit', 'disciple-tools-user-groups' ) . '</a>';
+                $actions[] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Edit', 'disciple_tools' ) . '</a>';
             }
 
             // Filter
@@ -657,22 +657,22 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                     'menu_name'                  => $this->tax_plural,
                     'name'                       => $this->tax_plural,
                     'singular_name'              => $this->tax_singular,
-                    'search_items'               => sprintf( __( 'Search %s', 'disciple-tools-user-groups' ), $this->tax_plural ),
-                    'popular_items'              => sprintf( __( 'Popular %s', 'disciple-tools-user-groups' ), $this->tax_plural ),
-                    'all_items'                  => sprintf( __( 'All %s', 'disciple-tools-user-groups' ), $this->tax_plural ),
-                    'parent_item'                => sprintf( __( 'Parent %s', 'disciple-tools-user-groups' ), $this->tax_singular ),
-                    'parent_item_colon'          => sprintf( __( 'Parent %s:', 'disciple-tools-user-groups' ), $this->tax_singular ),
-                    'edit_item'                  => sprintf( __( 'Edit %s', 'disciple-tools-user-groups' ), $this->tax_singular ),
-                    'view_item'                  => sprintf( __( 'View %s', 'disciple-tools-user-groups' ), $this->tax_singular ),
-                    'update_item'                => sprintf( __( 'Update %s', 'disciple-tools-user-groups' ), $this->tax_singular ),
-                    'add_new_item'               => sprintf( __( 'Add New %s', 'disciple-tools-user-groups' ), $this->tax_singular ),
-                    'new_item_name'              => sprintf( __( 'New %s Name', 'disciple-tools-user-groups' ), $this->tax_singular ),
-                    'separate_items_with_commas' => sprintf( __( 'Separate %s with commas', 'disciple-tools-user-groups' ), $this->tax_plural_low ),
-                    'add_or_remove_items'        => sprintf( __( 'Add or remove %s', 'disciple-tools-user-groups' ), $this->tax_plural_low ),
-                    'choose_from_most_used'      => sprintf( __( 'Choose from most used %s', 'disciple-tools-user-groups' ), $this->tax_plural_low ),
-                    'not_found'                  => sprintf( __( 'No %s found', 'disciple-tools-user-groups' ), $this->tax_plural_low ),
-                    'no_item'                    => sprintf( __( 'No %s', 'disciple-tools-user-groups' ), $this->tax_singular ),
-                    'no_items'                   => sprintf( __( 'No %s', 'disciple-tools-user-groups' ), $this->tax_plural_low ),
+                    'search_items'               => sprintf( __( 'Search %s', 'disciple_tools' ), $this->tax_plural ),
+                    'popular_items'              => sprintf( __( 'Popular %s', 'disciple_tools' ), $this->tax_plural ),
+                    'all_items'                  => sprintf( __( 'All %s', 'disciple_tools' ), $this->tax_plural ),
+                    'parent_item'                => sprintf( __( 'Parent %s', 'disciple_tools' ), $this->tax_singular ),
+                    'parent_item_colon'          => sprintf( __( 'Parent %s:', 'disciple_tools' ), $this->tax_singular ),
+                    'edit_item'                  => sprintf( __( 'Edit %s', 'disciple_tools' ), $this->tax_singular ),
+                    'view_item'                  => sprintf( __( 'View %s', 'disciple_tools' ), $this->tax_singular ),
+                    'update_item'                => sprintf( __( 'Update %s', 'disciple_tools' ), $this->tax_singular ),
+                    'add_new_item'               => sprintf( __( 'Add New %s', 'disciple_tools' ), $this->tax_singular ),
+                    'new_item_name'              => sprintf( __( 'New %s Name', 'disciple_tools' ), $this->tax_singular ),
+                    'separate_items_with_commas' => sprintf( __( 'Separate %s with commas', 'disciple_tools' ), $this->tax_plural_low ),
+                    'add_or_remove_items'        => sprintf( __( 'Add or remove %s', 'disciple_tools' ), $this->tax_plural_low ),
+                    'choose_from_most_used'      => sprintf( __( 'Choose from most used %s', 'disciple_tools' ), $this->tax_plural_low ),
+                    'not_found'                  => sprintf( __( 'No %s found', 'disciple_tools' ), $this->tax_plural_low ),
+                    'no_item'                    => sprintf( __( 'No %s', 'disciple_tools' ), $this->tax_singular ),
+                    'no_items'                   => sprintf( __( 'No %s', 'disciple_tools' ), $this->tax_plural_low ),
                 ]
             );
         }
@@ -736,8 +736,8 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             // Add to bulk actions array
             if ( !empty( $terms ) ) {
                 foreach ( $terms as $term ) {
-                    $actions[ "add-{$term->slug}-{$this->taxonomy}" ] = sprintf( esc_html__( 'Add to %1$s %2$s', 'disciple-tools-user-groups' ), $term->name, $tax->labels->singular_name );
-                    $actions[ "remove-{$term->slug}-{$this->taxonomy}" ] = sprintf( esc_html__( 'Remove from %1$s %2$s', 'disciple-tools-user-groups' ), $term->name, $tax->labels->singular_name );
+                    $actions[ "add-{$term->slug}-{$this->taxonomy}" ] = sprintf( esc_html_x( 'Add to %1$s %2$s', 'Add to team1 team', 'disciple_tools' ), $term->name, $tax->labels->singular_name );
+                    $actions[ "remove-{$term->slug}-{$this->taxonomy}" ] = sprintf( esc_html_x( 'Remove from %1$s %2$s', 'Remove from team1 team', 'disciple_tools' ), $term->name, $tax->labels->singular_name );
                 }
             }
 
@@ -892,8 +892,8 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
 
             // Add/remove
             $text = ( 'add' === $_REQUEST['action_type'] )
-                ? sprintf( _n( '%s user added.', '%s users added.', $count, 'disciple-tools-user-groups' ), number_format_i18n( $count ) )
-                : sprintf( _n( '%s user removed.', '%s users removed.', $count, 'disciple-tools-user-groups' ), number_format_i18n( $count ) )
+                ? sprintf( _n( '%s user added.', '%s users added.', $count, 'disciple_tools' ), number_format_i18n( $count ) )
+                : sprintf( _n( '%s user removed.', '%s users removed.', $count, 'disciple_tools' ), number_format_i18n( $count ) )
 
             // Output message
             ?>
@@ -902,7 +902,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                 echo esc_html( $text );
             ?>
                 <button type="button" class="notice-dismiss"><span
-                        class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'disciple-tools-user-groups' ); ?></span>
+                        class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'disciple_tools' ); ?></span>
                 </button>
             </p></div><?php
         }
@@ -943,22 +943,22 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
 
                 <div id="<?php echo esc_attr( $this->taxonomy ); ?>-header">
                     <h1>
-                        <?php esc_html_e( 'Users', 'disciple-tools-user-groups' ); ?>
+                        <?php esc_html_e( 'Users', 'disciple_tools' ); ?>
 
                         <?php if ( current_user_can( 'create_users' ) ) : ?>
 
                             <a href="<?php echo esc_url( admin_url( 'user-new.php' ) ); ?>"
-                               class="page-title-action"><?php echo esc_html_x( 'Add New', 'user', 'disciple-tools-user-groups' ); ?></a>
+                               class="page-title-action"><?php echo esc_html_x( 'Add New', 'user', 'disciple_tools' ); ?></a>
 
                         <?php elseif ( is_multisite() && current_user_can( 'promote_users' ) ) : ?>
 
                             <a href="<?php echo esc_url( admin_url( 'user-new.php' ) ); ?>"
-                               class="page-title-action"><?php echo esc_html_x( 'Add Existing', 'user', 'disciple-tools-user-groups' ); ?></a>
+                               class="page-title-action"><?php echo esc_html_x( 'Add Existing', 'user', 'disciple_tools' ); ?></a>
 
                         <?php endif; ?>
 
                         <span
-                            class="subtitle"><?php printf( esc_html__( 'Viewing users of %1$s: %2$s', 'disciple-tools-user-groups' ), esc_html( $this->tax_singular_low ), '<a href="' . esc_url( $url ) . '">' . esc_html( $terms[ $viewing ]->name ) . '</a>' ); ?></span>
+                            class="subtitle"><?php printf( esc_html__( 'Viewing users of %1$s: %2$s', 'disciple_tools' ), esc_html( $this->tax_singular_low ), '<a href="' . esc_url( $url ) . '">' . esc_html( $terms[ $viewing ]->name ) . '</a>' ); ?></span>
                     </h1>
                     <?php
                     // @phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped

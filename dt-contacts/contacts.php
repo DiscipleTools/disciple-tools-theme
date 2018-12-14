@@ -77,7 +77,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $error = new WP_Error();
         foreach ( $query_pagination_args as $key => $value ) {
             if ( !in_array( $key, $allowed_keys ) ) {
-                $error->add( __FUNCTION__, sprintf( __( "Key %s was an unexpected pagination key" ), $key ) );
+                $error->add( __FUNCTION__, sprintf( "Key %s was an unexpected pagination key", $key ) );
             }
         }
         if ( count( $error->errors ) ) {
@@ -160,18 +160,18 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function create_contact( array $fields = [], $check_permissions = true, $silent = false ) {
         if ( $check_permissions && !current_user_can( 'create_contacts' ) ) {
-            return new WP_Error( __FUNCTION__, __( "You may not publish a contact" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You may not publish a contact", [ 'status' => 403 ] );
         }
         $initial_fields = $fields;
 
         $continue = apply_filters( "dt_create_contact_check_proceed", true, $fields );
         if ( !$continue ){
-            return new WP_Error( __FUNCTION__, __( "Could not create this contact. Maybe it already exists" ), [ 'status' => 409 ] );
+            return new WP_Error( __FUNCTION__, "Could not create this contact. Maybe it already exists", [ 'status' => 409 ] );
         }
 
         //required fields
         if ( !isset( $fields["title"] ) ) {
-            return new WP_Error( __FUNCTION__, __( "Contact needs a title" ), [ 'fields' => $fields ] );
+            return new WP_Error( __FUNCTION__, "Contact needs a title", [ 'fields' => $fields ] );
         }
 
         //make sure the assigned to is in the right format (user-1)
@@ -181,7 +181,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 if ( $user ) {
                     $fields["assigned_to"] = $user->ID;
                 } else {
-                    return new WP_Error( __FUNCTION__, __( "Unrecognized user" ), $fields["assigned_to"] );
+                    return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
                 }
             }
             if ( is_numeric( $fields["assigned_to"] ) ||
@@ -212,7 +212,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $bad_fields = self::check_for_invalid_fields( $fields );
         if ( !empty( $bad_fields ) ) {
-            return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), [ 'bad_fields' => $bad_fields ] );
+            return new WP_Error( __FUNCTION__, "These fields do not exist", [ 'bad_fields' => $bad_fields ] );
         }
 
         $current_roles = wp_get_current_user()->roles;
@@ -372,7 +372,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         foreach ( $fields as $field_key => $field ){
             if ( isset( self::$contact_fields[$field_key] ) && self::$contact_fields[$field_key]["type"] === "multi_select" ){
                 if ( !isset( $field["values"] )){
-                    return new WP_Error( __FUNCTION__, __( "missing values field on:" ) . " " . $field_key );
+                    return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key );
                 }
                 if ( isset( $field["force_values"] ) && $field["force_values"] === true ){
                     delete_post_meta( $contact_id, $field_key );
@@ -388,7 +388,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             }
                         }
                     } else {
-                        return new WP_Error( __FUNCTION__, __( "Something wrong on field:" ) . " " . $field_key );
+                        return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key );
                     }
                 }
             }
@@ -420,7 +420,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             foreach ( $values as $field ){
                 if ( isset( $field["delete"] ) && $field["delete"] == true){
                     if ( !isset( $field["key"] )){
-                        return new WP_Error( __FUNCTION__, __( "missing key on:" ) . " " . $details_key );
+                        return new WP_Error( __FUNCTION__, "missing key on: " . $details_key );
                     }
                     //delete field
                     $potential_error = self::delete_contact_field( $contact_id, $field["key"] );
@@ -433,7 +433,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $potential_error = self::add_contact_method( $contact_id, $field["key"], $field["value"], $field, false );
 
                 } else {
-                    return new WP_Error( __FUNCTION__, __( "Is not an array or missing value on:" ) . " " . $details_key );
+                    return new WP_Error( __FUNCTION__, "Is not an array or missing value on: " . $details_key );
                 }
                 if ( isset( $potential_error ) && is_wp_error( $potential_error ) ) {
                     return $potential_error;
@@ -450,7 +450,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         foreach ( self::$contact_connection_types as $connection_type ){
             if ( isset( $fields[$connection_type] ) ){
                 if ( !isset( $fields[$connection_type]["values"] )){
-                    return new WP_Error( __FUNCTION__, __( "Missing values field on connection:" ) . " " . $connection_type, [ 'status' => 500 ] );
+                    return new WP_Error( __FUNCTION__, "Missing values field on connection: " . $connection_type, [ 'status' => 500 ] );
                 }
                 $existing_connections = [];
                 if ( isset( $existing_contact[$connection_type] ) ){
@@ -501,7 +501,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             }
                         }
                     } else {
-                         return new WP_Error( __FUNCTION__, __( "Cannot determine target on connection:" ) . " " . $connection_type, [ 'status' => 500 ] );
+                         return new WP_Error( __FUNCTION__, "Cannot determine target on connection: " . $connection_type, [ 'status' => 500 ] );
                     }
                 }
                 //check for deleted connections
@@ -556,7 +556,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function update_contact( int $contact_id, array $fields, $check_permissions = true, bool $silent = false ) {
 
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         $initial_fields = $fields;
         $initial_keys = array_keys( $fields );
@@ -567,14 +567,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         if ( !$post ) {
-            return new WP_Error( __FUNCTION__, __( "Contact does not exist" ) );
+            return new WP_Error( __FUNCTION__, "Contact does not exist" );
         }
 
 
         // don't try to update fields that don't exist
         $bad_fields = self::check_for_invalid_fields( $fields, $contact_id );
         if ( !empty( $bad_fields ) ) {
-            return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), [ 'bad_fields' => $bad_fields ] );
+            return new WP_Error( __FUNCTION__, "These fields do not exist", [ 'bad_fields' => $bad_fields ] );
         }
         $existing_contact = self::get_contact( $contact_id, false );
 
@@ -617,7 +617,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 if ( $user ) {
                     $fields["assigned_to"] = $user->ID;
                 } else {
-                    return new WP_Error( __FUNCTION__, __( "Unrecognized user" ), $fields["assigned_to"] );
+                    return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
                 }
             }
             //make sure the assigned to is in the right format (user-1)
@@ -977,7 +977,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function add_contact_detail( int $contact_id, string $key, string $value, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         if ( strpos( $key, "new-" ) === 0 ) {
             $type = explode( '-', $key )[1];
@@ -1030,7 +1030,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     public static function add_contact_method( int $contact_id, string $key, string $value, array $field, bool $check_permissions ) {
         if ( $check_permissions && ! self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         if ( strpos( $key, "new-" ) === 0 ) {
             $type = explode( '-', $key )[1];
@@ -1064,7 +1064,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function update_contact_method( int $contact_id, string $key, array $values, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         if ( ( strpos( $key, "contact_" ) === 0 || strpos( $key, "address_" ) === 0 ) &&
             strpos( $key, "_details" ) === false
@@ -1105,7 +1105,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function remove_contact_connection( int $contact_id, string $key, string $value, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         if ( $key === "locations" ) {
             return self::remove_location_from_contact( $contact_id, $value );
@@ -1139,7 +1139,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function delete_contact_field( int $contact_id, string $key, $check_permissions = true ){
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id )){
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 401 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 401 ] );
         }
         delete_post_meta( $contact_id, $key .'_details' );
         return delete_post_meta( $contact_id, $key );
@@ -1157,7 +1157,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_contact( int $contact_id, $check_permissions = true ) {
         if ( $check_permissions && !self::can_view( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "No permissions to read contact", [ 'status' => 403 ] );
         }
 
         $contact = get_post( $contact_id );
@@ -1363,7 +1363,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
             return apply_filters( 'dt_contact_fields_post_filter', $fields );
         } else {
-            return new WP_Error( __FUNCTION__, __( "No contact found with ID" ), [ 'contact_id' => $contact_id ] );
+            return new WP_Error( __FUNCTION__, "No contact found with ID", [ 'contact_id' => $contact_id ] );
         }
     }
 
@@ -1512,13 +1512,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     public static function copy_comments( int $master_id, int $non_master_id, $check_permissions = true ){
         if ( $check_permissions && ( !self::can_update( 'contacts', $master_id ) || !self::can_update( 'contacts', $non_master_id ) )) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         $comments = self::get_comments( $non_master_id );
         foreach ( $comments as $comment ){
             $comment->comment_post_ID = $master_id;
             if ( $comment->comment_type === "comment" ){
-                $comment->comment_content = __( "(From Duplicate): ", "disciple_tools" ) . $comment->comment_content;
+                $comment->comment_content = sprintf( esc_html_x( '(From Duplicate): %s', 'duplicate comment', 'disciple_tools' ), $comment->comment_content );
             }
             if ( $comment->comment_type !== "duplicate" ){
                 wp_insert_comment( (array) $comment );
@@ -1555,7 +1555,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function revert_activity( $contact_id, $activity_id ){
         if ( !self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         $activity = self::get_single_activity( $contact_id, $activity_id );
         if ( empty( $activity->old_value ) ){
@@ -1581,7 +1581,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_user_contacts( int $user_id, bool $check_permissions = true, array $query_pagination_args = [] ) {
         if ( $check_permissions && !self::can_access( 'contacts' ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have access to these contacts", [ 'status' => 403 ] );
         }
 
         $query_args = [
@@ -1607,7 +1607,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_viewable_contacts( int $most_recent, bool $check_permissions = true ) {
         if ( $check_permissions && !self::can_access( 'contacts' ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have access to these contacts", [ 'status' => 403 ] );
         }
         $current_user = wp_get_current_user();
 
@@ -1996,10 +1996,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function delete_comment( int $contact_id, int $comment_id, bool $check_permissions = true ){
         $comment = get_comment( $comment_id );
         if ( $check_permissions && isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) {
-            return new WP_Error( __FUNCTION__, __( "You don't have permission to delete this comment" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You don't have permission to delete this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){
-            return new WP_Error( __FUNCTION__, __( "No comment found with id:" ) . ' ' . $comment_id, [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "No comment found with id: " . $comment_id, [ 'status' => 403 ] );
         }
         return wp_delete_comment( $comment_id );
     }
@@ -2007,10 +2007,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function update_comment( int $contact_id, int $comment_id, string $comment_content, bool $check_permissions = true ){
         $comment = get_comment( $comment_id );
         if ( $check_permissions && isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) {
-            return new WP_Error( __FUNCTION__, __( "You don't have permission to edit this comment" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You don't have permission to edit this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){
-            return new WP_Error( __FUNCTION__, __( "No comment found with id:" ) . ' ' . $comment_id, [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "No comment found with id: " . $comment_id, [ 'status' => 403 ] );
         }
         $comment = [
             "comment_content" => $comment_content,
@@ -2027,7 +2027,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function accept_contact( int $contact_id, bool $accepted ) {
         if ( !self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
 
         if ( $accepted ) {
@@ -2188,7 +2188,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     public static function get_duplicates_on_contact( $contact_id ){
         if ( !self::can_view_all( 'contacts' ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         $contact = self::get_contact( $contact_id );
         $all_ids = [];
@@ -2468,7 +2468,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function get_count_of_contacts( $user_id = null ) {
         global $wpdb;
         if ( !self::can_access( "contacts" ) ) {
-            return new WP_Error( __FUNCTION__, __( "Permission denied." ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "Permission denied.", [ 'status' => 403 ] );
         }
 
         $numbers = [];
@@ -2683,7 +2683,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function list_sources() {
         if ( !self::can_access( "contacts" ) ) {
-            return new WP_Error( __FUNCTION__, __( "Permission denied." ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "Permission denied.", [ 'status' => 403 ] );
         }
         global $wpdb;
         $source_labels = dt_get_option( 'dt_site_custom_lists' )['sources'];

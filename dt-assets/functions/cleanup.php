@@ -86,7 +86,7 @@ function dt_excerpt_more( $more ) {
     global $post;
 
     // edit here if you like
-    return '<a class="excerpt-read-more" href="' . get_permalink( $post->ID ) . '" title="' . __( 'Read', 'disciple_tools' ) . esc_html( get_the_title( $post->ID, 'disciple_tools' ) ) . '">' . __( '... Read more &raquo;', 'disciple_tools' ) . '</a>';
+    return '<a class="excerpt-read-more" href="' . get_permalink( $post->ID ) . '" title="' . __( 'Read', 'disciple_tools' ) . esc_html( get_the_title( $post->ID, 'disciple_tools' ) ) . '"> ... Read more &raquo; </a>';
 }
 
 /**

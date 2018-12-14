@@ -549,7 +549,7 @@ class Disciple_Tools_Users
 
     public static function create_user( $user_name, $user_email, $display_name, $corresponds_to_contact = null ){
         if ( !current_user_can( "create_users" ) ){
-            return new WP_Error( "create_user", __( "You don't have permissions to create users", 'disciple_tools' ), [ 'status', 401 ] );
+            return new WP_Error( "create_user", "You don't have permissions to create users", [ 'status', 401 ] );
         }
 
         $user_id = username_exists( $user_name );
@@ -568,7 +568,7 @@ class Disciple_Tools_Users
         }
         $user = get_user_by( 'id', $user_id );
         $user->display_name = $display_name;
-        $user->roles = [ "multiplier" ];
+        $user->set_role( "multiplier" );
         wp_update_user( $user );
         if ( $corresponds_to_contact ){
             update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );

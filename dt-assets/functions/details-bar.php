@@ -23,7 +23,7 @@ function dt_print_details_bar(
     ?>
 
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
-        <nav aria-label="<?php esc_attr_e( "You are here:" ); ?>" role="navigation"
+        <nav role="navigation"
              data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
              class="second-bar">
             <div class="container-width">

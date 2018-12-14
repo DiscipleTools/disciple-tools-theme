@@ -11,7 +11,7 @@ declare(strict_types=1);
 
     <div id="errors"> </div>
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
-        <nav aria-label="<?php esc_attr_e( "You are here:" ); ?>" role="navigation"
+        <nav role="navigation"
              data-sticky data-options="marginTop:3;" style="width:100%" data-top-anchor="1"
              class="second-bar">
             <div class="container-width center">
@@ -205,7 +205,7 @@ declare(strict_types=1);
                                         <strong><?php esc_html_e( "Range Start", 'disciple_tools' ) ?></strong>
                                         <button class="clear-date-picker" style="color:firebrick"
                                                 data-for="<?php echo esc_html( $field ) ?>_start">
-                                            <?php esc_html_e( "Clear", 'disciple_tools' ) ?></button>
+                                            <?php echo esc_html_x( "Clear", 'Clear/empty input', 'disciple_tools' ) ?></button>
                                         <input id="<?php echo esc_html( $field ) ?>_start"
                                                autocomplete="off"
                                                type="text" data-date-format='yy-mm-dd'
@@ -216,7 +216,7 @@ declare(strict_types=1);
                                         <button class="clear-date-picker"
                                                 style="color:firebrick"
                                                 data-for="<?php echo esc_html( $field ) ?>_end">
-                                            <?php esc_html_e( "Clear", 'disciple_tools' ) ?></button>
+                                            <?php echo esc_html_x( "Clear", 'Clear/empty input', 'disciple_tools' ) ?></button>
                                         <input id="<?php echo esc_html( $field ) ?>_end"
                                                autocomplete="off" type="text"
                                                data-date-format='yy-mm-dd'

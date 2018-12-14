@@ -248,7 +248,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                             }
                         }
                     } else {
-                        return new WP_Error( __FUNCTION__, "Something wrong on field:" . $field_key );
+                        return new WP_Error( __FUNCTION__, "Something went wrong on field:" . $field_key );
                     }
                 }
             }
@@ -820,7 +820,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function remove_group_connection( int $group_id, string $key, string $value, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have have permission for this", [ 'status' => 403 ] );
         }
         if ( $key === "locations" ) {
             return self::remove_location_from_group( $group_id, $value );
@@ -872,10 +872,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     public static function delete_comment( int $group_id, int $comment_id, bool $check_permissions = true ){
         $comment = get_comment( $comment_id );
         if ( $check_permissions && isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) {
-            return new WP_Error( __FUNCTION__, __( "You don't have permission to delete this comment" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You don't have permission to delete this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){
-            return new WP_Error( __FUNCTION__, __( "No comment found with id:" ) . ' ' . $comment_id, [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "No comment found with id: " . $comment_id, [ 'status' => 403 ] );
         }
         return wp_delete_comment( $comment_id );
     }
@@ -883,10 +883,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     public static function update_comment( int $group_id, int $comment_id, string $comment_content, bool $check_permissions = true ){
         $comment = get_comment( $comment_id );
         if ( $check_permissions && isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) {
-            return new WP_Error( __FUNCTION__, __( "You don't have permission to edit this comment" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You don't have permission to edit this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){
-            return new WP_Error( __FUNCTION__, __( "No comment found with id:" ) . ' ' . $comment_id, [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "No comment found with id: " . $comment_id, [ 'status' => 403 ] );
         }
         $comment = [
             "comment_content" => $comment_content,
@@ -953,12 +953,12 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function create_group( array $fields = [], $check_permissions = true ) {
         if ( $check_permissions && ! current_user_can( 'create_groups' ) ) {
-            return new WP_Error( __FUNCTION__, __( "You may not create a group" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You may not create a group", [ 'status' => 403 ] );
         }
         $initial_fields = $fields;
 
         if ( ! isset( $fields ["title"] ) ) {
-            return new WP_Error( __FUNCTION__, __( "Group needs a title" ), [ 'fields' => $fields ] );
+            return new WP_Error( __FUNCTION__, "Group needs a title", [ 'fields' => $fields ] );
         }
 
         if ( isset( $fields["assigned_to"] ) ) {
@@ -967,7 +967,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 if ( $user ) {
                     $fields["assigned_to"] = $user->ID;
                 } else {
-                    return new WP_Error( __FUNCTION__, __( "Unrecognized user" ), $fields["assigned_to"] );
+                    return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
                 }
             }
             //make sure the assigned to is in the right format (user-1)
@@ -979,7 +979,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         $allowed_fields = [ "parent_group_id", "created_from_contact_id" ];
         $bad_fields = self::check_for_invalid_fields( $fields, null, $allowed_fields );
         if ( !empty( $bad_fields ) ) {
-            return new WP_Error( __FUNCTION__, __( "One or more fields do not exist" ), [
+            return new WP_Error( __FUNCTION__, "One or more fields do not exist", [
                 'bad_fields' => $bad_fields,
                 'status' => 400
             ] );
@@ -1053,7 +1053,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     public static function get_group_default_filter_counts(){
         if ( !self::can_access( "groups" ) ) {
-            return new WP_Error( __FUNCTION__, __( "Permission denied." ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "Permission denied.", [ 'status' => 403 ] );
         }
         $user_id = get_current_user_id();
         global $wpdb;

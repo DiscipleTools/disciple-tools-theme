@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 if ( ! current_user_can( 'create_contacts' ) ) {
-    wp_die( esc_html__( "You do not have permission to publish contacts" ), "Permission denied", 403 );
+    wp_die( esc_html( "You do not have permission to publish contacts" ), "Permission denied", 403 );
 }
 
 get_header();

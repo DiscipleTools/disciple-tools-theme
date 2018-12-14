@@ -109,8 +109,8 @@ class Disciple_Tools_Metabox_Address
                 break;
             case 'groups':
                 $addresses = [
-                    "main"      => [ "label" => __( 'Main', 'disciple_tools' ) ],
-                    "alternate" => [ "label" => __( 'Alternate', 'disciple_tools' ) ],
+                    "main"      => [ "label" => _x( 'Main', 'Main address', 'disciple_tools' ) ],
+                    "alternate" => [ "label" => _x( 'Alternate', 'Alternate address', 'disciple_tools' ) ],
                 ];
 
                 return $addresses;

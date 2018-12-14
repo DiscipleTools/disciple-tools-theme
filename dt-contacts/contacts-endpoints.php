@@ -857,7 +857,7 @@ class Disciple_Tools_Contacts_Endpoints
         } else {
             return [
                 'status' => 'FAIL',
-                'error' => __( 'Missing required parameter', 'disciple_tools' ),
+                'error' => 'Missing required parameter'
             ];
         }
     }
