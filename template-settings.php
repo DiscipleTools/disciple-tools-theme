@@ -12,7 +12,8 @@ if ( isset( $_POST['user_update_nonce'] ) ) {
 
 /* Build variables for page */
 $dt_user = wp_get_current_user(); // Returns WP_User object
-$dt_user_meta = get_user_meta( get_current_user_id() ); // Full array of user meta data
+$dt_user_meta = get_user_meta( $dt_user->ID ); // Full array of user meta data
+$dt_user_contact_id = dt_get_associated_user_id( $dt_user->ID, 'user' );
 
 $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the site settings in the config area with the fields available in the user meta table.
 $dt_site_notification_defaults = dt_get_site_notification_defaults(); // Array of site default settings
@@ -63,7 +64,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 
                             <div class="small-12 medium-4 cell">
 
-                                <p><?php echo get_avatar( get_current_user_id(), '150' ); ?></p>
+                                <p><?php echo get_avatar( $dt_user->ID, '150' ); ?></p>
 
                                 <p>
                                     <strong><?php esc_html_e( 'Username', 'disciple_tools' )?></strong><br>
@@ -163,11 +164,11 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 
                                 <p><strong><?php esc_html_e( 'Locations', 'disciple_tools' )?></strong></p>
                                 <?php
-                                $dt_user_locations_list = dt_get_user_locations_list( get_current_user_id() );
+                                $dt_user_locations_list = dt_get_user_locations_list( $dt_user->ID, true );
                                 if ( $dt_user_locations_list ) {
                                     echo '<ul>';
                                     foreach ( $dt_user_locations_list as $dt_locations_list ) {
-                                        echo '<li><a href="' . esc_url( $dt_locations_list->guid ) . '">' . esc_html( $dt_locations_list->post_title ) . '</a></li>';
+                                        echo '<li>' . esc_html( $dt_locations_list['post_title'] ) . '</li>';
                                     }
                                     echo '</ul>';
                                 }
@@ -176,7 +177,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 
                                 <p><strong><?php esc_html_e( 'Teams', 'disciple_tools' )?></strong></p>
                                 <?php
-                                $dt_user_team_members_list = dt_get_user_team_members_list( get_current_user_id() );
+                                $dt_user_team_members_list = dt_get_user_team_members_list( $dt_user->ID );
                                 if ( $dt_user_team_members_list ) {
                                     foreach ( $dt_user_team_members_list as $dt_team_list ) {
                                         echo esc_html( $dt_team_list['team_name'] );
@@ -301,10 +302,9 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                         </div>
 
 
-                        <?php // TODO: Add scheduling and history of availability ?>
-                        <?php
-                        /*
-                        <!-- List of past, present, and future vacations scheduled
+                        <?php /**
+
+                        <!-- List of past, present, and future vacations scheduled -->
                         <p>
                             <strong>Schedule Away: </strong>
                         </p>
@@ -356,7 +356,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 
                     </div>
 
-                    <!-- Future development of availability
+                    <!-- Future development of availability -->
                 <div class="reveal" id="add-away" data-reveal>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
@@ -392,9 +392,10 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                     </div>
 
                 </div>
-                    End future development of availability -->
-                */
-                        ?>
+                 <!--   End future development of availability -->
+
+                */ ?>
+
 
                         <div class="reveal" id="edit-profile" data-reveal>
                             <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -411,7 +412,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                     <table class="table">
 
                                         <tr>
-                                            <td><?php echo get_avatar( get_current_user_id(), '32' ); ?></td>
+                                            <td><?php echo get_avatar( $dt_user->ID, '32' ); ?></td>
                                             <td>
                                                 <span data-tooltip data-click-open="true" class="top" tabindex="1" title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar) for user profiles. If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.' ) ?>">
                                                     <a href="http://gravatar.com" class="small"><?php esc_html_e( 'edit image on gravatar.com', 'zume' ) ?> <i class="fi-link"></i></a>
@@ -457,6 +458,12 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                             <td><label for="nickname"><span dir="auto"><?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' )?></span></label></td>
                                             <td><input type="text" class="profile-input" id="nickname" name="nickname" dir="auto"
                                                        value=" <?php echo esc_html( $dt_user->nickname ); ?>"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="nickname"><?php esc_html_e( 'Locations', 'disciple_tools' )?></label></td>
+                                            <td><?php esc_html_e( '(Edit on contact record)', 'disciple_tools' )?>
+                                                <a href="/contacts/<?php //@todo  ?>"><i class="fi-link"></i></a>
+                                            </td>
                                         </tr>
 
                                         <?php // site defined fields

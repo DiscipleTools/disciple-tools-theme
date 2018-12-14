@@ -182,6 +182,24 @@ function dt_get_site_default_user_fields(): array
 }
 
 /**
+ * Returns the corresponding id for either user or contact.
+ *
+ * @param        $id
+ * @param string $id_type
+ *
+ * @return bool|mixed
+ */
+function dt_get_associated_user_id( $id, $id_type = 'user' ) {
+    if ( $id_type === 'user' ) {
+        return get_user_meta( $id, 'wp_corresponds_to_contact', true );
+    } else if ( $id_type === 'contact' ) {
+        return get_post_meta( $id, 'corresponds_to_user', true );
+    } else {
+        return false;
+    }
+}
+
+/**
  * Echos user display name
  *
  * @param int $user_id
@@ -290,35 +308,46 @@ function dt_build_user_fields_display( array $usermeta ): array
 }
 
 /**
- * @param int $user_id
+ * Expects the contact id, but can be given the user id and look up the contact id.
  *
- * @return array|bool
+ * @param int  $id
+ * @param bool $is_user_id
+ *
+ * @return array|bool|null|object
  */
-function dt_get_user_locations_list( int $user_id ) {
+function dt_get_user_locations_list( int $id, $is_user_id = false ) {
     global $wpdb;
 
-    // get connected location ids to user
-    $location_ids = $wpdb->get_col(
-        $wpdb->prepare(
-            "SELECT p2p_from as location_id 
-                FROM  $wpdb->p2p 
-                WHERE p2p_to = %d 
-                  AND p2p_type = 'team_member_locations';",
-        $user_id )
-    );
-
-    // check if null return
-    if ( empty( $location_ids ) ) {
+    if ( $is_user_id ) {
+        $id = $wpdb->get_var( $wpdb->prepare( "
+          SELECT post_id 
+          FROM $wpdb->postmeta 
+          WHERE meta_key = 'corresponds_to_user' 
+          AND meta_value = %d",
+        $id ) );
+    }
+    if ( empty( $id ) ) {
         return false;
     }
 
-    // get location posts from connected array
-    $location_posts = new WP_Query( [
-        'post__in' => $location_ids,
-        'post_type' => 'locations'
-    ] );
-
-    return $location_posts->posts;
+    $locations = $wpdb->get_results(
+        $wpdb->prepare(
+            "SELECT
+                      a.p2p_to as location_id,
+                      b.post_title
+                    FROM  $wpdb->p2p as a
+                      JOIN $wpdb->posts as b
+                      ON a.p2p_to=b.ID
+                    WHERE a.p2p_from = %d
+                    AND a.p2p_type = 'contacts_to_locations'",
+        $id ), ARRAY_A
+    );
+    // check if null return
+    if ( empty( $locations ) ) {
+        return false;
+    } else {
+        return $locations;
+    }
 }
 
 /**

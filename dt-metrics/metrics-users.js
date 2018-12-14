@@ -34,12 +34,12 @@ function users_activity() {
                 <span class="section-subheader">${sourceData.translations.title_recent_activity}</span>
                 <div id="chart_line_logins" style="height:300px"></div>
             </div>
-            <div class="cell">
+            <div class="cell" style="display:none;">
             <hr>
                 <p><span class="section-subheader">${sourceData.translations.label_contacts_per_user}</span></p>
                 <div id="contacts_per_user" ></div>
             </div>
-            <div class="cell">
+            <div class="cell" style="display:none;">
                 <hr>
                 <div class="grid-x grid-padding-x">
                     <div class="cell medium-6">
@@ -85,21 +85,7 @@ function users_activity() {
     function drawContactsPerUser() {
         let chartData = google.visualization.arrayToDataTable( [
             ['Name', 'Total', 'Attempt Needed', 'Attempted', 'Established', 'Meeting Scheduled', 'Meeting Complete', 'Ongoing', 'Being Coached'],
-            ['Chris', 20, 4, 3, 0, 10, 5, 6, 7 ],
-            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
-            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
-            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
-            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
-            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
-            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
-            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
-            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
-            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
-            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
-            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
-            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
-            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
-            ['Kara', 10, 4, 3, 0, 10, 5, 6, 7 ],
+
         ] );
         let options = {
             chartArea: {
