@@ -198,10 +198,7 @@ class Disciple_Tools_Groups_Endpoints
                 $group_array['locations'][] = $location->post_title;
             }
             $group_array['leaders'] = [];
-            $group_array['member_count'] = 0;
-            foreach ( $group->members as $contact ) {
-                $group_array['member_count']++;
-            }
+            $group_array['member_count'] = $meta_fields["member_count"] ?? 0;
             foreach ( $group->leaders as $leader ){
                 $group_array['leaders'][] = [
                     'post_title' => $leader->post_title,

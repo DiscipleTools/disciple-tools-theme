@@ -256,7 +256,7 @@
       <td class="hide-for-small-only"><a href="<%- permalink %>"><%- post_title %></a></td>
       <td class="hide-for-small-only"><span class="group-status group-status--<%- group_status %>"><%- status %></span></td>
       <td class="hide-for-small-only"><span class="group-type group-type--<%- group_type %>"><%- type %></span></td>
-      <td class="hide-for-small-only" style="text-align: right"><%- member_count %></td>
+      <td class="hide-for-small-only" style="text-align: center"><%- member_count %></td>
       <td class="hide-for-small-only"><%= leader_links %></td>
       <td class="hide-for-small-only"><%- locations.join(", ") %></td>
       <!--<td><%- last_modified %></td>-->
