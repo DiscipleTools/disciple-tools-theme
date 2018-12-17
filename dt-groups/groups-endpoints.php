@@ -441,8 +441,11 @@ class Disciple_Tools_Groups_Endpoints
         );
     }
 
-    public function get_group_default_filter_counts(){
-        return Disciple_Tools_Groups::get_group_default_filter_counts();
+    public function get_group_default_filter_counts( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $tab = $params["tab"] ?? null;
+        $show_closed = isset( $params["closed"] ) && $params["closed"] == "true";
+        return Disciple_Tools_Groups::get_group_default_filter_counts( $tab, $show_closed );
     }
 
 }

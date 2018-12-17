@@ -1188,6 +1188,29 @@ CONTACTS
     }
 }
 
+
+#list-filter-tabs {
+    margin-top: 10px;
+    .is-active a {
+        background-color: #3f729b;
+        color:white;
+        &:focus {
+            background-color: #3f729b;
+            color: white;
+        }
+    }
+}
+
+
+.show-closed-switch {
+    display: inline-block;
+    .switch {
+        display: inline-block;
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
+}
+
 .social-details-options-button {
     vertical-align: middle;
     padding: 0 3px;
@@ -1805,7 +1828,9 @@ select#overall_status {
     .confirm-buttons {
         text-align: end;
     }
-
+    .grid-container {
+        padding: 0
+    }
 }
 
 @media screen and (min-width : 640px) {

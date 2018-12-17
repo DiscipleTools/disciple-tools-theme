@@ -401,6 +401,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'boolean',
             'default'     => false,
             'section'     => 'status',
+            'hidden'      => true
         ];
 
         $sources_default = [];

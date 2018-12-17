@@ -791,8 +791,11 @@ class Disciple_Tools_Contacts_Endpoints
         }
     }
 
-    public function get_contact_counts(){
-        return Disciple_Tools_Contacts::get_count_of_contacts();
+    public function get_contact_counts( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $tab = $params["tab"] ?? null;
+        $show_closed = isset( $params["closed"] ) && $params["closed"] == "true";
+        return Disciple_Tools_Contacts::get_count_of_contacts( $tab, $show_closed );
     }
 
     public function list_sources() {

@@ -166,7 +166,7 @@ class Disciple_Tools_Posts
         return false;
     }
 
-    public static function get_label_for_post_type( $post_type, $singular ){
+    public static function get_label_for_post_type( $post_type, $singular = false ){
         switch ( $post_type ) {
             case "contacts":
             case "contact":
@@ -396,7 +396,9 @@ class Disciple_Tools_Posts
                     }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "text"){
-                    $message = sprintf( _x( '%1$s changed to %2$s', 'field1 changed to: text', 'disciple_tools' ), $fields[$activity->meta_key]["name"], $activity->meta_value );
+                    if ( !empty( $activity->meta_value ) && !empty( $activity->old_value ) ){
+                        $message = sprintf( _x( '%1$s changed to %2$s', 'field1 changed to: text', 'disciple_tools' ), $fields[$activity->meta_key]["name"], $activity->meta_value );
+                    }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "multi_select" ){
                     $value = $activity->meta_value;
@@ -480,16 +482,22 @@ class Disciple_Tools_Posts
                     $message = $activity->meta_key . ": " . $activity->meta_value;
                 }
             }
-        }
-        if ( $activity->object_subtype === "p2p" ){
+        } elseif ( $activity->action === "assignment_decline" ){
+            $user = get_user_by( "ID", $activity->user_id );
+            $message = sprintf( __( "%s declined assignment", 'disciple_tools' ), $user->display_name ?? __( "A user", "disciple_tools" ) );
+        } elseif ( $activity->action === "assignment_accepted" ){
+            $user = get_user_by( "ID", $activity->user_id );
+            $message = sprintf( __( "%s accepted assignment", 'disciple_tools' ), $user->display_name ?? __( "A user", "disciple_tools" ) );
+        } elseif ( $activity->object_subtype === "p2p" ){
             $message = self::format_connection_message( $activity->meta_id, $activity->action, $activity );
-        }
-        if ( $activity->object_subtype === "share" ){
+        } elseif ( $activity->object_subtype === "share" ){
             if ($activity->action === "share"){
                 $message = __( "Shared with", "disciple_tools" ) . ' ' . dt_get_user_display_name( $activity->meta_value );
             } else if ( $activity->action === "remove" ){
                 $message = __( "Unshared with", "disciple_tools" ) . ' ' . dt_get_user_display_name( $activity->meta_value );
             }
+        } else {
+            $message = $activity->object_note;
         }
 
         return $message;
@@ -880,6 +888,20 @@ class Disciple_Tools_Posts
                 $access_query .= ( !empty( $access_query ) ? "AND" : "" ) ." ( assigned_to.meta_key = 'assigned_to' AND assigned_to.meta_value != 'user-$current_user->ID' )";
             }
         }
+
+        /**
+         * Filter by creation date
+         */
+        if ( isset( $query["created_on"] ) ){
+            if ( isset( $query["created_on"]["start"] ) ){
+                $meta_query .= "AND $wpdb->posts.post_date >= '" . esc_sql( $query["created_on"]["start"] ) . "' ";
+            }
+            if ( isset( $query["created_on"]["end"] ) ){
+                $meta_query .= "AND $wpdb->posts.post_date <= '" . esc_sql( $query["created_on"]["end"] ) . "' ";
+            }
+            unset( $query["created_on"] );
+        }
+
         foreach ( $query as $query_key => $query_value ){
             $meta_field_sql = "";
             if ( !is_array( $query_value )){
@@ -913,22 +935,25 @@ class Disciple_Tools_Posts
                     $connector = " OR ";
                     foreach ( $query_value as $value_key => $value ){
                         $equality = "=";
-                        if ( isset( $post_fields[$query_key]["type"] ) && $post_fields[$query_key]["type"] === "boolean" ){
+                        $field_type = isset( $post_fields[$query_key]["type"] ) ? $post_fields[$query_key]["type"] : null;
+                        // boolean fields
+                        if ( $field_type === "boolean" ){
                             if ( $value === "1" || $value === "yes" || $value === "true" ){
                                 $value = true;
                             } elseif ( $value === "0" || $value === "no" || $value === "false" ){
                                 $value = false;
                             }
                         }
-                        if ( isset( $post_fields[$query_key]["type"] ) && $post_fields[$query_key]["type"] === "date" ){
+                        //date fields
+                        if ( $field_type === "date" ){
                             $connector = "AND";
                             if ( $value_key === "start" ){
                                 $value = strtotime( $value );
-                                $equality = ">";
+                                $equality = ">=";
                             }
                             if ( $value_key === "end" ){
                                 $value = strtotime( $value );
-                                $equality = "<";
+                                $equality = "<=";
                             }
                         }
 
@@ -941,7 +966,7 @@ class Disciple_Tools_Posts
                         if ( !empty( $meta_field_sql ) ){
                             $meta_field_sql .= $connector;
                         }
-                        if ($equality === "!="){
+                        if ($equality === "!=" && $field_type === "multi_select"){
                             //find one with the value to exclude
                             $meta_query .= " AND not exists (select 1 from $wpdb->postmeta where $wpdb->postmeta.post_id = $wpdb->posts.ID and $wpdb->postmeta.meta_key = '" . esc_sql( $query_key ) ."'  and $wpdb->postmeta.meta_value = '" . esc_sql( $value ) . "') ";
                         } else {
