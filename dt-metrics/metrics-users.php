@@ -3,11 +3,6 @@
 Disciple_Tools_Metrics_Users::instance();
 class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 {
-    public $title = 'Workers';
-    public $slug = 'workers'; // lowercase
-    public $js_object_name = 'wpApiWorkers'; // This object will be loaded into the metrics.js file by the wp_localize_script.
-    public $js_file_name = 'workers.js'; // should be full file name plus extension
-    public $deep_link_hash = '#workers_overview'; // should be the full hash name. #example_of_hash
     public $permissions = [ 'view_any_contacts', 'view_project_metrics' ];
 
     private static $_instance = null;
@@ -66,7 +61,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     public function add_menu( $content ) {
         $content .= '
             <li><a href="">' .  esc_html__( 'Users', 'disciple_tools' ) . '</a>
-                <ul class="menu vertical nested" id="users-menu" >
+                <ul class="menu vertical nested" id="users-menu" aria-expanded="true">
                     <li><a href="'. site_url( '/metrics/users/' ) .'#users_activity" onclick="users_activity()">'. esc_html__( 'Activity' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/users/' ) .'#follow_up_pace" onclick="show_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li>
                 </ul>

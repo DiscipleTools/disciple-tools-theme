@@ -174,22 +174,24 @@ window.show_follow_up_pace = function show_follow_up_pace(){
       <p><strong>Coalition Pace: <span id="coalition_to_to_attempt"></span> Hours Average</strong> <span data-tooltip data-hover-delay="0" class="top tool-tip" title="Time from assignment to contact attempt"><i class="fi-info"></i></span></p>
 
       <p>Note: Except for baptisms, these numbers come from the contacts that the User is currently assigned to. This means that if Bob met the contact and then assigned it to Fred it counts as if Fred met the contact.</p>
+      <div class="scrolling-wrapper">
       <table id="workers" class="hover table-scroll striped">
         <thead style="background-color: lightgrey;">
           <th onclick="sortTable(0)" style="white-space: nowrap;">Worker Name</th>
-          <th onclick="sortTable(1)">New</th>
-          <th onclick="sortTable(2)">Active</th>
-          <th onclick="sortTable(3)">Update Needed</th>
-          <th onclick="sortTable(4)">Assigned</th>
-          <th onclick="sortTable(5)">Met</th>
-          <th onclick="sortTable(6)">Baptized</th>
-          <th onclick="sortTable(7)">Last Assignment</th>
-          <th onclick="sortTable(8)">Pace <span data-tooltip data-hover-delay="0" class="top tool-tip" title="Time from assignment to contact attempt"><i class="fi-info"></i></span></th>
+          <th onclick="sortTable(1)"  style="white-space: nowrap;">Pace <span data-tooltip data-hover-delay="0" class="top tool-tip" title="Time from assignment to contact attempt"><i class="fi-info"></i></span></th>
+          <th onclick="sortTable(2)">New</th>
+          <th onclick="sortTable(3)">Active</th>
+          <th onclick="sortTable(4)">Update Needed</th>
+          <th onclick="sortTable(5)">Assigned</th>
+          <th onclick="sortTable(6)">Met</th>
+          <th onclick="sortTable(7)">Baptized</th>
+          <th onclick="sortTable(8)">Last Assignment</th>
         </thead>
         <tbody id="workers_table_body">
 
         </tbody>
       </table>
+      </div>
     `)
 
     // Create chart instance
@@ -203,6 +205,7 @@ window.show_follow_up_pace = function show_follow_up_pace(){
         tableHTML +=`
       <tr>
         <td>${worker.display_name}</td>
+        <td>${worker.avg_hours_to_contact_attempt || ""}</td>
         <td>${worker.number_new_assigned}</td>
         <td>${worker.number_active}</td>
         <td>${worker.number_update}</td>
@@ -210,15 +213,14 @@ window.show_follow_up_pace = function show_follow_up_pace(){
         <td>${worker.number_met}</td>
         <td>${worker.number_baptized}</td>
         <td>${worker.last_date_assigned || ""}</td>
-        <td>${worker.avg_hours_to_contact_attempt || ""}</td>
       </tr>
       `
     })
     jQuery("#workers_table_body").html(tableHTML)
 
-
     jQuery('#workers').foundation()
     jQuery('.tool-tip').foundation()
+
 
 
 
