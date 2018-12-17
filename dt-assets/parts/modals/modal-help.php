@@ -3,16 +3,14 @@
 
     <!--    Contact Status-->
     <div class="help-section" id="overall-status-help-text" style="display: none">
-        <h3 class="lead"><?php esc_html_e( "Contact Status", 'disciple_tools' ) ?></h3>
+        <h3><?php esc_html_e( "Contact Status", 'disciple_tools' ) ?></h3>
         <p><?php esc_html_e( "This is where you set the current status of the contact.", 'disciple_tools' ) ?></p>
         <ul>
-            <li><?php esc_html_e( "New Contact - The contact is new in the system", 'disciple_tools' ) ?></li>
-            <li><?php esc_html_e( "Not Ready - There is not enough information to move forward with the contact at this time.", 'disciple_tools' ) ?></li>
-            <li><?php esc_html_e( "Dispatch Needed - This contact needs to be assigned to a multiplier.", 'disciple_tools' ) ?></li>
-            <li><?php esc_html_e( "Waiting to be accepted - The contact has been assigned to someone, but has not yet been accepted by that person.", 'disciple_tools' ) ?></li>
-            <li><?php esc_html_e( "Active - The contact is progressing and/or continually being updated.", 'disciple_tools' ) ?></li>
-            <li><?php esc_html_e( "Paused - This contact is currently on hold (i.e. on vacation or not responding).", 'disciple_tools' ) ?></li>
-            <li><?php esc_html_e( "Closed - This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.", 'disciple_tools' ) ?></li>
+            <?php
+            $status_options = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["overall_status"]["default"];
+            foreach ( $status_options as $option ): ?>
+                <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ?? "" ) ?></li>
+            <?php endforeach; ?>
         </ul>
     </div>
 

@@ -220,8 +220,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
             <div class="small-12 cell bordered-box grid-x grid-margin-x">
-                <div class="cell small-12 medium-4">
-                    <i class="fi-torso large"></i>
+                <div class="cell small-12 medium-4" style="display: flex; align-items: center">
+                    <i class="fi-torso large" style="padding-bottom: 1.2rem"></i>
                     <span class="item-details-header title" ><?php the_title_attribute(); ?></span>
                 </div>
                 <div class="cell small-12 medium-2">

@@ -14,7 +14,7 @@
         </div>
     </form>
 
-    <p class="reveal-after-contact-create" style="display: none"><?php esc_html_e( "contact Created", 'disciple_tools' ) ?>: <span id="new-contact-link"></span></p>
+    <p class="reveal-after-contact-create" style="display: none"><?php esc_html_e( "contact created", 'disciple_tools' ) ?>: <span id="new-contact-link"></span></p>
 
 
     <div class="grid-x">

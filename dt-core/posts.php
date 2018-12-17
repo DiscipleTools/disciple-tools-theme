@@ -504,7 +504,7 @@ class Disciple_Tools_Posts
     public static function get_post_activity( string $post_type, int $post_id, array $fields ) {
         global $wpdb;
         if ( !self::can_view( $post_type, $post_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read:" ) . $post_type, [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "No permissions to read: " . $post_type, [ 'status' => 403 ] );
         }
         $activity = $wpdb->get_results( $wpdb->prepare(
             "SELECT
@@ -547,7 +547,7 @@ class Disciple_Tools_Posts
     public static function get_post_single_activity( string $post_type, int $post_id, array $fields, int $activity_id ){
         global $wpdb;
         if ( !self::can_view( $post_type, $post_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "No permissions to read group", [ 'status' => 403 ] );
         }
         $activity = $wpdb->get_results( $wpdb->prepare(
             "SELECT
@@ -590,7 +590,7 @@ class Disciple_Tools_Posts
      */
     public static function get_post_comments( string $post_type, int $post_id, bool $check_permissions = true, $type = "all" ) {
         if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read post" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "No permissions to read post", [ 'status' => 403 ] );
         }
         //setting type to "comment" does not work.
         $comments = get_comments( [
@@ -883,7 +883,7 @@ class Disciple_Tools_Posts
         foreach ( $query as $query_key => $query_value ){
             $meta_field_sql = "";
             if ( !is_array( $query_value )){
-                return new WP_Error( __FUNCTION__, __( "Filter queries must be arrays" ), [ 'status' => 403 ] );
+                return new WP_Error( __FUNCTION__, "Filter queries must be arrays", [ 'status' => 403 ] );
             }
             if ( !in_array( $query_key, array_keys( self::$connection_types ) ) && strpos( $query_key, "contact_" ) !== 0 ){
                 if ( $query_key == "assigned_to" ){

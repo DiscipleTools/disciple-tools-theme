@@ -430,9 +430,9 @@
     currentFilter = {ID, type, name, query:JSON.parse(JSON.stringify(query)), labels:labels}
     customFilters.push(JSON.parse(JSON.stringify(currentFilter)))
 
-    let saveFilter = $(`<span style="float:right" data-filter="${ID}">
+    let saveFilter = $(`<a style="float:right" data-filter="${ID}">
         ${wpApiListSettings.translations.save}
-    </span>`).on("click", function () {
+    </a>`).on("click", function () {
       $('#save-filter-modal').foundation('open');
       filterToSave = ID;
     })
