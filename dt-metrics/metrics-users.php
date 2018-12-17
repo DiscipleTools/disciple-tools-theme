@@ -15,6 +15,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
     public function __construct() {
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+
         $url_path = dt_get_url_path();
 
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
@@ -49,6 +50,14 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 ],
             ]
         );
+        register_rest_route(
+            $namespace, '/metrics/users/workers_pace', [
+                [
+                    'methods'  => WP_REST_Server::READABLE,
+                    'callback' => [ $this, 'workers_pace' ],
+                ],
+            ]
+        );
     }
 
     public function refresh_pace( WP_REST_Request $request ) {
@@ -56,6 +65,13 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             return new WP_Error( "refresh_pace", "Missing Permissions", [ 'status' => 400 ] );
         }
         return $this->get_workers_data( true );
+    }
+
+    public function workers_pace( ) {
+        if ( ! $this->has_permission() ){
+            return new WP_Error( "workers_pace", "Missing Permissions", [ 'status' => 400 ] );
+        }
+        return $this->get_workers_data();
     }
 
     public function add_menu( $content ) {
@@ -104,7 +120,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             ],
             'hero_stats' => $this->chart_user_hero_stats(),
             'recent_activity' => $this->chart_recent_activity(),
-            "workers" => $this->get_workers_data(),
+
         ];
     }
 
@@ -197,7 +213,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 SELECT user_pm.post_id 
                 FROM $wpdb->postmeta as user_pm 
                 WHERE user_pm.meta_key = 'corresponds_to_user' 
-                AND user_pm.meta_value = users.ID
+                AND user_pm.meta_value = users.ID 
+                LIMIT 1
             ))
             GROUP by users.ID",
         ARRAY_A);
@@ -249,7 +266,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
         $return = [
             "data" => $workers,
-            "coalition_to_to_attempt" => $coalition_time_to_attempt,
+            "coalition_time_to_attempt" => $coalition_time_to_attempt,
             "timestamp" => current_time( "mysql" ),
         ];
 

@@ -162,16 +162,15 @@ window.show_follow_up_pace = function show_follow_up_pace(){
     "use strict";
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#users-menu'));
     let localizedObject = window.dtMetricsUsers
-
     let chartDiv = jQuery('#chart') // retrieves the chart div in the metrics page
 
     // TODO: escape this properly
     chartDiv.empty().html(`
-      <span class="text-small" style="float:right; font-size:.6em; color: gray;">data as of ${localizedObject.data.workers.timestamp} - <a onclick="refresh_worker_pace_data()">refresh</a></span>
+      <span class="text-small" style="float:right; font-size:.6em; color: gray;">data as of <span id="pace-timestamp"></span> - <a onclick="refresh_worker_pace_data()">refresh</a></span>
       <span class="section-header">`+ localizedObject.data.translations.title_response +`</span>
       
       <hr style="max-width:100%;">
-      <p><strong>Coalition Pace: <span id="coalition_to_to_attempt"></span> Hours Average</strong> <span data-tooltip data-hover-delay="0" class="top tool-tip" title="Time from assignment to contact attempt"><i class="fi-info"></i></span></p>
+      <p><strong>Coalition Pace: <span id="coalition_time_to_attempt"></span> Hours Average</strong> <span data-tooltip data-hover-delay="0" class="top tool-tip" title="Time from assignment to contact attempt"><i class="fi-info"></i></span></p>
 
       <p>Note: Except for baptisms, these numbers come from the contacts that the User is currently assigned to. This means that if Bob met the contact and then assigned it to Fred it counts as if Fred met the contact.</p>
       <div class="scrolling-wrapper">
@@ -188,17 +187,20 @@ window.show_follow_up_pace = function show_follow_up_pace(){
           <th onclick="sortTable(8)">Last Assignment</th>
         </thead>
         <tbody id="workers_table_body">
-
+            
         </tbody>
       </table>
       </div>
     `)
 
-    // Create chart instance
+    refresh_worker_pace_data()
 
-    let data = window.dtMetricsUsers.data.workers.data;
-    let coalitionTime = window.dtMetricsUsers.data.workers.coalition_to_to_attempt;
-    jQuery("#coalition_to_to_attempt").html(coalitionTime)
+    // re-initialize foundation objects
+    jQuery('#workers').foundation()
+    jQuery('.tool-tip').foundation()
+}
+
+function add_worker_pace_table( data) {
     let tableHTML = ``;
     // TODO: escape this properly
     data.forEach(worker=>{
@@ -216,32 +218,30 @@ window.show_follow_up_pace = function show_follow_up_pace(){
       </tr>
       `
     })
-    jQuery("#workers_table_body").html(tableHTML)
-
-    jQuery('#workers').foundation()
-    jQuery('.tool-tip').foundation()
-
-
-
-
+    jQuery("#workers_table_body").empty().html(tableHTML)
 }
 
 function refresh_worker_pace_data() {
+    let table = jQuery('#workers_table_body')
+    table.empty().html(`
+            <tr><td colspan="8">
+                <img src="${dtMetricsUsers.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" />
+            </td></tr>`)
+
     return jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: dtMetricsUsers.root + 'dt/v1/metrics/users/refresh_pace',
+        url: dtMetricsUsers.root + 'dt/v1/metrics/users/workers_pace',
         beforeSend: function(xhr) {
             xhr.setRequestHeader('X-WP-Nonce', dtMetricsUsers.nonce);
         },
     })
-        .done(function (data) {
-            console.log(data)
-            if ( data ) {
-                window.dtMetricsUsers.data.workers = data;
-                show_follow_up_pace()
-            }
+        .done(function (response) {
+            console.log(response)
+            jQuery("#coalition_time_to_attempt").html(response.coalition_time_to_attempt)
+            jQuery("#pace-timestamp").html(response.timestamp)
+            add_worker_pace_table( response.data )
         })
         .fail(function (err) {
             console.log("error")
