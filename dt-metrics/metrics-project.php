@@ -14,9 +14,11 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 
     public function __construct() {
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+
         if ( !$this->has_permission() ){
             return;
         }
+
         $url_path = dt_get_url_path();
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
 

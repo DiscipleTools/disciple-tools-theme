@@ -742,46 +742,74 @@ class Disciple_Tools_Queries
         switch ( $query_name ) {
             case 'contact_progress_per_worker':
                 $query = $wpdb->get_results($wpdb->prepare( "
-                    SELECT 
-                        u.display_name as name, 
-                        (0) as assigned, 
-                        (0) as accepted, 
-                        (0) as attempt_needed, 
-                        (0) as attempted, 
-                        (0) as established, 
-                        (0) as meeting_scheduled, 
-                        (0) as meeting_complete, 
-                        (0) as ongoing, 
-                        (0) as being_coached,
-                        (0) as baptized
-                        FROM $wpdb->usermeta as um
-                          JOIN $wpdb->users as u
-                          ON u.ID=um.user_id
-                        WHERE meta_key LIKE %s
-                        ORDER BY name ASC
+                    SELECT
+                      ( TRIM( LEADING 'user-' from a.meta_value ) ) as user_id,
+                      count(a.meta_value) as assigned,
+                      count(b.meta_value) as accepted,
+                      count(e.meta_value) as active,
+                      count(c.meta_value) as attempt_needed,
+                      count(d.meta_value) as attempted,
+                      count(f.meta_value) as established,
+                      count(g.meta_value) as meeting_scheduled,
+                      count(h.meta_value) as meeting_complete,
+                      count(i.meta_value) as ongoing,
+                      count(j.meta_value) as being_coached
+                    FROM $wpdb->posts as p
+                      LEFT JOIN $wpdb->postmeta as a
+                        ON a.post_id=p.ID
+                        AND a.meta_key = 'assigned_to'
+                      LEFT JOIN $wpdb->postmeta as e
+                        ON e.post_id=p.ID
+                           AND e.meta_key = 'overall_status' AND e.meta_value = 'active'
+                      LEFT JOIN $wpdb->postmeta as b
+                        ON b.post_id=e.post_id
+                        AND b.meta_key = 'accepted' AND b.meta_value = '1'
+                      LEFT JOIN $wpdb->postmeta as c
+                        ON c.post_id=e.post_id
+                        AND c.meta_key = 'seeker_path' AND c.meta_value = 'none'
+                      LEFT JOIN $wpdb->postmeta as d
+                        ON d.post_id=e.post_id
+                           AND d.meta_key = 'seeker_path' AND d.meta_value = 'attempted'
+                      LEFT JOIN $wpdb->postmeta as f
+                        ON f.post_id=e.post_id
+                           AND f.meta_key = 'seeker_path' AND f.meta_value = 'established'
+                      LEFT JOIN $wpdb->postmeta as g
+                        ON g.post_id=e.post_id
+                           AND g.meta_key = 'seeker_path' AND g.meta_value = 'scheduled'
+                      LEFT JOIN $wpdb->postmeta as h
+                        ON h.post_id=e.post_id
+                           AND h.meta_key = 'seeker_path' AND h.meta_value = 'met'
+                      LEFT JOIN $wpdb->postmeta as i
+                        ON i.post_id=e.post_id
+                           AND i.meta_key = 'seeker_path' AND i.meta_value = 'ongoing'
+                      LEFT JOIN $wpdb->postmeta as j
+                        ON j.post_id=e.post_id
+                           AND j.meta_key = 'seeker_path' AND j.meta_value = 'coaching'
+                    WHERE post_status = 'publish'
+                      AND post_type = 'contacts'
+                    GROUP BY a.meta_value
                 ",
                 $wpdb->prefix . 'corresponds_to_contact'
                     ), ARRAY_A);
 
-                $workers = $wpdb->get_results( "
-                    SELECT 
-                        users.ID,
-                        users.display_name,
-                        count(pm.post_id) as number_assigned_to,
-                        count(met.post_id) as number_met,
-                        count(active.post_id) as number_active,
-                        count(new_assigned.post_id) as number_new_assigned,
-                        count(update_needed.post_id) as number_update
-                    from $wpdb->users as users
-                    INNER JOIN $wpdb->postmeta as pm on (pm.meta_key = 'assigned_to' and pm.meta_value = CONCAT( 'user-', users.ID ) )
-                    INNER JOIN $wpdb->postmeta as type on (type.post_id = pm.post_id and type.meta_key = 'type' and ( type.meta_value = 'media' OR type.meta_value = 'next_gen' ) )
-                    LEFT JOIN $wpdb->postmeta as met on (met.post_id = type.post_id and met.meta_key = 'seeker_path' and ( met.meta_value = 'met' OR met.meta_value = 'ongoing' OR met.meta_value = 'coaching' ) )
-                    LEFT JOIN $wpdb->postmeta as active on (active.post_id = type.post_id and active.meta_key = 'overall_status' and active.meta_value = 'active' )
-                    LEFT JOIN $wpdb->postmeta as new_assigned on (new_assigned.post_id = type.post_id and new_assigned.meta_key = 'overall_status' and new_assigned.meta_value = 'assigned' )
-                    LEFT JOIN $wpdb->postmeta as update_needed on (update_needed.post_id = type.post_id and update_needed.meta_key = 'requires_update' and update_needed.meta_value = '1' )
-                    GROUP by users.ID",
-                    ARRAY_A);
+                return $query;
+                break;
 
+
+            case 'baptized_per_worker':
+                $query = $wpdb->get_results("
+                    SELECT
+                      p2p_to as contact_id,
+                      (
+                          SELECT meta_value 
+                          FROM wp_postmeta 
+                          WHERE meta_key = 'corresponds_to_user' 
+                            AND post_id = p2p_to
+                      ) as user_id,
+                      count(*) as count
+                    FROM wp_p2p
+                    WHERE p2p_type = 'baptizer_to_baptized'
+                    GROUP BY p2p_to;", ARRAY_A);
 
                 return $query;
                 break;

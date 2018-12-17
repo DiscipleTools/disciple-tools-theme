@@ -18,6 +18,10 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
         $url_path = dt_get_url_path();
 
+        if ( !$this->has_permission() ){
+            return;
+        }
+
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
 
             add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
@@ -27,9 +31,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             }
 
-            if ( !$this->has_permission() ){
-                return;
-            }
+
         }
     }
 
@@ -175,26 +177,42 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     public function chart_contact_progress_per_worker() {
         $chart = [];
 
-        $chart[] = ['Name', 'Assigned', 'Accepted', 'Attempt Needed', 'Attempted', 'Established', 'Meeting Scheduled', 'Meeting Complete', 'Ongoing', 'Being Coached', 'Baptized'];
+        $chart[] = ['Name', 'Assigned', 'Accepted', 'Active', 'Attempt Needed', 'Attempted', 'Established', 'Meet Scheduled', 'Meet Complete', 'Ongoing Meeting', 'Baptisms', 'Coaching' ];
 
         $results = Disciple_Tools_Queries::instance()->query( 'contact_progress_per_worker' );
+        $baptized = Disciple_Tools_Queries::instance()->query( 'baptized_per_worker' );
         if ( empty( $results ) ) {
             return $chart;
         }
 
+
         foreach ( $results as $result ) {
+
+            $user = get_userdata( $result['user_id'] );
+            if ( empty( $user ) ) {
+                continue;
+            }
+
+            $baptisms = 0;
+            foreach( $baptized as $value ) {
+                if ( $value['user_id'] === $result['user_id'] ) {
+                    $baptisms = $value['count'];
+                }
+            }
+
             $chart[] = [
-                $result['name'],
-                $result['assigned'],
-                $result['accepted'],
-                $result['attempt_needed'],
-                $result['attempted'],
-                $result['established'],
-                $result['meeting_scheduled'],
-                $result['meeting_complete'],
-                $result['ongoing'],
-                $result['being_coached'],
-                $result['baptized']
+                $user->display_name,
+                (int) $result['assigned'],
+                (int) $result['accepted'],
+                (int) $result['active'],
+                (int) $result['attempt_needed'],
+                (int) $result['attempted'],
+                (int) $result['established'],
+                (int) $result['meeting_scheduled'],
+                (int) $result['meeting_complete'],
+                (int) $result['ongoing'],
+                (int) $result['being_coached'],
+                (int) $baptisms,
             ];
         }
         dt_write_log($chart);

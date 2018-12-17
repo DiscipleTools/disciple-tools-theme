@@ -112,6 +112,19 @@ function workers_activity() {
         })
             .done(function (response) {
                 let chartData = google.visualization.arrayToDataTable( response );
+                // let chartData = new google.visualization.DataTable();
+                // chartData.addColumn('string', 'Name');
+                // chartData.addColumn('number', 'Assigned');
+                // chartData.addColumn('number', 'Accepted');
+                // chartData.addColumn('number', 'Active');
+                // chartData.addColumn('number', 'Attempt Needed');
+                // chartData.addColumn('number', 'Attempted');
+                // chartData.addColumn('number', 'Established');
+                // chartData.addColumn('number', 'Meeting Scheduled');
+                // chartData.addColumn('number', 'Meeting Complete');
+                // chartData.addColumn('number', 'Ongoing');
+                // chartData.addColumn('number', 'Being Coached');
+                // chartData.addRows(response);
                 let options = {
                     chartArea: {
                         left: '5%',
