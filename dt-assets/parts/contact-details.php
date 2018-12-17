@@ -298,7 +298,7 @@
                         <?php
                         foreach ( $contact_fields["age"]["default"] as $age_key => $option ) {
                             $age_value = $option["label"] ?? "";
-                            if ( isset( $contact["age"] ) &&
+                            if ( isset( $contact["age"] ) && isset( $contact["age"]["key"] ) &&
                                  $contact["age"]["key"] === $age_key){
                                 echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
                             } else {
