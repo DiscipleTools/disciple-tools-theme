@@ -1,73 +1,87 @@
 jQuery(document).ready(function() {
     console.log( dtMetricsUsers )
 
-    if( ! window.location.hash || '#users_activity' === window.location.hash  ) {
-        users_activity()
+    if( ! window.location.hash || '#workers_activity' === window.location.hash  ) {
+        workers_activity()
     }
     if( '#follow_up_pace' === window.location.hash) {
         window.show_follow_up_pace()
     }
+    if( '#contact_follow_up_pace' === window.location.hash) {
+        contact_follow_up_pace()
+    }
 
 })
 
-function users_activity() {
+function workers_activity() {
     "use strict";
     let chartDiv = jQuery('#chart')
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#users-menu'));
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#workers-menu'));
     let sourceData = dtMetricsUsers.data
     chartDiv.empty().html(`
+        <span style="float:right;"><i class="fi-info primary-color"></i> </span>
         <span class="section-header">${sourceData.translations.title_activity}</span>
         
         <br><br>
         <div class="grid-x grid-padding-x grid-padding-y">
             <div class="cell center callout">
                 <div class="grid-x">
-                    <div class="medium-4 cell center">
-                        <h4>${sourceData.translations.label_total_users}<br><span id="total_users">0</span></h4>
+                    <div class="medium-3 cell center">
+                        <h4>${sourceData.translations.label_total_workers}<br><span id="total_workers">0</span></h4>
                     </div>
-                    <div class="medium-4 cell center left-border-grey">
+                    <div class="medium-2 cell left-border-grey">
                         <h4>${sourceData.translations.label_total_multipliers}<br><span id="total_multipliers">0</span></h4>
                     </div>
-                    <div class="medium-4 cell center left-border-grey">
+                    <div class="medium-2 cell center">
                         <h4>${sourceData.translations.label_total_dispatchers}<br><span id="total_dispatchers">0</span></h4>
                     </div>
+                    <div class="medium-2 cell center">
+                        <h4>${sourceData.translations.label_total_administrators}<br><span id="total_administrators">0</span></h4>
+                    </div>
+                    <div class="medium-2 cell center">
+                        <h4>${sourceData.translations.label_total_strategists}<br><span id="total_strategists">0</span>
+                        </h4>
+                    </div>
+                    
                 </div>
             </div>
             <div class="cell">
                 <span class="section-subheader">${sourceData.translations.title_recent_activity}</span>
-                <div id="chart_line_logins" style="height:300px"></div>
+                <div id="chart_line_logins" style="height:300px"><img src="${dtMetricsUsers.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
             </div>
-            <div class="cell" style="display:none;">
-            <hr>
-                <p><span class="section-subheader">${sourceData.translations.label_contacts_per_user}</span></p>
-                <div id="contacts_per_user" ></div>
-            </div>
-            <div class="cell" style="display:none;">
-                <hr>
+            <div class="cell">
                 <div class="grid-x grid-padding-x">
-                    <div class="cell medium-6">
-                        <span class="section-subheader">${sourceData.translations.label_least_active}</span>
-                        <div id="least_active"></div>
+                <div class="cell medium-6">
+                        <span class="section-subheader">${sourceData.translations.label_most_active}</span>
+                        <div id="most_active"><img src="${dtMetricsUsers.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
                     </div>
                     <div class="cell medium-6">
-                        <span class="section-subheader">${sourceData.translations.label_most_active}</span>
-                        <div id="most_active"></div>
+                        <span class="section-subheader">${sourceData.translations.label_least_active}</span>
+                        <div id="least_active"><img src="${dtMetricsUsers.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
                     </div>
                 </div>
             </div>
+            <div class="cell">
+                <hr>
+                <p><span class="section-subheader">${sourceData.translations.label_contacts_per_user}</span></p>
+                <div id="contact_progress_per_worker" ><img src="${dtMetricsUsers.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
+            </div>
+            
         </div>
         `)
 
     let hero = sourceData.hero_stats
-    jQuery('#total_users').html( numberWithCommas( hero.total_users ) )
+    jQuery('#total_workers').html( numberWithCommas( hero.total_workers ) )
     jQuery('#total_multipliers').html( numberWithCommas( hero.total_multipliers ) )
     jQuery('#total_dispatchers').html( numberWithCommas( hero.total_dispatchers ) )
+    jQuery('#total_administrators').html( numberWithCommas( hero.total_administrators ) )
+    jQuery('#total_strategists').html( numberWithCommas( hero.total_strategists ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'line', 'table']});
 
     google.charts.setOnLoadCallback(drawLineChartLogins);
-    google.charts.setOnLoadCallback(drawContactsPerUser);
+    google.charts.setOnLoadCallback(contact_progress_per_worker);
     google.charts.setOnLoadCallback(drawLeastActive);
     google.charts.setOnLoadCallback(drawMostActive);
 
@@ -85,27 +99,41 @@ function users_activity() {
         chart.draw(chartData, options);
     }
 
-    function drawContactsPerUser() {
-        let chartData = google.visualization.arrayToDataTable( [
-            ['Name', 'Total', 'Attempt Needed', 'Attempted', 'Established', 'Meeting Scheduled', 'Meeting Complete', 'Ongoing', 'Being Coached'],
+    function contact_progress_per_worker() {
 
-        ] );
-        let options = {
-            chartArea: {
-                left: '5%',
-                top: '7%',
-                width: "100%",
-                height: "85%" },
-            legend: { position: 'bottom' },
-            alternatingRowStyle: true,
-            sort: 'enable',
-            showRowNumber: true,
-            width: '100%',
+        jQuery.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: dtMetricsUsers.root + 'dt/v1/metrics/workers/contact_progress_per_worker',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', dtMetricsUsers.nonce);
+            },
+        })
+            .done(function (response) {
+                let chartData = google.visualization.arrayToDataTable( response );
+                let options = {
+                    chartArea: {
+                        left: '5%',
+                        top: '7%',
+                        width: "100%",
+                        height: "85%" },
+                    legend: { position: 'bottom' },
+                    alternatingRowStyle: true,
+                    sort: 'enable',
+                    showRowNumber: true,
+                    width: '100%',
 
-        };
-        let chart = new google.visualization.Table( document.getElementById('contacts_per_user') );
+                };
+                let chart = new google.visualization.Table( document.getElementById('contact_progress_per_worker') );
 
-        chart.draw(chartData, options);
+                chart.draw(chartData, options);
+            })
+            .fail(function (err) {
+                console.log("error")
+                console.log(err)
+                jQuery("#errors").append(err.responseText)
+            })
     }
 
     function drawLeastActive() {
@@ -158,9 +186,9 @@ function users_activity() {
 
 }
 
-window.show_follow_up_pace = function show_follow_up_pace(){
+function contact_follow_up_pace(){
     "use strict";
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#users-menu'));
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#workers-menu'));
     let localizedObject = window.dtMetricsUsers
     let chartDiv = jQuery('#chart') // retrieves the chart div in the metrics page
 
@@ -170,9 +198,69 @@ window.show_follow_up_pace = function show_follow_up_pace(){
       <span class="section-header">`+ localizedObject.data.translations.title_response +`</span>
       
       <hr style="max-width:100%;">
+      <span><a onclick="jQuery('.notes').toggle();" style="float:right; font-size:.6em;">Show Chart Notes</a> </span>
+      <p>
+        <strong>Coalition Average Pace (CAP):</strong><br>
+        Assigned-to-Accepted Pace: <strong id="coalition_assigned_to_accepted"></strong> Hours Average <br>
+        Accepted-to-Attempted Pace: <strong id="coalition_accept_to_attempted"></strong> Hours Average 
+      </p>
+
+      <p class="notes" style="display:none;">Note: Except for baptisms, these numbers come from the contacts that the User is currently assigned to. This means that if Bob met the contact and then assigned it to Fred it counts as if Fred met the contact.</p>
+      
+      <p><strong>Per User Pace:</strong></p>
+      <div id="followup-pace"></div>
+      
+    `)
+
+    google.charts.load('current', {'packages':['corechart', 'table']});
+    google.charts.setOnLoadCallback(drawContactsProgressPerUser);
+
+    function drawContactsProgressPerUser() {
+        let chartData = google.visualization.arrayToDataTable( [
+            [ 'Name', 'Assigned-to-Accepted Pace', 'CAP', 'Accepted-to-Attempted Pace', 'CAP' ],
+
+        ] );
+        let options = {
+            chartArea: {
+                left: '5%',
+                top: '7%',
+                width: "100%",
+                height: "85%" },
+            legend: { position: 'bottom' },
+            alternatingRowStyle: true,
+            sort: 'enable',
+            showRowNumber: true,
+            width: '100%',
+
+        };
+        let chart = new google.visualization.Table( document.getElementById('followup-pace') );
+
+        chart.draw(chartData, options);
+    }
+
+    // re-initialize foundation objects
+    jQuery('#workers').foundation()
+    jQuery('.tool-tip').foundation()
+}
+
+
+window.show_follow_up_pace = function show_follow_up_pace(){
+    "use strict";
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#workers-menu'));
+    let localizedObject = window.dtMetricsUsers
+    let chartDiv = jQuery('#chart') // retrieves the chart div in the metrics page
+
+    // TODO: escape this properly
+    chartDiv.empty().html(`
+      <span class="text-small" style="float:right; font-size:.6em; color: gray;">data as of <span id="pace-timestamp"></span> - <a onclick="refresh_worker_pace_data()">refresh</a></span>
+      <span class="section-header">`+ localizedObject.data.translations.title_response +`</span>
+      
+      <hr style="max-width:100%;">
+      <span><a onclick="jQuery('.notes').toggle();" style="float:right; font-size:.6em;">Show Chart Notes</a> </span>
       <p><strong>Coalition Pace: <span id="coalition_time_to_attempt"></span> Hours Average</strong> <span data-tooltip data-hover-delay="0" class="top tool-tip" title="Time from assignment to contact attempt"><i class="fi-info"></i></span></p>
 
-      <p>Note: Except for baptisms, these numbers come from the contacts that the User is currently assigned to. This means that if Bob met the contact and then assigned it to Fred it counts as if Fred met the contact.</p>
+      <p class="notes" style="display:none;">Note: Except for baptisms, these numbers come from the contacts that the User is currently assigned to. This means that if Bob met the contact and then assigned it to Fred it counts as if Fred met the contact.</p>
+      
       <div class="scrolling-wrapper">
       <table id="workers" class="hover table-scroll striped">
         <thead style="background-color: lightgrey;">
@@ -192,6 +280,32 @@ window.show_follow_up_pace = function show_follow_up_pace(){
       </table>
       </div>
     `)
+
+    google.charts.load('current', {'packages':['corechart', 'table']});
+    google.charts.setOnLoadCallback(drawContactsProgressPerUser);
+
+    function drawContactsProgressPerUser() {
+        let chartData = google.visualization.arrayToDataTable( [
+            ['Name', 'Assigned-to-Accepted', 'Coalition Average', 'Accepted-to-Attempted', 'Coalition Average', 'Last Assignment'],
+
+        ] );
+        let options = {
+            chartArea: {
+                left: '5%',
+                top: '7%',
+                width: "100%",
+                height: "85%" },
+            legend: { position: 'bottom' },
+            alternatingRowStyle: true,
+            sort: 'enable',
+            showRowNumber: true,
+            width: '100%',
+
+        };
+        let chart = new google.visualization.Table( document.getElementById('followup-pace') );
+
+        chart.draw(chartData, options);
+    }
 
     refresh_worker_pace_data()
 
@@ -232,7 +346,7 @@ function refresh_worker_pace_data() {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: dtMetricsUsers.root + 'dt/v1/metrics/users/workers_pace',
+        url: dtMetricsUsers.root + 'dt/v1/metrics/workers/workers_pace',
         beforeSend: function(xhr) {
             xhr.setRequestHeader('X-WP-Nonce', dtMetricsUsers.nonce);
         },

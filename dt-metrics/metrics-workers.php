@@ -23,7 +23,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
             add_filter( 'dt_metrics_menu', [ $this, 'add_menu' ], 50 );
 
-            if ( 'metrics/users' === $url_path ) {
+            if ( 'metrics/workers' === $url_path ) {
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             }
 
@@ -34,7 +34,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function add_url( $template_for_url ) {
-        $template_for_url['metrics/users'] = 'template-metrics.php';
+        $template_for_url['metrics/workers'] = 'template-metrics.php';
         return $template_for_url;
     }
 
@@ -43,7 +43,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         $namespace = 'dt/v' . $version;
 
         register_rest_route(
-            $namespace, '/metrics/users/refresh_pace', [
+            $namespace, '/metrics/workers/refresh_pace', [
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'refresh_pace' ],
@@ -51,10 +51,18 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             ]
         );
         register_rest_route(
-            $namespace, '/metrics/users/workers_pace', [
+            $namespace, '/metrics/workers/workers_pace', [
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'workers_pace' ],
+                ],
+            ]
+        );
+        register_rest_route(
+            $namespace, '/metrics/workers/contact_progress_per_worker', [
+                [
+                    'methods'  => WP_REST_Server::READABLE,
+                    'callback' => [ $this, 'contact_progress_per_worker' ],
                 ],
             ]
         );
@@ -74,12 +82,20 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         return $this->get_workers_data();
     }
 
+    public function contact_progress_per_worker() {
+        if ( ! $this->has_permission() ){
+            return new WP_Error( "contact_progress_per_worker", "Missing Permissions", [ 'status' => 400 ] );
+        }
+        return $this->chart_contact_progress_per_worker();
+    }
+
     public function add_menu( $content ) {
         $content .= '
-            <li><a href="">' .  esc_html__( 'Users', 'disciple_tools' ) . '</a>
-                <ul class="menu vertical nested" id="users-menu" aria-expanded="true">
-                    <li><a href="'. site_url( '/metrics/users/' ) .'#users_activity" onclick="users_activity()">'. esc_html__( 'Activity' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/users/' ) .'#follow_up_pace" onclick="show_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li>
+            <li><a href="">' .  esc_html__( 'Workers', 'disciple_tools' ) . '</a>
+                <ul class="menu vertical nested" id="workers-menu" aria-expanded="true">
+                    <li><a href="'. site_url( '/metrics/workers/' ) .'#workers_activity" onclick="workers_activity()">'. esc_html__( 'Activity' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/workers/' ) .'#follow_up_pace" onclick="show_follow_up_pace()">'. esc_html__( 'Worker Pace' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/workers/' ) .'#contact_follow_up_pace" onclick="contact_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li>
                 </ul>
             </li>
             ';
@@ -87,40 +103,41 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function scripts() {
-        wp_enqueue_script( 'dt_metrics_users_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-users.js', [
+        wp_enqueue_script( 'dt_metrics_workers_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-workers.js', [
             'jquery',
             'jquery-ui-core',
-        ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-users.js' ), true );
+        ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-workers.js' ), true );
 
         wp_localize_script(
-            'dt_metrics_users_script', 'dtMetricsUsers', [
+            'dt_metrics_workers_script', 'dtMetricsUsers', [
                 'root' => esc_url_raw( rest_url() ),
                 'theme_uri' => get_stylesheet_directory_uri(),
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
                 'map_key' => dt_get_option( 'map_key' ),
-                'data' => $this->users(),
+                'data' => $this->workers(),
             ]
         );
     }
 
-    public function users() {
+    public function workers() {
         return [
             'translations' => [
                 'title_activity' => __( 'Users Activity', 'disciple_tools' ),
-                'title_recent_activity' => __( 'Recent Activity', 'disciple_tools' ),
+                'title_recent_activity' => __( 'Worker System Engagement for the Last 30 Days', 'disciple_tools' ),
                 'title_response' => __( 'Follow-up Pace', 'disciple_tools' ),
-                'label_total_users' => __( 'Total Users', 'disciple_tools' ),
+                'label_total_workers' => __( 'Total Workers', 'disciple_tools' ),
                 'label_total_multipliers' => __( 'Multipliers', 'disciple_tools' ),
                 'label_total_dispatchers' => __( 'Dispatchers', 'disciple_tools' ),
-                'label_contacts_per_user' => __( 'Contacts Per User', 'disciple_tools' ),
+                'label_total_administrators' => __( 'Admins', 'disciple_tools' ),
+                'label_total_strategists' => __( 'Strategists', 'disciple_tools' ),
+                'label_contacts_per_user' => __( 'Contact Progress per Worker', 'disciple_tools' ),
                 'label_least_active' => __( 'Least Active', 'disciple_tools' ),
                 'label_most_active' => __( 'Most Active', 'disciple_tools' ),
             ],
             'hero_stats' => $this->chart_user_hero_stats(),
             'recent_activity' => $this->chart_recent_activity(),
-
         ];
     }
 
@@ -128,18 +145,20 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         $result = count_users();
 
         return [
-            'total_users' => $result['total_users'] ?? 0,
-            'total_dispatchers' => $result['avail_roles']['dispatcher'] ?? 0,
+            'total_workers' => $result['total_users'] ?? 0,
             'total_multipliers' => $result['avail_roles']['multiplier'] ?? 0,
+            'total_dispatchers' => $result['avail_roles']['dispatcher'] ?? 0,
+            'total_administrators' => $result['avail_roles']['dt_admin'] ?? 0,
+            'total_strategists' => $result['avail_roles']['strategist'] ?? 0,
             'all_roles' => $result['avail_roles'],
         ];
     }
 
     public function chart_recent_activity() {
         $chart = [];
-        $chart[] = [ 'Year', 'Logins' ];
+        $chart[] = [ 'Year', 'Worker Logins' ];
 
-        $results = Disciple_Tools_Queries::instance()->tree( 'recent_logins' );
+        $results = Disciple_Tools_Queries::instance()->query( 'recent_unique_logins' );
         if ( empty( $results ) ) {
             return $chart;
         }
@@ -153,15 +172,32 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         return $chart;
     }
 
-    public function chart_contacts_per_user() {
+    public function chart_contact_progress_per_worker() {
         $chart = [];
 
-        $chart[] = [ 'Name', 'Total', 'Attempt Needed', 'Attempted', 'Established', 'Meeting Scheduled', 'Meeting Complete', 'Ongoing', 'Being Coached' ];
+        $chart[] = ['Name', 'Assigned', 'Accepted', 'Attempt Needed', 'Attempted', 'Established', 'Meeting Scheduled', 'Meeting Complete', 'Ongoing', 'Being Coached', 'Baptized'];
 
-        $results = Disciple_Tools_Queries::instance()->query( 'contacts_per_user' );
+        $results = Disciple_Tools_Queries::instance()->query( 'contact_progress_per_worker' );
         if ( empty( $results ) ) {
             return $chart;
         }
+
+        foreach ( $results as $result ) {
+            $chart[] = [
+                $result['name'],
+                $result['assigned'],
+                $result['accepted'],
+                $result['attempt_needed'],
+                $result['attempted'],
+                $result['established'],
+                $result['meeting_scheduled'],
+                $result['meeting_complete'],
+                $result['ongoing'],
+                $result['being_coached'],
+                $result['baptized']
+            ];
+        }
+        dt_write_log($chart);
 
         return $chart;
     }

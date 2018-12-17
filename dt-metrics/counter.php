@@ -730,7 +730,66 @@ class Disciple_Tools_Queries
                 return $query;
                 break;
 
-            case 'recent_logins':
+            default:
+                return false;
+                break;
+        }
+    }
+
+    public function query( $query_name, $args = [] ) {
+        global $wpdb;
+
+        switch ( $query_name ) {
+            case 'contact_progress_per_worker':
+                $query = $wpdb->get_results($wpdb->prepare( "
+                    SELECT 
+                        u.display_name as name, 
+                        (0) as assigned, 
+                        (0) as accepted, 
+                        (0) as attempt_needed, 
+                        (0) as attempted, 
+                        (0) as established, 
+                        (0) as meeting_scheduled, 
+                        (0) as meeting_complete, 
+                        (0) as ongoing, 
+                        (0) as being_coached,
+                        (0) as baptized
+                        FROM $wpdb->usermeta as um
+                          JOIN $wpdb->users as u
+                          ON u.ID=um.user_id
+                        WHERE meta_key LIKE %s
+                        ORDER BY name ASC
+                ",
+                $wpdb->prefix . 'corresponds_to_contact'
+                    ), ARRAY_A);
+
+                $workers = $wpdb->get_results( "
+                    SELECT 
+                        users.ID,
+                        users.display_name,
+                        count(pm.post_id) as number_assigned_to,
+                        count(met.post_id) as number_met,
+                        count(active.post_id) as number_active,
+                        count(new_assigned.post_id) as number_new_assigned,
+                        count(update_needed.post_id) as number_update
+                    from $wpdb->users as users
+                    INNER JOIN $wpdb->postmeta as pm on (pm.meta_key = 'assigned_to' and pm.meta_value = CONCAT( 'user-', users.ID ) )
+                    INNER JOIN $wpdb->postmeta as type on (type.post_id = pm.post_id and type.meta_key = 'type' and ( type.meta_value = 'media' OR type.meta_value = 'next_gen' ) )
+                    LEFT JOIN $wpdb->postmeta as met on (met.post_id = type.post_id and met.meta_key = 'seeker_path' and ( met.meta_value = 'met' OR met.meta_value = 'ongoing' OR met.meta_value = 'coaching' ) )
+                    LEFT JOIN $wpdb->postmeta as active on (active.post_id = type.post_id and active.meta_key = 'overall_status' and active.meta_value = 'active' )
+                    LEFT JOIN $wpdb->postmeta as new_assigned on (new_assigned.post_id = type.post_id and new_assigned.meta_key = 'overall_status' and new_assigned.meta_value = 'assigned' )
+                    LEFT JOIN $wpdb->postmeta as update_needed on (update_needed.post_id = type.post_id and update_needed.meta_key = 'requires_update' and update_needed.meta_value = '1' )
+                    GROUP by users.ID",
+                    ARRAY_A);
+
+
+                return $query;
+                break;
+
+            case 'recent_unique_logins':
+                /**
+                 * Returns unique logins for the last 30 days.
+                 */
                 $query = $wpdb->get_results("
                     SELECT
                       DATE(FROM_UNIXTIME(hist_time)) AS report_date,
@@ -745,31 +804,6 @@ class Disciple_Tools_Queries
                 return $query;
                 break;
 
-            default:
-                return false;
-                break;
-        }
-    }
-
-    public function query( $query_name, $args = [] ) {
-        global $wpdb;
-
-        switch ( $query_name ) {
-            case 'contacts_per_user':
-                $query = $wpdb->get_results("
-                    SELECT 
-                        () as name, 
-                        () as total, 
-                        () as attempt_needed, 
-                        () as attempted, 
-                        () as established, 
-                        () as meeting_scheduled, 
-                        () as meeting_complete, 
-                        () as ongoing, 
-                        () as being_coached
-                ", ARRAY_A);
-                return $query;
-                break;
             default:
                 break;
         }
