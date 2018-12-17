@@ -128,10 +128,10 @@ declare(strict_types=1);
                                 <?php print_filters() ?>
                             </div>
                         </li>
-                        <li class="accordion-item" data-accordion-item data-id="shared">
+                        <li class="accordion-item" data-accordion-item data-id="my">
                             <a href="#" class="accordion-title">
-                                <?php esc_html_e( "Contacts Shared with me", 'disciple_tools' ) ?>
-                                <span class="tab-count-span" data-tab="total_shared"></span>
+                                <?php esc_html_e( "Contacts Assigned to me", 'disciple_tools' ) ?>
+                                <span class="tab-count-span" data-tab="total_my"></span>
                             </a>
                             <div class="accordion-content" data-tab-content>
                                 <?php print_filters() ?>
@@ -146,10 +146,10 @@ declare(strict_types=1);
                                 <?php print_filters() ?>
                             </div>
                         </li>
-                        <li class="accordion-item" data-accordion-item data-id="my">
+                        <li class="accordion-item" data-accordion-item data-id="shared">
                             <a href="#" class="accordion-title">
-                                <?php esc_html_e( "Contacts Assigned to me", 'disciple_tools' ) ?>
-                                <span class="tab-count-span" data-tab="total_my"></span>
+                                <?php esc_html_e( "Contacts Shared with me", 'disciple_tools' ) ?>
+                                <span class="tab-count-span" data-tab="total_shared"></span>
                             </a>
                             <div class="accordion-content" data-tab-content>
                                 <?php print_filters() ?>
