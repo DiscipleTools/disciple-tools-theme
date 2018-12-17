@@ -4,6 +4,9 @@ jQuery(document).ready(function() {
     if( ! window.location.hash || '#users_activity' === window.location.hash  ) {
         users_activity()
     }
+    if( '#follow_up_pace' === window.location.hash) {
+        window.show_follow_up_pace()
+    }
 
 })
 
@@ -155,6 +158,159 @@ function users_activity() {
 
 }
 
+window.show_follow_up_pace = function show_follow_up_pace(){
+    "use strict";
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#users-menu'));
+    let localizedObject = window.dtMetricsUsers
+
+    let chartDiv = jQuery('#chart') // retrieves the chart div in the metrics page
+
+    // TODO: escape this properly
+    chartDiv.empty().html(`
+      <span class="text-small" style="float:right; font-size:.6em; color: gray;">data as of ${localizedObject.data.workers.timestamp} - <a onclick="refresh_worker_pace_data()">refresh</a></span>
+      <span class="section-header">`+ localizedObject.data.translations.title_response +`</span>
+      
+      <hr style="max-width:100%;">
+      <p><strong>Coalition Pace: <span id="coalition_to_to_attempt"></span> Hours Average</strong> <span data-tooltip data-hover-delay="0" class="top tool-tip" title="Time from assignment to contact attempt"><i class="fi-info"></i></span></p>
+
+      <p>Note: Except for baptisms, these numbers come from the contacts that the User is currently assigned to. This means that if Bob met the contact and then assigned it to Fred it counts as if Fred met the contact.</p>
+      <table id="workers" class="hover table-scroll striped">
+        <thead style="background-color: lightgrey;">
+          <th onclick="sortTable(0)" style="white-space: nowrap;">Worker Name</th>
+          <th onclick="sortTable(1)">New</th>
+          <th onclick="sortTable(2)">Active</th>
+          <th onclick="sortTable(3)">Update Needed</th>
+          <th onclick="sortTable(4)">Assigned</th>
+          <th onclick="sortTable(5)">Met</th>
+          <th onclick="sortTable(6)">Baptized</th>
+          <th onclick="sortTable(7)">Last Assignment</th>
+          <th onclick="sortTable(8)">Pace <span data-tooltip data-hover-delay="0" class="top tool-tip" title="Time from assignment to contact attempt"><i class="fi-info"></i></span></th>
+        </thead>
+        <tbody id="workers_table_body">
+
+        </tbody>
+      </table>
+    `)
+
+    // Create chart instance
+
+    let data = window.dtMetricsUsers.data.workers.data;
+    let coalitionTime = window.dtMetricsUsers.data.workers.coalition_to_to_attempt;
+    jQuery("#coalition_to_to_attempt").html(coalitionTime)
+    let tableHTML = ``;
+    // TODO: escape this properly
+    data.forEach(worker=>{
+        tableHTML +=`
+      <tr>
+        <td>${worker.display_name}</td>
+        <td>${worker.number_new_assigned}</td>
+        <td>${worker.number_active}</td>
+        <td>${worker.number_update}</td>
+        <td>${worker.number_assigned_to}</td>
+        <td>${worker.number_met}</td>
+        <td>${worker.number_baptized}</td>
+        <td>${worker.last_date_assigned || ""}</td>
+        <td>${worker.avg_hours_to_contact_attempt || ""}</td>
+      </tr>
+      `
+    })
+    jQuery("#workers_table_body").html(tableHTML)
+
+
+    jQuery('#workers').foundation()
+    jQuery('.tool-tip').foundation()
+
+
+
+}
+
+function refresh_worker_pace_data() {
+    return jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: dtMetricsUsers.root + 'dt/v1/metrics/users/refresh_pace',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsUsers.nonce);
+        },
+    })
+        .done(function (data) {
+            console.log(data)
+            if ( data ) {
+                window.dtMetricsUsers.data.workers = data;
+                show_follow_up_pace()
+            }
+        })
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+            jQuery("#errors").append(err.responseText)
+        })
+}
+
+window.sortTable = function sortTable(n) {
+    "use strict";
+    let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("workers");
+    switching = true;
+    //Set the sorting direction to ascending:
+    dir = "asc";
+    /*Make a loop that will continue until
+    no switching has been done:*/
+    while (switching) {
+        //start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /*Loop through all table rows (except the
+        first, which contains table headers):*/
+        for (i = 1; i < (rows.length - 1); i++) {
+            //start by saying there should be no switching:
+            shouldSwitch = false;
+            /*Get the two elements you want to compare,
+            one from current row and one from the next:*/
+            x = rows[i].getElementsByTagName("TD")[n];
+            y = rows[i + 1].getElementsByTagName("TD")[n];
+            /*check if the two rows should switch place,
+            based on the direction, asc or desc:*/
+            if (dir === "asc") {
+
+                if (Number.isInteger(parseInt(x.innerHTML))){
+                    if (parseInt(x.innerHTML.replace("-", "")) > parseInt(y.innerHTML.replace("-", ""))) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else {
+                    if (x.innerHTML.toLowerCase().replace("-", "") > y.innerHTML.toLowerCase().replace("-", "")) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch= true;
+                        break;
+                    }
+                }
+            } else if (dir === "desc") {
+                if (Number.isInteger(parseInt(x.innerHTML)) ? (parseInt(x.innerHTML.replace("-", "")) < parseInt(y.innerHTML.replace("-", ""))) : (x.innerHTML.toLowerCase().replace("-", "") < y.innerHTML.toLowerCase().replace("-", ""))) {
+                    //if so, mark as a switch and break the loop:
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+        }
+        if (shouldSwitch) {
+            /*If a switch has been marked, make the switch
+            and mark that a switch has been done:*/
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            //Each time a switch is done, increase this count by 1:
+            switchcount ++;
+        } else {
+            /*If no switching has been done AND the direction is "asc",
+            set the direction to "desc" and run the while loop again.*/
+            if (switchcount === 0 && dir === "asc") {
+                dir = "desc";
+                switching = true;
+            }
+        }
+    }
+}
 
 
 function numberWithCommas(x) {
@@ -164,4 +320,6 @@ function numberWithCommas(x) {
         x = x.replace(pattern, "$1,$2");
     return x;
 }
+
+
 
