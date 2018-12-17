@@ -254,16 +254,18 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             <?php
                             $hide_edit_button = false;
                             if ( $contact["overall_status"]["key"] === "paused" &&
-                                 isset( $contact["reason_paused"] )){
+                                 isset( $contact["reason_paused"]["label"] )){
                                 echo '(' . esc_html( $contact["reason_paused"]["label"] ) . ')';
                             } else if ( $contact["overall_status"]["key"] === "closed" &&
-                                        isset( $contact["reason_closed"] )){
+                                        isset( $contact["reason_closed"]["label"] )){
                                 echo '(' . esc_html( $contact["reason_closed"]["label"] ) . ')';
                             } else if ( $contact["overall_status"]["key"] === "unassignable" &&
-                                        isset( $contact["reason_unassignable"] )){
+                                        isset( $contact["reason_unassignable"]["label"] )){
                                 echo '(' . esc_html( $contact["reason_unassignable"]["label"] ) . ')';
                             } else {
-                                $hide_edit_button = true;
+                                if ( !in_array( $contact["overall_status"]["key"], [ "paused", "closed", "unassignable" ] ) ){
+                                    $hide_edit_button = true;
+                                }
                             }
                             ?>
                         </span>
