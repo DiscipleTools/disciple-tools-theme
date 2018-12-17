@@ -96,8 +96,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             <li><a href="">' .  esc_html__( 'Workers', 'disciple_tools' ) . '</a>
                 <ul class="menu vertical nested" id="workers-menu" aria-expanded="true">
                     <li><a href="'. site_url( '/metrics/workers/' ) .'#workers_activity" onclick="workers_activity()">'. esc_html__( 'Activity' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/workers/' ) .'#follow_up_pace" onclick="show_follow_up_pace()">'. esc_html__( 'Worker Pace' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/workers/' ) .'#contact_follow_up_pace" onclick="contact_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/workers/' ) .'#follow_up_pace" onclick="show_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li>
+                    <!-- <li><a href="'. site_url( '/metrics/workers/' ) .'#contact_follow_up_pace" onclick="contact_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li> -->
                 </ul>
             </li>
             ';
@@ -165,10 +165,28 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             return $chart;
         }
 
+        $days = 31;
+        $last_30_days = [];
+        while ( $days > 0 ) {
+            $last_30_days[] = date( 'Y-m-d', strtotime( '- ' . $days . ' days'  ) );
+            $days--;
+        }
+
+
+
         $results = array_reverse( $results );
-        foreach ( $results as $result ) {
-            $date = date_create( $result['report_date'] );
-            $chart[] = [ date_format( $date, "M d" ), (int) $result['total'] ];
+        foreach ( $last_30_days as $day ) {
+
+            $total = 0;
+
+            foreach ( $results as $result ) {
+                if ( $day ==  $result['report_date'] ) {
+                    $total = $result['total'];
+                    break;
+                }
+            }
+
+            $chart[] = [ date( 'M d', strtotime( $day ) ), (int) $total ];
         }
 
         return $chart;

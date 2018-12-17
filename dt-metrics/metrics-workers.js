@@ -89,9 +89,10 @@ function workers_activity() {
         let chartData = google.visualization.arrayToDataTable( sourceData.recent_activity );
         let options = {
             vAxis: {title: 'logins'},
-            // chartArea: {
-            //     width: "100%",
-            //     height: "85%" },
+            chartArea: {
+                left: '5%',
+                width: "100%"
+                 },
             legend: { position: 'bottom' }
         };
         let chart = new google.visualization.LineChart( document.getElementById('chart_line_logins') );
