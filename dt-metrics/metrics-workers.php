@@ -30,8 +30,6 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             if ( 'metrics/workers' === $url_path ) {
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             }
-
-
         }
     }
 
@@ -77,7 +75,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         return $this->get_workers_data( true );
     }
 
-    public function workers_pace( ) {
+    public function workers_pace() {
         if ( ! $this->has_permission() ){
             return new WP_Error( "workers_pace", "Missing Permissions", [ 'status' => 400 ] );
         }
@@ -168,7 +166,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         $days = 31;
         $last_30_days = [];
         while ( $days > 0 ) {
-            $last_30_days[] = date( 'Y-m-d', strtotime( '- ' . $days . ' days'  ) );
+            $last_30_days[] = date( 'Y-m-d', strtotime( '- ' . $days . ' days' ) );
             $days--;
         }
 
@@ -180,7 +178,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             $total = 0;
 
             foreach ( $results as $result ) {
-                if ( $day ==  $result['report_date'] ) {
+                if ( $day == $result['report_date'] ) {
                     $total = $result['total'];
                     break;
                 }
@@ -201,12 +199,15 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         }
         $chart = [];
 
-        $chart[] = ['Name', 'Assigned', 'Accepted', 'Active', 'Attempt Needed', 'Attempted', 'Established', 'Meet Scheduled', 'Meet Complete', 'Ongoing Meeting', 'Baptisms', 'Coaching' ];
+        $chart[] = [ 'Name', 'Assigned', 'Accepted', 'Active', 'Attempt Needed', 'Attempted', 'Established', 'Meet Scheduled', 'Meet Complete', 'Ongoing Meeting', 'Baptisms', 'Coaching' ];
 
         $results = Disciple_Tools_Queries::instance()->query( 'contact_progress_per_worker' );
         $baptized = Disciple_Tools_Queries::instance()->query( 'baptized_per_worker' );
-        $multiplier_ids = get_users(['role' => 'multiplier', 'fields' => 'ID' ]);
-        dt_write_log($multiplier_ids);
+        $multiplier_ids = get_users( [
+            'role' => 'multiplier',
+            'fields' => 'ID'
+        ] );
+        dt_write_log( $multiplier_ids );
         if ( empty( $results ) ) {
             return $chart;
         }
@@ -224,7 +225,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             }
 
             $baptisms = 0;
-            foreach( $baptized as $value ) {
+            foreach ( $baptized as $value ) {
                 if ( $value['user_id'] === $result['user_id'] ) {
                     $baptisms = $value['count'];
                 }
