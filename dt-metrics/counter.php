@@ -741,7 +741,7 @@ class Disciple_Tools_Queries
 
         switch ( $query_name ) {
             case 'contact_progress_per_worker':
-                $query = $wpdb->get_results($wpdb->prepare( "
+                $query = $wpdb->get_results("
                     SELECT
                       ( TRIM( LEADING 'user-' from a.meta_value ) ) as user_id,
                       count(a.meta_value) as assigned,
@@ -788,9 +788,7 @@ class Disciple_Tools_Queries
                     WHERE post_status = 'publish'
                       AND post_type = 'contacts'
                     GROUP BY a.meta_value
-                ",
-                $wpdb->prefix . 'corresponds_to_contact'
-                    ), ARRAY_A);
+                ", ARRAY_A);
 
                 return $query;
                 break;

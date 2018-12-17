@@ -49,7 +49,7 @@ function workers_activity() {
                 <span class="section-subheader">${sourceData.translations.title_recent_activity}</span>
                 <div id="chart_line_logins" style="height:300px"><img src="${dtMetricsUsers.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
             </div>
-            <div class="cell">
+            <div class="cell" style="display:none;">
                 <div class="grid-x grid-padding-x">
                 <div class="cell medium-6">
                         <span class="section-subheader">${sourceData.translations.label_most_active}</span>
@@ -112,19 +112,6 @@ function workers_activity() {
         })
             .done(function (response) {
                 let chartData = google.visualization.arrayToDataTable( response );
-                // let chartData = new google.visualization.DataTable();
-                // chartData.addColumn('string', 'Name');
-                // chartData.addColumn('number', 'Assigned');
-                // chartData.addColumn('number', 'Accepted');
-                // chartData.addColumn('number', 'Active');
-                // chartData.addColumn('number', 'Attempt Needed');
-                // chartData.addColumn('number', 'Attempted');
-                // chartData.addColumn('number', 'Established');
-                // chartData.addColumn('number', 'Meeting Scheduled');
-                // chartData.addColumn('number', 'Meeting Complete');
-                // chartData.addColumn('number', 'Ongoing');
-                // chartData.addColumn('number', 'Being Coached');
-                // chartData.addRows(response);
                 let options = {
                     chartArea: {
                         left: '5%',
@@ -134,7 +121,8 @@ function workers_activity() {
                     legend: { position: 'bottom' },
                     alternatingRowStyle: true,
                     sort: 'enable',
-                    showRowNumber: true,
+                    // showRowNumber: true,
+                    sortColumn: 0,
                     width: '100%',
 
                 };

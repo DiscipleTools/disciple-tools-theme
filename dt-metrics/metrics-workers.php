@@ -174,19 +174,31 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         return $chart;
     }
 
-    public function chart_contact_progress_per_worker() {
+    public function chart_contact_progress_per_worker( $force_refresh = false ) {
+        if ( $force_refresh ) {
+            delete_transient( __METHOD__ );
+        }
+        if ( get_transient( __METHOD__ ) ) {
+            return maybe_unserialize( get_transient( __METHOD__ ) );
+        }
         $chart = [];
 
         $chart[] = ['Name', 'Assigned', 'Accepted', 'Active', 'Attempt Needed', 'Attempted', 'Established', 'Meet Scheduled', 'Meet Complete', 'Ongoing Meeting', 'Baptisms', 'Coaching' ];
 
         $results = Disciple_Tools_Queries::instance()->query( 'contact_progress_per_worker' );
         $baptized = Disciple_Tools_Queries::instance()->query( 'baptized_per_worker' );
+        $multiplier_ids = get_users(['role' => 'multiplier', 'fields' => 'ID' ]);
+        dt_write_log($multiplier_ids);
         if ( empty( $results ) ) {
             return $chart;
         }
 
 
         foreach ( $results as $result ) {
+
+            if ( ! array_search( $result['user_id'], $multiplier_ids ) ) {
+                continue;
+            }
 
             $user = get_userdata( $result['user_id'] );
             if ( empty( $user ) ) {
@@ -215,7 +227,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 (int) $baptisms,
             ];
         }
-        dt_write_log($chart);
+
+        set_transient( __METHOD__, maybe_serialize( $chart ), dt_get_time_until_midnight() );
 
         return $chart;
     }
