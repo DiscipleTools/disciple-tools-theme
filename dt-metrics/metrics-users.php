@@ -21,7 +21,9 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     public function __construct() {
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
         $url_path = dt_get_url_path();
-
+        if ( !$this->has_permission() ){
+            return;
+        }
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
 
             add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
@@ -29,10 +31,6 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
             if ( 'metrics/users' === $url_path ) {
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
-            }
-
-            if ( !$this->has_permission() ){
-                return;
             }
         }
     }
