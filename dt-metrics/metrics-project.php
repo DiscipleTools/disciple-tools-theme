@@ -107,7 +107,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'title_locations_tree' => __( 'Location Tree', 'disciple_tools' ),
                 'label_number_of_contacts' => strtolower( __( 'number of contacts', 'disciple_tools' ) ),
                 'label_follow_up_progress' => __( 'Follow-up progress of current active contacts', 'disciple_tools' ),
-                'label_group_needs_training' => __( 'Active Groups Health Metrics', 'disciple_tools' ),
+                'label_group_needs_training' => __( 'Active Group Health Metrics', 'disciple_tools' ),
                 'label_groups' => strtolower( __( 'groups', 'disciple_tools' ) ),
                 'label_generations' => strtolower( __( 'generations', 'disciple_tools' ) ),
                 'label_groups_by_type' => strtolower( __( 'groups by type', 'disciple_tools' ) ),

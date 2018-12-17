@@ -700,7 +700,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                   AND d.meta_key = 'health_metrics' )
               WHERE a.post_status = 'publish'
                   AND a.post_type = 'groups'
-              GROUP BY d.meta_key
+              GROUP BY d.meta_value
         ",
             'user-' . $user_id,
             'user-' . $user_id

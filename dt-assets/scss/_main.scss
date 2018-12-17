@@ -98,12 +98,14 @@ NAVIGATION STYLES
 
     .active {
         a {
-            background: $light-gray;
-            color: $black;
+            background: #224f72;
+            //color: $black;
         }
     }
 }
 #top-bar-menu {
+    margin-top:0 !important;
+    padding: 0px 20px;
     z-index: 999;
     .dropdown.menu {
         li {
@@ -112,8 +114,8 @@ NAVIGATION STYLES
     }
 
     a {
-        //padding: 10px 1rem 10px 1rem;
         font-weight:bold;
+        padding: 1rem 1rem;
     }
 
     .image-menu-nav {
@@ -123,8 +125,11 @@ NAVIGATION STYLES
         }
         a {
             padding: 4px 5px;
-            vertical-align: text-bottom;
+            vertical-align: middle;
             font-weight: bold;
+            span {
+                vertical-align: middle;
+            }
         }
 
     }
@@ -157,12 +162,20 @@ nav.second-bar {
     .button {
         img {
             height: 17px;
+            padding-right: 5px;
         }
         padding: .4em .75em
     }
     input {
         padding: .4em .75em;
         max-height: 32px;
+    }
+    a, input, button {
+        vertical-align: middle;
+        margin: 0 5px;
+        span {
+            vertical-align: middle;
+        }
     }
 }
 
@@ -417,6 +430,10 @@ img {
         margin-bottom: 0;
     }
 }
+.quick-action-menu a {
+    vertical-align: middle;
+}
+
 
 #add-comment-button {
     margin-bottom: 0;
@@ -1171,6 +1188,29 @@ CONTACTS
     }
 }
 
+
+#list-filter-tabs {
+    margin-top: 10px;
+    .is-active a {
+        background-color: #3f729b;
+        color:white;
+        &:focus {
+            background-color: #3f729b;
+            color: white;
+        }
+    }
+}
+
+
+.show-closed-switch {
+    display: inline-block;
+    .switch {
+        display: inline-block;
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
+}
+
 .social-details-options-button {
     vertical-align: middle;
     padding: 0 3px;
@@ -1517,10 +1557,6 @@ div.dataTables_wrapper .datatable-first-line {
     }
 }
 
-#top-bar-menu {
-    margin-top:0 !important;
-    padding: 5px 20px;
-}
 .header {
     z-index: 10;
     position: relative;
@@ -1751,7 +1787,7 @@ select#overall_status {
 #filter-modal {
     padding:10px 0 0 0;
     .tabs-title > a {
-        padding: 1.25rem 0 1.25rem 10px;
+        padding: 1.25rem 0 1.25rem 15px;
     }
     h3 {
         margin-left: 10px;
@@ -1792,7 +1828,9 @@ select#overall_status {
     .confirm-buttons {
         text-align: end;
     }
-
+    .grid-container {
+        padding: 0
+    }
 }
 
 @media screen and (min-width : 640px) {
@@ -1836,5 +1874,13 @@ select#overall_status {
 }
 .not-church-gray, .not-church-gray a {
     color:lightgray;
+}
+.accordion-menu .is-accordion-submenu-parent[aria-expanded=true]>a:after {
+    transform: none !important;
+    transform-origin: 50% 50% !important;
+}
+.accordion-menu .is-accordion-submenu-parent[aria-expanded=false]>a:after {
+    transform: rotate(90deg) !important;
+    transform-origin: 50% 50% !important;
 }
 /* End Metrics section */

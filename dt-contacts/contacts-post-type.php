@@ -195,31 +195,38 @@ class Disciple_Tools_Contact_Post_Type
             'default'     => [
                 'new'   => [
                     "label" => _x( 'New Contact', 'Contact Status', 'disciple_tools' ),
-                    "color" => "#F43636"
+                    "color" => "#F43636",
+                    "description" => _x( "The contact is new in the system", "Contact Status", 'disciple_tools' )
                 ],
                 'unassignable' => [
                     "color" => "#FF9800",
-                    "label" => _x( 'Not Ready', 'Contact Status', 'disciple_tools' )
+                    "label" => _x( 'Not Ready', 'Contact Status', 'disciple_tools' ),
+                    "description" => _x( "There is not enough information to move forward with the contact at this time.", "Contact Status", 'disciple_tools' )
                 ],
                 'unassigned'   => [
                     "label" => _x( 'Dispatch Needed', 'Contact Status', 'disciple_tools' ),
-                    "color" => "#F43636"
+                    "color" => "#F43636",
+                    "description" => _x( "This contact needs to be assigned to a multiplier.", "Contact Status", 'disciple_tools' )
                 ],
                 'assigned'     => [
                     "color" => "#FF9800",
-                    "label" => _X( "Waiting to be accepted", 'Contact Status', 'disciple_tools' )
+                    "label" => _X( "Waiting to be accepted", 'Contact Status', 'disciple_tools' ),
+                    "description" => _x( "The contact has been assigned to someone, but has not yet been accepted by that person.", "Contact Status", 'disciple_tools' )
                 ],
                 'active'       => [
                     "color" => "#4CAF50",
-                    "label" => _X( 'Active', 'Contact Status', 'disciple_tools' )
+                    "label" => _X( 'Active', 'Contact Status', 'disciple_tools' ),
+                    "description" => _x( "The contact is progressing and/or continually being updated.", "Contact Status", 'disciple_tools' )
                 ],
                 'paused'       => [
                     "color" => "#FF9800",
-                    "label" => _x( 'Paused', 'Contact Status', 'disciple_tools' )
+                    "label" => _x( 'Paused', 'Contact Status', 'disciple_tools' ),
+                    "description" => _x( "This contact is currently on hold (i.e. on vacation or not responding).", "Contact Status", 'disciple_tools' )
                 ],
                 'closed'       => [
                     "color" => "#F43636",
-                    "label" => _x( 'Closed', 'Contact Status', 'disciple_tools' )
+                    "label" => _x( 'Closed', 'Contact Status', 'disciple_tools' ),
+                    "description" => _x( "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.", "Contact Status", 'disciple_tools' )
                 ],
             ],
             'section'     => 'status',
@@ -394,6 +401,7 @@ class Disciple_Tools_Contact_Post_Type
             'type'        => 'boolean',
             'default'     => false,
             'section'     => 'status',
+            'hidden'      => true
         ];
 
         $sources_default = [];

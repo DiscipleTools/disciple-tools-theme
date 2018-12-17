@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools\n"
-"POT-Creation-Date: 2018-12-14 14:41+0100\n"
+"POT-Creation-Date: 2018-12-17 11:45+0100\n"
 "PO-Revision-Date: 2018-01-09 14:10-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -25,9 +25,10 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-3: dt-core/dependencies\n"
 "X-Poedit-SearchPathExcluded-4: node_modules\n"
 "X-Poedit-SearchPathExcluded-5: dt-core/admin/user-groups\n"
-"X-Poedit-SearchPathExcluded-6: dt-core/admin/menu/tabs\n"
+"X-Poedit-SearchPathExcluded-6: dt-core/admin/menu\n"
 "X-Poedit-SearchPathExcluded-7: dt-core/admin/gdpr.php\n"
 "X-Poedit-SearchPathExcluded-8: dt-core/admin/site-link-post-type.php\n"
+"X-Poedit-SearchPathExcluded-9: dt-network\n"
 
 #: 403.php:9
 msgid "Permission denied"
@@ -149,13 +150,13 @@ msgstr ""
 
 #: archive-contacts.php:241 archive-contacts.php:242 archive-groups.php:194
 #: archive-groups.php:195 dt-assets/functions/details-bar.php:43
-#: dt-assets/functions/details-bar.php:84 template-settings.php:270
+#: dt-assets/functions/details-bar.php:84 template-settings.php:271
 msgid "No"
 msgstr ""
 
 #: archive-contacts.php:247 archive-contacts.php:248 archive-groups.php:200
 #: archive-groups.php:201 dt-assets/functions/details-bar.php:42
-#: dt-assets/functions/details-bar.php:83 template-settings.php:269
+#: dt-assets/functions/details-bar.php:83 template-settings.php:270
 msgid "Yes"
 msgstr ""
 
@@ -179,17 +180,16 @@ msgstr ""
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:22
-#: dt-assets/parts/modals/modal-new-group.php:22 single-contacts.php:643
-#: single-contacts.php:670 single-contacts.php:696 single-contacts.php:757
-#: single-contacts.php:838 single-contacts.php:892 single-contacts.php:941
+#: dt-assets/parts/modals/modal-new-group.php:22 single-contacts.php:645
+#: single-contacts.php:672 single-contacts.php:698 single-contacts.php:759
+#: single-contacts.php:840 single-contacts.php:894 single-contacts.php:943
 msgid "Cancel"
 msgstr ""
 
 #: archive-contacts.php:294 archive-groups.php:247
 #: dt-assets/functions/enqueue-scripts.php:285
 #: dt-assets/parts/contact-details.php:360
-#: dt-assets/parts/group-details.php:264 dt-network/network.php:77
-#: template-settings.php:509
+#: dt-assets/parts/group-details.php:264 template-settings.php:517
 msgid "Save"
 msgstr ""
 
@@ -201,7 +201,7 @@ msgstr ""
 msgid "Filter groups"
 msgstr ""
 
-#: archive-groups.php:46 single-contacts.php:374 single-groups.php:188
+#: archive-groups.php:46 single-contacts.php:376 single-groups.php:188
 msgid "Search groups"
 msgstr ""
 
@@ -258,7 +258,7 @@ msgstr ""
 
 #: dt-assets/functions/details-bar.php:77
 #: dt-assets/functions/details-bar.php:82
-#: dt-contacts/contacts-post-type.php:502 dt-groups/groups-post-type.php:347
+#: dt-contacts/contacts-post-type.php:509 dt-groups/groups-post-type.php:347
 msgid "Follow"
 msgstr ""
 
@@ -375,8 +375,8 @@ msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:286
 #: dt-assets/parts/contact-details.php:55 dt-assets/parts/group-details.php:37
-#: dt-core/admin/multi-role/functions-admin.php:38 template-settings.php:56
-#: template-settings.php:403
+#: dt-core/admin/multi-role/functions-admin.php:38 template-settings.php:57
+#: template-settings.php:404
 msgid "Edit"
 msgstr ""
 
@@ -422,7 +422,7 @@ msgstr ""
 #: dt-assets/parts/content-locations.php:12
 #: dt-assets/parts/content-locations.php:25 dt-core/posts.php:29
 #: dt-groups/groups-post-type.php:99 dt-metrics/metrics-personal.php:65
-#: dt-metrics/metrics-project.php:91 single-contacts.php:367
+#: dt-metrics/metrics-project.php:91 single-contacts.php:369
 #: single-groups.php:163
 msgid "Groups"
 msgstr ""
@@ -439,8 +439,8 @@ msgstr ""
 
 #. Template Name of the plugin/theme
 #: dt-assets/functions/menu.php:89 dt-assets/parts/nav-offcanvas-topbar.php:17
-#: dt-assets/parts/nav-offcanvas-topbar.php:48 template-settings.php:36
-#: template-settings.php:208
+#: dt-assets/parts/nav-offcanvas-topbar.php:48 template-settings.php:37
+#: template-settings.php:209
 msgid "Notifications"
 msgstr ""
 
@@ -493,19 +493,19 @@ msgstr ""
 
 #: dt-assets/parts/contact-details.php:90
 #: dt-assets/parts/contact-details.php:216 dt-assets/parts/group-details.php:92
-#: dt-assets/parts/group-details.php:183 dt-contacts/contacts-post-type.php:714
-#: dt-locations/locations-post-type.php:207 template-settings.php:118
+#: dt-assets/parts/group-details.php:183 dt-contacts/contacts-post-type.php:721
+#: dt-locations/locations-post-type.php:207 template-settings.php:119
 msgid "Address"
 msgstr ""
 
 #: dt-assets/parts/contact-details.php:99
 #: dt-assets/parts/contact-details.php:337
 #: dt-assets/parts/content-locations.php:5 dt-assets/parts/group-details.php:44
-#: dt-assets/parts/group-details.php:241 dt-contacts/contacts-post-type.php:529
+#: dt-assets/parts/group-details.php:241 dt-contacts/contacts-post-type.php:536
 #: dt-core/posts.php:28 dt-groups/groups-post-type.php:368
 #: dt-locations/utilities/tab-import-csv.php:169
 #: dt-metrics/metrics-project.php:46 dt-metrics/metrics-project.php:106
-#: template-settings.php:164
+#: template-settings.php:165 template-settings.php:464
 msgid "Locations"
 msgstr ""
 
@@ -518,13 +518,13 @@ msgstr ""
 
 #: dt-assets/parts/contact-details.php:118
 #: dt-assets/parts/contact-details.php:295
-#: dt-contacts/contacts-post-type.php:318
+#: dt-contacts/contacts-post-type.php:325
 msgid "Age"
 msgstr ""
 
 #: dt-assets/parts/contact-details.php:137
 #: dt-assets/parts/contact-details.php:276
-#: dt-contacts/contacts-post-type.php:307
+#: dt-contacts/contacts-post-type.php:314
 msgid "Gender"
 msgstr ""
 
@@ -546,7 +546,7 @@ msgstr ""
 #: dt-assets/parts/modals/modal-new-contact.php:9
 #: dt-assets/parts/modals/modal-new-group.php:9 dt-contacts/contacts.php:115
 #: template-contacts-new.php:20 template-groups-new.php:22
-#: template-settings.php:75
+#: template-settings.php:76
 msgid "Name"
 msgstr ""
 
@@ -593,22 +593,22 @@ msgstr ""
 #: dt-assets/parts/content-groups.php:34
 #: dt-assets/parts/content-locations.php:10
 #: dt-assets/parts/content-locations.php:23
-#: dt-locations/utilities/tab-import-csv.php:324 single-contacts.php:229
+#: dt-locations/utilities/tab-import-csv.php:324 single-contacts.php:231
 msgid "Status"
 msgstr ""
 
 #: dt-assets/parts/content-contacts.php:36
-#: dt-contacts/contacts-post-type.php:231
+#: dt-contacts/contacts-post-type.php:238
 msgid "Seeker Path"
 msgstr ""
 
 #: dt-assets/parts/content-contacts.php:37
-#: dt-contacts/contacts-post-type.php:271
+#: dt-contacts/contacts-post-type.php:278
 msgid "Faith Milestones"
 msgstr ""
 
 #: dt-assets/parts/content-contacts.php:38 dt-assets/parts/group-details.php:78
-#: single-contacts.php:278
+#: single-contacts.php:280
 msgid "Assigned to"
 msgstr ""
 
@@ -681,16 +681,16 @@ msgstr ""
 
 #: dt-assets/parts/content-locations.php:13
 #: dt-assets/parts/content-locations.php:26
-#: dt-contacts/contacts-post-type.php:481
+#: dt-contacts/contacts-post-type.php:488
 msgid "Last modified"
 msgstr ""
 
 #: dt-assets/parts/content-locations.php:15
 #: dt-assets/parts/loop-activity-comment.php:116
 #: dt-assets/parts/loop-activity-comment.php:136
-#: dt-assets/parts/modals/modal-help.php:98
+#: dt-assets/parts/modals/modal-help.php:96
 #: dt-assets/parts/modals/modal-revert.php:15
-#: dt-assets/parts/modals/modal-share.php:48 single-contacts.php:802
+#: dt-assets/parts/modals/modal-share.php:48 single-contacts.php:804
 #: single-groups.php:336
 msgid "Close"
 msgstr ""
@@ -731,8 +731,8 @@ msgid "Edit Group"
 msgstr ""
 
 #: dt-assets/parts/group-details.php:166
-#: dt-assets/parts/modals/modal-share.php:25 single-contacts.php:288
-#: single-contacts.php:870
+#: dt-assets/parts/modals/modal-share.php:25 single-contacts.php:290
+#: single-contacts.php:872
 msgid "Search Users"
 msgstr ""
 
@@ -825,8 +825,8 @@ msgstr ""
 msgid "Unsure"
 msgstr ""
 
-#: dt-assets/parts/merge-details.php:178 single-contacts.php:899
-#: single-contacts.php:948
+#: dt-assets/parts/merge-details.php:178 single-contacts.php:901
+#: single-contacts.php:950
 msgid "Merge"
 msgstr ""
 
@@ -856,42 +856,6 @@ msgstr ""
 msgid "This is where you set the current status of the contact."
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:9
-msgid "New Contact - The contact is new in the system"
-msgstr ""
-
-#: dt-assets/parts/modals/modal-help.php:10
-msgid ""
-"Not Ready - There is not enough information to move forward with the contact "
-"at this time."
-msgstr ""
-
-#: dt-assets/parts/modals/modal-help.php:11
-msgid "Dispatch Needed - This contact needs to be assigned to a multiplier."
-msgstr ""
-
-#: dt-assets/parts/modals/modal-help.php:12
-msgid ""
-"Waiting to be accepted - The contact has been assigned to someone, but has "
-"not yet been accepted by that person."
-msgstr ""
-
-#: dt-assets/parts/modals/modal-help.php:13
-msgid "Active - The contact is progressing and/or continually being updated."
-msgstr ""
-
-#: dt-assets/parts/modals/modal-help.php:14
-msgid ""
-"Paused - This contact is currently on hold (i.e. on vacation or not "
-"responding)."
-msgstr ""
-
-#: dt-assets/parts/modals/modal-help.php:15
-msgid ""
-"Closed - This contact has made it known that they no longer want to continue "
-"or you have decided not to continue with him/her."
-msgstr ""
-
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:13
 msgid "Create contact"
@@ -902,14 +866,14 @@ msgid "Name of contact"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-new-contact.php:10
-#: dt-assets/parts/modals/modal-new-group.php:10 single-contacts.php:752
-#: single-contacts.php:825 template-contacts-new.php:22
+#: dt-assets/parts/modals/modal-new-group.php:10 single-contacts.php:754
+#: single-contacts.php:827 template-contacts-new.php:22
 #: template-groups-new.php:23
 msgid "This is required"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-new-contact.php:17
-msgid "contact Created"
+msgid "contact created"
 msgstr ""
 
 #: dt-assets/parts/modals/modal-new-contact.php:27
@@ -983,7 +947,7 @@ msgstr ""
 msgid "This contact is shared with:"
 msgstr ""
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:42 template-settings.php:35
+#: dt-assets/parts/nav-offcanvas-topbar.php:42 template-settings.php:36
 msgid "Profile"
 msgstr ""
 
@@ -1033,381 +997,422 @@ msgctxt "Contact Status"
 msgid "New Contact"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:202
+#: dt-contacts/contacts-post-type.php:199
+msgctxt "Contact Status"
+msgid "The contact is new in the system"
+msgstr ""
+
+#: dt-contacts/contacts-post-type.php:203
 msgctxt "Contact Status"
 msgid "Not Ready"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:205
+#: dt-contacts/contacts-post-type.php:204
+msgctxt "Contact Status"
+msgid ""
+"There is not enough information to move forward with the contact at this "
+"time."
+msgstr ""
+
+#: dt-contacts/contacts-post-type.php:207
 msgctxt "Contact Status"
 msgid "Dispatch Needed"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:218
+#: dt-contacts/contacts-post-type.php:209
+msgctxt "Contact Status"
+msgid "This contact needs to be assigned to a multiplier."
+msgstr ""
+
+#: dt-contacts/contacts-post-type.php:214
+msgctxt "Contact Status"
+msgid ""
+"The contact has been assigned to someone, but has not yet been accepted by "
+"that person."
+msgstr ""
+
+#: dt-contacts/contacts-post-type.php:219
+msgctxt "Contact Status"
+msgid "The contact is progressing and/or continually being updated."
+msgstr ""
+
+#: dt-contacts/contacts-post-type.php:223
 msgctxt "Contact Status"
 msgid "Paused"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:222
+#: dt-contacts/contacts-post-type.php:224
+msgctxt "Contact Status"
+msgid "This contact is currently on hold (i.e. on vacation or not responding)."
+msgstr ""
+
+#: dt-contacts/contacts-post-type.php:228
 msgctxt "Contact Status"
 msgid "Closed"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:235
+#: dt-contacts/contacts-post-type.php:229
+msgctxt "Contact Status"
+msgid ""
+"This contact has made it known that they no longer want to continue or you "
+"have decided not to continue with him/her."
+msgstr ""
+
+#: dt-contacts/contacts-post-type.php:242
 msgid "Contact Attempt Needed"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:236
+#: dt-contacts/contacts-post-type.php:243
 msgid "Contact Attempted"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:237
-#: dt-contacts/contacts-post-type.php:428
+#: dt-contacts/contacts-post-type.php:244
+#: dt-contacts/contacts-post-type.php:435
 msgid "Contact Established"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:238
+#: dt-contacts/contacts-post-type.php:245
 msgid "First Meeting Scheduled"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:239
+#: dt-contacts/contacts-post-type.php:246
 msgid "First Meeting Complete"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:240 dt-metrics/counter.php:136
+#: dt-contacts/contacts-post-type.php:247 dt-metrics/counter.php:139
 msgid "Ongoing Meetings"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:241
+#: dt-contacts/contacts-post-type.php:248
 msgid "Being Coached"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:247 dt-groups/groups-post-type.php:372
+#: dt-contacts/contacts-post-type.php:254 dt-groups/groups-post-type.php:372
 msgid "Requires Update"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:274
+#: dt-contacts/contacts-post-type.php:281
 msgid "Has Bible"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:275
+#: dt-contacts/contacts-post-type.php:282
 msgid "Reading Bible"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:276
+#: dt-contacts/contacts-post-type.php:283
 msgid "States Belief"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:277
+#: dt-contacts/contacts-post-type.php:284
 msgid "Can Share Gospel/Testimony"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:278
+#: dt-contacts/contacts-post-type.php:285
 msgid "Sharing Gospel/Testimony"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:279 dt-core/posts.php:32
-#: single-contacts.php:390 single-contacts.php:770
+#: dt-contacts/contacts-post-type.php:286 dt-core/posts.php:32
+#: single-contacts.php:392 single-contacts.php:772
 msgid "Baptized"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:280
+#: dt-contacts/contacts-post-type.php:287
 msgid "Baptizing"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:281
+#: dt-contacts/contacts-post-type.php:288
 msgid "In Church/Group"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:282
+#: dt-contacts/contacts-post-type.php:289
 msgid "Starting Churches"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:289 single-contacts.php:476
-#: single-contacts.php:792
+#: dt-contacts/contacts-post-type.php:296 single-contacts.php:478
+#: single-contacts.php:794
 msgid "Baptism Date"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:297 dt-metrics/counter.php:153
+#: dt-contacts/contacts-post-type.php:304 dt-metrics/counter.php:156
 msgid "Baptism Generation"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:312
+#: dt-contacts/contacts-post-type.php:319
 msgid "Male"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:313
+#: dt-contacts/contacts-post-type.php:320
 msgid "Female"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:323
+#: dt-contacts/contacts-post-type.php:330
 msgid "Under 18 years old"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:324
+#: dt-contacts/contacts-post-type.php:331
 msgid "18-25 years old"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:325
+#: dt-contacts/contacts-post-type.php:332
 msgid "26-40 years old"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:326
+#: dt-contacts/contacts-post-type.php:333
 msgid "Over 40 years old"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:332
+#: dt-contacts/contacts-post-type.php:339
 msgid "Reason Not Ready"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:337
+#: dt-contacts/contacts-post-type.php:344
 msgid "Insufficient Contact Information"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:338
+#: dt-contacts/contacts-post-type.php:345
 msgid "Unknown Location"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:339
+#: dt-contacts/contacts-post-type.php:346
 msgid "Only wants media"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:340
+#: dt-contacts/contacts-post-type.php:347
 msgid "Outside Area"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:341
+#: dt-contacts/contacts-post-type.php:348
 msgid "Needs Review"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:342
+#: dt-contacts/contacts-post-type.php:349
 msgid "Waiting for Confirmation"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:349
+#: dt-contacts/contacts-post-type.php:356
 msgid "Reason Paused"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:354
+#: dt-contacts/contacts-post-type.php:361
 msgid "On Vacation"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:355
+#: dt-contacts/contacts-post-type.php:362
 msgid "Not Responding"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:356
+#: dt-contacts/contacts-post-type.php:363
 msgid "Not available"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:357
+#: dt-contacts/contacts-post-type.php:364
 msgid "Little interest/hunger"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:358
+#: dt-contacts/contacts-post-type.php:365
 msgid "No initiative"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:359
+#: dt-contacts/contacts-post-type.php:366
 msgid "Questionable motives"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:360
+#: dt-contacts/contacts-post-type.php:367
 msgid "Ball is in his/her court"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:361
+#: dt-contacts/contacts-post-type.php:368
 msgid "Want to see if/how they respond to automated text messages"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:368
+#: dt-contacts/contacts-post-type.php:375
 msgid "Reason Closed"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:373
+#: dt-contacts/contacts-post-type.php:380
 msgid "Duplicate"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:374
+#: dt-contacts/contacts-post-type.php:381
 msgid "Hostile, playing game or self gain"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:375
+#: dt-contacts/contacts-post-type.php:382
 msgid "Playing games"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:376
+#: dt-contacts/contacts-post-type.php:383
 msgid "Only wants to argue or debate"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:377
+#: dt-contacts/contacts-post-type.php:384
 msgid "Insufficient contact info"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:378
+#: dt-contacts/contacts-post-type.php:385
 msgid "Already in church or connected with others"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:379
+#: dt-contacts/contacts-post-type.php:386
 msgid "No longer interested"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:380
+#: dt-contacts/contacts-post-type.php:387
 msgid "No longer responding"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:381
+#: dt-contacts/contacts-post-type.php:388
 msgid "Just wanted media or book"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:382
+#: dt-contacts/contacts-post-type.php:389
 msgid "Denies submitting contact request"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:383
+#: dt-contacts/contacts-post-type.php:390
 msgid "Transferred contact to partner"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:384
+#: dt-contacts/contacts-post-type.php:391
 msgid "Unknown"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:390
+#: dt-contacts/contacts-post-type.php:397
 msgid "Accepted"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:403
+#: dt-contacts/contacts-post-type.php:410
 msgid "Sources"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:411
+#: dt-contacts/contacts-post-type.php:418
 msgid "Source Details"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:420
+#: dt-contacts/contacts-post-type.php:427
 msgid "No Answer"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:436
+#: dt-contacts/contacts-post-type.php:443
 msgid "Meeting Scheduled"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:444
+#: dt-contacts/contacts-post-type.php:451
 msgid "Meeting Complete"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:452
+#: dt-contacts/contacts-post-type.php:459
 msgid "Meeting No-show"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:461
+#: dt-contacts/contacts-post-type.php:468
 msgid "Corresponds to user"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:468
+#: dt-contacts/contacts-post-type.php:475
 msgid "Contact type"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:472
+#: dt-contacts/contacts-post-type.php:479
 msgid "Media"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:473
+#: dt-contacts/contacts-post-type.php:480
 msgid "Next Generation"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:474
+#: dt-contacts/contacts-post-type.php:481
 msgid "User"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:475
+#: dt-contacts/contacts-post-type.php:482
 msgid "Partner"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:488 dt-groups/groups-post-type.php:340
+#: dt-contacts/contacts-post-type.php:495 dt-groups/groups-post-type.php:340
 msgid "Duplicates"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:495
-#: dt-contacts/contacts-post-type.php:518
+#: dt-contacts/contacts-post-type.php:502
+#: dt-contacts/contacts-post-type.php:525
 msgid "Tags"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:510 dt-groups/groups-post-type.php:355
+#: dt-contacts/contacts-post-type.php:517 dt-groups/groups-post-type.php:355
 msgid "Un-Follow"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:523
+#: dt-contacts/contacts-post-type.php:530
 msgid "Duplicate of"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:533 single-contacts.php:304
+#: dt-contacts/contacts-post-type.php:540 single-contacts.php:306
 msgid "Sub-assigned to"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:696 template-settings.php:107
+#: dt-contacts/contacts-post-type.php:703 template-settings.php:108
 msgid "Phone"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:698
-#: dt-contacts/contacts-post-type.php:708
+#: dt-contacts/contacts-post-type.php:705
+#: dt-contacts/contacts-post-type.php:715
 msgid "Primary"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:699
+#: dt-contacts/contacts-post-type.php:706
 msgid "Mobile"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:700
-#: dt-contacts/contacts-post-type.php:709
+#: dt-contacts/contacts-post-type.php:707
+#: dt-contacts/contacts-post-type.php:716
 #: dt-core/admin/config-site-defaults.php:550
 #: dt-core/admin/metaboxes/box-address.php:104
 msgid "Work"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:701
+#: dt-contacts/contacts-post-type.php:708
 #: dt-core/admin/config-site-defaults.php:549
 #: dt-core/admin/metaboxes/box-address.php:103
 msgid "Home"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:702
-#: dt-contacts/contacts-post-type.php:710
-#: dt-contacts/contacts-post-type.php:748
-#: dt-contacts/contacts-post-type.php:750
+#: dt-contacts/contacts-post-type.php:709
+#: dt-contacts/contacts-post-type.php:717
+#: dt-contacts/contacts-post-type.php:755
+#: dt-contacts/contacts-post-type.php:757
 #: dt-core/admin/config-site-defaults.php:551
-#: dt-core/admin/metaboxes/box-address.php:105 single-contacts.php:487
-#: template-settings.php:140
+#: dt-core/admin/metaboxes/box-address.php:105 single-contacts.php:489
+#: template-settings.php:141
 msgid "Other"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:706 single-contacts.php:822
+#: dt-contacts/contacts-post-type.php:713 single-contacts.php:824
 #: template-contacts-new.php:29 template-contacts-new.php:30
-#: template-settings.php:95 template-settings.php:216
+#: template-settings.php:96 template-settings.php:217
 msgid "Email"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:718
-#: dt-contacts/contacts-post-type.php:721
+#: dt-contacts/contacts-post-type.php:725
+#: dt-contacts/contacts-post-type.php:728
 msgid "Facebook"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:728
-#: dt-contacts/contacts-post-type.php:730
+#: dt-contacts/contacts-post-type.php:735
+#: dt-contacts/contacts-post-type.php:737
 msgid "Twitter"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:736
-#: dt-contacts/contacts-post-type.php:738
+#: dt-contacts/contacts-post-type.php:743
+#: dt-contacts/contacts-post-type.php:745
 msgid "Instagram"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:742
-#: dt-contacts/contacts-post-type.php:744
+#: dt-contacts/contacts-post-type.php:749
+#: dt-contacts/contacts-post-type.php:751
 msgid "Skype"
 msgstr ""
 
-#: dt-contacts/contacts-post-type.php:775
+#: dt-contacts/contacts-post-type.php:782
 msgid "Enter the contact name here"
 msgstr ""
 
@@ -1605,38 +1610,6 @@ msgstr ""
 msgid "To reset your password, visit the following address:"
 msgstr ""
 
-#: dt-core/admin/menu/menu-extensions.php:32
-msgid "Extensions (DT)"
-msgstr ""
-
-#: dt-core/admin/menu/menu-extensions.php:47
-msgid "DISCIPLE TOOLS : EXTENSIONS"
-msgstr ""
-
-#: dt-core/admin/menu/menu-settings.php:35
-msgid "General"
-msgstr ""
-
-#: dt-core/admin/menu/menu-settings.php:35
-msgid "Settings (DT)"
-msgstr ""
-
-#: dt-core/admin/menu/menu-settings.php:47
-msgid "DISCIPLE TOOLS : SETTINGS"
-msgstr ""
-
-#: dt-core/admin/menu/menu-utilities.php:35
-msgid "Utilities"
-msgstr ""
-
-#: dt-core/admin/menu/menu-utilities.php:35
-msgid "Utilities (DT)"
-msgstr ""
-
-#: dt-core/admin/menu/menu-utilities.php:47
-msgid "DISCIPLE TOOLS : UTILITIES"
-msgstr ""
-
 #: dt-core/admin/metaboxes/box-activity.php:105
 msgid "unknown"
 msgstr ""
@@ -1656,7 +1629,7 @@ msgid "Main"
 msgstr ""
 
 #: dt-core/admin/multi-role/class-user-edit.php:84
-#: dt-core/admin/multi-role/functions-admin.php:145 template-settings.php:88
+#: dt-core/admin/multi-role/functions-admin.php:145 template-settings.php:89
 msgid "Roles"
 msgstr ""
 
@@ -1696,15 +1669,15 @@ msgstr ""
 msgid "(no title)"
 msgstr ""
 
-#: dt-core/posts.php:31 single-contacts.php:389 single-contacts.php:774
+#: dt-core/posts.php:31 single-contacts.php:391 single-contacts.php:776
 msgid "Baptized By"
 msgstr ""
 
-#: dt-core/posts.php:33 single-contacts.php:391
+#: dt-core/posts.php:33 single-contacts.php:393
 msgid "Coached By"
 msgstr ""
 
-#: dt-core/posts.php:34 single-contacts.php:392
+#: dt-core/posts.php:34 single-contacts.php:394
 msgid "Coaching"
 msgstr ""
 
@@ -2045,22 +2018,6 @@ msgstr ""
 msgid "Unshared with"
 msgstr ""
 
-#: dt-core/posts.php:507
-msgid "No permissions to read:"
-msgstr ""
-
-#: dt-core/posts.php:550
-msgid "No permissions to read group"
-msgstr ""
-
-#: dt-core/posts.php:593
-msgid "No permissions to read post"
-msgstr ""
-
-#: dt-core/posts.php:886
-msgid "Filter queries must be arrays"
-msgstr ""
-
 #: dt-core/posts.php:1180
 msgid "Record not deleted."
 msgstr ""
@@ -2177,19 +2134,19 @@ msgstr ""
 msgid "Parent"
 msgstr ""
 
-#: dt-locations/locations-post-type.php:328
-msgid "Order"
+#: dt-locations/locations-post-type.php:337
+msgid "Hierarchy"
 msgstr ""
 
-#: dt-locations/locations-post-type.php:362
+#: dt-locations/locations-post-type.php:359
 msgid "Auto Build"
 msgstr ""
 
-#: dt-locations/locations-post-type.php:384
+#: dt-locations/locations-post-type.php:381
 msgid "Change Settings"
 msgstr ""
 
-#: dt-locations/locations-post-type.php:425
+#: dt-locations/locations-post-type.php:422
 msgid "You must save post before geocoding."
 msgstr ""
 
@@ -2248,39 +2205,39 @@ msgstr ""
 msgid "Report"
 msgstr ""
 
-#: dt-metrics/counter.php:126
+#: dt-metrics/counter.php:129
 msgid "New Contacts"
 msgstr ""
 
-#: dt-metrics/counter.php:131
+#: dt-metrics/counter.php:134
 msgid "First Meetings"
 msgstr ""
 
-#: dt-metrics/counter.php:141
+#: dt-metrics/counter.php:144
 msgid "Total Baptisms"
 msgstr ""
 
-#: dt-metrics/counter.php:146
+#: dt-metrics/counter.php:149
 msgid "Total Baptizers"
 msgstr ""
 
-#: dt-metrics/counter.php:159
+#: dt-metrics/counter.php:162
 msgid "Total Churches and Groups"
 msgstr ""
 
-#: dt-metrics/counter.php:164
+#: dt-metrics/counter.php:167
 msgid "Active Groups"
 msgstr ""
 
-#: dt-metrics/counter.php:169
+#: dt-metrics/counter.php:172
 msgid "Active Churches"
 msgstr ""
 
-#: dt-metrics/counter.php:176
+#: dt-metrics/counter.php:179
 msgid "Church Generation"
 msgstr ""
 
-#: dt-metrics/counter.php:182
+#: dt-metrics/counter.php:185
 msgid "Church Planters"
 msgstr ""
 
@@ -2314,7 +2271,7 @@ msgid "Fully Practicing"
 msgstr ""
 
 #: dt-metrics/metrics-personal.php:69 dt-metrics/metrics-project.php:102
-#: dt-metrics/metrics-project.php:116
+#: dt-metrics/metrics-project.php:117
 msgid "Group Types"
 msgstr ""
 
@@ -2334,11 +2291,11 @@ msgstr ""
 msgid "Attempts Needed"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:75 dt-metrics/metrics-project.php:112
+#: dt-metrics/metrics-personal.php:75 dt-metrics/metrics-project.php:113
 msgid "groups by type"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:76 dt-metrics/metrics-project.php:107
+#: dt-metrics/metrics-personal.php:76 dt-metrics/metrics-project.php:108
 msgid "number of contacts"
 msgstr ""
 
@@ -2346,11 +2303,11 @@ msgstr ""
 msgid "Follow-up of my active contacts"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:78
+#: dt-metrics/metrics-personal.php:78 dt-metrics/metrics-project.php:110
 msgid "Active Group Health Metrics"
 msgstr ""
 
-#: dt-metrics/metrics-personal.php:79 dt-metrics/metrics-project.php:113
+#: dt-metrics/metrics-personal.php:79 dt-metrics/metrics-project.php:114
 msgid "stats as of"
 msgstr ""
 
@@ -2422,28 +2379,52 @@ msgstr ""
 msgid "Coaching Generation Tree"
 msgstr ""
 
-#: dt-metrics/metrics-project.php:108
-msgid "Follow-up progress of current active contacts"
+#: dt-metrics/metrics-project.php:107
+msgid "Location Tree"
 msgstr ""
 
 #: dt-metrics/metrics-project.php:109
-msgid "Active Groups Health Metrics"
-msgstr ""
-
-#: dt-metrics/metrics-project.php:110
-msgid "groups"
+msgid "Follow-up progress of current active contacts"
 msgstr ""
 
 #: dt-metrics/metrics-project.php:111
+msgid "groups"
+msgstr ""
+
+#: dt-metrics/metrics-project.php:112
 msgid "generations"
 msgstr ""
 
-#: dt-metrics/metrics-project.php:114
+#: dt-metrics/metrics-project.php:115
 msgid "Select All time or a specific year to display"
 msgstr ""
 
-#: dt-metrics/metrics-project.php:115
+#: dt-metrics/metrics-project.php:116
 msgid "All time"
+msgstr ""
+
+#: dt-metrics/metrics-project.php:118
+msgid "Total Locations"
+msgstr ""
+
+#: dt-metrics/metrics-project.php:119
+msgid "Active Locations"
+msgstr ""
+
+#: dt-metrics/metrics-project.php:120
+msgid "Inactive Locations"
+msgstr ""
+
+#: dt-metrics/metrics-project.php:121
+msgid "Countries"
+msgstr ""
+
+#: dt-metrics/metrics-project.php:122
+msgid "States"
+msgstr ""
+
+#: dt-metrics/metrics-project.php:123
+msgid "Counties"
 msgstr ""
 
 #: dt-metrics/metrics-users.php:35
@@ -2454,47 +2435,40 @@ msgstr ""
 msgid "Users Activity"
 msgstr ""
 
+#: dt-metrics/metrics-users.php:67
+msgid "Recent Activity"
+msgstr ""
+
+#: dt-metrics/metrics-users.php:68
+msgid "Total Users"
+msgstr ""
+
+#: dt-metrics/metrics-users.php:69
+msgid "Multipliers"
+msgstr ""
+
+#: dt-metrics/metrics-users.php:70
+msgid "Dispatchers"
+msgstr ""
+
+#: dt-metrics/metrics-users.php:71
+msgid "Contacts Per User"
+msgstr ""
+
+#: dt-metrics/metrics-users.php:72
+msgid "Least Active"
+msgstr ""
+
+#: dt-metrics/metrics-users.php:73
+msgid "Most Active"
+msgstr ""
+
 #: dt-metrics/metrics.php:280
 msgid "Practicing"
 msgstr ""
 
 #: dt-metrics/metrics.php:280
 msgid "Not Practicing"
-msgstr ""
-
-#: dt-network/network.php:55
-msgid "Network Dashboard Fields"
-msgstr ""
-
-#: dt-network/network.php:71
-msgid "Network Extension"
-msgstr ""
-
-#: dt-network/network.php:74
-msgid "Disabled"
-msgstr ""
-
-#: dt-network/network.php:75
-msgid "Enabled"
-msgstr ""
-
-#: dt-network/network.php:125
-msgid "Send Test"
-msgstr ""
-
-#: dt-network/network.php:200
-msgid "Network Dashboard"
-msgstr ""
-
-#: dt-network/network.php:268
-msgid ""
-"Geoname ID is the unique global id for this location or its nearest known "
-"location. This is usually supplied by the Network Dashboard, but can be "
-"overwritten by clicking \"edit\""
-msgstr ""
-
-#: dt-network/network.php:275
-msgid "Population for this location"
 msgstr ""
 
 #: dt-notifications/notifications-email.php:91
@@ -2638,14 +2612,14 @@ msgstr ""
 msgid "Updated Needed"
 msgstr ""
 
-#: functions.php:522
+#: functions.php:521
 msgid ""
 "Disciple Tools theme requires PHP version 7.0 or greater. Your current "
 "version is:"
 msgstr ""
 
-#: functions.php:524
-msgid " Please upgrade PHP or uninstall this theme"
+#: functions.php:523
+msgid "Please upgrade PHP or uninstall this theme"
 msgstr ""
 
 #: header.php:81
@@ -2663,121 +2637,121 @@ msgstr ""
 msgid "See what browser you are using."
 msgstr ""
 
-#: single-contacts.php:313 single-contacts.php:404 single-contacts.php:784
-#: single-contacts.php:920
+#: single-contacts.php:315 single-contacts.php:406 single-contacts.php:786
+#: single-contacts.php:922
 msgid "Search multipliers and contacts"
 msgstr ""
 
-#: single-contacts.php:328
+#: single-contacts.php:330
 msgid "View Comments"
 msgstr ""
 
-#: single-contacts.php:349
+#: single-contacts.php:351
 msgid "This contact has possible duplicates."
 msgstr ""
 
-#: single-contacts.php:352
+#: single-contacts.php:354
 msgid "Go to duplicates"
 msgstr ""
 
-#: single-contacts.php:366
+#: single-contacts.php:368
 msgid "Connections"
 msgstr ""
 
-#: single-contacts.php:388
+#: single-contacts.php:390
 msgid "Connection or Relation"
 msgstr ""
 
-#: single-contacts.php:424 single-groups.php:112
+#: single-contacts.php:426 single-groups.php:112
 msgid "Progress"
 msgstr ""
 
-#: single-contacts.php:499
+#: single-contacts.php:501
 msgid "Search Tags"
 msgstr ""
 
-#: single-contacts.php:629
+#: single-contacts.php:631
 msgid "Close Contact"
 msgstr ""
 
-#: single-contacts.php:630
+#: single-contacts.php:632
 msgid "Why do you want to close this contact?"
 msgstr ""
 
-#: single-contacts.php:646 single-contacts.php:673 single-contacts.php:699
+#: single-contacts.php:648 single-contacts.php:675 single-contacts.php:701
 msgid "Confirm"
 msgstr ""
 
-#: single-contacts.php:654
+#: single-contacts.php:656
 msgid "Pause Contact"
 msgstr ""
 
-#: single-contacts.php:655
+#: single-contacts.php:657
 msgid "Why do you want to pause this contact?"
 msgstr ""
 
-#: single-contacts.php:745
+#: single-contacts.php:747
 msgid "Create Tag"
 msgstr ""
 
-#: single-contacts.php:749
+#: single-contacts.php:751
 msgid "Tag"
 msgstr ""
 
-#: single-contacts.php:751
+#: single-contacts.php:753
 msgid "tag"
 msgstr ""
 
-#: single-contacts.php:760
+#: single-contacts.php:762
 msgid "Create and apply tag"
 msgstr ""
 
-#: single-contacts.php:812
+#: single-contacts.php:814
 msgid "Create User"
 msgstr ""
 
-#: single-contacts.php:815 single-contacts.php:857
+#: single-contacts.php:817 single-contacts.php:859
 msgid "This contact already represents a user"
 msgstr ""
 
-#: single-contacts.php:818
+#: single-contacts.php:820
 msgid "This will invite this contact to D.T as a multiplier"
 msgstr ""
 
-#: single-contacts.php:827
+#: single-contacts.php:829
 msgid "Display Name"
 msgstr ""
 
-#: single-contacts.php:830
+#: single-contacts.php:832
 msgid "Display name"
 msgstr ""
 
-#: single-contacts.php:841
+#: single-contacts.php:843
 msgid "Create user"
 msgstr ""
 
-#: single-contacts.php:854
+#: single-contacts.php:856
 msgid "Link this contact to an existing user"
 msgstr ""
 
-#: single-contacts.php:861
+#: single-contacts.php:863
 msgid "First, find the user"
 msgstr ""
 
-#: single-contacts.php:885
+#: single-contacts.php:887
 msgid ""
 "To finish the linking, merge this contact with the existing user details."
 msgstr ""
 
-#: single-contacts.php:910
+#: single-contacts.php:912
 msgid "Merge this contact with another contact"
 msgstr ""
 
-#: single-contacts.php:935
+#: single-contacts.php:937
 msgid "selected."
 msgstr ""
 
-#: single-contacts.php:936
+#: single-contacts.php:938
 msgid "Click merge to continue."
 msgstr ""
 
@@ -2895,123 +2869,127 @@ msgstr ""
 msgid "load more notifications"
 msgstr ""
 
-#: template-settings.php:37 template-settings.php:285
+#: template-settings.php:38 template-settings.php:286
 msgid "Availability"
 msgstr ""
 
-#: template-settings.php:58
+#: template-settings.php:59
 msgid "Your Profile"
 msgstr ""
 
-#: template-settings.php:69
+#: template-settings.php:70
 msgid "Username"
 msgstr ""
 
-#: template-settings.php:82 template-settings.php:457
+#: template-settings.php:83 template-settings.php:459
 msgid "Nickname (Display Name)"
 msgstr ""
 
-#: template-settings.php:129
+#: template-settings.php:130
 msgid "Social"
 msgstr ""
 
-#: template-settings.php:154 template-settings.php:488
+#: template-settings.php:155 template-settings.php:496
 msgid "Language"
 msgstr ""
 
-#: template-settings.php:160
+#: template-settings.php:161
 msgid "English"
 msgstr ""
 
-#: template-settings.php:177
+#: template-settings.php:178
 msgid "Teams"
 msgstr ""
 
-#: template-settings.php:194
+#: template-settings.php:195
 msgid "Biography"
 msgstr ""
 
-#: template-settings.php:214
+#: template-settings.php:215
 msgid "Type of Notification"
 msgstr ""
 
-#: template-settings.php:215
+#: template-settings.php:216
 msgid "Web"
 msgstr ""
 
-#: template-settings.php:225 template-settings.php:241
+#: template-settings.php:226 template-settings.php:242
 msgid "required"
 msgstr ""
 
-#: template-settings.php:262
+#: template-settings.php:263
 msgid "Follow all contacts"
 msgstr ""
 
-#: template-settings.php:268 template-settings.php:297
+#: template-settings.php:269 template-settings.php:298
 msgid "Enable"
 msgstr ""
 
-#: template-settings.php:291
+#: template-settings.php:292
 msgid "Set Away"
 msgstr ""
 
-#: template-settings.php:298
+#: template-settings.php:299
 msgid "On"
 msgstr ""
 
-#: template-settings.php:299
+#: template-settings.php:300
 msgid "Off"
 msgstr ""
 
-#: template-settings.php:416
+#: template-settings.php:418
 msgid ""
 "Disciple Tools System does not store images. For profile images we use "
-"Gravatar (Globally Recognized Avatar) for user profiles. If you have "
-"security concerns, we suggest not using a personal photo, but instead choose "
-"a cartoon, abstract, or alias photo to represent you."
+"Gravatar (Globally Recognized Avatar). If you have security concerns, we "
+"suggest not using a personal photo, but instead choose a cartoon, abstract, "
+"or alias photo to represent you."
 msgstr ""
 
-#: template-settings.php:417
+#: template-settings.php:419
 msgid "edit image on gravatar.com"
 msgstr ""
 
-#: template-settings.php:422
+#: template-settings.php:424
 msgid "User Name"
 msgstr ""
 
-#: template-settings.php:423 template-settings.php:424
+#: template-settings.php:425 template-settings.php:426
 msgid "Username cannot be changed"
 msgstr ""
 
-#: template-settings.php:428
+#: template-settings.php:430
 msgid "System Email"
 msgstr ""
 
-#: template-settings.php:429
+#: template-settings.php:431
 msgid "User email can be changed by site administrator."
 msgstr ""
 
-#: template-settings.php:436
+#: template-settings.php:438
 msgid "Password"
 msgstr ""
 
-#: template-settings.php:437
+#: template-settings.php:439
 msgid "Use this email reset form to create a new password."
 msgstr ""
 
-#: template-settings.php:439
+#: template-settings.php:441
 msgid "go to password change form"
 msgstr ""
 
-#: template-settings.php:446
+#: template-settings.php:448
 msgid "First Name"
 msgstr ""
 
-#: template-settings.php:452
+#: template-settings.php:454
 msgid "Last Name"
 msgstr ""
 
-#: template-settings.php:481
+#: template-settings.php:465
+msgid "(Edit on contact record)"
+msgstr ""
+
+#: template-settings.php:489
 msgid "Description"
 msgstr ""
 

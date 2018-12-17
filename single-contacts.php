@@ -220,8 +220,8 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
             <div class="small-12 cell bordered-box grid-x grid-margin-x">
-                <div class="cell small-12 medium-4">
-                    <i class="fi-torso large"></i>
+                <div class="cell small-12 medium-4" style="display: flex; align-items: center">
+                    <i class="fi-torso large" style="padding-bottom: 1.2rem"></i>
                     <span class="item-details-header title" ><?php the_title_attribute(); ?></span>
                 </div>
                 <div class="cell small-12 medium-2">
@@ -254,16 +254,18 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             <?php
                             $hide_edit_button = false;
                             if ( $contact["overall_status"]["key"] === "paused" &&
-                                 isset( $contact["reason_paused"] )){
+                                 isset( $contact["reason_paused"]["label"] )){
                                 echo '(' . esc_html( $contact["reason_paused"]["label"] ) . ')';
                             } else if ( $contact["overall_status"]["key"] === "closed" &&
-                                        isset( $contact["reason_closed"] )){
+                                        isset( $contact["reason_closed"]["label"] )){
                                 echo '(' . esc_html( $contact["reason_closed"]["label"] ) . ')';
                             } else if ( $contact["overall_status"]["key"] === "unassignable" &&
-                                        isset( $contact["reason_unassignable"] )){
+                                        isset( $contact["reason_unassignable"]["label"] )){
                                 echo '(' . esc_html( $contact["reason_unassignable"]["label"] ) . ')';
                             } else {
-                                $hide_edit_button = true;
+                                if ( !in_array( $contact["overall_status"]["key"], [ "paused", "closed", "unassignable" ] ) ){
+                                    $hide_edit_button = true;
+                                }
                             }
                             ?>
                         </span>

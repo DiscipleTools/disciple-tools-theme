@@ -20,7 +20,7 @@
                         <a class="button menu-white-dropdown-arrow"
                            style="background-color: #00897B; color: white;">
                             <?php esc_html_e( "Quick actions", 'disciple_tools' ) ?></a>
-                        <ul class="menu">
+                        <ul class="menu" style="width: max-content">
                             <?php
                             foreach ( $contact_fields as $field => $val ) {
                                 if ( strpos( $field, "quick_button" ) === 0 ) {
