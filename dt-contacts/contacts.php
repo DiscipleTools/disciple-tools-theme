@@ -2743,8 +2743,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         if ( current_user_can( 'view_any_contacts' ) ) {
             foreach ( $source_labels as $source_key => $source ) {
-                $rv[$source_key] = $source['label'];
+                if ( !isset( $source["enabled"] ) || $source["enabled"] != false ){
+                    $rv[$source_key] = $source['label'];
+                }
             }
+            //check for sources not in the defined list
             $results = $wpdb->get_results(
                 "SELECT DISTINCT meta_value FROM $wpdb->postmeta WHERE meta_key = 'sources'",
                 ARRAY_N
@@ -2755,15 +2758,26 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 }
             }
         } else {
-            /* TODO: Find a way to do this that is faster, I'm guessing this is slow */
-            $contacts = self::get_viewable_contacts( 0 );
-            if ( is_wp_error( $contacts ) ) {
-                return $contacts;
-            }
-            foreach ( $contacts['contacts'] as $contact ) {
-                foreach ( get_post_meta( $contact->ID, 'sources', false ) as $post_source_key ) {
+            $user_id = get_current_user_id();
+            // get the sources for the contacts shared with the user
+            $results = $wpdb->get_results( $wpdb->prepare(
+                "SELECT DISTINCT meta_value 
+                FROM $wpdb->postmeta 
+                JOIN $wpdb->dt_share as shares ON ( 
+                    shares.post_id = $wpdb->postmeta.post_id
+                    AND shares.user_id = %s
+                )  
+                WHERE meta_key = 'sources'",
+                $user_id
+                ), ARRAY_N
+            );
+            foreach ( $results as $result ) {
+                $post_source_key = $result[0];
+                if ( ! array_key_exists( $post_source_key, $rv ) ) {
                     if ( array_key_exists( $post_source_key, $source_labels ) ) {
-                        $rv[ $post_source_key ] = $source_labels[ $post_source_key ]['label'];
+                        if ( !isset( $source_labels[$post_source_key]["enabled"] ) || $source_labels[$post_source_key]["enabled"] != false ) {
+                            $rv[ $post_source_key ] = $source_labels[ $post_source_key ]['label'];
+                        }
                     } else {
                         $rv[ $post_source_key ] = null;
                     }

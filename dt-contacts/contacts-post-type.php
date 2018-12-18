@@ -413,7 +413,7 @@ class Disciple_Tools_Contact_Post_Type
             'name'        => __( 'Sources', 'disciple_tools' ),
             'description' => '',
             'type'        => 'multi_select',
-            'default'     => $sources_default,
+            'default'     => [],
             'section'     => 'misc',
         ];
 

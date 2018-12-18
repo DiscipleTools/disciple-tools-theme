@@ -229,11 +229,11 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
     public function sources_box() {
         echo '<form method="post" name="sources_form">';
         echo '<button type="submit" class="button-like-link" name="enter_bug_fix" value="&nasb"></button>';
-        echo '<button type="submit" class="button-like-link" name="sources_reset" value="1">' . esc_html( __( "reset", 'disciple_tools' ) ) . '</button>';
+//        echo '<button type="submit" class="button-like-link" name="sources_reset" value="1">' . esc_html( __( "reset", 'disciple_tools' ) ) . '</button>';
         echo '<p>' . esc_html( __( "Add or remove sources for new contacts.", 'disciple_tools' ) ) . '</p>';
         echo '<input type="hidden" name="sources_nonce" id="sources_nonce" value="' . esc_attr( wp_create_nonce( 'sources' ) ) . '" />';
         echo '<table class="widefat">';
-        echo '<thead><tr><td>Label</td><td>Enabled</td><td>' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</td></tr></thead><tbody>';
+        echo '<thead><tr><td>Label</td><td>Key</td><td>Enabled</td><td>' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</td></tr></thead><tbody>';
 
         // custom list block
         $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -243,10 +243,11 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         $sources = $site_custom_lists['sources'];
         foreach ( $sources as $source ) {
             echo '<tr>
-                        <td><input type="text" name="sources_label[' . esc_attr( $source['key'] ) . ']" value = "' . esc_attr( $source['label'] ) . '"></input></td>
-                        <td><input name="sources[' . esc_attr( $source['key'] ) . ']" type="checkbox" ' . ( $source['enabled'] ? "checked" : "" ) . ' /></td>
-                        <td><button type="submit" name="delete_field" value="' . esc_attr( $source['key'] ) . '" class="button small" >' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</button> </td>
-                      </tr>';
+                <td><input type="text" name="sources_label[' . esc_attr( $source['key'] ) . ']" value = "' . esc_attr( $source['label'] ) . '"></input></td>
+                <td>' . esc_attr( $source['key'] ) . '</td>
+                <td><input name="sources[' . esc_attr( $source['key'] ) . ']" type="checkbox" ' . ( $source['enabled'] ? "checked" : "" ) . ' /></td>
+                <td><button type="submit" name="delete_field" value="' . esc_attr( $source['key'] ) . '" class="button small" >' . esc_html( __( "Delete", 'disciple_tools' ) ) . '</button> </td>
+            </tr>';
         }
         // end list block
 
