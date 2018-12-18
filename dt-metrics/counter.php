@@ -730,7 +730,92 @@ class Disciple_Tools_Queries
                 return $query;
                 break;
 
-            case 'recent_logins':
+            default:
+                return false;
+                break;
+        }
+    }
+
+    public function query( $query_name, $args = [] ) {
+        global $wpdb;
+
+        switch ( $query_name ) {
+            case 'contact_progress_per_worker':
+                $query = $wpdb->get_results("
+                    SELECT
+                      ( TRIM( LEADING 'user-' from a.meta_value ) ) as user_id,
+                      count(a.meta_value) as assigned,
+                      count(b.meta_value) as accepted,
+                      count(e.meta_value) as active,
+                      count(c.meta_value) as attempt_needed,
+                      count(d.meta_value) as attempted,
+                      count(f.meta_value) as established,
+                      count(g.meta_value) as meeting_scheduled,
+                      count(h.meta_value) as meeting_complete,
+                      count(i.meta_value) as ongoing,
+                      count(j.meta_value) as being_coached
+                    FROM $wpdb->posts as p
+                      LEFT JOIN $wpdb->postmeta as a
+                        ON a.post_id=p.ID
+                        AND a.meta_key = 'assigned_to'
+                      LEFT JOIN $wpdb->postmeta as e
+                        ON e.post_id=p.ID
+                           AND e.meta_key = 'overall_status' AND e.meta_value = 'active'
+                      LEFT JOIN $wpdb->postmeta as b
+                        ON b.post_id=e.post_id
+                        AND b.meta_key = 'accepted' AND b.meta_value = '1'
+                      LEFT JOIN $wpdb->postmeta as c
+                        ON c.post_id=e.post_id
+                        AND c.meta_key = 'seeker_path' AND c.meta_value = 'none'
+                      LEFT JOIN $wpdb->postmeta as d
+                        ON d.post_id=e.post_id
+                           AND d.meta_key = 'seeker_path' AND d.meta_value = 'attempted'
+                      LEFT JOIN $wpdb->postmeta as f
+                        ON f.post_id=e.post_id
+                           AND f.meta_key = 'seeker_path' AND f.meta_value = 'established'
+                      LEFT JOIN $wpdb->postmeta as g
+                        ON g.post_id=e.post_id
+                           AND g.meta_key = 'seeker_path' AND g.meta_value = 'scheduled'
+                      LEFT JOIN $wpdb->postmeta as h
+                        ON h.post_id=e.post_id
+                           AND h.meta_key = 'seeker_path' AND h.meta_value = 'met'
+                      LEFT JOIN $wpdb->postmeta as i
+                        ON i.post_id=e.post_id
+                           AND i.meta_key = 'seeker_path' AND i.meta_value = 'ongoing'
+                      LEFT JOIN $wpdb->postmeta as j
+                        ON j.post_id=e.post_id
+                           AND j.meta_key = 'seeker_path' AND j.meta_value = 'coaching'
+                    WHERE post_status = 'publish'
+                      AND post_type = 'contacts'
+                    GROUP BY a.meta_value
+                ", ARRAY_A);
+
+                return $query;
+                break;
+
+
+            case 'baptized_per_worker':
+                $query = $wpdb->get_results("
+                    SELECT
+                      p2p_to as contact_id,
+                      (
+                          SELECT meta_value 
+                          FROM wp_postmeta 
+                          WHERE meta_key = 'corresponds_to_user' 
+                            AND post_id = p2p_to
+                      ) as user_id,
+                      count(*) as count
+                    FROM wp_p2p
+                    WHERE p2p_type = 'baptizer_to_baptized'
+                    GROUP BY p2p_to;", ARRAY_A);
+
+                return $query;
+                break;
+
+            case 'recent_unique_logins':
+                /**
+                 * Returns unique logins for the last 30 days.
+                 */
                 $query = $wpdb->get_results("
                     SELECT
                       DATE(FROM_UNIXTIME(hist_time)) AS report_date,
@@ -745,31 +830,6 @@ class Disciple_Tools_Queries
                 return $query;
                 break;
 
-            default:
-                return false;
-                break;
-        }
-    }
-
-    public function query( $query_name, $args = [] ) {
-        global $wpdb;
-
-        switch ( $query_name ) {
-            case 'contacts_per_user':
-                $query = $wpdb->get_results("
-                    SELECT 
-                        () as name, 
-                        () as total, 
-                        () as attempt_needed, 
-                        () as attempted, 
-                        () as established, 
-                        () as meeting_scheduled, 
-                        () as meeting_complete, 
-                        () as ongoing, 
-                        () as being_coached
-                ", ARRAY_A);
-                return $query;
-                break;
             default:
                 break;
         }

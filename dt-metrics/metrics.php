@@ -37,7 +37,8 @@ class Disciple_Tools_Metrics
             // load basic charts
             require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
             require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
-            require_once( get_template_directory() . '/dt-metrics/metrics-users.php' );
+            require_once( get_template_directory() . '/dt-metrics/metrics-workers.php' );
+//            require_once( get_template_directory() . '/dt-metrics/metrics-prayer.php' );
         }
     }
 
