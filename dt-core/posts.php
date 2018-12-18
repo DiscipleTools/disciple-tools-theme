@@ -401,6 +401,9 @@ class Disciple_Tools_Posts
                     }
                 }
                 if ( $fields[$activity->meta_key]["type"] === "multi_select" ){
+                    if ( $activity->meta_key === "sources" && empty( $fields["sources"]["default"] ) ){
+                        $fields["sources"]["default"] = dt_get_option( 'dt_site_custom_lists' )['sources'];
+                    }
                     $value = $activity->meta_value;
                     if ( $activity->meta_value == "value_deleted" ){
                         $value = $activity->old_value;

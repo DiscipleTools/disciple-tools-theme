@@ -1131,7 +1131,7 @@ jQuery(document).ready(function($) {
     let sourceHTML = $('.sources-list').empty()
     if ( contact.sources && contact.sources.length > 0 ){
       contact.sources.forEach(source=>{
-        let translatedSourceHTML = _.escape(_.get(contactsDetailsWpApiSettings, `sourcese.${source}`))
+        let translatedSourceHTML = _.escape(_.get(contactsDetailsWpApiSettings, `sources.${source}`))
         if (! translatedSourceHTML) {
           translatedSourceHTML = `<code>Unknown source: ${_.escape(source)}</code>`
         }
