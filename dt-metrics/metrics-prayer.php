@@ -38,23 +38,15 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
 
     public function add_menu( $content ) {
         $content .= '
-            <li><a href="">' .  esc_html__( 'Prayer', 'disciple_tools' ) . '</a>
-                <ul class="menu vertical nested" id="prayer-menu" aria-expanded="true">
-                    <li><a href="'. site_url( '/metrics/prayer/' ) .'#prayer_overview" onclick="prayer_overview()">'. esc_html__( 'Overview', 'disciple_tools' ) .'</a></li>
-                </ul>
-            </li>
+            <li><a href="'. site_url( '/metrics/prayer/' ) .'#prayer_overview" onclick="prayer_overview()">'. esc_html__( 'Prayer List', 'disciple_tools' ) .'</a></li>
             ';
         return $content;
     }
 
     public function scripts() {
-//        wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, '4' );
-//        wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
         wp_enqueue_script( 'dt_metrics_prayer_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-prayer.js', [
             'jquery',
             'jquery-ui-core',
-            //            'amcharts-core',
-            //            'amcharts-charts',
         ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-prayer.js' ), true );
 
         wp_localize_script(
@@ -71,16 +63,14 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function data() {
-
-        /**
-         * Apply Filters before final enqueue. This provides opportunity for complete override or modification of chart.
-         */
         return [
             'translations' => [
-                'title_overview' => __( 'Prayer Overview', 'disciple_tools' ),
+                'title_1' => __( 'Prayer Lists', 'disciple_tools' ),
+                'title_2' => __( 'Praises for Steps Taken', 'disciple_tools' ),
+                'title_3' => __( 'Requests for Next Steps Needed', 'disciple_tools' ),
                 'label_counties' => __( 'Counties', 'disciple_tools' ),
             ],
-            'hero_stats' => self::chart_prayer_hero_stats(),
+            'prayer_list' => $this->prayer_list(),
         ];
     }
 
@@ -91,19 +81,103 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
         $version = '1';
         $namespace = 'dt/v' . $version;
 
-//        register_rest_route(
-//            $namespace, '/metrics/project/tree', [
-//                [
-//                    'methods'  => WP_REST_Server::CREATABLE,
-//                    'callback' => [ $this, 'tree' ],
-//                ],
-//            ]
-//        );
-    }
-
-    public function chart_prayer_hero_stats() {
-        return [];
+        register_rest_route(
+            $namespace, '/metrics/prayer_list', [
+                [
+                    'methods'  => WP_REST_Server::CREATABLE,
+                    'callback' => [ $this, 'get_prayer_list' ],
+                ],
+            ]
+        );
     }
 
 
+    public function get_prayer_list( WP_REST_Request $request ) {
+        if ( !$this->has_permission() ){
+            return new WP_Error( "get_prayer_list", "Missing Permissions", [ 'status' => 400 ] );
+        }
+
+        $params = $request->get_params();
+
+        $days = 30;
+        if ( isset( $params['days'] ) ) {
+            $days = (int) $params['days'];
+        }
+
+        $alias_name = true;
+        if ( isset( $params['alias_name'] ) ) {
+            $alias_name = $params['alias_name'];
+        }
+
+        $alias_location = false;
+        if ( isset( $params['alias_location'] ) ) {
+            $alias_location = $params['alias_location'];
+        }
+
+        return $this->prayer_list( (int) $days, $alias_name, $alias_location );
+    }
+
+    public function prayer_list( $days = 30, $alias_name = true, $alias_location = false ) {
+        $args = [
+            'days' => $days,
+        ];
+
+        $recent_seeker_path = dt_queries()->query('recent_seeker_path', $args );
+        if ( empty( $recent_seeker_path ) ) {
+           return false;
+        }
+        $list = [];
+        $unique = [];
+
+        foreach ( $recent_seeker_path as $item ) {
+
+            if ( $alias_name ) {
+                $item['name'] = dt_make_alias_name( $item['name'] );
+            }
+
+            if ( $alias_location ) {
+                $item['location_name'] = 'Location ' . $item['location_id'];
+            }
+
+            if ( isset( $unique[$item['id']] ) ) {
+                continue;
+            }
+
+            if ( 'met' === $item['type'] ) {
+                $list['praise'][] = [
+                    'text' => $item['name'],
+                    'type' => $item['type'],
+                    'location_name' => $item['location_name'],
+                    'id' => $item['id']
+                ];
+            } else {
+                $list['request'][] = [
+                    'text' => $item['name'],
+                    'type' => $item['type'],
+                    'location_name' => $item['location_name'],
+                    'id' => $item['id']
+                ];
+            }
+
+
+            $unique[$item['id']] = true;
+        }
+
+        return $list;
+    }
+
+
+}
+
+function dt_make_alias_name( $name ) {
+    // SHA256
+    $name = hash('sha256', $name );
+    // base64_encode
+    $name = base64_encode( $name );
+    // substr_2
+    $alias = strtoupper( substr( $name, 0, 2 ) );
+    if ( ! ctype_alpha( $alias ) ) {
+        $alias = strtoupper( substr( base64_encode( hash('sha256', $alias ) ), 0, 2 ) );
+    }
+    return $alias;
 }

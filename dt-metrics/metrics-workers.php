@@ -95,7 +95,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 <ul class="menu vertical nested" id="workers-menu" aria-expanded="true">
                     <li><a href="'. site_url( '/metrics/workers/' ) .'#workers_activity" onclick="workers_activity()">'. esc_html__( 'Activity' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/workers/' ) .'#follow_up_pace" onclick="show_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li>
-                    <!-- <li><a href="'. site_url( '/metrics/workers/' ) .'#contact_follow_up_pace" onclick="contact_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li> -->
+                    <li><a href="'. site_url( '/metrics/workers/' ) .'#contact_follow_up_pace" onclick="contact_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li>
                 </ul>
             </li>
             ';
@@ -124,7 +124,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     public function workers() {
         return [
             'translations' => [
-                'title_activity' => __( 'Users Activity', 'disciple_tools' ),
+                'title_activity' => __( 'Workers Activity', 'disciple_tools' ),
                 'title_recent_activity' => __( 'Worker System Engagement for the Last 30 Days', 'disciple_tools' ),
                 'title_response' => __( 'Follow-up Pace', 'disciple_tools' ),
                 'label_total_workers' => __( 'Total Workers', 'disciple_tools' ),

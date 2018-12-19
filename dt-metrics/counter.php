@@ -830,6 +830,33 @@ class Disciple_Tools_Queries
                 return $query;
                 break;
 
+            case 'recent_seeker_path':
+                $days = 30;
+                if ( ! empty( $args['days'] ) ) {
+                    $days = (int) $args['days'];
+                }
+                $query = $wpdb->get_results( $wpdb->prepare( "
+                    SELECT
+                      object_id as id,
+                      object_name as name,
+                      meta_value as type,
+                      p.p2p_to as location_id,
+                      ( SELECT post_title FROM wp_posts WHERE ID = p.p2p_to) as location_name,
+                      hist_time
+                    FROM $wpdb->dt_activity_log as l
+                    LEFT JOIN wp_p2p as p
+                          ON l.object_id=p.p2p_from
+                          AND p.p2p_type = 'contacts_to_locations'
+                    WHERE action = 'field_update'
+                          AND object_type = 'contacts'
+                          AND object_subtype = 'seeker_path'
+                          AND (meta_value = 'attempted' OR meta_value = 'scheduled' OR meta_value = 'met')
+                          AND hist_time > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL %d DAY ))
+                    ORDER BY hist_time DESC
+                ", $days ), ARRAY_A);
+                return $query;
+                break;
+
             default:
                 break;
         }
