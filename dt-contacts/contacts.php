@@ -278,7 +278,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $post_id = wp_insert_post( $post );
 
-
         if ( isset( $fields["assigned_to"] )) {
             $user_id = explode( '-', $fields["assigned_to"] )[1];
             if ( $user_id ) {

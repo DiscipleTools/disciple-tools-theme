@@ -121,7 +121,9 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
         $list = [
             "praise_meetings" => [],
             "request_meetings" => [],
-            "baptisms" => []
+            "baptisms" => [],
+            "new_groups" => [],
+            "new_contacts" => [],
         ];
         $args = [
             'days' => $days,
@@ -191,6 +193,44 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
 
             $unique[$item['id']] = true;
 
+            }
+        }
+
+        // New Groups and Contacts
+        $new = dt_queries()->query( 'new_contacts_groups', $args );
+        if ( ! empty( $new ) ) {
+            $unique = [];
+            foreach ( $new as $item ) {
+
+                if ( $alias_name ) {
+                    $item['name'] = dt_make_alias_name( $item['name'] );
+                }
+
+                if ( $alias_location ) {
+                    $item['location_name'] = 'Location ' . $item['location_id'];
+                }
+
+                if ( isset( $unique[$item['id']] ) ) {
+                    continue;
+                }
+
+                if ( 'contacts' === $item['type'] ) {
+                    $list['praise_meetings'][] = [
+                        'text' => $item['name'],
+                        'type' => $item['type'],
+                        'location_name' => $item['location_name'],
+                        'id' => $item['id']
+                    ];
+                } else if ( 'groups' === $item['type'] ) {
+                    $list['request_meetings'][] = [
+                        'text' => $item['name'],
+                        'type' => $item['type'],
+                        'location_name' => $item['location_name'],
+                        'id' => $item['id']
+                    ];
+                }
+
+                $unique[$item['id']] = true;
             }
         }
 

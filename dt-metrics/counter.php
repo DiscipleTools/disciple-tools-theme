@@ -880,6 +880,29 @@ class Disciple_Tools_Queries
                 return $query;
                 break;
 
+            case 'new_contacts_groups':
+                $days = 30;
+                if ( ! empty( $args['days'] ) ) {
+                    $days = (int) $args['days'];
+                }
+                $query = $wpdb->get_results( $wpdb->prepare( "
+                    SELECT
+                      object_id as id,
+                      object_name as name,
+                      p.p2p_to as location_id,
+                      ( SELECT post_title FROM $wpdb->posts WHERE ID = p.p2p_to) as location_name,
+                      hist_time
+                    FROM $wpdb->dt_activity_log as l
+                      LEFT JOIN $wpdb->p2p as p
+                        ON l.object_id=p.p2p_from
+                           AND p.p2p_type = 'contacts_to_locations'
+                    WHERE meta_key = 'baptism_date'
+                          AND meta_value > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL %d DAY ))
+                    ORDER BY meta_value DESC
+                ", $days ), ARRAY_A);
+                return $query;
+                break;
+
             default:
                 break;
         }

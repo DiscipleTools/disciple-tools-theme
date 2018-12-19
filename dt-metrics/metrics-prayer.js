@@ -21,6 +21,7 @@ function prayer_overview() {
             <div class="cell medium-2">
                 <span><select id="days">
                     <option value="7">Last 7 Days</option>
+                    <option value="14">Last 14 Days</option>
                     <option value="30" selected>Last 30 Days</option>
                     <option value="90">Last 90 Days</option>
                     <option value="180">Last 180 Days</option>
@@ -155,7 +156,7 @@ function prayer_overview() {
                 if (v.type === 'scheduled') {
                     message = `has a meeting scheduled.`
                 } else if (v.type === 'attempted') {
-                    message = `needs to respond to connection attempts by worker.`
+                    message = `needs to call back our worker.`
                 }
 
                 let location = ''
