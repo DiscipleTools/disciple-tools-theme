@@ -889,6 +889,7 @@ class Disciple_Tools_Queries
                     SELECT
                       object_id as id,
                       object_name as name,
+                      'groups' as type,
                       p.p2p_to as location_id,
                       ( SELECT post_title FROM $wpdb->posts WHERE ID = p.p2p_to) as location_name,
                       hist_time
