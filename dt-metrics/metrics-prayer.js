@@ -35,10 +35,12 @@ function prayer_overview() {
             <div class="cell medium-2">
                 <button class="button hollow" style="width:100%;" id="alias_locations" value="0" >Alias Locations</button>
             </div>
+            <div class="cell medium-4">
+                <button class="button" style="float:right;" onclick="printElem('prayer-list-print')" ><i class="fi-print"></i> Print</button>
+            </div>
         </div>
-        <hr>
-        
-        <div class="grid-x grid-padding-x grid-padding-y">
+        <hr style="padding:0;">
+        <div class="grid-x grid-padding-x grid-padding-y" id="prayer-list-print">
             <div class="cell medium-6">
                 <div class="grid-x grid-padding-y">
                     <h3 class="section-header">${ translations.title_2 }</h3>
@@ -56,9 +58,15 @@ function prayer_overview() {
                             
                         </div>
                     </div>
-                    <div class="cell">
+                    <div class="cell" id="list-3-section">
+                        <strong>Baptisms</strong><br>
+                       <div id="list-3"><img src="${dt.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
+                    </div>
+                    <div class="cell" id="list-1-section">
+                        <strong>Meetings</strong><br>
                        <div id="list-1"><img src="${dt.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
                     </div>
+                    
                 </div>
             </div>
             <div class="cell medium-6 left-border-grey">
@@ -77,10 +85,10 @@ function prayer_overview() {
                             </div>
                         </div>
                     </div>
-                    <div class="cell">
+                    <div class="cell" id="list-2-section">
+                        <strong>Meetings</strong><br>
                        <div id="list-2"><img src="${dt.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
                     </div>
-                    
                 </div>
             </div>
         </div>
@@ -89,9 +97,10 @@ function prayer_overview() {
     function list_spinners() {
         jQuery('#list-1').empty().html(`<img src="${dt.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" />`)
         jQuery('#list-2').empty().html(`<img src="${dt.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" />`)
+        jQuery('#list-3').empty().html(`<img src="${dt.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" />`)
     }
 
-    function get_lists( ) {
+    window.get_lists = function get_lists( ) {
         let days = jQuery('#days').val()
         let alias_names = jQuery('#alias_names').val()
         let alias_locations = jQuery('#alias_locations').val()
@@ -120,37 +129,59 @@ function prayer_overview() {
     function add_lists( prayer_list ) {
         let list1 = ''
         let list2 = ''
+        let list3 = ''
 
-        jQuery.each( prayer_list.praise, function(i,v) {
-            let message = ``
-            if ( v.type === 'met' ) {
-                message = `had a first meeting.`
-            }
+        if ( prayer_list.praise_meetings.length > 0 ) {
+            jQuery.each( prayer_list.praise_meetings, function(i,v) {
+                let message = ``
+                if ( v.type === 'met' ) {
+                    message = `had a first meeting.`
+                }
 
-            let location = ''
-            if ( v.location_name ) {
-                location = `(${v.location_name})`
-            }
-            list1 += `<a href="/contacts/${v.id}">${v.text}</a> ${message} ${location}<br>`
-        })
+                let location = ''
+                if ( v.location_name ) {
+                    location = `(${v.location_name})`
+                }
+                list1 += `<a href="/contacts/${v.id}">${v.text}</a> ${message} ${location}<br>`
+            })
+            jQuery('#list-1').empty().html(list1)
+        } else {
+            jQuery('#list-1-section').hide()
+        }
 
-        jQuery.each( prayer_list.request, function(i,v) {
-            let message = ``
-            if ( v.type === 'scheduled' ) {
-                message = `has a meeting scheduled.`
-            } else if ( v.type === 'attempted') {
-                message = `needs to respond to connection attempts by worker.`
-            }
+        if ( prayer_list.request_meetings.length > 0 ) {
+            jQuery.each(prayer_list.request_meetings, function (i, v) {
+                let message = ``
+                if (v.type === 'scheduled') {
+                    message = `has a meeting scheduled.`
+                } else if (v.type === 'attempted') {
+                    message = `needs to respond to connection attempts by worker.`
+                }
 
-            let location = ''
-            if ( v.location_name ) {
-                location = `(${v.location_name})`
-            }
-            list2 += `<a href="/contacts/${v.id}">${v.text}</a> ${message} ${location}<br>`
-        })
+                let location = ''
+                if (v.location_name) {
+                    location = `(${v.location_name})`
+                }
+                list2 += `<a href="/contacts/${v.id}">${v.text}</a> ${message} ${location}<br>`
+            })
+            jQuery('#list-2').empty().html(list2)
+        } else {
+            jQuery('#list-2-section').hide()
+        }
 
-        jQuery('#list-1').empty().html(list1)
-        jQuery('#list-2').empty().html(list2)
+        if ( prayer_list.baptisms.length > 0 ) {
+            jQuery.each(prayer_list.baptisms, function (i, v) {
+
+                let location = ''
+                if (v.location_name) {
+                    location = `(${v.location_name})`
+                }
+                list3 += `<a href="/contacts/${v.id}">${v.text}</a> was baptized. ${location}<br>`
+            })
+            jQuery('#list-3').empty().html(list3)
+        } else {
+            jQuery('#list-3-section').hide()
+        }
     }
 
     jQuery('#days').change( function() {
@@ -188,5 +219,34 @@ function prayer_overview() {
         }
     })
 
+}
 
+function printElem(elem)
+{
+    let today = new Date();
+    let start = new Date();
+    let days = jQuery('#days').val()
+    start.setDate(today.getDate() - days);
+
+    let mywindow = window.open('', 'PRINT', 'height=1200,width=800');
+    let div = jQuery('#'+elem+' a')
+
+    div.contents().unwrap();
+
+    mywindow.document.write('<html><head><title>Prayer List</title>');
+    mywindow.document.write('</head><body >');
+    mywindow.document.write('<h1>Prayer List</h1>');
+    mywindow.document.write(`List covers: ${start.getMonth()}-${start.getDate()}-${start.getFullYear()} to ${today.getMonth()}-${today.getDate()}-${today.getFullYear()}`);
+    mywindow.document.write(document.getElementById(elem).innerHTML);
+    mywindow.document.write('</body></html>');
+
+    mywindow.document.close(); // necessary for IE >= 10
+    mywindow.focus(); // necessary for IE >= 10*/
+
+    mywindow.print();
+    mywindow.close();
+
+    window.get_lists()
+
+    return true;
 }

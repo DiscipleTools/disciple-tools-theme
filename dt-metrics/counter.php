@@ -800,12 +800,12 @@ class Disciple_Tools_Queries
                       p2p_to as contact_id,
                       (
                           SELECT meta_value 
-                          FROM wp_postmeta 
+                          FROM $wpdb->postmeta 
                           WHERE meta_key = 'corresponds_to_user' 
                             AND post_id = p2p_to
                       ) as user_id,
                       count(*) as count
-                    FROM wp_p2p
+                    FROM $wpdb->p2p
                     WHERE p2p_type = 'baptizer_to_baptized'
                     GROUP BY p2p_to;", ARRAY_A);
 
@@ -841,10 +841,10 @@ class Disciple_Tools_Queries
                       object_name as name,
                       meta_value as type,
                       p.p2p_to as location_id,
-                      ( SELECT post_title FROM wp_posts WHERE ID = p.p2p_to) as location_name,
+                      ( SELECT post_title FROM $wpdb->posts WHERE ID = p.p2p_to) as location_name,
                       hist_time
                     FROM $wpdb->dt_activity_log as l
-                    LEFT JOIN wp_p2p as p
+                    LEFT JOIN $wpdb->p2p as p
                           ON l.object_id=p.p2p_from
                           AND p.p2p_type = 'contacts_to_locations'
                     WHERE action = 'field_update'
@@ -853,6 +853,29 @@ class Disciple_Tools_Queries
                           AND (meta_value = 'attempted' OR meta_value = 'scheduled' OR meta_value = 'met')
                           AND hist_time > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL %d DAY ))
                     ORDER BY hist_time DESC
+                ", $days ), ARRAY_A);
+                return $query;
+                break;
+
+            case 'recent_baptisms':
+                $days = 30;
+                if ( ! empty( $args['days'] ) ) {
+                    $days = (int) $args['days'];
+                }
+                $query = $wpdb->get_results( $wpdb->prepare( "
+                    SELECT
+                      object_id as id,
+                      object_name as name,
+                      p.p2p_to as location_id,
+                      ( SELECT post_title FROM $wpdb->posts WHERE ID = p.p2p_to) as location_name,
+                      hist_time
+                    FROM $wpdb->dt_activity_log as l
+                      LEFT JOIN $wpdb->p2p as p
+                        ON l.object_id=p.p2p_from
+                           AND p.p2p_type = 'contacts_to_locations'
+                    WHERE meta_key = 'baptism_date'
+                          AND meta_value > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL %d DAY ))
+                    ORDER BY meta_value DESC
                 ", $days ), ARRAY_A);
                 return $query;
                 break;

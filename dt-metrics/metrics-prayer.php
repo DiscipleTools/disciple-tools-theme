@@ -70,7 +70,7 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
                 'title_3' => __( 'Requests for Next Steps Needed', 'disciple_tools' ),
                 'label_counties' => __( 'Counties', 'disciple_tools' ),
             ],
-            'prayer_list' => $this->prayer_list(),
+//            'prayer_list' => $this->prayer_list(),
         ];
     }
 
@@ -118,55 +118,84 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function prayer_list( $days = 30, $alias_name = true, $alias_location = false ) {
+        $list = [
+            "praise_meetings" => [],
+            "request_meetings" => [],
+            "baptisms" => []
+        ];
         $args = [
             'days' => $days,
         ];
 
+        // Meetings
         $recent_seeker_path = dt_queries()->query('recent_seeker_path', $args );
-        if ( empty( $recent_seeker_path ) ) {
-           return false;
+        if ( ! empty( $recent_seeker_path ) ) {
+            $unique = [];
+            foreach ( $recent_seeker_path as $item ) {
+
+                if ( $alias_name ) {
+                    $item['name'] = dt_make_alias_name( $item['name'] );
+                }
+
+                if ( $alias_location ) {
+                    $item['location_name'] = 'Location ' . $item['location_id'];
+                }
+
+                if ( isset( $unique[$item['id']] ) ) {
+                    continue;
+                }
+
+                if ( 'met' === $item['type'] ) {
+                    $list['praise_meetings'][] = [
+                        'text' => $item['name'],
+                        'type' => $item['type'],
+                        'location_name' => $item['location_name'],
+                        'id' => $item['id']
+                    ];
+                } else {
+                    $list['request_meetings'][] = [
+                        'text' => $item['name'],
+                        'type' => $item['type'],
+                        'location_name' => $item['location_name'],
+                        'id' => $item['id']
+                    ];
+                }
+
+                $unique[$item['id']] = true;
+            }
         }
-        $list = [];
-        $unique = [];
 
-        foreach ( $recent_seeker_path as $item ) {
 
-            if ( $alias_name ) {
-                $item['name'] = dt_make_alias_name( $item['name'] );
-            }
+        // Baptisms
+        $baptisms = dt_queries()->query( 'recent_baptisms', $args );
+        if ( ! empty( $baptisms ) ) {
+            $unique = [];
+            foreach ( $baptisms as $item ) {
+                if ( $alias_name ) {
+                    $item['name'] = dt_make_alias_name( $item['name'] );
+                }
 
-            if ( $alias_location ) {
-                $item['location_name'] = 'Location ' . $item['location_id'];
-            }
+                if ( $alias_location ) {
+                    $item['location_name'] = 'Location ' . $item['location_id'];
+                }
 
-            if ( isset( $unique[$item['id']] ) ) {
-                continue;
-            }
+                if ( isset( $unique[$item['id']] ) ) {
+                    continue;
+                }
 
-            if ( 'met' === $item['type'] ) {
-                $list['praise'][] = [
+                $list['baptisms'][] = [
                     'text' => $item['name'],
-                    'type' => $item['type'],
                     'location_name' => $item['location_name'],
                     'id' => $item['id']
                 ];
-            } else {
-                $list['request'][] = [
-                    'text' => $item['name'],
-                    'type' => $item['type'],
-                    'location_name' => $item['location_name'],
-                    'id' => $item['id']
-                ];
-            }
-
 
             $unique[$item['id']] = true;
+
+            }
         }
 
         return $list;
     }
-
-
 }
 
 function dt_make_alias_name( $name ) {
