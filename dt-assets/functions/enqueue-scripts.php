@@ -209,17 +209,13 @@ function dt_site_scripts() {
                     'typeahead-jquery',
                     'comments'
                 ) );
-                /* TODO: fix security vulnerability.
-                 * Outputting the return value of get_custom_fields_settings is
-                 * a security vulnerability. It includes a list of all sources,
-                 * for instance, but not all users have permission to view all
-                 * sources. */
                 wp_localize_script(
                     'contact-details', 'contactsDetailsWpApiSettings', array(
                         'contact'                         => $post,
                         'root'                            => esc_url_raw( rest_url() ),
                         'nonce'                           => wp_create_nonce( 'wp_rest' ),
                         'contacts_custom_fields_settings' => Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( false ),
+                        'sources'                         => Disciple_Tools_Contacts::list_sources(),
                         'channels'                        => Disciple_Tools_Contacts::get_channel_list(),
                         'template_dir'                    => get_template_directory_uri(),
                         'txt_created'                     => __( "Created contact at {}" ),
@@ -288,7 +284,7 @@ function dt_site_scripts() {
                 'txt_info' => _x( 'Showing _START_ of _TOTAL_', 'just copy as they are: _START_ and _TOTAL_', 'disciple_tools' ),
                 'filter_my' => __( 'Assigned to me', 'disciple_tools' ),
                 'filter_subassigned' => __( 'Subassigned to me', 'disciple_tools' ),
-                'filter_shared' => __( 'Shared with we', 'disciple_tools' ),
+                'filter_shared' => __( 'Shared with me', 'disciple_tools' ),
                 'filter_all' => sprintf( _x( 'All %s', 'Contacts or Groups', 'disciple_tools' ), Disciple_Tools_Posts::get_label_for_post_type( $post_type ) ),
                 'filter_needs_accepted' => __( 'Waiting to be accepted', 'disciple_tools' ),
                 'filter_unassigned' => __( 'Dispatch needed', 'disciple_tools' ),
@@ -301,8 +297,6 @@ function dt_site_scripts() {
                 'sorting_by' => __( 'Sorting By', 'disciple_tools' ),
                 'creation_date' => __( 'Creation Date', 'disciple_tools' ),
                 'date_modified' => __( 'Date Modified', 'disciple_tools' ),
-                'closed_excluded' => __( 'Excluded: closed', 'disciple_tools' ),
-                'inactive_excluded' => __( 'Excluded: inactive', 'disciple_tools' )
             ],
             'txt_infoEmpty' => __( 'Showing 0 to 0 of 0 entries', 'disciple_tools' ),
             'txt_infoFiltered' => _x( '(filtered from _MAX_ total entries)', 'just copy `_MAX_`', 'disciple_tools' ),

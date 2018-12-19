@@ -14,7 +14,6 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 {
-    public static $contact_fields;
     public static $channel_list;
     public static $address_types;
     public static $contact_connection_types;
@@ -23,7 +22,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * Disciple_Tools_Contacts constructor.
      */
     public function __construct() {
-        self::$contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
         self::$address_types = dt_get_option( "dt_site_custom_lists" )["contact_address_types"];
         self::$contact_connection_types = [
@@ -96,7 +94,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return mixed
      */
     public static function get_contact_fields() {
-        return self::$contact_fields;
+        return Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
     }
 
     /**
@@ -135,7 +133,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( $contact_id ){
             $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( isset( $contact_id ), $contact_id );
         } else {
-            $contact_fields = self::$contact_fields;
+            $contact_fields = $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         }
         if ( isset( $contact_fields[$field] ) ){
             return $contact_fields[ $field ];
@@ -163,6 +161,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, "You may not publish a contact", [ 'status' => 403 ] );
         }
         $initial_fields = $fields;
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
 
         $continue = apply_filters( "dt_create_contact_check_proceed", true, $fields );
         if ( !$continue ){
@@ -257,7 +256,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $contact_methods_and_connections[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
-            $field_type = self::$contact_fields[$field_key]["type"] ?? '';
+            $field_type = $contact_fields[$field_key]["type"] ?? '';
             if ( $field_type === "multi_select" ){
                 $multi_select_fields[$field_key] = $field_value;
                 unset( $fields[$field_key] );
@@ -369,8 +368,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     private static function parse_multi_select_fields( $contact_id, $fields, $existing_contact = null ){
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         foreach ( $fields as $field_key => $field ){
-            if ( isset( self::$contact_fields[$field_key] ) && self::$contact_fields[$field_key]["type"] === "multi_select" ){
+            if ( isset( $contact_fields[$field_key] ) && $contact_fields[$field_key]["type"] === "multi_select" ){
                 if ( !isset( $field["values"] )){
                     return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key );
                 }
@@ -560,7 +560,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
         $initial_fields = $fields;
         $initial_keys = array_keys( $fields );
-
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         $post = get_post( $contact_id );
         if ( isset( $fields['id'] ) ) {
             unset( $fields['id'] );
@@ -657,7 +657,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             if ( !self::is_key_contact_method_or_connection( $field_id ) ) {
                 // Boolean contact field are stored as yes/no
 
-                $field_type = self::$contact_fields[$field_id]["type"] ?? '';
+                $field_type = $contact_fields[$field_id]["type"] ?? '';
                 //we handle multi_select above.
                 if ( $field_type === 'date' && !is_numeric( $value )){
                     $value = strtotime( $value );
@@ -1161,6 +1161,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         $contact = get_post( $contact_id );
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         if ( $contact ) {
             $fields = [];
 
@@ -1308,8 +1309,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         }
                         $fields["address"][] = $details;
                     }
-                } elseif ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]["type"] == "key_select" && !empty( $value[0] )) {
-                    $value_options = self::$contact_fields[ $key ]["default"][ $value[0] ] ?? $value[0];
+                } elseif ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]["type"] == "key_select" && !empty( $value[0] )) {
+                    $value_options = $contact_fields[ $key ]["default"][ $value[0] ] ?? $value[0];
                     if ( isset( $value_options["label"] ) ){
                         $label = $value_options["label"];
                     } elseif ( is_string( $value_options ) ) {
@@ -1317,7 +1318,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     } else {
                         $label = $value[0];
                     }
-//                        $label = self::$contact_fields[ $key ]["default"][ $value[0] ]["label"] ?? $value[0];
+//                        $label = $contact_fields[ $key ]["default"][ $value[0] ]["label"] ?? $value[0];
                     $fields[ $key ] = [
                         "key" => $value[0],
                         "label" => $label
@@ -1339,13 +1340,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             }
                         }
                     }
-                } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'multi_select' ){
+                } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'multi_select' ){
                     $fields[ $key ] = $value;
-                } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'boolean' ){
+                } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'boolean' ){
                     $fields[ $key ] = $value[0] === "1";
-                } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'array' ){
+                } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'array' ){
                     $fields[ $key ] = maybe_unserialize( $value[0] );
-                } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'date' ){
+                } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'date' ){
                     $fields[ $key ] = [
                         "timestamp" => $value[0],
                         "formatted" => dt_format_date( $value[0] ),
@@ -1887,7 +1888,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return array|int|\WP_Error
      */
     public static function update_seeker_path( int $contact_id, string $path_option, $check_permissions = true ) {
-        $seeker_path_options = self::$contact_fields["seeker_path"]["default"];
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $seeker_path_options = $contact_fields["seeker_path"]["default"];
         $option_keys = array_keys( $seeker_path_options );
         $current_seeker_path = get_post_meta( $contact_id, "seeker_path", true );
         $current_index = array_search( $current_seeker_path, $option_keys );
@@ -2743,8 +2745,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         if ( current_user_can( 'view_any_contacts' ) ) {
             foreach ( $source_labels as $source_key => $source ) {
-                $rv[$source_key] = $source['label'];
+                if ( !isset( $source["enabled"] ) || $source["enabled"] != false ){
+                    $rv[$source_key] = $source['label'];
+                }
             }
+            //check for sources not in the defined list
             $results = $wpdb->get_results(
                 "SELECT DISTINCT meta_value FROM $wpdb->postmeta WHERE meta_key = 'sources'",
                 ARRAY_N
@@ -2755,15 +2760,26 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 }
             }
         } else {
-            /* TODO: Find a way to do this that is faster, I'm guessing this is slow */
-            $contacts = self::get_viewable_contacts( 0 );
-            if ( is_wp_error( $contacts ) ) {
-                return $contacts;
-            }
-            foreach ( $contacts['contacts'] as $contact ) {
-                foreach ( get_post_meta( $contact->ID, 'sources', false ) as $post_source_key ) {
+            $user_id = get_current_user_id();
+            // get the sources for the contacts shared with the user
+            $results = $wpdb->get_results( $wpdb->prepare(
+                "SELECT DISTINCT meta_value 
+                FROM $wpdb->postmeta 
+                JOIN $wpdb->dt_share as shares ON ( 
+                    shares.post_id = $wpdb->postmeta.post_id
+                    AND shares.user_id = %s
+                )  
+                WHERE meta_key = 'sources'",
+                $user_id
+                ), ARRAY_N
+            );
+            foreach ( $results as $result ) {
+                $post_source_key = $result[0];
+                if ( ! array_key_exists( $post_source_key, $rv ) ) {
                     if ( array_key_exists( $post_source_key, $source_labels ) ) {
-                        $rv[ $post_source_key ] = $source_labels[ $post_source_key ]['label'];
+                        if ( !isset( $source_labels[$post_source_key]["enabled"] ) || $source_labels[$post_source_key]["enabled"] != false ) {
+                            $rv[ $post_source_key ] = $source_labels[ $post_source_key ]['label'];
+                        }
                     } else {
                         $rv[ $post_source_key ] = null;
                     }

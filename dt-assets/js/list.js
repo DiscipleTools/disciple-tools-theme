@@ -936,18 +936,19 @@
   /*
    * Setup filter box
    */
+  let typeaheadsLoaded = null
   $('#filter-modal').on("open.zf.reveal", function () {
     newFilterLabels=[]
     if ( wpApiListSettings.current_post_type === "groups" ){
       loadLocationTypeahead()
       loadAssignedToTypeahead()
       // loadLeadersTypeahead()
-      loadMultiSelectTypeaheads().catch(err => { console.error(err) })
+      typeaheadsLoaded = loadMultiSelectTypeaheads().catch(err => { console.error(err) })
     } else if ( wpApiListSettings.current_post_type === "contacts" ){
       loadLocationTypeahead()
       loadAssignedToTypeahead()
       loadSubassignedTypeahead()
-      loadMultiSelectTypeaheads().catch(err => { console.error(err) })
+      typeaheadsLoaded = loadMultiSelectTypeaheads().catch(err => { console.error(err) })
     }
     $('#new-filter-name').val('')
     $("#filter-modal input.dt_date_picker").each(function () {
@@ -972,29 +973,30 @@
 
   let editSavedFilter = function( filter ){
     $('#filter-modal').foundation('open');
-    newFilterLabels = filter.labels
-    let connectionTypeKeys = Object.keys(wpApiListSettings.connection_types)
-    connectionTypeKeys.push("assigned_to")
-    newFilterLabels.forEach(label=>{
-      selectedFilters.append(`<span class="current-filter ${label.field}" data-id="${label.id}">${label.name}</span>`)
-      let type = _.get(wpApiListSettings, `custom_fields_settings.${label.field}.type`)
-      if ( type === "key_select" || type === "boolean" ){
-        $(`#filter-modal #${label.field}-options input[value="${label.id}"]`).prop('checked', true)
-      } else if ( type === "date" ){
-        $(`#filter-modal #${label.field}-options #${label.id}`).datepicker('setDate', label.date)
-      } else if ( connectionTypeKeys.includes( label.field ) ){
-        Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
-      } else if ( type === "multi_select" ){
-        Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
-
-      }
+    typeaheadsLoaded.then(()=>{
+      newFilterLabels = filter.labels
+      let connectionTypeKeys = Object.keys(wpApiListSettings.connection_types)
+      connectionTypeKeys.push("assigned_to")
+      newFilterLabels.forEach(label=>{
+        selectedFilters.append(`<span class="current-filter ${label.field}" data-id="${label.id}">${label.name}</span>`)
+        let type = _.get(wpApiListSettings, `custom_fields_settings.${label.field}.type`)
+        if ( type === "key_select" || type === "boolean" ){
+          $(`#filter-modal #${label.field}-options input[value="${label.id}"]`).prop('checked', true)
+        } else if ( type === "date" ){
+          $(`#filter-modal #${label.field}-options #${label.id}`).datepicker('setDate', label.date)
+        } else if ( connectionTypeKeys.includes( label.field ) ){
+          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({ID:label.id, name:label.name})
+        } else if ( type === "multi_select" ){
+          Typeahead[`.js-typeahead-${label.field}`].addMultiselectItemLayout({key:label.id, value:label.name})
+        }
+      })
+      ;(filter.query.combine || []).forEach(c=>{
+        $(`#combine_${c}`).prop('checked', true)
+      })
+      $('#new-filter-name').val(filter.name)
+      $('#confirm-filter-contacts').hide()
+      $('#save-filter-edits').data("filter-id", filter.ID).show()
     })
-    ;(filter.query.combine || []).forEach(c=>{
-      $(`#combine_${c}`).prop('checked', true)
-    })
-    $('#new-filter-name').val(filter.name)
-    $('#confirm-filter-contacts').hide()
-    $('#save-filter-edits').data("filter-id", filter.ID).show()
   }
   $('#save-filter-edits').on('click', function () {
     let searchQuery = getSearchQuery()

@@ -200,7 +200,7 @@ jQuery(document).ready(function($) {
       });
       let sourcesData = []
       _.forOwn(await response.json(), (sourceValue, sourceKey) => {
-         sourcesData.push({key:sourceKey, value:sourceValue || ""})
+        sourcesData.push({key:sourceKey, value:sourceValue || ""})
       })
       sourceTypeahead.attr("disabled", false)
       $.typeahead({
@@ -221,7 +221,7 @@ jQuery(document).ready(function($) {
             return (contact.sources || []).map(sourceKey=>{
               return {
                 key:sourceKey,
-                value: _.get(sourcesData, sourceKey) || sourceKey,
+                value: _.get(contactsDetailsWpApiSettings.sources, sourceKey) || sourceKey,
               }
             })
           }, callback: {
@@ -1131,10 +1131,9 @@ jQuery(document).ready(function($) {
     let sourceHTML = $('.sources-list').empty()
     if ( contact.sources && contact.sources.length > 0 ){
       contact.sources.forEach(source=>{
-        let translatedSourceHTML = _.escape(_.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings.sources.default.${source}.label`))
+        let translatedSourceHTML = _.escape(_.get(contactsDetailsWpApiSettings, `sources.${source}`))
         if (! translatedSourceHTML) {
-          alert(`Error: Could not find the label for the source key '${source}', please ask an admin to create it in the Settings (DT) interface`)
-          translatedSourceHTML = `<code>${_.escape(source)}</code>`
+          translatedSourceHTML = `<code>Unknown source: ${_.escape(source)}</code>`
         }
         sourceHTML.append(`<li>${translatedSourceHTML}</li>`)
       })

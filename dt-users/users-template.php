@@ -162,6 +162,13 @@ function dt_get_team_contacts( $user_id ) {
  */
 function dt_get_site_notification_defaults() {
     $site_options = dt_get_option( 'dt_site_options' );
+    $default_notifications = dt_get_site_options_defaults()["notifications"];
+    //get translated value
+    foreach ( $site_options['notifications'] as $notification_key => $value ){
+        if ( isset( $default_notifications[$notification_key]["label"] ) ){
+            $site_options["notifications"][$notification_key]["label"] = $default_notifications[$notification_key]["label"];
+        }
+    }
 
     return $site_options['notifications'];
 }

@@ -130,7 +130,7 @@ declare(strict_types=1);
                         </li>
                         <li class="accordion-item" data-accordion-item data-id="my">
                             <a href="#" class="accordion-title">
-                                <?php esc_html_e( "Contacts Assigned to me", 'disciple_tools' ) ?>
+                                <?php esc_html_e( "Assigned to me", 'disciple_tools' ) ?>
                                 <span class="tab-count-span" data-tab="total_my"></span>
                             </a>
                             <div class="accordion-content" data-tab-content>
@@ -139,7 +139,7 @@ declare(strict_types=1);
                         </li>
                         <li class="accordion-item" data-accordion-item data-id="subassigned">
                             <a href="#" class="accordion-title">
-                                <?php esc_html_e( "Contacts Subassigned to me", 'disciple_tools' ) ?>
+                                <?php esc_html_e( "Subassigned to me", 'disciple_tools' ) ?>
                                 <span class="tab-count-span" data-tab="total_subassigned"></span>
                             </a>
                             <div class="accordion-content" data-tab-content>
@@ -148,7 +148,7 @@ declare(strict_types=1);
                         </li>
                         <li class="accordion-item" data-accordion-item data-id="shared">
                             <a href="#" class="accordion-title">
-                                <?php esc_html_e( "Contacts Shared with me", 'disciple_tools' ) ?>
+                                <?php esc_html_e( "Shared with me", 'disciple_tools' ) ?>
                                 <span class="tab-count-span" data-tab="total_shared"></span>
                             </a>
                             <div class="accordion-content" data-tab-content>

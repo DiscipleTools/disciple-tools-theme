@@ -1199,6 +1199,14 @@ CONTACTS
             color: white;
         }
     }
+    .accordion-title {
+        font-size: inherit;
+        font-weight: bold;
+        .tab-count-span {
+            font-weight: 100;
+            font-size: 12px;
+        }
+    }
 }
 
 
