@@ -9,8 +9,7 @@
  */
 class Disciple_Tools_Migration_0019 extends Disciple_Tools_Migration
 {
-    public function up()
-    {
+    public function up() {
         global $wpdb;
         // get get posts
         $posts = $wpdb->get_results( "SELECT ID, post_title, post_date, post_type FROM $wpdb->posts WHERE post_type = 'contacts' OR post_type = 'groups'", ARRAY_A );
@@ -19,11 +18,11 @@ class Disciple_Tools_Migration_0019 extends Disciple_Tools_Migration
         // create activity log
         if ( ! empty( $posts ) ) {
             foreach ( $posts as $item ) {
-                if ( array_search( $item[ 'ID' ], $create_records ) ) {
+                if ( array_search( $item['ID'], $create_records ) ) {
                     continue;
                 }
 
-                $hist_time = strtotime( $item[ 'post_date' ] );
+                $hist_time = strtotime( $item['post_date'] );
                 if ( ! $hist_time ) {
                     $hist_time = time();
                 }
@@ -32,10 +31,10 @@ class Disciple_Tools_Migration_0019 extends Disciple_Tools_Migration
                     $wpdb->dt_activity_log,
                     [
                         'action'         => 'created',
-                        'object_type'    => $item[ 'post_type' ],
+                        'object_type'    => $item['post_type'],
                         'object_subtype' => '',
-                        'object_name'    => $item[ 'post_title' ],
-                        'object_id'      => $item[ 'ID' ],
+                        'object_name'    => $item['post_title'],
+                        'object_id'      => $item['ID'],
                         'user_id'        => 0,
                         'user_caps'      => 'administrator',
                         'hist_ip'        => '0',
@@ -54,13 +53,11 @@ class Disciple_Tools_Migration_0019 extends Disciple_Tools_Migration
         }
     }
 
-    public function down()
-    {
+    public function down() {
         return;
     }
 
-    public function test()
-    {
+    public function test() {
     }
 
     public function get_expected_tables(): array

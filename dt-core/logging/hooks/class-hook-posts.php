@@ -38,7 +38,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
      * @param $post
      * @param $update
      */
-    public function hooks_new_post ( $post_ID, $post, $update ) {
+    public function hooks_new_post( $post_ID, $post, $update ) {
         if ( ! $update ) {
             dt_activity_insert(
                 [

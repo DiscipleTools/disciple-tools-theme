@@ -183,7 +183,7 @@ add_filter( 'login_redirect',
         }
     },
     10,
-    3 );
+3 );
 
 
 
