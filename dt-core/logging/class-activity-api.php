@@ -19,47 +19,7 @@ function dt_activity_insert( $args = [] ) {
  * This handles the insert and other functions for the table _dt_activity_log
  */
 class Disciple_Tools_Activity_Log_API {
-
-    /**
-     * Get real address
-     *
-     * @since 0.1.0
-     *
-     * @return string real address IP
-     */
-    protected function _get_ip_address() {
-        $server_ip_keys = [
-            'HTTP_CLIENT_IP',
-            'HTTP_X_FORWARDED_FOR',
-            'HTTP_X_FORWARDED',
-            'HTTP_X_CLUSTER_CLIENT_IP',
-            'HTTP_FORWARDED_FOR',
-            'HTTP_FORWARDED',
-            'REMOTE_ADDR',
-        ];
-
-        foreach ( $server_ip_keys as $key ) {
-            if ( isset( $_SERVER[ $key ] ) && filter_var( sanitize_text_field( wp_unslash( $_SERVER[ $key ] ) ), FILTER_VALIDATE_IP ) ) {
-                return sanitize_text_field( wp_unslash( $_SERVER[ $key ] ) );
-            }
-        }
-
-        // Fallback local ip.
-        return '127.0.0.1';
-    }
-
-    /**
-     * @since 0.1.0
-     * @return void
-     */
-    public function erase_all_items() {
-        global $wpdb;
-
-        $wpdb->query(
-            "TRUNCATE `$wpdb->dt_activity_log`"
-        );
-    }
-
+    
     /**
      * @since 0.1.0
      *
@@ -77,7 +37,7 @@ class Disciple_Tools_Activity_Log_API {
                 'object_subtype' => '',
                 'object_name'    => 'unknown',
                 'object_id'      => '0',
-                'hist_ip'        => $this->_get_ip_address(),
+                'hist_ip'        => '0',
                 'hist_time'      => time(),
                 'object_note'    => '0',
                 'meta_id'        => '0',
@@ -100,52 +60,6 @@ class Disciple_Tools_Activity_Log_API {
                 $args['user_id'] = 0;
             }
         }
-
-//        // Make sure for non duplicate.
-//        $check_duplicate = $wpdb->get_row(
-//            $wpdb->prepare(
-//                "SELECT
-//                     `histid`
-//                FROM
-//                    `$wpdb->dt_activity_log`
-//                WHERE
-//                    `user_caps` = %s
-//                    AND `action` = %s
-//                    AND `object_type` = %s
-//                    AND `object_subtype` = %s
-//                    AND `object_name` = %s
-//                    AND `user_id` = %s
-//                    AND `hist_ip` = %s
-//                    AND `hist_time` = %s
-//                    AND `object_note` = %s
-//                    AND `meta_id` = %s
-//                    AND `meta_key` = %s
-//                    AND `meta_value` = %s
-//                    AND `meta_parent` = %s
-//                    AND `old_value` = %s
-//                    AND `field_type` = %s
-//                ;",
-//                $args['user_caps'],
-//                $args['action'],
-//                $args['object_type'],
-//                $args['object_subtype'],
-//                $args['object_name'],
-//                $args['user_id'],
-//                $args['hist_ip'],
-//                $args['hist_time'],
-//                $args['object_note'],
-//                $args['meta_id'],
-//                $args['meta_key'],
-//                $args['meta_value'],
-//                $args['meta_parent'],
-//                $args['old_value'],
-//                $args['field_type']
-//            )
-//        );
-//
-//        if ( $check_duplicate ) {
-//            return;
-//        }
 
         $wpdb->insert(
             $wpdb->dt_activity_log,
