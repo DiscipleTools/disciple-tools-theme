@@ -19,7 +19,7 @@ function dt_activity_insert( $args = [] ) {
  * This handles the insert and other functions for the table _dt_activity_log
  */
 class Disciple_Tools_Activity_Log_API {
-    
+
     /**
      * @since 0.1.0
      *

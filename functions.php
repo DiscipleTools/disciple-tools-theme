@@ -142,7 +142,7 @@ else {
              */
             $this->token = 'disciple_tools';
             $this->version = '0.14.2';
-            $this->migration_number = 17;
+            $this->migration_number = 18;
 
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -195,15 +195,13 @@ else {
              */
             add_action( 'init', function() {
                 $template_for_url = [
-                'metrics'       => 'template-metrics.php',
-                'settings'      => 'template-settings.php',
-                'notifications' => 'template-notifications.php',
-                'about'         => 'template-about.php',
-                'team'          => 'template-team.php',
-                'contacts/new'  => 'template-contacts-new.php',
-                'groups/new'    => 'template-groups-new.php',
-                'contacts/mergedetails'    => 'template-merge-details.php',
-                'view-duplicates'    => 'template-view-duplicates.php',
+                    'metrics'               => 'template-metrics.php',
+                    'settings'              => 'template-settings.php',
+                    'notifications'         => 'template-notifications.php',
+                    'contacts/new'          => 'template-contacts-new.php',
+                    'groups/new'            => 'template-groups-new.php',
+                    'contacts/mergedetails' => 'template-merge-details.php',
+                    'view-duplicates'       => 'template-view-duplicates.php',
                 ];
 
                 $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
