@@ -317,9 +317,11 @@ function dt_my_connection_types() {
     );
 
 
+    // @todo remove @CC 12-20-2018
     /**
      * This creates the link between members and locations for assignment purposes.
      */
+    /*
     p2p_register_connection_type(
         [
             'name'  => 'team_member_locations',
@@ -331,10 +333,12 @@ function dt_my_connection_types() {
             ],
         ]
     );
+    */
 
     /**
      * People Groups
      */
+    /*
     p2p_register_connection_type(
         [
             'name'  => 'team_member_peoplegroups',
@@ -346,6 +350,10 @@ function dt_my_connection_types() {
             ],
         ]
     );
+    */
+    // @todo end remove @CC 12-20-2018
+
+
     p2p_register_connection_type(
         [
             'name'        => 'contacts_to_peoplegroups',
@@ -448,11 +456,24 @@ function dt_p2p_published_by_default( $args ) {
 }
 add_filter( 'p2p_new_post_args', 'dt_p2p_published_by_default', 10, 1 );
 
+//escape the connection title because p2p doesn't
+function dt_p2p_title_escape( $title, $object = null, $type = null ){
+    return esc_html( $title );
+}
+add_filter( "p2p_connected_title", "dt_p2p_title_escape" );
+
+
+
+// @todo remove below @CC 12-20-2018
+// These functions below give people groups and locations to user profiles, but we are moving towards using the contact
+// record connected to the user account as the source for tracking people groups, locations, and user contact details
+
 /**
  * Adding the connection box to the user profile
  *
  * @param $user
  */
+/*
 function dt_user_location_connections( $user ) {
 
     // Find connected posts
@@ -520,12 +541,14 @@ function dt_user_location_connections( $user ) {
 }
 add_action( 'show_user_profile', 'dt_user_location_connections', 999 );
 add_action( 'edit_user_profile', 'dt_user_location_connections', 999 );
+*/
 
 /**
  * Adding the connection box to the user profile
  *
  * @param $user
  */
+/*
 function dt_user_peoplegroup_connections( $user ) {
 
     // Find connected posts
@@ -594,8 +617,4 @@ function dt_user_peoplegroup_connections( $user ) {
 add_action( 'show_user_profile', 'dt_user_peoplegroup_connections', 999 );
 add_action( 'edit_user_profile', 'dt_user_peoplegroup_connections', 999 );
 
-//escape the connection title because p2p doesn't
-function dt_p2p_title_escape( $title, $object = null, $type = null ){
-    return esc_html( $title );
-}
-add_filter( "p2p_connected_title", "dt_p2p_title_escape" );
+*/

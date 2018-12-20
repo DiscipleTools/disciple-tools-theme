@@ -202,7 +202,7 @@ function contact_follow_up_pace(){
       <hr style="max-width:100%;">
       <span><a onclick="jQuery('.notes').toggle();" style="float:right; font-size:.6em;">Show Chart Notes</a> </span>
       <p>
-        <strong>Coalition Average Pace (CAP):</strong><br>
+        <strong>Average Coalition Pace (ACP):</strong><br>
         Assigned-to-Accepted Pace: <strong id="coalition_assigned_to_accepted"></strong> Hours Average <br>
         Accepted-to-Attempted Pace: <strong id="coalition_accept_to_attempted"></strong> Hours Average 
       </p>
@@ -219,7 +219,7 @@ function contact_follow_up_pace(){
 
     function drawContactsProgressPerUser() {
         let chartData = google.visualization.arrayToDataTable( [
-            [ 'Name', 'Assigned-to-Accepted Pace', 'CAP', 'Accepted-to-Attempted Pace', 'CAP' ],
+            [ 'Name', 'New-to-Assigned Pace', 'ACP', 'Assigned-to-Accepted Pace', 'ACP', 'Accepted-to-Attempted Pace', 'ACP' ],
 
         ] );
         let options = {
