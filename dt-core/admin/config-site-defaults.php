@@ -540,7 +540,7 @@ function dt_get_site_custom_lists( string $list_title = null ) {
         'transfer' => [
             'label'       => 'Transfer',
             'key'         => 'transfer',
-            'description' => 'Contacts coming an contact transfer partnership with another DT site.',
+            'description' => 'Contacts coming an contact transfer partnership with another Disciple.Tools site.',
             'enabled'     => true,
         ],
 

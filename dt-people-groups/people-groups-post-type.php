@@ -285,9 +285,9 @@ class Disciple_Tools_People_Groups_Post_Type
                 <td width="33%"><label for="country">Country </label><br>
                     <select id="country">
                         <option></option>
-                        <?php foreach ( $names as $name ) {
+                        <?php foreach ( $names as $name ) :
                             echo '<option value="'.esc_attr( $name ).'">'.esc_attr( $name ).'</option>';
-} ?>
+                        endforeach; ?>
                     </select>
                 </td>
                 <td width="33%" style="text-align:center;"><br>or</td>

@@ -106,7 +106,6 @@ class Disciple_Tools_Groups_Post_Type
         if ( is_admin() ) {
             global $pagenow;
 
-            add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
 
             if ( $pagenow == 'edit.php' && isset( $_GET['post_type'] ) && esc_attr( sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) ) == $this->post_type ) {

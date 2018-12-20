@@ -268,9 +268,9 @@ class Disciple_Tools_People_Groups
         $names = self::get_country_dropdown();
         ?>
         <select id="group-search">
-            <?php foreach ( $names as $name ) {
+            <?php foreach ( $names as $name ) :
                 echo '<option value="'.esc_attr( $name ).'">'.esc_attr( $name ).'</option>';
-} ?>
+            endforeach; ?>
         </select>
         <button class="button" id="search_button" onclick="group_search()">Get List</button>
         <br><br>

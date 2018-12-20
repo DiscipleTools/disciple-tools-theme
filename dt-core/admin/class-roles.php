@@ -200,7 +200,7 @@ class Disciple_Tools_Roles
             remove_role( 'dt_admin' );
         }
         add_role(
-            'dt_admin', __( 'DT Admin', "disciple_tools" ),
+            'dt_admin', __( 'Disciple.Tools Admin', "disciple_tools" ),
             [
                 'read'                      => true, //access to admin
                 'edit_posts'                => true, //edit custom post types

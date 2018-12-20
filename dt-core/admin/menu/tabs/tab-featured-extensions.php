@@ -98,7 +98,7 @@ class Disciple_Tools_Tab_Featured_Extensions extends Disciple_Tools_Abstract_Men
         //get plugin data
         $plugins = $this->get_plugins();
         ?>
-        <h3><?php esc_html_e( "Official DT Plugins", 'disciple_tools' ) ?></h3>
+        <h3><?php esc_html_e( "Official Disciple.Tools Plugins", 'disciple_tools' ) ?></h3>
         <table class="widefat striped">
             <thead>
             <tr>

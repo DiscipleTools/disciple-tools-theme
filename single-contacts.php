@@ -817,7 +817,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             <p><?php esc_html_e( "This contact already represents a user", 'disciple_tools' ) ?></p>
         <?php else : ?>
 
-        <p><?php esc_html_e( "This will invite this contact to D.T as a multiplier", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "This will invite this contact to Disciple.Tools as a multiplier", 'disciple_tools' ) ?></p>
 
         <form id="create-user-form">
             <label for="user-email">

@@ -499,7 +499,7 @@ class Disciple_Tools_Users
             });
         </script>
         <?php endif; ?>
-        <h3><?php esc_html_e( "Extra D.T Information", 'disciple_tools' ) ?></h3>
+        <h3><?php esc_html_e( "Extra Disciple.Tools Information", 'disciple_tools' ) ?></h3>
         <table class="form-table">
             <tr>
                 <th><label for="contact"><?php esc_html_e( "Corresponds to Contact", 'disciple_tools' ) ?></label></th>
@@ -512,7 +512,7 @@ class Disciple_Tools_Users
                         <?php if ( $contact_id ) : ?>
                             <span class="description"><a href="<?php echo esc_html( get_site_url() . '/contacts/' . $contact_id )?>" target="_blank"><?php esc_html_e( "View contact", 'disciple_tools' ) ?></a></span>
                         <?php else :?>
-                            <span class="description"><?php esc_html_e( "Is this user already a contact in D.T?", 'disciple_tools' ) ?></span>
+                            <span class="description"><?php esc_html_e( "Is this user already a contact in Disciple.Tools?", 'disciple_tools' ) ?></span>
                         <?php endif; ?>
                     <?php endif; ?>
                 </td>

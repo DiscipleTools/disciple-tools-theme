@@ -223,7 +223,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         );
 
         echo '<form method="post" name="extension_modules_form">';
-        echo '<p>Base User is the catch-all account for orphaned contacts and other records to be assigned to. To be a base user, the user must be an administrator, dispatcher, multiplier, marketer, or strategist.</p>';
+        echo '<p>Base User is the catch-all account for orphaned contacts and other records to be assigned to. To be a Base User, the user must be an Administrator, Dispatcher, Multiplier, Digital Responder, or Strategist.</p>';
         echo '<hr>';
         echo '<input type="hidden" name="base_user_nonce" id="base_user_nonce" value="' . esc_attr( wp_create_nonce( 'base_user' ) ) . '" />';
 
@@ -260,7 +260,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         ?>
         <form method="POST">
             <input type="hidden" name="email_base_subject_nonce" id="email_base_subject_nonce" value="<?php echo esc_attr( wp_create_nonce( 'email_subject' ) )?>" />
-            <label for="email_subject"><?php esc_html_e( "Configure the first part of the subject line in email sent by DT", 'disciple_tools' ) ?></label>
+            <label for="email_subject"><?php esc_html_e( "Configure the first part of the subject line in email sent by Disciple.Tools", 'disciple_tools' ) ?></label>
             <input name="email_subject" id="email_subject" value="<?php echo esc_html( dt_get_option( "dt_email_base_subject" ) ) ?>" />
             <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( "Update", 'disciple_tools' ) ?></button></span>
         </form>
