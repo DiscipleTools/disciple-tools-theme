@@ -211,7 +211,6 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
                     } else {
                         $item['location_name'] = '';
                     }
-
                 }
 
                 if ( isset( $unique[$item['id']] ) ) {
