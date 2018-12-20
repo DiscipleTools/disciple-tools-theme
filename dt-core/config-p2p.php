@@ -321,6 +321,7 @@ function dt_my_connection_types() {
     /**
      * This creates the link between members and locations for assignment purposes.
      */
+    /*
     p2p_register_connection_type(
         [
             'name'  => 'team_member_locations',
@@ -332,10 +333,12 @@ function dt_my_connection_types() {
             ],
         ]
     );
+    */
 
     /**
      * People Groups
      */
+    /*
     p2p_register_connection_type(
         [
             'name'  => 'team_member_peoplegroups',
@@ -347,6 +350,7 @@ function dt_my_connection_types() {
             ],
         ]
     );
+    */
     // @todo end remove @CC 12-20-2018
 
 
@@ -469,6 +473,7 @@ add_filter( "p2p_connected_title", "dt_p2p_title_escape" );
  *
  * @param $user
  */
+/*
 function dt_user_location_connections( $user ) {
 
     // Find connected posts
@@ -536,12 +541,14 @@ function dt_user_location_connections( $user ) {
 }
 add_action( 'show_user_profile', 'dt_user_location_connections', 999 );
 add_action( 'edit_user_profile', 'dt_user_location_connections', 999 );
+*/
 
 /**
  * Adding the connection box to the user profile
  *
  * @param $user
  */
+/*
 function dt_user_peoplegroup_connections( $user ) {
 
     // Find connected posts
@@ -610,4 +617,4 @@ function dt_user_peoplegroup_connections( $user ) {
 add_action( 'show_user_profile', 'dt_user_peoplegroup_connections', 999 );
 add_action( 'edit_user_profile', 'dt_user_peoplegroup_connections', 999 );
 
-
+*/
