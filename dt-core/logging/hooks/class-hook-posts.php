@@ -7,11 +7,13 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
     public function __construct() {
-        add_action( 'transition_post_status', [ &$this, 'hooks_transition_post_status' ], 10, 3 );
+        add_action( 'wp_insert_post', [ &$this, 'hooks_new_post' ], 10, 3 );
+//        add_action( 'transition_post_status', [ &$this, 'hooks_transition_post_status' ], 10, 3 );
         add_action( 'delete_post', [ &$this, 'hooks_delete_post' ] );
         add_action( "added_post_meta", [ &$this, 'hooks_added_post_meta' ], 10, 4 );
         add_action( "updated_post_meta", [ &$this, 'hooks_updated_post_meta' ], 10, 4 );
         add_action( "delete_post_meta", [ &$this, 'post_meta_deleted' ], 10, 4 );
+
         add_action( 'p2p_created_connection', [ &$this, 'hooks_p2p_created' ], 10, 1 );
         add_action( 'p2p_delete_connections', [ &$this, 'hooks_p2p_deleted' ], 10, 1 );
 
@@ -27,6 +29,32 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         }
 
         return $title;
+    }
+
+    /**
+     * @see /wp-includes/post.php:3684
+     *
+     * @param $post_ID
+     * @param $post
+     * @param $update
+     */
+    public function hooks_new_post ( $post_ID, $post, $update ) {
+        if ( ! $update ) {
+            dt_activity_insert(
+                [
+                    'action' => 'created',
+                    'object_type' => $post->post_type,
+                    'object_subtype' => '',
+                    'object_id' => $post->ID,
+                    'object_name' => $this->_draft_or_post_title( $post->ID ),
+                    'meta_id'           => ' ',
+                    'meta_key'          => ' ',
+                    'meta_value'        => ' ',
+                    'meta_parent'        => ' ',
+                    'object_note'       => ' ',
+                ]
+            );
+        }
     }
 
     public function hooks_transition_post_status( $new_status, $old_status, $post ) {
