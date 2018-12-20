@@ -2771,7 +2771,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 )  
                 WHERE meta_key = 'sources'",
                 $user_id
-                ), ARRAY_N
+                ),
+                ARRAY_N
             );
             foreach ( $results as $result ) {
                 $post_source_key = $result[0];

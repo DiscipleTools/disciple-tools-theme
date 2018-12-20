@@ -109,7 +109,6 @@ class Disciple_Tools_Contact_Post_Type
         add_filter( 'post_type_link', [ $this, 'contacts_permalink' ], 1, 3 );
 
         if ( is_admin() ) {
-            add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
         }
     } // End __construct()
