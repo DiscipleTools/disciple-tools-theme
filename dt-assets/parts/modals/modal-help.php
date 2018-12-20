@@ -26,21 +26,21 @@
         </p>
     </div>
     <div class="help-section" id="contact-progress-help-text" style="display: none">
-        <h3 class="lead">Contact Progress</h3>
+        <h3 class="lead"><?php esc_html_e( "Contact Progress", 'disciple_tools' ) ?></h3>
         <p>Here you can track the progress of a contact's faith journey.</p>
     </div>
     <div class="help-section" id="seeker-path-help-text" style="display: none">
-        <h3 class="lead">Seeker Path</h3>
+        <h3 class="lead"><?php esc_html_e( "Seeker Path", 'disciple_tools' ) ?></h3>
         <p>This is where you set the status of your progression with the contact.</p>
     </div>
     <div class="help-section" id="faith-milestones-help-text" style="display: none">
-        <h3 class="lead">Faith Milestones</h3>
+        <h3 class="lead"><?php esc_html_e( "Faith Milestones", 'disciple_tools' ) ?></h3>
         <p>This is where you set which milestones the contact has reached in their faith journey.</p>
     </div>
 
     <!--  Health Metrics  -->
     <div class="help-section" id="health-metrics-help-text" style="display: none">
-        <h3 class="lead">Health Metrics</h3>
+        <h3 class="lead"><?php esc_html_e( "Health Metrics", 'disciple_tools' ) ?></h3>
         <p> Here you can track the progress of a group/church.</p>
         <p>If the group has committed to be a church, click the "Covenant" button to make the dotted line circle solid.</p>
         <p>If the group/church regularly practices any of the following elements then click
@@ -49,7 +49,7 @@
 
     <!--  Group type  -->
     <div class="help-section" id="group-type-help-text" style="display: none">
-        <h3 class="lead">Group type</h3>
+        <h3 class="lead"><?php esc_html_e( "Group type", 'disciple_tools' ) ?></h3>
         <p>Here you can select whether the group is a pre-group, group or church.</p>
         <p>We define a pre-group as having x people. We define a group as having x people.</p>
         <p>We define a church as having 3 or more believers.</p>
@@ -57,7 +57,7 @@
 
     <!--  Group Status  -->
     <div class="help-section" id="group-status-help-text" style="display: none">
-        <h3 class="lead">Group Status</h3>
+        <h3 class="lead"><?php esc_html_e( "Group Status", 'disciple_tools' ) ?></h3>
         <p>This is where you set the current status of the group. </p>
         <ul>
             <li>
@@ -71,7 +71,7 @@
 
     <!--  Group Parents and Children  -->
     <div class="help-section" id="group-connections-help-text" style="display: none">
-        <h3 class="lead">Group Connections. Parent and Child Groups</h3>
+        <h3 class="lead"><?php esc_html_e( "Group Connections. Parent and Child Groups", 'disciple_tools' ) ?></h3>
         <p>If this group has multiplied from another group, you can add that group here (Parent Group).</p>
         <p>If this group has multiplied into another group, you can add that here (Child Groups).</p>
     </div>
