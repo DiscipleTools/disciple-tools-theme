@@ -413,11 +413,6 @@ else {
                 require_once( get_template_directory() . '/dt-groups/groups-config.php' );
                 $this->config_groups = Disciple_Tools_Groups_Config::instance();
 
-                // People Groups
-
-                // Metaboxes
-                require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-activity.php' );
-                require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-share-contact.php' );
             }
             /* End Admin configuration section */
 
