@@ -358,65 +358,6 @@ function dt_get_user_locations_list( int $id, $is_user_id = false ) {
 }
 
 /**
- * Gets an array of teams populated with an array of members for each team
- * array(
- *      team_id
- *      team_name
- *      team_members array(
- *              ID
- *              display_name
- *              user_email
- *              user_url
- *
- * @param int $user_id
- *
- * @return array|bool
- */
-function dt_get_user_team_members_list( int $user_id ) {
-
-    $team_members_list = [];
-
-    $teams = wp_get_object_terms( $user_id, 'user-group' );
-    if ( empty( $teams ) || is_wp_error( $teams ) ) {
-        return false;
-    }
-
-    foreach ( $teams as $team ) {
-
-        $team_id = $team->term_id;
-        $team_name = $team->name;
-
-        $members_list = [];
-        $args = [
-            'taxonomy' => 'user-group',
-            'term'     => $team_id,
-            'term_by'  => 'id',
-        ];
-        $results = disciple_tools_get_users_of_group( $args );
-        if ( !empty( $results ) ) {
-            foreach ( $results as $result ) {
-                if ( !( $user_id == $result->data->ID ) ) {
-                    $members_list[] = [
-                        'ID'           => $result->data->ID,
-                        'display_name' => $result->data->display_name,
-                        'user_email'   => $result->data->user_email,
-                        'user_url'     => $result->data->user_url,
-                    ];
-                }
-            }
-        }
-
-        $team_members_list[] = [
-            'team_id'      => $team_id,
-            'team_name'    => $team_name,
-            'team_members' => $members_list,
-        ];
-    }
-
-    return $team_members_list;
-}
-
-/**
  * Tests if a user notification is enabled.
  *
  *

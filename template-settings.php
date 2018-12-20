@@ -175,23 +175,6 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                 ?>
 
 
-                                <p><strong><?php esc_html_e( 'Teams', 'disciple_tools' )?></strong></p>
-                                <?php
-                                $dt_user_team_members_list = dt_get_user_team_members_list( $dt_user->ID );
-                                if ( $dt_user_team_members_list ) {
-                                    foreach ( $dt_user_team_members_list as $dt_team_list ) {
-                                        echo esc_html( $dt_team_list['team_name'] );
-                                        if ( !empty( $dt_team_list['team_members'] ) ) {
-                                            echo '<ul>';
-                                            foreach ( $dt_team_list['team_members'] as $dt_member ) {
-                                                echo '<li><a href="' . esc_url( $dt_member['user_url'] ) . '">' . esc_html( $dt_member['display_name'] ) . '</a></li>';
-                                            }
-                                            echo '</ul>';
-                                        }
-                                    }
-                                }
-                                ?>
-
                                 <strong><?php esc_html_e( 'Biography', 'disciple_tools' )?></strong>
                                 <p><?php echo esc_html( $dt_user->user_description ); ?></p>
 
