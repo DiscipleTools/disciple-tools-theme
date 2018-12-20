@@ -1,3 +1,4 @@
+<?php /*
 <article id="post-<?php the_ID(); ?>" <?php post_class( '' ); ?> role="article" itemscope itemtype="http://schema.org/WebPage">
 
     <header class="article-header">
@@ -16,3 +17,5 @@
     <?php comments_template(); ?>
 
 </article> <!-- end article -->
+
+ //@todo removed as unnecissary to DT theme. @CC 12-20-2018

@@ -6,12 +6,12 @@
 
             <main id="main" class="large-12 medium-12 columns" role="main">
 
-                <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+                <?php /* if (have_posts()) : while (have_posts()) : the_post(); ?>
 
                         <?php get_template_part( 'dt-assets/parts/loop', 'page' ); ?>
 
                 <?php endwhile; ?>
-                <?php endif; ?>
+                <?php endif; */ // @todo removed to protect against accidental page display ?>
 
             </main> <!-- end #main -->
 
