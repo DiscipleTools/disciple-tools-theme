@@ -124,7 +124,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     public function workers() {
         return [
             'translations' => [
-                'title_activity' => __( 'Users Activity', 'disciple_tools' ),
+                'title_activity' => __( 'Workers Activity', 'disciple_tools' ),
                 'title_recent_activity' => __( 'Worker System Engagement for the Last 30 Days', 'disciple_tools' ),
                 'title_response' => __( 'Follow-up Pace', 'disciple_tools' ),
                 'label_total_workers' => __( 'Total Workers', 'disciple_tools' ),

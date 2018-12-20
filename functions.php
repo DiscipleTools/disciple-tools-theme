@@ -142,7 +142,7 @@ else {
              */
             $this->token = 'disciple_tools';
             $this->version = '0.14.2';
-            $this->migration_number = 17;
+            $this->migration_number = 19;
 
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -176,20 +176,16 @@ else {
             /**
              * User Groups & Multi Roles
              */
-//            require_once( get_template_directory() . '/dt-core/admin/user-groups/class-user-taxonomy.php' );
-//            require_once( get_template_directory() . '/dt-core/admin/user-groups/user-groups-taxonomies.php' );
             require_once( get_template_directory() . '/dt-core/admin/multi-role/multi-role.php' );
             $this->multi = Disciple_Tools_Multi_Roles::instance();
 
             /**
              * Theme specific files
              */
-            require_once( get_template_directory() . '/dt-assets/functions/theme-support.php' ); // Theme support options
+//            require_once( get_template_directory() . '/dt-assets/functions/theme-support.php' ); // Theme support options
             require_once( get_template_directory() . '/dt-assets/functions/cleanup.php' ); // WP Head and other cleanup functions
             require_once( get_template_directory() . '/dt-assets/functions/enqueue-scripts.php' ); // Register scripts and stylesheets
-//            require_once( get_template_directory() . '/dt-assets/functions/sidebar.php' ); // Register sidebars/widget areas
-//            require_once( get_template_directory() . '/dt-assets/functions/page-navi.php' ); // Replace 'older/newer' post links with numbered navigation
-            require_once( get_template_directory() . '/dt-assets/functions/login.php' ); // Customize the WordPress login menu
+//            require_once( get_template_directory() . '/dt-assets/functions/login.php' ); // Customize the WordPress login menu
             require_once( get_template_directory() . '/dt-assets/functions/menu.php' ); // Register menus and menu walkers
             require_once( get_template_directory() . '/dt-assets/functions/details-bar.php' ); // Breadcrumbs bar
 
@@ -199,15 +195,13 @@ else {
              */
             add_action( 'init', function() {
                 $template_for_url = [
-                'metrics'       => 'template-metrics.php',
-                'settings'      => 'template-settings.php',
-                'notifications' => 'template-notifications.php',
-                'about'         => 'template-about.php',
-                'team'          => 'template-team.php',
-                'contacts/new'  => 'template-contacts-new.php',
-                'groups/new'    => 'template-groups-new.php',
-                'contacts/mergedetails'    => 'template-merge-details.php',
-                'view-duplicates'    => 'template-view-duplicates.php',
+                    'metrics'               => 'template-metrics.php',
+                    'settings'              => 'template-settings.php',
+                    'notifications'         => 'template-notifications.php',
+                    'contacts/new'          => 'template-contacts-new.php',
+                    'groups/new'            => 'template-groups-new.php',
+                    'contacts/mergedetails' => 'template-merge-details.php',
+                    'view-duplicates'       => 'template-view-duplicates.php',
                 ];
 
                 $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
@@ -330,8 +324,6 @@ else {
             /**
              * dt-notifications
              */
-            require_once( get_template_directory() . '/dt-notifications/notifications-hooks.php' );
-            $this->hooks['notifications'] = Disciple_Tools_Notification_Hooks::instance();
             require_once( get_template_directory() . '/dt-notifications/notifications-template.php' );
             require_once( get_template_directory() . '/dt-notifications/notifications.php' );
             $this->core['notifications'] = Disciple_Tools_Notifications::instance();
@@ -343,9 +335,6 @@ else {
              * Post-to-Post configuration
              */
             require_once( get_template_directory() . '/dt-core/config-p2p.php' ); // Creates the post to post relationship between the post type tables.
-
-            // Custom Metaboxes
-            require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-address.php' ); // todo remove theme dependency on this box. used by both theme and wp-admin
 
             /**
              * Logging
@@ -422,11 +411,6 @@ else {
                 require_once( get_template_directory() . '/dt-groups/groups-config.php' );
                 $this->config_groups = Disciple_Tools_Groups_Config::instance();
 
-                // People Groups
-
-                // Metaboxes
-                require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-activity.php' );
-                require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-share-contact.php' );
             }
             /* End Admin configuration section */
 
