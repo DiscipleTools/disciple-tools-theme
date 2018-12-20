@@ -70,7 +70,6 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
                 'title_3' => __( 'Requests for Next Steps Needed', 'disciple_tools' ),
                 'label_counties' => __( 'Counties', 'disciple_tools' ),
             ],
-//            'prayer_list' => $this->prayer_list(),
         ];
     }
 
@@ -130,7 +129,7 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
         ];
 
         // Meetings
-        $recent_seeker_path = dt_queries()->query('recent_seeker_path', $args );
+        $recent_seeker_path = dt_queries()->query( 'recent_seeker_path', $args );
         if ( ! empty( $recent_seeker_path ) ) {
             $unique = [];
             foreach ( $recent_seeker_path as $item ) {
@@ -191,7 +190,7 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
                     'id' => $item['id']
                 ];
 
-            $unique[$item['id']] = true;
+                $unique[$item['id']] = true;
 
             }
         }
@@ -207,7 +206,12 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
                 }
 
                 if ( $alias_location ) {
-                    $item['location_name'] = 'Location ' . $item['location_id'];
+                    if ( empty( $item['location_id'] ) ) {
+                        $item['location_name'] = 'Location ' . $item['location_id'];
+                    } else {
+                        $item['location_name'] = '';
+                    }
+
                 }
 
                 if ( isset( $unique[$item['id']] ) ) {
@@ -215,14 +219,14 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
                 }
 
                 if ( 'contacts' === $item['type'] ) {
-                    $list['praise_meetings'][] = [
+                    $list['new_contacts'][] = [
                         'text' => $item['name'],
                         'type' => $item['type'],
                         'location_name' => $item['location_name'],
                         'id' => $item['id']
                     ];
                 } else if ( 'groups' === $item['type'] ) {
-                    $list['request_meetings'][] = [
+                    $list['new_groups'][] = [
                         'text' => $item['name'],
                         'type' => $item['type'],
                         'location_name' => $item['location_name'],
@@ -240,13 +244,13 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
 
 function dt_make_alias_name( $name ) {
     // SHA256
-    $name = hash('sha256', $name );
+    $name = hash( 'sha256', $name );
     // base64_encode
     $name = base64_encode( $name );
     // substr_2
     $alias = strtoupper( substr( $name, 0, 2 ) );
     if ( ! ctype_alpha( $alias ) ) {
-        $alias = strtoupper( substr( base64_encode( hash('sha256', $alias ) ), 0, 2 ) );
+        $alias = strtoupper( substr( base64_encode( hash( 'sha256', $alias ) ), 0, 2 ) );
     }
     return $alias;
 }

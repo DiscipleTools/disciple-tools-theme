@@ -67,6 +67,14 @@ function prayer_overview() {
                         <strong>Meetings</strong><br>
                        <div id="list-1"><img src="${dt.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
                     </div>
+                    <div class="cell" id="list-4-section">
+                        <strong>New Contacts</strong><br>
+                       <div id="list-4"><img src="${dt.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
+                    </div>
+                    <div class="cell" id="list-5-section">
+                        <strong>New Groups</strong><br>
+                       <div id="list-5"><img src="${dt.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
+                    </div>
                     
                 </div>
             </div>
@@ -99,6 +107,8 @@ function prayer_overview() {
         jQuery('#list-1').empty().html(`<img src="${dt.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" />`)
         jQuery('#list-2').empty().html(`<img src="${dt.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" />`)
         jQuery('#list-3').empty().html(`<img src="${dt.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" />`)
+        jQuery('#list-4').empty().html(`<img src="${dt.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" />`)
+        jQuery('#list-5').empty().html(`<img src="${dt.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" />`)
     }
 
     window.get_lists = function get_lists( ) {
@@ -131,6 +141,8 @@ function prayer_overview() {
         let list1 = ''
         let list2 = ''
         let list3 = ''
+        let list4 = ''
+        let list5 = ''
 
         if ( prayer_list.praise_meetings.length > 0 ) {
             jQuery.each( prayer_list.praise_meetings, function(i,v) {
@@ -182,6 +194,36 @@ function prayer_overview() {
             jQuery('#list-3').empty().html(list3)
         } else {
             jQuery('#list-3-section').hide()
+        }
+
+        // new contacts
+        if ( prayer_list.new_contacts.length > 0 ) {
+            jQuery.each(prayer_list.new_contacts, function (i, v) {
+
+                let location = ''
+                if (v.location_name) {
+                    location = ` in ${v.location_name}`
+                }
+                list4 += `We have a new contact named <a href="/contacts/${v.id}">${v.text}</a>${location}!<br>`
+            })
+            jQuery('#list-4').empty().html(list4)
+        } else {
+            jQuery('#list-4-section').hide()
+        }
+
+        // new groups
+        if ( prayer_list.new_groups.length > 0 ) {
+            jQuery.each(prayer_list.new_groups, function (i, v) {
+
+                let location = ''
+                if (v.location_name) {
+                    location = ` in ${v.location_name}`
+                }
+                list5 += `We formed a new group named <a href="/groups/${v.id}">${v.text}</a>${location}!<br>`
+            })
+            jQuery('#list-5').empty().html(list5)
+        } else {
+            jQuery('#list-5-section').hide()
         }
     }
 
