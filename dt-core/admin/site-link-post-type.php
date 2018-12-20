@@ -413,7 +413,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             switch ( $column_name ) {
                 case 'linked':
                     if ( get_post_meta( $post->ID, 'non_wp', true ) ) {
-                        echo '<span>' . esc_html( 'Non-DT Site Connection' ) . '</span>';
+                        echo '<span>' . esc_html( 'Non-Disciple.Tools Site Connection' ) . '</span>';
                     }
                     elseif ( $this->is_key_locked( $post->ID ) ) {
                         ?>
@@ -771,12 +771,12 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'section'     => 'non_wp',
             ];
             $fields['non_wp'] = [
-                'name'        => __( 'DT Site' ),
+                'name'        => __( 'Disciple.Tools Site' ),
                 'description' => __( 'Is this connection to a Disciple Tools/Wordpress system.' ),
                 'type'        => 'key_select',
                 'default'     => [
-                    0 => __( 'Yes, connected to another DT site (default)' ),
-                    1 => __( 'No, connection for a non-Disciple Tools system.' )
+                    0 => __( 'Yes, connected to another Disciple.Tools site (default)' ),
+                    1 => __( 'No, connection for a non-Disciple.Tools system.' )
                 ],
                 'section'     => 'non_wp',
             ];
