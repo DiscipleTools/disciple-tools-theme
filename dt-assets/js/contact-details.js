@@ -753,8 +753,8 @@ jQuery(document).ready(function($) {
     $('.update-needed-notification').toggle(updateNeeded)
     API.save_field_api( "contact", contactId, {"requires_update":updateNeeded})
   })
-  $('#update-needed')[0].addEventListener('comment_posted', function (e) {
-    if ( $(e.target).prop('checked') ){
+  $('#content')[0].addEventListener('comment_posted', function (e) {
+    if ( _.get(contact, "requires_update") === true ){
       API.get_post("contact",  contactId ).then(contact=>{
         contactUpdated(_.get(contact, "requires_update") === true )
       }).catch(err => { console.error(err) })
