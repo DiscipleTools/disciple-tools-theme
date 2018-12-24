@@ -1309,6 +1309,7 @@ button.loader{
         -moz-animation-timing-function: linear;
         -webkit-animation-timing-function: linear;
         animation-timing-function: linear;
+        display: none;
     }
     &:not(.disabled):after {
         content: '';
@@ -1348,6 +1349,7 @@ button.loader{
         transition-duration: 1s;
         filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
         opacity: 1;
+        display: block;
     }
     &:not(.disabled).loading:after {
         -moz-transition-delay: 0s;
