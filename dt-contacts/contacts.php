@@ -2304,6 +2304,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
     }
 
+    public static function escape_regex_mysql( string $regex ) {
+        return preg_replace( '/&/', '\\&', preg_quote( $regex ) );
+    }
+
 
     public static function recheck_duplicates( int $contact_id) {
         global $wpdb;
@@ -2318,27 +2322,30 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
         $unsure = $contact['duplicate_data']['unsure'] ?? array();
         $dismissed = $contact['duplicate_data']['override'] ?? array();
-        $vals = join( '|', $values );
-        $flds = join( '|', $fields );
-
-        $results = $wpdb->get_results( $wpdb->prepare( "
-            select
-                *
-            from
-                wp_posts p join
-                wp_postmeta m on p.ID = m.post_id
-            where
-                ID != %d and
-                (meta_key regexp %s and meta_key not like %s) and
-                meta_value regexp %s
-            ",
-            array(
-                $contact_id,
-                "$flds",
-                '%details',
-                "$vals"
-            )
-        ), ARRAY_A );
+        if (count( $values ) == 0 || count( $fields ) == 0) {
+            $results = [];
+        } else {
+            $vals = join( '|', array_map( [ __CLASS__, 'escape_regex_mysql' ], $values ) );
+            $flds = join( '|', array_map( [ __CLASS__, 'escape_regex_mysql' ], $fields ) );
+            $results = $wpdb->get_results( $wpdb->prepare( "
+                select
+                    *
+                from
+                    wp_posts p join
+                    wp_postmeta m on p.ID = m.post_id
+                where
+                    ID != %d and
+                    (meta_key regexp %s and meta_key not like %s) and
+                    meta_value regexp %s
+                ",
+                array(
+                    $contact_id,
+                    "$flds",
+                    '%details',
+                    "$vals"
+                )
+            ), ARRAY_A );
+        }
         $duplicates = array();
         foreach ($results as $result) {
             $key = $result['meta_key'];
