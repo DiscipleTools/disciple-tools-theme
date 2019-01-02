@@ -1469,6 +1469,9 @@ button.loader{
     overflow-y: auto;
     overflow-x: hidden;
 }
+.typeahead__container.result .typeahead__list {
+    box-shadow: 5px 6px 5px rgba(0, 0, 0, 0.4)
+}
 
 .typeahead-margin-when-active .typeahead__container.result .typeahead__result {
     margin-bottom: 350px;
