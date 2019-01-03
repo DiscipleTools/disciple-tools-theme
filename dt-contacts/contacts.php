@@ -530,12 +530,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             "duplicate_of" => $contact_id
         ] );
 
-        $comment = "{$duplicate['title']} is a duplicate and was merged into " .
-                   "<a href='" . get_permalink( $contact_id ) . "'>{$contact['title']}</a>";
+        $link = "<a href='" . get_permalink( $contact_id ) . "'>{$contact['title']}</a>";
+        $comment = sprintf( esc_html_x( '%1$s is a duplicate and was merged into %2$s', 'Contact1 is a duplicated and was merged into Contact2', 'disciple_tools' ), $duplicate['title'], $link );
+
         self::add_comment( $duplicate_id, $comment, "duplicate", [], true, true );
 
         //comment on master
-        $comment = "Contact <a href='" . get_permalink( $duplicate_id ) . "'>{$duplicate['title']}</a> was merged into {$contact['title']}";
+        $link = "<a href='" . get_permalink( $duplicate_id ) . "'>{$duplicate['title']}</a>";
+        $comment = sprintf( esc_html_x( '%1$s was merged into %2$s', 'Contact1 was merged into Contact2', 'disciple_tools' ), $link, $duplicate['title']);
         self::add_comment( $contact_id, $comment, "duplicate", [], true, true );
     }
 
