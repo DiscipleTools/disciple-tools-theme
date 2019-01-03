@@ -59,8 +59,6 @@ jQuery(document).ready(function($) {
         if (_.get(group,  "assigned_to.display")){
           assignedToInput.val(group.assigned_to.display)
         }
-        assignedToInput.focus()
-        $('.assigned_to-result-container').html("");
       }
     },
     debug:true

@@ -390,7 +390,6 @@ img {
  */
 .item-details-header {
     font-size: 1.7rem;
-    margin: 0 10px 0 10px;
 }
 .item-details-header-row {
     margin-bottom:15px;
@@ -1756,7 +1755,7 @@ html[dir='rtl'] {
     margin-right: 3px;
     margin-left: 3px;
 }
-select#overall_status {
+select.color-select {
     color: white;
     font-weight: bold;
     border-radius: 10px;

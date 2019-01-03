@@ -64,23 +64,6 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                        class="number-input" type="number" min="0"
                                        placeholder="<?php echo esc_html( sizeof( $group["members"] ) )?>"
                                        value="<?php echo esc_html( $group["member_count"] ?? "" ) ?>">
-                                
-                                <div class="section-subheader"><?php esc_html_e( "Group Coach / Church Planter", 'disciple_tools' ) ?></div>
-                                <div class="coaches">
-                                    <var id="coaches-result-container" class="result-container"></var>
-                                    <div id="coaches_t" name="form-coaches" class="scrollable-typeahead">
-                                        <div class="typeahead__container">
-                                            <div class="typeahead__field">
-                                                <span class="typeahead__query">
-                                                    <input class="js-typeahead-coaches"
-                                                           name="coaches[query]" placeholder="<?php esc_html_e( "Search Users and Contacts", 'disciple_tools' ) ?>"
-                                                           autocomplete="off">
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
 
 
                                 <div class="section-subheader members-header" style="padding-top: 10px">
