@@ -413,9 +413,6 @@ jQuery(document).ready(function($) {
     assigned_to_input.trigger('input.typeahead')
     assigned_to_input.focus()
   })
-  if (_.get(contact, "assigned_to")){
-    $('.current-assigned').text(_.get(contact, "assigned_to.display"))
-  }
 
   /**
    * Share

@@ -46,7 +46,11 @@ jQuery(document).ready(function($) {
     emptyTemplate: 'No users found "{{query}}"',
     callback: {
       onClick: function(node, a, item){
-        editFieldsUpdate.assigned_to = item.ID
+        API.save_field_api('group', groupId, {assigned_to: 'user-' + item.ID}).then(function (response) {
+          group = response
+          assigned_to_input.val(contact.assigned_to.display)
+          assigned_to_input.blur()
+        }).catch(err => { console.error(err) })
       },
       onResult: function (node, query, result, resultCount) {
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
@@ -479,11 +483,6 @@ jQuery(document).ready(function($) {
    * Setup group fields
    */
 
-  if (group.assigned_to){
-    $('.current-assigned').text(_.get(group, "assigned_to.display"))
-  }
-
-
   $("#open-edit").on("click", function () {
     editFieldsUpdate = {
       locations : { values: [] },
@@ -596,13 +595,6 @@ jQuery(document).ready(function($) {
         })
       }
     })
-    let assignedHtml = $(`.assigned_to.details-list`).empty()
-    if ( group.assigned_to ){
-      assignedHtml.html(group.assigned_to.display)
-    } else {
-      assignedHtml.html(wpApiGroupsSettings.translations["not-set"]["assigned_to"])
-    }
-
 
     dateFields.forEach(dateField=>{
       if ( group[dateField] ){
