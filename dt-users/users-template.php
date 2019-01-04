@@ -198,7 +198,7 @@ function dt_get_site_default_user_fields(): array
  */
 function dt_get_associated_user_id( $id, $id_type = 'user' ) {
     if ( $id_type === 'user' ) {
-        return get_user_meta( $id, 'wp_corresponds_to_contact', true );
+        return get_user_option( "corresponds_to_contact", $id );
     } else if ( $id_type === 'contact' ) {
         return get_post_meta( $id, 'corresponds_to_user', true );
     } else {

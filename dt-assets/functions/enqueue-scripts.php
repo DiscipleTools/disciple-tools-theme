@@ -81,7 +81,7 @@ function dt_site_scripts() {
 
     wp_register_script( 'moment', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js', false, '2.19.1' );
     wp_enqueue_script( 'moment' );
-    wp_register_script( 'lodash', 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.min.js', false, '4.17.10' );
+    wp_register_script( 'lodash', 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js', false, '4.17.11' );
     wp_enqueue_script( 'lodash' );
 
 

@@ -32,7 +32,7 @@ class Disciple_Tools_Users
         add_action( "user_new_form", [ &$this, "custom_user_profile_fields" ] );
         add_action( "show_user_profile", [ &$this, "custom_user_profile_fields" ] );
         add_action( "edit_user_profile", [ &$this, "custom_user_profile_fields" ] );
-        add_action( "edit_user_created_user", [ $this, "edit_user_created_user" ] );
+//        add_action( "edit_user_created_user", [ $this, "edit_user_created_user" ] );
         add_action( "dt_contact_merged", [ $this, "dt_contact_merged" ], 10, 2 );
         add_filter( 'user_row_actions', [ $this, 'dt_edit_user_row_actions' ], 10, 2 );
         add_filter( 'manage_users_columns', [ $this, 'new_modify_user_table' ] );
@@ -348,6 +348,16 @@ class Disciple_Tools_Users
      * @param $user_id
      */
     public static function user_register_hook( $user_id ) {
+        if ( isset( $_REQUEST['action'] ) && 'createuser' == $_REQUEST['action'] ) {
+            check_admin_referer( 'create-user', '_wpnonce_create-user' );
+            if ( isset( $_POST["corresponds_to_contact_id"] ) ) {
+                $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
+                update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
+                Disciple_Tools_Contacts::update_contact( (int) $corresponds_to_contact, [
+                    "corresponds_to_user" => $user_id
+                ], false, true );
+            }
+        }
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
         if ( empty( $corresponds_to_contact ) ){
             self::create_contact_for_user( $user_id );
@@ -440,6 +450,7 @@ class Disciple_Tools_Users
     }
 
 
+    //@todo remove. Moved to user_register hook
     public function edit_user_created_user( $user_id ){
         if ( isset( $_REQUEST['action'] ) && 'createuser' == $_REQUEST['action'] ) {
             check_admin_referer( 'create-user', '_wpnonce_create-user' );
