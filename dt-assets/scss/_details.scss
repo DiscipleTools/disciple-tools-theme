@@ -1,0 +1,428 @@
+/**
+    Option buttons
+ */
+.button.select-button {
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    &:hover {
+        background-color: #4CAF50;
+        opacity: .5;
+        color: white;
+    }
+}
+//unselected options
+.empty-select-button {
+    background-color: #eee;
+    color: black;
+    &:focus {
+        background-color: #eee;
+        color:black;
+    }
+}
+.selected-select-button {
+    background-color: #4CAF50;
+    color: white;
+    &:focus {
+        background-color: #4CAF50;
+        color:white;
+    }
+}
+.submitting-select-button {
+    opacity: .5;
+}
+
+
+/**
+    Item details
+ */
+.item-details-header {
+    font-size: 1.7rem;
+}
+.item-details-header-row {
+    margin-bottom:15px;
+
+    .button {
+        padding: 0.45em 1em;
+    }
+    .label {
+        font-size: .9rem;
+    }
+}
+//contact quick buttons
+.contact-quick-button-number {
+    background-color: rgb(63, 114, 155);
+    border-radius: 20px;
+    color: white;
+    padding: 2px 4px;
+    font-size: 10px;
+    position: absolute;
+    top: 0;
+    margin-left: 3px;
+}
+.contact-quick-buttons {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-wrap:wrap;
+}
+.contact-quick-button {
+    width: min-content;
+    position: relative;
+    flex: 0 1 100px;
+    margin: 5px 0 10px 0;
+    p {
+        font-size: 12px;
+        word-spacing: 100vw;
+        margin-bottom: 0;
+    }
+}
+.quick-action-menu a {
+    vertical-align: middle;
+}
+
+
+
+/*********************
+DT comments and activity
+*********************/
+#comment-activity-section{
+    .button.select-button:hover {
+        background-color: #3f729b;
+    }
+    .selected-select-button {
+        background-color: #3f729b;
+        :focus {
+            background-color: #3f729b;
+        }
+    }
+    li {
+        list-style-type: none;
+    }
+
+    .tabs-title {
+        margin-right: 10px;
+        input {
+            margin: 0;
+        }
+        button {
+            color: #3f729b;
+            font-size: 12px;
+        }
+    }
+
+    .tabs-content {
+        border: none;
+    }
+
+    p {
+        line-height: 1.4;
+    }
+
+    .gravatar {
+        img {
+            height: 16px;
+        }
+    }
+
+}
+
+#add-comment-button {
+    margin-bottom: 0;
+    //height: 30px;
+    //width: 40px;
+    //padding: 0 4px;
+}
+
+#add-comment-button-container {
+    margin: 0 3px 0 0;
+}
+
+.comment-bubble {
+    word-wrap: break-word;
+    margin: 0 10px 0 0;
+}
+
+.comment-controls {
+    a {
+        font-size: 12px;
+    }
+    img {
+        height: 10px;
+    }
+    object path {
+        fill: red;
+    }
+}
+
+.comment-date {
+    text-align: right;
+    margin-right: 20px;
+    font-size:12px;
+}
+
+.activity-block {
+    margin-top: 15px;
+}
+.activity-text {
+    margin-left: 30px;
+}
+.activity-bubble {
+    word-wrap: break-word;
+    color:gray;
+    font-style: italic;
+    border-left: 3px solid gainsboro;
+    padding-left: 15px;
+    margin: 0;
+    padding-bottom: 2px;
+}
+
+
+.details-status-button {
+    font-size: 14px;
+    margin-left: 10px;
+    &.verify {
+        color: #4CAF50
+    }
+    &.invalid {
+        color: #F43636
+    }
+}
+.details-status {
+    margin-left: 10px;
+}
+.details-remove-button {
+    font-size: 14px;
+    margin-left: 10px;
+    color: #F43636;
+}
+
+.connections-edit {
+    display: none;
+}
+
+.display-fields {
+    ul {
+        list-style-type: none;
+        margin-left: 0;
+    }
+    img {
+        height: 15px;
+    }
+}
+.details-edit-fields {
+    input {
+        margin-bottom: 5px
+    }
+    .section-subheader {
+        margin-top: 10px
+    }
+    .delete-button{
+        margin-bottom: 0;
+    }
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.show-more-button {
+    text-align: center;
+
+    button {
+        border: none;
+
+        &.showing-more {
+            .show-less {
+                display: inline;
+            }
+
+            .show-more {
+                display: none;
+            }
+        }
+    }
+
+    .show-less {
+        display: none;
+    }
+}
+
+ul.address {
+    textarea {
+        display: block;
+    }
+
+    ul.dropdown.menu {
+        vertical-align: top;
+    }
+}
+
+.address.details-list .address-row {
+    .address-text {
+        white-space:pre-wrap;
+    }
+    img {
+        display: inline-block;
+        vertical-align: top;
+        margin-top:5px;
+    }
+    div {
+        display: inline-block;
+    }
+}
+
+.new-social-media {
+    display: flex;
+    .button {
+        margin-left:5px;
+    }
+}
+
+ul.social li {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.single-contacts {
+    &.editing {
+        .details-list {
+            display: none;
+        }
+    }
+
+    &.listing {
+        .details-edit {
+            display: none;
+        }
+    }
+
+    .show-content {
+        display: none;
+
+        ul {
+            margin: 0;
+        }
+    }
+
+    li {
+        list-style-type: none;
+    }
+}
+
+.single-groups {
+    .details-edit {
+        display: none;
+    }
+}
+
+
+
+/**
+Groups
+**/
+
+.group-progress-button-wrapper {
+    text-align: center;
+    flex: 1 0 80px;
+}
+
+.group-progress-button {
+    text-align:center;
+    padding:10px;
+    background-color:$primary-color;
+    border-radius:5px;
+    height:60px;
+    width:65px;
+}
+
+
+.members-section {
+    border: 1px solid #ccc;
+    .member-row {
+        padding: 10px 10px;
+        display: flex;
+        &:hover {
+            background-color: rgba(204, 204, 204, 0.5);
+        }
+        .member-row-actions {
+            margin: 0;
+            padding: 0 5px;
+            color: grey;
+        }
+        i {
+            padding: 0 2px;
+        }
+    }
+}
+.members-header {
+    button {
+        height: 36px;
+        width: max-content;
+        border: 1px solid #ccc;
+        vertical-align: bottom;
+        border-bottom: 2px solid white;
+        margin-bottom: -1px;
+        padding: 5px 10px;
+        img {
+            margin-left: 2px;
+        }
+    }
+}
+
+
+.revert-activity {
+    float: right;
+}
+.revert-arrow-img {
+    height: 17px;
+    padding-top: 2px;
+
+    margin-right: 15px;
+}
+
+
+.detail-notification-box {
+    border: none;
+    color: white;
+    text-align: center;
+    h4 {
+        font-weight: bold;
+    }
+    img {
+        margin: 0 10px;
+    }
+}
+
+.accept-contact .bordered-box{
+    background-color: #3F729B;
+    .accept-button {
+        background-color: #4CAF50;
+    }
+    .decline-button {
+        background-color: #F43636;
+    }
+    .button {
+        margin: 0 10px;
+    }
+}
+
+select.color-select {
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    option {
+        background-color: white;
+        color: black;
+    }
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: #FFFFFF'></polygon></svg>");
+    border:none;
+}
+
+//add a loading spinner when searching for contacts
+.mentions-input-box textarea.loading-gif {
+    background:url('../../../dt-assets/images/ajax-loader.gif') no-repeat 99% 6px;
+}
+//make sure the blue boxes around the @mentions in the textarea are the right sizes
+.mentions-input-box .mentions strong span {
+    font-weight: 300;
+}

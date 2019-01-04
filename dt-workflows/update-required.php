@@ -50,7 +50,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     LEFT JOIN $wpdb->postmeta AS contact_type ON ( $wpdb->posts.ID = contact_type.post_id AND contact_type.meta_key = 'type' )
                     WHERE ( mt1.meta_value = '' OR mt1.meta_value = '0' OR mt1.meta_key IS NULL )
                     AND ( mt2.meta_key = 'overall_status' AND mt2.meta_value = %s )
-                    AND ( mt3.meta_key = 'last_modified' AND mt3.meta_value <= %s )
+                    AND ( mt3.meta_key = 'last_modified' AND mt3.meta_value <= %d )
                     AND ( mt4.meta_key = 'seeker_path' AND mt4.meta_value = %s )
                     AND ( contact_type.meta_value = 'media' OR contact_type.meta_value = 'next_gen' OR contact_type.meta_key IS NULL )
                     AND $wpdb->posts.post_type = 'contacts' AND $wpdb->posts.post_status = 'publish'
@@ -88,7 +88,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     LEFT JOIN $wpdb->postmeta AS mt3 ON ( $wpdb->posts.ID = mt3.post_id )
                     WHERE ( mt1.meta_value = '' OR mt1.meta_value = '0' OR mt1.meta_value IS NULL )
                     AND ( mt2.meta_key = 'group_status' AND mt2.meta_value = %s )
-                    AND ( mt3.meta_key = 'last_modified' AND mt3.meta_value <= %s )
+                    AND ( mt3.meta_key = 'last_modified' AND mt3.meta_value <= %d )
                     AND $wpdb->posts.post_type = 'groups' AND $wpdb->posts.post_status = 'publish'
                     GROUP BY $wpdb->posts.ID ORDER BY $wpdb->posts.post_date DESC LIMIT 0, 50",
                     esc_sql( $setting["status"] ),

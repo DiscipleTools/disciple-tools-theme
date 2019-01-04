@@ -25,7 +25,7 @@ jQuery(document).ready(function($) {
           comments.push(data.comment)
           display_activity_comment()
           // fire comment posted event
-          $('#update-needed')[0].dispatchEvent(commentPostedEvent);
+          $('#content')[0].dispatchEvent(commentPostedEvent);
           commentInput.attr("disabled", false)
           commentButton.attr("disabled", false)
           $('textarea.mention').mentionsInput('reset')

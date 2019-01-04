@@ -495,9 +495,9 @@ class Disciple_Tools_Posts
             $message = self::format_connection_message( $activity->meta_id, $activity->action, $activity );
         } elseif ( $activity->object_subtype === "share" ){
             if ($activity->action === "share"){
-                $message = __( "Shared with", "disciple_tools" ) . ' ' . dt_get_user_display_name( $activity->meta_value );
+                $message = sprintf( __( "Shared with %s", "disciple_tools" ), dt_get_user_display_name( $activity->meta_value ) );
             } else if ( $activity->action === "remove" ){
-                $message = __( "Unshared with", "disciple_tools" ) . ' ' . dt_get_user_display_name( $activity->meta_value );
+                $message = sprintf( __( "Unshared with %s", "disciple_tools" ), dt_get_user_display_name( $activity->meta_value ) );
             }
         } else {
             $message = $activity->object_note;

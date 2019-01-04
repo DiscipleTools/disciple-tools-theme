@@ -530,12 +530,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             "duplicate_of" => $contact_id
         ] );
 
-        $comment = "{$duplicate['title']} is a duplicate and was merged into " .
-                   "<a href='" . get_permalink( $contact_id ) . "'>{$contact['title']}</a>";
+        $link = "<a href='" . get_permalink( $contact_id ) . "'>{$contact['title']}</a>";
+        $comment = sprintf( esc_html_x( '%1$s is a duplicate and was merged into %2$s', 'Contact1 is a duplicated and was merged into Contact2', 'disciple_tools' ), $duplicate['title'], $link );
+
         self::add_comment( $duplicate_id, $comment, "duplicate", [], true, true );
 
         //comment on master
-        $comment = "Contact <a href='" . get_permalink( $duplicate_id ) . "'>{$duplicate['title']}</a> was merged into {$contact['title']}";
+        $link = "<a href='" . get_permalink( $duplicate_id ) . "'>{$duplicate['title']}</a>";
+        $comment = sprintf( esc_html_x( '%1$s was merged into %2$s', 'Contact1 was merged into Contact2', 'disciple_tools' ), $link, $duplicate['title'] );
         self::add_comment( $contact_id, $comment, "duplicate", [], true, true );
     }
 
@@ -2304,6 +2306,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
     }
 
+    public static function escape_regex_mysql( string $regex ) {
+        return preg_replace( '/&/', '\\&', preg_quote( $regex ) );
+    }
+
 
     public static function recheck_duplicates( int $contact_id) {
         global $wpdb;
@@ -2318,27 +2324,30 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
         $unsure = $contact['duplicate_data']['unsure'] ?? array();
         $dismissed = $contact['duplicate_data']['override'] ?? array();
-        $vals = join( '|', $values );
-        $flds = join( '|', $fields );
-
-        $results = $wpdb->get_results( $wpdb->prepare( "
-            select
-                *
-            from
-                wp_posts p join
-                wp_postmeta m on p.ID = m.post_id
-            where
-                ID != %d and
-                (meta_key regexp %s and meta_key not like %s) and
-                meta_value regexp %s
-            ",
-            array(
-                $contact_id,
-                "$flds",
-                '%details',
-                "$vals"
-            )
-        ), ARRAY_A );
+        if (count( $values ) == 0 || count( $fields ) == 0) {
+            $results = [];
+        } else {
+            $vals = join( '|', array_map( [ __CLASS__, 'escape_regex_mysql' ], $values ) );
+            $flds = join( '|', array_map( [ __CLASS__, 'escape_regex_mysql' ], $fields ) );
+            $results = $wpdb->get_results( $wpdb->prepare( "
+                select
+                    *
+                from
+                    wp_posts p join
+                    wp_postmeta m on p.ID = m.post_id
+                where
+                    ID != %d and
+                    (meta_key regexp %s and meta_key not like %s) and
+                    meta_value regexp %s
+                ",
+                array(
+                    $contact_id,
+                    "$flds",
+                    '%details',
+                    "$vals"
+                )
+            ), ARRAY_A );
+        }
         $duplicates = array();
         foreach ($results as $result) {
             $key = $result['meta_key'];
@@ -2614,6 +2623,21 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             as update_needed,
             (SELECT count(a.ID)
               FROM $wpdb->posts as a
+                " . $access_sql . "
+                JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                    AND b.meta_key = 'overall_status'
+                    AND b.meta_value = 'active'
+                INNER JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                  AND (( e.meta_key = 'type'
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
+                  OR e.meta_key IS NULL)
+              WHERE a.post_status = 'publish'
+              AND post_type = 'contacts')
+            as active,
+            (SELECT count(a.ID)
+              FROM $wpdb->posts as a
                 INNER JOIN $wpdb->postmeta as b
                   ON a.ID=b.post_id
                     AND b.meta_key = 'accepted'
@@ -2695,7 +2719,22 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   OR e.meta_key IS NULL)
                     WHERE a.post_status = 'publish'
                   )
-                as needs_assigned
+                as needs_assigned,
+            (SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                INNER JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                     AND b.meta_key = 'overall_status'
+                     AND b.meta_value = 'new'
+                " . $access_sql . "
+                INNER JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                  AND (( e.meta_key = 'type'
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
+                  OR e.meta_key IS NULL)
+                    WHERE a.post_status = 'publish'
+                  )
+                as new
               ", ARRAY_A );
 
             foreach ( $dispatcher_counts[0] as $key => $value ) {

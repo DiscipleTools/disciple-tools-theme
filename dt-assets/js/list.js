@@ -177,7 +177,7 @@
 
   $(function() {
     $(window).resize(function() {
-      if (Foundation.MediaQuery.is('small only')) {
+      if (Foundation.MediaQuery.is('small only') || Foundation.MediaQuery.is('medium only')) {
         if ($(".js-filters-accordion .js-filters-modal-content").length === 0) {
           $(".js-filters-accordion").append($(".js-filters-modal-content").detach());
         }
@@ -416,6 +416,12 @@
       query.overall_status = ["assigned"]
       query.accepted = [false]
       filter.labels = [{ id:"needs_accepted", name:filter_name, field: "accepted"}]
+    } else if ( currentView === "new") {
+      query.overall_status = ["new"]
+      filter.labels = [{ id:"new", name:filter_name, field: "overall_status"}]
+    } else if ( currentView === "active") {
+      query.overall_status = ["active"]
+      filter.labels = [{ id:"active", name:filter_name, field: "overall_status"}]
     } else if ( currentView === "assignment_needed" ){
       query.overall_status = ["unassigned"]
       filter.labels = [{ id:"unassigned", name:filter_name, field: "assigned"}]

@@ -180,14 +180,14 @@ class Disciple_Tools_Contacts_Transfer
 
         if ( ! empty( $result_body->error ) ) {
             foreach ( $result_body->error->errors as $key => $value ) {
-                $time = current_time( 'mysql' );
+                $time_in_mysql_format = current_time( 'mysql' );
                 wp_insert_comment([
                     'comment_post_ID' => $contact_id,
                     'comment_content' => __( 'Minor transfer error.', 'disciple_tools' ) . ' ' . $key,
                     'comment_type' => '',
                     'comment_parent' => 0,
                     'user_id' => get_current_user_id(),
-                    'comment_date' => $time,
+                    'comment_date' => $time_in_mysql_format,
                     'comment_approved' => 1,
                 ]);
             }
@@ -205,14 +205,14 @@ class Disciple_Tools_Contacts_Transfer
         }
 
         // add note that the record was transferred
-        $time = current_time( 'mysql' );
+        $time_in_mysql_format = current_time( 'mysql' );
         $comment_result = wp_insert_comment([
             'comment_post_ID' => $contact_id,
             'comment_content' => sprintf( 'This contact was transferred to %s for further follow-up.', esc_attr( get_the_title( $site_post_id ) ) ),
             'comment_type' => '',
             'comment_parent' => 0,
             'user_id' => get_current_user_id(),
-            'comment_date' => $time,
+            'comment_date' => $time_in_mysql_format,
             'comment_approved' => 1,
         ]);
         if ( is_wp_error( $comment_result ) ) {

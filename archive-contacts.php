@@ -18,11 +18,16 @@ declare(strict_types=1);
                 <span class="list-view__count js-list-view-count" data-value="total_count">.</span>
             </label>
             <label class="list-view">
-                <input type="radio" name="view" value="needs_accepted" class="js-list-view" autocomplete="off">
-                <?php esc_html_e( "Waiting to be accepted", "disciple_tools" ); ?>
-                <span class="list-view__count js-list-view-count" data-value="needs_accepted">.</span>
+                <input type="radio" name="view" value="active" class="js-list-view" autocomplete="off">
+                <span id="total_filter_label"><?php esc_html_e( "Active", "disciple_tools" ); ?></span>
+                <span class="list-view__count js-list-view-count" data-value="active">.</span>
             </label>
             <?php if (user_can( get_current_user_id(), 'view_any_contacts' ) ){ ?>
+                <label class="list-view">
+                    <input type="radio" name="view" value="new" class="js-list-view" autocomplete="off">
+                    <?php esc_html_e( "New", "disciple_tools" ); ?>
+                    <span class="list-view__count js-list-view-count" data-value="new">.</span>
+                </label>
                 <label class="list-view">
                     <input type="radio" name="view" value="assignment_needed" class="js-list-view">
                     <?php esc_html_e( "Dispatch needed", "disciple_tools" ); ?>
@@ -30,19 +35,24 @@ declare(strict_types=1);
                 </label>
             <?php } ?>
             <label class="list-view">
+                <input type="radio" name="view" value="needs_accepted" class="js-list-view" autocomplete="off">
+                <?php esc_html_e( "Waiting to be accepted", "disciple_tools" ); ?>
+                <span class="list-view__count js-list-view-count" data-value="needs_accepted">.</span>
+            </label>
+            <label class="list-view">
                 <input type="radio" name="view" value="update_needed" class="js-list-view" autocomplete="off">
                 <?php esc_html_e( "Update needed", "disciple_tools" ); ?>
                 <span class="list-view__count js-list-view-count" data-value="update_needed">.</span>
             </label>
             <label class="list-view">
-                <input type="radio" name="view" value="meeting_scheduled" class="js-list-view" autocomplete="off">
-                <?php esc_html_e( "Meeting scheduled", "disciple_tools" ); ?>
-                <span class="list-view__count js-list-view-count" data-value="meeting_scheduled">.</span>
-            </label>
-            <label class="list-view">
                 <input type="radio" name="view" value="contact_unattempted" class="js-list-view" autocomplete="off">
                 <?php esc_html_e( "Contact attempt needed", "disciple_tools" ); ?>
                 <span class="list-view__count js-list-view-count" data-value="contact_unattempted">.</span>
+            </label>
+            <label class="list-view">
+                <input type="radio" name="view" value="meeting_scheduled" class="js-list-view" autocomplete="off">
+                <?php esc_html_e( "Meeting scheduled", "disciple_tools" ); ?>
+                <span class="list-view__count js-list-view-count" data-value="meeting_scheduled">.</span>
             </label>
         </div>
     <?php }
@@ -97,13 +107,13 @@ declare(strict_types=1);
 
         <div id="inner-content" class="grid-x grid-margin-x">
 
-            <aside class="large-3 cell padding-bottom hide-for-small-only">
+            <aside class="large-3 cell padding-bottom show-for-large">
                 <div class="bordered-box js-pane-filters">
                     <?php /* Javascript may move .js-filters-modal-content to this location. */ ?>
                 </div>
             </aside>
 
-            <aside class="cell padding-bottom show-for-small-only">
+            <aside class="cell padding-bottom hide-for-large">
                 <div class="bordered-box" style="padding-top:5px;padding-bottom:5px">
                     <div class="js-list-filter filter--closed">
                         <div class="filter__title js-list-filter-title" style="margin-bottom:0"><?php esc_html_e( "Filters", "disciple_tools" ); ?>

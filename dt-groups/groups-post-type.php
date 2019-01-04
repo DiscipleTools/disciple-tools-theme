@@ -242,8 +242,14 @@ class Disciple_Tools_Groups_Post_Type
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
-                'inactive' => [ "label" => __( 'Inactive', 'disciple_tools' ) ],
-                'active'   => [ "label" => __( 'Active', 'disciple_tools' ) ],
+                'inactive' => [
+                    "label" => __( 'Inactive', 'disciple_tools' ),
+                    "color" => "#F43636"
+                ],
+                'active'   => [
+                    "label" => __( 'Active', 'disciple_tools' ),
+                    "color" => "#4CAF50"
+                ],
             ],
             'section'     => 'info',
         ];
