@@ -94,8 +94,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             <li><a href="">' .  esc_html__( 'Workers', 'disciple_tools' ) . '</a>
                 <ul class="menu vertical nested" id="workers-menu" aria-expanded="true">
                     <li><a href="'. site_url( '/metrics/workers/' ) .'#workers_activity" onclick="workers_activity()">'. esc_html__( 'Activity' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/workers/' ) .'#follow_up_pace" onclick="show_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li>
-                    <!-- <li><a href="'. site_url( '/metrics/workers/' ) .'#contact_follow_up_pace" onclick="contact_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li> -->
+                    <li><a href="'. site_url( '/metrics/workers/' ) .'#follow_up_pace" onclick="show_follow_up_pace()">'. esc_html__( 'Overall Pace' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/workers/' ) .'#contact_follow_up_pace" onclick="contact_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li>
                 </ul>
             </li>
             ';
@@ -143,9 +143,15 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
     public function chart_user_hero_stats() {
         $result = count_users();
+        $worker_ids = get_users( [
+            'role__in' => [ 'multiplier','dispatcher','dt_admin','strategist','Administrator' ],
+            'fields' => 'ID'
+        ] );
+        $total_workers =  count( $worker_ids );
+        dt_write_log($worker_ids);
 
         return [
-            'total_workers' => $result['total_users'] ?? 0,
+            'total_workers' => $total_workers,
             'total_multipliers' => $result['avail_roles']['multiplier'] ?? 0,
             'total_dispatchers' => $result['avail_roles']['dispatcher'] ?? 0,
             'total_administrators' => $result['avail_roles']['dt_admin'] ?? 0,
@@ -203,11 +209,11 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
         $results = Disciple_Tools_Queries::instance()->query( 'contact_progress_per_worker' );
         $baptized = Disciple_Tools_Queries::instance()->query( 'baptized_per_worker' );
-        $multiplier_ids = get_users( [
-            'role' => 'multiplier',
+        $worker_ids = get_users( [
+            'role__in' => [ 'multiplier','dispatcher','dt_admin','strategist','Administrator' ],
             'fields' => 'ID'
         ] );
-        dt_write_log( $multiplier_ids );
+
         if ( empty( $results ) ) {
             return $chart;
         }
@@ -215,12 +221,14 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
         foreach ( $results as $result ) {
 
-            if ( ! array_search( $result['user_id'], $multiplier_ids ) ) {
+            if ( ! array_search( $result['user_id'], $worker_ids ) ) {
+                dt_write_log($result['user_id'] . ' skipped search');
                 continue;
             }
 
             $user = get_userdata( $result['user_id'] );
             if ( empty( $user ) ) {
+                dt_write_log($result['user_id'] . ' skipped userdata');
                 continue;
             }
 
