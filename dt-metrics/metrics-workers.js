@@ -130,6 +130,8 @@ function workers_activity() {
                 let chart = new google.visualization.Table( document.getElementById('contact_progress_per_worker') );
 
                 chart.draw(chartData, options);
+                
+                jQuery('.google-visualization-table-td:contains(0)').addClass('grey')
             })
             .fail(function (err) {
                 console.log("error")
