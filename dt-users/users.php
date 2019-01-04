@@ -350,13 +350,16 @@ class Disciple_Tools_Users
     public static function user_register_hook( $user_id ) {
         if ( isset( $_REQUEST['action'] ) && 'createuser' == $_REQUEST['action'] ) {
             check_admin_referer( 'create-user', '_wpnonce_create-user' );
-            if ( isset( $_POST["corresponds_to_contact_id"] ) ) {
-                $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
-                update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
-                Disciple_Tools_Contacts::update_contact( (int) $corresponds_to_contact, [
-                    "corresponds_to_user" => $user_id
-                ], false, true );
-            }
+        }
+        if ( isset( $_REQUEST['action'] ) && 'adduser' == $_REQUEST['action'] ) {
+            check_admin_referer( 'add-user', '_wpnonce_add-user' );
+        }
+        if ( isset( $_POST["corresponds_to_contact_id"] ) ) {
+            $corresponds_to_contact = sanitize_text_field( wp_unslash( $_POST["corresponds_to_contact_id"] ) );
+            update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
+            Disciple_Tools_Contacts::update_contact( (int) $corresponds_to_contact, [
+                "corresponds_to_user" => $user_id
+            ], false, true );
         }
         $corresponds_to_contact = get_user_option( "corresponds_to_contact", $user_id );
         if ( empty( $corresponds_to_contact ) ){
@@ -479,36 +482,38 @@ class Disciple_Tools_Users
             }
         }
         if ( empty( $contact_title ) ) : ?>
-        <script type="application/javascript">
-            jQuery(document).ready(function($) {
-                jQuery("#corresponds_to_contact").autocomplete({
-                    source: function (request, response) {
-                        jQuery.ajax({
-                            url: '<?php echo esc_html( rest_url() ) ?>dt/v1/contacts/compact',
-                            data: {
-                                s: request.term
+            <script type="application/javascript">
+                jQuery(document).ready(function($) {
+                    jQuery(".corresponds_to_contact").each(function () {
+                        $(this).autocomplete({
+                            source: function (request, response) {
+                                jQuery.ajax({
+                                    url: '<?php echo esc_html( rest_url() ) ?>dt/v1/contacts/compact',
+                                    data: {
+                                        s: request.term
+                                    },
+                                    beforeSend: function (xhr) {
+                                        xhr.setRequestHeader('X-WP-Nonce',
+                                            "<?php echo esc_html( wp_create_nonce( 'wp_rest' ) ) ?>");
+                                    }
+                                }).then(data => {
+                                    response(data.posts);
+                                })
                             },
-                            beforeSend: function (xhr) {
-                                xhr.setRequestHeader('X-WP-Nonce',
-                                    "<?php echo esc_html( wp_create_nonce( 'wp_rest' ) ) ?>");
+                            minLength: 2,
+                            select: function (event, ui) {
+                                $(".corresponds_to_contact").val(ui.item.name);
+                                $(".corresponds_to_contact_id").val(ui.item.ID);
+                                return false;
                             }
-                        }).then(data=>{
-                            response(data.posts);
-                        })
-                    },
-                    minLength: 2,
-                    select: function (event, ui) {
-                        $( "#corresponds_to_contact" ).val( ui.item.name );
-                        $( "#corresponds_to_contact_id" ).val( ui.item.ID );
-                        return false;
-                    }
-                }).autocomplete( "instance" )._renderItem = function( ul, item ) {
-                    return $( "<li>" )
-                        .append( `<div>${item.name} (${item.ID})</div>` )
-                        .appendTo( ul );
-                };
-            });
-        </script>
+                        }).autocomplete("instance")._renderItem = function (ul, item) {
+                            return $("<li>")
+                                .append(`<div>${item.name} (${item.ID})</div>`)
+                                .appendTo(ul);
+                        };
+                    })
+                });
+            </script>
         <?php endif; ?>
         <h3><?php esc_html_e( "Extra Disciple.Tools Information", 'disciple_tools' ) ?></h3>
         <table class="form-table">
@@ -518,8 +523,8 @@ class Disciple_Tools_Users
                     <?php if ( !empty( $contact_title ) ) : ?>
                         <a href="<?php echo esc_html( get_permalink( $contact_id ) ) ?>"><?php echo esc_html( $contact_title ) ?></a>
                     <?php else : ?>
-                        <input type="text" class="regular-text" name="corresponds_to_contact" value="<?php echo esc_html( $contact_title )?>" id="corresponds_to_contact" /><br />
-                        <input type="hidden" class="regular-text" name="corresponds_to_contact_id" value="<?php echo esc_html( $contact_id )?>" id="corresponds_to_contact_id" />
+                        <input type="text" class="regular-text corresponds_to_contact" name="corresponds_to_contact" value="<?php echo esc_html( $contact_title )?>" /><br />
+                        <input type="hidden" class="regular-text corresponds_to_contact_id" name="corresponds_to_contact_id" value="<?php echo esc_html( $contact_id )?>" />
                         <?php if ( $contact_id ) : ?>
                             <span class="description"><a href="<?php echo esc_html( get_site_url() . '/contacts/' . $contact_id )?>" target="_blank"><?php esc_html_e( "View contact", 'disciple_tools' ) ?></a></span>
                         <?php else :?>
