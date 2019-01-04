@@ -2623,6 +2623,21 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             as update_needed,
             (SELECT count(a.ID)
               FROM $wpdb->posts as a
+                " . $access_sql . "
+                JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                    AND b.meta_key = 'overall_status'
+                    AND b.meta_value = 'active'
+                INNER JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                  AND (( e.meta_key = 'type'
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
+                  OR e.meta_key IS NULL)
+              WHERE a.post_status = 'publish'
+              AND post_type = 'contacts')
+            as active,
+            (SELECT count(a.ID)
+              FROM $wpdb->posts as a
                 INNER JOIN $wpdb->postmeta as b
                   ON a.ID=b.post_id
                     AND b.meta_key = 'accepted'
