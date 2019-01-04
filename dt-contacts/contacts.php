@@ -537,7 +537,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         //comment on master
         $link = "<a href='" . get_permalink( $duplicate_id ) . "'>{$duplicate['title']}</a>";
-        $comment = sprintf( esc_html_x( '%1$s was merged into %2$s', 'Contact1 was merged into Contact2', 'disciple_tools' ), $link, $duplicate['title']);
+        $comment = sprintf( esc_html_x( '%1$s was merged into %2$s', 'Contact1 was merged into Contact2', 'disciple_tools' ), $link, $duplicate['title'] );
         self::add_comment( $contact_id, $comment, "duplicate", [], true, true );
     }
 
@@ -2704,7 +2704,22 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   OR e.meta_key IS NULL)
                     WHERE a.post_status = 'publish'
                   )
-                as needs_assigned
+                as needs_assigned,
+            (SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                INNER JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                     AND b.meta_key = 'overall_status'
+                     AND b.meta_value = 'new'
+                " . $access_sql . "
+                INNER JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                  AND (( e.meta_key = 'type'
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
+                  OR e.meta_key IS NULL)
+                    WHERE a.post_status = 'publish'
+                  )
+                as new
               ", ARRAY_A );
 
             foreach ( $dispatcher_counts[0] as $key => $value ) {
