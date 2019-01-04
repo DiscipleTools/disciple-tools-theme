@@ -122,7 +122,7 @@ function workers_activity() {
                     legend: { position: 'bottom' },
                     alternatingRowStyle: true,
                     sort: 'enable',
-                    showRowNumber: true,
+                    // showRowNumber: true,
                     sortColumn: 0,
                     width: '100%',
 
