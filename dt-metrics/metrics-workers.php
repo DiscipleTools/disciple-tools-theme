@@ -147,8 +147,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             'role__in' => [ 'multiplier','dispatcher','dt_admin','strategist','Administrator' ],
             'fields' => 'ID'
         ] );
-        $total_workers =  count( $worker_ids );
-        dt_write_log($worker_ids);
+        $total_workers = count( $worker_ids );
+        dt_write_log( $worker_ids );
 
         return [
             'total_workers' => $total_workers,
@@ -197,6 +197,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function chart_contact_progress_per_worker( $force_refresh = false ) {
+//        $force_refresh = true; // for testing
+
         if ( $force_refresh ) {
             delete_transient( __METHOD__ );
         }
@@ -209,6 +211,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
         $results = Disciple_Tools_Queries::instance()->query( 'contact_progress_per_worker' );
         $baptized = Disciple_Tools_Queries::instance()->query( 'baptized_per_worker' );
+        dt_write_log( 'Baptized' );
+        dt_write_log( $baptized );
         $worker_ids = get_users( [
             'role__in' => [ 'multiplier','dispatcher','dt_admin','strategist','Administrator' ],
             'fields' => 'ID'
@@ -222,20 +226,24 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         foreach ( $results as $result ) {
 
             if ( ! array_search( $result['user_id'], $worker_ids ) ) {
-                dt_write_log($result['user_id'] . ' skipped search');
                 continue;
             }
 
             $user = get_userdata( $result['user_id'] );
             if ( empty( $user ) ) {
-                dt_write_log($result['user_id'] . ' skipped userdata');
                 continue;
             }
 
             $baptisms = 0;
-            foreach ( $baptized as $value ) {
-                if ( $value['user_id'] === $result['user_id'] ) {
-                    $baptisms = $value['count'];
+            if ( ! empty( $baptized ) ) {
+                foreach ( $baptized as $value ) {
+                    if ( empty( $value['user_id'] ) ) {
+                        continue;
+                    }
+
+                    if ( $value['user_id'] === $result['user_id'] ) {
+                        $baptisms = $value['count'];
+                    }
                 }
             }
 
@@ -250,8 +258,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 (int) $result['meeting_scheduled'],
                 (int) $result['meeting_complete'],
                 (int) $result['ongoing'],
-                (int) $result['being_coached'],
                 (int) $baptisms,
+                (int) $result['being_coached'],
             ];
         }
 
