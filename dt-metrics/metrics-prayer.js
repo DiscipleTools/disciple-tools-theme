@@ -279,7 +279,7 @@ function printElem(elem)
     mywindow.document.write('<html><head><title>Prayer List</title>');
     mywindow.document.write('</head><body >');
     mywindow.document.write('<h1>Prayer List</h1>');
-    mywindow.document.write(`List covers: ${start.getMonth()}-${start.getDate()}-${start.getFullYear()} to ${today.getMonth()}-${today.getDate()}-${today.getFullYear()}`);
+    mywindow.document.write(`List covers: ${start.getMonth()+1}-${start.getDate()}-${start.getFullYear()} to ${today.getMonth()+1}-${today.getDate()}-${today.getFullYear()}`);
     mywindow.document.write(document.getElementById(elem).innerHTML);
     mywindow.document.write('</body></html>');
 
