@@ -37,6 +37,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     "members",
                     "parent_groups",
                     "child_groups",
+                    "peer_groups",
                     "locations",
                     "people_groups",
                     "leaders",
@@ -105,6 +106,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 [ "groups_to_coaches", "coaches", "any" ],
                 [ "groups_to_groups", "child_groups", "to" ],
                 [ "groups_to_groups", "parent_groups", "from" ],
+                [ "groups_to_peers", "peer_groups", "any" ],
             ];
 
             foreach ( $connection_types as $type ){
@@ -642,6 +644,13 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         );
     }
 
+    public static function add_peer_group_to_group( int $group_id, int $post_id ) {
+        return p2p_type( 'groups_to_peers' )->connect(
+            $group_id, $post_id,
+            [ 'date' => current_time( 'mysql' ) ]
+        );
+    }
+
     /**
      * @param int $group_id
      * @param int $location_id
@@ -717,6 +726,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         return p2p_type( 'groups_to_groups' )->disconnect( $group_id, $post_id );
     }
 
+    public static function remove_peer_group_from_group( int $group_id, int $post_id ) {
+        return p2p_type( 'groups_to_peers' )->disconnect( $group_id, $post_id );
+    }
+
     /**
      * @param int    $group_id
      * @param string $key
@@ -752,6 +765,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $connect = self::add_child_group_to_group( $group_id, $value );
         } elseif ( $key === "parent_groups" ) {
             $connect = self::add_parent_group_to_group( $group_id, $value );
+        } elseif ( $key === "peer_groups" ) {
+            $connect = self::add_peer_group_to_group( $group_id, $value );
         } else {
             return new WP_Error( __FUNCTION__, "Field not recognized: " . $key, [ "status" => 400 ] );
         }
@@ -836,6 +851,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return self::remove_child_group_from_group( $group_id, $value );
         } elseif ( $key === "parent_groups" ) {
             return self::remove_parent_group_from_group( $group_id, $value );
+        } elseif ( $key === "peer_groups" ) {
+            return self::remove_peer_group_from_group( $group_id, $value );
         }
 
         return false;

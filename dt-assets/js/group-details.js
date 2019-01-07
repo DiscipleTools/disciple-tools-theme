@@ -277,6 +277,70 @@ jQuery(document).ready(function($) {
       }
     }
   });
+
+  /**
+   * peer Groups
+   */
+  $.typeahead({
+    input: '.js-typeahead-peer_groups',
+    minLength: 0,
+    accent: true,
+    searchOnFocus: true,
+    maxItem: 20,
+    template: function (query, item) {
+      if (item.ID === "new-item"){
+        return "Create new Group"
+      }
+      return `<span>${_.escape(item.name)}</span>`
+    },
+    source: TYPEAHEADS.typeaheadSource('groups', 'dt/v1/groups/compact/'),
+    display: "name",
+    templateValue: "{{name}}",
+    dynamic: true,
+    multiselect: {
+      matchOn: ["ID"],
+      data: function () {
+        return (group.peer_groups||[]).map(g=>{
+          return {ID:g.ID, name:g.post_title}
+        })
+      }, callback: {
+        onCancel: function (node, item) {
+          API.save_field_api('group', groupId, {'peer_groups': {values:[{value:item.ID, delete:true}]}})
+        }
+      },
+      href: function(item){
+        if (item){
+          return `${window.wpApiShare.site_url}/groups/${item.ID}`
+        }
+      }
+    },
+    callback: {
+      onClick: function(node, a, item, event){
+        if(item.ID === "new-item"){
+          event.preventDefault();
+          $('#create-group-modal').foundation('open');
+        } else {
+          API.save_field_api('group', groupId, {'peer_groups': {values:[{value:item.ID}]}})
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
+          masonGrid.masonry('layout')
+        }
+      },
+      onResult: function (node, query, result, resultCount) {
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+        result.push({
+          ID: "new-item",
+          group:"contacts"
+        })
+        $('#groups-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('#groups-result-container').html("");
+      }
+    }
+  });
   /**
    * Child Groups
    */

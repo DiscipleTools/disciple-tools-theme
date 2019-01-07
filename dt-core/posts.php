@@ -37,6 +37,7 @@ class Disciple_Tools_Posts
             "coaches" => [ "name" => __( "Coaches/Church planters", "disciple_tools" ) ],
             "parent_groups" => [ "name" => __( "Parent Groups", "disciple_tools" ) ],
             "child_groups" => [ "name" => __( "Child Groups", "disciple_tools" ) ],
+            "peer_groups" => [ "name" => __( "Peer Groups", "disciple_tools" ) ],
         ];
         self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
     }
@@ -358,6 +359,15 @@ class Disciple_Tools_Posts
             } else {
                 $object_note_to = sprintf( esc_html_x( '%s removed from child groups', 'group2 removed from child groups', 'disciple_tools' ), $from_title );
                 $object_note_from = sprintf( esc_html_x( '%s removed from parent groups', 'group1 removed from parent groups', 'disciple_tools' ), $to_title );
+            }
+        }
+        else if ( $p2p_type === "groups_to_peers"){
+            if ($action == "connected to"){
+                $object_note_to = sprintf( esc_html_x( '%s added to peer groups', 'group2 added to peer groups', 'disciple_tools' ), $from_title );
+                $object_note_from = sprintf( esc_html_x( '%s added to peer groups', 'group1 added to peer groups', 'disciple_tools' ), $to_title );
+            } else {
+                $object_note_to = sprintf( esc_html_x( '%s removed from peer groups', 'group2 removed from peer groups', 'disciple_tools' ), $from_title );
+                $object_note_from = sprintf( esc_html_x( '%s removed from peer groups', 'group1 removed from peer groups', 'disciple_tools' ), $to_title );
             }
         } else if ( $p2p_type === "contacts_to_relation"){
             if ($action == "connected to"){
