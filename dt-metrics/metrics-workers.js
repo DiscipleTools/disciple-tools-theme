@@ -130,6 +130,11 @@ function workers_activity() {
                 let chart = new google.visualization.Table( document.getElementById('contact_progress_per_worker') );
 
                 chart.draw(chartData, options);
+
+                jQuery('.google-visualization-table-td:contains(0)').filter(function() {
+                    return jQuery(this).text() === "0";
+                }).addClass("grey");
+
             })
             .fail(function (err) {
                 console.log("error")
@@ -211,11 +216,15 @@ function contact_follow_up_pace(){
       
       <p><strong>Per User Pace:</strong></p>
       <div id="followup-pace"></div>
+      <br><br>
+      <p><strong>Generation Pace:</strong></p>
+      <div id="gen-pace"></div>
       
     `)
 
     google.charts.load('current', {'packages':['corechart', 'table']});
     google.charts.setOnLoadCallback(drawContactsProgressPerUser);
+    google.charts.setOnLoadCallback(drawGenerationPace);
 
     function drawContactsProgressPerUser() {
         let chartData = google.visualization.arrayToDataTable( [
@@ -236,6 +245,29 @@ function contact_follow_up_pace(){
 
         };
         let chart = new google.visualization.Table( document.getElementById('followup-pace') );
+
+        chart.draw(chartData, options);
+    }
+
+    function drawGenerationPace() {
+        let chartData = google.visualization.arrayToDataTable( [
+            [ 'Name', '1st-to-2nd Gen', 'ACP', '2nd-to-3rd Gen', 'ACP', '3rd-to-4th Gen', 'ACP' ],
+
+        ] );
+        let options = {
+            chartArea: {
+                left: '5%',
+                top: '7%',
+                width: "100%",
+                height: "85%" },
+            legend: { position: 'bottom' },
+            alternatingRowStyle: true,
+            sort: 'enable',
+            showRowNumber: true,
+            width: '100%',
+
+        };
+        let chart = new google.visualization.Table( document.getElementById('gen-pace') );
 
         chart.draw(chartData, options);
     }

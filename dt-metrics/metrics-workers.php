@@ -94,7 +94,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             <li><a href="">' .  esc_html__( 'Workers', 'disciple_tools' ) . '</a>
                 <ul class="menu vertical nested" id="workers-menu" aria-expanded="true">
                     <li><a href="'. site_url( '/metrics/workers/' ) .'#workers_activity" onclick="workers_activity()">'. esc_html__( 'Activity' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/workers/' ) .'#follow_up_pace" onclick="show_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li>
+                    <li><a href="'. site_url( '/metrics/workers/' ) .'#follow_up_pace" onclick="show_follow_up_pace()">'. esc_html__( 'Overall Pace' ) .'</a></li>
                     <!-- <li><a href="'. site_url( '/metrics/workers/' ) .'#contact_follow_up_pace" onclick="contact_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li> -->
                 </ul>
             </li>
@@ -143,9 +143,15 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
     public function chart_user_hero_stats() {
         $result = count_users();
+        $worker_ids = get_users( [
+            'role__in' => [ 'multiplier','dispatcher','dt_admin','strategist','Administrator' ],
+            'fields' => 'ID'
+        ] );
+        $total_workers = count( $worker_ids );
+        dt_write_log( $worker_ids );
 
         return [
-            'total_workers' => $result['total_users'] ?? 0,
+            'total_workers' => $total_workers,
             'total_multipliers' => $result['avail_roles']['multiplier'] ?? 0,
             'total_dispatchers' => $result['avail_roles']['dispatcher'] ?? 0,
             'total_administrators' => $result['avail_roles']['dt_admin'] ?? 0,
@@ -191,6 +197,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function chart_contact_progress_per_worker( $force_refresh = false ) {
+//        $force_refresh = true; // for testing
+
         if ( $force_refresh ) {
             delete_transient( __METHOD__ );
         }
@@ -203,11 +211,13 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
         $results = Disciple_Tools_Queries::instance()->query( 'contact_progress_per_worker' );
         $baptized = Disciple_Tools_Queries::instance()->query( 'baptized_per_worker' );
-        $multiplier_ids = get_users( [
-            'role' => 'multiplier',
+        dt_write_log( 'Baptized' );
+        dt_write_log( $baptized );
+        $worker_ids = get_users( [
+            'role__in' => [ 'multiplier','dispatcher','dt_admin','strategist','Administrator' ],
             'fields' => 'ID'
         ] );
-        dt_write_log( $multiplier_ids );
+
         if ( empty( $results ) ) {
             return $chart;
         }
@@ -215,7 +225,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
         foreach ( $results as $result ) {
 
-            if ( ! array_search( $result['user_id'], $multiplier_ids ) ) {
+            if ( ! array_search( $result['user_id'], $worker_ids ) ) {
                 continue;
             }
 
@@ -225,9 +235,15 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             }
 
             $baptisms = 0;
-            foreach ( $baptized as $value ) {
-                if ( $value['user_id'] === $result['user_id'] ) {
-                    $baptisms = $value['count'];
+            if ( ! empty( $baptized ) ) {
+                foreach ( $baptized as $value ) {
+                    if ( empty( $value['user_id'] ) ) {
+                        continue;
+                    }
+
+                    if ( $value['user_id'] === $result['user_id'] ) {
+                        $baptisms = $value['count'];
+                    }
                 }
             }
 
@@ -242,8 +258,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 (int) $result['meeting_scheduled'],
                 (int) $result['meeting_complete'],
                 (int) $result['ongoing'],
-                (int) $result['being_coached'],
                 (int) $baptisms,
+                (int) $result['being_coached'],
             ];
         }
 
