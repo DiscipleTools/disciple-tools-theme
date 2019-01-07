@@ -761,17 +761,15 @@ class Disciple_Tools_Notifications
         if ( $destination_user && !empty( $destination_user->locale ) ){
             $destination_user_locale = $destination_user->locale;
         }
-        $current_user_locale = get_user_locale( get_current_user_id() );
         add_filter( "determine_locale", function ( $locale ) use ( $destination_user_locale ) {
             if ( $destination_user_locale ){
                 $locale = $destination_user_locale;
             }
             return $locale;
         }, 10, 1 );
-        if ( $destination_user_locale !== $current_user_locale ){
-            unload_textdomain( "disciple_tools" );
-            load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
-        }
+        //make sure correct translation is loaded for destination user.
+        unload_textdomain( "disciple_tools" );
+        load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
 
         $object_id = $notification["post_id"];
         $post = get_post( $object_id );

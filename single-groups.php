@@ -161,6 +161,19 @@ if ( ! current_user_can( 'access_groups' ) ) {
                                         </div>
                                     </div>
                                 </div>
+                                <div class="section-subheader"><?php esc_html_e( "Peer Group", 'disciple_tools' ) ?></div>
+                                <var id="peer_groups-result-container" class="result-container"></var>
+                                <div id="peer_groups_t" name="form-groups" class="scrollable-typeahead typeahead-margin-when-active">
+                                    <div class="typeahead__container">
+                                        <div class="typeahead__field">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-peer_groups input-height"
+                                                   name="groups[query]" placeholder="<?php esc_html_e( "Search Groups", 'disciple_tools' ) ?>"
+                                                   autocomplete="off">
+                                        </span>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="section-subheader"><?php esc_html_e( "Child Groups", 'disciple_tools' ) ?></div>
                                 <var id="child_groups-result-container" class="result-container"></var>
                                 <div id="child_groups_t" name="form-child_groups" class="scrollable-typeahead typeahead-margin-when-active">

@@ -316,6 +316,16 @@ function dt_my_connection_types() {
         ]
     );
 
+    /**
+     * Peer groups
+     */
+    p2p_register_connection_type( [
+        'name'         => 'groups_to_peers',
+        'from'         => 'groups',
+        'to'           => 'groups',
+        'admin_column' => 'any'
+    ] );
+
 
     // @todo remove @CC 12-20-2018
     /**
