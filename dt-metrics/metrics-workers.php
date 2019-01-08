@@ -97,11 +97,17 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         return $this->chart_contact_progress_per_worker();
     }
 
-    public function user_pace() {
+    public function user_pace( WP_REST_Request $request ) {
         if ( ! $this->has_permission() ){
             return new WP_Error( "pace_assigned_to_accepted", "Missing Permissions", [ 'status' => 400 ] );
         }
-        return $this->chart_user_pace();
+        $params = $request->get_params();
+
+        $force_reset = false;
+        if ( isset( $params['force_reset'] ) ) {
+            $force_reset = $params['force_reset'];
+        }
+        return $this->chart_user_pace( strtotime( '-12 months', current_time( 'timestamp' ) ), current_time( 'timestamp' ), $force_reset );
     }
 
     public function add_menu( $content ) {
@@ -150,6 +156,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 'label_contacts_per_user' => __( 'Contact Progress per Worker', 'disciple_tools' ),
                 'label_least_active' => __( 'Least Active', 'disciple_tools' ),
                 'label_most_active' => __( 'Most Active', 'disciple_tools' ),
+                'label_select_year' => __( 'Select All time or a specific year to display', 'disciple_tools' ),
+                'label_all_time' => __( 'All time', 'disciple_tools' ),
             ],
             'hero_stats' => $this->chart_user_hero_stats(),
             'recent_activity' => $this->chart_recent_activity(),
@@ -163,7 +171,6 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             'fields' => 'ID'
         ] );
         $total_workers = count( $worker_ids );
-        dt_write_log( $worker_ids );
 
         return [
             'total_workers' => $total_workers,
@@ -289,26 +296,30 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
      * @return array|mixed
      */
     public function chart_user_pace( int $begin_date = null, int $end_date = null, $force_refresh = false ) {
-        $force_refresh = true; // for testing
+//        $force_refresh = true; // for testing
 
         if ( $force_refresh ) {
-            delete_transient( __METHOD__ );
+            delete_transient( 'chart_user_pace' );
         }
-        if ( get_transient( __METHOD__ ) ) {
-            return maybe_unserialize( get_transient( __METHOD__ ) );
+        if ( ! false === get_transient( 'chart_user_pace' ) ) {
+            return maybe_unserialize( get_transient( 'chart_user_pace' ) );
         }
 
         // Setup chart
         $chart = [];
-        $chart[] = [ 'Name', 'Assigned to Accepted', 'AP' ];
+        $chart[] = [ 'Name', 'Assigned to Accepted Pace', 'Average' ];
 
         // Timestamps
         if ( empty( $begin_date ) || ! is_valid_timestamp( $begin_date ) ) {
-            $begin_date = strtotime('-6 months', current_time( 'timestamp' ) );
+            $begin_date = strtotime( '-10 years', current_time( 'timestamp' ) ); // @todo add data select functions to chart
         }
-        if ( empty( $end_date  ) || ! is_valid_timestamp( $end_date ) ) {
+        if ( empty( $end_date ) || ! is_valid_timestamp( $end_date ) ) {
             $end_date = current_time( 'timestamp' );
         }
+        $args = [
+            'begin_date' => $begin_date,
+            'end_date' => $end_date
+        ];
 
         // Get average pace
         $ap = [
@@ -317,25 +328,68 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             'accepted_to_attempted' => 0,
         ];
 
-        $ap['assigned_to_accepted'] = 20; // @todo add query to get average coalition pace
+        // get assigned to accepted coalition pace
+        $ap_assigned_to_accepted = Disciple_Tools_Queries::instance()->query( 'pace_coalition', $args );
+        if ( ! empty( $ap_assigned_to_accepted['avg'] ) ) {
+            $formated_average_pace = Disciple_Tools_Metrics::convert_seconds( intval( $ap_assigned_to_accepted['avg'] ) );
+        } else {
+            $formated_average_pace = 'unknown';
+        }
+        $ap['assigned_to_accepted'] = $formated_average_pace;
+
 
         // Get user pace
-        $args = [
-            'begin_date' => $begin_date,
-            'end_date' => $end_date
-        ];
         $results = Disciple_Tools_Queries::instance()->query( 'pace_users', $args );
+
+        $user_pace = [];
         foreach ( $results as $result ) {
-            $chart[] = [
-                (string) $result['name'],
-                (int) $result['assigned_to_accepted'],
-                (int) $ap['assigned_to_accepted'],
-            ];
+            $user_pace[$result['assigned_to']][] = $result['pace'];
         }
 
-        set_transient( __METHOD__, maybe_serialize( $chart ), dt_get_time_until_midnight() );
+        foreach ( $user_pace as $user => $items ) {
+            if ( count( $items ) ) {
+                $user_id = str_replace( 'user-', '', $user );
+                $userdata = get_userdata( $user_id );
+                if ( ! $userdata ) {
+                    continue;
+                }
 
-        return $chart;
+                $a = array_filter( $items );
+                $average_user_pace = array_sum( $a ) /count( $a );
+                $average_user_pace_formatted = Disciple_Tools_Metrics::convert_seconds( intval( $average_user_pace ) );
+
+                if ( ! empty( $ap_assigned_to_accepted['avg'] ) ) {
+
+                    $coalition_avg = intval( $ap_assigned_to_accepted['avg'] );
+                    if ( $average_user_pace > $coalition_avg ) {
+                        $dif = $average_user_pace - $coalition_avg;
+                        $acp = '<span style="color:red;">' . Disciple_Tools_Metrics::convert_seconds( intval( $dif ) ) . ' slower than average</span>';
+                        $average_user_pace_formatted = '<span style="color:red;">' . $average_user_pace_formatted . '</span>';
+                    } else {
+                        $dif = $coalition_avg - $average_user_pace;
+                        $acp = Disciple_Tools_Metrics::convert_seconds( intval( $dif ) ) . ' faster than average';
+                    }
+                } else {
+                    $acp = 'unknown';
+                }
+
+                $chart[] = [
+                    $userdata->display_name,
+                    $average_user_pace_formatted,
+                    $acp,
+                ];
+            }
+        }
+
+        $response = [
+          'acp' => $ap['assigned_to_accepted'],
+          'chart' => $chart,
+          'timestamp' => current_time( 'timestamp' ),
+        ];
+
+        set_transient( 'chart_user_pace', $response, dt_get_time_until_midnight() );
+
+        return $response;
     }
 
     public function get_workers_data( $force_refresh = false ) {

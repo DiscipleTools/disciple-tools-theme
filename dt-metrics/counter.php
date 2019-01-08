@@ -909,24 +909,68 @@ class Disciple_Tools_Queries
                     return false;
                 }
 
+                /**
+                 * # - includes assigned and accepted time stamps and calculates the time between events to form 'pace' column
+                # - excludes assigned but not accepted
+                # - excludes assigned and accepted instantly, or less than 5 seconds
+                # - excludes negative pace
+                # - order by newest assignment first
+                 */
                 $query = $wpdb->get_results( $wpdb->prepare( "
                     SELECT
-                      ('Chris') as name,
-                      (20) as assigned_to_accepted
+                      a.object_id as contact_id,
+                      a.meta_value as assigned_to,
+                      a.hist_time as assigned_time,
+                      b.hist_time as accepted_time,
+                      ( b.hist_time - a.hist_time ) as pace
+                    FROM $wpdb->dt_activity_log as a
+                    LEFT JOIN $wpdb->dt_activity_log as b
+                      ON a.object_id=b.object_id
+                        AND b.meta_key = 'accepted'
+                        AND b.meta_value = 'yes'
+                    WHERE
+                      a.object_subtype = 'assigned_to'
+                      AND a.object_type = 'contacts'
+                      AND ( b.hist_time - a.hist_time ) > 5
+                      AND a.hist_time > %d
+                      AND b.hist_time < %d
+                    ORDER BY a.hist_time DESC
                 ", $args['begin_date'], $args['end_date'] ), ARRAY_A);
 
-                $query = [
-                   [
-                       'name' => 'test',
-                       'assigned_to_accepted' => 20,
-                   ],
-                   [
-                       'name' => 'test2',
-                       'assigned_to_accepted' => 30,
-                   ],
-                ];
-
                 return $query;
+                break;
+
+            case 'pace_coalition':
+                if ( empty( $args['begin_date'] ) || empty( $args['end_date'] ) ) {
+                    return false;
+                }
+                /**
+                 * # - average pace assigned to accepted
+                # - slowest pace between assigned to accepted
+                # - fastest pace between assigned to accepted
+                 */
+
+                $query = $wpdb->get_row( $wpdb->prepare( "
+                        SELECT
+                          COUNT( a.object_id ) as count,
+                          AVG( b.hist_time - a.hist_time ) as avg,
+                          MAX( b.hist_time - a.hist_time ) as max,
+                          MIN( b.hist_time - a.hist_time ) as min
+                        FROM $wpdb->dt_activity_log as a
+                          LEFT JOIN $wpdb->dt_activity_log as b
+                            ON a.object_id=b.object_id
+                               AND b.meta_key = 'accepted'
+                               AND b.meta_value = 'yes'
+                        WHERE
+                          a.object_subtype = 'assigned_to'
+                          AND a.object_type = 'contacts'
+                          AND ( b.hist_time - a.hist_time ) > 5
+                          AND a.hist_time > %d
+                          AND b.hist_time < %d
+                        ;
+                    ", $args['begin_date'], $args['end_date'] ), ARRAY_A );
+
+                    return $query;
                 break;
 
             default:

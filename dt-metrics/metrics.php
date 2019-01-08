@@ -71,6 +71,16 @@ class Disciple_Tools_Metrics
         return $current;
     }
 
+    public static function convert_seconds( $seconds, $include_seconds = false ) {
+        $dt1 = new DateTime( "@0" );
+        $dt2 = new DateTime( "@$seconds" );
+        if ( $include_seconds ) {
+            return $dt1->diff( $dt2 )->format( '%a days, %h hours, %i minutes and %s seconds' );
+        } else {
+            return $dt1->diff( $dt2 )->format( '%a days, %h hours, %i minutes' );
+        }
+    }
+
     /**
      * Check permissions for if the user can view a certain report
      *
@@ -105,7 +115,7 @@ Disciple_Tools_Metrics::instance();
 
 function dt_get_time_until_midnight() {
     $midnight = mktime( 0, 0, 0, date( 'n' ), date( 'j' ) +1, date( 'Y' ) );
-    return $midnight - current_time( 'timestamp' );
+    return intval( $midnight - current_time( 'timestamp' ) );
 }
 
 abstract class Disciple_Tools_Metrics_Hooks_Base
@@ -883,11 +893,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
 // Tests if timestamp is valid.
 if ( ! function_exists( 'is_valid_timestamp' ) ) {
-    function is_valid_timestamp( $timestamp )
-    {
-        return ((string) (int) $timestamp === $timestamp)
-            && ($timestamp <= PHP_INT_MAX)
-            && ($timestamp >= ~PHP_INT_MAX);
+    function is_valid_timestamp( $timestamp ) {
+        return ( (string) (int) $timestamp === $timestamp )
+            && ( $timestamp <= PHP_INT_MAX )
+            && ( $timestamp >= ~PHP_INT_MAX );
     }
 }
 

@@ -82,8 +82,6 @@ function workers_activity() {
 
     google.charts.setOnLoadCallback(drawLineChartLogins);
     google.charts.setOnLoadCallback(contact_progress_per_worker);
-    google.charts.setOnLoadCallback(drawLeastActive);
-    google.charts.setOnLoadCallback(drawMostActive);
 
     function drawLineChartLogins() {
         let chartData = google.visualization.arrayToDataTable( sourceData.recent_activity );
@@ -143,54 +141,6 @@ function workers_activity() {
             })
     }
 
-    function drawLeastActive() {
-        let chartData = google.visualization.arrayToDataTable( [
-            ['Name', 'Logins Last 30', 'Updates Last 30'],
-            ['Jimmy', 3, 0 ],
-            ['Lazardo', 0, 0 ]
-        ] );
-        let options = {
-            chartArea: {
-                left: '5%',
-                top: '7%',
-                width: "100%",
-                height: "85%" },
-            legend: { position: 'bottom' },
-            alternatingRowStyle: true,
-            sort: 'enable',
-            showRowNumber: true,
-            width: '100%',
-
-        };
-        let chart = new google.visualization.Table( document.getElementById('least_active') );
-
-        chart.draw(chartData, options);
-    }
-
-    function drawMostActive() {
-        let chartData = google.visualization.arrayToDataTable( [
-            ['Name', 'Logins Last 30', 'Updates Last 30'],
-            ['Over Achiever', 34, 23 ],
-            ['Lazardo', 24, 34 ]
-        ] );
-        let options = {
-            chartArea: {
-                left: '5%',
-                top: '7%',
-                width: "100%",
-                height: "85%" },
-            legend: { position: 'bottom' },
-            alternatingRowStyle: true,
-            sort: 'enable',
-            showRowNumber: true,
-            width: '100%',
-
-        };
-        let chart = new google.visualization.Table( document.getElementById('most_active') );
-
-        chart.draw(chartData, options);
-    }
-
 }
 
 function contact_follow_up_pace(){
@@ -199,29 +149,62 @@ function contact_follow_up_pace(){
     let localizedObject = window.dtMetricsUsers
     let chartDiv = jQuery('#chart') // retrieves the chart div in the metrics page
 
-    // TODO: escape this properly
     chartDiv.empty().html(`
-      <span class="text-small" style="float:right; font-size:.6em; color: gray;">data as of <span id="pace-timestamp"></span> - <a onclick="refresh_worker_pace_data()">refresh</a></span>
+      <span class="text-small" style="float:right; font-size:.6em; color: gray;">data as of <span id="pace-timestamp"></span> - <a onclick="refresh_follow_up_pace( 1 )">refresh</a></span>
       <span class="section-header">`+ localizedObject.data.translations.title_response +`</span>
       
       <hr style="max-width:100%;">
       <span><a onclick="jQuery('.notes').toggle();" style="float:right; font-size:.6em;">Show Chart Notes</a> </span>
       <p>
         <strong>Average Coalition Pace (ACP):</strong><br>
-        Assigned-to-Accepted Pace: <strong id="coalition_assigned_to_accepted"></strong> Hours Average <br>
-        Accepted-to-Attempted Pace: <strong id="coalition_accept_to_attempted"></strong> Hours Average 
+        Assigned-to-Accepted Pace: <strong id="coalition_assigned_to_accepted"></strong><br>
       </p>
 
-      <p class="notes" style="display:none;">Note: Except for baptisms, these numbers come from the contacts that the User is currently assigned to. This means that if Bob met the contact and then assigned it to Fred it counts as if Fred met the contact.</p>
+      <p class="notes" style="display:none;">(1) This pace estimate excludes contacts assigned but not accepted and "assigned and accepted" 
+      at basically the same moment. (ex. user uploaded contacts that self-assign)
+      <br>(2) This chart calculates a person's pace against available logs. Some users might have "100" logs, other only "2". 
+      Pace on users with a lower number of logs will experience more fluxuation in pace estimate than those will more logs 
+      to base and average upon.
+      <br>(3) Some users might be missing from the chart because there are not enough logs to calculate their pace.
+      </p>
       
       <p><strong>Per User Pace:</strong></p>
       <div id="followup-pace"></div>
       
     `)
 
+    google.charts.load('current', {'packages':['corechart', 'table']});
+
+    refresh_follow_up_pace()
+
+    // re-initialize foundation objects
+    jQuery('#workers').foundation()
+    jQuery('.tool-tip').foundation()
+}
+
+function year_list() {
+    // create array with descending dates
+    let i = 0
+    let fullDate = new Date()
+    let date = fullDate.getFullYear()
+    let currentYear = fullDate.getFullYear()
+    let options = `<option value="all">${dtMetricsUsers.data.translations.label_all_time}</option>`
+    while (i < 15) {
+        options += `<option value="${date}" ${ date === currentYear && 'selected'}>${date}</option>`;
+        i++;
+        date--;
+    }
+
+    return options
+}
+
+function refresh_follow_up_pace( force = 0 ) {
+    let time_stamp = jQuery('#pace-timestamp')
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({"force_reset": force } ),
         dataType: "json",
         url: dtMetricsUsers.root + 'dt/v1/metrics/workers/user_pace',
         beforeSend: function(xhr) {
@@ -230,43 +213,40 @@ function contact_follow_up_pace(){
     })
         .done(function (response) {
             console.log(response)
-            drawContactsProgressPerUser( response )
+            jQuery('#coalition_assigned_to_accepted').html(response['acp'])
+
+            let date = new Date(response['timestamp']*1000);
+            time_stamp.html(date)
+
+            drawContactsProgressPerUser( response['chart'] )
         })
         .fail(function (err) {
             console.log("error")
             console.log(err)
             jQuery("#errors").append(err.responseText)
         })
+}
+function drawContactsProgressPerUser( data ) {
+    let chartData = google.visualization.arrayToDataTable( data );
 
-    google.charts.load('current', {'packages':['corechart', 'table']});
-    // google.charts.setOnLoadCallback(drawContactsProgressPerUser);
-    // google.charts.setOnLoadCallback(drawGenerationPace);
+    let options = {
+        chartArea: {
+            left: '5%',
+            top: '7%',
+            width: "100%",
+            height: "85%" },
+        legend: { position: 'bottom' },
+        alternatingRowStyle: true,
+        allowHtml: true,
+        sortColumn: 0,
+        sort: 'enable',
+        // showRowNumber: true,
+        width: '100%',
 
-    function drawContactsProgressPerUser( response ) {
-        let chartData = google.visualization.arrayToDataTable( response );
+    };
+    let chart = new google.visualization.Table( document.getElementById('followup-pace') );
 
-        let options = {
-            chartArea: {
-                left: '5%',
-                top: '7%',
-                width: "100%",
-                height: "85%" },
-            legend: { position: 'bottom' },
-            alternatingRowStyle: true,
-            sort: 'enable',
-            // showRowNumber: true,
-            width: '100%',
-
-        };
-        let chart = new google.visualization.Table( document.getElementById('followup-pace') );
-
-        chart.draw(chartData, options);
-    }
-
-
-    // re-initialize foundation objects
-    jQuery('#workers').foundation()
-    jQuery('.tool-tip').foundation()
+    chart.draw(chartData, options);
 }
 
 
