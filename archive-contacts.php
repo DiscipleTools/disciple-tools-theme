@@ -77,10 +77,10 @@ declare(strict_types=1);
                     <span class="hide-for-small-only"><?php esc_html_e( "View Duplicates", 'disciple_tools' ) ?></span>
                 </a>
                 <input class="search-input" style="max-width:200px;display: inline-block;margin-bottom:0" type="search" id="search-query" placeholder="search contacts">
-                <button class="button" style="margin-bottom:0" id="search">
+                <a class="button" style="margin-bottom:0" id="search">
                     <img style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search-white.svg' ) ?>"/>
-                    <?php esc_html_e( "Search", 'disciple_tools' ) ?>
-                </button>
+                    <span><?php esc_html_e( "Search", 'disciple_tools' ) ?></span>
+                </a>
             </div>
         </nav>
     </div>
