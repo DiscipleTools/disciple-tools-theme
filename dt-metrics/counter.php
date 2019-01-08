@@ -904,7 +904,33 @@ class Disciple_Tools_Queries
                 return $query;
                 break;
 
+            case 'pace_users':
+                if ( empty( $args['begin_date'] ) || empty( $args['end_date'] ) ) {
+                    return false;
+                }
+
+                $query = $wpdb->get_results( $wpdb->prepare( "
+                    SELECT
+                      ('Chris') as name,
+                      (20) as assigned_to_accepted
+                ", $args['begin_date'], $args['end_date'] ), ARRAY_A);
+
+                $query = [
+                   [
+                       'name' => 'test',
+                       'assigned_to_accepted' => 20,
+                   ],
+                   [
+                       'name' => 'test2',
+                       'assigned_to_accepted' => 30,
+                   ],
+                ];
+
+                return $query;
+                break;
+
             default:
+                return false;
                 break;
         }
     }

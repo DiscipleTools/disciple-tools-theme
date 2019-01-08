@@ -66,6 +66,14 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 ],
             ]
         );
+        register_rest_route(
+            $namespace, '/metrics/workers/user_pace', [
+                [
+                    'methods'  => WP_REST_Server::CREATABLE,
+                    'callback' => [ $this, 'user_pace' ],
+                ],
+            ]
+        );
     }
 
     public function refresh_pace( WP_REST_Request $request ) {
@@ -89,13 +97,20 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         return $this->chart_contact_progress_per_worker();
     }
 
+    public function user_pace() {
+        if ( ! $this->has_permission() ){
+            return new WP_Error( "pace_assigned_to_accepted", "Missing Permissions", [ 'status' => 400 ] );
+        }
+        return $this->chart_user_pace();
+    }
+
     public function add_menu( $content ) {
         $content .= '
             <li><a href="">' .  esc_html__( 'Workers', 'disciple_tools' ) . '</a>
                 <ul class="menu vertical nested" id="workers-menu" aria-expanded="true">
                     <li><a href="'. site_url( '/metrics/workers/' ) .'#workers_activity" onclick="workers_activity()">'. esc_html__( 'Activity' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/workers/' ) .'#follow_up_pace" onclick="show_follow_up_pace()">'. esc_html__( 'Overall Pace' ) .'</a></li>
-                    <!-- <li><a href="'. site_url( '/metrics/workers/' ) .'#contact_follow_up_pace" onclick="contact_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li> -->
+                    <li><a href="'. site_url( '/metrics/workers/' ) .'#contact_follow_up_pace" onclick="contact_follow_up_pace()">'. esc_html__( 'Follow-up Pace' ) .'</a></li>
                 </ul>
             </li>
             ';
@@ -266,6 +281,62 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         return $chart;
     }
 
+    /**
+     * @param int|null $begin_date (must be a valid Unix timestamp)
+     * @param int|null $end_date (must be a valid Unix timestamp)
+     * @param bool     $force_refresh
+     *
+     * @return array|mixed
+     */
+    public function chart_user_pace( int $begin_date = null, int $end_date = null, $force_refresh = false ) {
+        $force_refresh = true; // for testing
+
+        if ( $force_refresh ) {
+            delete_transient( __METHOD__ );
+        }
+        if ( get_transient( __METHOD__ ) ) {
+            return maybe_unserialize( get_transient( __METHOD__ ) );
+        }
+
+        // Setup chart
+        $chart = [];
+        $chart[] = [ 'Name', 'Assigned to Accepted', 'AP' ];
+
+        // Timestamps
+        if ( empty( $begin_date ) || ! is_valid_timestamp( $begin_date ) ) {
+            $begin_date = strtotime('-6 months', current_time( 'timestamp' ) );
+        }
+        if ( empty( $end_date  ) || ! is_valid_timestamp( $end_date ) ) {
+            $end_date = current_time( 'timestamp' );
+        }
+
+        // Get average pace
+        $ap = [
+            'new_to_assigned' => 0,
+            'assigned_to_accepted' => 0,
+            'accepted_to_attempted' => 0,
+        ];
+
+        $ap['assigned_to_accepted'] = 20; // @todo add query to get average coalition pace
+
+        // Get user pace
+        $args = [
+            'begin_date' => $begin_date,
+            'end_date' => $end_date
+        ];
+        $results = Disciple_Tools_Queries::instance()->query( 'pace_users', $args );
+        foreach ( $results as $result ) {
+            $chart[] = [
+                (string) $result['name'],
+                (int) $result['assigned_to_accepted'],
+                (int) $ap['assigned_to_accepted'],
+            ];
+        }
+
+        set_transient( __METHOD__, maybe_serialize( $chart ), dt_get_time_until_midnight() );
+
+        return $chart;
+    }
 
     public function get_workers_data( $force_refresh = false ) {
         if ( $force_refresh ) {
@@ -374,8 +445,6 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
         return $return;
     }
-
-
 }
 
 
