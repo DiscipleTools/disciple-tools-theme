@@ -50,8 +50,33 @@ function contactUpdated(updateNeeded) {
 }
 
 
-
+/* The `contact` variable can be accessed outside this script, but not through
+ * `window.` because `let` was used */
 let contact = {}
+
+window.contactDetailsEvents = (function() {
+  /* Simple publish/subscribe, based on https://davidwalsh.name/pubsub-javascript */
+  let topics = {}
+  return {
+    subscribe(topic, listener) {
+      if (! topics.hasOwnProperty(topic)) {
+        topics[topic] = []
+      }
+      let index = topics[topic].push(listener) - 1;
+      return {
+        unsubscribe() {
+          delete topics[topic][index]
+        }
+      }
+    },
+    publish(topic, info) {
+      if (! topics.hasOwnProperty(topic)) {
+        return
+      }
+      topics[topic].forEach(listener => listener(info))
+    }
+  }
+})();
 
 jQuery(document).ready(function($) {
   let contactId = $("#contact-id").text()
@@ -1137,6 +1162,10 @@ jQuery(document).ready(function($) {
     } else {
       sourceHTML.append(`<li id="no-source">${contactsDetailsWpApiSettings.translations["not-set"]["source"]}</li>`)
     }
+
+    contactDetailsEvents.publish('resetDetails', {
+      newContactDetails: contact
+    })
 
   })
   resetDetailsFields(contact)
