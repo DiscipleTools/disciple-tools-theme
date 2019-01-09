@@ -198,8 +198,6 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             $days--;
         }
 
-
-
         $results = array_reverse( $results );
         foreach ( $last_30_days as $day ) {
 
@@ -222,10 +220,10 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 //        $force_refresh = true; // for testing
 
         if ( $force_refresh ) {
-            delete_transient( __METHOD__ );
+            delete_transient( 'chart_contact_progress_per_worker' );
         }
-        if ( get_transient( __METHOD__ ) ) {
-            return maybe_unserialize( get_transient( __METHOD__ ) );
+        if ( get_transient( 'chart_contact_progress_per_worker' ) ) {
+            return maybe_unserialize( get_transient( 'chart_contact_progress_per_worker' ) );
         }
         $chart = [];
 
@@ -283,7 +281,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             ];
         }
 
-        set_transient( __METHOD__, maybe_serialize( $chart ), dt_get_time_until_midnight() );
+        set_transient( 'chart_contact_progress_per_worker', maybe_serialize( $chart ), strtotime( 'tomorrow' ) );
 
         return $chart;
     }
@@ -387,7 +385,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
           'timestamp' => current_time( 'timestamp' ),
         ];
 
-        set_transient( 'chart_user_pace', $response, strtotime('tomorrow') );
+        set_transient( 'chart_user_pace', $response, strtotime( 'tomorrow' ) );
 
         return $response;
     }
@@ -495,7 +493,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             "timestamp" => current_time( "mysql" ),
         ];
 
-        set_transient( 'get_workers_data', maybe_serialize( $return ), strtotime('tomorrow') );
+        set_transient( 'get_workers_data', maybe_serialize( $return ), strtotime( 'tomorrow' ) );
 
         return $return;
     }
