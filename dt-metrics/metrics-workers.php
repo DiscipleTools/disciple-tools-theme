@@ -301,7 +301,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         if ( $force_refresh ) {
             delete_transient( 'chart_user_pace' );
         }
-        if ( ! false === get_transient( 'chart_user_pace' ) ) {
+        if ( get_transient( 'chart_user_pace' ) ) {
             return maybe_unserialize( get_transient( 'chart_user_pace' ) );
         }
 
@@ -387,17 +387,17 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
           'timestamp' => current_time( 'timestamp' ),
         ];
 
-        set_transient( 'chart_user_pace', $response, dt_get_time_until_midnight() );
+        set_transient( 'chart_user_pace', $response, strtotime('tomorrow') );
 
         return $response;
     }
 
     public function get_workers_data( $force_refresh = false ) {
         if ( $force_refresh ) {
-            delete_transient( __METHOD__ );
+            delete_transient( 'get_workers_data' );
         }
-        if ( get_transient( __METHOD__ ) ) {
-            return maybe_unserialize( get_transient( __METHOD__ ) );
+        if ( get_transient( 'get_workers_data' ) ) {
+            return maybe_unserialize( get_transient( 'get_workers_data' ) );
         }
 
         global $wpdb;
@@ -495,7 +495,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
             "timestamp" => current_time( "mysql" ),
         ];
 
-        set_transient( __METHOD__, maybe_serialize( $return ), dt_get_time_until_midnight() );
+        set_transient( 'get_workers_data', maybe_serialize( $return ), strtotime('tomorrow') );
 
         return $return;
     }
