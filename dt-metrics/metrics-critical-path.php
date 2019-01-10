@@ -44,6 +44,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
                 <ul class="menu vertical nested" id="path-menu" aria-expanded="true">
                     <li><a href="' . site_url( '/metrics/critical-path/' ) . '#project_critical_path" onclick="project_critical_path()">' . esc_html__( 'Critical Path', 'disciple_tools' ) . '</a></li>
                     <li><a href="' . site_url( '/metrics/critical-path/' ) . '#project_seeker_path" onclick="project_seeker_path()">' . esc_html__( 'Seeker Path', 'disciple_tools' ) . '</a></li>
+                    <li><a href="' . site_url( '/metrics/critical-path/' ) . '#project_milestones" onclick="project_milestones()">' . esc_html__( 'Milestones', 'disciple_tools' ) . '</a></li>
                 </ul>
             </li>
             ';
@@ -90,7 +91,8 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
                 'label_all_time' => __( 'All time', 'disciple_tools' ),
             ],
             'critical_path' => self::chart_critical_path( dt_date_start_of_year(), dt_date_end_of_year() ),
-            'seeker_path' => $this->seeker_path()
+            'seeker_path' => $this->seeker_path(),
+            'milestones' => $this->milestones()
         ];
     }
 
@@ -114,6 +116,14 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
                 [
                     'methods'  => WP_REST_Server::READABLE,
                     'callback' => [ $this, 'seeker_path_endpoint' ],
+                ],
+            ]
+        );
+        register_rest_route(
+            $namespace, '/metrics/milestones/', [
+                [
+                    'methods'  => WP_REST_Server::READABLE,
+                    'callback' => [ $this, 'milestones_endpoint' ],
                 ],
             ]
         );
@@ -162,8 +172,25 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         } else {
             return new WP_Error( "seeker_path", "Missing a valid values", [ 'status' => 400 ] );
         }
+    }
 
-
+    public function milestones_endpoint( WP_REST_Request $request ){
+        if ( !$this->has_permission() ) {
+            return new WP_Error( "milestones", "Missing Permissions", [ 'status' => 400 ] );
+        }
+        $params = $request->get_params();
+        if ( isset( $params["start"], $params["end"] ) ){
+            $start = strtotime( $params["start"] );
+            $end = strtotime( $params["end"] );
+            $result = $this->milestones( $start, $end );
+            if ( is_wp_error( $result ) ) {
+                return $result;
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( "milestones", "Missing a valid values", [ 'status' => 400 ] );
+        }
     }
 
     public function _no_results() {
@@ -210,6 +237,50 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         foreach ( $seeker_path_data as $k => $v ){
             $return[] = [
                 "seeker_path" => $k,
+                "value" => (int) $v
+            ];
+        }
+
+        return $return;
+    }
+    public function milestones( $start = null, $end = null ){
+        global $wpdb;
+        if ( empty( $start ) ){
+            $start = 0;
+        }
+        if ( empty( $end ) ){
+            $end = time();
+        }
+
+        $res = $wpdb->get_results( $wpdb->prepare( "
+            SELECT COUNT( DISTINCT(log.object_id) ) as `value`, log.meta_value as milestones
+            FROM $wpdb->dt_activity_log log
+            INNER JOIN $wpdb->posts post
+            WHERE log.object_type = 'contacts'
+            AND log.meta_key = 'milestones'
+            AND log.hist_time > %s
+            AND log.hist_time < %s
+            AND post.post_type = 'contacts'
+            AND post.post_status = 'publish'
+            GROUP BY log.meta_value
+        ", $start, $end ), ARRAY_A );
+
+        $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $milestones_options = $field_settings["milestones"]["default"];
+        $milestones_data = [];
+
+        foreach ( $milestones_options as $option_key => $option_value ){
+            $milestones_data[$option_value["label"]] = 0;
+            foreach ( $res as $r ){
+                if ( $r["milestones"] === $option_key ){
+                    $milestones_data[$option_value["label"]] = $r["value"];
+                }
+            }
+        }
+        $return = [];
+        foreach ( $milestones_data as $k => $v ){
+            $return[] = [
+                "milestones" => $k,
                 "value" => (int) $v
             ];
         }

@@ -1,15 +1,57 @@
 jQuery(document).ready(function() {
-  console.log(window.location.hash);
   if( '#project_critical_path' === window.location.hash  ) {
     project_critical_path()
   }
   if( '#project_seeker_path' === window.location.hash  ) {
     project_seeker_path()
   }
+  if( '#project_milestones' === window.location.hash  ) {
+    project_milestones()
+  }
   jQuery('#metrics-sidemenu').foundation('down', jQuery('#path-menu'));
 
 
 })
+
+let setupDatePicker = function (endpoint_url, callback) {
+  $('#date_range').daterangepicker({
+    "showDropdowns": true,
+    ranges: {
+      'All time': [moment("1980-01-01"),  moment().endOf('year')],
+      'This Month': [moment().startOf('month'), moment().endOf('month')],
+      'Last Month': [moment().subtract(1, 'month').startOf('month'),
+        moment().subtract(1, 'month').endOf('month')],
+      'This Year': [moment().startOf('year'), moment().endOf('year')],
+      'Last Year': [moment().subtract(1, 'year').startOf('year'),
+        moment().subtract(1, 'year').endOf('year')]
+
+    },
+    "linkedCalendars": false,
+    locale: {
+      format: 'YYYY-MM-DD'
+    },
+    "startDate": moment().startOf('year').format('YYYY-MM-DD'),
+    "endDate": moment().endOf('year').format('YYYY-MM-DD'),
+  }, function(start, end, label) {
+    jQuery.ajax({
+      type: "GET",
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      url: `${endpoint_url}?start=${start.format('YYYY-MM-DD')}&end=${end.format('YYYY-MM-DD')}`,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
+      },
+    })
+      .done(callback)
+      .fail(function (err) {
+        console.log("error")
+        console.log(err)
+        jQuery("#errors").append(err.responseText)
+      })
+    // console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+  });
+}
+
 
 function project_critical_path() {
   "use strict";
@@ -50,7 +92,6 @@ function project_critical_path() {
 }
 
 function drawCriticalPath( cp_data ) {
-  console.log(dtMetricsProject);
   let sourceData = dtMetricsProject.data
 
   let translations = dtMetricsProject.data.translations
@@ -202,46 +243,63 @@ function project_seeker_path() {
   columnTemplate.strokeOpacity = 1;
 
 
-  $('#date_range').daterangepicker({
-    "showDropdowns": true,
-    ranges: {
-      'All time': [moment("1980-01-01"),  moment().endOf('year')],
-      'This Month': [moment().startOf('month'), moment().endOf('month')],
-      'Last Month': [moment().subtract(1, 'month').startOf('month'),
-        moment().subtract(1, 'month').endOf('month')],
-      'This Year': [moment().startOf('year'), moment().endOf('year')],
-      'Last Year': [moment().subtract(1, 'year').startOf('year'),
-        moment().subtract(1, 'year').endOf('year')]
-
-    },
-    "linkedCalendars": false,
-    locale: {
-      format: 'YYYY-MM-DD'
-    },
-    "startDate": moment().startOf('year').format('YYYY-MM-DD'),
-    "endDate": moment().endOf('year').format('YYYY-MM-DD'),
-  }, function(start, end, label) {
-    jQuery.ajax({
-      type: "GET",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: `${dtMetricsProject.root}dt/v1/metrics/seeker_path/?start=${start.format('YYYY-MM-DD')}&end=${end.format('YYYY-MM-DD')}`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
-      },
-    })
-      .done(function (data) {
-        if ( data ) {
-          chart.data = data
-        }
-      })
-      .fail(function (err) {
-        console.log("error")
-        console.log(err)
-        jQuery("#errors").append(err.responseText)
-      })
-    console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
-  });
+  setupDatePicker(
+    `${dtMetricsProject.root}dt/v1/metrics/seeker_path/`,
+    function (data) {
+      if ( data ){
+        chart.data = data
+      }
+    }
+  )
 }
 
+function project_milestones() {
+  let chartDiv = jQuery('#chart')
+  let sourceData = dtMetricsProject.data
+  let translations = dtMetricsProject.data.translations
 
+  chartDiv.empty().html(`
+    <div class="section-header">Milestones</div>
+    <div class="section-subheader">Date Range:</div>
+    <input id="date_range" type="text" name="daterange" style="max-width: 250px"/>
+    <div id="chartdiv" style="height: 400px"></div>
+  `)
+
+  let chart = am4core.create("chartdiv", am4charts.XYChart);
+
+  chart.data = sourceData.milestones
+  let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+  categoryAxis.dataFields.category = "milestones";
+  categoryAxis.renderer.grid.template.location = 0;
+  categoryAxis.renderer.minGridDistance = 30;
+  categoryAxis.renderer.labels.template.adapter.add("dy", function(dy, target) {
+    if (target.dataItem && target.dataItem.index & 2 == 2) {
+      return dy + 25;
+    }
+    return dy;
+  });
+
+  let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+  // Create series
+  let series = chart.series.push(new am4charts.ColumnSeries());
+  series.dataFields.valueY = "value";
+  series.dataFields.categoryX = "milestones";
+  series.name = "Visits";
+  series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
+  series.columns.template.fillOpacity = .8;
+
+  let columnTemplate = series.columns.template;
+  columnTemplate.strokeWidth = 2;
+  columnTemplate.strokeOpacity = 1;
+
+  setupDatePicker(
+    `${dtMetricsProject.root}dt/v1/metrics/milestones/`,
+    function (data) {
+      if ( data ){
+        chart.data = data
+      }
+    }
+  )
+
+}
