@@ -446,7 +446,11 @@ else {
     function dt_route_front_page() {
         if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
             wp_safe_redirect( home_url( '/contacts' ) );
-        } else {
+        }
+        else if ( ! is_user_logged_in() ) {
+            dt_please_log_in();
+        }
+        else {
             wp_safe_redirect( home_url( '/settings' ) );
         }
     }
