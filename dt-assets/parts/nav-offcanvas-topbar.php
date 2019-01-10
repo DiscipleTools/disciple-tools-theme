@@ -4,7 +4,7 @@
  * medium up
  */
 global $pagenow;
-if ( is_multisite() && 'wp-activate.php' === $pagenow  ) {
+if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
     /**
      * Removes blog header if user is activating.
      * @see wp-activate.php
