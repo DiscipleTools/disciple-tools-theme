@@ -63,7 +63,6 @@ function dt_theme_register_style( string $handle, string $rel_src, array $deps =
  * Primary site script loader
  */
 function dt_site_scripts() {
-    global $wp_styles; // Call global $wp_styles variable to add conditional wrapper around ie stylesheet the WordPress way
 
     dt_theme_enqueue_script( 'modernizr-custom', 'dt-assets/js/modernizr-custom.js', [], true );
     dt_theme_enqueue_script( 'check-browser-version', 'dt-assets/js/check-browser-version.js', [ 'modernizr-custom' ], true );
@@ -112,6 +111,10 @@ function dt_site_scripts() {
         <?php
     } );
 
+    global $pagenow;
+    if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
+        return;
+    }
 
     dt_theme_enqueue_script( 'shared-functions', 'dt-assets/js/shared-functions.js', array( 'jquery', 'lodash' ) );
     wp_localize_script(

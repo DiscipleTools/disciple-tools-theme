@@ -3,6 +3,15 @@
  * By default, Foundation will use .title-bar for small, and .top-bar for
  * medium up
  */
+global $pagenow;
+if ( is_multisite() && 'wp-activate.php' === $pagenow  ) {
+    /**
+     * Removes blog header if user is activating.
+     * @see wp-activate.php
+     */
+    return;
+}
+
 ?>
 
 <div class="title-bar show-for-small-only" data-responsive-toggle="top-bar-menu">
