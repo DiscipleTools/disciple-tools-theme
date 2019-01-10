@@ -130,7 +130,7 @@
 
     <div class="reveal" id="edit-comment-modal" data-reveal>
         <p class="lead"><?php esc_html_e( 'Edit Comment:', 'disciple_tools' )?></p>
-        <textarea id="comment-to-edit" rows="10"></textarea>
+        <textarea id="comment-to-edit" rows="10" dir="auto"></textarea>
         <div class="grid-x">
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
                 <?php esc_html_e( 'Close', 'disciple_tools' )?>
