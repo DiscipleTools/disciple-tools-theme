@@ -282,7 +282,11 @@ jQuery(document).ready(function($) {
     if(comment){
       let mentionRegex = /\@\[(.*?)\]\((.+?)\)/g
       comment = comment.replace(mentionRegex, (match, text, id)=>{
-        return `<a>@${text}</a>`
+        /* dir=auto means that @ will be put to the left of the name if the
+          * mentioned name is LTR, and to the right if the mentioned name is
+          * RTL, instead of letting the surrounding dir determine the placement
+          * of @ */
+        return `<a dir="auto">@${text}</a>`
       })
       let urlRegex = /((href=('|"))|(\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g
       comment = comment.replace(urlRegex, (match)=>{
