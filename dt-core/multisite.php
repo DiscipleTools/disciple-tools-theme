@@ -22,7 +22,7 @@ if ( is_multisite() ) {
 
         return $url;
     }
-    add_filter('network_site_url', 'dt_network_site_url_to_specific_blog', 3, 999 );
+    add_filter( 'network_site_url', 'dt_network_site_url_to_specific_blog', 3, 999 );
 
     /**
      * Adds some simple styling to the head of the wp-activate.php page
