@@ -364,6 +364,7 @@ else {
             }
 
             require_once( get_template_directory() . '/dt-core/admin/gdpr.php' );
+            require_once( get_template_directory() . '/dt-core/multisite.php' );
 
             /**
              * Admin panel
