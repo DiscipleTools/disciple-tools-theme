@@ -67,6 +67,101 @@ class Disciple_Tools_Network_Endpoints
                 'callback' => [ $this, 'trigger_transfer' ],
             ]
         );
+        register_rest_route(
+            $this->public_namespace, '/network/live_stats', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'live_stats' ],
+            ]
+        );
+    }
+
+
+    public function live_stats( WP_REST_Request $request ) {
+        $params = $this->process_token( $request );
+        if ( is_wp_error( $params ) ) {
+            return $params;
+        }
+
+        return [
+        'partner_id' => dt_get_partner_profile_id(),
+                'total_contacts' => 0,
+                'total_groups' => 0,
+                'total_users' => 0,
+                'new_contacts' => 0,
+                'new_groups' => 0,
+                'new_users' => 0,
+                'total_baptisms' => 0,
+                'new_baptisms' => 0,
+                'baptism_generations' => 0,
+                'church_generations' => 0,
+                'locations' => [
+                    [
+                        'location_name' => '',
+                        'location_id' => '',
+                        'parent_id' => '',
+                        'geonameid' => '',
+                        'longitude' => '',
+                        'latitude' => '',
+                        'total_contacts' => 0,
+                        'total_groups' => 0,
+                        'total_users' => 0,
+                        'new_contacts' => 0,
+                        'new_groups' => 0,
+                        'new_users' => 0,
+                    ],
+                    [
+                        'location_name' => '',
+                        'location_id' => '',
+                        'parent_id' => '',
+                        'geonameid' => '',
+                        'longitude' => '',
+                        'latitude' => '',
+                        'total_contacts' => 0,
+                        'total_groups' => 0,
+                        'total_users' => 0,
+                        'new_contacts' => 0,
+                        'new_groups' => 0,
+                        'new_users' => 0,
+                    ],
+                    [
+                        'location_name' => '',
+                        'location_id' => '',
+                        'parent_id' => '',
+                        'geonameid' => '',
+                        'longitude' => '',
+                        'latitude' => '',
+                        'total_contacts' => 0,
+                        'total_groups' => 0,
+                        'total_users' => 0,
+                        'new_contacts' => 0,
+                        'new_groups' => 0,
+                        'new_users' => 0,
+                    ],
+                ],
+                'critical_path' => [
+                    'new_inquirers' => 0,
+                    'first_meetings' => 0,
+                    'ongoing_meetings' => 0,
+                    'total_baptisms' => 0,
+                    'baptism_generations' => [
+                        1 => 0,
+                        2 => 0,
+                        3 => 0,
+                    ],
+                    'baptizers' => 0,
+                    'total_churches_and_groups' => 0,
+                    'active_groups' => 0,
+                    'active_churches' => 0,
+                    'church_generations' => [
+                        1 => 0,
+                        2 => 0,
+                        3 => 0,
+                    ],
+                    'church_planters' => 0,
+                    'people_groups' => 0,
+                ],
+                'date' => current_time( 'mysql' ),
+            ];
     }
 
     /**
