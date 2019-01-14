@@ -99,19 +99,19 @@ class Disciple_Tools_Network {
 
         echo '<h2>You are reporting to these Network Dashboards</h2>';
         foreach ( $site_links as $site ) {
-            if ( 'Network Dashboard (Remote)' === $site['type'] ) {
+            if ( 'network_dashboard_sending' === $site['type'] ) {
                 echo '<dd><a href="'. esc_url( admin_url() ) .'post.php?post='. esc_attr( $site['ID'] ).'&action=edit">' . esc_html( $site['post_title'] ) . '</a></dd>';
             }
         }
 
         echo '<h2>Other System Site-to-Site Links</h2>';
         foreach ( $site_links as $site ) {
-            if ( ! ( 'Network Reporting (Remote)' === $site['type'] ) ) {
+            if ( ! ( 'network_dashboard_sending' === $site['type'] ) ) {
                 echo '<dd><a href="'. esc_url( admin_url() ) .'post.php?post='. esc_attr( $site['ID'] ).'&action=edit">' . esc_html( $site['post_title'] ) . '</a></dd>';
             }
         }
 
-        echo '<hr><p style="font-size:.8em;">Note: Network Dashboards are Site Links that have the "Connection Type" of "Network Dashboard".</p>';
+        echo '<hr><p style="font-size:.8em;">Note: Network Dashboards are Site Links that have the "Connection Type" of "Network Dashboard Sending".</p>';
     }
 
     public static function admin_test_send_box() {
@@ -197,12 +197,12 @@ class Disciple_Tools_Network {
     }
 
     public function site_link_type( $type ) {
-        $type['network_dashboard'] = __( 'Network Dashboard' );
+        $type['network_dashboard_sending'] = __( 'Network Dashboard Sending' );
         return $type;
     }
 
     public function site_link_capabilities( $args ) {
-        if ( 'network_dashboard' == $args['connection_type'] ) {
+        if ( 'network_dashboard_sending' == $args['connection_type'] ) {
             $args['capabilities'][] = 'network_dashboard_transfer';
         }
         return $args;
