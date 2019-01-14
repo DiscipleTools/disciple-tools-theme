@@ -76,12 +76,29 @@ class Disciple_Tools_Activity_Log_API {
                 'object_note'    => $args['object_note'],
                 'meta_id'        => $args['meta_id'],
                 'meta_key'       => $args['meta_key'],
-                'meta_value'       => $args['meta_value'],
-                'meta_parent'       => $args['meta_parent'],
-                'old_value'         => $args['old_value'],
-                'field_type'        => $args['field_type']
+                'meta_value'     => $args['meta_value'],
+                'meta_parent'    => $args['meta_parent'],
+                'old_value'      => $args['old_value'],
+                'field_type'     => $args['field_type']
             ],
-            [ '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%d', '%s', '%s' ]
+            [
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%d',
+                '%d',
+                '%s',
+                '%s',
+                '%d',
+                '%s',
+                '%d',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s'
+            ]
         );
 
         if ( isset( $args["object_id"] ) && isset( $args["object_subtype"] ) && $args["object_subtype"] !== "last_modified" && ( isset( $args["object_type"] ) && $args["object_type"] !== "User" ) ){
