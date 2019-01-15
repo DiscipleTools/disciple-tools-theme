@@ -255,7 +255,7 @@ if ( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
          * Run the do_action function for the asynchronous postback.
          * This method needs to fetch and sanitize any and all data from the $_POST
          * superglobal and provide them to the do_action call.
-         * The action should be constructed as "wp_async_task_$this->action"
+         * The action should be constructed as "dt_async_task_$this->action"
          */
         abstract protected function run_action();
 
