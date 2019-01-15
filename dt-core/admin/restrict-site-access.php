@@ -3,12 +3,12 @@
  * Requires site-wide login
  */
 function dt_please_log_in() {
-    if ( ! is_user_logged_in() ) {
-        auth_redirect();
-        exit;
-    }
+
     if ( is_multisite() ) { // tests if user has access to current site in multi-site
-        global $wpdb;
+        global $wpdb, $pagenow;
+        if ( 'wp-activate.php' === $pagenow ) {
+            return 1;
+        }
         if ( is_super_admin( get_current_user_id() ) ) {
             return 1;
         }
@@ -18,6 +18,10 @@ function dt_please_log_in() {
             auth_redirect();
             exit;
         }
+    }
+    if ( ! is_user_logged_in() ) {
+        auth_redirect();
+        exit;
     }
     return 1;
 }
@@ -87,13 +91,6 @@ function dt_head_cleanup() {
 } /* end Joints head cleanup */
 add_action( 'init', 'dt_head_cleanup' );
 
-# Redirects users to the login page.
-add_action( 'template_redirect', 'disciple_tools_please_log_in', 0 );
-
-# Disable content in feeds if the feed should be private.
-add_filter( 'the_content_feed', 'disciple_tools_private_feed', 95 );
-add_filter( 'the_excerpt_rss', 'disciple_tools_private_feed', 95 );
-add_filter( 'comment_text_rss', 'disciple_tools_private_feed', 95 );
 
 /**
  * Conditional tag to see if we have a private blog.
@@ -117,23 +114,7 @@ function disciple_tools_is_private_feed() {
     return true;
 }
 
-/**
- * Redirects users that are not logged in to the 'wp-login.php' page.
- *
- * @since  0.1.0
- * @access public
- * @return void
- */
-function disciple_tools_please_log_in() {
 
-    // Check if the private blog feature is active and if the user is not logged in.
-    if ( ! is_user_logged_in() ) {
-
-        // Redirect to the login page.
-        auth_redirect();
-        exit;
-    }
-}
 
 /**
  * Blocks feed items if the user has selected the private feed feature.
@@ -184,10 +165,3 @@ add_filter( 'login_redirect',
     },
     10,
 3 );
-
-
-
-// Change homepage url
-function dt_my_login_logo_url() {
-    return home_url();
-}

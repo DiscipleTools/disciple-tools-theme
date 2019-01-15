@@ -2,7 +2,7 @@
 /*
 Template Name: Settings
 */
-
+dt_please_log_in();
 /* Process $_POST content */
 // We're not checking the nonce here because update_user_contact_info will
 // phpcs:ignore
