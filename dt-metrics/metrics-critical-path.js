@@ -1,56 +1,14 @@
 jQuery(document).ready(function() {
   if( '#project_critical_path' === window.location.hash  ) {
     project_critical_path()
+  }if( '#project_critical_path2' === window.location.hash  ) {
+    project_critical_path2()
   }
-  if( '#project_seeker_path' === window.location.hash  ) {
-    project_seeker_path()
-  }
-  if( '#project_milestones' === window.location.hash  ) {
-    project_milestones()
-  }
+
   jQuery('#metrics-sidemenu').foundation('down', jQuery('#path-menu'));
 
 
 })
-
-let setupDatePicker = function (endpoint_url, callback) {
-  $('#date_range').daterangepicker({
-    "showDropdowns": true,
-    ranges: {
-      'All time': [moment("1980-01-01"),  moment().endOf('year')],
-      'This Month': [moment().startOf('month'), moment().endOf('month')],
-      'Last Month': [moment().subtract(1, 'month').startOf('month'),
-        moment().subtract(1, 'month').endOf('month')],
-      'This Year': [moment().startOf('year'), moment().endOf('year')],
-      'Last Year': [moment().subtract(1, 'year').startOf('year'),
-        moment().subtract(1, 'year').endOf('year')]
-
-    },
-    "linkedCalendars": false,
-    locale: {
-      format: 'YYYY-MM-DD'
-    },
-    "startDate": moment().startOf('year').format('YYYY-MM-DD'),
-    "endDate": moment().endOf('year').format('YYYY-MM-DD'),
-  }, function(start, end, label) {
-    jQuery.ajax({
-      type: "GET",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: `${endpoint_url}?start=${start.format('YYYY-MM-DD')}&end=${end.format('YYYY-MM-DD')}`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
-      },
-    })
-      .done(callback)
-      .fail(function (err) {
-        console.log("error")
-        console.log(err)
-        jQuery("#errors").append(err.responseText)
-      })
-    // console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
-  });
-}
 
 
 function project_critical_path() {
@@ -202,104 +160,184 @@ function numberWithCommas(x) {
   return x;
 }
 
-function project_seeker_path() {
+function project_critical_path2() {
   let chartDiv = jQuery('#chart')
   let sourceData = dtMetricsProject.data
   let translations = dtMetricsProject.data.translations
 
-  chartDiv.empty().html(`
-    <div class="section-header">Seeker path</div>
-    <div class="section-subheader">Date Range:</div>
-    <input id="date_range" type="text" name="daterange" style="max-width: 250px"/>
-    <div id="chartdiv" style="height: 400px"></div>
-  `)
-
-  let chart = am4core.create("chartdiv", am4charts.XYChart);
-
-  chart.data = sourceData.seeker_path
-  let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-  categoryAxis.dataFields.category = "seeker_path";
-  categoryAxis.renderer.grid.template.location = 0;
-  categoryAxis.renderer.minGridDistance = 30;
-  categoryAxis.renderer.labels.template.adapter.add("dy", function(dy, target) {
-    if (target.dataItem && target.dataItem.index & 2 == 2) {
-      return dy + 25;
-    }
-    return dy;
-  });
-
-  let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-
-  // Create series
-  let series = chart.series.push(new am4charts.ColumnSeries());
-  series.dataFields.valueY = "value";
-  series.dataFields.categoryX = "seeker_path";
-  series.name = "Visits";
-  series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
-  series.columns.template.fillOpacity = .8;
-
-  let columnTemplate = series.columns.template;
-  columnTemplate.strokeWidth = 2;
-  columnTemplate.strokeOpacity = 1;
-
-
-  setupDatePicker(
-    `${dtMetricsProject.root}dt/v1/metrics/seeker_path/`,
-    function (data) {
-      if ( data ){
-        chart.data = data
-      }
-    }
-  )
-}
-
-function project_milestones() {
-  let chartDiv = jQuery('#chart')
-  let sourceData = dtMetricsProject.data
-  let translations = dtMetricsProject.data.translations
 
   chartDiv.empty().html(`
-    <div class="section-header">Milestones</div>
-    <div class="section-subheader">Date Range:</div>
+    <div class="section-header">Insider</div>
+    <div class="section-subheader">Filter to date range:</div>
     <input id="date_range" type="text" name="daterange" style="max-width: 250px"/>
-    <div id="chartdiv" style="height: 400px"></div>
+    <div id="chartdiv" style="height: 800px; width:100%"></div>
+    <br>
+    <!--<div id="chartdiv2" style="height: 600px; width:100%"></div>-->
   `)
 
-  let chart = am4core.create("chartdiv", am4charts.XYChart);
-
-  chart.data = sourceData.milestones
-  let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-  categoryAxis.dataFields.category = "milestones";
-  categoryAxis.renderer.grid.template.location = 0;
-  categoryAxis.renderer.minGridDistance = 30;
-  categoryAxis.renderer.labels.template.adapter.add("dy", function(dy, target) {
-    if (target.dataItem && target.dataItem.index & 2 == 2) {
-      return dy + 25;
-    }
-    return dy;
-  });
-
-  let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-
-  // Create series
-  let series = chart.series.push(new am4charts.ColumnSeries());
-  series.dataFields.valueY = "value";
-  series.dataFields.categoryX = "milestones";
-  series.name = "Visits";
-  series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
-  series.columns.template.fillOpacity = .8;
-
-  let columnTemplate = series.columns.template;
-  columnTemplate.strokeWidth = 2;
-  columnTemplate.strokeOpacity = 1;
-
-  setupDatePicker(
+  window.METRICS.setupDatePicker(
     `${dtMetricsProject.root}dt/v1/metrics/milestones/`,
     function (data) {
-      if ( data ){
+      if (data) {
         chart.data = data
       }
     }
   )
+
+  // Create chart instance
+  let chart = am4core.create("chartdiv", am4charts.XYChart);
+
+  chart.data = [
+    // {
+    //   "country": "Contacts",
+    //   "ensemble": 3000,
+    //   "activity": 3027
+    // },
+  {
+      "country": "Assigned",
+      "ensemble": 10,
+      "activity": 155
+  }, {
+    "country": "Active Contacts",
+    "ensemble": 652,
+    "activity": 149
+  }, {
+      "country": "Contact Attempted Needed",
+      "ensemble": 111,
+      "activity": 149
+  }, {
+      "country": "Contact Attempted",
+      "ensemble": 9,
+      "activity": 107,
+      "needed": 111
+  }, {
+      "country": "Contact establish",
+      "ensemble": 63,
+      "activity": 142,
+      "needed": 9
+  }, {
+      "country": "Meeting scheduled",
+      "ensemble": 24,
+      "activity": 124,
+      "needed": 63
+  }, {
+      "country": "1st meeting Complete",
+      "ensemble": 251,
+      "activity": 159,
+      "needed": 24
+  }, {
+      "country": "Ongoing",
+      "ensemble": 157,
+      "activity": 50,
+      "needed": 251
+  }, {
+      "country": "Coaching",
+      "ensemble": 37,
+      "activity": 13,
+      "needed": 157
+  }, {
+      "country": "Baptized",
+      "ensemble": 213,
+      "activity": 23,
+  }, {
+      "country": "Baptism Gen 1",
+      "ensemble": 163,
+      "activity": 22,
+  }, {
+      "country": "Baptism Gen 2",
+      "ensemble": 88,
+      "activity": 1,
+  }, {
+      "country": "Baptism Gen 3",
+      "ensemble": 10,
+      // "activity": ,
+  }, {
+      "country": "Baptizers",
+      "ensemble": 92,
+      "activity": 14,
+  }
+  ].reverse();
+  chart.legend = new am4charts.Legend();
+  chart.legend.useDefaultMarker = true;
+
+  // Create axes
+  let categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+  categoryAxis.dataFields.category = "country";
+  categoryAxis.renderer.grid.template.location = 0;
+  categoryAxis.renderer.minGridDistance = 30;
+  // categoryAxis.renderer.inversed = true;
+  categoryAxis.renderer.grid.template.location = 0;
+  // categoryAxis.renderer.cellStartLocation = 0.1;
+  // categoryAxis.renderer.cellEndLocation = 0.9;
+
+  let valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+  valueAxis.title.text = "Critical Path";
+  valueAxis.title.fontWeight = 800;
+  // valueAxis.renderer.opposite = true;
+
+  // valueAxis.logarithmic = true;
+
+  // Create series
+  let series = chart.series.push(new am4charts.ColumnSeries());
+  series.name = "Current System counts"
+  series.dataFields.valueX = "ensemble";
+  series.dataFields.categoryY = "country";
+  series.clustered = false;
+  series.tooltipText = "Total: [bold]{valueX}[/]";
+
+    // var valueLabel = series.bullets.push(new am4charts.LabelBullet());
+    // valueLabel.label.text = "{valueX}";
+    // valueLabel.label.horizontalCenter = "left";
+    // valueLabel.label.dx = 10;
+    // valueLabel.label.hideOversized = false;
+    // valueLabel.label.truncate = false;
+
+  let series2 = chart.series.push(new am4charts.ColumnSeries());
+  series2.name = "Activity"
+  series2.dataFields.valueX = "activity";
+  series2.dataFields.categoryY = "country";
+  series2.clustered = false;
+  series2.columns.template.height = am4core.percent(50);
+  series2.tooltipText = "New: [bold]{valueX}[/]";
+  //
+  // let series3 = chart.series.push(new am4charts.ColumnSeries());
+  // series3.name = "Needed"
+  // series3.dataFields.valueX = "needed";
+  // series3.dataFields.categoryY = "country";
+  // series3.clustered = false;
+  // series3.columns.template.height = am4core.percent(50);
+  // series3.tooltipText = "New: [bold]{valueX}[/]";
+
+  // function createSeries(field, name) {
+  //   var series = chart.series.push(new am4charts.ColumnSeries());
+  //   series.dataFields.valueX = field;
+  //   series.dataFields.categoryY = "country";
+  //   series.name = name;
+  //   series.columns.template.tooltipText = "{name}: [bold]{valueX}[/]";
+  //   series.columns.template.height = am4core.percent(100);
+  //   series.sequencedInterpolation = true;
+  //
+  //   var valueLabel = series.bullets.push(new am4charts.LabelBullet());
+  //   valueLabel.label.text = "{valueX}";
+  //   valueLabel.label.horizontalCenter = "left";
+  //   valueLabel.label.dx = 10;
+  //   valueLabel.label.hideOversized = false;
+  //   valueLabel.label.truncate = false;
+  //
+  //   // var categoryLabel = series.bullets.push(new am4charts.LabelBullet());
+  //   // categoryLabel.label.text = "{name}";
+  //   // categoryLabel.label.horizontalCenter = "right";
+  //   // categoryLabel.label.dx = -10;
+  //   // categoryLabel.label.fill = am4core.color("#fff");
+  //   // categoryLabel.label.hideOversized = false;
+  //   // categoryLabel.label.truncate = false;
+  // }
+  // createSeries("ensemble", "Current System Counts");
+  // createSeries("activity", "Activity");
+
+
+  chart.cursor = new am4charts.XYCursor();
+  chart.cursor.lineX.disabled = true;
+  chart.cursor.lineY.disabled = true;
 
 }

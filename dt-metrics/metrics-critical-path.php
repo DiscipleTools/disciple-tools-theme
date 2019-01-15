@@ -14,11 +14,11 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
     } // End instance()
 
     public function __construct() {
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
-
         if ( !$this->has_permission() ) {
             return;
         }
+        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+
 
         $url_path = dt_get_url_path();
         if ( 'metrics' === substr( $url_path, '0', 7 ) ) {
@@ -43,8 +43,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
             <li><a href="">' . esc_html__( 'Critical Path', 'disciple_tools' ) . '</a>
                 <ul class="menu vertical nested" id="path-menu" aria-expanded="true">
                     <li><a href="' . site_url( '/metrics/critical-path/' ) . '#project_critical_path" onclick="project_critical_path()">' . esc_html__( 'Critical Path', 'disciple_tools' ) . '</a></li>
-                    <li><a href="' . site_url( '/metrics/critical-path/' ) . '#project_seeker_path" onclick="project_seeker_path()">' . esc_html__( 'Seeker Path', 'disciple_tools' ) . '</a></li>
-                    <li><a href="' . site_url( '/metrics/critical-path/' ) . '#project_milestones" onclick="project_milestones()">' . esc_html__( 'Milestones', 'disciple_tools' ) . '</a></li>
+                    <li><a href="' . site_url( '/metrics/critical-path/' ) . '#project_critical_path2" onclick="project_critical_path2()">' . esc_html__( 'Critical Path2', 'disciple_tools' ) . '</a></li>
                 </ul>
             </li>
             ';
@@ -53,9 +52,6 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
     }
 
     public function scripts() {
-        wp_register_script( 'datepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', false );
-        wp_enqueue_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', array() );
-
         wp_enqueue_script( 'dt_metrics_project_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-critical-path.js', [
             'moment',
             'jquery',
@@ -63,7 +59,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
             'amcharts-core',
             'amcharts-charts',
             'datepicker',
-        ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-project.js' ) );
+        ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-critical-path.js' ) );
 
         wp_localize_script(
             'dt_metrics_project_script', 'dtMetricsProject', [
@@ -91,8 +87,6 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
                 'label_all_time' => __( 'All time', 'disciple_tools' ),
             ],
             'critical_path' => self::chart_critical_path( dt_date_start_of_year(), dt_date_end_of_year() ),
-            'seeker_path' => $this->seeker_path(),
-            'milestones' => $this->milestones()
         ];
     }
 
@@ -212,11 +206,14 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
             SELECT COUNT( DISTINCT(log.object_id) ) as `value`, log.meta_value as seeker_path
             FROM $wpdb->dt_activity_log log
             INNER JOIN $wpdb->posts post
-            WHERE log.object_type = 'contacts'
-            AND log.meta_key = 'seeker_path'
-            AND log.hist_time > %s
-            AND log.hist_time < %s
-            AND post.post_type = 'contacts'
+            ON ( 
+                post.ID = log.object_id
+                AND log.meta_key = 'seeker_path'
+                AND log.hist_time > %s
+                AND log.hist_time < %s
+                AND log.object_type = 'contacts' 
+            )
+            WHERE post.post_type = 'contacts'
             AND post.post_status = 'publish'
             GROUP BY log.meta_value
         ", $start, $end ), ARRAY_A );
@@ -255,12 +252,15 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         $res = $wpdb->get_results( $wpdb->prepare( "
             SELECT COUNT( DISTINCT(log.object_id) ) as `value`, log.meta_value as milestones
             FROM $wpdb->dt_activity_log log
-            INNER JOIN $wpdb->posts post
-            WHERE log.object_type = 'contacts'
-            AND log.meta_key = 'milestones'
-            AND log.hist_time > %s
-            AND log.hist_time < %s
-            AND post.post_type = 'contacts'
+            INNER JOIN $wpdb->posts post 
+            ON (
+                post.ID = log.object_id
+                AND log.meta_key = 'milestones'
+                AND log.hist_time > %s
+                AND log.hist_time < %s
+                AND log.object_type = 'contacts'
+            )
+            WHERE post.post_type = 'contacts'
             AND post.post_status = 'publish'
             GROUP BY log.meta_value
         ", $start, $end ), ARRAY_A );

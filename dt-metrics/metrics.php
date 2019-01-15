@@ -38,6 +38,7 @@ class Disciple_Tools_Metrics
             require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
             require_once( get_template_directory() . '/dt-metrics/metrics-critical-path.php' );
             require_once( get_template_directory() . '/dt-metrics/metrics-project.php' );
+            require_once( get_template_directory() . '/dt-metrics/metrics-contacts.php' );
             require_once( get_template_directory() . '/dt-metrics/metrics-workers.php' );
             require_once( get_template_directory() . '/dt-metrics/metrics-prayer.php' );
         }
@@ -45,10 +46,13 @@ class Disciple_Tools_Metrics
 
     // Enqueue maps and charts for standard metrics
     public function enqueue_google() {
+        wp_register_script( 'datepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', false );
+        wp_enqueue_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', array() );
+
         /* phpcs:ignore WordPress.WP.EnqueuedResourceParameters */
         wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', [], false );
         /* phpcs:ignore WordPress.WP.EnqueuedResourceParameters */
-        wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . dt_get_option( 'map_key' ), array(), null, true );
+//        wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . dt_get_option( 'map_key' ), array(), null, true );
 
         wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/version/4.0.16/core.js', false, '4.0.16', true );
         wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/version/4.0.16/charts.js', false, '4.0.16', true );
