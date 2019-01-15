@@ -428,23 +428,24 @@ window.SHAREDFUNCTIONS = {
 window.METRICS = {
   setupDatePicker : function (endpoint_url, callback, startDate, endDate) {
 
-    $('#date_range').daterangepicker({
+    $('.date_range_picker').daterangepicker({
       "showDropdowns": true,
       ranges: {
-        'All time': [moment("1980-01-01"),  moment().endOf('year')],
-        'This Month': [moment().startOf('month'), moment().endOf('month')],
-        'Last Month': [moment().subtract(1, 'month').startOf('month'),
+        'All time': [moment(0),  moment().endOf('year')],
+        [moment().format("MMMM YYYY")]: [moment().startOf('month'), moment().endOf('month')],
+        [moment().subtract(1, 'month').format("MMMM YYYY")]: [moment().subtract(1, 'month').startOf('month'),
           moment().subtract(1, 'month').endOf('month')],
-        'This Year': [moment().startOf('year'), moment().endOf('year')],
-        'Last Year': [moment().subtract(1, 'year').startOf('year'),
-          moment().subtract(1, 'year').endOf('year')]
-
+        [moment().format("YYYY")]: [moment().startOf('year'), moment().endOf('year')],
+        [moment().subtract(1, 'year').format("YYYY")]: [moment().subtract(1, 'year').startOf('year'),
+          moment().subtract(1, 'year').endOf('year')],
+        [moment().subtract(2, 'year').format("YYYY")]: [moment().subtract(2, 'year').startOf('year'),
+          moment().subtract(2, 'year').endOf('year')]
       },
       "linkedCalendars": false,
       locale: {
         format: 'YYYY-MM-DD'
       },
-      "startDate": startDate || moment().startOf('year').format('YYYY-MM-DD'),
+      "startDate": startDate || moment(0),
       "endDate": endDate || moment().endOf('year').format('YYYY-MM-DD'),
     }, function(start, end, label) {
       $(".loading-spinner").addClass("active")
@@ -460,7 +461,7 @@ window.METRICS = {
         .done(function (data) {
           $(".loading-spinner").removeClass("active")
           if ( label === "Custom Range" ){
-            label = start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD')
+            label = start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY')
           }
           callback(data, label, start, end )
         })

@@ -89,8 +89,6 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
                 'overall_status_settings' => $overall_status_settings,
                 'seeker_path_settings' => $seeker_path_settings,
                 'milestone_settings' => $milestone_settings,
-                'source_data' =>
-                'wp-i18n'
             ]
         );
     }
@@ -149,7 +147,7 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
 
     public function seeker_path_endpoint( WP_REST_Request $request ){
         if ( !$this->has_permission() ) {
-            return new WP_Error( "critical_path_by_year", "Missing Permissions", [ 'status' => 400 ] );
+            return new WP_Error( "seeker_path_endpoint", "Missing Permissions", [ 'status' => 400 ] );
         }
         $params = $request->get_params();
         if ( isset( $params["start"], $params["end"] ) ){
@@ -162,7 +160,7 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
                 return new WP_REST_Response( $result );
             }
         } else {
-            return new WP_Error( "seeker_path", "Missing a valid values", [ 'status' => 400 ] );
+            return new WP_Error( "seeker_path_endpoint", "Missing a valid values", [ 'status' => 400 ] );
         }
     }
 
@@ -211,6 +209,12 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
                 AND log.hist_time < %s
                 AND log.object_type = 'contacts' 
             )
+            INNER JOIN $wpdb->postmeta pm
+            ON (
+                pm.post_id = post.ID
+                AND pm.meta_key = 'seeker_path'
+                AND pm.meta_value = log.meta_value
+            )
             WHERE post.post_type = 'contacts'
             AND post.post_status = 'publish'
             GROUP BY log.meta_value
@@ -257,6 +261,12 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
                 AND log.hist_time > %s
                 AND log.hist_time < %s
                 AND log.object_type = 'contacts'
+            )
+            INNER JOIN $wpdb->postmeta pm
+            ON (
+                pm.post_id = post.ID
+                AND pm.meta_key = 'milestones'
+                AND pm.meta_value = log.meta_value
             )
             WHERE post.post_type = 'contacts'
             AND post.post_status = 'publish'
@@ -363,7 +373,7 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
             }
         } );
 
-        $milestones = self::get_sources_milestones();
+        $milestones = self::get_sources_milestones( $from, $to );
 
         foreach ($milestones as $source => $milestone_data) {
             foreach ($milestone_data as $key => $value) {

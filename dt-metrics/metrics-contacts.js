@@ -30,9 +30,15 @@ function project_seeker_path() {
   let translations = dtMetricsProject.data.translations
 
   chartDiv.empty().html(`
-    <div class="section-header">Seeker path</div>
-    <div class="section-subheader">Date Range:</div>
-    <input id="date_range" type="text" name="daterange" style="max-width: 250px"/>
+    <div class="section-header">${ __( 'Seeker path', 'disciple_tools' ) }</div>
+    <div class="section-subheader">${ __( 'Filter contacts to date range:', 'disciple_tools' ) }</div>
+    <div class="date_range_picker">
+        <i class="fi-calendar"></i>&nbsp;
+        <span>${ __( 'All time', 'disciple_tools' ) }</span> 
+        <i class="dt_caret down"></i>
+    </div>
+    <div style="display: inline-block" class="loading-spinner"></div>
+    <hr>
     <div id="chartdiv" style="height: 400px"></div>
   `)
 
@@ -67,8 +73,9 @@ function project_seeker_path() {
 
   window.METRICS.setupDatePicker(
     `${dtMetricsProject.root}dt/v1/metrics/seeker_path/`,
-    function (data) {
+    function (data, label, start, end) {
       if ( data ){
+        $('.date_range_picker span').html( label );
         chart.data = data
       }
     }
@@ -81,9 +88,15 @@ function project_milestones() {
   let translations = dtMetricsProject.data.translations
 
   chartDiv.empty().html(`
-    <div class="section-header">Milestones</div>
-    <div class="section-subheader">Date Range:</div>
-    <input id="date_range" type="text" name="daterange" style="max-width: 250px"/>
+    <div class="section-header">${ __( 'Milestones', 'disciple_tools' ) }</div>
+    <div class="section-subheader">${ __( 'Filter to date range', 'disciple_tools' ) }:</div>
+    <div class="date_range_picker">
+        <i class="fi-calendar"></i>&nbsp;
+        <span>${ __( 'All time', 'disciple_tools' ) }</span> 
+        <i class="dt_caret down"></i>
+    </div>
+    <div style="display: inline-block" class="loading-spinner"></div>
+    <hr>
     <div id="chartdiv" style="height: 400px"></div>
   `)
 
@@ -117,8 +130,9 @@ function project_milestones() {
 
   window.METRICS.setupDatePicker(
     `${dtMetricsProject.root}dt/v1/metrics/milestones/`,
-    function (data) {
+    function (data, label) {
       if (data) {
+        $('.date_range_picker span').html( label );
         chart.data = data
       }
     }
@@ -130,12 +144,15 @@ function show_sources_overview() {
   let chartDiv = jQuery('#chart')
 
   chartDiv.empty().html(`
-      <span class="section-header">${_.escape(window.dtMetricsProject.translations.title)}</span>
-
-
+      <span class="section-header">${__( 'Sources', 'disciple_tools' )}</span>
       <div class="section-subheader">${ __( 'Filter contacts to date range:', 'disciple_tools' ) }</div>
-      <input id="date_range" type="text" name="daterange" style="max-width: 250px; display: inline-block"/>
+      <div class="date_range_picker">
+          <i class="fi-calendar"></i>&nbsp;
+          <span>${ __( 'All time', 'disciple_tools' ) }</span> 
+          <i class="dt_caret down"></i>
+      </div>
       <div style="display: inline-block" class="loading-spinner"></div>
+      <hr>
 
       <div id="charts"></div>
     `)
@@ -144,15 +161,14 @@ function show_sources_overview() {
     `${window.dtMetricsProject.root}dt/v1/metrics/sources_chart_data/`,
     function (data, label) {
       if ( data ){
+        $('.date_range_picker span').html( label );
         draw_data(data, label)
       }
-    },
-    moment(0),
-    moment()
+    }
   )
 
 
-  function draw_data(data, label = "This year") {
+  function draw_data(data, label = "all time") {
     if (!data) {
       data = window.dtMetricsProject.data.sources
     }
@@ -164,11 +180,9 @@ function show_sources_overview() {
 
     chartDiv.find(".js-loading").remove()
 
-    let filteringOutText = `${__( "Showing contacts from", 'disciple_tools' )} ${label}.`;
+    let filteringOutText = `${__( "Showing contacts during", 'disciple_tools' )} ${label}.`;
 
     chartsDiv.append($("<div>").html(`
-  
-        <hr>
   
         <h1>${__("All contacts, by source and status", "disciple_tools")}</h1>
   

@@ -335,7 +335,7 @@ jQuery(document).ready(function($) {
 
 
   /**
-   * People_groups
+   * People groups
    */
   let loadPeopleGroupTypeahead = ()=>{
     if (!window.Typeahead['.js-typeahead-people_groups']){

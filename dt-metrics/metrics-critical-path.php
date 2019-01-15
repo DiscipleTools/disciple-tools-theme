@@ -59,6 +59,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
             'amcharts-core',
             'amcharts-charts',
             'datepicker',
+            'wp-i18n'
         ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-critical-path.js' ) );
 
         wp_localize_script(
@@ -105,23 +106,6 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
                 ],
             ]
         );
-        register_rest_route(
-            $namespace, '/metrics/seeker_path/', [
-                [
-                    'methods'  => WP_REST_Server::READABLE,
-                    'callback' => [ $this, 'seeker_path_endpoint' ],
-                ],
-            ]
-        );
-        register_rest_route(
-            $namespace, '/metrics/milestones/', [
-                [
-                    'methods'  => WP_REST_Server::READABLE,
-                    'callback' => [ $this, 'milestones_endpoint' ],
-                ],
-            ]
-        );
-
     }
 
     public function critical_path_by_year( WP_REST_Request $request ) {
@@ -149,142 +133,8 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
         }
     }
 
-    public function seeker_path_endpoint( WP_REST_Request $request ){
-        if ( !$this->has_permission() ) {
-            return new WP_Error( "critical_path_by_year", "Missing Permissions", [ 'status' => 400 ] );
-        }
-        $params = $request->get_params();
-        if ( isset( $params["start"], $params["end"] ) ){
-            $start = strtotime( $params["start"] );
-            $end = strtotime( $params["end"] );
-            $result = $this->seeker_path( $start, $end );
-            if ( is_wp_error( $result ) ) {
-                return $result;
-            } else {
-                return new WP_REST_Response( $result );
-            }
-        } else {
-            return new WP_Error( "seeker_path", "Missing a valid values", [ 'status' => 400 ] );
-        }
-    }
-
-    public function milestones_endpoint( WP_REST_Request $request ){
-        if ( !$this->has_permission() ) {
-            return new WP_Error( "milestones", "Missing Permissions", [ 'status' => 400 ] );
-        }
-        $params = $request->get_params();
-        if ( isset( $params["start"], $params["end"] ) ){
-            $start = strtotime( $params["start"] );
-            $end = strtotime( $params["end"] );
-            $result = $this->milestones( $start, $end );
-            if ( is_wp_error( $result ) ) {
-                return $result;
-            } else {
-                return new WP_REST_Response( $result );
-            }
-        } else {
-            return new WP_Error( "milestones", "Missing a valid values", [ 'status' => 400 ] );
-        }
-    }
-
     public function _no_results() {
         return '<p>' . esc_attr( 'No Results', 'disciple_tools' ) . '</p>';
     }
 
-
-
-    public function seeker_path( $start = null, $end = null ){
-        global $wpdb;
-        if ( empty( $start ) ){
-            $start = 0;
-        }
-        if ( empty( $end ) ){
-            $end = time();
-        }
-
-        $res = $wpdb->get_results( $wpdb->prepare( "
-            SELECT COUNT( DISTINCT(log.object_id) ) as `value`, log.meta_value as seeker_path
-            FROM $wpdb->dt_activity_log log
-            INNER JOIN $wpdb->posts post
-            ON ( 
-                post.ID = log.object_id
-                AND log.meta_key = 'seeker_path'
-                AND log.hist_time > %s
-                AND log.hist_time < %s
-                AND log.object_type = 'contacts' 
-            )
-            WHERE post.post_type = 'contacts'
-            AND post.post_status = 'publish'
-            GROUP BY log.meta_value
-        ", $start, $end ), ARRAY_A );
-
-        $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
-        $seeker_path_options = $field_settings["seeker_path"]["default"];
-        $seeker_path_data = [];
-
-        foreach ( $seeker_path_options as $option_key => $option_value ){
-            $seeker_path_data[$option_value["label"]] = 0;
-            foreach ( $res as $r ){
-                if ( $r["seeker_path"] === $option_key ){
-                    $seeker_path_data[$option_value["label"]] = $r["value"];
-                }
-            }
-        }
-        $return = [];
-        foreach ( $seeker_path_data as $k => $v ){
-            $return[] = [
-                "seeker_path" => $k,
-                "value" => (int) $v
-            ];
-        }
-
-        return $return;
-    }
-    public function milestones( $start = null, $end = null ){
-        global $wpdb;
-        if ( empty( $start ) ){
-            $start = 0;
-        }
-        if ( empty( $end ) ){
-            $end = time();
-        }
-
-        $res = $wpdb->get_results( $wpdb->prepare( "
-            SELECT COUNT( DISTINCT(log.object_id) ) as `value`, log.meta_value as milestones
-            FROM $wpdb->dt_activity_log log
-            INNER JOIN $wpdb->posts post 
-            ON (
-                post.ID = log.object_id
-                AND log.meta_key = 'milestones'
-                AND log.hist_time > %s
-                AND log.hist_time < %s
-                AND log.object_type = 'contacts'
-            )
-            WHERE post.post_type = 'contacts'
-            AND post.post_status = 'publish'
-            GROUP BY log.meta_value
-        ", $start, $end ), ARRAY_A );
-
-        $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
-        $milestones_options = $field_settings["milestones"]["default"];
-        $milestones_data = [];
-
-        foreach ( $milestones_options as $option_key => $option_value ){
-            $milestones_data[$option_value["label"]] = 0;
-            foreach ( $res as $r ){
-                if ( $r["milestones"] === $option_key ){
-                    $milestones_data[$option_value["label"]] = $r["value"];
-                }
-            }
-        }
-        $return = [];
-        foreach ( $milestones_data as $k => $v ){
-            $return[] = [
-                "milestones" => $k,
-                "value" => (int) $v
-            ];
-        }
-
-        return $return;
-    }
 }

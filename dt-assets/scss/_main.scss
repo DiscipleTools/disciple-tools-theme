@@ -692,6 +692,32 @@ html[dir='rtl'] {
     }
 }
 
+.dt_caret {
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    &.down {
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+    }
+    &.right {
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+    }
+
+    &.left {
+        transform: rotate(135deg);
+        -webkit-transform: rotate(135deg);
+    }
+
+    &.up {
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+    }
+
+}
+
 /* Metrics section */
 .scrolling-wrapper {
     overflow-x: scroll;
@@ -735,5 +761,18 @@ html[dir='rtl'] {
 .accordion-menu .is-accordion-submenu-parent[aria-expanded=false]>a:after {
     transform: rotate(90deg) !important;
     transform-origin: 50% 50% !important;
+}
+
+.date_range_picker {
+    display: inline-block;
+    background: #fff;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    width: 250px;
+    .dt_caret{
+        float:right;
+        margin:5px;
+    }
 }
 /* End Metrics section */

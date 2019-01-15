@@ -1,3 +1,4 @@
+const { __, _x, _n, _nx } = wp.i18n;
 jQuery(document).ready(function() {
   if( '#project_critical_path' === window.location.hash  ) {
     project_critical_path()
@@ -9,7 +10,6 @@ jQuery(document).ready(function() {
 
 
 })
-
 
 function project_critical_path() {
   "use strict";
@@ -167,19 +167,26 @@ function project_critical_path2() {
 
 
   chartDiv.empty().html(`
-    <div class="section-header">Insider</div>
-    <div class="section-subheader">Filter to date range:</div>
-    <input id="date_range" type="text" name="daterange" style="max-width: 250px"/>
+    <div class="section-header">${ __( 'Critical Path', 'disciple_tools' ) }</div>
+    <div class="date_range_picker">
+        <i class="fi-calendar"></i>&nbsp;
+        <span>${ __( 'All time', 'disciple_tools' ) }</span> 
+        <i class="dt_caret down"></i>
+    </div>
+    <div style="display: inline-block" class="loading-spinner"></div>
+    <hr>
     <div id="chartdiv" style="height: 800px; width:100%"></div>
     <br>
     <!--<div id="chartdiv2" style="height: 600px; width:100%"></div>-->
   `)
 
+  // @todo implement endpoint
   window.METRICS.setupDatePicker(
-    `${dtMetricsProject.root}dt/v1/metrics/milestones/`,
-    function (data) {
+    `${dtMetricsProject.root}dt/v1/metrics/critical_path/`,
+    function (data, label) {
       if (data) {
-        chart.data = data
+        $('.date_range_picker span').html( label );
+        // chart.data = data
       }
     }
   )
@@ -187,6 +194,7 @@ function project_critical_path2() {
   // Create chart instance
   let chart = am4core.create("chartdiv", am4charts.XYChart);
 
+  //@todo move to endpoint
   chart.data = [
     // {
     //   "country": "Contacts",

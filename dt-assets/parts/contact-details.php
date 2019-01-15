@@ -426,7 +426,7 @@
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-people_groups"
-                                           name="people_groups[query]" placeholder="<?php esc_html_e( "Search People_groups", 'disciple_tools' ) ?>"
+                                           name="people_groups[query]" placeholder="<?php esc_html_e( "Search People Groups", 'disciple_tools' ) ?>"
                                            autocomplete="off">
                                 </span>
                             </div>
