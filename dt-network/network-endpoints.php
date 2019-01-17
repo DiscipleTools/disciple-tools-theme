@@ -91,9 +91,11 @@ class Disciple_Tools_Network_Endpoints
         ];
         $location_id = rand(0,2);
 
+        $profile = dt_get_partner_profile();
 
         return [
-            'partner_id' => dt_get_partner_profile_id(),
+            'partner_id' => $profile['partner_id'],
+            'profile' => $profile,
             'contacts' => [
                 'current_state' => [
                     'active_contacts' => rand(300, 1000),
@@ -1249,44 +1251,54 @@ class Disciple_Tools_Network_Endpoints
                 ],
                 'health' => [
                     [
-                        'label' => 'Baptism',
-                        'value' => rand(300, 1000)
+                        'category' => 'Baptism',
+                        'practicing' => rand(300, 1000),
+                        'not_practicing' => rand(300, 1000),
                     ],
                     [
-                        'label' => 'Bible Study',
-                        'value' => rand(300, 1000)
+                        'category' => 'Bible Study',
+                        'practicing' => rand(300, 1000),
+                        'not_practicing' => rand(300, 1000),
                     ],
                     [
-                        'label' => 'Communion',
-                        'value' => rand(300, 1000)
+                        'category' => 'Communion',
+                        'practicing' => rand(300, 1000),
+                        'not_practicing' => rand(300, 1000),
                     ],
                     [
-                        'label' => 'Fellowship',
-                        'value' => rand(300, 1000)
+                        'category' => 'Fellowship',
+                        'practicing' => rand(300, 1000),
+                        'not_practicing' => rand(300, 1000),
                     ],
                     [
-                        'label' => 'Giving',
-                        'value' => rand(300, 1000)
+                        'category' => 'Giving',
+                        'practicing' => rand(300, 1000),
+                        'not_practicing' => rand(300, 1000),
                     ],
                     [
-                        'label' => 'Prayer',
-                        'value' => rand(300, 1000)
+                        'category' => 'Prayer',
+                        'practicing' => rand(300, 1000),
+                        'not_practicing' => rand(300, 1000),
                     ],
                     [
-                        'label' => 'Praise',
-                        'value' => rand(300, 1000)
+                        'category' => 'Praise',
+                        'practicing' => rand(300, 1000),
+                        'not_practicing' => rand(300, 1000),
                     ],
                     [
-                        'label' => 'Sharing',
-                        'value' => rand(300, 1000)
+                        'category' => 'Sharing',
+                        'practicing' => rand(300, 1000),
+                        'not_practicing' => rand(300, 1000),
                     ],
                     [
-                        'label' => 'Leaders',
-                        'value' => rand(300, 1000)
+                        'category' => 'Leaders',
+                        'practicing' => rand(300, 1000),
+                        'not_practicing' => rand(300, 1000),
                     ],
                     [
-                        'label' => 'Commitment',
-                        'value' => rand(300, 1000)
+                        'category' => 'Commitment',
+                        'practicing' => rand(300, 1000),
+                        'not_practicing' => rand(300, 1000),
                     ]
                 ],
                 'church_generations' => [
@@ -1721,6 +1733,7 @@ class Disciple_Tools_Network_Endpoints
                     [
                         'id' => $location_list[$location_id]['id'],
                         'name' => $location_list[$location_id]['name'],
+                        'site_name' => $profile['partner_name'],
                         'contacts' => rand(300, 1000),
                         'groups' => rand(300, 1000),
                         'value' => 100,

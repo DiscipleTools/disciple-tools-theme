@@ -694,3 +694,15 @@ function dt_get_partner_profile_id() {
     }
     return $partner_profile['partner_id'];
 }
+
+/**
+ * Helper function to get the partner profile id.
+ * @return mixed
+ */
+function dt_get_partner_profile() {
+    $partner_profile = get_option( 'dt_site_partner_profile' );
+    if ( empty( $partner_profile ) ) {
+        $partner_profile = Disciple_Tools_Network::create_partner_profile();
+    }
+    return $partner_profile;
+}
