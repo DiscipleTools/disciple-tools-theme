@@ -15,44 +15,33 @@ class Disciple_Tools_Migration_0020 extends Disciple_Tools_Migration
     public function up() {
         global $wpdb;
         // get get posts
-        $posts = $wpdb->get_results( "SELECT ID, post_title, post_date, post_type FROM $wpdb->posts WHERE post_type = 'contacts' OR post_type = 'groups'", ARRAY_A );
-        $create_records = $wpdb->get_results( "SELECT object_id as ID FROM $wpdb->dt_activity_log WHERE action = 'created' and ( object_type = 'contacts' OR object_type = 'groups' )", ARRAY_A );
+        $wpdb->query( "ALTER TABLE $wpdb->dt_activity_log ADD INDEX object_id_index (object_id)" );
+        $posts = $wpdb->get_results( "
+            SELECT ID, post_title, post_date, post_type, log.object_id, log.hist_time
+            FROM $wpdb->posts post
+            LEFT JOIN $wpdb->dt_activity_log log ON ( log.action = 'created' AND post.ID = log.object_id )
+            WHERE ( post_type = 'contacts' OR post_type = 'groups' )
+            AND log.object_id IS NULL
+            ",
+            ARRAY_A
+        );
+        $query = "INSERT INTO $wpdb->dt_activity_log ( action, object_type, object_name, object_id, user_caps, hist_time ) VALUES ";
 
         // create activity log
         if ( ! empty( $posts ) ) {
             foreach ( $posts as $item ) {
-                if ( array_search( $item['ID'], $create_records ) ) {
-                    continue;
-                }
 
                 $hist_time = strtotime( $item['post_date'] );
                 if ( ! $hist_time ) {
                     $hist_time = time();
                 }
+                $query .= " ( 'created', '" . esc_sql( $item['post_type'] ). "', '" . esc_sql( $item['post_title'] ) . "', '" . esc_sql( $item['ID'] ) . "', 'administrator', '" . esc_sql( $hist_time ) . "' ), ";
 
-                $wpdb->insert(
-                    $wpdb->dt_activity_log,
-                    [
-                        'action'         => 'created',
-                        'object_type'    => $item['post_type'],
-                        'object_subtype' => '',
-                        'object_name'    => $item['post_title'],
-                        'object_id'      => $item['ID'],
-                        'user_id'        => 0,
-                        'user_caps'      => 'administrator',
-                        'hist_ip'        => '0',
-                        'hist_time'      => $hist_time,
-                        'object_note'    => ' ',
-                        'meta_id'        => ' ',
-                        'meta_key'       => ' ',
-                        'meta_value'     => ' ',
-                        'meta_parent'    => ' ',
-                        'old_value'      => ' ',
-                        'field_type'     => ' ',
-                    ],
-                    [ '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%d' ]
-                );
             }
+            $query .= ';';
+            $query = str_replace( ", ;", ";", $query ); //remove last comma
+
+            $wpdb->query( $query );  //phpcs:ignore
         }
     }
 
