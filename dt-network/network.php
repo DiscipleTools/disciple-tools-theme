@@ -25,8 +25,12 @@ class Disciple_Tools_Network {
 
     public function __construct() {
 
-        add_filter( 'site_link_type', [ $this, 'site_link_type' ], 10, 1 );
-        add_filter( 'site_link_type_capabilities', [ $this, 'site_link_capabilities' ], 10, 1 );
+        if ( get_option( 'dt_network_enabled' ) ) {
+
+            add_filter( 'site_link_type', [ $this, 'site_link_type' ], 10, 1 );
+            add_filter( 'site_link_type_capabilities', [ $this, 'site_link_capabilities' ], 10, 1 );
+
+        }
 
         if ( is_admin() ) {
 
@@ -79,6 +83,8 @@ class Disciple_Tools_Network {
         </form>
 
         <?php
+        // @todo testing
+        Disciple_Tools_Snapshot_Report::groups_by_type();
     }
 
     public static function admin_site_link_box() {
@@ -415,7 +421,340 @@ class Disciple_Tools_Network {
         }
     }
 
+
+
+    /**
+     * @return array|\WP_Error
+     */
+    public static function api_report_project_total() {
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
+            return new WP_Error( __METHOD__, 'Network report permission error.' );
+        }
+
+        $report_data['partner_id'] = dt_get_partner_profile_id();
+
+
+        // @todo add real data to response
+        $report_data = [
+            'partner_id' => dt_get_partner_profile_id(),
+            'total_contacts' => 0,
+            'total_groups' => 0,
+            'total_users' => 0,
+            'new_contacts' => 0,
+            'new_groups' => 0,
+            'new_users' => 0,
+            'total_baptisms' => 0,
+            'new_baptisms' => 0,
+            'baptism_generations' => 0,
+            'church_generations' => 0,
+            'locations' => [
+                [
+                    'location_name' => '',
+                    'location_id' => '',
+                    'parent_id' => '',
+                    'geonameid' => '',
+                    'longitude' => '',
+                    'latitude' => '',
+                    'total_contacts' => 0,
+                    'total_groups' => 0,
+                    'total_users' => 0,
+                    'new_contacts' => 0,
+                    'new_groups' => 0,
+                    'new_users' => 0,
+                ],
+                [
+                    'location_name' => '',
+                    'location_id' => '',
+                    'parent_id' => '',
+                    'geonameid' => '',
+                    'longitude' => '',
+                    'latitude' => '',
+                    'total_contacts' => 0,
+                    'total_groups' => 0,
+                    'total_users' => 0,
+                    'new_contacts' => 0,
+                    'new_groups' => 0,
+                    'new_users' => 0,
+                ],
+                [
+                    'location_name' => '',
+                    'location_id' => '',
+                    'parent_id' => '',
+                    'geonameid' => '',
+                    'longitude' => '',
+                    'latitude' => '',
+                    'total_contacts' => 0,
+                    'total_groups' => 0,
+                    'total_users' => 0,
+                    'new_contacts' => 0,
+                    'new_groups' => 0,
+                    'new_users' => 0,
+                ],
+            ],
+            'critical_path' => [
+                'new_inquirers' => 0,
+                'first_meetings' => 0,
+                'ongoing_meetings' => 0,
+                'total_baptisms' => 0,
+                'baptism_generations' => [
+                    1 => 0,
+                    2 => 0,
+                    3 => 0,
+                ],
+                'baptizers' => 0,
+                'total_churches_and_groups' => 0,
+                'active_groups' => 0,
+                'active_churches' => 0,
+                'church_generations' => [
+                    1 => 0,
+                    2 => 0,
+                    3 => 0,
+                ],
+                'church_planters' => 0,
+                'people_groups' => 0,
+            ],
+            'date' => current_time( 'mysql' ),
+        ];
+        if ( true ) {
+            return $report_data;
+        } else {
+            return new WP_Error( __METHOD__, 'Failed to get report' );
+        }
+    }
+
+    /**
+     * @param $check_sum
+     *
+     * @return \WP_Error
+     */
+    public static function api_get_locations( $check_sum ) {
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
+            return new WP_Error( __METHOD__, 'Network report permission error.' );
+        }
+
+        // @todo finish response
+        // test if the check_sum matches current locations
+
+        // if it does not match, then return a new array of locations for the site to be stored and referred to in the network dashboard.
+
+
+        if ( true ) {
+            return $check_sum;
+        } else {
+            return new WP_Error( __METHOD__, 'Failed to get report' );
+        }
+    }
+
+    public static function api_set_location_attributes( $collection ) {
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
+            return new WP_Error( __METHOD__, 'Network report permission error.' );
+        }
+
+        // @todo finish response
+        // $collection is a list of location ids with updated geonameids and populations.
+
+
+        if ( true ) {
+            return $collection;
+        } else {
+            return new WP_Error( __METHOD__, 'Failed to get report' );
+        }
+    }
+
+    public static function send_project_totals( $site_post_id ) {
+
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
+            return new WP_Error( __METHOD__, 'Network report permission error.' );
+        }
+
+        // Trigger Remote Report from Site
+        $site = Site_Link_System::get_site_connection_vars( $site_post_id );
+        if ( is_wp_error( $site ) ) {
+            return new WP_Error( __METHOD__, 'Error creating site connection details.' );
+        }
+        $args = [
+            'method' => 'POST',
+            'body' => [
+                'transfer_token' => $site['transfer_token'],
+                'report_data' => self::get_project_totals(),
+            ]
+        ];
+        $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/network/collect/project_totals', $args );
+        if ( is_wp_error( $result ) ) {
+            return new WP_Error( 'failed_remote_post', $result->get_error_message() );
+        } else {
+            return $result['body'];
+        }
+
+    }
+
+    public static function get_project_totals() {
+        return [
+            'partner_id' => dt_get_partner_profile_id(),
+            'total_contacts' => 200,// @todo add real data
+            'total_groups' => 10,// @todo add real data
+            'total_users' => 5,// @todo add real data
+            'date' => current_time( 'mysql' ),
+        ];
+    }
+
+    public static function send_site_profile( $site_post_id ) {
+
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
+            return new WP_Error( __METHOD__, 'Network report permission error.' );
+        }
+
+        $site_profile = self::get_site_profile();
+
+        // Trigger Remote Report from Site
+        $site = Site_Link_System::get_site_connection_vars( $site_post_id );
+        if ( is_wp_error( $site ) ) {
+            return new WP_Error( __METHOD__, 'Error creating site connection details.' );
+        }
+        $args = [
+            'method' => 'POST',
+            'body' => [
+                'transfer_token' => $site['transfer_token'],
+                'report_data' => $site_profile,
+            ]
+        ];
+        $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/network/collect/site_profile', $args );
+        if ( is_wp_error( $result ) ) {
+            return new WP_Error( 'failed_remote_post', $result->get_error_message() );
+        } else {
+            return $result['body'];
+        }
+    }
+
+    public static function get_site_profile() {
+        $site_profile = get_option( 'dt_site_partner_profile' );
+        $site_profile['check_sum'] = md5( serialize( $site_profile ) );
+        return $site_profile;
+    }
+
+    public static function send_site_locations( $site_post_id ) {
+
+        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
+            return new WP_Error( __METHOD__, 'Network report permission error.' );
+        }
+
+        // Trigger Remote Report from Site
+        $site = Site_Link_System::get_site_connection_vars( $site_post_id );
+        if ( is_wp_error( $site ) ) {
+            return new WP_Error( __METHOD__, 'Error creating site connection details.' );
+        }
+        $args = [
+            'method' => 'POST',
+            'body' => [
+                'transfer_token' => $site['transfer_token'],
+                'partner_id' => dt_get_partner_profile_id(),
+                'report_data' => self::get_site_locations(),
+            ]
+        ];
+
+        $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/network/collect/site_locations', $args );
+        if ( is_wp_error( $result ) ) {
+            return new WP_Error( 'failed_remote_post', $result->get_error_message() );
+        } else {
+            return $result['body'];
+        }
+
+    }
+
+    public static function get_site_locations() {
+        global $wpdb;
+
+        $query_results = $wpdb->get_results( "
+            SELECT a.ID as id, a.post_parent as parent_id, a.post_title as name, b.meta_value as raw, c.meta_value as address
+            FROM $wpdb->posts as a
+            JOIN $wpdb->postmeta as b
+                ON a.ID=b.post_id
+                AND b.meta_key = 'raw'
+            JOIN $wpdb->postmeta as c
+                ON a.ID=c.post_id
+                AND c.meta_key = 'location_address'
+            WHERE post_type = 'locations' AND post_status = 'publish'
+        ", ARRAY_A );
+
+        $locations = [
+            'locations' => $query_results,
+            'check_sum' => md5( serialize( $query_results ) ),
+        ];
+
+        return $locations;
+    }
+
+    
+
+}
+Disciple_Tools_Network::instance();
+
+/**
+ * Helper function to get the partner profile id.
+ * @return mixed
+ */
+function dt_get_partner_profile_id() {
+    $partner_profile = get_option( 'dt_site_partner_profile' );
+    if ( ! isset( $partner_profile['partner_id'] ) ) {
+        $partner_profile = Disciple_Tools_Network::create_partner_profile();
+    }
+    return $partner_profile['partner_id'];
+}
+
+/**
+ * Helper function to get the partner profile id.
+ * @return mixed
+ */
+function dt_get_partner_profile() {
+    $partner_profile = get_option( 'dt_site_partner_profile' );
+    if ( empty( $partner_profile ) ) {
+        $partner_profile = Disciple_Tools_Network::create_partner_profile();
+    }
+    return $partner_profile;
+}
+
+
+// Begin Schedule daily cron build
+class Disciple_Tools_Cron_Snapshot_Scheduler {
+
+    public function __construct() {
+        if ( ! wp_next_scheduled( 'load-snapshot-report' ) ) {
+            wp_schedule_event( strtotime( 'tomorrow 1am' ), 'daily', 'load-snapshot-report' );
+        }
+        add_action( 'load-snapshot-report', [ $this, 'action' ] );
+    }
+
+    public static function action(){
+        do_action( "dt_load_snapshot_report" );
+    }
+}
+
+class Disciple_Tools_Cron_Snapshot_Async extends Disciple_Tools_Async_Task {
+
+    protected $action = 'dt_load_snapshot_report';
+
+    protected function prepare_data( $data ) {
+        return $data;
+    }
+
+    protected function run_action() {
+        Disciple_Tools_Snapshot_Report::snapshot_report();
+    }
+}
+new Disciple_Tools_Cron_Snapshot_Scheduler();
+try
+{
+    new Disciple_Tools_Cron_Snapshot_Async();
+} catch ( Exception $e ) {
+    dt_write_log( $e );
+}
+// End Schedule daily cron build
+
+
+class Disciple_Tools_Snapshot_Report
+{
     public static function snapshot_report( $force_refresh = false ) {
+        $force_refresh = true; // @development mode
 
         if ( $force_refresh ) {
             delete_transient( 'dt_snapshot_report' );
@@ -437,21 +776,7 @@ class Disciple_Tools_Network {
             'partner_id' => $profile['partner_id'],
             'profile' => $profile,
             'contacts' => [
-                'current_state' => [
-                    'active_contacts' => rand(300, 1000),
-                    'paused_contacts' => rand(300, 1000),
-                    'closed_contacts' => rand(300, 1000),
-                    'all_contacts' => rand(8000, 10000),
-                    'critical_path' => [
-                        'attempt_needed' => rand(8000, 10000),
-                        'attempted' => rand(8000, 10000),
-                        'established' => rand(8000, 10000),
-                        'scheduled' => rand(8000, 10000),
-                        'met' => rand(8000, 10000),
-                        'ongoing_meetings' => rand(8000, 10000),
-                        'coaching' => rand(8000, 10000),
-                    ],
-                ],
+                'current_state' => self::contacts_current_state(),
                 'added' => [
                     'sixty_days' => [
                         [
@@ -1205,40 +1530,8 @@ class Disciple_Tools_Network {
                 ],
             ],
             'groups' => [
-                'current_state' => [ // measure the current state of the system today
-                                     'active' => [
-                                         'pre_group' => rand(300, 1000),
-                                         'group' => rand(300, 1000),
-                                         'church' => rand(300, 1000),
-                                         'leadership_cell' => rand(300, 1000),
-                                     ],
-                                     'total_active' => rand(300, 1000), // all non-duplicate groups in the system active or inactive.
-                                     'inactive' => [
-                                         'pre_group' => rand(300, 1000),
-                                         'group' => rand(300, 1000),
-                                         'church' => rand(300, 1000),
-                                         'leadership_cell' => rand(300, 1000),
-                                     ],
-                                     'all' => rand(300, 1000),
-                ],
-                'by_types' => [
-                    [
-                        'label' => 'Pre-Group',
-                        'value' => rand(300, 1000),
-                    ],
-                    [
-                        'label' => 'Group',
-                        'value' => rand(300, 1000),
-                    ],
-                    [
-                        'label' => 'Church',
-                        'value' => rand(300, 1000),
-                    ],
-                    [
-                        'label' => 'Leadership Cell',
-                        'value' => rand(300, 1000),
-                    ]
-                ],
+                'current_state' => self::groups_current_state(),
+                'by_types' => self::groups_by_type(),
                 'added' => [ // measure the addition of groups over time
                              'sixty_days' => [
                                  [
@@ -1697,16 +1990,7 @@ class Disciple_Tools_Network {
                 ]
             ],
             'users' => [
-                'current_state' => [
-                    'total_users' => rand(300, 1000),
-                    'roles' => [
-                        'responders' => rand(3, 100),
-                        'dispatchers' => rand(3, 100),
-                        'multipliers' => rand(3, 100),
-                        'admins' => rand(3, 100),
-                    ],
-                    'updates' => rand(300, 1000),
-                ],
+                'current_state' => self::users_current_state(),
                 'login_activity' => [
                     'sixty_days' => [
                         [
@@ -2135,335 +2419,312 @@ class Disciple_Tools_Network {
         ];
 
         if ( $report_data ) {
-            set_transient( 'dt_snapshot_report', $report_data, strtotime( 'tomorrow midnight') );
+            set_transient( 'dt_snapshot_report', $report_data, strtotime( 'tomorrow') );
             return $report_data;
         } else {
             return new WP_Error( __METHOD__, 'Failed to get report' );
         }
     }
 
-    /**
-     * @return array|\WP_Error
-     */
-    public static function api_report_project_total() {
-        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
-            return new WP_Error( __METHOD__, 'Network report permission error.' );
-        }
-
-        $report_data['partner_id'] = dt_get_partner_profile_id();
-
-
-        // @todo add real data to response
-        $report_data = [
-            'partner_id' => dt_get_partner_profile_id(),
-            'total_contacts' => 0,
-            'total_groups' => 0,
-            'total_users' => 0,
-            'new_contacts' => 0,
-            'new_groups' => 0,
-            'new_users' => 0,
-            'total_baptisms' => 0,
-            'new_baptisms' => 0,
-            'baptism_generations' => 0,
-            'church_generations' => 0,
-            'locations' => [
-                [
-                    'location_name' => '',
-                    'location_id' => '',
-                    'parent_id' => '',
-                    'geonameid' => '',
-                    'longitude' => '',
-                    'latitude' => '',
-                    'total_contacts' => 0,
-                    'total_groups' => 0,
-                    'total_users' => 0,
-                    'new_contacts' => 0,
-                    'new_groups' => 0,
-                    'new_users' => 0,
-                ],
-                [
-                    'location_name' => '',
-                    'location_id' => '',
-                    'parent_id' => '',
-                    'geonameid' => '',
-                    'longitude' => '',
-                    'latitude' => '',
-                    'total_contacts' => 0,
-                    'total_groups' => 0,
-                    'total_users' => 0,
-                    'new_contacts' => 0,
-                    'new_groups' => 0,
-                    'new_users' => 0,
-                ],
-                [
-                    'location_name' => '',
-                    'location_id' => '',
-                    'parent_id' => '',
-                    'geonameid' => '',
-                    'longitude' => '',
-                    'latitude' => '',
-                    'total_contacts' => 0,
-                    'total_groups' => 0,
-                    'total_users' => 0,
-                    'new_contacts' => 0,
-                    'new_groups' => 0,
-                    'new_users' => 0,
-                ],
-            ],
-            'critical_path' => [
-                'new_inquirers' => 0,
-                'first_meetings' => 0,
-                'ongoing_meetings' => 0,
-                'total_baptisms' => 0,
-                'baptism_generations' => [
-                    1 => 0,
-                    2 => 0,
-                    3 => 0,
-                ],
-                'baptizers' => 0,
-                'total_churches_and_groups' => 0,
-                'active_groups' => 0,
-                'active_churches' => 0,
-                'church_generations' => [
-                    1 => 0,
-                    2 => 0,
-                    3 => 0,
-                ],
-                'church_planters' => 0,
-                'people_groups' => 0,
-            ],
-            'date' => current_time( 'mysql' ),
-        ];
-        if ( true ) {
-            return $report_data;
-        } else {
-            return new WP_Error( __METHOD__, 'Failed to get report' );
-        }
-    }
-
-    /**
-     * @param $check_sum
-     *
-     * @return \WP_Error
-     */
-    public static function api_get_locations( $check_sum ) {
-        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
-            return new WP_Error( __METHOD__, 'Network report permission error.' );
-        }
-
-        // @todo finish response
-        // test if the check_sum matches current locations
-
-        // if it does not match, then return a new array of locations for the site to be stored and referred to in the network dashboard.
-
-
-        if ( true ) {
-            return $check_sum;
-        } else {
-            return new WP_Error( __METHOD__, 'Failed to get report' );
-        }
-    }
-
-    public static function api_set_location_attributes( $collection ) {
-        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
-            return new WP_Error( __METHOD__, 'Network report permission error.' );
-        }
-
-        // @todo finish response
-        // $collection is a list of location ids with updated geonameids and populations.
-
-
-        if ( true ) {
-            return $collection;
-        } else {
-            return new WP_Error( __METHOD__, 'Failed to get report' );
-        }
-    }
-
-    public static function send_project_totals( $site_post_id ) {
-
-        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
-            return new WP_Error( __METHOD__, 'Network report permission error.' );
-        }
-
-        // Trigger Remote Report from Site
-        $site = Site_Link_System::get_site_connection_vars( $site_post_id );
-        if ( is_wp_error( $site ) ) {
-            return new WP_Error( __METHOD__, 'Error creating site connection details.' );
-        }
-        $args = [
-            'method' => 'POST',
-            'body' => [
-                'transfer_token' => $site['transfer_token'],
-                'report_data' => self::get_project_totals(),
-            ]
-        ];
-        $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/network/collect/project_totals', $args );
-        if ( is_wp_error( $result ) ) {
-            return new WP_Error( 'failed_remote_post', $result->get_error_message() );
-        } else {
-            return $result['body'];
-        }
-
-    }
-
-    public static function get_project_totals() {
-        return [
-            'partner_id' => dt_get_partner_profile_id(),
-            'total_contacts' => 200,// @todo add real data
-            'total_groups' => 10,// @todo add real data
-            'total_users' => 5,// @todo add real data
-            'date' => current_time( 'mysql' ),
-        ];
-    }
-
-    public static function send_site_profile( $site_post_id ) {
-
-        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
-            return new WP_Error( __METHOD__, 'Network report permission error.' );
-        }
-
-        $site_profile = self::get_site_profile();
-
-        // Trigger Remote Report from Site
-        $site = Site_Link_System::get_site_connection_vars( $site_post_id );
-        if ( is_wp_error( $site ) ) {
-            return new WP_Error( __METHOD__, 'Error creating site connection details.' );
-        }
-        $args = [
-            'method' => 'POST',
-            'body' => [
-                'transfer_token' => $site['transfer_token'],
-                'report_data' => $site_profile,
-            ]
-        ];
-        $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/network/collect/site_profile', $args );
-        if ( is_wp_error( $result ) ) {
-            return new WP_Error( 'failed_remote_post', $result->get_error_message() );
-        } else {
-            return $result['body'];
-        }
-    }
-
-    public static function get_site_profile() {
-        $site_profile = get_option( 'dt_site_partner_profile' );
-        $site_profile['check_sum'] = md5( serialize( $site_profile ) );
-        return $site_profile;
-    }
-
-    public static function send_site_locations( $site_post_id ) {
-
-        if ( ! current_user_can( 'network_dashboard_transfer' ) ) {
-            return new WP_Error( __METHOD__, 'Network report permission error.' );
-        }
-
-        // Trigger Remote Report from Site
-        $site = Site_Link_System::get_site_connection_vars( $site_post_id );
-        if ( is_wp_error( $site ) ) {
-            return new WP_Error( __METHOD__, 'Error creating site connection details.' );
-        }
-        $args = [
-            'method' => 'POST',
-            'body' => [
-                'transfer_token' => $site['transfer_token'],
-                'partner_id' => dt_get_partner_profile_id(),
-                'report_data' => self::get_site_locations(),
-            ]
+    public static function contacts_current_state() {
+        $data = [
+            'all_contacts' => 0,
+            'critical_path' => [],
         ];
 
-        $result = wp_remote_post( 'https://' . $site['url'] . '/wp-json/dt-public/v1/network/collect/site_locations', $args );
-        if ( is_wp_error( $result ) ) {
-            return new WP_Error( 'failed_remote_post', $result->get_error_message() );
-        } else {
-            return $result['body'];
+        // Add critical path
+        $critical_path = Disciple_Tools_Metrics_Hooks_Base::query_project_contacts_progress();
+        foreach ( $critical_path as $path ) {
+            $data['critical_path'][$path['key']] = $path;
         }
 
-    }
+        // Add
+        $data['status'] = self::get_contacts_status();
 
-    public static function get_site_locations() {
-        global $wpdb;
+        $data['all_contacts'] = self::query( 'all_contacts' );
 
-        $query_results = $wpdb->get_results( "
-            SELECT a.ID as id, a.post_parent as parent_id, a.post_title as name, b.meta_value as raw, c.meta_value as address
-            FROM $wpdb->posts as a
-            JOIN $wpdb->postmeta as b
-                ON a.ID=b.post_id
-                AND b.meta_key = 'raw'
-            JOIN $wpdb->postmeta as c
-                ON a.ID=c.post_id
-                AND c.meta_key = 'location_address'
-            WHERE post_type = 'locations' AND post_status = 'publish'
-        ", ARRAY_A );
-
-        $locations = [
-            'locations' => $query_results,
-            'check_sum' => md5( serialize( $query_results ) ),
-        ];
-
-        return $locations;
-    }
-
-}
-Disciple_Tools_Network::instance();
-
-/**
- * Helper function to get the partner profile id.
- * @return mixed
- */
-function dt_get_partner_profile_id() {
-    $partner_profile = get_option( 'dt_site_partner_profile' );
-    if ( ! isset( $partner_profile['partner_id'] ) ) {
-        $partner_profile = Disciple_Tools_Network::create_partner_profile();
-    }
-    return $partner_profile['partner_id'];
-}
-
-/**
- * Helper function to get the partner profile id.
- * @return mixed
- */
-function dt_get_partner_profile() {
-    $partner_profile = get_option( 'dt_site_partner_profile' );
-    if ( empty( $partner_profile ) ) {
-        $partner_profile = Disciple_Tools_Network::create_partner_profile();
-    }
-    return $partner_profile;
-}
-
-
-// Begin Schedule daily cron build
-class DT_Network_Dashboard_Cron_Scheduler {
-
-    public function __construct() {
-        if ( ! wp_next_scheduled( 'load-snapshot-report' ) ) {
-            wp_schedule_event( strtotime( 'tomorrow 1am' ), 'daily', 'load-snapshot-report' );
-        }
-        add_action( 'load-snapshot-report', [ $this, 'action' ] );
-    }
-
-    public static function action(){
-        do_action( "dt_load_snapshot_report" );
-    }
-}
-
-
-class DT_Get_Network_Dashboard_SnapShot_Async extends Disciple_Tools_Async_Task {
-
-    protected $action = 'dt_load_snapshot_report';
-
-    protected function prepare_data( $data ) {
         return $data;
     }
 
-    protected function run_action() {
-        Disciple_Tools_Network::snapshot_report();
+    /**
+     * Gets an array list of all contacts current status.
+        [new] => 0
+        [unassignable] => 0
+        [unassigned] => 0
+        [assigned] => 6
+        [active] => 38
+        [paused] => 5
+        [closed] => 5
+     *
+     * @return array
+     */
+    public static function get_contacts_status() :array {
+        $data = [];
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $status_defaults = $contact_fields['overall_status']['default'];
+        $current_state = self::query( 'contacts_current_state' );
+        foreach( $status_defaults as $key => $status ) {
+            $data[$key] = 0;
+            foreach( $current_state as $state ) {
+                if ( $state['status'] === $key ) {
+                    $data[$key] = (int) $state['count'];
+                }
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * Gets an array of the current state of groups
+     *
+     * [active] => Array
+            (
+            [pre_group] => 3
+            [group] => 0
+            [church] => 3
+            )
+
+        [inactive] => Array
+            (
+            [pre_group] => 0
+            [group] => 0
+            [church] => 0
+            )
+
+        [total_active] => 6
+        [all] => 6
+     *
+     * @return array
+     */
+    public static function groups_current_state() {
+        $data = [
+            'active' => [
+                'pre_group' => 0,
+                'group' => 0,
+                'church' => 0,
+            ],
+            'inactive' => [
+                'pre_group' => 0,
+                'group' => 0,
+                'church' => 0,
+            ],
+            'total_active' => 0, // all non-duplicate groups in the system active or inactive.
+            'all' => 0,
+        ];
+
+        // Add types and status
+        $types_and_status = self::query( 'groups_types_and_status' );
+        foreach ( $types_and_status as $value ) {
+            $value['type'] = str_replace( '-', '_', $value['type']);
+
+            $data[$value['status']][$value['type']] = (int) $value['count'];
+
+            if ( 'active' === $value['status'] ) {
+                $data ['total_active'] = $data['total_active'] + (int) $value['count'];
+            }
+        }
+
+        $data['all'] = self::query( 'all_groups' );
+
+        return $data;
+    }
+
+    public static function groups_by_type() {
+        $data = [];
+        $items = ['pre-group', 'group', 'church'];
+
+        $types_and_status = self::query( 'groups_types_and_status' );
+
+        $keyed = [];
+        foreach ( $types_and_status as $status ) {
+            if ( 'active' === $status['status'] ) {
+                $keyed[$status['type']] = $status;
+            }
+        }
+
+        if ( isset( $keyed['pre-group'] ) ) {
+            $data[] = [
+                'name' => 'Pre-Group',
+                'value' => $keyed['pre-group']['count'],
+            ];
+        } else {
+            $data[] = [
+                'name' => 'Pre-Group',
+                'value' => 0,
+            ];
+        }
+
+        if ( isset( $keyed['group'] ) ) {
+            $data[] = [
+                'name' => 'Group',
+                'value' => $keyed['group']['count'],
+            ];
+        } else {
+            $data[] = [
+                'name' => 'Group',
+                'value' => 0,
+            ];
+        }
+
+        if ( isset( $keyed['church'] ) ) {
+            $data[] = [
+                'name' => 'Church',
+                'value' => $keyed['church']['count'],
+            ];
+        } else {
+            $data[] = [
+                'name' => 'Church',
+                'value' => 0,
+            ];
+        }
+
+        return $data;
+    }
+
+    public static function users_current_state() {
+        $data = [
+            'total_users' => 0,
+            'roles' => [
+                'responders' => 0,
+                'dispatchers' => 0,
+                'multipliers' => 0,
+                'strategists' => 0,
+                'admins' => 0,
+            ],
+        ];
+
+        // Add types and status
+        $users = count_users();
+
+        $data['total_users'] = (int) $users['total_users'];
+
+        foreach ( $users['avail_roles'] as $role => $count ) {
+            if ( $role === 'marketer' ) {
+                $data['roles']['responders'] = $data['roles']['responders'] + $count;
+            }
+            if ( $role === 'dispatcher' ) {
+                $data['roles']['dispatchers'] = $data['roles']['dispatchers'] + $count;
+            }
+            if ( $role === 'multiplier' ) {
+                $data['roles']['multipliers'] = $data['roles']['multipliers'] + $count;
+            }
+            if ( $role === 'administrator' || $role === 'dt_admin' ) {
+                $data['roles']['admins'] = $data['roles']['admins'] + $count;
+            }
+            if ( $role === 'strategist' ) {
+                $data['roles']['strategists'] = $data['roles']['strategists'] + $count;
+            }
+        }
+
+        return $data;
+    }
+
+
+    public static function query( $type, $args = [] ) {
+        global $wpdb;
+
+        if ( empty( $type ) ) {
+            return new WP_Error( __METHOD__, 'Required type is missing.' );
+        }
+
+        switch ( $type ) {
+
+            case 'contacts_current_state':
+                /**
+                 * Returns status and count of contacts according to the overall status
+                 * return array
+                 */
+                $results = $wpdb->get_results("
+                SELECT
+                  b.meta_value as status,
+                  count(a.ID) as count
+                FROM $wpdb->posts as a
+                  JOIN $wpdb->postmeta as b
+                    ON a.ID = b.post_id
+                       AND b.meta_key = 'overall_status'
+                WHERE a.post_status = 'publish'
+                      AND a.post_type = 'contacts'
+                      AND a.ID NOT IN (
+                  SELECT bb.post_id
+                  FROM $wpdb->postmeta as bb
+                  WHERE meta_key = 'corresponds_to_user'
+                        AND meta_value != 0
+                  GROUP BY bb.post_id )
+                GROUP BY b.meta_value
+            ", ARRAY_A );
+                break;
+
+            case 'all_contacts':
+                /**
+                 * Returns single digit count of all contacts in the system.
+                 * return int
+                 */
+                $results = $wpdb->get_var("
+                    SELECT
+                      count(a.ID) as count
+                    FROM $wpdb->posts as a
+                    WHERE a.post_status = 'publish'
+                          AND a.post_type = 'contacts'
+                          AND a.ID NOT IN (
+                      SELECT bb.post_id
+                      FROM $wpdb->postmeta as bb
+                      WHERE meta_key = 'corresponds_to_user'
+                            AND meta_value != 0
+                      GROUP BY bb.post_id )
+                ");
+                if ( empty( $results ) ) {
+                    $results = 0;
+                }
+                break;
+
+            case 'all_groups':
+                /**
+                 * Returns single digit count of all groups in the system.
+                 * return int
+                 */
+                $results = $wpdb->get_var("
+                    SELECT
+                      count(a.ID) as count
+                    FROM $wpdb->posts as a
+                    WHERE a.post_status = 'publish'
+                          AND a.post_type = 'groups'
+                ");
+                if ( empty( $results ) ) {
+                    $results = 0;
+                }
+                break;
+
+            case 'groups_types_and_status':
+                /**
+                 * Returns the different types of groups and their count
+                 *
+                 *  pre-group	active	    5
+                    pre-group	inactive	7
+                    group	    active	    2
+                    group	    inactive	1
+                    church	    active	    9
+                    church	    inactive	2
+                 */
+                $results = $wpdb->get_results( "
+                    SELECT
+                      c.meta_value as type,
+                      b.meta_value as status,
+                      count(a.ID)  as count
+                    FROM $wpdb->posts as a
+                      JOIN $wpdb->postmeta as b
+                        ON a.ID = b.post_id
+                           AND b.meta_key = 'group_status'
+                      JOIN $wpdb->postmeta as c
+                        ON a.ID = c.post_id
+                           AND c.meta_key = 'group_type'
+                    WHERE a.post_status = 'publish'
+                          AND a.post_type = 'groups'
+                    GROUP BY type, status
+                    ORDER BY type DESC
+                ", ARRAY_A );
+                break;
+        }
+
+        return $results;
     }
 }
-new DT_Network_Dashboard_Cron_Scheduler();
-try
-{
-    new DT_Get_Network_Dashboard_SnapShot_Async();
-} catch ( Exception $e ) {
-    dt_write_log( $e );
-}
-// End Schedule daily cron build

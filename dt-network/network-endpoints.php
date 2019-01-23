@@ -84,7 +84,7 @@ class Disciple_Tools_Network_Endpoints
             ];
         }
 
-        return Disciple_Tools_Network::snapshot_report();
+        return Disciple_Tools_Snapshot_Report::snapshot_report();
     }
 
     /**

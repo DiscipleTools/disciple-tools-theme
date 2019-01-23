@@ -114,6 +114,10 @@ Disciple_Tools_Metrics::instance();
 
 
 function dt_get_time_until_midnight() {
+
+    /**
+     * If looking for the timestamp for tomorrow midnight, use strtotime('tomorrow')
+     */
     $midnight = mktime( 0, 0, 0, date( 'n' ), date( 'j' ) +1, date( 'Y' ) );
     return intval( $midnight - current_time( 'timestamp' ) );
 }
@@ -438,6 +442,11 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return wp_parse_args( $query_results, $defaults );
     }
 
+    /**
+     * @note active use
+     *
+     * @return array
+     */
     public static function query_project_contacts_progress() {
         global $wpdb;
 
