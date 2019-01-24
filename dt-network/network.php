@@ -783,9 +783,7 @@ class Disciple_Tools_Snapshot_Report
                 ],
                 'baptisms' => [
                     'current_state' => [
-                        'active_baptisms' => rand(300, 1000),
-                        'all_baptisms' => rand(300, 1000),
-                        'multiplying' => rand(300, 1000),
+                        'all_baptisms' => rand(300, 1000), // @todo
                     ],
                     'added' => [
                         'sixty_days' => [],
@@ -835,6 +833,11 @@ class Disciple_Tools_Snapshot_Report
                             'value' => rand(300, 1000)
                         ]
                     ],
+                ],
+                'follow_up_funnel' => [
+                    'funnel' => self::funnel(),
+                    'ongoing_meetings' => self::ongoing_meetings(),
+                    'coaching' => self::coaching(),
                 ],
             ],
             'groups' => [
@@ -1387,6 +1390,65 @@ class Disciple_Tools_Snapshot_Report
         return $data;
     }
 
+    public static function follow_up_funnel() {
+        $data = []; $labels = []; $keyed_result = [];
+
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+
+        foreach( $contact_fields['seeker_path']['default'] as $key => $value ) {
+            $labels[$key] = $value['label'];
+        }
+
+        $results = Disciple_Tools_Metrics_Hooks_Base::query_project_contacts_progress();
+        if ( empty( $results ) || is_wp_error( $results ) ) {
+            $results = [];
+        }
+
+        foreach( $results as $result ) {
+            $keyed_result[$result['key']] = $result;
+        }
+
+        foreach( $labels as $key => $label ) {
+            if ( isset( $keyed_result[$key] ) ) {
+                $data[] = [
+                    "name" => $label,
+                    "value" => (int) $keyed_result[$key]['value']
+                ];
+            } else {
+                $data[] = [
+                    "name" => $label,
+                    "value" => 0
+                ];
+            }
+        }
+
+        return $data;
+    }
+
+    public static function funnel() {
+        return array_slice( self::follow_up_funnel(), 0, 5 );
+    }
+
+    public static function ongoing_meetings() {
+        $data = self::follow_up_funnel();
+        if ( isset( $data[5] ) ) {
+            return (int) $data[5]['value'];
+        }
+        return 0; // returns 0 if fail
+    }
+
+    /**
+     * Selects single value from query.
+     * @return int
+     */
+    public static function coaching() {
+        $data = self::follow_up_funnel();
+        if ( isset( $data[6] ) ) {
+            return (int) $data[6]['value'];
+        }
+        return 0; // returns 0 if fail
+    }
+
     public static function query( $type, $args = [] ) {
         global $wpdb;
 
@@ -1675,4 +1737,4 @@ class Disciple_Tools_Snapshot_Report
         return $results;
     }
 }
-//dt_write_log( Disciple_Tools_Snapshot_Report::group_health() ); // @todo remove
+//dt_write_log( Disciple_Tools_Snapshot_Report::follow_up_funnel() ); // @todo remove
