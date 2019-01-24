@@ -957,16 +957,7 @@ class Disciple_Tools_Snapshot_Report
                     'sixty_days' => self::counted_by_day('logged_in'),
                     'twenty_four_months' => self::counted_by_month('logged_in'),
                 ],
-                'last_thirty_day_engagement' => [
-                    [
-                        'label' => 'Active',
-                        'value' => rand(300, 1000),
-                    ],
-                    [
-                        'label' => 'Inactive',
-                        'value' => rand(300, 1000),
-                    ]
-                ]
+                'last_thirty_day_engagement' => self::user_logins_last_thirty_days(),
             ],
             'locations' => [
                 'countries' => [
@@ -1124,7 +1115,7 @@ class Disciple_Tools_Snapshot_Report
                 $dates = self::query( 'counted_by_day', [ 'object_type' => 'user', 'action' => 'logged_in' ] );
                 break;
             default: // contacts
-                $dates = self::query( 'new_contacts_counted_by_day' );
+                $dates = self::query( 'counted_by_day', [ 'object_type' => 'contacts', 'action' => 'created' ] );
                 break;
         }
 
@@ -1168,7 +1159,7 @@ class Disciple_Tools_Snapshot_Report
                 $dates = self::query( 'counted_by_month', [ 'object_type' => 'user', 'action' => 'logged_in' ] );
                 break;
             default: // contacts
-                $dates = self::query( 'new_contacts_counted_by_month' );
+                $dates = self::query( 'counted_by_month', [ 'object_type' => 'contacts', 'action' => 'created' ] );
                 break;
         }
 
@@ -1199,6 +1190,31 @@ class Disciple_Tools_Snapshot_Report
         }
 
         return $data3;
+    }
+
+    public static function user_logins_last_thirty_days() {
+
+        $active = self::query( 'user_logins_last_thirty_days' );
+
+        $total_users = count_users();
+
+        $inactive = $total_users['total_users'] - $active;
+        if ( $inactive < 1 ) {
+            $inactive = 0;
+        }
+
+        $data = [
+            [
+                'label' => 'Active',
+                'value' => $active,
+            ],
+            [
+                'label' => 'Inactive',
+                'value' => $inactive,
+            ]
+        ];
+
+        return $data;
     }
 
     /**
@@ -1506,106 +1522,6 @@ class Disciple_Tools_Snapshot_Report
             ", ARRAY_A );
             break;
 
-            case 'new_contacts_counted_by_day':
-            /**
-             * Returns list grouped by timestamp
-             *
-             *   2018-04-30	    9
-             *   2018-04-29	    11
-             *   2018-04-28	    9
-             *   2018-04-27	    39
-             *
-             */
-            $results = $wpdb->get_results( "
-               SELECT
-                  from_unixtime( hist_time , '%Y-%m-%d') as date,
-                  count( DISTINCT object_id) as value
-                FROM $wpdb->dt_activity_log
-                WHERE object_type = 'contacts'
-                      AND action = 'created'
-                      AND hist_time != ''
-                      AND hist_time REGEXP ('^[0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
-                GROUP BY date
-                ORDER BY date DESC
-                LIMIT 60;
-            ", ARRAY_A );
-            break;
-
-            case 'new_contacts_counted_by_month':
-            /**
-             * Returns list grouped by timestamp
-             *
-             *   2019-01	    9
-             *   2018-12	    11
-             *   2018-11        9
-             *   2018-10	    39
-             *
-             */
-            $results = $wpdb->get_results( "
-                SELECT
-                  from_unixtime( hist_time , '%Y-%m') as date,
-                  count( DISTINCT object_id) as value
-                FROM $wpdb->dt_activity_log
-                WHERE object_type = 'contacts'
-                  AND action = 'created'
-                  AND hist_time != ''
-                  AND hist_time REGEXP ('^[0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
-                GROUP BY date
-                ORDER BY date DESC
-                LIMIT 25;
-            ", ARRAY_A );
-            break;
-
-            case 'new_groups_counted_by_day':
-                /**
-                 * Returns list grouped by timestamp
-                 *
-                 *   2018-04-30	    9
-                 *   2018-04-29	    11
-                 *   2018-04-28	    9
-                 *   2018-04-27	    39
-                 *
-                 */
-                $results = $wpdb->get_results( "
-                   SELECT
-                      from_unixtime( hist_time , '%Y-%m-%d') as date,
-                      count( DISTINCT object_id) as value
-                    FROM $wpdb->dt_activity_log
-                    WHERE object_type = 'groups'
-                          AND action = 'created'
-                          AND hist_time != ''
-                          AND hist_time REGEXP ('^[0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
-                    GROUP BY date
-                    ORDER BY date DESC
-                    LIMIT 60;
-                ", ARRAY_A );
-                break;
-
-            case 'new_groups_counted_by_month':
-                /**
-                 * Returns list grouped by timestamp
-                 *
-                 *   2019-01	    9
-                 *   2018-12	    11
-                 *   2018-11        9
-                 *   2018-10	    39
-                 *
-                 */
-                $results = $wpdb->get_results( "
-                    SELECT
-                      from_unixtime( hist_time , '%%Y-%%m') as date,
-                      count( DISTINCT object_id) as value
-                    FROM $wpdb->dt_activity_log
-                    WHERE object_type = 'groups'
-                      AND action = 'created'
-                      AND hist_time != ''
-                      AND hist_time REGEXP ('^[0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
-                    GROUP BY date
-                    ORDER BY date DESC
-                    LIMIT 25;
-                ", ARRAY_A );
-                break;
-
             case 'counted_by_day':
                 /**
                  * Can collect various events just by specifying object type and action.
@@ -1680,10 +1596,28 @@ class Disciple_Tools_Snapshot_Report
                 ), ARRAY_A );
                 break;
 
+            case 'user_logins_last_thirty_days':
+                /**
+                 * Returns count for number of unique users signed in within the last month.
+                 */
+                $results = $wpdb->get_var("
+                    SELECT
+                      COUNT( DISTINCT object_id ) as value
+                    FROM $wpdb->dt_activity_log
+                    WHERE
+                      object_type = 'user'
+                      AND action = 'logged_in'
+                      AND hist_time >= UNIX_TIMESTAMP(CURDATE() - INTERVAL 1 MONTH );
+                ");
 
+                if ( empty( $results ) ) {
+                    $results = 0;
+                }
+
+                break;
         }
 
         return $results;
     }
 }
-//dt_write_log( Disciple_Tools_Snapshot_Report::counted_by_day( 'logged_in') ); // @todo remove
+//dt_write_log( Disciple_Tools_Snapshot_Report::user_logins_last_thirty_days() ); // @todo remove
