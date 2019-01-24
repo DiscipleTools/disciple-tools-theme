@@ -844,58 +844,7 @@ class Disciple_Tools_Snapshot_Report
                      'sixty_days' => self::counted_by_day( 'groups'),
                      'twenty_four_months' => self::counted_by_month('groups'),
                 ],
-                'health' => [
-                    [
-                        'category' => 'Baptism',
-                        'practicing' => rand(300, 1000),
-                        'not_practicing' => rand(300, 1000),
-                    ],
-                    [
-                        'category' => 'Bible Study',
-                        'practicing' => rand(300, 1000),
-                        'not_practicing' => rand(300, 1000),
-                    ],
-                    [
-                        'category' => 'Communion',
-                        'practicing' => rand(300, 1000),
-                        'not_practicing' => rand(300, 1000),
-                    ],
-                    [
-                        'category' => 'Fellowship',
-                        'practicing' => rand(300, 1000),
-                        'not_practicing' => rand(300, 1000),
-                    ],
-                    [
-                        'category' => 'Giving',
-                        'practicing' => rand(300, 1000),
-                        'not_practicing' => rand(300, 1000),
-                    ],
-                    [
-                        'category' => 'Prayer',
-                        'practicing' => rand(300, 1000),
-                        'not_practicing' => rand(300, 1000),
-                    ],
-                    [
-                        'category' => 'Praise',
-                        'practicing' => rand(300, 1000),
-                        'not_practicing' => rand(300, 1000),
-                    ],
-                    [
-                        'category' => 'Sharing',
-                        'practicing' => rand(300, 1000),
-                        'not_practicing' => rand(300, 1000),
-                    ],
-                    [
-                        'category' => 'Leaders',
-                        'practicing' => rand(300, 1000),
-                        'not_practicing' => rand(300, 1000),
-                    ],
-                    [
-                        'category' => 'Commitment',
-                        'practicing' => rand(300, 1000),
-                        'not_practicing' => rand(300, 1000),
-                    ]
-                ],
+                'health' => self::group_health(),
                 'church_generations' => [
                     'highest_generation' => 4,
                     'generations' => [
@@ -1356,6 +1305,50 @@ class Disciple_Tools_Snapshot_Report
         return $data;
     }
 
+    public static function group_health() {
+        $data = []; $labels = []; $keyed_practicing = [];
+
+        // Make key list
+        $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
+        foreach ( $group_fields["health_metrics"]["default"] as $key => $option ) {
+            $labels[$key] = $option["label"];
+        }
+
+        // get results
+        $practicing = self::query( 'group_health' );
+
+        // build keyed practicing
+        foreach( $practicing as $value ) {
+            $keyed_practicing[$value['category']] = $value['practicing'];
+        }
+
+        // get total number
+        $total_groups = self::query( 'groups_churches_total' ); // total groups and churches
+
+        // add real numbers and prepare array
+        foreach( $labels as $key => $label ) {
+            if ( isset( $keyed_practicing[$key] ) ) {
+                $not_practicing = (int) $total_groups - $keyed_practicing[$key];
+                if ( $not_practicing < 1 ) {
+                    $not_practicing = 0;
+                }
+                $data[] = [
+                    'category' => $label,
+                    'not_practicing' => $not_practicing,
+                    'practicing' => $keyed_practicing[$key],
+                ];
+            } else {
+                $data[] = [
+                    'category' => $label,
+                    'not_practicing' => $total_groups,
+                    'practicing' => 0,
+                ];
+            }
+        }
+
+        return $data;
+    }
+
     public static function users_current_state() {
         $data = [
             'total_users' => 0,
@@ -1453,7 +1446,7 @@ class Disciple_Tools_Snapshot_Report
 
             case 'all_groups':
                 /**
-                 * Returns single digit count of all groups in the system.
+                 * Returns single digit count of all pre-groups, groups, and churches in the system.
                  * return int
                  */
                 $results = $wpdb->get_var("
@@ -1466,6 +1459,28 @@ class Disciple_Tools_Snapshot_Report
                 if ( empty( $results ) ) {
                     $results = 0;
                 }
+                break;
+
+            case 'groups_churches_total':
+                /**
+                 * Returns single digit count of all groups and churches in the system.
+                 * return int
+                 */
+                $results = $wpdb->get_var("
+                    SELECT
+                      count(a.ID) as count
+                    FROM $wpdb->posts as a
+                    JOIN $wpdb->postmeta as c
+                        ON a.ID = c.post_id
+                           AND c.meta_key = 'group_status'
+                           AND c.meta_value = 'active'
+                    JOIN $wpdb->postmeta as b 
+                      ON a.ID=b.post_id
+                      AND b.meta_key = 'group_type'
+                      AND ( b.meta_value = 'group' OR b.meta_value = 'church' )
+                    WHERE a.post_status = 'publish'
+                      AND a.post_type = 'groups'
+                ");
                 break;
 
             case 'groups_types_and_status':
@@ -1615,9 +1630,49 @@ class Disciple_Tools_Snapshot_Report
                 }
 
                 break;
+
+            case 'group_health':
+                /**
+                 * Returns health numbers for groups and churches but not pre-groups
+                 *
+                 *  category            practicing
+                 *  church_baptism	    4
+                    church_bible	    5
+                    church_commitment	1
+                    church_communion	2
+                    church_fellowship	2
+                    church_giving	    1
+                    church_leaders	    1
+                    church_praise	    1
+                    church_prayer	    4
+                    church_sharing	    2
+                 *
+                 */
+                $results = $wpdb->get_results( "
+                    SELECT
+                      d.meta_value           as category,
+                      count(distinct (a.ID)) as practicing
+                    FROM $wpdb->posts as a
+                      JOIN $wpdb->postmeta as c
+                        ON a.ID = c.post_id
+                           AND c.meta_key = 'group_status'
+                           AND c.meta_value = 'active'
+                      JOIN $wpdb->postmeta as d
+                        ON a.ID = d.post_id
+                            AND d.meta_key = 'health_metrics'
+                      JOIN $wpdb->postmeta as e
+                        ON a.ID = e.post_id
+                           AND e.meta_key = 'group_type'
+                            AND ( e.meta_value = 'group' OR e.meta_value = 'church')
+                    WHERE a.post_status = 'publish'
+                          AND a.post_type = 'groups'
+                    GROUP BY d.meta_value;
+                ", ARRAY_A );
+
+                break;
         }
 
         return $results;
     }
 }
-//dt_write_log( Disciple_Tools_Snapshot_Report::user_logins_last_thirty_days() ); // @todo remove
+//dt_write_log( Disciple_Tools_Snapshot_Report::group_health() ); // @todo remove
