@@ -783,11 +783,11 @@ class Disciple_Tools_Snapshot_Report
                 ],
                 'baptisms' => [
                     'current_state' => [
-                        'all_baptisms' => rand(300, 1000), // @todo
+                        'all_baptisms' => self::query( 'total_baptisms' ),
                     ],
                     'added' => [
-                        'sixty_days' => [],
-                        'twenty_four_months' => [],
+                        'sixty_days' => self::counted_by_day('baptisms'),
+                        'twenty_four_months' => self::counted_by_month('baptisms'),
                     ],
                     'highest_generation' => 6,
                     'generations' => [
@@ -850,24 +850,7 @@ class Disciple_Tools_Snapshot_Report
                 'health' => self::group_health(),
                 'church_generations' => [
                     'highest_generation' => 4,
-                    'generations' => [
-                        [
-                            'label' => 'Gen 1',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 2',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 3',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 4',
-                            'value' => rand(300, 1000)
-                        ]
-                    ],
+                    'generations' => self::church_generations(),
                 ],
                 'all_generations' => [
                     'highest_generation' => 7,
@@ -1033,29 +1016,6 @@ class Disciple_Tools_Snapshot_Report
         return $data;
     }
 
-    public static function baptisms_by_date() {
-        $data = [];
-
-        $dates = self::query( 'baptisms_counted_by_date' );
-
-        foreach( $dates as $date ) {
-            $date['value'] = (int) $date['value'];
-            $data[$date['date'] ] = $date;
-        }
-
-        $day_list = self::get_day_list( 60 );
-        foreach ( $day_list as $day ) {
-            if( ! isset( $data[$day] ) ) {
-                $data[$day] = [
-                     'date' => $day,
-                     'value' => 0,
-                ];
-            }
-        }
-
-        return $data;
-    }
-
     public static function counted_by_day( $type = null ) {
         $data1 = []; $data2 = []; $data3 = [];
 
@@ -1065,6 +1025,9 @@ class Disciple_Tools_Snapshot_Report
                 break;
             case 'logged_in':
                 $dates = self::query( 'counted_by_day', [ 'object_type' => 'user', 'action' => 'logged_in' ] );
+                break;
+            case 'baptisms':
+                $dates = self::query( 'baptisms_counted_by_day' );
                 break;
             default: // contacts
                 $dates = self::query( 'counted_by_day', [ 'object_type' => 'contacts', 'action' => 'created' ] );
@@ -1109,6 +1072,9 @@ class Disciple_Tools_Snapshot_Report
                 break;
             case 'logged_in':
                 $dates = self::query( 'counted_by_month', [ 'object_type' => 'user', 'action' => 'logged_in' ] );
+                break;
+            case 'baptisms':
+                $dates = self::query( 'baptisms_counted_by_month' );
                 break;
             default: // contacts
                 $dates = self::query( 'counted_by_month', [ 'object_type' => 'contacts', 'action' => 'created' ] );
@@ -1258,7 +1224,6 @@ class Disciple_Tools_Snapshot_Report
 
     public static function groups_by_type() {
         $data = [];
-        $items = ['pre-group', 'group', 'church'];
 
         $types_and_status = self::query( 'groups_types_and_status' );
 
@@ -1449,6 +1414,60 @@ class Disciple_Tools_Snapshot_Report
         return 0; // returns 0 if fail
     }
 
+    public static function generations( $type = null ) {
+        $data = [
+            [
+                'label' => 'Gen 1',
+                'value' => rand(300, 1000)
+            ],
+            [
+                'label' => 'Gen 2',
+                'value' => rand(300, 1000)
+            ],
+            [
+                'label' => 'Gen 3',
+                'value' => rand(300, 1000)
+            ],
+            [
+                'label' => 'Gen 4',
+                'value' => rand(300, 1000)
+            ]
+        ];
+
+        $data = [];
+
+        switch ( $type ) {
+            case 'groups':
+                break;
+            default: // returns churches
+                $generation = Disciple_Tools_Counter::critical_path( 'all_group_generations', 0, PHP_INT_MAX );
+
+                if ( empty( $generation ) ) {
+                    return [
+                        [
+                            'label' => 'Gen 1',
+                            'value' => 0,
+                        ]
+                    ];
+                }
+
+                foreach ( $generation as $gen ) {
+                    $data[] = [
+                        'label' => 'Gen ' . $gen['generation'],
+                        'value' => rand(300, 1000)
+                    ];
+                }
+
+                break;
+        }
+
+
+
+
+
+        return $generation;
+    }
+
     public static function query( $type, $args = [] ) {
         global $wpdb;
 
@@ -1575,7 +1594,7 @@ class Disciple_Tools_Snapshot_Report
                 ", ARRAY_A );
                 break;
                 
-            case 'baptisms_counted_by_date':
+            case 'baptisms_counted_by_day':
             /**
              * Returns list grouped by timestamp
              *
@@ -1598,6 +1617,59 @@ class Disciple_Tools_Snapshot_Report
                 LIMIT 60;
             ", ARRAY_A );
             break;
+
+            case 'baptisms_counted_by_month':
+                /**
+                 * Can collect various events just by specifying object type and action.
+                 *
+                 * Returns list grouped by timestamp
+                 *
+                 *   2019-01	    9
+                 *   2018-12	    11
+                 *   2018-11        9
+                 *   2018-10	    39
+                 *
+                 */
+                $results = $wpdb->get_results( "
+                    SELECT
+                      from_unixtime( meta_value , '%Y-%m') as date,
+                      count( DISTINCT object_id) as value
+                    FROM $wpdb->dt_activity_log
+                    WHERE object_type = 'contacts'
+                      AND object_subtype = 'baptism_date'
+                      AND meta_value != ''
+                      AND meta_value REGEXP ('^[0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
+                    GROUP BY meta_value
+                    ORDER BY date DESC
+                    LIMIT 25;
+                ", ARRAY_A );
+                break;
+
+            case 'total_baptisms':
+                /**
+                 * Returns the count for baptisms in the system
+                 *
+                 *   2018-04-30	    9
+                 *   2018-04-29	    11
+                 *   2018-04-28	    9
+                 *   2018-04-27	    39
+                 */
+                $results = $wpdb->get_var( "
+                   SELECT
+                      count( DISTINCT object_id) as value
+                    FROM $wpdb->dt_activity_log
+                    WHERE 
+                        object_type = 'contacts'
+                        AND object_subtype = 'baptism_date'
+                        AND meta_value != ''
+                        AND meta_value REGEXP ('^[0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
+                " );
+                if ( empty( $results) ) {
+                    $results = 0;
+                } else {
+                    $results = (int) $results;
+                }
+                break;
 
             case 'counted_by_day':
                 /**
@@ -1737,4 +1809,4 @@ class Disciple_Tools_Snapshot_Report
         return $results;
     }
 }
-//dt_write_log( Disciple_Tools_Snapshot_Report::follow_up_funnel() ); // @todo remove
+dt_write_log( Disciple_Tools_Snapshot_Report::generations('church') ); // @todo remove
