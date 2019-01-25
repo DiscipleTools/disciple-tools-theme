@@ -850,7 +850,7 @@ class Disciple_Tools_Snapshot_Report
                 'health' => self::group_health(),
                 'church_generations' => [
                     'highest_generation' => 4,
-                    'generations' => self::church_generations(),
+                    'generations' => self::generations( 'church' ),
                 ],
                 'all_generations' => [
                     'highest_generation' => 7,
@@ -1438,32 +1438,34 @@ class Disciple_Tools_Snapshot_Report
 
         switch ( $type ) {
             case 'groups':
+                $generation = Disciple_Tools_Counter::critical_path( 'all_group_generations', 0, PHP_INT_MAX );
+                $item = 'group';
+                break;
+            case 'baptisms':
+                $generation = Disciple_Tools_Counter::critical_path( 'baptism_generations', 0, PHP_INT_MAX );
+                $item = 'baptisms';
                 break;
             default: // returns churches
                 $generation = Disciple_Tools_Counter::critical_path( 'all_group_generations', 0, PHP_INT_MAX );
-
-                if ( empty( $generation ) ) {
-                    return [
-                        [
-                            'label' => 'Gen 1',
-                            'value' => 0,
-                        ]
-                    ];
-                }
-
-                foreach ( $generation as $gen ) {
-                    $data[] = [
-                        'label' => 'Gen ' . $gen['generation'],
-                        'value' => rand(300, 1000)
-                    ];
-                }
-
+                $item = 'church';
                 break;
         }
 
+        if ( empty( $generation ) ) {
+            return [
+                [
+                    'label' => 'Gen 1',
+                    'value' => 0,
+                ]
+            ];
+        }
 
-
-
+        foreach ( $generation as $gen ) {
+            $data[] = [
+                'label' => 'Gen ' . $gen['generation'],
+                'value' => $gen[$item]
+            ];
+        }
 
         return $generation;
     }
@@ -1809,4 +1811,4 @@ class Disciple_Tools_Snapshot_Report
         return $results;
     }
 }
-dt_write_log( Disciple_Tools_Snapshot_Report::generations('church') ); // @todo remove
+//dt_write_log( Disciple_Tools_Snapshot_Report::generations('baptisms') ); // @todo remove

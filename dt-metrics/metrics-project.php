@@ -233,7 +233,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             return $this->_no_results();
         }
         $menu_data = $this->prepare_menu_array( $query );
-        return $this->build_menu( 0, $menu_data, 0 );
+        return $this->build_menu( 0, $menu_data, -1 );
     }
 
     public function get_coaching_generations_tree(){
@@ -242,7 +242,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             return $this->_no_results();
         }
         $menu_data = $this->prepare_menu_array( $query );
-        return $this->build_menu( 0, $menu_data, 0 );
+        return $this->build_menu( 0, $menu_data, -1 );
     }
 
     public function get_locations_tree() {
@@ -294,11 +294,17 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 
         if (isset( $menu_data['parents'][$parent_id] ))
         {
-            $html = '<ul class="ul-gen-'.$gen.'">';
             $gen++;
+
+            $first_section = '';
+            if ( $gen === 0 ) {
+                $first_section = 'first-section';
+            }
+
+            $html = '<ul class="ul-gen-'.$gen.'">';
             foreach ($menu_data['parents'][$parent_id] as $item_id)
             {
-                $html .= '<li class="gen-node li-gen-'.$gen.'">';
+                $html .= '<li class="gen-node li-gen-'.$gen.' '.$first_section.'">';
                 $html .= '('.$gen.') ';
                 $html .= '<strong><a href="'. site_url( "/groups/" ).$item_id.'">'. $menu_data['items'][$item_id]['name'] . '</a></strong><br>';
 
@@ -318,11 +324,16 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 
         if (isset( $menu_data['parents'][$parent_id] ))
         {
+            $first_section = '';
+            if ( $gen === 0 ) {
+                $first_section = 'first-section';
+            }
+
             $html = '<ul class="ul-gen-'.$gen.'">';
             $gen++;
             foreach ($menu_data['parents'][$parent_id] as $item_id)
             {
-                $html .= '<li class="gen-node li-gen-'.$gen.'">';
+                $html .= '<li class="gen-node li-gen-'.$gen.' '.$first_section.'">';
                 $html .= '<span class="'.$menu_data['items'][$item_id]['group_status'].' '.$menu_data['items'][$item_id]['group_type'].'">('.$gen.') ';
                 $html .= '<a onclick="open_modal_details('.$item_id.');">'. $menu_data['items'][$item_id]['name'] . '</a></span>';
 
@@ -341,11 +352,16 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 
         if (isset( $menu_data['parents'][$parent_id] ))
         {
+            $first_section = '';
+            if ( $gen === 0 ) {
+                $first_section = 'first-section';
+            }
+
             $html = '<ul class="ul-gen-'.$gen.'">';
             $gen++;
             foreach ($menu_data['parents'][$parent_id] as $item_id)
             {
-                $html .= '<li class="gen-node li-gen-'.$gen.'">';
+                $html .= '<li class="gen-node li-gen-'.$gen.' '.$first_section.'">';
                 $html .= '<a onclick="open_location_modal_details('.$item_id.');">'. $menu_data['items'][$item_id]['name'] . '</a>';
 
                 $html .= $this->build_location_tree( $item_id, $menu_data, $gen );
