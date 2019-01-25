@@ -217,6 +217,7 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
                     } elseif ( $element["group_type"] === "church" ) {
                         $counts[ $generation ]["church"] ++;
                     }
+                    $counts[ $generation ]["total"] ++;
                 }
                 $counts = self::build_group_generation_counts( $elements, $element['id'], $generation, $counts, $ids_to_include );
             }
