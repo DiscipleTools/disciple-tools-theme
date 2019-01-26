@@ -789,50 +789,7 @@ class Disciple_Tools_Snapshot_Report
                         'sixty_days' => self::counted_by_day('baptisms'),
                         'twenty_four_months' => self::counted_by_month('baptisms'),
                     ],
-                    'highest_generation' => 6,
-                    'generations' => [
-                        [
-                            'label' => 'Gen 1',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 2',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 3',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 4',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 5',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 6',
-                            'value' => rand(300, 1000)
-                        ]
-                    ],
-                ],
-                'coaching' => [
-                    'highest_generation' => 3,
-                    'generations' => [
-                        [
-                            'label' => 'Gen 1',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 2',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 3',
-                            'value' => rand(300, 1000)
-                        ]
-                    ],
+                    'generations' => self::generations( 'baptisms' ),
                 ],
                 'follow_up_funnel' => [
                     'funnel' => self::funnel(),
@@ -848,43 +805,8 @@ class Disciple_Tools_Snapshot_Report
                      'twenty_four_months' => self::counted_by_month('groups'),
                 ],
                 'health' => self::group_health(),
-                'church_generations' => [
-                    'highest_generation' => 4,
-                    'generations' => self::generations( 'church' ),
-                ],
-                'all_generations' => [
-                    'highest_generation' => 7,
-                    'generations' => [
-                        [
-                            'label' => 'Gen 1',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 2',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 3',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 4',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 5',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 6',
-                            'value' => rand(300, 1000)
-                        ],
-                        [
-                            'label' => 'Gen 7',
-                            'value' => rand(300, 1000)
-                        ],
-                    ],
-                ]
+                'church_generations' => self::generations( 'church' ),
+                'group_generations' => self::generations( 'groups' ),
             ],
             'users' => [
                 'current_state' => self::users_current_state(),
@@ -1415,24 +1337,6 @@ class Disciple_Tools_Snapshot_Report
     }
 
     public static function generations( $type = null ) {
-        $data = [
-            [
-                'label' => 'Gen 1',
-                'value' => rand(300, 1000)
-            ],
-            [
-                'label' => 'Gen 2',
-                'value' => rand(300, 1000)
-            ],
-            [
-                'label' => 'Gen 3',
-                'value' => rand(300, 1000)
-            ],
-            [
-                'label' => 'Gen 4',
-                'value' => rand(300, 1000)
-            ]
-        ];
 
         $data = [];
 
@@ -1442,8 +1346,18 @@ class Disciple_Tools_Snapshot_Report
                 $item = 'group';
                 break;
             case 'baptisms':
-                $generation = Disciple_Tools_Counter::critical_path( 'baptism_generations', 0, PHP_INT_MAX );
-                $item = 'baptisms';
+                $baptisms = Disciple_Tools_Counter::critical_path( 'baptism_generations', 0, PHP_INT_MAX );
+                if ( empty( $baptisms ) ) {
+                    $generation = [];
+                } else {
+                    foreach( $baptisms as $key => $value ) {
+                        $generation[] = [
+                            'generation' => $key,
+                            'value' => $value,
+                        ];
+                    }
+                }
+                $item = 'value';
                 break;
             default: // returns churches
                 $generation = Disciple_Tools_Counter::critical_path( 'all_group_generations', 0, PHP_INT_MAX );
@@ -1460,14 +1374,23 @@ class Disciple_Tools_Snapshot_Report
             ];
         }
 
+        $end = false;
         foreach ( $generation as $gen ) {
+            if ( $end ) { // this makes sure the last generation is zero but no more.
+                break;
+            }
+
             $data[] = [
                 'label' => 'Gen ' . $gen['generation'],
                 'value' => $gen[$item]
             ];
+
+            if ( $gen[$item] === 0 ) {
+                $end = true;
+            }
         }
 
-        return $generation;
+        return $data;
     }
 
     public static function query( $type, $args = [] ) {
