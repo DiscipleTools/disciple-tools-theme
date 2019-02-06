@@ -205,8 +205,6 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
             ON ( 
                 post.ID = log.object_id
                 AND log.meta_key = 'seeker_path'
-                AND log.hist_time > %s
-                AND log.hist_time < %s
                 AND log.object_type = 'contacts' 
             )
             INNER JOIN $wpdb->postmeta pm
@@ -217,6 +215,8 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
             )
             WHERE post.post_type = 'contacts'
             AND post.post_status = 'publish'
+            AND log.hist_time > %s
+            AND log.hist_time < %s
             GROUP BY log.meta_value
         ", $start, $end ), ARRAY_A );
 
