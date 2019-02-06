@@ -118,7 +118,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         // get the previous value
         $prev = '';
         $prev_value = '';
-        if ( !$new){
+        if ( !$new ){
             $prev = $wpdb->get_results( $wpdb->prepare(
                 "SELECT
                     *
