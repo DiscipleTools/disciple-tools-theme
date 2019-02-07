@@ -70,10 +70,7 @@ function project_overview() {
                             <h5>${ translations.title_total_groups }<br><span id="total_groups">0</span></h5>
                         </div>
                         <div class="medium-4 cell center left-border-grey">
-                            <h5>${ translations.title_needs_training }<br><span id="needs_training">0</span></h5>
-                        </div>
-                        <div class="medium-4 cell center left-border-grey">
-                            <h5>${ translations.title_fully_practicing }<br><span id="fully_practicing">0</span></h5>
+                            <h5>${ translations.title_teams }<br><span id="teams">0</span></h5>
                         </div>
                    </div> 
                 </div>
@@ -105,7 +102,7 @@ function project_overview() {
 
     jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
     jQuery('#needs_training').html( numberWithCommas( hero.needs_training ) )
-    jQuery('#fully_practicing').html( numberWithCommas( hero.fully_practicing ) )
+    jQuery('#teams').html( numberWithCommas( hero.teams ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'bar']});

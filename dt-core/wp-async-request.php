@@ -9,7 +9,7 @@
  * License: MIT
  */
 
-if ( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
+if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
     /**
      * Class Disciple_Tools_Async_Task
      */

@@ -13,7 +13,7 @@ class Disciple_Tools_Migration_0018 extends Disciple_Tools_Migration {
         //rename field
         global $wpdb;
         $wpdb->query("
-            UPDATE wp_dt_activity_log SET hist_ip = 0;
+            UPDATE $wpdb->dt_activity_log SET hist_ip = 0;
         ");
     }
 

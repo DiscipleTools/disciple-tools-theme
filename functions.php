@@ -141,7 +141,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.14.2';
+            $this->version = '0.16.0';
             $this->migration_number = 22;
 
 
@@ -360,8 +360,8 @@ else {
              */
             if ( get_option( 'dt_network_enabled' ) ) {
                 require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
-                require_once( get_template_directory() . '/dt-network/network.php' );
             }
+            require_once( get_template_directory() . '/dt-network/network.php' );
 
             require_once( get_template_directory() . '/dt-core/admin/gdpr.php' );
             require_once( get_template_directory() . '/dt-core/multisite.php' );

@@ -755,6 +755,13 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'default'     => '',
                 'section'     => 'site',
             ];
+            $fields['type'] = [
+                'name'        => __( 'Connection Type' ),
+                'description' => __( 'This adds permissions needed for the labeled task. If you have trouble with a connection succeeding, and a task failing. This permission setting may be the reason.' ),
+                'type'        => 'key_select',
+                'default'     => apply_filters( 'site_link_type', $permission = [ "" => "" ] ),
+                'section'     => 'site',
+            ];
 
             $fields['approved_ip_address'] = [
                 'name'        => __( 'Approved IP Address' ),
@@ -763,13 +770,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'default'     => '',
                 'section'     => 'non_wp',
             ];
-            $fields['type'] = [
-                'name'        => __( 'Connection Type' ),
-                'description' => __( 'This adds permissions needed for the labeled task. If you have trouble with a connection succeeding, and a task failing. This permission setting may be the reason.' ),
-                'type'        => 'key_select',
-                'default'     => apply_filters( 'site_link_type', $permission = [ "" => "" ] ),
-                'section'     => 'non_wp',
-            ];
+
             $fields['non_wp'] = [
                 'name'        => __( 'Disciple.Tools Site' ),
                 'description' => __( 'Is this connection to a Disciple Tools/Wordpress system.' ),

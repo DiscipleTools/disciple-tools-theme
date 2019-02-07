@@ -68,6 +68,7 @@ class Disciple_Tools_Metrics_Personal extends Disciple_Tools_Metrics_Hooks_Base
                 'title_fully_practicing' => __( 'Fully Practicing', 'disciple_tools' ),
                 'title_group_types' => __( 'Group Types', 'disciple_tools' ),
                 'title_generations' => __( 'Group and Church Generations', 'disciple_tools' ),
+                'title_teams' => __( 'Lead Teams', 'disciple_tools' ),
                 'label_active_contacts'  => __( 'Active Contacts', 'disciple_tools' ),
                 'total_groups'    => __( 'Total Groups', 'disciple_tools' ),
                 'updates_needed'  => __( 'Updates Needed', 'disciple_tools' ),

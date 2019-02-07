@@ -261,7 +261,7 @@ class Disciple_Tools_Groups_Post_Type
                 'pre-group' => [ "label" => __( 'Pre-Group', 'disciple_tools' ) ],
                 'group'     => [ "label" => __( 'Group', 'disciple_tools' ) ],
                 'church'    => [ "label" => __( 'Church', 'disciple_tools' ) ],
-                'lead_cell' => [ "label" => __( 'Leadership Cell', 'disciple_tools' ) ],
+                'team'    => [ "label" => __( 'Team', 'disciple_tools' ) ],
             ],
             'section'     => 'info',
             "customizable" => "add_only"

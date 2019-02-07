@@ -122,6 +122,10 @@ Disciple_Tools_Metrics::instance();
 
 
 function dt_get_time_until_midnight() {
+
+    /**
+     * If looking for the timestamp for tomorrow midnight, use strtotime('tomorrow')
+     */
     $midnight = mktime( 0, 0, 0, date( 'n' ), date( 'j' ) +1, date( 'Y' ) );
     return intval( $midnight - current_time( 'timestamp' ) );
 }
@@ -169,6 +173,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             'groups' => $results['groups'],
             'needs_training' => $needs_training,
             'fully_practicing' => (int) $results['groups'] - (int) $needs_training,
+            'teams' => (int) $results['teams'],
         ];
 
         return $chart;
@@ -332,10 +337,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     }
 
     public static function chart_project_hero_stats() {
-        $stats = self::query_project_hero_stats();
 
+        $stats = self::query_project_hero_stats();
         $group_health = self::query_project_group_health();
-        $needs_training = 0;
+        $needs_training = 0; // @todo
 
         if ( ! empty( $group_health ) ) {
             foreach ( $group_health as $value ) {
@@ -354,7 +359,8 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             'updates_needed' => $stats['needs_update'],
             'total_groups' => $stats['groups'],
             'needs_training' => $needs_training,
-            'fully_practicing' => (int) $stats['groups'] - (int) $needs_training,
+            'fully_practicing' => (int) $stats['groups'] - (int) $needs_training, // @todo
+            'teams' => $stats['teams'],
             'generations' => 0,
         ];
 
@@ -446,6 +452,11 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         return wp_parse_args( $query_results, $defaults );
     }
 
+    /**
+     * @note active use
+     *
+     * @return array
+     */
     public static function query_project_contacts_progress() {
         global $wpdb;
 
@@ -527,14 +538,15 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             SELECT c.meta_value as type, count( a.ID ) as count
                 FROM $wpdb->posts as a
                 JOIN $wpdb->postmeta as b
-                ON a.ID=b.post_id
-                AND b.meta_key = 'group_status'
-                   AND b.meta_value = 'active'
+                    ON a.ID=b.post_id
+                    AND b.meta_key = 'group_status'
+                    AND b.meta_value = 'active'
                 JOIN $wpdb->postmeta as c
-                ON a.ID=c.post_id
-                AND c.meta_key = 'group_type'
+                    ON a.ID=c.post_id
+                    AND c.meta_key = 'group_type'
+                    AND c.meta_value != 'team'
                 WHERE a.post_status = 'publish'
-                  AND a.post_type = 'groups'
+                    AND a.post_type = 'groups'
                 GROUP BY type
                 ORDER BY type DESC
         ", ARRAY_A );
@@ -551,22 +563,23 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
 
         $results = $wpdb->get_results( $wpdb->prepare( "
             SELECT c.meta_value as type, count( a.ID ) as count
-                FROM $wpdb->posts as a
-                JOIN $wpdb->postmeta as b
+            FROM $wpdb->posts as a
+            JOIN $wpdb->postmeta as b
                 ON a.ID=b.post_id
                 AND b.meta_key = 'group_status'
-                   AND b.meta_value = 'active'
-                JOIN $wpdb->postmeta as c
+               AND b.meta_value = 'active'
+            JOIN $wpdb->postmeta as c
                 ON a.ID=c.post_id
                 AND c.meta_key = 'group_type'
-                JOIN $wpdb->postmeta as d
+                AND c.meta_value != 'team'
+            JOIN $wpdb->postmeta as d
                  ON a.ID=d.post_id
                     AND d.meta_key = 'assigned_to'
                     AND d.meta_value = %s
-                WHERE a.post_status = 'publish'
+            WHERE a.post_status = 'publish'
                   AND a.post_type = 'groups'
-                GROUP BY type
-                ORDER BY type DESC
+            GROUP BY type
+            ORDER BY type DESC
         ",
         'user-' . $user_id ), ARRAY_A );
 
@@ -602,6 +615,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     GROUP BY post_id
                 ))
               as contacts,
+              
               (SELECT count(a.ID)
                 FROM $wpdb->posts as a
                   JOIN $wpdb->postmeta as b
@@ -626,6 +640,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     GROUP BY post_id
                   )
               ) as needs_accept,
+              
               (SELECT count(a.ID)
                 FROM $wpdb->posts as a
                   JOIN $wpdb->postmeta as b
@@ -650,6 +665,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                     GROUP BY post_id
                 )
               ) as needs_update,
+              
               (SELECT count(a.ID)
                 FROM $wpdb->posts as a
                   JOIN $wpdb->postmeta as c
@@ -662,8 +678,27 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                       AND d.meta_value = 'active'
                 WHERE a.post_status = 'publish'
                   AND a.post_type = 'groups')
-                as `groups`
+                as `groups`,
+                
+                (SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                  JOIN $wpdb->postmeta as c
+                    ON a.ID=c.post_id
+                      AND c.meta_key = 'assigned_to'
+                      AND c.meta_value = CONCAT( 'user-', %s )
+                  JOIN $wpdb->postmeta as d
+                    ON a.ID=d.post_id
+                      AND d.meta_key = 'group_status'
+                      AND d.meta_value = 'active'
+                  JOIN $wpdb->postmeta as e
+                    ON a.ID=e.post_id
+                      AND e.meta_key = 'group_type'
+                      AND e.meta_value = 'team'
+                WHERE a.post_status = 'publish'
+                  AND a.post_type = 'groups')
+                as `teams`
             ",
+            $user_id,
             $user_id,
             $user_id,
             $user_id,
@@ -701,6 +736,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                   ON a.ID=c.post_id
                      AND c.meta_key = 'group_status'
                      AND c.meta_value = 'active'
+                JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                     AND e.meta_key = 'group_type'
+                     AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
               ) as out_of
@@ -713,6 +752,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                   ON a.ID=c.post_id
                      AND c.meta_key = 'group_status'
                      AND c.meta_value = 'active'
+                JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                     AND e.meta_key = 'group_type'
+                     AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
                 LEFT JOIN $wpdb->postmeta as d
                   ON ( a.ID=d.post_id
                   AND d.meta_key = 'health_metrics' )
@@ -730,7 +773,7 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
     public static function query_project_group_health() {
         global $wpdb;
 
-        $results = $wpdb->get_results($wpdb->prepare( "
+        $results = $wpdb->get_results( "
             SELECT d.meta_value as health_key,
               count(distinct(a.ID)) as count,
               ( SELECT count(*)
@@ -739,6 +782,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                   ON a.ID=c.post_id
                      AND c.meta_key = 'group_status'
                      AND c.meta_value = 'active'
+                JOIN $wpdb->postmeta as d
+                  ON a.ID=d.post_id
+                     AND d.meta_key = 'group_type'
+                     AND ( d.meta_value = 'group' OR d.meta_value = 'church' )
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
               ) as out_of
@@ -749,11 +796,15 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                      AND c.meta_value = 'active'
                 JOIN $wpdb->postmeta as d
                   ON ( a.ID=d.post_id
-                    AND d.meta_key = %s )
+                    AND d.meta_key = 'health_metrics' )
+                JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                     AND e.meta_key = 'group_type'
+                     AND ( e.meta_value = 'group' OR e.meta_value = 'church' )
               WHERE a.post_status = 'publish'
                     AND a.post_type = 'groups'
               GROUP BY d.meta_value
-        ", 'health_metrics' ), ARRAY_A );
+        ", ARRAY_A );
 
         return $results;
     }
@@ -779,24 +830,26 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
               JOIN $wpdb->postmeta as c
                 ON a.ID = c.post_id
                    AND c.meta_key = 'group_status'
-              LEFT JOIN $wpdb->postmeta as d
+              JOIN $wpdb->postmeta as d
                 ON a.ID = d.post_id
                    AND d.meta_key = 'group_type'
+                   AND d.meta_value != 'team'
             WHERE a.post_status = 'publish'
                   AND a.post_type = 'groups'
                   AND a.ID NOT IN (
-              SELECT DISTINCT (p2p_from)
-              FROM $wpdb->p2p
-              WHERE p2p_type = 'groups_to_groups'
-              GROUP BY p2p_from)
+                      SELECT DISTINCT (p2p_from)
+                      FROM $wpdb->p2p
+                      WHERE p2p_type = 'groups_to_groups'
+                      GROUP BY p2p_from)
             UNION
             SELECT
-              p.p2p_from                          as id,
-              p.p2p_to                            as parent_id,
+              p.p2p_from  as id,
+              p.p2p_to    as parent_id,
               (SELECT meta_value
                FROM $wpdb->postmeta
                WHERE post_id = p.p2p_from
-                     AND meta_key = 'group_type') as group_type,
+                     AND meta_key = 'group_type')
+                     as group_type,
                (SELECT meta_value
                FROM $wpdb->postmeta
                WHERE post_id = p.p2p_from
@@ -855,10 +908,10 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
             as needs_accept,
             (SELECT count(a.ID)
                 FROM $wpdb->posts as a
-                            JOIN $wpdb->postmeta as b
-                            ON a.ID=b.post_id
-                               AND b.meta_key = 'requires_update'
-                               AND b.meta_value = '1'
+                    JOIN $wpdb->postmeta as b
+                    ON a.ID=b.post_id
+                       AND b.meta_key = 'requires_update'
+                       AND b.meta_value = '1'
                JOIN $wpdb->postmeta as d
                ON a.ID=d.post_id
                       AND d.meta_key = 'overall_status'
@@ -879,9 +932,26 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 ON a.ID=d.post_id
                     AND d.meta_key = 'group_status'
                 AND d.meta_value = 'active'
+                JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                     AND e.meta_key = 'group_type'
+                     AND e.meta_value != 'team'
                 WHERE a.post_status = 'publish'
                 AND a.post_type = 'groups')
-            as `groups`
+            as `groups`,
+            (SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                JOIN $wpdb->postmeta as d
+                ON a.ID=d.post_id
+                    AND d.meta_key = 'group_status'
+                AND d.meta_value = 'active'
+                JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                     AND e.meta_key = 'group_type'
+                     AND e.meta_value = 'team'
+                WHERE a.post_status = 'publish'
+                AND a.post_type = 'groups')
+            as `teams`
         ",
         ARRAY_A );
 
