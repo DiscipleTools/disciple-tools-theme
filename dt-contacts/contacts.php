@@ -2862,18 +2862,18 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $meta_id = 0;
                 foreach ( $seeker_path_activity as $activity ){
                     $existing_keys[] = $activity["meta_value"];
-                    if ( $activity["hist_time"] >  $most_recent ){
+                    if ( $activity["hist_time"] > $most_recent ){
                         $most_recent = $activity["hist_time"];
                     }
                     $meta_id = $activity["meta_id"];
                 }
                 $activity_to_create = [];
                 for ( $i = $current_index; $i > 0; $i-- ){
-                    if ( !in_array($option_keys[$i], $existing_keys ) ){
+                    if ( !in_array( $option_keys[$i], $existing_keys ) ){
                         $activity_to_create[] = $option_keys[$i];
                     }
                 }
-                foreach( $activity_to_create as $missing_key ){
+                foreach ( $activity_to_create as $missing_key ){
                     $wpdb->query( $wpdb->prepare("
                         INSERT INTO $wpdb->dt_activity_log
                         ( action, object_type, object_subtype, object_id, user_id, hist_time, meta_id, meta_key, meta_value, field_type )
