@@ -346,7 +346,7 @@ let mediaChart = function ( data ) {
   if ( data.length ) {
     let chart = am4core.create("mediachart", am4charts.XYChart);
     chart.data = data
-    setupChart( chart, "outreach", __( 'Media', 'disciple_tools' ) )
+    setupChart( chart, "outreach", __( 'Outreach', 'disciple_tools' ) )
   }
 }
 
@@ -356,7 +356,7 @@ let activityChart = function ( data ) {
   if ( data.length ) {
     let chart = am4core.create("activityChart", am4charts.XYChart);
     chart.data = data
-    setupChart( chart, "value", __( 'Contact activity', 'disciple_tools' ) )
+    setupChart( chart, "value", __( 'Follow-Up', 'disciple_tools' ) )
   }
 }
 let ongoingChart = function ( data ) {
@@ -365,7 +365,7 @@ let ongoingChart = function ( data ) {
   if ( data.length ) {
     let chart = am4core.create("ongoingChart", am4charts.XYChart);
     chart.data = data
-    setupChart( chart, "total", __( 'Movement status', 'disciple_tools' ))
+    setupChart( chart, "total", __( 'Movement Tracking', 'disciple_tools' ))
   }
 }
 

@@ -42,12 +42,12 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
         $content .= '
             <li><a href="">' . esc_html__( 'Contacts', 'disciple_tools' ) . '</a>
                 <ul class="menu vertical nested" id="contacts-menu" aria-expanded="true">
-                    <li><a href="' . site_url( '/metrics/contacts/' ) . '#project_seeker_path" onclick="project_seeker_path()">' . esc_html__( 'Seeker Path', 'disciple_tools' ) . '</a></li>
                     <li><a href="' . site_url( '/metrics/contacts/' ) . '#project_milestones" onclick="project_milestones()">' . esc_html__( 'Milestones', 'disciple_tools' ) . '</a></li>
                     <li><a href="' . site_url( '/metrics/contacts/' ) . '#contact_sources" onclick="show_sources_overview()">' . esc_html__( 'Sources', 'disciple_tools' ) . '</a></li>
                 </ul>
             </li>
             ';
+//                    <li><a href="' . site_url( '/metrics/contacts/' ) . '#project_seeker_path" onclick="project_seeker_path()">' . esc_html__( 'Seeker Path', 'disciple_tools' ) . '</a></li>
 
         return $content;
     }
@@ -190,7 +190,6 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
 
 
     public function seeker_path( $start = null, $end = null ){
-        global $wpdb;
         if ( empty( $start ) ){
             $start = 0;
         }
@@ -198,46 +197,15 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
             $end = time();
         }
 
-        $res = $wpdb->get_results( $wpdb->prepare( "
-            SELECT COUNT( DISTINCT(log.object_id) ) as `value`, log.meta_value as seeker_path
-            FROM $wpdb->dt_activity_log log
-            INNER JOIN $wpdb->posts post
-            ON ( 
-                post.ID = log.object_id
-                AND log.meta_key = 'seeker_path'
-                AND log.object_type = 'contacts' 
-            )
-            INNER JOIN $wpdb->postmeta pm
-            ON (
-                pm.post_id = post.ID
-                AND pm.meta_key = 'seeker_path'
-                AND pm.meta_value = log.meta_value
-            )
-            WHERE post.post_type = 'contacts'
-            AND post.post_status = 'publish'
-            AND log.hist_time > %s
-            AND log.hist_time < %s
-            GROUP BY log.meta_value
-        ", $start, $end ), ARRAY_A );
-
-        $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
-        $seeker_path_options = $field_settings["seeker_path"]["default"];
-        $seeker_path_data = [];
-
-        foreach ( $seeker_path_options as $option_key => $option_value ){
-            $seeker_path_data[$option_value["label"]] = 0;
-            foreach ( $res as $r ){
-                if ( $r["seeker_path"] === $option_key ){
-                    $seeker_path_data[$option_value["label"]] = $r["value"];
-                }
-            }
-        }
+        $seeker_path_activity = Disciple_Tools_Counter_Contacts::seeker_path_activity( $start, $end );
         $return = [];
-        foreach ( $seeker_path_data as $k => $v ){
-            $return[] = [
-                "seeker_path" => $k,
-                "value" => (int) $v
-            ];
+        foreach ( $seeker_path_activity as $key => $value ){
+            if ( $key != "none" ){
+                $return[] = [
+                    "seeker_path" => $value["label"],
+                    "value" => (int) $value["value"]
+                ];
+            }
         }
 
         return $return;
@@ -257,10 +225,8 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
             INNER JOIN $wpdb->posts post 
             ON (
                 post.ID = log.object_id
-                AND log.meta_key = 'milestones'
-                AND log.hist_time > %s
-                AND log.hist_time < %s
-                AND log.object_type = 'contacts'
+                AND post.post_type = 'contacts'
+                AND post.post_status = 'publish'
             )
             INNER JOIN $wpdb->postmeta pm
             ON (
@@ -268,8 +234,10 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
                 AND pm.meta_key = 'milestones'
                 AND pm.meta_value = log.meta_value
             )
-            WHERE post.post_type = 'contacts'
-            AND post.post_status = 'publish'
+            WHERE log.meta_key = 'milestones'
+            AND log.object_type = 'contacts'
+            AND log.hist_time > %s
+            AND log.hist_time < %s
             GROUP BY log.meta_value
         ", $start, $end ), ARRAY_A );
 

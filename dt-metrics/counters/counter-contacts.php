@@ -231,7 +231,6 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
             ON (
                 pm.post_id = post.ID
                 AND pm.meta_key = 'seeker_path'
-                AND pm.meta_value = log.meta_value
             )
             WHERE post.post_type = 'contacts'
             AND log.hist_time > %s
