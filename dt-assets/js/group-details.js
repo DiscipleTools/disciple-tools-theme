@@ -166,7 +166,7 @@ jQuery(document).ready(function($) {
 
   let peopleGroupList = $('.people_groups-list')
   /**
-   * People_groups
+   * People groups
    */
   $.typeahead({
     input: '.js-typeahead-people_groups',

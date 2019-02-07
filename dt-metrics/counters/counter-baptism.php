@@ -49,6 +49,14 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
         }
     }
 
+
+    /**
+     * Generations of baptisms which occurred in a time range
+     * @param $start
+     * @param $end
+     *
+     * @return array
+     */
     public static function get_baptism_generations( $start, $end ){
         if ( !isset( self::$generations[$start . $end] ) ){
             $raw_baptism_generation_list = self::query_get_all_baptism_connections();
@@ -80,12 +88,12 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
      * @access public
      * @since  0.1.0
      *
-     * @param $start int unix timestamp
-     * @param $end int unix timestamp
+     * @param int $start unix timestamp
+     * @param int $end unix timestamp
      *
      * @return int
      */
-    public static function get_number_of_baptizers( $start, $end ) {
+    public static function get_number_of_baptizers( int $start, int $end ) {
         global $wpdb;
 
         $results = $wpdb->get_var( $wpdb->prepare(
@@ -106,6 +114,14 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
         $start, $end ));
         return $results;
     }
+
+    /**
+     * Baptisms with baptism date in range
+     * @param int $start_date
+     * @param int $end_date
+     *
+     * @return array
+     */
 
     public static function query_get_baptisms_id_list( $start_date = 0, $end_date = PHP_INT_MAX ) {
         global $wpdb;

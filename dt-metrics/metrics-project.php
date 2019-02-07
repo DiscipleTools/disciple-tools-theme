@@ -38,7 +38,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
 
     public function add_menu( $content ) {
         $content .= '
-            <li><a href="'. site_url( '/metrics/project/' ) .'#project_critical_path" onclick="project_critical_path()">'. esc_html__( 'Critical Path', 'disciple_tools' ) .'</a></li>
             <li><a href="">' .  esc_html__( 'Project', 'disciple_tools' ) . '</a>
                 <ul class="menu vertical nested" id="project-menu" aria-expanded="true">
                     <li><a href="'. site_url( '/metrics/project/' ) .'#project_overview" onclick="project_overview()">'. esc_html__( 'Overview', 'disciple_tools' ) .'</a></li>
@@ -114,9 +113,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'label_groups' => strtolower( __( 'groups', 'disciple_tools' ) ),
                 'label_generations' => strtolower( __( 'generations', 'disciple_tools' ) ),
                 'label_groups_by_type' => strtolower( __( 'groups by type', 'disciple_tools' ) ),
-                'label_stats_as_of' => strtolower( __( 'stats as of', 'disciple_tools' ) ),
-                'label_select_year' => __( 'Select All time or a specific year to display', 'disciple_tools' ),
-                'label_all_time' => __( 'All time', 'disciple_tools' ),
                 'label_group_types' => __( 'Group Types', 'disciple_tools' ),
                 'label_total_locations' => __( 'Total Locations', 'disciple_tools' ),
                 'label_active_locations' => __( 'Active Locations', 'disciple_tools' ),
@@ -126,7 +122,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'label_counties' => __( 'Counties', 'disciple_tools' ),
             ],
             'hero_stats' => self::chart_project_hero_stats(),
-            'critical_path' => self::chart_critical_path( dt_date_start_of_year(), dt_date_end_of_year() ),
             'contacts_progress' => self::chart_contacts_progress( 'project' ),
             'group_types' => self::chart_group_types( 'project' ),
             'group_health' => self::chart_group_health( 'project' ),
@@ -145,15 +140,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
     public function add_api_routes() {
         $version = '1';
         $namespace = 'dt/v' . $version;
-
-        register_rest_route(
-            $namespace, '/metrics/critical_path_by_year/(?P<id>[\w-]+)', [
-                [
-                    'methods'  => WP_REST_Server::READABLE,
-                    'callback' => [ $this, 'critical_path_by_year' ],
-                ],
-            ]
-        );
         register_rest_route(
             $namespace, '/metrics/project/tree', [
                 [
@@ -164,30 +150,6 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
         );
     }
 
-    public function critical_path_by_year( WP_REST_Request $request ) {
-        if ( !$this->has_permission() ){
-            return new WP_Error( "critical_path_by_year", "Missing Permissions", [ 'status' => 400 ] );
-        }
-        $params = $request->get_params();
-        if ( isset( $params['id'] ) ) {
-            if ( $params['id'] == 'all'){
-                $start = 0;
-                $end = PHP_INT_MAX;
-            } else {
-                $year = (int) $params['id'];
-                $start = DateTime::createFromFormat( "Y-m-d", $year . '-01-01' )->getTimestamp();
-                $end = DateTime::createFromFormat( "Y-m-d", ( $year + 1 ) . '-01-01' )->getTimestamp();
-            }
-            $result = Disciple_Tools_Metrics_Hooks_Base::chart_critical_path( $start, $end );
-            if ( is_wp_error( $result ) ) {
-                return $result;
-            } else {
-                return new WP_REST_Response( $result );
-            }
-        } else {
-            return new WP_Error( "critical_path_by_year", "Missing a valid contact id", [ 'status' => 400 ] );
-        }
-    }
 
     public function tree( WP_REST_Request $request ) {
         if ( !$this->has_permission() ){
