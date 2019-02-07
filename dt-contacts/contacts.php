@@ -37,6 +37,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         ];
         add_action( "dt_contact_created", [ $this, "check_for_duplicates" ], 10, 2 );
         add_action( "dt_contact_updated", [ $this, "check_for_duplicates" ], 10, 2 );
+        add_action( "dt_contact_updated", [ $this, "check_seeker_path" ], 10, 4 );
+
         parent::__construct();
     }
 
@@ -682,7 +684,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         //hook for signaling that a contact has been updated and which keys have been changed
         if ( !is_wp_error( $contact )){
-            do_action( "dt_contact_updated", $contact_id, $initial_fields, $contact );
+            do_action( "dt_contact_updated", $contact_id, $initial_fields, $contact, $existing_contact );
             if ( !$silent ){
                 Disciple_Tools_Notifications::insert_notification_for_post_update( "contacts", $contact, $existing_contact, $initial_keys );
             }
@@ -2826,6 +2828,61 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         asort( $rv );
         return $rv;
+    }
+
+
+    /**
+     * Make sure activity is created for all the steps before the current seeker path
+     *
+     * @param $contact_id
+     * @param $initial_fields
+     * @param $contact
+     * @param $previous_values
+     */
+    public function check_seeker_path( $contact_id, $initial_fields, $contact, $previous_values ){
+        if ( isset( $contact["seeker_path"]["key"] ) && $contact["seeker_path"]["key"] != "none" ){
+            $current_key = $contact["seeker_path"]["key"];
+            $prev_key = isset( $previous_values["seeker_path"]["key"] ) ? $previous_values["seeker_path"]["key"] : "none";
+            $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+            $seeker_path_options = $field_settings["seeker_path"]["default"];
+            $option_keys = array_keys( $seeker_path_options );
+            $current_index = array_search( $current_key, $option_keys );
+            $prev_option_key = $option_keys[ $current_index - 1 ];
+
+            if ( $prev_option_key != $prev_key && $current_index > array_search( $prev_key, $option_keys ) ){
+                global $wpdb;
+                $seeker_path_activity = $wpdb->get_results( $wpdb->prepare( "
+                    SELECT meta_value, hist_time, meta_id
+                    FROM $wpdb->dt_activity_log
+                    WHERE object_id = %s
+                    AND meta_key = 'seeker_path'
+                ", $contact_id), ARRAY_A );
+                $existing_keys = [];
+                $most_recent = 0;
+                $meta_id = 0;
+                foreach ( $seeker_path_activity as $activity ){
+                    $existing_keys[] = $activity["meta_value"];
+                    if ( $activity["hist_time"] > $most_recent ){
+                        $most_recent = $activity["hist_time"];
+                    }
+                    $meta_id = $activity["meta_id"];
+                }
+                $activity_to_create = [];
+                for ( $i = $current_index; $i > 0; $i-- ){
+                    if ( !in_array( $option_keys[$i], $existing_keys ) ){
+                        $activity_to_create[] = $option_keys[$i];
+                    }
+                }
+                foreach ( $activity_to_create as $missing_key ){
+                    $wpdb->query( $wpdb->prepare("
+                        INSERT INTO $wpdb->dt_activity_log
+                        ( action, object_type, object_subtype, object_id, user_id, hist_time, meta_id, meta_key, meta_value, field_type )
+                        VALUES ( 'field_update', 'contacts', 'seeker_path', %s, %d, %d, %d, 'seeker_path', %s, 'key_select' )",
+                        $contact_id, get_current_user_id(), $most_recent - 1, $meta_id, $missing_key
+                    ));
+                }
+            }
+        }
     }
 
 }
