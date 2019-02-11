@@ -88,8 +88,8 @@ jQuery(document).ready(function($) {
   }
   $(".show-tabs").on("click", function () {
     let id = $(this).attr("id")
-    $('.tabs-section').prop('checked', id === 'show-all-tabs')
-    display_activity_comment()
+    $('input.tabs-section').prop('checked', id === 'show-all-tabs')
+    saveTabs()
   })
 
   let commentTemplate = _.template(`
@@ -198,9 +198,6 @@ jQuery(document).ready(function($) {
       let activeTabs = $('#comment-activity-tabs .tabs-section:checked')
       activeTabs.each((i, e)=>{
         activeTabIds.push($(e).data("id"))
-      })
-    } else {
-      activeTabIds.forEach(tab=>{
       })
     }
     let possibleTabs = _.union( [ 'activity', 'comment' ], commentsSettings.additional_sections.map((l)=>{return l['key']}))
@@ -385,6 +382,9 @@ jQuery(document).ready(function($) {
   })
 
   $('#comment-activity-tabs .tabs-section').on("change", function () {
+    saveTabs()
+  })
+  let saveTabs = ()=>{
     let activeTabs = $('#comment-activity-tabs .tabs-section:checked')
     let activeTabIds = [];
     activeTabs.each((i, e)=>{
@@ -392,7 +392,8 @@ jQuery(document).ready(function($) {
     })
     document.cookie = `contact_details_tabs=${JSON.stringify(activeTabIds)};path=/;expires=Fri, 31 Dec 9999 23:59:59 GMT"`
     display_activity_comment()
-  })
+  }
+
 
   let searchUsersPromise = null
 
