@@ -182,10 +182,8 @@ else {
             /**
              * Theme specific files
              */
-//            require_once( get_template_directory() . '/dt-assets/functions/theme-support.php' ); // Theme support options
             require_once( get_template_directory() . '/dt-assets/functions/cleanup.php' ); // WP Head and other cleanup functions
             require_once( get_template_directory() . '/dt-assets/functions/enqueue-scripts.php' ); // Register scripts and stylesheets
-//            require_once( get_template_directory() . '/dt-assets/functions/login.php' ); // Customize the WordPress login menu
             require_once( get_template_directory() . '/dt-assets/functions/menu.php' ); // Register menus and menu walkers
             require_once( get_template_directory() . '/dt-assets/functions/details-bar.php' ); // Breadcrumbs bar
 

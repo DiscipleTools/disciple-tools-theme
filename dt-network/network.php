@@ -413,7 +413,7 @@ class Disciple_Tools_Network {
         ];
 
         if ( $report_data ) {
-            set_transient( 'dt_snapshot_report', $report_data, strtotime( 'tomorrow midnight') );
+            set_transient( 'dt_snapshot_report', $report_data, strtotime( 'tomorrow midnight' ) );
             return $report_data;
         } else {
             return new WP_Error( __METHOD__, 'Failed to get report' );
@@ -683,7 +683,7 @@ class Disciple_Tools_Network {
         return $locations;
     }
 
-    
+
 
 }
 Disciple_Tools_Network::instance();
@@ -741,8 +741,7 @@ class Disciple_Tools_Cron_Snapshot_Async extends Disciple_Tools_Async_Task {
     }
 }
 new Disciple_Tools_Cron_Snapshot_Scheduler();
-try
-{
+try {
     new Disciple_Tools_Cron_Snapshot_Async();
 } catch ( Exception $e ) {
     dt_write_log( $e );
@@ -764,15 +763,24 @@ class Disciple_Tools_Snapshot_Report
         }
 
         $location_list = [
-            ['id' => 'AF', 'name' => 'Afganistan'],
-            ['id' => 'US', 'name' => 'United States'],
-            ['id' => 'TN', 'name' => 'Tunisia'],
+            [
+        'id' => 'AF',
+        'name' => 'Afganistan'
+            ],
+            [
+            'id' => 'US',
+            'name' => 'United States'
+            ],
+            [
+            'id' => 'TN',
+            'name' => 'Tunisia'
+            ],
         ];
-        $location_id = rand(0,2);
+        $location_id = rand( 0, 2 );
 
         $profile = dt_get_partner_profile();
 
-        $report_data =  [
+        $report_data = [
             'partner_id' => $profile['partner_id'],
             'profile' => $profile,
             'contacts' => [
@@ -786,8 +794,8 @@ class Disciple_Tools_Snapshot_Report
                         'all_baptisms' => self::query( 'total_baptisms' ),
                     ],
                     'added' => [
-                        'sixty_days' => self::counted_by_day('baptisms'),
-                        'twenty_four_months' => self::counted_by_month('baptisms'),
+                        'sixty_days' => self::counted_by_day( 'baptisms' ),
+                        'twenty_four_months' => self::counted_by_month( 'baptisms' ),
                     ],
                     'generations' => self::generations( 'baptisms' ),
                 ],
@@ -801,8 +809,8 @@ class Disciple_Tools_Snapshot_Report
                 'current_state' => self::groups_current_state(),
                 'by_types' => self::groups_by_type(),
                 'added' => [
-                     'sixty_days' => self::counted_by_day( 'groups'),
-                     'twenty_four_months' => self::counted_by_month('groups'),
+                     'sixty_days' => self::counted_by_day( 'groups' ),
+                     'twenty_four_months' => self::counted_by_month( 'groups' ),
                 ],
                 'health' => self::group_health(),
                 'church_generations' => self::generations( 'church' ),
@@ -811,8 +819,8 @@ class Disciple_Tools_Snapshot_Report
             'users' => [
                 'current_state' => self::users_current_state(),
                 'login_activity' => [
-                    'sixty_days' => self::counted_by_day('logged_in'),
-                    'twenty_four_months' => self::counted_by_month('logged_in'),
+                    'sixty_days' => self::counted_by_day( 'logged_in' ),
+                    'twenty_four_months' => self::counted_by_month( 'logged_in' ),
                 ],
                 'last_thirty_day_engagement' => self::user_logins_last_thirty_days(),
             ],
@@ -822,16 +830,16 @@ class Disciple_Tools_Snapshot_Report
                         'id' => $location_list[$location_id]['id'],
                         'name' => $location_list[$location_id]['name'],
                         'site_name' => $profile['partner_name'],
-                        'contacts' => rand(300, 1000),
-                        'groups' => rand(300, 1000),
+                        'contacts' => rand( 300, 1000 ),
+                        'groups' => rand( 300, 1000 ),
                         'value' => 100,
                         'color' => 'red'
                     ]
                 ],
                 'current_state' => [
-                    'active_locations' => rand(300, 1000),
-                    'inactive_locations' => rand(300, 1000),
-                    'all_locations' => rand(300, 1000),
+                    'active_locations' => rand( 300, 1000 ),
+                    'inactive_locations' => rand( 300, 1000 ),
+                    'all_locations' => rand( 300, 1000 ),
                 ],
                 'list' => [
                     [
@@ -883,7 +891,7 @@ class Disciple_Tools_Snapshot_Report
         ];
 
         if ( $report_data ) {
-            set_transient( 'dt_snapshot_report', $report_data, strtotime( 'tomorrow') );
+            set_transient( 'dt_snapshot_report', $report_data, strtotime( 'tomorrow' ) );
             return $report_data;
         } else {
             return new WP_Error( __METHOD__, 'Failed to get report' );
@@ -927,9 +935,9 @@ class Disciple_Tools_Snapshot_Report
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         $status_defaults = $contact_fields['overall_status']['default'];
         $current_state = self::query( 'contacts_current_state' );
-        foreach( $status_defaults as $key => $status ) {
+        foreach ( $status_defaults as $key => $status ) {
             $data[$key] = 0;
-            foreach( $current_state as $state ) {
+            foreach ( $current_state as $state ) {
                 if ( $state['status'] === $key ) {
                     $data[$key] = (int) $state['count'];
                 }
@@ -939,31 +947,42 @@ class Disciple_Tools_Snapshot_Report
     }
 
     public static function counted_by_day( $type = null ) {
-        $data1 = []; $data2 = []; $data3 = [];
+        $data1 = [];
+        $data2 = [];
+        $data3 = [];
 
         switch ( $type ) {
             case 'groups':
-                $dates = self::query( 'counted_by_day', [ 'object_type' => 'groups', 'action' => 'created' ] );
+                $dates = self::query( 'counted_by_day', [
+                    'object_type' => 'groups',
+                    'action' => 'created'
+                ] );
                 break;
             case 'logged_in':
-                $dates = self::query( 'counted_by_day', [ 'object_type' => 'user', 'action' => 'logged_in' ] );
+                $dates = self::query( 'counted_by_day', [
+                    'object_type' => 'user',
+                    'action' => 'logged_in'
+                ] );
                 break;
             case 'baptisms':
                 $dates = self::query( 'baptisms_counted_by_day' );
                 break;
             default: // contacts
-                $dates = self::query( 'counted_by_day', [ 'object_type' => 'contacts', 'action' => 'created' ] );
+                $dates = self::query( 'counted_by_day', [
+                    'object_type' => 'contacts',
+                    'action' => 'created'
+                ] );
                 break;
         }
 
-        foreach( $dates as $date ) {
+        foreach ( $dates as $date ) {
             $date['value'] = (int) $date['value'];
             $data1[$date['date']] = $date;
         }
 
         $day_list = self::get_day_list( 60 );
         foreach ( $day_list as $day ) {
-            if( isset( $data1[$day] ) ) {
+            if ( isset( $data1[$day] ) ) {
                 $data2[] = [
                     'date' => $data1[$day]['date'],
                     'value' => $data1[$day]['value'],
@@ -976,7 +995,7 @@ class Disciple_Tools_Snapshot_Report
             }
         }
 
-        arsort($data2);
+        arsort( $data2 );
 
         foreach ( $data2 as $d ) {
             $data3[] = $d;
@@ -986,31 +1005,42 @@ class Disciple_Tools_Snapshot_Report
     }
 
     public static function counted_by_month( $type = null ) {
-        $data1 = []; $data2 = []; $data3 = [];
+        $data1 = [];
+        $data2 = [];
+        $data3 = [];
 
         switch ( $type ) {
             case 'groups':
-                $dates = self::query( 'counted_by_month', [ 'object_type' => 'groups', 'action' => 'created' ] );
+                $dates = self::query( 'counted_by_month', [
+                    'object_type' => 'groups',
+                    'action' => 'created'
+                ] );
                 break;
             case 'logged_in':
-                $dates = self::query( 'counted_by_month', [ 'object_type' => 'user', 'action' => 'logged_in' ] );
+                $dates = self::query( 'counted_by_month', [
+                    'object_type' => 'user',
+                    'action' => 'logged_in'
+                ] );
                 break;
             case 'baptisms':
                 $dates = self::query( 'baptisms_counted_by_month' );
                 break;
             default: // contacts
-                $dates = self::query( 'counted_by_month', [ 'object_type' => 'contacts', 'action' => 'created' ] );
+                $dates = self::query( 'counted_by_month', [
+                    'object_type' => 'contacts',
+                    'action' => 'created'
+                ] );
                 break;
         }
 
-        foreach( $dates as $date ) {
+        foreach ( $dates as $date ) {
             $date['value'] = (int) $date['value'];
             $data1[$date['date']] = $date;
         }
 
         $list = self::get_month_list( 25 );
         foreach ( $list as $month ) {
-            if( isset( $data1[$month] ) ) {
+            if ( isset( $data1[$month] ) ) {
                 $data2[] = [
                     'date' => $data1[$month]['date'] . '-01',
                     'value' => $data1[$month]['value'],
@@ -1023,7 +1053,7 @@ class Disciple_Tools_Snapshot_Report
             }
         }
 
-        arsort($data2);
+        arsort( $data2 );
 
         foreach ( $data2 as $d ) {
             $data3[] = $d;
@@ -1066,8 +1096,8 @@ class Disciple_Tools_Snapshot_Report
      */
     public static function get_day_list( $number_of_days = 60 ) {
         $d = [];
-        for($i = 0; $i < $number_of_days; $i++) {
-            $d[] = date("Y-m-d", strtotime('-'. $i .' days') );
+        for ($i = 0; $i < $number_of_days; $i++) {
+            $d[] = date( "Y-m-d", strtotime( '-'. $i .' days' ) );
         }
         return $d;
     }
@@ -1083,8 +1113,8 @@ class Disciple_Tools_Snapshot_Report
      */
     public static function get_month_list( $number_of_months = 25 ) {
         $d = [];
-        for($i = 0; $i < $number_of_months; $i++) {
-            $d[] = date("Y-m", strtotime('-'. $i .' months') );
+        for ($i = 0; $i < $number_of_months; $i++) {
+            $d[] = date( "Y-m", strtotime( '-'. $i .' months' ) );
         }
         return $d;
     }
@@ -1130,7 +1160,7 @@ class Disciple_Tools_Snapshot_Report
         // Add types and status
         $types_and_status = self::query( 'groups_types_and_status' );
         foreach ( $types_and_status as $value ) {
-            $value['type'] = str_replace( '-', '_', $value['type']);
+            $value['type'] = str_replace( '-', '_', $value['type'] );
 
             $data[$value['status']][$value['type']] = (int) $value['count'];
 
@@ -1196,7 +1226,9 @@ class Disciple_Tools_Snapshot_Report
     }
 
     public static function group_health() {
-        $data = []; $labels = []; $keyed_practicing = [];
+        $data = [];
+        $labels = [];
+        $keyed_practicing = [];
 
         // Make key list
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
@@ -1208,7 +1240,7 @@ class Disciple_Tools_Snapshot_Report
         $practicing = self::query( 'group_health' );
 
         // build keyed practicing
-        foreach( $practicing as $value ) {
+        foreach ( $practicing as $value ) {
             $keyed_practicing[$value['category']] = $value['practicing'];
         }
 
@@ -1216,7 +1248,7 @@ class Disciple_Tools_Snapshot_Report
         $total_groups = self::query( 'groups_churches_total' ); // total groups and churches
 
         // add real numbers and prepare array
-        foreach( $labels as $key => $label ) {
+        foreach ( $labels as $key => $label ) {
             if ( isset( $keyed_practicing[$key] ) ) {
                 $not_practicing = (int) $total_groups - $keyed_practicing[$key];
                 if ( $not_practicing < 1 ) {
@@ -1278,11 +1310,13 @@ class Disciple_Tools_Snapshot_Report
     }
 
     public static function follow_up_funnel() {
-        $data = []; $labels = []; $keyed_result = [];
+        $data = [];
+        $labels = [];
+        $keyed_result = [];
 
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
 
-        foreach( $contact_fields['seeker_path']['default'] as $key => $value ) {
+        foreach ( $contact_fields['seeker_path']['default'] as $key => $value ) {
             $labels[$key] = $value['label'];
         }
 
@@ -1291,11 +1325,11 @@ class Disciple_Tools_Snapshot_Report
             $results = [];
         }
 
-        foreach( $results as $result ) {
+        foreach ( $results as $result ) {
             $keyed_result[$result['key']] = $result;
         }
 
-        foreach( $labels as $key => $label ) {
+        foreach ( $labels as $key => $label ) {
             if ( isset( $keyed_result[$key] ) ) {
                 $data[] = [
                     "name" => $label,
@@ -1350,7 +1384,7 @@ class Disciple_Tools_Snapshot_Report
                 if ( empty( $baptisms ) ) {
                     $generation = [];
                 } else {
-                    foreach( $baptisms as $key => $value ) {
+                    foreach ( $baptisms as $key => $value ) {
                         $generation[] = [
                             'generation' => $key,
                             'value' => $value,
@@ -1493,12 +1527,12 @@ class Disciple_Tools_Snapshot_Report
                 /**
                  * Returns the different types of groups and their count
                  *
-                 *  pre-group	active	    5
-                    pre-group	inactive	7
-                    group	    active	    2
-                    group	    inactive	1
-                    church	    active	    9
-                    church	    inactive	2
+                 *  pre-group   active      5
+                    pre-group   inactive    7
+                    group       active      2
+                    group       inactive    1
+                    church      active      9
+                    church      inactive    2
                  */
                 $results = $wpdb->get_results( "
                     SELECT
@@ -1518,17 +1552,17 @@ class Disciple_Tools_Snapshot_Report
                     ORDER BY type ASC
                 ", ARRAY_A );
                 break;
-                
+
             case 'baptisms_counted_by_day':
             /**
              * Returns list grouped by timestamp
              *
-             *   2018-04-30	    9
-             *   2018-04-29	    11
-             *   2018-04-28	    9
-             *   2018-04-27	    39
+             *   2018-04-30     9
+             *   2018-04-29     11
+             *   2018-04-28     9
+             *   2018-04-27     39
              */
-            $results = $wpdb->get_results( "
+                $results = $wpdb->get_results( "
                SELECT
                   from_unixtime( meta_value , '%Y-%m-%d') as date,
                   count( DISTINCT object_id) as value
@@ -1549,10 +1583,10 @@ class Disciple_Tools_Snapshot_Report
                  *
                  * Returns list grouped by timestamp
                  *
-                 *   2019-01	    9
-                 *   2018-12	    11
+                 *   2019-01        9
+                 *   2018-12        11
                  *   2018-11        9
-                 *   2018-10	    39
+                 *   2018-10        39
                  *
                  */
                 $results = $wpdb->get_results( "
@@ -1574,10 +1608,10 @@ class Disciple_Tools_Snapshot_Report
                 /**
                  * Returns the count for baptisms in the system
                  *
-                 *   2018-04-30	    9
-                 *   2018-04-29	    11
-                 *   2018-04-28	    9
-                 *   2018-04-27	    39
+                 *   2018-04-30     9
+                 *   2018-04-29     11
+                 *   2018-04-28     9
+                 *   2018-04-27     39
                  */
                 $results = $wpdb->get_var( "
                    SELECT
@@ -1589,7 +1623,7 @@ class Disciple_Tools_Snapshot_Report
                         AND meta_value != ''
                         AND meta_value REGEXP ('^[0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
                 " );
-                if ( empty( $results) ) {
+                if ( empty( $results ) ) {
                     $results = 0;
                 } else {
                     $results = (int) $results;
@@ -1602,10 +1636,10 @@ class Disciple_Tools_Snapshot_Report
                  *
                  * Returns list grouped by timestamp
                  *
-                 *   2019-01	    9
-                 *   2018-12	    11
+                 *   2019-01        9
+                 *   2018-12        11
                  *   2018-11        9
-                 *   2018-10	    39
+                 *   2018-10        39
                  *
                  */
                 if ( isset( $args['action'] ) && isset( $args['object_type'] ) ) {
@@ -1639,10 +1673,10 @@ class Disciple_Tools_Snapshot_Report
                  *
                  * Returns list grouped by timestamp
                  *
-                 *   2019-01	    9
-                 *   2018-12	    11
+                 *   2019-01        9
+                 *   2018-12        11
                  *   2018-11        9
-                 *   2018-10	    39
+                 *   2018-10        39
                  *
                  */
                 if ( isset( $args['action'] ) && isset( $args['object_type'] ) ) {
@@ -1654,7 +1688,7 @@ class Disciple_Tools_Snapshot_Report
 
                 $results = $wpdb->get_results( $wpdb->prepare( "
                     SELECT
-                      from_unixtime( hist_time , '%Y-%m') as date,
+                      from_unixtime( hist_time , '%%Y-%%m') as date,
                       count( DISTINCT object_id) as value
                     FROM $wpdb->dt_activity_log
                     WHERE object_type = %s
@@ -1695,16 +1729,16 @@ class Disciple_Tools_Snapshot_Report
                  * Returns health numbers for groups and churches but not pre-groups
                  *
                  *  category            practicing
-                 *  church_baptism	    4
-                    church_bible	    5
-                    church_commitment	1
-                    church_communion	2
-                    church_fellowship	2
-                    church_giving	    1
-                    church_leaders	    1
-                    church_praise	    1
-                    church_prayer	    4
-                    church_sharing	    2
+                 *  church_baptism      4
+                    church_bible        5
+                    church_commitment   1
+                    church_communion    2
+                    church_fellowship   2
+                    church_giving       1
+                    church_leaders      1
+                    church_praise       1
+                    church_prayer       4
+                    church_sharing      2
                  *
                  */
                 $results = $wpdb->get_results( "
