@@ -202,7 +202,7 @@ jQuery(document).ready(function($) {
     }
     let possibleTabs = _.union( [ 'activity', 'comment' ], commentsSettings.additional_sections.map((l)=>{return l['key']}))
     possibleTabs.forEach(tab=>{
-        $(`#tab-button-${tab}`).prop('checked', activeTabIds.includes(tab))
+      $(`#tab-button-${tab}`).prop('checked', activeTabIds.includes(tab))
     })
 
     let commentsWrapper = $("#comments-wrapper")
@@ -270,6 +270,13 @@ jQuery(document).ready(function($) {
       }
     }
   });
+  $( document ).ajaxSend(function(event, xhr, settings) {
+    if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
+      if (!settings.url.includes("notifications")){
+        $("#comments-activity-spinner.loading-spinner").addClass("active")
+      }
+    }
+  });
 
   let refreshActivity = ()=>{
     get_all();
@@ -289,18 +296,18 @@ jQuery(document).ready(function($) {
       comment = comment.replace(urlRegex, (match)=>{
         let url = match
         if(match.indexOf("@") === -1 && match.indexOf("[") === -1 && match.indexOf("(") === -1 && match.indexOf("href") === -1) {
-              if (match.indexOf("http") === 0 && match.indexOf("www.") === -1) {
-                  url = match
-              }
-              else if (match.indexOf("http") === -1 && match.indexOf("www.") === 0) {
-                  url = "http://" + match
-              }
-              else if (match.indexOf("www.") === -1) {
-                  url = "http://www." + match
-              }
-              return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`
+          if (match.indexOf("http") === 0 && match.indexOf("www.") === -1) {
+            url = match
           }
-          return match
+          else if (match.indexOf("http") === -1 && match.indexOf("www.") === 0) {
+            url = "http://" + match
+          }
+          else if (match.indexOf("www.") === -1) {
+            url = "http://www." + match
+          }
+          return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`
+        }
+        return match
       })
       let linkRegex = /\[(.*?)\]\((.+?)\)/g
       comment = comment.replace(linkRegex, (match, text, url)=>{
@@ -330,6 +337,7 @@ jQuery(document).ready(function($) {
       getActivityPromise
     )
     getAllPromise.then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
+      $("#comments-activity-spinner.loading-spinner").removeClass("active")
       const commentData = commentDataStatusJQXHR[0];
       const activityData = activityDataStatusJQXHR[0];
       prepareData(commentData, activityData)

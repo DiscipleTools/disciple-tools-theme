@@ -51,7 +51,8 @@
             </div>
         </div>
         <div class="cell">
-            <h3 class="section-header"><?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?></h3>
+            <h3 class="section-header" style="display: inline-block"><?php esc_html_e( "Comments and Activity", 'disciple_tools' ) ?></h3>
+            <div id="comments-activity-spinner" style="display: inline-block" class="loading-spinner"></div>
             <div>
             <span style="display: inline-block; margin-right:5px; vertical-align:top; font-weight: bold"><?php esc_html_e( "Showing:", 'disciple_tools' ) ?></span>
             <ul id="comment-activity-tabs" style="display: inline-block; margin: 0">
