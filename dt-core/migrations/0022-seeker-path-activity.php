@@ -29,15 +29,17 @@ class Disciple_Tools_Migration_0022 extends Disciple_Tools_Migration
                     )
                 ", $option_key, $prev_key), ARRAY_A
                 );
-                $query = " INSERT INTO $wpdb->dt_activity_log
-                    ( action, object_type, object_subtype, object_id, user_id, hist_time, meta_id, meta_key, meta_value, field_type )
-                    VALUES ";
-                foreach ( $res as $r ){
-                    $query .= $wpdb->prepare( "( 'field_update', 'contacts', 'seeker_path', %s, %d, %d, %d, 'seeker_path', %s, 'key_select' ), ", $r["object_id"], $r["user_id"], $r["hist_time"] - 1, $r["meta_id"], $prev_key );
+                if ( sizeof( $res ) > 0 ){
+                    $query = " INSERT INTO $wpdb->dt_activity_log
+                        ( action, object_type, object_subtype, object_id, user_id, hist_time, meta_id, meta_key, meta_value, field_type )
+                        VALUES ";
+                    foreach ( $res as $r ){
+                        $query .= $wpdb->prepare( "( 'field_update', 'contacts', 'seeker_path', %s, %d, %d, %d, 'seeker_path', %s, 'key_select' ), ", $r["object_id"], $r["user_id"], $r["hist_time"] - 1, $r["meta_id"], $prev_key );
+                    }
+                    $query .= ';';
+                    $query = str_replace( ", ;", ";", $query ); //remove last comma
+                    $wpdb->query( $query ); //phpcs:ignore
                 }
-                $query .= ';';
-                $query = str_replace( ", ;", ";", $query ); //remove last comma
-                $wpdb->query( $query ); //phpcs:ignore
             }
         }
     }
