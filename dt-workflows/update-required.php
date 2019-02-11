@@ -60,7 +60,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     esc_sql( $setting["seeker_path"] )
                 ), OBJECT );
                 foreach ( $contacts_need_update as $contact ) {
-                    $user_name    = ( "@" . dt_get_assigned_name( $contact->ID, true ) . " " ) ?? "";
+                    $user_name    = ( "@" . dt_get_user_display_name( $contact->ID ) . " " ) ?? "";
                     $comment_html = esc_html( $user_name . $setting["comment"] );
                     Disciple_Tools_Contacts::add_comment( $contact->ID, $comment_html, "comment", [ "user_id" => 0 ], false, true );
                     Disciple_Tools_contacts::update_contact( $contact->ID, [ "requires_update" => true ], false );
@@ -95,7 +95,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     $date
                 ), OBJECT );
                 foreach ( $groups_need_update as $group ) {
-                    $user_name    = ( "@" . dt_get_assigned_name( $group->ID, true ) . " " ) ?? "";
+                    $user_name    = ( "@" . dt_get_user_display_name( $group->ID ) . " " ) ?? "";
                     $comment_html = esc_html( $user_name . $setting["comment"] );
                     Disciple_Tools_Groups::add_comment( $group->ID, $comment_html, "updated_needed", [
                         "user_id" => 0,
