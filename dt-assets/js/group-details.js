@@ -688,6 +688,9 @@ jQuery(document).ready(function($) {
     ).then(resp=>{
       group = resp
       resetDetailsFields(group);
+      if ( id === 'group_status' ){
+        statusChanged()
+      }
     }).catch(err=>{
       console.log(err)
     })
@@ -708,6 +711,18 @@ jQuery(document).ready(function($) {
     }).catch(handelAjaxError)
   })
 
+  let statusChanged = ()=>{
+    let statusSelect = $('#group_status')
+    let status = _.get(group, "group_status.key")
+    let statusColor = _.get(wpApiGroupsSettings,
+      `groups_custom_fields_settings.group_status.default.${status}.color`
+    )
+    if (statusColor){
+      statusSelect.css("background-color", statusColor)
+    } else {
+      statusSelect.css("background-color", "#4CAF50")
+    }
+  }
   /**
    * Church fields
    */
