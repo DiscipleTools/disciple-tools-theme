@@ -2171,8 +2171,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $exclude_id
             ), ARRAY_N
         );
-        // if there are more than 50, it is most likely not a duplicate
-        return sizeof( $dups ) > 50 ? [] : $dups;
+        // if there are more than 25, it is most likely not a duplicate
+        return sizeof( $dups ) > 25 ? [] : $dups;
     }
 
     public function get_all_duplicates() {
