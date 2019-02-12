@@ -1008,7 +1008,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             "assigned_to" => sprintf( "user-%d", get_current_user_id() ),
             "start_date" => time()
         ];
-        if ( isset( $field["group_type"] ) && !isset( $fields["church_start_date"] ) && $fields["group_type"] === 'church' ){
+        if ( isset( $fields["group_type"] ) && !isset( $fields["church_start_date"] ) && $fields["group_type"] === 'church' ){
             $fields["church_start_date"] = time();
         }
 
