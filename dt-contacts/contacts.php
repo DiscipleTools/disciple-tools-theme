@@ -1466,15 +1466,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( !$master_id || !$non_master_id) { return; }
         $master = self::get_contact( $master_id );
         $non_master = self::get_contact( $non_master_id );
-        $keys = array(
-            'groups',
-            'baptized_by',
-            'baptized',
-            'coached_by',
-            'coaching',
-            'locations',
-            'people_groups'
-        );
+        $keys = self::$contact_connection_types;
 
         $update = [];
         $to_remove = [];
@@ -2279,7 +2271,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     public function check_for_duplicates( $contact_id, $fields ){
-        $fields_to_check = [ "contact_phone", "contact_email", "title" ];
+        $fields_to_check = [ "contact_phone", "contact_email", "contact_address", "title" ];
         $fields_to_check = apply_filters( "dt_contact_duplicate_fields_to_check", $fields_to_check );
         foreach ( $fields as $field_id => $field_value ){
             if ( in_array( $field_id, $fields_to_check ) && !empty( $field_value ) ){
@@ -2321,7 +2313,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $values = array();
         foreach ($fields as $field) {
             foreach ($contact[$field] ?? [] as $arr_val) {
-                $values[] = $arr_val['value'];
+                if ( !empty( $arr_val['value'] ) ){
+                    $values[] = $arr_val['value'];
+                }
             }
         }
         $unsure = $contact['duplicate_data']['unsure'] ?? array();
