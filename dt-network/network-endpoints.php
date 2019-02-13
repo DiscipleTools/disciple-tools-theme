@@ -67,6 +67,24 @@ class Disciple_Tools_Network_Endpoints
                 'callback' => [ $this, 'trigger_transfer' ],
             ]
         );
+        register_rest_route(
+            $this->public_namespace, '/network/live_stats', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'live_stats' ],
+            ]
+        );
+    }
+
+    public function live_stats( WP_REST_Request $request ) {
+        $params = $this->process_token( $request );
+        if ( is_wp_error( $params ) ) {
+            return [
+                'status' => 'FAIL',
+                'error' => $params,
+            ];
+        }
+
+        return Disciple_Tools_Snapshot_Report::snapshot_report();
     }
 
     /**

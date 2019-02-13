@@ -275,7 +275,9 @@ function dt_multi_role_sanitize_role( $role ) {
 function dt_multi_role_translate_role( $role ) {
     global $wp_roles;
 
-    return apply_filters( 'dt_multi_role_translate_role', translate_user_role( $wp_roles->role_names[ $role ] ), $role );
+    $label = before_last_bar( $wp_roles->role_names[ $role ] );
+    $translated_label = translate_with_gettext_context( $label, '', "disciple_tools" ); //@phpcs:ignore
+    return apply_filters( 'dt_multi_role_translate_role', $translated_label, $role );
 }
 
 /**

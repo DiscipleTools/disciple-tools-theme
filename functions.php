@@ -141,8 +141,8 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.14.1';
-            $this->migration_number = 16;
+            $this->version = '0.16.0';
+            $this->migration_number = 22;
 
 
             $this->theme_url = get_template_directory_uri() . '/';
@@ -176,20 +176,14 @@ else {
             /**
              * User Groups & Multi Roles
              */
-            require_once( get_template_directory() . '/dt-core/admin/user-groups/class-user-taxonomy.php' );
-            require_once( get_template_directory() . '/dt-core/admin/user-groups/user-groups-taxonomies.php' );
             require_once( get_template_directory() . '/dt-core/admin/multi-role/multi-role.php' );
             $this->multi = Disciple_Tools_Multi_Roles::instance();
 
             /**
              * Theme specific files
              */
-            require_once( get_template_directory() . '/dt-assets/functions/theme-support.php' ); // Theme support options
             require_once( get_template_directory() . '/dt-assets/functions/cleanup.php' ); // WP Head and other cleanup functions
             require_once( get_template_directory() . '/dt-assets/functions/enqueue-scripts.php' ); // Register scripts and stylesheets
-            require_once( get_template_directory() . '/dt-assets/functions/sidebar.php' ); // Register sidebars/widget areas
-            require_once( get_template_directory() . '/dt-assets/functions/page-navi.php' ); // Replace 'older/newer' post links with numbered navigation
-            require_once( get_template_directory() . '/dt-assets/functions/login.php' ); // Customize the WordPress login menu
             require_once( get_template_directory() . '/dt-assets/functions/menu.php' ); // Register menus and menu walkers
             require_once( get_template_directory() . '/dt-assets/functions/details-bar.php' ); // Breadcrumbs bar
 
@@ -199,15 +193,13 @@ else {
              */
             add_action( 'init', function() {
                 $template_for_url = [
-                'metrics'       => 'template-metrics.php',
-                'settings'      => 'template-settings.php',
-                'notifications' => 'template-notifications.php',
-                'about'         => 'template-about.php',
-                'team'          => 'template-team.php',
-                'contacts/new'  => 'template-contacts-new.php',
-                'groups/new'    => 'template-groups-new.php',
-                'contacts/mergedetails'    => 'template-merge-details.php',
-                'view-duplicates'    => 'template-view-duplicates.php',
+                    'metrics'               => 'template-metrics.php',
+                    'settings'              => 'template-settings.php',
+                    'notifications'         => 'template-notifications.php',
+                    'contacts/new'          => 'template-contacts-new.php',
+                    'groups/new'            => 'template-groups-new.php',
+                    'contacts/mergedetails' => 'template-merge-details.php',
+                    'view-duplicates'       => 'template-view-duplicates.php',
                 ];
 
                 $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
@@ -260,7 +252,6 @@ else {
              * @service    Post to Post connections
              * @service    User groups via taxonomies
              */
-            require_once( get_template_directory() . '/dt-core/class-taxonomy.php' );
 
             require_once( get_template_directory() . '/dt-core/admin/site-link-post-type.php' );
             Site_Link_System::instance( 100, 'dashicons-admin-links' );
@@ -315,13 +306,7 @@ else {
              * dt-metrics
              */
             require_once( get_template_directory() . '/dt-metrics/counter.php' );
-            $this->counter = Disciple_Tools_Counter::instance();
-            require_once( get_template_directory() . '/dt-metrics/metrics-template.php' );
             require_once( get_template_directory() . '/dt-metrics/metrics.php' );
-            $this->metrics = Disciple_Tools_Metrics::instance();
-
-            require_once( get_template_directory() . '/dt-metrics/metrics-endpoints.php' );
-            $this->endpoints['metrics'] = Disciple_Tools_Metrics_Endpoints::instance();
 
 
             /**
@@ -337,8 +322,6 @@ else {
             /**
              * dt-notifications
              */
-            require_once( get_template_directory() . '/dt-notifications/notifications-hooks.php' );
-            $this->hooks['notifications'] = Disciple_Tools_Notification_Hooks::instance();
             require_once( get_template_directory() . '/dt-notifications/notifications-template.php' );
             require_once( get_template_directory() . '/dt-notifications/notifications.php' );
             $this->core['notifications'] = Disciple_Tools_Notifications::instance();
@@ -350,9 +333,6 @@ else {
              * Post-to-Post configuration
              */
             require_once( get_template_directory() . '/dt-core/config-p2p.php' ); // Creates the post to post relationship between the post type tables.
-
-            // Custom Metaboxes
-            require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-address.php' ); // todo remove theme dependency on this box. used by both theme and wp-admin
 
             /**
              * Logging
@@ -378,10 +358,11 @@ else {
              */
             if ( get_option( 'dt_network_enabled' ) ) {
                 require_once( get_template_directory() . '/dt-network/network-endpoints.php' );
-                require_once( get_template_directory() . '/dt-network/network.php' );
             }
+            require_once( get_template_directory() . '/dt-network/network.php' );
 
             require_once( get_template_directory() . '/dt-core/admin/gdpr.php' );
+            require_once( get_template_directory() . '/dt-core/multisite.php' );
 
             /**
              * Admin panel
@@ -402,8 +383,8 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-settings.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-general.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-lists.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-fields.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-tiles.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-fields.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-site-links.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-keys.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-critical-path.php' );
@@ -429,11 +410,6 @@ else {
                 require_once( get_template_directory() . '/dt-groups/groups-config.php' );
                 $this->config_groups = Disciple_Tools_Groups_Config::instance();
 
-                // People Groups
-
-                // Metaboxes
-                require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-activity.php' );
-                require_once( get_template_directory() . '/dt-core/admin/metaboxes/box-share-contact.php' );
             }
             /* End Admin configuration section */
 
@@ -447,7 +423,7 @@ else {
          * @since  0.1.0
          */
         public function __clone() {
-            wp_die( esc_html__( "Cheatin' huh?" ), __FUNCTION__ );
+            wp_die( esc_html( "Cheatin' huh?" ), __FUNCTION__ );
         } // End __clone()
 
         /**
@@ -457,7 +433,7 @@ else {
          * @since  0.1.0
          */
         public function __wakeup() {
-            wp_die( esc_html__( "Cheatin' huh?" ), __FUNCTION__ );
+            wp_die( esc_html( "Cheatin' huh?" ), __FUNCTION__ );
         } // End __wakeup()
 
     } // End Class
@@ -469,7 +445,11 @@ else {
     function dt_route_front_page() {
         if ( user_can( get_current_user_id(), 'access_contacts' ) ) {
             wp_safe_redirect( home_url( '/contacts' ) );
-        } else {
+        }
+        else if ( ! is_user_logged_in() ) {
+            dt_please_log_in();
+        }
+        else {
             wp_safe_redirect( home_url( '/settings' ) );
         }
     }
@@ -527,7 +507,7 @@ function dt_theme_admin_notice_required_php_version() {
     <div class="notice notice-error">
         <p><?php esc_html_e( 'Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:', 'disciple_tools' );
             echo esc_html( phpversion() );
-            esc_html_e( ' Please upgrade PHP or uninstall this theme', "disciple_tools" ); ?></p>
+            esc_html_e( 'Please upgrade PHP or uninstall this theme', "disciple_tools" ); ?></p>
     </div>
     <?php
 }

@@ -1,10 +1,18 @@
 jQuery(document).ready(function() {
-
-    if( ! window.location.hash || '#project_overview' === window.location.hash  ) {
+  if( ! window.location.hash || '#project_overview' === window.location.hash  ) {
         project_overview()
     }
-    if( '#project_critical_path' === window.location.hash  ) {
-        project_critical_path()
+    if( '#group_tree' === window.location.hash  ) {
+        project_group_tree()
+    }
+    if( '#baptism_tree' === window.location.hash  ) {
+        project_baptism_tree()
+    }
+    if( '#coaching_tree' === window.location.hash  ) {
+        project_coaching_tree()
+    }
+    if( '#project_locations' === window.location.hash  ) {
+        project_locations()
     }
 
 })
@@ -23,7 +31,6 @@ function project_overview() {
             <h3 >${ translations.title_overview }</h3>
         </div>
         <!--<span class="section-header">${ translations.title_overview }</span>-->
-        <!--<span style="float:right; font-size:1.5em;color:#3f729b;"><button data-open="dt-project-legend"><i class="fi-info"></i></button></span>-->
         <div class="medium reveal" id="dt-project-legend" data-reveal>
             <button class="close-button" data-close aria-label="Close modal" type="button">
                 <span aria-hidden="true">&times;</span>
@@ -63,10 +70,7 @@ function project_overview() {
                             <h5>${ translations.title_total_groups }<br><span id="total_groups">0</span></h5>
                         </div>
                         <div class="medium-4 cell center left-border-grey">
-                            <h5>${ translations.title_needs_training }<br><span id="needs_training">0</span></h5>
-                        </div>
-                        <div class="medium-4 cell center left-border-grey">
-                            <h5>${ translations.title_fully_practicing }<br><span id="fully_practicing">0</span></h5>
+                            <h5>${ translations.title_teams }<br><span id="teams">0</span></h5>
                         </div>
                    </div> 
                 </div>
@@ -98,7 +102,7 @@ function project_overview() {
 
     jQuery('#total_groups').html( numberWithCommas( hero.total_groups ) )
     jQuery('#needs_training').html( numberWithCommas( hero.needs_training ) )
-    jQuery('#fully_practicing').html( numberWithCommas( hero.fully_practicing ) )
+    jQuery('#teams').html( numberWithCommas( hero.teams ) )
 
     // build charts
     google.charts.load('current', {'packages':['corechart', 'bar']});
@@ -225,7 +229,16 @@ function project_overview() {
     new Foundation.Reveal(jQuery('#dt-project-legend'));
 }
 
-function project_critical_path() {
+
+function numberWithCommas(x) {
+  x = (x || 0).toString();
+    let pattern = /(-?\d+)(\d{3})/;
+    while (pattern.test(x))
+        x = x.replace(pattern, "$1,$2");
+    return x;
+}
+
+function project_group_tree() {
     "use strict";
     jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
     let chartDiv = jQuery('#chart')
@@ -236,127 +249,39 @@ function project_critical_path() {
     let chartHeight = height - ( height * .15 )
 
     chartDiv.empty().html(`
-        <span class="section-header">${translations.title_critical_path}</span>
-        <div style="width:fit-content">
-        ${translations.label_select_year} 
-        <select id="year_select" onchange="change_critical_path_year($(this).val())">
-            ${year_list()}
-        </select>
-        </div>
+        <span class="section-header">${translations.title_group_tree}</span><hr>
         
         <br clear="all">
         <div class="grid-x grid-padding-x">
+        <div class="cell">
+             <span>
+                <button class="button hollow toggle-singles" id="highlight-active" onclick="highlight_active();">Highlight Active</button>
+            </span>
+            <span>
+                <button class="button hollow toggle-singles" id="highlight-churches" onclick="highlight_churches();">Highlight Churches</button>
+            </span>
+        </div>
             <div class="cell">
-                <div id="dashboard_div">
-                    <div id="my_critical_path" style="min-height: 700px; height: ` + chartHeight + `px;"></div>
-                    <hr>
-                    <div id="filter_div"></div>
-                </div>
+                <div class="scrolling-wrapper" id="generation_map"><img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
             </div>
         </div>
+        <div id="modal" class="reveal" data-reveal></div>
     `)
 
-
-    // build charts
-    google.charts.load('current', {'packages':['corechart', 'bar', 'controls']});
-    google.charts.setOnLoadCallback(drawCriticalPath);
-
-    new Foundation.Reveal(jQuery('.dt-project-legend'));
-}
-
-function drawCriticalPath( cp_data ) {
-    let sourceData = dtMetricsProject.data
-    let translations = dtMetricsProject.data.translations
-    let path_data = []
-
-    if ( cp_data ) {
-        path_data = cp_data
-    } else {
-        path_data = sourceData.critical_path
-    }
-    let formattedData = [ [ 'Step', 'Contacts', {role: 'annotation'} ]]
-    path_data.forEach(row=>{
-      formattedData.push( [row.label, parseInt(row.value), row.value] );
-
-    })
-    let data = google.visualization.arrayToDataTable( formattedData );
-    let dashboard = new google.visualization.Dashboard(
-        document.getElementById('dashboard_div')
-    );
-
-    let barChart = new google.visualization.ChartWrapper({
-        'chartType': 'BarChart',
-        'containerId': 'my_critical_path',
-        'options': {
-            bars: 'horizontal',
-            chartArea: {
-                left: '20%',
-                top: '7%',
-                width: "75%",
-                height: "85%" },
-            hAxis: { scaleType: 'mirrorLog' },
-            title: translations.title_critical_path,
-            legend: { position: "none"},
-            animation:{
-                duration: 400,
-                easing: 'out',
-            },
-        }
-    });
-
-    var crit_keys = []
-    jQuery.each( path_data, function( index, value ) {
-      crit_keys.push( value["label"] )
-    })
-
-    let categoryFilter = new google.visualization.ControlWrapper({
-        'controlType': 'CategoryFilter',
-        'containerId': 'filter_div',
-        'options': {
-            'filterColumnLabel': 'Step'
-        },
-        'ui': {
-            'allowMultiple': true,
-            'caption': "Select Path Step...",
-        },
-        'state': { 'selectedValues': crit_keys },
-
-    });
-
-    dashboard.bind(categoryFilter, barChart);
-
-    dashboard.draw( data )
-}
-
-function year_list() {
-    // create array with descending dates
-    let i = 0
-    let fullDate = new Date()
-    let date = fullDate.getFullYear()
-    let currentYear = fullDate.getFullYear()
-    let options = `<option value="all">${dtMetricsProject.data.translations.label_all_time}</option>`
-    while (i < 15) {
-        options += `<option value="${date}" ${ date === currentYear && 'selected'}>${date}</option>`;
-        i++;
-        date--;
-    }
-
-    return options
-}
-
-function change_critical_path_year( year ) {
     jQuery.ajax({
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
+        data:JSON.stringify({ "type": "groups" }),
         dataType: "json",
-        url: dtMetricsProject.root + 'dt/v1/metrics/critical_path_by_year/'+year,
+        url: dtMetricsProject.root + 'dt/v1/metrics/project/tree/',
         beforeSend: function(xhr) {
             xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
         },
     })
         .done(function (data) {
-            if ( data ) {
-                drawCriticalPath( data )
+            if( data ) {
+                jQuery('#generation_map').empty().html(data)
+                jQuery('#generation_map li:last-child').addClass('last');
             }
         })
         .fail(function (err) {
@@ -364,12 +289,337 @@ function change_critical_path_year( year ) {
             console.log(err)
             jQuery("#errors").append(err.responseText)
         })
+
+    new Foundation.Reveal(jQuery('#modal'))
+}
+function open_modal_details( id ) {
+    let modal = jQuery('#modal')
+    let spinner = `<img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" />`
+    modal.empty().html(spinner).foundation('open')
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: dtMetricsProject.root + 'dt/v1/group/'+id,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
+        },
+    })
+        .done(function (data) {
+            if( data ) {
+                let list = '<dt>Members</dt><ul>'
+                jQuery.each(data.members, function(i, v)  { list += '<li><a href="/contacts/'+data.members[i].ID+'">' + data.members[i].post_title + '</a></li>' } )
+                list += '</ul>'
+                let content = `
+                <div class="grid-x">
+                    <div class="cell"><span class="section-header">${data.name}</span><hr style="max-width:100%;"></div>
+                    <div class="cell">
+                        <dl>
+                            <dd><strong>Status: </strong>${data.group_status.label}</dd>
+                            <dd><strong>Assigned to: </strong>${data.assigned_to['display']}</dd>
+                            <dd><strong>Total Members: </strong>${data.member_count}</dd>
+                            ${list}
+                        </dl>
+                    </div>
+                    <div class="cell center"><hr><a href="/groups/${id}">View Group</a></div>
+                </div>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                `
+                modal.empty().html(content)
+            }
+        })
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+            jQuery("#errors").append(err.responseText)
+        })
+
+}
+function toggle_multiplying_only () {
+    let list = jQuery('#generation_map .li-gen-1:not(:has(li.li-gen-2))')
+    let button = jQuery('#multiplying-only')
+    if( button.hasClass('hollow') ) {
+        list.hide()
+        button.removeClass('hollow')
+    } else {
+        button.addClass('hollow')
+        list.show()
+    }
 }
 
-function numberWithCommas(x) {
-  x = (x || 0).toString();
-    let pattern = /(-?\d+)(\d{3})/;
-    while (pattern.test(x))
-        x = x.replace(pattern, "$1,$2");
-    return x;
+function highlight_active() {
+    let list = jQuery('.inactive')
+    let button = jQuery('#highlight-active')
+    if( button.hasClass('hollow') ) {
+        list.addClass('inactive-gray')
+        button.removeClass('hollow')
+    } else {
+        button.addClass('hollow')
+        list.removeClass('inactive-gray')
+    }
+}
+
+function highlight_churches() {
+    let list = jQuery('#generation_map span:not(.church)')
+    let button = jQuery('#highlight-churches')
+    if( button.hasClass('hollow') ) {
+        list.addClass('not-church-gray')
+        button.removeClass('hollow')
+    } else {
+        button.addClass('hollow')
+        list.removeClass('not-church-gray')
+    }
+}
+
+function project_baptism_tree() {
+    "use strict";
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+    let chartDiv = jQuery('#chart')
+    let sourceData = dtMetricsProject.data
+    let translations = dtMetricsProject.data.translations
+
+    let height = $(window).height()
+    let chartHeight = height - ( height * .15 )
+
+    chartDiv.empty().html(`
+        <span class="section-header">${translations.title_baptism_tree}</span><hr>
+        
+        <br clear="all">
+        <div class="grid-x grid-padding-x">
+            <div class="cell">
+                <div class="scrolling-wrapper" id="generation_map"><img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
+            </div>
+        </div>
+        <div id="modal" class="reveal" data-reveal></div>
+    `)
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        data:JSON.stringify({ "type": "baptisms" }),
+        dataType: "json",
+        url: dtMetricsProject.root + 'dt/v1/metrics/project/tree/',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
+        },
+    })
+        .done(function (data) {
+            if( data ) {
+                jQuery('#generation_map').empty().html(data)
+                jQuery('#generation_map li:last-child').addClass('last');
+            }
+        })
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+            jQuery("#errors").append(err.responseText)
+        })
+
+    new Foundation.Reveal(jQuery('#modal'))
+}
+
+function project_coaching_tree() {
+    "use strict";
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+    let chartDiv = jQuery('#chart')
+    let sourceData = dtMetricsProject.data
+    let translations = dtMetricsProject.data.translations
+
+    let height = $(window).height()
+    let chartHeight = height - ( height * .15 )
+
+    chartDiv.empty().html(`
+        <span class="section-header">${translations.title_coaching_tree}</span><hr>
+        
+        <br clear="all">
+        <div class="grid-x grid-padding-x">
+            <div class="cell">
+                <div class="scrolling-wrapper" id="generation_map"><img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
+            </div>
+        </div>
+        <div id="modal" class="reveal" data-reveal></div>
+    `)
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        data:JSON.stringify({ "type": "coaching" }),
+        dataType: "json",
+        url: dtMetricsProject.root + 'dt/v1/metrics/project/tree/',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
+        },
+    })
+        .done(function (data) {
+            if( data ) {
+                jQuery('#generation_map').empty().html(data)
+                jQuery('#generation_map li:last-child').addClass('last');
+            }
+        })
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+            jQuery("#errors").append(err.responseText)
+        })
+
+}
+
+function project_locations() {
+    "use strict";
+    let chartDiv = jQuery('#chart')
+    jQuery('#metrics-sidemenu').foundation('down', jQuery('#project-menu'));
+    let sourceData = dtMetricsProject.data
+    chartDiv.empty().html(`
+        <span class="section-header">${sourceData.translations.title_locations}</span><br><br>
+        
+        <div class="grid-x grid-padding-x grid-padding-y">
+            <div class="cell center callout">
+                <div class="grid-x">
+                    <div class="medium-4 cell center">
+                        <h4>${sourceData.translations.label_total_locations}<br><span id="total_locations">0</span></h4>
+                    </div>
+                    <div class="medium-4 cell center left-border-grey">
+                        <h4>${sourceData.translations.label_active_locations}<br><span id="total_active_locations">0</span></h4>
+                    </div>
+                    <div class="medium-4 cell center left-border-grey">
+                        <h4>${sourceData.translations.label_inactive_locations}<br><span id="total_inactive_locations">0</span></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="cell">
+                <span class="section-subheader">${sourceData.translations.title_locations_tree}</span>
+                <div id="generation_map" class="scrolling-wrapper"><img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
+            </div>
+        </div>
+        <div id="modal" class="large reveal" data-reveal data-v-offset="20px"></div>
+        
+        `)
+
+    /* Load hero stats */
+    let hero = sourceData.location_hero_stats
+    jQuery('#total_locations').html( numberWithCommas( hero.total_locations ) )
+    jQuery('#total_active_locations').html( numberWithCommas( hero.total_active_locations ) )
+    jQuery('#total_inactive_locations').html( numberWithCommas( hero.total_inactive_locations ) )
+
+    /* Get tree data */
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        data:JSON.stringify({ "type": "location" }),
+        dataType: "json",
+        url: dtMetricsProject.root + 'dt/v1/metrics/project/tree/',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
+        },
+    })
+        .done(function (data) {
+            if( data ) {
+                jQuery('#generation_map').empty().html(data)
+                jQuery('#generation_map li:last-child').addClass('last');
+            }
+        })
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+            jQuery("#errors").append(err.responseText)
+        })
+
+    new Foundation.Reveal(jQuery('#modal') )
+
+}
+function open_location_modal_details( id ) {
+    let modal = jQuery('#modal')
+    let spinner = `<img src="${dtMetricsProject.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" />`
+    modal.empty().html(spinner).foundation('open')
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({"id": id } ),
+        dataType: "json",
+        url: dtMetricsProject.root + 'dt/v1/locations/get_location_with_connections/',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsProject.nonce);
+        },
+    })
+        .done(function (data) {
+            if( data ) {
+                console.log(data)
+                let columns = 4
+                let map = ''
+                if ( data.latitude && data.longitude && data.api_key ) {
+                    map += `<div class="cell medium-3">
+                                <img src="https://maps.googleapis.com/maps/api/staticmap?center=${data.latitude},${data.longitude}&zoom=${data.zoom}&size=400x500&markers=color:red|${data.latitude},${data.longitude}&key=${data.api_key}"/>
+                            </div>`
+                    columns = 3
+                }
+
+                let groups = ''
+                if ( data.groups ) {
+                    jQuery.each( data.groups, function(i,v) {
+                        groups += `- <a href="/groups/${v.id}">` + v.name + `</a>`
+                        if ( v.type === 'church' ) {
+                            groups += ` <i class="fi-home"></i>`
+                        }
+                        groups += `<br>`
+                    })
+                }
+
+                let contacts = ''
+                if ( data.contacts ) {
+                    jQuery.each( data.contacts, function(i,v) {
+                        contacts += `- <a href="/contacts/${v.id}">` + v.name + `</a><br>`
+                    })
+                }
+
+                let workers = ''
+                if ( data.workers ) {
+                    workers += `<div class="cell medium-${columns}">
+                                <strong>Workers (${data.total_workers})</strong><br><br>`
+                    jQuery.each( data.workers, function(i,v) {
+                        workers += `- <a href="/contacts/${v.id}">` + v.name + `</a><br>`
+                    })
+                    workers += `</div>`
+                }
+
+                let content = `
+                <div class="grid-x">
+                    <div class="cell"><span class="section-header">${data.post_title}</span><hr style="max-width:100%;"></div>
+                    
+                    <div class="cell">
+                        <div class="grid-x grid-padding-x grid-padding-y">
+                            ${map}
+                            ${workers}
+                            <div class="cell medium-${columns}">
+                                <strong>Groups (${data.total_groups})</strong><br><br>
+                                ${groups}
+                            </div>
+                            <div class="cell medium-${columns}">
+                                <strong>Contacts (${data.total_contacts})</strong><br><br>
+                                 ${contacts}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="cell center">
+                        <hr>
+                        <button data-close aria-label="Close modal" class="button" type="button">
+                            <span aria-hidden="true">Close</span>
+                          </button>
+                    </div>
+                </div>
+                <button class="close-button" data-close aria-label="Close modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                `
+
+                modal.empty().html(content)
+            }
+        })
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+            jQuery("#errors").append(err.responseText)
+        })
 }

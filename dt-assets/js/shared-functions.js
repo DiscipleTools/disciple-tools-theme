@@ -306,7 +306,6 @@ window.TYPEAHEADS = {
           },
           callback: {
             done: function (data) {
-              typeaheadTotals["assigned_id"] = data.total || data.length
               return data.posts || data
             }
           }
@@ -317,9 +316,9 @@ window.TYPEAHEADS = {
   typeaheadContactsSource : function (){
     return {
       contacts: {
-        display: "name",
+        display: [ "name", "ID" ],
         ajax: {
-          url: contactsDetailsWpApiSettings.root + 'dt/v1/contacts/compact',
+          url: wpApiShare.root + 'dt/v1/contacts/compact',
           data: {
             s: "{{query}}"
           },
@@ -348,6 +347,15 @@ window.TYPEAHEADS = {
     }
     return text
   },
+  contactListRowTemplate: function (query, item){
+    let img = item.user ? `<img src="${wpApiShare.template_dir}/dt-assets/images/profile.svg">` : ''
+    return `<span dir="auto">
+      <span class="typeahead-user-row" style="width:20px">${img}</span>
+      ${_.escape(item.name)} 
+      <span dir="auto">(#${item.ID})</span>
+    </span>`
+  },
+
 
   share(type, id){
     return $.typeahead({
@@ -414,6 +422,56 @@ window.SHAREDFUNCTIONS = {
       }
     }
     return "";
+  }
+}
+
+window.METRICS = {
+  setupDatePicker : function (endpoint_url, callback, startDate, endDate) {
+
+    $('.date_range_picker').daterangepicker({
+      "showDropdowns": true,
+      ranges: {
+        'All time': [moment(0),  moment().endOf('year')],
+        [moment().format("MMMM YYYY")]: [moment().startOf('month'), moment().endOf('month')],
+        [moment().subtract(1, 'month').format("MMMM YYYY")]: [moment().subtract(1, 'month').startOf('month'),
+          moment().subtract(1, 'month').endOf('month')],
+        [moment().format("YYYY")]: [moment().startOf('year'), moment().endOf('year')],
+        [moment().subtract(1, 'year').format("YYYY")]: [moment().subtract(1, 'year').startOf('year'),
+          moment().subtract(1, 'year').endOf('year')],
+        [moment().subtract(2, 'year').format("YYYY")]: [moment().subtract(2, 'year').startOf('year'),
+          moment().subtract(2, 'year').endOf('year')]
+      },
+      "linkedCalendars": false,
+      locale: {
+        format: 'YYYY-MM-DD'
+      },
+      "startDate": startDate || moment(0),
+      "endDate": endDate || moment().endOf('year').format('YYYY-MM-DD'),
+    }, function(start, end, label) {
+      $(".loading-spinner").addClass("active")
+        jQuery.ajax({
+          type: "GET",
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          url: `${endpoint_url}?start=${start.format('YYYY-MM-DD')}&end=${end.format('YYYY-MM-DD')}`,
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+          },
+        })
+        .done(function (data) {
+          $(".loading-spinner").removeClass("active")
+          if ( label === "Custom Range" ){
+            label = start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY')
+          }
+          callback(data, label, start, end )
+        })
+        .fail(function (err) {
+          console.log("error")
+          console.log(err)
+          jQuery("#errors").append(err.responseText)
+        })
+      // console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+    });
   }
 }
 

@@ -36,6 +36,13 @@ class Disciple_Tools_Notifications_Comments
             $post_type                = get_post_type( $post_id );
 
             $followers = Disciple_Tools_Posts::get_users_following_post( $post_type, $post_id );
+            $following_all = get_users( [
+                'meta_key' => 'dt_follow_all',
+                'meta_value' => true
+            ] );
+            foreach ( $following_all as $user ){
+                $followers[] = $user->ID;
+            }
 
             $source_user_id = $comment->user_id;
             $notification = [

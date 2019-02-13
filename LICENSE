@@ -24,12 +24,9 @@ dependencies/what-input/LICENSE.
 - "lodash" by JS Foundation and other contributors, licensed under the MIT
 license. You can find the required copyright notice and permission notice at
 dependencies/lodash/LICENSE.
-- "typeahead" by Twitter, Inc. and other contributors, licensed under the MIT
+- "jQuery Typeahead" by tombertrand, licensed under the MIT
 license. You can find the required copyright notice and permission notice at
 dependencies/typeahead/LICENSE.
-- "DataTables" by SpryMedia (and/or contributors), licensed under the MIT
-license. You can find the required copyright notice and permission notice at
-dependencies/DataTables/DataTables-1.10.15/js/jquery.dataTables.js.
 - "sizzle" by jQuery Foundation and other contributors, licensed under the MIT
 license. You can find the required copyright notice and permission notice at
 dependencies/jquery/external/sizzle/LICENSE.txt

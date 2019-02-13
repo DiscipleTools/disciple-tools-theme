@@ -413,7 +413,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             switch ( $column_name ) {
                 case 'linked':
                     if ( get_post_meta( $post->ID, 'non_wp', true ) ) {
-                        echo '<span>' . esc_html( 'Non-DT Site Connection' ) . '</span>';
+                        echo '<span>' . esc_html( 'Non-Disciple.Tools Site Connection' ) . '</span>';
                     }
                     elseif ( $this->is_key_locked( $post->ID ) ) {
                         ?>
@@ -755,6 +755,13 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'default'     => '',
                 'section'     => 'site',
             ];
+            $fields['type'] = [
+                'name'        => __( 'Connection Type' ),
+                'description' => __( 'This adds permissions needed for the labeled task. If you have trouble with a connection succeeding, and a task failing. This permission setting may be the reason.' ),
+                'type'        => 'key_select',
+                'default'     => apply_filters( 'site_link_type', $permission = [ "" => "" ] ),
+                'section'     => 'site',
+            ];
 
             $fields['approved_ip_address'] = [
                 'name'        => __( 'Approved IP Address' ),
@@ -763,20 +770,14 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                 'default'     => '',
                 'section'     => 'non_wp',
             ];
-            $fields['type'] = [
-                'name'        => __( 'Connection Type' ),
-                'description' => __( 'This adds permissions needed for the labeled task. If you have trouble with a connection succeeding, and a task failing. This permission setting may be the reason.' ),
-                'type'        => 'key_select',
-                'default'     => apply_filters( 'site_link_type', $permission = [ "" => "" ] ),
-                'section'     => 'non_wp',
-            ];
+
             $fields['non_wp'] = [
-                'name'        => __( 'DT Site' ),
+                'name'        => __( 'Disciple.Tools Site' ),
                 'description' => __( 'Is this connection to a Disciple Tools/Wordpress system.' ),
                 'type'        => 'key_select',
                 'default'     => [
-                    0 => __( 'Yes, connected to another DT site (default)' ),
-                    1 => __( 'No, connection for a non-Disciple Tools system.' )
+                    0 => __( 'Yes, connected to another Disciple.Tools site (default)' ),
+                    1 => __( 'No, connection for a non-Disciple.Tools system.' )
                 ],
                 'section'     => 'non_wp',
             ];

@@ -37,6 +37,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     "members",
                     "parent_groups",
                     "child_groups",
+                    "peer_groups",
                     "locations",
                     "people_groups",
                     "leaders",
@@ -47,6 +48,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 ];
             }
         );
+        add_action( 'group_member_count', [ $this, 'update_group_member_count' ], 10, 2 );
         parent::__construct();
     }
 
@@ -104,6 +106,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 [ "groups_to_coaches", "coaches", "any" ],
                 [ "groups_to_groups", "child_groups", "to" ],
                 [ "groups_to_groups", "parent_groups", "from" ],
+                [ "groups_to_peers", "peer_groups", "any" ],
             ];
 
             foreach ( $connection_types as $type ){
@@ -137,8 +140,16 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                         }
                         $fields["contact_address"][] = $details;
                     }
-                } elseif ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]["type"] == "key_select" ) {
-                    $label = self::$group_fields[ $key ]["default"][ $value[0] ]["label"] ?? current( self::$group_fields[ $key ]["default"] );
+                } elseif ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]["type"] == "key_select" && !empty( $value[0] )) {
+                    $value_options = self::$group_fields[ $key ]["default"][ $value[0] ] ?? $value[0];
+                    if ( isset( $value_options["label"] ) ){
+                        $label = $value_options["label"];
+                    } elseif ( is_string( $value_options ) ) {
+                        $label = $value_options;
+                    } else {
+                        $label = $value[0];
+                    }
+
                     $fields[ $key ] = [
                     "key" => $value[0],
                     "label" => $label
@@ -181,7 +192,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $fields["name"] = $group->post_title;
             $fields["title"] = $group->post_title;
 
-            return $fields;
+            return apply_filters( 'dt_groups_fields_post_filter', $fields );
         } else {
             return new WP_Error( __FUNCTION__, "No group found with ID", [ 'contact_id' => $group_id ] );
         }
@@ -239,7 +250,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                             }
                         }
                     } else {
-                        return new WP_Error( __FUNCTION__, "Something wrong on field:" . $field_key );
+                        return new WP_Error( __FUNCTION__, "Something went wrong on field:" . $field_key );
                     }
                 }
             }
@@ -479,6 +490,24 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
     }
 
+    //check to see if the group is marked as needing an update
+    //if yes: mark as updated
+    private static function check_requires_update( $group_id ){
+        if ( get_current_user_id() ){
+            $requires_update = get_post_meta( $group_id, "requires_update", true );
+            if ( $requires_update == "yes" || $requires_update == true || $requires_update = "1"){
+                //don't remove update needed if the user is a dispatcher (and not assigned to the groups.)
+                if ( self::can_view_all( 'groups' ) ){
+                    if ( dt_get_user_id_from_assigned_to( get_post_meta( $group_id, "assigned_to", true ) ) === get_current_user_id() ){
+                        update_post_meta( $group_id, "requires_update", false );
+                    }
+                } else {
+                    update_post_meta( $group_id, "requires_update", false );
+                }
+            }
+        }
+    }
+
     /**
      * @param int    $group_id
      * @param string $key
@@ -527,18 +556,40 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function add_member_to_group( int $group_id, int $member_id ) {
         // share the group with the owner of the contact.
-        $assigned_to = get_post_meta( $member_id, "assigned_to", true );
-        if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
-            $user_id = explode( "-", $assigned_to )[1];
-            if ( $user_id ){
-                self::add_shared_on_group( $group_id, $user_id, null, false, false );
-            }
-        }
-
-        return p2p_type( 'contacts_to_groups' )->connect(
+        $added = p2p_type( 'contacts_to_groups' )->connect(
             $member_id, $group_id,
             [ 'date' => current_time( 'mysql' ) ]
         );
+        if ( !is_wp_error( $added )){
+            $assigned_to = get_post_meta( $member_id, "assigned_to", true );
+            if ( $assigned_to && strpos( $assigned_to, "-" ) !== false ){
+                $user_id = explode( "-", $assigned_to )[1];
+                if ( $user_id ){
+                    self::add_shared_on_group( $group_id, $user_id, null, false, false );
+                }
+            }
+            do_action( 'group_member_count', $group_id, "added" );
+        }
+        return $added;
+    }
+
+    public function update_group_member_count( $group_id, $action = "added" ){
+        $group = get_post( $group_id );
+
+        $args = [
+            'connected_type'   => "contacts_to_groups",
+            'connected_direction' => 'to',
+            'connected_items'  => $group,
+            'nopaging'         => true,
+            'suppress_filters' => false,
+        ];
+        $members = get_posts( $args );
+        $member_count = get_post_meta( $group_id, 'member_count', true );
+        if ( sizeof( $members ) > intval( $member_count ) ){
+            update_post_meta( $group_id, 'member_count', sizeof( $members ) );
+        } elseif ( $action === "removed" ){
+            update_post_meta( $group_id, 'member_count', $member_count - 1 );
+        }
     }
 
     /**
@@ -593,6 +644,13 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         );
     }
 
+    public static function add_peer_group_to_group( int $group_id, int $post_id ) {
+        return p2p_type( 'groups_to_peers' )->connect(
+            $group_id, $post_id,
+            [ 'date' => current_time( 'mysql' ) ]
+        );
+    }
+
     /**
      * @param int $group_id
      * @param int $location_id
@@ -621,7 +679,11 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @return mixed
      */
     public static function remove_member_from_group( int $group_id, int $member_id ) {
-        return p2p_type( 'contacts_to_groups' )->disconnect( $member_id, $group_id );
+        $removed = p2p_type( 'contacts_to_groups' )->disconnect( $member_id, $group_id );
+        if ( !is_wp_error( $removed ) ){
+            do_action( 'group_member_count', $group_id, "removed" );
+        }
+        return $removed;
     }
 
     /**
@@ -664,6 +726,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         return p2p_type( 'groups_to_groups' )->disconnect( $group_id, $post_id );
     }
 
+    public static function remove_peer_group_from_group( int $group_id, int $post_id ) {
+        return p2p_type( 'groups_to_peers' )->disconnect( $group_id, $post_id );
+    }
+
     /**
      * @param int    $group_id
      * @param string $key
@@ -699,6 +765,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $connect = self::add_child_group_to_group( $group_id, $value );
         } elseif ( $key === "parent_groups" ) {
             $connect = self::add_parent_group_to_group( $group_id, $value );
+        } elseif ( $key === "peer_groups" ) {
+            $connect = self::add_peer_group_to_group( $group_id, $value );
         } else {
             return new WP_Error( __FUNCTION__, "Field not recognized: " . $key, [ "status" => 400 ] );
         }
@@ -767,7 +835,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function remove_group_connection( int $group_id, string $key, string $value, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have have permission for this", [ 'status' => 403 ] );
         }
         if ( $key === "locations" ) {
             return self::remove_location_from_group( $group_id, $value );
@@ -783,6 +851,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return self::remove_child_group_from_group( $group_id, $value );
         } elseif ( $key === "parent_groups" ) {
             return self::remove_parent_group_from_group( $group_id, $value );
+        } elseif ( $key === "peer_groups" ) {
+            return self::remove_peer_group_from_group( $group_id, $value );
         }
 
         return false;
@@ -799,7 +869,11 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @return false|int|\WP_Error
      */
     public static function add_comment( int $group_id, string $comment_html, string $type = "comment", array $args = [], bool $check_permissions = true, $silent = false ) {
-        return self::add_post_comment( 'groups', $group_id, $comment_html, $type, $args, $check_permissions, $silent );
+        $result = self::add_post_comment( 'groups', $group_id, $comment_html, $type, $args, $check_permissions, $silent );
+        if ( $type === "comment" && !is_wp_error( $result )){
+            self::check_requires_update( $group_id );
+        }
+        return $result;
     }
 
     /**
@@ -815,10 +889,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     public static function delete_comment( int $group_id, int $comment_id, bool $check_permissions = true ){
         $comment = get_comment( $comment_id );
         if ( $check_permissions && isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) {
-            return new WP_Error( __FUNCTION__, __( "You don't have permission to delete this comment" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You don't have permission to delete this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){
-            return new WP_Error( __FUNCTION__, __( "No comment found with id:" ) . ' ' . $comment_id, [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "No comment found with id: " . $comment_id, [ 'status' => 403 ] );
         }
         return wp_delete_comment( $comment_id );
     }
@@ -826,10 +900,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     public static function update_comment( int $group_id, int $comment_id, string $comment_content, bool $check_permissions = true ){
         $comment = get_comment( $comment_id );
         if ( $check_permissions && isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) {
-            return new WP_Error( __FUNCTION__, __( "You don't have permission to edit this comment" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You don't have permission to edit this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){
-            return new WP_Error( __FUNCTION__, __( "No comment found with id:" ) . ' ' . $comment_id, [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "No comment found with id: " . $comment_id, [ 'status' => 403 ] );
         }
         $comment = [
             "comment_content" => $comment_content,
@@ -896,12 +970,12 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function create_group( array $fields = [], $check_permissions = true ) {
         if ( $check_permissions && ! current_user_can( 'create_groups' ) ) {
-            return new WP_Error( __FUNCTION__, __( "You may not create a group" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You may not create a group", [ 'status' => 403 ] );
         }
         $initial_fields = $fields;
 
         if ( ! isset( $fields ["title"] ) ) {
-            return new WP_Error( __FUNCTION__, __( "Group needs a title" ), [ 'fields' => $fields ] );
+            return new WP_Error( __FUNCTION__, "Group needs a title", [ 'fields' => $fields ] );
         }
 
         if ( isset( $fields["assigned_to"] ) ) {
@@ -910,7 +984,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 if ( $user ) {
                     $fields["assigned_to"] = $user->ID;
                 } else {
-                    return new WP_Error( __FUNCTION__, __( "Unrecognized user" ), $fields["assigned_to"] );
+                    return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
                 }
             }
             //make sure the assigned to is in the right format (user-1)
@@ -922,7 +996,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         $allowed_fields = [ "parent_group_id", "created_from_contact_id" ];
         $bad_fields = self::check_for_invalid_fields( $fields, null, $allowed_fields );
         if ( !empty( $bad_fields ) ) {
-            return new WP_Error( __FUNCTION__, __( "One or more fields do not exist" ), [
+            return new WP_Error( __FUNCTION__, "One or more fields do not exist", [
                 'bad_fields' => $bad_fields,
                 'status' => 400
             ] );
@@ -934,7 +1008,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             "assigned_to" => sprintf( "user-%d", get_current_user_id() ),
             "start_date" => time()
         ];
-        if ( isset( $field["group_type"] ) && !isset( $fields["church_start_date"] ) && $fields["group_type"] === 'church' ){
+        if ( isset( $fields["group_type"] ) && !isset( $fields["church_start_date"] ) && $fields["group_type"] === 'church' ){
             $fields["church_start_date"] = time();
         }
 
@@ -994,56 +1068,94 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
 
-    public static function get_group_default_filter_counts(){
+    public static function get_group_default_filter_counts( $tab = "all", $show_closed = false ){
         if ( !self::can_access( "groups" ) ) {
-            return new WP_Error( __FUNCTION__, __( "Permission denied." ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "Permission denied.", [ 'status' => 403 ] );
         }
         $user_id = get_current_user_id();
         global $wpdb;
-        $personal_counts = $wpdb->get_results( $wpdb->prepare( "
+
+        $access_sql = "";
+        $user_post = Disciple_Tools_Users::get_contact_for_user( $user_id ) ?? 0;
+        // contacts assigned to me
+        $my_access = "INNER JOIN $wpdb->postmeta as assigned_to
+            ON a.ID=assigned_to.post_id
+              AND assigned_to.meta_key = 'assigned_to'
+              AND assigned_to.meta_value = CONCAT( 'user-', " . $user_id . " )";
+        //contacts subassigned to me
+        $subassigned_access = "INNER JOIN $wpdb->p2p as from_p2p 
+            ON ( from_p2p.p2p_to = a.ID 
+                AND from_p2p.p2p_type = 'contacts_to_subassigned' 
+                AND from_p2p.p2p_from = " . $user_post. ")";
+        //contacts shared with me
+        $shared_access = "
+            INNER JOIN $wpdb->dt_share AS shares 
+            ON ( shares.post_id = a.ID  
+                AND shares.user_id = " . $user_id . "
+                AND a.ID NOT IN (
+                    SELECT assigned_to.post_id 
+                    FROM $wpdb->postmeta as assigned_to
+                    WHERE a.ID = assigned_to.post_id
+                      AND assigned_to.meta_key = 'assigned_to'
+                      AND assigned_to.meta_value = CONCAT( 'user-', " . $user_id . " )
+                )
+            )";
+        $all_access = "";
+        //contacts shared with me.
+        if ( !self::can_view_all( "contacts" ) ){
+            $all_access = "INNER JOIN $wpdb->dt_share AS shares 
+            ON ( shares.post_id = a.ID
+                 AND shares.user_id = " . $user_id . " ) ";
+        }
+        if ( $tab === "my" ){
+            $access_sql = $my_access;
+        } elseif ( $tab === "subassigned" ){
+            $access_sql = $subassigned_access;
+        } elseif ( $tab === "shared" ){
+            $access_sql = $shared_access;
+        } elseif ( $tab === "all" ){
+            $access_sql = $all_access;
+        }
+        $closed = "";
+        if ( !$show_closed ){
+            $closed = " INNER JOIN $wpdb->postmeta as status
+              ON ( a.ID=status.post_id 
+              AND status.meta_key = 'group_status'
+              AND status.meta_value != 'inactive' )";
+        }
+
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepare
+        $personal_counts = $wpdb->get_results( "
             SELECT (
                 SELECT COUNT(DISTINCT(a.ID))
                 FROM $wpdb->posts as a
-                INNER JOIN $wpdb->postmeta as b
-                  ON a.ID=b.post_id
-                    AND b.meta_key = 'assigned_to'
-                    AND b.meta_value = CONCAT( 'user-', %s )
+                " . $access_sql . $closed . "
                 WHERE a.post_status = 'publish'
                 AND a.post_type = 'groups'
-            ) as my_groups,
+            ) as total_count,
             (SELECT COUNT(DISTINCT(a.ID))
                 FROM $wpdb->posts as a
-                INNER JOIN $wpdb->postmeta as b
-                  ON a.ID=b.post_id
-                    AND b.meta_key = 'assigned_to'
-                    AND b.meta_value != CONCAT( 'user-', %s )
+                " . $my_access . $closed . "
                 WHERE a.post_status = 'publish'
                 AND a.post_type = 'groups'
-                AND a.ID IN (
-                    SELECT post_id 
-                    FROM $wpdb->dt_share
-                    WHERE user_id = %s
-                )
-            ) as shared_with_me
-        ", $user_id, $user_id, $user_id ), ARRAY_A );
-
-        $all_groups = (int) $personal_counts[0]["my_groups"] + (int) $personal_counts[0]["shared_with_me"];
-        if ( current_user_can( "view_any_groups" ) ){
-            $dispatcher_counts = $wpdb->get_results( "
-                SELECT COUNT(a.ID) as all_groups
+            ) as total_my,
+            (SELECT COUNT(DISTINCT(a.ID))
                 FROM $wpdb->posts as a
+                " . $shared_access . $closed . "
                 WHERE a.post_status = 'publish'
                 AND a.post_type = 'groups'
-                ", ARRAY_A
-            );
-            $all_groups = $dispatcher_counts[0]["all_groups"];
-        }
+            ) as total_shared,
+            (SELECT COUNT(DISTINCT(a.ID))
+                FROM $wpdb->posts as a
+                " . $all_access . $closed . "
+                WHERE a.post_status = 'publish'
+                AND a.post_type = 'groups'
+            ) as total_all
+        ", ARRAY_A );
+        // phpcs:enable
 
-        return [
-            'all_groups' => $all_groups,
-            'my_groups' => $personal_counts[0]["my_groups"],
-            'groups_shared_with_me' => $personal_counts[0]["shared_with_me"]
-        ];
+        return $personal_counts[0] ?? [];
 
     }
 }

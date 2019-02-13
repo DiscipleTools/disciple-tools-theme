@@ -198,10 +198,7 @@ class Disciple_Tools_Groups_Endpoints
                 $group_array['locations'][] = $location->post_title;
             }
             $group_array['leaders'] = [];
-            $group_array['member_count'] = 0;
-            foreach ( $group->members as $contact ) {
-                $group_array['member_count']++;
-            }
+            $group_array['member_count'] = $meta_fields["member_count"] ?? 0;
             foreach ( $group->leaders as $leader ){
                 $group_array['leaders'][] = [
                     'post_title' => $leader->post_title,
@@ -441,8 +438,11 @@ class Disciple_Tools_Groups_Endpoints
         );
     }
 
-    public function get_group_default_filter_counts(){
-        return Disciple_Tools_Groups::get_group_default_filter_counts();
+    public function get_group_default_filter_counts( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $tab = $params["tab"] ?? null;
+        $show_closed = isset( $params["closed"] ) && $params["closed"] == "true";
+        return Disciple_Tools_Groups::get_group_default_filter_counts( $tab, $show_closed );
     }
 
 }

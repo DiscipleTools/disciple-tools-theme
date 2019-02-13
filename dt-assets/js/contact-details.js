@@ -49,17 +49,34 @@ function contactUpdated(updateNeeded) {
   $('#update-needed').prop("checked", updateNeeded)
 }
 
-function commentPosted() {
-  if (_.get(contact, "requires_update") === true ){
-    API.get_post("contact",  $("#contact-id").text() ).then(contact=>{
-      contactUpdated(_.get(contact, "requires_update") === true )
-    }).catch(err => { console.error(err) })
-  }
-}
 
-
+/* The `contact` variable can be accessed outside this script, but not through
+ * `window.` because `let` was used */
 let contact = {}
-let typeaheadTotals = {};
+
+window.contactDetailsEvents = (function() {
+  /* Simple publish/subscribe, based on https://davidwalsh.name/pubsub-javascript */
+  let topics = {}
+  return {
+    subscribe(topic, listener) {
+      if (! topics.hasOwnProperty(topic)) {
+        topics[topic] = []
+      }
+      let index = topics[topic].push(listener) - 1;
+      return {
+        unsubscribe() {
+          delete topics[topic][index]
+        }
+      }
+    },
+    publish(topic, info) {
+      if (! topics.hasOwnProperty(topic)) {
+        return
+      }
+      topics[topic].forEach(listener => listener(info))
+    }
+  }
+})();
 
 jQuery(document).ready(function($) {
   let contactId = $("#contact-id").text()
@@ -81,7 +98,6 @@ jQuery(document).ready(function($) {
   /**
    * Groups
    */
-  typeaheadTotals.groups = 0;
   $.typeahead({
     input: '.js-typeahead-groups',
     minLength: 0,
@@ -130,7 +146,6 @@ jQuery(document).ready(function($) {
         }
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.groups
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         result.push({
           ID: "new-item",
@@ -197,7 +212,6 @@ jQuery(document).ready(function($) {
   /**
    * Sources
    */
-  typeaheadTotals.sources = 0;
   let leadSourcesTypeahead = async function leadSourcesTypeahead() {
     let sourceTypeahead =  $(".js-typeahead-sources");
     if (!window.Typeahead['.js-typeahead-sources']){
@@ -211,7 +225,7 @@ jQuery(document).ready(function($) {
       });
       let sourcesData = []
       _.forOwn(await response.json(), (sourceValue, sourceKey) => {
-         sourcesData.push({key:sourceKey, value:sourceValue || ""})
+        sourcesData.push({key:sourceKey, value:sourceValue || ""})
       })
       sourceTypeahead.attr("disabled", false)
       $.typeahead({
@@ -232,7 +246,7 @@ jQuery(document).ready(function($) {
             return (contact.sources || []).map(sourceKey=>{
               return {
                 key:sourceKey,
-                value: _.get(sourcesData, sourceKey) || sourceKey,
+                value: _.get(contactsDetailsWpApiSettings.sources, sourceKey) || sourceKey,
               }
             })
           }, callback: {
@@ -252,7 +266,6 @@ jQuery(document).ready(function($) {
             this.resetInput();
           },
           onResult: function (node, query, result, resultCount) {
-            resultCount = typeaheadTotals.sources
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $('#sources-result-container').html(text);
           },
@@ -268,7 +281,6 @@ jQuery(document).ready(function($) {
     /**
    * Locations
    */
-  typeaheadTotals.locations = 0;
   let loadLocationTypeahead = ()=>{
     if (!window.Typeahead['.js-typeahead-locations']){
       $.typeahead({
@@ -310,7 +322,6 @@ jQuery(document).ready(function($) {
             this.resetInput();
           },
           onResult: function (node, query, result, resultCount) {
-            resultCount = typeaheadTotals.locations
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $('#locations-result-container').html(text);
           },
@@ -324,9 +335,8 @@ jQuery(document).ready(function($) {
 
 
   /**
-   * People_groups
+   * People groups
    */
-  typeaheadTotals.people_groups = 0;
   let loadPeopleGroupTypeahead = ()=>{
     if (!window.Typeahead['.js-typeahead-people_groups']){
 
@@ -367,7 +377,6 @@ jQuery(document).ready(function($) {
             this.resetInput();
           },
           onResult: function (node, query, result, resultCount) {
-            resultCount = typeaheadTotals.people_groups
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $('#people_groups-result-container').html(text);
           },
@@ -383,7 +392,6 @@ jQuery(document).ready(function($) {
    * Assigned_to
    */
   let assigned_to_input = $(`.js-typeahead-assigned_to`)
-  typeaheadTotals.assigned_to = 0;
   $.typeahead({
     input: '.js-typeahead-assigned_to',
     minLength: 0,
@@ -392,7 +400,7 @@ jQuery(document).ready(function($) {
     source: TYPEAHEADS.typeaheadUserSource(),
     templateValue: "{{name}}",
     template: function (query, item) {
-      return `<span class="row">
+      return `<span class="row" dir="auto">
         <span class="avatar"><img src="{{avatar}}"/> </span>
         <span>${item.name}</span>
       </span>`
@@ -410,7 +418,6 @@ jQuery(document).ready(function($) {
         }).catch(err => { console.error(err) })
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.assigned_to
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#assigned_to-result-container').html(text);
       },
@@ -431,9 +438,6 @@ jQuery(document).ready(function($) {
     assigned_to_input.trigger('input.typeahead')
     assigned_to_input.focus()
   })
-  if (_.get(contact, "assigned_to")){
-    $('.current-assigned').text(_.get(contact, "assigned_to.display"))
-  }
 
   /**
    * Share
@@ -462,39 +466,17 @@ jQuery(document).ready(function($) {
    * connections to other contacts
    */
   ;["relation", "baptized_by", "baptized", "coached_by", "coaching", "subassigned"].forEach(field_id=>{
-    typeaheadTotals[field_id] = 0
     $.typeahead({
       input: `.js-typeahead-${field_id}`,
       minLength: 0,
       accent: true,
       maxItem: 30,
       searchOnFocus: true,
-      template: function (query, item) {
-        return `<span>${_.escape(item.name)} (#${item.ID})</span>`
-      },
+      template: window.TYPEAHEADS.contactListRowTemplate,
       matcher: function (item) {
         return item.ID !== contact.ID
       },
-      source: {
-        contacts: {
-          display: ["name", "ID"],
-          ajax: {
-            url: contactsDetailsWpApiSettings.root + 'dt/v1/contacts/compact',
-            data: {
-              s: "{{query}}"
-            },
-            beforeSend: function(xhr) {
-              xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-            },
-            callback: {
-              done: function (data) {
-                typeaheadTotals[field_id] = data.total
-                return data.posts
-              }
-            }
-          }
-        }
-      },
+      source: window.TYPEAHEADS.typeaheadContactsSource(),
       display: "name",
       templateValue: "{{name}}",
       dynamic: true,
@@ -534,15 +516,7 @@ jQuery(document).ready(function($) {
           masonGrid.masonry('layout')
         },
         onResult: function (node, query, result, resultCount) {
-          resultCount = typeaheadTotals[field_id]
-          let text = "";
-          if (result.length > 0 && result.length < resultCount) {
-            text = "Showing <strong>" + result.length + "</strong> of <strong>" + resultCount + '</strong> ' + (query ? 'elements matching "' + query + '"' : '');
-          } else if (result.length > 0) {
-            text = 'Showing <strong>' + result.length + '</strong> contacts matching "' + query + '"';
-          } else {
-            text = 'No results matching "' + query + '"';
-          }
+          let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
           $(`#${field_id}-result-container`).html(text);
         },
         onHideLayout: function () {
@@ -652,22 +626,6 @@ jQuery(document).ready(function($) {
     API.save_field_api('contact', contactId, { [field]: value }).catch(handelAjaxError)
   })
 
-  $('button#add-social-media').on('click', () => {
-    const channel_type = 'contact_' + $('select#social-channels').val()
-    const $inputForNewValue = $('input#new-social-media')
-    const text = $inputForNewValue.val()
-
-    $('#edit-social').append(`<li style="display: flex">
-        <input type="text" class="contact-input" data-type="${channel_type}" value="${text}"/>
-        <button class="button clear delete-button" data-id="new">
-          <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
-        </button>
-    </li>`)
-    if (!editFieldsUpdate[channel_type]){
-      editFieldsUpdate[channel_type] = { values: [] }
-    }
-    editFieldsUpdate[channel_type].values.push({value:text})
-  })
 
   $('select.select-field').change(e => {
     const id = $(e.currentTarget).attr('id')
@@ -760,6 +718,36 @@ jQuery(document).ready(function($) {
     </li>`)
   })
 
+  let idOfNextNewField = 1
+  $('button#add-new-social-media').on('click', ()=>{
+    let channelOptions = ``
+    _.forOwn( contactsDetailsWpApiSettings.channels, (val, key)=>{
+      if ( ![ "phone", "email", "address"].includes( key ) ){
+        channelOptions += `<option value="${key}">${val.label}</option>`
+      }
+    })
+    idOfNextNewField++
+    $('#edit-social').append(`
+      <div class="grid-x grid-margin-x social-media-row" data-id="${idOfNextNewField}">
+        <div class="cell small-4 new-social-type">
+          <select data-id="${idOfNextNewField}">
+            ${channelOptions}
+          </select>
+        </div>
+        <div class="cell small-8" style="display:flex">
+          <input type="text" class="new-social-text" data-id="${idOfNextNewField}">
+          <button class="button clear delete-social-media" data-id="${idOfNextNewField}">
+              <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+          </button>
+        </div>
+      </div>
+    `)
+  })
+  $(document).on('click', '.delete-social-media', function () {
+    let tempId = $(this).data('id')
+    $(`.social-media-row[data-id="${tempId}"]`).remove()
+  })
+
   // Clicking the plus sign next to the field label
   $('button.add-button').on('click', e => {
     const listClass = $(e.currentTarget).data('list-class')
@@ -784,8 +772,16 @@ jQuery(document).ready(function($) {
    */
   $('.update-needed.switch-input').change(function () {
     let updateNeeded = $(this).is(':checked')
+    $('.update-needed-notification').toggle(updateNeeded)
     API.save_field_api( "contact", contactId, {"requires_update":updateNeeded})
   })
+  $('#content')[0].addEventListener('comment_posted', function (e) {
+    if ( _.get(contact, "requires_update") === true ){
+      API.get_post("contact",  contactId ).then(contact=>{
+        contactUpdated(_.get(contact, "requires_update") === true )
+      }).catch(err => { console.error(err) })
+    }
+  }, false);
 
   /**
    * Status
@@ -889,13 +885,20 @@ jQuery(document).ready(function($) {
     let html = ""
     _.forOwn( contact, (fieldVal, field)=>{
       if ( field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field) ){
+        let channel = field.replace("contact_", "")
         contact[field].forEach(socialField=>{
-          html += `<li style="display: flex">
-            <input class="contact-input" type="text" id="${socialField.key}" value="${socialField.value}" data-type="${field}"/>
-            <button class="button clear delete-button" data-id="${socialField.key}" data-type="${field}">
-                <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
-            </button>
-          </li>`
+          html += `<div class="grid-x grid-margin-x social-media-row" data-id="${socialField.key}">
+              <div class="cell small-4">
+                  ${_.get(contactsDetailsWpApiSettings, 'channels[' + channel + '].label' ,field)}
+              </div>
+              <div class="cell small-8" style="display: flex">
+                <input class="contact-input" type="text" id="${socialField.key}" value="${socialField.value}" data-type="${field}"/>
+                <button class="button clear delete-social-media delete-button" data-id="${socialField.key}" data-type="${field}">
+                    <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
+                </button>
+              </div>
+          </div>
+          `
         })
 
       }
@@ -1014,6 +1017,19 @@ jQuery(document).ready(function($) {
    */
   $('#save-edit-details').on('click', function () {
     $(this).toggleClass("loading")
+
+    let newSocialEntries = $(".new-social-text")
+    newSocialEntries.each((index, entry) =>{
+      let val = $(entry).val()
+      let tempId = $(entry).data('id')
+      let channelType = $(`.new-social-type [data-id=${tempId}]`).val()
+      if ( val && tempId && channelType ){
+        if ( !editFieldsUpdate[`contact_${channelType}`]){
+          editFieldsUpdate[`contact_${channelType}`] = {values:[]}
+        }
+        editFieldsUpdate[`contact_${channelType}`].values.push({value:val})
+      }
+    })
     API.save_field_api( "contact", contactId, editFieldsUpdate).then((updatedContact)=>{
       contact = updatedContact
       $(this).toggleClass("loading")
@@ -1137,16 +1153,19 @@ jQuery(document).ready(function($) {
     let sourceHTML = $('.sources-list').empty()
     if ( contact.sources && contact.sources.length > 0 ){
       contact.sources.forEach(source=>{
-        let translatedSourceHTML = _.escape(_.get(contactsDetailsWpApiSettings, `contacts_custom_fields_settings.sources.default.${source}.label`))
+        let translatedSourceHTML = _.escape(_.get(contactsDetailsWpApiSettings, `sources.${source}`))
         if (! translatedSourceHTML) {
-          alert(`Error: Could not find the label for the source key '${source}', please ask an admin to create it in the Settings (DT) interface`)
-          translatedSourceHTML = `<code>${_.escape(source)}</code>`
+          translatedSourceHTML = `<code>Unknown source: ${_.escape(source)}</code>`
         }
         sourceHTML.append(`<li>${translatedSourceHTML}</li>`)
       })
     } else {
       sourceHTML.append(`<li id="no-source">${contactsDetailsWpApiSettings.translations["not-set"]["source"]}</li>`)
     }
+
+    contactDetailsEvents.publish('resetDetails', {
+      newContactDetails: contact
+    })
 
   })
   resetDetailsFields(contact)
@@ -1261,11 +1280,7 @@ jQuery(document).ready(function($) {
         searchOnFocus: true,
         source: TYPEAHEADS.typeaheadContactsSource(),
         templateValue: "{{name}}",
-        template: function (query, item) {
-          return `<span class="row">
-            <span>${item.name} (#${item.ID})</span>
-          </span>`
-        },
+        template: window.TYPEAHEADS.contactListRowTemplate,
         dynamic: true,
         hint: true,
         emptyTemplate: 'No users found "{{query}}"',
@@ -1309,9 +1324,10 @@ jQuery(document).ready(function($) {
                   location.reload();
               }
           }).catch(err=>{
+          jQuery('#transfer_spinner').empty().append(err.responseJSON.message).append('&nbsp;' + contactsDetailsWpApiSettings.translations.transfer_error )
+          jQuery("#errors").empty()
           console.log("error")
           console.log(err)
-          jQuery("#errors").append(err.responseText)
       })
   });
 
@@ -1337,11 +1353,7 @@ jQuery(document).ready(function($) {
           searchOnFocus: true,
           source: TYPEAHEADS.typeaheadContactsSource(),
           templateValue: "{{name}}",
-          template: function (query, item) {
-            return `<span class="row">
-              <span>${item.name} (#${item.ID})</span>
-            </span>`
-          },
+          template: window.TYPEAHEADS.contactListRowTemplate,
           matcher: function (item) {
             return item.ID !== contact.ID
           },

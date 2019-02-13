@@ -6,6 +6,7 @@ var gulp  = require('gulp'),
   gutil = require('gulp-util'),
   browserSync = require('browser-sync').create(),
   plugin = require('gulp-load-plugins')(),
+  touch = require('gulp-touch-cmd'),
   rename = require('gulp-rename'),
   merge = require('merge-stream');
 
@@ -113,6 +114,7 @@ gulp.task('styles', function() {
     .pipe(plugin.cssnano())
     .pipe(plugin.sourcemaps.write('.'))
     .pipe(gulp.dest(BUILD_DIRS.styles))
+    .pipe(touch())
     .pipe(browserSync.reload({
       stream: true
     }));

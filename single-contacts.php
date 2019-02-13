@@ -1,6 +1,10 @@
 <?php
 declare( strict_types=1 );
 
+if ( ! current_user_can( 'access_contacts' ) ) {
+    wp_safe_redirect( '/settings' );
+}
+
 ( function () {
     $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
@@ -215,107 +219,8 @@ declare( strict_types=1 );
 
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
 
-            <div class="small-12 cell bordered-box grid-x grid-margin-x">
-                <div class="cell small-12 medium-4">
-                    <i class="fi-torso large"></i>
-                    <span class="item-details-header title" ><?php the_title_attribute(); ?></span>
-                </div>
-                <div class="cell small-12 medium-2">
-                    <div class="section-subheader">
-                        <?php esc_html_e( "Status", 'disciple_tools' ) ?>
-                        <button class="help-button" data-section="overall-status-help-text">
-                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                        </button>
-                    </div>
-                    <?php
-                    $active_color = "#366184";
-                    $current_key = $contact["overall_status"]["key"] ?? "";
-                    if ( isset( $contact_fields["overall_status"]["default"][ $current_key ]["color"] )){
-                        $active_color = $contact_fields["overall_status"]["default"][ $current_key ]["color"];
-                    }
-                    ?>
-                    <select id="overall_status" class="select-field" style="width:fit-content; margin-bottom:0px; background-color: <?php echo esc_html( $active_color ) ?>">
-                    <?php foreach ($contact_fields["overall_status"]["default"] as $key => $option){
-                        $value = $option["label"] ?? "";
-                        if ( $contact["overall_status"]["key"] === $key ) {
-                            ?>
-                            <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
-                        <?php } else { ?>
-                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
-                        <?php } ?>
-                    <?php } ?>
-                    </select>
-                    <p>
-                        <span id="reason">
-                            <?php
-                            $hide_edit_button = false;
-                            if ( $contact["overall_status"]["key"] === "paused" &&
-                                 isset( $contact["reason_paused"] )){
-                                echo '(' . esc_html( $contact["reason_paused"]["label"] ) . ')';
-                            } else if ( $contact["overall_status"]["key"] === "closed" &&
-                                        isset( $contact["reason_closed"] )){
-                                echo '(' . esc_html( $contact["reason_closed"]["label"] ) . ')';
-                            } else if ( $contact["overall_status"]["key"] === "unassignable" &&
-                                        isset( $contact["reason_unassignable"] )){
-                                echo '(' . esc_html( $contact["reason_unassignable"]["label"] ) . ')';
-                            } else {
-                                $hide_edit_button = true;
-                            }
-                            ?>
-                        </span>
-                        <button id="edit-reason" <?php if ( $hide_edit_button ) : ?> style="display: none"<?php endif; ?> ><i class="fi-pencil"></i></button>
-                    </p>
-                </div>
 
-                <div class="cell small-12 medium-3">
-                    <!-- Assigned To -->
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
-                        <?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
-                    </div>
-
-                    <div class="assigned_to details">
-                        <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
-                        <div id="assigned_to_t" name="form-assigned_to">
-                            <div class="typeahead__container">
-                                <div class="typeahead__field">
-                                    <span class="typeahead__query">
-                                        <input class="js-typeahead-assigned_to input-height"
-                                               name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
-                                               autocomplete="off">
-                                    </span>
-                                    <span class="typeahead__button">
-                                        <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
-                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                                        </button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="cell small-12 medium-3">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/subassigned.svg' ?>">
-                        <?php esc_html_e( 'Sub-assigned to', 'disciple_tools' )?>
-                    </div>
-                    <div class="subassigned details">
-                        <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
-                        <div id="subassigned_t" name="form-subassigned">
-                            <div class="typeahead__container">
-                                <div class="typeahead__field">
-                                    <span class="typeahead__query">
-                                        <input class="js-typeahead-subassigned input-height"
-                                               name="subassigned[query]" placeholder="<?php esc_html_e( "Search multipliers and contacts", 'disciple_tools' ) ?>"
-                                               autocomplete="off">
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                <section class="hide-for-large small-12 cell">
+            <section class="hide-for-large small-12 cell">
                 <div class="bordered-box">
                     <?php get_template_part( 'dt-assets/parts/contact', 'quick-buttons' ); ?>
 
@@ -327,6 +232,7 @@ declare( strict_types=1 );
                 </div>
             </section>
             <main id="main" class="xlarge-7 large-7 medium-12 small-12 cell" role="main" style="padding:0">
+
               <div class="cell grid-y grid-margin-y" style="display: block">
                 <?php
                 if ( current_user_can( "view_any_contacts" ) ){
@@ -352,9 +258,9 @@ declare( strict_types=1 );
                     <?php }
                 }
                 ?>
-                    <section id="contact-details" class="small-12 grid-y grid-margin-y cell ">
+                    <div id="contact-details" class="small-12 cell grid-margin-y">
                         <?php get_template_part( 'dt-assets/parts/contact', 'details' ); ?>
-                    </section>
+                    </div>
                     <div class="cell small-12">
                         <div class="grid-x grid-margin-x grid-margin-y grid">
                             <section id="relationships" class="xlarge-6 large-12 medium-6 cell grid-item">
@@ -726,7 +632,7 @@ declare( strict_types=1 );
                             <?php
                             $selected = $contact["reason_$status"]['key'] ?? '' === $reason_key ? 'selected' : '';
                             echo esc_html( $selected ); ?>>
-                            <?php echo esc_html( $reason_label, 'disciple_tools' ); ?>
+                            <?php echo esc_html( $reason_label['label'] ); ?>
                         </option>
                         <?php
                     }
@@ -811,7 +717,7 @@ declare( strict_types=1 );
             <p><?php esc_html_e( "This contact already represents a user", 'disciple_tools' ) ?></p>
         <?php else : ?>
 
-        <p><?php esc_html_e( "This will invite this contact to D.T as a multiplier", 'disciple_tools' ) ?></p>
+        <p><?php esc_html_e( "This will invite this contact to Disciple.Tools as a multiplier", 'disciple_tools' ) ?></p>
 
         <form id="create-user-form">
             <label for="user-email">

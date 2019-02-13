@@ -13,6 +13,9 @@ function dt_my_connection_types() {
             'name'        => 'contacts_to_contacts',
             'from'        => 'contacts',
             'to'          => 'contacts',
+            'admin_box' => [
+                'show' => false,
+            ],
             'title'       => [
                 'from' => __( 'Coached by', 'disciple_tools' ),
                 'to'   => __( 'Coaching', 'disciple_tools' ),
@@ -37,7 +40,10 @@ function dt_my_connection_types() {
         [
             'name'        => 'contacts_to_relation',
             'from'        => 'contacts',
-            'to'          => 'contacts'
+            'to'          => 'contacts',
+            'admin_box' => [
+                'show' => false,
+            ],
         ]
     );
 
@@ -46,6 +52,9 @@ function dt_my_connection_types() {
             'name'        => 'contacts_to_subassigned',
             'from'        => 'contacts',
             'to'          => 'contacts',
+            'admin_box' => [
+                'show' => false,
+            ],
             'title'       => [
                 'from' => __( 'Sub-assigned by', 'disciple_tools' ),
                 'to'   => __( 'Sub-assigned', 'disciple_tools' ),
@@ -71,6 +80,9 @@ function dt_my_connection_types() {
             'name'        => 'baptizer_to_baptized',
             'from'        => 'contacts',
             'to'          => 'contacts',
+            'admin_box' => [
+                'show' => false,
+            ],
             'title'       => [
                 'from' => __( 'Baptized by', 'disciple_tools' ),
                 'to'   => __( 'Baptized', 'disciple_tools' ),
@@ -115,8 +127,9 @@ function dt_my_connection_types() {
             'name'           => 'contacts_to_groups',
             'from'           => 'contacts',
             'to'             => 'groups',
-            'admin_column'   => 'any',
-            'admin_dropdown' => 'from',
+            'admin_box' => [
+                'show' => false,
+            ],
             'title'          => [
                 'from' => __( 'Contacts', 'disciple_tools' ),
                 'to'   => __( 'Members', 'disciple_tools' ),
@@ -149,8 +162,9 @@ function dt_my_connection_types() {
             'name'           => 'groups_to_leaders',
             'from'           => 'groups',
             'to'             => 'contacts',
-            'admin_column'   => 'any',
-            'admin_dropdown' => 'from',
+            'admin_box' => [
+                'show' => false,
+            ],
             'title'          => [
                 'from' => __( 'Groups', 'disciple_tools' ),
                 'to'   => __( 'Leaders', 'disciple_tools' ),
@@ -183,8 +197,9 @@ function dt_my_connection_types() {
             'name'           => 'groups_to_coaches',
             'from'           => 'groups',
             'to'             => 'contacts',
-            'admin_column'   => 'any',
-            'admin_dropdown' => 'from',
+            'admin_box' => [
+                'show' => false,
+            ],
             'title'          => [
                 'from' => __( 'Groups', 'disciple_tools' ),
                 'to'   => __( 'Coaches', 'disciple_tools' ),
@@ -217,7 +232,9 @@ function dt_my_connection_types() {
             'name'        => 'contacts_to_locations',
             'from'        => 'contacts',
             'to'          => 'locations',
-            //            'cardinality' => 'many-to-one',
+            'admin_box' => [
+                'show' => 'from',
+            ],
             'title'       => [
                 'from' => __( 'Location', 'disciple_tools' ),
                 'to'   => __( 'Contacts', 'disciple_tools' ),
@@ -248,6 +265,9 @@ function dt_my_connection_types() {
             'name'        => 'groups_to_locations',
             'from'        => 'groups',
             'to'          => 'locations',
+            'admin_box' => [
+                'show' => 'from',
+            ],
             'title'       => [
                 'from' => __( 'Location', 'disciple_tools' ),
                 'to'   => __( 'Groups', 'disciple_tools' ),
@@ -296,36 +316,54 @@ function dt_my_connection_types() {
         ]
     );
 
+    /**
+     * Peer groups
+     */
+    p2p_register_connection_type( [
+        'name'         => 'groups_to_peers',
+        'from'         => 'groups',
+        'to'           => 'groups',
+        'admin_column' => 'any'
+    ] );
 
+
+    // @todo remove @CC 12-20-2018
     /**
      * This creates the link between members and locations for assignment purposes.
      */
+    /*
     p2p_register_connection_type(
         [
             'name'  => 'team_member_locations',
-            'from'  => 'locations',
-            'to'    => 'user',
+            'from'  => 'user',
+            'to'    => 'locations',
             'title' => [
-                'from' => __( 'Team Members', 'disciple_tools' ),
-                'to'   => __( 'Locations', 'disciple_tools' ),
+                'to' => __( 'Team Members', 'disciple_tools' ),
+                'from'   => __( 'Locations', 'disciple_tools' ),
             ],
         ]
     );
+    */
 
     /**
      * People Groups
      */
+    /*
     p2p_register_connection_type(
         [
             'name'  => 'team_member_peoplegroups',
-            'from'  => 'peoplegroups',
-            'to'    => 'user',
+            'from'  => 'user',
+            'to'    => 'peoplegroups',
             'title' => [
-                'from' => __( 'Team Members', 'disciple_tools' ),
-                'to'   => __( 'People Groups', 'disciple_tools' ),
+                'to' => __( 'Team Members', 'disciple_tools' ),
+                'from'   => __( 'People Groups', 'disciple_tools' ),
             ],
         ]
     );
+    */
+    // @todo end remove @CC 12-20-2018
+
+
     p2p_register_connection_type(
         [
             'name'        => 'contacts_to_peoplegroups',
@@ -428,11 +466,24 @@ function dt_p2p_published_by_default( $args ) {
 }
 add_filter( 'p2p_new_post_args', 'dt_p2p_published_by_default', 10, 1 );
 
+//escape the connection title because p2p doesn't
+function dt_p2p_title_escape( $title, $object = null, $type = null ){
+    return esc_html( $title );
+}
+add_filter( "p2p_connected_title", "dt_p2p_title_escape" );
+
+
+
+// @todo remove below @CC 12-20-2018
+// These functions below give people groups and locations to user profiles, but we are moving towards using the contact
+// record connected to the user account as the source for tracking people groups, locations, and user contact details
+
 /**
  * Adding the connection box to the user profile
  *
  * @param $user
  */
+/*
 function dt_user_location_connections( $user ) {
 
     // Find connected posts
@@ -500,12 +551,14 @@ function dt_user_location_connections( $user ) {
 }
 add_action( 'show_user_profile', 'dt_user_location_connections', 999 );
 add_action( 'edit_user_profile', 'dt_user_location_connections', 999 );
+*/
 
 /**
  * Adding the connection box to the user profile
  *
  * @param $user
  */
+/*
 function dt_user_peoplegroup_connections( $user ) {
 
     // Find connected posts
@@ -574,8 +627,4 @@ function dt_user_peoplegroup_connections( $user ) {
 add_action( 'show_user_profile', 'dt_user_peoplegroup_connections', 999 );
 add_action( 'edit_user_profile', 'dt_user_peoplegroup_connections', 999 );
 
-//escape the connection title because p2p doesn't
-function dt_p2p_title_escape( $title, $object = null, $type = null ){
-    return esc_html( $title );
-}
-add_filter( "p2p_connected_title", "dt_p2p_title_escape" );
+*/

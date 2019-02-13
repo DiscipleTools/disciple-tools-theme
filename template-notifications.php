@@ -3,11 +3,13 @@
 Template Name: Notifications
 */
 
+if ( ! current_user_can( 'access_contacts' ) ) {
+    wp_safe_redirect( '/settings' );
+}
+
 $dt_user = wp_get_current_user(); // query to get new notifications
-?>
 
-<?php get_header(); ?>
-
+get_header(); ?>
 
 <script>
 

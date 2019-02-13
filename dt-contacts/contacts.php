@@ -14,7 +14,6 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 {
-    public static $contact_fields;
     public static $channel_list;
     public static $address_types;
     public static $contact_connection_types;
@@ -23,7 +22,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * Disciple_Tools_Contacts constructor.
      */
     public function __construct() {
-        self::$contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
         self::$address_types = dt_get_option( "dt_site_custom_lists" )["contact_address_types"];
         self::$contact_connection_types = [
@@ -39,6 +37,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         ];
         add_action( "dt_contact_created", [ $this, "check_for_duplicates" ], 10, 2 );
         add_action( "dt_contact_updated", [ $this, "check_for_duplicates" ], 10, 2 );
+        add_action( "dt_contact_updated", [ $this, "check_seeker_path" ], 10, 4 );
+
         parent::__construct();
     }
 
@@ -77,7 +77,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $error = new WP_Error();
         foreach ( $query_pagination_args as $key => $value ) {
             if ( !in_array( $key, $allowed_keys ) ) {
-                $error->add( __FUNCTION__, sprintf( __( "Key %s was an unexpected pagination key" ), $key ) );
+                $error->add( __FUNCTION__, sprintf( "Key %s was an unexpected pagination key", $key ) );
             }
         }
         if ( count( $error->errors ) ) {
@@ -96,7 +96,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return mixed
      */
     public static function get_contact_fields() {
-        return self::$contact_fields;
+        return Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
     }
 
     /**
@@ -135,7 +135,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( $contact_id ){
             $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( isset( $contact_id ), $contact_id );
         } else {
-            $contact_fields = self::$contact_fields;
+            $contact_fields = $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         }
         if ( isset( $contact_fields[$field] ) ){
             return $contact_fields[ $field ];
@@ -160,18 +160,19 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function create_contact( array $fields = [], $check_permissions = true, $silent = false ) {
         if ( $check_permissions && !current_user_can( 'create_contacts' ) ) {
-            return new WP_Error( __FUNCTION__, __( "You may not publish a contact" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You may not publish a contact", [ 'status' => 403 ] );
         }
         $initial_fields = $fields;
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
 
         $continue = apply_filters( "dt_create_contact_check_proceed", true, $fields );
         if ( !$continue ){
-            return new WP_Error( __FUNCTION__, __( "Could not create this contact. Maybe it already exists" ), [ 'status' => 409 ] );
+            return new WP_Error( __FUNCTION__, "Could not create this contact. Maybe it already exists", [ 'status' => 409 ] );
         }
 
         //required fields
         if ( !isset( $fields["title"] ) ) {
-            return new WP_Error( __FUNCTION__, __( "Contact needs a title" ), [ 'fields' => $fields ] );
+            return new WP_Error( __FUNCTION__, "Contact needs a title", [ 'fields' => $fields ] );
         }
 
         //make sure the assigned to is in the right format (user-1)
@@ -181,7 +182,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 if ( $user ) {
                     $fields["assigned_to"] = $user->ID;
                 } else {
-                    return new WP_Error( __FUNCTION__, __( "Unrecognized user" ), $fields["assigned_to"] );
+                    return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
                 }
             }
             if ( is_numeric( $fields["assigned_to"] ) ||
@@ -212,7 +213,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $bad_fields = self::check_for_invalid_fields( $fields );
         if ( !empty( $bad_fields ) ) {
-            return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), [ 'bad_fields' => $bad_fields ] );
+            return new WP_Error( __FUNCTION__, "These fields do not exist", [ 'bad_fields' => $bad_fields ] );
         }
 
         $current_roles = wp_get_current_user()->roles;
@@ -257,7 +258,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $contact_methods_and_connections[$field_key] = $field_value;
                 unset( $fields[$field_key] );
             }
-            $field_type = self::$contact_fields[$field_key]["type"] ?? '';
+            $field_type = $contact_fields[$field_key]["type"] ?? '';
             if ( $field_type === "multi_select" ){
                 $multi_select_fields[$field_key] = $field_value;
                 unset( $fields[$field_key] );
@@ -278,7 +279,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         $post_id = wp_insert_post( $post );
-
 
         if ( isset( $fields["assigned_to"] )) {
             $user_id = explode( '-', $fields["assigned_to"] )[1];
@@ -369,10 +369,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     private static function parse_multi_select_fields( $contact_id, $fields, $existing_contact = null ){
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         foreach ( $fields as $field_key => $field ){
-            if ( isset( self::$contact_fields[$field_key] ) && self::$contact_fields[$field_key]["type"] === "multi_select" ){
+            if ( isset( $contact_fields[$field_key] ) && $contact_fields[$field_key]["type"] === "multi_select" ){
                 if ( !isset( $field["values"] )){
-                    return new WP_Error( __FUNCTION__, __( "missing values field on:" ) . " " . $field_key );
+                    return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key );
                 }
                 if ( isset( $field["force_values"] ) && $field["force_values"] === true ){
                     delete_post_meta( $contact_id, $field_key );
@@ -388,7 +389,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             }
                         }
                     } else {
-                        return new WP_Error( __FUNCTION__, __( "Something wrong on field:" ) . " " . $field_key );
+                        return new WP_Error( __FUNCTION__, "Something wrong on field: " . $field_key );
                     }
                 }
             }
@@ -420,7 +421,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             foreach ( $values as $field ){
                 if ( isset( $field["delete"] ) && $field["delete"] == true){
                     if ( !isset( $field["key"] )){
-                        return new WP_Error( __FUNCTION__, __( "missing key on:" ) . " " . $details_key );
+                        return new WP_Error( __FUNCTION__, "missing key on: " . $details_key );
                     }
                     //delete field
                     $potential_error = self::delete_contact_field( $contact_id, $field["key"] );
@@ -433,7 +434,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $potential_error = self::add_contact_method( $contact_id, $field["key"], $field["value"], $field, false );
 
                 } else {
-                    return new WP_Error( __FUNCTION__, __( "Is not an array or missing value on:" ) . " " . $details_key );
+                    return new WP_Error( __FUNCTION__, "Is not an array or missing value on: " . $details_key );
                 }
                 if ( isset( $potential_error ) && is_wp_error( $potential_error ) ) {
                     return $potential_error;
@@ -450,7 +451,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         foreach ( self::$contact_connection_types as $connection_type ){
             if ( isset( $fields[$connection_type] ) ){
                 if ( !isset( $fields[$connection_type]["values"] )){
-                    return new WP_Error( __FUNCTION__, __( "Missing values field on connection:" ) . " " . $connection_type, [ 'status' => 500 ] );
+                    return new WP_Error( __FUNCTION__, "Missing values field on connection: " . $connection_type, [ 'status' => 500 ] );
                 }
                 $existing_connections = [];
                 if ( isset( $existing_contact[$connection_type] ) ){
@@ -501,7 +502,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             }
                         }
                     } else {
-                         return new WP_Error( __FUNCTION__, __( "Cannot determine target on connection:" ) . " " . $connection_type, [ 'status' => 500 ] );
+                         return new WP_Error( __FUNCTION__, "Cannot determine target on connection: " . $connection_type, [ 'status' => 500 ] );
                     }
                 }
                 //check for deleted connections
@@ -531,12 +532,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             "duplicate_of" => $contact_id
         ] );
 
-        $comment = "{$duplicate['title']} is a duplicate and was merged into " .
-                   "<a href='" . get_permalink( $contact_id ) . "'>{$contact['title']}</a>";
+        $link = "<a href='" . get_permalink( $contact_id ) . "'>{$contact['title']}</a>";
+        $comment = sprintf( esc_html_x( '%1$s is a duplicate and was merged into %2$s', 'Contact1 is a duplicated and was merged into Contact2', 'disciple_tools' ), $duplicate['title'], $link );
+
         self::add_comment( $duplicate_id, $comment, "duplicate", [], true, true );
 
         //comment on master
-        $comment = "Contact <a href='" . get_permalink( $duplicate_id ) . "'>{$duplicate['title']}</a> was merged into {$contact['title']}";
+        $link = "<a href='" . get_permalink( $duplicate_id ) . "'>{$duplicate['title']}</a>";
+        $comment = sprintf( esc_html_x( '%1$s was merged into %2$s', 'Contact1 was merged into Contact2', 'disciple_tools' ), $link, $duplicate['title'] );
         self::add_comment( $contact_id, $comment, "duplicate", [], true, true );
     }
 
@@ -556,25 +559,25 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function update_contact( int $contact_id, array $fields, $check_permissions = true, bool $silent = false ) {
 
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         $initial_fields = $fields;
         $initial_keys = array_keys( $fields );
-
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         $post = get_post( $contact_id );
         if ( isset( $fields['id'] ) ) {
             unset( $fields['id'] );
         }
 
         if ( !$post ) {
-            return new WP_Error( __FUNCTION__, __( "Contact does not exist" ) );
+            return new WP_Error( __FUNCTION__, "Contact does not exist" );
         }
 
 
         // don't try to update fields that don't exist
         $bad_fields = self::check_for_invalid_fields( $fields, $contact_id );
         if ( !empty( $bad_fields ) ) {
-            return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), [ 'bad_fields' => $bad_fields ] );
+            return new WP_Error( __FUNCTION__, "These fields do not exist", [ 'bad_fields' => $bad_fields ] );
         }
         $existing_contact = self::get_contact( $contact_id, false );
 
@@ -617,7 +620,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 if ( $user ) {
                     $fields["assigned_to"] = $user->ID;
                 } else {
-                    return new WP_Error( __FUNCTION__, __( "Unrecognized user" ), $fields["assigned_to"] );
+                    return new WP_Error( __FUNCTION__, "Unrecognized user", $fields["assigned_to"] );
                 }
             }
             //make sure the assigned to is in the right format (user-1)
@@ -657,7 +660,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             if ( !self::is_key_contact_method_or_connection( $field_id ) ) {
                 // Boolean contact field are stored as yes/no
 
-                $field_type = self::$contact_fields[$field_id]["type"] ?? '';
+                $field_type = $contact_fields[$field_id]["type"] ?? '';
                 //we handle multi_select above.
                 if ( $field_type === 'date' && !is_numeric( $value )){
                     $value = strtotime( $value );
@@ -681,7 +684,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         //hook for signaling that a contact has been updated and which keys have been changed
         if ( !is_wp_error( $contact )){
-            do_action( "dt_contact_updated", $contact_id, $initial_fields, $contact );
+            do_action( "dt_contact_updated", $contact_id, $initial_fields, $contact, $existing_contact );
             if ( !$silent ){
                 Disciple_Tools_Notifications::insert_notification_for_post_update( "contacts", $contact, $existing_contact, $initial_keys );
             }
@@ -737,10 +740,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 self::add_shared( "groups", $group_id, $user_id, null, false, false );
             }
         }
-        return p2p_type( 'contacts_to_groups' )->connect(
+        $added = p2p_type( 'contacts_to_groups' )->connect(
             $group_id, $contact_id,
             [ 'date' => current_time( 'mysql' ) ]
         );
+        do_action( 'group_member_count', $group_id, "added" );
+        return $added;
     }
 
     /**
@@ -864,8 +869,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @return mixed
      */
-    public static function remove_group_from_contact( $contact_id, $people_group_id ) {
-        return p2p_type( 'contacts_to_groups' )->disconnect( $people_group_id, $contact_id );
+    public static function remove_group_from_contact( $contact_id, $group_id ) {
+        $removed = p2p_type( 'contacts_to_groups' )->disconnect( $group_id, $contact_id );
+        if ( !is_wp_error( $removed ) ){
+            do_action( 'group_member_count', $group_id, "removed" );
+        }
+        return $removed;
     }
 
     /**
@@ -971,7 +980,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function add_contact_detail( int $contact_id, string $key, string $value, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         if ( strpos( $key, "new-" ) === 0 ) {
             $type = explode( '-', $key )[1];
@@ -1024,7 +1033,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     public static function add_contact_method( int $contact_id, string $key, string $value, array $field, bool $check_permissions ) {
         if ( $check_permissions && ! self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         if ( strpos( $key, "new-" ) === 0 ) {
             $type = explode( '-', $key )[1];
@@ -1058,7 +1067,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function update_contact_method( int $contact_id, string $key, array $values, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         if ( ( strpos( $key, "contact_" ) === 0 || strpos( $key, "address_" ) === 0 ) &&
             strpos( $key, "_details" ) === false
@@ -1099,7 +1108,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function remove_contact_connection( int $contact_id, string $key, string $value, bool $check_permissions ) {
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         if ( $key === "locations" ) {
             return self::remove_location_from_contact( $contact_id, $value );
@@ -1133,7 +1142,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function delete_contact_field( int $contact_id, string $key, $check_permissions = true ){
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id )){
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 401 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 401 ] );
         }
         delete_post_meta( $contact_id, $key .'_details' );
         return delete_post_meta( $contact_id, $key );
@@ -1151,10 +1160,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_contact( int $contact_id, $check_permissions = true ) {
         if ( $check_permissions && !self::can_view( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "No permissions to read contact", [ 'status' => 403 ] );
         }
 
         $contact = get_post( $contact_id );
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         if ( $contact ) {
             $fields = [];
 
@@ -1302,14 +1312,20 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         }
                         $fields["address"][] = $details;
                     }
-                } elseif ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]["type"] == "key_select" ) {
-                    if ( !empty( $value[0] )){
-                        $label = self::$contact_fields[ $key ]["default"][ $value[0] ]["label"] ?? current( self::$contact_fields[ $key ]["default"] );
-                        $fields[ $key ] = [
-                            "key" => $value[0],
-                            "label" => $label
-                        ];
+                } elseif ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]["type"] == "key_select" && !empty( $value[0] )) {
+                    $value_options = $contact_fields[ $key ]["default"][ $value[0] ] ?? $value[0];
+                    if ( isset( $value_options["label"] ) ){
+                        $label = $value_options["label"];
+                    } elseif ( is_string( $value_options ) ) {
+                        $label = $value_options;
+                    } else {
+                        $label = $value[0];
                     }
+//                        $label = $contact_fields[ $key ]["default"][ $value[0] ]["label"] ?? $value[0];
+                    $fields[ $key ] = [
+                        "key" => $value[0],
+                        "label" => $label
+                    ];
                 } elseif ( $key === "assigned_to" ) {
                     if ( $value ) {
                         $meta_array = explode( '-', $value[0] ); // Separate the type and id
@@ -1327,13 +1343,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             }
                         }
                     }
-                } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'multi_select' ){
+                } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'multi_select' ){
                     $fields[ $key ] = $value;
-                } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'boolean' ){
+                } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'boolean' ){
                     $fields[ $key ] = $value[0] === "1";
-                } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'array' ){
+                } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'array' ){
                     $fields[ $key ] = maybe_unserialize( $value[0] );
-                } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'date' ){
+                } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'date' ){
                     $fields[ $key ] = [
                         "timestamp" => $value[0],
                         "formatted" => dt_format_date( $value[0] ),
@@ -1349,9 +1365,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $fields["title"] = $contact->post_title;
             $fields["created_date"] = $contact->post_date;
 
-            return $fields;
+            return apply_filters( 'dt_contact_fields_post_filter', $fields );
         } else {
-            return new WP_Error( __FUNCTION__, __( "No contact found with ID" ), [ 'contact_id' => $contact_id ] );
+            return new WP_Error( __FUNCTION__, "No contact found with ID", [ 'contact_id' => $contact_id ] );
         }
     }
 
@@ -1450,15 +1466,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( !$master_id || !$non_master_id) { return; }
         $master = self::get_contact( $master_id );
         $non_master = self::get_contact( $non_master_id );
-        $keys = array(
-            'groups',
-            'baptized_by',
-            'baptized',
-            'coached_by',
-            'coaching',
-            'locations',
-            'people_groups'
-        );
+        $keys = self::$contact_connection_types;
 
         $update = [];
         $to_remove = [];
@@ -1500,13 +1508,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     public static function copy_comments( int $master_id, int $non_master_id, $check_permissions = true ){
         if ( $check_permissions && ( !self::can_update( 'contacts', $master_id ) || !self::can_update( 'contacts', $non_master_id ) )) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         $comments = self::get_comments( $non_master_id );
         foreach ( $comments as $comment ){
             $comment->comment_post_ID = $master_id;
             if ( $comment->comment_type === "comment" ){
-                $comment->comment_content = __( "(From Duplicate): ", "disciple_tools" ) . $comment->comment_content;
+                $comment->comment_content = sprintf( esc_html_x( '(From Duplicate): %s', 'duplicate comment', 'disciple_tools' ), $comment->comment_content );
             }
             if ( $comment->comment_type !== "duplicate" ){
                 wp_insert_comment( (array) $comment );
@@ -1543,7 +1551,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function revert_activity( $contact_id, $activity_id ){
         if ( !self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         $activity = self::get_single_activity( $contact_id, $activity_id );
         if ( empty( $activity->old_value ) ){
@@ -1569,7 +1577,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_user_contacts( int $user_id, bool $check_permissions = true, array $query_pagination_args = [] ) {
         if ( $check_permissions && !self::can_access( 'contacts' ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have access to these contacts", [ 'status' => 403 ] );
         }
 
         $query_args = [
@@ -1595,7 +1603,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_viewable_contacts( int $most_recent, bool $check_permissions = true ) {
         if ( $check_permissions && !self::can_access( 'contacts' ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have access to these contacts", [ 'status' => 403 ] );
         }
         $current_user = wp_get_current_user();
 
@@ -1875,7 +1883,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return array|int|\WP_Error
      */
     public static function update_seeker_path( int $contact_id, string $path_option, $check_permissions = true ) {
-        $seeker_path_options = self::$contact_fields["seeker_path"]["default"];
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $seeker_path_options = $contact_fields["seeker_path"]["default"];
         $option_keys = array_keys( $seeker_path_options );
         $current_seeker_path = get_post_meta( $contact_id, "seeker_path", true );
         $current_index = array_search( $current_seeker_path, $option_keys );
@@ -1984,10 +1993,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function delete_comment( int $contact_id, int $comment_id, bool $check_permissions = true ){
         $comment = get_comment( $comment_id );
         if ( $check_permissions && isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) {
-            return new WP_Error( __FUNCTION__, __( "You don't have permission to delete this comment" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You don't have permission to delete this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){
-            return new WP_Error( __FUNCTION__, __( "No comment found with id:" ) . ' ' . $comment_id, [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "No comment found with id: " . $comment_id, [ 'status' => 403 ] );
         }
         return wp_delete_comment( $comment_id );
     }
@@ -1995,10 +2004,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function update_comment( int $contact_id, int $comment_id, string $comment_content, bool $check_permissions = true ){
         $comment = get_comment( $comment_id );
         if ( $check_permissions && isset( $comment->user_id ) && $comment->user_id != get_current_user_id() ) {
-            return new WP_Error( __FUNCTION__, __( "You don't have permission to edit this comment" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You don't have permission to edit this comment", [ 'status' => 403 ] );
         }
         if ( !$comment ){
-            return new WP_Error( __FUNCTION__, __( "No comment found with id:" ) . ' ' . $comment_id, [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "No comment found with id: " . $comment_id, [ 'status' => 403 ] );
         }
         $comment = [
             "comment_content" => $comment_content,
@@ -2015,7 +2024,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function accept_contact( int $contact_id, bool $accepted ) {
         if ( !self::can_update( 'contacts', $contact_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
 
         if ( $accepted ) {
@@ -2023,6 +2032,20 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 "overall_status" => 'active',
                 "accepted" => true
             ];
+            dt_activity_insert(
+                [
+                    'action'         => 'assignment_accepted',
+                    'object_type'    => get_post_type( $contact_id ),
+                    'object_subtype' => '',
+                    'object_name'    => get_the_title( $contact_id ),
+                    'object_id'      => $contact_id,
+                    'meta_id'        => '', // id of the comment
+                    'meta_key'       => '',
+                    'meta_value'     => '',
+                    'meta_parent'    => '',
+                    'object_note'    => '',
+                ]
+            );
             self::update_contact( $contact_id, $update, true );
             return self::get_contact( $contact_id );
         } else {
@@ -2042,11 +2065,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 "overall_status" => 'unassigned'
             ];
             self::update_contact( $contact_id, $update, true );
-            $assign = get_user_by( 'id', $assign_to_id );
             $current_user = wp_get_current_user();
             dt_activity_insert(
                 [
-                    'action'         => 'decline',
+                    'action'         => 'assignment_decline',
                     'object_type'    => get_post_type( $contact_id ),
                     'object_subtype' => 'decline',
                     'object_name'    => get_the_title( $contact_id ),
@@ -2055,7 +2077,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'meta_key'       => '',
                     'meta_value'     => '',
                     'meta_parent'    => '',
-                    'object_note'    => $current_user->display_name . " declined assignment",
+                    'object_note'    => ''
                 ]
             );
             Disciple_Tools_Notifications::insert_notification_for_assignment_declined( $current_user->ID, $assign_to_id, $contact_id );
@@ -2141,8 +2163,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $exclude_id
             ), ARRAY_N
         );
-        // if there are more than 50, it is most likely not a duplicate
-        return sizeof( $dups ) > 50 ? [] : $dups;
+        // if there are more than 25, it is most likely not a duplicate
+        return sizeof( $dups ) > 25 ? [] : $dups;
     }
 
     public function get_all_duplicates() {
@@ -2176,7 +2198,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     public static function get_duplicates_on_contact( $contact_id ){
         if ( !self::can_view_all( 'contacts' ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
         $contact = self::get_contact( $contact_id );
         $all_ids = [];
@@ -2249,7 +2271,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     public function check_for_duplicates( $contact_id, $fields ){
-        $fields_to_check = [ "contact_phone", "contact_email", "title" ];
+        $fields_to_check = [ "contact_phone", "contact_email", "contact_address", "title" ];
         $fields_to_check = apply_filters( "dt_contact_duplicate_fields_to_check", $fields_to_check );
         foreach ( $fields as $field_id => $field_value ){
             if ( in_array( $field_id, $fields_to_check ) && !empty( $field_value ) ){
@@ -2278,6 +2300,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
     }
 
+    public static function escape_regex_mysql( string $regex ) {
+        return preg_replace( '/&/', '\\&', preg_quote( $regex ) );
+    }
+
 
     public static function recheck_duplicates( int $contact_id) {
         global $wpdb;
@@ -2287,32 +2313,37 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $values = array();
         foreach ($fields as $field) {
             foreach ($contact[$field] ?? [] as $arr_val) {
-                $values[] = $arr_val['value'];
+                if ( !empty( $arr_val['value'] ) ){
+                    $values[] = $arr_val['value'];
+                }
             }
         }
         $unsure = $contact['duplicate_data']['unsure'] ?? array();
         $dismissed = $contact['duplicate_data']['override'] ?? array();
-        $vals = join( '|', $values );
-        $flds = join( '|', $fields );
-
-        $results = $wpdb->get_results( $wpdb->prepare( "
-            select
-                *
-            from
-                wp_posts p join
-                wp_postmeta m on p.ID = m.post_id
-            where
-                ID != %d and
-                (meta_key regexp %s and meta_key not like %s) and
-                meta_value regexp %s
-            ",
-            array(
-                $contact_id,
-                "$flds",
-                '%details',
-                "$vals"
-            )
-        ), ARRAY_A );
+        if (count( $values ) == 0 || count( $fields ) == 0) {
+            $results = [];
+        } else {
+            $vals = join( '|', array_map( [ __CLASS__, 'escape_regex_mysql' ], $values ) );
+            $flds = join( '|', array_map( [ __CLASS__, 'escape_regex_mysql' ], $fields ) );
+            $results = $wpdb->get_results( $wpdb->prepare( "
+                select
+                    *
+                from
+                    wp_posts p join
+                    wp_postmeta m on p.ID = m.post_id
+                where
+                    ID != %d and
+                    (meta_key regexp %s and meta_key not like %s) and
+                    meta_value regexp %s
+                ",
+                array(
+                    $contact_id,
+                    "$flds",
+                    '%details',
+                    "$vals"
+                )
+            ), ARRAY_A );
+        }
         $duplicates = array();
         foreach ($results as $result) {
             $key = $result['meta_key'];
@@ -2435,81 +2466,179 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * Example Array Return:
      * [
-            [my_contacts] => 39
-            [update_needed] => 0
-            [contact_attempted] => 1
-            [meeting_scheduled] => 0
-            [shared] => 5
-            [all_contacts] => 43
-            [needs_assigned] => 0
-        ]
+     * [my_contacts] => 39
+     * [update_needed] => 0
+     * [contact_attempted] => 1
+     * [meeting_scheduled] => 0
+     * [shared] => 5
+     * [all_contacts] => 43
+     * [needs_assigned] => 0
+     * ]
      *
      * This function will always return this array even if the counts are zero.
      *
      * If the current user/supplied user is not a dispatcher role or similar, then it will skip the query and return zeros for
      * all_contacts and needs assigned array elements.
      *
-     * @param null $user_id
+     * @param string $tab
+     * @param bool $show_closed
      *
      * @return array|\WP_Error
      */
-    public static function get_count_of_contacts( $user_id = null ) {
+    public static function get_count_of_contacts( $tab = "my", $show_closed = false ) {
         global $wpdb;
         if ( !self::can_access( "contacts" ) ) {
-            return new WP_Error( __FUNCTION__, __( "Permission denied." ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "Permission denied.", [ 'status' => 403 ] );
         }
 
         $numbers = [];
 
-        if ( is_null( $user_id ) ) {
-            $user_id = get_current_user_id();
+        $user_id = get_current_user_id();
+        $access_sql = "";
+        $user_post = Disciple_Tools_Users::get_contact_for_user( $user_id ) ?? 0;
+        // contacts assigned to me
+        $my_access = "INNER JOIN $wpdb->postmeta as assigned_to
+            ON a.ID=assigned_to.post_id
+              AND assigned_to.meta_key = 'assigned_to'
+              AND assigned_to.meta_value = CONCAT( 'user-', " . $user_id . " )";
+        //contacts subassigned to me
+        $subassigned_access = "INNER JOIN $wpdb->p2p as from_p2p 
+            ON ( from_p2p.p2p_to = a.ID 
+                AND from_p2p.p2p_type = 'contacts_to_subassigned' 
+                AND from_p2p.p2p_from = " . $user_post. ")";
+        //contacts shared with me
+        $shared_access = "
+            INNER JOIN $wpdb->dt_share AS shares 
+            ON ( shares.post_id = a.ID  
+                AND shares.user_id = " . $user_id . "
+                AND a.ID NOT IN (
+                    SELECT assigned_to.post_id 
+                    FROM $wpdb->postmeta as assigned_to
+                    WHERE a.ID = assigned_to.post_id
+                      AND assigned_to.meta_key = 'assigned_to'
+                      AND assigned_to.meta_value = CONCAT( 'user-', " . $user_id . " )
+                )
+            )";
+        $all_access = "";
+        $closed = "";
+        if ( !$show_closed ){
+            $closed = " INNER JOIN $wpdb->postmeta as status
+              ON ( a.ID=status.post_id 
+              AND status.meta_key = 'overall_status'
+              AND status.meta_value != 'closed' )";
+        }
+        //contacts shared with me.
+        if ( !self::can_view_all( "contacts" ) ){
+            $all_access = "INNER JOIN $wpdb->dt_share AS shares 
+            ON ( shares.post_id = a.ID
+                 AND shares.user_id = " . $user_id . " ) ";
+        }
+        if ( $tab === "my" ){
+            $access_sql = $my_access;
+        } elseif ( $tab === "subassigned" ){
+            $access_sql = $subassigned_access;
+        } elseif ( $tab === "shared" ){
+            $access_sql = $shared_access;
+        } elseif ( $tab === "all" ){
+            $access_sql = $all_access;
         }
 
-        $personal_counts = $wpdb->get_results( $wpdb->prepare( "
+
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepare
+        $personal_counts = $wpdb->get_results("
             SELECT (SELECT count(a.ID)
             FROM $wpdb->posts as a
-              INNER JOIN $wpdb->postmeta as b
-                ON a.ID=b.post_id
-                  AND b.meta_key = 'assigned_to'
-                  AND b.meta_value = CONCAT( 'user-', %s )
+              " . $access_sql . $closed . "
               INNER JOIN $wpdb->postmeta as type
                 ON a.ID=type.post_id AND type.meta_key = 'type'
             WHERE a.post_status = 'publish'
+            AND post_type = 'contacts'
             AND (( type.meta_value = 'media' OR type.meta_value = 'next_gen' )
                 OR ( type.meta_key IS NULL ))
             )
-            as my_contacts,
+            as total_count,
+            (SELECT count(a.ID)
+            FROM $wpdb->posts as a
+            " . $my_access . $closed . "
+            INNER JOIN $wpdb->postmeta as type
+              ON a.ID=type.post_id AND type.meta_key = 'type'
+            WHERE a.post_status = 'publish'
+            AND post_type = 'contacts'
+            AND (( type.meta_value = 'media' OR type.meta_value = 'next_gen' )
+                OR ( type.meta_key IS NULL ))
+            )
+            as total_my,
+            (SELECT count(a.ID)
+            FROM $wpdb->posts as a
+            " . $subassigned_access . $closed . "
+            INNER JOIN $wpdb->postmeta as type
+              ON a.ID=type.post_id AND type.meta_key = 'type'
+            WHERE a.post_status = 'publish'
+            AND post_type = 'contacts'
+            AND (( type.meta_value = 'media' OR type.meta_value = 'next_gen' )
+                OR ( type.meta_key IS NULL ))
+            )
+            as total_subassigned,
+            (SELECT count(a.ID)
+            FROM $wpdb->posts as a
+            " . $shared_access . $closed . "
+            INNER JOIN $wpdb->postmeta as type
+              ON a.ID=type.post_id AND type.meta_key = 'type'
+            WHERE a.post_status = 'publish'
+            AND post_type = 'contacts'
+            AND (( type.meta_value = 'media' OR type.meta_value = 'next_gen' )
+                OR ( type.meta_key IS NULL ))
+            )
+            as total_shared,
+            (SELECT count(a.ID)
+            FROM $wpdb->posts as a
+            " . $all_access . $closed . "
+            INNER JOIN $wpdb->postmeta as type
+              ON a.ID=type.post_id AND type.meta_key = 'type'
+            WHERE a.post_status = 'publish'
+            AND post_type = 'contacts'
+            AND (( type.meta_value = 'media' OR type.meta_value = 'next_gen' )
+                OR ( type.meta_key IS NULL ))
+            )
+            as total_all,
             (SELECT count(a.ID)
               FROM $wpdb->posts as a
+                " . $access_sql . $closed . "
                 JOIN $wpdb->postmeta as b
                   ON a.ID=b.post_id
                     AND b.meta_key = 'requires_update'
                     AND b.meta_value = '1'
-                JOIN $wpdb->postmeta as c
-                  ON a.ID=c.post_id
-                    AND c.meta_key = 'assigned_to'
-                    AND c.meta_value = CONCAT( 'user-', %s )
-                JOIN $wpdb->postmeta as d
-                  ON a.ID=d.post_id
-                    AND d.meta_key = 'overall_status'
-                    AND d.meta_value = 'active'
                 INNER JOIN $wpdb->postmeta as e
                   ON a.ID=e.post_id
                   AND (( e.meta_key = 'type'
                     AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
-              WHERE a.post_status = 'publish')
+              WHERE a.post_status = 'publish'
+              AND post_type = 'contacts')
             as update_needed,
+            (SELECT count(a.ID)
+              FROM $wpdb->posts as a
+                " . $access_sql . "
+                JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                    AND b.meta_key = 'overall_status'
+                    AND b.meta_value = 'active'
+                INNER JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                  AND (( e.meta_key = 'type'
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
+                  OR e.meta_key IS NULL)
+              WHERE a.post_status = 'publish'
+              AND post_type = 'contacts')
+            as active,
             (SELECT count(a.ID)
               FROM $wpdb->posts as a
                 INNER JOIN $wpdb->postmeta as b
                   ON a.ID=b.post_id
                     AND b.meta_key = 'accepted'
                     AND b.meta_value = ''
-                INNER JOIN $wpdb->postmeta as c
-                  ON a.ID=c.post_id
-                    AND c.meta_key = 'assigned_to'
-                    AND c.meta_value = CONCAT( 'user-', %s )
+                " . $access_sql . $closed . "
                 INNER JOIN $wpdb->postmeta as d
                   ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
@@ -2519,7 +2648,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   AND (( e.meta_key = 'type'
                     AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
-              WHERE a.post_status = 'publish')
+              WHERE a.post_status = 'publish'
+              AND post_type = 'contacts')
             as needs_accepted,
             (SELECT count(a.ID)
               FROM $wpdb->posts as a
@@ -2527,10 +2657,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   ON a.ID=b.post_id
                     AND b.meta_key = 'seeker_path'
                     AND b.meta_value = 'none'
-                JOIN $wpdb->postmeta as c
-                  ON a.ID=c.post_id
-                    AND c.meta_key = 'assigned_to'
-                    AND c.meta_value = CONCAT( 'user-', %s )
+                " . $access_sql . $closed . "
                 JOIN $wpdb->postmeta as d
                   ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
@@ -2540,7 +2667,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   AND (( e.meta_key = 'type'
                     AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
-              WHERE a.post_status = 'publish')
+              WHERE a.post_status = 'publish'
+              AND post_type = 'contacts')
             as contact_unattempted,
             (SELECT count(a.ID)
               FROM $wpdb->posts as a
@@ -2548,10 +2676,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   ON a.ID=b.post_id
                     AND b.meta_key = 'seeker_path'
                     AND b.meta_value = 'scheduled'
-                JOIN $wpdb->postmeta as c
-                  ON a.ID=c.post_id
-                    AND c.meta_key = 'assigned_to'
-                    AND c.meta_value = CONCAT( 'user-', %s )
+                " . $access_sql . $closed . "
                 JOIN $wpdb->postmeta as d
                   ON a.ID=d.post_id
                     AND d.meta_key = 'overall_status'
@@ -2561,38 +2686,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                   AND (( e.meta_key = 'type'
                     AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
                   OR e.meta_key IS NULL)
-              WHERE a.post_status = 'publish')
-            as meeting_scheduled,
-            (SELECT count(a.ID)
-              FROM $wpdb->posts as a
-                JOIN $wpdb->postmeta as c
-                  ON a.ID=c.post_id
-                    AND c.meta_key = 'assigned_to'
-                    AND c.meta_value != CONCAT( 'user-', %s )
-                INNER JOIN $wpdb->postmeta as type
-                    ON a.ID=type.post_id AND type.meta_key = 'type'
-              WHERE ID IN (SELECT post_id
-                FROM $wpdb->dt_share
-                WHERE user_id = %s)
-              AND post_status = 'publish'
-              AND (
-                (type.meta_key = 'type' AND type.meta_value = 'media')
-                OR
-                ( type.meta_key = 'type' AND type.meta_value = 'next_gen' )
-                OR
-                ( type.meta_key IS NULL )
-              )
-            )
-            as shared_with_me;
-            ",
-            $user_id,
-            $user_id,
-            $user_id,
-            $user_id,
-            $user_id,
-            $user_id,
-            $user_id
-        ), ARRAY_A );
+              WHERE a.post_status = 'publish'
+              AND post_type = 'contacts' )
+            as meeting_scheduled
+            ", ARRAY_A );
 
         if ( empty( $personal_counts ) ) {
             return new WP_Error( __METHOD__, 'No results from the personal count query' );
@@ -2603,41 +2700,44 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         if ( user_can( $user_id, 'view_any_contacts' ) ) {
-            $dispatcher_counts = $wpdb->get_results( $wpdb->prepare( "
-            SELECT (SELECT count(ID) as all_contacts
-                    FROM $wpdb->posts
-                    INNER JOIN $wpdb->postmeta as e
-                      ON $wpdb->posts.ID=e.post_id
-                      AND (( e.meta_key = 'type'
-                        AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
-                      OR e.meta_key IS NULL)
-                    WHERE post_status = 'publish'
-                      AND post_type = 'contacts')
-                as all_contacts,
-                  (SELECT count(a.ID)
-                    FROM $wpdb->posts as a
-                    INNER JOIN $wpdb->postmeta as b
-                      ON a.ID=b.post_id
-                         AND b.meta_key = 'overall_status'
-                         AND b.meta_value = 'unassigned'
-                    INNER JOIN $wpdb->postmeta as c
-                      ON a.ID=c.post_id
-                         AND c.meta_key = 'assigned_to'
-                         AND c.meta_value = CONCAT( 'user-', %s )
-                    INNER JOIN $wpdb->postmeta as e
-                      ON a.ID=e.post_id
-                      AND (( e.meta_key = 'type'
-                        AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
-                      OR e.meta_key IS NULL)
+            $dispatcher_counts = $wpdb->get_results( "
+            SELECT (SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                INNER JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                     AND b.meta_key = 'overall_status'
+                     AND b.meta_value = 'unassigned'
+                " . $access_sql . "
+                INNER JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                  AND (( e.meta_key = 'type'
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
+                  OR e.meta_key IS NULL)
                     WHERE a.post_status = 'publish'
                   )
-                as needs_assigned
-              ", $user_id), ARRAY_A );
+                as needs_assigned,
+            (SELECT count(a.ID)
+                FROM $wpdb->posts as a
+                INNER JOIN $wpdb->postmeta as b
+                  ON a.ID=b.post_id
+                     AND b.meta_key = 'overall_status'
+                     AND b.meta_value = 'new'
+                " . $access_sql . "
+                INNER JOIN $wpdb->postmeta as e
+                  ON a.ID=e.post_id
+                  AND (( e.meta_key = 'type'
+                    AND ( e.meta_value = 'media' OR e.meta_value = 'next_gen' ) )
+                  OR e.meta_key IS NULL)
+                    WHERE a.post_status = 'publish'
+                  )
+                as new
+              ", ARRAY_A );
 
             foreach ( $dispatcher_counts[0] as $key => $value ) {
                 $numbers[$key] = $value;
             }
         }
+        // phpcs:enable
 
         $numbers = wp_parse_args( $numbers, [
             'my_contacts' => 0,
@@ -2671,7 +2771,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function list_sources() {
         if ( !self::can_access( "contacts" ) ) {
-            return new WP_Error( __FUNCTION__, __( "Permission denied." ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, "Permission denied.", [ 'status' => 403 ] );
         }
         global $wpdb;
         $source_labels = dt_get_option( 'dt_site_custom_lists' )['sources'];
@@ -2679,8 +2779,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         if ( current_user_can( 'view_any_contacts' ) ) {
             foreach ( $source_labels as $source_key => $source ) {
-                $rv[$source_key] = $source['label'];
+                if ( !isset( $source["enabled"] ) || $source["enabled"] != false ){
+                    $rv[$source_key] = $source['label'];
+                }
             }
+            //check for sources not in the defined list
             $results = $wpdb->get_results(
                 "SELECT DISTINCT meta_value FROM $wpdb->postmeta WHERE meta_key = 'sources'",
                 ARRAY_N
@@ -2691,15 +2794,25 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 }
             }
         } else {
-            /* TODO: Find a way to do this that is faster, I'm guessing this is slow */
-            $contacts = self::get_viewable_contacts( 0 );
-            if ( is_wp_error( $contacts ) ) {
-                return $contacts;
-            }
-            foreach ( $contacts['contacts'] as $contact ) {
-                foreach ( get_post_meta( $contact->ID, 'sources', false ) as $post_source_key ) {
+            $user_id = get_current_user_id();
+            // get the sources for the contacts shared with the user
+            $results = $wpdb->get_results( $wpdb->prepare(
+                "SELECT DISTINCT meta_value 
+                FROM $wpdb->postmeta 
+                JOIN $wpdb->dt_share as shares ON ( 
+                    shares.post_id = $wpdb->postmeta.post_id
+                    AND shares.user_id = %s
+                )  
+                WHERE meta_key = 'sources'",
+                $user_id
+            ), ARRAY_N );
+            foreach ( $results as $result ) {
+                $post_source_key = $result[0];
+                if ( ! array_key_exists( $post_source_key, $rv ) ) {
                     if ( array_key_exists( $post_source_key, $source_labels ) ) {
-                        $rv[ $post_source_key ] = $source_labels[ $post_source_key ]['label'];
+                        if ( !isset( $source_labels[$post_source_key]["enabled"] ) || $source_labels[$post_source_key]["enabled"] != false ) {
+                            $rv[ $post_source_key ] = $source_labels[ $post_source_key ]['label'];
+                        }
                     } else {
                         $rv[ $post_source_key ] = null;
                     }
@@ -2709,6 +2822,61 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         asort( $rv );
         return $rv;
+    }
+
+
+    /**
+     * Make sure activity is created for all the steps before the current seeker path
+     *
+     * @param $contact_id
+     * @param $initial_fields
+     * @param $contact
+     * @param $previous_values
+     */
+    public function check_seeker_path( $contact_id, $initial_fields, $contact, $previous_values ){
+        if ( isset( $contact["seeker_path"]["key"] ) && $contact["seeker_path"]["key"] != "none" ){
+            $current_key = $contact["seeker_path"]["key"];
+            $prev_key = isset( $previous_values["seeker_path"]["key"] ) ? $previous_values["seeker_path"]["key"] : "none";
+            $field_settings = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+            $seeker_path_options = $field_settings["seeker_path"]["default"];
+            $option_keys = array_keys( $seeker_path_options );
+            $current_index = array_search( $current_key, $option_keys );
+            $prev_option_key = $option_keys[ $current_index - 1 ];
+
+            if ( $prev_option_key != $prev_key && $current_index > array_search( $prev_key, $option_keys ) ){
+                global $wpdb;
+                $seeker_path_activity = $wpdb->get_results( $wpdb->prepare( "
+                    SELECT meta_value, hist_time, meta_id
+                    FROM $wpdb->dt_activity_log
+                    WHERE object_id = %s
+                    AND meta_key = 'seeker_path'
+                ", $contact_id), ARRAY_A );
+                $existing_keys = [];
+                $most_recent = 0;
+                $meta_id = 0;
+                foreach ( $seeker_path_activity as $activity ){
+                    $existing_keys[] = $activity["meta_value"];
+                    if ( $activity["hist_time"] > $most_recent ){
+                        $most_recent = $activity["hist_time"];
+                    }
+                    $meta_id = $activity["meta_id"];
+                }
+                $activity_to_create = [];
+                for ( $i = $current_index; $i > 0; $i-- ){
+                    if ( !in_array( $option_keys[$i], $existing_keys ) ){
+                        $activity_to_create[] = $option_keys[$i];
+                    }
+                }
+                foreach ( $activity_to_create as $missing_key ){
+                    $wpdb->query( $wpdb->prepare("
+                        INSERT INTO $wpdb->dt_activity_log
+                        ( action, object_type, object_subtype, object_id, user_id, hist_time, meta_id, meta_key, meta_value, field_type )
+                        VALUES ( 'field_update', 'contacts', 'seeker_path', %s, %d, %d, %d, 'seeker_path', %s, 'key_select' )",
+                        $contact_id, get_current_user_id(), $most_recent - 1, $meta_id, $missing_key
+                    ));
+                }
+            }
+        }
     }
 
 }

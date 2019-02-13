@@ -9,7 +9,7 @@
  * License: MIT
  */
 
-if ( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
+if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
     /**
      * Class Disciple_Tools_Async_Task
      */
@@ -81,10 +81,10 @@ if ( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
             }
             add_action( $this->action, [ $this, 'launch' ], (int) $this->priority, (int) $this->argument_count );
             if ( $auth_level & self::LOGGED_IN ) {
-                add_action( "admin_post_wp_async_$this->action", [ $this, 'handle_postback' ] );
+                add_action( "admin_post_dt_async_$this->action", [ $this, 'handle_postback' ] );
             }
             if ( $auth_level & self::LOGGED_OUT ) {
-                add_action( "admin_post_nopriv_wp_async_$this->action", [ $this, 'handle_postback' ] );
+                add_action( "admin_post_nopriv_dt_async_$this->action", [ $this, 'handle_postback' ] );
             }
         }
 
@@ -255,7 +255,7 @@ if ( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
          * Run the do_action function for the asynchronous postback.
          * This method needs to fetch and sanitize any and all data from the $_POST
          * superglobal and provide them to the do_action call.
-         * The action should be constructed as "wp_async_task_$this->action"
+         * The action should be constructed as "dt_async_task_$this->action"
          */
         abstract protected function run_action();
 

@@ -1,0 +1,200 @@
+
+.filter {
+    border-top: 1px #E2E2E2 solid;
+    border-bottom: 1px #E2E2E2 solid;
+    padding: 0 $bordered-box-padding 10px $bordered-box-padding;
+    margin: 0 (-1 * $bordered-box-padding);
+    width: calc(100% + 2 * #{$bordered-box-padding});
+}
+
+.filter--closed {
+    padding-bottom: 0;
+}
+
+.filter__title:hover {
+    color: #2196f3;
+}
+
+.filter__title:before {
+    content: "▼";
+    float: right;
+}
+
+.filter--closed .filter__title:before {
+    content: "▶";
+    float: right;
+}
+
+.filter--closed :not(.filter__title) {
+    display: none;
+}
+
+.filter__title {
+    cursor: pointer;
+}
+
+.filter input, .list-views input {
+    margin: 0 0.2rem 0 0;
+}
+
+.filter label:hover, .list-views label:hover {
+    color: #2196f3;
+}
+
+.list-views {
+    margin-bottom: 0.5rem;
+}
+
+.list-views__sub {
+    margin-left: 20px;
+}
+
+
+.list-view {
+    cursor: pointer;
+}
+
+.list-view__count {
+    float: right;
+}
+
+.priorities-show-all {
+    float: right;
+    & > span {
+        font-size: 60%;
+    }
+}
+
+
+#list-filter-tabs {
+    margin-top: 10px;
+    .is-active a {
+        background-color: #3f729b;
+        color:white;
+        &:focus {
+            background-color: #3f729b;
+            color: white;
+        }
+    }
+    .accordion-title {
+        font-size: inherit;
+        font-weight: bold;
+        .tab-count-span {
+            font-weight: 100;
+            font-size: 12px;
+        }
+    }
+}
+
+
+.show-closed-switch {
+    display: inline-block;
+    .switch {
+        display: inline-block;
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
+}
+
+
+table.table-remove-top-border thead {
+    border-top: 0;
+}
+
+
+.current-filter {
+    font-size: 0.875rem;
+    position: relative;
+    background: #ecf5fc;
+    border: 1px solid #c2e0ff;
+    padding: 4px;
+    border-radius: 2px;
+    margin-right: 4px;
+    margin-bottom: 0.375rem;
+}
+
+#content table thead .sortable th {
+    background-repeat: no-repeat;
+    background-position: center right;
+    padding-right:1.5rem;
+    background-image: url("../../../dt-assets/images/sort_both.png")
+}
+
+#content table thead .sortable .sorting_desc {
+    background-image: url("../../../dt-assets/images/sort_desc.png")
+}
+#content table thead .sortable .sorting_asc {
+    background-image: url("../../../dt-assets/images/sort_asc.png")
+}
+
+
+#filter-modal {
+    padding:10px 0 0 0;
+    .tabs-title > a {
+        padding: 1.25rem 0 1.25rem 15px;
+    }
+    h3 {
+        margin-left: 10px;
+    }
+    .vertical.tabs {
+        border:none;
+        background-color: #3F729B;
+        .tabs-title>a {
+            color: white;
+        }
+        .tabs-title>a:hover {
+            background-color: #224F72;
+        }
+        .tabs-title>a:focus, .tabs-title>a[aria-selected=true] {
+            background-color: #224F72;
+            color: white;
+        }
+        max-height: 500px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .tabs-content {
+
+        min-height:400px;
+    }
+    .filter-modal-left {
+        background-color: #3F729B;
+    }
+    .filter-modal-right {
+        background-color: #F2F2F2;
+        border: none;
+    }
+    .button-cancel {
+        background-color: #F2F2F2;
+        color: black;
+    }
+    .confirm-buttons {
+        text-align: end;
+    }
+    .grid-container {
+        padding: 0
+    }
+}
+
+
+// list colors
+.status--unassigned   { color: #999999; }
+.status--accepted     { color: #4CAF50; }
+.status--paused       { color: #FF9800; }
+.status--closed       { color: #333333; }
+.status--unassignable { color: #FF9800; }
+.milestone--belief    { color: #4CAF50; }
+.milestone--baptized  { color: #2196F3; }
+.milestone--baptizing { color: #2196F3; }
+.milestone--can_share { color: #4CAF50; }
+.milestone--sharing   { color: #4CAF50; }
+.milestone--in_group  { color: #4CAF50; }
+.milestone--planting  { color: #9C27B0; }
+.group-status--no_value           { color: black;   }
+.group-status--active_pre_group   { color: #FF9800; }
+.group-status--active_group       { color: #4CAF50; }
+.group-status--active_church      { color: #4CAF50; }
+.group-status--inactive_church    { color: #F43636; }
+.group-status--inactive_group     { color: #F43636; }
+.group-status--inactive_pre_group { color: #F43636; }

@@ -1,6 +1,10 @@
 /* global jQuery:false, moment:false, _:false, commentsSettings:false */
 
 jQuery(document).ready(function($) {
+
+  let commentPostedEvent = document.createEvent('Event');
+  commentPostedEvent.initEvent('comment_posted', true, true);
+
   let postId = $("#post-id").text()
   let postType = $("#post-type").text()
 
@@ -20,9 +24,8 @@ jQuery(document).ready(function($) {
           data.comment.date = moment(data.comment.comment_date_gmt + "Z")
           comments.push(data.comment)
           display_activity_comment()
-          if ( typeof commentPosted === "function"){
-            commentPosted()
-          }
+          // fire comment posted event
+          $('#content')[0].dispatchEvent(commentPostedEvent);
           commentInput.attr("disabled", false)
           commentButton.attr("disabled", false)
           $('textarea.mention').mentionsInput('reset')
@@ -85,8 +88,8 @@ jQuery(document).ready(function($) {
   }
   $(".show-tabs").on("click", function () {
     let id = $(this).attr("id")
-    $('.tabs-section').prop('checked', id === 'show-all-tabs')
-    display_activity_comment()
+    $('input.tabs-section').prop('checked', id === 'show-all-tabs')
+    saveTabs()
   })
 
   let commentTemplate = _.template(`
@@ -196,13 +199,10 @@ jQuery(document).ready(function($) {
       activeTabs.each((i, e)=>{
         activeTabIds.push($(e).data("id"))
       })
-    } else {
-      activeTabIds.forEach(tab=>{
-      })
     }
     let possibleTabs = _.union( [ 'activity', 'comment' ], commentsSettings.additional_sections.map((l)=>{return l['key']}))
     possibleTabs.forEach(tab=>{
-        $(`#tab-button-${tab}`).prop('checked', activeTabIds.includes(tab))
+      $(`#tab-button-${tab}`).prop('checked', activeTabIds.includes(tab))
     })
 
     let commentsWrapper = $("#comments-wrapper")
@@ -270,6 +270,13 @@ jQuery(document).ready(function($) {
       }
     }
   });
+  $( document ).ajaxSend(function(event, xhr, settings) {
+    if (settings && settings.type && (settings.type === "POST" || settings.type === "DELETE")){
+      if (!settings.url.includes("notifications")){
+        $("#comments-activity-spinner.loading-spinner").addClass("active")
+      }
+    }
+  });
 
   let refreshActivity = ()=>{
     get_all();
@@ -279,24 +286,28 @@ jQuery(document).ready(function($) {
     if(comment){
       let mentionRegex = /\@\[(.*?)\]\((.+?)\)/g
       comment = comment.replace(mentionRegex, (match, text, id)=>{
-        return `<a>@${text}</a>`
+        /* dir=auto means that @ will be put to the left of the name if the
+          * mentioned name is LTR, and to the right if the mentioned name is
+          * RTL, instead of letting the surrounding dir determine the placement
+          * of @ */
+        return `<a dir="auto">@${text}</a>`
       })
       let urlRegex = /((href=('|"))|(\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g
       comment = comment.replace(urlRegex, (match)=>{
         let url = match
         if(match.indexOf("@") === -1 && match.indexOf("[") === -1 && match.indexOf("(") === -1 && match.indexOf("href") === -1) {
-              if (match.indexOf("http") === 0 && match.indexOf("www.") === -1) {
-                  url = match
-              }
-              else if (match.indexOf("http") === -1 && match.indexOf("www.") === 0) {
-                  url = "http://" + match
-              }
-              else if (match.indexOf("www.") === -1) {
-                  url = "http://www." + match
-              }
-              return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`
+          if (match.indexOf("http") === 0 && match.indexOf("www.") === -1) {
+            url = match
           }
-          return match
+          else if (match.indexOf("http") === -1 && match.indexOf("www.") === 0) {
+            url = "http://" + match
+          }
+          else if (match.indexOf("www.") === -1) {
+            url = "http://www." + match
+          }
+          return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`
+        }
+        return match
       })
       let linkRegex = /\[(.*?)\]\((.+?)\)/g
       comment = comment.replace(linkRegex, (match, text, url)=>{
@@ -310,17 +321,31 @@ jQuery(document).ready(function($) {
     return comment
   })
 
+  let getAllPromise = null
+  let getCommentsPromise = null
+  let getActivityPromise = null
   function get_all() {
-    $.when(
-      API.get_comments(postType, postId),
-      API.get_activity(postType, postId)
-    ).then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
+    //abort previous promise if it is not finished.
+    if (getAllPromise && _.get(getAllPromise, "readyState") !== 4){
+      getActivityPromise.abort()
+      getCommentsPromise.abort()
+    }
+    getCommentsPromise =  API.get_comments(postType, postId)
+    getActivityPromise = API.get_activity(postType, postId)
+    getAllPromise = $.when(
+      getCommentsPromise,
+      getActivityPromise
+    )
+    getAllPromise.then(function(commentDataStatusJQXHR, activityDataStatusJQXHR) {
+      $("#comments-activity-spinner.loading-spinner").removeClass("active")
       const commentData = commentDataStatusJQXHR[0];
       const activityData = activityDataStatusJQXHR[0];
       prepareData(commentData, activityData)
     }).catch(err => {
-      console.error(err);
-      jQuery("#errors").append(err.responseText)
+      if ( !_.get( err, "statusText" ) === "abort" ) {
+        console.error(err);
+        jQuery("#errors").append(err.responseText)
+      }
     })
   }
 
@@ -365,6 +390,9 @@ jQuery(document).ready(function($) {
   })
 
   $('#comment-activity-tabs .tabs-section').on("change", function () {
+    saveTabs()
+  })
+  let saveTabs = ()=>{
     let activeTabs = $('#comment-activity-tabs .tabs-section:checked')
     let activeTabIds = [];
     activeTabs.each((i, e)=>{
@@ -372,7 +400,8 @@ jQuery(document).ready(function($) {
     })
     document.cookie = `contact_details_tabs=${JSON.stringify(activeTabIds)};path=/;expires=Fri, 31 Dec 9999 23:59:59 GMT"`
     display_activity_comment()
-  })
+  }
+
 
   let searchUsersPromise = null
 
@@ -441,5 +470,11 @@ jQuery(document).ready(function($) {
       }
     }).catch(err => { console.error(err) })
   })
+
+  window.onbeforeunload = function() {
+    if ( $('textarea.mention').val() ){
+      return true;
+    }
+  };
 
 });

@@ -19,7 +19,7 @@
     <section class="cell small-12 update-needed-notification">
         <div class="bordered-box detail-notification-box" style="background-color:#F43636">
             <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This contact needs an update', 'disciple_tools' ) ?>.</h4>
-            <p><?php esc_html_e( 'It has been a while since this contact was updated. Please do so', 'disciple_tools' )?>.</p>
+            <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?>.</p>
         </div>
     </section>
     <?php } ?>
@@ -47,134 +47,239 @@
 
     <?php do_action( 'dt_contact_detail_notification', $contact ); ?>
 
-    <section class="cell">
-        <div class="bordered-box">
-            <div class="item-details-header-row">
-                <button class="float-right" id="open-edit">
+    <section class="cell bordered-box">
+        <div style="display: flex;">
+            <div class="item-details-header" style="flex-grow:1">
+                <i class="fi-torso large" style="padding-bottom: 1.2rem"></i>
+                <span class="title"><?php the_title_attribute(); ?></span>
+            </div>
+            <div>
+                <button class="" id="open-edit">
                     <i class="fi-pencil"></i>
                     <span><?php esc_html_e( 'Edit', 'disciple_tools' )?></span>
                 </button>
-                <h3 class="section-header"><?php esc_html_e( 'Details', 'disciple_tools' ) ?></h3>
             </div>
-
-            <div class="display-fields grid-x grid-margin-x">
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <!--Phone-->
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/phone.svg' ?>">
-                        <?php echo esc_html( $channel_list["phone"]["label"] ) ?>
-                    </div>
-                    <ul class="phone">
-                    </ul>
+        </div>
+        <div class="grid-x grid-margin-x" style="margin-top: 20px">
+            <div class="cell small-12 medium-4">
+                <div class="section-subheader">
+                    <?php esc_html_e( "Status", 'disciple_tools' ) ?>
+                    <button class="help-button" data-section="overall-status-help-text">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
                 </div>
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <!--Email-->
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/email.svg' ?>">
-                        <?php echo esc_html( $channel_list['email']['label'] ) ?>
-                    </div>
-                    <ul class="email">
-                    </ul>
-                </div>
-
-                <!-- Social Media -->
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader"><?php esc_html_e( 'Social Media', 'disciple_tools' ) ?></div>
-                    <ul class="social"></ul>
-                </div>
-
-                <!-- Address -->
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
-                        <?php esc_html_e( 'Address', 'disciple_tools' )?>
-                    </div>
-                    <ul class="address"></ul>
-                </div>
-
-                <!-- Locations -->
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                        <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
-                    </div>
-                    <ul class="locations-list"></ul>
-                </div>
-
-                <!-- People Groups -->
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
-                        <?php esc_html_e( 'People Groups', 'disciple_tools' )?>
-                    </div>
-                    <ul class="people_groups-list details-list"></ul>
-                </div>
-
-
-                <!-- Age -->
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/contact-age.svg" ?>">
-                        <?php esc_html_e( 'Age', 'disciple_tools' )?>
-                    </div>
-                    <ul class="details-list">
-                        <li class="age">
-                            <?php
-                            if ( !empty( $contact['age']['label'] ) ){
-                                echo esc_html( $contact['age']['label'] );
-                            } else {
-                                esc_html_e( 'No age set', 'disciple_tools' );
-                            }
+                <?php
+                $active_color = "#366184";
+                $current_key = $contact["overall_status"]["key"] ?? "";
+                if ( isset( $contact_fields["overall_status"]["default"][ $current_key ]["color"] )){
+                    $active_color = $contact_fields["overall_status"]["default"][ $current_key ]["color"];
+                }
+                ?>
+                <select id="overall_status" class="select-field color-select" style="margin-bottom:0px; background-color: <?php echo esc_html( $active_color ) ?>">
+                    <?php foreach ($contact_fields["overall_status"]["default"] as $key => $option){
+                        $value = $option["label"] ?? "";
+                        if ( $contact["overall_status"]["key"] === $key ) {
                             ?>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Gender -->
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/gender.svg' ?>">
-                        <?php esc_html_e( 'Gender', 'disciple_tools' )?>
-                    </div>
-                    <ul class="details-list">
-                        <li class="gender">
-                            <?php
-                            if ( !empty( $contact['gender']['label'] ) ){
-                                echo esc_html( $contact['gender']['label'] );
-                            } else {
-                                esc_html_e( 'No gender set', 'disciple_tools' );
-                            }
-                            ?>
-                    </ul>
-                </div>
-
-                <!-- Source -->
-                <div class="xlarge-4 large-6 medium-6 small-12 cell">
-                    <div class="section-subheader">
-                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
-                        <?php esc_html_e( 'Source' ); ?>
-                    </div>
-                    <ul class="sources-list <?php echo esc_html( user_can( get_current_user_id(), 'view_any_contacts' ) ? 'details-list' : '' ) ?>">
+                            <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
+                        <?php } else { ?>
+                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
+                        <?php } ?>
+                    <?php } ?>
+                </select>
+                <p>
+                    <span id="reason">
                         <?php
-                        foreach ($contact['sources'] ?? [] as $value){
-                            ?>
-                            <li class="<?php echo esc_html( $value )?>">
-                                <?php echo esc_html( $contact_fields['sources']['default'][$value]["label"] ?? $value ) ?>
-                            </li>
-                        <?php }
-                        if ( !isset( $contact['sources'] ) || sizeof( $contact['sources'] ) === 0){
-                            ?> <li id="no-source"><?php esc_html_e( "No source set", 'disciple_tools' ) ?></li><?php
+                        $hide_edit_button = false;
+                        if ( $contact["overall_status"]["key"] === "paused" &&
+                             isset( $contact["reason_paused"]["label"] )){
+                            echo '(' . esc_html( $contact["reason_paused"]["label"] ) . ')';
+                        } else if ( $contact["overall_status"]["key"] === "closed" &&
+                                    isset( $contact["reason_closed"]["label"] )){
+                            echo '(' . esc_html( $contact["reason_closed"]["label"] ) . ')';
+                        } else if ( $contact["overall_status"]["key"] === "unassignable" &&
+                                    isset( $contact["reason_unassignable"]["label"] )){
+                            echo '(' . esc_html( $contact["reason_unassignable"]["label"] ) . ')';
+                        } else {
+                            if ( !in_array( $contact["overall_status"]["key"], [ "paused", "closed", "unassignable" ] ) ){
+                                $hide_edit_button = true;
+                            }
                         }
                         ?>
-                    </ul>
+                    </span>
+                    <button id="edit-reason" <?php if ( $hide_edit_button ) : ?> style="display: none"<?php endif; ?> ><i class="fi-pencil"></i></button>
+                </p>
+            </div>
+
+            <div class="cell small-12 medium-4">
+                <!-- Assigned To -->
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
+                    <?php esc_html_e( 'Assigned to', 'disciple_tools' )?>
                 </div>
+
+                <div class="assigned_to details">
+                    <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
+                    <div id="assigned_to_t" name="form-assigned_to">
+                        <div class="typeahead__container">
+                            <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-assigned_to input-height" dir="auto"
+                                           name="assigned_to[query]" placeholder="<?php esc_html_e( "Search Users", 'disciple_tools' ) ?>"
+                                           autocomplete="off">
+                                </span>
+                                <span class="typeahead__button">
+                                    <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cell small-12 medium-4">
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/subassigned.svg' ?>">
+                    <?php esc_html_e( 'Sub-assigned to', 'disciple_tools' )?>
+                </div>
+                <div class="subassigned details">
+                    <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
+                    <div id="subassigned_t" name="form-subassigned" class="scrollable-typeahead">
+                        <div class="typeahead__container">
+                            <div class="typeahead__field">
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-subassigned input-height"
+                                           name="subassigned[query]" placeholder="<?php esc_html_e( "Search multipliers and contacts", 'disciple_tools' ) ?>"
+                                           autocomplete="off">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+
+        <div class="display-fields grid-x grid-margin-x">
+            <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                <!--Phone-->
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/phone.svg' ?>">
+                    <?php echo esc_html( $channel_list["phone"]["label"] ) ?>
+                </div>
+                <ul class="phone">
+                </ul>
+            </div>
+            <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                <!--Email-->
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/email.svg' ?>">
+                    <?php echo esc_html( $channel_list['email']['label'] ) ?>
+                </div>
+                <ul class="email">
+                </ul>
+            </div>
+
+            <!-- Social Media -->
+            <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                <div class="section-subheader"><?php esc_html_e( 'Social Media', 'disciple_tools' ) ?></div>
+                <ul class="social"></ul>
+            </div>
+
+            <!-- Address -->
+            <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
+                    <?php esc_html_e( 'Address', 'disciple_tools' )?>
+                </div>
+                <ul class="address"></ul>
+            </div>
+
+            <!-- Locations -->
+            <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
+                    <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
+                </div>
+                <ul class="locations-list"></ul>
+            </div>
+
+            <!-- People Groups -->
+            <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
+                    <?php esc_html_e( 'People Groups', 'disciple_tools' )?>
+                </div>
+                <ul class="people_groups-list details-list"></ul>
+            </div>
+
+
+            <!-- Age -->
+            <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/contact-age.svg" ?>">
+                    <?php esc_html_e( 'Age', 'disciple_tools' )?>
+                </div>
+                <ul class="details-list">
+                    <li class="age">
+                        <?php
+                        if ( !empty( $contact['age']['label'] ) ){
+                            echo esc_html( $contact['age']['label'] );
+                        } else {
+                            esc_html_e( 'No age set', 'disciple_tools' );
+                        }
+                        ?>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Gender -->
+            <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/gender.svg' ?>">
+                    <?php esc_html_e( 'Gender', 'disciple_tools' )?>
+                </div>
+                <ul class="details-list">
+                    <li class="gender">
+                        <?php
+                        if ( !empty( $contact['gender']['label'] ) ){
+                            echo esc_html( $contact['gender']['label'] );
+                        } else {
+                            esc_html_e( 'No gender set', 'disciple_tools' );
+                        }
+                        ?>
+                </ul>
+            </div>
+
+            <!-- Source -->
+            <div class="xlarge-4 large-6 medium-6 small-12 cell">
+                <div class="section-subheader">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
+                    <?php esc_html_e( 'Source' ); ?>
+                </div>
+                <ul class="sources-list <?php echo esc_html( user_can( get_current_user_id(), 'view_any_contacts' ) ? 'details-list' : '' ) ?>">
+                    <?php
+                    foreach ($contact['sources'] ?? [] as $value){
+                        ?>
+                        <li class="<?php echo esc_html( $value )?>">
+                            <?php echo esc_html( $contact_fields['sources']['default'][$value]["label"] ?? $value ) ?>
+                        </li>
+                    <?php }
+                    if ( !isset( $contact['sources'] ) || sizeof( $contact['sources'] ) === 0){
+                        ?> <li id="no-source"><?php esc_html_e( "No source set", 'disciple_tools' ) ?></li><?php
+                    }
+                    ?>
+                </ul>
             </div>
         </div>
     </section>
 
     <div class="reveal" id="contact-details-edit" data-reveal>
         <h1><?php esc_html_e( "Edit Contact", 'disciple_tools' ) ?></h1>
-        <div class="display-fields">
+        <div class="display-fields details-edit-fields">
             <div class="grid-x">
                 <div class="cell section-subheader">
                     <?php esc_html_e( 'Name', 'disciple_tools' ) ?>
@@ -225,31 +330,13 @@
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <?php esc_html_e( 'Social Media', 'disciple_tools' ) ?>
+                    <button id="add-new-social-media">
+                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
+                    </button>
                 </div>
                 <ul id="edit-social" class="cell">
 
                 </ul>
-                <div class="cell">
-                    <label for="social-channels">
-                        <?php esc_html_e( 'Add another contact method', 'disciple_tools' )?>
-                    </label>
-                    <select id="social-channels">
-                        <?php
-                        foreach ($channel_list as $key => $channel) {
-                            $enabled = !isset( $channel['enabled'] ) || $channel['enabled'] !== false;
-                            if ( $key !== 'phone' && $key !== 'email' && $key !== 'address' && $enabled) {
-                                ?><option value="<?php echo esc_html( $key ); ?>"> <?php echo esc_html( $channel['label'] ) ?></option><?php
-                            }
-                        }
-                        ?>
-                    </select>
-                    <div class="new-social-media">
-                        <input type="text" id="new-social-media" placeholder="facebook.com/user1">
-                        <button id="add-social-media" class="button small loader">
-                            <?php esc_html_e( 'Add', 'disciple_tools' ) ?>
-                        </button>
-                    </div>
-                </div>
             </div>
 
 
@@ -287,43 +374,45 @@
                     </ul>
                 <?php endif; ?>
             </div>
-            <div class="grix-x">
-                <div class="section-subheader cell">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/gender.svg' ?>">
-                    <?php esc_html_e( 'Gender', 'disciple_tools' )?>
-                </div>
-                <select id="gender" class="select-input">
-                    <?php
-                    foreach ( $contact_fields['gender']['default'] as $gender_key => $option ) {
-                        $gender_value = $option["label"] ?? "";
-                        if ( isset( $contact['gender'] ) &&
-                             $contact['gender']['key'] === $gender_key){
-                            echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
-                        } else {
-                            echo '<option value="'. esc_html( $gender_key ) . '">' . esc_html( $gender_value ). '</option>';
+            <div class="grid-x grid-margin-x">
+                <div class="cell small-6">
+                    <div class="section-subheader cell">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/gender.svg' ?>">
+                        <?php esc_html_e( 'Gender', 'disciple_tools' )?>
+                    </div>
+                    <select id="gender" class="select-input">
+                        <?php
+                        foreach ( $contact_fields['gender']['default'] as $gender_key => $option ) {
+                            $gender_value = $option["label"] ?? "";
+                            if ( isset( $contact['gender'] ) &&
+                                 $contact['gender']['key'] === $gender_key){
+                                echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
+                            } else {
+                                echo '<option value="'. esc_html( $gender_key ) . '">' . esc_html( $gender_value ). '</option>';
+                            }
                         }
-                    }
-                    ?>
-                </select>
-            </div>
-            <div class="grix-x">
-                <div class="section-subheader cell">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/contact-age.svg" ?>">
-                    <?php esc_html_e( 'Age', 'disciple_tools' )?>
+                        ?>
+                    </select>
                 </div>
-                <select id="age" class="select-input">
-                    <?php
-                    foreach ( $contact_fields["age"]["default"] as $age_key => $option ) {
-                        $age_value = $option["label"] ?? "";
-                        if ( isset( $contact["age"] ) &&
-                             $contact["age"]["key"] === $age_key){
-                            echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
-                        } else {
-                            echo '<option value="'. esc_html( $age_key ) . '">' . esc_html( $age_value ). '</option>';
+                <div class="cell small-6">
+                    <div class="section-subheader cell">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/contact-age.svg" ?>">
+                        <?php esc_html_e( 'Age', 'disciple_tools' )?>
+                    </div>
+                    <select id="age" class="select-input">
+                        <?php
+                        foreach ( $contact_fields["age"]["default"] as $age_key => $option ) {
+                            $age_value = $option["label"] ?? "";
+                            if ( isset( $contact["age"] ) && isset( $contact["age"]["key"] ) &&
+                                 $contact["age"]["key"] === $age_key){
+                                echo '<option value="'. esc_html( $age_key ) . '" selected>' . esc_html( $age_value ) . '</option>';
+                            } else {
+                                echo '<option value="'. esc_html( $age_key ) . '">' . esc_html( $age_value ). '</option>';
+                            }
                         }
-                    }
-                    ?>
-                </select>
+                        ?>
+                    </select>
+                </div>
             </div>
             <div class="grix-x">
                 <div class="section-subheader cell">
@@ -337,7 +426,7 @@
                             <div class="typeahead__field">
                                 <span class="typeahead__query">
                                     <input class="js-typeahead-people_groups"
-                                           name="people_groups[query]" placeholder="<?php esc_html_e( "Search People_groups", 'disciple_tools' ) ?>"
+                                           name="people_groups[query]" placeholder="<?php esc_html_e( "Search People Groups", 'disciple_tools' ) ?>"
                                            autocomplete="off">
                                 </span>
                             </div>

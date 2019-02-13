@@ -2,14 +2,12 @@
 declare(strict_types=1);
 
 if ( ! current_user_can( 'create_contacts' ) ) {
-    wp_die( esc_html__( "You do not have permission to publish contacts" ), "Permission denied", 403 );
+    wp_die( esc_html( "You do not have permission to publish contacts" ), "Permission denied", 403 );
 }
 
 get_header();
 
-( function() {
-
-    ?>
+( function() { ?>
 
 <div id="content">
     <div id="inner-content" class="grid-x grid-margin-x">
@@ -68,12 +66,12 @@ get_header();
                 <div style="text-align: center">
                     <button class="button loader js-create-contact-button" type="submit" disabled><?php esc_html_e( "Save and continue editing", "disciple_tools" ); ?></button>
                 </div>
-            </div>
-
+            </form>
         </div>
 
-        <div class="large-2 medium-12 small-12 cell"></div>
-    </div>
+     </div> <!-- inner content -->
+
+     <div class="large-2 medium-12 small-12 cell"></div>
 </div>
 
 <script>jQuery(function($) {
@@ -84,7 +82,12 @@ get_header();
             .attr("disabled", true)
             .addClass("loading");
         let source = $(".js-create-contact select[name=sources]").val()
+        let status = 'new'
+        if ( source === "personal" ){
+            status = "active"
+        }
         API.create_contact({
+            overall_status: status,
             title: $(".js-create-contact input[name=title]").val(),
             contact_phone: [{value:$(".js-create-contact input[name=phone]").val()}],
             contact_email: [{value:$(".js-create-contact input[name=email]").val()}],
@@ -168,8 +171,8 @@ get_header();
             },
         }
     });
-});</script>
-
+});
+</script>
 
     <?php
 

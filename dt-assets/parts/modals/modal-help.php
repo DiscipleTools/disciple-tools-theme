@@ -3,16 +3,14 @@
 
     <!--    Contact Status-->
     <div class="help-section" id="overall-status-help-text" style="display: none">
-        <h3 class="lead"><?php esc_html_e( "Contact Status", 'disciple_tools' ) ?></h3>
+        <h3><?php esc_html_e( "Contact Status", 'disciple_tools' ) ?></h3>
         <p><?php esc_html_e( "This is where you set the current status of the contact.", 'disciple_tools' ) ?></p>
         <ul>
-            <li><?php esc_html_e( "New Contact - The contact is new in the system", 'disciple_tools' ) ?></li>
-            <li><?php esc_html_e( "Not Ready - There is not enough information to move forward with the contact at this time.", 'disciple_tools' ) ?></li>
-            <li><?php esc_html_e( "Dispatch Needed - This contact needs to be assigned to a multiplier.", 'disciple_tools' ) ?></li>
-            <li><?php esc_html_e( "Waiting to be accepted - The contact has been assigned to someone, but has not yet been accepted by that person.", 'disciple_tools' ) ?></li>
-            <li><?php esc_html_e( "Active - The contact is progressing and/or continually being updated.", 'disciple_tools' ) ?></li>
-            <li><?php esc_html_e( "Paused - This contact is currently on hold (i.e. on vacation or not responding).", 'disciple_tools' ) ?></li>
-            <li><?php esc_html_e( "Closed - This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.", 'disciple_tools' ) ?></li>
+            <?php
+            $status_options = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings()["overall_status"]["default"];
+            foreach ( $status_options as $option ): ?>
+                <li><strong><?php echo esc_html( $option["label"] ) ?></strong> - <?php echo esc_html( $option["description"] ?? "" ) ?></li>
+            <?php endforeach; ?>
         </ul>
     </div>
 
@@ -28,21 +26,21 @@
         </p>
     </div>
     <div class="help-section" id="contact-progress-help-text" style="display: none">
-        <h3 class="lead">Contact Progress</h3>
+        <h3 class="lead"><?php esc_html_e( "Contact Progress", 'disciple_tools' ) ?></h3>
         <p>Here you can track the progress of a contact's faith journey.</p>
     </div>
     <div class="help-section" id="seeker-path-help-text" style="display: none">
-        <h3 class="lead">Seeker Path</h3>
+        <h3 class="lead"><?php esc_html_e( "Seeker Path", 'disciple_tools' ) ?></h3>
         <p>This is where you set the status of your progression with the contact.</p>
     </div>
     <div class="help-section" id="faith-milestones-help-text" style="display: none">
-        <h3 class="lead">Faith Milestones</h3>
+        <h3 class="lead"><?php esc_html_e( "Faith Milestones", 'disciple_tools' ) ?></h3>
         <p>This is where you set which milestones the contact has reached in their faith journey.</p>
     </div>
 
     <!--  Health Metrics  -->
     <div class="help-section" id="health-metrics-help-text" style="display: none">
-        <h3 class="lead">Health Metrics</h3>
+        <h3 class="lead"><?php esc_html_e( "Health Metrics", 'disciple_tools' ) ?></h3>
         <p> Here you can track the progress of a group/church.</p>
         <p>If the group has committed to be a church, click the "Covenant" button to make the dotted line circle solid.</p>
         <p>If the group/church regularly practices any of the following elements then click
@@ -51,7 +49,7 @@
 
     <!--  Group type  -->
     <div class="help-section" id="group-type-help-text" style="display: none">
-        <h3 class="lead">Group type</h3>
+        <h3 class="lead"><?php esc_html_e( "Group type", 'disciple_tools' ) ?></h3>
         <p>Here you can select whether the group is a pre-group, group or church.</p>
         <p>We define a pre-group as having x people. We define a group as having x people.</p>
         <p>We define a church as having 3 or more believers.</p>
@@ -59,7 +57,7 @@
 
     <!--  Group Status  -->
     <div class="help-section" id="group-status-help-text" style="display: none">
-        <h3 class="lead">Group Status</h3>
+        <h3 class="lead"><?php esc_html_e( "Group Status", 'disciple_tools' ) ?></h3>
         <p>This is where you set the current status of the group. </p>
         <ul>
             <li>
@@ -73,7 +71,7 @@
 
     <!--  Group Parents and Children  -->
     <div class="help-section" id="group-connections-help-text" style="display: none">
-        <h3 class="lead">Group Connections. Parent and Child Groups</h3>
+        <h3 class="lead"><?php esc_html_e( "Group Connections. Parent and Child Groups", 'disciple_tools' ) ?></h3>
         <p>If this group has multiplied from another group, you can add that group here (Parent Group).</p>
         <p>If this group has multiplied into another group, you can add that here (Child Groups).</p>
     </div>

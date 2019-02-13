@@ -265,7 +265,7 @@ function dt_update_option( $name, $value, $autoload = false ) {
 function dt_get_site_options_defaults() {
     $fields = [];
 
-    $fields['version'] = '6';
+    $fields['version'] = '7';
 
     $fields['user_notifications'] = [
         'new_web'          => true,
@@ -336,7 +336,7 @@ function dt_get_site_options_defaults() {
     ];
 
     $fields['update_required'] = [
-        "enabled" => false,
+        "enabled" => true,
         "options" => [
             [
                 "status"      => "active",
@@ -379,6 +379,16 @@ function dt_get_site_options_defaults() {
                 "seeker_path" => "coaching",
                 "days"        => 30,
                 "comment"     => __( "We haven't heard about this person in a while. Do you have an update for this contact?", 'disciple_tools' )
+            ]
+        ]
+    ];
+    $fields["group_update_required"] = [
+        "enabled" => true,
+        "options" => [
+            [
+                "status"      => "active",
+                "days"        => 30,
+                "comment"     => __( "We haven't heard about this group in a while. Do you have an update?", 'disciple_tools' )
             ]
         ]
     ];
@@ -530,7 +540,7 @@ function dt_get_site_custom_lists( string $list_title = null ) {
         'transfer' => [
             'label'       => 'Transfer',
             'key'         => 'transfer',
-            'description' => 'Contacts coming an contact transfer partnership with another DT site.',
+            'description' => 'Contacts coming an contact transfer partnership with another Disciple.Tools site.',
             'enabled'     => true,
         ],
 
@@ -651,9 +661,11 @@ function dt_custom_dir_attr( $lang ){
 
     $current_user = wp_get_current_user();
     $user_language = $current_user->locale;
-    $dir = _x( 'text direction', 'either rtl or ltr', 'disciple_tools' );
-    if ( $dir === 'text direction' || !$dir || empty( $dir ) ){
+    $dir = _x( 'ltr', 'either rtl or ltr', 'disciple_tools' );
+    if ( $dir === 'ltr' || $dir === 'text direction' || !$dir || empty( $dir ) ){
         $dir = "ltr";
+    } else {
+        $dir = "rtl";
     }
     $dir_attr = 'dir="' . $dir . '"';
     return 'lang="' . $user_language .'" ' .$dir_attr;

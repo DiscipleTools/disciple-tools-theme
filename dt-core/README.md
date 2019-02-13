@@ -1,5 +1,5 @@
-# DT-Core
-The D.T. core files contain most of the shared libraries, utilities, integrations, and language files. The organizational 
+# Disciple.Tools-Core
+The Disciple.Tools core files contain most of the shared libraries, utilities, integrations, and language files. The organizational 
 rule of thumb is that if it is shared beyond more than one module, it would be placed in the core to be available to all modules.
 
 ## Core Folders and Files

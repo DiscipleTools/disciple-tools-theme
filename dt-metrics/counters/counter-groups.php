@@ -49,7 +49,7 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
                 $generations = self::get_group_generations( $start, $end );
                 $church_generations = [];
                 foreach ( $generations as $gen_key => $gen_val ){
-                    $church_generations[$gen_key] = $gen_val["church"];
+                    $church_generations[$gen_val["generation"]] = $gen_val["church"];
                 }
                 return $church_generations;
                 break;
@@ -90,6 +90,14 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
     }
 
 
+    /**
+     * Get group generation of groups that were active in the time range
+     * @param $start
+     * @param $end
+     * @param array $args
+     *
+     * @return array
+     */
     public static function get_group_generations( $start, $end, $args = [] ){
         if ( !isset( self::$generations[$start.$end] ) ){
             $raw_connections = self::query_get_all_group_connections();
@@ -152,6 +160,15 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
         return $results;
     }
 
+
+    /**
+     * Groups that were active in a date range
+     * @param int $start_date
+     * @param int $end_date
+     * @param array $args
+     *
+     * @return array
+     */
     public static function query_get_groups_id_list( $start_date = 0, $end_date = PHP_INT_MAX, $args = [] ) {
         global $wpdb;
 
@@ -194,6 +211,18 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
         return $results;
     }
 
+
+    /**
+     * Count group generations by group type
+     *
+     * @param array $elements
+     * @param int $parent_id
+     * @param int $generation
+     * @param array $counts
+     * @param array $ids_to_include
+     *
+     * @return array
+     */
     public static function build_group_generation_counts( array $elements, $parent_id = 0, $generation = 0, $counts = [], $ids_to_include = [] ) {
 
         $generation++;
@@ -217,6 +246,7 @@ class Disciple_Tools_Counter_Groups extends Disciple_Tools_Counter_Base  {
                     } elseif ( $element["group_type"] === "church" ) {
                         $counts[ $generation ]["church"] ++;
                     }
+                    $counts[ $generation ]["total"] ++;
                 }
                 $counts = self::build_group_generation_counts( $elements, $element['id'], $generation, $counts, $ids_to_include );
             }

@@ -23,18 +23,17 @@ function dt_print_details_bar(
     ?>
 
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
-        <nav aria-label="<?php esc_attr_e( "You are here:" ); ?>" role="navigation"
+        <nav role="navigation"
              data-sticky data-options="marginTop:3;" style="width:100%" data-sticky-on="medium"
              class="second-bar">
             <div class="container-width">
 
                 <div class="grid-x grid-margin-x">
                     <div class="cell small-4 grid-x grid-margin-x">
-                        <div class="cell grid-x grid-margin-x">
+                        <div class="cell grid-x shrink center-items">
                             <?php if ( $show_update_needed ){ ?>
-                            <div class="section-subheader cell shrink center-items"><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></div>
+                            <div style="margin-right:5px"><span><?php esc_html_e( 'Update Needed', 'disciple_tools' )?></span></div>
                             <div class="switch tiny cell shrink" style="margin-bottom: 0px">
-
                                 <input class="switch-input update-needed" id="update-needed" type="checkbox" name="update-needed"
                                 <?php echo ( $update_needed ? 'checked' : "" ) ?>>
                                 <label class="switch-paddle update-needed" for="update-needed">
@@ -44,6 +43,8 @@ function dt_print_details_bar(
                                 </label>
                             </div>
                             <?php } ?>
+                        </div>
+                        <div class="cell grid-x shrink center-items">
                             <?php if ( sizeof( $dispatcher_actions ) > 0 ): ?>
                             <ul class="dropdown menu" data-dropdown-menu dropdownmenu-arrow-color="white">
                                 <li style="border-radius: 5px">

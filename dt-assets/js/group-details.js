@@ -1,6 +1,5 @@
 /* global jQuery:false, wpApiGroupsSettings:false, _:false */
 
-let typeaheadTotals = {}
 jQuery(document).ready(function($) {
 
   let group = wpApiGroupsSettings.group
@@ -28,7 +27,6 @@ jQuery(document).ready(function($) {
    * Assigned_to
    */
   let assignedToInput = $('.js-typeahead-assigned_to');
-  typeaheadTotals.assigned_to = 0;
   $.typeahead({
     input: '.js-typeahead-assigned_to',
     minLength: 0,
@@ -48,10 +46,13 @@ jQuery(document).ready(function($) {
     emptyTemplate: 'No users found "{{query}}"',
     callback: {
       onClick: function(node, a, item){
-        editFieldsUpdate.assigned_to = item.ID
+        API.save_field_api('group', groupId, {assigned_to: 'user-' + item.ID}).then(function (response) {
+          group = response
+          assigned_to_input.val(contact.assigned_to.display)
+          assigned_to_input.blur()
+        }).catch(err => { console.error(err) })
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.assigned_to
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#assigned_to-result-container').html(text);
       },
@@ -62,8 +63,6 @@ jQuery(document).ready(function($) {
         if (_.get(group,  "assigned_to.display")){
           assignedToInput.val(group.assigned_to.display)
         }
-        assignedToInput.focus()
-        $('.assigned_to-result-container').html("");
       }
     },
     debug:true
@@ -96,10 +95,30 @@ jQuery(document).ready(function($) {
     API.save_field_api( "group", groupId, update)
   })
 
+
+  /**
+   * Update Needed
+   */
+  $('.update-needed.switch-input').change(function () {
+    let updateNeeded = $(this).is(':checked')
+    $('.update-needed-notification').toggle(updateNeeded)
+    API.save_field_api( "group", groupId, {"requires_update":updateNeeded})
+  })
+  $('#update-needed')[0].addEventListener('comment_posted', function (e) {
+    if ( $(e.target).prop('checked') ){
+      API.get_post("group",  groupId ).then(g=>{
+        group = g
+        $('.update-needed-notification').toggle(group.requires_update === true)
+        $('#update-needed').prop("checked", group.requires_update === true)
+
+      }).catch(err => { console.error(err) })
+    }
+  }, false);
+
+
   /**
    * Locations
    */
-  typeaheadTotals.locations = 0;
   $.typeahead({
     input: '.js-typeahead-locations',
     minLength: 0,
@@ -136,7 +155,6 @@ jQuery(document).ready(function($) {
         this.resetInput();
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.locations
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#locations-result-container').html(text);
       },
@@ -148,9 +166,8 @@ jQuery(document).ready(function($) {
 
   let peopleGroupList = $('.people_groups-list')
   /**
-   * People_groups
+   * People groups
    */
-  typeaheadTotals.people_groups = 0;
   $.typeahead({
     input: '.js-typeahead-people_groups',
     minLength: 0,
@@ -188,7 +205,6 @@ jQuery(document).ready(function($) {
         this.resetInput();
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.people_groups
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#people_groups-result-container').html(text);
       },
@@ -201,7 +217,6 @@ jQuery(document).ready(function($) {
   /**
    * parent Groups
    */
-  typeaheadTotals.groups = 0;
   $.typeahead({
     input: '.js-typeahead-parent_groups',
     minLength: 0,
@@ -209,7 +224,7 @@ jQuery(document).ready(function($) {
     searchOnFocus: true,
     maxItem: 20,
     template: function (query, item) {
-      if (item.ID == "new-item"){
+      if (item.ID === "new-item"){
         return "Create new Group"
       }
       return `<span>${_.escape(item.name)}</span>`
@@ -250,7 +265,70 @@ jQuery(document).ready(function($) {
         }
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.groups
+        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
+        result.push({
+          ID: "new-item",
+          group:"contacts"
+        })
+        $('#groups-result-container').html(text);
+      },
+      onHideLayout: function () {
+        $('#groups-result-container').html("");
+      }
+    }
+  });
+
+  /**
+   * peer Groups
+   */
+  $.typeahead({
+    input: '.js-typeahead-peer_groups',
+    minLength: 0,
+    accent: true,
+    searchOnFocus: true,
+    maxItem: 20,
+    template: function (query, item) {
+      if (item.ID === "new-item"){
+        return "Create new Group"
+      }
+      return `<span>${_.escape(item.name)}</span>`
+    },
+    source: TYPEAHEADS.typeaheadSource('groups', 'dt/v1/groups/compact/'),
+    display: "name",
+    templateValue: "{{name}}",
+    dynamic: true,
+    multiselect: {
+      matchOn: ["ID"],
+      data: function () {
+        return (group.peer_groups||[]).map(g=>{
+          return {ID:g.ID, name:g.post_title}
+        })
+      }, callback: {
+        onCancel: function (node, item) {
+          API.save_field_api('group', groupId, {'peer_groups': {values:[{value:item.ID, delete:true}]}})
+        }
+      },
+      href: function(item){
+        if (item){
+          return `${window.wpApiShare.site_url}/groups/${item.ID}`
+        }
+      }
+    },
+    callback: {
+      onClick: function(node, a, item, event){
+        if(item.ID === "new-item"){
+          event.preventDefault();
+          $('#create-group-modal').foundation('open');
+        } else {
+          API.save_field_api('group', groupId, {'peer_groups': {values:[{value:item.ID}]}})
+          this.addMultiselectItemLayout(item)
+          event.preventDefault()
+          this.hideLayout();
+          this.resetInput();
+          masonGrid.masonry('layout')
+        }
+      },
+      onResult: function (node, query, result, resultCount) {
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         result.push({
           ID: "new-item",
@@ -266,7 +344,6 @@ jQuery(document).ready(function($) {
   /**
    * Child Groups
    */
-  typeaheadTotals.groups = 0;
   $.typeahead({
     input: '.js-typeahead-child_groups',
     minLength: 0,
@@ -274,7 +351,7 @@ jQuery(document).ready(function($) {
     searchOnFocus: true,
     maxItem: 20,
     template: function (query, item) {
-      if (item.ID == "new-item"){
+      if (item.ID === "new-item"){
         return "Create new Group"
       }
       return `<span>${_.escape(item.name)}</span>`
@@ -314,7 +391,6 @@ jQuery(document).ready(function($) {
         }
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.groups
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         result.push({
           ID: "new-item",
@@ -332,6 +408,12 @@ jQuery(document).ready(function($) {
   $('#create-group-modal').on("closed.zf.reveal", function () {
     $(".reveal-after-group-create").hide()
     $(".hide-after-group-create").show()
+  })
+  //reset new group modal on close.
+  $('#create-contact-modal').on("closed.zf.reveal", function () {
+    $(".reveal-after-contact-create").hide()
+    $("#create-contact-modal input[name='title']").val('')
+    $(".hide-after-contact-create").show()
   })
 
   //create new group
@@ -355,7 +437,7 @@ jQuery(document).ready(function($) {
       });
   })
 
-  $("#add-new-address").click(function () {
+  $("#add-new-address").on("click", function () {
     $('#edit-contact_address').append(`
       <li style="display: flex">
         <textarea rows="3" class="contact-input" data-type="contact_address"></textarea>
@@ -368,17 +450,14 @@ jQuery(document).ready(function($) {
   /**
    * members
    */
-  typeaheadTotals.members = 0;
   $.typeahead({
     input: '.js-typeahead-members',
     minLength: 0,
     accent: true,
     searchOnFocus: true,
     maxItem: 20,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
-    source: TYPEAHEADS.typeaheadSource('members', 'dt/v1/contacts/compact/'),
+    template: window.TYPEAHEADS.contactListRowTemplate,
+    source: TYPEAHEADS.typeaheadContactsSource(),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -390,8 +469,10 @@ jQuery(document).ready(function($) {
         })
       }, callback: {
         onCancel: function (node, item) {
-          API.save_field_api('group', groupId, {'members': {values:[{value:item.ID, delete:true}]}}).then(()=>{
-
+          API.save_field_api('group', groupId, {'members': {values:[{value:item.ID, delete:true}]}}).then((g)=>{
+            group = g
+            populateMembersList()
+            masonGrid.masonry('layout')
           }).catch(err => { console.error(err) })
         }
       },
@@ -400,11 +481,13 @@ jQuery(document).ready(function($) {
     callback: {
       onClick: function(node, a, item, event){
         API.save_field_api('group', groupId, {'members': {values:[{value:item.ID}]}}).then((addedItem)=>{
+          group = addedItem
+          populateMembersList()
+          masonGrid.masonry('layout')
         }).catch(err => { console.error(err) })
         masonGrid.masonry('layout')
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.members
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#members-result-container').html(text);
       },
@@ -417,17 +500,14 @@ jQuery(document).ready(function($) {
   /**
    * coaches
    */
-  typeaheadTotals.coaches = 0;
   $.typeahead({
     input: '.js-typeahead-coaches',
     minLength: 0,
     accent: true,
     searchOnFocus: true,
     maxItem: 20,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
-    source: TYPEAHEADS.typeaheadSource('coaches', 'dt/v1/contacts/compact/'),
+    template: window.TYPEAHEADS.contactListRowTemplate,
+    source: TYPEAHEADS.typeaheadContactsSource(),
     display: "name",
     templateValue: "{{name}}",
     dynamic: true,
@@ -452,7 +532,6 @@ jQuery(document).ready(function($) {
         masonGrid.masonry('layout')
       },
       onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.coaches
         let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
         $('#coaches-result-container').html(text);
       },
@@ -462,72 +541,16 @@ jQuery(document).ready(function($) {
     }
   });
 
-  /**
-   * leaders
-   */
-  typeaheadTotals.leaders = 0;
-  $.typeahead({
-    input: '.js-typeahead-leaders',
-    minLength: 0,
-    accent: true,
-    searchOnFocus: true,
-    maxItem: 20,
-    template: function (query, item) {
-      return `<span>${_.escape(item.name)}</span>`
-    },
-    source: TYPEAHEADS.typeaheadSource('leaders', 'dt/v1/contacts/compact/'),
-    display: "name",
-    templateValue: "{{name}}",
-    dynamic: true,
-    multiselect: {
-      matchOn: ["ID"],
-      data: function () {
-        return group.leaders.map(g=>{
-          return {ID:g.ID, name:g.post_title}
-        })
-      }, callback: {
-        onCancel: function (node, item) {
-          _.pullAllBy(editFieldsUpdate.leaders.values, [{value:item.ID}], "value")
-          editFieldsUpdate.leaders.values.push({value:item.ID, delete:true})
-        }
-      },
-      href: window.wpApiShare.site_url + "/contacts/{{ID}}"
-    },
-    callback: {
-      onClick: function(node, a, item, e){
-        _.pullAllBy(editFieldsUpdate.leaders.values, [{value:item.ID}], "value")
-        editFieldsUpdate.leaders.values.push({value:item.ID})
-        this.addMultiselectItemLayout(item)
-        event.preventDefault()
-        this.hideLayout();
-        this.resetInput();
-      },
-      onResult: function (node, query, result, resultCount) {
-        resultCount = typeaheadTotals.leaders
-        let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-        $('#leaders-result-container').html(text);
-      },
-      onHideLayout: function () {
-        $('#leaders-result-container').html("");
-      }
-    }
-  });
 
 
   /**
    * Setup group fields
    */
 
-  if (group.assigned_to){
-    $('.current-assigned').text(_.get(group, "assigned_to.display"))
-  }
-
-
   $("#open-edit").on("click", function () {
     editFieldsUpdate = {
       locations : { values: [] },
       people_groups : { values: [] },
-      leaders : { values: [] },
     }
     $('#group-details-edit #title').val( group.name );
     let addressHTML = "";
@@ -543,7 +566,7 @@ jQuery(document).ready(function($) {
 
 
     $('#group-details-edit').foundation('open');
-    ["locations", "people_groups", "leaders"].forEach(t=>{
+    ["locations", "people_groups"].forEach(t=>{
       Typeahead[`.js-typeahead-${t}`].adjustInputSize()
     })
   })
@@ -636,13 +659,6 @@ jQuery(document).ready(function($) {
         })
       }
     })
-    let assignedHtml = $(`.assigned_to.details-list`).empty()
-    if ( group.assigned_to ){
-      assignedHtml.html(group.assigned_to.display)
-    } else {
-      assignedHtml.html(wpApiGroupsSettings.translations["not-set"]["assigned_to"])
-    }
-
 
     dateFields.forEach(dateField=>{
       if ( group[dateField] ){
@@ -672,6 +688,9 @@ jQuery(document).ready(function($) {
     ).then(resp=>{
       group = resp
       resetDetailsFields(group);
+      if ( id === 'group_status' ){
+        statusChanged()
+      }
     }).catch(err=>{
       console.log(err)
     })
@@ -683,7 +702,27 @@ jQuery(document).ready(function($) {
     API.save_field_api('group', groupId, { [id]: val })
       .catch(handelAjaxError)
   })
+  $('input.number-input').on("blur", function(){
+    const id = $(this).attr('id')
+    const val = $(this).val()
 
+    API.save_field_api('group', groupId, { [id]: val }).then((groupResp)=>{
+      group = groupResp
+    }).catch(handelAjaxError)
+  })
+
+  let statusChanged = ()=>{
+    let statusSelect = $('#group_status')
+    let status = _.get(group, "group_status.key")
+    let statusColor = _.get(wpApiGroupsSettings,
+      `groups_custom_fields_settings.group_status.default.${status}.color`
+    )
+    if (statusColor){
+      statusSelect.css("background-color", statusColor)
+    } else {
+      statusSelect.css("background-color", "#4CAF50")
+    }
+  }
   /**
    * Church fields
    */
@@ -716,6 +755,7 @@ jQuery(document).ready(function($) {
   $('#church-svg-wrapper').on('load', function() {
     fillOutChurchHealthMetrics()
   })
+  fillOutChurchHealthMetrics()
 
   $('.group-progress-button').on('click', function () {
     let fieldId = $(this).attr('id')
@@ -771,6 +811,105 @@ jQuery(document).ready(function($) {
     },
     changeMonth: true,
     changeYear: true
+  })
+
+  let memberList = $('.member-list')
+  let memberCountInput = $('#member_count')
+  let populateMembersList = ()=>{
+    memberList.empty()
+
+    group.members.forEach(m=>{
+      if ( _.find( group.leaders || [], {ID: m.ID} ) ){
+        m.leader = true
+      }
+    })
+    group.members = _.sortBy( group.members, ["leader"])
+    group.members.forEach(member=>{
+      let leaderHTML = '';
+      if( member.leader ){
+        leaderHTML = `<i class="fi-foot small leader"></i>`
+      }
+      let memberHTML = `<div class="member-row" style="" data-id="${member.ID}">
+          <div style="flex-grow: 1" class="member-status">
+              <i class="fi-torso small"></i>
+              <a href="${window.wpApiShare.site_url}/contacts/${member.ID}">${_.escape(member.post_title)}</a>
+              ${leaderHTML}
+          </div>
+          <button class="button clear make-leader member-row-actions" data-id="${member.ID}">
+            <i class="fi-foot small"></i>
+          </button>
+          <button class="button clear delete-member member-row-actions" data-id="${member.ID}">
+            <i class="fi-x small"></i>
+          </button>
+        </div>`
+      memberList.append(memberHTML)
+    })
+    memberCountInput.val( group.member_count )
+  }
+  populateMembersList()
+
+  $(document).on("click", ".delete-member", function () {
+    let id = $(this).data('id')
+    $(`.member-row[data-id="${id}"]`).remove()
+    window.API.save_field_api("group", groupId, {'members': {values:[{value:id, delete:true}]}}).then(groupRes=>{
+      group=groupRes
+      populateMembersList()
+      masonGrid.masonry('layout')
+    })
+    if( _.find( group.leaders || [], {ID: id}) ) {
+      window.API.save_field_api("group", groupId, {'leaders': {values: [{value: id, delete: true}]}})
+    }
+  })
+  $(document).on("click", ".make-leader", function () {
+    let id = $(this).data('id')
+    let remove = false
+    let existingLeaderIcon = $(`.member-row[data-id="${id}"] .leader`)
+    if( _.find( group.leaders || [], {ID: id}) || existingLeaderIcon.length !== 0){
+      remove = true
+      existingLeaderIcon.remove()
+    } else {
+      $(`.member-row[data-id="${id}"] .member-status`).append(`<i class="fi-foot small leader"></i>`)
+    }
+    window.API.save_field_api("group", groupId, {'leaders': {values:[{value:id, delete:remove}]}}).then(groupRes=>{
+      group=groupRes
+      populateMembersList()
+      masonGrid.masonry('layout')
+    })
+  })
+  $('.add-new-member').on("click", function () {
+    $('#add-new-group-member').foundation('open');
+    ["members"].forEach(t=>{
+      Typeahead[`.js-typeahead-${t}`].adjustInputSize()
+    })
+  })
+  //create new group
+  $(".js-create-contact").on("submit", function(e) {
+    e.preventDefault();
+    let title = $(".js-create-contact input[name=title]").val()
+    API.create_contact({
+      title,
+      groups:{values:[{value:groupId}]},
+      requires_update: true,
+      overall_status: "active"
+    }).then((newContact)=>{
+        $(".reveal-after-contact-create").show()
+        $("#new-contact-link").html(`<a href="${newContact.permalink}">${title}</a>`)
+        $(".hide-after-contact-create").hide()
+        $('#go-to-contact').attr('href', newContact.permalink);
+        group.members.push({post_title:title, ID:newContact.post_id})
+        if ( group.members.length > group.member_count ){
+          group.member_count = group.members.length
+        }
+        populateMembersList()
+        masonGrid.masonry('layout')
+      })
+      .catch(function(error) {
+        $(".js-create-contact-button").removeClass("loading").addClass("alert");
+        $(".js-create-contact").append(
+          $("<div>").html(error.responseText)
+        );
+        console.error(error);
+      });
   })
 
 

@@ -32,11 +32,6 @@ if ( !defined( 'ABSPATH' ) ) {
  * @return bool|\WP_Error
  */
 function dt_send_email( $email, $subject, $message_plain_text ) {
-    //@todo, remove this. Even System needs to be able to send emails.
-    // Check permission to send email
-//    if ( ! Disciple_Tools_Posts::can_access( 'contacts' ) ) {
-//        return new WP_Error( 'send_email_permission_error', 'You do not have the minimum permissions to send an email' );
-//    }
 
     // Sanitize
     $email = sanitize_email( $email );
