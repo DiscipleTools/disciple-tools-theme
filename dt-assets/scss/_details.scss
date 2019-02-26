@@ -426,3 +426,33 @@ select.color-select {
 .mentions-input-box .mentions strong span {
     font-weight: 300;
 }
+
+
+.bordered-box{
+    .section-header {
+        display: flex; justify-content: space-between
+    }
+    .section-chevron {
+        margin-left:auto;
+        margin-right:0;
+        img {
+            vertical-align: middle; width:20px
+        }
+    }
+    .chevron_down {
+        display: none;
+    }
+
+    &.collapsed {
+        .chevron_up {
+            display: none;
+        }
+        .chevron_down {
+            display: block;
+        }
+        .section-body {
+            display: none;
+        }
+    }
+
+}

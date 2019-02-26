@@ -1412,14 +1412,18 @@ jQuery(document).ready(function($) {
     })
   })
 
+  // expand and collapse tiles
+  $(".section-header").on("click", function () {
+    $(this).parent().toggleClass("collapsed")
+    $('.grid').masonry('layout')
+  })
 
-
-  //leave at the end
+  //leave at the end of this file
   masonGrid.masonry({
     itemSelector: '.grid-item',
     percentPosition: true
   });
-  //leave at the end
+  //leave at the end of this file
 })
 
 
