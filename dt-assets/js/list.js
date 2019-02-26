@@ -414,7 +414,6 @@
     let filter_name = wpApiListSettings.translations[`filter_${currentView}`]
     if ( currentView === "needs_accepted" ){
       query.overall_status = ["assigned"]
-      query.accepted = [false]
       filter.labels = [{ id:"needs_accepted", name:filter_name, field: "accepted"}]
     } else if ( currentView === "new") {
       query.overall_status = ["new"]
