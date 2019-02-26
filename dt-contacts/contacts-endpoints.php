@@ -270,7 +270,7 @@ class Disciple_Tools_Contacts_Endpoints
      * @return string|array The contact on success
      */
     public function create_contact( WP_REST_Request $request ) {
-        $fields = $request->get_json_params();
+        $fields = $request->get_json_params() ?? $request->get_params();
         $get_params = $request->get_query_params();
         $silent = false;
         if ( isset( $get_params["silent"] ) && $get_params["silent"] === "true" ){
@@ -318,7 +318,7 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function update_contact( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
         if ( isset( $params['id'] ) ) {
             $result = Disciple_Tools_Contacts::update_contact( $params['id'], $body, true );
             if ( is_wp_error( $result ) ) {
@@ -525,7 +525,7 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function post_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
         if ( isset( $params['id'] ) && isset( $body['comment'] ) ) {
             $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"] );
 
@@ -549,7 +549,7 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function public_post_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
         $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
         $silent = isset( $params["silent"] ) && $params["silent"] === true;
         if ( !$site_key ){
@@ -583,7 +583,7 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function update_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
         if ( isset( $params['id'] ) && isset( $body['comment_ID'] ) && isset( $body['comment_content'] ) ) {
             return Disciple_Tools_Contacts::update_comment( $params['id'], $body["comment_ID"], $body["comment_content"], true );
         } else {
@@ -598,7 +598,7 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function delete_comment( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
         if ( isset( $params['id'] ) && isset( $body['comment_ID'] ) ) {
             return Disciple_Tools_Contacts::delete_comment( $params['id'], $body["comment_ID"], true );
         } else {
@@ -690,7 +690,7 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function accept_contact( WP_REST_Request $request ) {
         $params = $request->get_params();
-        $body = $request->get_json_params();
+        $body = $request->get_json_params() ?? $request->get_params();
         if ( isset( $params['id'] ) ) {
             $result = Disciple_Tools_Contacts::accept_contact( $params['id'], $body["accept"] );
 

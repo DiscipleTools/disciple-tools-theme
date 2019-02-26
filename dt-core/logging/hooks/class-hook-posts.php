@@ -47,11 +47,12 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                     'object_subtype' => '',
                     'object_id' => $post->ID,
                     'object_name' => $this->_draft_or_post_title( $post->ID ),
-                    'meta_id'           => ' ',
-                    'meta_key'          => ' ',
-                    'meta_value'        => ' ',
-                    'meta_parent'        => ' ',
-                    'object_note'       => ' ',
+                    'meta_id'           => '',
+                    'meta_key'          => '',
+                    'meta_value'        => '',
+                    'meta_parent'        => '',
+                    'object_note'       => '',
+                    'hist_time'         => time() - 1,
                 ]
             );
         }

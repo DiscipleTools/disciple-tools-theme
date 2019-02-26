@@ -551,15 +551,17 @@ class Disciple_Tools_Posts
                     $a->gravatar = get_avatar_url( $user->ID, [ 'size' => '16' ] );
                 }
             }
-            $activity_simple[] = [
-                "meta_key" => $a->meta_key,
-                "gravatar" => isset( $a->gravatar ) ? $a->gravatar : "",
-                "name" => isset( $a->name ) ? $a->name : "",
-                "object_note" => $a->object_note,
-                "hist_time" => $a->hist_time,
-                "meta_id" => $a->meta_id,
-                "histid" => $a->histid,
-            ];
+            if ( !empty( $a->object_note ) ){
+                $activity_simple[] = [
+                    "meta_key" => $a->meta_key,
+                    "gravatar" => isset( $a->gravatar ) ? $a->gravatar : "",
+                    "name" => isset( $a->name ) ? $a->name : "",
+                    "object_note" => $a->object_note,
+                    "hist_time" => $a->hist_time,
+                    "meta_id" => $a->meta_id,
+                    "histid" => $a->histid,
+                ];
+            }
         }
 
         return $activity_simple;

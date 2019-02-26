@@ -145,13 +145,14 @@ function dt_site_scripts() {
                 'shared-functions',
                 'moment',
                 'jquery-mentions',
-                'jquery-mentions-elastic'
+                'jquery-mentions-elastic',
+                'wp-i18n'
             ) );
             wp_localize_script(
                 'comments', 'commentsSettings', [
                     "post" => get_post(),
                     'post_with_fields' => $post,
-                    'txt_created' => __( "Created contact at {}" ),
+                    'txt_created' => __( "Created record at {}" ),
                     'template_dir' => get_template_directory_uri(),
                     'contact_author_name' => isset( $post->post_author ) && (int) $post->post_author > 0 ? get_user_by( 'id', intval( $post->post_author ) )->display_name : "",
                     'translations' => [
@@ -205,7 +206,6 @@ function dt_site_scripts() {
                         'sources'                         => Disciple_Tools_Contacts::list_sources(),
                         'channels'                        => Disciple_Tools_Contacts::get_channel_list(),
                         'template_dir'                    => get_template_directory_uri(),
-                        'txt_created'                     => __( "Created contact at {}" ),
                         'translations'                    => $translations,
                         'can_view_all'                    => user_can( get_current_user_id(), 'view_any_contacts' ),
                         'current_user_id'                 => get_current_user_id(),
@@ -228,7 +228,6 @@ function dt_site_scripts() {
                         'root'              => esc_url_raw( rest_url() ),
                         'nonce'             => wp_create_nonce( 'wp_rest' ),
                         'template_dir'      => get_template_directory_uri(),
-                        'txt_created'       => __( "Created group at {}" ),
                         'translations'      => $translations,
                         'current_user_id'   => get_current_user_id()
                     )

@@ -552,7 +552,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @param  bool|null $check_permissions
      * @param bool $silent
      *
-     * @return int | WP_Error of contact ID
+     * @return array | WP_Error the contact
      * @access public
      * @since  0.1.0
      */
@@ -2139,13 +2139,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         AND post_id != %s
                         ",
                 [
-                    $field .'%',
-                    $exact_match ? $value : ( '%' . $value . '%' ),
-                    $exclude_id
+                    esc_sql( $field ) .'%',
+                    $exact_match ? esc_sql( $value ) : ( '%' . esc_sql( $value ) . '%' ),
+                    esc_sql( $exclude_id )
                 ]
             ),
             ARRAY_N
         );
+//        @todo return just an array
         // if there are more than 50, it is most likely not a duplicate
         return sizeof( $contact_ids ) > 50 ? [] : $contact_ids;
     }
