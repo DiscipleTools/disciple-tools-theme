@@ -275,7 +275,7 @@ declare(strict_types=1);
                                 <div id="<?php echo esc_html( $field ) ?>-options">
                                     <?php if ( isset( $dt_contact_field_options[$field] ) && $dt_contact_field_options[$field]["type"] == "key_select" ) :
                                         foreach ( $dt_contact_field_options[$field]["default"] as $option_key => $option_value ) :
-                                            $label = $option_value["label"]?>
+                                            $label = $option_value["label"] ?? ""?>
                                             <div class="key_select_options">
                                                 <label style="cursor: pointer">
                                                     <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"

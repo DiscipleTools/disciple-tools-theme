@@ -608,7 +608,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                             <?php
                             $selected = $contact["reason_$status"]['key'] ?? '' === $reason_key ? 'selected' : '';
                             echo esc_html( $selected ); ?>>
-                            <?php echo esc_html( $reason_label['label'] ); ?>
+                            <?php echo esc_html( $reason_label['label'] ?? "" ); ?>
                         </option>
                         <?php
                     }
