@@ -1,0 +1,128 @@
+Problem Countries GeoNames ADMIN 1
+
+———————————————————————————————
+CAN’T DO FULL RESOLUTION
+United States because of Alaska
+Canada (slow loading even on low resolution) Massive shorelines.
+Chile (shorelines)
+Philippines
+United Kingdom
+
+———————————————————————————————
+SLOW ON FULL RESOLUTION
+Columbia (slow on high resolution)
+Greece
+Iceland
+Indonesia
+India
+Ireland
+Japan(even slow on low)
+South Korea
+Mexico
+Norway
+
+———————————————————————————————
+POPULATION MISSING
+The Bahamas ( no population)
+Fiji (no population)
+Litchtenstin (missing a couple populations)
+Monaco (no population)
+Serbia (missing population
+Somalia
+Zambia
+
+———————————————————————————————
+MISSING POLYGONS
+Argentina (includes  a big chunk of Antarctica)
+Bosnia ( missing information. Only one polygon shows)
+Kazakstan
+Eritrea (missing a couple states)
+Lybia
+Macedonia (missing a couple polygons)
+Moldova
+Montenegro
+Morocco
+Naru
+Oman
+Poland
+Russia
+Samoa
+San Marino
+Seychelles
+Singapore
+Timor-Leste
+Tonga
+Trinidad and Tobago
+Tuvalu
+Vanuatu
+
+———————————————————————————————
+MISSING
+American Samoa
+Bermuda
+Anguilla
+British Indio Ocean Territory
+Burkina Faso (missing polygons)
+Caman Islands
+Christmas Island
+Cook Islands
+Curacao
+Dhekelia
+Falkin Islands
+Faroe Islands
+French Guiana (large country missing admin1 polygons) (important !)
+French Polynesia
+Gaza Strip
+Gibraltar
+Greenland
+Guateloupe
+Guam
+Guernsey
+Hong Kong (important!)
+Isle of Man
+Jersey
+Kiribati
+Kosovo (important !)
+Macau
+Marshall Islands
+Martinique
+Mayotte
+Micronesia
+Monteserrat
+New Caledonia
+Niue
+Norfolk Island
+Northern Mariana Islands
+Palau
+Puerto Rico (important !)
+Reunion
+Saint Barthalemy
+Saint Helena…
+Saint Martin
+Saint Pierre…
+South Georgia and South Sandwich Islands
+South Sudan (important !)
+Svalbard
+Turks and Caicos Islands
+US Virgin Islands
+Wells and Futuna
+West Bank
+West Sahara
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
