@@ -754,10 +754,7 @@ jQuery(document).ready(function($) {
   window.getAddressInput = function() {
     let v = $('#validate_addressnew').val()
     $('#edit-contact_address').append(`<li style="display: flex"><textarea class="contact-input" data-type="contact_address" dir="auto">${v}</textarea><button class="button clear delete-button" data-id="new"><img src="${wpApiShare.template_dir}/dt-assets/images/invalid.svg"></button></li>`)
-    console.log( editFieldsUpdate )
-    editFieldsUpdate['new'] = v
-
-    console.log( editFieldsUpdate )
+    editFieldsUpdate['contact_address'] = {"values": [{"key": undefined, "value": v }]}
   }
 
 
