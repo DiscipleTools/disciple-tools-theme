@@ -180,10 +180,10 @@ function show_sources_overview() {
 
     chartDiv.find(".js-loading").remove()
 
-    let filteringOutText = `${__( "Showing contacts during", 'disciple_tools' )} ${label}.`;
+    let filteringOutText = `${__( "Showing contacts created during", 'disciple_tools' )} ${label}.`;
 
     chartsDiv.append($("<div>").html(`
-  
+
         <h1>${__("All contacts, by source and status", "disciple_tools")}</h1>
   
         <p>${filteringOutText} ${__( "A contact can come from more than one source.", 'disciple_tools' )}</p>
