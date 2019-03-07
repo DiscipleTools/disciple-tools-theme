@@ -422,7 +422,12 @@ window.SHAREDFUNCTIONS = {
       }
     }
     return "";
+  },
+  getAddressInput() {
+    let v = $('#validate_addressnew').val()
+    $('#edit-contact_address').append(`<li style="display: flex"><textarea type="text" class="contact-input" data-type="contact_address" dir="auto">${v}</textarea><button class="button clear delete-button" data-id="new"><img src="https://simpledashboard.disciple.tools.site/wp-content/themes/disciple-tools-theme/dt-assets/images/invalid.svg"></button></li>`)
   }
+
 }
 
 window.METRICS = {

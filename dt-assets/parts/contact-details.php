@@ -322,7 +322,7 @@
                     </button>
                 </div>
                 <ul id="current-addresses" class="cell"></ul>
-                <div id="edit-contact_address" class="cell"></div>
+                <ul id="edit-contact_address" class="cell"></ul>
             </div>
 
             <div class="grix-x">

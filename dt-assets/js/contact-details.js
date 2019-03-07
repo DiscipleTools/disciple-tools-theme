@@ -716,6 +716,9 @@ jQuery(document).ready(function($) {
     $('#edit-contact_address').append(`
     <div class="reveal" class="geocode-address" id="geocode-address" data-reveal>
         <h1>Add Address</h1>
+        <ul>
+        
+        </ul>
         <label for="validate_addressnew">Address</label>
           <div class="input-group">
               <input type="text"
@@ -739,7 +742,7 @@ jQuery(document).ready(function($) {
           
           <div id="address-click-map"></div>
         <p>
-            <button class="button" data-open="contact-details-edit" onclick="$('#current-addresses').append('<li>This is a new address</li>')">Select</button>
+            <button class="button" data-open="contact-details-edit" onclick="window.SHAREDFUNCTIONS.getAddressInput()">Select</button>
             <button class="button" data-open="contact-details-edit">Cancel</button>
         </p>
     </div>
