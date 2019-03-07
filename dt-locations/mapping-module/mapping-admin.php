@@ -177,20 +177,30 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                         <?php ( $tab == 'general' || ! isset( $tab ) ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
                         <?php esc_attr_e( 'General Settings', $this->token ) ?>
                     </a>
+                    <!-- Starting Map -->
+                    <a href="<?php echo esc_attr( $link ) . 'focus' ?>" class="nav-tab
+                        <?php ( $tab == 'focus' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
+                        <?php esc_attr_e( 'Mapping Focus', $this->token ) ?>
+                    </a>
+                    <!-- Polygon -->
+                    <a href="<?php echo esc_attr( $link ) . 'polygons' ?>" class="nav-tab
+                        <?php ( $tab == 'polygons' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
+                        <?php esc_attr_e( 'Polygons', $this->token ) ?>
+                    </a>
                     <!-- Geocoding -->
                     <a href="<?php echo esc_attr( $link ) . 'geocoding' ?>" class="nav-tab
                         <?php ( $tab == 'geocoding' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
                         <?php esc_attr_e( 'Geocoding', $this->token ) ?>
                     </a>
-                    <!-- Names Tab -->
-                    <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
-                        <?php ( $tab == 'names' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
-                        <?php esc_attr_e( 'Names', $this->token ) ?>
-                    </a>
                     <!-- Population Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'population' ?>" class="nav-tab
                         <?php ( $tab == 'population' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
                         <?php esc_attr_e( 'Population', $this->token ) ?>
+                    </a>
+                    <!-- Names Tab -->
+                    <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
+                        <?php ( $tab == 'names' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
+                        <?php esc_attr_e( 'Names', $this->token ) ?>
                     </a>
                     <!-- Add Sub-Locations -->
                     <a href="<?php echo esc_attr( $link ) . 'sub-locations' ?>" class="nav-tab
@@ -214,6 +224,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                 switch ($tab) {
                     case "general":
                         $this->general_tab();
+                        break;
+                    case "focus":
+                        $this->focus_tab();
+                        break;
+                    case "polygons":
+                        $this->polygon_tab();
                         break;
                     case "geocoding":
                         $this->geocoding_tab();
@@ -245,13 +261,75 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             ?>
             <div class="wrap">
                 <div id="poststuff">
-                    <div id="post-body" class="metabox-holder columns-1">
+                    <div id="post-body" class="metabox-holder columns-2">
+                        <div id="post-body-content">
+                            <!-- Main Column -->
+
+                            <?php $this->summary_metabox() ?>
+
+
+                            <!-- End Main Column -->
+                        </div><!-- end post-body-content -->
+                        <div id="postbox-container-1" class="postbox-container">
+                            <!-- Right Column -->
+
+                            <!-- End Right Column -->
+                        </div><!-- postbox-container 1 -->
+                        <div id="postbox-container-2" class="postbox-container">
+                        </div><!-- postbox-container 2 -->
+                    </div><!-- post-body meta box container -->
+                </div><!--poststuff end -->
+            </div><!-- wrap end -->
+            <?php
+        }
+
+        public function focus_tab() {
+            ?>
+            <div class="wrap">
+                <div id="poststuff">
+                    <div id="post-body" class="metabox-holder columns-2">
                         <div id="post-body-content">
                             <!-- Main Column -->
 
                             <?php $this->starting_map_level_metabox(); ?>
 
-                            <?php $this->global_population_division_metabox(); ?>
+                            <!-- End Main Column -->
+                        </div><!-- end post-body-content -->
+                        <div id="postbox-container-1" class="postbox-container">
+                            <!-- Right Column -->
+
+                            <!-- Box -->
+                            <table class="widefat striped">
+                                <thead>
+                                <th>Instructions</th>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!-- End Box -->
+
+                            <!-- End Right Column -->
+                        </div><!-- postbox-container 1 -->
+                        <div id="postbox-container-2" class="postbox-container">
+                        </div><!-- postbox-container 2 -->
+                    </div><!-- post-body meta box container -->
+                </div><!--poststuff end -->
+            </div><!-- wrap end -->
+            <?php
+        }
+
+        public function polygon_tab() {
+            ?>
+            <div class="wrap">
+                <div id="poststuff">
+                    <div id="post-body" class="metabox-holder columns-1">
+                        <div id="post-body-content">
+                            <!-- Main Column -->
 
                             <?php $this->set_polygon_mirror_metabox(); ?>
 
@@ -420,7 +498,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                                 <thead>
                                 <th>List</th>
                                 </thead>
-                                <tbody><tr><td id="results_body"><img src="<?php echo esc_url( $this->spinner ); dt_write_log( __DIR__) ?>" style="width:20px; padding-top:5px;" /></td></tr>
+                                <tbody><tr><td id="results_body"><img src="<?php echo esc_url( $this->spinner ); ?>" style="width:20px; padding-top:5px;" /></td></tr>
                                 </tbody>
                             </table>
 
@@ -516,6 +594,72 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
         /**
          * Admin Page Metaboxes
          */
+
+        public function summary_metabox() {
+            ?>
+                <!-- Box -->
+                <table class="widefat striped">
+                    <thead>
+                    <th>Name</th>
+                    <th>Current Setting</th>
+                    <th></th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Mapping Focus
+                            </td>
+                            <td>
+                                <?php
+                                    $mm = DT_Mapping_Module::instance();
+                                    $sl = $mm->initial_map_level();
+
+                                    if ( isset( $sl['geonameid'] ) ) {
+                                        $location = $mm->query( 'get_location_by_geonameid', ['geonameid' => $sl['geonameid'] ] );
+                                    }
+
+                                    if ( isset( $location['name'] ) ) {
+                                        echo $location['name'];
+                                    }
+                                ?>
+                            </td>
+                            <td>
+                                <a href="admin.php?page=dt_mapping_module&tab=focus">Edit</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Polygon Mirror Source
+                            </td>
+                            <td>
+                                <?php
+                                    $mirror = dt_get_mapping_polygon_mirror();
+                                    echo $mirror['label'] ?? '';
+                                ?>
+                            </td>
+                            <td>
+                                <a href="admin.php?page=dt_mapping_module&tab=polygons">Edit</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Geocoding Source
+                            </td>
+                            <td>
+                                <?php
+                                    $mirror = dt_get_mapping_polygon_mirror();
+                                    echo $mirror['label'] ?? '';
+                                ?>
+                            </td>
+                            <td>
+                                <a href="admin.php?page=dt_mapping_module&tab=polygons">Edit</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            <?php
+        }
+
         public function migration_status_metabox() {
             if ( isset( $_POST[ 'unlock' ] )
                 && ( isset( $_POST[ '_wpnonce' ] )

@@ -310,9 +310,7 @@
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 </div>
-                <ul id="edit-contact_email" class="cell">
-
-                </ul>
+                <ul id="edit-contact_email" class="cell"></ul>
             </div>
 
             <div class="grix-x">
@@ -323,20 +321,19 @@
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 </div>
-                <ul id="edit-contact_address" class="cell">
-                </ul>
+                <ul id="current-addresses" class="cell"></ul>
+                <div id="edit-contact_address" class="cell"></div>
             </div>
 
             <div class="grix-x">
                 <div class="section-subheader cell">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
                     <?php esc_html_e( 'Social Media', 'disciple_tools' ) ?>
                     <button id="add-new-social-media">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 </div>
-                <ul id="edit-social" class="cell">
-
-                </ul>
+                <ul id="edit-social" class="cell"></ul>
             </div>
 
 
@@ -350,11 +347,11 @@
                     <div id="sources_t" name="form-sources" class="scrollable-typeahead">
                         <div class="typeahead__container">
                             <div class="typeahead__field">
-                                            <span class="typeahead__query">
-                                                <input class="js-typeahead-sources"
-                                                       name="sources[query]" placeholder="<?php esc_html_e( "Search sources", 'disciple_tools' ) ?>"
-                                                       autocomplete="off">
-                                            </span>
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-sources"
+                                           name="sources[query]" placeholder="<?php esc_html_e( "Search sources", 'disciple_tools' ) ?>"
+                                           autocomplete="off">
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -454,20 +451,6 @@
                             </div>
                         </div>
                     </div>
-                    <style>
-                        #drill_down {
-                            margin-bottom: 0;
-                            list-style-type: none;
-                        }
-                        #drill_down li {
-                            display:inline;
-                            padding: 0 10px;
-                        }
-                        #drill_down li select {
-                            width:150px;
-                        }
-                    </style>
-                    <div id="geoname-encode-contact"><ul id="drill_down"><li><button id="geoname-encode-button">Encode</button></li></ul></div>
                 </div>
             </div>
         </div>

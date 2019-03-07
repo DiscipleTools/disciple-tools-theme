@@ -98,7 +98,6 @@ class DT_Mapping_Module_Example_Filters
         /**
          * Add new url base for listener
          */
-        $base_url = 'network';
         return $base_url;
     }
 
@@ -144,7 +143,7 @@ class DT_Mapping_Module_Example_Filters
         return $data;
     }
 
-    public function custom_population_division( $data ) {
+    public function custom_population_division( $data ) { // @todo move this to a admin tab for configuration
         /**********************************************************************************************************
          * Filter to supply custom divisions geographic unit.
          *
@@ -154,7 +153,6 @@ class DT_Mapping_Module_Example_Filters
          *
          *              This would make the "United States" ( i.e. 6252001) use divisions of 5000
          */
-        $data[6252001] = 5000; // changed the
         return $data;
     }
 

@@ -310,7 +310,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
             $params = $request->get_params();
             if ( isset( $params['geonameid'] ) ) {
-                return $this->map_level_by_geoname( $params['geonameid'] );
+                return $this->get_locations_list( $params['geonameid'] );
             } else {
                 return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
             }

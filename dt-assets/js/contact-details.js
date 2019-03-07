@@ -714,12 +714,41 @@ jQuery(document).ready(function($) {
   // Clicking plus sign for new address
   $('button#add-new-address').on('click', () => {
     $('#edit-contact_address').append(`
-      <li style="display: flex">
-        <textarea rows="3" class="contact-input" data-type="contact_address" dir="auto"></textarea>
-        <button class="button clear delete-button" data-id="new">
-          <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
-        </button>
-    </li>`)
+    <div class="reveal" class="geocode-address" id="geocode-address" data-reveal>
+        <h1>Add Address</h1>
+        <label for="validate_addressnew">Address</label>
+          <div class="input-group">
+              <input type="text"
+                     placeholder="example: 1000 Broadway, Denver, CO 80126"
+                     class="profile-input input-group-field contact-input"
+                     name="validate_address"
+                     id="validate_addressnew"
+                     data-type="contact_address"
+                     value=""
+              />
+              <div class="input-group-button">
+                  <input type="button" class="button"
+                         onclick="validate_group_address( jQuery('#validate_addressnew').val(), 'new')"
+                         value="Validate"
+                         id="validate_address_buttonnew">
+              </div>
+          </div>
+          <div id="possible-resultsnew">
+              <input type="hidden" name="address" id="address_new" value=""/>
+          </div>
+          
+          <div id="address-click-map"></div>
+        <p>
+            <button class="button" data-open="contact-details-edit" onclick="$('#current-addresses').append('<li>This is a new address</li>')">Select</button>
+            <button class="button" data-open="contact-details-edit">Cancel</button>
+        </p>
+    </div>
+    `)
+      let options = {multiExpand: true, allowAllClosed: false};
+      let div = $('#geocode-address')
+      new Foundation.Reveal(div, options);
+      div.foundation('open')
+
   })
 
   let idOfNextNewField = 1
@@ -1423,36 +1452,6 @@ jQuery(document).ready(function($) {
     $('.grid').masonry('layout')
   })
 
-    // geoname encode on contact edit
-    $('#geoname-encode-button').click(function() {
-        $.ajax({
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            url: contactsDetailsWpApiSettings.root  + 'dt/v1/mapping_module/get_start_level',
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce );
-            },
-        })
-        .done( function( response ) {
-            console.log(response)
-            let div = 'geoname-encode-contact'
-
-            $('#drill_down').empty().append(`
-                    <li>${response.data.start_level.self.name}</li>
-                    <li><select id="${response.data.start_level.self.geonameid}" onchange="geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();">
-                    <option>Select</option></select>
-                    </li>`)
-
-            jQuery.each( response.data.start_level.children, function(i,v) {
-                jQuery('#'+response.data.start_level.self.geonameid).append(`<option value="${v.id}">${v.name}</option>`)
-            })
-        }) // end success statement
-        .fail(function (err) {
-            console.log("error")
-            console.log(err)
-        })
-    })
-
   //leave at the end of this file
   masonGrid.masonry({
     itemSelector: '.grid-item',
@@ -1461,43 +1460,3 @@ jQuery(document).ready(function($) {
   //leave at the end of this file
 })
 
-
-function geoname_drill_down( div, id ) {
-
-    let drill_down = jQuery('#drill_down')
-
-    jQuery.ajax({
-        type: 'POST',
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify( { 'geonameid': id } ),
-        dataType: "json",
-        url: contactsDetailsWpApiSettings.root  + 'dt/v1/mapping_module/map_level',
-        beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce );
-        },
-    })
-        .done( function( response ) {
-            console.log(response)
-
-            if ( ! isEmpty( response.children ) ) {
-                drill_down.append(`<li><select id="${response.self.geonameid}" onchange="geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
-                let sorted_children =  _.sortBy(response.children, [function(o) { return o.name; }]);
-
-                jQuery.each( sorted_children, function(i,v) {
-                    jQuery('#'+id).append(`<option value="${v.id}">${v.name}</option>`)
-                })
-            }
-
-        }) // end success statement
-        .fail(function (err) {
-            console.log("error")
-            console.log(err)
-        })
-}
-function isEmpty(obj) {
-    for(let key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}
