@@ -713,12 +713,9 @@ jQuery(document).ready(function($) {
 
   // Clicking plus sign for new address
   $('button#add-new-address').on('click', () => {
-    $('#edit-contact_address').append(`
+    $('#address-reveal').append(`
     <div class="reveal" class="geocode-address" id="geocode-address" data-reveal>
         <h1>Add Address</h1>
-        <ul>
-        
-        </ul>
         <label for="validate_addressnew">Address</label>
           <div class="input-group">
               <input type="text"

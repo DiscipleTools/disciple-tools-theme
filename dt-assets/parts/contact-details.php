@@ -321,8 +321,8 @@
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 </div>
-                <ul id="current-addresses" class="cell"></ul>
                 <ul id="edit-contact_address" class="cell"></ul>
+                <div id="address-reveal"></div>
             </div>
 
             <div class="grix-x">
