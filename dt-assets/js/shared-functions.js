@@ -422,7 +422,44 @@ window.SHAREDFUNCTIONS = {
       }
     }
     return "";
-  }
+  },
+  geoname_drill_down( div, id ) {
+    let drill_down = jQuery('#drill_down')
+    jQuery.ajax({
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify( { 'geonameid': id } ),
+        dataType: "json",
+        url: contactsDetailsWpApiSettings.root  + 'dt/v1/mapping_module/map_level',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce );
+        },
+    })
+        .done( function( response ) {
+            console.log(response)
+
+            if ( ! window.SHAREDFUNCTIONS.isEmpty( response.children ) ) {
+                drill_down.append(`<li><select id="${response.self.geonameid}" onchange="window.SHAREDFUNCTIONS.geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
+                let sorted_children =  _.sortBy(response.children, [function(o) { return o.name; }]);
+
+                jQuery.each( sorted_children, function(i,v) {
+                    jQuery('#'+id).append(`<option value="${v.id}">${v.name}</option>`)
+                })
+            }
+
+        }) // end success statement
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+        })
+    },
+    isEmpty(obj) {
+        for(let key in obj) {
+            if(obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
+    }
 
 }
 

@@ -713,48 +713,45 @@ jQuery(document).ready(function($) {
 
   // Clicking plus sign for new address
   $('button#add-new-address').on('click', () => {
-    $('#address-reveal').append(`
-    <div class="reveal" class="geocode-address" id="geocode-address" data-reveal>
-        <h1>Add Address</h1>
-        <label for="validate_addressnew">Address</label>
-          <div class="input-group">
-              <input type="text"
-                     placeholder="example: 1000 Broadway, Denver, CO 80126"
-                     class="profile-input input-group-field contact-input"
-                     name="validate_address"
-                     id="validate_addressnew"
-                     data-type="contact_address"
-                     value=""
-              />
-              <div class="input-group-button">
-                  <input type="button" class="button"
-                         onclick="validate_group_address( jQuery('#validate_addressnew').val(), 'new')"
-                         value="Validate"
-                         id="validate_address_buttonnew">
-              </div>
-          </div>
-          <div id="possible-resultsnew">
-              <input type="hidden" name="address" id="address_new" value=""/>
-          </div>
-          
-          <div id="address-click-map"></div>
-        <p>
-            <button class="button" data-open="contact-details-edit" onclick="window.getAddressInput()">Select</button>
-            <button class="button" data-open="contact-details-edit">Cancel</button>
-        </p>
-    </div>
-    `)
-      let options = {multiExpand: true, allowAllClosed: false};
-      let div = $('#geocode-address')
-      new Foundation.Reveal(div, options);
-      div.foundation('open')
+      if ( ! $('#new-contact').length ) { /* check if already created */
+          $.ajax({
+              type: "POST",
+              contentType: "application/json; charset=utf-8",
+              url: contactsDetailsWpApiSettings.root  + 'dt/v1/mapping_module/get_start_level',
+              beforeSend: function(xhr) {
+                  xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce );
+              },
+          })
+              .done( function( response ) {
+                  console.log(response)
+                  let div = 'geoname-encode-contact'
 
+                  $('#drill_down').empty().append(`
+                    <li>${response.data.start_level.self.name}</li>
+                    <li><select id="${response.data.start_level.self.geonameid}" onchange="window.SHAREDFUNCTIONS.geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();">
+                    <option>Select</option></select>
+                    </li>`)
+
+                  jQuery.each( response.data.start_level.children, function(i,v) {
+                      jQuery('#'+response.data.start_level.self.geonameid).append(`<option value="${v.id}">${v.name}</option>`)
+                  })
+              }) // end success statement
+              .fail(function (err) {
+                  console.log("error")
+                  console.log(err)
+              })
+      }
   })
 
   window.getAddressInput = function() {
     let v = $('#validate_addressnew').val()
-    $('#edit-contact_address').append(`<li style="display: flex"><textarea class="contact-input" data-type="contact_address" dir="auto">${v}</textarea><button class="button clear delete-button" data-id="new"><img src="${wpApiShare.template_dir}/dt-assets/images/invalid.svg"></button></li>`)
-    editFieldsUpdate['contact_address'] = {"values": [{"key": undefined, "value": v }]}
+      if ( $('#new-contact').length ) {
+          $('#new-contact').replaceWith(`<textarea class="contact-input" id="new-contact" data-type="contact_address" dir="auto">${v}</textarea>`)
+          editFieldsUpdate['contact_address']['values'] = [{"key": undefined, "value": v }]
+      } else {
+          $('#edit-contact_address').append(`<li style="display: flex"><textarea class="contact-input" id="new-contact" data-type="contact_address" dir="auto">${v}</textarea><button class="button clear delete-button" data-id="new"><img src="${wpApiShare.template_dir}/dt-assets/images/invalid.svg"></button></li>`)
+          editFieldsUpdate['contact_address'] = {"values": [{"key": undefined, "value": v }]}
+      }
   }
 
 

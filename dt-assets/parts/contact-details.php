@@ -317,12 +317,62 @@
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
                     <?php esc_html_e( 'Address', 'disciple_tools' )?>
-                    <button id="add-new-address">
+                    <button id="add-new-address" data-open="geocode-address" >
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                     </button>
                 </div>
+                <!-- list of addresses -->
                 <ul id="edit-contact_address" class="cell"></ul>
-                <div id="address-reveal"></div>
+
+                <!-- address add and edit -->
+                <div class="reveal" class="geocode-address" id="geocode-address" data-reveal>
+                    <h1>Add Address</h1>
+
+                    <!-- address and validation-->
+                    <label for="validate_addressnew">Address</label>
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder="example: 1000 Broadway, Denver, CO 80126"
+                               class="profile-input input-group-field contact-input"
+                               name="validate_address"
+                               id="validate_addressnew"
+                               data-type="contact_address"
+                               value=""
+                        />
+                        <!-- <div class="input-group-button">
+                            <input type="button" class="button"
+                                   onclick="validate_group_address( jQuery('#validate_addressnew').val(), 'new')"
+                                   value="Validate"
+                                   id="validate_address_buttonnew">
+                        </div> -->
+                    </div>
+                    <div id="possible-resultsnew">
+                        <input type="hidden" name="address" id="address_new" value=""/>
+                    </div>
+
+                    <!-- drill down -->
+                    <style>
+                        #drill_down {
+                            margin-bottom: 0;
+                            list-style-type: none;
+                        }
+                        #drill_down li {
+                            display:inline;
+                            padding: 0 10px;
+                        }
+                        #drill_down li select {
+                            width:150px;
+                        }
+                    </style>
+                    <div id="geoname-encode-contact"><ul id="drill_down"></ul></div>
+
+                    <!-- map -->
+                    <div id="address-click-map"></div>
+                    <p>
+                        <button class="button" data-open="contact-details-edit" onclick="window.getAddressInput()">Select</button>
+                        <button class="button" data-open="contact-details-edit" data-close>Cancel</button>
+                    </p>
+                </div>
             </div>
 
             <div class="grix-x">
