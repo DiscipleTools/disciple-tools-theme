@@ -56,7 +56,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                 return; // this allows you to control what environments the admin loads.
             }
 
-            $this->spinner = plugin_dir_url( __FILE__ ) . '/spinner.svg';
+            $this->spinner = spinner();
             $this->nonce = wp_create_nonce( 'wp_rest' );
             $this->current_user_id = get_current_user_id();
             add_action( 'admin_head', [ $this, 'scripts' ] );
@@ -420,7 +420,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                                 <thead>
                                 <th>List</th>
                                 </thead>
-                                <tbody><tr><td id="results_body"><img src="<?php echo esc_url( DT_Mapping_Module::instance()->module_url )?>spinner.svg" style="width:20px; padding-top:5px;" /></td></tr>
+                                <tbody><tr><td id="results_body"><img src="<?php echo esc_url( $this->spinner ); dt_write_log( __DIR__) ?>" style="width:20px; padding-top:5px;" /></td></tr>
                                 </tbody>
                             </table>
 
@@ -435,7 +435,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                 })
 
                 function reset_drill_down() {
-                    jQuery('#drill_down_body').empty().append(`<tr><td>World</td></tr><tr><td><select id="6295630" onchange="get_children( this.value );jQuery(this).parent().parent().nextAll().remove();"><option>Select</option></select> <span id="spinner_6295630"><img src="<?php echo esc_url( DT_Mapping_Module::instance()->module_url )?>spinner.svg" style="width:20px; padding-top:5px;" /></span></td></tr>`)
+                    jQuery('#drill_down_body').empty().append(`<tr><td>World</td></tr><tr><td><select id="6295630" onchange="get_children( this.value );jQuery(this).parent().parent().nextAll().remove();"><option>Select</option></select> <span id="spinner_6295630"><img src="<?php echo esc_url( $this->spinner ) ?>" style="width:20px; padding-top:5px;" /></span></td></tr>`)
                     jQuery.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
@@ -472,7 +472,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
 
                     let spinner_span = jQuery('#spinner_'+id)
                     let results_box = jQuery('#results_body')
-                    let spinner = `<img src="<?php echo esc_url( DT_Mapping_Module::instance()->module_url )?>spinner.svg" style="width:20px; padding-top:5px;" />`
+                    let spinner = `<img src="<?php echo esc_url( $this->spinner ) ?>" style="width:20px; padding-top:5px;" />`
 
                     results_box.empty().append(spinner)
 

@@ -454,7 +454,20 @@
                             </div>
                         </div>
                     </div>
-                    <select id="2464461" style="width:20%;"><option>Country</option><option value="2464461">Tunisia</option></select>
+                    <style>
+                        #drill_down {
+                            margin-bottom: 0;
+                            list-style-type: none;
+                        }
+                        #drill_down li {
+                            display:inline;
+                            padding: 0 10px;
+                        }
+                        #drill_down li select {
+                            width:150px;
+                        }
+                    </style>
+                    <div id="geoname-encode-contact"><ul id="drill_down"><li><button id="geoname-encode-button">Encode</button></li></ul></div>
                 </div>
             </div>
         </div>

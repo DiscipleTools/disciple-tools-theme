@@ -16,6 +16,20 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
     }
     /*******************************************************************************************************************/
 
+    if ( ! function_exists( 'spinner' ) ) {
+        function spinner() {
+            $dir = __DIR__;
+            if ( strpos( $dir,'wp-content/themes' ) ) {
+                $nest = explode( get_stylesheet(), plugin_dir_path(__FILE__ ) );
+                return get_theme_file_uri() . $nest[1] . 'spinner.svg';
+            } else if ( strpos( $dir,'wp-content/plugins' ) ) {
+                return plugin_dir_url( __FILE__ ) . 'spinner.svg';
+            } else {
+                return plugin_dir_url( __FILE__ ) . 'spinner.svg';
+            }
+        }
+    }
+
     require_once('mapping-admin.php');
 
     /**
@@ -62,8 +76,18 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             /**
              * SET FILE LOCATIONS
              */
-            $this->module_path = plugin_dir_path( __FILE__ );
-            $this->module_url = plugin_dir_url( __FILE__ );
+            $dir = __DIR__;
+            if ( strpos( $dir,'wp-content/themes' ) ) {
+                $this->module_path = plugin_dir_path(__FILE__ );
+                $nest = explode( get_stylesheet(), plugin_dir_path(__FILE__ ) );
+                $this->module_url = get_theme_file_uri() . $nest[1];
+            } else if ( strpos( $dir,'wp-content/plugins' ) ) {
+                $this->module_path = plugin_dir_path(__FILE__ );
+                $this->module_url = plugin_dir_url(__FILE__ );
+            } else {
+                $this->module_path = plugin_dir_path(__FILE__ );
+                $this->module_url = plugin_dir_url(__FILE__ );
+            }
             /** END SET FILE LOCATIONS */
 
             /**
@@ -213,8 +237,8 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             $mapping_module = [
                 'root' => esc_url_raw( rest_url() ),
                 'endpoints' => DT_Mapping_Module::instance()->endpoints, // associative array of full urls
-                'spinner' => ' <img src="'. DT_Mapping_Module::instance()->module_url . 'spinner.svg" width="12px" />',
-                'spinner_large' => ' <img src="'. DT_Mapping_Module::instance()->module_url . 'spinner.svg" width="24px" />',
+                'spinner' => ' <img src="'. spinner() . '" width="12px" />',
+                'spinner_large' => ' <img src="'. spinner() . '" width="24px" />',
                 'mapping_source_url' => dt_get_mapping_polygon_mirror( true ),
                 'translations' => apply_filters( 'dt_mapping_module_translations', [] ),
                 'data' => apply_filters( 'dt_mapping_module_data', DT_Mapping_Module::instance()->default_map_data() ),
@@ -251,6 +275,12 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'method' => 'POST',
             ];
+            $endpoints['get_start_level_endpoint'] = [
+                'namespace' => $this->namespace,
+                'route' => '/mapping_module/get_start_level',
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'method' => 'POST',
+            ];
             // add another endpoint here
             return $endpoints;
         }
@@ -266,6 +296,13 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
             }
         }
+        public function get_start_level_endpoint( WP_REST_Request $request ) {
+            if ( ! $this->permissions ) {
+                return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
+            }
+
+            return self::localize_script();
+        }
         public function get_children( WP_REST_Request $request ) {
             if ( ! $this->permissions ) {
                 return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
@@ -273,8 +310,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
             $params = $request->get_params();
             if ( isset( $params['geonameid'] ) ) {
-                $result = $this->get_locations_list( $params['geonameid'] );
-                return $result;
+                return $this->map_level_by_geoname( $params['geonameid'] );
             } else {
                 return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
             }

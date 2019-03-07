@@ -284,6 +284,10 @@ else {
             /**
              * dt-locations
              */
+            require_once ( get_template_directory() . '/dt-locations/config-mapping-module.php' ); // configuration file for mapping module
+            DT_Mapping_Module_Config::instance();
+            require_once ( get_template_directory() . '/dt-locations/mapping-module/mapping.php' ); // load for mapping module
+
             require_once( get_template_directory() . '/dt-locations/locations-post-type.php' );
             $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
             require_once( get_template_directory() . '/dt-locations/locations-template.php' );

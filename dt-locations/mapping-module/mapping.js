@@ -621,7 +621,7 @@ function page_mapping_list() {
             <!--</div>-->
             <div class="cell auto">
                 <!-- Drill Down -->
-                <ul id="drill_down" style="list-style-type: none;">
+                <ul id="drill_down">
                     
                 </ul>
             </div>
@@ -648,6 +648,7 @@ function page_mapping_list() {
         <style>
             #drill_down {
                 margin-bottom: 0;
+                list-style-type: none;
             }
             #drill_down li {
                 display:inline;
