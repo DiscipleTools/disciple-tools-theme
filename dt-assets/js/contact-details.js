@@ -739,7 +739,7 @@ jQuery(document).ready(function($) {
           
           <div id="address-click-map"></div>
         <p>
-            <button class="button" data-open="contact-details-edit" onclick="window.SHAREDFUNCTIONS.getAddressInput()">Select</button>
+            <button class="button" data-open="contact-details-edit" onclick="window.getAddressInput()">Select</button>
             <button class="button" data-open="contact-details-edit">Cancel</button>
         </p>
     </div>
@@ -750,6 +750,16 @@ jQuery(document).ready(function($) {
       div.foundation('open')
 
   })
+
+  window.getAddressInput = function() {
+    let v = $('#validate_addressnew').val()
+    $('#edit-contact_address').append(`<li style="display: flex"><textarea class="contact-input" data-type="contact_address" dir="auto">${v}</textarea><button class="button clear delete-button" data-id="new"><img src="${wpApiShare.template_dir}/dt-assets/images/invalid.svg"></button></li>`)
+    console.log( editFieldsUpdate )
+    editFieldsUpdate['new'] = v
+
+    console.log( editFieldsUpdate )
+  }
+
 
   let idOfNextNewField = 1
   $('button#add-new-social-media').on('click', ()=>{
@@ -1064,6 +1074,7 @@ jQuery(document).ready(function($) {
         editFieldsUpdate[`contact_${channelType}`].values.push({value:val})
       }
     })
+      console.log(editFieldsUpdate)
     API.save_field_api( "contact", contactId, editFieldsUpdate).then((updatedContact)=>{
       contact = updatedContact
       $(this).toggleClass("loading")
