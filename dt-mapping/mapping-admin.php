@@ -614,13 +614,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                                     $mm = DT_Mapping_Module::instance();
                                     $sl = $mm->initial_map_level();
 
-                                    if ( isset( $sl['geonameid'] ) ) {
+                                    $name = '';
+                                    if ( isset( $sl['geonameid'] ) && is_numeric( $sl['geonameid'] ) ) {
                                         $location = $mm->query( 'get_location_by_geonameid', ['geonameid' => $sl['geonameid'] ] );
+                                        $name = $location['name'];
+                                    } else {
+                                        $name = $sl['geonameid'];
                                     }
 
-                                    if ( isset( $location['name'] ) ) {
-                                        echo $location['name'];
-                                    }
+                                    echo ucwords( $name );
                                 ?>
                             </td>
                             <td>
@@ -647,14 +649,27 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                             </td>
                             <td>
                                 <?php
-                                    $mirror = dt_get_mapping_polygon_mirror();
-                                    echo $mirror['label'] ?? '';
+
                                 ?>
                             </td>
                             <td>
-                                <a href="admin.php?page=dt_mapping_module&tab=polygons">Edit</a>
+                                <a href="admin.php?page=dt_mapping_module&tab=geocoding">Edit</a>
                             </td>
                         </tr>
+                        <tr>
+                            <td>
+                                Population
+                            </td>
+                            <td>
+                                <?php
+                                    echo get_option( 'dt_mapping_module_population' );;
+                                ?>
+                            </td>
+                            <td>
+                                <a href="admin.php?page=dt_mapping_module&tab=population">Edit</a>
+                            </td>
+                        </tr>
+
                     </tbody>
                 </table>
             <?php

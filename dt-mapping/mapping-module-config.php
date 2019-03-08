@@ -1,6 +1,6 @@
 <?php
 
-class DT_Mapping_Module_Example_Filters
+class DT_Mapping_Module_Config
 {
     private static $_instance = null;
     public static function instance() {

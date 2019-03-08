@@ -282,11 +282,13 @@ else {
             $this->endpoints['groups'] = Disciple_Tools_Groups_Endpoints::instance();
 
             /**
-             * dt-locations
+             * dt-mapping
              */
-            require_once ( get_template_directory() . '/dt-locations/config-mapping-module.php' ); // configuration file for mapping module
-            require_once ( get_template_directory() . '/dt-locations/mapping-module/mapping.php' ); // load for mapping module
+            require_once ( get_template_directory() . '/dt-mapping/mapping-module-config.php' ); // configuration file for mapping module
+            DT_Mapping_Module_Config::instance();
+            require_once ( get_template_directory() . '/dt-mapping/mapping.php' ); // load for mapping module
 
+            // dt-locations
             require_once( get_template_directory() . '/dt-locations/locations-post-type.php' );
             $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
             require_once( get_template_directory() . '/dt-locations/locations-template.php' );
