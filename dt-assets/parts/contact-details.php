@@ -463,16 +463,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Locations -->
-            <div class="grix-x">
-                <div class="section-subheader cell">
-                    <?php esc_html_e( 'Geonameid', 'disciple_tools' ) ?>
-                </div>
-                <div class="geonameid_section">
-                    <input class="" name="geonameid" placeholder="geonameid" value="6201192" />
-                </div>
-            </div>
         </div>
 
         <!-- Buttons -->

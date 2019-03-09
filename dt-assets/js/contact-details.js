@@ -756,6 +756,9 @@ jQuery(document).ready(function($) {
         }
     },
     geoname_drill_down( div, id ) { // geoname drill down loader
+
+        editFieldsUpdate['geonameid'] = id
+
         let drill_down = jQuery('#drill_down')
         jQuery.ajax({
             type: 'POST',
