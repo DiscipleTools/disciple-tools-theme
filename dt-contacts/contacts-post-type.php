@@ -542,6 +542,12 @@ class Disciple_Tools_Contact_Post_Type
             "name" => __( "Sub-assigned to", "disciple_tools" ),
             "type" => "connection"
         ];
+        $fields['geonameid'] = [
+            'name'        => __( 'Geonameid', 'disciple_tools' ),
+            'type'        => 'text',
+            'default'     => '',
+            'hidden'      => true
+        ];
 
         return $fields;
     }

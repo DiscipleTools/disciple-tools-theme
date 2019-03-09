@@ -662,11 +662,59 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                             </td>
                             <td>
                                 <?php
-                                    echo get_option( 'dt_mapping_module_population' );;
+                                    echo get_option( 'dt_mapping_module_population' );
                                 ?>
                             </td>
                             <td>
                                 <a href="admin.php?page=dt_mapping_module&tab=population">Edit</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Status
+                            </td>
+                            <td>
+                                <?php
+                                global $wpdb;
+                                    $results = $wpdb->get_results("
+                                                SELECT
+                                                  PCLI as geonameid,
+                                                  'PCLI'      as level,
+                                                  post_type,
+                                                  count(PCLI) as count
+                                                FROM {$wpdb->prefix}dt_geonames_reference
+                                                WHERE PCLI != ''
+                                                GROUP BY PCLI, post_type
+                                                UNION
+                                                SELECT
+                                                  ADM1 as geonameid,
+                                                  'ADM1'      as level,
+                                                  post_type,
+                                                  count(ADM1) as count
+                                                FROM {$wpdb->prefix}dt_geonames_reference
+                                                WHERE ADM1 != ''
+                                                GROUP BY ADM1, post_type
+                                                UNION
+                                                SELECT
+                                                  ADM2 as geonameid,
+                                                  'ADM2'      as level,
+                                                  post_type,
+                                                  count(ADM2) as count
+                                                FROM {$wpdb->prefix}dt_geonames_reference
+                                                WHERE ADM2 != ''
+                                                GROUP BY ADM2, post_type
+                                  ", ARRAY_A);
+
+                                if ( ! empty( $results ) ) {
+                                        foreach( $results as $result ) {
+                                            echo $result['geonameid'] . ' - ' . $result['level'] . ' - ' . $result['post_type'] . ' - ' . $result['count'] . '<br>';
+                                        }
+                                }
+
+                                ?>
+                            </td>
+                            <td>
+
                             </td>
                         </tr>
 

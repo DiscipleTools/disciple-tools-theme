@@ -4,6 +4,14 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
+    /**
+     * Set Global Database Variables
+     */
+    global $wpdb;
+    $wpdb->dt_geonames = 'dt_geonames';
+    $wpdb->dt_geonames_hierarchy = 'dt_geonames_hierarchy';
+    $wpdb->dt_geonames_reference = $wpdb->prefix . 'dt_geonames_reference';
+
     /*******************************************************************************************************************
      * MIGRATION ENGINE
      ******************************************************************************************************************/
@@ -30,7 +38,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
         }
     }
 
-    require_once('mapping-admin.php');
+
 
     /**
      * Class DT_Mapping_Module
@@ -72,6 +80,8 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 return;
             }
             /** END PERMISSION CHECK */
+
+            require_once('mapping-admin.php');
 
             /**
              * SET FILE LOCATIONS

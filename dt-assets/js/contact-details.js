@@ -711,49 +711,93 @@ jQuery(document).ready(function($) {
     changeYear: true
   })
 
-  // Clicking plus sign for new address
-  $('button#add-new-address').on('click', () => {
-      if ( ! $('#new-contact').length ) { /* check if already created */
-          $.ajax({
-              type: "POST",
-              contentType: "application/json; charset=utf-8",
-              url: contactsDetailsWpApiSettings.root  + 'dt/v1/mapping_module/get_start_level',
-              beforeSend: function(xhr) {
-                  xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce );
-              },
-          })
-              .done( function( response ) {
-                  console.log(response)
-                  let div = 'geoname-encode-contact'
+    /**
+     * Geocode Section
+     */
+    window.GEOCODEFUNCTIONS = {
+    loadInitialDropDown() {
+        if ( ! $('#new-contact').length ) { /* check if already created */
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: contactsDetailsWpApiSettings.root  + 'dt/v1/mapping_module/get_start_level',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce );
+                },
+            })
+                .done( function( response ) {
+                    console.log(response)
+                    let div = 'geoname-encode-contact'
 
-                  $('#drill_down').empty().append(`
+                    $('#drill_down').empty().append(`
                     <li>${response.data.start_level.self.name}</li>
-                    <li><select id="${response.data.start_level.self.geonameid}" onchange="window.SHAREDFUNCTIONS.geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();">
+                    <li><select id="${response.data.start_level.self.geonameid}" onchange="window.GEOCODEFUNCTIONS.geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();">
                     <option>Select</option></select>
                     </li>`)
 
-                  jQuery.each( response.data.start_level.children, function(i,v) {
-                      jQuery('#'+response.data.start_level.self.geonameid).append(`<option value="${v.id}">${v.name}</option>`)
-                  })
-              }) // end success statement
-              .fail(function (err) {
-                  console.log("error")
-                  console.log(err)
-              })
-      }
-  })
+                    jQuery.each( response.data.start_level.children, function(i,v) {
+                        jQuery('#'+response.data.start_level.self.geonameid).append(`<option value="${v.id}">${v.name}</option>`)
+                    })
+                }) // end success statement
+                .fail(function (err) {
+                    console.log("error")
+                    console.log(err)
+                })
+        }
+    },
+    getAddressInput() {
+        let v = $('#validate_addressnew').val()
+        if ( $('#new-contact').length ) { // check if edits have already been made in this session and load those instead.
+            $('#new-contact').replaceWith(`<textarea class="contact-input" id="new-contact" data-type="contact_address" dir="auto">${v}</textarea>`)
+            editFieldsUpdate['contact_address']['values'] = [{"key": undefined, "value": v }]
+        } else {
+            $('#edit-contact_address').append(`<li style="display: flex"><textarea class="contact-input" id="new-contact" data-type="contact_address" dir="auto">${v}</textarea><button class="button clear delete-button" data-id="new"><img src="${wpApiShare.template_dir}/dt-assets/images/invalid.svg"></button></li>`)
+            editFieldsUpdate['contact_address'] = {"values": [{"key": undefined, "value": v }]}
+        }
+    },
+    geoname_drill_down( div, id ) { // geoname drill down loader
+        let drill_down = jQuery('#drill_down')
+        jQuery.ajax({
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify( { 'geonameid': id } ),
+            dataType: "json",
+            url: contactsDetailsWpApiSettings.root  + 'dt/v1/mapping_module/map_level',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce );
+            },
+        })
+            .done( function( response ) {
+                console.log(response)
 
-  window.getAddressInput = function() {
-    let v = $('#validate_addressnew').val()
-      if ( $('#new-contact').length ) {
-          $('#new-contact').replaceWith(`<textarea class="contact-input" id="new-contact" data-type="contact_address" dir="auto">${v}</textarea>`)
-          editFieldsUpdate['contact_address']['values'] = [{"key": undefined, "value": v }]
-      } else {
-          $('#edit-contact_address').append(`<li style="display: flex"><textarea class="contact-input" id="new-contact" data-type="contact_address" dir="auto">${v}</textarea><button class="button clear delete-button" data-id="new"><img src="${wpApiShare.template_dir}/dt-assets/images/invalid.svg"></button></li>`)
-          editFieldsUpdate['contact_address'] = {"values": [{"key": undefined, "value": v }]}
-      }
+                if ( ! window.GEOCODEFUNCTIONS.isEmpty( response.children ) ) {
+                    drill_down.append(`<li><select id="${response.self.geonameid}" onchange="window.GEOCODEFUNCTIONS.geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
+                    let sorted_children =  _.sortBy(response.children, [function(o) { return o.name; }]);
+
+                    jQuery.each( sorted_children, function(i,v) {
+                        jQuery('#'+id).append(`<option value="${v.id}">${v.name}</option>`)
+                    })
+                }
+
+            }) // end success statement
+            .fail(function (err) {
+                console.log("error")
+                console.log(err)
+            })
+    },
+    isEmpty(obj) {
+        for(let key in obj) {
+            if(obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
+    }
   }
-
+  // Geocode Listeners
+    $('button#add-new-address').on('click', () => {
+        window.GEOCODEFUNCTIONS.loadInitialDropDown()
+    })
+  // End Geocode Section
 
   let idOfNextNewField = 1
   $('button#add-new-social-media').on('click', ()=>{
@@ -1051,7 +1095,7 @@ jQuery(document).ready(function($) {
   })
 
   /**
-   * Save contact details updates
+   * Save contact details
    */
   $('#save-edit-details').on('click', function () {
     $(this).toggleClass("loading")

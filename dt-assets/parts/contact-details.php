@@ -288,6 +288,7 @@
 
             </div>
 
+            <!-- Phone -->
             <div class="grid-x">
                 <div class="cell section-subheader">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/phone.svg' ?>">
@@ -302,6 +303,7 @@
                 </ul>
             </div>
 
+            <!-- Email -->
             <div class="grid-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/email.svg' ?>">
@@ -313,6 +315,7 @@
                 <ul id="edit-contact_email" class="cell"></ul>
             </div>
 
+            <!-- Address -->
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
@@ -325,6 +328,7 @@
                 <ul id="edit-contact_address" class="cell"></ul>
             </div>
 
+            <!-- Social Media -->
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
@@ -336,7 +340,7 @@
                 <ul id="edit-social" class="cell"></ul>
             </div>
 
-
+            <!-- Sources -->
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/source.svg' ?>">
@@ -371,6 +375,8 @@
                     </ul>
                 <?php endif; ?>
             </div>
+
+            <!-- Gender -->
             <div class="grid-x grid-margin-x">
                 <div class="cell small-6">
                     <div class="section-subheader cell">
@@ -391,6 +397,8 @@
                         ?>
                     </select>
                 </div>
+
+                <!-- Age -->
                 <div class="cell small-6">
                     <div class="section-subheader cell">
                         <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/contact-age.svg" ?>">
@@ -411,6 +419,8 @@
                     </select>
                 </div>
             </div>
+
+            <!-- People Groups -->
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
@@ -432,7 +442,7 @@
                 </div>
             </div>
 
-
+            <!-- Locations -->
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
@@ -453,7 +463,19 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Locations -->
+            <div class="grix-x">
+                <div class="section-subheader cell">
+                    <?php esc_html_e( 'Geonameid', 'disciple_tools' ) ?>
+                </div>
+                <div class="geonameid_section">
+                    <input class="" name="geonameid" placeholder="geonameid" value="6201192" />
+                </div>
+            </div>
         </div>
+
+        <!-- Buttons -->
         <div>
             <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
                 <?php esc_html_e( 'Cancel', 'disciple_tools' )?>
@@ -467,7 +489,7 @@
         </div>
     </div>
 
-    <!-- Add and Edit Address Modal -->
+    <!-- Address Reveal -->
     <div class="medium reveal geocode-address" id="geocode-address" data-reveal>
         <h1>Add Address</h1>
 
@@ -514,7 +536,7 @@
         <!-- map -->
         <div id="address-click-map"></div>
         <p>
-            <button class="button" data-open="contact-details-edit" onclick="window.getAddressInput()">Select</button>
+            <button class="button" data-open="contact-details-edit" onclick="window.GEOCODEFUNCTIONS.getAddressInput()">Select</button>
             <button class="button" data-open="contact-details-edit" data-close>Cancel</button>
         </p>
     </div>
