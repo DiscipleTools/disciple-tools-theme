@@ -20,24 +20,8 @@ class DT_Mapping_Module_Config
         add_filter( 'dt_mapping_module_has_permissions', [ $this, 'custom_permission_check' ] );
 
         /**
-         * dt_mapping_module_endpoints
-         * @see     mapping.php:77
-         */
-        add_filter( 'dt_mapping_module_endpoints', [ $this, 'add_custom_endpoints'], 10, 1 );
-
-        /**
-         * dt_mapping_module_url_base
-         * @see     mapping.php:102
-         */
-        add_filter( 'dt_mapping_module_url_base', [ $this, 'custom_url_base' ] );
-
-        /**
-         * dt_mapping_module_translations
-         * @see     mapping.php:119 125
-         */
-        add_filter( 'dt_mapping_module_translations', [ $this, 'custom_translations' ] );
-
-        /**
+         * Use this filter to add data to the starting map.
+         *
          * dt_mapping_module_data
          * @see     mapping.php:220
          * @see     mapping.php:292
@@ -45,10 +29,33 @@ class DT_Mapping_Module_Config
         add_filter( 'dt_mapping_module_data', [ $this, 'custom_data_filter'], 10, 1 );
 
         /**
+         * Use this filter to add data to sub levels by geoname
+         *
          * dt_mapping_module_map_level_by_geoname
          * @see     mapping.php:389
          */
         add_filter( 'dt_mapping_module_map_level_by_geoname', [ $this, 'map_level_by_gename_filter'], 10, 1 );
+
+        /**
+         * dt_mapping_module_url_base
+         * @see     mapping.php:102
+         */
+        add_filter( 'dt_mapping_module_url_base', [ $this, 'custom_url_base' ] );
+
+
+        /**
+         * dt_mapping_module_endpoints
+         * @see     mapping.php:77
+         */
+        add_filter( 'dt_mapping_module_endpoints', [ $this, 'add_custom_endpoints'], 10, 1 );
+
+
+
+        /**
+         * dt_mapping_module_translations
+         * @see     mapping.php:119 125
+         */
+        add_filter( 'dt_mapping_module_translations', [ $this, 'custom_translations' ] );
 
         /**
          * dt_mapping_module_custom_population_divisions
@@ -72,6 +79,61 @@ class DT_Mapping_Module_Config
         }
         return false;
     }
+
+    /**
+     * Populates the heat map
+     *
+     * @param $data
+     *
+     * @return array
+     */
+    public function custom_data_filter( $data ) {
+        /**
+         * Filter data here
+         */
+        $data['custom_column_labels'] = [
+            [
+                'key' => 'contacts',
+                'label' => 'Contacts'
+            ],
+            [
+                'key' => 'groups',
+                'label' => 'Groups'
+            ],
+            [
+                'key' => 'trainings',
+                'label' => 'Trainings'
+            ]
+        ];
+        $data['custom_column_data'] = [
+            2465027 => [
+                20,
+                10,
+                5
+            ],
+            2465837 => [30, 5, 1],
+            2464645 => [30, 5, 1],
+            2464698 => [35, 5, 1],
+            2464912 => [40, 5, 1],
+        ];
+        return $data;
+    }
+
+    /**
+     * Pre-processes map_level data before delivery
+     *
+     * @param $data
+     *
+     * @return mixed
+     */
+    public function map_level_by_gename_filter( $data ) {
+        /**
+         * Add filter here
+         */
+        return $data;
+    }
+
+
 
     /**
      * add_custom_endpoints
@@ -115,33 +177,7 @@ class DT_Mapping_Module_Config
         return $translations;
     }
 
-    /**
-     * Populates the heat map
-     *
-     * @param $data
-     *
-     * @return array
-     */
-    public function custom_data_filter( $data ) {
-        /**
-         * Filter data here
-         */
-        return $data;
-    }
 
-    /**
-     * Pre-processes map_level data before delivery
-     *
-     * @param $data
-     *
-     * @return mixed
-     */
-    public function map_level_by_gename_filter( $data ) {
-        /**
-         * Add filter here
-         */
-        return $data;
-    }
 
     public function custom_population_division( $data ) { // @todo move this to a admin tab for configuration
         /**********************************************************************************************************

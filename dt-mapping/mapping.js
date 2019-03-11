@@ -148,6 +148,7 @@ function top_level_map( div ) {
     jQuery.getJSON( mapUrl, function( data ) {
         // Set map definition
         let map_data = data
+        let custom_label = ''
 
         // prepare country/child data
         jQuery.each( map_data.features, function(i, v ) {
@@ -156,6 +157,22 @@ function top_level_map( div ) {
                 map_data.features[i].properties.population = start_level.children[v.id].population
                 map_data.features[i].properties.value = start_level.children[v.id].population
                 map_data.features[i].properties.fill = start_level.children[v.id].fill
+
+                if ( mapping_module.data.custom_column_data[i] ) {
+                    console.log('test')
+                    jQuery.each( mapping_module.data.custom_column_data[i], function(i,v) {
+                        custom_label = mapping_module.data.custom_column_labels[i]
+                        map_data.features[i].properties[custom_label] = v
+                    })
+
+                } else {
+                    console.log('test')
+                    jQuery.each( mapping_module.data.custom_column_data[i], function(i,v) {
+                        custom_label = mapping_module.data.custom_column_labels[i]
+                        map_data.features[i].properties[custom_label] = 0
+                    })
+                }
+
             }
         })
 
@@ -246,12 +263,25 @@ function geoname_map( div, geonameid ) {
 
                 // load geojson with additional parameters
                 let map_data = data
+                let custom_label = ''
                 jQuery.each( map_data.features, function(i, v ) {
                     if ( response.children[map_data.features[i].properties.geonameid] !== undefined ) {
 
                         map_data.features[i].properties.population = response.children[map_data.features[i].properties.geonameid].population
                         map_data.features[i].properties.value = response.children[map_data.features[i].properties.geonameid].population
                         map_data.features[i].properties.fill = response.children[map_data.features[i].properties.geonameid].fill
+
+                        // custom columns
+                        if ( mapping_module.data.custom_column_data[map_data.features[i].properties.geonameid] ) {
+                            console.log( 'found geonameid')
+                            jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
+                                map_data.features[i].properties[vv.key] = mapping_module.data.custom_column_data[map_data.features[i].properties.geonameid][ii]
+                            })
+                        } else {
+                            jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
+                                map_data.features[i].properties[vv.key] = 0
+                            })
+                        }
 
                     }
                 })
@@ -260,6 +290,7 @@ function geoname_map( div, geonameid ) {
                 let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
                 polygonSeries.geodata = map_data
                 polygonSeries.useGeodata = true;
+                console.log(map_data)
 
                 /* Heat map @see https://www.amcharts.com/demos/us-heat-map/ */
                 polygonSeries.heatRules.push({
@@ -270,17 +301,20 @@ function geoname_map( div, geonameid ) {
                 });
 
                 // Configure series tooltip
-                var template = polygonSeries.mapPolygons.template;
-                template.tooltipHTML = `<strong>{name}</strong><br>
+                let template = polygonSeries.mapPolygons.template;
+
+                // create tool tip
+                let toolTipContent = `<strong>{name}</strong><br>
                             ---------<br>
-                            population: {population}<br>
-                            workers: {workers}<br> 
-                            groups: {groups}<br> 
-                            contacts: {contacts}<br> 
+                            Population: {population}<br>
                             `;
+                jQuery.each( mapping_module.data.custom_column_labels, function(ii, vc) {
+                    toolTipContent += vc.label + ': {' + vc.key + '}<br>'
+                })
+                template.tooltipHTML = toolTipContent
 
                 // Create hover state and set alternative fill color
-                var hs = template.states.create("hover");
+                let hs = template.states.create("hover");
                 hs.properties.fill = am4core.color("#3c5bdc");
 
 
@@ -731,9 +765,11 @@ function top_level_location_list( div ) {
                     <div class="cell small-3">Population</div>`
 
         /* Additional Columns */
-        header += `<div class="cell small-3">Trainings</div>
-                    <div class="cell small-2">Churches</div>
-                    <div class="cell small-1">Map</div>`
+        if ( mapping_module.data.custom_column_labels ) {
+            jQuery.each( mapping_module.data.custom_column_labels, function(i,v) {
+                header += `<div class="cell small-3">${v}</div>`
+            })
+        }
         /* End Additional Columns */
 
     header += `</div>`
@@ -750,22 +786,17 @@ function top_level_location_list( div ) {
                         <div class="cell small-3">${population}</div>`
 
 
-            /* Additional columns with data @todo */
-            let training_count = parseInt( v.population / population_division )
-            let trainings =  numberWithCommas( training_count)
-            if ( training_count < 1 ) {
-                trainings = 1
-            }
-            let church_count = parseInt( v.population / population_division * 2 )
-            let churches = numberWithCommas( church_count )
-            if ( church_count < 2 ) {
-                churches = 2
-            }
-            html += `<div class="cell small-3">${trainings}</div>
-                     <div class="cell small-2">${churches}</div>
-                     <div class="cell small-1"><a target="_blank" href="https://www.google.com/maps/@${v.latitude},${v.longitude},5z"><i class="fi-web"></i></a></div>
-                    `
-            /* End addition columns */
+        /* Additional Columns */
+        if ( mapping_module.data.custom_column_data[i] ) {
+            jQuery.each( mapping_module.data.custom_column_data[i], function(i,v) {
+                html += `<div class="cell small-3">${v}</div>`
+            })
+        } else {
+            jQuery.each( mapping_module.data.custom_column_labels, function(i,v) {
+                html += `<div class="cell small-3"></div>`
+            })
+        }
+        /* End Additional Columns */
 
         html += `</div>`
         locations.append(html)
@@ -835,13 +866,16 @@ function geoname_list( div, geonameid ) {
                     <div class="cell small-3">Population</div>`
 
         /* Additional Columns */
-        header += `<div class="cell small-3">Trainings</div>
-                    <div class="cell small-2">Churches</div>
-                    <div class="cell small-1">Map</div>`
+        if ( mapping_module.data.custom_column_labels ) {
+            jQuery.each( mapping_module.data.custom_column_labels, function(i,v) {
+                header += `<div class="cell small-3">${v.label}</div>`
+            })
+        }
         /* End Additional Columns */
 
         header += `</div>`
         locations.empty().append( header )
+        // End Header Section
 
         // Children List Section
         let sorted_children =  _.sortBy(start_level.children, [function(o) { return o.name; }]);
@@ -852,23 +886,17 @@ function geoname_list( div, geonameid ) {
                         <div class="cell small-3"><strong>${v.name}</strong></div>
                         <div class="cell small-3">${population}</div>`
 
-
-            /* Additional columns with data @todo */
-            let training_count = parseInt( v.population / population_division )
-            let trainings =  numberWithCommas( training_count)
-            if ( training_count < 1 ) {
-                trainings = 1
+            /* Additional Columns */
+            if ( mapping_module.data.custom_column_data[v.geonameid] ) {
+                jQuery.each( mapping_module.data.custom_column_data[v.geonameid], function(ii,vv) {
+                    html += `<div class="cell small-3"><strong>${vv}</strong></div>`
+                })
+            } else {
+                jQuery.each( mapping_module.data.custom_column_labels, function(ii,vv) {
+                    html += `<div class="cell small-3 grey">0</div>`
+                })
             }
-            let church_count = parseInt( v.population / population_division * 2 )
-            let churches = numberWithCommas( church_count )
-            if ( church_count < 2 ) {
-                churches = 2
-            }
-            html += `<div class="cell small-3">${trainings}</div>
-                     <div class="cell small-2">${churches}</div>
-                     <div class="cell small-1"><a target="_blank" href="https://www.google.com/maps/@${v.latitude},${v.longitude},5z"><i class="fi-web"></i></a></div>
-                    `
-            /* End addition columns */
+            /* End Additional Columns */
 
             html += `</div>`
             locations.append(html)
