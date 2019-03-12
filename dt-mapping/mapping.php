@@ -201,10 +201,6 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                     [
                         'amcharts-core'
                     ], filemtime( $this->module_path . 'amcharts4/dist/script/maps.js' ), true );
-                wp_enqueue_script( 'amcharts-worldlow', $this->module_url . 'amcharts-geodata/dist/script/worldlow.js',
-                    [
-                        'amcharts-core'
-                    ], filemtime( $this->module_path . 'geodata/dist/script/worldlow.js' ), true );
                 wp_enqueue_script( 'amcharts-animated', $this->module_url . 'amcharts/dist/script/themes/animated.js',
                     [
                         'amcharts-core'
@@ -217,10 +213,11 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', false, '4' );
                 wp_register_script( 'amcharts-maps', 'https://www.amcharts.com/lib/4/maps.js', false, '4' );
 
-                wp_register_style( 'datatable-css', '//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css', false, '1.10' );
-                wp_enqueue_style( 'datatable-css' );
-                wp_register_script( 'datatable', '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', false, '1.10' );
             }
+
+            wp_register_style( 'datatable-css', '//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css' );
+            wp_enqueue_style( 'datatable-css' );
+            wp_register_script( 'datatable', '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', false, '1.10' );
 
             wp_enqueue_script( 'dt_mapping_module_script', $this->module_url . 'mapping.js', [
                 'jquery',
@@ -998,6 +995,38 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                             SELECT *
                             FROM dt_geonames
                             WHERE geonameid = 6295630
+                        ", ARRAY_A );
+
+                    break;
+
+                case 'get_geoname_totals':
+                    $results = $wpdb->get_results("
+                            SELECT
+                              PCLI as geonameid,
+                              'PCLI'      as level,
+                              post_type,
+                              count(PCLI) as count
+                            FROM {$wpdb->prefix}dt_geonames_reference
+                            WHERE PCLI != ''
+                            GROUP BY PCLI, post_type
+                            UNION
+                            SELECT
+                              ADM1 as geonameid,
+                              'ADM1'      as level,
+                              post_type,
+                              count(ADM1) as count
+                            FROM {$wpdb->prefix}dt_geonames_reference
+                            WHERE ADM1 != ''
+                            GROUP BY ADM1, post_type
+                            UNION
+                            SELECT
+                              ADM2 as geonameid,
+                              'ADM2'      as level,
+                              post_type,
+                              count(ADM2) as count
+                            FROM {$wpdb->prefix}dt_geonames_reference
+                            WHERE ADM2 != ''
+                            GROUP BY ADM2, post_type
                         ", ARRAY_A );
 
                     break;

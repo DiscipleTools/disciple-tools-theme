@@ -91,31 +91,46 @@ class DT_Mapping_Module_Config
         /**
          * Filter data here
          */
-        $data['custom_column_labels'] = [
-            [
-                'key' => 'contacts',
-                'label' => 'Contacts'
-            ],
-            [
-                'key' => 'groups',
-                'label' => 'Groups'
-            ],
-            [
-                'key' => 'trainings',
-                'label' => 'Trainings'
-            ]
-        ];
-        $data['custom_column_data'] = [
-            2465027 => [
-                20,
-                10,
-                5
-            ],
-            2465837 => [30, 5, 1],
-            2464645 => [30, 5, 1],
-            2464698 => [35, 5, 1],
-            2464912 => [40, 5, 1],
-        ];
+
+        global $wpdb;
+        $results = DT_Mapping_Module::instance()->query( 'get_geoname_totals' );
+
+        if ( ! empty( $results ) ) {
+            $data['custom_column_labels'] = [
+                [
+                    'key' => 'contacts',
+                    'label' => 'Contacts'
+                ],
+                [
+                    'key' => 'groups',
+                    'label' => 'Groups'
+                ]
+            ];
+
+            $data['custom_column_data'] = [];
+
+            foreach( $results as $result ) {
+                if ( ! isset( $data['custom_column_data'][$result['geonameid']] ) ) {
+                    $data['custom_column_data'][$result['geonameid']] = [];
+                    $data['custom_column_data'][$result['geonameid']][0] = '0';
+                    $data['custom_column_data'][$result['geonameid']][1] = '0';
+                }
+
+                if ( $result['post_type'] === 'contacts' ) {
+                    $index = 0;
+                    $value = (string) $result['count'] ?? '0';
+                } else {
+                    $index = 1;
+                    $value = (string) $result['count'] ?? '0';
+                }
+
+                $data['custom_column_data'][$result['geonameid']][$index] = $value;
+            }
+
+        }
+
+//        dt_write_log( $data['custom_column_data'] );
+
         return $data;
     }
 

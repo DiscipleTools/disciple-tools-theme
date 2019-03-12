@@ -24,28 +24,32 @@ class DT_Mapping_Module_Migration_0005 extends DT_Mapping_Module_Migration {
                 WHEN g.feature_code = 'ADM2' THEN (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = g.geonameid LIMIT 1) LIMIT 1)
                 WHEN g.feature_code = 'ADM3' THEN (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = g.geonameid LIMIT 1) LIMIT 1) LIMIT 1)
                 ELSE 'Unknown'
-            END as PCLI,
+            END as pcli,
+            ( SELECT dt_geonames.name FROM dt_geonames WHERE geonameid = pcli ) as pcli_name,
             CASE
-                WHEN g.feature_code = 'PCLI' THEN ''
+                WHEN g.feature_code = 'PCLI' THEN NULL
                 WHEN g.feature_code = 'ADM1' THEN g.geonameid
                 WHEN g.feature_code = 'ADM2' THEN (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = g.geonameid LIMIT 1)
                 WHEN g.feature_code = 'ADM3' THEN (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = g.geonameid LIMIT 1) LIMIT 1)
                 ELSE 'Unknown'
-            END as ADM1,
+            END as adm1,
+            ( SELECT dt_geonames.name FROM dt_geonames WHERE geonameid = adm1 ) as adm1_name,
             CASE
-                WHEN g.feature_code = 'PCLI' THEN ''
-                WHEN g.feature_code = 'ADM1' THEN ''
+                WHEN g.feature_code = 'PCLI' THEN NULL
+                WHEN g.feature_code = 'ADM1' THEN NULL
                 WHEN g.feature_code = 'ADM2' THEN g.geonameid
                 WHEN g.feature_code = 'ADM3' THEN (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = g.geonameid LIMIT 1)
                 ELSE 'Unknown'
-            END as ADM2,
+            END as adm2,
+            ( SELECT dt_geonames.name FROM dt_geonames WHERE geonameid = adm2 ) as adm2_name,
             CASE
-                WHEN g.feature_code = 'PCLI' THEN ''
-                WHEN g.feature_code = 'ADM1' THEN ''
-                WHEN g.feature_code = 'ADM2' THEN ''
+                WHEN g.feature_code = 'PCLI' THEN NULL
+                WHEN g.feature_code = 'ADM1' THEN NULL
+                WHEN g.feature_code = 'ADM2' THEN NULL
                 WHEN g.feature_code = 'ADM3' THEN g.geonameid
                 ELSE 'Unknown'
-            END as ADM3,
+            END as adm3,
+            ( SELECT dt_geonames.name FROM dt_geonames WHERE geonameid = adm3 ) as adm3_name,
             p.meta_value as geonameid, 
             g.name,
             g.feature_code,

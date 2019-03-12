@@ -24,17 +24,24 @@ function page_mapping_view() {
     chartDiv.empty().html(`
         
         <div class="grid-x grid-margin-y">
-            <div class="cell medium-4">
+            <div class="cell auto">
+                <!-- Drill Down -->
+                <ul id="drill_down">
+                    
+                </ul>
                 <!-- Breadcrumbs -->
-                <div id="breadcrumbs">
-                    <span id="world"><a onclick="map_chart( 'locations-home', false ) ">World</a></span>
-                </div>
+                <!--<div id="breadcrumbs">-->
+                    <!--<span id="world"><a onclick="map_chart( 'locations-home', false ) ">World</a></span>-->
+                <!--</div>-->
             </div>
-            <div class="cell center medium-4"><h3 id="section-title"></h3></div>
-            <div class="cell medium-4">
-                <!-- Dropdown -->
-                <span id="dropdown-box-container" class="ui-widget" style="float:right;margin-right:30px;"></span>
+            <div class="cell medium-4" style="text-align:right;">
+               <strong id="section-title" style="font-size:2em;"></strong><br>
+                <span id="current_level"></span>
             </div>
+            <!--<div class="cell medium-4">-->
+                <!--&lt;!&ndash; Dropdown &ndash;&gt;-->
+                <!--<span id="dropdown-box-container" class="ui-widget" style="float:right;margin-right:30px;"></span>-->
+            <!--</div>-->
         </div>
         
         
@@ -45,22 +52,32 @@ function page_mapping_view() {
        
        <!-- Map -->
        <div class="grid-x grid-margin-x">
-            <div class="cell medium-10">
+            <div class="cell">
+                <div id="minimap" style="position:absolute;z-index:1001;float:right;width:200px; margin-top: 543px;"></div>
                 <div id="locations-home" style="width: 100%;max-height: 700px;height: 100vh;vertical-align: text-top;"></div>
             </div>
-            <div class="cell medium-2 left-border-grey">
-                <div class="grid-y">
-                    
-                    <div class="cell" style="overflow-y: scroll; height:700px;" id="child-list-container">
-                        <ul class="accordion" data-accordion id="child-list">
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <!--<div class="cell medium-2 left-border-grey">-->
+                <!--<div class="grid-y">-->
+                    <!---->
+                    <!--<div class="cell" style="overflow-y: scroll; height:700px;" id="child-list-container">-->
+                        <!--<ul class="accordion" data-accordion id="child-list">-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
         
         <hr style="max-width:100%;">
-        <div class="cell" id="minimap" style="width:200px;"></div>
+        <div id="page-header" style="float:left;">
+            <strong id="section-title" style="font-size:1.5em;"></strong><br>
+            <span id="current_level"></span>
+        </div>
+        
+        <div id="location_list"></div>
+        
+        <hr style="max-width:100%;">
+        
+        
         
         <span style="float:right;font-size:.8em;"><a onclick="map_chart( 'locations-home' )" >return to world view</a></span>
         
@@ -82,10 +99,33 @@ function page_mapping_view() {
             margin: 0;
             padding:5px 10px;
           }
+          
+          #page-header {
+                position:absolute;
+            }
+            @media screen and (max-width : 640px){
+                #page-header {
+                    position:relative;
+                    text-align: center;
+                    width: 100%;
+                }
+            }
+            #drill_down {
+                margin-bottom: 0;
+                list-style-type: none;
+            }
+            #drill_down li {
+                display:inline;
+                padding: 0 10px;
+            }
+            #drill_down li select {
+                width:150px;
+            }
           </style>
         `);
 
     map_chart( 'locations-home' )
+    load_drill_down( 'drill_down' )
 }
 
 function map_chart( div, geonameid ) {
@@ -166,7 +206,6 @@ function top_level_map( div ) {
                     })
 
                 } else {
-                    console.log('test')
                     jQuery.each( mapping_module.data.custom_column_data[i], function(i,v) {
                         custom_label = mapping_module.data.custom_column_labels[i]
                         map_data.features[i].properties[custom_label] = 0
@@ -223,7 +262,7 @@ function top_level_map( div ) {
             mini_map( 'minimap', start_level.self.name, start_level.self.latitude, start_level.self.longitude )
         }
 
-        child_list( div, start_level.children, start_level.deeper_levels )
+        // child_list( div, start_level.children, start_level.deeper_levels )
 
     }) // end success statement
         .fail(function (err) {
@@ -647,12 +686,6 @@ function page_mapping_list() {
     let chartDiv = jQuery('#chart')
     chartDiv.empty().html(`
         <div class="grid-x grid-margin-x">
-            <!--<div class="cell medium-4">-->
-                <!--&lt;!&ndash; Breadcrumbs &ndash;&gt;-->
-                <!--<div id="breadcrumbs">-->
-                    <!--<span id="world"><a onclick="location_list( 'location_list', false ) ">World</a></span>-->
-                <!--</div>-->
-            <!--</div>-->
             <div class="cell auto">
                 <!-- Drill Down -->
                 <ul id="drill_down">
@@ -666,12 +699,9 @@ function page_mapping_list() {
         
         <hr style="max-width:100%;">
         
-        <div class="grid-x grid-margin-y">
-            <div class="cell center">
-                <!-- Title -->
-                <strong id="section-title" style="font-size:1.5em;"></strong><br>
-                <span id="current_level"></span>
-            </div>
+        <div id="page-header" style="float:left;">
+            <strong id="section-title" style="font-size:1.5em;"></strong><br>
+            <span id="current_level"></span>
         </div>
         
         <div id="location_list"></div>
@@ -679,7 +709,17 @@ function page_mapping_list() {
         <hr style="max-width:100%;">
         
         <br>
-        <style>
+        <style> /* @todo move these definitions to site style sheet. */
+            #page-header {
+                position:absolute;
+            }
+            @media screen and (max-width : 640px){
+                #page-header {
+                    position:relative;
+                    text-align: center;
+                    width: 100%;
+                }
+            }
             #drill_down {
                 margin-bottom: 0;
                 list-style-type: none;
@@ -788,11 +828,11 @@ function top_level_location_list( div ) {
 
         /* Additional Columns */
         if ( mapping_module.data.custom_column_data[i] ) {
-            jQuery.each( mapping_module.data.custom_column_data[i], function(i,v) {
+            jQuery.each( mapping_module.data.custom_column_data[i], function(ii,v) {
                 html += `<div class="cell small-3">${v}</div>`
             })
         } else {
-            jQuery.each( mapping_module.data.custom_column_labels, function(i,v) {
+            jQuery.each( mapping_module.data.custom_column_labels, function(ii,v) {
                 html += `<div class="cell small-3"></div>`
             })
         }
@@ -860,47 +900,56 @@ function geoname_list( div, geonameid ) {
         let locations = jQuery('#location_list')
         locations.empty()
 
+        let html = `<table id="country-list-table" class="display">`
+
         // Header Section
-        let header = `<div class="grid-x grid-padding-x grid-padding-y" style="border-bottom:1px solid grey">
-                    <div class="cell small-3">Name</div>
-                    <div class="cell small-3">Population</div>`
+        html += `<thead><tr><th>Name</th><th>Population</th>`
 
         /* Additional Columns */
         if ( mapping_module.data.custom_column_labels ) {
             jQuery.each( mapping_module.data.custom_column_labels, function(i,v) {
-                header += `<div class="cell small-3">${v.label}</div>`
+                html += `<th>${v.label}</th>`
             })
         }
         /* End Additional Columns */
 
-        header += `</div>`
-        locations.empty().append( header )
+        html += `</tr></thead>`
         // End Header Section
 
         // Children List Section
         let sorted_children =  _.sortBy(start_level.children, [function(o) { return o.name; }]);
 
+        html += `<tbody>`
         jQuery.each( sorted_children, function(i, v) {
             let population = numberWithCommas( v.population )
-            let html = `<div class="grid-x grid-padding-x grid-padding-y">
-                        <div class="cell small-3"><strong>${v.name}</strong></div>
-                        <div class="cell small-3">${population}</div>`
+            html += `<tr>
+                        <td><strong>${v.name}</strong></td>
+                        <td>${population}</td>`
 
             /* Additional Columns */
             if ( mapping_module.data.custom_column_data[v.geonameid] ) {
                 jQuery.each( mapping_module.data.custom_column_data[v.geonameid], function(ii,vv) {
-                    html += `<div class="cell small-3"><strong>${vv}</strong></div>`
+                    html += `<td><strong>${vv}</strong></td>`
                 })
             } else {
                 jQuery.each( mapping_module.data.custom_column_labels, function(ii,vv) {
-                    html += `<div class="cell small-3 grey">0</div>`
+                    html += `<td class="grey">0</td>`
                 })
             }
             /* End Additional Columns */
 
-            html += `</div>`
-            locations.append(html)
+            html += `</tr>`
+
         })
+        html += `</tbody>`
+        // end Child section
+
+        html += `</table>`
+        locations.append(html)
+
+        jQuery('#country-list-table').DataTable({
+            "paging":   false
+        });
 
        hide_spinner()
     }
