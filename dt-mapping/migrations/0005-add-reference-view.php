@@ -24,24 +24,21 @@ class DT_Mapping_Module_Migration_0005 extends DT_Mapping_Module_Migration {
                 WHEN g.feature_code = 'ADM2' THEN (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = g.geonameid LIMIT 1) LIMIT 1)
                 WHEN g.feature_code = 'ADM3' THEN (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = g.geonameid LIMIT 1) LIMIT 1) LIMIT 1)
                 ELSE 'Unknown'
-            END as pcli,
-            ( SELECT dt_geonames.name FROM dt_geonames WHERE geonameid = pcli ) as pcli_name,
+            END as pcli,           
             CASE
                 WHEN g.feature_code = 'PCLI' THEN NULL
                 WHEN g.feature_code = 'ADM1' THEN g.geonameid
                 WHEN g.feature_code = 'ADM2' THEN (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = g.geonameid LIMIT 1)
                 WHEN g.feature_code = 'ADM3' THEN (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = g.geonameid LIMIT 1) LIMIT 1)
                 ELSE 'Unknown'
-            END as adm1,
-            ( SELECT dt_geonames.name FROM dt_geonames WHERE geonameid = adm1 ) as adm1_name,
+            END as adm1,           
             CASE
                 WHEN g.feature_code = 'PCLI' THEN NULL
                 WHEN g.feature_code = 'ADM1' THEN NULL
                 WHEN g.feature_code = 'ADM2' THEN g.geonameid
                 WHEN g.feature_code = 'ADM3' THEN (SELECT parent_id FROM dt_geonames_hierarchy WHERE id = g.geonameid LIMIT 1)
                 ELSE 'Unknown'
-            END as adm2,
-            ( SELECT dt_geonames.name FROM dt_geonames WHERE geonameid = adm2 ) as adm2_name,
+            END as adm2,       
             CASE
                 WHEN g.feature_code = 'PCLI' THEN NULL
                 WHEN g.feature_code = 'ADM1' THEN NULL
@@ -49,6 +46,9 @@ class DT_Mapping_Module_Migration_0005 extends DT_Mapping_Module_Migration {
                 WHEN g.feature_code = 'ADM3' THEN g.geonameid
                 ELSE 'Unknown'
             END as adm3,
+            ( SELECT dt_geonames.name FROM dt_geonames WHERE geonameid = pcli ) as pcli_name,
+            ( SELECT dt_geonames.name FROM dt_geonames WHERE geonameid = adm1 ) as adm1_name,
+            ( SELECT dt_geonames.name FROM dt_geonames WHERE geonameid = adm2 ) as adm2_name,
             ( SELECT dt_geonames.name FROM dt_geonames WHERE geonameid = adm3 ) as adm3_name,
             p.meta_value as geonameid, 
             g.name,
@@ -66,7 +66,7 @@ class DT_Mapping_Module_Migration_0005 extends DT_Mapping_Module_Migration {
             LEFT JOIN {$wpdb->prefix}postmeta as gd ON gd.post_id=p.post_id AND gd.meta_key = 'start_date'
             LEFT JOIN {$wpdb->prefix}postmeta as ge ON ge.post_id=p.post_id AND ge.meta_key = 'end_date'
             LEFT JOIN {$wpdb->prefix}postmeta as ce ON ce.post_id=p.post_id AND ce.meta_key = 'last_modified' AND cs.meta_value = 'closed'
-            WHERE p.meta_key = 'geonameid'  
+            WHERE p.meta_key = 'geonameid'   
         ");
 
         $this->test();
