@@ -22,13 +22,28 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
         <div class="title-bar-title"><?php esc_html_e( "Disciple Tools" ); ?></div>
     </div>
     <div class="title-bar-right">
+
+      <ul class="dropdown menu" data-dropdown-menu style="display:inline-block;">
+      <li class="has-submenu center-items" style="width:21px;">
+          <button>
+              <img title="<?php esc_html_e( "Add New", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/circle-add.svg" ?>" style="width:21px;">
+          </button>
+          <ul class="submenu menu vertical">
+              <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'contacts/new'; ?>"><?php esc_html_e( 'New Contact', 'disciple_tools' )?></a></li>
+              <li><a href="<?php echo esc_url( site_url( '/' ) ) . 'groups/new'; ?>"><?php esc_html_e( 'New Group', 'disciple_tools' )?></a></li>
+          </ul>
+      </li>
+      </ul>
+
         <a href="<?php echo esc_url( site_url( '/notifications' ) ); ?>">
             <img title="<?php esc_html_e( "Notifications", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/bell.svg" ?>">
             <span class="badge alert notification-count" style="display:none"></span>
         </a>
+
         <a href="<?php echo esc_url( site_url( '/' ) ) . 'settings/'; ?>">
             <img title="<?php esc_html_e( "Settings", "disciple_tools" ); ?>" src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/gear.svg" ?>">
         </a>
+
     </div>
 </div>
 
@@ -91,4 +106,3 @@ if ( is_multisite() && 'wp-activate.php' === $pagenow ) {
         </div>
     </div>
 </div>
-
