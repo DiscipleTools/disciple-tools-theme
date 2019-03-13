@@ -231,19 +231,53 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             );
         }
 
+        /**
+         * Script Module
+         *
+         * @note    This is added to scripts, but can also be added to other localization scripts in the system via
+         *          'mapping_module' => DT_Mapping_Module::instance()->localize_script,
+         * @note    data, settings, and translations can be modified by the filters.
+         * @return array
+         */
         public static function localize_script() {
             $mapping_module = [
                 'data' => apply_filters( 'dt_mapping_module_data', DT_Mapping_Module::instance()->data() ),
                 'settings' => apply_filters( 'dt_mapping_module_settings', DT_Mapping_Module::instance()->settings() ),
                 'translations' => apply_filters( 'dt_mapping_module_translations', DT_Mapping_Module::instance()->translations() ),
-
-                'root' => esc_url_raw( rest_url() ),
-                'endpoints' => DT_Mapping_Module::instance()->endpoints, // associative array of full urls
-                'spinner' => ' <img src="'. spinner() . '" width="12px" />',
-                'spinner_large' => ' <img src="'. spinner() . '" width="24px" />',
-                'mapping_source_url' => dt_get_mapping_polygon_mirror( true ),
             ];
             return $mapping_module;
+        }
+        public function data() {
+            $data = [];
+
+            $data['top_map_list'] = $this->top_map_list();
+            $data['map_data'] = $this->get_default_map_data();
+            $data['custom_column_labels'] = [];
+            $data['custom_column_data'] = [];
+
+            $data['top_level_maps'] = $this->top_level_maps(); // @todo needed?
+
+            return $data;
+        }
+        public function settings() {
+            $settings = [];
+
+            $settings['root'] = esc_url_raw( rest_url() );
+            $settings['endpoints'] = DT_Mapping_Module::instance()->endpoints;
+            $settings['mapping_source_url'] = dt_get_mapping_polygon_mirror( true );
+            $settings['population_division'] = $this->get_population_division();
+            $settings['default_map_settings'] = $this->default_map_settings();
+            $settings['spinner'] = ' <img src="'. spinner() . '" width="12px" />';
+            $settings['spinner_large'] = ' <img src="'. spinner() . '" width="24px" />';
+
+            return $settings;
+        }
+        public function translations( ) {
+            $translations = [];
+
+            $translations['title'] = __( "Mapping", "dt_mapping_module" );
+
+            return $translations;
         }
 
         /**
@@ -332,42 +366,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
          *
          * @return array
          */
-        public function data() {
-            $data = [];
 
-            $data['top_map_list'] = $this->top_map_list();
-            $data['map_data'] = $this->get_default_map_data();
-            $data['custom_column_labels'] = [];
-            $data['custom_column_data'] = [];
-
-
-            $data['default_map_settings'] = $this->default_map_settings();
-            $data['population_division'] = $this->get_population_division();
-            $data['top_level_maps'] = $this->top_level_maps();
-
-            return $data;
-        }
-        public function settings() {
-            $settings = [];
-
-            $settings['root'] = esc_url_raw( rest_url() );
-            $settings['endpoints'] = DT_Mapping_Module::instance()->endpoints;
-            $settings['mapping_source_url'] = dt_get_mapping_polygon_mirror( true );
-            $settings['population_division'] = $this->get_population_division();
-            $settings['default_map_settings'] = $this->default_map_settings();
-            $settings['spinner'] = ' <img src="'. spinner() . '" width="12px" />';
-            $settings['spinner_large'] = ' <img src="'. spinner() . '" width="24px" />';
-
-            return $settings;
-        }
-        public function translations( ) {
-            $translations = [];
-
-            $translations['title'] = __( "Mapping", "dt_mapping_module" );
-            /* Add translations here */
-
-            return $translations;
-        }
         public function get_default_map_data( ) {
 
             $results = [ // set array defaults

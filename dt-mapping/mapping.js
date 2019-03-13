@@ -130,7 +130,7 @@ function page_mapping_view() {
 
 function map_chart( div, geonameid ) {
     let mapping_module = mappingModule.mapping_module
-    let default_map_settings = mapping_module.data.default_map_settings
+    let default_map_settings = mapping_module.settings.default_map_settings
 
     /*******************************************************************************************************************
      *
@@ -169,7 +169,7 @@ function top_level_map( div ) {
     chart.projection = new am4maps.projections.Miller(); // Set projection
 
     let mapping_module = mappingModule.mapping_module
-    let default_map_settings = mapping_module.data.default_map_settings
+    let default_map_settings = mapping_module.settings.default_map_settings
     let map_data = mapping_module.data.map_data
 
     // set title
@@ -181,7 +181,7 @@ function top_level_map( div ) {
     if ( mapping_module.data.map_data.self.unique_source_url /* This is available only for top level */ ) {
         mapUrl = mapping_module.data.map_data.self.url
     } else {
-        mapUrl = mapping_module.mapping_source_url + 'top_level_maps/world.geojson'
+        mapUrl = mapping_module.settings.mapping_source_url + 'top_level_maps/world.geojson'
     }
 
     // get geojson
@@ -273,9 +273,9 @@ function geoname_map( div, geonameid ) {
     am4core.useTheme(am4themes_animated);
 
     let chart = am4core.create( div, am4maps.MapChart);
-    // let default_map_settings = mapping_module.data.default_map_settings
+    // let default_map_settings = mapping_module.settings.default_map_settings
     let title = jQuery('#section-title')
-    let rest = mapping_module.endpoints.get_map_by_geonameid_endpoint
+    let rest = mapping_module.settings.endpoints.get_map_by_geonameid_endpoint
 
     chart.projection = new am4maps.projections.Miller(); // Set projection
 
@@ -285,7 +285,7 @@ function geoname_map( div, geonameid ) {
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify( { 'geonameid': geonameid } ),
         dataType: "json",
-        url: mapping_module.root + rest.namespace + rest.route,
+        url: mapping_module.settings.root + rest.namespace + rest.route,
         beforeSend: function(xhr) {
             xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
         },
@@ -295,7 +295,7 @@ function geoname_map( div, geonameid ) {
             title.html(response.self.name)
             console.log(response)
 
-            jQuery.getJSON( mapping_module.mapping_source_url + 'maps/' + geonameid+'.geojson', function( data ) { // get geojson data
+            jQuery.getJSON( mapping_module.settings.mapping_source_url + 'maps/' + geonameid+'.geojson', function( data ) { // get geojson data
 
                 // load geojson with additional parameters
                 let mapData = data
@@ -583,7 +583,7 @@ function numberWithCommas(x) {
 function mini_map( div, name, lat, lng ) {
     let mapping_module = mappingModule.mapping_module
 
-    jQuery.getJSON( mapping_module.mapping_source_url + 'top_level_maps/world.geojson', function( data ) {
+    jQuery.getJSON( mapping_module.settings.mapping_source_url + 'top_level_maps/world.geojson', function( data ) {
         am4core.useTheme(am4themes_animated);
 
         var chart = am4core.create( div, am4maps.MapChart);
@@ -687,7 +687,7 @@ function page_mapping_list() {
                 </ul>
             </div>
             <div class="cell small-1">
-                <span id="spinner" style="display:none;" class="float-right">${mapping_module.spinner_large}</span>
+                <span id="spinner" style="display:none;" class="float-right">${mapping_module.settings.spinner_large}</span>
             </div>
         </div>
         
@@ -732,7 +732,7 @@ function page_mapping_list() {
 
 function location_list( div, geonameid ) {
     let mapping_module = mappingModule.mapping_module
-    let default_map_settings = mapping_module.data.default_map_settings
+    let default_map_settings = mapping_module.settings.default_map_settings
 
     /*******************************************************************************************************************
      *
@@ -774,7 +774,7 @@ function top_level_location_list( div ) {
     title.empty().html(map_data.self.name)
 
     // Population Division and Check for Custom Division
-    let pd_settings = mapping_module.data.population_division
+    let pd_settings = mapping_module.settings.population_division
     let population_division = pd_settings.base
     if ( ! isEmpty( pd_settings.custom ) ) {
         jQuery.each( pd_settings.custom, function(i,v) {
@@ -843,14 +843,14 @@ function geoname_list( div, geonameid ) {
     let mapping_module = mappingModule.mapping_module
     show_spinner()
     if ( mapping_module.data[geonameid] === undefined ) {
-        let rest = mapping_module.endpoints.get_map_by_geonameid_endpoint
+        let rest = mapping_module.settings.endpoints.get_map_by_geonameid_endpoint
 
         jQuery.ajax({
             type: rest.method,
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify( { 'geonameid': geonameid } ),
             dataType: "json",
-            url: mapping_module.root + rest.namespace + rest.route,
+            url: mapping_module.settings.root + rest.namespace + rest.route,
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
             },
@@ -876,7 +876,7 @@ function geoname_list( div, geonameid ) {
         title.empty().html(map_data.self.name)
 
         // Population Division and Check for Custom Division
-        let pd_settings = mapping_module.data.population_division
+        let pd_settings = mapping_module.settings.population_division
         let population_division = pd_settings.base
         if ( ! isEmpty( pd_settings.custom ) ) {
             jQuery.each( pd_settings.custom, function(i,v) {
@@ -951,7 +951,7 @@ function geoname_list( div, geonameid ) {
 
 function load_drill_down( div, geonameid ) {
     let mapping_module = mappingModule.mapping_module
-    let default_map_settings = mapping_module.data.default_map_settings
+    let default_map_settings = mapping_module.settings.default_map_settings
 
     /*******************************************************************************************************************
      *
@@ -998,7 +998,7 @@ function top_level_drill_down( div ) {
 function geoname_drill_down( div, id ) {
     let mapping_module = mappingModule.mapping_module
     show_spinner()
-    let rest = mapping_module.endpoints.get_map_by_geonameid_endpoint
+    let rest = mapping_module.settings.endpoints.get_map_by_geonameid_endpoint
 
     let drill_down = jQuery('#'+div)
 
@@ -1007,7 +1007,7 @@ function geoname_drill_down( div, id ) {
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify( { 'geonameid': id } ),
         dataType: "json",
-        url: mapping_module.root + rest.namespace + rest.route,
+        url: mapping_module.settings.root + rest.namespace + rest.route,
         beforeSend: function(xhr) {
             xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
         },
