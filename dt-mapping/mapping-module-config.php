@@ -12,7 +12,6 @@ class DT_Mapping_Module_Config
 
     public function __construct()
     {
-
         /**
          * dt_mapping_module_has_permissions
          * @see    mapping.php:56
@@ -20,21 +19,23 @@ class DT_Mapping_Module_Config
         add_filter( 'dt_mapping_module_has_permissions', [ $this, 'custom_permission_check' ] );
 
         /**
-         * Use this filter to add data to the starting map.
-         *
-         * dt_mapping_module_data
-         * @see     mapping.php:220
-         * @see     mapping.php:292
+         * dt_mapping_module_translations
+         * @see     mapping.php:119 125
          */
-        add_filter( 'dt_mapping_module_data', [ $this, 'custom_data_filter'], 10, 1 );
+        add_filter( 'dt_mapping_module_translations', [ $this, 'custom_translations_filter' ] );
+
+        /**
+         * dt_mapping_module_settings
+         * @see     mapping.php:241
+         */
+        add_filter( 'dt_mapping_module_settings', [ $this, 'custom_settings_filter' ] );
 
         /**
          * Use this filter to add data to sub levels by geoname
-         *
          * dt_mapping_module_map_level_by_geoname
          * @see     mapping.php:389
          */
-        add_filter( 'dt_mapping_module_map_level_by_geoname', [ $this, 'map_level_by_gename_filter'], 10, 1 );
+        add_filter( 'dt_mapping_module_map_level_by_geoname', [ $this, 'map_level_by_geoname_filter'], 10, 1 );
 
         /**
          * dt_mapping_module_url_base
@@ -42,20 +43,11 @@ class DT_Mapping_Module_Config
          */
         add_filter( 'dt_mapping_module_url_base', [ $this, 'custom_url_base' ] );
 
-
         /**
          * dt_mapping_module_endpoints
          * @see     mapping.php:77
          */
         add_filter( 'dt_mapping_module_endpoints', [ $this, 'add_custom_endpoints'], 10, 1 );
-
-
-
-        /**
-         * dt_mapping_module_translations
-         * @see     mapping.php:119 125
-         */
-        add_filter( 'dt_mapping_module_translations', [ $this, 'custom_translations' ] );
 
         /**
          * dt_mapping_module_custom_population_divisions
@@ -79,59 +71,26 @@ class DT_Mapping_Module_Config
         }
         return false;
     }
+    
+    public function custom_settings_filter( $data ) {
+        /**
+         * Add or modify current settings
+         */
+        return $data;
+    }
 
     /**
-     * Populates the heat map
+     * custom_translations
      *
-     * @param $data
+     * @param $translations
      *
-     * @return array
+     * @return mixed
      */
-    public function custom_data_filter( $data ) {
+    public function custom_translations_filter( $translations ) {
         /**
-         * Filter data here
+         * Add translation strings
          */
-
-        global $wpdb;
-        $results = DT_Mapping_Module::instance()->query( 'get_geoname_totals' );
-
-        if ( ! empty( $results ) ) {
-            $data['custom_column_labels'] = [
-                [
-                    'key' => 'contacts',
-                    'label' => 'Contacts'
-                ],
-                [
-                    'key' => 'groups',
-                    'label' => 'Groups'
-                ]
-            ];
-
-            $data['custom_column_data'] = [];
-
-            foreach( $results as $result ) {
-                if ( ! isset( $data['custom_column_data'][$result['geonameid']] ) ) {
-                    $data['custom_column_data'][$result['geonameid']] = [];
-                    $data['custom_column_data'][$result['geonameid']][0] = '0';
-                    $data['custom_column_data'][$result['geonameid']][1] = '0';
-                }
-
-                if ( $result['post_type'] === 'contacts' ) {
-                    $index = 0;
-                    $value = (string) $result['count'] ?? '0';
-                } else {
-                    $index = 1;
-                    $value = (string) $result['count'] ?? '0';
-                }
-
-                $data['custom_column_data'][$result['geonameid']][$index] = $value;
-            }
-
-        }
-
-//        dt_write_log( $data['custom_column_data'] );
-
-        return $data;
+        return $translations;
     }
 
     /**
@@ -141,14 +100,12 @@ class DT_Mapping_Module_Config
      *
      * @return mixed
      */
-    public function map_level_by_gename_filter( $data ) {
+    public function map_level_by_geoname_filter( $data ) {
         /**
          * Add filter here
          */
         return $data;
     }
-
-
 
     /**
      * add_custom_endpoints
@@ -179,33 +136,17 @@ class DT_Mapping_Module_Config
     }
 
     /**
-     * custom_translations
+     * Filter to supply custom divisions geographic unit.
+     * @example     [
+     *                  6252001 => 5000
+     *              ]
      *
-     * @param $translations
-     *
-     * @return mixed
+     *              This would make the "United States" ( i.e. 6252001) use divisions of 5000
      */
-    public function custom_translations( $translations ) {
-        /**
-         * Add translation strings
-         */
-        return $translations;
-    }
-
-
-
     public function custom_population_division( $data ) { // @todo move this to a admin tab for configuration
-        /**********************************************************************************************************
-         * Filter to supply custom divisions geographic unit.
-         *
-         * @example     [
-         *                  6252001 => 5000
-         *              ]
-         *
-         *              This would make the "United States" ( i.e. 6252001) use divisions of 5000
+        /**
+         * Filter population division
          */
         return $data;
     }
-
-
 }

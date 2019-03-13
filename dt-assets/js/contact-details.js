@@ -720,7 +720,7 @@ jQuery(document).ready(function($) {
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
-                url: contactsDetailsWpApiSettings.root  + 'dt/v1/mapping_module/get_start_level',
+                url: contactsDetailsWpApiSettings.root  + 'dt/v1/mapping_module/get_default_map_data',
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce );
                 },
@@ -730,13 +730,13 @@ jQuery(document).ready(function($) {
                     let div = 'geoname-encode-contact'
 
                     $('#drill_down').empty().append(`
-                    <li>${response.data.start_level.self.name}</li>
-                    <li><select id="${response.data.start_level.self.geonameid}" onchange="window.GEOCODEFUNCTIONS.geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();">
+                    <li>${response.data.map_data.self.name}</li>
+                    <li><select id="${response.data.map_data.self.geonameid}" onchange="window.GEOCODEFUNCTIONS.geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();">
                     <option>Select</option></select>
                     </li>`)
 
-                    jQuery.each( response.data.start_level.children, function(i,v) {
-                        jQuery('#'+response.data.start_level.self.geonameid).append(`<option value="${v.id}">${v.name}</option>`)
+                    jQuery.each( response.data.map_data.children, function(i,v) {
+                        jQuery('#'+response.data.map_data.self.geonameid).append(`<option value="${v.id}">${v.name}</option>`)
                     })
                 }) // end success statement
                 .fail(function (err) {
@@ -765,7 +765,7 @@ jQuery(document).ready(function($) {
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify( { 'geonameid': id } ),
             dataType: "json",
-            url: contactsDetailsWpApiSettings.root  + 'dt/v1/mapping_module/map_level',
+            url: contactsDetailsWpApiSettings.root  + 'dt/v1/mapping_module/get_map_by_geonameid',
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce );
             },

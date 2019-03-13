@@ -81,7 +81,9 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             }
             /** END PERMISSION CHECK */
 
-            require_once('mapping-admin.php');
+            require_once( 'add-contacts-column.php' );
+            require_once( 'add-groups-column.php' );
+            require_once( 'mapping-admin.php' );
 
             /**
              * SET FILE LOCATIONS
@@ -150,14 +152,10 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
                     add_filter( 'dt_templates_for_urls', [ $this, 'add_url' ] ); // add custom URL
                     add_filter( 'dt_metrics_menu', [ $this, 'menu' ], 99 );
-                    add_filter( 'dt_mapping_module_translations', [ $this, 'translations'], 99 );
-                    add_filter( 'dt_mapping_module_endpoints', [ $this, 'endpoints'], 99 );
                     add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
                 }
             }
             else if ( $url_base === substr( $url_path, '0', $url_base_length ) ) {
-                add_filter( 'dt_mapping_module_translations', [ $this, 'translations'], 99 );
-                add_filter( 'dt_mapping_module_endpoints', [ $this, 'endpoints'], 99 );
                 add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
             }
             /* End DEFAULT MAPPING DEFINITION */
@@ -167,8 +165,6 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
         /**
          * ENABLED DEFAULT NAVIGATION FUNCTIONS
          */
-
-
         public function top_nav_desktop() {
             ?><li><a href="<?php echo esc_url( site_url( '/mapping/' ) ) . '#mapping_view' ; ?>"><?php esc_html_e( "Mapping" ); ?></a></li><?php
         }
@@ -180,11 +176,6 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_view" onclick="page_mapping_view()">' .  esc_html__( 'Map' ) . '</a></li>';
             $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_list" onclick="page_mapping_list()">' .  esc_html__( 'List' ) . '</a></li>';
             return $content;
-        }
-        public function translations( $translations ) {
-            $translations['title'] = __( "Mapping", "dt_mapping_module" );
-            /* Add translations here */
-            return $translations;
         }
         public function scripts() {
 
@@ -242,13 +233,15 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
         public static function localize_script() {
             $mapping_module = [
+                'data' => apply_filters( 'dt_mapping_module_data', DT_Mapping_Module::instance()->data() ),
+                'settings' => apply_filters( 'dt_mapping_module_settings', DT_Mapping_Module::instance()->settings() ),
+                'translations' => apply_filters( 'dt_mapping_module_translations', DT_Mapping_Module::instance()->translations() ),
+
                 'root' => esc_url_raw( rest_url() ),
                 'endpoints' => DT_Mapping_Module::instance()->endpoints, // associative array of full urls
                 'spinner' => ' <img src="'. spinner() . '" width="12px" />',
                 'spinner_large' => ' <img src="'. spinner() . '" width="24px" />',
                 'mapping_source_url' => dt_get_mapping_polygon_mirror( true ),
-                'translations' => apply_filters( 'dt_mapping_module_translations', [] ),
-                'data' => apply_filters( 'dt_mapping_module_data', DT_Mapping_Module::instance()->default_map_data() ),
             ];
             return $mapping_module;
         }
@@ -269,29 +262,39 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             }
 
         }
+
         public function default_endpoints( $endpoints = [] ) {
-            $endpoints['map_level_endpoint'] = [
+            $endpoints['get_default_map_data_endpoint'] = [
                 'namespace' => $this->namespace,
-                'route' => '/mapping_module/map_level',
+                'route' => '/mapping_module/get_default_map_data',
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'method' => 'POST',
             ];
-            $endpoints['get_children'] = [
+            $endpoints['get_map_by_geonameid_endpoint'] = [
+                'namespace' => $this->namespace,
+                'route' => '/mapping_module/get_map_by_geonameid',
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'method' => 'POST',
+            ];
+            $endpoints['get_children'] = [ // @todo remove with the explore section of the admin
                 'namespace' => $this->namespace,
                 'route' => '/mapping_module/get_children',
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'method' => 'POST',
-            ];
-            $endpoints['get_start_level_endpoint'] = [
-                'namespace' => $this->namespace,
-                'route' => '/mapping_module/get_start_level',
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'method' => 'POST',
             ];
             // add another endpoint here
             return $endpoints;
         }
-        public function map_level_endpoint( WP_REST_Request $request ) {
+
+        public function get_default_map_data_endpoint( WP_REST_Request $request ) {
+            if ( ! $this->permissions ) {
+                return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
+            }
+
+            return self::localize_script();
+        }
+
+        public function get_map_by_geonameid_endpoint( WP_REST_Request $request ) {
             if ( ! $this->permissions ) {
                 return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
             }
@@ -303,14 +306,11 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
             }
         }
-        public function get_start_level_endpoint( WP_REST_Request $request ) {
-            if ( ! $this->permissions ) {
-                return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
-            }
 
-            return self::localize_script();
-        }
-        public function get_children( WP_REST_Request $request ) {
+        public function get_children( WP_REST_Request $request ) { // @todo remove with the explore section of the admin
+            /**
+             * Services the explore section of the admin area
+             */
             if ( ! $this->permissions ) {
                 return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
             }
@@ -332,33 +332,132 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
          *
          * @return array
          */
-        public function default_map_data() {
+        public function data() {
             $data = [];
 
-            // load selected start level
-            $data['start_level'] = $this->get_starting_level();
+            $data['top_map_list'] = $this->top_map_list();
+            $data['map_data'] = $this->get_default_map_data();
+            $data['custom_column_labels'] = [];
+            $data['custom_column_data'] = [];
 
-            // load initial map level
-            $data['initial_map_level'] = $this->initial_map_level();
-            $data['top_level_maps'] = $this->top_level_maps();
 
-            // population division
+            $data['default_map_settings'] = $this->default_map_settings();
             $data['population_division'] = $this->get_population_division();
+            $data['top_level_maps'] = $this->top_level_maps();
 
             return $data;
         }
+        public function settings() {
+            $settings = [];
 
-        /**
-         * Retieves and sets initial map level
-         * @return array
-         */
-        public function initial_map_level() : array {
+            $settings['root'] = esc_url_raw( rest_url() );
+            $settings['endpoints'] = DT_Mapping_Module::instance()->endpoints;
+            $settings['mapping_source_url'] = dt_get_mapping_polygon_mirror( true );
+            $settings['population_division'] = $this->get_population_division();
+            $settings['default_map_settings'] = $this->default_map_settings();
+            $settings['spinner'] = ' <img src="'. spinner() . '" width="12px" />';
+            $settings['spinner_large'] = ' <img src="'. spinner() . '" width="24px" />';
+
+            return $settings;
+        }
+        public function translations( ) {
+            $translations = [];
+
+            $translations['title'] = __( "Mapping", "dt_mapping_module" );
+            /* Add translations here */
+
+            return $translations;
+        }
+        public function get_default_map_data( ) {
+
+            $results = [ // set array defaults
+                         'self' => [],
+                         'children' => [],
+                         'deeper_levels' => [],
+            ];
+
+            // get default setting for start level
+            $starting_map_level = $this->default_map_settings();
+            if ( isset( $starting_map_level['geonameid']) && $starting_map_level['geonameid'] === 'world') {
+                return $this->get_world_map_data();
+            }
+            else {
+                $type = $starting_map_level['type'];
+                $geonameid = $starting_map_level['parent'];
+            }
+
+            // build response by type
+            if ( $type === 'country' ) {
+
+                // self
+                $self = $this->query( 'get_by_geonameid', ['geonameid' => $geonameid ] );
+                if ( ! $self ) {
+                    return $this->get_world_map_data();
+                }
+                $results['self'] = [
+                    'name' => $self['name'],
+                    'id' => (int) $self['geonameid'],
+                    'geonameid' => (int) $self['geonameid'],
+                    'population' => (int) $self['population'],
+                    'population_formatted' => number_format( (int) $self['population'] ),
+                    'latitude' => (float) $self['latitude'],
+                    'longitude' => (float) $self['longitude'],
+                ];
+
+                // children
+                $children = $this->query( 'get_children_by_geonameid', ['geonameid' => $geonameid ] );
+
+                if ( ! empty( $children ) ) {
+                    // loop and modify types and population
+                    foreach ( $children as $child ) {
+                        $index = $child['geonameid'];
+                        $results['children'][$index] = $child;
+
+                        // set types
+                        $results['children'][$index]['id'] = (int) $child['id'];
+                        $results['children'][$index]['geonameid'] = (int) $child['geonameid'];
+                        $results['children'][$index]['population'] = (int) $child['population'];
+                        $results['children'][$index]['population_formatted'] = number_format( $child['population'] );
+                        $results['children'][$index]['latitude'] = (float) $child['latitude'];
+                        $results['children'][$index]['longitude'] = (float) $child['longitude'];
+                    }
+                }
+
+                // deeper levels
+                $results['deeper_levels'] = $this->get_deeper_levels( $results['children'] );
+
+            } else if ( $type === 'top_level' ) {
+
+                // self
+                $top_levels = $this->top_level_maps();
+                if ( array_key_exists( $geonameid, $top_levels ) ) {
+                    $results['self'] = $top_levels[$geonameid];
+                } else {
+                    return $this->get_world_map_data();
+                }
+
+                // children
+                $results['children'] = $this->get_countries_map_data();
+
+                // deeper levels
+                $results['deeper_levels'] = $this->get_deeper_levels( $results['children'] );
+
+
+            } else { // not set, default to world
+                return $this->get_world_map_data();
+            }
+
+            return $results;
+        }
+
+        public function default_map_settings() : array {
             $level = get_option( 'dt_mapping_module_starting_map_level' );
 
             if ( ! $level || ! is_array( $level ) ) {
                 $level = [
-                    'type' => 'top_level',
-                    'geonameid' => 'world',
+                    'type' => 'world',
+                    'parent' => 'world',
+                    'children' => [],
                 ];
                 dt_write_log(__METHOD__ . ': Set the initial map level' );
                 update_option( 'dt_mapping_module_starting_map_level', $level, false );
@@ -389,7 +488,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 $results['parent']['longitude'] = (float) $parent['longitude'];
             }
 
-            $self = $this->query( 'get_location_by_geonameid', ['geonameid' => $geonameid ] );
+            $self = $this->query( 'get_by_geonameid', ['geonameid' => $geonameid ] );
             if ( ! empty( $self ) ) {
                 $results['self'] = $self;
 
@@ -432,93 +531,13 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             return apply_filters( 'dt_mapping_module_map_level_by_geoname', $results );
         }
 
-        public function get_starting_level( ) {
 
-            $results = [ // set array defaults
-                'self' => [],
-                'children' => [],
-                'deeper_levels' => [],
-            ];
-
-            // get default setting for start level
-            $starting_map_level = $this->initial_map_level();
-            if ( isset( $starting_map_level['geonameid']) && $starting_map_level['geonameid'] === 'world') {
-                return $this->get_world_start_level();
-            }
-            else {
-                $type = $starting_map_level['type'];
-                $geonameid = $starting_map_level['geonameid'];
-            }
-
-            // build response by type
-            if ( $type === 'country' ) {
-
-                // self
-                $self = $this->query( 'get_location_by_geonameid', ['geonameid' => $geonameid ] );
-                if ( ! $self ) {
-                    return $this->get_world_start_level();
-                }
-                $results['self'] = [
-                    'name' => $self['name'],
-                    'id' => (int) $self['geonameid'],
-                    'geonameid' => (int) $self['geonameid'],
-                    'population' => (int) $self['population'],
-                    'population_formatted' => number_format( (int) $self['population'] ),
-                    'latitude' => (float) $self['latitude'],
-                    'longitude' => (float) $self['longitude'],
-                ];
-
-                // children
-                $children = $this->query( 'get_children_by_geonameid', ['geonameid' => $geonameid ] );
-
-                if ( ! empty( $children ) ) {
-                    // loop and modify types and population
-                    foreach ( $children as $child ) {
-                        $index = $child['geonameid'];
-                        $results['children'][$index] = $child;
-
-                        // set types
-                        $results['children'][$index]['id'] = (int) $child['id'];
-                        $results['children'][$index]['geonameid'] = (int) $child['geonameid'];
-                        $results['children'][$index]['population'] = (int) $child['population'];
-                        $results['children'][$index]['population_formatted'] = number_format( $child['population'] );
-                        $results['children'][$index]['latitude'] = (float) $child['latitude'];
-                        $results['children'][$index]['longitude'] = (float) $child['longitude'];
-                    }
-                }
-
-                // deeper levels
-                $results['deeper_levels'] = $this->get_deeper_levels( $results['children'] );
-
-            } else if ( $type === 'top_level' ) {
-
-                // self
-                $top_levels = $this->top_level_maps();
-                if ( array_key_exists( $geonameid, $top_levels ) ) {
-                    $results['self'] = $top_levels[$geonameid];
-                } else {
-                    return $this->get_world_start_level();
-                }
-
-                // children
-                $results['children'] = $this->get_countries_start_level();
-
-                // deeper levels
-                $results['deeper_levels'] = $this->get_deeper_levels( $results['children'] );
-
-
-            } else { // not set, default to world
-                return $this->get_world_start_level();
-            }
-
-            return $results;
-        }
 
         /**
          * Gets default world view
          * @return array
          */
-        public function get_world_start_level() : array {
+        public function get_world_map_data() : array {
             $results = [ // set array defaults
                  'self' => [],
                  'children' => [],
@@ -527,13 +546,13 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
             $top_levels = $this->top_level_maps();
             $results['self'] = $top_levels['world'];
-            $results['children'] = $this->get_countries_start_level();
+            $results['children'] = $this->get_countries_map_data();
             $results['deeper_levels'] = $this->get_deeper_levels( $results['children'] );
 
             return $results;
         }
 
-        public function get_countries_start_level() {
+        public function get_countries_map_data() {
             $children = $this->query( 'list_countries' );
 
             $results = [];
@@ -814,6 +833,25 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
             switch ( $type ) {
 
+                case 'get_by_geonameid':
+                    if ( isset( $args['geonameid'] ) ) {
+                        $results = $wpdb->get_row( $wpdb->prepare( "
+                            SELECT 
+                              geonameid as id, 
+                              geonameid as geonameid, 
+                              name, 
+                              population,
+                              latitude,
+                              longitude,
+                              country_code,
+                              feature_code
+                            FROM dt_geonames
+                            WHERE geonameid = %s
+                             ORDER BY name ASC
+                        ", $args[ 'geonameid' ] ), ARRAY_A );
+                    }
+                    break;
+
                 case 'get_parent_by_geonameid':
                     if ( isset( $args['geonameid'] ) ) {
                         $results = $wpdb->get_row( $wpdb->prepare( "
@@ -835,28 +873,10 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                     }
                     break;
 
-                case 'get_location_by_geonameid':
-                    if ( isset( $args['geonameid'] ) ) {
-                        $results = $wpdb->get_row( $wpdb->prepare( "
-                            SELECT 
-                              geonameid as id, 
-                              geonameid as geonameid, 
-                              name, 
-                              population,
-                              latitude,
-                              longitude,
-                              country_code
-                            FROM dt_geonames
-                            WHERE geonameid = %s
-                             ORDER BY name ASC
-                        ", $args[ 'geonameid' ] ), ARRAY_A );
-                    }
-                    break;
-
                 case 'get_children_by_geonameid':
                     if ( isset( $args['geonameid'] ) ) {
                         $results = $wpdb->get_results( $wpdb->prepare( "
-                            SELECT 
+                            SELECT DISTINCTROW
                               g.geonameid as id, 
                               g.geonameid, 
                               g.name, 
@@ -870,6 +890,38 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                             WHERE parent_id = %d
                             ORDER BY g.name ASC
                         ", $args['geonameid'] ), ARRAY_A );
+                    }
+                    break;
+
+                case 'get_by_geonameid_list':
+                    /**
+                     * Gets a specific list of geonameids
+                     * This requires an array of geonames.
+                     */
+                    if ( isset( $args['list'] ) && is_array( $args['list'] ) ) {
+                        $prepared_list = '';
+                        $i = 0;
+                        foreach ( $args['list'] as $list ) {
+                            if ( $i !== 0 ) {
+                                $prepared_list .= ',';
+                            }
+                            $prepared_list .= (int) $list;
+                            $i++;
+                        }
+                        $results = $wpdb->get_results("
+                            SELECT DISTINCTROW
+                              g.geonameid as id, 
+                              g.geonameid, 
+                              g.name, 
+                              g.population, 
+                              g.latitude, 
+                              g.longitude,
+                              g.country_code,
+                              g.feature_code
+                            FROM dt_geonames as g
+                            WHERE geonameid IN ($prepared_list)
+                            ORDER BY g.name ASC
+                        ", ARRAY_A );
                     }
                     break;
 
@@ -928,6 +980,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                     }
 
                     break;
+
 
                 case 'get_country_code_by_id':
                     if ( isset( $args['id'] ) ) {
@@ -1039,11 +1092,11 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             return $results;
         }
 
+
         /**
-         * @param int $start_geonameid
-         *
-         * @return array|string
+         * Explore section of the admin area
          */
+        //
         public function get_locations_list( $start_geonameid = 6295630 ) {
             global $wpdb;
             $response = [];
@@ -1061,7 +1114,6 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
             return $response;
         }
-
         public function build_locations_html_list( $parent_id, $menu_data, $gen, $depth_limit ) {
             $list = '';
 
@@ -1079,8 +1131,6 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             }
             return $list;
         }
-
-
         public function prepare_menu_array( $query) {
             // prepare special array with parent-child relations
             $menu_data = array(
@@ -1095,75 +1145,38 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             }
             return $menu_data;
         }
-
         public function _no_results() {
             return '<p>'. esc_attr( 'No Results', 'disciple_tools' ) .'</p>';
         }
-
-
-
-        //        public function get_locations_dropdown() {
-        //            $select = '<select id="locations" name="locations">';
-        //
-        //            $select .= '<option value="6295630">World</option>';
-        //            $select .= '<option value="">-------</option>';
-        //
-        //
-        //            // get continents
-        //            $results = $this->query( 'get_continents' );
-        //            foreach( $results as $result ) {
-        //                $select .= '<option value="'.$result['geonameid'].'">'.$result['name'].'</option>';
-        //            }
-        //
-        //            $select .= '<option value="">-------</option>';
-        //
-        //            // get countries
-        //            $results = $this->query( 'list_countries' );
-        //            foreach( $results as $result ) {
-        //                $select .= '<option value="'.$result['geonameid'].'">'.$result['name'].'</option>';
-        //            }
-        //
-        //            $select .= '</select>';
-        //
-        //            return $select;
-        //        }
+        /**
+         * End explore section of the admin area
+         */
 
         /**
-         * Returns a nested array of countries within their continents.
+         * Returns key/value pairs of default locations
          *
-         * @param int $start_geonameid
-         *
-         * @return array|string
+         * @return array
          */
-        //        public function get_locations_nested_array( $start_geonameid = 6295630, $depth_limit = 6 ) {
-        //            global $wpdb;
-        //            $query = $wpdb->get_results("SELECT DISTINCT parent_id, id, name FROM dt_geonames_hierarchy", ARRAY_A );
-        //            if ( empty( $query ) ) {
-        //                return $this->_no_results();
-        //            }
-        //            $menu_data = $this->prepare_menu_array( $query );
-        //            return $this->build_locations_html_list( $start_geonameid, $menu_data, 0, $depth_limit );
-        //        }
+        public function top_map_list() : array {
+            $list = [];
+            $default_map_settings = $this->default_map_settings();
 
-
-
-        //        public function build_locations_nested_array( $parent_id, $menu_data, $gen) {
-        //            $list = [];
-        //
-        //            if (isset( $menu_data['parents'][$parent_id] ) && $gen < 3 )
-        //            {
-        //                $gen++;
-        //                foreach ($menu_data['parents'][$parent_id] as $item_id)
-        //                {
-        //                    $list[] = [
-        //                            "name" => $menu_data['items'][$item_id]['name'],
-        //                            'geonameid' => $item_id,
-        //                            'sub_levels' => $this->build_locations_nested_array( $item_id, $menu_data, $gen ),
-        //                    ];
-        //                }
-        //            }
-        //            return $list;
-        //        }
+            if ( $default_map_settings['type'] === 'world' ) {
+                $list = ['world' => 'World'];
+            }
+            else if ( $default_map_settings['type'] !== 'world' && empty( $default_map_settings['children'] ) ) {
+                $list = ['world' => 'World'];
+            }
+            else {
+                $children = $this->query( 'get_by_geonameid_list', [ 'list' => $default_map_settings['children'] ] );
+                if ( ! empty( $children ) ) {
+                    foreach ( $children as $child ) {
+                        $list[$child['geonameid']] = $child['name'];
+                    }
+                }
+            }
+            return $list;
+        }
 
     } DT_Mapping_Module::instance(); // end DT_Mapping_Module class
 } // end if class check

@@ -130,7 +130,7 @@ function page_mapping_view() {
 
 function map_chart( div, geonameid ) {
     let mapping_module = mappingModule.mapping_module
-    let initial_map_level = mapping_module.data.initial_map_level
+    let default_map_settings = mapping_module.data.default_map_settings
 
     /*******************************************************************************************************************
      *
@@ -146,9 +146,9 @@ function map_chart( div, geonameid ) {
      * Initialize Country Based Top Level Maps
      *
      *****************************************************************************************************************/
-    else if ( initial_map_level.type === 'country' ) {
+    else if ( default_map_settings.type === 'country' ) {
         console.log('country available')
-        geoname_map( div, initial_map_level.geonameid )
+        geoname_map( div, default_map_settings.geonameid )
     }
     /*******************************************************************************************************************
      *
@@ -163,59 +163,58 @@ function map_chart( div, geonameid ) {
 }
 
 function top_level_map( div ) {
-    let mapping_module = mappingModule.mapping_module
+
     am4core.useTheme(am4themes_animated);
-
     let chart = am4core.create( div, am4maps.MapChart);
-    let initial_map_level = mapping_module.data.initial_map_level
-
     chart.projection = new am4maps.projections.Miller(); // Set projection
 
-    let start_level = mapping_module.data.start_level
-    let title = jQuery('#section-title')
+    let mapping_module = mappingModule.mapping_module
+    let default_map_settings = mapping_module.data.default_map_settings
+    let map_data = mapping_module.data.map_data
 
-    title.empty().html(start_level.self.name)
+    // set title
+    let title = jQuery('#section-title')
+    title.empty().html(map_data.self.name)
 
     // sort custom start level url
     let mapUrl = ''
-    if ( mapping_module.data.start_level.self.unique_source_url /* This is available only for top level */ ) {
-        mapUrl = mapping_module.data.start_level.self.url
+    if ( mapping_module.data.map_data.self.unique_source_url /* This is available only for top level */ ) {
+        mapUrl = mapping_module.data.map_data.self.url
     } else {
-        mapUrl = mapping_module.mapping_source_url + 'top_level_maps/' + initial_map_level.geonameid + '.geojson'
+        mapUrl = mapping_module.mapping_source_url + 'top_level_maps/world.geojson'
     }
 
     // get geojson
     jQuery.getJSON( mapUrl, function( data ) {
         // Set map definition
-        let map_data = data
+        let mapData = data
         let custom_label = ''
 
         // prepare country/child data
-        jQuery.each( map_data.features, function(i, v ) {
-            if ( start_level.children[v.id] !== undefined ) {
-                map_data.features[i].properties.geonameid = start_level.children[v.id].geonameid
-                map_data.features[i].properties.population = start_level.children[v.id].population
-                map_data.features[i].properties.value = start_level.children[v.id].population
-                map_data.features[i].properties.fill = start_level.children[v.id].fill
+        jQuery.each( mapData.features, function(i, v ) {
+            if ( map_data.children[v.id] !== undefined ) {
+                mapData.features[i].properties.geonameid = map_data.children[v.id].geonameid
+                mapData.features[i].properties.population = map_data.children[v.id].population
+                mapData.features[i].properties.value = map_data.children[v.id].population
+                mapData.features[i].properties.fill = map_data.children[v.id].fill
 
                 if ( mapping_module.data.custom_column_data[i] ) {
-                    console.log('test')
                     jQuery.each( mapping_module.data.custom_column_data[i], function(i,v) {
                         custom_label = mapping_module.data.custom_column_labels[i]
-                        map_data.features[i].properties[custom_label] = v
+                        mapData.features[i].properties[custom_label] = v
                     })
 
                 } else {
                     jQuery.each( mapping_module.data.custom_column_data[i], function(i,v) {
                         custom_label = mapping_module.data.custom_column_labels[i]
-                        map_data.features[i].properties[custom_label] = 0
+                        mapData.features[i].properties[custom_label] = 0
                     })
                 }
 
             }
         })
 
-        chart.geodata = map_data;
+        chart.geodata = mapData;
 
         // initialize polygonseries
         let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
@@ -246,7 +245,7 @@ function top_level_map( div ) {
             console.log(ev.target.dataItem.dataContext.name)
             console.log(ev.target.dataItem.dataContext.geonameid)
 
-            if( start_level.deeper_levels[ev.target.dataItem.dataContext.geonameid] )
+            if( map_data.deeper_levels[ev.target.dataItem.dataContext.geonameid] )
             {
                 return map_chart( div, ev.target.dataItem.dataContext.geonameid )
             }
@@ -254,15 +253,13 @@ function top_level_map( div ) {
         }, this);
 
         // update breadcrumbs
-        load_breadcrumbs( div, false, start_level.self.name )
+        load_breadcrumbs( div, false, map_data.self.name )
         // add dropdown box
-        load_dropdown_content( div, start_level.children, start_level.deeper_levels )
+        load_dropdown_content( div, map_data.children, map_data.deeper_levels )
 
-        if ( start_level.self.geonameid !== 6295630 ) {
-            mini_map( 'minimap', start_level.self.name, start_level.self.latitude, start_level.self.longitude )
+        if ( map_data.self.geonameid !== 6295630 ) {
+            mini_map( 'minimap', map_data.self.name, map_data.self.latitude, map_data.self.longitude )
         }
-
-        // child_list( div, start_level.children, start_level.deeper_levels )
 
     }) // end success statement
         .fail(function (err) {
@@ -276,9 +273,9 @@ function geoname_map( div, geonameid ) {
     am4core.useTheme(am4themes_animated);
 
     let chart = am4core.create( div, am4maps.MapChart);
-    // let initial_map_level = mapping_module.data.initial_map_level
+    // let default_map_settings = mapping_module.data.default_map_settings
     let title = jQuery('#section-title')
-    let rest = mapping_module.endpoints.map_level_endpoint
+    let rest = mapping_module.endpoints.get_map_by_geonameid_endpoint
 
     chart.projection = new am4maps.projections.Miller(); // Set projection
 
@@ -301,24 +298,24 @@ function geoname_map( div, geonameid ) {
             jQuery.getJSON( mapping_module.mapping_source_url + 'maps/' + geonameid+'.geojson', function( data ) { // get geojson data
 
                 // load geojson with additional parameters
-                let map_data = data
+                let mapData = data
                 let custom_label = ''
-                jQuery.each( map_data.features, function(i, v ) {
-                    if ( response.children[map_data.features[i].properties.geonameid] !== undefined ) {
+                jQuery.each( mapData.features, function(i, v ) {
+                    if ( response.children[mapData.features[i].properties.geonameid] !== undefined ) {
 
-                        map_data.features[i].properties.population = response.children[map_data.features[i].properties.geonameid].population
-                        map_data.features[i].properties.value = response.children[map_data.features[i].properties.geonameid].population
-                        map_data.features[i].properties.fill = response.children[map_data.features[i].properties.geonameid].fill
+                        mapData.features[i].properties.population = response.children[mapData.features[i].properties.geonameid].population
+                        mapData.features[i].properties.value = response.children[mapData.features[i].properties.geonameid].population
+                        mapData.features[i].properties.fill = response.children[mapData.features[i].properties.geonameid].fill
 
                         // custom columns
-                        if ( mapping_module.data.custom_column_data[map_data.features[i].properties.geonameid] ) {
+                        if ( mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
                             console.log( 'found geonameid')
                             jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
-                                map_data.features[i].properties[vv.key] = mapping_module.data.custom_column_data[map_data.features[i].properties.geonameid][ii]
+                                mapData.features[i].properties[vv.key] = mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
                             })
                         } else {
                             jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
-                                map_data.features[i].properties[vv.key] = 0
+                                mapData.features[i].properties[vv.key] = 0
                             })
                         }
 
@@ -327,9 +324,8 @@ function geoname_map( div, geonameid ) {
 
                 // create polygon series
                 let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
-                polygonSeries.geodata = map_data
+                polygonSeries.geodata = mapData
                 polygonSeries.useGeodata = true;
-                console.log(map_data)
 
                 /* Heat map @see https://www.amcharts.com/demos/us-heat-map/ */
                 polygonSeries.heatRules.push({
@@ -374,8 +370,6 @@ function geoname_map( div, geonameid ) {
                 load_dropdown_content( div, response.children, response.deeper_levels )
 
                 mini_map( 'minimap', response.self.name, response.self.latitude, response.self.longitude )
-
-                child_list( div, response.children, response.deeper_levels)
 
             }) // end get geojson
         }) // end success statement
@@ -638,7 +632,7 @@ function mini_map( div, name, lat, lng ) {
 
 }
 
-function child_list( mapDiv, children, deeper_levels ) {
+function child_list( mapDiv, children, deeper_levels ) { /* @todo consider removing or widgetizing */
 
     if ( ! children ) {
         return false;
@@ -667,8 +661,8 @@ function child_list( mapDiv, children, deeper_levels ) {
                           </li>`)
     })
 
-    var e = document.getElementById('child-list-container');
-    e.scrollTop = 0;
+    // var e = document.getElementById('child-list-container');
+    // e.scrollTop = 0;
 
     var elem = new Foundation.Accordion(container);
 }
@@ -738,7 +732,7 @@ function page_mapping_list() {
 
 function location_list( div, geonameid ) {
     let mapping_module = mappingModule.mapping_module
-    let initial_map_level = mapping_module.data.initial_map_level
+    let default_map_settings = mapping_module.data.default_map_settings
 
     /*******************************************************************************************************************
      *
@@ -746,7 +740,7 @@ function location_list( div, geonameid ) {
      *
      *****************************************************************************************************************/
     if ( geonameid ) { // make sure this is not a top level continent or world request
-        console.log('geonameid available')
+        console.log('location_list: geonameid available')
         geoname_list( div, geonameid )
     }
     /*******************************************************************************************************************
@@ -754,9 +748,9 @@ function location_list( div, geonameid ) {
      * Initialize Country Based Top Level Maps
      *
      *****************************************************************************************************************/
-    else if ( initial_map_level.type === 'country' ) {
-        console.log('country available')
-        geoname_list( div, initial_map_level.geonameid )
+    else if ( default_map_settings.type === 'country' ) {
+        console.log('location_list: country available')
+        geoname_list( div, default_map_settings.geonameid )
     }
     /*******************************************************************************************************************
      *
@@ -773,25 +767,25 @@ function top_level_location_list( div ) {
     show_spinner()
 
     // Initialize Location Data
-    let start_level = mapping_module.data.start_level
+    let map_data = mapping_module.data.map_data
 
     // Place Title
     let title = jQuery('#section-title')
-    title.empty().html(start_level.self.name)
+    title.empty().html(map_data.self.name)
 
     // Population Division and Check for Custom Division
     let pd_settings = mapping_module.data.population_division
     let population_division = pd_settings.base
     if ( ! isEmpty( pd_settings.custom ) ) {
         jQuery.each( pd_settings.custom, function(i,v) {
-            if ( start_level.self.geonameid === i ) {
+            if ( map_data.self.geonameid === i ) {
                 population_division = v
             }
         })
     }
 
     // Self Data
-    let self_population = numberWithCommas( start_level.self.population )
+    let self_population = numberWithCommas( map_data.self.population )
     jQuery('#current_level').empty().html(`Population: ${self_population}`)
 
 
@@ -817,7 +811,7 @@ function top_level_location_list( div ) {
 
     // Children List Section
 
-    let sorted_children =  _.sortBy(start_level.children, [function(o) { return o.name; }]);
+    let sorted_children =  _.sortBy(map_data.children, [function(o) { return o.name; }]);
 
     jQuery.each( sorted_children, function(i, v) {
         let population = numberWithCommas( v.population )
@@ -849,7 +843,7 @@ function geoname_list( div, geonameid ) {
     let mapping_module = mappingModule.mapping_module
     show_spinner()
     if ( mapping_module.data[geonameid] === undefined ) {
-        let rest = mapping_module.endpoints.map_level_endpoint
+        let rest = mapping_module.endpoints.get_map_by_geonameid_endpoint
 
         jQuery.ajax({
             type: rest.method,
@@ -875,25 +869,25 @@ function geoname_list( div, geonameid ) {
         build_geoname_list( div, mapping_module.data[geonameid] )
     }
 
-    function build_geoname_list( div, start_level ) {
+    function build_geoname_list( div, map_data ) {
 
         // Place Title
         let title = jQuery('#section-title')
-        title.empty().html(start_level.self.name)
+        title.empty().html(map_data.self.name)
 
         // Population Division and Check for Custom Division
         let pd_settings = mapping_module.data.population_division
         let population_division = pd_settings.base
         if ( ! isEmpty( pd_settings.custom ) ) {
             jQuery.each( pd_settings.custom, function(i,v) {
-                if ( start_level.self.geonameid === i ) {
+                if ( map_data.self.geonameid === i ) {
                     population_division = v
                 }
             })
         }
 
         // Self Data
-        let self_population = numberWithCommas( start_level.self.population )
+        let self_population = numberWithCommas( map_data.self.population )
         jQuery('#current_level').empty().html(`Population: ${self_population}`)
 
         // Build List
@@ -917,7 +911,7 @@ function geoname_list( div, geonameid ) {
         // End Header Section
 
         // Children List Section
-        let sorted_children =  _.sortBy(start_level.children, [function(o) { return o.name; }]);
+        let sorted_children =  _.sortBy(map_data.children, [function(o) { return o.name; }]);
 
         html += `<tbody>`
         jQuery.each( sorted_children, function(i, v) {
@@ -957,7 +951,7 @@ function geoname_list( div, geonameid ) {
 
 function load_drill_down( div, geonameid ) {
     let mapping_module = mappingModule.mapping_module
-    let initial_map_level = mapping_module.data.initial_map_level
+    let default_map_settings = mapping_module.data.default_map_settings
 
     /*******************************************************************************************************************
      *
@@ -972,9 +966,9 @@ function load_drill_down( div, geonameid ) {
      * Initialize Country Based Top Level Maps
      *
      *****************************************************************************************************************/
-    else if ( initial_map_level.type === 'country' ) {
+    else if ( default_map_settings.type === 'country' ) {
         top_level_drill_down( div )
-        // geoname_drill_down( div, initial_map_level.geonameid )
+        // geoname_drill_down( div, default_map_settings.geonameid )
     }
     /*******************************************************************************************************************
      *
@@ -990,13 +984,13 @@ function top_level_drill_down( div ) {
     let mapping_module = mappingModule.mapping_module
     show_spinner()
 
-    jQuery('#'+div).empty().append(`<li>${mapping_module.data.start_level.self.name}</li><li><select id="${mapping_module.data.start_level.self.geonameid}" onchange="geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
+    jQuery('#'+div).empty().append(`<li>${mapping_module.data.map_data.self.name}</li><li><select id="${mapping_module.data.map_data.self.geonameid}" onchange="geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
 
-    jQuery.each( mapping_module.data.start_level.children, function(i,v) {
-        jQuery('#'+mapping_module.data.start_level.self.geonameid).append(`<option value="${v.id}">${v.name}</option>`)
+    jQuery.each( mapping_module.data.map_data.children, function(i,v) {
+        jQuery('#'+mapping_module.data.map_data.self.geonameid).append(`<option value="${v.id}">${v.name}</option>`)
     })
 
-    bind_drill_down( mapping_module.data.start_level.self.geonameid )
+    bind_drill_down( mapping_module.data.map_data.self.geonameid )
 
     hide_spinner()
 }
@@ -1004,7 +998,7 @@ function top_level_drill_down( div ) {
 function geoname_drill_down( div, id ) {
     let mapping_module = mappingModule.mapping_module
     show_spinner()
-    let rest = mapping_module.endpoints.map_level_endpoint
+    let rest = mapping_module.endpoints.get_map_by_geonameid_endpoint
 
     let drill_down = jQuery('#'+div)
 

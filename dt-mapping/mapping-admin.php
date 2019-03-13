@@ -36,6 +36,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
 
         public function __construct()
         {
+
             /**
              * If allowed, this class will load into every admin the header scripts and rest endpoints. It is best
              * practice to add a filter to a config file in the plugin or theme using this module that filters for the
@@ -298,20 +299,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                         <div id="postbox-container-1" class="postbox-container">
                             <!-- Right Column -->
 
-                            <!-- Box -->
-                            <table class="widefat striped">
-                                <thead>
-                                <th>Instructions</th>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>
-
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <!-- End Box -->
+                            <?php $this->mapping_focus_instructions_metabox() ?>
 
                             <!-- End Right Column -->
                         </div><!-- postbox-container 1 -->
@@ -612,11 +600,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                             <td>
                                 <?php
                                     $mm = DT_Mapping_Module::instance();
-                                    $sl = $mm->initial_map_level();
+                                    $sl = $mm->default_map_settings();
 
                                     $name = '';
-                                    if ( isset( $sl['geonameid'] ) && is_numeric( $sl['geonameid'] ) ) {
-                                        $location = $mm->query( 'get_location_by_geonameid', ['geonameid' => $sl['geonameid'] ] );
+                                    if ( isset( $sl['children'] ) && !empty( $sl['children'] ) ) {
+                                        $location = $mm->query( 'get_by_geonameid', ['geonameid' => $sl['geonameid'] ] );
                                         $name = $location['name'];
                                     } else {
                                         $name = $sl['geonameid'];
@@ -813,92 +801,279 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
 
         public function starting_map_level_metabox()
         {
-            // get mapping class
+            dt_write_log('BEGIN');
+
+            // load mapping class
             $mm = DT_Mapping_Module::instance();
-            $top_level_maps = $mm->top_level_maps();
 
-            // process post action
-            if ( isset( $_POST[ 'locations' ] )
-                && ( isset( $_POST[ '_wpnonce' ] )
-                    && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ '_wpnonce' ] ) ), 'starting_map_level' . get_current_user_id() ) ) ) {
-                $new = sanitize_text_field( wp_unslash( $_POST[ 'locations' ] ) );
+            // set variables
+            $default_map_settings = $mm->default_map_settings();
 
-                if ( array_key_exists( $new, $top_level_maps ) ) {
-                    $array = [
-                         'type' => 'top_level',
-                         'geonameid' => $new,
-                    ];
-                    update_option( 'dt_mapping_module_starting_map_level', $array, false );
-                } elseif ( is_numeric( $new ) ) {
-                    $array = [
-                        'type' => 'country',
-                        'geonameid' => (int) $new,
-                    ];
-                    update_option( 'dt_mapping_module_starting_map_level', $array, false );
+            /*******************************
+             * PROCESS POST
+             ******************************/
+            if ( isset( $_POST[ '_wpnonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ '_wpnonce' ] ) ), 'starting_map_level' . get_current_user_id() ) ) {
+                dt_write_log($_POST);
+                $option = [];
+
+                // set focus
+                if ( isset( $_POST['focus_type'] ) && ! empty( $_POST['focus_type'] ) ) {
+                    $option['type'] = sanitize_key( wp_unslash( $_POST['focus_type'] ) );
+                    if ( $option['type'] !== $default_map_settings['type'] ) { // if focus changed, reset elements
+                        $_POST['parent'] = 'world';
+                        $_POST['children'] = [];
+                    }
+                } else {
+                    $option['type'] = $default_map_settings['type'];
                 }
-            }
-            $starting_map_level = $mm->initial_map_level();
 
-            $select = '<select id="locations" name="locations">';
-
-            // build default world
-            $select .= '<option value="world"';
-            if ( $starting_map_level['geonameid'] === 'world' ) {
-                $select .= 'selected';
-            }
-            $select .= '>World</option>';
-            $select .= '<option value="">-------</option>';
-
-
-            // get continents
-            foreach( $top_level_maps as $key => $result ) {
-                if ( 'world' === $key ) {
-                    continue;
+                // set parent
+                if ( $option['type'] === 'world' || $option['type'] === 'country' || empty( $_POST['parent'] ) ) {
+                    $option['parent'] = 'world';
                 }
-                $select .= '<option value="'.$key.'" ';
-                if ( $starting_map_level['geonameid'] === $key ) {
-                    $select .= 'selected';
+                else {
+                    $option['parent'] = (int) sanitize_key( wp_unslash( $_POST['parent'] ) );
                 }
-                $select .= '>'.$result['name'].'</option>';
-            }
 
-            $select .= '<option value="">-------</option>';
-
-            // get countries
-            $results = $mm->query( 'list_countries' );
-
-            foreach( $results as $result ) {
-                $select .= '<option value="'.$result['geonameid'].'" ';
-                if ( $starting_map_level['geonameid'] === (int) $result['geonameid'] ) {
-                    $select .= 'selected';
+                // set children
+                if ( $option['type'] === 'world' || empty( $_POST['children'] ) || $option['parent'] !== $default_map_settings['parent'] ) {
+                    $option['children'] = [];
+                } else {
+                    $option['children'] = array_filter( wp_unslash( $_POST['children'] ), 'sanitize_key' );
                 }
-                $select .= '>'.$result['name'].'</option>';
-            }
 
-            $select .= '</select>';
+                update_option( 'dt_mapping_module_starting_map_level', $option, false );
+                $default_map_settings = $mm->default_map_settings();
+            }
+            dt_write_log($default_map_settings);
+
+
+            /*******************************
+             * FOCUS SELECTION
+             ******************************/
+            $focus_select = '<select name="focus_type">
+                                <option value="world" ';
+            $focus_select .= ( $default_map_settings['type'] === 'world') ? "selected" : "";
+            $focus_select .= '>World</option>
+                                <option value="country" ';
+            $focus_select .= ( $default_map_settings['type'] === 'country') ? "selected" : "";
+            $focus_select .= '>Country</option>
+                                <option value="state" ';
+            $focus_select .= ( $default_map_settings['type'] === 'state') ? "selected" : "";
+            $focus_select .= '>State</option>
+                            </select>';
+            /* End focus select */
 
             ?>
-            <!-- Box -->
-            <form method="post">
+            <form method="post"> <!-- Begin form -->
+                <?php wp_nonce_field( 'starting_map_level' . get_current_user_id() ); ?>
+
+                <!-- Box -->
                 <table class="widefat striped">
                     <thead>
-                        <th>Starting Map Level</th>
+                    <th>Starting Map Level</th>
                     </thead>
                     <tbody>
                     <tr>
                         <td>
-                            <?php wp_nonce_field( 'starting_map_level' . get_current_user_id() ); ?>
-                            <?php echo $select ?> <button type="submit" class="button">Update</button>
-
+                            <?php echo $focus_select ?>
+                            <button type="submit" class="button">Select</button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                <br>
+                <!-- End Box -->
+            <?php
 
-            </form>
 
-            <br>
+            /*******************************
+             * COUNTRY TYPE
+             ******************************/
+            if ( $default_map_settings['type'] === 'country' ) :
+
+                $country_list = $mm->query( 'list_countries' );
+
+                ?>
+                <!-- Box -->
+                <table class="widefat striped">
+                    <thead>
+                    <th colspan="2">Select Country or Countries of Focus</th>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <table class="widefat striped">
+                                <tr>
+                                    <td>
+                                        <span style="float: right;"><button type="submit" class="button">Save</button></span>
+                                        <strong>Select Countries</strong><br><br><hr clear="all" />
+
+                                        <input type="hidden" name="type" value="country" />
+                                        <input type="hidden" name="parent" value="0" />
+                                        <fieldset>
+                                            <?php
+                                            foreach ( $country_list as $country ) {
+                                                echo '<input type="checkbox" name="children[]" value="'.$country['geonameid'].'"';
+                                                if ( array_search( $country['geonameid'], $default_map_settings['children'] ) !== false ) {
+                                                    echo 'checked';
+                                                }
+                                                echo '>'.$country['name'].'<br>';
+                                            }
+                                            ?>
+                                            <hr clear="all">
+                                            <span style="float: right;"><button type="submit" class="button">Save</button></span>
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <p>Presets</p>
+                            <a>Africa</a><br>
+                            <a>Africa - Eastern</a><br>
+                            <a>Africa - Western</a><br>
+                            <a>Africa - Northern</a><br>
+                            <a>Africa - Southern</a><br>
+                            <a>Africa - Central</a><br>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <!-- End Box -->
+                <?php
+
+
+            endif; // end country selection
+
+
+            /*******************************
+             * STATE TYPE
+             ******************************/
+            if ( $default_map_settings['type'] === 'state' ) :
+
+                // create select
+                $country_list = $mm->query( 'list_countries' );
+                $country_select = '<select name="parent"><option></option><option>-------------</option>';
+                foreach( $country_list as $result ) {
+                    $country_select .= '<option value="'.$result['geonameid'].'" ';
+                    if ( $default_map_settings['parent'] === (int) $result['geonameid'] ) {
+                        $country_select .= 'selected';
+                    }
+                    $country_select .= '>'.$result['name'].'</option>';
+                }
+                $country_select .= '</select>';
+                ?>
+                <table class="widefat striped">
+                    <thead>
+                    <th colspan="2">Select Country</th>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <?php echo $country_select ?>
+                            <button type="submit" class="button">Select</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+
+
+                <?php
+                // if country selection is made
+                if ( $default_map_settings['parent'] ) :
+
+                    $country_id = $default_map_settings['parent'];
+                    $parent = $mm->query( 'get_by_geonameid', [ 'geonameid' => $country_id ] );
+                    $state_list = $mm->query( 'get_children_by_geonameid', [ 'geonameid' => $country_id ] );
+
+                    ?>
+                    <!-- Box -->
+                    <table class="widefat striped">
+                        <thead>
+                        <th colspan="2">
+                            <strong>Select States for <?php echo $parent['name'] ?? '?' ?></strong>
+                            <span style="float: right;"><button type="submit" class="button">Save</button></span>
+                        </th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <fieldset>
+                                    <?php
+                                    foreach ( $state_list as $value ) {
+                                        echo '<input type="checkbox" name="children[]" value="'.$value['geonameid'].'"';
+                                        if ( array_search( $value['geonameid'], $default_map_settings['children'] ) !== false ) {
+                                            echo 'checked';
+                                        }
+                                        echo '>'.$value['name'].'<br>';
+                                    }
+                                    ?>
+                                </fieldset>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr><td><span style="float: right;"><button type="submit" class="button">Save</button></span></td></tr>
+                        </tfoot>
+                    </table>
+                    <br>
+                    <!-- End Box -->
+                    <?php
+                endif; // state sub selection box
+
+            endif; // if state
+
+
+            ?></form><?php // End form
+
+            dt_write_log('END');
+        }
+
+        public function mapping_focus_instructions_metabox() {
+
+            $list = DT_Mapping_Module::instance()->top_map_list();
+
+            ?>
+            <!-- Box -->
+            <table class="widefat striped">
+                <thead>
+                <th>Current Selection</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <?php
+                        if ( is_array( $list ) ) {
+                            foreach ( $list as $key => $value ) {
+                                echo $value . '<br>';
+                            }
+                        }
+                        ?>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
             <!-- End Box -->
+            <br>
+            <!-- Box -->
+            <table class="widefat striped">
+                <thead>
+                <th>Instructions</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- End Box -->
+            <br>
+
             <?php
         }
 
@@ -1067,8 +1242,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             </div>
             <?php
         }
-
-
     }
     DT_Mapping_Module_Admin::instance();
 
@@ -1096,4 +1269,3 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
         return $mirror;
     }
 }
-
