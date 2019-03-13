@@ -77,4 +77,5 @@ Make sure tests are passing!
 If you discover a security vulnerability in these WordPress plugins and/or themes, or in the website https://disciple.tools , please send an email to supportXXXXdisciple.tools , replacing XXXX with the @ symbol. We ask that you give us a reasonable amount of time to correct the issue before you make the vulnerability public. Please do not submit a GitHub issue or a GitHub pull request, as these are public.
 
 ## Related Projects
-1. [Installing Disciple Tools with Kubernetes on Google](https://github.com/cairocoder01/disciple-tools-kubernetes)
+1. [Installing Disciple Tools with Kubernetes on Google](https://github.com/cairocoder01/disciple-tools-kubernetes) (Github)
+2. [Docker Image of DT](https://github.com/cairocoder01/dt-docker) (Github)
