@@ -203,12 +203,21 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, '4' );
                 wp_register_script( 'amcharts-animated', 'https://www.amcharts.com/lib/4/themes/animated.js', false, '4' );
                 wp_register_script( 'amcharts-maps', 'https://www.amcharts.com/lib/4/maps.js', false, '4' );
+                wp_register_script( 'amcharts-world', 'https://www.amcharts.com/lib/4/geodata/worldLow.js', false, '4' );
 
             }
 
             wp_register_style( 'datatable-css', '//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css' );
             wp_enqueue_style( 'datatable-css' );
             wp_register_script( 'datatable', '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js', false, '1.10' );
+
+            // drill down tool
+            wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', ['jquery'], '1.1' );
+            wp_localize_script(
+                'mapping-drill-down', 'mappingModule', array(
+                    'mapping_module' => DT_Mapping_Module::instance()->localize_script(),
+                )
+            );
 
             wp_enqueue_script( 'dt_mapping_module_script', $this->module_url . 'mapping.js', [
                 'jquery',
@@ -217,7 +226,9 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 'amcharts-charts',
                 'amcharts-animated',
                 'amcharts-maps',
+                'amcharts-world',
                 'datatable',
+                'mapping-drill-down'
             ], filemtime( $this->module_path . 'mapping.js' ), true );
             wp_localize_script(
                 'dt_mapping_module_script', 'mappingModule', [
@@ -226,7 +237,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                     'nonce' => wp_create_nonce( 'wp_rest' ),
                     'current_user_login' => wp_get_current_user()->user_login,
                     'current_user_id' => get_current_user_id(),
-                    'mapping_module' => self::localize_script(),
+                    'mapping_module' => $this->localize_script(),
                 ]
             );
         }
@@ -239,13 +250,33 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
          * @note    data, settings, and translations can be modified by the filters.
          * @return array
          */
-        public static function localize_script() {
+        public function localize_script() {
             $mapping_module = [
-                'data' => apply_filters( 'dt_mapping_module_data', DT_Mapping_Module::instance()->data() ),
-                'settings' => apply_filters( 'dt_mapping_module_settings', DT_Mapping_Module::instance()->settings() ),
-                'translations' => apply_filters( 'dt_mapping_module_translations', DT_Mapping_Module::instance()->translations() ),
+                'data' => apply_filters( 'dt_mapping_module_data', $this->data() ),
+                'settings' => apply_filters( 'dt_mapping_module_settings', $this->settings() ),
+                'translations' => apply_filters( 'dt_mapping_module_translations', $this->translations() ),
             ];
-            return $mapping_module;
+
+            /**
+             * Full permissions
+             */
+            if ( $this->permissions ) {
+                return $mapping_module;
+            }
+            /**
+             * Approved member of the site can get data for drill down and geocoding
+             */
+            else if ( user_can( get_current_user_id(), 'read' ) ) {
+                unset( $mapping_module['data']['custom_column_data'] );
+                unset( $mapping_module['data']['custom_column_labels'] );
+                return $mapping_module;
+            }
+            /**
+             * No permissions, no data
+             */
+            else {
+                return [];
+            }
         }
         public function data() {
             $data = [];
@@ -257,13 +288,13 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 foreach( $data['top_map_list'] as $geonameid => $name ) {
                     $data[$geonameid] = $this->map_level_by_geoname( $geonameid );
                 }
+                $default_map_settings = $this->default_map_settings();
+                $data[$default_map_settings['parent']] = $this->map_level_by_geoname( $default_map_settings['parent'] );
             }
 
-            $data['map_data'] = $this->get_default_map_data();
             $data['custom_column_labels'] = [];
             $data['custom_column_data'] = [];
 
-            $data['top_level_maps'] = $this->top_level_maps(); // @todo needed?
 
             return $data;
         }
@@ -333,7 +364,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 return new WP_Error( __METHOD__, 'No permission', [ 'status' => 101 ] );
             }
 
-            return self::localize_script();
+            return $this->localize_script();
         }
 
         public function get_map_by_geonameid_endpoint( WP_REST_Request $request ) {
@@ -642,180 +673,180 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             return $results;
         }
 
-        public function top_level_maps() {
-            // this data resides in the database, but it easier to label and source from an array. This allows for customization better.
-            // @link https://www.internetworldstats.com/list1.htm
-
-            $top_level_maps = [];
-
-            $top_level_maps['world'] = [
-                'name' => 'World',
-                'id' => 'world',
-                'geonameid' => 6295630,
-                'population' => 7700000000,
-                'population_formatted' => number_format(7700000000 ),
-                'latitude' => 0,
-                'longitude' => 0,
-                'countries' => [],
-                'unique_source_url' => false,
-                'url' => '',
-            ];
-            $top_level_maps['north_america'] = [
-                'name' => 'North America',
-                'id' => 'north_america',
-                'geonameid' => 6255149,
-                'population' => 365574927,
-                'population_formatted' => number_format(7700000000 ),
-                'latitude' => 46.0732,
-                'longitude' => -100.547,
-                'countries' => [],
-                'unique_source_url' => false,
-                'url' => '',
-            ];
-            $top_level_maps['south_america'] = [
-                'name' => __( 'South America', 'dt_mapping_module' ),
-                'id' => 'south_america',
-                'geonameid' => 6255150,
-                'population' => 385742554,
-                'population_formatted' => number_format(385742554 ),
-                'latitude' => -14.6048,
-                'longitude' => -57.6562,
-                'countries' => [],
-                'unique_source_url' => false,
-                'url' => '',
-            ];
-            $top_level_maps['europe'] = [
-                'name' => 'Europe',
-                'id' => 'europe',
-                'geonameid' => 6255148,
-                'population' => 742945582,
-                'population_formatted' => number_format(742945582 ),
-                'latitude' => 48.691,
-                'longitude' => 9.14062,
-                'countries' => [],
-                'unique_source_url' => false,
-                'url' => '',
-            ];
-
-            // africa
-            $top_level_maps['africa'] = [
-                'name' => 'Africa',
-                'id' => 'africa',
-                'geonameid' => 6255146,
-                'population' => 1031833000,
-                'population_formatted' => number_format(1031833000 ),
-                'latitude' => 7.1881,
-                'longitude' => 21.0938,
-                'countries' => [],
-                'unique_source_url' => false,
-                'url' => '',
-            ];
-            $top_level_maps['africa_east'] = [
-                'name' => 'Africa - Eastern (UN)',
-                'id' => 'africa_east',
-                'geonameid' => 6255146,
-                'population' => 1031833000,
-                'population_formatted' => number_format(1031833000 ),
-                'latitude' => 7.1881,
-                'longitude' => 21.0938,
-                'countries' => [],
-                'unique_source_url' => false,
-                'url' => '',
-            ];
-            $top_level_maps['africa_middle'] = [
-                'name' => 'Africa - Middle (UN)',
-                'id' => 'africa_middle',
-                'geonameid' => 0,
-                'population' => 0,
-                'population_formatted' => number_format(0 ),
-                'latitude' => 7.1881,
-                'longitude' => 21.0938,
-                'countries' => [],
-                'unique_source_url' => false,
-                'url' => '',
-            ];
-            $top_level_maps['africa_north'] = [
-                'name' => 'Africa - Northern (UN)',
-                'id' => 'africa_north',
-                'geonameid' => 0,
-                'population' => 0,
-                'population_formatted' => number_format(0 ),
-                'latitude' => 7.1881,
-                'longitude' => 21.0938,
-                'countries' => ["DZ","EG","LY","MA","SS","SD","TN","ST"],
-                'unique_source_url' => false,
-                'url' => '',
-            ];
-            $top_level_maps['africa_south'] = [
-                'name' => 'Africa - Southern (UN)',
-                'id' => 'africa_south',
-                'geonameid' => 0,
-                'population' => 0,
-                'population_formatted' => number_format(0 ),
-                'latitude' => 7.1881,
-                'longitude' => 21.0938,
-                'countries' => [],
-                'unique_source_url' => false,
-                'url' => '',
-            ];
-            $top_level_maps['africa_west'] = [
-                'name' => 'Africa - Western (UN)',
-                'id' => 'africa_west',
-                'geonameid' => 0,
-                'population' => 0,
-                'population_formatted' => number_format(0 ),
-                'latitude' => 7.1881,
-                'longitude' => 21.0938,
-                'countries' => [],
-                'unique_source_url' => false,
-                'url' => '',
-            ];
-            // end africa
-
-            // asia
-            $top_level_maps['asia'] = [
-                'name' => __( 'Asia', 'dt_mapping_module' ),
-                'id' => 'asia',
-                'geonameid' => 6255147,
-                'population' => 2147483647,
-                'population_formatted' => number_format(2147483647 ),
-                'latitude' => 29.8406,
-                'longitude' => 89.2969,
-                'countries' => [],
-                'unique_source_url' => false,
-                'url' => '',
-            ];
-
-            // oceania
-            $top_level_maps['oceania'] = [
-                'name' => __( 'Oceania', 'dt_mapping_module' ),
-                'id' => 'oceania',
-                'geonameid' => 6255151,
-                'population' => 7700000000,
-                'population_formatted' => number_format(7700000000 ),
-                'latitude' => -18.3128,
-                'longitude' => 138.516,
-                'countries' => [],
-                'unique_source_url' => false,
-                'url' => '',
-            ];
-
-
-            $top_level_maps['middle_east'] = [
-                'name' => 'Middle East',
-                'id' => 'middle_east',
-                'geonameid' => 1,
-                'population' => 411000000,
-                'population_formatted' => number_format(411000000 ),
-                'latitude' => 0,
-                'longitude' => 0,
-                'countries' => [],
-                'unique_source_url' => false,
-                'url' => '',
-            ];
-
-            return apply_filters( 'dt_mapping_module_top_level_list', $top_level_maps );
-        }
+//        public function top_level_maps() {
+//            // this data resides in the database, but it easier to label and source from an array. This allows for customization better.
+//            // @link https://www.internetworldstats.com/list1.htm
+//
+//            $top_level_maps = [];
+//
+//            $top_level_maps['world'] = [
+//                'name' => 'World',
+//                'id' => 'world',
+//                'geonameid' => 6295630,
+//                'population' => 7700000000,
+//                'population_formatted' => number_format(7700000000 ),
+//                'latitude' => 0,
+//                'longitude' => 0,
+//                'countries' => [],
+//                'unique_source_url' => false,
+//                'url' => '',
+//            ];
+//            $top_level_maps['north_america'] = [
+//                'name' => 'North America',
+//                'id' => 'north_america',
+//                'geonameid' => 6255149,
+//                'population' => 365574927,
+//                'population_formatted' => number_format(7700000000 ),
+//                'latitude' => 46.0732,
+//                'longitude' => -100.547,
+//                'countries' => [],
+//                'unique_source_url' => false,
+//                'url' => '',
+//            ];
+//            $top_level_maps['south_america'] = [
+//                'name' => __( 'South America', 'dt_mapping_module' ),
+//                'id' => 'south_america',
+//                'geonameid' => 6255150,
+//                'population' => 385742554,
+//                'population_formatted' => number_format(385742554 ),
+//                'latitude' => -14.6048,
+//                'longitude' => -57.6562,
+//                'countries' => [],
+//                'unique_source_url' => false,
+//                'url' => '',
+//            ];
+//            $top_level_maps['europe'] = [
+//                'name' => 'Europe',
+//                'id' => 'europe',
+//                'geonameid' => 6255148,
+//                'population' => 742945582,
+//                'population_formatted' => number_format(742945582 ),
+//                'latitude' => 48.691,
+//                'longitude' => 9.14062,
+//                'countries' => [],
+//                'unique_source_url' => false,
+//                'url' => '',
+//            ];
+//
+//            // africa
+//            $top_level_maps['africa'] = [
+//                'name' => 'Africa',
+//                'id' => 'africa',
+//                'geonameid' => 6255146,
+//                'population' => 1031833000,
+//                'population_formatted' => number_format(1031833000 ),
+//                'latitude' => 7.1881,
+//                'longitude' => 21.0938,
+//                'countries' => [],
+//                'unique_source_url' => false,
+//                'url' => '',
+//            ];
+//            $top_level_maps['africa_east'] = [
+//                'name' => 'Africa - Eastern (UN)',
+//                'id' => 'africa_east',
+//                'geonameid' => 6255146,
+//                'population' => 1031833000,
+//                'population_formatted' => number_format(1031833000 ),
+//                'latitude' => 7.1881,
+//                'longitude' => 21.0938,
+//                'countries' => [],
+//                'unique_source_url' => false,
+//                'url' => '',
+//            ];
+//            $top_level_maps['africa_middle'] = [
+//                'name' => 'Africa - Middle (UN)',
+//                'id' => 'africa_middle',
+//                'geonameid' => 0,
+//                'population' => 0,
+//                'population_formatted' => number_format(0 ),
+//                'latitude' => 7.1881,
+//                'longitude' => 21.0938,
+//                'countries' => [],
+//                'unique_source_url' => false,
+//                'url' => '',
+//            ];
+//            $top_level_maps['africa_north'] = [
+//                'name' => 'Africa - Northern (UN)',
+//                'id' => 'africa_north',
+//                'geonameid' => 0,
+//                'population' => 0,
+//                'population_formatted' => number_format(0 ),
+//                'latitude' => 7.1881,
+//                'longitude' => 21.0938,
+//                'countries' => ["DZ","EG","LY","MA","SS","SD","TN","ST"],
+//                'unique_source_url' => false,
+//                'url' => '',
+//            ];
+//            $top_level_maps['africa_south'] = [
+//                'name' => 'Africa - Southern (UN)',
+//                'id' => 'africa_south',
+//                'geonameid' => 0,
+//                'population' => 0,
+//                'population_formatted' => number_format(0 ),
+//                'latitude' => 7.1881,
+//                'longitude' => 21.0938,
+//                'countries' => [],
+//                'unique_source_url' => false,
+//                'url' => '',
+//            ];
+//            $top_level_maps['africa_west'] = [
+//                'name' => 'Africa - Western (UN)',
+//                'id' => 'africa_west',
+//                'geonameid' => 0,
+//                'population' => 0,
+//                'population_formatted' => number_format(0 ),
+//                'latitude' => 7.1881,
+//                'longitude' => 21.0938,
+//                'countries' => [],
+//                'unique_source_url' => false,
+//                'url' => '',
+//            ];
+//            // end africa
+//
+//            // asia
+//            $top_level_maps['asia'] = [
+//                'name' => __( 'Asia', 'dt_mapping_module' ),
+//                'id' => 'asia',
+//                'geonameid' => 6255147,
+//                'population' => 2147483647,
+//                'population_formatted' => number_format(2147483647 ),
+//                'latitude' => 29.8406,
+//                'longitude' => 89.2969,
+//                'countries' => [],
+//                'unique_source_url' => false,
+//                'url' => '',
+//            ];
+//
+//            // oceania
+//            $top_level_maps['oceania'] = [
+//                'name' => __( 'Oceania', 'dt_mapping_module' ),
+//                'id' => 'oceania',
+//                'geonameid' => 6255151,
+//                'population' => 7700000000,
+//                'population_formatted' => number_format(7700000000 ),
+//                'latitude' => -18.3128,
+//                'longitude' => 138.516,
+//                'countries' => [],
+//                'unique_source_url' => false,
+//                'url' => '',
+//            ];
+//
+//
+//            $top_level_maps['middle_east'] = [
+//                'name' => 'Middle East',
+//                'id' => 'middle_east',
+//                'geonameid' => 1,
+//                'population' => 411000000,
+//                'population_formatted' => number_format(411000000 ),
+//                'latitude' => 0,
+//                'longitude' => 0,
+//                'countries' => [],
+//                'unique_source_url' => false,
+//                'url' => '',
+//            ];
+//
+//            return apply_filters( 'dt_mapping_module_top_level_list', $top_level_maps );
+//        } // @todo remove?
 
         public function get_available_geojson() {
 
@@ -1230,6 +1261,21 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 }
             }
             return $list;
+        }
+
+        public function initial_drill_down_input() {
+            $list = $this->top_map_list();
+            $html = '';
+
+
+
+            ?>
+            <ul id="drill_down">
+                <li>
+                    <select id="drill_down_top_level" onchange="geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"></select>
+                </li>
+            </ul>
+            <?php
         }
 
     } DT_Mapping_Module::instance(); // end DT_Mapping_Module class

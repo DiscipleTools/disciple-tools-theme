@@ -212,6 +212,7 @@ function dt_site_scripts() {
                         'spinner_url'                     => get_template_directory_uri() . '/dt-assets/images/ajax-loader.gif',
                     )
                 );
+
             }
             if ( is_singular( "groups" ) ) {
                 dt_theme_enqueue_script( 'group-details', 'dt-assets/js/group-details.js', array(
@@ -233,6 +234,7 @@ function dt_site_scripts() {
                     )
                 );
             }
+
         }
     }
 
@@ -245,6 +247,14 @@ function dt_site_scripts() {
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'current_user_login' => wp_get_current_user()->user_login,
                 'current_user_id' => get_current_user_id(),
+            )
+        );
+    }
+    if ( is_singular( "groups" ) || is_singular( "contacts" ) || 'settings' === $url_path ) {
+        wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', ['jquery'], '1' );
+        wp_localize_script(
+            'mapping-drill-down', 'mappingModule', array(
+                'mapping_module' => DT_Mapping_Module::instance()->localize_script(),
             )
         );
     }

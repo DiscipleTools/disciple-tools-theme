@@ -506,21 +506,12 @@
         </div>
 
         <!-- drill down -->
-        <style>
-            #drill_down {
-                margin-bottom: 0;
-                list-style-type: none;
-            }
-            #drill_down li {
-                display:inline;
-                padding: 0 10px;
-            }
-            #drill_down li select {
-                width:150px;
-            }
-        </style>
         <div id="geoname-encode-contact">
-            <ul id="drill_down"></ul>
+            <ul id="drill_down">
+                <?php
+
+                ?>
+            </ul>
         </div>
 
         <!-- map -->

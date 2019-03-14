@@ -26,22 +26,12 @@ function page_mapping_view() {
         <div class="grid-x grid-margin-y">
             <div class="cell auto">
                 <!-- Drill Down -->
-                <ul id="drill_down">
-                    
-                </ul>
-                <!-- Breadcrumbs -->
-                <!--<div id="breadcrumbs">-->
-                    <!--<span id="world"><a onclick="map_chart( 'map-display', false ) ">World</a></span>-->
-                <!--</div>-->
+                <ul id="drill_down"></ul>
             </div>
-            <div class="cell medium-4" style="text-align:right;">
+            <div class="cell medium-6" style="text-align:right;">
                <strong id="section-title" style="font-size:2em;"></strong><br>
                 <span id="current_level"></span>
             </div>
-            <!--<div class="cell medium-4">-->
-                <!--&lt;!&ndash; Dropdown &ndash;&gt;-->
-                <!--<span id="dropdown-box-container" class="ui-widget" style="float:right;margin-right:30px;"></span>-->
-            <!--</div>-->
         </div>
         
         
@@ -52,19 +42,19 @@ function page_mapping_view() {
        
        <!-- Map -->
        <div class="grid-x grid-margin-x">
-            <div class="cell">
-                <div id="minimap" style="position:absolute;z-index:1001;float:right;width:200px; margin-top: 543px;"></div>
+            <div class="cell medium-10">
+                
                 <div id="map-display" style="width: 100%;max-height: 700px;height: 100vh;vertical-align: text-top;"></div>
             </div>
-            <!--<div class="cell medium-2 left-border-grey">-->
-                <!--<div class="grid-y">-->
-                    <!---->
-                    <!--<div class="cell" style="overflow-y: scroll; height:700px;" id="child-list-container">-->
-                        <!--<ul class="accordion" data-accordion id="child-list">-->
-                        <!--</ul>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
+            <div class="cell medium-2 left-border-grey">
+                <div class="grid-y">
+                    <div class="cell" style="overflow-y: scroll; height:700px; padding:0 .4em;" id="child-list-container">
+                        <div id="minimap"></div><br><br>
+                        <div class="button-group expanded stacked" id="data-type-list">
+                         </div>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <hr style="max-width:100%;">
@@ -125,7 +115,7 @@ function page_mapping_view() {
         `);
 
     load_drill_down( 'map-display' )
-    // top_level_map( 'map-display' )
+    data_type_list( 'data-type-list' )
 }
 
 function map_chart( div, geonameid ) {
@@ -140,15 +130,6 @@ function map_chart( div, geonameid ) {
     if ( geonameid ) { // make sure this is not a top level continent or world request
         console.log('geonameid available')
         geoname_map( div, geonameid )
-    }
-    /*******************************************************************************************************************
-     *
-     * Initialize Country Based Top Level Maps
-     *
-     *****************************************************************************************************************/
-    else if ( default_map_settings.type === 'country' ) {
-        console.log('country available')
-        geoname_map( div, default_map_settings.geonameid )
     }
     /*******************************************************************************************************************
      *
@@ -169,8 +150,9 @@ function top_level_map( div ) {
 
     let mapping_module = mappingModule.mapping_module
     let default_map_settings = mapping_module.settings.default_map_settings
+    let mapUrl = ''
     let top_map_list = mapping_module.data.top_map_list
-    let drill_down = jQuery('#drill_down')
+    let title = jQuery('#section-title')
 
     switch ( default_map_settings.type ) {
 
@@ -179,11 +161,10 @@ function top_level_map( div ) {
             let map_data = mapping_module.data.world
 
             // set title
-            let title = jQuery('#section-title')
             title.empty().html(map_data.self.name)
 
             // sort custom start level url
-            let mapUrl = mapping_module.settings.mapping_source_url + 'top_level_maps/world.geojson'
+            mapUrl = mapping_module.settings.mapping_source_url + 'top_level_maps/world.geojson'
 
             // get geojson
             jQuery.getJSON( mapUrl, function( data ) {
@@ -249,6 +230,37 @@ function top_level_map( div ) {
                     max: chart.colors.getIndex(1).brighten(-0.3)
                 });
 
+
+                // add slider to chart container in order not to occupy space
+                let slider = chart.chartContainer.createChild(am4core.Slider);
+                slider.start = .5;
+                slider.valign = "bottom";
+                slider.width = 400;
+                slider.align = "center";
+                slider.marginBottom = 15;
+                slider.start = .5;
+                slider.events.on("rangechanged", () => {
+                    chart.deltaLongitude = 720 * slider.start;
+                })
+
+
+                // Zoom control
+                chart.zoomControl = new am4maps.ZoomControl();
+
+                var homeButton = new am4core.Button();
+                homeButton.events.on("hit", function(){
+                    chart.goHome();
+                });
+
+                homeButton.icon = new am4core.Sprite();
+                homeButton.padding(7, 5, 7, 5);
+                homeButton.width = 30;
+                homeButton.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
+                homeButton.marginBottom = 10;
+                homeButton.parent = chart.zoomControl;
+                homeButton.insertBefore(chart.zoomControl.plusButton);
+
+
                 /* Click navigation */
                 template.events.on("hit", function(ev) {
                     console.log(ev.target.dataItem.dataContext.name)
@@ -272,12 +284,284 @@ function top_level_map( div ) {
 
             break;
         case 'country':
+            console.log('top_level_map: country')
+
+            if( Object.keys(top_map_list).length === 1 ) { // if only one country selected
+                jQuery.each(top_map_list, function(i,v) {
+                    geoname_map( div, i )
+                })
+            } else {
+                // multiple countries selected. So load the world and reduce the polygons
+                console.log(Object.keys(top_map_list))
+
+                mapUrl = mapping_module.settings.mapping_source_url + 'top_level_maps/world.geojson'
+                jQuery.getJSON( mapUrl, function( data ) {
+
+                    // set title
+                    title.empty().html('Multiple Countries')
+
+                    // create a new geojson, including only the top level maps
+                    let new_geojson = jQuery.extend({}, data )
+                    new_geojson.features = []
+
+                    jQuery.each(data.features, function(i,v) {
+                        if ( top_map_list[ v.properties.geonameid ] ) {
+                            new_geojson.features.push(v)
+                        }
+                    })
+
+
+                    // Set map definition
+                    let mapData = new_geojson
+                    let coordinates = []
+                    title.empty()
+
+                    // prepare country/child data
+                    jQuery.each( mapData.features, function(i, v ) {
+
+                        if ( mapping_module.data[v.properties.geonameid] !== undefined ) {
+                            mapData.features[i].properties.geonameid = v.properties.geonameid
+                            mapData.features[i].properties.population = mapping_module.data[v.properties.geonameid].self.population
+
+
+                            // custom columns
+                            if ( mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
+                                jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
+                                    mapData.features[i].properties[vv.key] = mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                                    mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
+                                })
+                            } else {
+                                jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
+                                    mapData.features[i].properties[vv.key] = 0
+                                    mapData.features[i].properties.value = 0
+                                })
+                            }
+
+                            title.append(mapping_module.data[v.properties.geonameid].self.name)
+                            if ( title.html().length !== '' ) {
+                                title.append(', ')
+                            }
+
+                            coordinates[i] = {
+                                "latitude": mapping_module.data[v.properties.geonameid].self.latitude,
+                                "longitude": mapping_module.data[v.properties.geonameid].self.longitude,
+                                "title": mapping_module.data[v.properties.geonameid].self.name
+                            }
+
+                        }
+                    })
+
+                    chart.geodata = mapData;
+
+                    // initialize polygonseries
+                    let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+                    polygonSeries.useGeodata = true;
+
+                    let template = polygonSeries.mapPolygons.template;
+
+                    // create tool tip
+                    let toolTipContent = `<strong>{name}</strong><br>
+                            ---------<br>
+                            Population: {population}<br>
+                            `;
+                    jQuery.each( mapping_module.data.custom_column_labels, function(ii, vc) {
+                        toolTipContent += vc.label + ': {' + vc.key + '}<br>'
+                    })
+                    template.tooltipHTML = toolTipContent
+
+                    // Create hover state and set alternative fill color
+                    let hs = template.states.create("hover");
+                    hs.properties.fill = am4core.color("#3c5bdc");
+
+
+                    template.propertyFields.fill = "fill";
+                    polygonSeries.tooltip.label.interactionsEnabled = true;
+                    polygonSeries.tooltip.pointerOrientation = "vertical";
+
+                    polygonSeries.heatRules.push({
+                        property: "fill",
+                        target: template,
+                        min: chart.colors.getIndex(1).brighten(1.5),
+                        max: chart.colors.getIndex(1).brighten(-0.3)
+                    });
+
+                    // Zoom control
+                    chart.zoomControl = new am4maps.ZoomControl();
+
+                    var homeButton = new am4core.Button();
+                    homeButton.events.on("hit", function(){
+                        chart.goHome();
+                    });
+
+                    homeButton.icon = new am4core.Sprite();
+                    homeButton.padding(7, 5, 7, 5);
+                    homeButton.width = 30;
+                    homeButton.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
+                    homeButton.marginBottom = 10;
+                    homeButton.parent = chart.zoomControl;
+                    homeButton.insertBefore(chart.zoomControl.plusButton);
+
+
+                    /* Click navigation */
+                    template.events.on("hit", function(ev) {
+                        console.log(ev.target.dataItem.dataContext.name)
+                        console.log(ev.target.dataItem.dataContext.geonameid)
+
+                        if( mapping_module.data[ev.target.dataItem.dataContext.geonameid] )
+                        {
+                            jQuery("select#drill_down_top_level option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
+                            geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid )
+                            return map_chart( div, ev.target.dataItem.dataContext.geonameid )
+                        }
+                    }, this);
+
+                    mini_map( 'minimap', coordinates )
+
+                }).fail(function (err) {
+                    console.log("error")
+                    console.log(err)
+                })
+            }
+
             break;
+
         case 'state':
+
+            if( Object.keys(top_map_list).length === 1 ) { // if only one country selected
+                jQuery.each(top_map_list, function(i,v) {
+                    geoname_map( div, i )
+                })
+            } else {
+                // multiple countries selected. So load the world and reduce the polygons
+
+                mapUrl = mapping_module.settings.mapping_source_url + 'maps/' +default_map_settings.parent+ '.geojson'
+                jQuery.getJSON( mapUrl, function( data ) {
+
+                    // set title
+
+                    title.empty().append(mapping_module.data[default_map_settings.parent].self.name)
+
+                    // create a new geojson, including only the top level maps
+                    let new_geojson = jQuery.extend({}, data )
+                    new_geojson.features = []
+
+                    jQuery.each(data.features, function(i,v) {
+                        if ( top_map_list[ v.properties.geonameid ] ) {
+                            new_geojson.features.push(v)
+                        }
+                    })
+
+
+                    // Set map definition
+                    let mapData = new_geojson
+                    let map_data = []
+                    let coordinates = []
+
+                    // prepare country/child data
+                    jQuery.each( mapData.features, function(i, v ) {
+
+                        if ( mapping_module.data[v.properties.geonameid] !== undefined ) {
+                            mapData.features[i].properties.geonameid = v.properties.geonameid
+                            mapData.features[i].properties.population = mapping_module.data[v.properties.geonameid].self.population
+
+
+                            // custom columns
+                            if ( mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
+                                jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
+                                    mapData.features[i].properties[vv.key] = mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                                    mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
+                                })
+                            } else {
+                                jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
+                                    mapData.features[i].properties[vv.key] = 0
+                                    mapData.features[i].properties.value = 0
+                                })
+                            }
+
+
+
+                            coordinates[i] = {
+                                "latitude": mapping_module.data[v.properties.geonameid].self.latitude,
+                                "longitude": mapping_module.data[v.properties.geonameid].self.longitude,
+                                "title": mapping_module.data[v.properties.geonameid].self.name
+                            }
+
+                        }
+                    })
+
+                    chart.geodata = mapData;
+
+                    // initialize polygonseries
+                    let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+                    polygonSeries.useGeodata = true;
+
+                    let template = polygonSeries.mapPolygons.template;
+
+                    // create tool tip
+                    let toolTipContent = `<strong>{name}</strong><br>
+                            ---------<br>
+                            Population: {population}<br>
+                            `;
+                    jQuery.each( mapping_module.data.custom_column_labels, function(ii, vc) {
+                        toolTipContent += vc.label + ': {' + vc.key + '}<br>'
+                    })
+                    template.tooltipHTML = toolTipContent
+
+                    // Create hover state and set alternative fill color
+                    let hs = template.states.create("hover");
+                    hs.properties.fill = am4core.color("#3c5bdc");
+
+
+                    template.propertyFields.fill = "fill";
+                    polygonSeries.tooltip.label.interactionsEnabled = true;
+                    polygonSeries.tooltip.pointerOrientation = "vertical";
+
+                    polygonSeries.heatRules.push({
+                        property: "fill",
+                        target: template,
+                        min: chart.colors.getIndex(1).brighten(1.5),
+                        max: chart.colors.getIndex(1).brighten(-0.3)
+                    });
+
+                    // Zoom control
+                    chart.zoomControl = new am4maps.ZoomControl();
+
+                    var homeButton = new am4core.Button();
+                    homeButton.events.on("hit", function(){
+                        chart.goHome();
+                    });
+
+                    homeButton.icon = new am4core.Sprite();
+                    homeButton.padding(7, 5, 7, 5);
+                    homeButton.width = 30;
+                    homeButton.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
+                    homeButton.marginBottom = 10;
+                    homeButton.parent = chart.zoomControl;
+                    homeButton.insertBefore(chart.zoomControl.plusButton);
+
+
+                    /* Click navigation */
+                    template.events.on("hit", function(ev) {
+                        console.log(ev.target.dataItem.dataContext.name)
+                        console.log(ev.target.dataItem.dataContext.geonameid)
+
+                        if( mapping_module.data[ev.target.dataItem.dataContext.geonameid] )
+                        {
+                            jQuery("select#drill_down_top_level option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
+                            geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid )
+                            return map_chart( div, ev.target.dataItem.dataContext.geonameid )
+                        }
+                    }, this);
+
+                    mini_map( 'minimap', coordinates )
+
+                }).fail(function (err) {
+                    console.log("error")
+                    console.log(err)
+                })
+            }
             break;
     }
-
-
 }
 
 function geoname_map( div, geonameid ) {
@@ -318,7 +602,6 @@ function geoname_map( div, geonameid ) {
 
                         // custom columns
                         if ( mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
-                            console.log( 'found geonameid')
                             jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
                                 mapData.features[i].properties[vv.key] = mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
                                 mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
@@ -367,7 +650,6 @@ function geoname_map( div, geonameid ) {
                     max: chart.colors.getIndex(1).brighten(-0.3)
                 });
 
-
                 /* Click navigation */
                 template.events.on("hit", function(ev) {
                     console.log(ev.target.dataItem.dataContext.geonameid)
@@ -380,8 +662,14 @@ function geoname_map( div, geonameid ) {
                     }
                 }, this);
 
+                let coordinates = []
+                coordinates.push({
+                    "latitude": response.self.latitude,
+                    "longitude": response.self.longitude,
+                    "title": response.self.name
+                })
 
-                mini_map( 'minimap', response.self.name, response.self.latitude, response.self.longitude )
+                mini_map( 'minimap', coordinates )
 
             }) // end get geojson
         }) // end success statement
@@ -389,6 +677,14 @@ function geoname_map( div, geonameid ) {
             console.log("error")
             console.log(err)
         })
+}
+
+function data_type_list( div ) {
+    let mapping_module = mappingModule.mapping_module
+    let list = jQuery('#'+div )
+    jQuery.each( mapping_module.data.custom_column_labels, function(i,v) {
+        list.append(`<a onclick="" class="button hollow" id="${v.key}">${v.label}</a>`)
+    })
 }
 
 function load_breadcrumbs( div, id, parent_name ) {
@@ -592,7 +888,7 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 } // @todo remove?
 
-function mini_map( div, name, lat, lng ) {
+function mini_map( div, marker_data ) {
     let mapping_module = mappingModule.mapping_module
 
     jQuery.getJSON( mapping_module.settings.mapping_source_url + 'top_level_maps/world.geojson', function( data ) {
@@ -605,21 +901,20 @@ function mini_map( div, name, lat, lng ) {
         chart.seriesContainer.draggable = false;
         chart.seriesContainer.resizable = false;
 
-        // chart.deltaLongitude = parseInt(lng);
-        if (  parseInt(lng) < 0 ) {
-            chart.deltaLongitude = parseInt(Math.abs(lng));
+        if (  parseInt(marker_data[0].longitude) < 0 ) {
+            chart.deltaLongitude = parseInt(Math.abs(marker_data[0].longitude));
         } else {
-            chart.deltaLongitude = parseInt(-Math.abs(lng));
+            chart.deltaLongitude = parseInt(-Math.abs(marker_data[0].longitude));
         }
-
 
         chart.geodata = data;
         var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
 
-        polygonSeries.exclude = ["AQ",];
         polygonSeries.useGeodata = true;
 
         var imageSeries = chart.series.push(new am4maps.MapImageSeries());
+
+        imageSeries.data = marker_data;
 
         var imageSeriesTemplate = imageSeries.mapImages.template;
         var circle = imageSeriesTemplate.createChild(am4core.Circle);
@@ -628,16 +923,9 @@ function mini_map( div, name, lat, lng ) {
         circle.stroke = am4core.color("#FFFFFF");
         circle.strokeWidth = 2;
         circle.nonScaling = true;
-        // circle.tooltipText = "{title}";
-
+        circle.tooltipText = "{title}";
         imageSeriesTemplate.propertyFields.latitude = "latitude";
         imageSeriesTemplate.propertyFields.longitude = "longitude";
-
-        imageSeries.data = [{
-            "latitude": lat,
-            "longitude": lng,
-            "title": name
-        }];
     })
 
 
@@ -760,7 +1048,17 @@ function location_list( div, geonameid ) {
      *****************************************************************************************************************/
     else if ( default_map_settings.type === 'country' ) {
         console.log('location_list: country available')
-        geoname_list( div, default_map_settings.geonameid )
+        if( Object.keys(default_map_settings.children).length === 1 ) {
+            geoname_list( div, default_map_settings.children[0] )
+        }
+    }
+    else if ( default_map_settings.type === 'state' ) {
+        console.log('location_list: country available')
+        if( Object.keys(default_map_settings.children).length === 1 ) {
+            geoname_list( div, default_map_settings.children[0] )
+        } else {
+            geoname_list( div, default_map_settings.parent )
+        }
     }
     /*******************************************************************************************************************
      *
@@ -774,10 +1072,15 @@ function location_list( div, geonameid ) {
 
 function top_level_location_list( div ) {
     let mapping_module = mappingModule.mapping_module
+    let default_map_settings = mapping_module.settings.default_map_settings
     show_spinner()
 
     // Initialize Location Data
-    let map_data = mapping_module.data.map_data
+    let map_data = mapping_module.data[default_map_settings.parent]
+    if ( map_data === undefined ) {
+        console.log('error getting map_data')
+        return;
+    }
 
     // Place Title
     let title = jQuery('#section-title')
@@ -1024,6 +1327,8 @@ function top_level_drill_down( div ) {
             drill_down_select.append(`<option value="${i}">${v}</option>`)
         })
         jQuery('#location-list').empty().append(`Select list above.`)
+
+        bind_drill_down( div )
     }
 
     hide_spinner()
@@ -1095,11 +1400,17 @@ function bind_drill_down( div, geonameid ) {
 
     switch(div) {
         case 'location-list':
-            console.log('test')
+            console.log('bind_drill_down: location-list')
             location_list( div, geonameid )
             break;
         case 'map-display':
-            map_chart( div, geonameid )
+            console.log('bind_drill_down: map-display: ')
+            if ( geonameid !== undefined ) {
+                map_chart( div, geonameid )
+            } else {
+                map_chart( div )
+            }
+
             break;
 
     }
