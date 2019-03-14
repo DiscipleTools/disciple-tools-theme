@@ -251,6 +251,14 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             $data = [];
 
             $data['top_map_list'] = $this->top_map_list();
+            if ( isset( $data['top_map_list']['world'] ) ) {
+                $data['world'] = $this->get_world_map_data();
+            } else {
+                foreach( $data['top_map_list'] as $geonameid => $name ) {
+                    $data[$geonameid] = $this->map_level_by_geoname( $geonameid );
+                }
+            }
+
             $data['map_data'] = $this->get_default_map_data();
             $data['custom_column_labels'] = [];
             $data['custom_column_data'] = [];
@@ -377,76 +385,123 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
             // get default setting for start level
             $starting_map_level = $this->default_map_settings();
-            if ( isset( $starting_map_level['geonameid']) && $starting_map_level['geonameid'] === 'world') {
-                return $this->get_world_map_data();
-            }
-            else {
-                $type = $starting_map_level['type'];
-                $geonameid = $starting_map_level['parent'];
-            }
+            $type = $starting_map_level['type'];
 
-            // build response by type
-            if ( $type === 'country' ) {
+            switch ( $type ) {
 
-                // self
-                $self = $this->query( 'get_by_geonameid', ['geonameid' => $geonameid ] );
-                if ( ! $self ) {
+                case 'world':
                     return $this->get_world_map_data();
-                }
-                $results['self'] = [
-                    'name' => $self['name'],
-                    'id' => (int) $self['geonameid'],
-                    'geonameid' => (int) $self['geonameid'],
-                    'population' => (int) $self['population'],
-                    'population_formatted' => number_format( (int) $self['population'] ),
-                    'latitude' => (float) $self['latitude'],
-                    'longitude' => (float) $self['longitude'],
-                ];
+                    break;
 
-                // children
-                $children = $this->query( 'get_children_by_geonameid', ['geonameid' => $geonameid ] );
-
-                if ( ! empty( $children ) ) {
-                    // loop and modify types and population
-                    foreach ( $children as $child ) {
-                        $index = $child['geonameid'];
-                        $results['children'][$index] = $child;
-
-                        // set types
-                        $results['children'][$index]['id'] = (int) $child['id'];
-                        $results['children'][$index]['geonameid'] = (int) $child['geonameid'];
-                        $results['children'][$index]['population'] = (int) $child['population'];
-                        $results['children'][$index]['population_formatted'] = number_format( $child['population'] );
-                        $results['children'][$index]['latitude'] = (float) $child['latitude'];
-                        $results['children'][$index]['longitude'] = (float) $child['longitude'];
+                case 'country':
+                    if ( empty( $starting_map_level['children'] ) ) {
+                        return $this->get_world_map_data();
                     }
-                }
 
-                // deeper levels
-                $results['deeper_levels'] = $this->get_deeper_levels( $results['children'] );
+                    if ( count( $starting_map_level['children'] ) < 2 ) {
+                        $geonameid = $starting_map_level['children'][0];
 
-            } else if ( $type === 'top_level' ) {
+                        // self
+                        $self = $this->query( 'get_by_geonameid', ['geonameid' => $geonameid ] );
+                        if ( ! $self ) {
+                            return $this->get_world_map_data();
+                        }
+                        $results['self'] = [
+                            'name' => $self['name'],
+                            'id' => (int) $self['geonameid'],
+                            'geonameid' => (int) $self['geonameid'],
+                            'population' => (int) $self['population'],
+                            'population_formatted' => number_format( (int) $self['population'] ),
+                            'latitude' => (float) $self['latitude'],
+                            'longitude' => (float) $self['longitude'],
+                        ];
 
-                // self
-                $top_levels = $this->top_level_maps();
-                if ( array_key_exists( $geonameid, $top_levels ) ) {
-                    $results['self'] = $top_levels[$geonameid];
-                } else {
+                        // children
+                        $children = $this->query( 'get_children_by_geonameid', ['geonameid' => $geonameid ] );
+
+                        if ( ! empty( $children ) ) {
+                            // loop and modify types and population
+                            foreach ( $children as $child ) {
+                                $index = $child['geonameid'];
+                                $results['children'][$index] = $child;
+
+                                // set types
+                                $results['children'][$index]['id'] = (int) $child['id'];
+                                $results['children'][$index]['geonameid'] = (int) $child['geonameid'];
+                                $results['children'][$index]['population'] = (int) $child['population'];
+                                $results['children'][$index]['population_formatted'] = number_format( $child['population'] );
+                                $results['children'][$index]['latitude'] = (float) $child['latitude'];
+                                $results['children'][$index]['longitude'] = (float) $child['longitude'];
+                            }
+                        }
+
+                        // deeper levels
+                        $results['deeper_levels'] = $this->get_deeper_levels( $results['children'] );
+                    }
+                    else {
+
+                        $self = $this->query( 'get_by_geonameid_list', ['list' => array_keys( $starting_map_level['children'] ) ] );
+                        if ( empty( $self ) ) {
+                            return $this->get_world_map_data();
+                        }
+
+                        foreach ( $starting_map_level['children'] as $k => $v ) {
+                            $geonameid = $k;
+
+                            // self
+                            $self = $this->query( 'get_by_geonameid', ['geonameid' => $geonameid ] );
+                            if ( ! $self ) {
+                                return $this->get_world_map_data();
+                            }
+                            $results['self'] = [
+                                'name' => $self['name'],
+                                'id' => (int) $self['geonameid'],
+                                'geonameid' => (int) $self['geonameid'],
+                                'population' => (int) $self['population'],
+                                'population_formatted' => number_format( (int) $self['population'] ),
+                                'latitude' => (float) $self['latitude'],
+                                'longitude' => (float) $self['longitude'],
+                            ];
+
+                            // children
+                            $children = $this->query( 'get_children_by_geonameid', ['geonameid' => $geonameid ] );
+
+                            if ( ! empty( $children ) ) {
+                                // loop and modify types and population
+                                foreach ( $children as $child ) {
+                                    $index = $child['geonameid'];
+                                    $results['children'][$index] = $child;
+
+                                    // set types
+                                    $results['children'][$index]['id'] = (int) $child['id'];
+                                    $results['children'][$index]['geonameid'] = (int) $child['geonameid'];
+                                    $results['children'][$index]['population'] = (int) $child['population'];
+                                    $results['children'][$index]['population_formatted'] = number_format( $child['population'] );
+                                    $results['children'][$index]['latitude'] = (float) $child['latitude'];
+                                    $results['children'][$index]['longitude'] = (float) $child['longitude'];
+                                }
+                            }
+
+                            // deeper levels
+                            $results['deeper_levels'] = $this->get_deeper_levels( $results['children'] );
+                        }
+                    }
+
+                    return $results;
+                    break;
+
+                case 'state':
+                    if ( empty( $starting_map_level['children'] ) ) {
+                        return $this->get_world_map_data();
+                    }
+
+                    return $results;
+                    break;
+
+                default:
                     return $this->get_world_map_data();
-                }
-
-                // children
-                $results['children'] = $this->get_countries_map_data();
-
-                // deeper levels
-                $results['deeper_levels'] = $this->get_deeper_levels( $results['children'] );
-
-
-            } else { // not set, default to world
-                return $this->get_world_map_data();
+                    break;
             }
-
-            return $results;
         }
 
         public function default_map_settings() : array {

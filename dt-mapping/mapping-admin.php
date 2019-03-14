@@ -599,18 +599,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                             </td>
                             <td>
                                 <?php
-                                    $mm = DT_Mapping_Module::instance();
-                                    $sl = $mm->default_map_settings();
-
-                                    $name = '';
-                                    if ( isset( $sl['children'] ) && !empty( $sl['children'] ) ) {
-                                        $location = $mm->query( 'get_by_geonameid', ['geonameid' => $sl['geonameid'] ] );
-                                        $name = $location['name'];
-                                    } else {
-                                        $name = $sl['geonameid'];
+                                $list = DT_Mapping_Module::instance()->top_map_list();
+                                if ( is_array( $list ) ) {
+                                    foreach ( $list as $key => $value ) {
+                                        echo $value . '<br>';
                                     }
-
-                                    echo ucwords( $name );
+                                }
                                 ?>
                             </td>
                             <td>

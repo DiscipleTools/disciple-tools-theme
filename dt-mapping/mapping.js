@@ -19,7 +19,7 @@ jQuery(document).ready(function() {
  **********************************************************************************************************************/
 function page_mapping_view() {
     "use strict";
-    let mapping_module = mappingModule.mapping_module
+    // let mapping_module = mappingModule.mapping_module
     let chartDiv = jQuery('#chart')
     chartDiv.empty().html(`
         
@@ -31,7 +31,7 @@ function page_mapping_view() {
                 </ul>
                 <!-- Breadcrumbs -->
                 <!--<div id="breadcrumbs">-->
-                    <!--<span id="world"><a onclick="map_chart( 'locations-home', false ) ">World</a></span>-->
+                    <!--<span id="world"><a onclick="map_chart( 'map-display', false ) ">World</a></span>-->
                 <!--</div>-->
             </div>
             <div class="cell medium-4" style="text-align:right;">
@@ -54,7 +54,7 @@ function page_mapping_view() {
        <div class="grid-x grid-margin-x">
             <div class="cell">
                 <div id="minimap" style="position:absolute;z-index:1001;float:right;width:200px; margin-top: 543px;"></div>
-                <div id="locations-home" style="width: 100%;max-height: 700px;height: 100vh;vertical-align: text-top;"></div>
+                <div id="map-display" style="width: 100%;max-height: 700px;height: 100vh;vertical-align: text-top;"></div>
             </div>
             <!--<div class="cell medium-2 left-border-grey">-->
                 <!--<div class="grid-y">-->
@@ -79,7 +79,7 @@ function page_mapping_view() {
         
         
         
-        <span style="float:right;font-size:.8em;"><a onclick="map_chart( 'locations-home' )" >return to world view</a></span>
+        <span style="float:right;font-size:.8em;"><a onclick="map_chart( 'map-display' )" >return to world view</a></span>
         
         <br>
         
@@ -124,8 +124,8 @@ function page_mapping_view() {
           </style>
         `);
 
-    map_chart( 'locations-home' )
-    load_drill_down( 'drill_down' )
+    load_drill_down( 'map-display' )
+    // top_level_map( 'map-display' )
 }
 
 function map_chart( div, geonameid ) {
@@ -163,109 +163,121 @@ function map_chart( div, geonameid ) {
 }
 
 function top_level_map( div ) {
-
     am4core.useTheme(am4themes_animated);
     let chart = am4core.create( div, am4maps.MapChart);
     chart.projection = new am4maps.projections.Miller(); // Set projection
 
     let mapping_module = mappingModule.mapping_module
     let default_map_settings = mapping_module.settings.default_map_settings
-    let map_data = mapping_module.data.map_data
+    let top_map_list = mapping_module.data.top_map_list
+    let drill_down = jQuery('#drill_down')
 
-    // set title
-    let title = jQuery('#section-title')
-    title.empty().html(map_data.self.name)
+    switch ( default_map_settings.type ) {
 
-    // sort custom start level url
-    let mapUrl = ''
-    if ( mapping_module.data.map_data.self.unique_source_url /* This is available only for top level */ ) {
-        mapUrl = mapping_module.data.map_data.self.url
-    } else {
-        mapUrl = mapping_module.settings.mapping_source_url + 'top_level_maps/world.geojson'
+        case 'world':
+
+            let map_data = mapping_module.data.world
+
+            // set title
+            let title = jQuery('#section-title')
+            title.empty().html(map_data.self.name)
+
+            // sort custom start level url
+            let mapUrl = mapping_module.settings.mapping_source_url + 'top_level_maps/world.geojson'
+
+            // get geojson
+            jQuery.getJSON( mapUrl, function( data ) {
+                // Set map definition
+                let mapData = data
+
+                // prepare country/child data
+                jQuery.each( mapData.features, function(i, v ) {
+                    if ( map_data.children[v.id] !== undefined ) {
+                        mapData.features[i].properties.geonameid = map_data.children[v.id].geonameid
+                        mapData.features[i].properties.population = map_data.children[v.id].population
+
+
+                        // custom columns
+                        if ( mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
+                            jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
+                                mapData.features[i].properties[vv.key] = mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                                mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
+                            })
+                        } else {
+                            jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
+                                mapData.features[i].properties[vv.key] = 0
+                                mapData.features[i].properties.value = 0
+                            })
+                        }
+
+
+                    }
+                })
+
+                chart.geodata = mapData;
+
+                // initialize polygonseries
+                let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+                polygonSeries.exclude = ["AQ","GL"];
+                polygonSeries.useGeodata = true;
+
+                let template = polygonSeries.mapPolygons.template;
+
+                // create tool tip
+                let toolTipContent = `<strong>{name}</strong><br>
+                            ---------<br>
+                            Population: {population}<br>
+                            `;
+                jQuery.each( mapping_module.data.custom_column_labels, function(ii, vc) {
+                    toolTipContent += vc.label + ': {' + vc.key + '}<br>'
+                })
+                template.tooltipHTML = toolTipContent
+
+                // Create hover state and set alternative fill color
+                let hs = template.states.create("hover");
+                hs.properties.fill = am4core.color("#3c5bdc");
+
+
+                template.propertyFields.fill = "fill";
+                polygonSeries.tooltip.label.interactionsEnabled = true;
+                polygonSeries.tooltip.pointerOrientation = "vertical";
+
+                polygonSeries.heatRules.push({
+                    property: "fill",
+                    target: template,
+                    min: chart.colors.getIndex(1).brighten(1.5),
+                    max: chart.colors.getIndex(1).brighten(-0.3)
+                });
+
+                /* Click navigation */
+                template.events.on("hit", function(ev) {
+                    console.log(ev.target.dataItem.dataContext.name)
+                    console.log(ev.target.dataItem.dataContext.geonameid)
+
+                    if( map_data.deeper_levels[ev.target.dataItem.dataContext.geonameid] )
+                    {
+                        jQuery("select#world option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
+                        geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid )
+                        return map_chart( div, ev.target.dataItem.dataContext.geonameid )
+                    }
+
+                }, this);
+
+
+            }) // end success statement
+                .fail(function (err) {
+                    console.log("error")
+                    console.log(err)
+                })
+
+            break;
+        case 'country':
+            break;
+        case 'state':
+            break;
     }
 
-    // get geojson
-    jQuery.getJSON( mapUrl, function( data ) {
-        // Set map definition
-        let mapData = data
-        let custom_label = ''
 
-        // prepare country/child data
-        jQuery.each( mapData.features, function(i, v ) {
-            if ( map_data.children[v.id] !== undefined ) {
-                mapData.features[i].properties.geonameid = map_data.children[v.id].geonameid
-                mapData.features[i].properties.population = map_data.children[v.id].population
-                mapData.features[i].properties.value = map_data.children[v.id].population
-                mapData.features[i].properties.fill = map_data.children[v.id].fill
-
-                if ( mapping_module.data.custom_column_data[i] ) {
-                    jQuery.each( mapping_module.data.custom_column_data[i], function(i,v) {
-                        custom_label = mapping_module.data.custom_column_labels[i]
-                        mapData.features[i].properties[custom_label] = v
-                    })
-
-                } else {
-                    jQuery.each( mapping_module.data.custom_column_data[i], function(i,v) {
-                        custom_label = mapping_module.data.custom_column_labels[i]
-                        mapData.features[i].properties[custom_label] = 0
-                    })
-                }
-
-            }
-        })
-
-        chart.geodata = mapData;
-
-        // initialize polygonseries
-        let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
-        polygonSeries.exclude = ["AQ","GL"];
-        polygonSeries.useGeodata = true;
-
-        let template = polygonSeries.mapPolygons.template;
-        template.tooltipHTML = `<strong>{name}</strong><br>
-                ---------<br>
-                population: {population}<br>
-                workers: {workers}<br> 
-                groups: {groups}<br> 
-                contacts: {contacts}<br> 
-                `;
-        template.propertyFields.fill = "fill";
-        polygonSeries.tooltip.label.interactionsEnabled = true;
-        polygonSeries.tooltip.pointerOrientation = "vertical";
-
-        polygonSeries.heatRules.push({
-            property: "fill",
-            target: template,
-            min: chart.colors.getIndex(1).brighten(1),
-            max: chart.colors.getIndex(1).brighten(-0.3)
-        });
-
-        /* Click navigation */
-        template.events.on("hit", function(ev) {
-            console.log(ev.target.dataItem.dataContext.name)
-            console.log(ev.target.dataItem.dataContext.geonameid)
-
-            if( map_data.deeper_levels[ev.target.dataItem.dataContext.geonameid] )
-            {
-                return map_chart( div, ev.target.dataItem.dataContext.geonameid )
-            }
-
-        }, this);
-
-        // update breadcrumbs
-        load_breadcrumbs( div, false, map_data.self.name )
-        // add dropdown box
-        load_dropdown_content( div, map_data.children, map_data.deeper_levels )
-
-        if ( map_data.self.geonameid !== 6295630 ) {
-            mini_map( 'minimap', map_data.self.name, map_data.self.latitude, map_data.self.longitude )
-        }
-
-    }) // end success statement
-        .fail(function (err) {
-            console.log("error")
-            console.log(err)
-        })
 }
 
 function geoname_map( div, geonameid ) {
@@ -293,29 +305,28 @@ function geoname_map( div, geonameid ) {
         .done( function( response ) {
 
             title.html(response.self.name)
-            console.log(response)
 
             jQuery.getJSON( mapping_module.settings.mapping_source_url + 'maps/' + geonameid+'.geojson', function( data ) { // get geojson data
 
                 // load geojson with additional parameters
                 let mapData = data
-                let custom_label = ''
+
                 jQuery.each( mapData.features, function(i, v ) {
                     if ( response.children[mapData.features[i].properties.geonameid] !== undefined ) {
 
                         mapData.features[i].properties.population = response.children[mapData.features[i].properties.geonameid].population
-                        mapData.features[i].properties.value = response.children[mapData.features[i].properties.geonameid].population
-                        mapData.features[i].properties.fill = response.children[mapData.features[i].properties.geonameid].fill
 
                         // custom columns
                         if ( mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
                             console.log( 'found geonameid')
                             jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
                                 mapData.features[i].properties[vv.key] = mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                                mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
                             })
                         } else {
                             jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
                                 mapData.features[i].properties[vv.key] = 0
+                                mapData.features[i].properties.value = 0
                             })
                         }
 
@@ -326,14 +337,6 @@ function geoname_map( div, geonameid ) {
                 let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
                 polygonSeries.geodata = mapData
                 polygonSeries.useGeodata = true;
-
-                /* Heat map @see https://www.amcharts.com/demos/us-heat-map/ */
-                polygonSeries.heatRules.push({
-                    property: "fill",
-                    target: polygonSeries.mapPolygons.template,
-                    min: chart.colors.getIndex(1).brighten(1),
-                    max: chart.colors.getIndex(1).brighten(-0.3)
-                });
 
                 // Configure series tooltip
                 let template = polygonSeries.mapPolygons.template;
@@ -353,6 +356,18 @@ function geoname_map( div, geonameid ) {
                 hs.properties.fill = am4core.color("#3c5bdc");
 
 
+                template.propertyFields.fill = "fill";
+                polygonSeries.tooltip.label.interactionsEnabled = true;
+                polygonSeries.tooltip.pointerOrientation = "vertical";
+
+                polygonSeries.heatRules.push({
+                    property: "fill",
+                    target: template,
+                    min: chart.colors.getIndex(1).brighten(1.5),
+                    max: chart.colors.getIndex(1).brighten(-0.3)
+                });
+
+
                 /* Click navigation */
                 template.events.on("hit", function(ev) {
                     console.log(ev.target.dataItem.dataContext.geonameid)
@@ -360,14 +375,11 @@ function geoname_map( div, geonameid ) {
 
                     if( response.deeper_levels[ev.target.dataItem.dataContext.geonameid] )
                     {
+                        jQuery("select#"+response.self.geonameid+" option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
                         return map_chart( div, ev.target.dataItem.dataContext.geonameid)
                     }
                 }, this);
 
-                // update breadcrumbs
-                load_breadcrumbs( div, response.self.geonameid, response.self.name )
-                // refresh and add dropdown box
-                load_dropdown_content( div, response.children, response.deeper_levels )
 
                 mini_map( 'minimap', response.self.name, response.self.latitude, response.self.longitude )
 
@@ -417,7 +429,7 @@ function load_breadcrumbs( div, id, parent_name ) {
 
     console.log(mapping_module.breadcrumbs)
 
-}
+} // @todo remove?
 
 function load_dropdown_content( div, locations, deeper_levels ) {
     let mapping_module = mappingModule.mapping_module
@@ -434,7 +446,7 @@ function load_dropdown_content( div, locations, deeper_levels ) {
     jQuery('#dropdown-box-container').empty().html(input_select)
 
     setup_dropdown_script( div )
-}
+} // @todo remove?
 
 function setup_dropdown_script( div ) {
     let mapping_module = mappingModule.mapping_module
@@ -574,11 +586,11 @@ function setup_dropdown_script( div ) {
         jQuery('.custom-combobox input.custom-combobox-input').prop('placeholder', 'Deeper Levels')
 
     })
-}
+} // @todo remove?
 
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+} // @todo remove?
 
 function mini_map( div, name, lat, lng ) {
     let mapping_module = mappingModule.mapping_module
@@ -665,11 +677,11 @@ function child_list( mapDiv, children, deeper_levels ) { /* @todo consider remov
     // e.scrollTop = 0;
 
     var elem = new Foundation.Accordion(container);
-}
+} // @todo remove?
 
 /**********************************************************************************************************************
  *
- * MAP LIST
+ * LIST
  *
  * This page allows for drill-down into the locations and related reports.
  * 
@@ -682,9 +694,7 @@ function page_mapping_list() {
         <div class="grid-x grid-margin-x">
             <div class="cell auto">
                 <!-- Drill Down -->
-                <ul id="drill_down">
-                    
-                </ul>
+                <ul id="drill_down"></ul>
             </div>
             <div class="cell small-1">
                 <span id="spinner" style="display:none;" class="float-right">${mapping_module.settings.spinner_large}</span>
@@ -698,7 +708,7 @@ function page_mapping_list() {
             <span id="current_level"></span>
         </div>
         
-        <div id="location_list"></div>
+        <div id="location-list"></div>
         
         <hr style="max-width:100%;">
         
@@ -727,7 +737,7 @@ function page_mapping_list() {
             }
         </style>
         `);
-    load_drill_down( 'drill_down' )
+    load_drill_down( 'location-list' )
 }
 
 function location_list( div, geonameid ) {
@@ -790,7 +800,7 @@ function top_level_location_list( div ) {
 
 
     // Build List
-    let locations = jQuery('#location_list')
+    let locations = jQuery('#location-list')
     locations.empty()
 
     // Header Section
@@ -891,7 +901,7 @@ function geoname_list( div, geonameid ) {
         jQuery('#current_level').empty().html(`Population: ${self_population}`)
 
         // Build List
-        let locations = jQuery('#location_list')
+        let locations = jQuery('#location-list')
         locations.empty()
 
         let html = `<table id="country-list-table" class="display">`
@@ -949,9 +959,11 @@ function geoname_list( div, geonameid ) {
     }
 }
 
+
+/**
+ * DRILL DOWN
+ */
 function load_drill_down( div, geonameid ) {
-    let mapping_module = mappingModule.mapping_module
-    let default_map_settings = mapping_module.settings.default_map_settings
 
     /*******************************************************************************************************************
      *
@@ -960,15 +972,6 @@ function load_drill_down( div, geonameid ) {
      *****************************************************************************************************************/
     if ( geonameid ) { // make sure this is not a top level continent or world request
         geoname_drill_down( div, geonameid )
-    }
-    /*******************************************************************************************************************
-     *
-     * Initialize Country Based Top Level Maps
-     *
-     *****************************************************************************************************************/
-    else if ( default_map_settings.type === 'country' ) {
-        top_level_drill_down( div )
-        // geoname_drill_down( div, default_map_settings.geonameid )
     }
     /*******************************************************************************************************************
      *
@@ -982,15 +985,46 @@ function load_drill_down( div, geonameid ) {
 
 function top_level_drill_down( div ) {
     let mapping_module = mappingModule.mapping_module
+    let top_map_list = mapping_module.data.top_map_list
+    let drill_down = jQuery('#drill_down')
+
     show_spinner()
 
-    jQuery('#'+div).empty().append(`<li>${mapping_module.data.map_data.self.name}</li><li><select id="${mapping_module.data.map_data.self.geonameid}" onchange="geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
+    drill_down.empty().append(`<li><select id="drill_down_top_level" onchange="geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"></select></li>`)
+    let drill_down_select = jQuery('#drill_down_top_level')
 
-    jQuery.each( mapping_module.data.map_data.children, function(i,v) {
-        jQuery('#'+mapping_module.data.map_data.self.geonameid).append(`<option value="${v.id}">${v.name}</option>`)
-    })
+    if( Object.keys(top_map_list).length === 1 ) {
+        jQuery.each(top_map_list, function(i,v) {
+            drill_down_select.append(`<option value="${i}" selected>${v}</option>`)
 
-    bind_drill_down( mapping_module.data.map_data.self.geonameid )
+            if ( ! isEmpty( mapping_module.data[i].children ) ) {
+                if ( ! isEmpty( mapping_module.data[i].deeper_levels ) ) {
+                    drill_down.append(`<li><select id="${i}" onchange="geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
+                    let sorted_children =  _.sortBy(mapping_module.data[i].children, [function(o) { return o.name; }]);
+
+                    jQuery.each( sorted_children, function(ii,vv) {
+                        jQuery('#'+i).append(`<option value="${vv.id}">${vv.name}</option>`)
+                    })
+                }
+
+                if ( i === 'world' ) {
+                    bind_drill_down( div )
+                } else {
+                    bind_drill_down( div, i )
+                }
+
+            } else {
+                drill_down.append(`<li>deepest level</li>`)
+            }
+
+        })
+    } else {
+        drill_down_select.append(`<option>Select</option>`)
+        jQuery.each(top_map_list, function(i,v) {
+            drill_down_select.append(`<option value="${i}">${v}</option>`)
+        })
+        jQuery('#location-list').empty().append(`Select list above.`)
+    }
 
     hide_spinner()
 }
@@ -1000,7 +1034,7 @@ function geoname_drill_down( div, id ) {
     show_spinner()
     let rest = mapping_module.settings.endpoints.get_map_by_geonameid_endpoint
 
-    let drill_down = jQuery('#'+div)
+    let drill_down = jQuery('#drill_down')
 
     jQuery.ajax({
         type: rest.method,
@@ -1017,15 +1051,20 @@ function geoname_drill_down( div, id ) {
             mapping_module.data[response.self.geonameid] = response
 
             if ( ! isEmpty( response.children ) ) {
-                drill_down.append(`<li><select id="${response.self.geonameid}" onchange="geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
-                let sorted_children =  _.sortBy(response.children, [function(o) { return o.name; }]);
+                if ( ! isEmpty( response.deeper_levels ) ) {
+                    drill_down.append(`<li><select id="${response.self.geonameid}" onchange="geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
+                    let sorted_children =  _.sortBy(response.children, [function(o) { return o.name; }]);
 
-                jQuery.each( sorted_children, function(i,v) {
-                    jQuery('#'+id).append(`<option value="${v.id}">${v.name}</option>`)
-                })
+                    jQuery.each( sorted_children, function(i,v) {
+                        jQuery('#'+id).append(`<option value="${v.id}">${v.name}</option>`)
+                    })
+                }
+
+                bind_drill_down( div, response.self.geonameid )
+            } else {
+                drill_down.append(`<li>deepest level</li>`)
             }
 
-            bind_drill_down( response.self.geonameid )
 
             hide_spinner()
         }) // end success statement
@@ -1052,6 +1091,16 @@ function hide_spinner() {
     jQuery('#spinner').hide()
 }
 
-function bind_drill_down( geonameid ) {
-    location_list( 'location_list', geonameid )
+function bind_drill_down( div, geonameid ) {
+
+    switch(div) {
+        case 'location-list':
+            console.log('test')
+            location_list( div, geonameid )
+            break;
+        case 'map-display':
+            map_chart( div, geonameid )
+            break;
+
+    }
 }
