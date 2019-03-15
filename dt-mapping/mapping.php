@@ -281,7 +281,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
         public function data() {
             $data = [];
 
-            $data['top_map_list'] = $this->top_map_list();
+            $data['top_map_list'] = $this->default_map_short_list();
             if ( isset( $data['top_map_list']['world'] ) ) {
                 $data['world'] = $this->get_world_map_data();
             } else {
@@ -551,6 +551,32 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             return $level;
         }
 
+        /**
+         * Returns key/value pairs of default locations
+         *
+         * @return array
+         */
+        public function default_map_short_list() : array {
+            $list = [];
+            $default_map_settings = $this->default_map_settings();
+
+            if ( $default_map_settings['type'] === 'world' ) {
+                $list = ['world' => 'World'];
+            }
+            else if ( $default_map_settings['type'] !== 'world' && empty( $default_map_settings['children'] ) ) {
+                $list = ['world' => 'World'];
+            }
+            else {
+                $children = $this->query( 'get_by_geonameid_list', [ 'list' => $default_map_settings['children'] ] );
+                if ( ! empty( $children ) ) {
+                    foreach ( $children as $child ) {
+                        $list[$child['geonameid']] = $child['name'];
+                    }
+                }
+            }
+            return $list;
+        }
+
         public function map_level_by_geoname( $geonameid ) {
             $results = [
                 'parent' => [],
@@ -629,8 +655,19 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                  'deeper_levels' => [],
             ];
 
-            $top_levels = $this->top_level_maps();
-            $results['self'] = $top_levels['world'];
+
+            $results['self'] =  [
+                'name' => 'World',
+                'id' => 'world',
+                'geonameid' => 6295630,
+                'population' => 7700000000,
+                'population_formatted' => number_format(7700000000 ),
+                'latitude' => 0,
+                'longitude' => 0,
+                'countries' => [],
+                'unique_source_url' => false,
+                'url' => '',
+            ];
             $results['children'] = $this->get_countries_map_data();
             $results['deeper_levels'] = $this->get_deeper_levels( $results['children'] );
 
@@ -1079,6 +1116,30 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
                     break;
 
+                case 'get_full_hierarchy':
+                    $results = $wpdb->get_results("
+                          SELECT DISTINCTROW parent_id, id, name 
+                          FROM dt_geonames_hierarchy", ARRAY_A );
+
+                    break;
+
+                case 'get_reference':
+                    if ( isset( $args['post_id'] ) ) {
+                        $results = $wpdb->get_row( $wpdb->prepare( "
+                            SELECT * 
+                            FROM {$wpdb->prefix}dt_geonames_reference 
+                            WHERE post_id = %s;
+                        ", $args['post_id'] ) );
+                    }
+                    else if ( isset( $args['geonameid'] ) ) {
+                        $results = $wpdb->get_row( $wpdb->prepare( "
+                            SELECT * 
+                            FROM {$wpdb->prefix}dt_geonames_reference 
+                            WHERE geonameid = %s;
+                        ", $args['geonameid'] ) );
+                    }
+                    break;
+
                 case 'get_continents_countries_and_states':
                     $results = $wpdb->get_results("
                             SELECT DISTINCT parent_id, id, name
@@ -1115,6 +1176,39 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                             OR parent_id IN (6255146,6255147,6255148,6255149,6255151,6255150,6255152,6295630)
                             OR id IN (6255146,6255147,6255148,6255149,6255151,6255150,6255152,6295630);
                         ", ARRAY_A );
+
+                    break;
+
+                case 'get_regions':
+                    if ( isset( $args['add_country_info'] ) ) {
+                        /**
+                         * Lists all countries with their region_name and region_id
+                         * @note There are often two regions that claim the same country.
+                         */
+                        $results = $wpdb->get_results("
+                            SELECT
+                                gh.parent_id as region_id,
+                                rg.name as region_name,
+                                g.*
+                            FROM dt_geonames_hierarchy as gh
+                            JOIN dt_geonames as g ON gh.id=g.geonameid
+                            LEFT JOIN dt_geonames as rg ON gh.parent_id=rg.geonameid
+                            WHERE 
+                            parent_id IN (
+                              SELECT rgn.geonameid 
+                              FROM dt_geonames as rgn 
+                              WHERE rgn.feature_code = 'RGN'  
+                                AND rgn.country_code = '')
+                            ORDER BY region_name ASC;
+                        ", ARRAY_A );
+                    } else {
+                        $results = $wpdb->get_results("
+                            SELECT *
+                            FROM dt_geonames
+                            WHERE feature_code = 'RGN' AND country_code = ''
+                            ORDER BY name ASC;
+                        ", ARRAY_A );
+                    }
 
                     break;
 
@@ -1167,6 +1261,102 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                             GROUP BY ADM2, post_type
                         ", ARRAY_A );
 
+                    break;
+
+                case 'get_hierarchy_for_geoname':
+                    /**
+                     * Gets a single row from geonameid with country, state, county columns for given geonameid
+                     *
+                     * @example     [
+                     *                  geonameid   (supplied geonameid)
+                     *                  country_id  (geonameid for the country related to supplied geonameid)
+                     *                  adm1_id    (geonameid for the state/administration level 1 related to supplied geonameid)
+                     *                  adm2_id    (geonameid for the county/administration level 2 related to supplied geonameid)
+                     *                  country_name
+                     *                  adm1_name
+                     *                  adm2_name
+                     *              ]
+                     */
+                    if ( isset( $args['geonameid'] ) ) {
+                        $results = $wpdb->get_row( $wpdb->prepare( "
+                            SELECT
+                                  g.geonameid,
+                                  (CASE WHEN (`g`.`feature_code` = 'PCLI')
+                                    THEN `g`.`geonameid`
+                                   WHEN (`g`.`feature_code` = 'ADM1')
+                                     THEN (SELECT `dt_geonames_hierarchy`.`parent_id`
+                                           FROM `dt_geonames_hierarchy`
+                                           WHERE (`dt_geonames_hierarchy`.`id` = `g`.`geonameid`)
+                                           LIMIT 1)
+                                   WHEN (`g`.`feature_code` = 'ADM2')
+                                     THEN (SELECT `dt_geonames_hierarchy`.`parent_id`
+                                           FROM `dt_geonames_hierarchy`
+                                           WHERE (`dt_geonames_hierarchy`.`id` = (SELECT `dt_geonames_hierarchy`.`parent_id`
+                                                                                  FROM `dt_geonames_hierarchy`
+                                                                                  WHERE (`dt_geonames_hierarchy`.`id` = `g`.`geonameid`)
+                                                                                  LIMIT 1))
+                                           LIMIT 1)
+                                   WHEN (`g`.`feature_code` = 'ADM3')
+                                     THEN (SELECT `dt_geonames_hierarchy`.`parent_id`
+                                           FROM `dt_geonames_hierarchy`
+                                           WHERE (`dt_geonames_hierarchy`.`id` = (SELECT `dt_geonames_hierarchy`.`parent_id`
+                                                                                  FROM `dt_geonames_hierarchy`
+                                                                                  WHERE (`dt_geonames_hierarchy`.`id` =
+                                                                                         (SELECT `dt_geonames_hierarchy`.`parent_id`
+                                                                                          FROM `dt_geonames_hierarchy`
+                                                                                          WHERE (`dt_geonames_hierarchy`.`id` = `g`.`geonameid`)
+                                                                                          LIMIT 1))
+                                                                                  LIMIT 1))
+                                           LIMIT 1)
+                                   ELSE 'Unknown' END)                         AS `country_id`,
+                                  
+                                  (CASE WHEN (`g`.`feature_code` = 'PCLI')
+                                    THEN NULL
+                                   WHEN (`g`.`feature_code` = 'ADM1')
+                                     THEN `g`.`geonameid`
+                                   WHEN (`g`.`feature_code` = 'ADM2')
+                                     THEN (SELECT `dt_geonames_hierarchy`.`parent_id`
+                                           FROM `dt_geonames_hierarchy`
+                                           WHERE (`dt_geonames_hierarchy`.`id` = `g`.`geonameid`)
+                                           LIMIT 1)
+                                   WHEN (`g`.`feature_code` = 'ADM3')
+                                     THEN (SELECT `dt_geonames_hierarchy`.`parent_id`
+                                           FROM `dt_geonames_hierarchy`
+                                           WHERE (`dt_geonames_hierarchy`.`id` = (SELECT `dt_geonames_hierarchy`.`parent_id`
+                                                                                  FROM `dt_geonames_hierarchy`
+                                                                                  WHERE (`dt_geonames_hierarchy`.`id` = `g`.`geonameid`)
+                                                                                  LIMIT 1))
+                                           LIMIT 1)
+                                   ELSE 'Unknown' END) AS `adm1_id`,
+                                
+                                  
+                                  (CASE WHEN (`g`.`feature_code` = 'PCLI')
+                                    THEN NULL
+                                   WHEN (`g`.`feature_code` = 'ADM1')
+                                     THEN NULL
+                                   WHEN (`g`.`feature_code` = 'ADM2')
+                                     THEN `g`.`geonameid`
+                                   WHEN (`g`.`feature_code` = 'ADM3')
+                                     THEN (SELECT `dt_geonames_hierarchy`.`parent_id`
+                                           FROM `dt_geonames_hierarchy`
+                                           WHERE (`dt_geonames_hierarchy`.`id` = `g`.`geonameid`)
+                                           LIMIT 1)
+                                   ELSE 'Unknown' END)                         AS `adm2_id`,
+                                   (SELECT `dt_geonames`.`name`
+                                   FROM `dt_geonames`
+                                   WHERE (`dt_geonames`.`geonameid` = `country_id`)) AS `country_name`,
+                                  (SELECT `dt_geonames`.`name`
+                                   FROM `dt_geonames`
+                                   WHERE (`dt_geonames`.`geonameid` = `adm1_id`)) AS `adm1_name`,
+                                  (SELECT `dt_geonames`.`name`
+                                   FROM `dt_geonames`
+                                   WHERE (`dt_geonames`.`geonameid` = `adm2_id`)) AS `adm2_name` 
+                            FROM dt_geonames as g
+                            WHERE geonameid = %d
+                            ",
+                            $args[ 'geonameid' ]
+                        ), ARRAY_A );
+                    }
                     break;
 
 
@@ -1238,44 +1428,180 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
          */
 
         /**
-         * Returns key/value pairs of default locations
+         * Provides an easy to add drill down widget
+         * DT_Mapping_Module::instance()->initial_drill_down_input()
+         *
+         * @note    Works in connection with drill-down.js
+         */
+        public function initial_drill_down_input( $geonameid = null, $post_id = null ) {
+            $list = $this->default_map_short_list();
+            if ( count( $list ) < 2 ) {
+                $default_select_first_level = true;
+            }
+
+            /**
+             * Blank widget
+             */
+            if ( empty( $geonameid ) ) {
+                $first_level_geonameid = null;
+                ?>
+
+                <ul id="drill_down">
+                    <li>
+                        <select id="drill_down_top_level" class="geocode-select" onchange="GEOCODING.geoname_drill_down( 'geocode-selected-value', this.value );jQuery(this).parent().nextAll().remove();">
+                            <?php
+                                if ( $default_select_first_level ) {
+                                    foreach( $list as $geonameid => $name ) {
+                                        echo '<option value="'.esc_attr( $geonameid ).'" selected>'. esc_html( $name ) .'</option>';
+                                        $first_level_geonameid = $geonameid;
+                                    }
+                                } else {
+                                    echo '<option></option>';
+                                    foreach( $list as $geonameid => $name ) {
+                                        echo '<option value="'.esc_attr( $geonameid ).'">'. esc_html( $name ) .'</option>';
+                                    }
+                                }
+                            ?>
+                        </select>
+                    </li>
+                    <?php
+                    if ( $default_select_first_level ) {
+                        // auto generate second level
+                        $second_level_list = $this->query( 'get_children_by_geonameid', [ 'geonameid' => $first_level_geonameid ] );
+                        if ( ! empty( $second_level_list ) ) {
+                            ?>
+                            <li>
+                                <select id="<?php echo esc_attr( $first_level_geonameid );  ?>" class="geocode-select" onchange="GEOCODING.geoname_drill_down( 'geocode-selected-value', this.value );jQuery(this).parent().nextAll().remove();">
+                                    <option></option>
+                                    <?php
+                                        foreach( $second_level_list as $item ) {
+                                            echo '<option value="'.esc_attr( $item['geonameid'] ).'">'. esc_html( $item['name'] ) .'</option>';
+                                        }
+                                    ?>
+                                </select>
+                            </li>
+                            <?php
+                        }
+                    }
+
+                    ?>
+                </ul>
+                <input type="hidden" id="geocode-selected-value" value="" />
+                <?php
+            }
+
+            // Preloaded widget with geonameid
+            else if ( ! empty( $geonameid ) && ! empty( $post_id ) ) {
+
+                $default_settings = $this->default_map_settings();
+                $reference = $this->query( 'get_reference', [ 'post_id' => $post_id ] );
+                if ( empty( $reference ) ) {
+
+                }
+
+
+                $first_level_geonameid = null;
+                ?>
+
+                <ul id="drill_down">
+                    <li>
+                        <select id="drill_down_top_level" class="geocode-select" onchange="GEOCODING.geoname_drill_down( 'geocode-selected-value', this.value );jQuery(this).parent().nextAll().remove();">
+                            <?php
+                            if ( $default_select_first_level ) {
+                                foreach( $list as $geonameid => $name ) {
+                                    echo '<option value="'.esc_attr( $geonameid ).'" selected>'. esc_html( $name ) .'</option>';
+                                    $first_level_geonameid = $geonameid;
+                                }
+                            } else {
+                                echo '<option></option>';
+                                foreach( $list as $geonameid => $name ) {
+                                    echo '<option value="'.esc_attr( $geonameid ).'">'. esc_html( $name ) .'</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </li>
+                    <?php
+                    if ( $default_select_first_level ) {
+                        // auto generate second level
+                        $second_level_list = $this->query( 'get_children_by_geonameid', [ 'geonameid' => $first_level_geonameid ] );
+                        if ( ! empty( $second_level_list ) ) {
+                            ?>
+                            <li>
+                                <select id="<?php echo esc_attr( $first_level_geonameid );  ?>" class="geocode-select" onchange="GEOCODING.geoname_drill_down( 'geocode-selected-value', this.value );jQuery(this).parent().nextAll().remove();">
+                                    <option></option>
+                                    <?php
+                                    foreach( $second_level_list as $item ) {
+                                        echo '<option value="'.esc_attr( $item['geonameid'] ).'">'. esc_html( $item['name'] ) .'</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </li>
+                            <?php
+                        }
+                    }
+
+                    ?>
+                </ul>
+                <input type="hidden" id="geocode-selected-value" value="" />
+                <?php
+
+            }
+        }
+
+        /**
+         * Get a list of parent geonameids from a supplied geonameid
+         * Currently this is a heavy query because it pulls the entire hierarchy table and loops through it.
+         * If possible it is better to use $this->query( 'get_hierarchy_for_geoname') which returns a single row
+         * that has related country, state, and county for any given geoname. The result is narrow, but the
+         * query is much lighter and faster.
+         *
+         * @param $geonameid
          *
          * @return array
          */
-        public function top_map_list() : array {
-            $list = [];
-            $default_map_settings = $this->default_map_settings();
+        public function get_parents( $geonameid ) : array {
+            $query = $this->query( 'get_full_hierarchy' );
+            $hierarchy_data = $this->_prepare_list( $query );
+            $parents = $this->_build_parent_list( $geonameid, $hierarchy_data );
+            array_unshift($parents,$geonameid);
+            dt_write_log($parents);
+            return $parents;
+        }
+        public function _prepare_list( $query ) : array {
 
-            if ( $default_map_settings['type'] === 'world' ) {
-                $list = ['world' => 'World'];
+            $menu_data = [];
+
+            foreach ( $query as $menu_item )
+            {
+                $menu_data[$menu_item['id']] = $menu_item;
             }
-            else if ( $default_map_settings['type'] !== 'world' && empty( $default_map_settings['children'] ) ) {
-                $list = ['world' => 'World'];
-            }
-            else {
-                $children = $this->query( 'get_by_geonameid_list', [ 'list' => $default_map_settings['children'] ] );
-                if ( ! empty( $children ) ) {
-                    foreach ( $children as $child ) {
-                        $list[$child['geonameid']] = $child['name'];
-                    }
+
+            return $menu_data;
+        }
+        public function _build_parent_list( $geonameid, $hierarchy_data ) : array {
+            $list = [];
+
+            if (isset( $hierarchy_data[$geonameid] ) )
+            {
+                $list[] = $hierarchy_data[$geonameid]['parent_id'];
+                $parents = $this->_build_parent_list( $hierarchy_data[$geonameid]['parent_id'], $hierarchy_data );
+                if ( ! empty( $parents ) ) {
+                    $list = array_merge( $list, $parents );
                 }
+
             }
             return $list;
         }
 
-        public function initial_drill_down_input() {
-            $list = $this->top_map_list();
-            $html = '';
-
-
-
-            ?>
-            <ul id="drill_down">
-                <li>
-                    <select id="drill_down_top_level" onchange="geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"></select>
-                </li>
-            </ul>
-            <?php
+        public function get_countries_grouped_by_region() : array {
+            $regions = $this->query( 'get_regions', ['add_country_info' => true ] );
+            $list = [];
+            foreach ( $regions as $item ) {
+                $list[$item['region_id']]['region_name'] = $item['region_name'];
+                $list[$item['region_id']]['countries'][] = $item;
+            }
+            return $list;
         }
 
     } DT_Mapping_Module::instance(); // end DT_Mapping_Module class

@@ -711,42 +711,12 @@ jQuery(document).ready(function($) {
     changeYear: true
   })
 
-    /**
-     * Geocode Section
-     */
-    window.GEOCODEFUNCTIONS = {
-        loadInitialDropDown() {
-            if ( ! $('#new-contact').length ) { /* check if already created */
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    url: contactsDetailsWpApiSettings.root  + 'dt/v1/mapping_module/get_default_map_data',
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce );
-                    },
-                })
-                    .done( function( response ) {
-                        console.log(response)
-                        let div = 'geoname-encode-contact'
+    // Begin Geocode Section
+    window.GEOCODECONTACT = {
 
-                        $('#drill_down').empty().append(`
-                    <li>${response.data.map_data.self.name}</li>
-                    <li><select id="${response.data.map_data.self.geonameid}" onchange="window.GEOCODEFUNCTIONS.geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();">
-                    <option>Select</option></select>
-                    </li>`)
-
-                        jQuery.each( response.data.map_data.children, function(i,v) {
-                            jQuery('#'+response.data.map_data.self.geonameid).append(`<option value="${v.id}">${v.name}</option>`)
-                        })
-                    }) // end success statement
-                    .fail(function (err) {
-                        console.log("error")
-                        console.log(err)
-                    })
-            }
-        },
         getAddressInput() {
             let v = $('#validate_addressnew').val()
+
             if ( $('#new-contact').length ) { // check if edits have already been made in this session and load those instead.
                 $('#new-contact').replaceWith(`<textarea class="contact-input" id="new-contact" data-type="contact_address" dir="auto">${v}</textarea>`)
                 editFieldsUpdate['contact_address']['values'] = [{"key": undefined, "value": v }]
@@ -755,52 +725,9 @@ jQuery(document).ready(function($) {
                 editFieldsUpdate['contact_address'] = {"values": [{"key": undefined, "value": v }]}
             }
         },
-        geoname_drill_down( div, id ) { // geoname drill down loader
 
-            editFieldsUpdate['geonameid'] = id
-
-            let drill_down = jQuery('#drill_down')
-            jQuery.ajax({
-                type: 'POST',
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify( { 'geonameid': id } ),
-                dataType: "json",
-                url: contactsDetailsWpApiSettings.root  + 'dt/v1/mapping_module/get_map_by_geonameid',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce );
-                },
-            })
-                .done( function( response ) {
-                    console.log(response)
-
-                    if ( ! window.GEOCODEFUNCTIONS.isEmpty( response.children ) ) {
-                        drill_down.append(`<li><select id="${response.self.geonameid}" onchange="window.GEOCODEFUNCTIONS.geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
-                        let sorted_children =  _.sortBy(response.children, [function(o) { return o.name; }]);
-
-                        jQuery.each( sorted_children, function(i,v) {
-                            jQuery('#'+id).append(`<option value="${v.id}">${v.name}</option>`)
-                        })
-                    }
-
-                }) // end success statement
-                .fail(function (err) {
-                    console.log("error")
-                    console.log(err)
-                })
-        },
-        isEmpty(obj) {
-            for(let key in obj) {
-                if(obj.hasOwnProperty(key))
-                    return false;
-            }
-            return true;
-        }
     }
-// Geocode Listeners
-    $('button#add-new-address').on('click', () => {
-        window.GEOCODEFUNCTIONS.loadInitialDropDown()
-    })
-// End Geocode Section
+  // End Geocode Section
 
   let idOfNextNewField = 1
   $('button#add-new-social-media').on('click', ()=>{
@@ -1115,7 +1042,11 @@ jQuery(document).ready(function($) {
         editFieldsUpdate[`contact_${channelType}`].values.push({value:val})
       }
     })
-      console.log(editFieldsUpdate)
+      let geonameid = $('#geocode-selected-value').val()
+      if ( geonameid  ) {
+          editFieldsUpdate['geonameid'] = geonameid
+      }
+
     API.save_field_api( "contact", contactId, editFieldsUpdate).then((updatedContact)=>{
       contact = updatedContact
       $(this).toggleClass("loading")

@@ -328,6 +328,19 @@
                 <ul id="edit-contact_address" class="cell"></ul>
             </div>
 
+            <!-- Geocoding -->
+            <div class="grix-x">
+                <div class="section-subheader cell">
+                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
+                    <?php esc_html_e( 'GeoLocation', 'disciple_tools' ) ?>
+                </div>
+                <div class="locations">
+                    <?php
+                        DT_Mapping_Module::instance()->initial_drill_down_input( $contact['geonameid'] ?? null, $contact['ID'] );
+                    ?>
+                </div>
+            </div>
+
             <!-- Social Media -->
             <div class="grix-x">
                 <div class="section-subheader cell">
@@ -494,12 +507,12 @@
                    data-type="contact_address"
                    value=""
             />
-            <!-- <div class="input-group-button">
+            <div class="input-group-button">
                 <input type="button" class="button"
                        onclick="validate_group_address( jQuery('#validate_addressnew').val(), 'new')"
                        value="Validate"
                        id="validate_address_buttonnew">
-            </div> -->
+            </div>
         </div>
         <div id="possible-resultsnew">
             <input type="hidden" name="address" id="address_new" value=""/>
@@ -507,11 +520,7 @@
 
         <!-- drill down -->
         <div id="geoname-encode-contact">
-            <ul id="drill_down">
-                <?php
-
-                ?>
-            </ul>
+            <?php //DT_Mapping_Module::instance()->initial_drill_down_input(); ?>
         </div>
 
         <!-- map -->

@@ -599,7 +599,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                             </td>
                             <td>
                                 <?php
-                                $list = DT_Mapping_Module::instance()->top_map_list();
+                                $list = DT_Mapping_Module::instance()->default_map_short_list();
                                 if ( is_array( $list ) ) {
                                     foreach ( $list as $key => $value ) {
                                         echo $value . '<br>';
@@ -878,6 +878,20 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                 </table>
                 <br>
                 <!-- End Box -->
+                <script>
+                    function check_region( ids ) {
+                        jQuery.each( ids, function(i,v) {
+                            jQuery('#'+v).attr('checked', 'checked')
+                        })
+                    }
+                    function uncheck_all() {
+                        jQuery('.country-item').removeAttr('checked')
+                    }
+                    function check_all() {
+                        jQuery('.country-item').attr('checked', 'checked')
+                    }
+                </script>
+
             <?php
 
 
@@ -900,7 +914,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                             <table class="widefat striped">
                                 <tr>
                                     <td>
-                                        <span style="float: right;"><button type="submit" class="button">Save</button></span>
+                                        <span style="float: right;">
+                                            <a class="button" style="cursor:pointer;" onclick="uncheck_all()">Uncheck All</a>
+                                            <a class="button" style="cursor:pointer;" onclick="check_all()">Check All</a>
+                                            <button type="submit" class="button">Save</button>
+                                        </span>
                                         <strong>Select Countries</strong><br><br><hr clear="all" />
 
                                         <input type="hidden" name="type" value="country" />
@@ -908,7 +926,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                                         <fieldset>
                                             <?php
                                             foreach ( $country_list as $country ) {
-                                                echo '<input type="checkbox" name="children[]" value="'.$country['geonameid'].'"';
+                                                echo '<input id="'.$country['geonameid'].'" class="country-item" type="checkbox" name="children[]" value="'.$country['geonameid'].'"';
                                                 if ( array_search( $country['geonameid'], $default_map_settings['children'] ) !== false ) {
                                                     echo 'checked';
                                                 }
@@ -916,7 +934,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                                             }
                                             ?>
                                             <hr clear="all">
-                                            <span style="float: right;"><button type="submit" class="button">Save</button></span>
+                                            <span style="float: right;">
+                                                <a class="button" style="cursor:pointer;" onclick="uncheck_all()">Uncheck All</a>
+                                                <a class="button" style="cursor:pointer;" onclick="check_all()">Check All</a>
+                                                <button type="submit" class="button">Save</button>
+                                            </span>
                                         </fieldset>
                                     </td>
                                 </tr>
@@ -924,16 +946,27 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                         </td>
                         <td>
                             <p>Presets</p>
-                            <a>Africa</a><br>
-                            <a>Africa - Eastern</a><br>
-                            <a>Africa - Western</a><br>
-                            <a>Africa - Northern</a><br>
-                            <a>Africa - Southern</a><br>
-                            <a>Africa - Central</a><br>
+                            
+                            <hr>
+                            <?php
+                            $regions = $mm->get_countries_grouped_by_region();
+                            foreach ( $regions as $key => $value ) {
+                                $country_ids = '';
+                                foreach ( $value['countries'] as $country ) {
+                                    if ( ! empty( $country_ids ) ) {
+                                        $country_ids .= ',';
+                                    }
+                                    $country_ids .= $country['geonameid'];
+                                }
+                                echo '<a id="'.esc_attr( $key ).'" style="cursor:pointer;" onclick="check_region(['.$country_ids.']);jQuery(this).append(\' &#x2714;\');">'.esc_html($value['region_name']).'</a><br>';
+                            }
+
+                            ?>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+
                 <br>
                 <!-- End Box -->
                 <?php
@@ -989,7 +1022,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                         <thead>
                         <th colspan="2">
                             <strong>Select States for <?php echo $parent['name'] ?? '?' ?></strong>
-                            <span style="float: right;"><button type="submit" class="button">Save</button></span>
+                            <span style="float: right;">
+                                <a class="button" style="cursor:pointer;" onclick="uncheck_all()">Uncheck All</a>
+                                <a class="button" style="cursor:pointer;" onclick="check_all()">Check All</a>
+                                <button type="submit" class="button">Save</button>
+                            </span>
                         </th>
                         </thead>
                         <tbody>
@@ -998,7 +1035,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                                 <fieldset>
                                     <?php
                                     foreach ( $state_list as $value ) {
-                                        echo '<input type="checkbox" name="children[]" value="'.$value['geonameid'].'"';
+                                        echo '<input id="'.$value['geonameid'].'" class="country-item" type="checkbox" name="children[]" value="'.$value['geonameid'].'"';
                                         if ( array_search( $value['geonameid'], $default_map_settings['children'] ) !== false ) {
                                             echo 'checked';
                                         }
@@ -1028,7 +1065,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
 
         public function mapping_focus_instructions_metabox() {
 
-            $list = DT_Mapping_Module::instance()->top_map_list();
+            $list = DT_Mapping_Module::instance()->default_map_short_list();
 
             ?>
             <!-- Box -->
