@@ -11,240 +11,65 @@ jQuery(document).ready(function($) {
   }
   $(`div.top-bar-left ul.menu [href*=${ref.split('/')[0]}]`).parent().addClass('active');
 })
-window.API = {
-  get_post(type, postId){
-    return jQuery.ajax({
-      type:"GET",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/${type}/${postId}`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  create_contact(fields){
-    return jQuery.ajax({
-      type: "POST",
-      data: JSON.stringify(fields),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/contact/create`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
 
-  save_field_api(type, postId, post_data){
-    return jQuery.ajax({
-      type:"POST",
-      data:JSON.stringify(post_data),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/${type}/${postId}`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  post_comment(type, postId, comment) {
-    return jQuery.ajax({
-      type: "POST",
-      data: JSON.stringify({comment}),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/${type}/${postId}/comment`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  delete_comment(type, postId, comment_ID){
-    return jQuery.ajax({
-      type: "DELETE",
-      data: JSON.stringify({comment_ID}),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/${type}/${postId}/comment`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  update_comment(type, postId, comment_ID, comment_content){
-    return jQuery.ajax({
-      type: "POST",
-      data: JSON.stringify({comment_ID, comment_content}),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/${type}/${postId}/comment/update`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  get_comments(type, postId) {
-    return jQuery.ajax({
-      type: "GET",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/${type}/${postId}/comments`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  get_activity(type, postId) {
-    return jQuery.ajax({
-      type: "GET",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/${type}/${postId}/activity`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  get_single_activity(type, postId, activityId) {
-    return jQuery.ajax({
-      type: "GET",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/${type}/${postId}/activity/${activityId}`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  revert_activity(type, postId, activityId) {
-    return jQuery.ajax({
-      type: "GET",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/${type}/${postId}/revert/${activityId}`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  get_shared(type, postId){
-    return jQuery.ajax({
-      type: "GET",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/${type}/${postId}/shared-with`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  add_shared(type, postId, userId){
-    return jQuery.ajax({
-      type: "POST",
-      data: JSON.stringify({user_id:userId}),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/${type}/${postId}/add-shared`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  remove_shared(type, postId, userId){
-    return jQuery.ajax({
-      type: "POST",
-      data: JSON.stringify({user_id:userId}),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/${type}/${postId}/remove-shared`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-
-  create_group(fields){
-    return jQuery.ajax({
-      type: "POST",
-      data: JSON.stringify(fields),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/group/create`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  search_users(query){
-    return jQuery.ajax({
-      type: "GET",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/users/get_users?s=${query}`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  get_filters(){
-    return jQuery.ajax({
-      type: "GET",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/users/get_filters`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  save_filters( filters ){
-    return jQuery.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      data: JSON.stringify( {filters} ),
-      url: wpApiShare.root + `dt/v1/users/save_filters`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  get_duplicates_on_post(type, postId){
-    return jQuery.ajax({
-      type:"GET",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: wpApiShare.root + `dt/v1/${type}/${postId}/duplicates`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  create_user( user ){
-    return jQuery.ajax({
-      type:"POST",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      data: JSON.stringify( user ),
-      url: wpApiShare.root + `dt/v1/users/create`,
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-      }
-    })
-  },
-  transfer_contact( contactId, siteId ){
-      return jQuery.ajax({
-          type:"POST",
-          contentType: "application/json; charset=utf-8",
-          dataType: "json",
-          data: JSON.stringify( { "contact_id": contactId, "site_post_id": siteId } ),
-          url: wpApiShare.root + `dt/v1/contact/transfer`,
-          beforeSend: function(xhr) {
-              xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
-          }
-      })
+function makeRequest (type, url, data) {
+  const options = {
+    type: type,
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json',
+    url: url.startsWith('http') ? url : `${wpApiShare.root}dt/v1/${url}`,
+    beforeSend: xhr => {
+      xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+    }
   }
+
+  if (data) {
+    options.data = JSON.stringify(data)
+  }
+
+  return jQuery.ajax(options)
+}
+
+window.API = {
+  get_post: (type, postId) => makeRequest('get', `${type}/${postId}`),
+
+  create_contact: fields => makeRequest('post', `contact/create`, fields),
+
+  save_field_api: (type, postId, postData) => makeRequest('post', `${type}/${postId}`, postData),
+
+  post_comment: (type, postId, comment) => makeRequest('post', `${type}/${postId}/comment`, { comment }),
+
+  delete_comment: (type, postId, commentId) => makeRequest('delete', `${type}/${postId}/comment`, { commentId }),
+
+  update_comment: (type, postId, commentId, commentContent) => makeRequest('post', `${type}/${postId}/comment/update`, { commentId, commentContent }),
+
+  get_comments: (type, postId) => makeRequest('get', `${type}/${postId}/comments`),
+
+  get_activity: (type, postId) => makeRequest('get', `${type}/${postId}/activity`),
+
+  get_single_activity: (type, postId, activityId) => makeRequest('get', `${type}/${postId}/activity/${activityId}`),
+
+  revert_activity: (type, postId, activityId) => makeRequest('get', `${type}/${postId}/revert/${activityId}`),
+
+  get_shared: (type, postId)=> makeRequest('get', `${type}/${postId}/shared-with`),
+
+  add_shared: (type, postId, userId) => makeRequest('post', `${type}/${postId}/add-shared`, { user_id: userId }),
+
+  remove_shared: (type, postId, userId)=> makeRequest('post', `${type}/${postId}/remove-shared`, { user_id: userId }),
+
+  create_group: fields => makeRequest('post', 'group/create', fields),
+
+  search_users: query => makeRequest('get', `users/get_users?s=${query}`),
+
+  get_filters: () => makeRequest('get', 'users/get_filters'),
+
+  save_filters: filters => makeRequest('post', 'users/save_filters', { filters }),
+
+  get_duplicates_on_post: (type, postId) => makeRequest('get', `${type}/${postId}/duplicates`),
+
+  create_user: user => makeRequest('post', 'users/create', user),
+
+  transfer_contact: (contactId, siteId) => makeRequest('post', 'contact/transfer', { contact_id: contactId, site_post_id: siteId }),
 }
 
 function handelAjaxError(err) {
@@ -255,22 +80,22 @@ function handelAjaxError(err) {
   }
 }
 
-jQuery( document ).ajaxComplete(function(event, xhr, settings) {
-  if (_.get(xhr, "responseJSON.data.status") === 401){
-    window.location.replace("/login");
+jQuery(document).ajaxComplete((event, xhr, settings) => {
+  if (_.get(xhr, 'responseJSON.data.status') === 401) {
+    window.location.replace('/login');
   }
-}).ajaxError(function (event, xhr) {
-    handelAjaxError(xhr)
-  })
-jQuery( document ).on("click", ".help-button", function () {
-    jQuery('#help-modal').foundation('open');
-    let section = jQuery(this).data("section")
-    jQuery(".help-section").hide()
-    jQuery(`#${section}`).show()
+}).ajaxError((event, xhr) => {
+  handelAjaxError(xhr)
+})
+
+jQuery(document).on('click', '.help-button', function () {
+  jQuery('#help-modal').foundation('open')
+  let section = jQuery(this).data("section")
+  jQuery(".help-section").hide()
+  jQuery(`#${section}`).show()
 })
 
 window.TYPEAHEADS = {
-
   typeaheadSource : function (field, url) {
     return {
       contacts: {
@@ -351,7 +176,7 @@ window.TYPEAHEADS = {
     let img = item.user ? `<img src="${wpApiShare.template_dir}/dt-assets/images/profile.svg">` : ''
     return `<span dir="auto">
       <span class="typeahead-user-row" style="width:20px">${img}</span>
-      ${_.escape(item.name)} 
+      ${_.escape(item.name)}
       <span dir="auto">(#${item.ID})</span>
     </span>`
   },
