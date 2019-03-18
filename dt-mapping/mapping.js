@@ -1334,7 +1334,7 @@ function top_level_drill_down( div ) {
     hide_spinner()
 }
 
-function geoname_drill_down( div, id ) {
+function geoname_drill_down( div, id, deeper_levels ) {
     let mapping_module = mappingModule.mapping_module
     show_spinner()
     let rest = mapping_module.settings.endpoints.get_map_by_geonameid_endpoint

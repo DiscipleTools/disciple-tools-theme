@@ -710,180 +710,11 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             return $results;
         }
 
-//        public function top_level_maps() {
-//            // this data resides in the database, but it easier to label and source from an array. This allows for customization better.
-//            // @link https://www.internetworldstats.com/list1.htm
-//
-//            $top_level_maps = [];
-//
-//            $top_level_maps['world'] = [
-//                'name' => 'World',
-//                'id' => 'world',
-//                'geonameid' => 6295630,
-//                'population' => 7700000000,
-//                'population_formatted' => number_format(7700000000 ),
-//                'latitude' => 0,
-//                'longitude' => 0,
-//                'countries' => [],
-//                'unique_source_url' => false,
-//                'url' => '',
-//            ];
-//            $top_level_maps['north_america'] = [
-//                'name' => 'North America',
-//                'id' => 'north_america',
-//                'geonameid' => 6255149,
-//                'population' => 365574927,
-//                'population_formatted' => number_format(7700000000 ),
-//                'latitude' => 46.0732,
-//                'longitude' => -100.547,
-//                'countries' => [],
-//                'unique_source_url' => false,
-//                'url' => '',
-//            ];
-//            $top_level_maps['south_america'] = [
-//                'name' => __( 'South America', 'dt_mapping_module' ),
-//                'id' => 'south_america',
-//                'geonameid' => 6255150,
-//                'population' => 385742554,
-//                'population_formatted' => number_format(385742554 ),
-//                'latitude' => -14.6048,
-//                'longitude' => -57.6562,
-//                'countries' => [],
-//                'unique_source_url' => false,
-//                'url' => '',
-//            ];
-//            $top_level_maps['europe'] = [
-//                'name' => 'Europe',
-//                'id' => 'europe',
-//                'geonameid' => 6255148,
-//                'population' => 742945582,
-//                'population_formatted' => number_format(742945582 ),
-//                'latitude' => 48.691,
-//                'longitude' => 9.14062,
-//                'countries' => [],
-//                'unique_source_url' => false,
-//                'url' => '',
-//            ];
-//
-//            // africa
-//            $top_level_maps['africa'] = [
-//                'name' => 'Africa',
-//                'id' => 'africa',
-//                'geonameid' => 6255146,
-//                'population' => 1031833000,
-//                'population_formatted' => number_format(1031833000 ),
-//                'latitude' => 7.1881,
-//                'longitude' => 21.0938,
-//                'countries' => [],
-//                'unique_source_url' => false,
-//                'url' => '',
-//            ];
-//            $top_level_maps['africa_east'] = [
-//                'name' => 'Africa - Eastern (UN)',
-//                'id' => 'africa_east',
-//                'geonameid' => 6255146,
-//                'population' => 1031833000,
-//                'population_formatted' => number_format(1031833000 ),
-//                'latitude' => 7.1881,
-//                'longitude' => 21.0938,
-//                'countries' => [],
-//                'unique_source_url' => false,
-//                'url' => '',
-//            ];
-//            $top_level_maps['africa_middle'] = [
-//                'name' => 'Africa - Middle (UN)',
-//                'id' => 'africa_middle',
-//                'geonameid' => 0,
-//                'population' => 0,
-//                'population_formatted' => number_format(0 ),
-//                'latitude' => 7.1881,
-//                'longitude' => 21.0938,
-//                'countries' => [],
-//                'unique_source_url' => false,
-//                'url' => '',
-//            ];
-//            $top_level_maps['africa_north'] = [
-//                'name' => 'Africa - Northern (UN)',
-//                'id' => 'africa_north',
-//                'geonameid' => 0,
-//                'population' => 0,
-//                'population_formatted' => number_format(0 ),
-//                'latitude' => 7.1881,
-//                'longitude' => 21.0938,
-//                'countries' => ["DZ","EG","LY","MA","SS","SD","TN","ST"],
-//                'unique_source_url' => false,
-//                'url' => '',
-//            ];
-//            $top_level_maps['africa_south'] = [
-//                'name' => 'Africa - Southern (UN)',
-//                'id' => 'africa_south',
-//                'geonameid' => 0,
-//                'population' => 0,
-//                'population_formatted' => number_format(0 ),
-//                'latitude' => 7.1881,
-//                'longitude' => 21.0938,
-//                'countries' => [],
-//                'unique_source_url' => false,
-//                'url' => '',
-//            ];
-//            $top_level_maps['africa_west'] = [
-//                'name' => 'Africa - Western (UN)',
-//                'id' => 'africa_west',
-//                'geonameid' => 0,
-//                'population' => 0,
-//                'population_formatted' => number_format(0 ),
-//                'latitude' => 7.1881,
-//                'longitude' => 21.0938,
-//                'countries' => [],
-//                'unique_source_url' => false,
-//                'url' => '',
-//            ];
-//            // end africa
-//
-//            // asia
-//            $top_level_maps['asia'] = [
-//                'name' => __( 'Asia', 'dt_mapping_module' ),
-//                'id' => 'asia',
-//                'geonameid' => 6255147,
-//                'population' => 2147483647,
-//                'population_formatted' => number_format(2147483647 ),
-//                'latitude' => 29.8406,
-//                'longitude' => 89.2969,
-//                'countries' => [],
-//                'unique_source_url' => false,
-//                'url' => '',
-//            ];
-//
-//            // oceania
-//            $top_level_maps['oceania'] = [
-//                'name' => __( 'Oceania', 'dt_mapping_module' ),
-//                'id' => 'oceania',
-//                'geonameid' => 6255151,
-//                'population' => 7700000000,
-//                'population_formatted' => number_format(7700000000 ),
-//                'latitude' => -18.3128,
-//                'longitude' => 138.516,
-//                'countries' => [],
-//                'unique_source_url' => false,
-//                'url' => '',
-//            ];
-//
-//
-//            $top_level_maps['middle_east'] = [
-//                'name' => 'Middle East',
-//                'id' => 'middle_east',
-//                'geonameid' => 1,
-//                'population' => 411000000,
-//                'population_formatted' => number_format(411000000 ),
-//                'latitude' => 0,
-//                'longitude' => 0,
-//                'countries' => [],
-//                'unique_source_url' => false,
-//                'url' => '',
-//            ];
-//
-//            return apply_filters( 'dt_mapping_module_top_level_list', $top_level_maps );
-//        } // @todo remove?
+        public function get_geonameid_title( int $geonameid ) : string {
+            $result = $this->query( 'get_by_geonameid', [ 'geonameid' => $geonameid ] );
+            return $result['name'] ?? '';
+        }
+
 
         public function get_available_geojson() {
 
@@ -1129,14 +960,14 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                             SELECT * 
                             FROM {$wpdb->prefix}dt_geonames_reference 
                             WHERE post_id = %s;
-                        ", $args['post_id'] ) );
+                        ", $args['post_id'] ), ARRAY_A );
                     }
                     else if ( isset( $args['geonameid'] ) ) {
                         $results = $wpdb->get_row( $wpdb->prepare( "
                             SELECT * 
                             FROM {$wpdb->prefix}dt_geonames_reference 
                             WHERE geonameid = %s;
-                        ", $args['geonameid'] ) );
+                        ", $args['geonameid'] ), ARRAY_A );
                     }
                     break;
 
@@ -1427,14 +1258,15 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
          * End explore section of the admin area
          */
 
+
         /**
-         * Provides an easy to add drill down widget
-         * DT_Mapping_Module::instance()->initial_drill_down_input()
+         * Provides a drill down widget
          *
          * @note    Works in connection with drill-down.js
          */
-        public function initial_drill_down_input( $geonameid = null, $post_id = null ) {
+        public function initial_drill_down_input( $div = '', $geonameid = null, $post_id = null ) {
             $list = $this->default_map_short_list();
+            $default_select_first_level = false;
             if ( count( $list ) < 2 ) {
                 $default_select_first_level = true;
             }
@@ -1449,6 +1281,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 <ul id="drill_down">
                     <li>
                         <select id="drill_down_top_level" class="geocode-select" onchange="GEOCODING.geoname_drill_down( 'geocode-selected-value', this.value );jQuery(this).parent().nextAll().remove();">
+                            <option value=""></option>
                             <?php
                                 if ( $default_select_first_level ) {
                                     foreach( $list as $geonameid => $name ) {
@@ -1472,7 +1305,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                             ?>
                             <li>
                                 <select id="<?php echo esc_attr( $first_level_geonameid );  ?>" class="geocode-select" onchange="GEOCODING.geoname_drill_down( 'geocode-selected-value', this.value );jQuery(this).parent().nextAll().remove();">
-                                    <option></option>
+                                    <option value="<?php echo esc_attr( $first_level_geonameid );  ?>"></option>
                                     <?php
                                         foreach( $second_level_list as $item ) {
                                             echo '<option value="'.esc_attr( $item['geonameid'] ).'">'. esc_html( $item['name'] ) .'</option>';
@@ -1493,59 +1326,96 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             // Preloaded widget with geonameid
             else if ( ! empty( $geonameid ) && ! empty( $post_id ) ) {
 
-                $default_settings = $this->default_map_settings();
+                $default_top_level = $this->default_map_short_list();
+                foreach ( $default_top_level as $key => $value ) {
+                    $default_settings['list'][] = [
+                         'geonameid' => $key,
+                         'name' => $value,
+                    ];
+                }
                 $reference = $this->query( 'get_reference', [ 'post_id' => $post_id ] );
-                if ( empty( $reference ) ) {
 
+
+                switch ( $reference['feature_code'] ) {
+
+                    case 'ADM1':
+                        $dd = [
+                            'drill_down_top_level' => [
+                                'selected' => $reference['pcli'],
+                                'list' => $default_settings['list'],
+                            ],
+                            $reference['pcli'] => [
+                                'selected' => $reference['adm1'],
+                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ),
+                            ],
+                            $reference['adm1'] => [
+                                'selected' => $reference['adm2'],
+                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ),
+                            ],
+                        ];
+                        break;
+
+                    case 'ADM2':
+                        $dd = [
+                            'drill_down_top_level' => [
+                                'selected' => $reference['pcli'],
+                                'list' => $default_settings['list'],
+                            ],
+                            $reference['pcli'] => [
+                                'selected' => $reference['pcli'],
+                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ),
+                            ],
+                            $reference['adm1'] => [
+                                'selected' => $reference['adm2'],
+                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ),
+                            ],
+                            $reference['adm2'] => [
+                                'selected' => $reference['adm3'],
+                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm2'] ] ),
+                            ],
+                        ];
+                        break;
+
+                    case 'PCLI':
+                    default:
+                        $dd = [
+                            'drill_down_top_level' => [
+                                'selected' => $reference['pcli'],
+                                'list' => $default_settings['list'],
+                            ],
+                            $reference['pcli'] => [
+                                'selected' => $reference['adm1'],
+                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ),
+                            ]
+                        ];
+                        break;
                 }
 
-
-                $first_level_geonameid = null;
                 ?>
 
                 <ul id="drill_down">
-                    <li>
-                        <select id="drill_down_top_level" class="geocode-select" onchange="GEOCODING.geoname_drill_down( 'geocode-selected-value', this.value );jQuery(this).parent().nextAll().remove();">
-                            <?php
-                            if ( $default_select_first_level ) {
-                                foreach( $list as $geonameid => $name ) {
-                                    echo '<option value="'.esc_attr( $geonameid ).'" selected>'. esc_html( $name ) .'</option>';
-                                    $first_level_geonameid = $geonameid;
-                                }
-                            } else {
-                                echo '<option></option>';
-                                foreach( $list as $geonameid => $name ) {
-                                    echo '<option value="'.esc_attr( $geonameid ).'">'. esc_html( $name ) .'</option>';
-                                }
-                            }
-                            ?>
-                        </select>
-                    </li>
                     <?php
-                    if ( $default_select_first_level ) {
-                        // auto generate second level
-                        $second_level_list = $this->query( 'get_children_by_geonameid', [ 'geonameid' => $first_level_geonameid ] );
-                        if ( ! empty( $second_level_list ) ) {
-                            ?>
-                            <li>
-                                <select id="<?php echo esc_attr( $first_level_geonameid );  ?>" class="geocode-select" onchange="GEOCODING.geoname_drill_down( 'geocode-selected-value', this.value );jQuery(this).parent().nextAll().remove();">
-                                    <option></option>
-                                    <?php
-                                    foreach( $second_level_list as $item ) {
-                                        echo '<option value="'.esc_attr( $item['geonameid'] ).'">'. esc_html( $item['name'] ) .'</option>';
+                        if ( $dd ) :
+                        foreach ( $dd as $key => $value ) :
+                        ?>
+                        <li>
+                            <select id="<?php echo $key ?>" class="geocode-select" onchange="GEOCODING.geoname_drill_down( 'geocode-selected-value', this.value );jQuery(this).parent().nextAll().remove();">
+                                <option value="<?php echo $key ?>"></option>
+                                <?php
+                                foreach( $value['list'] as $item ) {
+                                    echo '<option value="'.esc_attr( $item['geonameid'] ).'"';
+                                    if ( $value['selected'] == $item['geonameid'] ) {
+                                        echo ' selected';
                                     }
-                                    ?>
-                                </select>
-                            </li>
-                            <?php
-                        }
-                    }
-
-                    ?>
+                                    echo '>'. esc_html( $item['name'] ) .'</option>';
+                                }
+                                ?>
+                            </select>
+                        </li>
+                    <?php endforeach; endif; ?>
                 </ul>
                 <input type="hidden" id="geocode-selected-value" value="" />
                 <?php
-
             }
         }
 

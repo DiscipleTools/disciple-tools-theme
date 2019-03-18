@@ -332,11 +332,11 @@
             <div class="grix-x">
                 <div class="section-subheader cell">
                     <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                    <?php esc_html_e( 'GeoLocation', 'disciple_tools' ) ?>
+                    <?php esc_html_e( 'Primary Location', 'disciple_tools' ) ?>
                 </div>
                 <div class="locations">
                     <?php
-                        DT_Mapping_Module::instance()->initial_drill_down_input( $contact['geonameid'] ?? null, $contact['ID'] );
+                        DT_Mapping_Module::instance()->initial_drill_down_input( 'geocode-selected-value', $contact['geonameid'] ?? null, $contact['ID'] );
                     ?>
                 </div>
             </div>

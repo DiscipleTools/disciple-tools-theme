@@ -287,15 +287,15 @@ else {
             require_once ( get_template_directory() . '/dt-mapping/mapping-module-config.php' ); // configuration file for mapping module
             DT_Mapping_Module_Config::instance();
             require_once ( get_template_directory() . '/dt-mapping/mapping.php' ); // load for mapping module
+            require_once( get_template_directory() . '/dt-mapping/geocoders/google-geocode-api.php' );
 
             // dt-locations
             require_once( get_template_directory() . '/dt-locations/locations-post-type.php' );
             $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
-            require_once( get_template_directory() . '/dt-locations/locations-template.php' );
             require_once( get_template_directory() . '/dt-locations/locations.php' ); // serves the locations rest endpoints
             require_once( get_template_directory() . '/dt-locations/locations-endpoints.php' ); // builds rest endpoints
             $this->endpoints['locations'] = Disciple_Tools_Locations_Endpoints::instance();
-            require_once( get_template_directory() . '/dt-locations/geocoding-api.php' );
+
 
             /**
              * dt-people-groups
@@ -399,7 +399,6 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-featured-extensions.php' );
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-utilities.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-locations.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-people-groups.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-utilities-overview.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-contact-import.php' );
@@ -407,7 +406,6 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-export.php' );
                 /* End menu tab section */
 
-                require_once( get_template_directory() . '/dt-locations/utilities/locations-async-insert.php' ); // required to load for async listening
 
                 // Contacts
                 require_once( get_template_directory() . '/dt-contacts/contacts-config.php' );

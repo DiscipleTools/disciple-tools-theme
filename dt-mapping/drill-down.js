@@ -1,36 +1,27 @@
+/* global jQuery:false, wpApiShare:false */
+_ = _ || window.lodash // make sure lodash is defined so plugins like gutenberg don't break it.
+
+window.GEOCODINGDATA = mappingModule.mapping_module
 window.GEOCODING = {
-    mapping_module() {
-        return mappingModule
-    },
 
     load_drill_down( div, geonameid ) {
-
-        /*******************************************************************************************************************
-         *
-         * Load Requested Geonameid
-         *
-         *****************************************************************************************************************/
-        if ( geonameid ) { // make sure this is not a top level continent or world request
+        if ( geonameid ) {
             GEOCODING.geoname_drill_down( div, geonameid )
         }
-        /*******************************************************************************************************************
-         *
-         * Initialize Top Level Maps
-         *
-         *****************************************************************************************************************/
-        else { // top_level maps
+        else {
             GEOCODING.top_level_drill_down( div )
-        } // end if
+        }
     },
 
     top_level_drill_down( div ) {
-        let mapping_module = mappingModule.mapping_module
+
+        let mapping_module = GEOCODINGDATA
         let top_map_list = mapping_module.data.top_map_list
         let drill_down = jQuery('#drill_down')
 
         GEOCODING.show_spinner()
 
-        drill_down.empty().append(`<li><select id="drill_down_top_level" onchange="geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"></select></li>`)
+        drill_down.empty().append(`<li><select id="drill_down_top_level" onchange="geoname_drill_down( '${div}', this.value, null );jQuery(this).parent().nextAll().remove();"></select><option value=" "></option></li>`)
         let drill_down_select = jQuery('#drill_down_top_level')
 
         if( Object.keys(top_map_list).length === 1 ) {
@@ -38,84 +29,75 @@ window.GEOCODING = {
                 drill_down_select.append(`<option value="${i}" selected>${v}</option>`)
 
                 if ( ! GEOCODING.isEmpty( mapping_module.data[i].children ) ) {
-                    if ( ! GEOCODING.isEmpty( mapping_module.data[i].deeper_levels ) ) {
-                        drill_down.append(`<li><select id="${i}" onchange="GEOCODING.geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
-                        let sorted_children =  _.sortBy(mapping_module.data[i].children, [function(o) { return o.name; }]);
 
-                        jQuery.each( sorted_children, function(ii,vv) {
-                            jQuery('#'+i).append(`<option value="${vv.id}">${vv.name}</option>`)
-                        })
-                    }
+                    drill_down.append(`<li><select id="${i}" onchange="GEOCODING.geoname_drill_down( '${div}', this.value, ${i} );jQuery(this).parent().nextAll().remove();"><option value="${i}"></option></select></li>`)
+                    let sorted_children =  _.sortBy(mapping_module.data[i].children, [function(o) { return o.name; }]);
+
+                    jQuery.each( sorted_children, function(ii,vv) {
+                        jQuery('#'+i).append(`<option value="${vv.id}">${vv.name}</option>`)
+                    })
 
                     if ( i === 'world' ) {
                         GEOCODING.bind_drill_down( div )
                     } else {
                         GEOCODING.bind_drill_down( div, i )
                     }
-
-                } else {
-                    drill_down.append(`<li>deepest level</li>`)
                 }
-
             })
         } else {
-            drill_down_select.append(`<option>Select</option>`)
+            drill_down_select.append(`<option value=""></option>`)
             jQuery.each(top_map_list, function(i,v) {
                 drill_down_select.append(`<option value="${i}">${v}</option>`)
             })
-            jQuery('#location-list').empty().append(`Select list above.`)
-
             GEOCODING.bind_drill_down( div )
         }
 
         GEOCODING.hide_spinner()
     },
 
-    geoname_drill_down( div, id ) {
+    geoname_drill_down( div, id) {
         let mapping_module = mappingModule.mapping_module
-        GEOCODING.show_spinner()
         let rest = mapping_module.settings.endpoints.get_map_by_geonameid_endpoint
-
         let drill_down = jQuery('#drill_down')
 
-        jQuery.ajax({
-            type: rest.method,
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify( { 'geonameid': id } ),
-            dataType: "json",
-            url: mapping_module.settings.root + rest.namespace + rest.route,
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
-            },
-        })
-            .done( function( response ) {
-                console.log(response)
-                mapping_module.data[response.self.geonameid] = response
+        GEOCODING.show_spinner()
 
-                if ( ! GEOCODING.isEmpty( response.children ) ) {
-                    if ( ! GEOCODING.isEmpty( response.deeper_levels ) ) {
-                        drill_down.append(`<li><select id="${response.self.geonameid}" class="geocode-select" onchange="GEOCODING.geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
+        if ( id !== undefined ) {
+
+            jQuery.ajax({
+                type: rest.method,
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify( { 'geonameid': id } ),
+                dataType: "json",
+                url: mapping_module.settings.root + rest.namespace + rest.route,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
+                },
+            })
+                .done( function( response ) {
+                    console.log(response)
+                    GEOCODINGDATA.data[response.self.geonameid] = response
+
+                    if ( ! GEOCODING.isEmpty( response.children ) ) {
+
+                        drill_down.append(`<li><select id="${response.self.geonameid}" class="geocode-select" onchange="GEOCODING.geoname_drill_down( '${div}', this.value, ${response.self.geonameid} );jQuery(this).parent().nextAll().remove();"><option value="${response.self.geonameid}"></option></select></li>`)
                         let sorted_children =  _.sortBy(response.children, [function(o) { return o.name; }]);
 
                         jQuery.each( sorted_children, function(i,v) {
                             jQuery('#'+id).append(`<option value="${v.id}">${v.name}</option>`)
                         })
+
+                        GEOCODING.bind_drill_down( div, response.self.geonameid )
                     }
 
-                    GEOCODING.bind_drill_down( div, response.self.geonameid )
-                } else {
-                    drill_down.append(`<li>deepest level</li>`)
-                }
+                }) // end success statement
+                .fail(function (err) {
+                    console.log("error")
+                    console.log(err)
+                })
+        }
 
-
-                GEOCODING.hide_spinner()
-
-            }) // end success statement
-            .fail(function (err) {
-                console.log("error")
-                console.log(err)
-                GEOCODING.hide_spinner()
-            })
+        GEOCODING.hide_spinner()
     },
 
     isEmpty(obj) {
@@ -134,11 +116,12 @@ window.GEOCODING = {
         jQuery('#spinner').hide()
     },
 
-    bind_drill_down( div, geonameid ) {
-
+    bind_drill_down( div, geonameid, previous ) {
         switch(div) {
             case 'location-list':
-                console.log('bind_drill_down: location-list')
+                if ( geonameid === undefined ) {
+                    jQuery('#location-list').empty().append(`Select list above.`)
+                }
                 location_list( div, geonameid )
                 break;
             case 'map-display':
@@ -150,9 +133,19 @@ window.GEOCODING = {
                 }
                 break;
             case 'geocode-selected-value':
-                jQuery('#geocode-selected-value').val( geonameid )
+                if ( geonameid !== previous ) {
+                    console.log( geonameid )
+                    jQuery('#geocode-selected-value').val( geonameid )
+                }
                 break;
+            case 'name-select':
+                let list_results = jQuery('#list_results')
+                list_results.empty()
+                jQuery.each( window.GEOCODINGDATA.data[geonameid].children, function(i,v) {
+                    list_results.append( v.name + `<br>`)
+                })
 
+                break;
         }
     }
 }

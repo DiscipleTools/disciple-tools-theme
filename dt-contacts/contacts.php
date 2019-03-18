@@ -1180,6 +1180,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $l->permalink = get_permalink( $l->ID );
             }
             $fields["locations"] = $locations;
+
             $groups = get_posts(
                 [
                     'connected_type'   => 'contacts_to_groups',

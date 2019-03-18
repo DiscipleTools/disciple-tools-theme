@@ -60,10 +60,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             $this->spinner = spinner();
             $this->nonce = wp_create_nonce( 'wp_rest' );
             $this->current_user_id = get_current_user_id();
-            add_action( 'admin_head', [ $this, 'scripts' ] );
 
+            add_action( 'admin_head', [ $this, 'scripts' ] );
             add_action( "admin_menu", array( $this, "register_menu" ) );
             add_action( "admin_head", [ $this, 'header_script' ] );
+            add_action( "admin_enqueue_scripts", [ $this, 'enqueue_scripts'] );
 
             if ( is_admin() ) {
                 // all other things to load when in the admin environment.
@@ -75,7 +76,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
          */
         public function scripts()
         {
-            ?>
+            /*?>
             <script>
                 function install_geonames(type) {
                     let link = jQuery('#' + type)
@@ -133,7 +134,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                         })
                 }
             </script>
-            <?php
+            <?php */
         }
 
         public function register_menu() {
@@ -146,10 +147,38 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                 7 );
         }
 
+        public function enqueue_scripts( $hook ){
+            if ( 'admin.php' === $hook ) {
+                return;
+            }
+            // drill down tool
+            wp_register_script( 'lodash', 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js', false, '4.17.11' );
+            wp_enqueue_script( 'lodash' );
+            wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', ['jquery', 'lodash'], '1.1' );
+            wp_localize_script(
+                'mapping-drill-down', 'mappingModule', array(
+                    'mapping_module' => DT_Mapping_Module::instance()->localize_script(),
+                )
+            );
+
+        }
+
         public function header_script() {
+
             ?>
             <style>
                 a.pointer { cursor: pointer; }
+                #drill_down {
+                    margin-bottom: 0;
+                    list-style-type: none;
+                }
+                #drill_down li {
+                    display:inline;
+                    margin-right: 3px;
+                }
+                #drill_down li select {
+                    width:150px;
+                }
             </style>
             <?php
         }
@@ -369,6 +398,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
+                            <?php $this->alternate_name_metabox() ?>
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
@@ -394,6 +424,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                             <!-- Main Column -->
 
                             <?php $this->global_population_division_metabox(); ?>
+                            <?php DT_Mapping_Module::instance()->initial_drill_down_input(  ); ?>
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
@@ -793,6 +824,57 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             <?php
         }
 
+        public function alternate_name_metabox()
+        {
+            // process post action
+            if ( isset( $_POST[ 'population_division' ] )
+                && ( isset( $_POST[ '_wpnonce' ] )
+                    && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ '_wpnonce' ] ) ), 'population_division' . get_current_user_id() ) ) ) {
+                $new = (int) sanitize_text_field( wp_unslash( $_POST[ 'population_division' ] ) );
+
+            }
+
+            ?>
+            <!-- Box -->
+            <form method="post">
+                <table class="widefat striped">
+                    <thead>
+                    <th>Edit Default Location Names</th>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <?php wp_nonce_field( 'population_division' . get_current_user_id() ); ?>
+                            <?php DT_Mapping_Module::instance()->initial_drill_down_input('name-select'); ?>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div id="list_results"></div>
+            </form>
+            <br>
+            <script>
+                jQuery(document).ready(function() {
+                    jQuery('.geocode-select').on('change', function() {
+                        makeList(jQuery(this).val())
+                    } )
+
+                    function makeList( geonameid ) {
+                        let list_results = jQuery('#list_results')
+                        list_results.empty()
+                        jQuery.each( window.GEOCODINGDATA.data[parseInt(geonameid)].children, function(i,v) {
+                            list_results.append( v.name + `<br>`)
+                        })
+                        jQuery('#'+geonameid).on('change', function() {
+                            makeList(jQuery(this).val())
+                        } )
+                    }
+                })
+            </script>
+            <!-- End Box -->
+            <?php
+        }
+
         public function starting_map_level_metabox()
         {
             dt_write_log('BEGIN');
@@ -946,7 +1028,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                         </td>
                         <td>
                             <p>Presets</p>
-                            
+
                             <hr>
                             <?php
                             $regions = $mm->get_countries_grouped_by_region();
@@ -1266,6 +1348,40 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                 </table>
             </form>
             <?php
+        }
+
+        public function geocode_metabox() {
+
+            global $post, $pagenow;
+            if ( ! ( 'post-new.php' == $pagenow ) ) :
+                $post_meta = get_post_meta( $post->ID );
+
+                echo '<input type="hidden" name="dt_locations_noonce" id="dt_locations_noonce" value="' . esc_attr( wp_create_nonce( 'update_location_info' ) ) . '" />';
+                ?>
+                <table class="widefat striped">
+                    <tr>
+                        <td><label for="search_location_address">Address:</label></td>
+                        <td><input type="text" id="search_location_address"
+                                   value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>" />
+                            <button type="button" class="button" name="validate_address_button" id="validate_address_button" onclick="validate_address( jQuery('#search_location_address').val() );" >Validate</button>
+                            <button type="submit" name="delete" value="1" class="button">Delete</button>
+                            <br>
+                            <span id="errors"><?php echo ( ! empty( $this->error ) ) ? esc_html( $this->error ) : ''; ?></span>
+                            <p id="possible-results">
+
+                                <input type="hidden" id="location_address" name="location_address"
+                                       value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>" />
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+            <?php
+            else :
+                ?>
+                <?php esc_html__( 'You must save post before geocoding.' ) ?>
+            <?php
+            endif;
         }
 
         public function warning_handler($errno, $errstr) {

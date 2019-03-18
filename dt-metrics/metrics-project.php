@@ -44,7 +44,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                     <li><a href="'. site_url( '/metrics/project/' ) .'#group_tree" onclick="project_group_tree()">'. esc_html__( 'Group Tree', 'disciple_tools' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#baptism_tree" onclick="project_baptism_tree()">'. esc_html__( 'Baptism Tree', 'disciple_tools' ) .'</a></li>
                     <li><a href="'. site_url( '/metrics/project/' ) .'#coaching_tree" onclick="project_coaching_tree()">'. esc_html__( 'Coaching Tree', 'disciple_tools' ) .'</a></li>
-                    <li><a href="'. site_url( '/metrics/project/' ) .'#project_locations" onclick="project_locations()">'. esc_html__( 'Locations' ) .'</a></li>
+                    <!-- <li><a href="'. site_url( '/metrics/project/' ) .'#project_locations" onclick="project_locations()">'. esc_html__( 'Locations' ) .'</a></li> -->
                 </ul>
             </li>
             ';
@@ -104,8 +104,8 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
                 'title_group_tree' => __( 'Group Generation Tree', 'disciple_tools' ),
                 'title_baptism_tree' => __( 'Baptism Generation Tree', 'disciple_tools' ),
                 'title_coaching_tree' => __( 'Coaching Generation Tree', 'disciple_tools' ),
-                'title_locations' => __( 'Locations', 'disciple_tools' ),
-                'title_locations_tree' => __( 'Location Tree', 'disciple_tools' ),
+//                'title_locations' => __( 'Locations', 'disciple_tools' ), // @todo remove?
+//                'title_locations_tree' => __( 'Location Tree', 'disciple_tools' ), // @todo remove?
                 'title_teams' => __( 'Teams', 'disciple_tools' ),
                 'label_number_of_contacts' => strtolower( __( 'number of contacts', 'disciple_tools' ) ),
                 'label_follow_up_progress' => __( 'Follow-up progress of current active contacts', 'disciple_tools' ),
@@ -129,7 +129,7 @@ class Disciple_Tools_Metrics_Project extends Disciple_Tools_Metrics_Hooks_Base
             'group_generation_tree' => $this->get_group_generations_tree(),
             'baptism_generation_tree' => $this->get_baptism_generations_tree(),
             'coaching_generation_tree' => $this->get_coaching_generations_tree(),
-            'location_hero_stats' => Disciple_Tools_Queries::instance()->tree( 'locations_hero_stats' ),
+//            'location_hero_stats' => Disciple_Tools_Queries::instance()->tree( 'locations_hero_stats' ),
 
         ];
     }

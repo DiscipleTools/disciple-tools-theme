@@ -80,18 +80,20 @@ class Disciple_Tools_Locations_Endpoints
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [ $this, 'get_all_locations_grouped' ],
             ],
-            $base.'/import_check' => [
-                'methods' => WP_REST_Server::READABLE,
-                'callback' => [ $this, 'import_check' ],
-            ],
-            $base.'/import_check' => [
-                'methods' => WP_REST_Server::READABLE,
-                'callback' => [ $this, 'import_check' ],
-            ],
+
+
             $base.'/validate_address' => [
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [ $this, 'validate_address' ],
             ],
+
+//            $base.'/import_check' => [
+//                'methods' => WP_REST_Server::READABLE,
+//                'callback' => [ $this, 'import_check' ],
+//            ],
+
+
+
             $base.'/auto_build_location' => [
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [ $this, 'auto_build_location' ],
@@ -104,10 +106,11 @@ class Disciple_Tools_Locations_Endpoints
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [ $this, 'auto_build_levels_from_post' ],
             ],
-            $base.'/get_location_with_connections' => [
-                'methods' => WP_REST_Server::CREATABLE,
-                'callback' => [ $this, 'get_location_with_connections' ],
-            ],
+
+//            $base.'/get_location_with_connections' => [
+//                'methods' => WP_REST_Server::CREATABLE,
+//                'callback' => [ $this, 'get_location_with_connections' ],
+//            ],
         ];
 
         // Register each route
@@ -121,22 +124,22 @@ class Disciple_Tools_Locations_Endpoints
      * @see /dt-core/utilities/tab-import-csv.php
      * @return array|\WP_Error
      */
-    public function import_check() {
-        $count = get_transient( 'dt_import_finished_count' );
-        $errors = get_transient( 'dt_import_finished_with_errors' );
-
-        if ( empty( $count ) ) {
-            $count = 0;
-        }
-        if ( empty( $errors ) ) {
-            $errors = [];
-        }
-
-        return [
-            'count' => $count,
-            'errors' => $errors,
-        ];
-    }
+//    public function import_check() {
+//        $count = get_transient( 'dt_import_finished_count' );
+//        $errors = get_transient( 'dt_import_finished_with_errors' );
+//
+//        if ( empty( $count ) ) {
+//            $count = 0;
+//        }
+//        if ( empty( $errors ) ) {
+//            $errors = [];
+//        }
+//
+//        return [
+//            'count' => $count,
+//            'errors' => $errors,
+//        ];
+//    }
 
     /**
      * @return array|\WP_Error
@@ -198,24 +201,24 @@ class Disciple_Tools_Locations_Endpoints
         }
     }
 
-    public function get_location_with_connections( WP_REST_Request $request ){
-        if ( ! current_user_can( 'read_location' ) ) {
-            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
-        }
-        $params = $request->get_json_params();
-        if ( isset( $params['id'] ) ){
-
-            $result = Disciple_Tools_Locations::get_location_with_connections( $params['id'] );
-
-            if ( $result['status'] == 'OK' ){
-                return $result;
-            } else {
-                return new WP_Error( "status_error", 'Zero Results', array( 'status' => 400 ) );
-            }
-        } else {
-            return new WP_Error( "param_error", "Please provide a valid address", array( 'status' => 400 ) );
-        }
-    }
+//    public function get_location_with_connections( WP_REST_Request $request ){
+//        if ( ! current_user_can( 'read_location' ) ) {
+//            return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
+//        }
+//        $params = $request->get_json_params();
+//        if ( isset( $params['id'] ) ){
+//
+//            $result = Disciple_Tools_Locations::get_location_with_connections( $params['id'] );
+//
+//            if ( $result['status'] == 'OK' ){
+//                return $result;
+//            } else {
+//                return new WP_Error( "status_error", 'Zero Results', array( 'status' => 400 ) );
+//            }
+//        } else {
+//            return new WP_Error( "param_error", "Please provide a valid address", array( 'status' => 400 ) );
+//        }
+//    }
 
     public function auto_build_location( WP_REST_Request $request ){
         $params = $request->get_json_params();
