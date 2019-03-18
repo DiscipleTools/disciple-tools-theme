@@ -72,7 +72,7 @@ window.API = {
   transfer_contact: (contactId, siteId) => makeRequest('post', 'contact/transfer', { contact_id: contactId, site_post_id: siteId }),
 }
 
-function handelAjaxError(err) {
+function handleAjaxError (err) {
   if (_.get(err, "statusText") !== "abortPromise" && err.responseText){
     console.trace("error")
     console.log(err)
@@ -85,7 +85,7 @@ jQuery(document).ajaxComplete((event, xhr, settings) => {
     window.location.replace('/login');
   }
 }).ajaxError((event, xhr) => {
-  handelAjaxError(xhr)
+  handleAjaxError(xhr)
 })
 
 jQuery(document).on('click', '.help-button', function () {

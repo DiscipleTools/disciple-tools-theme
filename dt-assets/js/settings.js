@@ -18,11 +18,7 @@ function change_password() {
   makeRequest('post', 'users/change_password', { password: p1 }).done(data => {
     console.log( data )
     message.html('Password changed!')
-  }).fail(err => {
-    console.log('Password reset error', err)
-    message.html('Password not changed! ' + err.responseText)
-    jQuery("#errors").append(err.responseText)
-  })
+  }).fail(handelAjaxError)
 }
 
 
