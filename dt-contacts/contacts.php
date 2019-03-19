@@ -1287,80 +1287,21 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $c->permalink = get_permalink( $c->ID );
             }
             $fields["relation"] = $relation;
-
-            $meta_fields = get_post_custom( $contact_id );
-            foreach ( $meta_fields as $key => $value ) {
-                //if is contact details and is in a channel
-                if ( !( isset( self::$channel_list ) )){
-                    self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
-                }
-                if ( strpos( $key, "contact_" ) === 0 && isset( self::$channel_list[ explode( '_', $key )[1] ] ) ) {
-                    if ( strpos( $key, "details" ) === false ) {
-                        $type = explode( '_', $key )[1];
-                        $fields[ "contact_" . $type ][] = self::format_contact_details( $meta_fields, $type, $key, $value[0] );
-                    }
-                } elseif ( strpos( $key, "address" ) === 0 ) {
-                    if ( strpos( $key, "_details" ) === false ) {
-
-                        $details = [];
-                        if ( isset( $meta_fields[ $key . '_details' ][0] ) ) {
-                            $details = maybe_unserialize( $meta_fields[ $key . '_details' ][0] );
-                        }
-                        $details["value"] = $value[0];
-                        $details["key"] = $key;
-                        if ( isset( $details["type"] ) ) {
-                            $details["type_label"] = self::$address_types[ $details["type"] ]["label"];
-                        }
-                        $fields["address"][] = $details;
-                    }
-                } elseif ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]["type"] == "key_select" && !empty( $value[0] )) {
-                    $value_options = $contact_fields[ $key ]["default"][ $value[0] ] ?? $value[0];
-                    if ( isset( $value_options["label"] ) ){
-                        $label = $value_options["label"];
-                    } elseif ( is_string( $value_options ) ) {
-                        $label = $value_options;
-                    } else {
-                        $label = $value[0];
-                    }
-//                        $label = $contact_fields[ $key ]["default"][ $value[0] ]["label"] ?? $value[0];
-                    $fields[ $key ] = [
-                        "key" => $value[0],
-                        "label" => $label
+            foreach ( self::$contact_connection_types as $type ){
+                foreach ( $fields[$type] as $index => $post ){
+                    $fields[$type][$index] = [
+                        "ID" => $post->ID,
+                        "post_type" => $post->post_type,
+                        "post_date_gmt" => $post->post_date_gmt,
+                        "post_date" => $post->post_date,
+                        "post_title" => $post->post_title
                     ];
-                } elseif ( $key === "assigned_to" ) {
-                    if ( $value ) {
-                        $meta_array = explode( '-', $value[0] ); // Separate the type and id
-                        $type = $meta_array[0]; // Build variables
-                        if ( isset( $meta_array[1] ) ) {
-                            $id = $meta_array[1];
-                            if ( $type == 'user' && $id) {
-                                $user = get_user_by( 'id', $id );
-                                $fields[ $key ] = [
-                                    "id" => $id,
-                                    "type" => $type,
-                                    "display" => ( $user ? $user->display_name : "Nobody" ) ,
-                                    "assigned-to" => $value[0]
-                                ];
-                            }
-                        }
-                    }
-                } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'multi_select' ){
-                    $fields[ $key ] = $value;
-                } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'boolean' ){
-                    $fields[ $key ] = $value[0] === "1";
-                } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'array' ){
-                    $fields[ $key ] = maybe_unserialize( $value[0] );
-                } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'date' ){
-                    $fields[ $key ] = [
-                        "timestamp" => $value[0],
-                        "formatted" => dt_format_date( $value[0] ),
-                    ];
-                } else {
-                    $fields[ $key ] = $value[0];
                 }
             }
 
-            $comments = get_comments( [ 'post_id' => $contact_id ] );
+            self::adjust_custom_fields( $contact_id, $fields, $contact_fields );
+
+            $comments = self::get_comments( $contact_id );
             $fields["comments"] = $comments;
             $fields["ID"] = $contact->ID;
             $fields["title"] = $contact->post_title;
@@ -1369,6 +1310,91 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return apply_filters( 'dt_contact_fields_post_filter', $fields );
         } else {
             return new WP_Error( __FUNCTION__, "No contact found with ID", [ 'contact_id' => $contact_id ] );
+        }
+    }
+
+    /**
+     * Used in in the method get_custom, this method mutates $fields to add
+     * data about a particular contact in the required format. You might want
+     * to use this instead of get_custom for performance reasons.
+     *
+     * @param int   $contact_id     The ID number of the contact
+     * @param array $fields         This array will be mutated with the results
+     * @param array $contact_fields This is what get_custom_fields_settings() returns
+     *
+     * @return void
+     */
+    public static function adjust_custom_fields( int $contact_id, array &$fields, array $contact_fields ) {
+        $meta_fields = get_post_custom( $contact_id );
+        foreach ( $meta_fields as $key => $value ) {
+            //if is contact details and is in a channel
+            if ( !( isset( self::$channel_list ) )){
+                self::$channel_list = Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
+            }
+            if ( strpos( $key, "contact_" ) === 0 && isset( self::$channel_list[ explode( '_', $key )[1] ] ) ) {
+                if ( strpos( $key, "details" ) === false ) {
+                    $type = explode( '_', $key )[1];
+                    $fields[ "contact_" . $type ][] = self::format_contact_details( $meta_fields, $type, $key, $value[0] );
+                }
+            } elseif ( strpos( $key, "address" ) === 0 ) {
+                if ( strpos( $key, "_details" ) === false ) {
+
+                    $details = [];
+                    if ( isset( $meta_fields[ $key . '_details' ][0] ) ) {
+                        $details = maybe_unserialize( $meta_fields[ $key . '_details' ][0] );
+                    }
+                    $details["value"] = $value[0];
+                    $details["key"] = $key;
+                    if ( isset( $details["type"] ) ) {
+                        $details["type_label"] = self::$address_types[ $details["type"] ]["label"];
+                    }
+                    $fields["address"][] = $details;
+                }
+            } elseif ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]["type"] == "key_select" && !empty( $value[0] )) {
+                $value_options = $contact_fields[ $key ]["default"][ $value[0] ] ?? $value[0];
+                if ( isset( $value_options["label"] ) ){
+                    $label = $value_options["label"];
+                } elseif ( is_string( $value_options ) ) {
+                    $label = $value_options;
+                } else {
+                    $label = $value[0];
+                }
+//                        $label = $contact_fields[ $key ]["default"][ $value[0] ]["label"] ?? $value[0];
+                $fields[ $key ] = [
+                    "key" => $value[0],
+                    "label" => $label
+                ];
+            } elseif ( $key === "assigned_to" ) {
+                if ( $value ) {
+                    $meta_array = explode( '-', $value[0] ); // Separate the type and id
+                    $type = $meta_array[0]; // Build variables
+                    if ( isset( $meta_array[1] ) ) {
+                        $id = $meta_array[1];
+                        if ( $type == 'user' && $id) {
+                            $user = get_user_by( 'id', $id );
+                            $fields[ $key ] = [
+                                "id" => $id,
+                                "type" => $type,
+                                "display" => ( $user ? $user->display_name : "Nobody" ) ,
+                                "assigned-to" => $value[0]
+                            ];
+                        }
+                    }
+                }
+            } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'multi_select' ){
+                $fields[ $key ] = $value;
+            } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'boolean' ){
+                $fields[ $key ] = $value[0] === "1";
+            } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'array' ){
+                $fields[ $key ] = maybe_unserialize( $value[0] );
+            } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'date' ){
+                $fields[ $key ] = [
+                    "timestamp" => $value[0],
+                    "formatted" => dt_format_date( $value[0] ),
+                ];
+            } else {
+                $fields[ $key ] = $value[0];
+            }
         }
     }
 
@@ -2133,7 +2159,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 "
                         SELECT post_id
                         FROM {$wpdb->prefix}postmeta
-                        INNER JOIN $wpdb->posts posts ON ( posts.ID = post_id AND posts.post_type = 'contacts' AND posts.post_status = 'publish' ) 
+                        INNER JOIN $wpdb->posts posts ON ( posts.ID = post_id AND posts.post_type = 'contacts' AND posts.post_status = 'publish' )
                         WHERE meta_key
                         LIKE %s
                         AND meta_value LIKE %s

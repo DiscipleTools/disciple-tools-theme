@@ -485,17 +485,26 @@ else {
      */
     if ( ! function_exists( 'dt_write_log' ) ) {
         /**
-         * A function to assist development only.
-         * This function allows you to post a string, array, or object to the WP_DEBUG log.
-         *
-         * @param $log
-         */
+        * A function to assist development only.
+        * This function allows you to post a string, array, or object to the WP_DEBUG log.
+        * It also prints elapsed time since the last call.
+        *
+        * @param $log
+        */
         function dt_write_log( $log ) {
             if ( true === WP_DEBUG ) {
-                if ( is_array( $log ) || is_object( $log ) ) {
-                    error_log( print_r( $log, true ) );
+                global $dt_write_log_microtime;
+                $now = microtime( true );
+                if ( $dt_write_log_microtime > 0 ) {
+                    $elapsed_log = sprintf( "[elapsed:%5dms]", ( $now - $dt_write_log_microtime ) * 1000 );
                 } else {
-                    error_log( $log );
+                    $elapsed_log = "[elapsed:-------]";
+                }
+                $dt_write_log_microtime = $now;
+                if ( is_array( $log ) || is_object( $log ) ) {
+                    error_log( $elapsed_log . " " . print_r( $log, true ) );
+                } else {
+                    error_log( "$elapsed_log $log" );
                 }
             }
         }
