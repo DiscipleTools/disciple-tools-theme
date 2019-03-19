@@ -21,7 +21,7 @@ window.GEOCODING.location_list = function(  geonameid ) {
     }
 
 }
-window.GEOCODING.map_display = function( geonameid ) {
+window.GEOCODING.map_chart = function( geonameid ) {
     if ( geonameid !== 'top_map_list' ) {
         map_chart( 'map_chart', geonameid )
     } else {
@@ -58,7 +58,7 @@ function page_mapping_view() {
        <!-- Map -->
        <div class="grid-x grid-margin-x">
             <div class="cell medium-10">
-                <div id="map_display" style="width: 100%;max-height: 700px;height: 100vh;vertical-align: text-top;"></div>
+                <div id="map_chart" style="width: 100%;max-height: 700px;height: 100vh;vertical-align: text-top;"></div>
             </div>
             <div class="cell medium-2 left-border-grey">
                 <div class="grid-y">
@@ -72,35 +72,15 @@ function page_mapping_view() {
         </div>
         
         <hr style="max-width:100%;">
-        <div id="page-header" style="float:left;">
-            <strong id="section-title" style="font-size:1.5em;"></strong><br>
-            <span id="current_level"></span>
-        </div>
         
-        <!-- Location List -->
-        <div id="location_list"></div>
-        
-        <hr style="max-width:100%;">
-        
-        <span style="float:right;font-size:.8em;"><a onclick="map_chart( 'map_display' )" >return to world view</a></span>
+        <span style="float:right;font-size:.8em;"><a onclick="map_chart( 'map_chart' )" >return to top level</a></span>
         
         <br>
         
-        <style>/* custom css for dropdown box */
-          #page-header {
-                position:absolute;
-            }
-            @media screen and (max-width : 640px){
-                #page-header {
-                    position:relative;
-                    text-align: center;
-                    width: 100%;
-                }
-            }
-        </style>
+        
         `);
 
-    window.GEOCODING.load_drill_down( null, 'map_display' )
+    GEOCODING.load_drill_down( null, 'map_chart' )
     data_type_list( 'data-type-list' )
 }
 
@@ -240,7 +220,7 @@ function top_level_map( div ) {
                     if( map_data.deeper_levels[ev.target.dataItem.dataContext.geonameid] )
                     {
                         jQuery("select#world option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
-                        GEOCODING.geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid, 'map_display' )
+                        GEOCODING.geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid, 'map_chart' )
                         return map_chart( div, ev.target.dataItem.dataContext.geonameid )
                     }
 
@@ -381,7 +361,7 @@ function top_level_map( div ) {
                         if( GEOCODINGDATA.data[ev.target.dataItem.dataContext.geonameid] )
                         {
                             jQuery("select#drill_down_top_level option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
-                            GEOCODING.geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid, 'map_display' )
+                            GEOCODING.geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid, 'map_chart' )
                             return map_chart( div, ev.target.dataItem.dataContext.geonameid )
                         }
                     }, this);
@@ -519,7 +499,7 @@ function top_level_map( div ) {
                         if( GEOCODINGDATA.data[ev.target.dataItem.dataContext.geonameid] )
                         {
                             jQuery("select#drill_down_top_level option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
-                            GEOCODING.geoname_drill_down( ev.target.dataItem.dataContext.geonameid, 'map_display' )
+                            GEOCODING.geoname_drill_down( ev.target.dataItem.dataContext.geonameid, 'map_chart' )
                             return map_chart( div, ev.target.dataItem.dataContext.geonameid )
                         }
                     }, this);
@@ -539,13 +519,13 @@ function geoname_map( div, geonameid ) {
     am4core.useTheme(am4themes_animated);
 
     let chart = am4core.create( div, am4maps.MapChart);
-    // let default_map_settings = GEOCODINGDATA.settings.default_map_settings
     let title = jQuery('#section-title')
     let rest = GEOCODINGDATA.settings.endpoints.get_map_by_geonameid_endpoint
 
     chart.projection = new am4maps.projections.Miller(); // Set projection
 
     title.empty()
+
     jQuery.ajax({
         type: rest.method,
         contentType: "application/json; charset=utf-8",

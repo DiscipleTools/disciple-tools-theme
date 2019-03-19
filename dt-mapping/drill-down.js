@@ -14,9 +14,7 @@ window.GEOCODING = {
     },
 
     top_level_drill_down( bindFunction ) {
-
-        let mapping_module = GEOCODINGDATA
-        let top_map_list = mapping_module.data.top_map_list
+        let top_map_list = GEOCODINGDATA.data.top_map_list
         let drill_down = jQuery('#drill_down')
 
         GEOCODING.show_spinner()
@@ -28,10 +26,10 @@ window.GEOCODING = {
             jQuery.each(top_map_list, function(i,v) {
                 drill_down_select.append(`<option value="${i}" selected>${v}</option>`)
 
-                if ( ! GEOCODING.isEmpty( mapping_module.data[i].children ) ) {
+                if ( ! GEOCODING.isEmpty( GEOCODINGDATA.data[i].children ) ) {
 
                     drill_down.append(`<li><select id="${i}" onchange="GEOCODING.geoname_drill_down( this.value, '${bindFunction}' );jQuery(this).parent().nextAll().remove();"><option value="${i}"></option></select></li>`)
-                    let sorted_children = _.sortBy(mapping_module.data[i].children, [function (o) {
+                    let sorted_children = _.sortBy(GEOCODINGDATA.data[i].children, [function (o) {
                         return o.name;
                     }]);
 
@@ -60,8 +58,7 @@ window.GEOCODING = {
     },
 
     geoname_drill_down( geonameid, bindFunction ) {
-        let mapping_module = GEOCODINGDATA
-        let rest = mapping_module.settings.endpoints.get_map_by_geonameid_endpoint
+        let rest = GEOCODINGDATA.settings.endpoints.get_map_by_geonameid_endpoint
         let drill_down = jQuery('#drill_down')
 
         GEOCODING.show_spinner()
@@ -73,7 +70,7 @@ window.GEOCODING = {
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify( { 'geonameid': geonameid } ),
                 dataType: "json",
-                url: mapping_module.settings.root + rest.namespace + rest.route,
+                url: GEOCODINGDATA.settings.root + rest.namespace + rest.route,
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
                 },
@@ -83,6 +80,7 @@ window.GEOCODING = {
                     GEOCODINGDATA.data[geonameid] = response
 
                     if ( ! GEOCODING.isEmpty( response.children ) ) {
+                        /* Hide next level drill down if 'hide_final_drill_down' is set to true. This can be defined externally. @see example mapping-admin.php:858 */
                         if ( ! GEOCODING.isEmpty( response.deeper_levels ) || ! GEOCODINGDATA.settings.hide_final_drill_down === true ) {
                             drill_down.append(`<li><select id="${response.self.geonameid}" class="geocode-select" onchange="GEOCODING.geoname_drill_down( this.value, '${bindFunction}' );jQuery(this).parent().nextAll().remove();"><option value="${response.self.geonameid}"></option></select></li>`)
                             let sorted_children =  _.sortBy(response.children, [function(o) { return o.name; }]);

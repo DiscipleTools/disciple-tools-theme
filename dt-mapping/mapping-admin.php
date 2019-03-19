@@ -855,6 +855,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             </table>
 
             <script>
+                window.GEOCODINGDATA.settings.hide_final_drill_down = true
                 window.GEOCODING.population_edit = function(  geonameid ) {
                     if ( geonameid === 'top_map_list' ) { // top level multi-list
                         let list_results = jQuery('#list_results')
@@ -913,6 +914,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             </table>
 
             <script>
+                window.GEOCODINGDATA.settings.hide_final_drill_down = true
                 window.GEOCODING.name_select = function(  geonameid ) {
                     if ( geonameid === 'top_map_list' ) { // top level multi-list
                         let list_results = jQuery('#list_results')

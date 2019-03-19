@@ -83,6 +83,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
             require_once( 'add-contacts-column.php' );
             require_once( 'add-groups-column.php' );
+            require_once( 'add-workers-column.php' );
             require_once( 'mapping-admin.php' );
 
             /**
@@ -282,6 +283,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
         public function data() {
             $data = [];
 
+            // top map list
             $data['top_map_list'] = $this->default_map_short_list();
             if ( isset( $data['top_map_list']['world'] ) ) {
                 $data['world'] = $this->get_world_map_data();
@@ -293,8 +295,24 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 $data[$default_map_settings['parent']] = $this->map_level_by_geoname( $default_map_settings['parent'] );
             }
 
+            // set custom columns
             $data['custom_column_labels'] = [];
             $data['custom_column_data'] = [];
+
+            // initialize drill down configuration
+            if ( is_singular( "groups" ) || is_singular( "contacts" ) ) {
+                global $post;
+                if ( isset( $post->ID ) ) {
+                    $data['default_drill_down'] = $this->default_drill_down( null, $post->ID );
+                }
+            }
+            else if ( 'settings' === dt_get_url_path() ) {
+
+                $data['default_drill_down'] = $this->default_drill_down();
+            }
+            else {
+                $data['default_drill_down'] = $this->default_drill_down();
+            }
 
 
             return $data;
@@ -1292,12 +1310,12 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                     $second_level_list = $this->query( 'get_children_by_geonameid', [ 'geonameid' => $preset_array['drill_down_top_level']['selected']  ] );
                     if ( ! empty( $second_level_list ) ) {
                         foreach( $second_level_list as $item ) {
-                            $preset_array[$item['geonameid']]['list'][] = [
+                            $preset_array[$geonameid]['list'][] = [
                                   'geonameid' => $item['geonameid'],
                                   'name' => $item['name'],
                             ];
-                            $preset_array[$item['geonameid']]['selected'] = 0;
                         }
+                        $preset_array[$geonameid]['selected'] = 0;
                     }
 
                 // top level list has more than one option
