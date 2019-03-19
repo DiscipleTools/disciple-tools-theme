@@ -13,6 +13,7 @@ function switch_preference(preference_key, type=null) {
 }
 
 function change_password() {
+    let translation = wpApiSettingsPage.translations
     // test matching passwords
     let p1 = jQuery('#password1')
     let p2 = jQuery('#password2')
@@ -21,7 +22,7 @@ function change_password() {
     message.empty()
 
     if ( ! ( p1.val() === p2.val() ) ) {
-        message.append('Your passwords do not match')
+        message.append(translation.pass_does_not_match)
         return;
     }
 
@@ -38,13 +39,13 @@ function change_password() {
     })
         .done(function (data) {
             console.log( data )
-            message.html('Password changed!')
+            message.html(translation.changed)
 
         })
         .fail(function (err) {
             console.log("error")
             console.log(err)
-            message.html('Password not changed! ' + err.responseText)
+            message.html(translation.not_changed + ' ' + err.responseText)
             jQuery("#errors").append(err.responseText)
         })
 
