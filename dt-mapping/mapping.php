@@ -1461,7 +1461,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 if ( ! empty( $dd_list['list'] ) ) :
                 ?>
                     <li>
-                        <select id="<?php echo $dd_list['parent'] ?>" class="geocode-select" onchange="GEOCODING.geoname_drill_down( this.value, '<?php echo esc_attr( $bind_function ) ?>' );jQuery(this).parent().nextAll().remove();">
+                        <select id="<?php echo $dd_list['parent'] ?>" class="geocode-select" onchange="DRILLDOWN.geoname_drill_down( this.value, '<?php echo esc_attr( $bind_function ) ?>' );jQuery(this).parent().nextAll().remove();">
                             <option value="<?php echo $dd_list['parent'] ?>"></option>
                             <?php
                                 foreach( $dd_list['list'] as $item ) {
@@ -1482,164 +1482,19 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             echo '</u>';
         }
 
-        /**
-         * Provides a drill down widget
-         *
-         * @note    Works in connection with drill-down.js
-         */
-        public function initial_drill_down_input( $div = 'geocode-selected-value', $bind_function = '', $geonameid = null, $post_id = null ) {
-            $list = $this->default_map_short_list();
-            $default_select_first_level = false;
-            if ( count( $list ) < 2 ) {
-                $default_select_first_level = true;
-            }
-
-            /**
-             * Blank widget
-             */
-            if ( empty( $geonameid ) ) {
-                $first_level_geonameid = null;
-                ?>
-
-                <ul id="drill_down">
-                    <li>
-                        <select id="drill_down_top_level" class="geocode-select" onchange="GEOCODING.geoname_drill_down( '<?php echo esc_attr( $div ) ?>', '<?php echo esc_attr( $bind_function ) ?>', this.value, <?php echo esc_attr( $geonameid ) ?>  );jQuery(this).parent().nextAll().remove();">
-                            <option value=""></option>
-                            <?php
-                                if ( $default_select_first_level ) {
-                                    foreach( $list as $geonameid => $name ) {
-                                        echo '<option value="'.esc_attr( $geonameid ).'" selected>'. esc_html( $name ) .'</option>';
-                                        $first_level_geonameid = $geonameid;
-                                    }
-                                } else {
-                                    echo '<option></option>';
-                                    foreach( $list as $geonameid => $name ) {
-                                        echo '<option value="'.esc_attr( $geonameid ).'">'. esc_html( $name ) .'</option>';
-                                    }
-                                }
-                            ?>
-                        </select>
-                    </li>
-                    <?php
-                    if ( $default_select_first_level ) {
-                        // auto generate second level
-                        $second_level_list = $this->query( 'get_children_by_geonameid', [ 'geonameid' => $first_level_geonameid ] );
-                        if ( ! empty( $second_level_list ) ) {
-                            ?>
-                            <li>
-                                <select id="<?php echo esc_attr( $first_level_geonameid );  ?>" class="geocode-select" onchange="GEOCODING.geoname_drill_down( '<?php echo esc_attr( $div ) ?>', '<?php echo esc_attr( $bind_function ) ?>', this.value, <?php echo esc_attr( $geonameid ) ?> );jQuery(this).parent().nextAll().remove();">
-                                    <option value="<?php echo esc_attr( $first_level_geonameid );  ?>"></option>
-                                    <?php
-                                        foreach( $second_level_list as $item ) {
-                                            echo '<option value="'.esc_attr( $item['geonameid'] ).'">'. esc_html( $item['name'] ) .'</option>';
-                                        }
-                                    ?>
-                                </select>
-                            </li>
-                            <?php
-                        }
-                    }
-
-                    ?>
-                </ul>
-                <input type="hidden" id="geocode-selected-value" value="" />
-                <?php
-            }
-
-            // Preloaded widget with geonameid
-            else if ( ! empty( $geonameid ) && ! empty( $post_id ) ) {
-
-                $default_top_level = $this->default_map_short_list();
-                foreach ( $default_top_level as $key => $value ) {
-                    $default_settings['list'][] = [
-                        'geonameid' => $key,
-                        'name' => $value,
-                    ];
-                }
-                $reference = $this->query( 'get_reference', [ 'post_id' => $post_id ] );
-
-
-                switch ( $reference['feature_code'] ) {
-
-                    case 'ADM1':
-                        $dd = [
-                            'drill_down_top_level' => [
-                                'selected' => $reference['pcli'],
-                                'list' => $default_settings['list'],
-                            ],
-                            $reference['pcli'] => [
-                                'selected' => $reference['adm1'],
-                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ),
-                            ],
-                            $reference['adm1'] => [
-                                'selected' => $reference['adm2'],
-                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ),
-                            ],
-                        ];
-                        break;
-
-                    case 'ADM2':
-                        $dd = [
-                            'drill_down_top_level' => [
-                                'selected' => $reference['pcli'],
-                                'list' => $default_settings['list'],
-                            ],
-                            $reference['pcli'] => [
-                                'selected' => $reference['pcli'],
-                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ),
-                            ],
-                            $reference['adm1'] => [
-                                'selected' => $reference['adm2'],
-                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ),
-                            ],
-                            $reference['adm2'] => [
-                                'selected' => $reference['adm3'],
-                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm2'] ] ),
-                            ],
-                        ];
-                        break;
-
-                    case 'PCLI':
-                    default:
-                        $dd = [
-                            'drill_down_top_level' => [
-                                'selected' => $reference['pcli'],
-                                'list' => $default_settings['list'],
-                            ],
-                            $reference['pcli'] => [
-                                'selected' => $reference['adm1'],
-                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ),
-                            ]
-                        ];
-                        break;
-                }
-
-                ?>
-
-                <ul id="drill_down">
-                    <?php
-                        if ( $dd ) :
-                        foreach ( $dd as $key => $value ) :
-                        ?>
-                        <li>
-                            <select id="<?php echo $key ?>" class="geocode-select" onchange="GEOCODING.geoname_drill_down( '<?php echo esc_attr( $div ) ?>', '<?php echo esc_attr( $bind_function ) ?>', this.value, <?php echo esc_attr( $geonameid ) ?> );jQuery(this).parent().nextAll().remove();">
-                                <option value="<?php echo $key ?>"></option>
-                                <?php
-                                foreach( $value['list'] as $item ) {
-                                    echo '<option value="'.esc_attr( $item['geonameid'] ).'"';
-                                    if ( $value['selected'] == $item['geonameid'] ) {
-                                        echo ' selected';
-                                    }
-                                    echo '>'. esc_html( $item['name'] ) .'</option>';
-                                }
-                                ?>
-                            </select>
-                        </li>
-                    <?php endforeach; endif; ?>
-                </ul>
-                <input type="hidden" id="geocode-selected-value" value="" />
-                <?php
-            }
+        public function get_post_locations( $post_id ) {
+            return [
+              [
+                  'geonameid' => 123456,
+                  'name' => 'Tataouine Sud',
+                  'full_name' => 'Tataouine Sud, Tunisia'
+              ],
+              [
+                  'geonameid' => 124545,
+                  'name' => 'Tataouine Nor',
+                  'full_name' => 'Tataouine Nor, Tunisia'
+              ]
+            ];
         }
 
         /**

@@ -18,6 +18,7 @@ $dt_user_contact_id = dt_get_associated_user_id( $dt_user->ID, 'user' );
 $dt_user_fields = dt_build_user_fields_display( $dt_user_meta ); // Compares the site settings in the config area with the fields available in the user meta table.
 $dt_site_notification_defaults = dt_get_site_notification_defaults(); // Array of site default settings
 $dt_available_languages = get_available_languages( get_template_directory() .'/dt-assets/translation' )
+
 ?>
 
 <?php get_header(); ?>
@@ -178,16 +179,9 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                         <span class="section-header"><?php esc_html_e( 'Locations', 'disciple_tools' )?></span>
                         <hr size="1" style="max-width:100%"/>
                         <!-- Geocoding -->
-                        <div class="grix-x">
-                            <div class="cell">
-                                <button type="button" class="button">Add</button>
-                            </div>
-                            <div class="cell">
-                                <?php
-                                DT_Mapping_Module::instance()->drill_down_input(  'edit_group_geocodeid', get_post_meta( $dt_user_contact_id, 'geonameid', true),  $dt_user_contact_id );
-                                ?>
-                            </div>
-                        </div>
+
+                        <div id="manage_locations_section"></div>
+
                     </div>
                 </div>
 

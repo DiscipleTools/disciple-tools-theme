@@ -709,7 +709,7 @@ jQuery(document).ready(function($) {
   })
 
     // Begin Geocode Section
-    window.GEOCODING.edit_contact_geocodeid = function( geonameid ) {
+    window.DRILLDOWN.edit_contact_geocodeid = function( geonameid ) {
         editFieldsUpdate['geonameid'] = geonameid
     }
   // End Geocode Section

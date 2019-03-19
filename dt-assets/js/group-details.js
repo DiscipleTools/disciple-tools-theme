@@ -168,7 +168,7 @@ jQuery(document).ready(function($) {
      * Geocoding
      * @param geonameid
      */
-    window.GEOCODING.edit_group_geocodeid = function( geonameid ) {
+    window.DRILLDOWN.edit_group_geocodeid = function( geonameid ) {
         editFieldsUpdate['geonameid'] = geonameid
     }
     // End Geocode Section

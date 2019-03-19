@@ -1,18 +1,18 @@
 jQuery(document).ready(function() {
     
     if('#mapping_view' === window.location.hash) {
-        console.log(GEOCODINGDATA)
+        console.log(DRILLDOWNDATA)
         page_mapping_view()
     }
     if('#mapping_list' === window.location.hash) {
-        console.log(GEOCODINGDATA)
+        console.log(DRILLDOWNDATA)
         page_mapping_list()
     }
 })
 
 _ = _ || window.lodash
 
-window.GEOCODING.location_list = function(  geonameid ) {
+window.DRILLDOWN.location_list = function(  geonameid ) {
     if ( geonameid !== 'top_map_list' ) {
         location_list( 'location_list', geonameid )
     } else {
@@ -21,7 +21,7 @@ window.GEOCODING.location_list = function(  geonameid ) {
     }
 
 }
-window.GEOCODING.map_chart = function( geonameid ) {
+window.DRILLDOWN.map_chart = function( geonameid ) {
     if ( geonameid !== 'top_map_list' ) {
         map_chart( 'map_chart', geonameid )
     } else {
@@ -80,7 +80,7 @@ function page_mapping_view() {
         
         `);
 
-    GEOCODING.load_drill_down( null, 'map_chart' )
+    DRILLDOWN.load_drill_down( null, 'map_chart' )
     data_type_list( 'data-type-list' )
 }
 
@@ -100,22 +100,22 @@ function top_level_map( div ) {
     let chart = am4core.create( div, am4maps.MapChart);
     chart.projection = new am4maps.projections.Miller(); // Set projection
 
-    let default_map_settings = GEOCODINGDATA.settings.default_map_settings
+    let default_map_settings = DRILLDOWNDATA.settings.default_map_settings
     let mapUrl = ''
-    let top_map_list = GEOCODINGDATA.data.top_map_list
+    let top_map_list = DRILLDOWNDATA.data.top_map_list
     let title = jQuery('#section-title')
 
     switch ( default_map_settings.type ) {
 
         case 'world':
 
-            let map_data = GEOCODINGDATA.data.world
+            let map_data = DRILLDOWNDATA.data.world
 
             // set title
             title.empty().html(map_data.self.name)
 
             // sort custom start level url
-            mapUrl = GEOCODINGDATA.settings.mapping_source_url + 'top_level_maps/world.geojson'
+            mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'top_level_maps/world.geojson'
 
             // get geojson
             jQuery.getJSON( mapUrl, function( data ) {
@@ -130,13 +130,13 @@ function top_level_map( div ) {
 
 
                         // custom columns
-                        if ( GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
-                            jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
-                                mapData.features[i].properties[vv.key] = GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                        if ( DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
+                            jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
+                                mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
                                 mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
                             })
                         } else {
-                            jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
+                            jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
                                 mapData.features[i].properties[vv.key] = 0
                                 mapData.features[i].properties.value = 0
                             })
@@ -160,7 +160,7 @@ function top_level_map( div ) {
                             ---------<br>
                             Population: {population}<br>
                             `;
-                jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vc) {
+                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
                     toolTipContent += vc.label + ': {' + vc.key + '}<br>'
                 })
                 template.tooltipHTML = toolTipContent
@@ -220,7 +220,7 @@ function top_level_map( div ) {
                     if( map_data.deeper_levels[ev.target.dataItem.dataContext.geonameid] )
                     {
                         jQuery("select#world option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
-                        GEOCODING.geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid, 'map_chart' )
+                        DRILLDOWN.geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid, 'map_chart' )
                         return map_chart( div, ev.target.dataItem.dataContext.geonameid )
                     }
 
@@ -245,7 +245,7 @@ function top_level_map( div ) {
                 // multiple countries selected. So load the world and reduce the polygons
                 console.log(Object.keys(top_map_list))
 
-                mapUrl = GEOCODINGDATA.settings.mapping_source_url + 'top_level_maps/world.geojson'
+                mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'top_level_maps/world.geojson'
                 jQuery.getJSON( mapUrl, function( data ) {
 
                     // set title
@@ -270,33 +270,33 @@ function top_level_map( div ) {
                     // prepare country/child data
                     jQuery.each( mapData.features, function(i, v ) {
 
-                        if ( GEOCODINGDATA.data[v.properties.geonameid] !== undefined ) {
+                        if ( DRILLDOWNDATA.data[v.properties.geonameid] !== undefined ) {
                             mapData.features[i].properties.geonameid = v.properties.geonameid
-                            mapData.features[i].properties.population = GEOCODINGDATA.data[v.properties.geonameid].self.population
+                            mapData.features[i].properties.population = DRILLDOWNDATA.data[v.properties.geonameid].self.population
 
 
                             // custom columns
-                            if ( GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
-                                jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
-                                    mapData.features[i].properties[vv.key] = GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                            if ( DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
+                                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
+                                    mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
                                     mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
                                 })
                             } else {
-                                jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
+                                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
                                     mapData.features[i].properties[vv.key] = 0
                                     mapData.features[i].properties.value = 0
                                 })
                             }
 
-                            title.append(GEOCODINGDATA.data[v.properties.geonameid].self.name)
+                            title.append(DRILLDOWNDATA.data[v.properties.geonameid].self.name)
                             if ( title.html().length !== '' ) {
                                 title.append(', ')
                             }
 
                             coordinates[i] = {
-                                "latitude": GEOCODINGDATA.data[v.properties.geonameid].self.latitude,
-                                "longitude": GEOCODINGDATA.data[v.properties.geonameid].self.longitude,
-                                "title": GEOCODINGDATA.data[v.properties.geonameid].self.name
+                                "latitude": DRILLDOWNDATA.data[v.properties.geonameid].self.latitude,
+                                "longitude": DRILLDOWNDATA.data[v.properties.geonameid].self.longitude,
+                                "title": DRILLDOWNDATA.data[v.properties.geonameid].self.name
                             }
 
                         }
@@ -315,7 +315,7 @@ function top_level_map( div ) {
                             ---------<br>
                             Population: {population}<br>
                             `;
-                    jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vc) {
+                    jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
                         toolTipContent += vc.label + ': {' + vc.key + '}<br>'
                     })
                     template.tooltipHTML = toolTipContent
@@ -358,10 +358,10 @@ function top_level_map( div ) {
                         console.log(ev.target.dataItem.dataContext.name)
                         console.log(ev.target.dataItem.dataContext.geonameid)
 
-                        if( GEOCODINGDATA.data[ev.target.dataItem.dataContext.geonameid] )
+                        if( DRILLDOWNDATA.data[ev.target.dataItem.dataContext.geonameid] )
                         {
                             jQuery("select#drill_down_top_level option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
-                            GEOCODING.geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid, 'map_chart' )
+                            DRILLDOWN.geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid, 'map_chart' )
                             return map_chart( div, ev.target.dataItem.dataContext.geonameid )
                         }
                     }, this);
@@ -385,12 +385,12 @@ function top_level_map( div ) {
             } else {
                 // multiple countries selected. So load the world and reduce the polygons
 
-                mapUrl = GEOCODINGDATA.settings.mapping_source_url + 'maps/' +default_map_settings.parent+ '.geojson'
+                mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'maps/' +default_map_settings.parent+ '.geojson'
                 jQuery.getJSON( mapUrl, function( data ) {
 
                     // set title
 
-                    title.empty().append(GEOCODINGDATA.data[default_map_settings.parent].self.name)
+                    title.empty().append(DRILLDOWNDATA.data[default_map_settings.parent].self.name)
 
                     // create a new geojson, including only the top level maps
                     let new_geojson = jQuery.extend({}, data )
@@ -411,19 +411,19 @@ function top_level_map( div ) {
                     // prepare country/child data
                     jQuery.each( mapData.features, function(i, v ) {
 
-                        if ( GEOCODINGDATA.data[v.properties.geonameid] !== undefined ) {
+                        if ( DRILLDOWNDATA.data[v.properties.geonameid] !== undefined ) {
                             mapData.features[i].properties.geonameid = v.properties.geonameid
-                            mapData.features[i].properties.population = GEOCODINGDATA.data[v.properties.geonameid].self.population
+                            mapData.features[i].properties.population = DRILLDOWNDATA.data[v.properties.geonameid].self.population
 
 
                             // custom columns
-                            if ( GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
-                                jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
-                                    mapData.features[i].properties[vv.key] = GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                            if ( DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
+                                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
+                                    mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
                                     mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
                                 })
                             } else {
-                                jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
+                                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
                                     mapData.features[i].properties[vv.key] = 0
                                     mapData.features[i].properties.value = 0
                                 })
@@ -432,9 +432,9 @@ function top_level_map( div ) {
 
 
                             coordinates[i] = {
-                                "latitude": GEOCODINGDATA.data[v.properties.geonameid].self.latitude,
-                                "longitude": GEOCODINGDATA.data[v.properties.geonameid].self.longitude,
-                                "title": GEOCODINGDATA.data[v.properties.geonameid].self.name
+                                "latitude": DRILLDOWNDATA.data[v.properties.geonameid].self.latitude,
+                                "longitude": DRILLDOWNDATA.data[v.properties.geonameid].self.longitude,
+                                "title": DRILLDOWNDATA.data[v.properties.geonameid].self.name
                             }
 
                         }
@@ -453,7 +453,7 @@ function top_level_map( div ) {
                             ---------<br>
                             Population: {population}<br>
                             `;
-                    jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vc) {
+                    jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
                         toolTipContent += vc.label + ': {' + vc.key + '}<br>'
                     })
                     template.tooltipHTML = toolTipContent
@@ -496,10 +496,10 @@ function top_level_map( div ) {
                         console.log(ev.target.dataItem.dataContext.name)
                         console.log(ev.target.dataItem.dataContext.geonameid)
 
-                        if( GEOCODINGDATA.data[ev.target.dataItem.dataContext.geonameid] )
+                        if( DRILLDOWNDATA.data[ev.target.dataItem.dataContext.geonameid] )
                         {
                             jQuery("select#drill_down_top_level option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
-                            GEOCODING.geoname_drill_down( ev.target.dataItem.dataContext.geonameid, 'map_chart' )
+                            DRILLDOWN.geoname_drill_down( ev.target.dataItem.dataContext.geonameid, 'map_chart' )
                             return map_chart( div, ev.target.dataItem.dataContext.geonameid )
                         }
                     }, this);
@@ -520,7 +520,7 @@ function geoname_map( div, geonameid ) {
 
     let chart = am4core.create( div, am4maps.MapChart);
     let title = jQuery('#section-title')
-    let rest = GEOCODINGDATA.settings.endpoints.get_map_by_geonameid_endpoint
+    let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_geonameid_endpoint
 
     chart.projection = new am4maps.projections.Miller(); // Set projection
 
@@ -531,7 +531,7 @@ function geoname_map( div, geonameid ) {
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify( { 'geonameid': geonameid } ),
         dataType: "json",
-        url: GEOCODINGDATA.settings.root + rest.namespace + rest.route,
+        url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
         beforeSend: function(xhr) {
             xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
         },
@@ -540,7 +540,7 @@ function geoname_map( div, geonameid ) {
 
             title.html(response.self.name)
 
-            jQuery.getJSON( GEOCODINGDATA.settings.mapping_source_url + 'maps/' + geonameid+'.geojson', function( data ) { // get geojson data
+            jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'maps/' + geonameid+'.geojson', function( data ) { // get geojson data
 
                 // load geojson with additional parameters
                 let mapData = data
@@ -551,13 +551,13 @@ function geoname_map( div, geonameid ) {
                         mapData.features[i].properties.population = response.children[mapData.features[i].properties.geonameid].population
 
                         // custom columns
-                        if ( GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
-                            jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
-                                mapData.features[i].properties[vv.key] = GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                        if ( DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
+                            jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
+                                mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
                                 mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
                             })
                         } else {
-                            jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
+                            jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
                                 mapData.features[i].properties[vv.key] = 0
                                 mapData.features[i].properties.value = 0
                             })
@@ -579,7 +579,7 @@ function geoname_map( div, geonameid ) {
                             ---------<br>
                             Population: {population}<br>
                             `;
-                jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vc) {
+                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
                     toolTipContent += vc.label + ': {' + vc.key + '}<br>'
                 })
                 template.tooltipHTML = toolTipContent
@@ -631,7 +631,7 @@ function geoname_map( div, geonameid ) {
 
 function data_type_list( div ) {
     let list = jQuery('#'+div )
-    jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(i,v) {
+    jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(i,v) {
         list.append(`<a onclick="" class="button hollow" id="${v.key}">${v.label}</a>`)
     })
 }
@@ -639,39 +639,39 @@ function data_type_list( div ) {
 function load_breadcrumbs( div, id, parent_name ) {
     let separator = ` > `
 
-    if ( GEOCODINGDATA.breadcrumbs === undefined) {
-        GEOCODINGDATA.breadcrumbs = []
+    if ( DRILLDOWNDATA.breadcrumbs === undefined) {
+        DRILLDOWNDATA.breadcrumbs = []
     }
 
-    for(let i = 0; i < GEOCODINGDATA.breadcrumbs.length; i++ ) {
-        if ( GEOCODINGDATA.breadcrumbs[i].id === id ) {
-            let reset = GEOCODINGDATA.breadcrumbs.slice(0,i)
-            GEOCODINGDATA.breadcrumbs = []
-            GEOCODINGDATA.breadcrumbs = reset
+    for(let i = 0; i < DRILLDOWNDATA.breadcrumbs.length; i++ ) {
+        if ( DRILLDOWNDATA.breadcrumbs[i].id === id ) {
+            let reset = DRILLDOWNDATA.breadcrumbs.slice(0,i)
+            DRILLDOWNDATA.breadcrumbs = []
+            DRILLDOWNDATA.breadcrumbs = reset
         }
     }
 
-    GEOCODINGDATA.breadcrumbs.push({id,parent_name})
+    DRILLDOWNDATA.breadcrumbs.push({id,parent_name})
 
     // clear breadcrumbs
     let content = jQuery('#breadcrumbs')
     content.empty()
 
-    for(let i = 0; i < GEOCODINGDATA.breadcrumbs.length; i++ ) {
+    for(let i = 0; i < DRILLDOWNDATA.breadcrumbs.length; i++ ) {
         let separator = ` > `
         if ( i === 0 ) {
             separator = ''
         }
-        if ( GEOCODINGDATA.breadcrumbs[i].id === id ) {
-            // GEOCODINGDATA.breadcrumbs.slice(0,i)
+        if ( DRILLDOWNDATA.breadcrumbs[i].id === id ) {
+            // DRILLDOWNDATA.breadcrumbs.slice(0,i)
             return false;
         }
-        content.append(`<span id="${GEOCODINGDATA.breadcrumbs[i].id}">${separator}<a onclick="map_chart('${div}', ${GEOCODINGDATA.breadcrumbs[i].id} ) ">${GEOCODINGDATA.breadcrumbs[i].parent_name}</a></span>`)
+        content.append(`<span id="${DRILLDOWNDATA.breadcrumbs[i].id}">${separator}<a onclick="map_chart('${div}', ${DRILLDOWNDATA.breadcrumbs[i].id} ) ">${DRILLDOWNDATA.breadcrumbs[i].parent_name}</a></span>`)
     }
 
     content.append(`<span id="${id}" data-value="${id}">${separator}<a onclick="map_chart('${div}', ${id} ) ">${parent_name}</a></span>`)
 
-    console.log(GEOCODINGDATA.breadcrumbs)
+    console.log(DRILLDOWNDATA.breadcrumbs)
 
 } // @todo remove?
 
@@ -836,7 +836,7 @@ function numberWithCommas(x) {
 
 function mini_map( div, marker_data ) {
 
-    jQuery.getJSON( GEOCODINGDATA.settings.mapping_source_url + 'top_level_maps/world.geojson', function( data ) {
+    jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'top_level_maps/world.geojson', function( data ) {
         am4core.useTheme(am4themes_animated);
 
         var chart = am4core.create( div, am4maps.MapChart);
@@ -929,7 +929,7 @@ function page_mapping_list() {
                 <ul id="drill_down"></ul>
             </div>
             <div class="cell small-1">
-                <span id="spinner" style="display:none;" class="float-right">${GEOCODINGDATA.settings.spinner_large}</span>
+                <span id="spinner" style="display:none;" class="float-right">${DRILLDOWNDATA.settings.spinner_large}</span>
             </div>
         </div>
         
@@ -959,11 +959,11 @@ function page_mapping_list() {
            
         </style>
         `);
-    window.GEOCODING.load_drill_down( null, 'location_list' )
+    window.DRILLDOWN.load_drill_down( null, 'location_list' )
 }
 
 function location_list( div, geonameid ) {
-    let default_map_settings = GEOCODINGDATA.settings.default_map_settings
+    let default_map_settings = DRILLDOWNDATA.settings.default_map_settings
 
     /*******************************************************************************************************************
      *
@@ -1004,11 +1004,11 @@ function location_list( div, geonameid ) {
 }
 
 function top_level_location_list( div ) {
-    let default_map_settings = GEOCODINGDATA.settings.default_map_settings
-    GEOCODING.show_spinner()
+    let default_map_settings = DRILLDOWNDATA.settings.default_map_settings
+    DRILLDOWN.show_spinner()
 
     // Initialize Location Data
-    let map_data = GEOCODINGDATA.data[default_map_settings.parent]
+    let map_data = DRILLDOWNDATA.data[default_map_settings.parent]
     if ( map_data === undefined ) {
         console.log('error getting map_data')
         return;
@@ -1019,9 +1019,9 @@ function top_level_location_list( div ) {
     title.empty().html(map_data.self.name)
 
     // Population Division and Check for Custom Division
-    let pd_settings = GEOCODINGDATA.settings.population_division
+    let pd_settings = DRILLDOWNDATA.settings.population_division
     let population_division = pd_settings.base
-    if ( ! GEOCODING.isEmpty( pd_settings.custom ) ) {
+    if ( ! DRILLDOWN.isEmpty( pd_settings.custom ) ) {
         jQuery.each( pd_settings.custom, function(i,v) {
             if ( map_data.self.geonameid === i ) {
                 population_division = v
@@ -1044,8 +1044,8 @@ function top_level_location_list( div ) {
                     <div class="cell small-3">Population</div>`
 
         /* Additional Columns */
-        if ( GEOCODINGDATA.data.custom_column_labels ) {
-            jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(i,v) {
+        if ( DRILLDOWNDATA.data.custom_column_labels ) {
+            jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(i,v) {
                 header += `<div class="cell small-3">${v}</div>`
             })
         }
@@ -1066,12 +1066,12 @@ function top_level_location_list( div ) {
 
 
         /* Additional Columns */
-        if ( GEOCODINGDATA.data.custom_column_data[i] ) {
-            jQuery.each( GEOCODINGDATA.data.custom_column_data[i], function(ii,v) {
+        if ( DRILLDOWNDATA.data.custom_column_data[i] ) {
+            jQuery.each( DRILLDOWNDATA.data.custom_column_data[i], function(ii,v) {
                 html += `<div class="cell small-3">${v}</div>`
             })
         } else {
-            jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii,v) {
+            jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii,v) {
                 html += `<div class="cell small-3"></div>`
             })
         }
@@ -1081,37 +1081,37 @@ function top_level_location_list( div ) {
         locations.append(html)
     })
 
-    GEOCODING.hide_spinner()
+    DRILLDOWN.hide_spinner()
 }
 
 function geoname_list( div, geonameid ) {
-    GEOCODINGDATA.settings.hide_final_drill_down = true
-    GEOCODING.show_spinner()
-    if ( GEOCODINGDATA.data[geonameid] === undefined ) {
-        let rest = GEOCODINGDATA.settings.endpoints.get_map_by_geonameid_endpoint
+    DRILLDOWNDATA.settings.hide_final_drill_down = true
+    DRILLDOWN.show_spinner()
+    if ( DRILLDOWNDATA.data[geonameid] === undefined ) {
+        let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_geonameid_endpoint
 
         jQuery.ajax({
             type: rest.method,
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify( { 'geonameid': geonameid } ),
             dataType: "json",
-            url: GEOCODINGDATA.settings.root + rest.namespace + rest.route,
+            url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
             },
         })
             .done( function( response ) {
-                GEOCODINGDATA.data[geonameid] = response
-                build_geoname_list( div, GEOCODINGDATA.data[geonameid] )
+                DRILLDOWNDATA.data[geonameid] = response
+                build_geoname_list( div, DRILLDOWNDATA.data[geonameid] )
             })
             .fail(function (err) {
                 console.log("error")
                 console.log(err)
-                GEOCODING.hide_spinner()
+                DRILLDOWN.hide_spinner()
             })
 
     } else {
-        build_geoname_list( div, GEOCODINGDATA.data[geonameid] )
+        build_geoname_list( div, DRILLDOWNDATA.data[geonameid] )
     }
 
     function build_geoname_list( div, map_data ) {
@@ -1121,9 +1121,9 @@ function geoname_list( div, geonameid ) {
         title.empty().html(map_data.self.name)
 
         // Population Division and Check for Custom Division
-        let pd_settings = GEOCODINGDATA.settings.population_division
+        let pd_settings = DRILLDOWNDATA.settings.population_division
         let population_division = pd_settings.base
-        if ( ! GEOCODING.isEmpty( pd_settings.custom ) ) {
+        if ( ! DRILLDOWN.isEmpty( pd_settings.custom ) ) {
             jQuery.each( pd_settings.custom, function(i,v) {
                 if ( map_data.self.geonameid === i ) {
                     population_division = v
@@ -1145,8 +1145,8 @@ function geoname_list( div, geonameid ) {
         html += `<thead><tr><th>Name</th><th>Population</th>`
 
         /* Additional Columns */
-        if ( GEOCODINGDATA.data.custom_column_labels ) {
-            jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(i,v) {
+        if ( DRILLDOWNDATA.data.custom_column_labels ) {
+            jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(i,v) {
                 html += `<th>${v.label}</th>`
             })
         }
@@ -1166,12 +1166,12 @@ function geoname_list( div, geonameid ) {
                         <td>${population}</td>`
 
             /* Additional Columns */
-            if ( GEOCODINGDATA.data.custom_column_data[v.geonameid] ) {
-                jQuery.each( GEOCODINGDATA.data.custom_column_data[v.geonameid], function(ii,vv) {
+            if ( DRILLDOWNDATA.data.custom_column_data[v.geonameid] ) {
+                jQuery.each( DRILLDOWNDATA.data.custom_column_data[v.geonameid], function(ii,vv) {
                     html += `<td><strong>${vv}</strong></td>`
                 })
             } else {
-                jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii,vv) {
+                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii,vv) {
                     html += `<td class="grey">0</td>`
                 })
             }
@@ -1190,7 +1190,7 @@ function geoname_list( div, geonameid ) {
             "paging":   false
         });
 
-       GEOCODING.hide_spinner()
+       DRILLDOWN.hide_spinner()
     }
 }
 
@@ -1206,7 +1206,7 @@ function geoname_list( div, geonameid ) {
 //      *
 //      *****************************************************************************************************************/
 //     if ( geonameid ) { // make sure this is not a top level continent or world request
-//         GEOCODING.geoname_drill_down()( div, geonameid )
+//         DRILLDOWN.geoname_drill_down()( div, geonameid )
 //     }
 //     /*******************************************************************************************************************
 //      *
@@ -1220,22 +1220,22 @@ function geoname_list( div, geonameid ) {
 //
 // function top_level_drill_down( div ) {
 //     
-//     let top_map_list = GEOCODINGDATA.data.top_map_list
+//     let top_map_list = DRILLDOWNDATA.data.top_map_list
 //     let drill_down = jQuery('#drill_down')
 //
-//     GEOCODING.show_spinner()
+//     DRILLDOWN.show_spinner()
 //
-//     drill_down.empty().append(`<li><select id="drill_down_top_level" onchange="GEOCODING.geoname_drill_down()( '${div}', this.value );jQuery(this).parent().nextAll().remove();"></select></li>`)
+//     drill_down.empty().append(`<li><select id="drill_down_top_level" onchange="DRILLDOWN.geoname_drill_down()( '${div}', this.value );jQuery(this).parent().nextAll().remove();"></select></li>`)
 //     let drill_down_select = jQuery('#drill_down_top_level')
 //
 //     if( Object.keys(top_map_list).length === 1 ) {
 //         jQuery.each(top_map_list, function(i,v) {
 //             drill_down_select.append(`<option value="${i}" selected>${v}</option>`)
 //
-//             if ( ! GEOCODING.isEmpty( GEOCODINGDATA.data[i].children ) ) {
-//                 if ( ! GEOCODING.isEmpty( GEOCODINGDATA.data[i].deeper_levels ) ) {
-//                     drill_down.append(`<li><select id="${i}" onchange="GEOCODING.geoname_drill_down()( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
-//                     let sorted_children =  _.sortBy(GEOCODINGDATA.data[i].children, [function(o) { return o.name; }]);
+//             if ( ! DRILLDOWN.isEmpty( DRILLDOWNDATA.data[i].children ) ) {
+//                 if ( ! DRILLDOWN.isEmpty( DRILLDOWNDATA.data[i].deeper_levels ) ) {
+//                     drill_down.append(`<li><select id="${i}" onchange="DRILLDOWN.geoname_drill_down()( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
+//                     let sorted_children =  _.sortBy(DRILLDOWNDATA.data[i].children, [function(o) { return o.name; }]);
 //
 //                     jQuery.each( sorted_children, function(ii,vv) {
 //                         jQuery('#'+i).append(`<option value="${vv.id}">${vv.name}</option>`)
@@ -1263,13 +1263,13 @@ function geoname_list( div, geonameid ) {
 //         bind_drill_down( div )
 //     }
 //
-//     GEOCODING.hide_spinner()
+//     DRILLDOWN.hide_spinner()
 // }
 //
-// function GEOCODING.geoname_drill_down()( div, id, deeper_levels ) {
+// function DRILLDOWN.geoname_drill_down()( div, id, deeper_levels ) {
 //     
-//     GEOCODING.show_spinner()
-//     let rest = GEOCODINGDATA.settings.endpoints.get_map_by_geonameid_endpoint
+//     DRILLDOWN.show_spinner()
+//     let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_geonameid_endpoint
 //
 //     let drill_down = jQuery('#drill_down')
 //
@@ -1278,18 +1278,18 @@ function geoname_list( div, geonameid ) {
 //         contentType: "application/json; charset=utf-8",
 //         data: JSON.stringify( { 'geonameid': id } ),
 //         dataType: "json",
-//         url: GEOCODINGDATA.settings.root + rest.namespace + rest.route,
+//         url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
 //         beforeSend: function(xhr) {
 //             xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
 //         },
 //     })
 //         .done( function( response ) {
 //             console.log(response)
-//             GEOCODINGDATA.data[response.self.geonameid] = response
+//             DRILLDOWNDATA.data[response.self.geonameid] = response
 //
-//             if ( ! GEOCODING.isEmpty( response.children ) ) {
-//                 if ( ! GEOCODING.isEmpty( response.deeper_levels ) ) {
-//                     drill_down.append(`<li><select id="${response.self.geonameid}" onchange="GEOCODING.geoname_drill_down()( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
+//             if ( ! DRILLDOWN.isEmpty( response.children ) ) {
+//                 if ( ! DRILLDOWN.isEmpty( response.deeper_levels ) ) {
+//                     drill_down.append(`<li><select id="${response.self.geonameid}" onchange="DRILLDOWN.geoname_drill_down()( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
 //                     let sorted_children =  _.sortBy(response.children, [function(o) { return o.name; }]);
 //
 //                     jQuery.each( sorted_children, function(i,v) {
@@ -1303,16 +1303,16 @@ function geoname_list( div, geonameid ) {
 //             }
 //
 //
-//             GEOCODING.hide_spinner()
+//             DRILLDOWN.hide_spinner()
 //         }) // end success statement
 //         .fail(function (err) {
 //             console.log("error")
 //             console.log(err)
-//             GEOCODING.hide_spinner()
+//             DRILLDOWN.hide_spinner()
 //         })
 // }
 //
-// function GEOCODING.isEmpty(obj) {
+// function DRILLDOWN.isEmpty(obj) {
 //     for(let key in obj) {
 //         if(obj.hasOwnProperty(key))
 //             return false;
@@ -1320,11 +1320,11 @@ function geoname_list( div, geonameid ) {
 //     return true;
 // }
 //
-// function GEOCODING.show_spinner() {
+// function DRILLDOWN.show_spinner() {
 //     jQuery('#spinner').show()
 // }
 //
-// function GEOCODING.hide_spinner() {
+// function DRILLDOWN.hide_spinner() {
 //     jQuery('#spinner').hide()
 // }
 //

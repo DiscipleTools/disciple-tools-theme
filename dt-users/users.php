@@ -40,6 +40,8 @@ class Disciple_Tools_Users
         add_action( 'delete_user', [ $this, 'user_deleted' ], 10, 1 );
         add_action( 'remove_user_from_blog', [ $this, 'user_deleted' ], 10, 2 );
 
+        add_filter( 'dt_settings_js_data', [ $this, 'add_current_locations_list'], 10, 1 );
+
     }
 
     /**
@@ -49,7 +51,6 @@ class Disciple_Tools_Users
      *
      * @return array|\WP_Error
      */
-
     public static function get_assignable_users_compact( string $search_string = null ) {
         if ( !current_user_can( "access_contacts" ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to assign" ), [ 'status' => 403 ] );
@@ -248,7 +249,7 @@ class Disciple_Tools_Users
         if ( !empty( $args['nickname'] ) && $current_user->display_name != $args['nickname'] ) {
             //set display name to nickname
             $user_id = wp_update_user( array(
-                'ID' => $args['ID'],
+                'ID' => (int) $args['ID'],
                 'display_name' => $args['nickname']
                 )
             );
@@ -625,5 +626,10 @@ class Disciple_Tools_Users
         if ( $corresponds_to_contact ){
             delete_post_meta( $corresponds_to_contact, "corresponds_to_user" );
         }
+    }
+
+    public function add_current_locations_list( $custom_data ) {
+        $custom_data['current_locations'] = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id(), 'user' ) );
+        return $custom_data;
     }
 }

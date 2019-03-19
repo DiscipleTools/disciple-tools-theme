@@ -75,6 +75,12 @@ class Disciple_Tools_Users_Endpoints
                 'callback' => [ $this, 'get_user_contact_id' ]
             ]
         );
+        register_rest_route(
+            $this->namespace, '/users/current_locations', [
+                'methods' => "GET",
+                'callback' => [ $this, 'get_current_locations' ]
+            ]
+        );
     }
 
     /**
@@ -166,6 +172,10 @@ class Disciple_Tools_Users_Endpoints
         } else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
         }
+    }
+
+    public function get_current_locations(){
+        return DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id(), 'user' ) );
     }
 
 }

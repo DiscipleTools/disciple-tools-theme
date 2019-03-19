@@ -855,26 +855,26 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             </table>
 
             <script>
-                window.GEOCODINGDATA.settings.hide_final_drill_down = true
-                window.GEOCODING.population_edit = function(  geonameid ) {
+                window.DRILLDOWNDATA.settings.hide_final_drill_down = true
+                window.DRILLDOWN.population_edit = function(  geonameid ) {
                     if ( geonameid === 'top_map_list' ) { // top level multi-list
                         let list_results = jQuery('#list_results')
                         let gn = []
                         list_results.empty()
-                        jQuery.each( window.GEOCODINGDATA.data.top_map_list, function(i,v) {
-                            gn = window.GEOCODINGDATA.data[i]
+                        jQuery.each( window.DRILLDOWNDATA.data.top_map_list, function(i,v) {
+                            gn = window.DRILLDOWNDATA.data[i]
                             if ( gn !== undefined ) {
                                 list_results.append( `<tr><td>${gn.self.name}</td><td>${gn.self.population_formatted}</td><td><input type="number" id="${gn.self.geonameid}" value=""></td><td><a class="button" onclick="update_population( ${gn.self.geonameid}, jQuery('#'+${gn.self.geonameid}).val() )">Update</a></td></tr>`)
                             }
                         })
                     }
-                    else if ( window.GEOCODING.isEmpty( window.GEOCODINGDATA.data[geonameid].children ) ) { // empty children for geonameid
+                    else if ( window.DRILLDOWN.isEmpty( window.DRILLDOWNDATA.data[geonameid].children ) ) { // empty children for geonameid
                         jQuery('#drill_down').append(`<li><em>deepest level reached!</em></li>`)
                     }
                     else { // children available
                         let list_results = jQuery('#list_results')
                         list_results.empty()
-                        jQuery.each( window.GEOCODINGDATA.data[geonameid].children, function(i,v) {
+                        jQuery.each( window.DRILLDOWNDATA.data[geonameid].children, function(i,v) {
                             list_results.append( `<tr><td>${v.name}</td><td>${v.population_formatted}</td><td><input type="number" id="${v.geonameid}" value=""></td><td><a class="button" onclick="update_population( ${v.geonameid}, jQuery('#'+${v.geonameid}).val() )">Update</a></td></tr>`)
                         })
                     }
@@ -914,26 +914,26 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             </table>
 
             <script>
-                window.GEOCODINGDATA.settings.hide_final_drill_down = true
-                window.GEOCODING.name_select = function(  geonameid ) {
+                window.DRILLDOWNDATA.settings.hide_final_drill_down = true
+                window.DRILLDOWN.name_select = function(  geonameid ) {
                     if ( geonameid === 'top_map_list' ) { // top level multi-list
                         let list_results = jQuery('#list_results')
                         let gn = []
                         list_results.empty()
-                        jQuery.each( window.GEOCODINGDATA.data.top_map_list, function(i,v) {
-                            gn = window.GEOCODINGDATA.data[i]
+                        jQuery.each( window.DRILLDOWNDATA.data.top_map_list, function(i,v) {
+                            gn = window.DRILLDOWNDATA.data[i]
                             if ( gn !== undefined ) {
                                 list_results.append( `<tr><td>${gn.self.name}</td><td><input type="text" id="${gn.self.geonameid}" value=""></td><td><a class="button" onclick="update_name( ${gn.self.geonameid}, jQuery('#'+${gn.self.geonameid}).val() )">Update</a></td></tr>`)
                             }
                         })
                     }
-                    else if ( window.GEOCODING.isEmpty( window.GEOCODINGDATA.data[geonameid].children ) ) { // empty children for geonameid
+                    else if ( window.DRILLDOWN.isEmpty( window.DRILLDOWNDATA.data[geonameid].children ) ) { // empty children for geonameid
                         jQuery('#drill_down').append(`<li><em>deepest level reached!</em></li>`)
                     }
                     else { // children available
                         let list_results = jQuery('#list_results')
                         list_results.empty()
-                        jQuery.each( window.GEOCODINGDATA.data[geonameid].children, function(i,v) {
+                        jQuery.each( window.DRILLDOWNDATA.data[geonameid].children, function(i,v) {
                             list_results.append( `<tr><td>${v.name}</td><td><input type="text" id="${v.geonameid}" value=""></td><td><a class="button" onclick="update_population( ${v.geonameid}, jQuery('#'+${v.geonameid}).val() )">Update</a></td></tr>`)
                         })
                     }
@@ -975,7 +975,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             </table>
 
             <script>
-                window.GEOCODING.sublocation = function(  geonameid ) {
+                window.DRILLDOWN.sublocation = function(  geonameid ) {
                     let list_results = jQuery('#list_results')
                     let current_subs = jQuery('#current_subs')
                     let other_list = jQuery('#other_list')
@@ -988,14 +988,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                         list_results.append(`Select one single location`)
                     }
                     else { // children available
-                        if ( ! window.GEOCODING.isEmpty( window.GEOCODINGDATA.data[geonameid].children ) ) { // empty children for geonameid
-                            jQuery.each( window.GEOCODINGDATA.data[geonameid].children, function(gnid, data ) {
-                                other_list.append(`<tr><td><a onclick="GEOCODING.geoname_drill_down( ${gnid}, 'sublocation' );jQuery('#'+${gnid}).parent().nextAll().remove();jQuery('#${geonameid} option[value=${gnid}]').attr('selected', 'selected');">${data.name}</a></td></tr>`)
+                        if ( ! window.DRILLDOWN.isEmpty( window.DRILLDOWNDATA.data[geonameid].children ) ) { // empty children for geonameid
+                            jQuery.each( window.DRILLDOWNDATA.data[geonameid].children, function(gnid, data ) {
+                                other_list.append(`<tr><td><a onclick="DRILLDOWN.geoname_drill_down( ${gnid}, 'sublocation' );jQuery('#'+${gnid}).parent().nextAll().remove();jQuery('#${geonameid} option[value=${gnid}]').attr('selected', 'selected');">${data.name}</a></td></tr>`)
                             })
                             current_subs.show()
                         }
 
-                        list_results.append(`<tr><td>Edit ${window.GEOCODINGDATA.data[geonameid].self.name}</td></tr><tr><td><input id="new_name_${geonameid}" value="" /></td></tr>`)
+                        list_results.append(`<tr><td>Edit ${window.DRILLDOWNDATA.data[geonameid].self.name}</td></tr><tr><td><input id="new_name_${geonameid}" value="" /></td></tr>`)
                         list_results.append(`<tr><td><a class="button" onclick="update_name( ${geonameid}, jQuery('#new_name_'+${geonameid}).val()  )" >Save</a> </td></tr>`)
                     }
                 }
