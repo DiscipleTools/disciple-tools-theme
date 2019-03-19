@@ -1286,10 +1286,21 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $c->permalink = get_permalink( $c->ID );
             }
             $fields["relation"] = $relation;
+            foreach ( self::$contact_connection_types as $type ){
+                foreach ( $fields[$type] as $index => $post ){
+                    $fields[$type][$index] = [
+                        "ID" => $post->ID,
+                        "post_type" => $post->post_type,
+                        "post_date_gmt" => $post->post_date_gmt,
+                        "post_date" => $post->post_date,
+                        "post_title" => $post->post_title
+                    ];
+                }
+            }
 
             self::adjust_custom_fields( $contact_id, $fields, $contact_fields );
 
-            $comments = get_comments( [ 'post_id' => $contact_id ] );
+            $comments = self::get_comments( $contact_id );
             $fields["comments"] = $comments;
             $fields["ID"] = $contact->ID;
             $fields["title"] = $contact->post_title;
