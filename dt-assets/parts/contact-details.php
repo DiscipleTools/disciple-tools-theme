@@ -400,7 +400,7 @@
                         <?php
                         foreach ( $contact_fields['gender']['default'] as $gender_key => $option ) {
                             $gender_value = $option["label"] ?? "";
-                            if ( isset( $contact['gender'] ) &&
+                            if ( isset( $contact['gender']['key'] ) &&
                                  $contact['gender']['key'] === $gender_key){
                                 echo '<option value="'. esc_html( $gender_key ) . '" selected>' . esc_html( $gender_value ) . '</option>';
                             } else {
