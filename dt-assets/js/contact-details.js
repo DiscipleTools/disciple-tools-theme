@@ -335,9 +335,6 @@ jQuery(document).ready(function($) {
 
 
 
-
-
-
   /**
    * People groups
    */
@@ -712,20 +709,8 @@ jQuery(document).ready(function($) {
   })
 
     // Begin Geocode Section
-    window.GEOCODECONTACT = {
-
-        getAddressInput() {
-            let v = $('#validate_addressnew').val()
-
-            if ( $('#new-contact').length ) { // check if edits have already been made in this session and load those instead.
-                $('#new-contact').replaceWith(`<textarea class="contact-input" id="new-contact" data-type="contact_address" dir="auto">${v}</textarea>`)
-                editFieldsUpdate['contact_address']['values'] = [{"key": undefined, "value": v }]
-            } else {
-                $('#edit-contact_address').append(`<li style="display: flex"><textarea class="contact-input" id="new-contact" data-type="contact_address" dir="auto">${v}</textarea><button class="button clear delete-button" data-id="new"><img src="${wpApiShare.template_dir}/dt-assets/images/invalid.svg"></button></li>`)
-                editFieldsUpdate['contact_address'] = {"values": [{"key": undefined, "value": v }]}
-            }
-        },
-
+    window.GEOCODING.edit_contact_geocodeid = function( geonameid ) {
+        editFieldsUpdate['geonameid'] = geonameid
     }
   // End Geocode Section
 
@@ -1042,10 +1027,6 @@ jQuery(document).ready(function($) {
         editFieldsUpdate[`contact_${channelType}`].values.push({value:val})
       }
     })
-      let geonameid = $('#geocode-selected-value').val()
-      if ( geonameid  ) {
-          editFieldsUpdate['geonameid'] = geonameid
-      }
 
     API.save_field_api( "contact", contactId, editFieldsUpdate).then((updatedContact)=>{
       contact = updatedContact

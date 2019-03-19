@@ -1,14 +1,33 @@
 jQuery(document).ready(function() {
-    let mapping_module = mappingModule.mapping_module
+    
     if('#mapping_view' === window.location.hash) {
-        console.log(mapping_module)
+        console.log(GEOCODINGDATA)
         page_mapping_view()
     }
     if('#mapping_list' === window.location.hash) {
-        console.log(mapping_module)
+        console.log(GEOCODINGDATA)
         page_mapping_list()
     }
 })
+
+_ = _ || window.lodash
+
+window.GEOCODING.location_list = function(  geonameid ) {
+    if ( geonameid !== 'top_map_list' ) {
+        location_list( 'location_list', geonameid )
+    } else {
+        jQuery('#location_list').empty().append(`Select list above.`)
+        location_list( 'location_list' )
+    }
+
+}
+window.GEOCODING.map_display = function( geonameid ) {
+    if ( geonameid !== 'top_map_list' ) {
+        map_chart( 'map_chart', geonameid )
+    } else {
+        map_chart( 'map_chart' )
+    }
+}
 
 /**********************************************************************************************************************
  *
@@ -19,13 +38,12 @@ jQuery(document).ready(function() {
  **********************************************************************************************************************/
 function page_mapping_view() {
     "use strict";
-    // let mapping_module = mappingModule.mapping_module
+    // 
     let chartDiv = jQuery('#chart')
     chartDiv.empty().html(`
         
         <div class="grid-x grid-margin-y">
-            <div class="cell auto">
-                <!-- Drill Down -->
+            <div class="cell medium-6">
                 <ul id="drill_down"></ul>
             </div>
             <div class="cell medium-6" style="text-align:right;">
@@ -37,14 +55,10 @@ function page_mapping_view() {
         
         <hr style="max-width:100%;">
         
-        <!-- Section Title -->
-        <div class="grid-x"></div>
-       
        <!-- Map -->
        <div class="grid-x grid-margin-x">
             <div class="cell medium-10">
-                
-                <div id="map-display" style="width: 100%;max-height: 700px;height: 100vh;vertical-align: text-top;"></div>
+                <div id="map_display" style="width: 100%;max-height: 700px;height: 100vh;vertical-align: text-top;"></div>
             </div>
             <div class="cell medium-2 left-border-grey">
                 <div class="grid-y">
@@ -63,33 +77,16 @@ function page_mapping_view() {
             <span id="current_level"></span>
         </div>
         
+        <!-- Location List -->
         <div id="location_list"></div>
         
         <hr style="max-width:100%;">
         
-        
-        
-        <span style="float:right;font-size:.8em;"><a onclick="map_chart( 'map-display' )" >return to world view</a></span>
+        <span style="float:right;font-size:.8em;"><a onclick="map_chart( 'map_display' )" >return to world view</a></span>
         
         <br>
         
         <style>/* custom css for dropdown box */
-          .custom-combobox {
-            position: relative;
-            display: inline-block;
-          }
-          .custom-combobox-toggle {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            margin-left: -1px;
-            padding: 0;
-          }
-          .custom-combobox-input {
-            margin: 0;
-            padding:5px 10px;
-          }
-          
           #page-header {
                 position:absolute;
             }
@@ -100,47 +97,22 @@ function page_mapping_view() {
                     width: 100%;
                 }
             }
-            #drill_down {
-                margin-bottom: 0;
-                list-style-type: none;
-            }
-            #drill_down li {
-                display:inline;
-                padding: 0 10px;
-            }
-            #drill_down li select {
-                width:150px;
-            }
-          </style>
+        </style>
         `);
 
-    load_drill_down( 'map-display' )
+    window.GEOCODING.load_drill_down( null, 'map_display' )
     data_type_list( 'data-type-list' )
 }
 
 function map_chart( div, geonameid ) {
-    let mapping_module = mappingModule.mapping_module
-    let default_map_settings = mapping_module.settings.default_map_settings
-
-    /*******************************************************************************************************************
-     *
-     * Load Requested Geonameid
-     *
-     *****************************************************************************************************************/
     if ( geonameid ) { // make sure this is not a top level continent or world request
-        console.log('geonameid available')
+        console.log('map_chart: geonameid available')
         geoname_map( div, geonameid )
     }
-    /*******************************************************************************************************************
-     *
-     * Initialize Top Level Maps
-     *
-     *****************************************************************************************************************/
     else { // top_level maps
-        console.log('top level')
+        console.log('map_chart: top level')
         top_level_map( div )
-    } // end if
-
+    }
 }
 
 function top_level_map( div ) {
@@ -148,23 +120,22 @@ function top_level_map( div ) {
     let chart = am4core.create( div, am4maps.MapChart);
     chart.projection = new am4maps.projections.Miller(); // Set projection
 
-    let mapping_module = mappingModule.mapping_module
-    let default_map_settings = mapping_module.settings.default_map_settings
+    let default_map_settings = GEOCODINGDATA.settings.default_map_settings
     let mapUrl = ''
-    let top_map_list = mapping_module.data.top_map_list
+    let top_map_list = GEOCODINGDATA.data.top_map_list
     let title = jQuery('#section-title')
 
     switch ( default_map_settings.type ) {
 
         case 'world':
 
-            let map_data = mapping_module.data.world
+            let map_data = GEOCODINGDATA.data.world
 
             // set title
             title.empty().html(map_data.self.name)
 
             // sort custom start level url
-            mapUrl = mapping_module.settings.mapping_source_url + 'top_level_maps/world.geojson'
+            mapUrl = GEOCODINGDATA.settings.mapping_source_url + 'top_level_maps/world.geojson'
 
             // get geojson
             jQuery.getJSON( mapUrl, function( data ) {
@@ -179,13 +150,13 @@ function top_level_map( div ) {
 
 
                         // custom columns
-                        if ( mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
-                            jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
-                                mapData.features[i].properties[vv.key] = mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                        if ( GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
+                            jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
+                                mapData.features[i].properties[vv.key] = GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
                                 mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
                             })
                         } else {
-                            jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
+                            jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
                                 mapData.features[i].properties[vv.key] = 0
                                 mapData.features[i].properties.value = 0
                             })
@@ -209,7 +180,7 @@ function top_level_map( div ) {
                             ---------<br>
                             Population: {population}<br>
                             `;
-                jQuery.each( mapping_module.data.custom_column_labels, function(ii, vc) {
+                jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vc) {
                     toolTipContent += vc.label + ': {' + vc.key + '}<br>'
                 })
                 template.tooltipHTML = toolTipContent
@@ -269,7 +240,7 @@ function top_level_map( div ) {
                     if( map_data.deeper_levels[ev.target.dataItem.dataContext.geonameid] )
                     {
                         jQuery("select#world option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
-                        geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid )
+                        GEOCODING.geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid, 'map_display' )
                         return map_chart( div, ev.target.dataItem.dataContext.geonameid )
                     }
 
@@ -294,7 +265,7 @@ function top_level_map( div ) {
                 // multiple countries selected. So load the world and reduce the polygons
                 console.log(Object.keys(top_map_list))
 
-                mapUrl = mapping_module.settings.mapping_source_url + 'top_level_maps/world.geojson'
+                mapUrl = GEOCODINGDATA.settings.mapping_source_url + 'top_level_maps/world.geojson'
                 jQuery.getJSON( mapUrl, function( data ) {
 
                     // set title
@@ -319,33 +290,33 @@ function top_level_map( div ) {
                     // prepare country/child data
                     jQuery.each( mapData.features, function(i, v ) {
 
-                        if ( mapping_module.data[v.properties.geonameid] !== undefined ) {
+                        if ( GEOCODINGDATA.data[v.properties.geonameid] !== undefined ) {
                             mapData.features[i].properties.geonameid = v.properties.geonameid
-                            mapData.features[i].properties.population = mapping_module.data[v.properties.geonameid].self.population
+                            mapData.features[i].properties.population = GEOCODINGDATA.data[v.properties.geonameid].self.population
 
 
                             // custom columns
-                            if ( mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
-                                jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
-                                    mapData.features[i].properties[vv.key] = mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                            if ( GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
+                                jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
+                                    mapData.features[i].properties[vv.key] = GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
                                     mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
                                 })
                             } else {
-                                jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
+                                jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
                                     mapData.features[i].properties[vv.key] = 0
                                     mapData.features[i].properties.value = 0
                                 })
                             }
 
-                            title.append(mapping_module.data[v.properties.geonameid].self.name)
+                            title.append(GEOCODINGDATA.data[v.properties.geonameid].self.name)
                             if ( title.html().length !== '' ) {
                                 title.append(', ')
                             }
 
                             coordinates[i] = {
-                                "latitude": mapping_module.data[v.properties.geonameid].self.latitude,
-                                "longitude": mapping_module.data[v.properties.geonameid].self.longitude,
-                                "title": mapping_module.data[v.properties.geonameid].self.name
+                                "latitude": GEOCODINGDATA.data[v.properties.geonameid].self.latitude,
+                                "longitude": GEOCODINGDATA.data[v.properties.geonameid].self.longitude,
+                                "title": GEOCODINGDATA.data[v.properties.geonameid].self.name
                             }
 
                         }
@@ -364,7 +335,7 @@ function top_level_map( div ) {
                             ---------<br>
                             Population: {population}<br>
                             `;
-                    jQuery.each( mapping_module.data.custom_column_labels, function(ii, vc) {
+                    jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vc) {
                         toolTipContent += vc.label + ': {' + vc.key + '}<br>'
                     })
                     template.tooltipHTML = toolTipContent
@@ -407,10 +378,10 @@ function top_level_map( div ) {
                         console.log(ev.target.dataItem.dataContext.name)
                         console.log(ev.target.dataItem.dataContext.geonameid)
 
-                        if( mapping_module.data[ev.target.dataItem.dataContext.geonameid] )
+                        if( GEOCODINGDATA.data[ev.target.dataItem.dataContext.geonameid] )
                         {
                             jQuery("select#drill_down_top_level option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
-                            geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid )
+                            GEOCODING.geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid, 'map_display' )
                             return map_chart( div, ev.target.dataItem.dataContext.geonameid )
                         }
                     }, this);
@@ -434,12 +405,12 @@ function top_level_map( div ) {
             } else {
                 // multiple countries selected. So load the world and reduce the polygons
 
-                mapUrl = mapping_module.settings.mapping_source_url + 'maps/' +default_map_settings.parent+ '.geojson'
+                mapUrl = GEOCODINGDATA.settings.mapping_source_url + 'maps/' +default_map_settings.parent+ '.geojson'
                 jQuery.getJSON( mapUrl, function( data ) {
 
                     // set title
 
-                    title.empty().append(mapping_module.data[default_map_settings.parent].self.name)
+                    title.empty().append(GEOCODINGDATA.data[default_map_settings.parent].self.name)
 
                     // create a new geojson, including only the top level maps
                     let new_geojson = jQuery.extend({}, data )
@@ -460,19 +431,19 @@ function top_level_map( div ) {
                     // prepare country/child data
                     jQuery.each( mapData.features, function(i, v ) {
 
-                        if ( mapping_module.data[v.properties.geonameid] !== undefined ) {
+                        if ( GEOCODINGDATA.data[v.properties.geonameid] !== undefined ) {
                             mapData.features[i].properties.geonameid = v.properties.geonameid
-                            mapData.features[i].properties.population = mapping_module.data[v.properties.geonameid].self.population
+                            mapData.features[i].properties.population = GEOCODINGDATA.data[v.properties.geonameid].self.population
 
 
                             // custom columns
-                            if ( mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
-                                jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
-                                    mapData.features[i].properties[vv.key] = mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                            if ( GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
+                                jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
+                                    mapData.features[i].properties[vv.key] = GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
                                     mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
                                 })
                             } else {
-                                jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
+                                jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
                                     mapData.features[i].properties[vv.key] = 0
                                     mapData.features[i].properties.value = 0
                                 })
@@ -481,9 +452,9 @@ function top_level_map( div ) {
 
 
                             coordinates[i] = {
-                                "latitude": mapping_module.data[v.properties.geonameid].self.latitude,
-                                "longitude": mapping_module.data[v.properties.geonameid].self.longitude,
-                                "title": mapping_module.data[v.properties.geonameid].self.name
+                                "latitude": GEOCODINGDATA.data[v.properties.geonameid].self.latitude,
+                                "longitude": GEOCODINGDATA.data[v.properties.geonameid].self.longitude,
+                                "title": GEOCODINGDATA.data[v.properties.geonameid].self.name
                             }
 
                         }
@@ -502,7 +473,7 @@ function top_level_map( div ) {
                             ---------<br>
                             Population: {population}<br>
                             `;
-                    jQuery.each( mapping_module.data.custom_column_labels, function(ii, vc) {
+                    jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vc) {
                         toolTipContent += vc.label + ': {' + vc.key + '}<br>'
                     })
                     template.tooltipHTML = toolTipContent
@@ -545,10 +516,10 @@ function top_level_map( div ) {
                         console.log(ev.target.dataItem.dataContext.name)
                         console.log(ev.target.dataItem.dataContext.geonameid)
 
-                        if( mapping_module.data[ev.target.dataItem.dataContext.geonameid] )
+                        if( GEOCODINGDATA.data[ev.target.dataItem.dataContext.geonameid] )
                         {
                             jQuery("select#drill_down_top_level option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
-                            geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid )
+                            GEOCODING.geoname_drill_down( ev.target.dataItem.dataContext.geonameid, 'map_display' )
                             return map_chart( div, ev.target.dataItem.dataContext.geonameid )
                         }
                     }, this);
@@ -565,13 +536,12 @@ function top_level_map( div ) {
 }
 
 function geoname_map( div, geonameid ) {
-    let mapping_module = mappingModule.mapping_module
     am4core.useTheme(am4themes_animated);
 
     let chart = am4core.create( div, am4maps.MapChart);
-    // let default_map_settings = mapping_module.settings.default_map_settings
+    // let default_map_settings = GEOCODINGDATA.settings.default_map_settings
     let title = jQuery('#section-title')
-    let rest = mapping_module.settings.endpoints.get_map_by_geonameid_endpoint
+    let rest = GEOCODINGDATA.settings.endpoints.get_map_by_geonameid_endpoint
 
     chart.projection = new am4maps.projections.Miller(); // Set projection
 
@@ -581,7 +551,7 @@ function geoname_map( div, geonameid ) {
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify( { 'geonameid': geonameid } ),
         dataType: "json",
-        url: mapping_module.settings.root + rest.namespace + rest.route,
+        url: GEOCODINGDATA.settings.root + rest.namespace + rest.route,
         beforeSend: function(xhr) {
             xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
         },
@@ -590,7 +560,7 @@ function geoname_map( div, geonameid ) {
 
             title.html(response.self.name)
 
-            jQuery.getJSON( mapping_module.settings.mapping_source_url + 'maps/' + geonameid+'.geojson', function( data ) { // get geojson data
+            jQuery.getJSON( GEOCODINGDATA.settings.mapping_source_url + 'maps/' + geonameid+'.geojson', function( data ) { // get geojson data
 
                 // load geojson with additional parameters
                 let mapData = data
@@ -601,13 +571,13 @@ function geoname_map( div, geonameid ) {
                         mapData.features[i].properties.population = response.children[mapData.features[i].properties.geonameid].population
 
                         // custom columns
-                        if ( mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
-                            jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
-                                mapData.features[i].properties[vv.key] = mapping_module.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                        if ( GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
+                            jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
+                                mapData.features[i].properties[vv.key] = GEOCODINGDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
                                 mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
                             })
                         } else {
-                            jQuery.each( mapping_module.data.custom_column_labels, function(ii, vv) {
+                            jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vv) {
                                 mapData.features[i].properties[vv.key] = 0
                                 mapData.features[i].properties.value = 0
                             })
@@ -629,7 +599,7 @@ function geoname_map( div, geonameid ) {
                             ---------<br>
                             Population: {population}<br>
                             `;
-                jQuery.each( mapping_module.data.custom_column_labels, function(ii, vc) {
+                jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii, vc) {
                     toolTipContent += vc.label + ': {' + vc.key + '}<br>'
                 })
                 template.tooltipHTML = toolTipContent
@@ -680,55 +650,52 @@ function geoname_map( div, geonameid ) {
 }
 
 function data_type_list( div ) {
-    let mapping_module = mappingModule.mapping_module
     let list = jQuery('#'+div )
-    jQuery.each( mapping_module.data.custom_column_labels, function(i,v) {
+    jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(i,v) {
         list.append(`<a onclick="" class="button hollow" id="${v.key}">${v.label}</a>`)
     })
 }
 
 function load_breadcrumbs( div, id, parent_name ) {
-    let mapping_module = mappingModule.mapping_module
     let separator = ` > `
 
-    if ( mapping_module.breadcrumbs === undefined) {
-        mapping_module.breadcrumbs = []
+    if ( GEOCODINGDATA.breadcrumbs === undefined) {
+        GEOCODINGDATA.breadcrumbs = []
     }
 
-    for(let i = 0; i < mapping_module.breadcrumbs.length; i++ ) {
-        if ( mapping_module.breadcrumbs[i].id === id ) {
-            let reset = mapping_module.breadcrumbs.slice(0,i)
-            mapping_module.breadcrumbs = []
-            mapping_module.breadcrumbs = reset
+    for(let i = 0; i < GEOCODINGDATA.breadcrumbs.length; i++ ) {
+        if ( GEOCODINGDATA.breadcrumbs[i].id === id ) {
+            let reset = GEOCODINGDATA.breadcrumbs.slice(0,i)
+            GEOCODINGDATA.breadcrumbs = []
+            GEOCODINGDATA.breadcrumbs = reset
         }
     }
 
-    mapping_module.breadcrumbs.push({id,parent_name})
+    GEOCODINGDATA.breadcrumbs.push({id,parent_name})
 
     // clear breadcrumbs
     let content = jQuery('#breadcrumbs')
     content.empty()
 
-    for(let i = 0; i < mapping_module.breadcrumbs.length; i++ ) {
+    for(let i = 0; i < GEOCODINGDATA.breadcrumbs.length; i++ ) {
         let separator = ` > `
         if ( i === 0 ) {
             separator = ''
         }
-        if ( mapping_module.breadcrumbs[i].id === id ) {
-            // mapping_module.breadcrumbs.slice(0,i)
+        if ( GEOCODINGDATA.breadcrumbs[i].id === id ) {
+            // GEOCODINGDATA.breadcrumbs.slice(0,i)
             return false;
         }
-        content.append(`<span id="${mapping_module.breadcrumbs[i].id}">${separator}<a onclick="map_chart('${div}', ${mapping_module.breadcrumbs[i].id} ) ">${mapping_module.breadcrumbs[i].parent_name}</a></span>`)
+        content.append(`<span id="${GEOCODINGDATA.breadcrumbs[i].id}">${separator}<a onclick="map_chart('${div}', ${GEOCODINGDATA.breadcrumbs[i].id} ) ">${GEOCODINGDATA.breadcrumbs[i].parent_name}</a></span>`)
     }
 
     content.append(`<span id="${id}" data-value="${id}">${separator}<a onclick="map_chart('${div}', ${id} ) ">${parent_name}</a></span>`)
 
-    console.log(mapping_module.breadcrumbs)
+    console.log(GEOCODINGDATA.breadcrumbs)
 
 } // @todo remove?
 
 function load_dropdown_content( div, locations, deeper_levels ) {
-    let mapping_module = mappingModule.mapping_module
     let input_select = `<select id="combobox" style="display:none;"><option value="">Deeper Levels</option>`
 
     jQuery.each( locations, function( i, v ) {
@@ -745,7 +712,6 @@ function load_dropdown_content( div, locations, deeper_levels ) {
 } // @todo remove?
 
 function setup_dropdown_script( div ) {
-    let mapping_module = mappingModule.mapping_module
     /* Supports for combo box dropdown */
     jQuery(document).ready(function () {
         jQuery.widget("custom.combobox", {
@@ -889,9 +855,8 @@ function numberWithCommas(x) {
 } // @todo remove?
 
 function mini_map( div, marker_data ) {
-    let mapping_module = mappingModule.mapping_module
 
-    jQuery.getJSON( mapping_module.settings.mapping_source_url + 'top_level_maps/world.geojson', function( data ) {
+    jQuery.getJSON( GEOCODINGDATA.settings.mapping_source_url + 'top_level_maps/world.geojson', function( data ) {
         am4core.useTheme(am4themes_animated);
 
         var chart = am4core.create( div, am4maps.MapChart);
@@ -976,7 +941,6 @@ function child_list( mapDiv, children, deeper_levels ) { /* @todo consider remov
  **********************************************************************************************************************/
 function page_mapping_list() {
     "use strict";
-    let mapping_module = mappingModule.mapping_module
     let chartDiv = jQuery('#chart')
     chartDiv.empty().html(`
         <div class="grid-x grid-margin-x">
@@ -985,7 +949,7 @@ function page_mapping_list() {
                 <ul id="drill_down"></ul>
             </div>
             <div class="cell small-1">
-                <span id="spinner" style="display:none;" class="float-right">${mapping_module.settings.spinner_large}</span>
+                <span id="spinner" style="display:none;" class="float-right">${GEOCODINGDATA.settings.spinner_large}</span>
             </div>
         </div>
         
@@ -996,7 +960,7 @@ function page_mapping_list() {
             <span id="current_level"></span>
         </div>
         
-        <div id="location-list"></div>
+        <div id="location_list"></div>
         
         <hr style="max-width:100%;">
         
@@ -1012,25 +976,14 @@ function page_mapping_list() {
                     width: 100%;
                 }
             }
-            #drill_down {
-                margin-bottom: 0;
-                list-style-type: none;
-            }
-            #drill_down li {
-                display:inline;
-                padding: 0 10px;
-            }
-            #drill_down li select {
-                width:150px;
-            }
+           
         </style>
         `);
-    load_drill_down( 'location-list' )
+    window.GEOCODING.load_drill_down( null, 'location_list' )
 }
 
 function location_list( div, geonameid ) {
-    let mapping_module = mappingModule.mapping_module
-    let default_map_settings = mapping_module.settings.default_map_settings
+    let default_map_settings = GEOCODINGDATA.settings.default_map_settings
 
     /*******************************************************************************************************************
      *
@@ -1071,12 +1024,11 @@ function location_list( div, geonameid ) {
 }
 
 function top_level_location_list( div ) {
-    let mapping_module = mappingModule.mapping_module
-    let default_map_settings = mapping_module.settings.default_map_settings
-    show_spinner()
+    let default_map_settings = GEOCODINGDATA.settings.default_map_settings
+    GEOCODING.show_spinner()
 
     // Initialize Location Data
-    let map_data = mapping_module.data[default_map_settings.parent]
+    let map_data = GEOCODINGDATA.data[default_map_settings.parent]
     if ( map_data === undefined ) {
         console.log('error getting map_data')
         return;
@@ -1087,9 +1039,9 @@ function top_level_location_list( div ) {
     title.empty().html(map_data.self.name)
 
     // Population Division and Check for Custom Division
-    let pd_settings = mapping_module.settings.population_division
+    let pd_settings = GEOCODINGDATA.settings.population_division
     let population_division = pd_settings.base
-    if ( ! isEmpty( pd_settings.custom ) ) {
+    if ( ! GEOCODING.isEmpty( pd_settings.custom ) ) {
         jQuery.each( pd_settings.custom, function(i,v) {
             if ( map_data.self.geonameid === i ) {
                 population_division = v
@@ -1103,7 +1055,7 @@ function top_level_location_list( div ) {
 
 
     // Build List
-    let locations = jQuery('#location-list')
+    let locations = jQuery('#location_list')
     locations.empty()
 
     // Header Section
@@ -1112,8 +1064,8 @@ function top_level_location_list( div ) {
                     <div class="cell small-3">Population</div>`
 
         /* Additional Columns */
-        if ( mapping_module.data.custom_column_labels ) {
-            jQuery.each( mapping_module.data.custom_column_labels, function(i,v) {
+        if ( GEOCODINGDATA.data.custom_column_labels ) {
+            jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(i,v) {
                 header += `<div class="cell small-3">${v}</div>`
             })
         }
@@ -1134,12 +1086,12 @@ function top_level_location_list( div ) {
 
 
         /* Additional Columns */
-        if ( mapping_module.data.custom_column_data[i] ) {
-            jQuery.each( mapping_module.data.custom_column_data[i], function(ii,v) {
+        if ( GEOCODINGDATA.data.custom_column_data[i] ) {
+            jQuery.each( GEOCODINGDATA.data.custom_column_data[i], function(ii,v) {
                 html += `<div class="cell small-3">${v}</div>`
             })
         } else {
-            jQuery.each( mapping_module.data.custom_column_labels, function(ii,v) {
+            jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii,v) {
                 html += `<div class="cell small-3"></div>`
             })
         }
@@ -1149,37 +1101,37 @@ function top_level_location_list( div ) {
         locations.append(html)
     })
 
-    hide_spinner()
+    GEOCODING.hide_spinner()
 }
 
 function geoname_list( div, geonameid ) {
-    let mapping_module = mappingModule.mapping_module
-    show_spinner()
-    if ( mapping_module.data[geonameid] === undefined ) {
-        let rest = mapping_module.settings.endpoints.get_map_by_geonameid_endpoint
+    GEOCODINGDATA.settings.hide_final_drill_down = true
+    GEOCODING.show_spinner()
+    if ( GEOCODINGDATA.data[geonameid] === undefined ) {
+        let rest = GEOCODINGDATA.settings.endpoints.get_map_by_geonameid_endpoint
 
         jQuery.ajax({
             type: rest.method,
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify( { 'geonameid': geonameid } ),
             dataType: "json",
-            url: mapping_module.settings.root + rest.namespace + rest.route,
+            url: GEOCODINGDATA.settings.root + rest.namespace + rest.route,
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
             },
         })
             .done( function( response ) {
-                mapping_module.data[geonameid] = response
-                build_geoname_list( div, mapping_module.data[geonameid] )
+                GEOCODINGDATA.data[geonameid] = response
+                build_geoname_list( div, GEOCODINGDATA.data[geonameid] )
             })
             .fail(function (err) {
                 console.log("error")
                 console.log(err)
-                hide_spinner()
+                GEOCODING.hide_spinner()
             })
 
     } else {
-        build_geoname_list( div, mapping_module.data[geonameid] )
+        build_geoname_list( div, GEOCODINGDATA.data[geonameid] )
     }
 
     function build_geoname_list( div, map_data ) {
@@ -1189,9 +1141,9 @@ function geoname_list( div, geonameid ) {
         title.empty().html(map_data.self.name)
 
         // Population Division and Check for Custom Division
-        let pd_settings = mapping_module.settings.population_division
+        let pd_settings = GEOCODINGDATA.settings.population_division
         let population_division = pd_settings.base
-        if ( ! isEmpty( pd_settings.custom ) ) {
+        if ( ! GEOCODING.isEmpty( pd_settings.custom ) ) {
             jQuery.each( pd_settings.custom, function(i,v) {
                 if ( map_data.self.geonameid === i ) {
                     population_division = v
@@ -1204,7 +1156,7 @@ function geoname_list( div, geonameid ) {
         jQuery('#current_level').empty().html(`Population: ${self_population}`)
 
         // Build List
-        let locations = jQuery('#location-list')
+        let locations = jQuery('#location_list')
         locations.empty()
 
         let html = `<table id="country-list-table" class="display">`
@@ -1213,8 +1165,8 @@ function geoname_list( div, geonameid ) {
         html += `<thead><tr><th>Name</th><th>Population</th>`
 
         /* Additional Columns */
-        if ( mapping_module.data.custom_column_labels ) {
-            jQuery.each( mapping_module.data.custom_column_labels, function(i,v) {
+        if ( GEOCODINGDATA.data.custom_column_labels ) {
+            jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(i,v) {
                 html += `<th>${v.label}</th>`
             })
         }
@@ -1234,12 +1186,12 @@ function geoname_list( div, geonameid ) {
                         <td>${population}</td>`
 
             /* Additional Columns */
-            if ( mapping_module.data.custom_column_data[v.geonameid] ) {
-                jQuery.each( mapping_module.data.custom_column_data[v.geonameid], function(ii,vv) {
+            if ( GEOCODINGDATA.data.custom_column_data[v.geonameid] ) {
+                jQuery.each( GEOCODINGDATA.data.custom_column_data[v.geonameid], function(ii,vv) {
                     html += `<td><strong>${vv}</strong></td>`
                 })
             } else {
-                jQuery.each( mapping_module.data.custom_column_labels, function(ii,vv) {
+                jQuery.each( GEOCODINGDATA.data.custom_column_labels, function(ii,vv) {
                     html += `<td class="grey">0</td>`
                 })
             }
@@ -1258,7 +1210,7 @@ function geoname_list( div, geonameid ) {
             "paging":   false
         });
 
-       hide_spinner()
+       GEOCODING.hide_spinner()
     }
 }
 
@@ -1266,152 +1218,153 @@ function geoname_list( div, geonameid ) {
 /**
  * DRILL DOWN
  */
-function load_drill_down( div, geonameid ) {
+// function load_drill_down( div, geonameid ) {
+//
+//     /*******************************************************************************************************************
+//      *
+//      * Load Requested Geonameid
+//      *
+//      *****************************************************************************************************************/
+//     if ( geonameid ) { // make sure this is not a top level continent or world request
+//         GEOCODING.geoname_drill_down()( div, geonameid )
+//     }
+//     /*******************************************************************************************************************
+//      *
+//      * Initialize Top Level Maps
+//      *
+//      *****************************************************************************************************************/
+//     else { // top_level maps
+//         top_level_drill_down( div )
+//     } // end if
+// }
+//
+// function top_level_drill_down( div ) {
+//     
+//     let top_map_list = GEOCODINGDATA.data.top_map_list
+//     let drill_down = jQuery('#drill_down')
+//
+//     GEOCODING.show_spinner()
+//
+//     drill_down.empty().append(`<li><select id="drill_down_top_level" onchange="GEOCODING.geoname_drill_down()( '${div}', this.value );jQuery(this).parent().nextAll().remove();"></select></li>`)
+//     let drill_down_select = jQuery('#drill_down_top_level')
+//
+//     if( Object.keys(top_map_list).length === 1 ) {
+//         jQuery.each(top_map_list, function(i,v) {
+//             drill_down_select.append(`<option value="${i}" selected>${v}</option>`)
+//
+//             if ( ! GEOCODING.isEmpty( GEOCODINGDATA.data[i].children ) ) {
+//                 if ( ! GEOCODING.isEmpty( GEOCODINGDATA.data[i].deeper_levels ) ) {
+//                     drill_down.append(`<li><select id="${i}" onchange="GEOCODING.geoname_drill_down()( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
+//                     let sorted_children =  _.sortBy(GEOCODINGDATA.data[i].children, [function(o) { return o.name; }]);
+//
+//                     jQuery.each( sorted_children, function(ii,vv) {
+//                         jQuery('#'+i).append(`<option value="${vv.id}">${vv.name}</option>`)
+//                     })
+//                 }
+//
+//                 if ( i === 'world' ) {
+//                     bind_drill_down( div )
+//                 } else {
+//                     bind_drill_down( div, i )
+//                 }
+//
+//             } else {
+//                 drill_down.append(`<li>deepest level</li>`)
+//             }
+//
+//         })
+//     } else {
+//         drill_down_select.append(`<option>Select</option>`)
+//         jQuery.each(top_map_list, function(i,v) {
+//             drill_down_select.append(`<option value="${i}">${v}</option>`)
+//         })
+//         jQuery('#location_list').empty().append(`Select list above.`)
+//
+//         bind_drill_down( div )
+//     }
+//
+//     GEOCODING.hide_spinner()
+// }
+//
+// function GEOCODING.geoname_drill_down()( div, id, deeper_levels ) {
+//     
+//     GEOCODING.show_spinner()
+//     let rest = GEOCODINGDATA.settings.endpoints.get_map_by_geonameid_endpoint
+//
+//     let drill_down = jQuery('#drill_down')
+//
+//     jQuery.ajax({
+//         type: rest.method,
+//         contentType: "application/json; charset=utf-8",
+//         data: JSON.stringify( { 'geonameid': id } ),
+//         dataType: "json",
+//         url: GEOCODINGDATA.settings.root + rest.namespace + rest.route,
+//         beforeSend: function(xhr) {
+//             xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
+//         },
+//     })
+//         .done( function( response ) {
+//             console.log(response)
+//             GEOCODINGDATA.data[response.self.geonameid] = response
+//
+//             if ( ! GEOCODING.isEmpty( response.children ) ) {
+//                 if ( ! GEOCODING.isEmpty( response.deeper_levels ) ) {
+//                     drill_down.append(`<li><select id="${response.self.geonameid}" onchange="GEOCODING.geoname_drill_down()( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
+//                     let sorted_children =  _.sortBy(response.children, [function(o) { return o.name; }]);
+//
+//                     jQuery.each( sorted_children, function(i,v) {
+//                         jQuery('#'+id).append(`<option value="${v.id}">${v.name}</option>`)
+//                     })
+//                 }
+//
+//                 bind_drill_down( div, response.self.geonameid )
+//             } else {
+//                 drill_down.append(`<li>deepest level</li>`)
+//             }
+//
+//
+//             GEOCODING.hide_spinner()
+//         }) // end success statement
+//         .fail(function (err) {
+//             console.log("error")
+//             console.log(err)
+//             GEOCODING.hide_spinner()
+//         })
+// }
+//
+// function GEOCODING.isEmpty(obj) {
+//     for(let key in obj) {
+//         if(obj.hasOwnProperty(key))
+//             return false;
+//     }
+//     return true;
+// }
+//
+// function GEOCODING.show_spinner() {
+//     jQuery('#spinner').show()
+// }
+//
+// function GEOCODING.hide_spinner() {
+//     jQuery('#spinner').hide()
+// }
+//
+// function bind_drill_down( div, geonameid ) {
+//
+//     switch(div) {
+//         case 'location_list':
+//             console.log('bind_drill_down: location_list')
+//             location_list( div, geonameid )
+//             break;
+//         case 'map_display':
+//             console.log('bind_drill_down: map_display: ')
+//             if ( geonameid !== undefined ) {
+//                 map_chart( div, geonameid )
+//             } else {
+//                 map_chart( div )
+//             }
+//
+//             break;
+//
+//     }
+// }
 
-    /*******************************************************************************************************************
-     *
-     * Load Requested Geonameid
-     *
-     *****************************************************************************************************************/
-    if ( geonameid ) { // make sure this is not a top level continent or world request
-        geoname_drill_down( div, geonameid )
-    }
-    /*******************************************************************************************************************
-     *
-     * Initialize Top Level Maps
-     *
-     *****************************************************************************************************************/
-    else { // top_level maps
-        top_level_drill_down( div )
-    } // end if
-}
-
-function top_level_drill_down( div ) {
-    let mapping_module = mappingModule.mapping_module
-    let top_map_list = mapping_module.data.top_map_list
-    let drill_down = jQuery('#drill_down')
-
-    show_spinner()
-
-    drill_down.empty().append(`<li><select id="drill_down_top_level" onchange="geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"></select></li>`)
-    let drill_down_select = jQuery('#drill_down_top_level')
-
-    if( Object.keys(top_map_list).length === 1 ) {
-        jQuery.each(top_map_list, function(i,v) {
-            drill_down_select.append(`<option value="${i}" selected>${v}</option>`)
-
-            if ( ! isEmpty( mapping_module.data[i].children ) ) {
-                if ( ! isEmpty( mapping_module.data[i].deeper_levels ) ) {
-                    drill_down.append(`<li><select id="${i}" onchange="geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
-                    let sorted_children =  _.sortBy(mapping_module.data[i].children, [function(o) { return o.name; }]);
-
-                    jQuery.each( sorted_children, function(ii,vv) {
-                        jQuery('#'+i).append(`<option value="${vv.id}">${vv.name}</option>`)
-                    })
-                }
-
-                if ( i === 'world' ) {
-                    bind_drill_down( div )
-                } else {
-                    bind_drill_down( div, i )
-                }
-
-            } else {
-                drill_down.append(`<li>deepest level</li>`)
-            }
-
-        })
-    } else {
-        drill_down_select.append(`<option>Select</option>`)
-        jQuery.each(top_map_list, function(i,v) {
-            drill_down_select.append(`<option value="${i}">${v}</option>`)
-        })
-        jQuery('#location-list').empty().append(`Select list above.`)
-
-        bind_drill_down( div )
-    }
-
-    hide_spinner()
-}
-
-function geoname_drill_down( div, id, deeper_levels ) {
-    let mapping_module = mappingModule.mapping_module
-    show_spinner()
-    let rest = mapping_module.settings.endpoints.get_map_by_geonameid_endpoint
-
-    let drill_down = jQuery('#drill_down')
-
-    jQuery.ajax({
-        type: rest.method,
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify( { 'geonameid': id } ),
-        dataType: "json",
-        url: mapping_module.settings.root + rest.namespace + rest.route,
-        beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', rest.nonce );
-        },
-    })
-        .done( function( response ) {
-            console.log(response)
-            mapping_module.data[response.self.geonameid] = response
-
-            if ( ! isEmpty( response.children ) ) {
-                if ( ! isEmpty( response.deeper_levels ) ) {
-                    drill_down.append(`<li><select id="${response.self.geonameid}" onchange="geoname_drill_down( '${div}', this.value );jQuery(this).parent().nextAll().remove();"><option>Select</option></select></li>`)
-                    let sorted_children =  _.sortBy(response.children, [function(o) { return o.name; }]);
-
-                    jQuery.each( sorted_children, function(i,v) {
-                        jQuery('#'+id).append(`<option value="${v.id}">${v.name}</option>`)
-                    })
-                }
-
-                bind_drill_down( div, response.self.geonameid )
-            } else {
-                drill_down.append(`<li>deepest level</li>`)
-            }
-
-
-            hide_spinner()
-        }) // end success statement
-        .fail(function (err) {
-            console.log("error")
-            console.log(err)
-            hide_spinner()
-        })
-}
-
-function isEmpty(obj) {
-    for(let key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}
-
-function show_spinner() {
-    jQuery('#spinner').show()
-}
-
-function hide_spinner() {
-    jQuery('#spinner').hide()
-}
-
-function bind_drill_down( div, geonameid ) {
-
-    switch(div) {
-        case 'location-list':
-            console.log('bind_drill_down: location-list')
-            location_list( div, geonameid )
-            break;
-        case 'map-display':
-            console.log('bind_drill_down: map-display: ')
-            if ( geonameid !== undefined ) {
-                map_chart( div, geonameid )
-            } else {
-                map_chart( div )
-            }
-
-            break;
-
-    }
-}

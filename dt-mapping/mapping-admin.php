@@ -222,19 +222,19 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                         <?php ( $tab == 'geocoding' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
                         <?php esc_attr_e( 'Geocoding', $this->token ) ?>
                     </a>
-                    <!-- Population Tab -->
-                    <a href="<?php echo esc_attr( $link ) . 'population' ?>" class="nav-tab
-                        <?php ( $tab == 'population' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
-                        <?php esc_attr_e( 'Population', $this->token ) ?>
-                    </a>
                     <!-- Names Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
                         <?php ( $tab == 'names' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
                         <?php esc_attr_e( 'Names', $this->token ) ?>
                     </a>
+                    <!-- Population Tab -->
+                    <a href="<?php echo esc_attr( $link ) . 'population' ?>" class="nav-tab
+                        <?php ( $tab == 'population' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
+                        <?php esc_attr_e( 'Population', $this->token ) ?>
+                    </a>
                     <!-- Add Sub-Locations -->
-                    <a href="<?php echo esc_attr( $link ) . 'sub-locations' ?>" class="nav-tab
-                        <?php ( $tab == 'sub-locations' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
+                    <a href="<?php echo esc_attr( $link ) . 'sub_locations' ?>" class="nav-tab
+                        <?php ( $tab == 'sub_locations' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
                         <?php esc_attr_e( 'Sub-Locations', $this->token ) ?>
                     </a>
                     <!-- Add Migration -->
@@ -271,7 +271,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                         $this->population_tab();
                         break;
                     case "sub_locations":
-                        $this->geocoding_tab();
+                        $this->sub_locations_tab();
                         break;
                     case "migration":
                         $this->migration_tab();
@@ -415,6 +415,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             <?php
         }
 
+
         public function population_tab() {
             ?>
             <div class="wrap">
@@ -424,7 +425,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                             <!-- Main Column -->
 
                             <?php $this->global_population_division_metabox(); ?>
-                            <?php DT_Mapping_Module::instance()->initial_drill_down_input(  ); ?>
+
+                            <?php $this->edit_populations_metabox(); ?>
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
@@ -449,6 +451,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
+                            <?php $this->sub_locations_metabox() ?>
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
@@ -613,6 +616,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
         /**
          * Admin Page Metaboxes
          */
+
 
         public function summary_metabox() {
             ?>
@@ -824,55 +828,182 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             <?php
         }
 
-        public function alternate_name_metabox()
-        {
-            // process post action
-            if ( isset( $_POST[ 'population_division' ] )
-                && ( isset( $_POST[ '_wpnonce' ] )
-                    && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ '_wpnonce' ] ) ), 'population_division' . get_current_user_id() ) ) ) {
-                $new = (int) sanitize_text_field( wp_unslash( $_POST[ 'population_division' ] ) );
-
-            }
-
+        public function edit_populations_metabox() {
             ?>
-            <!-- Box -->
-            <form method="post">
-                <table class="widefat striped">
-                    <thead>
-                    <th>Edit Default Location Names</th>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <?php wp_nonce_field( 'population_division' . get_current_user_id() ); ?>
-                            <?php DT_Mapping_Module::instance()->initial_drill_down_input('name-select'); ?>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div id="list_results"></div>
-            </form>
-            <br>
-            <script>
-                jQuery(document).ready(function() {
-                    jQuery('.geocode-select').on('change', function() {
-                        makeList(jQuery(this).val())
-                    } )
+            <table class="widefat striped">
+                <thead>
+                <th>Select Population List to Edit</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <?php DT_Mapping_Module::instance()->drill_down_input( 'population_edit' ) ?>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-                    function makeList( geonameid ) {
+            <table class="widefat striped">
+                <thead>
+                <th>Name</th>
+                <th>Population</th>
+                <th>New Population (no commas)</th>
+                <th></th>
+                </thead>
+                <tbody id="list_results">
+                </tbody>
+            </table>
+
+            <script>
+                window.GEOCODING.population_edit = function(  geonameid ) {
+                    if ( geonameid === 'top_map_list' ) { // top level multi-list
+                        let list_results = jQuery('#list_results')
+                        let gn = []
+                        list_results.empty()
+                        jQuery.each( window.GEOCODINGDATA.data.top_map_list, function(i,v) {
+                            gn = window.GEOCODINGDATA.data[i]
+                            if ( gn !== undefined ) {
+                                list_results.append( `<tr><td>${gn.self.name}</td><td>${gn.self.population_formatted}</td><td><input type="number" id="${gn.self.geonameid}" value=""></td><td><a class="button" onclick="update_population( ${gn.self.geonameid}, jQuery('#'+${gn.self.geonameid}).val() )">Update</a></td></tr>`)
+                            }
+                        })
+                    }
+                    else if ( window.GEOCODING.isEmpty( window.GEOCODINGDATA.data[geonameid].children ) ) { // empty children for geonameid
+                        jQuery('#drill_down').append(`<li><em>deepest level reached!</em></li>`)
+                    }
+                    else { // children available
                         let list_results = jQuery('#list_results')
                         list_results.empty()
-                        jQuery.each( window.GEOCODINGDATA.data[parseInt(geonameid)].children, function(i,v) {
-                            list_results.append( v.name + `<br>`)
+                        jQuery.each( window.GEOCODINGDATA.data[geonameid].children, function(i,v) {
+                            list_results.append( `<tr><td>${v.name}</td><td>${v.population_formatted}</td><td><input type="number" id="${v.geonameid}" value=""></td><td><a class="button" onclick="update_population( ${v.geonameid}, jQuery('#'+${v.geonameid}).val() )">Update</a></td></tr>`)
                         })
-                        jQuery('#'+geonameid).on('change', function() {
-                            makeList(jQuery(this).val())
-                        } )
                     }
-                })
+                }
+                function update_population( geonameid, population ) {
+                    console.log( geonameid + ' ' + population ) // @todo add REST update endpoint.
+                }
             </script>
-            <!-- End Box -->
+
             <?php
+        }
+
+        public function alternate_name_metabox()
+        {
+            ?>
+            <table class="widefat striped">
+                <thead>
+                <th>Edit Default Location Names</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <?php DT_Mapping_Module::instance()->drill_down_input( 'name_select' ) ?>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="widefat striped">
+                <thead>
+                <th>Name</th>
+                <th>New Name</th>
+                <th></th>
+                </thead>
+                <tbody id="list_results">
+                </tbody>
+            </table>
+
+            <script>
+                window.GEOCODING.name_select = function(  geonameid ) {
+                    if ( geonameid === 'top_map_list' ) { // top level multi-list
+                        let list_results = jQuery('#list_results')
+                        let gn = []
+                        list_results.empty()
+                        jQuery.each( window.GEOCODINGDATA.data.top_map_list, function(i,v) {
+                            gn = window.GEOCODINGDATA.data[i]
+                            if ( gn !== undefined ) {
+                                list_results.append( `<tr><td>${gn.self.name}</td><td><input type="text" id="${gn.self.geonameid}" value=""></td><td><a class="button" onclick="update_name( ${gn.self.geonameid}, jQuery('#'+${gn.self.geonameid}).val() )">Update</a></td></tr>`)
+                            }
+                        })
+                    }
+                    else if ( window.GEOCODING.isEmpty( window.GEOCODINGDATA.data[geonameid].children ) ) { // empty children for geonameid
+                        jQuery('#drill_down').append(`<li><em>deepest level reached!</em></li>`)
+                    }
+                    else { // children available
+                        let list_results = jQuery('#list_results')
+                        list_results.empty()
+                        jQuery.each( window.GEOCODINGDATA.data[geonameid].children, function(i,v) {
+                            list_results.append( `<tr><td>${v.name}</td><td><input type="text" id="${v.geonameid}" value=""></td><td><a class="button" onclick="update_population( ${v.geonameid}, jQuery('#'+${v.geonameid}).val() )">Update</a></td></tr>`)
+                        })
+                    }
+                }
+                function update_name( geonameid, new_name ) {
+                    console.log( geonameid + ' ' + new_name ) // @todo add REST update endpoint.
+                }
+            </script>
+
+            <?php
+
+        }
+
+        public function sub_locations_metabox()
+        {
+            ?>
+            <table class="widefat striped">
+                <thead>
+                <th>Select the Location</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <?php DT_Mapping_Module::instance()->drill_down_input( 'sublocation' ) ?>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="widefat striped" style="display:none;" id="current_subs">
+                <thead>
+                <th>Current Sub-Locations (use these if possible):</th>
+                </thead>
+                <tbody id="other_list">
+                </tbody>
+            </table>
+
+            <table class="widefat striped">
+                <tbody id="list_results"></tbody>
+            </table>
+
+            <script>
+                window.GEOCODING.sublocation = function(  geonameid ) {
+                    let list_results = jQuery('#list_results')
+                    let current_subs = jQuery('#current_subs')
+                    let other_list = jQuery('#other_list')
+
+                    list_results.empty()
+                    other_list.empty()
+                    current_subs.hide()
+
+                    if ( geonameid === 'top_map_list' ) { // top level multi-list
+                        list_results.append(`Select one single location`)
+                    }
+                    else { // children available
+                        if ( ! window.GEOCODING.isEmpty( window.GEOCODINGDATA.data[geonameid].children ) ) { // empty children for geonameid
+                            jQuery.each( window.GEOCODINGDATA.data[geonameid].children, function(gnid, data ) {
+                                other_list.append(`<tr><td><a onclick="GEOCODING.geoname_drill_down( ${gnid}, 'sublocation' );jQuery('#'+${gnid}).parent().nextAll().remove();jQuery('#${geonameid} option[value=${gnid}]').attr('selected', 'selected');">${data.name}</a></td></tr>`)
+                            })
+                            current_subs.show()
+                        }
+
+                        list_results.append(`<tr><td>Edit ${window.GEOCODINGDATA.data[geonameid].self.name}</td></tr><tr><td><input id="new_name_${geonameid}" value="" /></td></tr>`)
+                        list_results.append(`<tr><td><a class="button" onclick="update_name( ${geonameid}, jQuery('#new_name_'+${geonameid}).val()  )" >Save</a> </td></tr>`)
+                    }
+                }
+                function update_name( geonameid, new_name ) {
+                    console.log( geonameid + ' ' + new_name ) // @todo add REST update endpoint.
+                }
+            </script>
+
+            <?php
+
         }
 
         public function starting_map_level_metabox()

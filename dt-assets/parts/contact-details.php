@@ -336,7 +336,7 @@
                 </div>
                 <div class="locations">
                     <?php
-                        DT_Mapping_Module::instance()->initial_drill_down_input( 'geocode-selected-value', $contact['geonameid'] ?? null, $contact['ID'] );
+                        DT_Mapping_Module::instance()->drill_down_input(  'edit_contact_geocodeid', $contact['geonameid'] ?? null,  $contact['ID'] );
                     ?>
                 </div>
             </div>
@@ -520,7 +520,7 @@
 
         <!-- drill down -->
         <div id="geoname-encode-contact">
-            <?php //DT_Mapping_Module::instance()->initial_drill_down_input(); ?>
+
         </div>
 
         <!-- map -->
