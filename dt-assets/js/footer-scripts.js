@@ -6,10 +6,10 @@ and Foundation play nice together.
 
 jQuery(document).ready(function() {
 
-    // Remove empty P tags created by WP inside of Accordion and Orbit
-    jQuery('.accordion p:empty, .orbit p:empty').remove();
+  // Remove empty P tags created by WP inside of Accordion and Orbit
+  jQuery('.accordion p:empty, .orbit p:empty').remove();
 
-   // Makes sure last grid item floats left
+  // Makes sure last grid item floats left
   jQuery('.archive-grid .columns').last().addClass( 'end' );
 
   // Adds Flex Video to YouTube and Vimeo Embeds
@@ -23,15 +23,11 @@ jQuery(document).ready(function() {
 
 });
 
-
 /**
 * Custom javascript for Disciple Tools
 *
 * */
-
-jQuery(document).ready(function($) {
-
-    // This adds padding to the top of the offcanvas menu, if the wp admin bar is turned on for the profile.
-    $( "#wpadminbar" ).addClass( "add" );
-
+jQuery(document).ready($ => {
+  // This adds padding to the top of the offcanvas menu, if the wp admin bar is turned on for the profile.
+  $('#wpadminbar').addClass('add')
 });

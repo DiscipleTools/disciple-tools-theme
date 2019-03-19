@@ -496,7 +496,7 @@ jQuery(document).ready(function($) {
       }
     }
   });
-  
+
   /**
    * coaches
    */
@@ -582,7 +582,7 @@ jQuery(document).ready(function($) {
       $(this).toggleClass("loading")
       resetDetailsFields(group)
       $(`#group-details-edit`).foundation('close')
-    }).catch(handelAjaxError)
+    }).catch(handleAjaxError)
   })
 
   $("#group-details-edit").on('change', '.contact-input', function() {
@@ -700,7 +700,7 @@ jQuery(document).ready(function($) {
     const val = $(this).val()
 
     API.save_field_api('group', groupId, { [id]: val })
-      .catch(handelAjaxError)
+      .catch(handleAjaxError)
   })
   $('input.number-input').on("blur", function(){
     const id = $(this).attr('id')
@@ -708,7 +708,7 @@ jQuery(document).ready(function($) {
 
     API.save_field_api('group', groupId, { [id]: val }).then((groupResp)=>{
       group = groupResp
-    }).catch(handelAjaxError)
+    }).catch(handleAjaxError)
   })
 
   let statusChanged = ()=>{
@@ -807,7 +807,7 @@ jQuery(document).ready(function($) {
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
       let id = $(this).attr('id')
-      API.save_field_api('group', groupId, { [id]: date }).catch(handelAjaxError)
+      API.save_field_api('group', groupId, { [id]: date }).catch(handleAjaxError)
     },
     changeMonth: true,
     changeYear: true

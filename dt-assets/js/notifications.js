@@ -1,131 +1,72 @@
 /* Functions to support the notifications system. */
-function get_new_notification_count(){
-  return jQuery.ajax({
-    type: "POST",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiNotifications.root + 'dt/v1/notifications/get_new_notifications_count',
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiNotifications.nonce);
-    },
-  })
-    .done(function (data) {
-      if(data > 0) {
-        jQuery('.notification-count').text(data).show().css("display", "inline-block")
+function get_new_notification_count() {
+  return makeRequest('post', 'notifications/get_new_notifications_count').done(data => {
+    if (data > 0) {
+      jQuery('.notification-count').text(data).show().css('display', 'inline-block')
+      return
+    }
 
-      } else {
-        jQuery('.notification-count').hide()
-      }
-    })
-    .fail(function (err) {
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    })
+    jQuery('.notification-count').hide()
+  }).fail(handleAjaxError)
 }
-setTimeout(()=>{
-  get_new_notification_count()
-}, 2000)
 
-let notificationRead = (notification_id)=>`
+setTimeout(get_new_notification_count, 2000)
+
+const notificationRead = notification_id => `
   <a id="read-button-${notification_id}" class="read-button button hollow small" style="border-radius:100px; margin: .7em 0 0;"
       onclick="mark_unread( ${notification_id} )">
       <!--<i class="fi-minus hollow"></i>-->
    </a>
 `
-let notificationNew = (notification_id)=>`
+const notificationNew = notification_id => `
   <a id="new-button-${notification_id}" class="new-button button small" style="border-radius:100px; margin: .7em 0 0;"
      onclick="mark_viewed( ${notification_id} )">
      <!--<i class="fi-check"></i>-->
   </a>
 `
 
-function mark_viewed(notification_id){
-  return jQuery.ajax({
-    type: "POST",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiNotifications.root + 'dt/v1/notifications/mark_viewed/'+notification_id,
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiNotifications.nonce);
-    },
-  })
-    .done(function (data) {
-      get_new_notification_count()
-      jQuery(`#row-${notification_id} .notification-row`).removeClass("unread-notification-row")
-      jQuery('#toggle-area-'+notification_id).html(notificationRead(notification_id))
-
-    })
-    .fail(function (err) {
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    })
+function mark_viewed (notification_id) {
+  return makeRequest('post', 'notifications/mark_viewed/' + notification_id).done(() => {
+    get_new_notification_count()
+    jQuery(`#row-${notification_id} .notification-row`).removeClass("unread-notification-row")
+    jQuery('#toggle-area-'+notification_id).html(notificationRead(notification_id))
+  }).fail(handleAjaxError)
 }
 
-function mark_unread(notification_id){
-  return jQuery.ajax({
-    type: "POST",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiNotifications.root + 'dt/v1/notifications/mark_unread/'+notification_id,
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiNotifications.nonce);
-    },
-  })
-    .done(function (data) {
-      get_new_notification_count()
-      jQuery(`#row-${notification_id} .notification-row`).addClass("unread-notification-row")
-      jQuery('#toggle-area-'+notification_id).html(notificationNew(notification_id))
-    })
-    .fail(function (err) {
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    })
+function mark_unread (notification_id) {
+  return makeRequest('post', 'notifications/mark_unread/' + notification_id).done(() => {
+    get_new_notification_count()
+    jQuery(`#row-${notification_id} .notification-row`).addClass("unread-notification-row")
+    jQuery('#toggle-area-'+notification_id).html(notificationNew(notification_id))
+  }).fail(handleAjaxError)
 }
 
-function mark_all_viewed(){
-  let id = wpApiNotifications.current_user_id
-  return jQuery.ajax({
-    type: "POST",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiNotifications.root + 'dt/v1/notifications/mark_all_viewed/'+id,
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiNotifications.nonce);
-    },
-  })
-    .done(function (data) {
-      get_new_notification_count()
-      jQuery('.new-cell').html(notificationRead(id))
-    })
-    .fail(function (err) {
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    })
+function mark_all_viewed () {
+  const id = wpApiNotifications.current_user_id
+
+  return makeRequest('post', 'notifications/mark_all_viewed/' + id).done(() => {
+    get_new_notification_count()
+    jQuery('.new-cell').html(notificationRead(id))
+  }).fail(handleAjaxError)
 }
 
-
-
-function notification_template( id, note, is_new, pretty_time ) {
-  "use strict";
+function notification_template (id, note, is_new, pretty_time) {
   let button = ``
   let label = `` // used by the mark_all_viewed()
 
-  if ( is_new === '1' ) {
-    button = notificationNew(id);
+  if (is_new === '1') {
+    button = notificationNew(id)
     label = `new-cell` // used by the mark_all_viewed()
   } else {
-    button = notificationRead(id);
+    button = notificationRead(id)
   }
-  console.log(is_new);
+
+  console.log(is_new)
 
   return `
             <div class="cell" id="row-${id}">
               <div class="grid-x grid-margin-x grid-padding-y bottom-border notification-row ${is_new ==='1' ? 'unread-notification-row' : ''} ">
-                
+
                 <div class="auto cell">
                    ${note}<br>
                    <span class="grey">${pretty_time}</span>
@@ -144,10 +85,9 @@ let new_offset
 let page
 let limit = 20
 
-function get_notifications( all, reset) {
-
+function get_notifications (all, reset) {
   /* Processing the offset of the query request. Using the limit variable to increment the sql offset. */
-  if ( all === true ) {
+  if (all === true) {
     new_offset = 0
     if (all_offset === 0 || !all_offset) {
       page = 0
@@ -177,49 +117,32 @@ function get_notifications( all, reset) {
     }
   }
 
-  /* query for the data */
-  let data = {"all": all, "page": page, "limit": limit}
-  return jQuery.ajax({
-    type: "POST",
-    data: JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    url: wpApiNotifications.root + 'dt/v1/notifications/get_notifications',
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiNotifications.nonce);
+  // return notifications if query successful
+  return makeRequest('post', 'notifications/get_notifications', { all, page, limit }).done(data => {
+    if (data) {
+      if (reset) {
+        jQuery('#notification-list').empty()
+      }
+
+      jQuery.each(data, function (i, item) {
+        jQuery('#notification-list').append(notification_template(data[i].id, data[i].notification_note, data[i].is_new, data[i].pretty_time))
+      })
+    } else if (
+      (all === true && (all_offset === 0 || !all_offset )) ||
+      all === false && (new_offset === 0 || !new_offset))
+    { // determines if this is the first query (offset 0) and there is nothing returned.
+      jQuery('#notification-list').html('<div class="cell center empty-notification-message">${wpApiNotifications.translations["no-notifications"]}</div>')
+      jQuery('#next-all').hide()
+      jQuery('#next-new').hide()
+    } else { // therefore if no data is returned, but this is not the first query, then just remove the option to load more content
+      if (reset) {
+        jQuery('#notification-list').html(`<div class="cell center empty-notification-message">${wpApiNotifications.translations["no-unread"]}</div>`)
+      }
+
+      jQuery('#next-all').hide()
+      jQuery('#next-new').hide()
     }
-  })
-    .done(function (data) { // return notifications if query successful
-      if (data) {
-
-        if (reset) {
-          jQuery('#notification-list').empty()
-        }
-
-        jQuery.each(data, function (i, item) {
-          jQuery('#notification-list').append(notification_template(data[i].id, data[i].notification_note, data[i].is_new, data[i].pretty_time))
-        })
-      }
-      else if (( all === true && (all_offset === 0 || !all_offset ) ) || all === false && (new_offset === 0 || !new_offset)) { // determines if this is the first query (offset 0) and there is nothing returned.
-
-        jQuery('#notification-list').html('<div class="cell center empty-notification-message">${wpApiNotifications.translations["no-notifications"]}</div>')
-        jQuery('#next-all').hide()
-        jQuery('#next-new').hide()
-
-      } else { // therefore if no data is returned, but this is not the first query, then just remove the option to load more content
-        if (reset) {
-          jQuery('#notification-list').html(`<div class="cell center empty-notification-message">${wpApiNotifications.translations["no-unread"]}</div>`)
-        }
-        jQuery('#next-all').hide()
-        jQuery('#next-new').hide()
-
-      }
-    })
-    .fail(function (err) {
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").append(err.responseText)
-    })
+  }).fail(handleAjaxError)
 }
 
 function toggle_buttons( state ) {
@@ -234,6 +157,4 @@ function toggle_buttons( state ) {
     jQuery('#next-all').hide()
     jQuery('#next-new').show()
   }
-
 }
-

@@ -93,7 +93,7 @@ jQuery(document).ready(function($) {
         contactUpdated(updateNeeded)
       }
     }
-  }).ajaxError(handelAjaxError)
+  }).ajaxError(handleAjaxError)
 
   /**
    * Groups
@@ -623,7 +623,7 @@ jQuery(document).ready(function($) {
     const field = $select.data('field')
     const value = $select.val()
 
-    API.save_field_api('contact', contactId, { [field]: value }).catch(handelAjaxError)
+    API.save_field_api('contact', contactId, { [field]: value }).catch(handleAjaxError)
   })
 
 
@@ -642,14 +642,14 @@ jQuery(document).ready(function($) {
       } else if (id === 'overall_status') {
         setStatus(contactResponse, true)
       }
-    }).catch(handelAjaxError)
+    }).catch(handleAjaxError)
   })
   $('input.text-input').change(function(){
     const id = $(this).attr('id')
     const val = $(this).val()
 
     API.save_field_api('contact', contactId, { [id]: val })
-      .catch(handelAjaxError)
+      .catch(handleAjaxError)
   })
   $('button.dt_multi_select').on('click',function () {
     let fieldKey = $(this).data("field-key")
@@ -691,7 +691,7 @@ jQuery(document).ready(function($) {
     onSelect: function (date) {
       API.save_field_api('contact', contactId, { baptism_date: date }).then(res=>{
         openBaptismModal(res)
-      }).catch(handelAjaxError)
+      }).catch(handleAjaxError)
     },
     changeMonth: true,
     changeYear: true
@@ -701,7 +701,7 @@ jQuery(document).ready(function($) {
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
       let id = $(this).attr('id')
-      API.save_field_api('contact', contactId, { [id]: date }).catch(handelAjaxError)
+      API.save_field_api('contact', contactId, { [id]: date }).catch(handleAjaxError)
     },
     changeMonth: true,
     changeYear: true
@@ -1035,7 +1035,7 @@ jQuery(document).ready(function($) {
       $(this).toggleClass("loading")
       resetDetailsFields(contact)
       $(`#contact-details-edit`).foundation('close')
-    }).catch(handelAjaxError)
+    }).catch(handleAjaxError)
   })
 
   $('#edit-reason').on('click', function () {
@@ -1336,7 +1336,7 @@ jQuery(document).ready(function($) {
   modalBaptismDatePicker.datepicker({
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
-      API.save_field_api('contact', contactId, { baptism_date: date }).catch(handelAjaxError)
+      API.save_field_api('contact', contactId, { baptism_date: date }).catch(handleAjaxError)
     },
     changeMonth: true,
     changeYear: true
