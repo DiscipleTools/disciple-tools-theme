@@ -456,7 +456,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $existing_connections = [];
                 if ( isset( $existing_contact[$connection_type] ) ){
                     foreach ( $existing_contact[$connection_type] as $connection){
-                        $existing_connections[] = $connection->ID;
+                        if ( isset( $connection->ID ) ) {
+                            $existing_connections[] = $connection->ID;
+                        }
                     }
                 }
                 //check for new connections
