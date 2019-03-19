@@ -379,6 +379,12 @@ class Disciple_Tools_Groups_Post_Type
             'type'        => 'boolean',
             'default'     => false,
         ];
+        $fields['geonameid'] = [
+            'name'        => __( 'Geonameid', 'disciple_tools' ),
+            'type'        => 'text',
+            'default'     => '',
+            'hidden'      => true
+        ];
 
 
         $id = isset( $post->ID ) ? $post->ID : $post_id;

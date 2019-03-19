@@ -211,6 +211,7 @@
             <input type="text" id="title" class="edit-text-input" value="<?php the_title_attribute(); ?>">
         </div>
 
+        <!-- Address -->
         <div class="grix-x">
             <div class="section-subheader cell">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/house.svg' ?>">
@@ -223,6 +224,20 @@
             </ul>
         </div>
 
+        <!-- Geocoding -->
+        <div class="grix-x">
+            <div class="section-subheader cell">
+                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
+                <?php esc_html_e( 'Primary Location', 'disciple_tools' ) ?>
+            </div>
+            <div class="locations">
+                <?php
+                DT_Mapping_Module::instance()->drill_down_input(  'edit_group_geocodeid', $group['geonameid'] ?? null,  $group['ID'] );
+                ?>
+            </div>
+        </div>
+
+        <!-- Dates -->
         <div class="grix-x">
             <div class="section-subheader cell">
                 <?php esc_html_e( 'Start Date', 'disciple_tools' )?>
@@ -244,7 +259,7 @@
             <div class="end_date"><input type="text" class="date-picker" id="end_date"></div>
         </div>
 
-
+        <!-- People Groups -->
         <div class="grix-x">
             <div class="section-subheader cell">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . "/dt-assets/images/people-group.svg" ?>">
@@ -266,9 +281,7 @@
             </div>
         </div>
 
-
-
-
+        <!-- Locations -->
         <div class="grix-x">
             <div class="section-subheader cell">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">

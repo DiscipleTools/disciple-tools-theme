@@ -1308,7 +1308,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                         $preset_array[0]['parent'] = 'drill_down_top_level';
                         $preset_array[0]['selected'] = (int) $geonameid;
                     }
-                    $second_level_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $preset_array['drill_down_top_level']['selected']  ] ) );
+                    $second_level_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $preset_array[0]['selected']  ] ) );
                     if ( ! empty( $second_level_list ) ) {
                         foreach( $second_level_list as $item ) {
                             $preset_array[1]['list'][] = [
@@ -1383,7 +1383,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                             ],
                             1 => [
                                 'parent' => (int) $reference['pcli'] ?? 0,
-                                'selected' => (int) $reference['pcli'] ?? 0,
+                                'selected' => (int) $reference['adm1'] ?? 0,
                                 'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
                             ],
                             2 => [
@@ -1429,7 +1429,6 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                     }
                     if ( isset( $value['population'] ) ) {
                         $query[$index]['population'] = (int) $value['population'];
-                        $query[$index]['population_formatted'] =  number_format( (int) $value['population'] );
                     }
                     if ( isset( $value['latitude'] ) ) {
                         $query[$index]['latitude'] = (float) $value['latitude'];
@@ -1459,6 +1458,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             echo '<ul id="drill_down">';
 
             foreach( $dd_array as $dd_list ) {
+                if ( ! empty( $dd_list['list'] ) ) :
                 ?>
                     <li>
                         <select id="<?php echo $dd_list['parent'] ?>" class="geocode-select" onchange="GEOCODING.geoname_drill_down( this.value, '<?php echo esc_attr( $bind_function ) ?>' );jQuery(this).parent().nextAll().remove();">
@@ -1475,6 +1475,8 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                         </select>
                     </li>
                 <?php
+                endif;
+
             }
 
             echo '</u>';

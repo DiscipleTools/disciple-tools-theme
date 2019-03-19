@@ -34,6 +34,7 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 
                     <ul class="menu vertical expanded" data-smooth-scroll data-offset="100">
                         <li><a href="#profile"><?php esc_html_e( 'Profile', 'disciple_tools' )?></a></li>
+                        <li><a href="#locations"><?php esc_html_e( 'Locations', 'disciple_tools' )?></a></li>
                         <li><a href="#notifications"><?php esc_html_e( 'Notifications', 'disciple_tools' )?></a></li>
                         <li><a href="#availability"><?php esc_html_e( 'Availability', 'disciple_tools' )?></a></li>
                     </ul>
@@ -162,19 +163,6 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                 }
                                 ?>
 
-                                <p><strong><?php esc_html_e( 'Locations', 'disciple_tools' )?></strong></p>
-                                <?php
-                                $dt_user_locations_list = dt_get_user_locations_list( $dt_user->ID, true );
-                                if ( $dt_user_locations_list ) {
-                                    echo '<ul>';
-                                    foreach ( $dt_user_locations_list as $dt_locations_list ) {
-                                        echo '<li>' . esc_html( $dt_locations_list['post_title'] ) . '</li>';
-                                    }
-                                    echo '</ul>';
-                                }
-                                ?>
-
-
                                 <strong><?php esc_html_e( 'Biography', 'disciple_tools' )?></strong>
                                 <p><?php echo esc_html( $dt_user->user_description ); ?></p>
 
@@ -183,6 +171,24 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
 
                     </div> <!-- End Profile -->
 
+                </div>
+
+                <div class="small-12 cell">
+                    <div class="bordered-box cell" id="locations" data-magellan-target="locations">
+                        <span class="section-header"><?php esc_html_e( 'Locations', 'disciple_tools' )?></span>
+                        <hr size="1" style="max-width:100%"/>
+                        <!-- Geocoding -->
+                        <div class="grix-x">
+                            <div class="cell">
+                                <button type="button" class="button">Add</button>
+                            </div>
+                            <div class="cell">
+                                <?php
+                                DT_Mapping_Module::instance()->drill_down_input(  'edit_group_geocodeid', get_post_meta( $dt_user_contact_id, 'geonameid', true),  $dt_user_contact_id );
+                                ?>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Begin Notification-->
