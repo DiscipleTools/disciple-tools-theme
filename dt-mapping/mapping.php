@@ -301,9 +301,10 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
             // initialize drill down configuration
             if ( is_singular( "groups" ) || is_singular( "contacts" ) ) {
-                global $post;
-                if ( isset( $post->ID ) ) {
-                    $data['default_drill_down'] = $this->default_drill_down( null, $post->ID );
+                global $wp_query;
+//                dt_write_log($wp_query->queried_object_id);
+                if ( isset( $wp_query->queried_object_id ) ) {
+                    $data['default_drill_down'] = $this->default_drill_down( get_post_meta( $wp_query->queried_object_id, 'geonameid', true ), $wp_query->queried_object_id );
                 }
             }
             else if ( 'settings' === dt_get_url_path() ) {
@@ -428,9 +429,9 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
         public function get_default_map_data( ) {
 
             $results = [ // set array defaults
-                         'self' => [],
-                         'children' => [],
-                         'deeper_levels' => [],
+                 'self' => [],
+                 'children' => [],
+                 'deeper_levels' => [],
             ];
 
             // get default setting for start level
@@ -563,7 +564,6 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                     'parent' => 'world',
                     'children' => [],
                 ];
-                dt_write_log(__METHOD__ . ': Set the initial map level' );
                 update_option( 'dt_mapping_module_starting_map_level', $level, false );
             }
 
@@ -1301,32 +1301,35 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 // if default list is just one country, then prepopulate second level
                 if ( $default_select_first_level ) {
                     foreach( $list as $geonameid => $name ) {
-                        $preset_array['drill_down_top_level']['list'][] = [
-                            'geonameid' => $geonameid,
+                        $preset_array[0]['list'][] = [
+                            'geonameid' => (int) $geonameid,
                             'name' => $name
                         ];
-                        $preset_array['drill_down_top_level']['selected'] = $geonameid;
+                        $preset_array[0]['parent'] = 'drill_down_top_level';
+                        $preset_array[0]['selected'] = (int) $geonameid;
                     }
-                    $second_level_list = $this->query( 'get_children_by_geonameid', [ 'geonameid' => $preset_array['drill_down_top_level']['selected']  ] );
+                    $second_level_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $preset_array['drill_down_top_level']['selected']  ] ) );
                     if ( ! empty( $second_level_list ) ) {
                         foreach( $second_level_list as $item ) {
-                            $preset_array[$geonameid]['list'][] = [
-                                  'geonameid' => $item['geonameid'],
+                            $preset_array[1]['list'][] = [
+                                  'geonameid' => (int) $item['geonameid'],
                                   'name' => $item['name'],
                             ];
                         }
-                        $preset_array[$geonameid]['selected'] = 0;
+                        $preset_array[1]['parent'] = (int) $geonameid;
+                        $preset_array[1]['selected'] = 0;
                     }
 
                 // top level list has more than one option
                 } else {
                     foreach( $list as $geonameid => $name ) {
-                        $preset_array['drill_down_top_level']['list'][] = [
-                            'geonameid' => $geonameid,
+                        $preset_array[0]['list'][] = [
+                            'geonameid' => (int) $geonameid,
                             'name' => $name
                         ];
                     }
-                    $preset_array['drill_down_top_level']['selected'] = 0;
+                    $preset_array[0]['parent'] = 'drill_down_top_level';
+                    $preset_array[0]['selected'] = 0;
                 }
             }
 
@@ -1337,8 +1340,8 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 $list = $this->default_map_short_list();
                 $default_list = [];
                 foreach ( $list as $key => $value ) {
-                    $default_list[$key] = [
-                        'geonameid' => $key,
+                    $default_list[] = [
+                        'geonameid' => (int) $key,
                         'name' => $value,
                     ];
                 }
@@ -1353,38 +1356,45 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
                     case 'ADM1':
                         $preset_array = [
-                            'drill_down_top_level' => [
-                                'selected' => $reference['pcli'] ?? 0,
+                            0 => [
+                                'parent' => 'drill_down_top_level',
+                                'selected' => (int) $reference['pcli'] ?? 0,
                                 'list' => $default_list,
                             ],
-                            $reference['pcli'] => [
-                                'selected' => $reference['adm1'] ?? 0,
-                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ),
+                            1 => [
+                                'parent' => (int) $reference['pcli'] ?? 0,
+                                'selected' => (int) $reference['adm1'] ?? 0,
+                                'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
                             ],
-                            $reference['adm1'] => [
-                                'selected' => $reference['adm2'] ?? 0,
-                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ),
+                            2 => [
+                                'parent' => (int) $reference['adm1'] ?? 0,
+                                'selected' => (int) $reference['adm2'] ?? 0,
+                                'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ) ),
                             ],
                         ];
                         break;
 
                     case 'ADM2':
                         $preset_array = [
-                            'drill_down_top_level' => [
-                                'selected' => $reference['pcli'] ?? 0,
+                            0 => [
+                                'parent' => 'drill_down_top_level',
+                                'selected' => (int) $reference['pcli'] ?? 0,
                                 'list' => $default_list,
                             ],
-                            $reference['pcli'] => [
-                                'selected' => $reference['pcli'] ?? 0,
-                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ),
+                            1 => [
+                                'parent' => (int) $reference['pcli'] ?? 0,
+                                'selected' => (int) $reference['pcli'] ?? 0,
+                                'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
                             ],
-                            $reference['adm1'] => [
-                                'selected' => $reference['adm2'] ?? 0,
-                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ),
+                            2 => [
+                                'parent' => (int) $reference['adm1'] ?? 0,
+                                'selected' => (int) $reference['adm2'] ?? 0,
+                                'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ) ),
                             ],
-                            $reference['adm2'] => [
-                                'selected' => $reference['adm3'] ?? 0,
-                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm2'] ] ),
+                            3 => [
+                                'parent' => (int) $reference['adm2'] ?? 0,
+                                'selected' => (int) $reference['adm3'] ?? 0,
+                                'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm2'] ] ) ),
                             ],
                         ];
                         break;
@@ -1392,20 +1402,44 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                     case 'PCLI':
                     default:
                     $preset_array = [
-                            'drill_down_top_level' => [
-                                'selected' => $reference['pcli'] ?? 0,
+                            0 => [
+                                'parent' => 'drill_down_top_level',
+                                'selected' => (int) $reference['pcli'] ?? 0,
                                 'list' => $default_list,
                             ],
-                            $reference['pcli'] => [
-                                'selected' => $reference['adm1'] ?? 0,
-                                'list' => $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ),
+                            1 => [
+                                'parent' => (int) $reference['pcli'] ?? 0,
+                                'selected' => (int) $reference['adm1'] ?? 0,
+                                'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
                             ]
                         ];
                         break;
                 }
 
             }
+
             return $preset_array;
+        }
+
+        public function format_geoname_types( $query ) {
+            if ( ! empty( $query ) || ! is_array( $query ) ) {
+                foreach ( $query as $index => $value ) {
+                    if ( isset( $value['geonameid'] ) ) {
+                        $query[$index]['geonameid'] = (int) $value['geonameid'];
+                    }
+                    if ( isset( $value['population'] ) ) {
+                        $query[$index]['population'] = (int) $value['population'];
+                        $query[$index]['population_formatted'] =  number_format( (int) $value['population'] );
+                    }
+                    if ( isset( $value['latitude'] ) ) {
+                        $query[$index]['latitude'] = (float) $value['latitude'];
+                    }
+                    if ( isset( $value['longitude'] ) ) {
+                        $query[$index]['longitude'] = (float) $value['longitude'];
+                    }
+                }
+            }
+            return $query;
         }
 
         /**
@@ -1418,17 +1452,17 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
         public function drill_down_input( $bind_function, $geonameid = null, $post_id = null  ) {
             $dd_array = $this->default_drill_down( $geonameid, $post_id );
 
-            if ( empty( $dd_array['drill_down_top_level']['list'] ) ) {
+            if ( empty( $dd_array[0]['list'] ) ) {
                 dt_write_log( new WP_Error('dd_list_error', 'Did not find basic list established for drill down.' ) );
             }
 
             echo '<ul id="drill_down">';
 
-            foreach( $dd_array as $key => $dd_list ) {
+            foreach( $dd_array as $dd_list ) {
                 ?>
                     <li>
-                        <select id="<?php echo $key ?>" class="geocode-select" onchange="GEOCODING.geoname_drill_down( this.value, '<?php echo esc_attr( $bind_function ) ?>' );jQuery(this).parent().nextAll().remove();">
-                            <option value="<?php echo $key ?>"></option>
+                        <select id="<?php echo $dd_list['parent'] ?>" class="geocode-select" onchange="GEOCODING.geoname_drill_down( this.value, '<?php echo esc_attr( $bind_function ) ?>' );jQuery(this).parent().nextAll().remove();">
+                            <option value="<?php echo $dd_list['parent'] ?>"></option>
                             <?php
                                 foreach( $dd_list['list'] as $item ) {
                                     echo '<option value="'.$item['geonameid'].'" ';
