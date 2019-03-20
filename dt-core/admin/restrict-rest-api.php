@@ -63,6 +63,13 @@ function dt_dra_disable_via_filters() {
  * @return WP_Error
  */
 function dt_dra_only_allow_logged_in_rest_access( $access ) {
+    /*
+     * Disable the built in Wordpress API because it opens all users and contacts to anyone who is logged in.
+     */
+    if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/wp-json/wp/' ) !== false ) {
+        return new WP_Error( 'wp_api_disabled', __( 'The Wordpress built in API is disabled.', 'disciple_tools' ), [ 'status' => rest_authorization_required_code() ] );
+    }
+
     $authorized = false;
     /**
      * External integrations to a Disciple Tools site can be done through the /dt-public/ route, which is left open to non-logged in external access
