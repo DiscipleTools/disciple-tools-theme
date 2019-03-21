@@ -158,7 +158,7 @@
                     $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                     ?>
                     <li class="<?php echo esc_html( $value["key"] ) ?> address-row">
-                        <div class="address-text"><?php echo esc_html( $value["value"] );?></div>
+                        <div class="address-text" dir="auto"><?php echo esc_html( $value["value"] );?></div>
                         <?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
                     </li>
                 <?php } ?>
