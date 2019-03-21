@@ -581,7 +581,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
         $existing_contact = self::get_contact( $contact_id, false );
 
-        if ( isset( $fields['title'] ) ) {
+        if ( isset( $fields['title'] ) && $existing_contact["title"] != $fields['title'] ) {
             wp_update_post( [
                 'ID' => $contact_id,
                 'post_title' => $fields['title']

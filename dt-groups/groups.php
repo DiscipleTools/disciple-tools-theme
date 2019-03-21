@@ -406,7 +406,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         $existing_group = self::get_group( $group_id, false );
         $added_fields = [];
 
-        if ( isset( $fields['title'] ) ) {
+        if ( isset( $fields['title'] ) && $existing_group["title"] != $fields['title']) {
             wp_update_post( [
                 'ID' => $group_id,
                 'post_title' => $fields['title']
