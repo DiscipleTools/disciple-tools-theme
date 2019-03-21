@@ -39,9 +39,9 @@ window.API = {
 
   post_comment: (type, postId, comment) => makeRequest('post', `${type}/${postId}/comment`, { comment }),
 
-  delete_comment: (type, postId, commentId) => makeRequest('delete', `${type}/${postId}/comment`, { commentId }),
+  delete_comment: (type, postId, comment_ID) => makeRequest('delete', `${type}/${postId}/comment`, { comment_ID }),
 
-  update_comment: (type, postId, commentId, commentContent) => makeRequest('post', `${type}/${postId}/comment/update`, { commentId, commentContent }),
+  update_comment: (type, postId, comment_ID, comment_content) => makeRequest('post', `${type}/${postId}/comment/update`, { comment_ID, comment_content }),
 
   get_comments: (type, postId) => makeRequest('get', `${type}/${postId}/comments`),
 
