@@ -440,7 +440,7 @@ jQuery(document).ready(function($) {
   $("#add-new-address").on("click", function () {
     $('#edit-contact_address').append(`
       <li style="display: flex">
-        <textarea rows="3" class="contact-input" data-type="contact_address"></textarea>
+        <textarea rows="3" class="contact-input" data-type="contact_address" dir="auto"></textarea>
         <button class="button clear delete-button" data-id="new">
           <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
@@ -556,7 +556,7 @@ jQuery(document).ready(function($) {
     let addressHTML = "";
     (group.contact_address|| []).forEach(field=>{
       addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address">${field.value}</textarea>
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${field.value}</textarea>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
             <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>

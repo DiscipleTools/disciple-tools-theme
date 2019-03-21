@@ -874,7 +874,7 @@ jQuery(document).ready(function($) {
     let addressHTML = "";
     (contact.contact_address|| []).forEach(field=>{
       addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" >${field.value}</textarea>
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${field.value}</textarea>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
             <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
@@ -948,7 +948,7 @@ jQuery(document).ready(function($) {
     let addressHTML = "";
     (contact.contact_address || []).forEach(field => {
       addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" >${field.value}</textarea>
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${field.value}</textarea>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
             <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
@@ -1072,6 +1072,8 @@ jQuery(document).ready(function($) {
           link = `<a href="mailto:${_.escape(field.value)}">${_.escape(field.value)}</a>`
         } else if (contact_method === "contact_phone") {
           link = `<a href="tel:${_.escape(field.value)}">${_.escape(field.value)}</a>`
+        } else if (contact_method == "contact_address") {
+          link = `<span dir="auto">${_.escape(field.value).replace(/\n+/g, "<br>\n")}</span>`
         }
         htmlField.append(`<li class="details-list ${_.escape(field.key)}">
               ${link}
