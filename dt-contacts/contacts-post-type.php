@@ -584,7 +584,7 @@ class Disciple_Tools_Contact_Post_Type
                         }
                         if ( $field_type === "key_select" || $field_type === "multi_select" ) {
                             if ( isset( $field["default"] ) ) {
-                                $fields[ $key ]["default"] = array_merge( $fields[ $key ]["default"], $field["default"] );
+                                $fields[ $key ]["default"] = array_replace_recursive( $fields[ $key ]["default"], $field["default"] );
                             }
                         }
                     }
