@@ -830,6 +830,21 @@ class Disciple_Tools_Queries
                 return $query;
                 break;
 
+            case 'last_update_per_worker':
+                /**
+                 * Returns the date of last update for each user
+                 */
+                $query = $wpdb->get_results("
+                    SELECT
+                      MAX(hist_time) AS last_update,
+                      user_id
+                    FROM $wpdb->dt_activity_log
+                    WHERE 1=1
+                    GROUP BY user_id DESC;
+                ", ARRAY_A);
+                return $query;
+                break;
+
             case 'recent_seeker_path':
                 $days = 30;
                 if ( ! empty( $args['days'] ) ) {

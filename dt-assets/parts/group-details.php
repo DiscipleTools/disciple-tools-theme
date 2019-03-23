@@ -158,7 +158,7 @@
                     $invalid = isset( $value["invalid"] ) && $value["invalid"] === true ? "inline" :"none";
                     ?>
                     <li class="<?php echo esc_html( $value["key"] ) ?> address-row">
-                        <div class="address-text"><?php echo esc_html( $value["value"] );?></div>
+                        <div class="address-text" dir="auto"><?php echo esc_html( $value["value"] );?></div>
                         <?php dt_contact_details_status( $value["key"], $verified, $invalid ) ?>
                     </li>
                 <?php } ?>
@@ -272,7 +272,7 @@
                         <div class="typeahead__field">
                             <span class="typeahead__query">
                                 <input class="js-typeahead-people_groups"
-                                       name="people_groups[query]" placeholder="<?php esc_html_e( "Search People groups", 'disciple_tools' ) ?>"
+                                       name="people_groups[query]" placeholder="<?php esc_html_e( "Search People Groups", 'disciple_tools' ) ?>"
                                        autocomplete="off">
                             </span>
                         </div>

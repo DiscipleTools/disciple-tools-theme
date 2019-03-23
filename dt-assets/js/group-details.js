@@ -449,7 +449,7 @@ jQuery(document).ready(function($) {
   $("#add-new-address").on("click", function () {
     $('#edit-contact_address').append(`
       <li style="display: flex">
-        <textarea rows="3" class="contact-input" data-type="contact_address"></textarea>
+        <textarea rows="3" class="contact-input" data-type="contact_address" dir="auto"></textarea>
         <button class="button clear delete-button" data-id="new">
           <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
@@ -505,7 +505,7 @@ jQuery(document).ready(function($) {
       }
     }
   });
-  
+
   /**
    * coaches
    */
@@ -565,7 +565,7 @@ jQuery(document).ready(function($) {
     let addressHTML = "";
     (group.contact_address|| []).forEach(field=>{
       addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address">${field.value}</textarea>
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${field.value}</textarea>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
             <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
@@ -591,7 +591,7 @@ jQuery(document).ready(function($) {
       $(this).toggleClass("loading")
       resetDetailsFields(group)
       $(`#group-details-edit`).foundation('close')
-    }).catch(handelAjaxError)
+    }).catch(handleAjaxError)
   })
 
   $("#group-details-edit").on('change', '.contact-input', function() {
@@ -709,7 +709,7 @@ jQuery(document).ready(function($) {
     const val = $(this).val()
 
     API.save_field_api('group', groupId, { [id]: val })
-      .catch(handelAjaxError)
+      .catch(handleAjaxError)
   })
   $('input.number-input').on("blur", function(){
     const id = $(this).attr('id')
@@ -717,7 +717,7 @@ jQuery(document).ready(function($) {
 
     API.save_field_api('group', groupId, { [id]: val }).then((groupResp)=>{
       group = groupResp
-    }).catch(handelAjaxError)
+    }).catch(handleAjaxError)
   })
 
   let statusChanged = ()=>{
@@ -816,7 +816,7 @@ jQuery(document).ready(function($) {
     dateFormat: 'yy-mm-dd',
     onSelect: function (date) {
       let id = $(this).attr('id')
-      API.save_field_api('group', groupId, { [id]: date }).catch(handelAjaxError)
+      API.save_field_api('group', groupId, { [id]: date }).catch(handleAjaxError)
     },
     changeMonth: true,
     changeYear: true

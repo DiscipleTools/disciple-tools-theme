@@ -217,7 +217,7 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function chart_contact_progress_per_worker( $force_refresh = false ) {
-//        $force_refresh = true; // for testing
+        $force_refresh = true; // for testing
 
         if ( $force_refresh ) {
             delete_transient( 'chart_contact_progress_per_worker' );
@@ -227,10 +227,12 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         }
         $chart = [];
 
-        $chart[] = [ 'Name', 'Assigned', 'Accepted', 'Active', 'Attempt Needed', 'Attempted', 'Established', 'Meet Scheduled', 'Meet Complete', 'Ongoing Meeting', 'Baptisms', 'Coaching' ];
+        $chart[] = [ 'Name', 'Last Update', 'Assigned', 'Accepted', 'Active', 'Attempt Needed', 'Attempted', 'Established', 'Meet Scheduled', 'Meet Complete', 'Ongoing Meeting', 'Baptisms', 'Coaching' ];
 
         $results = Disciple_Tools_Queries::instance()->query( 'contact_progress_per_worker' );
         $baptized = Disciple_Tools_Queries::instance()->query( 'baptized_per_worker' );
+        $activity = Disciple_Tools_Queries::instance()->query( 'last_update_per_worker' );
+
         $worker_ids = get_users( [
             'role__in' => [ 'multiplier','dispatcher','dt_admin','strategist','Administrator' ],
             'fields' => 'ID'
@@ -265,8 +267,18 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 }
             }
 
+            $last_activity = "";
+            if ( !empty( $activity ) ){
+                foreach ( $activity as $user_activity ){
+                    if ( $user_activity["user_id"] == $result["user_id"] ){
+                        $last_activity = dt_format_date( $user_activity["last_update"] );
+                    }
+                }
+            }
+
             $chart[] = [
                 $user->display_name,
+                $last_activity,
                 (int) $result['assigned'],
                 (int) $result['accepted'],
                 (int) $result['active'],

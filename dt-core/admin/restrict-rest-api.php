@@ -63,6 +63,13 @@ function dt_dra_disable_via_filters() {
  * @return WP_Error
  */
 function dt_dra_only_allow_logged_in_rest_access( $access ) {
+    /*
+     * Disable the built in Wordpress API because it opens all users and contacts to anyone who is logged in.
+     */
+    if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/wp-json/wp/' ) !== false ) {
+        return new WP_Error( 'wp_api_disabled', 'The Wordpress built in API is disabled.', [ 'status' => rest_authorization_required_code() ] );
+    }
+
     $authorized = false;
     /**
      * External integrations to a Disciple Tools site can be done through the /dt-public/ route, which is left open to non-logged in external access
@@ -91,7 +98,7 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
             $site_link_token = str_replace( 'Bearer ', '', $auth_token );
             $authorized = Site_Link_System::verify_transfer_token( $site_link_token );
             if ( !$authorized ){
-                return new WP_Error( 'rest_cannot_access', __( 'Invalid token', 'disciple_tools' ), [ 'status' => rest_authorization_required_code() ] );
+                return new WP_Error( 'rest_cannot_access', 'Invalid token', [ 'status' => rest_authorization_required_code() ] );
             }
         }
     }

@@ -583,7 +583,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
         $existing_contact = self::get_contact( $contact_id, false );
 
-        if ( isset( $fields['title'] ) ) {
+        if ( isset( $fields['title'] ) && $existing_contact["title"] != $fields['title'] ) {
             wp_update_post( [
                 'ID' => $contact_id,
                 'post_title' => $fields['title']
@@ -1289,17 +1289,18 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $c->permalink = get_permalink( $c->ID );
             }
             $fields["relation"] = $relation;
-            foreach ( self::$contact_connection_types as $type ){
-                foreach ( $fields[$type] as $index => $post ){
-                    $fields[$type][$index] = [
-                        "ID" => $post->ID,
-                        "post_type" => $post->post_type,
-                        "post_date_gmt" => $post->post_date_gmt,
-                        "post_date" => $post->post_date,
-                        "post_title" => $post->post_title
-                    ];
-                }
-            }
+//            @todo limit the amount of data returned
+//            foreach ( self::$contact_connection_types as $type ){
+//                foreach ( $fields[$type] as $index => $post ){
+//                    $fields[$type][$index] = [
+//                        "ID" => $post->ID,
+//                        "post_type" => $post->post_type,
+//                        "post_date_gmt" => $post->post_date_gmt,
+//                        "post_date" => $post->post_date,
+//                        "post_title" => $post->post_title
+//                    ];
+//                }
+//            }
 
             self::adjust_custom_fields( $contact_id, $fields, $contact_fields );
 
