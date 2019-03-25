@@ -541,7 +541,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         //comment on master
         $link = "<a href='" . get_permalink( $duplicate_id ) . "'>{$duplicate['title']}</a>";
-        $comment = sprintf( esc_html_x( '%1$s was merged into %2$s', 'Contact1 was merged into Contact2', 'disciple_tools' ), $link, $duplicate['title'] );
+        $comment = sprintf( esc_html_x( '%1$s was merged into %2$s', 'Contact1 was merged into Contact2', 'disciple_tools' ), $link, $contact['title'] );
         self::add_comment( $contact_id, $comment, "duplicate", [], true, true );
     }
 
