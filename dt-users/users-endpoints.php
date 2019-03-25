@@ -81,6 +81,18 @@ class Disciple_Tools_Users_Endpoints
                 'callback' => [ $this, 'get_current_locations' ]
             ]
         );
+        register_rest_route(
+            $this->namespace, '/users/user_location', [
+                'methods' => "POST",
+                'callback' => [ $this, 'add_user_location' ]
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/users/user_location', [
+                'methods' => "DELETE",
+                'callback' => [ $this, 'delete_user_location' ]
+            ]
+        );
     }
 
     /**
@@ -176,6 +188,15 @@ class Disciple_Tools_Users_Endpoints
 
     public function get_current_locations(){
         return DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id(), 'user' ) );
+    }
+
+    public function add_user_location( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params["geonameid"] ) ){
+            return Disciple_Tools_Users::add_user_location( $params["geonameid"], get_current_user_id() );
+        } else {
+            return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
+        }
     }
 
 }

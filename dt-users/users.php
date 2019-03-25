@@ -645,7 +645,21 @@ class Disciple_Tools_Users
     }
 
     public function add_current_locations_list( $custom_data ) {
-        $custom_data['current_locations'] = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id(), 'user' ) );
+        $custom_data['current_locations'] = DT_Mapping_Module::instance()->get_post_locations( dt_get_associated_user_id( get_current_user_id() ) );
         return $custom_data;
+    }
+
+    public static function add_user_location( $geonameid, $user_id = null ) {
+        if ( empty( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+        $corresponds_to_contact = self::get_contact_for_user( $user_id );
+        if ( $corresponds_to_contact ){
+            $other_values = get_post_meta( $corresponds_to_contact, 'geonameid' );
+            if ( array_search( $geonameid, $other_values ) === false ) {
+                add_post_meta( $corresponds_to_contact, 'geonameid', $geonameid, false );
+            }
+        }
+        return true;
     }
 }

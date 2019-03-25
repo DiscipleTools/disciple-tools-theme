@@ -1483,18 +1483,13 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
         }
 
         public function get_post_locations( $post_id ) {
-            return [
-              [
-                  'geonameid' => 123456,
-                  'name' => 'Tataouine Sud',
-                  'full_name' => 'Tataouine Sud, Tunisia'
-              ],
-              [
-                  'geonameid' => 124545,
-                  'name' => 'Tataouine Nor',
-                  'full_name' => 'Tataouine Nor, Tunisia'
-              ]
-            ];
+            $list = [];
+            $geoname_list = get_post_meta( $post_id, 'geonameid' );
+            if ( ! empty( $geoname_list  ) ) {
+                $list = $this->query( 'get_by_geonameid_list', [ 'list' => $geoname_list ] );
+            }
+            dt_write_log($list);
+            return $list;
         }
 
         /**
@@ -1550,6 +1545,10 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 $list[$item['region_id']]['countries'][] = $item;
             }
             return $list;
+        }
+
+        public function get_full_country_name( $country_code ) {
+
         }
 
     } DT_Mapping_Module::instance(); // end DT_Mapping_Module class

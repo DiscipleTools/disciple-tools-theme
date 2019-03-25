@@ -56,7 +56,7 @@ function load_settings_locations( reload = false ) {
     if ( wpApiSettingsPage.custom_data.current_locations !== undefined && ! reload ) {
         cl.append('<strong>Current Locations:</strong><br>')
         jQuery.each( wpApiSettingsPage.custom_data.current_locations, function(i,v) {
-            cl.append(`${v.full_name} <a>delete</a><br>`) // @todo add delete function
+            cl.append(`${v.name}, ${v.country_code} <a>delete</a><br>`) // @todo add delete function
         })
         cl.append('<br>')
     } else {
@@ -66,12 +66,11 @@ function load_settings_locations( reload = false ) {
             if (data ) {
                 cl.append('<strong>Current Locations:</strong><br>')
                 jQuery.each( data, function(i,v) {
-                    cl.append(`${v.full_name}<br>`)
+                    cl.append(`${v.name}, ${v.country_code}<br>`)
                 })
                 cl.append('<br>')
             }
         }).fail(handleAjaxError)
-
     }
 }
 
@@ -79,16 +78,18 @@ function add_drill_down_selector() {
     jQuery('#new_locations').empty().append(
             `<ul id="drill_down"></ul>
             <input type="hidden" id="add_location_geoname_value" />
-            <button type="button" class="button" onclick="save_location()">Save</button>`
+            <button type="button" class="button" onclick="save_new_location()">Save</button>`
     )
     window.DRILLDOWN.top_level_drill_down( 'add_settings_location' )
     jQuery('#locations_add_button').hide()
 }
 
-function save_location() {
+function save_new_location() {
     let geonameid = jQuery('#add_location_geoname_value').val()
 
-    // @todo insert REST API call to add new location to user contact record
+    makeRequest('post', 'users/user_location', { geonameid: geonameid } ).done(data => {
+        console.log( data )
+        load_settings_locations( true )
+    }).fail(handleAjaxError)
 
-    load_settings_locations( true )
 }

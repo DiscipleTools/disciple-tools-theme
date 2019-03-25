@@ -1,5 +1,5 @@
 
-function validate_address(address){
+function validate_address(address){ /* @todo reuse for geocodeing */
 
     jQuery('#possible-results').append('<span><img style="height:1.5em;" src="'+ dtLocAPI.images_uri +'spinner.svg" /></span>');
     let data = {"address": address };
