@@ -568,24 +568,40 @@ class Disciple_Tools_Users
             return new WP_Error( "create_user", "You don't have permissions to create users", [ 'status', 401 ] );
         }
 
-        $user_id = username_exists( $user_name );
-        if ( $user_id ){
-            return new WP_Error( "create_user", __( "Username already exists", 'disciple_tools' ), [ 'status', 403 ] );
-        }
+
+        $user_id = null;
         $email_exists = email_exists( $user_email );
         if ( $email_exists ){
-            return new WP_Error( "create_user", __( "Email already exists", 'disciple_tools' ), [ 'status', 403 ] );
+
+            //check to see if the user is on the server, but not part of this D.T instance
+            $user = get_user_by( "email", $user_email );
+            if ( !is_user_member_of_blog( $user->ID ) ){
+                $added = add_user_to_blog( get_current_blog_id(), $user->ID, 'multiplier' );
+                if ( is_wp_error( $added ) ){
+                    return $added;
+                }
+                $user_id = $user->ID;
+            } else {
+                return new WP_Error( "create_user", __( "Email already exists", 'disciple_tools' ), [ 'status', 403 ] );
+            }
+        } else {
+            $user_id = username_exists( $user_name );
+            if ( $user_id ){
+                return new WP_Error( "create_user", __( "Username already exists", 'disciple_tools' ), [ 'status', 403 ] );
+            }
         }
 
-        $random_password = wp_generate_password( $length = 12, $include_standard_special_chars = false );
-        $user_id = wp_create_user( $user_name, $random_password, $user_email );
-        if ( is_wp_error( $user_id )){
-            return $user_id;
+        if ( !$user_id ){
+            $random_password = wp_generate_password( $length = 12, $include_standard_special_chars = false );
+            $user_id = wp_create_user( $user_name, $random_password, $user_email );
+            if ( is_wp_error( $user_id )){
+                return $user_id;
+            }
+            $user = get_user_by( 'id', $user_id );
+            $user->display_name = $display_name;
+            $user->set_role( "multiplier" );
+            wp_update_user( $user );
         }
-        $user = get_user_by( 'id', $user_id );
-        $user->display_name = $display_name;
-        $user->set_role( "multiplier" );
-        wp_update_user( $user );
         if ( $corresponds_to_contact ){
             update_user_option( $user_id, "corresponds_to_contact", $corresponds_to_contact );
             update_post_meta( $corresponds_to_contact, "corresponds_to_user", $user_id );
