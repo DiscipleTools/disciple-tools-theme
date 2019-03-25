@@ -193,7 +193,16 @@ class Disciple_Tools_Users_Endpoints
     public function add_user_location( WP_REST_Request $request ) {
         $params = $request->get_params();
         if ( isset( $params["geonameid"] ) ){
-            return Disciple_Tools_Users::add_user_location( $params["geonameid"], get_current_user_id() );
+            return Disciple_Tools_Users::add_user_location( $params["geonameid"] );
+        } else {
+            return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
+        }
+    }
+
+    public function delete_user_location( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params["geonameid"] ) ){
+            return Disciple_Tools_Users::delete_user_location( $params["geonameid"] );
         } else {
             return new WP_Error( "missing_error", "Missing fields", [ 'status', 400 ] );
         }

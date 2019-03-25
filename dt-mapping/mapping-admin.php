@@ -76,65 +76,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
          */
         public function scripts()
         {
-            /*?>
-            <script>
-                function install_geonames(type) {
-                    let link = jQuery('#' + type)
-                    let spinner = '<img src="<?php echo esc_url( $this->spinner ) ?>" width="16px" />'
 
-                    link.attr("onclick", "")
-                    link.append(spinner)
-
-                    let data = {"type": type}
-                    jQuery.ajax({
-                        type: "POST",
-                        data: JSON.stringify(data),
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        url: '<?php echo esc_url( rest_url() ) ?>dt/v1/network/import',
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_attr( $this->nonce ) ?>');
-                        },
-                    })
-                        .done(function (data) {
-                            link.empty().append('All finished! &#9989;')
-                            console.log(data)
-                        })
-                        .fail(function (err) {
-                            link.empty().append("Oops. Something did not work. Maybe try again.")
-                            console.log(err);
-                        })
-                }
-
-                function test_download(country_code) {
-                    let link = jQuery('#test_download')
-                    let spinner = '<img src="<?php echo esc_url( $this->spinner ) ?>" width="16px" />'
-
-                    link.attr("onclick", "")
-                    link.append(spinner)
-
-                    let data = {"country_code": country_code}
-                    jQuery.ajax({
-                        type: "POST",
-                        data: JSON.stringify(data),
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        url: '<?php echo esc_url( rest_url() ) ?>dt/v1/network/download',
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_attr( $this->nonce ) ?>');
-                        },
-                    })
-                        .done(function (data) {
-                            link.empty().append('All finished! &#9989;')
-                            console.log(data)
-                        })
-                        .fail(function (err) {
-                            link.empty().append("Oops. Something did not work. Maybe try again.")
-                            console.log(err);
-                        })
-                }
-            </script>
-            <?php */
         }
 
         public function register_menu() {
@@ -691,42 +633,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                                 Status
                             </td>
                             <td>
-                                <?php
-                                global $wpdb;
-                                    $results = $wpdb->get_results("
-                                                SELECT
-                                                  PCLI as geonameid,
-                                                  'PCLI'      as level,
-                                                  post_type,
-                                                  count(PCLI) as count
-                                                FROM {$wpdb->prefix}dt_geonames_reference
-                                                WHERE PCLI != ''
-                                                GROUP BY PCLI, post_type
-                                                UNION
-                                                SELECT
-                                                  ADM1 as geonameid,
-                                                  'ADM1'      as level,
-                                                  post_type,
-                                                  count(ADM1) as count
-                                                FROM {$wpdb->prefix}dt_geonames_reference
-                                                WHERE ADM1 != ''
-                                                GROUP BY ADM1, post_type
-                                                UNION
-                                                SELECT
-                                                  ADM2 as geonameid,
-                                                  'ADM2'      as level,
-                                                  post_type,
-                                                  count(ADM2) as count
-                                                FROM {$wpdb->prefix}dt_geonames_reference
-                                                WHERE ADM2 != ''
-                                                GROUP BY ADM2, post_type
-                                  ", ARRAY_A);
-
-                                if ( ! empty( $results ) ) {
-                                        foreach( $results as $result ) {
-                                            echo $result['geonameid'] . ' - ' . $result['level'] . ' - ' . $result['post_type'] . ' - ' . $result['count'] . '<br>';
-                                        }
-                                }
+                                <?php // @todo remove after dev
+                                    $results = DT_Mapping_Module::instance()->query( 'get_geoname_totals' );
+                                    if ( ! empty( $results ) ) {
+                                            foreach( $results as $result ) {
+                                                echo $result['geonameid'] . ' - ' . $result['level'] . ' - ' . $result['type'] . ' - ' . $result['count'] . '<br>';
+                                            }
+                                    }
 
                                 ?>
                             </td>

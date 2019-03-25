@@ -247,13 +247,14 @@ function dt_site_scripts() {
         dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', array( 'jquery', 'jquery-ui', 'lodash', 'mapping-drill-down' ), true );
         wp_localize_script(
             'dt-settings', 'wpApiSettingsPage', array(
-                'root' => esc_url_raw( rest_url() ),
-                'nonce' => wp_create_nonce( 'wp_rest' ),
-                'current_user_login' => wp_get_current_user()->user_login,
-                'current_user_id' => get_current_user_id(),
+                'root'                  => esc_url_raw( rest_url() ),
+                'nonce'                 => wp_create_nonce( 'wp_rest' ),
+                'current_user_login'    => wp_get_current_user()->user_login,
+                'current_user_id'       => get_current_user_id(),
+                'template_dir'          => get_template_directory_uri(),
                 'associated_contact_id' => dt_get_associated_user_id( get_current_user_id(), 'user' ),
-                'translations' => apply_filters( 'dt_settings_js_translations', [] ),
-                'custom_data' => apply_filters( 'dt_settings_js_data', [] ), // nest associated array
+                'translations'          => apply_filters( 'dt_settings_js_translations', [] ),
+                'custom_data'           => apply_filters( 'dt_settings_js_data', [] ), // nest associated array
             )
         );
     }

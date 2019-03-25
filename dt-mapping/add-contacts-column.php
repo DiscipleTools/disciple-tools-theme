@@ -76,7 +76,7 @@ function dt_mm_add_contacts_column( $data ) {
     $results = DT_Mapping_Module::instance()->query( 'get_geoname_totals' );
     if ( ! empty( $results ) ) {
         foreach( $results as $result ) {
-            if ( $result['post_type'] === 'contacts' && $result['count'] > 0 ) { // filter for only contact and positive counts
+            if ( $result['type'] === 'contacts' && $result['count'] > 0 ) { // filter for only contact and positive counts
                 $geonameid = $result['geonameid'];
 
                 // test if geonameid exists, else prepare it with 0 values

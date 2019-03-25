@@ -83,7 +83,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
             require_once( 'add-contacts-column.php' );
             require_once( 'add-groups-column.php' );
-            require_once( 'add-workers-column.php' );
+            require_once( 'add-users-column.php' );
             require_once( 'mapping-admin.php' );
 
             /**
@@ -990,6 +990,10 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                     }
                     break;
 
+                case 'get_user_locations':
+
+                    break;
+
                 case 'get_continents_countries_and_states':
                     $results = $wpdb->get_results("
                             SELECT DISTINCT parent_id, id, name
@@ -999,12 +1003,12 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                             WHERE parent_id IN (
                               SELECT geonameid
                               FROM dt_geonames
-                              WHERE feature_code = 'PCLI'
+                              WHERE feature_code LIKE 'PCL%' OR feature_code = 'TERR' AND geonameid != 6697173
                               )
                             OR id IN (
                               SELECT geonameid
                               FROM dt_geonames
-                              WHERE feature_code = 'PCLI'
+                              WHERE feature_code LIKE 'PCL%' OR feature_code = 'TERR' AND geonameid != 6697173
                             )
                             OR parent_id IN (6255146,6255147,6255148,6255149,6255151,6255150,6255152,6295630)
                             OR id IN (6255146,6255147,6255148,6255149,6255151,6255150,6255152,6295630);
@@ -1021,7 +1025,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                             WHERE id IN (
                               SELECT geonameid
                               FROM dt_geonames
-                              WHERE feature_code = 'PCLI'
+                              WHERE feature_code LIKE 'PCL%' OR feature_code = 'TERR' AND geonameid != 6697173
                             )
                             OR parent_id IN (6255146,6255147,6255148,6255149,6255151,6255150,6255152,6295630)
                             OR id IN (6255146,6255147,6255148,6255149,6255151,6255150,6255152,6295630);
@@ -1086,29 +1090,29 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                             SELECT
                               PCLI as geonameid,
                               'PCLI'      as level,
-                              post_type,
+                              type,
                               count(PCLI) as count
                             FROM {$wpdb->prefix}dt_geonames_reference
                             WHERE PCLI != ''
-                            GROUP BY PCLI, post_type
+                            GROUP BY PCLI, type
                             UNION
                             SELECT
                               ADM1 as geonameid,
                               'ADM1'      as level,
-                              post_type,
+                              type,
                               count(ADM1) as count
                             FROM {$wpdb->prefix}dt_geonames_reference
                             WHERE ADM1 != ''
-                            GROUP BY ADM1, post_type
+                            GROUP BY ADM1, type
                             UNION
                             SELECT
                               ADM2 as geonameid,
                               'ADM2'      as level,
-                              post_type,
+                              type,
                               count(ADM2) as count
                             FROM {$wpdb->prefix}dt_geonames_reference
                             WHERE ADM2 != ''
-                            GROUP BY ADM2, post_type
+                            GROUP BY ADM2, type
                         ", ARRAY_A );
 
                     break;
@@ -1488,7 +1492,6 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             if ( ! empty( $geoname_list  ) ) {
                 $list = $this->query( 'get_by_geonameid_list', [ 'list' => $geoname_list ] );
             }
-            dt_write_log($list);
             return $list;
         }
 
@@ -1548,6 +1551,264 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
         }
 
         public function get_full_country_name( $country_code ) {
+
+            switch ( $country_code ) {
+
+                case "AF": $name = "Afghanistan"; break;
+                case "AX": $name = "Ahvenanmaan Laeaeni"; break;
+                case "AL": $name = "Albania"; break;
+                case "DZ": $name = "Algeria"; break;
+                case "AS": $name = "American Samoa"; break;
+                case "AD": $name = "Andorra"; break;
+                case "AO": $name = "Angola"; break;
+                case "AI": $name = "Anguilla"; break;
+                case "AG": $name = "Antigua And Barbuda"; break;
+                case "AR": $name = "Argentina"; break;
+                case "AM": $name = "Armenia"; break;
+                case "AW": $name = "Aruba"; break;
+                case "AU": $name = "Australia"; break;
+                case "AT": $name = "Austria"; break;
+                case "AZ": $name = "Azerbaijan"; break;
+                case "BS": $name = "Bahamas, The"; break;
+                case "BH": $name = "Bahrain"; break;
+                case "BD": $name = "Bangladesh"; break;
+                case "BB": $name = "Barbados"; break;
+                case "BY": $name = "Belarus"; break;
+                case "BE": $name = "Belgium"; break;
+                case "BZ": $name = "Belize"; break;
+                case "BJ": $name = "Benin"; break;
+                case "BM": $name = "Bermuda"; break;
+                case "BT": $name = "Bhutan"; break;
+                case "BO": $name = "Bolivia"; break;
+                case "BQ": $name = "Bonaire, Saint Eustatius and Saba"; break;
+                case "BA": $name = "Bosnia And Herzegovina"; break;
+                case "BW": $name = "Botswana"; break;
+                case "BV": $name = "Bouvet Island"; break;
+                case "BR": $name = "Brazil"; break;
+                case "IO": $name = "British Indian Ocean Territory"; break;
+                case "VG": $name = "British Virgin Islands"; break;
+                case "BN": $name = "Brunei"; break;
+                case "BG": $name = "Bulgaria"; break;
+                case "BF": $name = "Burkina Faso"; break;
+                case "MM": $name = "Burma"; break;
+                case "BI": $name = "Burundi"; break;
+                case "CV": $name = "Cabo Verde"; break;
+                case "KH": $name = "Cambodia"; break;
+                case "CM": $name = "Cameroon"; break;
+                case "CA": $name = "Canada"; break;
+                case "KY": $name = "Cayman Islands"; break;
+                case "CF": $name = "Central African Republic"; break;
+                case "TD": $name = "Chad"; break;
+                case "CL": $name = "Chile"; break;
+                case "CN": $name = "China"; break;
+                case "CX": $name = "Christmas Island"; break;
+                case "CO": $name = "Colombia"; break;
+                case "KM": $name = "Comoros"; break;
+                case "CG": $name = "Congo (Brazzaville)"; break;
+                case "CD": $name = "Congo (Kinshasa)"; break;
+                case "CK": $name = "Cook Islands"; break;
+                case "CR": $name = "Costa Rica"; break;
+                case "CI": $name = "Côte D’Ivoire"; break;
+                case "HR": $name = "Croatia"; break;
+                case "CU": $name = "Cuba"; break;
+                case "CW": $name = "Curaçao"; break;
+                case "CY": $name = "Cyprus"; break;
+                case "CZ": $name = "Czechia"; break;
+                case "DK": $name = "Denmark"; break;
+                case "DJ": $name = "Djibouti"; break;
+                case "DM": $name = "Dominica"; break;
+                case "DO": $name = "Dominican Republic"; break;
+                case "EC": $name = "Ecuador"; break;
+                case "EG": $name = "Egypt"; break;
+                case "SV": $name = "El Salvador"; break;
+                case "GQ": $name = "Equatorial Guinea"; break;
+                case "ER": $name = "Eritrea"; break;
+                case "EE": $name = "Estonia"; break;
+                case "ET": $name = "Ethiopia"; break;
+                case "FK": $name = "Falkland Islands (Islas Malvinas)"; break;
+                case "FO": $name = "Faroe Islands"; break;
+                case "FJ": $name = "Fiji"; break;
+                case "FI": $name = "Finland"; break;
+                case "FR": $name = "France"; break;
+                case "GF": $name = "French Guiana"; break;
+                case "PF": $name = "French Polynesia"; break;
+                case "GA": $name = "Gabon"; break;
+                case "GM": $name = "Gambia, The"; break;
+                case "GE": $name = "Georgia"; break;
+                case "DE": $name = "Germany"; break;
+                case "GH": $name = "Ghana"; break;
+                case "GI": $name = "Gibraltar"; break;
+                case "GR": $name = "Greece"; break;
+                case "GL": $name = "Greenland"; break;
+                case "GD": $name = "Grenada"; break;
+                case "GP": $name = "Guadeloupe"; break;
+                case "GU": $name = "Guam"; break;
+                case "GT": $name = "Guatemala"; break;
+                case "GG": $name = "Guernsey"; break;
+                case "GN": $name = "Guinea"; break;
+                case "GW": $name = "Guinea-Bissau"; break;
+                case "GY": $name = "Guyana"; break;
+                case "HT": $name = "Haiti"; break;
+                case "HN": $name = "Honduras"; break;
+                case "HK": $name = "Hong Kong"; break;
+                case "HU": $name = "Hungary"; break;
+                case "IS": $name = "Iceland"; break;
+                case "IN": $name = "India"; break;
+                case "ID": $name = "Indonesia"; break;
+                case "IR": $name = "Iran"; break;
+                case "IQ": $name = "Iraq"; break;
+                case "IE": $name = "Ireland"; break;
+                case "IM": $name = "Isle Of Man"; break;
+                case "IL": $name = "Israel"; break;
+                case "IT": $name = "Italy"; break;
+                case "JM": $name = "Jamaica"; break;
+                case "JP": $name = "Japan"; break;
+                case "JE": $name = "Jersey"; break;
+                case "JO": $name = "Jordan"; break;
+                case "KZ": $name = "Kazakhstan"; break;
+                case "KE": $name = "Kenya"; break;
+                case "KI": $name = "Kiribati"; break;
+                case "KP": $name = "Korea, North"; break;
+                case "KR": $name = "Korea, South"; break;
+                case "XK": $name = "Kosovo"; break;
+                case "KW": $name = "Kuwait"; break;
+                case "KG": $name = "Kyrgyzstan"; break;
+                case "LA": $name = "Laos"; break;
+                case "LV": $name = "Latvia"; break;
+                case "LB": $name = "Lebanon"; break;
+                case "LS": $name = "Lesotho"; break;
+                case "LR": $name = "Liberia"; break;
+                case "LY": $name = "Libya"; break;
+                case "LI": $name = "Liechtenstein"; break;
+                case "LT": $name = "Lithuania"; break;
+                case "LU": $name = "Luxembourg"; break;
+                case "MO": $name = "Macau"; break;
+                case "MK": $name = "Macedonia"; break;
+                case "MG": $name = "Madagascar"; break;
+                case "MW": $name = "Malawi"; break;
+                case "MY": $name = "Malaysia"; break;
+                case "MV": $name = "Maldives"; break;
+                case "ML": $name = "Mali"; break;
+                case "MT": $name = "Malta"; break;
+                case "MH": $name = "Marshall Islands"; break;
+                case "MQ": $name = "Martinique"; break;
+                case "MR": $name = "Mauritania"; break;
+                case "MU": $name = "Mauritius"; break;
+                case "YT": $name = "Mayotte"; break;
+                case "MX": $name = "Mexico"; break;
+                case "FM": $name = "Micronesia, Federated States Of"; break;
+                case "MD": $name = "Moldova"; break;
+                case "MC": $name = "Monaco"; break;
+                case "MN": $name = "Mongolia"; break;
+                case "ME": $name = "Montenegro"; break;
+                case "MS": $name = "Montserrat"; break;
+                case "MA": $name = "Morocco"; break;
+                case "MZ": $name = "Mozambique"; break;
+                case "NA": $name = "Namibia"; break;
+                case "NR": $name = "Nauru"; break;
+                case "NP": $name = "Nepal"; break;
+                case "NL": $name = "Netherlands"; break;
+                case "AN": $name = "Netherlands Antilles"; break;
+                case "NC": $name = "New Caledonia"; break;
+                case "NZ": $name = "New Zealand"; break;
+                case "NI": $name = "Nicaragua"; break;
+                case "NE": $name = "Niger"; break;
+                case "NG": $name = "Nigeria"; break;
+                case "NU": $name = "Niue"; break;
+                case "NF": $name = "Norfolk Island"; break;
+                case "MP": $name = "Northern Mariana Islands"; break;
+                case "NO": $name = "Norway"; break;
+                case "OM": $name = "Oman"; break;
+                case "PK": $name = "Pakistan"; break;
+                case "PW": $name = "Palau"; break;
+                case "PS": $name = "Palestine"; break;
+                case "PA": $name = "Panama"; break;
+                case "PG": $name = "Papua New Guinea"; break;
+                case "PY": $name = "Paraguay"; break;
+                case "PE": $name = "Peru"; break;
+                case "PH": $name = "Philippines"; break;
+                case "PN": $name = "Pitcairn, Henderson, Ducie and Oeno Islands"; break;
+                case "PL": $name = "Poland"; break;
+                case "PT": $name = "Portugal"; break;
+                case "PR": $name = "Puerto Rico"; break;
+                case "QA": $name = "Qatar"; break;
+                case "RE": $name = "Reunion"; break;
+                case "RO": $name = "Romania"; break;
+                case "RU": $name = "Russia"; break;
+                case "RW": $name = "Rwanda"; break;
+                case "BL": $name = "Saint Barthelemy"; break;
+                case "SH": $name = "Saint Helena, Ascension, And Tristan Da Cunha"; break;
+                case "KN": $name = "Saint Kitts And Nevis"; break;
+                case "LC": $name = "Saint Lucia"; break;
+                case "MF": $name = "Saint Martin"; break;
+                case "PM": $name = "Saint Pierre And Miquelon"; break;
+                case "VC": $name = "Saint Vincent And The Grenadines"; break;
+                case "WS": $name = "Samoa"; break;
+                case "SM": $name = "San Marino"; break;
+                case "ST": $name = "Sao Tome And Principe"; break;
+                case "SA": $name = "Saudi Arabia"; break;
+                case "SN": $name = "Senegal"; break;
+                case "RS": $name = "Serbia"; break;
+                case "CS": $name = "Serbia and Montenegro"; break;
+                case "SC": $name = "Seychelles"; break;
+                case "SL": $name = "Sierra Leone"; break;
+                case "SG": $name = "Singapore"; break;
+                case "SX": $name = "Sint Maarten"; break;
+                case "SK": $name = "Slovakia"; break;
+                case "SI": $name = "Slovenia"; break;
+                case "SB": $name = "Solomon Islands"; break;
+                case "SO": $name = "Somalia"; break;
+                case "ZA": $name = "South Africa"; break;
+                case "GS": $name = "South Georgia And South Sandwich Islands"; break;
+                case "SS": $name = "South Sudan"; break;
+                case "ES": $name = "Spain"; break;
+                case "LK": $name = "Sri Lanka"; break;
+                case "VA": $name = "State of the Vatican City"; break;
+                case "SD": $name = "Sudan"; break;
+                case "SR": $name = "Suriname"; break;
+                case "SJ": $name = "Svalbard and Jan Mayen"; break;
+                case "SZ": $name = "Swaziland"; break;
+                case "SE": $name = "Sweden"; break;
+                case "CH": $name = "Switzerland"; break;
+                case "SY": $name = "Syria"; break;
+                case "TW": $name = "Taiwan"; break;
+                case "TJ": $name = "Tajikistan"; break;
+                case "TZ": $name = "Tanzania"; break;
+                case "CC": $name = "Territory of Cocos (Keeling) Islands"; break;
+                case "HM": $name = "Territory of Heard Island and McDonald Islands"; break;
+                case "TF": $name = "Territory of the French Southern and Antarctic Lands"; break;
+                case "TH": $name = "Thailand"; break;
+                case "TL": $name = "Timor-Leste"; break;
+                case "TG": $name = "Togo"; break;
+                case "TK": $name = "Tokelau"; break;
+                case "TO": $name = "Tonga"; break;
+                case "TT": $name = "Trinidad And Tobago"; break;
+                case "TN": $name = "Tunisia"; break;
+                case "TR": $name = "Turkey"; break;
+                case "TM": $name = "Turkmenistan"; break;
+                case "TC": $name = "Turks And Caicos Islands"; break;
+                case "TV": $name = "Tuvalu"; break;
+                case "VI": $name = "U.S. Virgin Islands"; break;
+                case "UG": $name = "Uganda"; break;
+                case "UA": $name = "Ukraine"; break;
+                case "AE": $name = "United Arab Emirates"; break;
+                case "GB": $name = "United Kingdom"; break;
+                case "UM": $name = "United States Minor Outlying Islands"; break;
+                case "US": $name = "United States of America"; break;
+                case "UY": $name = "Uruguay"; break;
+                case "UZ": $name = "Uzbekistan"; break;
+                case "VU": $name = "Vanuatu"; break;
+                case "VE": $name = "Venezuela"; break;
+                case "VN": $name = "Vietnam"; break;
+                case "WF": $name = "Wallis And Futuna"; break;
+                case "EH": $name = "Western Sahara"; break;
+                case "YE": $name = "Yemen"; break;
+                case "ZM": $name = "Zambia"; break;
+                case "ZW": $name = "Zimbabwe"; break;
+                default: $name = false;
+
+            }
+            return $name;
 
         }
 
