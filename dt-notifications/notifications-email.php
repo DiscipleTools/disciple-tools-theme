@@ -89,6 +89,7 @@ function dt_send_email_about_post( string $email, int $post_id, string $message_
     $post_type = get_post_type( $post_id );
     $contact_url = home_url( '/' ) . $post_type . '/' . $post_id;
     $full_message = $message_plain_text . "\r\n\r\n--\r\n" . __( 'Click here to view or reply', 'disciple_tools' ) . ": $contact_url";
+    $full_message .= "\r\n" . __( 'Do not reply directly to this email.', 'disciple_tools' );
     $post_label = Disciple_Tools_Posts::get_label_for_post_type( $post_type, true );
 
     return dt_send_email(
