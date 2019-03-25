@@ -1,3 +1,14 @@
+jQuery(document).ready(function() {
+    load_settings_locations()
+})
+
+/**
+ * Password reset
+ *
+ * @param preference_key
+ * @param type
+ * @returns {*}
+ */
 function switch_preference (preference_key, type = null) {
     return makeRequest('post', 'users/switch_preference', { preference_key, type})
 }
@@ -25,14 +36,9 @@ function change_password() {
 /**
  * Locations
  */
-
 window.DRILLDOWN.add_settings_location = function( geonameid ) {
     jQuery('#add_location_geoname_value').val(geonameid)
 }
-
-jQuery(document).ready(function() {
-    load_settings_locations()
-})
 
 function load_settings_locations( reload = false ) {
     let section = jQuery('#manage_locations_section')
@@ -55,30 +61,16 @@ function load_settings_locations( reload = false ) {
         cl.append('<br>')
     } else {
 
-        jQuery.ajax({
-            type: "GET",
-            data: JSON.stringify({"contact_id": wpApiSettingsPage.associated_contact_id }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            url: wpApiSettingsPage.root + 'dt/v1/users/current_locations',
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', wpApiSettingsPage.nonce);
-            },
-        })
-            .done(function (data) {
-                console.log( data )
-                if (data ) {
-                    cl.append('<strong>Current Locations:</strong><br>')
-                    jQuery.each( data, function(i,v) {
-                        cl.append(`${v.full_name}<br>`)
-                    })
-                    cl.append('<br>')
-                }
-            })
-            .fail(function (err) {
-                console.log("error")
-                console.log(err)
-            })
+        makeRequest('get', 'users/current_locations', { "contact_id": wpApiSettingsPage.associated_contact_id } ).done(data => {
+            console.log( data )
+            if (data ) {
+                cl.append('<strong>Current Locations:</strong><br>')
+                jQuery.each( data, function(i,v) {
+                    cl.append(`${v.full_name}<br>`)
+                })
+                cl.append('<br>')
+            }
+        }).fail(handleAjaxError)
 
     }
 }

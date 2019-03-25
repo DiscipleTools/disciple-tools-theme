@@ -155,14 +155,14 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                             <div class="small-12 medium-4 cell" style="border-left: 1px solid lightgrey; padding-left: 1em;">
 
                                 <strong><?php esc_html_e( 'Language', 'disciple_tools' )?></strong>
-                                <br>
+                                <p>
                                 <?php
                                 if ( !empty( $dt_user->locale ) ){
                                     echo esc_html( $dt_user->locale );
                                 } else {
                                     echo esc_html__( 'English', 'disciple_tools' );
                                 }
-                                ?>
+                                ?></p>
 
                                 <strong><?php esc_html_e( 'Biography', 'disciple_tools' )?></strong>
                                 <p><?php echo esc_html( $dt_user->user_description ); ?></p>
@@ -171,7 +171,6 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                         </div>
 
                     </div> <!-- End Profile -->
-
                 </div>
 
                 <div class="small-12 cell">
