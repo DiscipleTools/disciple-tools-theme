@@ -37,7 +37,7 @@ window.DRILLDOWN = {
                         jQuery('#' + i).append(`<option value="${vv.id}">${vv.name}</option>`)
                     })
 
-                    if (bindFunction) {
+                    if ( typeof DRILLDOWN[bindFunction] !== "undefined" ) {
                         DRILLDOWN[bindFunction]( i )
                     }
                 }
@@ -49,7 +49,7 @@ window.DRILLDOWN = {
                 drill_down_select.append(`<option value="${i}">${v}</option>`)
             })
 
-            if (bindFunction) {
+            if (typeof DRILLDOWN[bindFunction] !== "undefined" ) {
                 DRILLDOWN[bindFunction]( 'top_map_list' )
             }
         }
@@ -91,7 +91,7 @@ window.DRILLDOWN = {
                         }
                     }
 
-                    if ( bindFunction ) {
+                    if ( typeof DRILLDOWN[bindFunction] !== "undefined" ) {
                         DRILLDOWN[bindFunction]( geonameid )
                     }
 
