@@ -872,7 +872,7 @@ function top_level_location_list( div ) {
     }
 
     // Self Data
-    let self_population = numberWithCommas( map_data.self.population )
+    let self_population = map_data.self.population_formatted
     jQuery('#current_level').empty().html(`Population: ${self_population}`)
 
 
@@ -901,7 +901,7 @@ function top_level_location_list( div ) {
     let sorted_children =  _.sortBy(map_data.children, [function(o) { return o.name; }]);
 
     jQuery.each( sorted_children, function(i, v) {
-        let population = numberWithCommas( v.population )
+        let population =  v.population_formatted
         let html = `<div class="grid-x grid-padding-x grid-padding-y">
                         <div class="cell small-3"><strong>${v.name}</strong></div>
                         <div class="cell small-3">${population}</div>`
@@ -974,7 +974,7 @@ function geoname_list( div, geonameid ) {
         }
 
         // Self Data
-        let self_population = numberWithCommas( map_data.self.population )
+        let self_population = map_data.self.population_formatted
         jQuery('#current_level').empty().html(`Population: ${self_population}`)
 
         // Build List
@@ -1002,7 +1002,7 @@ function geoname_list( div, geonameid ) {
 
         html += `<tbody>`
         jQuery.each( sorted_children, function(i, v) {
-            let population = numberWithCommas( v.population )
+            let population = v.population_formatted
             html += `<tr>
                         <td><strong>${v.name}</strong></td>
                         <td>${population}</td>`
