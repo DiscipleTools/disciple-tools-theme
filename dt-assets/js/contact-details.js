@@ -1313,23 +1313,22 @@ jQuery(document).ready(function($) {
   })
 
   $('#transfer_confirm_button').on('click',function() {
-      let status_spinner = $('#transfer_spinner')
-      status_spinner.append('<img src="'+contactsDetailsWpApiSettings.spinner_url+'" width="20px" />')
-      let siteId = $('#transfer_contact').val()
-      if ( ! siteId ) {
-          return;
-      }
-      API.transfer_contact( contactId, siteId )
-          .then(data=>{
-              if ( data ) {
-                jQuery('#transfer_spinner').empty()
-                  location.reload();
-              }
-          }).catch(err=>{
-          jQuery('#transfer_spinner').empty().append(err.responseJSON.message).append('&nbsp;' + contactsDetailsWpApiSettings.translations.transfer_error )
-          jQuery("#errors").empty()
-          console.log("error")
-          console.log(err)
+    let status_spinner = $('#transfer_spinner')
+    status_spinner.append('<img src="'+contactsDetailsWpApiSettings.spinner_url+'" width="20px" />')
+    let siteId = $('#transfer_contact').val()
+    if ( ! siteId ) {
+      return;
+    }
+    API.transfer_contact( contactId, siteId )
+      .then(data=>{
+        if ( data ) {
+          location.reload();
+        }
+      }).catch(err=>{
+        jQuery('#transfer_spinner').empty().append(err.responseJSON.message).append('&nbsp;' + contactsDetailsWpApiSettings.translations.transfer_error )
+        jQuery("#errors").empty()
+        console.log("error")
+        console.log(err)
       })
   });
 
