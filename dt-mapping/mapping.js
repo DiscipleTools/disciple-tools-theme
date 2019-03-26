@@ -617,7 +617,7 @@ function geoname_map( div, geonameid ) {
             })
         }) // end success statement
         .fail(function (err) {
-            jQuery('#map_chart').empty().append(`No polygon available.`)
+            
             console.log("error")
             console.log(err)
         })
