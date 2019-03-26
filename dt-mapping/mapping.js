@@ -74,7 +74,7 @@ function page_mapping_view() {
 }
 
 window.DRILLDOWN.map_chart = function( geonameid ) {
-    if ( geonameid !== 'top_map_list' ) { // make sure this is not a top level continent or world request
+    if ( geonameid !== 'top_map_list' && geonameid !== 'world' ) { // make sure this is not a top level continent or world request
         console.log('map_chart: geonameid available')
         geoname_map( 'map_chart', geonameid )
     }
@@ -212,6 +212,14 @@ function top_level_map( div ) {
                     }
 
                 }, this);
+
+                let coordinates = []
+                coordinates[0] = {
+                    "latitude": 0,
+                    "longitude": 0,
+                    "title": 'World'
+                }
+                mini_map( 'minimap', coordinates )
 
 
             }) // end success statement
@@ -674,7 +682,7 @@ function mini_map( div, marker_data ) {
         chart.seriesContainer.draggable = false;
         chart.seriesContainer.resizable = false;
 
-        if (  parseInt(marker_data[0].longitude) < 0 ) {
+        if ( parseInt(marker_data[0].longitude) < 0 ) {
             chart.deltaLongitude = parseInt(Math.abs(marker_data[0].longitude));
         } else {
             chart.deltaLongitude = parseInt(-Math.abs(marker_data[0].longitude));
