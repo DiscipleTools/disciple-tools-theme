@@ -85,7 +85,7 @@ function page_mapping_view() {
 }
 
 function map_chart( div, geonameid ) {
-    if ( geonameid ) { // make sure this is not a top level continent or world request
+    if ( geonameid !== 'world' ) { // make sure this is not a top level continent or world request
         console.log('map_chart: geonameid available')
         geoname_map( div, geonameid )
     }
