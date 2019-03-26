@@ -105,10 +105,6 @@ window.DRILLDOWN = {
         DRILLDOWN.hide_spinner()
     },
 
-    add_default_drill_down( div ) {
-
-    },
-
     isEmpty(obj) {
         for(let key in obj) {
             if(obj.hasOwnProperty(key))

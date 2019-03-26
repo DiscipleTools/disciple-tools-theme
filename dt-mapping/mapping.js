@@ -21,13 +21,7 @@ window.DRILLDOWN.location_list = function(  geonameid ) {
     }
 
 }
-window.DRILLDOWN.map_chart = function( geonameid ) {
-    if ( geonameid !== 'top_map_list' ) {
-        map_chart( 'map_chart', geonameid )
-    } else {
-        map_chart( 'map_chart' )
-    }
-}
+
 
 /**********************************************************************************************************************
  *
@@ -38,7 +32,6 @@ window.DRILLDOWN.map_chart = function( geonameid ) {
  **********************************************************************************************************************/
 function page_mapping_view() {
     "use strict";
-    // 
     let chartDiv = jQuery('#chart')
     chartDiv.empty().html(`
         
@@ -51,7 +44,6 @@ function page_mapping_view() {
                 <span id="current_level"></span>
             </div>
         </div>
-        
         
         <hr style="max-width:100%;">
         
@@ -73,25 +65,22 @@ function page_mapping_view() {
         
         <hr style="max-width:100%;">
         
-        <span style="float:right;font-size:.8em;"><a onclick="map_chart( 'map_chart' )" >return to top level</a></span>
-        
+        <span style="float:right;font-size:.8em;"><a onclick="DRILLDOWN.load_drill_down( null, 'map_chart' )" >return to top level</a></span>
         <br>
-        
-        
         `);
 
     DRILLDOWN.load_drill_down( null, 'map_chart' )
     data_type_list( 'data-type-list' )
 }
 
-function map_chart( div, geonameid ) {
-    if ( geonameid !== 'world' ) { // make sure this is not a top level continent or world request
+window.DRILLDOWN.map_chart = function( geonameid ) {
+    if ( geonameid !== 'top_map_list' ) { // make sure this is not a top level continent or world request
         console.log('map_chart: geonameid available')
-        geoname_map( div, geonameid )
+        geoname_map( 'map_chart', geonameid )
     }
     else { // top_level maps
         console.log('map_chart: top level')
-        top_level_map( div )
+        top_level_map( 'map_chart' )
     }
 }
 
@@ -108,7 +97,7 @@ function top_level_map( div ) {
     switch ( default_map_settings.type ) {
 
         case 'world':
-
+            console.log('top_level_map: world')
             let map_data = DRILLDOWNDATA.data.world
 
             // set title
@@ -141,8 +130,6 @@ function top_level_map( div ) {
                                 mapData.features[i].properties.value = 0
                             })
                         }
-
-
                     }
                 })
 
@@ -375,7 +362,6 @@ function top_level_map( div ) {
             }
 
             break;
-
         case 'state':
 
             if( Object.keys(top_map_list).length === 1 ) { // if only one country selected

@@ -975,9 +975,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
              ******************************/
             $focus_select = '<select name="focus_type">';
 
-//            $focus_select .= '<option value="world" ';
-//            $focus_select .= ( $default_map_settings['type'] === 'world') ? "selected" : "";
-//            $focus_select .= '>World</option>';
+            $focus_select .= '<option value="world" ';
+            $focus_select .= ( $default_map_settings['type'] === 'world') ? "selected" : "";
+            $focus_select .= '>World</option>';
 
             $focus_select .= '<option value="country" ';
             $focus_select .= ( $default_map_settings['type'] === 'country') ? "selected" : "";

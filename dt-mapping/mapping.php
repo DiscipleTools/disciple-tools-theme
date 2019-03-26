@@ -302,13 +302,11 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
             // initialize drill down configuration
             if ( is_singular( "groups" ) || is_singular( "contacts" ) ) {
                 global $wp_query;
-//                dt_write_log($wp_query->queried_object_id);
                 if ( isset( $wp_query->queried_object_id ) ) {
                     $data['default_drill_down'] = $this->default_drill_down( get_post_meta( $wp_query->queried_object_id, 'geonameid', true ), $wp_query->queried_object_id );
                 }
             }
             else if ( 'settings' === dt_get_url_path() ) {
-
                 $data['default_drill_down'] = $this->default_drill_down();
             }
             else {
@@ -1304,24 +1302,36 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
                 // if default list is just one country, then prepopulate second level
                 if ( $default_select_first_level ) {
-                    foreach( $list as $geonameid => $name ) {
-                        $preset_array[0]['list'][] = [
-                            'geonameid' => (int) $geonameid,
-                            'name' => $name
-                        ];
-                        $preset_array[0]['parent'] = 'drill_down_top_level';
-                        $preset_array[0]['selected'] = (int) $geonameid;
-                    }
-                    $second_level_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $preset_array[0]['selected']  ] ) );
-                    if ( ! empty( $second_level_list ) ) {
-                        foreach( $second_level_list as $item ) {
-                            $preset_array[1]['list'][] = [
-                                  'geonameid' => (int) $item['geonameid'],
-                                  'name' => $item['name'],
+                    if ( isset( $list['world'] ) ) {
+                        $default_list = $this->query( 'list_countries' );
+                        foreach( $default_list as $country ) {
+                            $preset_array[0]['list'][] = [
+                                'geonameid' => (int) $country['geonameid'],
+                                'name' => $country['name']
                             ];
+                            $preset_array[0]['parent'] = 'drill_down_top_level';
+                            $preset_array[0]['selected'] = 0;
                         }
-                        $preset_array[1]['parent'] = (int) $geonameid;
-                        $preset_array[1]['selected'] = 0;
+                    } else {
+                        foreach( $list as $geonameid => $name ) {
+                            $preset_array[0]['list'][] = [
+                                'geonameid' => (int) $geonameid,
+                                'name' => $name
+                            ];
+                            $preset_array[0]['parent'] = 'drill_down_top_level';
+                            $preset_array[0]['selected'] = (int) $geonameid;
+                        }
+                        $second_level_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $preset_array[0]['selected']  ] ) );
+                        if ( ! empty( $second_level_list ) ) {
+                            foreach( $second_level_list as $item ) {
+                                $preset_array[1]['list'][] = [
+                                    'geonameid' => (int) $item['geonameid'],
+                                    'name' => $item['name'],
+                                ];
+                            }
+                            $preset_array[1]['parent'] = (int) $geonameid;
+                            $preset_array[1]['selected'] = 0;
+                        }
                     }
 
                 // top level list has more than one option
@@ -1343,11 +1353,15 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
                 $list = $this->default_map_short_list();
                 $default_list = [];
-                foreach ( $list as $key => $value ) {
-                    $default_list[] = [
-                        'geonameid' => (int) $key,
-                        'name' => $value,
-                    ];
+                if ( isset( $list['world'] ) ) {
+                    $default_list = $this->query( 'list_countries' );
+                } else {
+                    foreach ( $list as $key => $value ) {
+                        $default_list[] = [
+                            'geonameid' => (int) $key,
+                            'name' => $value,
+                        ];
+                    }
                 }
 
                 if ( empty( $post_id ) ) {
