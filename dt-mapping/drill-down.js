@@ -63,7 +63,7 @@ window.DRILLDOWN = {
 
         DRILLDOWN.show_spinner()
 
-        if ( geonameid !== undefined ) {
+        if ( geonameid !== undefined  && geonameid !== ' ' ) {
 
             jQuery.ajax({
                 type: rest.method,

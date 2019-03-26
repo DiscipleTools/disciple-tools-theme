@@ -1288,138 +1288,246 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
          * @return array
          */
         public function default_drill_down( $geonameid = null, $post_id = null ) : array {
-            $preset_array = [];
 
+            $default_level = $this->default_map_settings();
             $list = $this->default_map_short_list();
+            $default_list = [];
+            $preset_array = [];
 
             $default_select_first_level = false;
             if ( count( $list ) < 2 ) {
                 $default_select_first_level = true;
             }
 
-            // no starting geonameid
-            if ( empty( $geonameid ) ) {
+            switch ( $default_level['type'] ) {
+                case 'country':
 
-                // if default list is just one country, then prepopulate second level
-                if ( $default_select_first_level ) {
-                    if ( isset( $list['world'] ) ) {
-                        $default_list = $this->query( 'list_countries' );
-                        foreach( $default_list as $country ) {
-                            $preset_array[0]['list'][] = [
-                                'geonameid' => (int) $country['geonameid'],
-                                'name' => $country['name']
+                    if ( $geonameid ) {
+
+                        foreach ( $list as $key => $value ) {
+                            $default_list[] = [
+                                'geonameid' => (int) $key,
+                                'name' => $value,
                             ];
+                        }
+
+                        if ( $post_id ) {
+                            $reference = $this->query( 'get_reference', [ 'post_id' => $post_id ] );
+                        } else {
+                            $reference = $this->query( 'get_reference', [ 'geonameid' => $geonameid ] );
+                        }
+
+                        switch ( $reference['feature_code'] ) {
+
+                            case 'ADM1':
+                                $preset_array = [
+                                    0 => [
+                                        'parent' => 'drill_down_top_level',
+                                        'selected' => (int) $reference['pcli'] ?? 0,
+                                        'list' => $default_list,
+                                    ],
+                                    1 => [
+                                        'parent' => (int) $reference['pcli'] ?? 0,
+                                        'selected' => (int) $reference['adm1'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
+                                    ],
+                                    2 => [
+                                        'parent' => (int) $reference['adm1'] ?? 0,
+                                        'selected' => (int) $reference['adm2'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ) ),
+                                    ],
+                                ];
+                                break;
+
+                            case 'ADM2':
+                                $preset_array = [
+                                    0 => [
+                                        'parent' => 'drill_down_top_level',
+                                        'selected' => (int) $reference['pcli'] ?? 0,
+                                        'list' => $default_list,
+                                    ],
+                                    1 => [
+                                        'parent' => (int) $reference['pcli'] ?? 0,
+                                        'selected' => (int) $reference['adm1'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
+                                    ],
+                                    2 => [
+                                        'parent' => (int) $reference['adm1'] ?? 0,
+                                        'selected' => (int) $reference['adm2'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ) ),
+                                    ],
+                                    3 => [
+                                        'parent' => (int) $reference['adm2'] ?? 0,
+                                        'selected' => (int) $reference['adm3'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm2'] ] ) ),
+                                    ],
+                                ];
+                                break;
+
+                            case 'PCLI':
+                            default:
+                                $preset_array = [
+                                    0 => [
+                                        'parent' => 'drill_down_top_level',
+                                        'selected' => (int) $reference['pcli'] ?? 0,
+                                        'list' => $default_list,
+                                    ],
+                                    1 => [
+                                        'parent' => (int) $reference['pcli'] ?? 0,
+                                        'selected' => (int) $reference['adm1'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
+                                    ]
+                                ];
+                                break;
+                        }
+
+                    } else {
+                        // if default list is just one country, then prepopulate second level
+                        if ( $default_select_first_level ) {
+                            foreach( $list as $geonameid => $name ) {
+                                $preset_array[0]['list'][] = [
+                                    'geonameid' => (int) $geonameid,
+                                    'name' => $name
+                                ];
+                                $preset_array[0]['parent'] = 'drill_down_top_level';
+                                $preset_array[0]['selected'] = (int) $geonameid;
+                            }
+                            $second_level_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $preset_array[0]['selected']  ] ) );
+                            if ( ! empty( $second_level_list ) ) {
+                                foreach( $second_level_list as $item ) {
+                                    $preset_array[1]['list'][] = [
+                                        'geonameid' => (int) $item['geonameid'],
+                                        'name' => $item['name'],
+                                    ];
+                                }
+                                $preset_array[1]['parent'] = (int) $geonameid;
+                                $preset_array[1]['selected'] = 0;
+                            }
+
+                            // top level list has more than one option
+                        } else {
+                            foreach( $list as $geonameid => $name ) {
+                                $preset_array[0]['list'][] = [
+                                    'geonameid' => (int) $geonameid,
+                                    'name' => $name
+                                ];
+                            }
                             $preset_array[0]['parent'] = 'drill_down_top_level';
                             $preset_array[0]['selected'] = 0;
                         }
-                    } else {
-                        foreach( $list as $geonameid => $name ) {
-                            $preset_array[0]['list'][] = [
-                                'geonameid' => (int) $geonameid,
-                                'name' => $name
+
+                    }
+
+                    return $preset_array;
+                    break;
+
+                case 'state':
+                    if ( $geonameid ) {
+
+                        foreach ( $list as $key => $value ) {
+                            $default_list[] = [
+                                'geonameid' => (int) $key,
+                                'name' => $value,
                             ];
-                            $preset_array[0]['parent'] = 'drill_down_top_level';
-                            $preset_array[0]['selected'] = (int) $geonameid;
                         }
-                        $second_level_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $preset_array[0]['selected']  ] ) );
-                        if ( ! empty( $second_level_list ) ) {
-                            foreach( $second_level_list as $item ) {
-                                $preset_array[1]['list'][] = [
-                                    'geonameid' => (int) $item['geonameid'],
-                                    'name' => $item['name'],
+
+                        if ( $post_id ) {
+                            $reference = $this->query( 'get_reference', [ 'post_id' => $post_id ] );
+                        } else {
+                            $reference = $this->query( 'get_reference', [ 'geonameid' => $geonameid ] );
+                        }
+
+                        switch ( $reference['feature_code'] ) {
+
+                            case 'ADM2':
+                                $preset_array = [
+                                    0 => [
+                                        'parent' => 'drill_down_top_level',
+                                        'selected' => (int) $reference['adm1'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
+                                    ],
+                                    1 => [
+                                        'parent' => (int) $reference['adm1'] ?? 0,
+                                        'selected' => (int) $reference['adm2'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ) ),
+                                    ],
+                                    2 => [
+                                        'parent' => (int) $reference['adm2'] ?? 0,
+                                        'selected' => (int) $reference['adm3'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm2'] ] ) ),
+                                    ],
+                                ];
+                                break;
+
+                            case 'PCLI':
+                            case 'ADM1':
+                            default:
+                                $preset_array = [
+                                    0 => [
+                                        'parent' => 'drill_down_top_level',
+                                        'selected' => (int) $reference['adm1'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
+                                    ],
+                                    1 => [
+                                        'parent' => (int) $reference['adm1'] ?? 0,
+                                        'selected' => (int) $reference['adm2'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ) ),
+                                    ],
+                                ];
+                                break;
+                        }
+
+                    } else {
+                        // if default list is just one country, then prepopulate second level
+                        if ( $default_select_first_level ) {
+                            foreach( $list as $geonameid => $name ) {
+                                $preset_array[0]['list'][] = [
+                                    'geonameid' => (int) $geonameid,
+                                    'name' => $name
+                                ];
+                                $preset_array[0]['parent'] = 'drill_down_top_level';
+                                $preset_array[0]['selected'] = (int) $geonameid;
+                            }
+                            $second_level_list = $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $preset_array[0]['selected']  ] ) );
+                            if ( ! empty( $second_level_list ) ) {
+                                foreach( $second_level_list as $item ) {
+                                    $preset_array[1]['list'][] = [
+                                        'geonameid' => (int) $item['geonameid'],
+                                        'name' => $item['name'],
+                                    ];
+                                }
+                                $preset_array[1]['parent'] = (int) $geonameid;
+                                $preset_array[1]['selected'] = 0;
+                            }
+
+                            // top level list has more than one option
+                        } else {
+                            foreach( $list as $geonameid => $name ) {
+                                $preset_array[0]['list'][] = [
+                                    'geonameid' => (int) $geonameid,
+                                    'name' => $name
                                 ];
                             }
-                            $preset_array[1]['parent'] = (int) $geonameid;
-                            $preset_array[1]['selected'] = 0;
+                            $preset_array[0]['parent'] = 'drill_down_top_level';
+                            $preset_array[0]['selected'] = 0;
                         }
+
                     }
 
-                // top level list has more than one option
-                } else {
-                    foreach( $list as $geonameid => $name ) {
-                        $preset_array[0]['list'][] = [
-                            'geonameid' => (int) $geonameid,
-                            'name' => $name
-                        ];
-                    }
-                    $preset_array[0]['parent'] = 'drill_down_top_level';
-                    $preset_array[0]['selected'] = 0;
-                }
-            }
+                    return $preset_array;
+                    break;
 
-
-            // has a starting geonameid and a post_id
-            else {
-
-                $list = $this->default_map_short_list();
-                $default_list = [];
-                if ( isset( $list['world'] ) ) {
+                case 'world':
+                default:
                     $default_list = $this->query( 'list_countries' );
-                } else {
-                    foreach ( $list as $key => $value ) {
-                        $default_list[] = [
-                            'geonameid' => (int) $key,
-                            'name' => $value,
-                        ];
-                    }
-                }
 
-                if ( empty( $post_id ) ) {
-                    $reference = $this->query( 'get_reference', [ 'geonameid' => $geonameid ] );
-                } else {
-                    $reference = $this->query( 'get_reference', [ 'post_id' => $post_id ] );
-                }
-
-                switch ( $reference['feature_code'] ) {
-
-                    case 'ADM1':
+                    if ( $geonameid ) {
+                        if ( empty( $post_id ) ) {
+                            $reference = $this->query( 'get_reference', [ 'geonameid' => $geonameid ] );
+                        } else {
+                            $reference = $this->query( 'get_reference', [ 'post_id' => $post_id ] );
+                        }
                         $preset_array = [
-                            0 => [
-                                'parent' => 'drill_down_top_level',
-                                'selected' => (int) $reference['pcli'] ?? 0,
-                                'list' => $default_list,
-                            ],
-                            1 => [
-                                'parent' => (int) $reference['pcli'] ?? 0,
-                                'selected' => (int) $reference['adm1'] ?? 0,
-                                'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
-                            ],
-                            2 => [
-                                'parent' => (int) $reference['adm1'] ?? 0,
-                                'selected' => (int) $reference['adm2'] ?? 0,
-                                'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ) ),
-                            ],
-                        ];
-                        break;
-
-                    case 'ADM2':
-                        $preset_array = [
-                            0 => [
-                                'parent' => 'drill_down_top_level',
-                                'selected' => (int) $reference['pcli'] ?? 0,
-                                'list' => $default_list,
-                            ],
-                            1 => [
-                                'parent' => (int) $reference['pcli'] ?? 0,
-                                'selected' => (int) $reference['adm1'] ?? 0,
-                                'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
-                            ],
-                            2 => [
-                                'parent' => (int) $reference['adm1'] ?? 0,
-                                'selected' => (int) $reference['adm2'] ?? 0,
-                                'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ) ),
-                            ],
-                            3 => [
-                                'parent' => (int) $reference['adm2'] ?? 0,
-                                'selected' => (int) $reference['adm3'] ?? 0,
-                                'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm2'] ] ) ),
-                            ],
-                        ];
-                        break;
-
-                    case 'PCLI':
-                    default:
-                    $preset_array = [
                             0 => [
                                 'parent' => 'drill_down_top_level',
                                 'selected' => (int) $reference['pcli'] ?? 0,
@@ -1431,12 +1539,20 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                                 'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
                             ]
                         ];
-                        break;
-                }
+                    } else {
+                        foreach( $default_list as $country ) {
+                            $preset_array[0]['list'][] = [
+                                'geonameid' => (int) $country['geonameid'],
+                                'name' => $country['name']
+                            ];
+                            $preset_array[0]['parent'] = 'drill_down_top_level';
+                            $preset_array[0]['selected'] = 0;
+                        }
+                    }
 
+                    return $preset_array;
+                    break;
             }
-
-            return $preset_array;
         }
 
         public function format_geoname_types( $query ) {
