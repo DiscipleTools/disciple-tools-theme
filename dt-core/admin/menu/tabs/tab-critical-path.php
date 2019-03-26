@@ -235,7 +235,7 @@ class Disciple_Tools_Critical_Path_Tab extends Disciple_Tools_Abstract_Menu_Base
               f.meta_value as type,
               g.meta_value as section,
               h.meta_value as total
-            FROM wp_dt_reports as a
+            FROM $wpdb->dt_reports as a
             LEFT JOIN wp_dt_reportmeta as b
               ON b.report_id=a.id
               AND b.meta_key = 'submit_date'
