@@ -206,9 +206,8 @@ function top_level_map( div ) {
 
                     if( map_data.deeper_levels[ev.target.dataItem.dataContext.geonameid] )
                     {
-                        jQuery("select#world option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
-                        DRILLDOWN.geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid, 'map_chart' )
-                        return map_chart( div, ev.target.dataItem.dataContext.geonameid )
+                        jQuery('select#world option[value='+ev.target.dataItem.dataContext.geonameid+']').attr('selected', true)
+                        return DRILLDOWN.geoname_drill_down( ev.target.dataItem.dataContext.geonameid, 'map_chart' )
                     }
 
                 }, this);
@@ -224,11 +223,12 @@ function top_level_map( div ) {
 
             }) // end success statement
                 .fail(function (err) {
-                    console.log("error")
-                    console.log(err)
+                    jQuery('#map_chart').empty().append(`No polygon available.`)
+                    console.log(`No polygon available.`)
                 })
 
             break;
+
         case 'country':
             console.log('top_level_map: country')
 
@@ -238,7 +238,6 @@ function top_level_map( div ) {
                 })
             } else {
                 // multiple countries selected. So load the world and reduce the polygons
-                console.log(Object.keys(top_map_list))
 
                 mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'top_level_maps/world.geojson'
                 jQuery.getJSON( mapUrl, function( data ) {
@@ -355,22 +354,23 @@ function top_level_map( div ) {
 
                         if( DRILLDOWNDATA.data[ev.target.dataItem.dataContext.geonameid] )
                         {
-                            jQuery("select#drill_down_top_level option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
-                            DRILLDOWN.geoname_drill_down( div, ev.target.dataItem.dataContext.geonameid, 'map_chart' )
-                            return map_chart( div, ev.target.dataItem.dataContext.geonameid )
+                            jQuery("select#drill_down_top_level option[value="+ev.target.dataItem.dataContext.geonameid+"]").attr('selected', true)
+                            return DRILLDOWN.geoname_drill_down( ev.target.dataItem.dataContext.geonameid, 'map_chart' )
                         }
                     }, this);
 
                     mini_map( 'minimap', coordinates )
 
                 }).fail(function (err) {
-                    console.log("error")
-                    console.log(err)
+                    jQuery('#map_chart').empty().append(`No polygon available.`)
+                    console.log(`No polygon available.`)
                 })
             }
 
             break;
+
         case 'state':
+            console.log('top_level_map: state')
 
             if( Object.keys(top_map_list).length === 1 ) { // if only one country selected
                 jQuery.each(top_map_list, function(i,v) {
@@ -399,7 +399,6 @@ function top_level_map( div ) {
 
                     // Set map definition
                     let mapData = new_geojson
-                    let map_data = []
                     let coordinates = []
 
                     // prepare country/child data
@@ -422,8 +421,6 @@ function top_level_map( div ) {
                                     mapData.features[i].properties.value = 0
                                 })
                             }
-
-
 
                             coordinates[i] = {
                                 "latitude": DRILLDOWNDATA.data[v.properties.geonameid].self.latitude,
@@ -492,17 +489,16 @@ function top_level_map( div ) {
 
                         if( DRILLDOWNDATA.data[ev.target.dataItem.dataContext.geonameid] )
                         {
-                            jQuery("select#drill_down_top_level option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
-                            DRILLDOWN.geoname_drill_down( ev.target.dataItem.dataContext.geonameid, 'map_chart' )
-                            return map_chart( div, ev.target.dataItem.dataContext.geonameid )
+                            jQuery("select#drill_down_top_level option[value="+ev.target.dataItem.dataContext.geonameid+"]").attr('selected', true)
+                            return DRILLDOWN.geoname_drill_down( ev.target.dataItem.dataContext.geonameid, 'map_chart' )
                         }
                     }, this);
 
                     mini_map( 'minimap', coordinates )
 
                 }).fail(function (err) {
-                    console.log("error")
-                    console.log(err)
+                    jQuery('#map_chart').empty().append(`No polygon available.`)
+                    console.log(`No polygon available.`)
                 })
             }
             break;
@@ -601,8 +597,8 @@ function geoname_map( div, geonameid ) {
 
                     if( response.deeper_levels[ev.target.dataItem.dataContext.geonameid] )
                     {
-                        jQuery("select#"+response.self.geonameid+" option[value*='"+ev.target.dataItem.dataContext.geonameid+"']").attr('selected', true)
-                        return map_chart( div, ev.target.dataItem.dataContext.geonameid)
+                        jQuery("select#"+response.self.geonameid+" option[value="+ev.target.dataItem.dataContext.geonameid+"]").attr('selected', true)
+                        return DRILLDOWN.map_chart( ev.target.dataItem.dataContext.geonameid, div )
                     }
                 }, this);
 
@@ -616,8 +612,12 @@ function geoname_map( div, geonameid ) {
                 mini_map( 'minimap', coordinates )
 
             }) // end get geojson
+             .fail(function() {
+                jQuery('#map_chart').empty().append(`No polygon available.`)
+            })
         }) // end success statement
         .fail(function (err) {
+            jQuery('#map_chart').empty().append(`No polygon available.`)
             console.log("error")
             console.log(err)
         })
