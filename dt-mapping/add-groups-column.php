@@ -32,8 +32,7 @@ function dt_mm_add_groups_column( $data ) {
     } else if ( count($column_labels) === 1 ) {
         $next_column_number = 1;
     } else {
-        $current_column_count = count($column_labels);
-        $next_column_number = $current_column_count + 1;
+        $next_column_number = count($column_labels);
     }
 
 
