@@ -233,7 +233,7 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
         $sql[] = "UPDATE dt_geonames SET name = 'Uganda' WHERE geonameid = 226074";
         $sql[] = "UPDATE dt_geonames SET name = 'United States of America' WHERE geonameid = 6252001";
         $sql[] = "UPDATE dt_geonames SET name = 'Uruguay' WHERE geonameid = 3439705";
-        $sql[] = "UPDATE dt_geonames SET name = 'Uxbekistan' WHERE geonameid = 1512440";
+        $sql[] = "UPDATE dt_geonames SET name = 'Uzbekistan' WHERE geonameid = 1512440";
         $sql[] = "UPDATE dt_geonames SET name = 'Saint Vincent And The Grenadines' WHERE geonameid = 3577815";
         $sql[] = "UPDATE dt_geonames SET name = 'Venezuela' WHERE geonameid = 3625428";
         $sql[] = "UPDATE dt_geonames SET name = 'U.S. Virgin Islands' WHERE geonameid = 4796775";
@@ -488,7 +488,7 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
         $sql[] = "UPDATE dt_geonames_hierarchy SET name = 'Uganda' WHERE id = 226074";
         $sql[] = "UPDATE dt_geonames_hierarchy SET name = 'United States of America' WHERE id = 6252001";
         $sql[] = "UPDATE dt_geonames_hierarchy SET name = 'Uruguay' WHERE id = 3439705";
-        $sql[] = "UPDATE dt_geonames_hierarchy SET name = 'Uxbekistan' WHERE id = 1512440";
+        $sql[] = "UPDATE dt_geonames_hierarchy SET name = 'Uzbekistan' WHERE id = 1512440";
         $sql[] = "UPDATE dt_geonames_hierarchy SET name = 'Saint Vincent And The Grenadines' WHERE id = 3577815";
         $sql[] = "UPDATE dt_geonames_hierarchy SET name = 'Venezuela' WHERE id = 3625428";
         $sql[] = "UPDATE dt_geonames_hierarchy SET name = 'U.S. Virgin Islands' WHERE id = 4796775";
