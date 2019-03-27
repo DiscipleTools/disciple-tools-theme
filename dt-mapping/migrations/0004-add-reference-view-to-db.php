@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Class DT_Mapping_Module_Migration_0005
+ * Class DT_Mapping_Module_Migration_0004
  *
  * @note    This migration adds a view table that combines the geoname tagged contacts and groups along with their
  *          higher level name divisions. (Country geonameid, Admin1 geonameid, Admin2 geonameid)
  *
  */
-class DT_Mapping_Module_Migration_0005 extends DT_Mapping_Module_Migration {
+class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
 
     /**
      * @throws \Exception

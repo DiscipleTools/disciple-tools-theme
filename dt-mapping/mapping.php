@@ -964,7 +964,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
                     break;
 
-                case 'get_full_hierarchy':
+                case 'get_full_hierarchy': // @todo remove name
                     $results = $wpdb->get_results("
                           SELECT DISTINCTROW parent_id, id, name 
                           FROM dt_geonames_hierarchy", ARRAY_A );
@@ -994,7 +994,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
                 case 'get_continents_countries_and_states':
                     $results = $wpdb->get_results("
-                            SELECT DISTINCT parent_id, id, name
+                            SELECT DISTINCT parent_id, id, g.name
                             FROM dt_geonames_hierarchy
                             JOIN dt_geonames as g 
                             ON dt_geonames_hierarchy.id=g.geonameid
