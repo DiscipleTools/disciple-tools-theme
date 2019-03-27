@@ -104,7 +104,7 @@ function top_level_map( div ) {
             title.empty().html(map_data.self.name)
 
             // sort custom start level url
-            mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'top_level_maps/world.geojson'
+            mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'maps/world.geojson'
 
             // get geojson
             jQuery.getJSON( mapUrl, function( data ) {
@@ -239,7 +239,7 @@ function top_level_map( div ) {
             } else {
                 // multiple countries selected. So load the world and reduce the polygons
 
-                mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'top_level_maps/world.geojson'
+                mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'maps/world.geojson'
                 jQuery.getJSON( mapUrl, function( data ) {
 
                     // set title
@@ -672,7 +672,7 @@ function load_breadcrumbs( div, id, parent_name ) {
 
 function mini_map( div, marker_data ) {
 
-    jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'top_level_maps/world.geojson', function( data ) {
+    jQuery.getJSON( DRILLDOWNDATA.settings.mapping_source_url + 'maps/world.geojson', function( data ) {
         am4core.useTheme(am4themes_animated);
 
         var chart = am4core.create( div, am4maps.MapChart);
