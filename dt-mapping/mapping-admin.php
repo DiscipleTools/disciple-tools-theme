@@ -64,9 +64,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             add_action( "admin_head", [ $this, 'header_script' ] );
             add_action( "admin_enqueue_scripts", [ $this, 'enqueue_scripts' ] );
 
-            if ( is_admin() ) {
-                // all other things to load when in the admin environment.
-            }
         }
 
         /**
@@ -192,53 +189,53 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             ?>
             <div class="wrap">
-                <h2><?php esc_attr_e( 'Mapping', $this->token ) ?></h2>
+                <h2><?php esc_attr_e( 'Mapping', 'disciple_tools' ) ?></h2>
                 <h2 class="nav-tab-wrapper">
 
                     <!-- General Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'general' ?>" class="nav-tab
-                        <?php ( $tab == 'general' || ! isset( $tab ) ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
-                        <?php esc_attr_e( 'General Settings', $this->token ) ?>
+                        <?php ( $tab == 'general' || ! isset( $tab ) ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php esc_attr_e( 'General Settings', 'disciple_tools' ) ?>
                     </a>
                     <!-- Starting Map -->
                     <a href="<?php echo esc_attr( $link ) . 'focus' ?>" class="nav-tab
-                        <?php ( $tab == 'focus' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
-                        <?php esc_attr_e( 'Mapping Focus', $this->token ) ?>
+                        <?php ( $tab == 'focus' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php esc_attr_e( 'Mapping Focus', 'disciple_tools' ) ?>
                     </a>
                     <!-- Polygon -->
                     <a href="<?php echo esc_attr( $link ) . 'polygons' ?>" class="nav-tab
-                        <?php ( $tab == 'polygons' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
-                        <?php esc_attr_e( 'Polygons', $this->token ) ?>
+                        <?php ( $tab == 'polygons' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php esc_attr_e( 'Polygons', 'disciple_tools' ) ?>
                     </a>
                     <!-- Geocoding -->
                     <a href="<?php echo esc_attr( $link ) . 'geocoding' ?>" class="nav-tab
-                        <?php ( $tab == 'geocoding' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
-                        <?php esc_attr_e( 'Geocoding', $this->token ) ?>
+                        <?php ( $tab == 'geocoding' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php esc_attr_e( 'Geocoding', 'disciple_tools' ) ?>
                     </a>
                     <!-- Names Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
-                        <?php ( $tab == 'names' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
-                        <?php esc_attr_e( 'Names', $this->token ) ?>
+                        <?php ( $tab == 'names' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php esc_attr_e( 'Names', 'disciple_tools' ) ?>
                     </a>
                     <!-- Population Tab -->
                     <a href="<?php echo esc_attr( $link ) . 'population' ?>" class="nav-tab
-                        <?php ( $tab == 'population' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
-                        <?php esc_attr_e( 'Population', $this->token ) ?>
+                        <?php ( $tab == 'population' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php esc_attr_e( 'Population', 'disciple_tools' ) ?>
                     </a>
                     <!-- Add Sub-Locations -->
                     <a href="<?php echo esc_attr( $link ) . 'sub_locations' ?>" class="nav-tab
-                        <?php ( $tab == 'sub_locations' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
-                        <?php esc_attr_e( 'Sub-Locations', $this->token ) ?>
+                        <?php ( $tab == 'sub_locations' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php esc_attr_e( 'Sub-Locations', 'disciple_tools' ) ?>
                     </a>
                     <!-- Add Migration -->
                     <a href="<?php echo esc_attr( $link ) . 'migration' ?>" class="nav-tab
-                        <?php ( $tab == 'migration' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
-                        <?php esc_attr_e( 'Migration', $this->token ) ?>
+                        <?php ( $tab == 'migration' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php esc_attr_e( 'Migration', 'disciple_tools' ) ?>
                     </a>
                     <!-- Add Locations Explorer -->
                     <a href="<?php echo esc_attr( $link ) . 'explore' ?>" class="nav-tab
-                        <?php ( $tab == 'explore' ) ? esc_attr_e( 'nav-tab-active', $this->token ) : print ''; ?>">
-                        <?php esc_attr_e( 'Explore', $this->token ) ?>
+                        <?php ( $tab == 'explore' ) ? esc_attr_e( 'nav-tab-active', 'disciple_tools' ) : print ''; ?>">
+                        <?php esc_attr_e( 'Explore', 'disciple_tools' ) ?>
                     </a>
 
                 </h2>
@@ -535,7 +532,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         dataType: "json",
                         url: "<?php echo esc_url_raw( rest_url() ) ?>dt/v1/mapping_module/get_children",
                         beforeSend: function(xhr) {
-                            xhr.setRequestHeader('X-WP-Nonce', '<?php echo wp_create_nonce( 'wp_rest' ) ?>');
+                            xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ) ?>');
                         },
                     })
                         .done( function( response ) {
@@ -575,7 +572,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         dataType: "json",
                         url: "<?php echo esc_url_raw( rest_url() ) ?>dt/v1/mapping_module/get_children",
                         beforeSend: function(xhr) {
-                            xhr.setRequestHeader('X-WP-Nonce', '<?php echo wp_create_nonce( 'wp_rest' ) ?>');
+                            xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ) ?>');
                         },
                     })
                         .done( function( response ) {
@@ -629,7 +626,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 $list = DT_Mapping_Module::instance()->default_map_short_list();
                                 if ( is_array( $list ) ) {
                                     foreach ( $list as $key => $value ) {
-                                        echo $value . '<br>';
+                                        echo esc_html( $value ) . '<br>';
                                     }
                                 }
                                 ?>
@@ -645,7 +642,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <td>
                                 <?php
                                     $mirror = dt_get_mapping_polygon_mirror();
-                                    echo $mirror['label'] ?? '';
+                                    echo esc_attr( $mirror['label'] ) ?? '';
                                 ?>
                             </td>
                             <td>
@@ -668,7 +665,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             </td>
                             <td>
                                 <?php
-                                    echo get_option( 'dt_mapping_module_population' );
+                                    echo esc_attr( get_option( 'dt_mapping_module_population' ) );
                                 ?>
                             </td>
                             <td>
@@ -702,7 +699,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <tr>
                         <td>
                             Migrations Available: <?php echo esc_attr( DT_Mapping_Module_Migration_Engine::$migration_number ) ?><br>
-                            Current Migration: <?php echo get_option( 'dt_mapping_module_migration_number', true ) ?><br>
+                            Current Migration: <?php echo esc_attr( get_option( 'dt_mapping_module_migration_number', true ) ) ?><br>
                             Locked Status: <?php
                             if ( get_option( 'dt_mapping_module_migration_lock', true ) ) {
                                 ?>
@@ -1004,6 +1001,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     $option['children'] = array_filter( wp_unslash( $_POST['children'] ), 'sanitize_key' );
                 }
 
+                // @codingStandardIgnoreLine
                 update_option( 'dt_mapping_module_starting_map_level', $option, false );
                 $default_map_settings = $mm->default_map_settings();
             }
@@ -1040,7 +1038,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <tbody>
                     <tr>
                         <td>
-                            <?php echo $focus_select ?>
+                            <?php echo esc_attr( $focus_select ) ?>
                             <button type="submit" class="button">Select</button>
                         </td>
                     </tr>
@@ -1096,11 +1094,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                         <fieldset>
                                             <?php
                                             foreach ( $country_list as $country ) {
-                                                echo '<input id="'.$country['geonameid'].'" class="country-item" type="checkbox" name="children[]" value="'.$country['geonameid'].'"';
+                                                echo '<input id="'. esc_attr( $country['geonameid'] ).'" class="country-item" type="checkbox" name="children[]" value="'. esc_attr( $country['geonameid'] ).'"';
                                                 if ( array_search( $country['geonameid'], $default_map_settings['children'] ) !== false ) {
                                                     echo 'checked';
                                                 }
-                                                echo '>'.$country['name'].'<br>';
+                                                echo '>'. esc_html( $country['name'] ).'<br>';
                                             }
                                             ?>
                                             <hr clear="all">
@@ -1169,7 +1167,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <tbody>
                     <tr>
                         <td>
-                            <?php echo $country_select ?>
+                            <?php echo esc_html( $country_select ) ?>
                             <button type="submit" class="button">Select</button>
                         </td>
                     </tr>
@@ -1191,7 +1189,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <table class="widefat striped">
                         <thead>
                         <th colspan="2">
-                            <strong>Select States for <?php echo $parent['name'] ?? '?' ?></strong>
+                            <strong>Select States for <?php echo esc_html( $parent['name'] ) ?? '?' ?></strong>
                             <span style="float: right;">
                                 <a class="button" style="cursor:pointer;" onclick="uncheck_all()">Uncheck All</a>
                                 <a class="button" style="cursor:pointer;" onclick="check_all()">Check All</a>
@@ -1205,11 +1203,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 <fieldset>
                                     <?php
                                     foreach ( $state_list as $value ) {
-                                        echo '<input id="'.$value['geonameid'].'" class="country-item" type="checkbox" name="children[]" value="'.$value['geonameid'].'"';
+                                        echo '<input id="'. esc_attr( $value['geonameid'] ).'" class="country-item" type="checkbox" name="children[]" value="'. esc_attr( $value['geonameid'] ).'"';
                                         if ( array_search( $value['geonameid'], $default_map_settings['children'] ) !== false ) {
                                             echo 'checked';
                                         }
-                                        echo '>'.$value['name'].'<br>';
+                                        echo '>'. esc_html( $value['name'] ).'<br>';
                                     }
                                     ?>
                                 </fieldset>
@@ -1249,7 +1247,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <?php
                         if ( is_array( $list ) ) {
                             foreach ( $list as $key => $value ) {
-                                echo $value . '<br>';
+                                echo esc_html( $value ) . '<br>';
                             }
                         }
                         ?>
@@ -1320,7 +1318,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 $selection_key = sanitize_text_field( wp_unslash( $_POST['source'] ) );
 
                 if ( $selection_key === 'other' && ! empty( $_POST['other_value'] ) ) { // must be set to other and have a url
-                    $url = trailingslashit( sanitize_text_field( $_POST['other_value'] ) );
+                    $url = trailingslashit( esc_url_raw(  $_POST['other_value'] ) );
                     if ( 'https://' === substr( $url, 0, 8 ) ) { // must begin with https
                         $array = [
                             'key' => 'other',
