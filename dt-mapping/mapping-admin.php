@@ -73,7 +73,61 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
          * Admin Page Elements
          */
         public function scripts() {
+            ?>
+            <script>
+                function send_update( data ) {
+                    let options = {
+                        type: 'POST',
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        url: `<?php echo esc_url_raw( rest_url() )  ?>dt/v1/mapping_module/modify_location`,
+                        beforeSend: xhr => {
+                            xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ) ?>');
+                        }
+                    }
 
+                    if (data) {
+                        options.data = JSON.stringify(data)
+                    }
+
+                    return jQuery.ajax(options)
+                }
+                function update( geonameid, value, key ) {
+                    if ( value ) {
+                        jQuery('#button-'+geonameid).append(`<span><img src="<?php echo esc_url_raw( spinner() ) ?>" width="20px" /></span>`)
+
+                        let update = send_update({ key: key, value: value, geonameid: geonameid })
+
+                        update.done(function(data) {
+                            console.log(data)
+                            if ( data ) {
+                                jQuery('#label-'+geonameid ).html(`${value}`)
+                                jQuery('#input-'+geonameid ).val('')
+                                jQuery('#button-'+geonameid+' span').remove()
+                            }
+                        })
+                    }
+                }
+                function reset( geonameid, key ) {
+                    jQuery('#reset-'+geonameid).append(`<span><img src="<?php echo esc_url_raw( spinner() ) ?>" width="20px" /></span>`)
+
+                    let update = send_update({ key: key, reset: true, geonameid: geonameid })
+
+                    update.done(function(data) {
+                        console.log(data)
+                        if ( data.status === 'OK' ) {
+                            jQuery('#label-'+geonameid ).html(`${data.value}`)
+                            jQuery('#input-'+geonameid ).val('')
+                            jQuery('#reset-'+geonameid+' span').remove()
+                        }
+                    })
+                    update.fail(function(e) {
+                        jQuery('#reset-'+geonameid+' span').remove()
+                        console.log(e)
+                    })
+                }
+            </script>
+            <?php
         }
 
         public function register_menu() {
@@ -736,6 +790,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <th>Population</th>
                 <th>New Population (no commas)</th>
                 <th></th>
+                <th></th>
                 </thead>
                 <tbody id="list_results">
                 </tbody>
@@ -751,7 +806,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         jQuery.each( window.DRILLDOWNDATA.data.top_map_list, function(i,v) {
                             gn = window.DRILLDOWNDATA.data[i]
                             if ( gn !== undefined ) {
-                                list_results.append( `<tr><td>${gn.self.name}</td><td>${gn.self.population_formatted}</td><td><input type="number" id="${gn.self.geonameid}" value=""></td><td><a class="button" onclick="update_population( ${gn.self.geonameid}, jQuery('#'+${gn.self.geonameid}).val() )">Update</a></td></tr>`)
+                                list_results.append( `<tr>
+                                        <td>${gn.self.name}</td>
+                                        <td id="label-${gn.self.geonameid}">${gn.self.population_formatted}</td>
+                                        <td><input type="number" id="input-${gn.self.geonameid}" value=""></td>
+                                        <td id="button-${gn.self.geonameid}"><a class="button" onclick="update( ${gn.self.geonameid}, jQuery('#input-'+${gn.self.geonameid}).val(), 'population' )">Update</a></td>
+                                        <td id="reset-${gn.self.geonameid}"><a class="button" onclick="reset( ${gn.self.geonameid}, 'population' )">Reset</a></td>
+                                        </tr>`)
                             }
                         })
                     }
@@ -762,13 +823,17 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         let list_results = jQuery('#list_results')
                         list_results.empty()
                         jQuery.each( window.DRILLDOWNDATA.data[geonameid].children, function(i,v) {
-                            list_results.append( `<tr><td>${v.name}</td><td>${v.population_formatted}</td><td><input type="number" id="${v.geonameid}" value=""></td><td><a class="button" onclick="update_population( ${v.geonameid}, jQuery('#'+${v.geonameid}).val() )">Update</a></td></tr>`)
+                            list_results.append( `<tr>
+                                        <td>${v.name}</td>
+                                        <td id="label-${v.geonameid}">${v.population_formatted}</td>
+                                        <td><input type="number" id="input-${v.geonameid}" value=""></td>
+                                        <td id="button-${v.geonameid}"><a class="button" onclick="update( ${v.geonameid}, jQuery('#input-'+${v.geonameid}).val(), 'population' )">Update</a></td>
+                                        <td id="reset-${v.geonameid}"><a class="button" onclick="reset( ${v.geonameid}, 'population' )">Reset</a></td>
+                                        </tr>`)
                         })
                     }
                 }
-                function update_population( geonameid, population ) {
-                    console.log( geonameid + ' ' + population ) // @todo add REST update endpoint.
-                }
+
             </script>
 
             <?php
@@ -794,9 +859,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <th>Name</th>
                 <th>New Name</th>
                 <th></th>
+                <th></th>
                 </thead>
-                <tbody id="list_results">
-                </tbody>
+                <tbody id="list_results"></tbody>
             </table>
 
             <script>
@@ -809,7 +874,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         jQuery.each( window.DRILLDOWNDATA.data.top_map_list, function(i,v) {
                             gn = window.DRILLDOWNDATA.data[i]
                             if ( gn !== undefined ) {
-                                list_results.append( `<tr><td>${gn.self.name}</td><td><input type="text" id="${gn.self.geonameid}" value=""></td><td><a class="button" onclick="update_name( ${gn.self.geonameid}, jQuery('#'+${gn.self.geonameid}).val() )">Update</a></td></tr>`)
+                                list_results.append( `<tr><td id="label-${gn.self.geonameid}">${gn.self.name}</td>
+                                    <td><input type="text" id="input-${gn.self.geonameid}" value="" /></td>
+                                    <td id="button-${gn.self.geonameid}"><a class="button" onclick="update( ${gn.self.geonameid}, jQuery('#input-'+${gn.self.geonameid}).val(), 'name' )">Update</a></td>
+                                    <td id="reset-${gn.self.geonameid}"><a class="button" onclick="reset( ${gn.self.geonameid}, 'name'  )">Reset</a></td>
+                                    </tr>`)
                             }
                         })
                     }
@@ -820,12 +889,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         let list_results = jQuery('#list_results')
                         list_results.empty()
                         jQuery.each( window.DRILLDOWNDATA.data[geonameid].children, function(i,v) {
-                            list_results.append( `<tr><td>${v.name}</td><td><input type="text" id="${v.geonameid}" value=""></td><td><a class="button" onclick="update_population( ${v.geonameid}, jQuery('#'+${v.geonameid}).val() )">Update</a></td></tr>`)
+                            list_results.append( `<tr><td id="label-${v.geonameid}">${v.name}</td><td><input type="text" id="input-${v.geonameid}" value=""></td>
+                                    <td id="button-${v.geonameid}"><a class="button" onclick="update( ${v.geonameid}, jQuery('#input-'+${v.geonameid}).val(), 'name' )">Update</a></td>
+                                    <td id="reset-${v.geonameid}"><a class="button" onclick="reset( ${v.geonameid}, 'name' )">Reset</a></td>
+                                    </tr>`)
                         })
                     }
-                }
-                function update_name( geonameid, new_name ) {
-                    console.log( geonameid + ' ' + new_name ) // @todo add REST update endpoint.
                 }
             </script>
 
@@ -1001,7 +1070,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
              ******************************/
             if ( $default_map_settings['type'] === 'country' ) :
 
-                $country_list = $mm->query( 'list_countries' );
+                $country_list = $mm->query( 'get_countries' );
 
                 ?>
                 <!-- Box -->
@@ -1082,7 +1151,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             if ( $default_map_settings['type'] === 'state' ) :
 
                 // create select
-                $country_list = $mm->query( 'list_countries' );
+                $country_list = $mm->query( 'get_countries' );
                 $country_select = '<select name="parent"><option></option><option>-------------</option>';
                 foreach ( $country_list as $result ) {
                     $country_select .= '<option value="'.$result['geonameid'].'" ';

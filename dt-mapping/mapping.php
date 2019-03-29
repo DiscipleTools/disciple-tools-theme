@@ -375,6 +375,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 'nonce' => wp_create_nonce( 'wp_rest' ),
                 'method' => 'POST',
             ];
+            $endpoints['modify_location_endpoint'] = [
+                   'namespace' => $this->namespace,
+                   'route' => '/mapping_module/modify_location',
+                   'nonce' => wp_create_nonce( 'wp_rest' ),
+                   'method' => 'POST',
+            ];
             // add another endpoint here
             return $endpoints;
         }
@@ -414,6 +420,120 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             } else {
                 return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
             }
+        }
+        public function modify_location_endpoint( WP_REST_Request $request ) {
+            if ( ! user_can(get_current_user_id(), 'manage_dt') ) {
+                return new WP_Error( 'permissions', 'No permissions for the action.', [ 'status' => 401 ]  );
+            }
+
+            $params = $request->get_params();
+
+            if ( isset( $params['key'] ) && isset( $params['geonameid'] ) ) {
+                global $wpdb;
+
+                switch( $params['key'] ) {
+                    case 'name':
+                        if ( isset( $params['reset'] ) && $params['reset'] === true ) {
+                            // delete geonameid for the key
+                            $result = $wpdb->delete(
+                                $wpdb->dt_geonames_meta,
+                                [
+                                    'geonameid' => $params['geonameid'],
+                                    'meta_key' => 'name'
+                                ],
+                                [
+                                    '%d',
+                                    '%s'
+                                ]
+                            );
+
+                            // get the original name for the geonameid
+                            $name = $wpdb->get_var( $wpdb->prepare( "
+                                SELECT name
+                                FROM $wpdb->dt_geonames
+                                WHERE geonameid = %d
+                            ", $params['geonameid'] ) );
+
+                            return [
+                                'status' => 'OK',
+                                'value' => $name
+                            ];
+                        } else if ( isset( $params['value'] ) ) {
+                            $insert_id = $wpdb->insert(
+                                    $wpdb->dt_geonames_meta,
+                                    [
+                                        'geonameid' => $params['geonameid'],
+                                        'meta_key' => 'name',
+                                        'meta_value' => $params['value'],
+                                    ],
+                                    [
+                                        '%d',
+                                        '%s',
+                                        '%s'
+                                    ]
+                            );
+                            if ( $insert_id ) {
+                                return true;
+                            } else {
+                                return new WP_Error('insert_fail', 'Failed to insert record' );
+                            }
+                        }
+                        break;
+                    case 'population':
+                        dt_write_log($params);
+                        if ( isset( $params['reset'] ) && $params['reset'] === true ) {
+                            // delete geonameid for the key
+                            $result = $wpdb->delete(
+                                $wpdb->dt_geonames_meta,
+                                [
+                                    'geonameid' => $params['geonameid'],
+                                    'meta_key' => 'population'
+                                ],
+                                [
+                                    '%d',
+                                    '%s'
+                                ]
+                            );
+
+                            // get the original name for the geonameid
+                            $population = $wpdb->get_var( $wpdb->prepare( "
+                                SELECT population
+                                FROM $wpdb->dt_geonames
+                                WHERE geonameid = %d
+                            ", $params['geonameid'] ) );
+
+                            return [
+                                'status' => 'OK',
+                                'value' => $population
+                            ];
+                        } else if ( isset( $params['value'] ) ) {
+                            $insert_id = $wpdb->insert(
+                                $wpdb->dt_geonames_meta,
+                                [
+                                    'geonameid'  => $params[ 'geonameid' ],
+                                    'meta_key'   => 'population',
+                                    'meta_value' => $params[ 'value' ],
+                                ],
+                                [
+                                    '%d',
+                                    '%s',
+                                    '%s'
+                                ]
+                            );
+                            if ( $insert_id ) {
+                                return true;
+                            } else {
+                                return new WP_Error( 'insert_fail', 'Failed to insert record' );
+                            }
+                        }
+                        break;
+                    default:
+                        return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
+                        break;
+                }
+
+            }
+            return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
         }
 
         /**
@@ -694,7 +814,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         }
 
         public function get_countries_map_data() {
-            $children = $this->query( 'list_countries' );
+            $children = $this->query( 'get_countries' );
 
             $results = [];
 
@@ -738,7 +858,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         public function get_available_geojson() {
 
             //caching response
-            self::reset_available_geojson(); // @todo remove (only used for dev)
+//            self::reset_available_geojson(); // @todo remove (only used for dev)
             if ( get_option( 'dt_mapping_module_available_geojson') ) {
                 return get_option( 'dt_mapping_module_available_geojson');
             }
@@ -808,7 +928,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 case 'get_by_geonameid':
                     if ( isset( $args['geonameid'] ) ) {
                         $results = $wpdb->get_row( $wpdb->prepare( "
-                            SELECT 
+                            SELECT DISTINCT
                               geonameid as id, 
                               geonameid as geonameid, 
                               name, 
@@ -827,7 +947,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 case 'get_parent_by_geonameid':
                     if ( isset( $args['geonameid'] ) ) {
                         $results = $wpdb->get_row( $wpdb->prepare( "
-                            SELECT 
+                            SELECT DISTINCT
                               gh.parent_id as id, 
                               gh.parent_id as geonameid, 
                               gp.name, 
@@ -848,7 +968,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 case 'get_children_by_geonameid':
                     if ( isset( $args['geonameid'] ) ) {
                         $results = $wpdb->get_results( $wpdb->prepare( "
-                            SELECT DISTINCTROW
+                            SELECT DISTINCT
                               g.geonameid as id, 
                               g.geonameid, 
                               g.name, 
@@ -885,7 +1005,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         // Any better ideas on how to still use ->prepare and not break the sql, welcome. :)
                         // @codingStandardsIgnoreStart
                         $results = $wpdb->get_results("
-                            SELECT DISTINCTROW
+                            SELECT DISTINCT
                               g.geonameid as id, 
                               g.geonameid, 
                               g.name, 
@@ -902,7 +1022,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     }
                     break;
 
-                case 'list_countries':
+                case 'get_countries':
                     if ( isset( $args['only_countries'] ) ) {
                         /**
                          * Returns list of countries and territories, excluding:
@@ -913,7 +1033,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                          * PCLS: semi-independent political entity
                          */
                         $results = $wpdb->get_results( "
-                         SELECT 
+                         SELECT DISTINCT
                           country_code as id, 
                           geonameid, 
                           name, 
@@ -921,7 +1041,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                           latitude, 
                           longitude,
                           country_code
-                         FROM $wpdb->dt_geonames 
+                         FROM $wpdb->dt_geonames
                          WHERE feature_code = 'PCLI' OR feature_code = 'TERR' AND geonameid != 6697173
                          ORDER BY name ASC
                         ", ARRAY_A );
@@ -946,7 +1066,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                           latitude, 
                           longitude,
                           country_code
-                         FROM $wpdb->dt_geonames 
+                         FROM $wpdb->dt_geonames
                          WHERE feature_code LIKE 'PCL%' OR feature_code = 'TERR' AND geonameid != 6697173
                          ORDER BY name ASC
                         ", ARRAY_A );
@@ -962,7 +1082,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 case 'get_country_code_by_id':
                     if ( isset( $args['id'] ) ) {
                         $results = $wpdb->get_var( $wpdb->prepare( "
-                            SELECT country_code FROM $wpdb->dt_geonames WHERE geonameid = %s;
+                            SELECT country_code 
+                            FROM $wpdb->dt_geonames 
+                            WHERE geonameid = %s;
                         ", $args['id'] ) );
                     }
                     if ( ! isset( $args['id'] ) ) {
@@ -971,24 +1093,33 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                     break;
 
-                case 'get_full_hierarchy': // @todo remove name
-                    $results = $wpdb->get_results("
-                          SELECT DISTINCTROW parent_id, geonameid, country_geonameid, admin1_geonameid, admin2_geonameid, admin3_geonameid
+                case 'get_hierarchy':
+                    if ( isset( $args['geonameid'] ) ) {
+                        $results = $wpdb->get_row( $wpdb->prepare( "
+                            SELECT *
+                            FROM $wpdb->dt_geonames_hierarchy 
+                            WHERE geonameid = %d;
+                        ", $args['geonameid'] ), ARRAY_A );
+                    } else {
+                        $results = $wpdb->get_results("
+                          SELECT *
                           FROM $wpdb->dt_geonames_hierarchy", ARRAY_A );
+                    }
+
                     break;
 
-                case 'get_reference':
+                case 'get_counter':
                     if ( isset( $args['post_id'] ) ) {
                         $results = $wpdb->get_row( $wpdb->prepare( "
                             SELECT * 
-                            FROM {$wpdb->prefix}dt_geonames_reference 
+                            FROM $wpdb->dt_geonames_counter 
                             WHERE post_id = %s;
                         ", $args['post_id'] ), ARRAY_A );
                     }
                     else if ( isset( $args['geonameid'] ) ) {
                         $results = $wpdb->get_row( $wpdb->prepare( "
                             SELECT * 
-                            FROM {$wpdb->prefix}dt_geonames_reference 
+                            FROM $wpdb->dt_geonames_counter 
                             WHERE geonameid = %d;
                         ", $args['geonameid'] ), ARRAY_A );
                     }
@@ -1031,7 +1162,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 case 'get_continents':
                     $results = $wpdb->get_results("
                             SELECT *
-                            FROM dt_geonames
+                            FROM $wpdb->dt_geonames
                             WHERE geonameid IN (6255146,6255147,6255148,6255149,6255151,6255150,6255152)
                             ORDER BY name ASC;
                         ", ARRAY_A );
@@ -1041,7 +1172,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 case 'get_earth':
                     $results = $wpdb->get_results("
                             SELECT *
-                            FROM dt_geonames
+                            FROM $wpdb->dt_geonames
                             WHERE geonameid = 6295630
                         ", ARRAY_A );
 
@@ -1177,70 +1308,70 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         }
 
                         if ( $post_id ) {
-                            $reference = $this->query( 'get_reference', [ 'post_id' => $post_id ] );
+                            $reference = $this->query( 'get_counter', [ 'post_id' => $post_id ] );
                         } else {
-                            $reference = $this->query( 'get_reference', [ 'geonameid' => $geonameid ] );
+                            $reference = $this->query( 'get_hierarchy', [ 'geonameid' => $geonameid ] );
                         }
 
-                        switch ( $reference['feature_code'] ) {
+                        switch ( $reference['level'] ) {
 
-                            case 'ADM1':
+                            case 'admin1':
                                 $preset_array = [
                                     0 => [
                                         'parent' => 'drill_down_top_level',
-                                        'selected' => (int) $reference['pcli'] ?? 0,
+                                        'selected' => (int) $reference['country_geonameid'] ?? 0,
                                         'list' => $default_list,
                                     ],
                                     1 => [
-                                        'parent' => (int) $reference['pcli'] ?? 0,
-                                        'selected' => (int) $reference['adm1'] ?? 0,
-                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
+                                        'parent' => (int) $reference['country_geonameid'] ?? 0,
+                                        'selected' => (int) $reference['admin1_geonameid'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) ),
                                     ],
                                     2 => [
-                                        'parent' => (int) $reference['adm1'] ?? 0,
-                                        'selected' => (int) $reference['adm2'] ?? 0,
-                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ) ),
+                                        'parent' => (int) $reference['admin1_geonameid'] ?? 0,
+                                        'selected' => (int) $reference['admin2_geonameid'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) ),
                                     ],
                                 ];
                                 break;
 
-                            case 'ADM2':
+                            case 'admin2':
                                 $preset_array = [
                                     0 => [
                                         'parent' => 'drill_down_top_level',
-                                        'selected' => (int) $reference['pcli'] ?? 0,
+                                        'selected' => (int) $reference['country_geonameid'] ?? 0,
                                         'list' => $default_list,
                                     ],
                                     1 => [
-                                        'parent' => (int) $reference['pcli'] ?? 0,
-                                        'selected' => (int) $reference['adm1'] ?? 0,
-                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
+                                        'parent' => (int) $reference['country_geonameid'] ?? 0,
+                                        'selected' => (int) $reference['admin1_geonameid'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) ),
                                     ],
                                     2 => [
-                                        'parent' => (int) $reference['adm1'] ?? 0,
-                                        'selected' => (int) $reference['adm2'] ?? 0,
-                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ) ),
+                                        'parent' => (int) $reference['admin1_geonameid'] ?? 0,
+                                        'selected' => (int) $reference['admin2_geonameid'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) ),
                                     ],
                                     3 => [
-                                        'parent' => (int) $reference['adm2'] ?? 0,
+                                        'parent' => (int) $reference['admin2_geonameid'] ?? 0,
                                         'selected' => (int) $reference['adm3'] ?? 0,
-                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm2'] ] ) ),
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['admin2_geonameid'] ] ) ),
                                     ],
                                 ];
                                 break;
 
-                            case 'PCLI':
+                            case 'country':
                             default:
                                 $preset_array = [
                                     0 => [
                                         'parent' => 'drill_down_top_level',
-                                        'selected' => (int) $reference['pcli'] ?? 0,
+                                        'selected' => (int) $reference['country_geonameid'] ?? 0,
                                         'list' => $default_list,
                                     ],
                                     1 => [
-                                        'parent' => (int) $reference['pcli'] ?? 0,
-                                        'selected' => (int) $reference['adm1'] ?? 0,
-                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
+                                        'parent' => (int) $reference['country_geonameid'] ?? 0,
+                                        'selected' => (int) $reference['admin1_geonameid'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) ),
                                     ]
                                 ];
                                 break;
@@ -1297,46 +1428,46 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         }
 
                         if ( $post_id ) {
-                            $reference = $this->query( 'get_reference', [ 'post_id' => $post_id ] );
+                            $reference = $this->query( 'get_counter', [ 'post_id' => $post_id ] );
                         } else {
-                            $reference = $this->query( 'get_reference', [ 'geonameid' => $geonameid ] );
+                            $reference = $this->query( 'get_counter', [ 'geonameid' => $geonameid ] );
                         }
 
-                        switch ( $reference['feature_code'] ) {
+                        switch ( $reference['level'] ) {
 
-                            case 'ADM2':
+                            case 'admin2':
                                 $preset_array = [
                                     0 => [
                                         'parent' => 'drill_down_top_level',
-                                        'selected' => (int) $reference['adm1'] ?? 0,
-                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
+                                        'selected' => (int) $reference['admin1_geonameid'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) ),
                                     ],
                                     1 => [
-                                        'parent' => (int) $reference['adm1'] ?? 0,
-                                        'selected' => (int) $reference['adm2'] ?? 0,
-                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ) ),
+                                        'parent' => (int) $reference['admin1_geonameid'] ?? 0,
+                                        'selected' => (int) $reference['admin2_geonameid'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) ),
                                     ],
                                     2 => [
-                                        'parent' => (int) $reference['adm2'] ?? 0,
+                                        'parent' => (int) $reference['admin2_geonameid'] ?? 0,
                                         'selected' => (int) $reference['adm3'] ?? 0,
-                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm2'] ] ) ),
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['admin2_geonameid'] ] ) ),
                                     ],
                                 ];
                                 break;
 
-                            case 'PCLI':
-                            case 'ADM1':
+                            case 'country':
+                            case 'admin1':
                             default:
                                 $preset_array = [
                                     0 => [
                                         'parent' => 'drill_down_top_level',
-                                        'selected' => (int) $reference['adm1'] ?? 0,
-                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
+                                        'selected' => (int) $reference['admin1_geonameid'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) ),
                                     ],
                                     1 => [
-                                        'parent' => (int) $reference['adm1'] ?? 0,
-                                        'selected' => (int) $reference['adm2'] ?? 0,
-                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['adm1'] ] ) ),
+                                        'parent' => (int) $reference['admin1_geonameid'] ?? 0,
+                                        'selected' => (int) $reference['admin2_geonameid'] ?? 0,
+                                        'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) ),
                                     ],
                                 ];
                                 break;
@@ -1384,24 +1515,24 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                 case 'world':
                 default:
-                    $default_list = $this->query( 'list_countries' );
+                    $default_list = $this->query( 'get_countries' );
 
                     if ( $geonameid ) {
                         if ( empty( $post_id ) ) {
-                            $reference = $this->query( 'get_reference', [ 'geonameid' => $geonameid ] );
+                            $reference = $this->query( 'get_counter', [ 'geonameid' => $geonameid ] );
                         } else {
-                            $reference = $this->query( 'get_reference', [ 'post_id' => $post_id ] );
+                            $reference = $this->query( 'get_counter', [ 'post_id' => $post_id ] );
                         }
                         $preset_array = [
                             0 => [
                                 'parent' => 'drill_down_top_level',
-                                'selected' => (int) $reference['pcli'] ?? 0,
+                                'selected' => (int) $reference['country_geonameid'] ?? 0,
                                 'list' => $default_list,
                             ],
                             1 => [
-                                'parent' => (int) $reference['pcli'] ?? 0,
-                                'selected' => (int) $reference['adm1'] ?? 0,
-                                'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['pcli'] ] ) ),
+                                'parent' => (int) $reference['country_geonameid'] ?? 0,
+                                'selected' => (int) $reference['admin1_geonameid'] ?? 0,
+                                'list' => $this->format_geoname_types( $this->query('get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) ),
                             ]
                         ];
                     } else {
@@ -1502,7 +1633,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
          * @return array
          */
         public function get_parents( $geonameid ) : array {
-            $query = $this->query( 'get_full_hierarchy' );
+            $query = $this->query( 'get_hierarchy' );
             $hierarchy_data = $this->_prepare_list( $query );
             $parents = $this->_build_parent_list( $geonameid, $hierarchy_data );
             array_unshift($parents,$geonameid);

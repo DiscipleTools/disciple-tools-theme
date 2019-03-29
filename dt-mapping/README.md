@@ -5,6 +5,10 @@ for themes and plugins to hook into.
 
 1. It contains an independent migration engine as a way to manage upgrades to the custom data tables. 
 
+## Data Source
+The primary data source for Disciple Tools mapping data comes from the Geonames Project. [www.geonames.org](https://www.geonames.org/)
+
+
 ## Database Tables
 The two database tables installed are deliberately not prefixed, so that in a multisite environment these
 tables are only installed once with all the data. This also allows upgrades to be once per database. All other 
