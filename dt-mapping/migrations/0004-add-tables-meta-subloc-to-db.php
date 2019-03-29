@@ -57,6 +57,19 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
                   KEY `geonameid` (`geonameid`),
                   KEY `meta_key` (`meta_key`)
                 ) $charset_collate;",
+            "{$wpdb->prefix}dt_geonames_sublocations" =>
+                "CREATE TABLE  IF NOT EXISTS `{$wpdb->prefix}dt_geonames_sublocations` (
+                  `parent_id` bigint(20) unsigned NOT NULL,
+                  `geonameid` bigint(20) unsigned NOT NULL,
+                  `name` varchar(200) DEFAULT NULL,
+                  `latitude` float DEFAULT NULL,
+                  `longitude` float DEFAULT NULL,
+                  `population` bigint(20) DEFAULT '0',
+                  `modification_date` date DEFAULT NULL,
+                  PRIMARY KEY (`geonameid`),
+                  KEY `parent_id` (`parent_id`),
+                  FULLTEXT KEY `name` (`name`)
+                ) $charset_collate;",
         );
     }
 

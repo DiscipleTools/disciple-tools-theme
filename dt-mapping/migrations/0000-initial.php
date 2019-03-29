@@ -87,7 +87,8 @@ class DT_Mapping_Module_Migration_0000 extends DT_Mapping_Module_Migration {
                   KEY `feature_code` (`feature_code`),
                   KEY `country_code` (`country_code`),
                   KEY `admin1_code` (`admin1_code`),
-                  KEY `admin2_code` (`admin2_code`)
+                  KEY `admin2_code` (`admin2_code`),
+                  FULLTEXT KEY `name` (`name`)
                 ) $charset_collate;",
             "dt_geonames_hierarchy" =>
                 "CREATE TABLE IF NOT EXISTS `dt_geonames_hierarchy` (
