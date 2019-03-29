@@ -29,10 +29,10 @@ function dt_mm_add_groups_column( $data ) {
      */
     if ( empty( $column_labels ) ) {
         $next_column_number = 0;
-    } else if ( count($column_labels) === 1 ) {
+    } else if ( count( $column_labels ) === 1 ) {
         $next_column_number = 1;
     } else {
-        $next_column_number = count($column_labels);
+        $next_column_number = count( $column_labels );
     }
 
 
@@ -44,7 +44,7 @@ function dt_mm_add_groups_column( $data ) {
      */
     $column_labels[$next_column_number] = [
         'key' => 'groups',
-        'label' => __('Groups', 'disciple_tools' )
+        'label' => __( 'Groups', 'disciple_tools' )
     ];
 
 
@@ -55,7 +55,7 @@ function dt_mm_add_groups_column( $data ) {
      * @note     No modification to this section needed.
      */
     if ( ! empty( $column_data ) ) {
-        foreach( $column_data as $key => $value ) {
+        foreach ( $column_data as $key => $value ) {
             $column_data[$key][$next_column_number] = 0;
         }
     }
@@ -75,7 +75,7 @@ function dt_mm_add_groups_column( $data ) {
      */
     $results = DT_Mapping_Module::instance()->query( 'get_geoname_totals' );
     if ( ! empty( $results ) ) {
-        foreach( $results as $result ) {
+        foreach ( $results as $result ) {
             if ( $result['type'] === 'groups' && $result['count'] > 0 ) { // filter for only contact and positive counts
                 $geonameid = $result['geonameid'];
 
@@ -83,7 +83,7 @@ function dt_mm_add_groups_column( $data ) {
                 if ( ! isset( $column_data[$geonameid] ) ) {
                     $column_data[$geonameid] = [];
                     $i = 0;
-                    while( $i <= $next_column_number ) {
+                    while ( $i <= $next_column_number ) {
                         $column_data[$geonameid][$i] = 0;
                         $i++;
                     }

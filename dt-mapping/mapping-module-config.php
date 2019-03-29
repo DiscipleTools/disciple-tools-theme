@@ -10,8 +10,7 @@ class DT_Mapping_Module_Config
         return self::$_instance;
     } // End instance()
 
-    public function __construct()
-    {
+    public function __construct() {
         /**
          * dt_mapping_module_has_permissions
          * @see    mapping.php:56
@@ -35,7 +34,7 @@ class DT_Mapping_Module_Config
          * dt_mapping_module_map_level_by_geoname
          * @see     mapping.php:389
          */
-        add_filter( 'dt_mapping_module_map_level_by_geoname', [ $this, 'map_level_by_geoname_filter'], 10, 1 );
+        add_filter( 'dt_mapping_module_map_level_by_geoname', [ $this, 'map_level_by_geoname_filter' ], 10, 1 );
 
         /**
          * dt_mapping_module_url_base
@@ -47,7 +46,7 @@ class DT_Mapping_Module_Config
          * dt_mapping_module_endpoints
          * @see     mapping.php:77
          */
-        add_filter( 'dt_mapping_module_endpoints', [ $this, 'add_custom_endpoints'], 10, 1 );
+        add_filter( 'dt_mapping_module_endpoints', [ $this, 'add_custom_endpoints' ], 10, 1 );
 
         /**
          * dt_mapping_module_custom_population_divisions
@@ -71,7 +70,7 @@ class DT_Mapping_Module_Config
         }
         return false;
     }
-    
+
     public function custom_settings_filter( $data ) {
         /**
          * Add or modify current settings

@@ -232,7 +232,7 @@
             </div>
             <div class="locations">
                 <?php
-                DT_Mapping_Module::instance()->drill_down_input(  'edit_group_geocodeid', $group['geonameid'] ?? null,  $group['ID'] );
+                DT_Mapping_Module::instance()->drill_down_input( 'edit_group_geocodeid', $group['geonameid'] ?? null, $group['ID'] );
                 ?>
             </div>
         </div>

@@ -92,10 +92,17 @@ class DT_Mapping_Module_Migration_0000 extends DT_Mapping_Module_Migration {
             "dt_geonames_hierarchy" =>
                 "CREATE TABLE IF NOT EXISTS `dt_geonames_hierarchy` (
                   `parent_id` bigint(20) unsigned NOT NULL,
-                  `id` bigint(20) unsigned NOT NULL,
-                  `name` varchar(200) DEFAULT NULL,
+                  `geonameid` bigint(20) unsigned NOT NULL,
+                  `country_geonameid` bigint(20) DEFAULT NULL,
+                  `admin1_geonameid` bigint(20) DEFAULT NULL,
+                  `admin2_geonameid` bigint(20) DEFAULT NULL,
+                  `admin3_geonameid` bigint(20) DEFAULT NULL,
                   KEY `parent_id` (`parent_id`),
-                  KEY `id` (`id`)
+                  KEY `geonameid` (`geonameid`),
+                  KEY `country_geonameid` (`country_geonameid`),
+                  KEY `admin1_geonameid` (`admin1_geonameid`),
+                  KEY `admin2_geonameid` (`admin2_geonameid`),
+                  KEY `admin3_geonameid` (`admin3_geonameid`)  
                 ) $charset_collate;",
         );
     }

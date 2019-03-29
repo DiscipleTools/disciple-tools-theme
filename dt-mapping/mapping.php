@@ -2,7 +2,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-if ( ! class_exists( 'DT_Mapping_Module' )  ) {
+if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
     /**
      * Set Global Database Variables
@@ -11,6 +11,8 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
     $wpdb->dt_geonames = 'dt_geonames';
     $wpdb->dt_geonames_hierarchy = 'dt_geonames_hierarchy';
     $wpdb->dt_geonames_reference = $wpdb->prefix . 'dt_geonames_reference';
+    $wpdb->dt_geonames_counter = $wpdb->prefix . 'dt_geonames_counter';
+    $wpdb->dt_geonames_meta = $wpdb->prefix . 'dt_geonames_meta';
 
     /*******************************************************************************************************************
      * MIGRATION ENGINE
@@ -608,7 +610,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 $results['parent'] = $parent;
 
                 // set types
-                $results['parent']['id'] = (int) $parent['id'];
+                $results['parent']['id'] = (int) $parent['geonameid'];
                 $results['parent']['geonameid'] = (int) $parent['geonameid'];
                 $results['parent']['population'] = (int) $parent['population'];
                 $results['parent']['population_formatted'] = number_format( $parent['population'] );
@@ -736,7 +738,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
         public function get_available_geojson() {
 
             //caching response
-//            self::reset_available_geojson(); // @todo remove (only used for dev)
+            self::reset_available_geojson(); // @todo remove (only used for dev)
             if ( get_option( 'dt_mapping_module_available_geojson') ) {
                 return get_option( 'dt_mapping_module_available_geojson');
             }
@@ -815,7 +817,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                               longitude,
                               country_code,
                               feature_code
-                            FROM dt_geonames
+                            FROM $wpdb->dt_geonames
                             WHERE geonameid = %s
                              ORDER BY name ASC
                         ", $args[ 'geonameid' ] ), ARRAY_A );
@@ -833,12 +835,12 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                               gp.latitude,
                               gp.longitude,
                               gc.country_code
-                            FROM dt_geonames_hierarchy as gh
-                              JOIN dt_geonames as gp
+                            FROM $wpdb->dt_geonames_hierarchy as gh
+                              JOIN $wpdb->dt_geonames as gp
                                 ON gp.geonameid=gh.parent_id
-                              JOIN dt_geonames as gc
-                                ON gc.geonameid=gh.id
-                            WHERE id = %s
+                              JOIN $wpdb->dt_geonames as gc
+                                ON gc.geonameid=gh.geonameid
+                            WHERE gh.geonameid = %s
                         ", $args[ 'geonameid' ] ), ARRAY_A );
                     }
                     break;
@@ -854,10 +856,10 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                               g.latitude, 
                               g.longitude,
                               g.country_code
-                            FROM dt_geonames_hierarchy as gh
-                              JOIN dt_geonames as g
-                              ON g.geonameid=gh.id
-                            WHERE parent_id = %d
+                            FROM $wpdb->dt_geonames_hierarchy as gh
+                              JOIN $wpdb->dt_geonames as g
+                              ON g.geonameid=gh.geonameid
+                            WHERE gh.parent_id = %d
                             ORDER BY g.name ASC
                         ", $args['geonameid'] ), ARRAY_A );
                     }
@@ -878,6 +880,10 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                             $prepared_list .= (int) $list;
                             $i++;
                         }
+                        // Note: $wpdb->prepare does not have a way to add a string without surrounding it with ''
+                        // and this query requires a list of numbers separated by commas but without surrounding ''
+                        // Any better ideas on how to still use ->prepare and not break the sql, welcome. :)
+                        // @codingStandardsIgnoreStart
                         $results = $wpdb->get_results("
                             SELECT DISTINCTROW
                               g.geonameid as id, 
@@ -888,10 +894,11 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                               g.longitude,
                               g.country_code,
                               g.feature_code
-                            FROM dt_geonames as g
+                            FROM $wpdb->dt_geonames as g
                             WHERE geonameid IN ($prepared_list)
                             ORDER BY g.name ASC
                         ", ARRAY_A );
+                        // @codingStandardsIgnoreEnd
                     }
                     break;
 
@@ -914,7 +921,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                           latitude, 
                           longitude,
                           country_code
-                         FROM dt_geonames 
+                         FROM $wpdb->dt_geonames 
                          WHERE feature_code = 'PCLI' OR feature_code = 'TERR' AND geonameid != 6697173
                          ORDER BY name ASC
                         ", ARRAY_A );
@@ -939,7 +946,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                           latitude, 
                           longitude,
                           country_code
-                         FROM dt_geonames 
+                         FROM $wpdb->dt_geonames 
                          WHERE feature_code LIKE 'PCL%' OR feature_code = 'TERR' AND geonameid != 6697173
                          ORDER BY name ASC
                         ", ARRAY_A );
@@ -955,7 +962,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 case 'get_country_code_by_id':
                     if ( isset( $args['id'] ) ) {
                         $results = $wpdb->get_var( $wpdb->prepare( "
-                            SELECT country_code FROM dt_geonames WHERE geonameid = %s;
+                            SELECT country_code FROM $wpdb->dt_geonames WHERE geonameid = %s;
                         ", $args['id'] ) );
                     }
                     if ( ! isset( $args['id'] ) ) {
@@ -966,9 +973,8 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
                 case 'get_full_hierarchy': // @todo remove name
                     $results = $wpdb->get_results("
-                          SELECT DISTINCTROW parent_id, id, name 
-                          FROM dt_geonames_hierarchy", ARRAY_A );
-
+                          SELECT DISTINCTROW parent_id, geonameid, country_geonameid, admin1_geonameid, admin2_geonameid, admin3_geonameid
+                          FROM $wpdb->dt_geonames_hierarchy", ARRAY_A );
                     break;
 
                 case 'get_reference':
@@ -988,48 +994,6 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                     }
                     break;
 
-                case 'get_user_locations':
-
-                    break;
-
-                case 'get_continents_countries_and_states':
-                    $results = $wpdb->get_results("
-                            SELECT DISTINCT parent_id, id, g.name
-                            FROM dt_geonames_hierarchy
-                            JOIN dt_geonames as g 
-                            ON dt_geonames_hierarchy.id=g.geonameid
-                            WHERE parent_id IN (
-                              SELECT geonameid
-                              FROM dt_geonames
-                              WHERE feature_code LIKE 'PCL%' OR feature_code = 'TERR' AND geonameid != 6697173
-                              )
-                            OR id IN (
-                              SELECT geonameid
-                              FROM dt_geonames
-                              WHERE feature_code LIKE 'PCL%' OR feature_code = 'TERR' AND geonameid != 6697173
-                            )
-                            OR parent_id IN (6255146,6255147,6255148,6255149,6255151,6255150,6255152,6295630)
-                            OR id IN (6255146,6255147,6255148,6255149,6255151,6255150,6255152,6295630);
-                        ", ARRAY_A );
-
-                    break;
-
-                case 'get_continents_and_countries':
-                    $results = $wpdb->get_results("
-                            SELECT DISTINCT parent_id, id, g.name
-                            FROM dt_geonames_hierarchy
-                            JOIN dt_geonames as g 
-                            ON dt_geonames_hierarchy.id=g.geonameid
-                            WHERE id IN (
-                              SELECT geonameid
-                              FROM dt_geonames
-                              WHERE feature_code LIKE 'PCL%' OR feature_code = 'TERR' AND geonameid != 6697173
-                            )
-                            OR parent_id IN (6255146,6255147,6255148,6255149,6255151,6255150,6255152,6295630)
-                            OR id IN (6255146,6255147,6255148,6255149,6255151,6255150,6255152,6295630);
-                        ", ARRAY_A );
-
-                    break;
 
                 case 'get_regions':
                     if ( isset( $args['add_country_info'] ) ) {
@@ -1042,13 +1006,13 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                                 gh.parent_id as region_id,
                                 rg.name as region_name,
                                 g.*
-                            FROM dt_geonames_hierarchy as gh
-                            JOIN dt_geonames as g ON gh.id=g.geonameid
-                            LEFT JOIN dt_geonames as rg ON gh.parent_id=rg.geonameid
+                            FROM $wpdb->dt_geonames_hierarchy as gh
+                            JOIN $wpdb->dt_geonames as g ON gh.geonameid=g.geonameid
+                            LEFT JOIN $wpdb->dt_geonames as rg ON gh.parent_id=rg.geonameid
                             WHERE 
-                            parent_id IN (
+                            gh.parent_id IN (
                               SELECT rgn.geonameid 
-                              FROM dt_geonames as rgn 
+                              FROM $wpdb->dt_geonames as rgn 
                               WHERE rgn.feature_code = 'RGN'  
                                 AND rgn.country_code = '')
                             ORDER BY region_name ASC;
@@ -1086,131 +1050,34 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
                 case 'get_geoname_totals':
                     $results = $wpdb->get_results("
                             SELECT
-                              PCLI as geonameid,
+                              country_geonameid as geonameid,
                               'PCLI'      as level,
                               type,
-                              count(PCLI) as count
-                            FROM {$wpdb->prefix}dt_geonames_reference
-                            WHERE PCLI != ''
-                            GROUP BY PCLI, type
+                              count(country_geonameid) as count
+                            FROM $wpdb->dt_geonames_counter
+                            WHERE country_geonameid != ''
+                            GROUP BY country_geonameid, type
                             UNION
                             SELECT
-                              ADM1 as geonameid,
+                              admin1_geonameid as geonameid,
                               'ADM1'      as level,
                               type,
-                              count(ADM1) as count
-                            FROM {$wpdb->prefix}dt_geonames_reference
-                            WHERE ADM1 != ''
-                            GROUP BY ADM1, type
+                              count(admin1_geonameid) as count
+                            FROM $wpdb->dt_geonames_counter
+                            WHERE admin1_geonameid != ''
+                            GROUP BY admin1_geonameid, type
                             UNION
                             SELECT
-                              ADM2 as geonameid,
+                              admin2_geonameid as geonameid,
                               'ADM2'      as level,
                               type,
-                              count(ADM2) as count
-                            FROM {$wpdb->prefix}dt_geonames_reference
-                            WHERE ADM2 != ''
-                            GROUP BY ADM2, type
+                              count(admin2_geonameid) as count
+                            FROM $wpdb->dt_geonames_counter
+                            WHERE admin2_geonameid != ''
+                            GROUP BY admin2_geonameid, type
                         ", ARRAY_A );
 
                     break;
-
-                case 'get_hierarchy_for_geoname':
-                    /**
-                     * Gets a single row from geonameid with country, state, county columns for given geonameid
-                     *
-                     * @example     [
-                     *                  geonameid   (supplied geonameid)
-                     *                  country_id  (geonameid for the country related to supplied geonameid)
-                     *                  adm1_id    (geonameid for the state/administration level 1 related to supplied geonameid)
-                     *                  adm2_id    (geonameid for the county/administration level 2 related to supplied geonameid)
-                     *                  country_name
-                     *                  adm1_name
-                     *                  adm2_name
-                     *              ]
-                     */
-                    if ( isset( $args['geonameid'] ) ) {
-                        $results = $wpdb->get_row( $wpdb->prepare( "
-                            SELECT
-                                  g.geonameid,
-                                  (CASE WHEN (`g`.`feature_code` = 'PCLI')
-                                    THEN `g`.`geonameid`
-                                   WHEN (`g`.`feature_code` = 'ADM1')
-                                     THEN (SELECT `dt_geonames_hierarchy`.`parent_id`
-                                           FROM `dt_geonames_hierarchy`
-                                           WHERE (`dt_geonames_hierarchy`.`id` = `g`.`geonameid`)
-                                           LIMIT 1)
-                                   WHEN (`g`.`feature_code` = 'ADM2')
-                                     THEN (SELECT `dt_geonames_hierarchy`.`parent_id`
-                                           FROM `dt_geonames_hierarchy`
-                                           WHERE (`dt_geonames_hierarchy`.`id` = (SELECT `dt_geonames_hierarchy`.`parent_id`
-                                                                                  FROM `dt_geonames_hierarchy`
-                                                                                  WHERE (`dt_geonames_hierarchy`.`id` = `g`.`geonameid`)
-                                                                                  LIMIT 1))
-                                           LIMIT 1)
-                                   WHEN (`g`.`feature_code` = 'ADM3')
-                                     THEN (SELECT `dt_geonames_hierarchy`.`parent_id`
-                                           FROM `dt_geonames_hierarchy`
-                                           WHERE (`dt_geonames_hierarchy`.`id` = (SELECT `dt_geonames_hierarchy`.`parent_id`
-                                                                                  FROM `dt_geonames_hierarchy`
-                                                                                  WHERE (`dt_geonames_hierarchy`.`id` =
-                                                                                         (SELECT `dt_geonames_hierarchy`.`parent_id`
-                                                                                          FROM `dt_geonames_hierarchy`
-                                                                                          WHERE (`dt_geonames_hierarchy`.`id` = `g`.`geonameid`)
-                                                                                          LIMIT 1))
-                                                                                  LIMIT 1))
-                                           LIMIT 1)
-                                   ELSE 'Unknown' END)                         AS `country_id`,
-                                  
-                                  (CASE WHEN (`g`.`feature_code` = 'PCLI')
-                                    THEN NULL
-                                   WHEN (`g`.`feature_code` = 'ADM1')
-                                     THEN `g`.`geonameid`
-                                   WHEN (`g`.`feature_code` = 'ADM2')
-                                     THEN (SELECT `dt_geonames_hierarchy`.`parent_id`
-                                           FROM `dt_geonames_hierarchy`
-                                           WHERE (`dt_geonames_hierarchy`.`id` = `g`.`geonameid`)
-                                           LIMIT 1)
-                                   WHEN (`g`.`feature_code` = 'ADM3')
-                                     THEN (SELECT `dt_geonames_hierarchy`.`parent_id`
-                                           FROM `dt_geonames_hierarchy`
-                                           WHERE (`dt_geonames_hierarchy`.`id` = (SELECT `dt_geonames_hierarchy`.`parent_id`
-                                                                                  FROM `dt_geonames_hierarchy`
-                                                                                  WHERE (`dt_geonames_hierarchy`.`id` = `g`.`geonameid`)
-                                                                                  LIMIT 1))
-                                           LIMIT 1)
-                                   ELSE 'Unknown' END) AS `adm1_id`,
-                                
-                                  
-                                  (CASE WHEN (`g`.`feature_code` = 'PCLI')
-                                    THEN NULL
-                                   WHEN (`g`.`feature_code` = 'ADM1')
-                                     THEN NULL
-                                   WHEN (`g`.`feature_code` = 'ADM2')
-                                     THEN `g`.`geonameid`
-                                   WHEN (`g`.`feature_code` = 'ADM3')
-                                     THEN (SELECT `dt_geonames_hierarchy`.`parent_id`
-                                           FROM `dt_geonames_hierarchy`
-                                           WHERE (`dt_geonames_hierarchy`.`id` = `g`.`geonameid`)
-                                           LIMIT 1)
-                                   ELSE 'Unknown' END)                         AS `adm2_id`,
-                                   (SELECT `dt_geonames`.`name`
-                                   FROM `dt_geonames`
-                                   WHERE (`dt_geonames`.`geonameid` = `country_id`)) AS `country_name`,
-                                  (SELECT `dt_geonames`.`name`
-                                   FROM `dt_geonames`
-                                   WHERE (`dt_geonames`.`geonameid` = `adm1_id`)) AS `adm1_name`,
-                                  (SELECT `dt_geonames`.`name`
-                                   FROM `dt_geonames`
-                                   WHERE (`dt_geonames`.`geonameid` = `adm2_id`)) AS `adm2_name` 
-                            FROM dt_geonames as g
-                            WHERE geonameid = %d
-                            ",
-                            $args[ 'geonameid' ]
-                        ), ARRAY_A );
-                    }
-                    break;
-
 
                 default:$results = []; break;
 
@@ -1226,13 +1093,12 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
         //
         public function get_locations_list( $start_geonameid = 6295630 ) {
             global $wpdb;
-            $response = [];
-
             // build list array
-            $response['list'] = $wpdb->get_results( $wpdb->prepare( "SELECT DISTINCTROW parent_id, id, name FROM dt_geonames_hierarchy WHERE parent_id = %d ORDER BY name ASC", $start_geonameid ), ARRAY_A );
+            $response = [];
+            $response['list'] = $wpdb->get_results( $wpdb->prepare( "SELECT DISTINCTROW parent_id, geonameid as id, name FROM $wpdb->dt_geonames_reference WHERE parent_id = %d ORDER BY name ASC", $start_geonameid ), ARRAY_A );
 
             // build full results
-            $query = $wpdb->get_results("SELECT DISTINCTROW parent_id, id, name FROM dt_geonames_hierarchy", ARRAY_A );
+            $query = $wpdb->get_results("SELECT DISTINCTROW parent_id, geonameid as id, name FROM $wpdb->dt_geonames_reference", ARRAY_A );
             if ( empty( $query ) ) {
                 return $this->_no_results();
             }
@@ -1244,8 +1110,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
         public function build_locations_html_list( $parent_id, $menu_data, $gen, $depth_limit ) {
             $list = '';
 
-            if (isset( $menu_data['parents'][$parent_id] ) && $gen < $depth_limit )
-            {
+            if ( isset( $menu_data['parents'][$parent_id] ) && $gen < $depth_limit ) {
                 $gen++;
                 foreach ($menu_data['parents'][$parent_id] as $item_id)
                 {
@@ -1650,7 +1515,7 @@ if ( ! class_exists( 'DT_Mapping_Module' )  ) {
 
             foreach ( $query as $menu_item )
             {
-                $menu_data[$menu_item['id']] = $menu_item;
+                $menu_data[$menu_item['geonameid']] = $menu_item;
             }
 
             return $menu_data;

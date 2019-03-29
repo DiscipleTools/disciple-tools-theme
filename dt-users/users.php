@@ -40,7 +40,7 @@ class Disciple_Tools_Users
         add_action( 'delete_user', [ $this, 'user_deleted' ], 10, 1 );
         add_action( 'remove_user_from_blog', [ $this, 'user_deleted' ], 10, 2 );
 
-        add_filter( 'dt_settings_js_data', [ $this, 'add_current_locations_list'], 10, 1 );
+        add_filter( 'dt_settings_js_data', [ $this, 'add_current_locations_list' ], 10, 1 );
 
     }
 

@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Class DT_Mapping_Module_Migration_0005
+ * Class DT_Mapping_Module_Migration_0004
  *
  * @note    Add a custom table for the site to hold geonames metadata, like custom names/translations and populations
  *
  */
-class DT_Mapping_Module_Migration_0005 extends DT_Mapping_Module_Migration {
+class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
 
     /**
      * @throws \Exception  Got error when creating table $name.
@@ -53,6 +53,7 @@ class DT_Mapping_Module_Migration_0005 extends DT_Mapping_Module_Migration {
                   `meta_key` VARCHAR(50) DEFAULT NULL,
                   `meta_value` LONGTEXT,
                   PRIMARY KEY (`id`),
+                  UNIQUE KEY `unique_key_constraint` (`geonameid`,`meta_key`),
                   KEY `geonameid` (`geonameid`),
                   KEY `meta_key` (`meta_key`)
                 ) $charset_collate;",

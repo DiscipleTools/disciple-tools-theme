@@ -336,7 +336,7 @@
                 </div>
                 <div class="locations">
                     <?php
-                        DT_Mapping_Module::instance()->drill_down_input(  'edit_contact_geocodeid', $contact['geonameid'] ?? null,  $contact['ID'] );
+                        DT_Mapping_Module::instance()->drill_down_input( 'edit_contact_geocodeid', $contact['geonameid'] ?? null, $contact['ID'] );
                     ?>
                 </div>
             </div>

@@ -14,7 +14,7 @@ class DT_Mapping_Module_Migration_0003 extends DT_Mapping_Module_Migration {
             global $wpdb;
             $table = 'dt_geonames_hierarchy';
             $file = 'dt_geonames_hierarchy.tsv';
-            $expected = 53206;
+            $expected = 49111;
 
             // TEST for expected tables\
             $wpdb->query( "SHOW TABLES LIKE '$table'" );
@@ -35,7 +35,7 @@ class DT_Mapping_Module_Migration_0003 extends DT_Mapping_Module_Migration {
 
                 // TEST for presence of source files
                 $dir = wp_upload_dir();
-                $uploads_dir = trailingslashit( $dir[ 'basedir' ] );
+                $uploads_dir = trailingslashit( $dir['basedir'] );
                 if ( ! file_exists( $uploads_dir . "geonames/" . $file ) ) {
                     error_log( 'Failed to find' . $file );
                     throw new Exception( 'Failed to find' . $file );
@@ -47,7 +47,7 @@ class DT_Mapping_Module_Migration_0003 extends DT_Mapping_Module_Migration {
                     INTO TABLE $table
                     FIELDS TERMINATED BY '\t'
                     LINES TERMINATED BY '\n'
-                    (parent_id,id)
+                    (parent_id,geonameid,country_geonameid,admin1_geonameid,admin2_geonameid,admin3_geonameid)
                 " );
 
                 // TEST

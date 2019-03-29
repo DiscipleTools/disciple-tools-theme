@@ -238,7 +238,6 @@ function dt_site_scripts() {
                     )
                 );
             }
-
         }
     }
 
@@ -259,7 +258,7 @@ function dt_site_scripts() {
         );
     }
     if ( is_singular( "groups" ) || is_singular( "contacts" ) || 'settings' === $url_path ) {
-        wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', ['jquery', 'lodash' ], '1' );
+        wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery', 'lodash' ], '1' );
         wp_localize_script(
             'mapping-drill-down', 'mappingModule', array(
                 'mapping_module' => DT_Mapping_Module::instance()->localize_script(),

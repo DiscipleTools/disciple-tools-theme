@@ -35,7 +35,7 @@ class DT_Mapping_Module_Migration_0002 extends DT_Mapping_Module_Migration {
 
                 // TEST for presence of source files
                 $dir = wp_upload_dir();
-                $uploads_dir = trailingslashit( $dir[ 'basedir' ] );
+                $uploads_dir = trailingslashit( $dir['basedir'] );
                 if ( ! file_exists( $uploads_dir . "geonames/" . $file ) ) {
                     error_log( 'Failed to find ' . $file );
                     throw new Exception( 'Failed to find ' . $file );
@@ -43,12 +43,12 @@ class DT_Mapping_Module_Migration_0002 extends DT_Mapping_Module_Migration {
 
                 // LOAD geonames data
                 $wpdb->query( "
-            LOAD DATA LOCAL INFILE '{$uploads_dir}geonames/{$file }'
-            INTO TABLE $table
-            FIELDS TERMINATED BY '\t'
-            LINES TERMINATED BY '\n'
-            (geonameid,name,asciiname,alternatenames,latitude,longitude,feature_class,feature_code,country_code,cc2,admin1_code,admin2_code,admin3_code,admin4_code,population,elevation,dem,timezone,modification_date)
-            " );
+                    LOAD DATA LOCAL INFILE '{$uploads_dir}geonames/{$file }'
+                    INTO TABLE $table
+                    FIELDS TERMINATED BY '\t'
+                    LINES TERMINATED BY '\n'
+                    (geonameid,name,asciiname,alternatenames,latitude,longitude,feature_class,feature_code,country_code,cc2,admin1_code,admin2_code,admin3_code,admin4_code,population,elevation,dem,timezone,modification_date)
+                    " );
 
                 // TEST
                 $rows = (int) $wpdb->get_var( "SELECT count(*) FROM $table" );

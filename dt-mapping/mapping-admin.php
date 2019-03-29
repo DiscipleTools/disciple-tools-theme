@@ -10,7 +10,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
+if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
     /**
      * Class DT_Mapping_Module_Admin
@@ -21,8 +21,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
 
         // Singleton
         private static $_instance = null;
-        public static function instance()
-        {
+        public static function instance() {
             if ( is_null( self::$_instance ) ) {
                 self::$_instance = new self();
             }
@@ -34,8 +33,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
         public $current_user_id;
         public $map_key;
 
-        public function __construct()
-        {
+        public function __construct() {
 
             /**
              * If allowed, this class will load into every admin the header scripts and rest endpoints. It is best
@@ -64,7 +62,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             add_action( 'admin_head', [ $this, 'scripts' ] );
             add_action( "admin_menu", array( $this, "register_menu" ) );
             add_action( "admin_head", [ $this, 'header_script' ] );
-            add_action( "admin_enqueue_scripts", [ $this, 'enqueue_scripts'] );
+            add_action( "admin_enqueue_scripts", [ $this, 'enqueue_scripts' ] );
 
             if ( is_admin() ) {
                 // all other things to load when in the admin environment.
@@ -74,8 +72,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
         /**
          * Admin Page Elements
          */
-        public function scripts()
-        {
+        public function scripts() {
 
         }
 
@@ -86,7 +83,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                 $this->token,
                 [ $this, 'content' ],
                 'dashicons-admin-site',
-                7 );
+            7 );
         }
 
         public function enqueue_scripts( $hook ){
@@ -96,7 +93,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             // drill down tool
             wp_register_script( 'lodash', 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js', false, '4.17.11' );
             wp_enqueue_script( 'lodash' );
-            wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', ['jquery', 'lodash'], '1.1' );
+            wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery', 'lodash' ], '1.1' );
             wp_localize_script(
                 'mapping-drill-down', 'mappingModule', array(
                     'mapping_module' => DT_Mapping_Module::instance()->localize_script(),
@@ -418,8 +415,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
-                            <?php ?>
-
+                            
                             <?php $this->migration_status_metabox() ?>
 
                             <!-- End Main Column -->
@@ -607,10 +603,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                                 Geocoding Source
                             </td>
                             <td>
-                                <?php
-
-                                ?>
-                            </td>
+                                                            </td>
                             <td>
                                 <a href="admin.php?page=dt_mapping_module&tab=geocoding">Edit</a>
                             </td>
@@ -628,39 +621,19 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                                 <a href="admin.php?page=dt_mapping_module&tab=population">Edit</a>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                Status
-                            </td>
-                            <td>
-                                <?php // @todo remove after dev
-                                    $results = DT_Mapping_Module::instance()->query( 'get_geoname_totals' );
-                                    if ( ! empty( $results ) ) {
-                                            foreach( $results as $result ) {
-                                                echo $result['geonameid'] . ' - ' . $result['level'] . ' - ' . $result['type'] . ' - ' . $result['count'] . '<br>';
-                                            }
-                                    }
-
-                                ?>
-                            </td>
-                            <td>
-
-                            </td>
-                        </tr>
-
                     </tbody>
                 </table>
             <?php
         }
 
         public function migration_status_metabox() {
-            if ( isset( $_POST[ 'unlock' ] )
-                && ( isset( $_POST[ '_wpnonce' ] )
-                    && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ '_wpnonce' ] ) ), 'migration_status' . get_current_user_id() ) ) ) {
+            if ( isset( $_POST['unlock'] )
+                && ( isset( $_POST['_wpnonce'] )
+                    && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'migration_status' . get_current_user_id() ) ) ) {
 
-                delete_option('dt_mapping_module_migration_number' );
-                delete_option('dt_mapping_module_migration_lock' );
-                delete_option('dt_mapping_module_migrate_last_error' );
+                delete_option( 'dt_mapping_module_migration_number' );
+                delete_option( 'dt_mapping_module_migration_lock' );
+                delete_option( 'dt_mapping_module_migrate_last_error' );
             }
 
             ?>
@@ -675,21 +648,23 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                     <tr>
                         <td>
                             Migrations Available: <?php echo esc_attr( DT_Mapping_Module_Migration_Engine::$migration_number ) ?><br>
-                            Current Migration: <?php echo get_option('dt_mapping_module_migration_number', true ) ?><br>
+                            Current Migration: <?php echo get_option( 'dt_mapping_module_migration_number', true ) ?><br>
                             Locked Status: <?php
-                                if ( get_option('dt_mapping_module_migration_lock', true ) ) {
-                                    ?>
+                            if ( get_option( 'dt_mapping_module_migration_lock', true ) ) {
+                                ?>
                                     Locked!
                                     <a onclick="jQuery('#error-message-raw').toggle();" class="alert">Show error message</a>
                                     <div style="display:none;" id="error-message-raw"><hr>
-                                        <?php echo '<pre>'; print_r( get_option('dt_mapping_module_migrate_last_error', true ) ); echo '</pre>'; ?>
+                                    <?php echo '<pre>';
+                                    print_r( get_option( 'dt_mapping_module_migrate_last_error', true ) );
+                                    echo '</pre>'; ?>
                                     </div>
                                     <hr>
                                     <p><button type="submit" name="unlock" value="1">Unlock and Rerun Migrations</button></p>
                                     <?php
-                                } else {
-                                    echo 'Not Locked';
-                                }
+                            } else {
+                                echo 'Not Locked';
+                            }
                             ?><br>
 
                         </td>
@@ -700,13 +675,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             <?php
         }
 
-        public function global_population_division_metabox()
-        {
+        public function global_population_division_metabox() {
             // process post action
-            if ( isset( $_POST[ 'population_division' ] )
-                && ( isset( $_POST[ '_wpnonce' ] )
-                    && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ '_wpnonce' ] ) ), 'population_division' . get_current_user_id() ) ) ) {
-                $new = (int) sanitize_text_field( wp_unslash( $_POST[ 'population_division' ] ) );
+            if ( isset( $_POST['population_division'] )
+                && ( isset( $_POST['_wpnonce'] )
+                    && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'population_division' . get_current_user_id() ) ) ) {
+                $new = (int) sanitize_text_field( wp_unslash( $_POST['population_division'] ) );
                 update_option( 'dt_mapping_module_population', $new, false );
             }
             $population_division = get_option( 'dt_mapping_module_population' );
@@ -800,8 +774,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             <?php
         }
 
-        public function alternate_name_metabox()
-        {
+        public function alternate_name_metabox() {
             ?>
             <table class="widefat striped">
                 <thead>
@@ -860,8 +833,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
 
         }
 
-        public function sub_locations_metabox()
-        {
+        public function sub_locations_metabox() {
             ?>
             <table class="widefat striped">
                 <thead>
@@ -921,9 +893,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
 
         }
 
-        public function starting_map_level_metabox()
-        {
-            dt_write_log('BEGIN');
+        public function starting_map_level_metabox() {
+            dt_write_log( 'BEGIN' );
 
             // load mapping class
             $mm = DT_Mapping_Module::instance();
@@ -934,8 +905,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             /*******************************
              * PROCESS POST
              ******************************/
-            if ( isset( $_POST[ '_wpnonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ '_wpnonce' ] ) ), 'starting_map_level' . get_current_user_id() ) ) {
-                dt_write_log($_POST);
+            if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'starting_map_level' . get_current_user_id() ) ) {
+                dt_write_log( $_POST );
                 $option = [];
 
                 // set focus
@@ -967,7 +938,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                 update_option( 'dt_mapping_module_starting_map_level', $option, false );
                 $default_map_settings = $mm->default_map_settings();
             }
-            dt_write_log($default_map_settings);
+            dt_write_log( $default_map_settings );
 
 
             /*******************************
@@ -976,14 +947,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             $focus_select = '<select name="focus_type">';
 
             $focus_select .= '<option value="world" ';
-            $focus_select .= ( $default_map_settings['type'] === 'world') ? "selected" : "";
+            $focus_select .= ( $default_map_settings['type'] === 'world' ) ? "selected" : "";
             $focus_select .= '>World</option>';
 
             $focus_select .= '<option value="country" ';
-            $focus_select .= ( $default_map_settings['type'] === 'country') ? "selected" : "";
+            $focus_select .= ( $default_map_settings['type'] === 'country' ) ? "selected" : "";
             $focus_select .= '>Country</option>
                                 <option value="state" ';
-            $focus_select .= ( $default_map_settings['type'] === 'state') ? "selected" : "";
+            $focus_select .= ( $default_map_settings['type'] === 'state' ) ? "selected" : "";
             $focus_select .= '>State</option>
                             </select>';
             /* End focus select */
@@ -1088,7 +1059,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                                     }
                                     $country_ids .= $country['geonameid'];
                                 }
-                                echo '<a id="'.esc_attr( $key ).'" style="cursor:pointer;" onclick="check_region(['.$country_ids.']);jQuery(this).append(\' &#x2714;\');">'.esc_html($value['region_name']).'</a><br>';
+                                echo '<a id="'.esc_attr( $key ).'" style="cursor:pointer;" onclick="check_region(['.$country_ids.']);jQuery(this).append(\' &#x2714;\');">'.esc_html( $value['region_name'] ).'</a><br>';
                             }
 
                             ?>
@@ -1113,7 +1084,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                 // create select
                 $country_list = $mm->query( 'list_countries' );
                 $country_select = '<select name="parent"><option></option><option>-------------</option>';
-                foreach( $country_list as $result ) {
+                foreach ( $country_list as $result ) {
                     $country_select .= '<option value="'.$result['geonameid'].'" ';
                     if ( $default_map_settings['parent'] === (int) $result['geonameid'] ) {
                         $country_select .= 'selected';
@@ -1190,7 +1161,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
 
             ?></form><?php // End form
 
-            dt_write_log('END');
+            dt_write_log( 'END' );
         }
 
         public function mapping_focus_instructions_metabox() {
@@ -1272,15 +1243,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
             ];
 
             // process post action
-            if ( isset( $_POST[ 'source' ] )
-                && ( isset( $_POST[ '_wpnonce' ] )
-                && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ '_wpnonce' ] ) ), 'set_polygon_mirror' . get_current_user_id() ) )
+            if ( isset( $_POST['source'] )
+                && ( isset( $_POST['_wpnonce'] )
+                && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'set_polygon_mirror' . get_current_user_id() ) )
                 ) {
 
-                $selection_key =  sanitize_text_field( wp_unslash( $_POST[ 'source' ] ) );
+                $selection_key = sanitize_text_field( wp_unslash( $_POST['source'] ) );
 
-                if ( $selection_key === 'other' && ! empty( $_POST[ 'other_value' ] ) ) { // must be set to other and have a url
-                    $url = trailingslashit( sanitize_text_field( $_POST[ 'other_value' ] ) );
+                if ( $selection_key === 'other' && ! empty( $_POST['other_value'] ) ) { // must be set to other and have a url
+                    $url = trailingslashit( sanitize_text_field( $_POST['other_value'] ) );
                     if ( 'https://' === substr( $url, 0, 8 ) ) { // must begin with https
                         $array = [
                             'key' => 'other',
@@ -1289,7 +1260,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                         ];
                         update_option( 'dt_mapping_module_polygon_mirror', $array, true );
                     }
-
                 } else if ( $selection_key !== 'other' ) {
                     $array = [
                         'key' => $selection_key,
@@ -1302,7 +1272,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
 
             $mirror = dt_get_mapping_polygon_mirror();
 
-            set_error_handler([$this, "warning_handler"], E_WARNING);
+            set_error_handler( [ $this, "warning_handler" ], E_WARNING );
             $list = file_get_contents( $mirror['url'] . 'available_locations.json' );
             restore_error_handler();
 
@@ -1313,7 +1283,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                 $status_class = 'not-connected';
                 $message = 'MIRROR SOURCE NOT AVAILABLE';
             }
-            
+
             ?>
             <!-- Box -->
             <style>
@@ -1336,11 +1306,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                         <td>
                             <?php wp_nonce_field( 'set_polygon_mirror' . get_current_user_id() ); ?>
 
-                            <p><input type="radio" id="github" name="source" value="github" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'github' ) ? 'checked': '' ?>><label for="github"><?php echo esc_html( $mirror_list['github']['label']) ?></label></p>
-                            <p><input type="radio" id="google" name="source" value="google" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'google' ) ? 'checked': '' ?>><label for="google"><?php echo esc_html( $mirror_list['google']['label']) ?></label></p>
-                            <p><input type="radio" id="amazon" name="source" value="amazon" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'amazon' ) ? 'checked': '' ?>><label for="amazon"><?php echo esc_html( $mirror_list['amazon']['label']) ?></label></p>
-                            <p><input type="radio" id="other" name="source" value="other" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'other' ) ? 'checked': '' ?>>
-                            <input type="text" style="width:50em;" placeholder="add full url of your custom mirror. Must begin with https." name="other_value" value="<?php echo ( $mirror['key'] === 'other' ) ? $mirror['url'] : '' ; ?>" /> (see Custom Mirror Note below)
+                            <p><input type="radio" id="github" name="source" value="github" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'github' ) ? 'checked' : '' ?>><label for="github"><?php echo esc_html( $mirror_list['github']['label'] ) ?></label></p>
+                            <p><input type="radio" id="google" name="source" value="google" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'google' ) ? 'checked' : '' ?>><label for="google"><?php echo esc_html( $mirror_list['google']['label'] ) ?></label></p>
+                            <p><input type="radio" id="amazon" name="source" value="amazon" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'amazon' ) ? 'checked' : '' ?>><label for="amazon"><?php echo esc_html( $mirror_list['amazon']['label'] ) ?></label></p>
+                            <p><input type="radio" id="other" name="source" value="other" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'other' ) ? 'checked' : '' ?>>
+                            <input type="text" style="width:50em;" placeholder="add full url of your custom mirror. Must begin with https." name="other_value" value="<?php echo ( $mirror['key'] === 'other' ) ? $mirror['url'] : ''; ?>" /> (see Custom Mirror Note below)
 
                             </p>
                             <p>
@@ -1424,15 +1394,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
                     </tr>
                 </table>
 
-            <?php
+                <?php
             else :
                 ?>
                 <?php esc_html__( 'You must save post before geocoding.' ) ?>
-            <?php
+                <?php
             endif;
         }
 
-        public function warning_handler($errno, $errstr) {
+        public function warning_handler( $errno, $errstr) {
             ?>
             <div class="notice notice-error notice-dt-mapping-source" data-notice="dt-demo">
                 <p><?php echo "MIRROR SOURCE NOT AVAILABLE" ?></p>
@@ -1449,7 +1419,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' )  ) {
      * @return array
      */
     function dt_get_mapping_polygon_mirror( $url_only = false ) {
-        $mirror = get_option('dt_mapping_module_polygon_mirror');
+        $mirror = get_option( 'dt_mapping_module_polygon_mirror' );
         if ( empty( $mirror ) ) {
             $array = [
                 'key' => 'github',
