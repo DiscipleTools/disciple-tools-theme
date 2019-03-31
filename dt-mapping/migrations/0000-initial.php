@@ -82,28 +82,25 @@ class DT_Mapping_Module_Migration_0000 extends DT_Mapping_Module_Migration {
                   `dem` varchar(80) DEFAULT NULL,
                   `timezone` varchar(40) DEFAULT NULL,
                   `modification_date` date DEFAULT NULL,
+                  `parent_id` BIGINT(20) DEFAULT NULL,
+                  `country_geonameid` BIGINT(20) DEFAULT NULL,
+                  `admin1_geonameid` BIGINT(20) DEFAULT NULL,
+                  `admin2_geonameid` BIGINT(20) DEFAULT NULL,
+                  `admin3_geonameid` BIGINT(20) DEFAULT NULL,
+                  `level` VARCHAR(50) DEFAULT NULL,
                   PRIMARY KEY (`geonameid`),
                   KEY `feature_class` (`feature_class`),
                   KEY `feature_code` (`feature_code`),
                   KEY `country_code` (`country_code`),
                   KEY `admin1_code` (`admin1_code`),
                   KEY `admin2_code` (`admin2_code`),
-                  FULLTEXT KEY `name` (`name`)
-                ) $charset_collate;",
-            "dt_geonames_hierarchy" =>
-                "CREATE TABLE IF NOT EXISTS `dt_geonames_hierarchy` (
-                  `parent_id` bigint(20) unsigned NOT NULL,
-                  `geonameid` bigint(20) unsigned NOT NULL,
-                  `country_geonameid` bigint(20) DEFAULT NULL,
-                  `admin1_geonameid` bigint(20) DEFAULT NULL,
-                  `admin2_geonameid` bigint(20) DEFAULT NULL,
-                  `admin3_geonameid` bigint(20) DEFAULT NULL,
+                  KEY `population` (`population`),
                   KEY `parent_id` (`parent_id`),
-                  KEY `geonameid` (`geonameid`),
                   KEY `country_geonameid` (`country_geonameid`),
                   KEY `admin1_geonameid` (`admin1_geonameid`),
                   KEY `admin2_geonameid` (`admin2_geonameid`),
-                  KEY `admin3_geonameid` (`admin3_geonameid`)  
+                  KEY `admin3_geonameid` (`admin3_geonameid`),
+                  FULLTEXT KEY `name` (`name`)
                 ) $charset_collate;",
         );
     }

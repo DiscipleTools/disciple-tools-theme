@@ -23,12 +23,7 @@ class DT_Mapping_Module_Migration_0005 extends DT_Mapping_Module_Migration {
                 gh.admin2_geonameid,
                 gh.admin3_geonameid,
                 gh.geonameid,
-   				CASE
-   					WHEN country_geonameid IS NOT NULL AND admin1_geonameid IS NULL THEN 'country'
-   					WHEN country_geonameid IS NOT NULL AND admin1_geonameid IS NOT NULL AND admin2_geonameid IS NULL THEN 'admin1'
-   					WHEN country_geonameid IS NOT NULL AND admin1_geonameid IS NOT NULL AND admin2_geonameid IS NOT NULL AND admin3_geonameid IS NULL THEN 'admin2'
-   					WHEN country_geonameid IS NOT NULL AND admin1_geonameid IS NOT NULL AND admin2_geonameid IS NOT NULL AND admin3_geonameid IS NOT NULL THEN 'admin3'
-   				END as level,
+   				gh.level,
                 p.post_id,
                 IF (cu.meta_value = 'user', 'users', pp.post_type) as type, 
                 IF (pp.post_type = 'contacts', cs.meta_value, gs.meta_value) as status,
@@ -36,7 +31,7 @@ class DT_Mapping_Module_Migration_0005 extends DT_Mapping_Module_Migration {
                 IF (pp.post_type = 'contacts', ce.meta_value, ge.meta_value) as end_date
             FROM {$wpdb->prefix}postmeta as p
                 JOIN {$wpdb->prefix}posts as pp ON p.post_id=pp.ID
-                LEFT JOIN dt_geonames_hierarchy as gh ON gh.geonameid=p.meta_value             
+                LEFT JOIN dt_geonames as gh ON gh.geonameid=p.meta_value             
                 LEFT JOIN {$wpdb->prefix}postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'type'
                 LEFT JOIN {$wpdb->prefix}postmeta as cs ON cs.post_id=p.post_id AND cs.meta_key = 'overall_status'
                 LEFT JOIN {$wpdb->prefix}postmeta as gs ON gs.post_id=p.post_id AND gs.meta_key = 'group_status'

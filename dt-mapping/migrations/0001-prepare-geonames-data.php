@@ -93,10 +93,6 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
             error_log( 'Failed to find dt_geonames.tsv' );
             throw new Exception( 'Failed to find dt_geonames.tsv' );
         }
-        if ( ! file_exists( $uploads_dir . "geonames/dt_geonames_hierarchy.tsv" ) ) {
-            error_log( 'Failed to dt_geonames_hierarchy.tsv' );
-            throw new Exception( 'Failed to dt_geonames_hierarchy.tsv' );
-        }
     }
 
     public function get_expected_tables(): array {
