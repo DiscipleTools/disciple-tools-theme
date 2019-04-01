@@ -947,19 +947,16 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 case 'get_parent_by_geonameid':
                     if ( isset( $args['geonameid'] ) ) {
                         $results = $wpdb->get_row( $wpdb->prepare( "
-                            SELECT DISTINCT
-                              gh.parent_id as id, 
-                              gh.parent_id as geonameid, 
-                              gp.name, 
-                              gp.population,
-                              gp.latitude,
-                              gp.longitude,
-                              gc.country_code
-                            FROM $wpdb->dt_geonames_hierarchy as gh
-                              JOIN $wpdb->dt_geonames as gp
-                                ON gp.geonameid=gh.parent_id
-                              JOIN $wpdb->dt_geonames as gc
-                                ON gc.geonameid=gh.geonameid
+                            SELECT DISTINCT 
+                              geonameid as id, 
+                              geonameid as geonameid, 
+                              name, 
+                              population,
+                              latitude,
+                              longitude,
+                              country_code,
+                              feature_code
+                            FROM $wpdb->dt_geonames as gh
                             WHERE gh.geonameid = %s
                         ", $args[ 'geonameid' ] ), ARRAY_A );
                     }
@@ -976,10 +973,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                               g.latitude, 
                               g.longitude,
                               g.country_code
-                            FROM $wpdb->dt_geonames_hierarchy as gh
-                              JOIN $wpdb->dt_geonames as g
-                              ON g.geonameid=gh.geonameid
-                            WHERE gh.parent_id = %d
+                            FROM $wpdb->dt_geonames as g
+                            WHERE g.parent_id = %d
                             ORDER BY g.name ASC
                         ", $args['geonameid'] ), ARRAY_A );
                     }

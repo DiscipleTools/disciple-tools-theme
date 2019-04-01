@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Class DT_Mapping_Module_Migration_0004
+ * Class DT_Mapping_Module_Migration_0003
  *
  * @note    Add a custom table for the site to hold geonames metadata, like custom names/translations and populations
  *
  */
-class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
+class DT_Mapping_Module_Migration_0003 extends DT_Mapping_Module_Migration {
 
     /**
      * @throws \Exception  Got error when creating table $name.

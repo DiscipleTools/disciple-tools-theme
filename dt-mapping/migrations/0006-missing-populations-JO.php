@@ -1,11 +1,11 @@
 <?php
 /**
- * Class DT_Mapping_Module_Migration_0007
+ * Class DT_Mapping_Module_Migration_0006
  *
  * @note  Add missing populations for Jordan
  */
 
-class DT_Mapping_Module_Migration_0007 extends DT_Mapping_Module_Migration {
+class DT_Mapping_Module_Migration_0006 extends DT_Mapping_Module_Migration {
     public function up() {
         $ms_migration_number = false;
         if ( is_multisite() ) {
