@@ -43,7 +43,7 @@ class DT_Mapping_Module_Migration_0002 extends DT_Mapping_Module_Migration {
 
                 // LOAD geonames data
                 $wpdb->query( "
-                    LOAD DATA LOCAL INFILE '{$uploads_dir}geonames/{$file }'
+                    LOAD DATA LOCAL INFILE '{$uploads_dir}geonames/{$file}'
                     INTO TABLE $table
                     FIELDS TERMINATED BY '\t'
                     LINES TERMINATED BY '\n'

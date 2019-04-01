@@ -1011,19 +1011,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             /*******************************
              * FOCUS SELECTION
              ******************************/
-            $focus_select = '<select name="focus_type">';
 
-            $focus_select .= '<option value="world" ';
-            $focus_select .= ( $default_map_settings['type'] === 'world' ) ? "selected" : "";
-            $focus_select .= '>World</option>';
-
-            $focus_select .= '<option value="country" ';
-            $focus_select .= ( $default_map_settings['type'] === 'country' ) ? "selected" : "";
-            $focus_select .= '>Country</option>
-                                <option value="state" ';
-            $focus_select .= ( $default_map_settings['type'] === 'state' ) ? "selected" : "";
-            $focus_select .= '>State</option>
-                            </select>';
             /* End focus select */
 
             ?>
@@ -1038,7 +1026,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <tbody>
                     <tr>
                         <td>
-                            <?php echo esc_attr( $focus_select ) ?>
+                            <select name="focus_type">
+                                <option value="world" <?php echo ( $default_map_settings['type'] === 'world' ) ? "selected" : "" ?>>World</option>
+                                <option value="country" <?php echo ( $default_map_settings['type'] === 'country' ) ? "selected" : ""; ?>>Country</option>
+                                <option value="state" <?php echo ( $default_map_settings['type'] === 'state' ) ? "selected" : ""; ?>>State</option>
+                            </select>
                             <button type="submit" class="button">Select</button>
                         </td>
                     </tr>
@@ -1126,7 +1118,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                     }
                                     $country_ids .= $country['geonameid'];
                                 }
-                                echo '<a id="'.esc_attr( $key ).'" style="cursor:pointer;" onclick="check_region(['.$country_ids.']);jQuery(this).append(\' &#x2714;\');">'.esc_html( $value['region_name'] ).'</a><br>';
+                                echo '<a id="'.esc_attr( $key ).'" style="cursor:pointer;" onclick="check_region(['.$country_ids.']);jQuery(this).append(\' &#x2714;\');">'.esc_html( $value['name'] ).'</a><br>';
                             }
 
                             ?>
@@ -1247,7 +1239,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <?php
                         if ( is_array( $list ) ) {
                             foreach ( $list as $key => $value ) {
-                                echo esc_html( $value ) . '<br>';
+                                echo esc_attr( $value ) . '<br>';
                             }
                         }
                         ?>
