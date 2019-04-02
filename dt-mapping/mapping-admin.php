@@ -34,7 +34,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         public $map_key;
 
         public function __construct() {
-            global $pagenow;
             /**
              * If allowed, this class will load into every admin the header scripts and rest endpoints. It is best
              * practice to add a filter to a config file in the plugin or theme using this module that filters for the
@@ -63,7 +62,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 $this->current_user_id = get_current_user_id();
 
                 add_action( 'admin_head', [ $this, 'scripts' ] );
-                add_action( "admin_head", [ $this, 'header_script' ] );
                 add_action( "admin_enqueue_scripts", [ $this, 'enqueue_scripts' ] );
             }
         }
@@ -126,6 +124,20 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     })
                 }
             </script>
+            <style>
+                a.pointer { cursor: pointer; }
+                #drill_down {
+                    margin-bottom: 0;
+                    list-style-type: none;
+                }
+                #drill_down li {
+                    display:inline;
+                    margin-right: 3px;
+                }
+                #drill_down li select {
+                    width:150px;
+                }
+            </style>
             <?php
         }
 
@@ -144,6 +156,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 return;
             }
             // drill down tool
+//            wp_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
+//            wp_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
+
             wp_register_script( 'lodash', 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js', false, '4.17.11' );
             wp_enqueue_script( 'lodash' );
             wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery', 'lodash' ], '1.1' );
@@ -155,24 +170,93 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
         }
 
-        public function header_script() {
+        public function process_rest_edits( $params ) {
+            if ( isset( $params['key'] ) && isset( $params['geonameid'] ) ) {
+                $geonameid = (int) sanitize_key( wp_unslash( $params['geonameid'] ) );
+                $value = false;
+                if ( isset( $params['value'] ) ) {
+                    $value = sanitize_text_field( wp_unslash( $params['value' ] ) );
+                }
 
-            ?>
-            <style>
-                a.pointer { cursor: pointer; }
-                #drill_down {
-                    margin-bottom: 0;
-                    list-style-type: none;
+                global $wpdb;
+
+                switch( $params['key'] ) {
+                    case 'name':
+                        if ( isset( $params['reset'] ) && $params['reset'] === true ) {
+                            // get the original name for the geonameid
+                            $wpdb->query( $wpdb->prepare( "
+                                UPDATE $wpdb->dt_geonames
+                                SET alt_name=name
+                                WHERE geonameid = %d
+                            ", $geonameid ) );
+
+                            $name = $wpdb->get_var( $wpdb->prepare( "
+                                SELECT alt_name as name FROM $wpdb->dt_geonames WHERE geonameid = %d
+                            ", $geonameid ) );
+
+                            return [
+                                'status' => 'OK',
+                                'value' => $name
+                            ];
+                        } else if ( $value ) {
+                            $update_id = $wpdb->update(
+                                $wpdb->dt_geonames, 
+                                [ 'alt_name' => $value ],
+                                [ 'geonameid' => $geonameid ],
+                                [ '%s' ],
+                                [ '%d' ]
+                            );
+                            if ( $update_id ) {
+                                return true;
+                            } else {
+                                return new WP_Error('insert_fail', 'Failed to insert record' );
+                            }
+                        }
+                        break;
+                    case 'population':
+
+                        if ( isset( $params['reset'] ) && $params['reset'] === true ) {
+                            // get the original name for the geonameid
+                            $wpdb->query( $wpdb->prepare( "
+                                UPDATE $wpdb->dt_geonames
+                                SET alt_population=NULL
+                                WHERE geonameid = %d
+                            ", $geonameid ) );
+
+                            $population = $wpdb->get_var( $wpdb->prepare( "
+                                SELECT population FROM $wpdb->dt_geonames WHERE geonameid = %d
+                            ", $geonameid ) );
+
+                            return [
+                                'status' => 'OK',
+                                'value' => $population
+                            ];
+                        } else if ( $value ) {
+                            $update_id = $wpdb->update(
+                                $wpdb->dt_geonames,
+                                [ 'alt_population' => $value ],
+                                [ 'geonameid' => $geonameid ],
+                                [ '%d' ],
+                                [ '%d' ]
+                            );
+                            if ( $update_id ) {
+                                return true;
+                            } else {
+                                return new WP_Error('update_fail', 'Failed to update population' );
+                            }
+                        }
+                        break;
+
+                    case 'sub_location':
+                        return true;
+                        break;
+                    default:
+                        return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
+                        break;
                 }
-                #drill_down li {
-                    display:inline;
-                    margin-right: 3px;
-                }
-                #drill_down li select {
-                    width:150px;
-                }
-            </style>
-            <?php
+
+            }
+            return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
         }
 
         public function content() {
@@ -922,7 +1006,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <tbody id="other_list">
                 </tbody>
             </table>
-
+            <br>
             <table class="widefat striped">
                 <tbody id="list_results"></tbody>
             </table>
@@ -949,21 +1033,43 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         }
 
                         list_results.append(`
-                                <tr><td>Edit ${window.DRILLDOWNDATA.data[geonameid].self.name}</td></tr>
-                                <tr><td>Parent ID: ${geonameid}</td></tr>
-                                <tr><td><input id="new_geonameid" value="" /></td></tr>
-                                <tr><td><input id="new_name" value="" /></td></tr>
-                                <tr><td><input id="new_population" value="" /></td></tr>
-                                <tr><td><input id="new_latitude" value="" /></td></tr>
-                                <tr><td><input id="new_longitude" value="" /></td></tr>
-                                <tr><td><a class="button" onclick="update_name( ${geonameid} )" >Save</a></td></tr>`)
+                                <tr><td colspan="2">Add New Location to ${window.DRILLDOWNDATA.data[geonameid].self.name}</td></tr>
+                                <tr><td style="width:150px;">Name</td><td><input id="new_name" value="" /></td></tr>
+                                <tr><td>Population</td><td><input id="new_population" value="" /></td></tr>
+                                <tr><td>Latitude</td><td><input id="new_latitude" value="" /></td></tr>
+                                <tr><td>Longitude</td><td><input id="new_longitude" value="" /></td></tr>
+                                <tr><td colspan="2"><button type="button" id="save-button" class="button" onclick="update_location( ${geonameid} )" >Save</a></td></tr>`)
                     }
                 }
-                function update_name( geonameid, new_name ) {
-                    let newName = jQuery('#new_name').val()
+                function update_location( geonameid ) {
+                    jQuery('#save-button').prop('disabled', true )
 
+                    let newFields = []
+                    newFields['name'] = jQuery('#new_name').val()
+                    newFields['population'] = jQuery('#new_population').val()
+                    newFields['latitude'] = jQuery('#new_latitude').val()
+                    newFields['longitude'] = jQuery('#new_longitude').val()
 
-                    console.log( geonameid + ' ' + new_name )
+                    let data = { key: 'sub_location', value: newFields, geonameid: geonameid }
+
+                    let update = send_update(data)
+
+                    update.done(function(data) {
+                        console.log(data)
+                        if ( data ) {
+                            jQuery('#other_list').append(`<tr><td><a >New Location Added</a></td></tr>`)
+
+                            jQuery('#new_name').val('')
+                            jQuery('#new_population').val('')
+                            jQuery('#new_latitude').val('')
+                            jQuery('#new_longitude').val('')
+
+                        }
+
+                        jQuery('#save-button').removeProp('disabled' )
+                    })
+
+                    console.log( geonameid  )
                 }
             </script>
 
