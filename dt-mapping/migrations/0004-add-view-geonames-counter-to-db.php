@@ -16,7 +16,7 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
         global $wpdb;
 
         $wpdb->query("
-            CREATE OR REPLACE VIEW {$wpdb->prefix}dt_geonames_counter AS    
+            CREATE OR REPLACE ALGORITHM = MERGE VIEW {$wpdb->prefix}dt_geonames_counter AS    
             SELECT
                 g.country_geonameid,
                 g.admin1_geonameid,
@@ -31,14 +31,14 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
                 IF (pp.post_type = 'contacts', ce.meta_value, ge.meta_value) as end_date
             FROM {$wpdb->prefix}postmeta as p
                 JOIN {$wpdb->prefix}posts as pp ON p.post_id=pp.ID
-                LEFT JOIN dt_geonames as g ON g.geonameid=p.meta_value             
+                LEFT JOIN {$wpdb->prefix}dt_geonames as g ON g.geonameid=p.meta_value             
                 LEFT JOIN {$wpdb->prefix}postmeta as cu ON cu.post_id=p.post_id AND cu.meta_key = 'type'
                 LEFT JOIN {$wpdb->prefix}postmeta as cs ON cs.post_id=p.post_id AND cs.meta_key = 'overall_status'
                 LEFT JOIN {$wpdb->prefix}postmeta as gs ON gs.post_id=p.post_id AND gs.meta_key = 'group_status'
                 LEFT JOIN {$wpdb->prefix}postmeta as gd ON gd.post_id=p.post_id AND gd.meta_key = 'start_date'
                 LEFT JOIN {$wpdb->prefix}postmeta as ge ON ge.post_id=p.post_id AND ge.meta_key = 'end_date'
                 LEFT JOIN {$wpdb->prefix}postmeta as ce ON ce.post_id=p.post_id AND ce.meta_key = 'last_modified' AND cs.meta_value = 'closed'
-            WHERE p.meta_key = 'geonameid'    
+            WHERE p.meta_key = g.geonameid   
         ");
 
         $this->test();
@@ -60,7 +60,7 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
     public function test() {
         global $wpdb;
 
-        $result = $wpdb->query( "SELECT COUNT(*) FROM {$wpdb->prefix}dt_geonames_counter" );
+        $result = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}dt_geonames_counter" );
         if ( $result < 0 ) {
             throw new Exception( "Got error finding table '{$wpdb->prefix}dt_geonames_counter': $wpdb->last_error" );
         }

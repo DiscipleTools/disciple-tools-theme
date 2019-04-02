@@ -34,7 +34,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         public $map_key;
 
         public function __construct() {
-
+            global $pagenow;
             /**
              * If allowed, this class will load into every admin the header scripts and rest endpoints. It is best
              * practice to add a filter to a config file in the plugin or theme using this module that filters for the
@@ -55,15 +55,17 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 return; // this allows you to control what environments the admin loads.
             }
 
-            $this->spinner = spinner();
-            $this->nonce = wp_create_nonce( 'wp_rest' );
-            $this->current_user_id = get_current_user_id();
-
-            add_action( 'admin_head', [ $this, 'scripts' ] );
             add_action( "admin_menu", array( $this, "register_menu" ) );
-            add_action( "admin_head", [ $this, 'header_script' ] );
-            add_action( "admin_enqueue_scripts", [ $this, 'enqueue_scripts' ] );
 
+            if ( is_admin() && isset( $_GET['page'] ) &&  'dt_mapping_module' === $_GET['page'] ) {
+                $this->spinner = spinner();
+                $this->nonce = wp_create_nonce( 'wp_rest' );
+                $this->current_user_id = get_current_user_id();
+
+                add_action( 'admin_head', [ $this, 'scripts' ] );
+                add_action( "admin_head", [ $this, 'header_script' ] );
+                add_action( "admin_enqueue_scripts", [ $this, 'enqueue_scripts' ] );
+            }
         }
 
         /**

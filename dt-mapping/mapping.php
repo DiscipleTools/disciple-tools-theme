@@ -8,11 +8,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
      * Set Global Database Variables
      */
     global $wpdb;
-    $wpdb->dt_geonames = 'dt_geonames';
-    $wpdb->dt_geonames_hierarchy = 'dt_geonames_hierarchy';
-    $wpdb->dt_geonames_reference = $wpdb->prefix . 'dt_geonames_reference';
+    $wpdb->dt_geonames = $wpdb->prefix .'dt_geonames';
     $wpdb->dt_geonames_counter = $wpdb->prefix . 'dt_geonames_counter';
-    $wpdb->dt_geonames_meta = $wpdb->prefix . 'dt_geonames_meta';
 
     /*******************************************************************************************************************
      * MIGRATION ENGINE
@@ -930,19 +927,17 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 case 'get_by_geonameid':
                     if ( isset( $args['geonameid'] ) ) {
                         $results = $wpdb->get_row( $wpdb->prepare( "
-                            SELECT DISTINCT
+                            SELECT
                               g.geonameid as id, 
                               g.geonameid, 
-                              IFNULL(gn.meta_value, g.name) as name, 
-                              IFNULL(gp.meta_value, g.population) as population, 
+                              g.alt_name as name, 
+                              IFNULL(g.alt_population, g.population) as population, 
                               g.latitude, 
                               g.longitude,
-                              g.country_code
+                              g.country_code,
+                              g.level
                             FROM $wpdb->dt_geonames as g
-                            LEFT JOIN $wpdb->dt_geonames_meta as gn ON g.geonameid=gn.geonameid AND meta_key = 'name'
-                            LEFT JOIN $wpdb->dt_geonames_meta as gp ON g.geonameid=gp.geonameid AND gp.meta_key = 'population'
                             WHERE g.geonameid = %s
-                            ORDER BY g.name ASC
                         ", $args[ 'geonameid' ] ), ARRAY_A );
                     }
                     break;
@@ -950,17 +945,17 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 case 'get_parent_by_geonameid':
                     if ( isset( $args['geonameid'] ) ) {
                         $results = $wpdb->get_row( $wpdb->prepare( "
-                            SELECT DISTINCT 
-                              g.geonameid as id, 
-                              g.geonameid, 
-                              IFNULL(gn.meta_value, g.name) as name, 
-                              IFNULL(gp.meta_value, g.population) as population, 
-                              g.latitude, 
-                              g.longitude,
-                              g.country_code
+                            SELECT 
+                              p.geonameid as id, 
+                              p.geonameid, 
+                              p.alt_name as name, 
+                              IFNULL(p.alt_population, p.population) as population, 
+                              p.latitude, 
+                              p.longitude,
+                              p.country_code,
+                              p.level
                             FROM $wpdb->dt_geonames as g
-                            LEFT JOIN $wpdb->dt_geonames_meta as gn ON g.geonameid=gn.geonameid AND meta_key = 'name'
-                            LEFT JOIN $wpdb->dt_geonames_meta as gp ON g.geonameid=gp.geonameid AND gp.meta_key = 'population'
+                            JOIN $wpdb->dt_geonames as p ON g.parent_id=p.geonameid
                             WHERE g.geonameid = %s
                         ", $args[ 'geonameid' ] ), ARRAY_A );
                     }
@@ -969,19 +964,18 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 case 'get_children_by_geonameid':
                     if ( isset( $args['geonameid'] ) ) {
                         $results = $wpdb->get_results( $wpdb->prepare( "
-                            SELECT DISTINCT
+                            SELECT
                               g.geonameid as id, 
                               g.geonameid, 
-                              IFNULL(gn.meta_value, g.name) as name, 
-                              IFNULL(gp.meta_value, g.population) as population, 
+                              g.alt_name as name, 
+                              IFNULL(g.alt_population, g.population) as population, 
                               g.latitude, 
                               g.longitude,
-                              g.country_code
+                              g.country_code,
+                              g.level
                             FROM $wpdb->dt_geonames as g
-                            LEFT JOIN $wpdb->dt_geonames_meta as gn ON g.geonameid=gn.geonameid AND meta_key = 'name'
-                            LEFT JOIN $wpdb->dt_geonames_meta as gp ON g.geonameid=gp.geonameid AND gp.meta_key = 'population'
                             WHERE g.parent_id = %d
-                            ORDER BY g.name ASC
+                            ORDER BY g.alt_name ASC
                         ", $args['geonameid'] ), ARRAY_A );
                     }
                     break;
@@ -1006,20 +1000,19 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         // Any better ideas on how to still use ->prepare and not break the sql, welcome. :)
                         // @codingStandardsIgnoreStart
                         $results = $wpdb->get_results("
-                            SELECT DISTINCT
+                            SELECT
                               g.geonameid as id, 
                               g.geonameid, 
-                              IFNULL(gn.meta_value, g.name) as name, 
-                              IFNULL(gp.meta_value, g.population) as population, 
+                              g.alt_name as name, 
+                              IFNULL(g.alt_population, g.population) as population, 
                               g.latitude, 
                               g.longitude,
                               g.country_code,
-                              g.feature_code
+                              g.feature_code,
+                              g.level
                             FROM $wpdb->dt_geonames as g
-                            LEFT JOIN $wpdb->dt_geonames_meta as gn ON g.geonameid=gn.geonameid AND meta_key = 'name'
-                            LEFT JOIN $wpdb->dt_geonames_meta as gp ON g.geonameid=gp.geonameid AND gp.meta_key = 'population'
                             WHERE g.geonameid IN ($prepared_list)
-                            ORDER BY g.name ASC
+                            ORDER BY g.alt_name ASC
                         ", ARRAY_A );
                         // @codingStandardsIgnoreEnd
                     }
@@ -1039,7 +1032,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     $results = $wpdb->get_results( "
                      SELECT
                             g.geonameid,
-                            IFNULL(gn.meta_value, g.name) as name,
+                            g.alt_name as name,
                             g.latitude,
                             g.longitude,
                             g.feature_class,
@@ -1050,7 +1043,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             g.admin2_code,
                             g.admin3_code,
                             g.admin4_code,
-                            IFNULL(gp.meta_value, g.population) as population,
+                            IFNULL(g.alt_population, g.population) as population,
                             g.timezone,
                             g.modification_date,
                             g.parent_id,
@@ -1060,8 +1053,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             g.admin3_geonameid,
                             g.level
                         FROM $wpdb->dt_geonames as g
-                        LEFT JOIN $wpdb->dt_geonames_meta as gn ON g.geonameid=gn.geonameid AND meta_key = 'name'
-                        LEFT JOIN $wpdb->dt_geonames_meta as gp ON g.geonameid=gp.geonameid AND gp.meta_key = 'population'
                      WHERE g.level = 'country'
                      ORDER BY name ASC
                     ", ARRAY_A );
@@ -1141,7 +1132,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     $results = $wpdb->get_results("
                             SELECT
                                 g.geonameid,
-                                IFNULL(gn.meta_value, g.name) as name,
+                                g.alt_name as name,
                                 g.latitude,
                                 g.longitude,
                                 g.feature_class,
@@ -1152,7 +1143,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 g.admin2_code,
                                 g.admin3_code,
                                 g.admin4_code,
-                                IFNULL(gp.meta_value, g.population) as population,
+                                IFNULL(g.alt_population, g.population) as population,
                                 g.timezone,
                                 g.modification_date,
                                 g.parent_id,
@@ -1162,8 +1153,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 g.admin3_geonameid,
                                 g.level
                             FROM $wpdb->dt_geonames as g
-                            LEFT JOIN $wpdb->dt_geonames_meta as gn ON g.geonameid=gn.geonameid AND meta_key = 'name'
-                            LEFT JOIN $wpdb->dt_geonames_meta as gp ON g.geonameid=gp.geonameid AND gp.meta_key = 'population'
                             WHERE feature_code = 'RGN' 
                             AND country_code = '';
                         ", ARRAY_A );
@@ -1174,7 +1163,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     $results = $wpdb->get_results("
                             SELECT
                                 g.geonameid,
-                                IFNULL(gn.meta_value, g.name) as name,
+                                g.alt_name as name,
                                 g.latitude,
                                 g.longitude,
                                 g.feature_class,
@@ -1185,7 +1174,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 g.admin2_code,
                                 g.admin3_code,
                                 g.admin4_code,
-                                IFNULL(gp.meta_value, g.population) as population,
+                                IFNULL(g.alt_population, g.population) as population,
                                 g.timezone,
                                 g.modification_date,
                                 g.parent_id,
@@ -1195,8 +1184,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 g.admin3_geonameid,
                                 g.level
                             FROM $wpdb->dt_geonames as g
-                            LEFT JOIN $wpdb->dt_geonames_meta as gn ON g.geonameid=gn.geonameid AND meta_key = 'name'
-                            LEFT JOIN $wpdb->dt_geonames_meta as gp ON g.geonameid=gp.geonameid AND gp.meta_key = 'population'
                             WHERE g.geonameid IN (6255146,6255147,6255148,6255149,6255151,6255150,6255152)
                             ORDER BY name ASC;
                         ", ARRAY_A );
@@ -1207,7 +1194,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     $results = $wpdb->get_results("
                             SELECT
                                 g.geonameid,
-                                IFNULL(gn.meta_value, g.name) as name,
+                                g.alt_name as name,
                                 g.latitude,
                                 g.longitude,
                                 g.feature_class,
@@ -1218,7 +1205,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 g.admin2_code,
                                 g.admin3_code,
                                 g.admin4_code,
-                                IFNULL(gp.meta_value, g.population) as population,
+                                IFNULL(g.alt_population, g.population) as population,
                                 g.timezone,
                                 g.modification_date,
                                 g.parent_id,
@@ -1228,8 +1215,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 g.admin3_geonameid,
                                 g.level
                             FROM $wpdb->dt_geonames as g
-                            LEFT JOIN $wpdb->dt_geonames_meta as gn ON g.geonameid=gn.geonameid AND meta_key = 'name'
-                            LEFT JOIN $wpdb->dt_geonames_meta as gp ON g.geonameid=gp.geonameid AND gp.meta_key = 'population'
                             WHERE g.geonameid = 6295630
                         ", ARRAY_A );
 
@@ -1274,22 +1259,20 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             g.geonameid,
                             CASE 
                                 WHEN g.level = 'country' 
-                                THEN IFNULL( gm.meta_value, g.name)
+                                THEN g.alt_name
                                 WHEN g.level = 'admin1' 
-                                THEN CONCAT( (SELECT name FROM dt_geonames WHERE geonameid = g.country_geonameid LIMIT 1), ' > ', 
-                                IFNULL( gm.meta_value, g.name) ) 
-                                WHEN g.level = 'admin2' 
-                                THEN CONCAT( (SELECT name FROM dt_geonames WHERE geonameid = g.country_geonameid LIMIT 1), ' > ', 
-                                (SELECT name FROM dt_geonames WHERE geonameid = g.admin1_geonameid LIMIT 1), ' > ', 
-                                IFNULL( gm.meta_value, g.name) )
-                            END 
-                            as name
+                                THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
+                                g.alt_name ) 
+                                WHEN g.level = 'admin2' OR g.level = 'admin3'
+                                THEN CONCAT( (SELECT name FROM $wpdb->dt_geonames as country WHERE geonameid = g.country_geonameid LIMIT 1), ' > ', 
+                                (SELECT a1.alt_name FROM $wpdb->dt_geonames AS a1 WHERE a1.geonameid = g.admin1_geonameid LIMIT 1), ' > ', 
+                                g.alt_name )
+                                ELSE g.alt_name
+                            END as name
                             FROM $wpdb->dt_geonames as g
-                            LEFT JOIN $wpdb->dt_geonames_meta as gm ON g.geonameid=gm.geonameid AND meta_key = 'name'
-                            WHERE g.name LIKE %s OR gm.meta_value LIKE %s
+                            WHERE g.alt_name LIKE %s
                             LIMIT 30;
                             ",
-                            '%' . $wpdb->esc_like( $args['s'] ) . '%',
                             '%' . $wpdb->esc_like( $args['s'] ) . '%' ),
                             ARRAY_A );
                         }
@@ -1312,13 +1295,13 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             // build list array
             $response = [];
             $response['list'] = $wpdb->get_results( $wpdb->prepare( "
-              SELECT DISTINCTROW parent_id, geonameid as id, name 
+              SELECT parent_id, geonameid as id, alt_name as name 
               FROM $wpdb->dt_geonames 
               WHERE parent_id = %d 
               ORDER BY name ASC", $start_geonameid ), ARRAY_A );
 
             // build full results
-            $query = $wpdb->get_results("SELECT DISTINCTROW parent_id, geonameid as id, name FROM $wpdb->dt_geonames", ARRAY_A );
+            $query = $wpdb->get_results("SELECT parent_id, geonameid as id, alt_name as name FROM $wpdb->dt_geonames", ARRAY_A );
             if ( empty( $query ) ) {
                 return $this->_no_results();
             }

@@ -61,12 +61,12 @@ class DT_Mapping_Module_Migration_0000 extends DT_Mapping_Module_Migration {
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
         return array(
-            "dt_geonames" =>
-                "CREATE TABLE IF NOT EXISTS `dt_geonames` (
-                  `geonameid` bigint(20) unsigned NOT NULL,
+            "{$wpdb->prefix}dt_geonames" =>
+                "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}dt_geonames` (
+                  `geonameid` BIGINT(20) unsigned NOT NULL,
                   `name` varchar(200) DEFAULT NULL,
                   `asciiname` varchar(200) DEFAULT NULL,
-                  `alternatenames` varchar(10000) DEFAULT NULL,
+                  `alternatenames` varchar(200) DEFAULT NULL,
                   `latitude` float DEFAULT NULL,
                   `longitude` float DEFAULT NULL,
                   `feature_class` char(1) DEFAULT NULL,
@@ -77,9 +77,9 @@ class DT_Mapping_Module_Migration_0000 extends DT_Mapping_Module_Migration {
                   `admin2_code` varchar(80) DEFAULT NULL,
                   `admin3_code` varchar(20) DEFAULT NULL,
                   `admin4_code` varchar(20) DEFAULT NULL,
-                  `population` bigint(20) DEFAULT 0,
-                  `elevation` int(80) DEFAULT NULL,
-                  `dem` varchar(80) DEFAULT NULL,
+                  `population` BIGINT(20) NOT NULL DEFAULT 0,
+                  `elevation` int(20) DEFAULT NULL,
+                  `dem` varchar(20) DEFAULT NULL,
                   `timezone` varchar(40) DEFAULT NULL,
                   `modification_date` date DEFAULT NULL,
                   `parent_id` BIGINT(20) DEFAULT NULL,
@@ -88,19 +88,22 @@ class DT_Mapping_Module_Migration_0000 extends DT_Mapping_Module_Migration {
                   `admin2_geonameid` BIGINT(20) DEFAULT NULL,
                   `admin3_geonameid` BIGINT(20) DEFAULT NULL,
                   `level` VARCHAR(50) DEFAULT NULL,
+                  `alt_name` VARCHAR(200) DEFAULT NULL,
+                  `alt_name_changed` TINYINT(1) NOT NULL DEFAULT 0,
+                  `alt_population` BIGINT(20) DEFAULT NULL,
+                  `is_custom_location` TINYINT(1) NOT NULL DEFAULT 0,
                   PRIMARY KEY (`geonameid`),
-                  KEY `feature_class` (`feature_class`),
                   KEY `feature_code` (`feature_code`),
                   KEY `country_code` (`country_code`),
-                  KEY `admin1_code` (`admin1_code`),
-                  KEY `admin2_code` (`admin2_code`),
                   KEY `population` (`population`),
                   KEY `parent_id` (`parent_id`),
                   KEY `country_geonameid` (`country_geonameid`),
                   KEY `admin1_geonameid` (`admin1_geonameid`),
                   KEY `admin2_geonameid` (`admin2_geonameid`),
                   KEY `admin3_geonameid` (`admin3_geonameid`),
-                  FULLTEXT KEY `name` (`name`)
+                  KEY `level` (`level`),
+                  FULLTEXT KEY `name` (`name`),
+                  FULLTEXT KEY `alt_name` (`alt_name`)
                 ) $charset_collate;",
         );
     }
