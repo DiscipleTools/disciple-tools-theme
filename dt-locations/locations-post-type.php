@@ -159,7 +159,7 @@ class Disciple_Tools_Location_Post_Type
             'capability_type'       => 'locations',
             'has_archive'           => true,
             'hierarchical'          => true,
-            'supports'              => [ 'title' ],
+            'supports'              => [ 'title', 'custom-fields' ],
             'menu_position'         => 6,
             'menu_icon'             => 'dashicons-smiley',
             'show_in_rest'          => true,
@@ -232,41 +232,6 @@ class Disciple_Tools_Location_Post_Type
         return $defaults;
     } // End register_custom_column_headings()
 
-    /**
-     * Update messages for the post type admin.
-     *
-     * @since  0.1.0
-     *
-     * @param  array $messages Array of messages for all post types.
-     *
-     * @return array           Modified array.
-     */
-//    public function updated_messages( $messages ) {
-//        global $post;
-//
-//        $link = '<a target="_blank" href="' . esc_url( get_permalink( $post->ID ) ) .'">' .  __( 'View', 'disciple_tools' ) . '</a>';
-//
-//        $messages[ $this->post_type ] = [
-//            0  => '', // Unused. Messages start at index 1.
-//            1  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
-//            2  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
-//            3  => sprintf( __( '%s deleted.', 'disciple_tools' ), $this->singular ),
-//            4  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
-//            /* translators: %s: date and time of the revision */
-//            5  => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-//            6  => sprintf( __( '%s published.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
-//            7  => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
-//            8  => sprintf( __( '%s submitted.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
-//            9  => sprintf(
-//                __( '%1$s scheduled for: %2$s.', 'disciple_tools' ),
-//                $this->singular,
-//                '<strong>' . date_i18n( _x( 'M j, Y @ G:i', 'Publish box date format, see http://php.net/date', 'disciple_tools' ), strtotime( $post->post_date ) ) . '</strong>'
-//            ) . ' ' . $link,
-//            10  => sprintf( __( '%s draft updated.', 'disciple_tools' ), $this->singular ) . ' ' . $link,
-//        ];
-//
-//        return $messages;
-//    } // End updated_messages()
 
     /**
      * Setup the meta box.

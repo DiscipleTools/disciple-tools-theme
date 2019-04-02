@@ -946,12 +946,22 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             current_subs.show()
                         }
 
-                        list_results.append(`<tr><td>Edit ${window.DRILLDOWNDATA.data[geonameid].self.name}</td></tr><tr><td><input id="new_name_${geonameid}" value="" /></td></tr>`)
-                        list_results.append(`<tr><td><a class="button" onclick="update_name( ${geonameid}, jQuery('#new_name_'+${geonameid}).val()  )" >Save</a> </td></tr>`)
+                        list_results.append(`
+                                <tr><td>Edit ${window.DRILLDOWNDATA.data[geonameid].self.name}</td></tr>
+                                <tr><td>Parent ID: ${geonameid}</td></tr>
+                                <tr><td><input id="new_geonameid" value="" /></td></tr>
+                                <tr><td><input id="new_name" value="" /></td></tr>
+                                <tr><td><input id="new_population" value="" /></td></tr>
+                                <tr><td><input id="new_latitude" value="" /></td></tr>
+                                <tr><td><input id="new_longitude" value="" /></td></tr>
+                                <tr><td><a class="button" onclick="update_name( ${geonameid} )" >Save</a></td></tr>`)
                     }
                 }
                 function update_name( geonameid, new_name ) {
-                    console.log( geonameid + ' ' + new_name ) // @todo add REST update endpoint.
+                    let newName = jQuery('#new_name').val()
+
+
+                    console.log( geonameid + ' ' + new_name )
                 }
             </script>
 

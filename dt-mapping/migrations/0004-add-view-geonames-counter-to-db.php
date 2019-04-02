@@ -61,7 +61,7 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
         global $wpdb;
 
         $result = $wpdb->query( "SELECT COUNT(*) FROM {$wpdb->prefix}dt_geonames_counter" );
-        if ( $result < 1 ) {
+        if ( $result < 0 ) {
             throw new Exception( "Got error finding table '{$wpdb->prefix}dt_geonames_counter': $wpdb->last_error" );
         }
     }

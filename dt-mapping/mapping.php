@@ -1273,9 +1273,15 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             SELECT 
                             g.geonameid,
                             CASE 
-                                WHEN level = 'country' THEN IFNULL( gm.meta_value, g.name)
-                                WHEN level = 'admin1' THEN CONCAT( (SELECT name FROM dt_geonames WHERE geonameid = country_geonameid LIMIT 1), ' > ', IFNULL( gm.meta_value, g.name) ) 
-                                WHEN level = 'admin2' THEN CONCAT( (SELECT name FROM dt_geonames WHERE geonameid = country_geonameid LIMIT 1), ' > ', (SELECT name FROM dt_geonames WHERE geonameid = admin1_geonameid LIMIT 1), ' > ', IFNULL( gm.meta_value, g.name) )
+                                WHEN g.level = 'country' 
+                                THEN IFNULL( gm.meta_value, g.name)
+                                WHEN g.level = 'admin1' 
+                                THEN CONCAT( (SELECT name FROM dt_geonames WHERE geonameid = g.country_geonameid LIMIT 1), ' > ', 
+                                IFNULL( gm.meta_value, g.name) ) 
+                                WHEN g.level = 'admin2' 
+                                THEN CONCAT( (SELECT name FROM dt_geonames WHERE geonameid = g.country_geonameid LIMIT 1), ' > ', 
+                                (SELECT name FROM dt_geonames WHERE geonameid = g.admin1_geonameid LIMIT 1), ' > ', 
+                                IFNULL( gm.meta_value, g.name) )
                             END 
                             as name
                             FROM $wpdb->dt_geonames as g
@@ -1307,12 +1313,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $response = [];
             $response['list'] = $wpdb->get_results( $wpdb->prepare( "
               SELECT DISTINCTROW parent_id, geonameid as id, name 
-              FROM $wpdb->dt_geonames_reference 
+              FROM $wpdb->dt_geonames 
               WHERE parent_id = %d 
               ORDER BY name ASC", $start_geonameid ), ARRAY_A );
 
             // build full results
-            $query = $wpdb->get_results("SELECT DISTINCTROW parent_id, geonameid as id, name FROM $wpdb->dt_geonames_reference", ARRAY_A );
+            $query = $wpdb->get_results("SELECT DISTINCTROW parent_id, geonameid as id, name FROM $wpdb->dt_geonames", ARRAY_A );
             if ( empty( $query ) ) {
                 return $this->_no_results();
             }

@@ -1,18 +1,18 @@
 <?php
 /**
- * Class DT_Mapping_Module_Migration_0006
+ * Class DT_Mapping_Module_Migration_0005
  *
  * @note  Add missing populations for Jordan
  */
 
-class DT_Mapping_Module_Migration_0006 extends DT_Mapping_Module_Migration {
+class DT_Mapping_Module_Migration_0005 extends DT_Mapping_Module_Migration {
     public function up() {
         $ms_migration_number = false;
         if ( is_multisite() ) {
             $ms_migration_number = (int) get_site_option( 'dt_mapping_module_multisite_migration_number', true );
         }
 
-        if ( ! is_multisite() || $ms_migration_number < 7 ) { // note: match the migration number to the class number
+        if ( ! is_multisite() || $ms_migration_number < 5 ) { // note: match the migration number to the class number
             global $wpdb;
 
             // sql for updating country names in dt_geonames
@@ -87,7 +87,7 @@ class DT_Mapping_Module_Migration_0006 extends DT_Mapping_Module_Migration {
             dt_write_log( $results );
 
             if ( is_multisite() ) {
-                update_site_option( 'dt_mapping_module_multisite_migration_number', 7 ); // set the migration number for multisite
+                update_site_option( 'dt_mapping_module_multisite_migration_number', 5 ); // set the migration number for multisite
             }
         }
 
