@@ -1153,12 +1153,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             g.geonameid,
                             CASE 
                                 WHEN g.level = 'country' 
-                                THEN g.alt_name
+                                  THEN g.alt_name
                                 WHEN g.level = 'admin1' 
-                                THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
+                                  THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
                                 g.alt_name ) 
                                 WHEN g.level = 'admin2' OR g.level = 'admin3'
-                                THEN CONCAT( (SELECT name FROM $wpdb->dt_geonames as country WHERE geonameid = g.country_geonameid LIMIT 1), ' > ', 
+                                  THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
                                 (SELECT a1.alt_name FROM $wpdb->dt_geonames AS a1 WHERE a1.geonameid = g.admin1_geonameid LIMIT 1), ' > ', 
                                 g.alt_name )
                                 ELSE g.alt_name
@@ -1183,7 +1183,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         /**
          * Explore section of the admin area
          */
-        //
         public function get_locations_list( $start_geonameid = 6295630 ) {
             global $wpdb;
             // build list array
@@ -1241,6 +1240,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
          * End explore section of the admin area
          */
 
+        
         /**
          * Creates the initial drill down array
          *
