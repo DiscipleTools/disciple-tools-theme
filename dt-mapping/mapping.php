@@ -380,6 +380,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                    'nonce' => wp_create_nonce( 'wp_rest' ),
                    'method' => 'POST',
             ];
+            $endpoints['typeahead_endpoint'] = [
+                'namespace' => $this->namespace,
+                'route' => '/mapping_module/typeahead',
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'method' => 'GET',
+            ];
             // add another endpoint here
             return $endpoints;
         }
@@ -427,6 +433,10 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
             $params = $request->get_params();
             return DT_Mapping_Module_Admin::instance()->process_rest_edits( $params );
+        }
+        public function typeahead_endpoint( WP_REST_Request $request ) {
+            $params = $request->get_params();
+            return $this->query( 'typeahead', [ 's' => 'Tun'] );
         }
 
         /**
