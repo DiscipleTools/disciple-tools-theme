@@ -14,8 +14,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
     /*******************************************************************************************************************
      * MIGRATION ENGINE
      ******************************************************************************************************************/
-    require_once('class-migration-engine.php');
-    try{
+    require_once( 'class-migration-engine.php' );
+    try {
         DT_Mapping_Module_Migration_Engine::migrate( DT_Mapping_Module_Migration_Engine::$migration_number );
     } catch ( Throwable $e ) {
         $error = new WP_Error( 'migration_error', 'Migration engine for mapping module failed to migrate.', ['error' => $e ] );
@@ -380,6 +380,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                    'nonce' => wp_create_nonce( 'wp_rest' ),
                    'method' => 'POST',
             ];
+            $endpoints['search_geonames_by_name'] = [
+               'namespace' => $this->namespace,
+               'route' => '/mapping_module/search_geonames_by_name',
+               'nonce' => wp_create_nonce( 'wp_rest' ),
+               'method' => 'GET',
+            ];
             // add another endpoint here
             return $endpoints;
         }
@@ -428,6 +434,32 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $params = $request->get_params();
             return DT_Mapping_Module_Admin::instance()->process_rest_edits( $params );
         }
+
+        public function search_geonames_by_name( WP_REST_Request $request ){
+            if ( !current_user_can( 'read_location' )){
+                return new WP_Error( __FUNCTION__, "No permissions to read locations", [ 'status' => 403 ] );
+            }
+            $params = $request->get_params();
+            $search = "";
+            if ( isset( $params['s'] ) ) {
+                $search = $params['s'];
+            }
+            $locations = $this->query( "search_geonames_by_name", [ "search_query" => $search ] );
+
+            $prepared = [];
+            foreach ( $locations["geonames"] as $location ){
+                $prepared[] = [
+                    "name" => $location["label"],
+                    "ID" => $location["geonameid"]
+                ];
+            }
+
+            return [
+                'posts' => $prepared,
+                'total' => $locations["total"]
+            ];
+        }
+
 
         /**
          * MAP BUILDING
@@ -1146,32 +1178,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                     break;
 
-                case 'typeahead':
-                    if ( isset( $args['s'] ) ) {
-                        $results = $wpdb->get_results( $wpdb->prepare( "
-                            SELECT 
-                            g.geonameid,
-                            CASE 
-                                WHEN g.level = 'country' 
-                                  THEN g.alt_name
-                                WHEN g.level = 'admin1' 
-                                  THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
-                                g.alt_name ) 
-                                WHEN g.level = 'admin2' OR g.level = 'admin3'
-                                  THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
-                                (SELECT a1.alt_name FROM $wpdb->dt_geonames AS a1 WHERE a1.geonameid = g.admin1_geonameid LIMIT 1), ' > ', 
-                                g.alt_name )
-                                ELSE g.alt_name
-                            END as name
-                            FROM $wpdb->dt_geonames as g
-                            WHERE g.alt_name LIKE %s
-                            LIMIT 30;
-                            ",
-                            '%' . $wpdb->esc_like( $args['s'] ) . '%' ),
-                            ARRAY_A );
-                        }
-                    break;
-
                 case 'search_geonames_by_name':
                     $geonames = $wpdb->get_results( $wpdb->prepare( "
                         SELECT SQL_CALC_FOUND_ROWS
@@ -1190,6 +1196,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         END as label
                         FROM $wpdb->dt_geonames as g
                         WHERE g.alt_name LIKE %s
+                        ORDER BY g.country_code, CHAR_LENGTH(label)
                         LIMIT 30;
                         ",
                         '%' . $wpdb->esc_like( $args['search_query'] ) . '%' ),
@@ -1200,6 +1207,25 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         'geonames' => $geonames,
                         'total' => $total_rows
                     ];
+
+                case 'get_names_from_ids':
+                    if ( isset( $args['geoname_ids'] ) ){
+                        $ids = dt_array_to_sql( $args['geoname_ids'] );
+                        // phpcs:disable
+                        // WordPress.WP.PreparedSQL.NotPrepared
+                        $results = $wpdb->get_results("
+                            SELECT geonameid, name 
+                            FROM $wpdb->dt_geonames
+                            WHERE geonameid IN ( $ids ) 
+                        ", ARRAY_A );
+                        // phpcs:disable
+                        $prepared = [];
+                        foreach ( $results as $row ){
+                            $prepared[$row["geonameid"]] = $row["name"];
+                        }
+                        return $prepared;
+                    }
+                    break;
 
                 default:$results = []; break;
 

@@ -38,7 +38,7 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
                 LEFT JOIN {$wpdb->prefix}postmeta as gd ON gd.post_id=p.post_id AND gd.meta_key = 'start_date'
                 LEFT JOIN {$wpdb->prefix}postmeta as ge ON ge.post_id=p.post_id AND ge.meta_key = 'end_date'
                 LEFT JOIN {$wpdb->prefix}postmeta as ce ON ce.post_id=p.post_id AND ce.meta_key = 'last_modified' AND cs.meta_value = 'closed'
-            WHERE p.meta_key = 'geonameid'
+            WHERE p.meta_key = 'geonames'
         ");
 
         $this->test();
