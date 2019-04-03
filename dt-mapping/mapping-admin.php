@@ -248,6 +248,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         break;
 
                     case 'sub_location':
+
+                        if ( isset( $value ) ) {
+                            //@todo write the save action for the form data
+                        }
                         return true;
                         break;
                     default:
