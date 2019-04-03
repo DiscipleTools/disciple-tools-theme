@@ -702,34 +702,7 @@ function dt_custom_password_reset( $message, $key, $user_login, $user_data ){
 }
 
 
-/**
- * The the base site url with, including the subfolder if wp is installed in a subfolder.
- * @return string
- */
-function dt_get_url_path() {
-    if ( isset( $_SERVER["HTTP_HOST"] ) ) {
-        $url  = ( !isset( $_SERVER["HTTPS"] ) || @( $_SERVER["HTTPS"] != 'on' ) ) ? 'http://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) ) : 'https://'. sanitize_text_field( wp_unslash( $_SERVER["HTTP_HOST"] ) );
-        if ( isset( $_SERVER["REQUEST_URI"] ) ) {
-            $url .= sanitize_text_field( wp_unslash( $_SERVER["REQUEST_URI"] ) );
-        }
-    }
-    return trim( str_replace( get_site_url(), "", $url ), '/' );
-}
 
-/**
- * check is the current url is a rest api request
- * @return bool
- */
-function dt_is_rest_url() {
-    $is_rest = false;
-    if ( function_exists( 'rest_url' ) && !empty( $_SERVER['REQUEST_URI'] ) ) {
-        $rest_url_base = get_rest_url( get_current_blog_id(), '/' );
-        $rest_path = trim( parse_url( $rest_url_base, PHP_URL_PATH ), '/' );
-        $request_path = trim( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/' );
-        $is_rest = ( strpos( $request_path, $rest_path ) === 0 );
-    }
-    return $is_rest;
-}
 
 /**
  * @param $date
