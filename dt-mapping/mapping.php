@@ -1172,6 +1172,35 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         }
                     break;
 
+                case 'search_geonames_by_name':
+                    $geonames = $wpdb->get_results( $wpdb->prepare( "
+                        SELECT SQL_CALC_FOUND_ROWS
+                        g.geonameid,
+                        CASE 
+                            WHEN g.level = 'country' 
+                              THEN g.alt_name
+                            WHEN g.level = 'admin1' 
+                              THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
+                            g.alt_name ) 
+                            WHEN g.level = 'admin2' OR g.level = 'admin3'
+                              THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
+                            (SELECT a1.alt_name FROM $wpdb->dt_geonames AS a1 WHERE a1.geonameid = g.admin1_geonameid LIMIT 1), ' > ', 
+                            g.alt_name )
+                            ELSE g.alt_name
+                        END as label
+                        FROM $wpdb->dt_geonames as g
+                        WHERE g.alt_name LIKE %s
+                        LIMIT 30;
+                        ",
+                        '%' . $wpdb->esc_like( $args['search_query'] ) . '%' ),
+                        ARRAY_A );
+
+                    $total_rows = $wpdb->get_var( "SELECT found_rows();" );
+                    return [
+                        'geonames' => $geonames,
+                        'total' => $total_rows
+                    ];
+
                 default:$results = []; break;
 
             }
