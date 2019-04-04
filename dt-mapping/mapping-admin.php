@@ -156,8 +156,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 return;
             }
             // drill down tool
-//            wp_enqueue_script( 'typeahead-jquery', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
-//            wp_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
+            wp_enqueue_script( 'typeahead-jquery', get_template_directory_uri() . '/dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
+            wp_enqueue_style( 'typeahead-jquery-css', get_template_directory_uri() . '/dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
 
             wp_register_script( 'lodash', 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js', false, '4.17.11' );
             wp_enqueue_script( 'lodash' );
@@ -998,6 +998,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <tbody>
                 <tr>
                     <td>
+                        <input class="js-typeahead-location" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <?php DT_Mapping_Module::instance()->drill_down_input( 'sublocation' ) ?>
                     </td>
                 </tr>
@@ -1016,6 +1021,57 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </table>
 
             <script>
+                function typeLocationSearch() {
+                    return {
+                        locations: {
+                            display: "name",
+                            ajax: {
+                                url: `<?php echo esc_url_raw( rest_url() )  ?>dt/v1/mapping_module/typeahead`,
+                                data: {
+                                    s: "{{query}}"
+                                },
+                                beforeSend: function (xhr) {
+                                    xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ) ?>' );
+                                },
+                                callback: {
+                                    done: function (data) {
+                                        return data
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                jQuery.typeahead({
+                    input: '.js-typeahead-location',
+                    minLength: 0,
+                    accent: true,
+                    searchOnFocus: true,
+                    maxItem: 20,
+                    template: function (query, item) {
+                        if (item.ID === "new-item"){
+                            return "Create new location"
+                        }
+                        return `<span>${_.escape(item.name)}</span>`
+                    },
+                    source: typeLocationSearch(),
+                    display: "name",
+                    templateValue: "{{name}}",
+                    dynamic: true,
+                    callback: {
+                        onClick: function(node, a, item, event){
+                            console.log(item)
+                        },
+                        onResult: function (node, query, result, resultCount) {
+                            console.log(result)
+                        },
+                        onHideLayout: function () {
+                           console.log('onHideLayout')
+                        }
+                    }
+                });
+
+
                 window.DRILLDOWN.sublocation = function(  geonameid ) {
                     let list_results = jQuery('#list_results')
                     let current_subs = jQuery('#current_subs')

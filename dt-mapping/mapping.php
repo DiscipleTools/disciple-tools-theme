@@ -434,6 +434,10 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $params = $request->get_params();
             return DT_Mapping_Module_Admin::instance()->process_rest_edits( $params );
         }
+        public function typeahead_endpoint( WP_REST_Request $request ) {
+            $params = $request->get_params();
+            return $this->query( 'typeahead', [ 's' => 'Tun'] );
+        }
 
         public function search_geonames_by_name( WP_REST_Request $request ){
             if ( !current_user_can( 'read_location' )){
