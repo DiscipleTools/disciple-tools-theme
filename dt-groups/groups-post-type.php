@@ -379,11 +379,10 @@ class Disciple_Tools_Groups_Post_Type
             'type'        => 'boolean',
             'default'     => false,
         ];
-        $fields['geonameid'] = [
-            'name'        => __( 'Geonameid', 'disciple_tools' ),
-            'type'        => 'text',
-            'default'     => '',
-            'hidden'      => true
+        $fields['geonames'] = [
+            'name'        => __( 'Locations', 'disciple_tools' ),
+            'type'        => 'location',
+            'default'     => [],
         ];
 
 

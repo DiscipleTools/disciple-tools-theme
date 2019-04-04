@@ -110,6 +110,9 @@ window.TYPEAHEADS = {
                     },
                     callback: {
                         done: function (data) {
+                            if ( typeof typeaheadTotals !== "undefined" ){
+                               typeaheadTotals.field = data.total
+                            }
                             return data.posts
                         }
                     }
@@ -162,7 +165,7 @@ window.TYPEAHEADS = {
     typeaheadHelpText : function (resultCount, query, result){
         let text = "";
         if (result.length > 0 && result.length < resultCount) {
-            text = `Showing <strong>${result.length}</strong> of <strong>${resultCount}</strong>(${query ? 'elements matching ' + query : ''})`
+            text = `Showing <strong>${result.length}</strong> of <strong>${resultCount}</strong>${query ? ' (elements matching ' + query + ')': ''}`
         } else if (result.length > 0 && query) {
             text = `Showing <strong>${result.length}</strong> items matching ${query}`;
         } else if (result.length > 0) {

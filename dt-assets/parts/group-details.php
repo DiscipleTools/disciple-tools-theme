@@ -100,26 +100,13 @@
     <hr />
 
     <div class="display-fields grid-x grid-margin-x">
+        <!-- Geonames -->
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
-
             <div class="section-subheader">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                <?php esc_html_e( 'Locations', 'disciple_tools' )?>
+                <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
             </div>
-            <ul class="locations-list details-list">
-                <?php
-                foreach ($group["locations"] ?? [] as $value){
-                    ?>
-                    <li class="<?php echo intval( $value->ID ); ?>">
-                        <?php echo esc_html( $value->post_title ); ?>
-                    </li>
-                    <?php
-                }
-                if (sizeof( $group["locations"] ) === 0){
-                    ?> <li id="no-locations"><?php esc_html_e( "No location set", 'disciple_tools' ) ?></li><?php
-                }
-                ?>
-            </ul>
+            <ul class="geonames-list"></ul>
         </div>
         <div class="xlarge-4 large-6 medium-6 small-12 cell">
             <div class="section-subheader">
@@ -224,16 +211,24 @@
             </ul>
         </div>
 
-        <!-- Geocoding -->
         <div class="grix-x">
             <div class="section-subheader cell">
                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                <?php esc_html_e( 'Primary Location', 'disciple_tools' ) ?>
+                <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
             </div>
-            <div class="locations">
-                <?php
-                DT_Mapping_Module::instance()->drill_down_input( 'edit_group_geocodeid', $group['geonameid'] ?? null, $group['ID'] );
-                ?>
+            <div class="geonames">
+                <var id="geonames-result-container" class="result-container"></var>
+                <div id="geonames_t" name="form-geonames" class="scrollable-typeahead typeahead-margin-when-active">
+                    <div class="typeahead__container">
+                        <div class="typeahead__field">
+                            <span class="typeahead__query">
+                                <input class="js-typeahead-geonames"
+                                       name="geonames[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
+                                       autocomplete="off">
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -281,27 +276,6 @@
             </div>
         </div>
 
-        <!-- Locations -->
-        <div class="grix-x">
-            <div class="section-subheader cell">
-                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                <?php esc_html_e( 'Locations', 'disciple_tools' ) ?>
-            </div>
-            <div class="locations">
-                <var id="locations-result-container" class="result-container"></var>
-                <div id="locations_t" name="form-locations" class="scrollable-typeahead typeahead-margin-when-active">
-                    <div class="typeahead__container">
-                        <div class="typeahead__field">
-                            <span class="typeahead__query">
-                                <input class="js-typeahead-locations"
-                                       name="locations[query]" placeholder="<?php esc_html_e( "Search Locations", 'disciple_tools' ) ?>"
-                                       autocomplete="off">
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <div>
         <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">

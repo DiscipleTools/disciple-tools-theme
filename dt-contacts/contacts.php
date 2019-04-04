@@ -371,7 +371,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     private static function parse_multi_select_fields( $contact_id, $fields, $existing_contact = null ){
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         foreach ( $fields as $field_key => $field ){
-            if ( isset( $contact_fields[$field_key] ) && $contact_fields[$field_key]["type"] === "multi_select" ){
+            if ( isset( $contact_fields[$field_key] ) && ( $contact_fields[$field_key]["type"] === "multi_select" || $contact_fields[$field_key]["type"] === "location" ) ){
                 if ( !isset( $field["values"] )){
                     return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key );
                 }
@@ -668,7 +668,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $value = strtotime( $value );
                 }
 
-                if ( $field_type && $field_type !== "multi_select" ){
+                if ( $field_type && $field_type !== "multi_select" && $field_type !== "location" ){
                     update_post_meta( $contact_id, $field_id, $value );
                 }
             }
@@ -1390,11 +1390,20 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $fields[ $key ] = $value[0] === "1";
             } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'array' ){
                 $fields[ $key ] = maybe_unserialize( $value[0] );
-            } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'date' ){
+            } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'date' ) {
                 $fields[ $key ] = [
                     "timestamp" => $value[0],
                     "formatted" => dt_format_date( $value[0] ),
                 ];
+            } else if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]['type'] === 'location' ){
+                $names = DT_Mapping_Module::instance()->query( "get_names_from_ids", [ "geoname_ids" => $value ] );
+                $fields[ $key ] = [];
+                foreach ( $names as $id => $name ){
+                    $fields[ $key ][] = [
+                        "id" => $id,
+                        "label" => $name
+                    ];
+                }
             } else {
                 $fields[ $key ] = $value[0];
             }
