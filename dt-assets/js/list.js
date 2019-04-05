@@ -493,6 +493,8 @@
         searchQuery[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID")
       }  if ( type === "multi_select" ){
         searchQuery[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "key")
+      } if ( type === "location" ){
+        searchQuery[field] = _.map(_.get(Typeahead[`.js-typeahead-${field}`], "items"), "ID")
       } else if ( type === "date" || field === "created_on" ) {
         searchQuery[field] = {}
         let start = $(`.dt_date_picker[data-field="${field}"][data-delimit="start"]`).val()
@@ -644,12 +646,12 @@
    */
 
   /**
-   * Locations
+   * geonames
    */
   let loadLocationTypeahead = ()=> {
-    if (!window.Typeahead['.js-typeahead-locations']) {
+    if (!window.Typeahead['.js-typeahead-geonames']) {
       $.typeahead({
-        input: '.js-typeahead-locations',
+        input: '.js-typeahead-geonames',
         minLength: 0,
         accent: true,
         searchOnFocus: true,
@@ -657,7 +659,7 @@
         template: function (query, item) {
           return `<span>${_.escape(item.name)}</span>`
         },
-        source: TYPEAHEADS.typeaheadSource('locations', 'dt/v1/locations/compact/'),
+        source: TYPEAHEADS.typeaheadSource('geonames', 'dt/v1/mapping_module/search_geonames_by_name/'),
         display: "name",
         templateValue: "{{name}}",
         dynamic: true,
@@ -666,7 +668,7 @@
           data: [],
           callback: {
             onCancel: function (node, item) {
-              $(`.current-filter[data-id="${item.ID}"].locations`).remove()
+              $(`.current-filter[data-id="${item.ID}"].geonames`).remove()
               _.pullAllBy(newFilterLabels, [{id: item.ID}], "id")
             }
           }
@@ -674,15 +676,15 @@
         callback: {
           onResult: function (node, query, result, resultCount) {
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
-            $('#locations-result-container').html(text);
+            $('#geonames-result-container').html(text);
           },
           onHideLayout: function () {
-            $('#locations-result-container').html("");
+            $('#geonames-result-container').html("");
           },
           onClick: function (node, a, item) {
-            let name = _.get(wpApiListSettings, `custom_fields_settings.locations.name`, 'locations')
-            newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "locations"})
-            selectedFilters.append(`<span class="current-filter locations" data-id="${item.ID}">${name}:${item.name}</span>`)
+            let name = _.get(wpApiListSettings, `custom_fields_settings.geonames.name`, 'geonames')
+            newFilterLabels.push({id: item.ID, name: `${name}:${item.name}`, field: "geonames"})
+            selectedFilters.append(`<span class="current-filter geonames" data-id="${item.ID}">${name}:${item.name}</span>`)
           }
         }
       });
@@ -982,6 +984,7 @@
       newFilterLabels = filter.labels
       let connectionTypeKeys = Object.keys(wpApiListSettings.connection_types)
       connectionTypeKeys.push("assigned_to")
+      connectionTypeKeys.push("geonames")
       newFilterLabels.forEach(label=>{
         selectedFilters.append(`<span class="current-filter ${label.field}" data-id="${label.id}">${label.name}</span>`)
         let type = _.get(wpApiListSettings, `custom_fields_settings.${label.field}.type`)

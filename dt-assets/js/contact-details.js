@@ -1182,14 +1182,11 @@ jQuery(document).ready(function($) {
     }
     let connections = [ "people_groups", "geonames" ]
     connections.forEach(connection=>{
-      console.log(connection);
-      console.log(contact.connection);
       let htmlField = $(`.${connection}-list`).empty()
       if ( !contact[connection] || contact[connection].length === 0 ){
         htmlField.append(`<li id="no-${connection}">${contactsDetailsWpApiSettings.translations["not-set"][connection]}</li>`)
       } else {
         contact[connection].forEach(field=>{
-          console.log(field);
           htmlField.append(`<li class="details-list ${_.escape(field.key || field.id)}">
             ${_.escape(field.post_title || field.label)}
               <img id="${_.escape(field.ID)}-verified" class="details-status" ${!field.verified ? 'style="display:none"': ""} src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/verified.svg"/>

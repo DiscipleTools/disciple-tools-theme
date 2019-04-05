@@ -369,7 +369,11 @@ class Disciple_Tools_Contacts_Endpoints
      */
     private function add_related_info_to_contacts( array $contacts ): array
     {
-        p2p_type( 'contacts_to_locations' )->each_connected( $contacts, [], 'locations' );
+        $contact_ids = array_map(
+            function( $c ){ return $c->ID; },
+            $contacts
+        );
+        $geonames = DT_Mapping_Module::instance()->query( "get_geoname_ids_and_names_for_post_ids", [ "post_ids" => $contact_ids ] );
         p2p_type( 'contacts_to_groups' )->each_connected( $contacts, [], 'groups' );
         $rv = [];
         foreach ( $contacts as $contact ) {
@@ -381,8 +385,8 @@ class Disciple_Tools_Contacts_Endpoints
             $contact_array['permalink'] = get_post_permalink( $contact->ID );
             $contact_array['overall_status'] = get_post_meta( $contact->ID, 'overall_status', true );
             $contact_array['locations'] = [];
-            foreach ( $contact->locations as $location ) {
-                $contact_array['locations'][] = $location->post_title;
+            foreach ( $geonames[$contact->ID] as $location ) {
+                $contact_array['locations'][] = $location["name"];
             }
             $contact_array['groups'] = [];
             foreach ( $contact->groups as $group ) {
