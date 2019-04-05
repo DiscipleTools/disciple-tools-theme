@@ -456,7 +456,14 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             if ( isset( $params['s'] ) ) {
                 $search = $params['s'];
             }
-            $locations = $this->query( "search_geonames_by_name", [ "search_query" => $search ] );
+            $filter = "all";
+            if ( isset( $params['filter'] ) ){
+                $filter = $params['filter'];
+            }
+            $locations = $this->query( "search_geonames_by_name", [
+                "search_query" => $search,
+                "filter" => $filter
+            ] );
 
             $prepared = [];
             foreach ( $locations["geonames"] as $location ){
@@ -1192,6 +1199,16 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     break;
 
                 case 'search_geonames_by_name':
+                    $focus_search_sql = "";
+                    if ( isset( $args['filter'] ) && $args["filter"] == "focus" ){
+                        $default_map_settings = $this->default_map_settings();
+                        if ( $default_map_settings["type"] === "country" && sizeof( $default_map_settings["children"] ) > 0 ){
+                            $joined_geoname_ids = dt_array_to_sql( $default_map_settings["children"] );
+                            $focus_search_sql = "AND g.country_geonameid IN ( $joined_geoname_ids ) ";
+                        }
+                    }
+                    // phpcs:disable
+                    // WordPress.WP.PreparedSQL.NotPrepared
                     $geonames = $wpdb->get_results( $wpdb->prepare( "
                         SELECT SQL_CALC_FOUND_ROWS
                         g.geonameid,
@@ -1209,11 +1226,13 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         END as label
                         FROM $wpdb->dt_geonames as g
                         WHERE g.alt_name LIKE %s
+                        $focus_search_sql
                         ORDER BY g.country_code, CHAR_LENGTH(label)
                         LIMIT 30;
-                        ", '%' . $wpdb->esc_like( $args['search_query'] ) . '%' ),
+                        ", '%' . $wpdb->esc_like( $args['search_query'] ?? "" ) . '%' ),
                         ARRAY_A
                     );
+                    // phpcs:enable
 
                     $total_rows = $wpdb->get_var( "SELECT found_rows();" );
                     return [

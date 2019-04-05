@@ -131,7 +131,37 @@ jQuery(document).ready(function($) {
         template: function (query, item) {
           return `<span>${_.escape(item.name)}</span>`
         },
-        source: TYPEAHEADS.typeaheadSource('geonames', 'dt/v1/mapping_module/search_geonames_by_name/'),
+        dropdownFilter: [{
+          key: 'group',
+          value: 'focus',
+          template: 'Regions of Focus',
+          all: 'All Locations'
+        }],
+        source: {
+          focus: {
+            display: "name",
+            ajax: {
+              url: wpApiShare.root + 'dt/v1/mapping_module/search_geonames_by_name',
+              data: {
+                s: "{{query}}",
+                filter: function () {
+                  return _.get(window.Typeahead['.js-typeahead-geonames'].filters.dropdown, 'value', 'all')
+                }
+              },
+              beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+              },
+              callback: {
+                done: function (data) {
+                  if (typeof typeaheadTotals !== "undefined") {
+                    typeaheadTotals.field = data.total
+                  }
+                  return data.posts
+                }
+              }
+            }
+          }
+        },
         display: "name",
         templateValue: "{{name}}",
         dynamic: true,
@@ -160,6 +190,13 @@ jQuery(document).ready(function($) {
             event.preventDefault()
             this.hideLayout();
             this.resetInput();
+          },
+          onReady(){
+            this.filters.dropdown = {key: "group", value: "focus", template: "Regions of Focus"}
+            this.container
+              .removeClass("filter")
+              .find("." + this.options.selector.filterButton)
+              .html("Regions of Focus");
           },
           onResult: function (node, query, result, resultCount) {
             resultCount = typeaheadTotals.geonames
