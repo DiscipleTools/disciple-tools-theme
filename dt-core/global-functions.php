@@ -107,5 +107,42 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
         return implode( ',', $values );
     }
+
+
+    /**
+     * Plugin support
+     */
+
+    /**
+     * @param $message string. The error the message to display
+     * @param $namespace string. The key use to dismiss the message
+     */
+    function dt_hook_admin_notice( $message, $namespace) {
+        // Check if it's been dismissed...
+        if ( ! get_option( 'dismissed-'. $namespace, false ) ) {
+            // multiple dismissible notice states ?>
+            <div class="notice notice-error notice-<?php echo esc_html( $namespace ) ?> is-dismissible" data-notice="<?php echo esc_html( $namespace ) ?>">
+                <p>
+                    <?php echo esc_html( $message ) ?>
+                </p>
+            </div>
+            <script>
+                jQuery(function($) {
+                    $( document ).on( 'click', '.notice-<?php echo esc_html( $namespace ) ?> .notice-dismiss', function () {
+                        let type = $( this ).closest( '.notice-<?php echo esc_html( $namespace ) ?>' ).data( 'notice' );
+                        $.ajax( ajaxurl,
+                            {
+                                type: 'POST',
+                                data: {
+                                    action: 'dismissed_notice_handler',
+                                    type: type,
+                                }
+                            } );
+                    } );
+                });
+            </script>
+
+        <?php }
+    }
 }
 
