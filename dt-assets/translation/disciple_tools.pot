@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Disciple Tools\n"
-"POT-Creation-Date: 2019-03-22 16:59+0100\n"
+"POT-Creation-Date: 2019-04-06 15:21+0100\n"
 "PO-Revision-Date: 2018-01-09 14:10-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -75,24 +75,24 @@ msgstr ""
 msgid "New"
 msgstr ""
 
-#: archive-contacts.php:33 dt-assets/functions/enqueue-scripts.php:277
-#: dt-assets/functions/enqueue-scripts.php:281
+#: archive-contacts.php:33 dt-assets/functions/enqueue-scripts.php:276
+#: dt-assets/functions/enqueue-scripts.php:280
 msgid "Dispatch needed"
 msgstr ""
 
-#: archive-contacts.php:39 dt-assets/functions/enqueue-scripts.php:276
+#: archive-contacts.php:39 dt-assets/functions/enqueue-scripts.php:275
 msgid "Waiting to be accepted"
 msgstr ""
 
-#: archive-contacts.php:44 dt-assets/functions/enqueue-scripts.php:278
+#: archive-contacts.php:44 dt-assets/functions/enqueue-scripts.php:277
 msgid "Update needed"
 msgstr ""
 
-#: archive-contacts.php:49 dt-assets/functions/enqueue-scripts.php:280
+#: archive-contacts.php:49 dt-assets/functions/enqueue-scripts.php:279
 msgid "Contact attempt needed"
 msgstr ""
 
-#: archive-contacts.php:54 dt-assets/functions/enqueue-scripts.php:279
+#: archive-contacts.php:54 dt-assets/functions/enqueue-scripts.php:278
 msgid "Meeting scheduled"
 msgstr ""
 
@@ -130,15 +130,15 @@ msgstr ""
 msgid "All contacts"
 msgstr ""
 
-#: archive-contacts.php:143 dt-assets/functions/enqueue-scripts.php:272
+#: archive-contacts.php:143 dt-assets/functions/enqueue-scripts.php:271
 msgid "Assigned to me"
 msgstr ""
 
-#: archive-contacts.php:152 dt-assets/functions/enqueue-scripts.php:273
+#: archive-contacts.php:152 dt-assets/functions/enqueue-scripts.php:272
 msgid "Subassigned to me"
 msgstr ""
 
-#: archive-contacts.php:161 dt-assets/functions/enqueue-scripts.php:274
+#: archive-contacts.php:161 dt-assets/functions/enqueue-scripts.php:273
 msgid "Shared with me"
 msgstr ""
 
@@ -160,7 +160,7 @@ msgid "Assigned To"
 msgstr ""
 
 #: archive-contacts.php:236 archive-groups.php:198
-#: dt-assets/functions/enqueue-scripts.php:285
+#: dt-assets/functions/enqueue-scripts.php:284
 msgid "Creation Date"
 msgstr ""
 
@@ -211,7 +211,7 @@ msgid "Cancel"
 msgstr ""
 
 #: archive-contacts.php:342 archive-groups.php:297
-#: dt-assets/functions/enqueue-scripts.php:268
+#: dt-assets/functions/enqueue-scripts.php:267
 #: dt-assets/parts/contact-details.php:465
 #: dt-assets/parts/group-details.php:298 template-settings.php:500
 msgid "Save"
@@ -308,138 +308,138 @@ msgstr ""
 msgid "You don't have any notifications"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:156
+#: dt-assets/functions/enqueue-scripts.php:155
 msgid "Created record at {}"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:160
+#: dt-assets/functions/enqueue-scripts.php:159
 #: dt-locations/locations-post-type.php:472
 msgid "edit"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:161
+#: dt-assets/functions/enqueue-scripts.php:160
 msgid "delete"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:174
+#: dt-assets/functions/enqueue-scripts.php:173
 #: dt-assets/parts/contact-details.php:272
 #: dt-assets/parts/contact-details.php:371
 msgid "No source set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:175
+#: dt-assets/functions/enqueue-scripts.php:174
 #: dt-assets/parts/group-details.php:119
 msgid "No location set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:176
+#: dt-assets/functions/enqueue-scripts.php:175
 msgid "No leaders set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:177
+#: dt-assets/functions/enqueue-scripts.php:176
 #: dt-assets/parts/group-details.php:138
 msgid "No people group set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:178
+#: dt-assets/functions/enqueue-scripts.php:177
 msgid "No email set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:179
+#: dt-assets/functions/enqueue-scripts.php:178
 msgid "No phone set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:180
+#: dt-assets/functions/enqueue-scripts.php:179
 #: dt-assets/parts/group-details.php:154
 msgid "No address set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:181
+#: dt-assets/functions/enqueue-scripts.php:180
 msgid "None set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:182
+#: dt-assets/functions/enqueue-scripts.php:181
 msgid "No sub-assigned set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:183
+#: dt-assets/functions/enqueue-scripts.php:182
 #: dt-assets/parts/contact-details.php:232
 msgid "No age set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:184
+#: dt-assets/functions/enqueue-scripts.php:183
 #: dt-assets/parts/contact-details.php:251
 msgid "No gender set"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:186
+#: dt-assets/functions/enqueue-scripts.php:185
 msgid "Valid"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:187
+#: dt-assets/functions/enqueue-scripts.php:186
 msgid "Invalid"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:188
+#: dt-assets/functions/enqueue-scripts.php:187
 msgid "Unconfirmed"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:189
+#: dt-assets/functions/enqueue-scripts.php:188
 msgid "Delete item"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:190
+#: dt-assets/functions/enqueue-scripts.php:189
 msgid "email"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:191
+#: dt-assets/functions/enqueue-scripts.php:190
 msgid "Transfer failed. Check site-to-site configuration."
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:269
+#: dt-assets/functions/enqueue-scripts.php:268
 #: dt-assets/parts/contact-details.php:59 dt-assets/parts/group-details.php:27
 #: dt-core/admin/multi-role/functions-admin.php:38 template-settings.php:57
 #: template-settings.php:387
 msgid "Edit"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:270
+#: dt-assets/functions/enqueue-scripts.php:269
 #: dt-assets/parts/loop-activity-comment.php:120
 msgid "Delete"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:271
+#: dt-assets/functions/enqueue-scripts.php:270
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:275
+#: dt-assets/functions/enqueue-scripts.php:274
 #, php-format
 msgctxt "Contacts or Groups"
 msgid "All %s"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:282
+#: dt-assets/functions/enqueue-scripts.php:281
 msgid "start"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:283
+#: dt-assets/functions/enqueue-scripts.php:282
 msgid "end"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:284
+#: dt-assets/functions/enqueue-scripts.php:283
 msgid "Sorting By"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:286
+#: dt-assets/functions/enqueue-scripts.php:285
 msgid "Date Modified"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:288
+#: dt-assets/functions/enqueue-scripts.php:287
 msgid "Showing 0 to 0 of 0 entries"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:289
+#: dt-assets/functions/enqueue-scripts.php:288
 msgctxt "just copy `_MAX_`"
 msgid "(filtered from _MAX_ total entries)"
 msgstr ""
@@ -1511,24 +1511,24 @@ msgstr ""
 msgid "Confirm Transfer"
 msgstr ""
 
-#: dt-contacts/contacts-transfer.php:177
+#: dt-contacts/contacts-transfer.php:180
 msgid "Unknown error."
 msgstr ""
 
-#: dt-contacts/contacts-transfer.php:186
+#: dt-contacts/contacts-transfer.php:189
 msgid "Minor transfer error."
 msgstr ""
 
-#: dt-contacts/contacts-transfer.php:323 dt-contacts/contacts-transfer.php:341
-#: dt-contacts/contacts-transfer.php:358
+#: dt-contacts/contacts-transfer.php:326 dt-contacts/contacts-transfer.php:344
+#: dt-contacts/contacts-transfer.php:361
 msgid "Transfer Bot"
 msgstr ""
 
-#: dt-contacts/contacts-transfer.php:343
+#: dt-contacts/contacts-transfer.php:346
 msgid "Contact transferred from site"
 msgstr ""
 
-#: dt-contacts/contacts-transfer.php:350
+#: dt-contacts/contacts-transfer.php:353
 msgid "ALERT: Possible duplicate contact from a previous transfer."
 msgstr ""
 
@@ -2642,7 +2642,11 @@ msgstr ""
 msgid "Click here to view or reply"
 msgstr ""
 
-#: dt-notifications/notifications-email.php:96
+#: dt-notifications/notifications-email.php:92
+msgid "Do not reply directly to this email."
+msgstr ""
+
+#: dt-notifications/notifications-email.php:97
 #, php-format
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
@@ -2763,15 +2767,15 @@ msgstr ""
 msgid "Is this user already a contact in Disciple.Tools?"
 msgstr ""
 
-#: dt-users/users.php:573
-msgid "Username already exists"
-msgstr ""
-
-#: dt-users/users.php:577
+#: dt-users/users.php:585
 msgid "Email already exists"
 msgstr ""
 
-#: dt-users/users.php:601
+#: dt-users/users.php:590
+msgid "Username already exists"
+msgstr ""
+
+#: dt-users/users.php:617
 msgid "View contact record"
 msgstr ""
 
@@ -2779,13 +2783,13 @@ msgstr ""
 msgid "Updated Needed"
 msgstr ""
 
-#: functions.php:517
+#: functions.php:466
 msgid ""
 "Disciple Tools theme requires PHP version 7.0 or greater. Your current "
 "version is:"
 msgstr ""
 
-#: functions.php:519
+#: functions.php:468
 msgid "Please upgrade PHP or uninstall this theme"
 msgstr ""
 

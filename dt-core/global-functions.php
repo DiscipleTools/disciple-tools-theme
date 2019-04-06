@@ -100,5 +100,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
         return trim( str_replace( get_site_url(), "", $url ), '/' );
     }
+
+    function dt_array_to_sql( $values ) {
+        foreach ( $values as &$val ) {
+            $val = "'" . esc_sql( trim( $val ) ) . "'";
+        }
+        return implode( ',', $values );
+    }
 }
 

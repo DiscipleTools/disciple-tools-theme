@@ -141,7 +141,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.18.1';
+            $this->version = '0.19.0';
             $this->migration_number = 22;
 
 
