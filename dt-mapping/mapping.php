@@ -1260,7 +1260,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     break;
 
                 case 'get_geoname_ids_and_names_for_post_ids':
-                    if ( isset( $args['post_ids'] ) ){
+                    if ( !empty( $args['post_ids'] ) ){
+                        $prepared = [];
+                        foreach ( $args['post_ids'] as $post_id ) {
+                            $prepared[$post_id] = [];
+                        }
                         $joined_post_ids = dt_array_to_sql( $args['post_ids'] );
                         // phpcs:disable
                         // WordPress.WP.PreparedSQL.NotPrepared
@@ -1270,7 +1274,9 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                             WHERE meta_key = 'geonames'
                             AND post_id IN ( $joined_post_ids )
                         ", ARRAY_A );
-
+                        if ( empty( $geonames ) ){
+                            return $prepared;
+                        }
                         $geoname_ids = array_map( function( $g ){ return $g["meta_value"]; }, $geonames );
                         $joined_geoname_ids = dt_array_to_sql( $geoname_ids );
                         $geoname_id_names = $wpdb->get_results("
@@ -1282,10 +1288,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         $mapped_geoname_id_to_name = [];
                         foreach ( $geoname_id_names as $geoname ){
                             $mapped_geoname_id_to_name[$geoname["geonameid"]] = $geoname["name"];
-                        }
-                        $prepared = [];
-                        foreach ( $args['post_ids'] as $post_id ) {
-                            $prepared[$post_id] = [];
                         }
                         foreach ( $geonames as $geoname ){
                             $prepared[$geoname["post_id"]][] = [
