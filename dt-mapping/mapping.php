@@ -1706,7 +1706,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
         public function get_post_locations( $post_id ) {
             $list = [];
-            $geoname_list = get_post_meta( $post_id, 'geonameid' );
+            $geoname_list = get_post_meta( $post_id, 'geonames' );
             if ( !empty( $geoname_list ) ) {
                 $list = $this->query( 'get_by_geonameid_list', [ 'list' => $geoname_list ] );
             }

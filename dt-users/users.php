@@ -655,9 +655,9 @@ class Disciple_Tools_Users
         }
         $corresponds_to_contact = self::get_contact_for_user( $user_id );
         if ( $corresponds_to_contact ){
-            $other_values = get_post_meta( $corresponds_to_contact, 'geonameid' );
+            $other_values = get_post_meta( $corresponds_to_contact, 'geonames' );
             if ( array_search( $geonameid, $other_values ) === false ) {
-                add_post_meta( $corresponds_to_contact, 'geonameid', $geonameid, false );
+                add_post_meta( $corresponds_to_contact, 'geonames', $geonameid, false );
                 return true;
             }
         }
@@ -670,7 +670,7 @@ class Disciple_Tools_Users
         }
         $corresponds_to_contact = self::get_contact_for_user( $user_id );
         if ( $corresponds_to_contact ){
-            delete_post_meta( $corresponds_to_contact, 'geonameid', $geonameid );
+            delete_post_meta( $corresponds_to_contact, 'geonames', $geonameid );
             return true;
         }
         return false;
