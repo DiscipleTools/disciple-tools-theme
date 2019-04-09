@@ -13,27 +13,15 @@ class DT_Mapping_Module_Migration_0000 extends DT_Mapping_Module_Migration {
      * @throws \Exception  Got error when creating table $name.
      */
     public function up() {
-        $ms_migration_number = false;
-        if ( is_multisite() ) {
-            $ms_migration_number = get_site_option( 'dt_mapping_module_multisite_migration_number', true );
-        }
-
-        /* if single site, or ms migration is not set, or ms migration is less than this migration */
-        if ( ! is_multisite() || $ms_migration_number === false || $ms_migration_number < 0 ) {
-            /**
-             * Install tables
-             */
-            global $wpdb;
-            $expected_tables = $this->get_expected_tables();
-            foreach ( $expected_tables as $name => $table) {
-                $rv = $wpdb->query( $table ); // WPCS: unprepared SQL OK
-                if ( $rv == false ) {
-                    dt_write_log( "Got error when creating table $name: $wpdb->last_error" );
-                }
-            }
-
-            if ( is_multisite() ) {
-                update_site_option( 'dt_mapping_module_multisite_migration_number', 0 );
+        /**
+         * Install tables
+         */
+        global $wpdb;
+        $expected_tables = $this->get_expected_tables();
+        foreach ( $expected_tables as $name => $table) {
+            $rv = $wpdb->query( $table ); // WPCS: unprepared SQL OK
+            if ( $rv == false ) {
+                dt_write_log( "Got error when creating table $name: $wpdb->last_error" );
             }
         }
     }
@@ -42,14 +30,12 @@ class DT_Mapping_Module_Migration_0000 extends DT_Mapping_Module_Migration {
      * @throws \Exception  Got error when dropping table $name.
      */
     public function down() {
-        if ( ! is_multisite() ) {
-            global $wpdb;
-            $expected_tables = $this->get_expected_tables();
-            foreach ( $expected_tables as $name => $table ) {
-                $rv = $wpdb->query( "DROP TABLE `{$name}`" ); // WPCS: unprepared SQL OK
-                if ( $rv == false ) {
-                    throw new Exception( "Got error when dropping table $name: $wpdb->last_error" );
-                }
+        global $wpdb;
+        $expected_tables = $this->get_expected_tables();
+        foreach ( $expected_tables as $name => $table ) {
+            $rv = $wpdb->query( "DROP TABLE `{$name}`" ); // WPCS: unprepared SQL OK
+            if ( $rv == false ) {
+                throw new Exception( "Got error when dropping table $name: $wpdb->last_error" );
             }
         }
     }
