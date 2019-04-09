@@ -1,5 +1,4 @@
 /* global jQuery:false, moment:false, _:false, commentsSettings:false */
-const { __, _x, _n, _nx } = wp.i18n;
 jQuery(document).ready(function($) {
 
   let commentPostedEvent = document.createEvent('Event');

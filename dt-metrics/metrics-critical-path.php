@@ -40,7 +40,7 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
 
     public function add_menu( $content ) {
         $content .= '
-            <li><a href="' . site_url( '/metrics/critical-path/' ) . '#project_critical_path2" onclick="project_critical_path2()">' . esc_html__( 'Critical Path', 'disciple_tools' ) . '</a></li>
+            <li><a href="' . site_url( '/metrics/critical-path/' ) . '#project_critical_path" onclick="project_critical_path()">' . esc_html__( 'Critical Path', 'disciple_tools' ) . '</a></li>
             ';
 //            <li><a href="">' . esc_html__( 'Critical Path', 'disciple_tools' ) . '</a>
 //                <ul class="menu vertical nested" id="path-menu" aria-expanded="true">
@@ -82,12 +82,6 @@ class Disciple_Tools_Metrics_Critical_Path extends Disciple_Tools_Metrics_Hooks_
          */
 
         return [
-            'translations'  => [
-                'title_critical_path' => __( 'Critical Path', 'disciple_tools' ),
-                'label_select_year' => __( 'Select All time or a specific year to display', 'disciple_tools' ),
-                'label_all_time' => __( 'All time', 'disciple_tools' ),
-            ],
-//            'critical_path' => self::chart_critical_path( dt_date_start_of_year(), dt_date_end_of_year() ),
             'cp' => self::critical_path_activity( dt_date_start_of_year(), time() )
         ];
     }

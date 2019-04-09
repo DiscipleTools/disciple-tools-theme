@@ -1,4 +1,3 @@
-const { __, _x, _n, _nx } = wp.i18n;
 jQuery(document).ready(function() {
   if( '#project_seeker_path' === window.location.hash  ) {
     project_seeker_path()
@@ -27,7 +26,6 @@ function numberWithCommas(x) {
 function project_seeker_path() {
   let chartDiv = jQuery('#chart')
   let sourceData = dtMetricsProject.data
-  let translations = dtMetricsProject.data.translations
 
   chartDiv.empty().html(`
     <div class="section-header">${ __( 'Seeker path', 'disciple_tools' ) }</div>
@@ -85,7 +83,6 @@ function project_seeker_path() {
 function project_milestones() {
   let chartDiv = jQuery('#chart')
   let sourceData = dtMetricsProject.data
-  let translations = dtMetricsProject.data.translations
 
   chartDiv.empty().html(`
     <div class="section-header">${ __( 'Milestones', 'disciple_tools' ) }</div>
@@ -275,13 +272,13 @@ function show_sources_overview() {
       // Create series
       for (let status of status_names) {
         let series = chart.series.push(new am4charts.ColumnSeries());
-        if (localizedObject.overall_status_settings.default[status].color) {
+        if (_.get(localizedObject.overall_status_settings.default[status], "color" )) {
           series.columns.template.fill = am4core.color(localizedObject.overall_status_settings.default[status].color);
         }
         series.stroke = am4core.color("#000000");
         series.dataFields.valueX = "status_" + status;
         series.dataFields.categoryY = "translated_source";
-        series.name = localizedObject.overall_status_settings.default[status].label || status;
+        series.name = _.get( localizedObject.overall_status_settings.default[status], "label", status );
         series.tooltipText = "{name}: [bold]{valueX}[/]";
         series.stacked = true;
       }

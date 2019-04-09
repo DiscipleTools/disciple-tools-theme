@@ -127,6 +127,8 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
         wp_enqueue_script( 'dt_metrics_workers_script', get_stylesheet_directory_uri() . '/dt-metrics/metrics-workers.js', [
             'jquery',
             'jquery-ui-core',
+            'amcharts-core',
+            'amcharts-charts',
         ], filemtime( get_theme_file_path() . '/dt-metrics/metrics-workers.js' ), true );
 
         wp_localize_script(
@@ -144,21 +146,6 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
     public function workers() {
         return [
-            'translations' => [
-                'title_activity' => __( 'Workers Activity', 'disciple_tools' ),
-                'title_recent_activity' => __( 'Worker System Engagement for the Last 30 Days', 'disciple_tools' ),
-                'title_response' => __( 'Follow-up Pace', 'disciple_tools' ),
-                'label_total_workers' => __( 'Total Workers', 'disciple_tools' ),
-                'label_total_multipliers' => __( 'Multipliers', 'disciple_tools' ),
-                'label_total_dispatchers' => __( 'Dispatchers', 'disciple_tools' ),
-                'label_total_administrators' => __( 'Admins', 'disciple_tools' ),
-                'label_total_strategists' => __( 'Strategists', 'disciple_tools' ),
-                'label_contacts_per_user' => __( 'Contact Progress per Worker', 'disciple_tools' ),
-                'label_least_active' => __( 'Least Active', 'disciple_tools' ),
-                'label_most_active' => __( 'Most Active', 'disciple_tools' ),
-                'label_select_year' => __( 'Select All time or a specific year to display', 'disciple_tools' ),
-                'label_all_time' => __( 'All time', 'disciple_tools' ),
-            ],
             'hero_stats' => $this->chart_user_hero_stats(),
             'recent_activity' => $this->chart_recent_activity(),
         ];
@@ -184,7 +171,6 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
 
     public function chart_recent_activity() {
         $chart = [];
-        $chart[] = [ 'Year', 'Worker Logins' ];
 
         $results = Disciple_Tools_Queries::instance()->query( 'recent_unique_logins' );
         if ( empty( $results ) ) {
@@ -210,7 +196,10 @@ class Disciple_Tools_Metrics_Users extends Disciple_Tools_Metrics_Hooks_Base
                 }
             }
 
-            $chart[] = [ date( 'M d', strtotime( $day ) ), (int) $total ];
+            $chart[] = [
+                'date' => date( 'M d', strtotime( $day ) ),
+                'value' => (int) $total
+            ];
         }
 
         return $chart;
