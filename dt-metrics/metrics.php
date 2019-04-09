@@ -32,7 +32,7 @@ class Disciple_Tools_Metrics
         $url_path = dt_get_url_path();
         if ( strpos( $url_path, "metrics" ) !== false ) {
 
-            add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_google' ], 10 );
+            add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ], 10 );
 
             // load basic charts
             require_once( get_template_directory() . '/dt-metrics/metrics-personal.php' );
@@ -45,17 +45,12 @@ class Disciple_Tools_Metrics
     }
 
     // Enqueue maps and charts for standard metrics
-    public function enqueue_google() {
+    public function enqueue_scripts() {
         wp_register_script( 'datepicker', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js', false );
         wp_enqueue_style( 'datepicker-css', 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css', array() );
 
-        /* phpcs:ignore WordPress.WP.EnqueuedResourceParameters */
-        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', [], false );
-        /* phpcs:ignore WordPress.WP.EnqueuedResourceParameters */
-//        wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . dt_get_option( 'map_key' ), array(), null, true );
-
-        wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/version/4.0.16/core.js', false, '4.0.16', true );
-        wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/version/4.0.16/charts.js', false, '4.0.16', true );
+        wp_register_script( 'amcharts-core', 'https://www.amcharts.com/lib/4/core.js', false, false, true );
+        wp_register_script( 'amcharts-charts', 'https://www.amcharts.com/lib/4/charts.js', false, false, true );
     }
 
     /**
@@ -185,28 +180,24 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         switch ( $type ) {
             case 'personal':
                 $results = self::query_my_contacts_progress( get_current_user_id() );
-
-                $chart[] = [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ];
-
                 foreach ( $results as $value ) {
-                    $chart[] = [ $value['label'], $value['count'], $value['count'] ];
+                    $chart[] = [
+                        'label' => $value['label'],
+                        'value' => $value['count']
+                    ];
                 }
                 break;
             case 'project':
-                $chart = self::query_project_contacts_progress();
-
+                $results = self::query_project_contacts_progress();
+                foreach ( $results as $value ) {
+                    $chart[] = [
+                        'label' => $value['label'],
+                        'value' => $value['value']
+                    ];
+                }
                 break;
             default:
-                $chart = [
-                    [ 'Step', 'Contacts', [ 'role' => 'annotation' ] ],
-                    [ 'Contact Attempt Needed', 0, 0 ],
-                    [ 'Contact Attempted', 0, 0 ],
-                    [ 'Contact Established', 0, 0 ],
-                    [ 'First Meeting Scheduled', 0, 0 ],
-                    [ 'First Meeting Complete', 0, 0 ],
-                    [ 'Ongoing Meetings', 0, 0 ],
-                    [ 'Being Coached', 0, 0 ],
-                ];
+                $chart = [];
                 break;
         }
 
@@ -223,27 +214,20 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         switch ( $type ) {
             case 'personal':
                 $results = self::query_my_group_types();
-                $chart[] = [ 'Group Type', 'Number' ];
                 foreach ( $results as $result ) {
-                    $label = $types[$result['type']]["label"] ?? $result['type'];
-                    $chart[] = [ $label, intval( $result['count'] ) ];
+                    $result["label"] = $types[$result['type']]["label"] ?? $result['type'];
+                    $chart[] = $result;
                 }
                 break;
             case 'project':
                 $results = self::query_project_group_types();
-                $chart[] = [ 'Group Type', 'Number' ];
                 foreach ( $results as $result ) {
-                    $label = $types[$result['type']]["label"] ?? $result['type'];
-                    $chart[] = [ $label, intval( $result['count'] ) ];
+                    $result["label"] = $types[$result['type']]["label"] ?? $result['type'];
+                    $chart[] = $result;
                 }
                 break;
             default:
-                $chart = [
-                    [ 'Group Type', 'Number' ],
-                    [ 'Pre-Group', 0 ],
-                    [ 'Group', 0 ],
-                    [ 'Church', 0 ],
-                ];
+                $chart = [];
                 break;
         }
 
@@ -275,34 +259,25 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
         }
 
         if ( $results ) {
-
+            $out_of = 0;
             if ( isset( $results[0]['out_of'] ) ) {
                 $out_of = $results[0]['out_of'];
             }
-
-            // Create rows from results
-            foreach ( $results as $result ) {
-                foreach ( $labels as $k_label => $v_label ) {
-                    if ( $k_label === $result['health_key'] ) {
-                        $value = intval( $result['out_of'] ) - intval( $result['count'] );
-                        $chart[] = [ $v_label, intval( $result['count'] ), intval( $value ), '' ];
-                        unset( $labels[ $k_label ] ); // remove established value from list
-                        break;
+            foreach ( $labels as $label_key => $label_value ) {
+                $row = [
+                    "label"      => $label_value,
+                    "practicing" => 0,
+                    "remaining"  => (int) $out_of
+                ];
+                foreach ( $results as $result ) {
+                    if ( $result['health_key'] === $label_key ) {
+                        $row["practicing"] = (int) $result["count"];
+                        $row["remaining"]  = intval( $result['out_of'] ) - intval( $result['count'] );
                     }
-                    $out_of = $result['out_of'];
                 }
+                $chart[] = $row;
             }
-        } else {
-            $out_of = 0;
         }
-
-        // Create remaining rows at full value
-        foreach ( $labels as $k_label => $v_label ) {
-            $chart[] = [ $v_label, 0, (int) $out_of, '' ];
-        }
-
-        array_unshift( $chart, [ 'Step', __( 'Practicing', 'disciple_tools' ), __( 'Not Practicing', 'disciple_tools' ), [ 'role' => 'annotation' ] ] ); // add top row
-
         return $chart;
     }
 
@@ -322,18 +297,17 @@ abstract class Disciple_Tools_Metrics_Hooks_Base
                 $generation_tree = [ "Generations", "Pre-Group", "Group", "Church", [ "role" => "Annotation" ] ];
                 break;
         }
-        $first_row = [ "Generations" ];
-        foreach ( $generation_tree[0] as $key => $label ){
-            if ( $key != "generation" && $key != "total" ){
-                if ( isset( $groups_fields["group_type"]["default"][$key]["label"] ) ){
-                    $first_row[] = $groups_fields["group_type"]["default"][$key]["label"];
-                } else {
-                    $first_row[] = $key;
-                }
-            }
-        }
-        $first_row[] = [ "role" => "Annotation" ];
-        return array_merge( [ $first_row ], $generation_tree );
+//        $first_row = [ "Generations" ];
+//        foreach ( $generation_tree[0] as $key => $label ){
+//            if ( $key != "generation" && $key != "total" ){
+//                if ( isset( $groups_fields["group_type"]["default"][$key]["label"] ) ){
+//                    $first_row[] = $groups_fields["group_type"]["default"][$key]["label"];
+//                } else {
+//                    $first_row[] = $key;
+//                }
+//            }
+//        }
+        return $generation_tree;
     }
 
     public static function chart_project_hero_stats() {

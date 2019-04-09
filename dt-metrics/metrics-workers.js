@@ -1,5 +1,4 @@
 jQuery(document).ready(function() {
-    console.log( dtMetricsUsers )
 
     if( ! window.location.hash || '#workers_activity' === window.location.hash  ) {
         workers_activity()
@@ -20,50 +19,50 @@ function workers_activity() {
     let sourceData = dtMetricsUsers.data
     chartDiv.empty().html(`
         <span style="float:right;"><i class="fi-info primary-color"></i> </span>
-        <span class="section-header">${sourceData.translations.title_activity}</span>
+        <span class="section-header">${ __( 'Workers Activity', 'disciple_tools' ) }</span>
         
         <br><br>
         <div class="grid-x grid-padding-x grid-padding-y">
             <div class="cell center callout">
                 <div class="grid-x">
                     <div class="medium-3 cell center">
-                        <h4>${sourceData.translations.label_total_workers}<br><span id="total_workers">0</span></h4>
+                        <h4>${ __( 'Total Workers', 'disciple_tools' ) }<br><span id="total_workers">0</span></h4>
                     </div>
                     <div class="medium-2 cell left-border-grey">
-                        <h4>${sourceData.translations.label_total_multipliers}<br><span id="total_multipliers">0</span></h4>
+                        <h4>${ __( 'Multipliers', 'disciple_tools' ) }<br><span id="total_multipliers">0</span></h4>
                     </div>
                     <div class="medium-2 cell center">
-                        <h4>${sourceData.translations.label_total_dispatchers}<br><span id="total_dispatchers">0</span></h4>
+                        <h4>${ __( 'Dispatchers', 'disciple_tools' ) }<br><span id="total_dispatchers">0</span></h4>
                     </div>
                     <div class="medium-2 cell center">
-                        <h4>${sourceData.translations.label_total_administrators}<br><span id="total_administrators">0</span></h4>
+                        <h4>${ __( 'Admins', 'disciple_tools' ) }<br><span id="total_administrators">0</span></h4>
                     </div>
                     <div class="medium-2 cell center">
-                        <h4>${sourceData.translations.label_total_strategists}<br><span id="total_strategists">0</span>
+                        <h4>${ __( 'Strategists', 'disciple_tools' ) }<br><span id="total_strategists">0</span>
                         </h4>
                     </div>
                     
                 </div>
             </div>
             <div class="cell">
-                <span class="section-subheader">${sourceData.translations.title_recent_activity}</span>
+                <span class="section-subheader">${ __( 'Worker System Engagement for the Last 30 Days', 'disciple_tools' ) }</span>
                 <div id="chart_line_logins" style="height:300px"><img src="${dtMetricsUsers.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
             </div>
             <div class="cell" style="display:none;">
                 <div class="grid-x grid-padding-x">
                 <div class="cell medium-6">
-                        <span class="section-subheader">${sourceData.translations.label_most_active}</span>
+                        <span class="section-subheader">${ __( 'Most Active', 'disciple_tools' ) }</span>
                         <div id="most_active"><img src="${dtMetricsUsers.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
                     </div>
                     <div class="cell medium-6">
-                        <span class="section-subheader">${sourceData.translations.label_least_active}</span>
+                        <span class="section-subheader">${ __( 'Least Active', 'disciple_tools' ) }</span>
                         <div id="least_active"><img src="${dtMetricsUsers.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
                     </div>
                 </div>
             </div>
             <div class="cell">
                 <hr>
-                <p><span class="section-subheader">${sourceData.translations.label_contacts_per_user}</span></p>
+                <p><span class="section-subheader">${ __( 'Contact Progress per Worker', 'disciple_tools' ) }</span></p>
                 <div id="contact_progress_per_worker" ><img src="${dtMetricsUsers.theme_uri}/dt-assets/images/ajax-loader.gif" width="20px" /></div>
             </div>
             
@@ -78,67 +77,67 @@ function workers_activity() {
     jQuery('#total_strategists').html( numberWithCommas( hero.total_strategists ) )
 
     // build charts
-    google.charts.load('current', {'packages':['corechart', 'line', 'table']});
+    drawLineChartLogins();
+    contact_progress_per_worker();
 
-    google.charts.setOnLoadCallback(drawLineChartLogins);
-    google.charts.setOnLoadCallback(contact_progress_per_worker);
+
 
     function drawLineChartLogins() {
-        let chartData = google.visualization.arrayToDataTable( sourceData.recent_activity );
-        let options = {
-            vAxis: {title: 'logins'},
-            chartArea: {
-                left: '5%',
-                width: "100%"
-                 },
-            legend: { position: 'bottom' }
-        };
-        let chart = new google.visualization.LineChart( document.getElementById('chart_line_logins') );
-
-        chart.draw(chartData, options);
+      let chart = am4core.create("chart_line_logins", am4charts.XYChart);
+      chart.data = sourceData.recent_activity
+      let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+      dateAxis.renderer.minGridDistance = 60;
+      let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+      let series = chart.series.push(new am4charts.LineSeries());
+      series.dataFields.valueY = "value";
+      series.dataFields.dateX = "date";
+      series.tooltipText = "{value}"
+      series.tooltip.pointerOrientation = "vertical";
     }
 
     function contact_progress_per_worker() {
-
-        jQuery.ajax({
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            url: dtMetricsUsers.root + 'dt/v1/metrics/workers/contact_progress_per_worker',
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', dtMetricsUsers.nonce);
-            },
+      jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: dtMetricsUsers.root + 'dt/v1/metrics/workers/contact_progress_per_worker',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', dtMetricsUsers.nonce);
+        },
+      })
+      .fail(function (err) {
+        console.log("error")
+        console.log(err)
+        jQuery("#errors").append(err.responseText)
+      })
+      .done(function (response) {
+        let headerArray = response.splice(0,1)[0]
+        let headerRows = ``
+        headerArray.forEach( (header, index) =>{
+          headerRows += `<th onclick="sortTable( ${index} )">${_.escape(header)}</th>`
         })
-            .done(function (response) {
-                let chartData = google.visualization.arrayToDataTable( response );
-                let options = {
-                    chartArea: {
-                        left: '5%',
-                        top: '7%',
-                        width: "100%",
-                        height: "85%" },
-                    legend: { position: 'bottom' },
-                    alternatingRowStyle: true,
-                    sort: 'enable',
-                    // showRowNumber: true,
-                    sortColumn: 0,
-                    width: '100%',
+        let tableBody = ``
+        response.forEach( row=>{
+          tableBody += `<tr>`
+          row.forEach( cell =>{
+            tableBody += `<td>${_.escape(cell)}</td>`
+          })
+          tableBody += `</tr>`
+        })
 
-                };
-                let chart = new google.visualization.Table( document.getElementById('contact_progress_per_worker') );
-
-                chart.draw(chartData, options);
-
-                jQuery('.google-visualization-table-td:contains(0)').filter(function() {
-                    return jQuery(this).text() === "0";
-                }).addClass("grey");
-
-            })
-            .fail(function (err) {
-                console.log("error")
-                console.log(err)
-                jQuery("#errors").append(err.responseText)
-            })
+        $('#contact_progress_per_worker').empty().html(`
+          <div class="scrolling-wrapper">
+          <table id="workers" class="hover table-scroll striped">
+            <thead style="background-color: lightgrey;">
+              ${headerRows}
+            </thead>
+            <tbody id="workers_table_body">
+                ${tableBody}
+            </tbody>
+          </table>
+          </div>
+        `)
+    })
     }
 
 }
@@ -151,7 +150,7 @@ function contact_follow_up_pace(){
 
     chartDiv.empty().html(`
       <span class="text-small" style="float:right; font-size:.6em; color: gray;">data as of <span id="pace-timestamp"></span> - <a onclick="refresh_follow_up_pace( 1 )">refresh</a></span>
-      <span class="section-header">`+ localizedObject.data.translations.title_response +`</span>
+      <span class="section-header">${ __( 'Follow-up Pace', 'disciple_tools' ) }</span>
       
       <hr style="max-width:100%;">
       <span><a onclick="jQuery('.notes').toggle();" style="float:right; font-size:.6em;">Show Chart Notes</a> </span>
@@ -173,8 +172,6 @@ function contact_follow_up_pace(){
       
     `)
 
-    google.charts.load('current', {'packages':['corechart', 'table']});
-
     refresh_follow_up_pace()
 
     // re-initialize foundation objects
@@ -188,7 +185,7 @@ function year_list() {
     let fullDate = new Date()
     let date = fullDate.getFullYear()
     let currentYear = fullDate.getFullYear()
-    let options = `<option value="all">${dtMetricsUsers.data.translations.label_all_time}</option>`
+    let options = `<option value="all">${ __( 'All time', 'disciple_tools' ) }</option>`
     while (i < 15) {
         options += `<option value="${date}" ${ date === currentYear && 'selected'}>${date}</option>`;
         i++;
@@ -212,7 +209,6 @@ function refresh_follow_up_pace( force = 0 ) {
         },
     })
         .done(function (response) {
-            console.log(response)
             jQuery('#coalition_assigned_to_accepted').html(response['acp'])
 
             let date = new Date(response['timestamp']*1000);
@@ -227,26 +223,32 @@ function refresh_follow_up_pace( force = 0 ) {
         })
 }
 function drawContactsProgressPerUser( data ) {
-    let chartData = google.visualization.arrayToDataTable( data );
+  let headerArray = data.splice(0,1)[0]
+  let headerRows = ``
+  headerArray.forEach( (header, index) =>{
+    headerRows += `<th onclick="sortTable( ${index} )">${_.escape(header)}</th>`
+  })
+  let tableBody = ``
+  data.forEach( row=>{
+    tableBody += `<tr>`
+    row.forEach( cell =>{
+      tableBody += `<td>${cell}</td>`
+    })
+    tableBody += `</tr>`
+  })
 
-    let options = {
-        chartArea: {
-            left: '5%',
-            top: '7%',
-            width: "100%",
-            height: "85%" },
-        legend: { position: 'bottom' },
-        alternatingRowStyle: true,
-        allowHtml: true,
-        sortColumn: 0,
-        sort: 'enable',
-        // showRowNumber: true,
-        width: '100%',
-
-    };
-    let chart = new google.visualization.Table( document.getElementById('followup-pace') );
-
-    chart.draw(chartData, options);
+  $('#followup-pace').empty().html(`
+    <div class="scrolling-wrapper">
+    <table id="workers" class="hover table-scroll striped">
+      <thead style="background-color: lightgrey;">
+        ${headerRows}
+      </thead>
+      <tbody id="workers_table_body">
+          ${tableBody}
+      </tbody>
+    </table>
+    </div>
+  `)
 }
 
 
@@ -259,7 +261,7 @@ window.show_follow_up_pace = function show_follow_up_pace(){
     // TODO: escape this properly
     chartDiv.empty().html(`
       <span class="text-small" style="float:right; font-size:.6em; color: gray;">data as of <span id="pace-timestamp"></span> - <a onclick="refresh_worker_pace_data()">refresh</a></span>
-      <span class="section-header">`+ localizedObject.data.translations.title_response +`</span>
+      <span class="section-header">${ __( 'Follow-up Pace', 'disciple_tools' ) }</span>
       
       <hr style="max-width:100%;">
       <span><a onclick="jQuery('.notes').toggle();" style="float:right; font-size:.6em;">Show Chart Notes</a> </span>
@@ -333,7 +335,6 @@ function refresh_worker_pace_data() {
         },
     })
         .done(function (response) {
-            console.log(response)
             jQuery("#coalition_time_to_attempt").html(response.coalition_time_to_attempt)
             jQuery("#pace-timestamp").html(response.timestamp)
             add_worker_pace_table( response.data )

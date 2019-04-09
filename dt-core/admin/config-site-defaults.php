@@ -704,42 +704,7 @@ function dt_custom_password_reset( $message, $key, $user_login, $user_data ){
 
 
 
-/**
- * @param $date
- * @param string $format  options are short, long, or [custom]
- *
- * @return bool|int|string
- */
 
-function dt_format_date( $date, $format = 'short' ){
-    $date_format = get_option( 'date_format' );
-    $time_format = get_option( 'time_format' );
-    if ( $format === 'short' ){
-        $format = $date_format;
-    } else if ( $format === 'long') {
-        $format = $date_format . ' ' . $time_format;
-    }
-    if ( is_numeric( $date ) ){
-        $formatted = date_i18n( $format, $date );
-    } else {
-        $formatted = mysql2date( $format, $date );
-    }
-    return $formatted;
-}
-
-function dt_date_start_of_year(){
-    $this_year = date( 'Y' );
-    $timestamp = strtotime( $this_year . '-01-01' );
-    return $timestamp;
-}
-function dt_date_end_of_year(){
-    $this_year = (int) date( 'Y' );
-    return strtotime( ( $this_year + 1 ) . '-01-01' );
-}
-
-function dt_get_year_from_timestamp( int $time ){
-    return date( "Y", $time );
-}
 
 
 function dt_wpmu_signup_blog_notification_email( $message, $domain, $path, $title, $user, $user_email, $key, $meta ){

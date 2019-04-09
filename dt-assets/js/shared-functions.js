@@ -1,5 +1,6 @@
 /* global jQuery:false, wpApiShare:false */
 _ = _ || window.lodash // make sure lodash is defined so plugins like gutenberg don't break it.
+const { __, _x, _n, _nx } = wp.i18n;
 
 jQuery(document).ready(function($) {
 // Adds an active state to the top bar navigation

@@ -81,9 +81,6 @@ class Disciple_Tools_Metrics_Contacts extends Disciple_Tools_Metrics_Hooks_Base 
                 'current_user_id'    => get_current_user_id(),
                 'data'               => $this->data(),
                 'spinner' => '<img src="' .trailingslashit( plugin_dir_url( __DIR__ ) ) . 'ajax-loader.gif" style="height:1em;" />',
-                'translations' => [
-                    "title" => "test",
-                ],
                 'sources' => Disciple_Tools_Contacts::list_sources(),
                 'source_names' => $contacts_custom_field_settings['sources']['default'],
                 'overall_status_settings' => $overall_status_settings,

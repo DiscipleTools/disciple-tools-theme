@@ -141,7 +141,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.18.1';
+            $this->version = '0.19.0';
             $this->migration_number = 22;
 
 
@@ -401,6 +401,7 @@ else {
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-utilities.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-people-groups.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-utilities-overview.php' );
+                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-fields.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-contact-import.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-erase.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-gdpr-export.php' );

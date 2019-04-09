@@ -63,14 +63,7 @@ class Disciple_Tools_Metrics_Prayer extends Disciple_Tools_Metrics_Hooks_Base
     }
 
     public function data() {
-        return [
-            'translations' => [
-                'title_1' => __( 'Prayer Lists', 'disciple_tools' ),
-                'title_2' => __( 'Praises for Steps Taken', 'disciple_tools' ),
-                'title_3' => __( 'Requests for Next Steps Needed', 'disciple_tools' ),
-                'label_counties' => __( 'Counties', 'disciple_tools' ),
-            ],
-        ];
+        return [];
     }
 
     /**

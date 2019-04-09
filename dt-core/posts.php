@@ -1123,6 +1123,9 @@ class Disciple_Tools_Posts
             $sort_sql = "ISNULL(p2p_post.post_name), p2p_post.post_name $sort_dir";
         } elseif ( $sort === "post_date" ){
             $sort_sql = "$wpdb->posts.post_date  " . $sort_dir;
+        } elseif ( $sort === "geonames" ){
+            $sort_join = "LEFT JOIN $wpdb->postmeta as sort ON ( $wpdb->posts.ID = sort.post_id AND sort.meta_key = '$sort')";
+            $sort_sql = "sort.meta_value $sort_dir";
         }
 
 
