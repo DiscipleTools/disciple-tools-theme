@@ -460,10 +460,17 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             if ( isset( $params['filter'] ) ){
                 $filter = $params['filter'];
             }
-            $locations = $this->query( "search_geonames_by_name", [
-                "search_query" => $search,
-                "filter" => $filter
-            ] );
+            //search for only the locations that are currently in use
+            if ( $filter === "used" ){
+                $locations = $this->query( "search_used_geonames_by_name", [
+                    "search_query" => $search,
+                ] );
+            } else {
+                $locations = $this->query( "search_geonames_by_name", [
+                    "search_query" => $search,
+                    "filter" => $filter
+                ] );
+            }
 
             $prepared = [];
             foreach ( $locations["geonames"] as $location ){
@@ -1199,6 +1206,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     break;
 
                 case 'search_geonames_by_name':
+                    $search_query = $wpdb->esc_like( $args['search_query'] ?? "" );
                     $focus_search_sql = "";
                     if ( isset( $args['filter'] ) && $args["filter"] == "focus" ){
                         $default_map_settings = $this->default_map_settings();
@@ -1229,11 +1237,44 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         $focus_search_sql
                         ORDER BY g.country_code, CHAR_LENGTH(label)
                         LIMIT 30;
-                        ", '%' . $wpdb->esc_like( $args['search_query'] ?? "" ) . '%' ),
+                        ", '%' . $search_query . '%' ),
                         ARRAY_A
                     );
                     // phpcs:enable
 
+                    $total_rows = $wpdb->get_var( "SELECT found_rows();" );
+                    return [
+                        'geonames' => $geonames,
+                        'total' => $total_rows
+                    ];
+
+                case 'search_used_geonames_by_name':
+                    $search_query = $wpdb->esc_like( $args['search_query'] ?? "" );
+
+                    $geonames = $wpdb->get_results( $wpdb->prepare( "
+                        SELECT SQL_CALC_FOUND_ROWS
+                        g.geonameid,
+                        CASE 
+                            WHEN g.level = 'country' 
+                              THEN g.alt_name
+                            WHEN g.level = 'admin1' 
+                              THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
+                            g.alt_name ) 
+                            WHEN g.level = 'admin2' OR g.level = 'admin3'
+                              THEN CONCAT( (SELECT country.alt_name FROM $wpdb->dt_geonames as country WHERE country.geonameid = g.country_geonameid LIMIT 1), ' > ', 
+                            (SELECT a1.alt_name FROM $wpdb->dt_geonames AS a1 WHERE a1.geonameid = g.admin1_geonameid LIMIT 1), ' > ', 
+                            g.alt_name )
+                            ELSE g.alt_name
+                        END as label
+                        FROM $wpdb->dt_geonames as g
+                        INNER JOIN $wpdb->dt_geonames_counter as counter ON (g.geonameid = counter.geonameid)
+                        WHERE g.alt_name LIKE %s
+                        
+                        ORDER BY g.country_code, CHAR_LENGTH(label)
+                        LIMIT 30;
+                        ", '%' . $search_query . '%' ),
+                        ARRAY_A
+                    );
                     $total_rows = $wpdb->get_var( "SELECT found_rows();" );
                     return [
                         'geonames' => $geonames,

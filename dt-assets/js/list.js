@@ -659,7 +659,37 @@
         template: function (query, item) {
           return `<span>${_.escape(item.name)}</span>`
         },
-        source: TYPEAHEADS.typeaheadSource('geonames', 'dt/v1/mapping_module/search_geonames_by_name/'),
+        dropdownFilter: [{
+          key: 'group',
+          value: 'used',
+          template: 'Used Locations',
+          all: 'All Locations'
+        }],
+        source: {
+          used: {
+            display: "name",
+            ajax: {
+              url: wpApiShare.root + 'dt/v1/mapping_module/search_geonames_by_name',
+              data: {
+                s: "{{query}}",
+                filter: function () {
+                  return _.get(window.Typeahead['.js-typeahead-geonames'].filters.dropdown, 'value', 'all')
+                }
+              },
+              beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
+              },
+              callback: {
+                done: function (data) {
+                  if (typeof typeaheadTotals !== "undefined") {
+                    typeaheadTotals.field = data.total
+                  }
+                  return data.posts
+                }
+              }
+            }
+          }
+        },
         display: "name",
         templateValue: "{{name}}",
         dynamic: true,
@@ -677,6 +707,13 @@
           onResult: function (node, query, result, resultCount) {
             let text = TYPEAHEADS.typeaheadHelpText(resultCount, query, result)
             $('#geonames-result-container').html(text);
+          },
+          onReady(){
+            this.filters.dropdown = {key: "group", value: "used", template: "Used Locations"}
+            this.container
+              .removeClass("filter")
+              .find("." + this.options.selector.filterButton)
+              .html("Used Locations");
           },
           onHideLayout: function () {
             $('#geonames-result-container').html("");
