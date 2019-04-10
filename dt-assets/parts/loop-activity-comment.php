@@ -1,7 +1,5 @@
 <?php
 ( function() {
-    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
-    $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
     ?>
 
     <div class="grid-y">
@@ -14,7 +12,10 @@
         </div>
         <div class="cell grid-x" style="margin-bottom: 20px">
             <div class="cell auto">
-                <?php if ( is_singular( "contacts" ) ) : ?>
+                <?php if ( is_singular( "contacts" ) ) :
+                    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
+                    $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
+                    ?>
                 <ul class="dropdown menu" data-dropdown-menu $dropdownmenu-arrow-color="white">
                     <li style="border-radius: 5px">
                         <a class="button menu-white-dropdown-arrow"

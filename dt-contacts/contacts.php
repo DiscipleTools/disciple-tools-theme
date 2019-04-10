@@ -1153,14 +1153,19 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @param int  $contact_id , the contact post_id
      * @param bool $check_permissions
+     * @param bool $load_cache
      *
      * @access public
      * @since  0.1.0
      * @return array| WP_Error, On success: the contact, else: the error message
      */
-    public static function get_contact( int $contact_id, $check_permissions = true ) {
+    public static function get_contact( int $contact_id, $check_permissions = true, $load_cache = true ) {
         if ( $check_permissions && !self::can_view( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read contact", [ 'status' => 403 ] );
+        }
+        $cached = wp_cache_get( "contact_" . $contact_id );
+        if ( $cached && $load_cache ){
+            return $cached;
         }
 
         $contact = get_post( $contact_id );
@@ -1307,7 +1312,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $fields["title"] = $contact->post_title;
             $fields["created_date"] = $contact->post_date;
 
-            return apply_filters( 'dt_contact_fields_post_filter', $fields );
+            $contact = apply_filters( 'dt_contact_fields_post_filter', $fields );
+            wp_cache_set( "contact_" . $contact_id, $contact );
+            return $contact;
         } else {
             return new WP_Error( __FUNCTION__, "No contact found with ID", [ 'contact_id' => $contact_id ] );
         }
