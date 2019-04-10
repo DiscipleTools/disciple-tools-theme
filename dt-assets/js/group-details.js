@@ -576,6 +576,17 @@ jQuery(document).ready(function($) {
    * Save group details updates
    */
   $('#save-edit-details').on('click', function () {
+    let contactInput = $(".contact-input")
+    contactInput.each((index, entry)=>{
+      if ( !$(entry).attr("id") ){
+        let val = $(entry).val()
+        let channelType = $(entry).data("type")
+        if ( !editFieldsUpdate[channelType]){
+          editFieldsUpdate[channelType] = {values:[]}
+        }
+        editFieldsUpdate[channelType].values.push({value:val})
+      }
+    })
     $(this).toggleClass("loading")
       API.save_field_api( "group", groupId, editFieldsUpdate).then((updatedGroup)=>{
       group = updatedGroup
@@ -589,14 +600,16 @@ jQuery(document).ready(function($) {
     let value = $(this).val()
     let field = $(this).data("type")
     let key = $(this).attr('id')
-    if (!editFieldsUpdate[field]){
-      editFieldsUpdate[field] = { values: [] }
-    }
-    let existing = _.find(editFieldsUpdate[field].values, {key})
-    if (existing){
-      existing.value = value
-    } else {
-      editFieldsUpdate[field].values.push({ key, value })
+    if ( key ){
+      if (!editFieldsUpdate[field]){
+        editFieldsUpdate[field] = { values: [] }
+      }
+      let existing = _.find(editFieldsUpdate[field].values, {key})
+      if (existing){
+        existing.value = value
+      } else {
+        editFieldsUpdate[field].values.push({ key, value })
+      }
     }
   }).on('click', '.delete-button', function () {
     let field = $(this).data('type')
