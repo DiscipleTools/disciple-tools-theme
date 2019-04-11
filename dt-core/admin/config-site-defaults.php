@@ -25,7 +25,8 @@ add_filter( 'comment_notification_recipients', 'dt_override_comment_notice_recip
 add_filter( 'language_attributes', 'dt_custom_dir_attr' );
 add_filter( 'retrieve_password_message', 'dt_custom_password_reset', 99, 4 );
 add_filter( 'wpmu_signup_blog_notification_email', 'dt_wpmu_signup_blog_notification_email', 10, 8 );
-
+remove_action( 'plugins_loaded', 'wp_maybe_load_widgets', 0 );  //don't load widgets as we don't use them
+remove_action( "init", "wp_widgets_init", 1 );
 
 /*********************************************************************************************
  * Functions
