@@ -25,7 +25,7 @@ add_filter( 'comment_notification_recipients', 'dt_override_comment_notice_recip
 add_filter( 'language_attributes', 'dt_custom_dir_attr' );
 add_filter( 'retrieve_password_message', 'dt_custom_password_reset', 99, 4 );
 add_filter( 'wpmu_signup_blog_notification_email', 'dt_wpmu_signup_blog_notification_email', 10, 8 );
-
+add_filter( 'login_errors', 'login_error_messages' );
 
 /*********************************************************************************************
  * Functions
@@ -701,12 +701,26 @@ function dt_custom_password_reset( $message, $key, $user_login, $user_data ){
 
 }
 
-
-
-
-
-
-
 function dt_wpmu_signup_blog_notification_email( $message, $domain, $path, $title, $user, $user_email, $key, $meta ){
     return str_replace( "blog", "site", $message );
+}
+
+/**
+ * change the error message if it is invalid_username or incorrect password
+ *
+ * @param $message string Error string provided by WordPress
+ * @return $message string Modified error string
+*/
+function login_error_messages( $message ){
+    global $errors;
+    if ( isset( $errors->errors['invalid_username'] ) || isset( $errors->errors['incorrect_password'] ) ) {
+        $message = __( '<strong>ERROR</strong>: Invalid username/password combination.', 'disciple_tools' ) . ' ' .
+        sprintf(
+            ( '<a href="%1$s" title="%2$s">%3$s</a>?' ),
+            site_url( 'wp-login.php?action=lostpassword', 'login' ),
+            __( 'Reset password', 'disciple_tools' ),
+            __( 'Lost pour password', 'disciple_tools' )
+        );
+    }
+    return $message;
 }
