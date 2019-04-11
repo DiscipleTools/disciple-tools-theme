@@ -188,7 +188,7 @@ function prayer_overview() {
                 if (v.location_name) {
                     location = `(${v.location_name})`
                 }
-                list3 += `<a href="/contacts/${v.id}">${v.text}</a> was baptized. ${location}<br>`
+                list3 += `<a href="${window.wpApiShare.site_url}/contacts/${v.id}">${v.text}</a> was baptized. ${location}<br>`
             })
             jQuery('#list-3').empty().html(list3)
         } else {
@@ -203,7 +203,7 @@ function prayer_overview() {
                 if (v.location_name) {
                     location = ` in ${v.location_name}`
                 }
-                list4 += `We have a new contact named <a href="/contacts/${v.id}">${v.text}</a>${location}!<br>`
+                list4 += `We have a new contact named <a href="${window.wpApiShare.site_url}/contacts/${v.id}">${v.text}</a>${location}!<br>`
             })
             jQuery('#list-4').empty().html(list4)
         } else {
@@ -218,7 +218,7 @@ function prayer_overview() {
                 if (v.location_name) {
                     location = ` in ${v.location_name}`
                 }
-                list5 += `We formed a new group named <a href="/groups/${v.id}">${v.text}</a>${location}!<br>`
+                list5 += `We formed a new group named <a href="${window.wpApiShare.site_url}/groups/${v.id}">${v.text}</a>${location}!<br>`
             })
             jQuery('#list-5').empty().html(list5)
         } else {
