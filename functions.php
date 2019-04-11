@@ -286,11 +286,11 @@ else {
              */
             require_once( get_template_directory() . '/dt-locations/locations-post-type.php' );
             $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
+            require_once( get_template_directory() . '/dt-locations/geocoding-api.php' );
             if ( strpos( $url_path, 'location' ) !== false ){
                 require_once( get_template_directory() . '/dt-locations/locations-template.php' );
                 require_once( get_template_directory() . '/dt-locations/locations-endpoints.php' ); // builds rest endpoints
                 require_once( get_template_directory() . '/dt-locations/locations.php' ); // serves the locations rest endpoints
-                require_once( get_template_directory() . '/dt-locations/geocoding-api.php' );
                 $this->endpoints['locations'] = Disciple_Tools_Locations_Endpoints::instance();
             }
             /**
@@ -483,3 +483,5 @@ function dt_theme_admin_notice_required_php_version() {
     </div>
     <?php
 }
+
+
