@@ -1298,7 +1298,7 @@ jQuery(document).ready(function($) {
         template: window.TYPEAHEADS.contactListRowTemplate,
         dynamic: true,
         hint: true,
-        emptyTemplate: 'No users found "{{query}}"',
+        emptyTemplate: _x( 'No contacts found matching "{{query}}"', 'disciple_tools', "Keep {{query}} as is" ),
         callback: {
           onClick: function (node, a, item) {
             console.log(item);

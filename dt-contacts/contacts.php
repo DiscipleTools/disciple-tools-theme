@@ -1519,7 +1519,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $to_remove[$key] = array();
                     $to_remove[$key]['values'] = array();
                 }
-                if ( in_array( $key, [ "baptized", "coaching" ] ) ){
+                if ( in_array( $key, [ "baptized", "coaching", "subassigned" ] ) ){
                     array_push($update[$key]['values'], array(
                         'value' => $result->p2p_from
                     ));
