@@ -201,7 +201,7 @@
 
 </section> <!-- end article -->
 
-<div class="reveal" id="group-details-edit" data-reveal>
+<div class="reveal" id="group-details-edit" data-reveal data-close-on-click="false">
     <h1><?php esc_html_e( "Edit Group", 'disciple_tools' ) ?></h1>
     <div class="display-fields">
         <div class="grid-x">

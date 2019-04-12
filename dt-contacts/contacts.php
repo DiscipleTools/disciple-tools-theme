@@ -162,6 +162,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( $check_permissions && !current_user_can( 'create_contacts' ) ) {
             return new WP_Error( __FUNCTION__, "You may not publish a contact", [ 'status' => 403 ] );
         }
+        $fields = dt_sanitize_array_html( $fields );
+
         $initial_fields = $fields;
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
 
@@ -561,6 +563,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
+        $fields = dt_sanitize_array_html( $fields );
         $initial_fields = $fields;
         $initial_keys = array_keys( $fields );
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();

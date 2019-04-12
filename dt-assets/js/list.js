@@ -479,7 +479,7 @@
   let selectedFilters = $("#selected-filters")
   $("#confirm-filter-contacts").on("click", function () {
     let searchQuery = getSearchQuery()
-    let filterName = $('#new-filter-name').val()
+    let filterName = _.escape( $('#new-filter-name').val() )
     addCustomFilter( filterName || "Custom Filter", "custom-filter", searchQuery, newFilterLabels)
   })
 
@@ -522,7 +522,7 @@
   function addCustomFilter(name, type, query, labels) {
     query = query || currentFilter.query
     let ID = new Date().getTime() / 1000
-    currentFilter = {ID, type, name, query:JSON.parse(JSON.stringify(query)), labels:labels}
+    currentFilter = {ID, type, name: _.escape( name ), query:JSON.parse(JSON.stringify(query)), labels:labels}
     customFilters.push(JSON.parse(JSON.stringify(currentFilter)))
 
     let saveFilter = $(`<a style="float:right" data-filter="${ID}">
@@ -570,13 +570,13 @@
 
 
   $("#search").on("click", function () {
-    let searchText = $("#search-query").val()
+    let searchText = _.escape( $("#search-query").val() )
     let query = {text:searchText, assigned_to:["all"]}
     let labels = [{ id:"search", name:searchText, field: "search"}]
     addCustomFilter(searchText, "search", query, labels)
   })
   $("#search-mobile").on("click", function () {
-    let searchText = $("#search-query-mobile").val()
+    let searchText = _.escape( $("#search-query-mobile").val() )
     let query = {text:searchText, assigned_to:["all"]}
     let labels = [{ id:"search", name:searchText, field: "search"}]
     addCustomFilter(searchText, "search", query, labels)
