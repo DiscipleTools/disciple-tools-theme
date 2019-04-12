@@ -266,21 +266,22 @@ else {
              */
             require_once( get_template_directory() . '/dt-contacts/contacts-post-type.php' );
             $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
+            require_once( get_template_directory() . '/dt-contacts/contacts.php' );
+            require_once( get_template_directory() . '/dt-contacts/contacts-template.php' ); // Functions to support theme
+            require_once( get_template_directory() . '/dt-contacts/contacts-transfer.php' ); // Functions to support theme
             if ( strpos( $url_path, 'contact' ) !== false ){
                 require_once( get_template_directory() . '/dt-contacts/contacts-endpoints.php' );
-                require_once( get_template_directory() . '/dt-contacts/contacts-template.php' ); // Functions to support theme
                 $this->endpoints['contacts'] = Disciple_Tools_Contacts_Endpoints::instance();
             }
-            require_once( get_template_directory() . '/dt-contacts/contacts-transfer.php' ); // Functions to support theme
 
             /**
              * dt-groups
              */
             require_once( get_template_directory() . '/dt-groups/groups-post-type.php' );
             $this->post_types['groups'] = Disciple_Tools_Groups_Post_Type::instance();
+            require_once( get_template_directory() . '/dt-groups/groups-template.php' ); // Functions to support theme
+            require_once( get_template_directory() . '/dt-groups/groups.php' );
             if ( strpos( $url_path, 'group' ) !== false ){
-                require_once( get_template_directory() . '/dt-groups/groups-template.php' ); // Functions to support theme
-                require_once( get_template_directory() . '/dt-groups/groups.php' );
                 require_once( get_template_directory() . '/dt-groups/groups-endpoints.php' ); // builds rest endpoints
                 $this->endpoints['groups'] = Disciple_Tools_Groups_Endpoints::instance();
             }
@@ -290,10 +291,10 @@ else {
             require_once( get_template_directory() . '/dt-locations/locations-post-type.php' );
             $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
             require_once( get_template_directory() . '/dt-locations/geocoding-api.php' );
+            require_once( get_template_directory() . '/dt-locations/locations-template.php' );
+            require_once( get_template_directory() . '/dt-locations/locations.php' ); // serves the locations rest endpoints
             if ( strpos( $url_path, 'location' ) !== false ){
-                require_once( get_template_directory() . '/dt-locations/locations-template.php' );
                 require_once( get_template_directory() . '/dt-locations/locations-endpoints.php' ); // builds rest endpoints
-                require_once( get_template_directory() . '/dt-locations/locations.php' ); // serves the locations rest endpoints
                 $this->endpoints['locations'] = Disciple_Tools_Locations_Endpoints::instance();
             }
             /**
