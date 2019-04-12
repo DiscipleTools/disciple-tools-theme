@@ -192,6 +192,9 @@ else {
              * URL loader
              */
             add_action( 'init', function() {
+                if ( !current_user_can( 'access_contacts' ) ) {
+                    wp_die( esc_html( "Insufficient permissions" ), "Permission denied", 403 );
+                }
                 $template_for_url = [
                     'metrics'               => 'template-metrics.php',
                     'settings'              => 'template-settings.php',
