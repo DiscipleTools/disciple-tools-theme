@@ -184,3 +184,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 }
 
+function dt_sanitize_array_html( $array ) {
+    array_walk_recursive( $array, function ( &$v ) {
+        $v = filter_var( trim( $v ), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES );
+    } );
+    return $array;
+}

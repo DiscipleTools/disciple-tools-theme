@@ -385,8 +385,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
-        $fields = filter_var_array( $fields, FILTER_SANITIZE_STRING );
-
+        $fields = dt_sanitize_array_html( $fields );
         $field_keys = array_keys( $fields );
         $post = get_post( $group_id );
         if ( isset( $fields['id'] ) ) {
@@ -973,7 +972,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         if ( $check_permissions && ! current_user_can( 'create_groups' ) ) {
             return new WP_Error( __FUNCTION__, "You may not create a group", [ 'status' => 403 ] );
         }
-        $fields = filter_var_array( $fields, FILTER_SANITIZE_STRING );
+        $fields = dt_sanitize_array_html( $fields );
         $initial_fields = $fields;
 
         if ( ! isset( $fields ["title"] ) ) {

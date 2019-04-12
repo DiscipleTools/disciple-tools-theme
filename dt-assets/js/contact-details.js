@@ -723,7 +723,7 @@ jQuery(document).ready(function($) {
     let channelOptions = ``
     _.forOwn( contactsDetailsWpApiSettings.channels, (val, key)=>{
       if ( ![ "phone", "email", "address"].includes( key ) ){
-        channelOptions += `<option value="${key}">${val.label}</option>`
+        channelOptions += `<option value="${_.escape(key)}">${escape(val.label)}</option>`
       }
     })
     idOfNextNewField++
@@ -854,7 +854,7 @@ jQuery(document).ready(function($) {
     let phoneHTML = "";
     (contact.contact_phone|| []).forEach(field=>{
       phoneHTML += `<li style="display: flex">
-          <input type="tel" id="${_.escape(field.key)}" value="${field.value}" data-type="contact_phone" class="contact-input"/>
+          <input type="tel" id="${_.escape(field.key)}" value="${_.escape(field.value)}" data-type="contact_phone" class="contact-input"/>
           <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_phone" style="color: red">
             <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
           </button>
@@ -864,7 +864,7 @@ jQuery(document).ready(function($) {
     let emailHTML = "";
     (contact.contact_email|| []).forEach(field=>{
       emailHTML += `<li style="display: flex">
-        <input class="contact-input" type="email" id="${_.escape(field.key)}" value="${field.value}" data-type="contact_email"/>
+        <input class="contact-input" type="email" id="${_.escape(field.key)}" value="${_.escape(field.value)}" data-type="contact_email"/>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_email">
             <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
@@ -874,7 +874,7 @@ jQuery(document).ready(function($) {
     let addressHTML = "";
     (contact.contact_address|| []).forEach(field=>{
       addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${field.value}</textarea>
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${_.escape(field.value)}</textarea>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
             <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
@@ -887,13 +887,13 @@ jQuery(document).ready(function($) {
       if ( field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field) ){
         let channel = field.replace("contact_", "")
         contact[field].forEach(socialField=>{
-          html += `<div class="grid-x grid-margin-x social-media-row" data-id="${socialField.key}">
+          html += `<div class="grid-x grid-margin-x social-media-row" data-id="${_.escape(socialField.key)}">
               <div class="cell small-4">
                   ${_.get(contactsDetailsWpApiSettings, 'channels[' + channel + '].label' ,field)}
               </div>
               <div class="cell small-8" style="display: flex">
-                <input class="contact-input" type="text" id="${socialField.key}" value="${socialField.value}" data-type="${field}"/>
-                <button class="button clear delete-social-media delete-button" data-id="${socialField.key}" data-type="${field}">
+                <input class="contact-input" type="text" id="${_.escape(socialField.key)}" value="${_.escape(socialField.value)}" data-type="${field}"/>
+                <button class="button clear delete-social-media delete-button" data-id="${_.escape(socialField.key)}" data-type="${field}">
                     <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
                 </button>
               </div>
@@ -928,7 +928,7 @@ jQuery(document).ready(function($) {
     let phoneHTML = "";
     (contact.contact_phone || []).forEach(field => {
       phoneHTML += `<li style="display: flex">
-          <input type="tel" id="${_.escape(field.key)}" value="${field.value}" data-type="contact_phone" class="contact-input"/>
+          <input type="tel" id="${_.escape(field.key)}" value="${_.escape(field.value)}" data-type="contact_phone" class="contact-input"/>
           <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_phone" style="color: red">
             <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
           </button>
@@ -938,7 +938,7 @@ jQuery(document).ready(function($) {
     let emailHTML = "";
     (contact.contact_email || []).forEach(field => {
       emailHTML += `<li style="display: flex">
-        <input class="contact-input" type="email" id="${_.escape(field.key)}" value="${field.value}" data-type="contact_email"/>
+        <input class="contact-input" type="email" id="${_.escape(field.key)}" value="${_.escape(field.value)}" data-type="contact_email"/>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_email">
             <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
@@ -948,7 +948,7 @@ jQuery(document).ready(function($) {
     let addressHTML = "";
     (contact.contact_address || []).forEach(field => {
       addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${field.value}</textarea>
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${_.escape(field.value)}</textarea>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
             <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
@@ -961,8 +961,8 @@ jQuery(document).ready(function($) {
       if (field.startsWith("contact_") && !["contact_email", "contact_phone", "contact_address"].includes(field)) {
         contact[field].forEach(socialField => {
           html += `<li style="display: flex">
-            <input class="contact-input" type="text" id="${socialField.key}" value="${socialField.value}" data-type="${field}"/>
-            <button class="button clear delete-button" data-id="${socialField.key}" data-type="${field}">
+            <input class="contact-input" type="text" id="${_.escape(socialField.key)}" value="${_.escape(socialField.value)}" data-type="${field}"/>
+            <button class="button clear delete-button" data-id="${_.escape(socialField.key)}" data-type="${field}">
                 <img src="${contactsDetailsWpApiSettings.template_dir}/dt-assets/images/invalid.svg">
             </button>
           </li>`
