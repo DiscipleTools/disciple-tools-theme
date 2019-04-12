@@ -90,7 +90,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      *
      * @return array|\WP_Error
      */
-    public static function get_group( int $group_id, bool $check_permissions = true, $load_cache = true ) {
+    public static function get_group( int $group_id, bool $check_permissions = true, $load_cache = false ) {
         if ( $check_permissions && !self::can_view( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read group", [ 'status' => 403 ] );
         }

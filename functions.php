@@ -298,7 +298,7 @@ else {
              */
             require_once( get_template_directory() . '/dt-people-groups/people-groups-post-type.php' );
             $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
-            if ( strpos( $url_path, 'peoplegroups' ) !== false ){
+            if ( strpos( $url_path, 'people-groups' ) !== false ){
                 require_once( get_template_directory() . '/dt-people-groups/people-groups-template.php' );
                 require_once( get_template_directory() . '/dt-people-groups/people-groups.php' );
                 require_once( get_template_directory() . '/dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
@@ -307,8 +307,8 @@ else {
             /**
              * dt-metrics
              */
+            require_once( get_template_directory() . '/dt-metrics/counter.php' );
             if ( strpos( $url_path, 'metrics' ) !== false ) {
-                require_once( get_template_directory() . '/dt-metrics/counter.php' );
                 require_once( get_template_directory() . '/dt-metrics/metrics.php' );
             }
 

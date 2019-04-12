@@ -1159,7 +1159,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @since  0.1.0
      * @return array| WP_Error, On success: the contact, else: the error message
      */
-    public static function get_contact( int $contact_id, $check_permissions = true, $load_cache = true ) {
+    public static function get_contact( int $contact_id, $check_permissions = true, $load_cache = false ) {
         if ( $check_permissions && !self::can_view( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read contact", [ 'status' => 403 ] );
         }
@@ -2080,8 +2080,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'object_note'    => '',
                 ]
             );
-            self::update_contact( $contact_id, $update, true );
-            return self::get_contact( $contact_id );
+            return self::update_contact( $contact_id, $update, true );
         } else {
             $assign_to_id = 0;
             $last_activity = self::get_most_recent_activity_for_field( $contact_id, "assigned_to" );
@@ -2098,7 +2097,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 "assigned_to" => $assign_to_id,
                 "overall_status" => 'unassigned'
             ];
-            self::update_contact( $contact_id, $update, true );
+            $contact = self::update_contact( $contact_id, $update, true );
             $current_user = wp_get_current_user();
             dt_activity_insert(
                 [
@@ -2115,7 +2114,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 ]
             );
             Disciple_Tools_Notifications::insert_notification_for_assignment_declined( $current_user->ID, $assign_to_id, $contact_id );
-            return self::get_contact( $contact_id );
+            return $contact;
         }
     }
 

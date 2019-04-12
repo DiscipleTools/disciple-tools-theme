@@ -130,9 +130,9 @@ function dt_site_scripts() {
     if ( is_singular( "contacts" ) || is_singular( "groups" ) ) {
         $post_type = "contacts";
         if ( is_singular( "contacts" )){
-            $post = Disciple_Tools_Contacts::get_contact( get_the_ID() );
+            $post = Disciple_Tools_Contacts::get_contact( get_the_ID(), true, true );
         } else {
-            $post = Disciple_Tools_Groups::get_group( get_the_ID() );
+            $post = Disciple_Tools_Groups::get_group( get_the_ID(), true, true );
             $post_type = "groups";
         }
         if ( !is_wp_error( $post )){
