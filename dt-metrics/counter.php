@@ -853,7 +853,7 @@ class Disciple_Tools_Queries
                 $query = $wpdb->get_results( $wpdb->prepare( "
                     SELECT
                       object_id as id,
-                      object_name as name,
+                      posts.post_title as name,
                       meta_value as type,
                       p.p2p_to as location_id,
                       ( SELECT post_title FROM $wpdb->posts WHERE ID = p.p2p_to) as location_name,
@@ -862,6 +862,8 @@ class Disciple_Tools_Queries
                     LEFT JOIN $wpdb->p2p as p
                           ON l.object_id=p.p2p_from
                           AND p.p2p_type = 'contacts_to_locations'
+                    LEFT JOIN $wpdb->posts as posts
+                          ON posts.ID = l.object_id
                     WHERE action = 'field_update'
                           AND object_type = 'contacts'
                           AND object_subtype = 'seeker_path'
@@ -880,7 +882,7 @@ class Disciple_Tools_Queries
                 $query = $wpdb->get_results( $wpdb->prepare( "
                     SELECT
                       object_id as id,
-                      object_name as name,
+                      posts.post_title as name,
                       p.p2p_to as location_id,
                       ( SELECT post_title FROM $wpdb->posts WHERE ID = p.p2p_to) as location_name,
                       hist_time
@@ -888,6 +890,8 @@ class Disciple_Tools_Queries
                       LEFT JOIN $wpdb->p2p as p
                         ON l.object_id=p.p2p_from
                            AND p.p2p_type = 'contacts_to_locations'
+                      LEFT JOIN $wpdb->posts as posts
+                        ON posts.ID = l.object_id
                     WHERE meta_key = 'baptism_date'
                           AND meta_value > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL %d DAY ))
                     ORDER BY meta_value DESC
@@ -903,15 +907,17 @@ class Disciple_Tools_Queries
                 $query = $wpdb->get_results( $wpdb->prepare( "
                     SELECT
                       object_id as id,
-                      object_name as name,
+                      posts.post_title as name,
                       object_type as type,
                       p.p2p_to as location_id,
                       ( SELECT post_title FROM $wpdb->posts WHERE ID = p.p2p_to) as location_name,
                       hist_time
                     FROM $wpdb->dt_activity_log as l
                       LEFT JOIN $wpdb->p2p as p
-                      ON l.object_id=p.p2p_from
-                      AND ( p.p2p_type = 'groups_to_locations' OR p.p2p_type = 'contacts_to_locations' )
+                        ON l.object_id=p.p2p_from
+                        AND ( p.p2p_type = 'groups_to_locations' OR p.p2p_type = 'contacts_to_locations' )
+                      LEFT JOIN $wpdb->posts as posts
+                        ON posts.ID = l.object_id
                     WHERE action = 'created'
                       AND hist_time > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL %d DAY ))
                     ORDER BY hist_time DESC

@@ -552,11 +552,11 @@ jQuery(document).ready(function($) {
       locations : { values: [] },
       people_groups : { values: [] },
     }
-    $('#group-details-edit #title').val( group.name );
+    $('#group-details-edit #title').html( _.escape(group.name) );
     let addressHTML = "";
     (group.contact_address|| []).forEach(field=>{
       addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${field.value}</textarea>
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${_.escape(field.value)}</textarea>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
             <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>

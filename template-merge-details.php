@@ -2,10 +2,10 @@
 /*
 Template Name: Merge Details
 */
-?>
 
-
-<?php
+if ( ! current_user_can( 'access_contacts' ) ) {
+    wp_die( esc_html( "You do not have permission to access contacts" ), "Permission denied", 403 );
+}
 
 get_header();
 if ( !isset( $_POST['dt_contact_nonce'] ) || !wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) || !isset( $_POST['currentid'], $_POST['dupeid'] )) {
