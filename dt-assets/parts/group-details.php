@@ -2,7 +2,7 @@
 ( function() {
     ?>
     <?php
-    $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
+    $group = Disciple_Tools_Groups::get_group( get_the_ID(), true, true );
 
     $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
 

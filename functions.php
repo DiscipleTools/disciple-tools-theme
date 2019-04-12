@@ -165,6 +165,9 @@ else {
             /**
              * Load first files
              */
+            require_once( get_template_directory() . '/dt-core/global-functions.php' );
+            $is_rest = dt_is_rest();
+            $url_path = dt_get_url_path();
             require_once( get_template_directory() . '/dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin. Required before DT instance
             require_once( get_template_directory() . '/dt-core/admin/config-site-defaults.php' ); // Force required site configurations
             require_once( get_template_directory() . '/dt-core/wp-async-request.php' ); // Async Task Processing
@@ -182,10 +185,12 @@ else {
             /**
              * Theme specific files
              */
-            require_once( get_template_directory() . '/dt-assets/functions/cleanup.php' ); // WP Head and other cleanup functions
-            require_once( get_template_directory() . '/dt-assets/functions/enqueue-scripts.php' ); // Register scripts and stylesheets
-            require_once( get_template_directory() . '/dt-assets/functions/menu.php' ); // Register menus and menu walkers
-            require_once( get_template_directory() . '/dt-assets/functions/details-bar.php' ); // Breadcrumbs bar
+            if ( !$is_rest ){
+                require_once( get_template_directory() . '/dt-assets/functions/cleanup.php' ); // WP Head and other cleanup functions
+                require_once( get_template_directory() . '/dt-assets/functions/enqueue-scripts.php' ); // Register scripts and stylesheets
+                require_once( get_template_directory() . '/dt-assets/functions/menu.php' ); // Register menus and menu walkers
+                require_once( get_template_directory() . '/dt-assets/functions/details-bar.php' ); // Breadcrumbs bar
+            }
 
 
             /**
@@ -233,14 +238,6 @@ else {
              */
             require_once( get_template_directory() . '/dt-core/config-required-plugins.php' );
             require_once( get_template_directory() . '/dt-core/libraries/class-tgm-plugin-activation.php' );
-            if ( ! class_exists( 'Puc_v4_Factory' ) ) {
-                require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
-            }
-            Puc_v4_Factory::buildUpdateChecker(
-                'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-theme-version-control.json',
-                __FILE__,
-                'disciple-tools-theme'
-            );
 
             /**
              * Data model
@@ -269,9 +266,11 @@ else {
              */
             require_once( get_template_directory() . '/dt-contacts/contacts-post-type.php' );
             $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
-            require_once( get_template_directory() . '/dt-contacts/contacts-endpoints.php' );
-            $this->endpoints['contacts'] = Disciple_Tools_Contacts_Endpoints::instance();
-            require_once( get_template_directory() . '/dt-contacts/contacts-template.php' ); // Functions to support theme
+            if ( strpos( $url_path, 'contact' ) !== false ){
+                require_once( get_template_directory() . '/dt-contacts/contacts-endpoints.php' );
+                require_once( get_template_directory() . '/dt-contacts/contacts-template.php' ); // Functions to support theme
+                $this->endpoints['contacts'] = Disciple_Tools_Contacts_Endpoints::instance();
+            }
             require_once( get_template_directory() . '/dt-contacts/contacts-transfer.php' ); // Functions to support theme
 
             /**
@@ -279,38 +278,42 @@ else {
              */
             require_once( get_template_directory() . '/dt-groups/groups-post-type.php' );
             $this->post_types['groups'] = Disciple_Tools_Groups_Post_Type::instance();
-            require_once( get_template_directory() . '/dt-groups/groups-template.php' ); // Functions to support theme
-            require_once( get_template_directory() . '/dt-groups/groups.php' );
-            require_once( get_template_directory() . '/dt-groups/groups-endpoints.php' ); // builds rest endpoints
-            $this->endpoints['groups'] = Disciple_Tools_Groups_Endpoints::instance();
-
+            if ( strpos( $url_path, 'group' ) !== false ){
+                require_once( get_template_directory() . '/dt-groups/groups-template.php' ); // Functions to support theme
+                require_once( get_template_directory() . '/dt-groups/groups.php' );
+                require_once( get_template_directory() . '/dt-groups/groups-endpoints.php' ); // builds rest endpoints
+                $this->endpoints['groups'] = Disciple_Tools_Groups_Endpoints::instance();
+            }
             /**
              * dt-locations
              */
             require_once( get_template_directory() . '/dt-locations/locations-post-type.php' );
             $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
-            require_once( get_template_directory() . '/dt-locations/locations-template.php' );
-            require_once( get_template_directory() . '/dt-locations/locations.php' ); // serves the locations rest endpoints
-            require_once( get_template_directory() . '/dt-locations/locations-endpoints.php' ); // builds rest endpoints
-            $this->endpoints['locations'] = Disciple_Tools_Locations_Endpoints::instance();
             require_once( get_template_directory() . '/dt-locations/geocoding-api.php' );
-
+            if ( strpos( $url_path, 'location' ) !== false ){
+                require_once( get_template_directory() . '/dt-locations/locations-template.php' );
+                require_once( get_template_directory() . '/dt-locations/locations-endpoints.php' ); // builds rest endpoints
+                require_once( get_template_directory() . '/dt-locations/locations.php' ); // serves the locations rest endpoints
+                $this->endpoints['locations'] = Disciple_Tools_Locations_Endpoints::instance();
+            }
             /**
              * dt-people-groups
              */
             require_once( get_template_directory() . '/dt-people-groups/people-groups-post-type.php' );
             $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
-            require_once( get_template_directory() . '/dt-people-groups/people-groups-template.php' );
-            require_once( get_template_directory() . '/dt-people-groups/people-groups.php' );
-            require_once( get_template_directory() . '/dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
-            $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();
-
+            if ( strpos( $url_path, 'people-groups' ) !== false ){
+                require_once( get_template_directory() . '/dt-people-groups/people-groups-template.php' );
+                require_once( get_template_directory() . '/dt-people-groups/people-groups.php' );
+                require_once( get_template_directory() . '/dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
+                $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();
+            }
             /**
              * dt-metrics
              */
             require_once( get_template_directory() . '/dt-metrics/counter.php' );
-            require_once( get_template_directory() . '/dt-metrics/metrics.php' );
-
+            if ( strpos( $url_path, 'metrics' ) !== false ) {
+                require_once( get_template_directory() . '/dt-metrics/metrics.php' );
+            }
 
             /**
              * dt-users
@@ -320,7 +323,9 @@ else {
             require_once( get_template_directory() . '/dt-users/users-template.php' );
             require_once( get_template_directory() . '/dt-users/users-endpoints.php' );
             $this->endpoints['users'] = new Disciple_Tools_Users_Endpoints();
-            require_once( get_template_directory() . '/dt-users/users-product-tour.php' );
+            if ( !$is_rest ){
+                require_once( get_template_directory() . '/dt-users/users-product-tour.php' );
+            }
 
             /**
              * dt-notifications
@@ -373,6 +378,15 @@ else {
              * or those things directly supporting Admin panel features.
              */
             if ( is_admin() ) {
+
+                if ( ! class_exists( 'Puc_v4_Factory' ) ) {
+                    require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
+                }
+                Puc_v4_Factory::buildUpdateChecker(
+                    'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-theme-version-control.json',
+                    __FILE__,
+                    'disciple-tools-theme'
+                );
 
                 // Administration
                 require_once( get_template_directory() . '/dt-core/admin/admin-enqueue-scripts.php' ); // Load admin scripts
@@ -458,7 +472,6 @@ else {
         }
     }
 
-    require get_template_directory() . '/dt-core/global-functions.php';
 }
 
 /**
@@ -473,3 +486,5 @@ function dt_theme_admin_notice_required_php_version() {
     </div>
     <?php
 }
+
+
