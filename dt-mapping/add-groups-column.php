@@ -106,4 +106,4 @@ function dt_mm_add_groups_column( $data ) {
 
     return $data;
 }
-add_filter( 'dt_mapping_module_data', 'dt_mm_add_groups_column', 15, 1 );
+add_filter( 'dt_mapping_module_data', 'dt_mm_add_groups_column', 50, 1 );

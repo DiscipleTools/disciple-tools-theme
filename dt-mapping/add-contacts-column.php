@@ -105,4 +105,4 @@ function dt_mm_add_contacts_column( $data ) {
 
     return $data;
 }
-add_filter( 'dt_mapping_module_data', 'dt_mm_add_contacts_column', 10, 1 );
+add_filter( 'dt_mapping_module_data', 'dt_mm_add_contacts_column', 60, 1 );
