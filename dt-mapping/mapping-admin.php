@@ -1670,26 +1670,5 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
     DT_Mapping_Module_Admin::instance();
 
 
-    /**
-     * Best way to call for the mapping polygon
-     * @return array
-     */
-    function dt_get_mapping_polygon_mirror( $url_only = false ) {
-        $mirror = get_option( 'dt_mapping_module_polygon_mirror' );
-        if ( empty( $mirror ) ) {
-            $array = [
-                'key' => 'github',
-                'label' => 'GitHub',
-                'url' => 'https://raw.githubusercontent.com/DiscipleTools/dt-geojson/master/'
-            ];
-            update_option( 'dt_mapping_module_polygon_mirror', $array, true );
-            $mirror = $array;
-        }
 
-        if ( $url_only ) {
-            return $mirror['url'];
-        }
-
-        return $mirror;
-    }
 }
