@@ -814,6 +814,25 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 </table>
             </form>
             <?php
+            $dir = wp_upload_dir();
+            $uploads_dir = trailingslashit( $dir['basedir'] );
+            $file = 'dt_geonames.tsv';
+            $file_location = $uploads_dir . "geonames/" . $file;
+
+
+            $fp = fopen( $file_location, 'r');
+            $i = 0;
+            while ( !feof($fp) && $i < 20 )
+            {
+                $line = fgets($fp, 2048);
+
+                $data = str_getcsv($line,"\t");
+
+                dt_write_log($data);
+                $i++;
+            }
+
+            fclose($fp);
         }
 
         public function global_population_division_metabox() {
