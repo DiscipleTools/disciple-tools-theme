@@ -2,7 +2,7 @@
 ( function() {
     ?>
     <?php
-    $group = Disciple_Tools_Groups::get_group( get_the_ID(), true );
+    $group = Disciple_Tools_Groups::get_group( get_the_ID(), true, true );
 
     $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
 
@@ -188,7 +188,7 @@
 
 </section> <!-- end article -->
 
-<div class="reveal" id="group-details-edit" data-reveal>
+<div class="reveal" id="group-details-edit" data-reveal data-close-on-click="false">
     <h1><?php esc_html_e( "Edit Group", 'disciple_tools' ) ?></h1>
     <div class="display-fields">
         <div class="grid-x">

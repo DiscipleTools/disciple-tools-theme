@@ -162,6 +162,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( $check_permissions && !current_user_can( 'create_contacts' ) ) {
             return new WP_Error( __FUNCTION__, "You may not publish a contact", [ 'status' => 403 ] );
         }
+        $fields = dt_sanitize_array_html( $fields );
+
         $initial_fields = $fields;
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
 
@@ -563,6 +565,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
+        $fields = dt_sanitize_array_html( $fields );
         $initial_fields = $fields;
         $initial_keys = array_keys( $fields );
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
@@ -1155,14 +1158,19 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      *
      * @param int  $contact_id , the contact post_id
      * @param bool $check_permissions
+     * @param bool $load_cache
      *
      * @access public
      * @since  0.1.0
      * @return array| WP_Error, On success: the contact, else: the error message
      */
-    public static function get_contact( int $contact_id, $check_permissions = true ) {
+    public static function get_contact( int $contact_id, $check_permissions = true, $load_cache = false ) {
         if ( $check_permissions && !self::can_view( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read contact", [ 'status' => 403 ] );
+        }
+        $cached = wp_cache_get( "contact_" . $contact_id );
+        if ( $cached && $load_cache ){
+            return $cached;
         }
 
         $contact = get_post( $contact_id );
@@ -1310,7 +1318,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $fields["title"] = $contact->post_title;
             $fields["created_date"] = $contact->post_date;
 
-            return apply_filters( 'dt_contact_fields_post_filter', $fields );
+            $contact = apply_filters( 'dt_contact_fields_post_filter', $fields );
+            wp_cache_set( "contact_" . $contact_id, $contact );
+            return $contact;
         } else {
             return new WP_Error( __FUNCTION__, "No contact found with ID", [ 'contact_id' => $contact_id ] );
         }
@@ -1521,7 +1531,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     $to_remove[$key] = array();
                     $to_remove[$key]['values'] = array();
                 }
-                if ( in_array( $key, [ "baptized", "coaching" ] ) ){
+                if ( in_array( $key, [ "baptized", "coaching", "subassigned" ] ) ){
                     array_push($update[$key]['values'], array(
                         'value' => $result->p2p_from
                     ));
@@ -2085,8 +2095,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'object_note'    => '',
                 ]
             );
-            self::update_contact( $contact_id, $update, true );
-            return self::get_contact( $contact_id );
+            return self::update_contact( $contact_id, $update, true );
         } else {
             $assign_to_id = 0;
             $last_activity = self::get_most_recent_activity_for_field( $contact_id, "assigned_to" );
@@ -2103,7 +2112,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 "assigned_to" => $assign_to_id,
                 "overall_status" => 'unassigned'
             ];
-            self::update_contact( $contact_id, $update, true );
+            $contact = self::update_contact( $contact_id, $update, true );
             $current_user = wp_get_current_user();
             dt_activity_insert(
                 [
@@ -2120,7 +2129,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 ]
             );
             Disciple_Tools_Notifications::insert_notification_for_assignment_declined( $current_user->ID, $assign_to_id, $contact_id );
-            return self::get_contact( $contact_id );
+            return $contact;
         }
     }
 

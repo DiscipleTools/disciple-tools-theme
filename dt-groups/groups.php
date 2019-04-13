@@ -84,14 +84,19 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
 
     /**
-     * @param  int  $group_id
-     * @param  bool $check_permissions
+     * @param int $group_id
+     * @param bool $check_permissions
+     * @param bool $load_cache
      *
      * @return array|\WP_Error
      */
-    public static function get_group( int $group_id, bool $check_permissions = true ) {
+    public static function get_group( int $group_id, bool $check_permissions = true, $load_cache = false ) {
         if ( $check_permissions && !self::can_view( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read group", [ 'status' => 403 ] );
+        }
+        $cached = wp_cache_get( "group_" . $group_id );
+        if ( $cached && $load_cache ){
+            return $cached;
         }
 
         $group = get_post( $group_id );
@@ -201,7 +206,9 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $fields["name"] = $group->post_title;
             $fields["title"] = $group->post_title;
 
-            return apply_filters( 'dt_groups_fields_post_filter', $fields );
+            $group = apply_filters( 'dt_groups_fields_post_filter', $fields );
+            wp_cache_set( "group_" . $group_id, $group );
+            return $group;
         } else {
             return new WP_Error( __FUNCTION__, "No group found with ID", [ 'contact_id' => $group_id ] );
         }
@@ -394,7 +401,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
-
+        $fields = dt_sanitize_array_html( $fields );
         $field_keys = array_keys( $fields );
         $post = get_post( $group_id );
         if ( isset( $fields['id'] ) ) {
@@ -981,6 +988,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         if ( $check_permissions && ! current_user_can( 'create_groups' ) ) {
             return new WP_Error( __FUNCTION__, "You may not create a group", [ 'status' => 403 ] );
         }
+        $fields = dt_sanitize_array_html( $fields );
         $initial_fields = $fields;
 
         if ( ! isset( $fields ["title"] ) ) {

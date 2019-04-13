@@ -562,6 +562,10 @@ class Disciple_Tools_Contact_Post_Type
      */
     public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false ) {
 
+        $cached = wp_cache_get( "contact_field_settings" );
+        if ( $cached ){
+            return $cached;
+        }
         $fields = $this->get_contact_field_defaults( $post_id, $include_current_post );
         $fields = apply_filters( 'dt_custom_fields_settings', $fields, "contacts" );
         foreach ( $fields as $field_key => $field ){
@@ -620,6 +624,7 @@ class Disciple_Tools_Contact_Post_Type
             }
         }
 
+        wp_cache_set( "contact_field_settings", $fields );
         return $fields;
     } // End get_custom_fields_settings()
 

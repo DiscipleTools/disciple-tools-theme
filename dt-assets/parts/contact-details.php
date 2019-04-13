@@ -1,7 +1,7 @@
 <?php
 
 ( function () {
-    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
+    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true, true );
     $channel_list = Disciple_Tools_Contacts::get_channel_list();
     $current_user = wp_get_current_user();
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
@@ -277,7 +277,7 @@
         </div>
     </section>
 
-    <div class="reveal" id="contact-details-edit" data-reveal>
+    <div class="reveal" id="contact-details-edit" data-reveal data-close-on-click="false">
         <h1><?php esc_html_e( "Edit Contact", 'disciple_tools' ) ?></h1>
         <div class="display-fields details-edit-fields">
             <div class="grid-x">

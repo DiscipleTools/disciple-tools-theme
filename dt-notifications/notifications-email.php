@@ -44,19 +44,21 @@ function dt_send_email( $email, $subject, $message_plain_text ) {
     if ( !$continue ){
         return false;
     }
+    wp_mail( $email, $subject, $message_plain_text );
+//    @todo figure why this async method is slower.
     // Send email
-    try {
-        $send_email = new Disciple_Tools_Notifications_Email();
-        $send_email->launch(
-            [
-                'email'              => $email,
-                'subject'            => $subject,
-                'message_plain_text' => $message_plain_text,
-            ]
-        );
-    } catch ( Exception $e ) {
-        return false;
-    }
+//    try {
+//        $send_email = new Disciple_Tools_Notifications_Email();
+//        $send_email->launch(
+//            [
+//                'email'              => $email,
+//                'subject'            => $subject,
+//                'message_plain_text' => $message_plain_text,
+//            ]
+//        );
+//    } catch ( Exception $e ) {
+//        return false;
+//    }
 
     return true;
 }

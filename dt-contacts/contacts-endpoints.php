@@ -44,7 +44,6 @@ class Disciple_Tools_Contacts_Endpoints
         $this->public_namespace = 'dt-public/v1';
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
 
-        require_once( 'contacts.php' );
         $this->contacts_instance = new Disciple_Tools_Contacts();
     }
 

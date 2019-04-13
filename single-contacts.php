@@ -6,7 +6,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
 }
 
 ( function () {
-    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true );
+    $contact = Disciple_Tools_Contacts::get_contact( get_the_ID(), true, true );
     $contact_fields = Disciple_Tools_Contacts::get_contact_fields();
 
     if (isset( $_POST['unsure_all'] ) && isset( $_POST['dt_contact_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_contact_nonce'] ) ) ) {
@@ -62,16 +62,15 @@ if ( ! current_user_can( 'access_contacts' ) ) {
             );
 
             foreach ( $contact as $key => $fields ) {
-                if ( strpos( $key, "contact_" ) === false ) {
-                    continue;
-                }
-                $split = explode( "_", $key );
-                if ( !isset( $split[1] ) ) {
-                    continue;
-                }
-                $new_key = $split[0] . "_" . $split[1];
-                foreach ( $contact[ $new_key ] ?? array() as $values ) {
-                    $current[ $new_key ][ $values['key'] ] = $values['value'];
+                if ( strpos( $key, "contact_" ) === 0 ) {
+                    $split = explode( "_", $key );
+                    if ( !isset( $split[1] ) ) {
+                        continue;
+                    }
+                    $new_key = $split[0] . "_" . $split[1];
+                    foreach ( $contact[ $new_key ] ?? array() as $values ) {
+                        $current[ $new_key ][ $values['key'] ] = $values['value'];
+                    }
                 }
             }
 
@@ -113,7 +112,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                         $update[$key]["values"][] = [ "value" => $field_value ];
                     }
                 }
-                if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "key_select" && !isset( $contact[$key] )){
+                if ( isset( $contact_fields[ $key ] ) && $contact_fields[ $key ]["type"] === "key_select" && ( !isset( $contact[ $key ] ) || $key === "none" || $key === "" ) ) {
                     $update[$key] = $fields["key"];
                 }
                 if ( isset( $contact_fields[$key] ) && $contact_fields[$key]["type"] === "text" && ( !isset( $contact[$key] ) || empty( $contact[$key] ) )){
@@ -131,29 +130,28 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                     }
                 }
 
-                if ( strpos( $key, "contact_" ) === false ) {
-                    continue;
-                }
-                $split = explode( "_", $key );
-                if ( !isset( $split[1] ) ) {
-                    continue;
-                }
-                $new_key = $split[0] . "_" . $split[1];
-                if ( in_array( $new_key, array_keys( $update ) ) ) {
-                    continue;
-                }
-                $update[ $new_key ] = array(
-                    'values' => array()
-                );
-                foreach ( $non_master[ $new_key ] ?? array() as $values ) {
-                    $index = array_search( $values['value'], $current[ $new_key ] ?? array() );
-                    if ( $index !== false ) {
-                        $ignore_keys[] = $index;
+                if ( strpos( $key, "contact_" ) === 0 ) {
+                    $split = explode( "_", $key );
+                    if ( !isset( $split[1] ) ) {
                         continue;
                     }
-                    array_push( $update[ $new_key ]['values'], array(
-                        'value' => $values['value']
-                    ) );
+                    $new_key = $split[0] . "_" . $split[1];
+                    if ( in_array( $new_key, array_keys( $update ) ) ) {
+                        continue;
+                    }
+                    $update[ $new_key ] = array(
+                        'values' => array()
+                    );
+                    foreach ( $non_master[ $new_key ] ?? array() as $values ) {
+                        $index = array_search( $values['value'], $current[ $new_key ] ?? array() );
+                        if ( $index !== false ) {
+                            $ignore_keys[] = $index;
+                            continue;
+                        }
+                        array_push( $update[ $new_key ]['values'], array(
+                            'value' => $values['value']
+                        ) );
+                    }
                 }
             }
 
@@ -166,6 +164,7 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                 Disciple_Tools_Contacts::remove_fields( $master_id, $delete_fields, $ignore_keys );
             }
 
+//            @todo return error if update fails
             Disciple_Tools_Contacts::update_contact( $master_id, $update, true );
             Disciple_Tools_Contacts::merge_p2p( $master_id, $non_master_id );
             Disciple_Tools_Contacts::copy_comments( $master_id, $non_master_id );

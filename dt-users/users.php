@@ -448,6 +448,7 @@ class Disciple_Tools_Users
     public static function save_user_filters( $filters ){
         $current_user_id = get_current_user_id();
         if ( $current_user_id ){
+            $filters = filter_var_array( $filters, FILTER_SANITIZE_STRING );
             $filters = update_user_meta( $current_user_id, "saved_filters", $filters );
         }
         return $filters;

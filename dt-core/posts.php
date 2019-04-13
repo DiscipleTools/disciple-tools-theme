@@ -626,6 +626,7 @@ class Disciple_Tools_Posts
             $comment->gravatar = preg_replace( "/^http:/i", "https:", $url );
             $display_name = dt_get_user_display_name( $comment->user_id );
             $comment->comment_author = !empty( $display_name ) ? $display_name : $comment->comment_author;
+            $comment->comment_content = wp_kses_post( $comment->comment_content ); //wp function for escaping unwanted html in comments.
         }
 
         return $comments;

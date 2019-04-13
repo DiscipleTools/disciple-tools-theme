@@ -602,11 +602,11 @@ jQuery(document).ready(function($) {
       people_groups : { values: [] },
       geonames : { values: [] }
     }
-    $('#group-details-edit #title').val( group.name );
+    $('#group-details-edit #title').html( _.escape(group.name) );
     let addressHTML = "";
     (group.contact_address|| []).forEach(field=>{
       addressHTML += `<li style="display: flex">
-        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${field.value}</textarea>
+        <textarea class="contact-input" type="text" id="${_.escape(field.key)}" data-type="contact_address" dir="auto">${_.escape(field.value)}</textarea>
         <button class="button clear delete-button" data-id="${_.escape(field.key)}" data-type="contact_address">
             <img src="${wpApiGroupsSettings.template_dir}/dt-assets/images/invalid.svg">
         </button>
@@ -626,6 +626,17 @@ jQuery(document).ready(function($) {
    * Save group details updates
    */
   $('#save-edit-details').on('click', function () {
+    let contactInput = $(".contact-input")
+    contactInput.each((index, entry)=>{
+      if ( !$(entry).attr("id") ){
+        let val = $(entry).val()
+        let channelType = $(entry).data("type")
+        if ( !editFieldsUpdate[channelType]){
+          editFieldsUpdate[channelType] = {values:[]}
+        }
+        editFieldsUpdate[channelType].values.push({value:val})
+      }
+    })
     $(this).toggleClass("loading")
       API.save_field_api( "group", groupId, editFieldsUpdate).then((updatedGroup)=>{
       group = updatedGroup
@@ -639,14 +650,16 @@ jQuery(document).ready(function($) {
     let value = $(this).val()
     let field = $(this).data("type")
     let key = $(this).attr('id')
-    if (!editFieldsUpdate[field]){
-      editFieldsUpdate[field] = { values: [] }
-    }
-    let existing = _.find(editFieldsUpdate[field].values, {key})
-    if (existing){
-      existing.value = value
-    } else {
-      editFieldsUpdate[field].values.push({ key, value })
+    if ( key ){
+      if (!editFieldsUpdate[field]){
+        editFieldsUpdate[field] = { values: [] }
+      }
+      let existing = _.find(editFieldsUpdate[field].values, {key})
+      if (existing){
+        existing.value = value
+      } else {
+        editFieldsUpdate[field].values.push({ key, value })
+      }
     }
   }).on('click', '.delete-button', function () {
     let field = $(this).data('type')
