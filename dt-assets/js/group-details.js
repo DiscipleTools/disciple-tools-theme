@@ -86,7 +86,7 @@ jQuery(document).ready(function($) {
   /**
    * Follow
    */
-  $('.follow.switch-input').change(function () {
+  $('.follow.dt-switch').change(function () {
     let follow = $(this).is(':checked')
     let update = {
       follow: {values:[{value:wpApiGroupsSettings.current_user_id, delete:!follow}]},

@@ -75,23 +75,16 @@ function dt_print_details_bar(
                             <?php if ( $disable_following_toggle_function ) : ?>
                             <span style="color: black"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></span>
                             <?php else : ?>
-                            <div style="margin-right:5px"><span><?php esc_html_e( 'Follow', 'disciple_tools' )?></span></div>
-                            <div class="switch tiny cell shrink" style="margin-bottom: 0px">
-                                <input class="switch-input follow" id="follow" type="checkbox" name="follow"
-                                <?php echo ( $following ? 'checked' : "" ) ?> />
-                                <label class="switch-paddle follow" for="follow">
-                                    <span class="show-for-sr"><?php esc_html_e( 'Follow', 'disciple_tools' )?></span>
-                                    <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
-                                    <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
-                                </label>
-                            </div>
+                                <span style="margin-right:5px"><?php esc_html_e( 'Follow', 'disciple_tools' )?>:</span>
+                                <input type="checkbox" id="follow-switch" class="dt-switch follow" <?php echo ( $following ? 'checked' : "" ) ?>/>
+                                <label class="dt-switch" for="follow-switch" style="vertical-align: top;"></label>
                             <?php endif; ?>
                         </div>
                         <?php if ( $share_button ): ?>
                         <div class="cell shrink center-items ">
                             <button class="center-items open-share">
                                 <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
-                                <span style="margin:0 10px 0 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
+                                <span style="margin:0 10px 2px 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
                             </button>
                         </div>
                         <?php endif; ?>
@@ -119,8 +112,17 @@ function dt_print_details_bar(
             <div class="cell shrink">
                 <button class="center-items open-share">
                     <img src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
-                    <span style="margin:0 10px 0 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
+                    <span style="margin:2px 10px 0 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
                 </button>
+            </div>
+            <div class="cell shrink">
+                <?php if ( $disable_following_toggle_function ) : ?>
+                    <span style="color: black"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></span>
+                <?php else : ?>
+                    <span><?php esc_html_e( 'Follow', 'disciple_tools' )?>:</span>
+                    <input type="checkbox" id="follow-switch" class="dt-switch follow" <?php echo ( $following ? 'checked' : "" ) ?>/>
+                    <label class="dt-switch" for="follow-switch" style="vertical-align: top;"></label>
+                <?php endif; ?>
             </div>
         </div>
         <?php endif; ?>
