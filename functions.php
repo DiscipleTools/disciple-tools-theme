@@ -197,7 +197,6 @@ else {
              * URL loader
              */
             add_action( 'init', function() {
-                
                 $template_for_url = [
                     'metrics'               => 'template-metrics.php',
                     'settings'              => 'template-settings.php',
@@ -470,7 +469,6 @@ else {
             wp_safe_redirect( home_url( '/settings' ) );
         }
     }
-
 }
 
 /**
