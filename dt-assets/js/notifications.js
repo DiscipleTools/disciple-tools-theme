@@ -115,6 +115,12 @@ function get_notifications (all, reset) {
       page = new_offset + limit
       new_offset = new_offset + limit
     }
+
+  }
+  if (reset === true) {
+    page = 0
+  }else if (reset === false) {
+    page += 1
   }
 
   // return notifications if query successful
