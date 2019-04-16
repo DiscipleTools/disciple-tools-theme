@@ -125,7 +125,7 @@ function notification_template( id, note, is_new, pretty_time ) {
   return `
             <div class="cell" id="row-${id}">
               <div class="grid-x grid-margin-x grid-padding-y bottom-border notification-row ${is_new ==='1' ? 'unread-notification-row' : ''} ">
-                
+
                 <div class="auto cell">
                    ${note}<br>
                    <span class="grey">${pretty_time}</span>
@@ -175,6 +175,12 @@ function get_notifications( all, reset) {
       page = new_offset + limit
       new_offset = new_offset + limit
     }
+
+  }
+  if (reset === true) {
+    page = 0
+  }else if (reset === false) {
+    page += 1
   }
 
   /* query for the data */
@@ -236,4 +242,3 @@ function toggle_buttons( state ) {
   }
 
 }
-
