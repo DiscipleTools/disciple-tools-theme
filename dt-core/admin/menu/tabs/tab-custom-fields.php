@@ -57,9 +57,9 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
     private function get_post_fields( $post_type ){
         if ( $post_type === "groups" ){
-            return Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( null, null, true );
+            return Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( null, null, true, false );
         } elseif ( $post_type === "contacts" ){
-            return Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( null, null, true );
+            return Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( null, null, true, false );
         }
         return null;
     }
