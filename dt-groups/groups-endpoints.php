@@ -33,7 +33,6 @@ class Disciple_Tools_Groups_Endpoints
     private $version = 1;
     private $context = "dt";
     private $namespace;
-    private $groups_instance;
 
     /**
      * Disciple_Tools_Groups_Endpoints constructor.
@@ -41,10 +40,6 @@ class Disciple_Tools_Groups_Endpoints
     public function __construct() {
         $this->namespace = $this->context . "/v" . intval( $this->version );
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
-
-        require_once( 'groups.php' );
-        $this->groups_instance = new Disciple_Tools_Groups();
-
     }
 
     public function add_api_routes() {

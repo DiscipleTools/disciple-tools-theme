@@ -34,7 +34,6 @@ class Disciple_Tools_Contacts_Endpoints
     private $context = "dt";
     private $namespace;
     private $public_namespace;
-    private $contacts_instance;
 
     /**
      * Disciple_Tools_Contacts_Endpoints constructor.
@@ -43,8 +42,6 @@ class Disciple_Tools_Contacts_Endpoints
         $this->namespace = $this->context . "/v" . intval( $this->version );
         $this->public_namespace = 'dt-public/v1';
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
-
-        $this->contacts_instance = new Disciple_Tools_Contacts();
     }
 
     /**
