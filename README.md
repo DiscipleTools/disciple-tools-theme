@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/DiscipleTools/disciple-tools-theme.svg?branch=master)](https://travis-ci.org/DiscipleTools/disciple-tools-theme)
+[![Build Status](https://travis-ci.com/DiscipleTools/disciple-tools-theme.svg?branch=master)](https://travis-ci.com/DiscipleTools/disciple-tools-theme)
 
 # Disciple Tools
 A disciple relationship management system for discipleship making movements.
