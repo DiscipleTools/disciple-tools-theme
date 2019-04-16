@@ -86,11 +86,14 @@ jQuery(document).ready(function($) {
   /**
    * Follow
    */
-  $('.follow.dt-switch').change(function () {
-    let follow = $(this).is(':checked')
+  $('button.follow').on("click", function () {
+    let following = !($(this).data('value') === "following")
+    $(this).data("value", following ? "following" : "" )
+    $(this).html( following ? "Following" : "Follow")
+    $(this).toggleClass( "hollow" )
     let update = {
-      follow: {values:[{value:wpApiGroupsSettings.current_user_id, delete:!follow}]},
-      unfollow: {values:[{value:wpApiGroupsSettings.current_user_id, delete:follow}]}
+      follow: {values:[{value:wpApiGroupsSettings.current_user_id, delete:!following}]},
+      unfollow: {values:[{value:wpApiGroupsSettings.current_user_id, delete:following}]}
     }
     API.save_field_api( "group", groupId, update)
   })
@@ -99,23 +102,26 @@ jQuery(document).ready(function($) {
   /**
    * Update Needed
    */
-  $('.update-needed.switch-input').change(function () {
+  $('#update-needed.dt-switch').change(function () {
     let updateNeeded = $(this).is(':checked')
     $('.update-needed-notification').toggle(updateNeeded)
-    API.save_field_api( "group", groupId, {"requires_update":updateNeeded})
+    API.save_field_api( "group", groupId, {"requires_update":updateNeeded}).then(resp=>{
+      group = resp
+    })
   })
-  $('#update-needed')[0].addEventListener('comment_posted', function (e) {
-    if ( $(e.target).prop('checked') ){
-      API.get_post("group",  groupId ).then(g=>{
-        group = g
-        $('.update-needed-notification').toggle(group.requires_update === true)
-        $('#update-needed').prop("checked", group.requires_update === true)
-
+  $('#content')[0].addEventListener('comment_posted', function (e) {
+    if ( _.get(group, "requires_update") === true ){
+      API.get_post("group",  groupId ).then(resp=>{
+        group = resp
+        groupUpdated(_.get(group, "requires_update") === true )
       }).catch(err => { console.error(err) })
     }
   }, false);
 
-
+  function groupUpdated(updateNeeded) {
+    $('.update-needed-notification').toggle(updateNeeded)
+    $('#update-needed').prop("checked", updateNeeded)
+  }
   /**
    * Locations
    */

@@ -453,11 +453,14 @@ jQuery(document).ready(function($) {
   /**
    * Follow
    */
-  $('.follow.dt-switch').change(function () {
-    let follow = $(this).is(':checked')
+  $('button.follow').on("click", function () {
+    let following = !($(this).data('value') === "following")
+    $(this).data("value", following ? "following" : "" )
+    $(this).html( following ? "Following" : "Follow")
+    $(this).toggleClass( "hollow" )
     let update = {
-      follow: {values:[{value:contactsDetailsWpApiSettings.current_user_id, delete:!follow}]},
-      unfollow: {values:[{value:contactsDetailsWpApiSettings.current_user_id, delete:follow}]}
+      follow: {values:[{value:contactsDetailsWpApiSettings.current_user_id, delete:!following}]},
+      unfollow: {values:[{value:contactsDetailsWpApiSettings.current_user_id, delete:following}]}
     }
     API.save_field_api( "contact", contactId, update)
   })
@@ -770,15 +773,17 @@ jQuery(document).ready(function($) {
   /**
    * Update Needed
    */
-  $('.update-needed.switch-input').change(function () {
+  $('#update-needed.dt-switch').change(function () {
     let updateNeeded = $(this).is(':checked')
-    $('.update-needed-notification').toggle(updateNeeded)
-    API.save_field_api( "contact", contactId, {"requires_update":updateNeeded})
+    API.save_field_api( "contact", contactId, {"requires_update":updateNeeded}).then(resp=>{
+      contact = resp
+    })
   })
   $('#content')[0].addEventListener('comment_posted', function (e) {
     if ( _.get(contact, "requires_update") === true ){
-      API.get_post("contact",  contactId ).then(contact=>{
-        contactUpdated(_.get(contact, "requires_update") === true )
+      API.get_post("contact",  contactId ).then(resp=>{
+        contact = resp
+        contactUpdated(_.get(resp, "requires_update") === true )
       }).catch(err => { console.error(err) })
     }
   }, false);
