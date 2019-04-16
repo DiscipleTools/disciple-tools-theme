@@ -66,7 +66,7 @@ function dt_print_details_bar(
                     <div class="cell small-4 align-right grid-x grid-margin-x">
                         <div class="cell shrink center-items ">
                         <?php if ( $disable_following_toggle_function ) : ?>
-                            <span style="color: black"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></span>
+                            <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
                         <?php else :
                             if ( $following ) : ?>
                                 <button class="button follow hollow" data-value="following"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
@@ -112,7 +112,7 @@ function dt_print_details_bar(
             </div>
             <div class="cell shrink">
                 <?php if ( $disable_following_toggle_function ) : ?>
-                    <span style="color: black"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></span>
+                    <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
                 <?php else :
                     if ( $following ) : ?>
                         <button class="button follow hollow" data-value="following"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
