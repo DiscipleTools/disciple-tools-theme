@@ -186,15 +186,3 @@ if ( !class_exists( 'Disciple_Tools_Three_Column_Screen_Layout' ) ) {
 
     new Disciple_Tools_Three_Column_Screen_Layout();
 }
-
-/**
- * AJAX handler to store the state of dismissible notices.
- */
-function dt_hook_ajax_notice_handler(){
-    $a = "test";
-    check_ajax_referer( 'wp_rest_dismiss', 'security' );
-    if ( isset( $_POST["type"] ) ){
-        $type = sanitize_text_field( wp_unslash( $_POST["type"] ) );
-        update_option( 'dismissed-' . $type, true );
-    }
-}
