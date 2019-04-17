@@ -65,7 +65,9 @@
         if ( !data.overall_status ){
           data.overall_status = [];
         }
-        data.overall_status.push( "-closed" )
+        if ( !data.overall_status.includes("-closed") ){
+          data.overall_status.push( "-closed" )
+        }
       } else {
         if ( !data.group_status ){
           data.group_status = [];

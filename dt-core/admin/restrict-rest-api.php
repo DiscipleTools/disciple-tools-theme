@@ -80,7 +80,8 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
     /**
      * JWT token authentication is also open on the Disciple Tools use of WP REST API
      */
-    if ( $_SERVER['REQUEST_URI'] == "/wp-json/jwt-auth/v1/token" || $_SERVER['REQUEST_URI'] == "/wp-json/jwt-auth/v1/token/validate" ) {
+    $path = dt_get_url_path();
+    if ( $path == "wp-json/jwt-auth/v1/token" || $path == "wp-json/jwt-auth/v1/token/validate" ) {
         $authorized = true;
     }
 
