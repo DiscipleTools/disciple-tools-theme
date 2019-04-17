@@ -882,6 +882,11 @@ class Disciple_Tools_Posts
         $share_joins = "";
         $access_joins = "";
         $access_query = "";
+        if ( isset( $query["assigned_to"] ) ){
+            if ( !is_array( $query["assigned_to"] ) ){
+                return new WP_Error( __FUNCTION__, "Assigned_to must be an array. found: " . esc_html( $query["assigned_to"] ), [ 'status' => 400 ] );
+            }
+        }
         if ( !isset( $query["assigned_to"] ) || in_array( "all", $query["assigned_to"] ) ){
             $query["assigned_to"] = [ "all" ];
             if ( !self::can_view_all( 'contacts' ) && $check_permissions ){

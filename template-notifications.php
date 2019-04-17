@@ -36,7 +36,7 @@ get_header(); ?>
                             <div class="small-4 medium-2 cell">
                                 <div class="expanded small button-group" style="text-align:center;">
                                     <button id="all" type="button"
-                                            onclick="toggle_buttons('all'); get_notifications( all = true, true );"
+                                            onclick="toggle_buttons('all'); get_notifications( all = true, true, );"
                                             class="button hollow"><?php esc_html_e( 'All', 'disciple_tools' )?>
                                     </button>
                                     <button id="new" type="button"
@@ -67,10 +67,10 @@ get_header(); ?>
                     <div class="cell">
                         <div class="grid-x grid-margin-x grid-margin-y">
                             <div class="small-12 medium-6 medium-offset-3 cell center">
-                                <a id="next-all" onclick="get_notifications( true, false )">
+                                <a id="next-all" onclick="get_notifications( true, false )" style="display:none;">
                                     <?php esc_html_e( 'load more notifications', 'disciple_tools' )?>
                                 </a>
-                                <a id="next-new" onclick="get_notifications( false, false )" style="display:none;">
+                                <a id="next-new" onclick="get_notifications( false, false )">
                                     <?php esc_html_e( 'load more notifications', 'disciple_tools' ) ?>
                                 </a>
                             </div>

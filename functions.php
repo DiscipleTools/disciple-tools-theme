@@ -197,7 +197,6 @@ else {
              * URL loader
              */
             add_action( 'init', function() {
-                
                 $template_for_url = [
                     'metrics'               => 'template-metrics.php',
                     'settings'              => 'template-settings.php',
@@ -265,6 +264,7 @@ else {
             require_once( get_template_directory() . '/dt-contacts/contacts-post-type.php' );
             $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
             require_once( get_template_directory() . '/dt-contacts/contacts.php' );
+            new Disciple_Tools_Contacts();
             require_once( get_template_directory() . '/dt-contacts/contacts-template.php' ); // Functions to support theme
             require_once( get_template_directory() . '/dt-contacts/contacts-transfer.php' ); // Functions to support theme
             if ( strpos( $url_path, 'contact' ) !== false ){
@@ -279,6 +279,7 @@ else {
             $this->post_types['groups'] = Disciple_Tools_Groups_Post_Type::instance();
             require_once( get_template_directory() . '/dt-groups/groups-template.php' ); // Functions to support theme
             require_once( get_template_directory() . '/dt-groups/groups.php' );
+            new Disciple_Tools_Groups();
             if ( strpos( $url_path, 'group' ) !== false ){
                 require_once( get_template_directory() . '/dt-groups/groups-endpoints.php' ); // builds rest endpoints
                 $this->endpoints['groups'] = Disciple_Tools_Groups_Endpoints::instance();
@@ -474,7 +475,6 @@ else {
             wp_safe_redirect( home_url( '/settings' ) );
         }
     }
-
 }
 
 /**

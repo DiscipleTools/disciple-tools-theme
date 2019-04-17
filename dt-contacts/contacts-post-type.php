@@ -557,13 +557,14 @@ class Disciple_Tools_Contact_Post_Type
      * @param bool $include_current_post
      * @param int|null $post_id
      * @param bool $with_deleted_options
+     * @param bool $load_from_cache
      *
      * @return mixed
      */
-    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false ) {
+    public function get_custom_fields_settings( $include_current_post = true, int $post_id = null, $with_deleted_options = false, $load_from_cache = true ) {
 
         $cached = wp_cache_get( "contact_field_settings" );
-        if ( $cached ){
+        if ( $load_from_cache && $cached ){
             return $cached;
         }
         $fields = $this->get_contact_field_defaults( $post_id, $include_current_post );

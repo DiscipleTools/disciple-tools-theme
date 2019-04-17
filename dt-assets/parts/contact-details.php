@@ -13,16 +13,14 @@
     } ?>
 
 
-    <?php
-//    <!-- Requires update block -->
-    if ( isset( $contact['requires_update'] ) && $contact['requires_update'] === true ) { ?>
-    <section class="cell small-12 update-needed-notification">
+    <!-- Requires update block -->
+    <section class="cell small-12 update-needed-notification"
+             style="display: <?php echo esc_html( ( isset( $contact['requires_update'] ) && $contact['requires_update'] === true ) ? "block" : "none" ) ?> ">
         <div class="bordered-box detail-notification-box" style="background-color:#F43636">
             <h4><img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/alert-circle-exc.svg' ) ?>"/><?php esc_html_e( 'This contact needs an update', 'disciple_tools' ) ?>.</h4>
             <p><?php esc_html_e( 'Please provide an update by posting a comment.', 'disciple_tools' )?>.</p>
         </div>
     </section>
-    <?php } ?>
 
     <!-- Assigned to block -->
     <?php
