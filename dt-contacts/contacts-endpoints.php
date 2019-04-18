@@ -222,11 +222,16 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'public_contact_transfer' ],
             ]
         );
-
         register_rest_route(
             $this->namespace, '/contacts/settings', [
                 "methods"  => "GET",
                 "callback" => [ $this, 'get_settings' ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/following', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_following' ],
             ]
         );
     }
@@ -897,5 +902,14 @@ class Disciple_Tools_Contacts_Endpoints
 
     public function get_settings(){
         return Disciple_Tools_Contacts::get_settings();
+    }
+
+    public function get_following( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params['id'] ) ) {
+            return Disciple_Tools_Posts::get_users_following_post( "contacts", $params['id'] );
+        } else {
+            return new WP_Error( __FUNCTION__, "Missing a valid group id", [ 'status' => 400 ] );
+        }
     }
 }

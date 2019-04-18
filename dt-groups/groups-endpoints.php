@@ -142,6 +142,12 @@ class Disciple_Tools_Groups_Endpoints
                 "callback" => [ $this, 'get_settings' ],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/group/(?P<id>\d+)/following', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_following' ],
+            ]
+        );
     }
 
     /**
@@ -448,6 +454,15 @@ class Disciple_Tools_Groups_Endpoints
 
     public function get_settings(){
         return Disciple_Tools_Groups::get_settings();
+    }
+
+    public function get_following( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params['id'] ) ) {
+            return Disciple_Tools_Posts::get_users_following_post( "groups", $params['id'] );
+        } else {
+            return new WP_Error( __FUNCTION__, "Missing a valid group id", [ 'status' => 400 ] );
+        }
     }
 
 }

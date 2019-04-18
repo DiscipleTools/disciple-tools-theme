@@ -1408,9 +1408,12 @@ class Disciple_Tools_Posts
      * @param $post_type
      * @param $post_id
      *
-     * @return array an array of user ids
+     * @return array|WP_Error
      */
     public static function get_users_following_post( $post_type, $post_id ){
+        if ( !self::can_access( $post_type ) ){
+            return new WP_Error( __FUNCTION__, "You do not have access to: " . $post_type, [ 'status' => 403 ] );
+        }
         $users = [];
         $assigned_to_meta = get_post_meta( $post_id, "assigned_to", true );
         $assigned_to = dt_get_user_id_from_assigned_to( $assigned_to_meta );
