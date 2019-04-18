@@ -329,7 +329,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $settings['root'] = esc_url_raw( rest_url() );
             $settings['endpoints'] = $this->endpoints;
             $settings['mapping_source_url'] = dt_get_mapping_polygon_mirror( true ); //@todo reenable, this function is not available to multipliers and breaks loading a contact details page.
-//            $settings['mapping_source_url'] = get_option( 'dt_mapping_module_polygon_mirror', 'https://raw.githubusercontent.com/DiscipleTools/dt-geojson/master/' ); // @todo delete
+//            $settings['mapping_source_url'] = get_option( 'dt_mapping_module_polygon_mirror', 'https://raw.githubusercontent.com/DiscipleTools/dt-mapping-data/master/' ); // @todo delete
             $settings['population_division'] = $this->get_population_division();
             $settings['default_map_settings'] = $this->default_map_settings();
             $settings['spinner'] = ' <img src="'. spinner() . '" width="12px" />';
@@ -2113,7 +2113,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             $array = [
                 'key' => 'github',
                 'label' => 'GitHub',
-                'url' => 'https://raw.githubusercontent.com/DiscipleTools/dt-geojson/master/'
+                'url' => 'https://raw.githubusercontent.com/DiscipleTools/dt-mapping-data/master/'
             ];
             update_option( 'dt_mapping_module_polygon_mirror', $array, true );
             $mirror = $array;

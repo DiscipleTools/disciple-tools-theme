@@ -1438,14 +1438,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             /**
              * https://storage.googleapis.com/disciple-tools-maps/
-             * https://raw.githubusercontent.com/DiscipleTools/dt-geojson/master/
+             * https://raw.githubusercontent.com/DiscipleTools/dt-mapping-data/master/
              * https://s3.amazonaws.com/mapping-source/
              */
             $mirror_list = [
                 'github' => [
                     'key'   => 'github',
                     'label' => 'GitHub',
-                    'url'   => 'https://raw.githubusercontent.com/DiscipleTools/dt-geojson/master/',
+                    'url'   => 'https://raw.githubusercontent.com/DiscipleTools/dt-mapping-data/master/',
                 ],
                 'google' => [
                     'key'   => 'google',
@@ -1562,7 +1562,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 <strong>Custom Mirror Note:</strong>
                                 <em>
                                     Note: The custom mirror option allows you to download the polygon source repo (<a
-                                            href="https://github.com/DiscipleTools/dt-geojson/archive/master.zip">Download
+                                            href="https://github.com/DiscipleTools/dt-mapping-data/archive/master.zip">Download
                                         source</a>) and install
                                     this folder to your own mirror. You will be responsible for syncing occasional
                                     updates to

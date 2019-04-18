@@ -26,7 +26,7 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
             $array = [
                 'key' => 'github',
                 'label' => 'GitHub',
-                'url' => 'https://raw.githubusercontent.com/DiscipleTools/dt-geojson/master/'
+                'url' => 'https://raw.githubusercontent.com/DiscipleTools/dt-mapping-data/master/'
             ];
             update_option( 'dt_mapping_module_polygon_mirror', $array, true );
             $mirror = $array;
