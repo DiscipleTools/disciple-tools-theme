@@ -9,9 +9,6 @@
  */
 class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
 
-    /**
-     * @throws \Exception
-     */
     public function up() {
 
         // get uploads director
@@ -61,13 +58,13 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
         curl_close( $ch_start );
 
         $zip = new ZipArchive();
-        $extractPath = $uploads_dir . 'geonames';
+        $extract_path = $uploads_dir . 'geonames';
         if ($zip->open( $zip_file ) != "true")
         {
             error_log( "Error :- Unable to open the Zip File" );
         }
 
-        $zip->extractTo( $extractPath );
+        $zip->extractTo( $extract_path );
         $zip->close();
 
         $this->test();
@@ -79,7 +76,8 @@ class DT_Mapping_Module_Migration_0001 extends DT_Mapping_Module_Migration {
     }
 
     /**
-     * @throws \Exception
+     * Testing
+     * @throws \Exception Did not find files.
      */
     public function test() {
         $dir = wp_upload_dir();

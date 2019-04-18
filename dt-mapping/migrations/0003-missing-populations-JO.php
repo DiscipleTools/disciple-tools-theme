@@ -69,6 +69,7 @@ class DT_Mapping_Module_Migration_0003 extends DT_Mapping_Module_Migration {
         $e = 0;
         $s = 0;
         foreach ( $sql as $query ) {
+            // @codingStandardsIgnoreLine
             $result = $wpdb->query( $query );
             if ( $result === false ) {
                 $results['error'] = $e++;

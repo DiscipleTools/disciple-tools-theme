@@ -9,9 +9,6 @@
  */
 class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
 
-    /**
-     * @throws \Exception
-     */
     public function up() {
         global $wpdb;
 
@@ -55,7 +52,8 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
     }
 
     /**
-     * @throws \Exception
+     * Testing
+     * @throws \Exception Did not find table.
      */
     public function test() {
         global $wpdb;

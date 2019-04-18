@@ -2115,5 +2115,4 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
         return $mirror;
     }
-
 } // end if class check

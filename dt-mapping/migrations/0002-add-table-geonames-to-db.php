@@ -2,30 +2,34 @@
 
 class DT_Mapping_Module_Migration_0002 extends DT_Mapping_Module_Migration {
     /**
-     * @throws \Exception
+     * Install the data
+     * @throws \Exception Failed to find correct records.
      */
     public function up() {
         global $wpdb;
-        $table = $wpdb->prefix . 'dt_geonames';
+        if ( ! isset( $wpdb->dt_geonames ) ) {
+            $wpdb->dt_geonames = $wpdb->prefix . 'dt_geonames';
+        }
+
         $file = 'dt_geonames.tsv';
         $expected = 48851;
 
         // TEST for expected tables\
-        $wpdb->query( "SHOW TABLES LIKE '$table'" );
+        $wpdb->query( "SHOW TABLES LIKE $wpdb->dt_geonames" );
         if ( $wpdb->num_rows < 1 ) {
-            error_log( 'Failed to find ' . $table );
+            error_log( 'Failed to find ' . $wpdb->dt_geonames );
             dt_write_log( $wpdb->num_rows );
             dt_write_log( $wpdb );
-            throw new Exception( 'Failed to find ' . $table );
+            throw new Exception( 'Failed to find ' . $wpdb->dt_geonames );
         }
 
         // CHECK IF DB INSTALLED
-        $rows = (int) $wpdb->get_var( "SELECT count(*) FROM $table" );
+        $rows = (int) $wpdb->get_var( "SELECT count(*) FROM $wpdb->dt_geonames" );
         if ( $rows >= $expected ) {
             /* Test if database is already created */
             error_log( 'database already installed' );
         } elseif ( $rows < $expected ) {
-            $wpdb->query( "TRUNCATE $table" );
+            $wpdb->query( "TRUNCATE $wpdb->dt_geonames" );
 
             // TEST for presence of source files
             $dir = wp_upload_dir();
@@ -35,17 +39,20 @@ class DT_Mapping_Module_Migration_0002 extends DT_Mapping_Module_Migration {
                 throw new Exception( 'Failed to find ' . $file );
             }
 
+            $file_location = $uploads_dir . 'geonames/' . $file;
+
             // LOAD geonames data
-            $wpdb->query( "
-                LOAD DATA LOCAL INFILE '{$uploads_dir}geonames/{$file}'
-                INTO TABLE $table
+            $wpdb->query( $wpdb->prepare( "
+                LOAD DATA LOCAL INFILE %s
+                INTO TABLE $wpdb->dt_geonames
                 FIELDS TERMINATED BY '\t'
                 LINES TERMINATED BY '\n'
                 (geonameid,name,asciiname,alternatenames,latitude,longitude,feature_class,feature_code,country_code,cc2,admin1_code,admin2_code,admin3_code,admin4_code,population,elevation,dem,timezone,modification_date,parent_id,country_geonameid,admin1_geonameid,admin2_geonameid,admin3_geonameid,level,alt_name,alt_name_changed,alt_population,is_custom_location)
-                " );
+                ", $file_location ) );
+
 
             // TEST
-            $rows = (int) $wpdb->get_var( "SELECT count(*) FROM $table" );
+            $rows = (int) $wpdb->get_var( "SELECT count(*) FROM $wpdb->dt_geonames" );
             if ( $rows === $expected ) {
                 error_log( 'success install of geonames data' );
             } elseif ( $rows > $expected ) {
@@ -53,9 +60,9 @@ class DT_Mapping_Module_Migration_0002 extends DT_Mapping_Module_Migration {
             } elseif ( $rows < $expected ) {
                  // fail over install
 
-                require_once ( get_template_directory() . '/dt-mapping/mapping-admin.php' );
+                require_once( get_template_directory() . '/dt-mapping/mapping-admin.php' );
                 DT_Mapping_Module_Admin::instance()->rebuild_geonames();
-                $rows = (int) $wpdb->get_var( "SELECT count(*) FROM $table" );
+                $rows = (int) $wpdb->get_var( "SELECT count(*) FROM $wpdb->dt_geonames" );
 
                 if ( $rows === $expected ) {
                     error_log( 'success install of geonames data' );

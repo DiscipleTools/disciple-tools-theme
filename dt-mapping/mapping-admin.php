@@ -1,14 +1,14 @@
 <?php
 /**
  * Mapping Module Admin Section Elements
- *
  * These elements are designed to be included into the admin areas of other themes and plugins.
- *
  * Example:
  *      DT_Mapping_Module_Admin::instance()->population_metabox();
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly
 
 if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
@@ -21,10 +21,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
         // Singleton
         private static $_instance = null;
+
         public static function instance() {
             if ( is_null( self::$_instance ) ) {
                 self::$_instance = new self();
             }
+
             return self::$_instance;
         }
 
@@ -38,7 +40,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
              * If allowed, this class will load into every admin the header scripts and rest endpoints. It is best
              * practice to add a filter to a config file in the plugin or theme using this module that filters for the
              * specific option page that these metaboxes are to be loaded, for the overall weight of the admin area.
-             *
              * Example:
              *  function dt_load_mapping_admin_class( $approved ) {
              *      global $pagenow;
@@ -48,15 +49,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
              *      return false;
              *  }
              *  add_filter('dt_mapping_module_admin_load_approved', 'dt_load_only_on_options_page' )
-             *
              */
             if ( ! apply_filters( 'dt_mapping_module_admin_load_approved', true ) ) {
                 return; // this allows you to control what environments the admin loads.
             }
 
-            add_action( "admin_menu", array( $this, "register_menu" ) );
+            add_action( "admin_menu", [ $this, 'register_menu' ] );
 
-            if ( is_admin() && isset( $_GET['page'] ) &&  'dt_mapping_module' === $_GET['page'] ) {
+            if ( is_admin() && isset( $_GET['page'] ) && 'dt_mapping_module' === $_GET['page'] ) {
                 $this->spinner = spinner();
                 $this->nonce = wp_create_nonce( 'wp_rest' );
                 $this->current_user_id = get_current_user_id();
@@ -72,7 +72,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         public function scripts() {
             ?>
             <script>
-                function send_update( data ) {
+                function send_update(data) {
                     let options = {
                         type: 'POST',
                         contentType: 'application/json; charset=utf-8',
@@ -89,53 +89,60 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                     return jQuery.ajax(options)
                 }
-                function update( geonameid, value, key ) {
-                    if ( value ) {
-                        jQuery('#button-'+geonameid).append(`<span><img src="<?php echo esc_url_raw( spinner() ) ?>" width="20px" /></span>`)
 
-                        let update = send_update({ key: key, value: value, geonameid: geonameid })
+                function update(geonameid, value, key) {
+                    if (value) {
+                        jQuery('#button-' + geonameid).append(`<span><img src="<?php echo esc_url_raw( spinner() ) ?>" width="20px" /></span>`)
 
-                        update.done(function(data) {
+                        let update = send_update({key: key, value: value, geonameid: geonameid})
+
+                        update.done(function (data) {
                             console.log(data)
-                            if ( data ) {
-                                jQuery('#label-'+geonameid ).html(`${value}`)
-                                jQuery('#input-'+geonameid ).val('')
-                                jQuery('#button-'+geonameid+' span').remove()
+                            if (data) {
+                                jQuery('#label-' + geonameid).html(`${value}`)
+                                jQuery('#input-' + geonameid).val('')
+                                jQuery('#button-' + geonameid + ' span').remove()
                             }
                         })
                     }
                 }
-                function reset( geonameid, key ) {
-                    jQuery('#reset-'+geonameid).append(`<span><img src="<?php echo esc_url_raw( spinner() ) ?>" width="20px" /></span>`)
 
-                    let update = send_update({ key: key, reset: true, geonameid: geonameid })
+                function reset(geonameid, key) {
+                    jQuery('#reset-' + geonameid).append(`<span><img src="<?php echo esc_url_raw( spinner() ) ?>" width="20px" /></span>`)
 
-                    update.done(function(data) {
+                    let update = send_update({key: key, reset: true, geonameid: geonameid})
+
+                    update.done(function (data) {
                         console.log(data)
-                        if ( data.status === 'OK' ) {
-                            jQuery('#label-'+geonameid ).html(`${data.value}`)
-                            jQuery('#input-'+geonameid ).val('')
-                            jQuery('#reset-'+geonameid+' span').remove()
+                        if (data.status === 'OK') {
+                            jQuery('#label-' + geonameid).html(`${data.value}`)
+                            jQuery('#input-' + geonameid).val('')
+                            jQuery('#reset-' + geonameid + ' span').remove()
                         }
                     })
-                    update.fail(function(e) {
-                        jQuery('#reset-'+geonameid+' span').remove()
+                    update.fail(function (e) {
+                        jQuery('#reset-' + geonameid + ' span').remove()
                         console.log(e)
                     })
                 }
             </script>
             <style>
-                a.pointer { cursor: pointer; }
+                a.pointer {
+                    cursor: pointer;
+                }
+
                 #drill_down {
                     margin-bottom: 0;
                     list-style-type: none;
                 }
+
                 #drill_down li {
-                    display:inline;
+                    display: inline;
                     margin-right: 3px;
                 }
+
                 #drill_down li select {
-                    width:150px;
+                    width: 150px;
                 }
             </style>
             <?php
@@ -148,26 +155,26 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 $this->token,
                 [ $this, 'content' ],
                 'dashicons-admin-site',
-            7 );
+                7
+            );
         }
 
-        public function enqueue_scripts( $hook ){
+        public function enqueue_scripts( $hook ) {
             if ( 'admin.php' === $hook ) {
                 return;
             }
             // drill down tool
-            wp_enqueue_script( 'typeahead-jquery', get_template_directory_uri() . '/dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', array( 'jquery' ), true );
-            wp_enqueue_style( 'typeahead-jquery-css', get_template_directory_uri() . '/dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
+            wp_enqueue_script( 'typeahead-jquery', get_template_directory_uri() . '/dt-core/dependencies/typeahead/dist/jquery.typeahead.min.js', [ 'jquery' ], true );
+            wp_enqueue_style( 'typeahead-jquery-css', get_template_directory_uri() . '/dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', [] );
 
             wp_register_script( 'lodash', 'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js', false, '4.17.11' );
             wp_enqueue_script( 'lodash' );
             wp_enqueue_script( 'mapping-drill-down', get_template_directory_uri() . '/dt-mapping/drill-down.js', [ 'jquery', 'lodash' ], '1.1' );
             wp_localize_script(
-                'mapping-drill-down', 'mappingModule', array(
+                'mapping-drill-down', 'mappingModule', [
                     'mapping_module' => DT_Mapping_Module::instance()->localize_script(),
-                )
+                ]
             );
-
         }
 
         public function process_rest_edits( $params ) {
@@ -175,12 +182,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 $geonameid = (int) sanitize_key( wp_unslash( $params['geonameid'] ) );
                 $value = false;
                 if ( isset( $params['value'] ) ) {
-                    $value = sanitize_text_field( wp_unslash( $params['value' ] ) );
+                    $value = sanitize_text_field( wp_unslash( $params['value'] ) );
                 }
 
                 global $wpdb;
 
-                switch( $params['key'] ) {
+                switch ( $params['key'] ) {
                     case 'name':
                         if ( isset( $params['reset'] ) && $params['reset'] === true ) {
                             // get the original name for the geonameid
@@ -196,11 +203,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                             return [
                                 'status' => 'OK',
-                                'value' => $name
+                                'value'  => $name,
                             ];
-                        } else if ( $value ) {
+                        } elseif ( $value ) {
                             $update_id = $wpdb->update(
-                                $wpdb->dt_geonames, 
+                                $wpdb->dt_geonames,
                                 [ 'alt_name' => $value ],
                                 [ 'geonameid' => $geonameid ],
                                 [ '%s' ],
@@ -209,7 +216,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             if ( $update_id ) {
                                 return true;
                             } else {
-                                return new WP_Error('insert_fail', 'Failed to insert record' );
+                                return new WP_Error( 'insert_fail', 'Failed to insert record' );
                             }
                         }
                         break;
@@ -229,9 +236,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                             return [
                                 'status' => 'OK',
-                                'value' => $population
+                                'value'  => $population,
                             ];
-                        } else if ( $value ) {
+                        } elseif ( $value ) {
                             $update_id = $wpdb->update(
                                 $wpdb->dt_geonames,
                                 [ 'alt_population' => $value ],
@@ -242,7 +249,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             if ( $update_id ) {
                                 return true;
                             } else {
-                                return new WP_Error('update_fail', 'Failed to update population' );
+                                return new WP_Error( 'update_fail', 'Failed to update population' );
                             }
                         }
                         break;
@@ -250,32 +257,34 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     case 'sub_location':
 
                         if ( isset( $value ) ) {
+                            dt_write_log( 'sub_location reached' );
                             //@todo write the save action for the form data
                         }
+
                         return true;
                         break;
                     default:
                         return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
                         break;
                 }
-
             }
+
             return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
         }
 
         public function content() {
 
-            if ( !current_user_can( 'manage_dt' ) ) { // manage dt is a permission that is specific to Disciple Tools and allows admins, strategists and dispatchers into the wp-admin
+            if ( ! current_user_can( 'manage_dt' ) ) { // manage dt is a permission that is specific to Disciple Tools and allows admins, strategists and dispatchers into the wp-admin
                 wp_die( esc_attr__( 'You do not have sufficient permissions to access this page.' ) );
             }
 
-            if ( isset( $_GET["tab"] ) ) {
-                $tab = sanitize_key( wp_unslash( $_GET["tab"] ) );
+            if ( isset( $_GET['tab'] ) ) {
+                $tab = sanitize_key( wp_unslash( $_GET['tab'] ) );
             } else {
                 $tab = 'general';
             }
 
-            $link = 'admin.php?page='.$this->token.'&tab=';
+            $link = 'admin.php?page=' . $this->token . '&tab=';
 
             ?>
             <div class="wrap">
@@ -331,7 +340,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 </h2>
 
                 <?php
-                switch ($tab) {
+                switch ( $tab ) {
                     case "general":
                         $this->general_tab();
                         break;
@@ -495,7 +504,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <?php
         }
 
-
         public function population_tab() {
             ?>
             <div class="wrap">
@@ -556,7 +564,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <div id="post-body-content">
                             <!-- Main Column -->
 
-                            
+
                             <?php $this->migration_status_metabox() ?>
                             <br>
                             <?php $this->migration_rebuild_geonames() ?>
@@ -601,7 +609,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 <thead>
                                 <th>List</th>
                                 </thead>
-                                <tbody><tr><td id="results_body"><img src="<?php echo esc_url( $this->spinner ); ?>" style="width:20px; padding-top:5px;" /></td></tr>
+                                <tbody>
+                                <tr>
+                                    <td id="results_body"><img src="<?php echo esc_url( $this->spinner ); ?>"
+                                                               style="width:20px; padding-top:5px;"/></td>
+                                </tr>
                                 </tbody>
                             </table>
 
@@ -611,7 +623,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 </div><!--poststuff end -->
             </div><!-- wrap end -->
             <script>
-                jQuery(document).ready(function() {
+                jQuery(document).ready(function () {
                     reset_drill_down()
                 })
 
@@ -620,21 +632,21 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     jQuery.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify( { 'geonameid': 6295630 } ),
+                        data: JSON.stringify({'geonameid': 6295630}),
                         dataType: "json",
                         url: "<?php echo esc_url_raw( rest_url() ) ?>dt/v1/mapping_module/get_children",
-                        beforeSend: function(xhr) {
+                        beforeSend: function (xhr) {
                             xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ) ?>');
                         },
                     })
-                        .done( function( response ) {
+                        .done(function (response) {
                             console.log(response)
 
                             jQuery('#spinner_6295630').empty()
                             jQuery('#results_body').empty()
 
-                            if ( response ) {
-                                jQuery.each( response.list, function(i,v) {
+                            if (response) {
+                                jQuery.each(response.list, function (i, v) {
                                     jQuery('#6295630').append(`<option value="${v.id}">${v.name}</option>`)
                                 })
                             }
@@ -646,12 +658,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         })
                 }
 
-                function get_children( id ) {
+                function get_children(id) {
                     let drill_down = jQuery('#drill_down_body')
                     console.log(id)
                     console.log(drill_down)
 
-                    let spinner_span = jQuery('#spinner_'+id)
+                    let spinner_span = jQuery('#spinner_' + id)
                     let results_box = jQuery('#results_body')
                     let spinner = `<img src="<?php echo esc_url( $this->spinner ) ?>" style="width:20px; padding-top:5px;" />`
 
@@ -660,26 +672,26 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     jQuery.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify( { 'geonameid': id } ),
+                        data: JSON.stringify({'geonameid': id}),
                         dataType: "json",
                         url: "<?php echo esc_url_raw( rest_url() ) ?>dt/v1/mapping_module/get_children",
-                        beforeSend: function(xhr) {
+                        beforeSend: function (xhr) {
                             xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ) ?>');
                         },
                     })
-                        .done( function( response ) {
+                        .done(function (response) {
                             console.log(response)
 
                             spinner_span.empty()
                             results_box.empty()
 
-                            if ( response.list.length === 0 ) {
+                            if (response.list.length === 0) {
                                 results_box.append(`<tr><td>No Children Locations</td></tr>`)
                             }
                             else {
                                 jQuery('#drill_down_body').append(`<tr><td><select id="${id}" onchange="get_children( this.value );jQuery(this).parent().parent().nextAll().remove()"><option>Select</option></select> <span id="spinner_${id}"></span></td></tr>`)
-                                jQuery.each( response.list, function(i,v) {
-                                    jQuery('#'+id).append(`<option value="${v.id}">${v.name}</option>`)
+                                jQuery.each(response.list, function (i, v) {
+                                    jQuery('#' + id).append(`<option value="${v.id}">${v.name}</option>`)
                                 })
                                 results_box.append(response.html)
                             }
@@ -698,74 +710,73 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
          * Admin Page Metaboxes
          */
 
-
         public function summary_metabox() {
             ?>
-                <!-- Box -->
-                <table class="widefat striped">
-                    <thead>
-                    <th>Name</th>
-                    <th>Current Setting</th>
-                    <th></th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                Mapping Focus
-                            </td>
-                            <td>
-                                <?php
-                                $list = DT_Mapping_Module::instance()->default_map_short_list();
-                                if ( is_array( $list ) ) {
-                                    foreach ( $list as $key => $value ) {
-                                        echo esc_html( $value ) . '<br>';
-                                    }
-                                }
-                                ?>
-                            </td>
-                            <td>
-                                <a href="admin.php?page=dt_mapping_module&tab=focus">Edit</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Polygon Mirror Source
-                            </td>
-                            <td>
-                                <?php
-                                    $mirror = dt_get_mapping_polygon_mirror();
-                                    echo esc_attr( $mirror['label'] ) ?? '';
-                                ?>
-                            </td>
-                            <td>
-                                <a href="admin.php?page=dt_mapping_module&tab=polygons">Edit</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Geocoding Source
-                            </td>
-                            <td>
-                                                            </td>
-                            <td>
-                                <a href="admin.php?page=dt_mapping_module&tab=geocoding">Edit</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Population
-                            </td>
-                            <td>
-                                <?php
-                                    echo esc_attr( get_option( 'dt_mapping_module_population' ) );
-                                ?>
-                            </td>
-                            <td>
-                                <a href="admin.php?page=dt_mapping_module&tab=population">Edit</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- Box -->
+            <table class="widefat striped">
+                <thead>
+                <th>Name</th>
+                <th>Current Setting</th>
+                <th></th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        Mapping Focus
+                    </td>
+                    <td>
+                        <?php
+                        $list = DT_Mapping_Module::instance()->default_map_short_list();
+                        if ( is_array( $list ) ) {
+                            foreach ( $list as $key => $value ) {
+                                echo esc_html( $value ) . '<br>';
+                            }
+                        }
+                        ?>
+                    </td>
+                    <td>
+                        <a href="admin.php?page=dt_mapping_module&tab=focus">Edit</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Polygon Mirror Source
+                    </td>
+                    <td>
+                        <?php
+                        $mirror = dt_get_mapping_polygon_mirror();
+                        echo esc_attr( $mirror['label'] ) ?? '';
+                        ?>
+                    </td>
+                    <td>
+                        <a href="admin.php?page=dt_mapping_module&tab=polygons">Edit</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Geocoding Source
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <a href="admin.php?page=dt_mapping_module&tab=geocoding">Edit</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Population
+                    </td>
+                    <td>
+                        <?php
+                        echo esc_attr( get_option( 'dt_mapping_module_population' ) );
+                        ?>
+                    </td>
+                    <td>
+                        <a href="admin.php?page=dt_mapping_module&tab=population">Edit</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
             <?php
         }
 
@@ -790,20 +801,27 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <tbody>
                     <tr>
                         <td>
-                            Migrations Available: <?php echo esc_attr( DT_Mapping_Module_Migration_Engine::$migration_number ) ?><br>
-                            Current Migration: <?php echo esc_attr( get_option( 'dt_mapping_module_migration_number', true ) ) ?><br>
+                            Migrations
+                            Available: <?php echo esc_attr( DT_Mapping_Module_Migration_Engine::$migration_number ) ?>
+                            <br>
+                            Current
+                            Migration: <?php echo esc_attr( get_option( 'dt_mapping_module_migration_number', true ) ) ?>
+                            <br>
                             Locked Status: <?php
                             if ( get_option( 'dt_mapping_module_migration_lock', true ) ) {
                                 ?>
                                 Locked!
                                 <a onclick="jQuery('#error-message-raw').toggle();" class="alert">Show error message</a>
-                                <div style="display:none;" id="error-message-raw"><hr>
+                                <div style="display:none;" id="error-message-raw">
+                                    <hr>
                                     <?php echo '<pre>';
                                     print_r( get_option( 'dt_mapping_module_migrate_last_error', true ) );
                                     echo '</pre>'; ?>
                                 </div>
                                 <hr>
-                                <p><button type="submit" name="unlock" value="1">Unlock and Rerun Migrations</button></p>
+                                <p>
+                                    <button type="submit" name="unlock" value="1">Unlock and Rerun Migrations</button>
+                                </p>
                                 <?php
                             } else {
                                 echo 'Not Locked';
@@ -845,7 +863,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             <?php wp_nonce_field( 'population_division' . get_current_user_id() ); ?>
                             <label for="population_division">Size of population for each group: </label>
                             <input type="number" class="text" id="population_division" name="population_division"
-                                   value="<?php echo esc_attr( $population_division ); ?>"/> <button type="submit" class="button">Update</button>
+                                   value="<?php echo esc_attr( $population_division ); ?>"/>
+                            <button type="submit" class="button">Update</button>
                             <p><em>Default is a population of 5,000 for each group. This must be a number and must not
                                     be blank. </em></p>
 
@@ -888,15 +907,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             <script>
                 window.DRILLDOWNDATA.settings.hide_final_drill_down = true
-                window.DRILLDOWN.population_edit = function(  geonameid ) {
-                    if ( geonameid === 'top_map_list' ) { // top level multi-list
+                window.DRILLDOWN.population_edit = function (geonameid) {
+                    if (geonameid === 'top_map_list') { // top level multi-list
                         let list_results = jQuery('#list_results')
                         let gn = []
                         list_results.empty()
-                        jQuery.each( window.DRILLDOWNDATA.data.top_map_list, function(i,v) {
+                        jQuery.each(window.DRILLDOWNDATA.data.top_map_list, function (i, v) {
                             gn = window.DRILLDOWNDATA.data[i]
-                            if ( gn !== undefined ) {
-                                list_results.append( `<tr>
+                            if (gn !== undefined) {
+                                list_results.append(`<tr>
                                         <td>${gn.self.name}</td>
                                         <td id="label-${gn.self.geonameid}">${gn.self.population_formatted}</td>
                                         <td><input type="number" id="input-${gn.self.geonameid}" value=""></td>
@@ -906,14 +925,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             }
                         })
                     }
-                    else if ( window.DRILLDOWN.isEmpty( window.DRILLDOWNDATA.data[geonameid].children ) ) { // empty children for geonameid
+                    else if (window.DRILLDOWN.isEmpty(window.DRILLDOWNDATA.data[geonameid].children)) { // empty children for geonameid
                         jQuery('#drill_down').append(`<li><em>deepest level reached!</em></li>`)
                     }
                     else { // children available
                         let list_results = jQuery('#list_results')
                         list_results.empty()
-                        jQuery.each( window.DRILLDOWNDATA.data[geonameid].children, function(i,v) {
-                            list_results.append( `<tr>
+                        jQuery.each(window.DRILLDOWNDATA.data[geonameid].children, function (i, v) {
+                            list_results.append(`<tr>
                                         <td>${v.name}</td>
                                         <td id="label-${v.geonameid}">${v.population_formatted}</td>
                                         <td><input type="number" id="input-${v.geonameid}" value=""></td>
@@ -956,15 +975,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             <script>
                 window.DRILLDOWNDATA.settings.hide_final_drill_down = true
-                window.DRILLDOWN.name_select = function(  geonameid ) {
-                    if ( geonameid === 'top_map_list' ) { // top level multi-list
+                window.DRILLDOWN.name_select = function (geonameid) {
+                    if (geonameid === 'top_map_list') { // top level multi-list
                         let list_results = jQuery('#list_results')
                         let gn = []
                         list_results.empty()
-                        jQuery.each( window.DRILLDOWNDATA.data.top_map_list, function(i,v) {
+                        jQuery.each(window.DRILLDOWNDATA.data.top_map_list, function (i, v) {
                             gn = window.DRILLDOWNDATA.data[i]
-                            if ( gn !== undefined ) {
-                                list_results.append( `<tr><td id="label-${gn.self.geonameid}">${gn.self.name}</td>
+                            if (gn !== undefined) {
+                                list_results.append(`<tr><td id="label-${gn.self.geonameid}">${gn.self.name}</td>
                                     <td><input type="text" id="input-${gn.self.geonameid}" value="" /></td>
                                     <td id="button-${gn.self.geonameid}"><a class="button" onclick="update( ${gn.self.geonameid}, jQuery('#input-'+${gn.self.geonameid}).val(), 'name' )">Update</a></td>
                                     <td id="reset-${gn.self.geonameid}"><a class="button" onclick="reset( ${gn.self.geonameid}, 'name'  )">Reset</a></td>
@@ -972,14 +991,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             }
                         })
                     }
-                    else if ( window.DRILLDOWN.isEmpty( window.DRILLDOWNDATA.data[geonameid].children ) ) { // empty children for geonameid
+                    else if (window.DRILLDOWN.isEmpty(window.DRILLDOWNDATA.data[geonameid].children)) { // empty children for geonameid
                         jQuery('#drill_down').append(`<li><em>deepest level reached!</em></li>`)
                     }
                     else { // children available
                         let list_results = jQuery('#list_results')
                         list_results.empty()
-                        jQuery.each( window.DRILLDOWNDATA.data[geonameid].children, function(i,v) {
-                            list_results.append( `<tr><td id="label-${v.geonameid}">${v.name}</td><td><input type="text" id="input-${v.geonameid}" value=""></td>
+                        jQuery.each(window.DRILLDOWNDATA.data[geonameid].children, function (i, v) {
+                            list_results.append(`<tr><td id="label-${v.geonameid}">${v.name}</td><td><input type="text" id="input-${v.geonameid}" value=""></td>
                                     <td id="button-${v.geonameid}"><a class="button" onclick="update( ${v.geonameid}, jQuery('#input-'+${v.geonameid}).val(), 'name' )">Update</a></td>
                                     <td id="reset-${v.geonameid}"><a class="button" onclick="reset( ${v.geonameid}, 'name' )">Reset</a></td>
                                     </tr>`)
@@ -1001,7 +1020,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <tbody>
                 <tr>
                     <td>
-                        <input class="js-typeahead-location" />
+                        <input class="js-typeahead-location"/>
                     </td>
                 </tr>
                 <tr>
@@ -1034,7 +1053,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                     s: "{{query}}"
                                 },
                                 beforeSend: function (xhr) {
-                                    xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ) ?>' );
+                                    xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ) ?>');
                                 },
                                 callback: {
                                     done: function (data) {
@@ -1045,6 +1064,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         }
                     }
                 }
+
                 jQuery.typeahead({
                     input: '.js-typeahead-location',
                     minLength: 0,
@@ -1052,7 +1072,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     searchOnFocus: true,
                     maxItem: 20,
                     template: function (query, item) {
-                        if (item.ID === "new-item"){
+                        if (item.ID === "new-item") {
                             return "Create new location"
                         }
                         return `<span>${_.escape(item.name)}</span>`
@@ -1062,20 +1082,20 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     templateValue: "{{name}}",
                     dynamic: true,
                     callback: {
-                        onClick: function(node, a, item, event){
+                        onClick: function (node, a, item, event) {
                             console.log(item)
                         },
                         onResult: function (node, query, result, resultCount) {
                             console.log(result)
                         },
                         onHideLayout: function () {
-                           console.log('onHideLayout')
+                            console.log('onHideLayout')
                         }
                     }
                 });
 
 
-                window.DRILLDOWN.sublocation = function(  geonameid ) {
+                window.DRILLDOWN.sublocation = function (geonameid) {
                     let list_results = jQuery('#list_results')
                     let current_subs = jQuery('#current_subs')
                     let other_list = jQuery('#other_list')
@@ -1084,12 +1104,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     other_list.empty()
                     current_subs.hide()
 
-                    if ( geonameid === 'top_map_list' ) { // top level multi-list
+                    if (geonameid === 'top_map_list') { // top level multi-list
                         list_results.append(`Select one single location`)
                     }
                     else { // children available
-                        if ( ! window.DRILLDOWN.isEmpty( window.DRILLDOWNDATA.data[geonameid].children ) ) { // empty children for geonameid
-                            jQuery.each( window.DRILLDOWNDATA.data[geonameid].children, function(gnid, data ) {
+                        if (!window.DRILLDOWN.isEmpty(window.DRILLDOWNDATA.data[geonameid].children)) { // empty children for geonameid
+                            jQuery.each(window.DRILLDOWNDATA.data[geonameid].children, function (gnid, data) {
                                 other_list.append(`<tr><td><a onclick="DRILLDOWN.geoname_drill_down( ${gnid}, 'sublocation' );jQuery('#'+${gnid}).parent().nextAll().remove();jQuery('#${geonameid} option[value=${gnid}]').attr('selected', 'selected');">${data.name}</a></td></tr>`)
                             })
                             current_subs.show()
@@ -1104,8 +1124,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 <tr><td colspan="2"><button type="button" id="save-button" class="button" onclick="update_location( ${geonameid} )" >Save</a></td></tr>`)
                     }
                 }
-                function update_location( geonameid ) {
-                    jQuery('#save-button').prop('disabled', true )
+
+                function update_location(geonameid) {
+                    jQuery('#save-button').prop('disabled', true)
 
                     let newFields = []
                     newFields['name'] = jQuery('#new_name').val()
@@ -1113,13 +1134,13 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     newFields['latitude'] = jQuery('#new_latitude').val()
                     newFields['longitude'] = jQuery('#new_longitude').val()
 
-                    let data = { key: 'sub_location', value: newFields, geonameid: geonameid }
+                    let data = {key: 'sub_location', value: newFields, geonameid: geonameid}
 
                     let update = send_update(data)
 
-                    update.done(function(data) {
+                    update.done(function (data) {
                         console.log(data)
-                        if ( data ) {
+                        if (data) {
                             jQuery('#other_list').append(`<tr><td><a >New Location Added</a></td></tr>`)
 
                             jQuery('#new_name').val('')
@@ -1129,10 +1150,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                         }
 
-                        jQuery('#save-button').removeProp('disabled' )
+                        jQuery('#save-button').removeProp('disabled')
                     })
 
-                    console.log( geonameid  )
+                    console.log(geonameid)
                 }
             </script>
 
@@ -1170,8 +1191,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 // set parent
                 if ( $option['type'] === 'world' || $option['type'] === 'country' || empty( $_POST['parent'] ) ) {
                     $option['parent'] = 'world';
-                }
-                else {
+                } else {
                     $option['parent'] = (int) sanitize_key( wp_unslash( $_POST['parent'] ) );
                 }
 
@@ -1179,6 +1199,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 if ( $option['type'] === 'world' || empty( $_POST['children'] ) || $option['parent'] !== $default_map_settings['parent'] ) {
                     $option['children'] = [];
                 } else {
+                    // Code check does not recognize the array_filter sanitization, even though it runs sanitization.
+                    // @codingStandardsIgnoreLine
                     $option['children'] = array_filter( wp_unslash( $_POST['children'] ), 'sanitize_key' );
                 }
 
@@ -1188,7 +1210,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             }
             dt_write_log( $default_map_settings );
 
-
             /*******************************
              * FOCUS SELECTION
              ******************************/
@@ -1197,44 +1218,51 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
             ?>
             <form method="post"> <!-- Begin form -->
-                <?php wp_nonce_field( 'starting_map_level' . get_current_user_id() ); ?>
+            <?php wp_nonce_field( 'starting_map_level' . get_current_user_id() ); ?>
 
-                <!-- Box -->
-                <table class="widefat striped">
-                    <thead>
-                    <th>Starting Map Level</th>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <select name="focus_type">
-                                <option value="world" <?php echo ( $default_map_settings['type'] === 'world' ) ? "selected" : "" ?>>World</option>
-                                <option value="country" <?php echo ( $default_map_settings['type'] === 'country' ) ? "selected" : ""; ?>>Country</option>
-                                <option value="state" <?php echo ( $default_map_settings['type'] === 'state' ) ? "selected" : ""; ?>>State</option>
-                            </select>
-                            <button type="submit" class="button">Select</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <br>
-                <!-- End Box -->
-                <script>
-                    function check_region( ids ) {
-                        jQuery.each( ids, function(i,v) {
-                            jQuery('#'+v).attr('checked', 'checked')
-                        })
-                    }
-                    function uncheck_all() {
-                        jQuery('.country-item').removeAttr('checked')
-                    }
-                    function check_all() {
-                        jQuery('.country-item').attr('checked', 'checked')
-                    }
-                </script>
+            <!-- Box -->
+            <table class="widefat striped">
+                <thead>
+                <th>Starting Map Level</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <select name="focus_type">
+                            <option value="world" <?php echo ( $default_map_settings['type'] === 'world' ) ? "selected" : "" ?>>
+                                World
+                            </option>
+                            <option value="country" <?php echo ( $default_map_settings['type'] === 'country' ) ? "selected" : ""; ?>>
+                                Country
+                            </option>
+                            <option value="state" <?php echo ( $default_map_settings['type'] === 'state' ) ? "selected" : ""; ?>>
+                                State
+                            </option>
+                        </select>
+                        <button type="submit" class="button">Select</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+            <!-- End Box -->
+            <script>
+                function check_region(ids) {
+                    jQuery.each(ids, function (i, v) {
+                        jQuery('#' + v).attr('checked', 'checked')
+                    })
+                }
+
+                function uncheck_all() {
+                    jQuery('.country-item').removeAttr('checked')
+                }
+
+                function check_all() {
+                    jQuery('.country-item').attr('checked', 'checked')
+                }
+            </script>
 
             <?php
-
 
             /*******************************
              * COUNTRY TYPE
@@ -1257,21 +1285,23 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                     <td>
                                         <span style="float: right;">
                                             <a class="button" style="cursor:pointer;" onclick="uncheck_all()">Uncheck All</a>
-                                            <a class="button" style="cursor:pointer;" onclick="check_all()">Check All</a>
+                                            <a class="button" style="cursor:pointer;"
+                                               onclick="check_all()">Check All</a>
                                             <button type="submit" class="button">Save</button>
                                         </span>
-                                        <strong>Select Countries</strong><br><br><hr clear="all" />
+                                        <strong>Select Countries</strong><br><br>
+                                        <hr clear="all"/>
 
-                                        <input type="hidden" name="type" value="country" />
-                                        <input type="hidden" name="parent" value="0" />
+                                        <input type="hidden" name="type" value="country"/>
+                                        <input type="hidden" name="parent" value="0"/>
                                         <fieldset>
                                             <?php
                                             foreach ( $country_list as $country ) {
-                                                echo '<input id="'. esc_attr( $country['geonameid'] ).'" class="country-item" type="checkbox" name="children[]" value="'. esc_attr( $country['geonameid'] ).'"';
+                                                echo '<input id="' . esc_attr( $country['geonameid'] ) . '" class="country-item" type="checkbox" name="children[]" value="' . esc_attr( $country['geonameid'] ) . '"';
                                                 if ( array_search( $country['geonameid'], $default_map_settings['children'] ) !== false ) {
                                                     echo 'checked';
                                                 }
-                                                echo '>'. esc_html( $country['name'] ).'<br>';
+                                                echo '>' . esc_html( $country['name'] ) . '<br>';
                                             }
                                             ?>
                                             <hr clear="all">
@@ -1299,7 +1329,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                     }
                                     $country_ids .= $country['geonameid'];
                                 }
-                                echo '<a id="'.esc_attr( $key ).'" style="cursor:pointer;" onclick="check_region(['.$country_ids.']);jQuery(this).append(\' &#x2714;\');">'.esc_html( $value['name'] ).'</a><br>';
+                                echo '<a id="' . esc_attr( $key ) . '" style="cursor:pointer;" onclick="check_region([' . esc_attr( $country_ids ) . ']);jQuery(this).append(\' &#x2714;\');">' . esc_html( $value['name'] ) . '</a><br>';
                             }
 
                             ?>
@@ -1310,11 +1340,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                 <br>
                 <!-- End Box -->
-                <?php
-
-
-            endif; // end country selection
-
+            <?php endif; // end country selection
 
             /*******************************
              * STATE TYPE
@@ -1325,11 +1351,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 $country_list = $mm->query( 'get_countries' );
                 $country_select = '<select name="parent"><option></option><option>-------------</option>';
                 foreach ( $country_list as $result ) {
-                    $country_select .= '<option value="'.$result['geonameid'].'" ';
+                    $country_select .= '<option value="' . $result['geonameid'] . '" ';
                     if ( $default_map_settings['parent'] === (int) $result['geonameid'] ) {
                         $country_select .= 'selected';
                     }
-                    $country_select .= '>'.$result['name'].'</option>';
+                    $country_select .= '>' . $result['name'] . '</option>';
                 }
                 $country_select .= '</select>';
                 ?>
@@ -1376,11 +1402,11 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 <fieldset>
                                     <?php
                                     foreach ( $state_list as $value ) {
-                                        echo '<input id="'. esc_attr( $value['geonameid'] ).'" class="country-item" type="checkbox" name="children[]" value="'. esc_attr( $value['geonameid'] ).'"';
+                                        echo '<input id="' . esc_attr( $value['geonameid'] ) . '" class="country-item" type="checkbox" name="children[]" value="' . esc_attr( $value['geonameid'] ) . '"';
                                         if ( array_search( $value['geonameid'], $default_map_settings['children'] ) !== false ) {
                                             echo 'checked';
                                         }
-                                        echo '>'. esc_html( $value['name'] ).'<br>';
+                                        echo '>' . esc_html( $value['name'] ) . '<br>';
                                     }
                                     ?>
                                 </fieldset>
@@ -1388,18 +1414,18 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         </tr>
                         </tbody>
                         <tfoot>
-                            <tr><td><span style="float: right;"><button type="submit" class="button">Save</button></span></td></tr>
+                        <tr>
+                            <td><span style="float: right;"><button type="submit" class="button">Save</button></span>
+                            </td>
+                        </tr>
                         </tfoot>
                     </table>
                     <br>
                     <!-- End Box -->
-                    <?php
-                endif; // state sub selection box
-
-            endif; // if state
-
-
-            ?></form><?php // End form
+                <?php endif; ?>
+                <?php endif; ?>
+            </form>
+            <?php // End form
 
             dt_write_log( 'END' );
         }
@@ -1439,8 +1465,9 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <tr>
                     <td>
                         <p>You can select World, Country, or State level focus for the mapping. By selecting the most
-                        specific region of focus, you optimize the performance of the site load and various drop down
-                        lists throughout the site.
+                            specific region of focus, you optimize the performance of the site load and various drop
+                            down
+                            lists throughout the site.
                         </p>
                     </td>
                 </tr>
@@ -1460,51 +1487,51 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
              * https://s3.amazonaws.com/mapping-source/
              */
             $mirror_list = [
-                 'github' => [
-                     'key' => 'github',
-                     'label' => 'GitHub',
-                     'url' => 'https://raw.githubusercontent.com/DiscipleTools/dt-geojson/master/'
-                 ],
-                 'google' => [
-                     'key' => 'google',
-                     'label' => 'Google',
-                     'url' => 'https://storage.googleapis.com/mapping-source/'
-                 ],
-                 'amazon' => [
-                     'key' => 'amazon',
-                     'label' => 'Amazon',
-                     'url' => 'https://s3.amazonaws.com/mapping-source/',
-                 ],
-                 'other' => [
-                     'key' => 'other',
-                     'label' => 'Other',
-                     'url' => '',
-                 ],
+                'github' => [
+                    'key'   => 'github',
+                    'label' => 'GitHub',
+                    'url'   => 'https://raw.githubusercontent.com/DiscipleTools/dt-geojson/master/',
+                ],
+                'google' => [
+                    'key'   => 'google',
+                    'label' => 'Google',
+                    'url'   => 'https://storage.googleapis.com/mapping-source/',
+                ],
+                'amazon' => [
+                    'key'   => 'amazon',
+                    'label' => 'Amazon',
+                    'url'   => 'https://s3.amazonaws.com/mapping-source/',
+                ],
+                'other'  => [
+                    'key'   => 'other',
+                    'label' => 'Other',
+                    'url'   => '',
+                ],
             ];
 
             // process post action
             if ( isset( $_POST['source'] )
                 && ( isset( $_POST['_wpnonce'] )
-                && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'set_polygon_mirror' . get_current_user_id() ) )
-                ) {
+                    && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'set_polygon_mirror' . get_current_user_id() ) )
+            ) {
 
                 $selection_key = sanitize_text_field( wp_unslash( $_POST['source'] ) );
 
                 if ( $selection_key === 'other' && ! empty( $_POST['other_value'] ) ) { // must be set to other and have a url
-                    $url = trailingslashit( esc_url_raw(  $_POST['other_value'] ) );
+                    $url = trailingslashit( sanitize_text_field( wp_unslash( $_POST['other_value'] ) ) );
                     if ( 'https://' === substr( $url, 0, 8 ) ) { // must begin with https
                         $array = [
-                            'key' => 'other',
+                            'key'   => 'other',
                             'label' => 'Other',
-                            'url' => $url,
+                            'url'   => $url,
                         ];
                         update_option( 'dt_mapping_module_polygon_mirror', $array, true );
                     }
-                } else if ( $selection_key !== 'other' ) {
+                } elseif ( $selection_key !== 'other' ) {
                     $array = [
-                        'key' => $selection_key,
+                        'key'   => $selection_key,
                         'label' => $mirror_list[$selection_key]['label'],
-                        'url' => $mirror_list[$selection_key]['url'],
+                        'url'   => $mirror_list[$selection_key]['url'],
                     ];
                     update_option( 'dt_mapping_module_polygon_mirror', $array, true );
                 }
@@ -1531,6 +1558,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     padding: 10px;
                     background-color: lightgreen;
                 }
+
                 .not-connected {
                     padding: 10px;
                     background-color: red;
@@ -1546,36 +1574,57 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <td>
                             <?php wp_nonce_field( 'set_polygon_mirror' . get_current_user_id() ); ?>
 
-                            <p><input type="radio" id="github" name="source" value="github" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'github' ) ? 'checked' : '' ?>><label for="github"><?php echo esc_html( $mirror_list['github']['label'] ) ?></label></p>
-                            <p><input type="radio" id="google" name="source" value="google" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'google' ) ? 'checked' : '' ?>><label for="google"><?php echo esc_html( $mirror_list['google']['label'] ) ?></label></p>
-                            <p><input type="radio" id="amazon" name="source" value="amazon" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'amazon' ) ? 'checked' : '' ?>><label for="amazon"><?php echo esc_html( $mirror_list['amazon']['label'] ) ?></label></p>
-                            <p><input type="radio" id="other" name="source" value="other" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'other' ) ? 'checked' : '' ?>>
-                            <input type="text" style="width:50em;" placeholder="add full url of your custom mirror. Must begin with https." name="other_value" value="<?php echo ( $mirror['key'] === 'other' ) ? $mirror['url'] : ''; ?>" /> (see Custom Mirror Note below)
+                            <p><input type="radio" id="github" name="source"
+                                      value="github" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'github' ) ? 'checked' : '' ?>><label
+                                        for="github"><?php echo esc_html( $mirror_list['github']['label'] ) ?></label>
+                            </p>
+                            <p><input type="radio" id="google" name="source"
+                                      value="google" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'google' ) ? 'checked' : '' ?>><label
+                                        for="google"><?php echo esc_html( $mirror_list['google']['label'] ) ?></label>
+                            </p>
+                            <p><input type="radio" id="amazon" name="source"
+                                      value="amazon" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'amazon' ) ? 'checked' : '' ?>><label
+                                        for="amazon"><?php echo esc_html( $mirror_list['amazon']['label'] ) ?></label>
+                            </p>
+                            <p><input type="radio" id="other" name="source"
+                                      value="other" <?php echo ( isset( $mirror['key'] ) && $mirror['key'] === 'other' ) ? 'checked' : '' ?>>
+                                <input type="text" style="width:50em;"
+                                       placeholder="add full url of your custom mirror. Must begin with https."
+                                       name="other_value"
+                                       value="<?php echo ( $mirror['key'] === 'other' ) ? esc_url_raw( $mirror['url'] ) : ''; ?>"/>
+                                (see Custom Mirror Note below)
 
                             </p>
                             <p>
                                 <button type="submit" class="button">Update</button>
                             </p>
 
-                            <p id="reachable_source" class="<?php echo $status_class ?>">
-                                <?php echo $message; ?>
+                            <p id="reachable_source" class="<?php echo esc_attr( $status_class ) ?>">
+                                <?php echo esc_html( $message ); ?>
                             </p>
 
                             <p>
                                 <strong>Custom Mirror Note:</strong>
                                 <em>
-                                    Note: The custom mirror option allows you to download the polygon source repo (<a href="https://github.com/DiscipleTools/dt-geojson/archive/master.zip">Download source</a>) and install
-                                    this folder to your own mirror. You will be responsible for syncing occasional updates to
-                                    the folder. But this allows you to obscure traffic to these default mirrors, if you have
+                                    Note: The custom mirror option allows you to download the polygon source repo (<a
+                                            href="https://github.com/DiscipleTools/dt-geojson/archive/master.zip">Download
+                                        source</a>) and install
+                                    this folder to your own mirror. You will be responsible for syncing occasional
+                                    updates to
+                                    the folder. But this allows you to obscure traffic to these default mirrors, if you
+                                    have
                                     security concerns with from your country.
                                 </em>
                             </p>
                             <p>
                                 <strong>Other Notes:</strong><br>
-                                <em>The polygons that make up of the boarders for each country, state, and county are a significant
-                                amount of data. Mapping has broken these up into individual files that are stored at various
-                                mirror locations. You can choose the mirror that works for you and your country, or you can host your own mirror
-                                for security reasons.
+                                <em>The polygons that make up of the boarders for each country, state, and county are a
+                                    significant
+                                    amount of data. Mapping has broken these up into individual files that are stored at
+                                    various
+                                    mirror locations. You can choose the mirror that works for you and your country, or
+                                    you can host your own mirror
+                                    for security reasons.
                                 </em>
                             </p>
 
@@ -1620,33 +1669,34 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <tr>
                         <td><label for="search_location_address">Address:</label></td>
                         <td><input type="text" id="search_location_address"
-                                   value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>" />
-                            <button type="button" class="button" name="validate_address_button" id="validate_address_button" onclick="validate_address( jQuery('#search_location_address').val() );" >Validate</button>
+                                   value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>"/>
+                            <button type="button" class="button" name="validate_address_button"
+                                    id="validate_address_button"
+                                    onclick="validate_address( jQuery('#search_location_address').val() );">Validate
+                            </button>
                             <button type="submit" name="delete" value="1" class="button">Delete</button>
                             <br>
                             <span id="errors"><?php echo ( ! empty( $this->error ) ) ? esc_html( $this->error ) : ''; ?></span>
                             <p id="possible-results">
 
                                 <input type="hidden" id="location_address" name="location_address"
-                                       value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>" />
+                                       value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>"/>
                             </p>
                         </td>
                     </tr>
                 </table>
 
-                <?php
-            else :
-                ?>
+            <?php else : ?>
                 <?php esc_html__( 'You must save post before geocoding.' ) ?>
-                <?php
+            <?php
             endif;
         }
 
-        public function warning_handler( $errno, $errstr) {
+        public function warning_handler( $errno, $errstr ) {
             ?>
             <div class="notice notice-error notice-dt-mapping-source" data-notice="dt-demo">
                 <p><?php echo "MIRROR SOURCE NOT AVAILABLE" ?></p>
-                <p><?php echo "Error Message: " . $errstr  ?></p>
+                <p><?php echo "Error Message: " . esc_attr( $errstr ) ?></p>
             </div>
             <?php
         }
@@ -1676,12 +1726,18 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <tbody>
                     <tr>
                         <td>
-                            Current Geoname Records: <?php echo DT_Mapping_Module::instance()->query( 'count_geonames' ) ?>
+                            Current Geoname
+                            Records: <?php echo esc_attr( DT_Mapping_Module::instance()->query( 'count_geonames' ) ) ?>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <p><button type="button" class="button" onclick="jQuery('#check_rebuild').show();jQuery(this).prop('disabled', 'disabled')">Add Geonames</button></p>
+                            <p>
+                                <button type="button" class="button"
+                                        onclick="jQuery('#check_rebuild').show();jQuery(this).prop('disabled', 'disabled')">
+                                    Add Geonames
+                                </button>
+                            </p>
                             <span id="check_rebuild" style="display:none;">
                                 <button type="submit" class="button" name="rebuild_geonames" value="1">Are you sure you want to add geonames?</button>
                             </span>
@@ -1689,7 +1745,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     </tr>
                     <tr>
                         <td>
-                            <p><button type="button" class="button" onclick="jQuery('#reset_geonames').show();jQuery(this).prop('disabled', 'disabled')">Reset Geonames Table and Install Geonames</button></p>
+                            <p>
+                                <button type="button" class="button"
+                                        onclick="jQuery('#reset_geonames').show();jQuery(this).prop('disabled', 'disabled')">
+                                    Reset Geonames Table and Install Geonames
+                                </button>
+                            </p>
                             <span id="reset_geonames" style="display:none;">
                                 <button type="submit" class="button" name="reset_geonames" value="1">Are you sure you want to empty the table and to add geonames?</button>
                             </span>
@@ -1709,30 +1770,29 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $file = 'dt_geonames.tsv';
             $file_location = $uploads_dir . "geonames/" . $file;
 
-            $table = $wpdb->dt_geonames;
-
             // TEST for presence of source files
             if ( ! file_exists( $uploads_dir . "geonames/" . $file ) ) {
-                require_once( get_template_directory() . '/dt-mapping/migrations/0001-prepare-geonames-data.php');
+                require_once( get_template_directory() . '/dt-mapping/migrations/0001-prepare-geonames-data.php' );
                 $download = new DT_Mapping_Module_Migration_0001();
                 $download->up();
 
                 if ( ! file_exists( $uploads_dir . "geonames/" . $file ) ) {
                     error_log( 'Failed to find ' . $file );
+
                     return;
                 }
             }
 
             // TEST for expected tables and clear it
-            $wpdb->query( "SHOW TABLES LIKE '$table'" );
+            $wpdb->query( "SHOW TABLES LIKE $wpdb->dt_geonames" );
             if ( $wpdb->num_rows < 1 ) {
-                require_once( get_template_directory() . '/dt-mapping/migrations/0000-initial.php');
+                require_once( get_template_directory() . '/dt-mapping/migrations/0000-initial.php' );
                 $download = new DT_Mapping_Module_Migration_0000();
                 $download->up();
 
-                $wpdb->query( "SHOW TABLES LIKE '$table'" );
+                $wpdb->query( "SHOW TABLES LIKE $wpdb->dt_geonames" );
                 if ( $wpdb->num_rows < 1 ) {
-                    error_log( 'Failed to find ' . $table );
+                    error_log( 'Failed to find ' . $wpdb->dt_geonames );
                     dt_write_log( $wpdb->num_rows );
                     dt_write_log( $wpdb );
 
@@ -1740,54 +1800,22 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 }
             }
             if ( $reset ) {
-                $wpdb->query( "TRUNCATE $table" );
+                $wpdb->query( "TRUNCATE $wpdb->dt_geonames" );
             }
 
             // LOAD geonames data
-            dt_write_log('begin geonames install: ' . microtime() );
+            dt_write_log( 'begin geonames install: ' . microtime() );
 
-            $fp = fopen( $file_location, 'r');
-            while ( !feof($fp) )
-            {
-                $line = fgets($fp, 2048);
+            $fp = fopen( $file_location, 'r' );
+            while ( ! feof( $fp ) ) {
+                $line = fgets( $fp, 2048 );
 
-                $data = str_getcsv($line,"\t");
+                $data = str_getcsv( $line, "\t" );
 
                 if ( isset( $data[28] ) ) {
                     $wpdb->query( $wpdb->prepare( "
-                    INSERT IGNORE INTO $wpdb->dt_geonames
-                    VALUES (
-                        %d,
-                        %s,
-                        %s,
-                        %s,
-                        %d,
-                        %d,
-                        %s,
-                        %s,
-                        %s,
-                        %s,
-                        %s,
-                        %s,
-                        %s,
-                        %s,
-                        %d,
-                        %d,
-                        %s,
-                        %s,
-                        %s,
-                        %d,
-                        %d,
-                        %d,
-                        %d,
-                        %d,
-                        %s,
-                        %s,
-                        %d,
-                        %d,
-                        %d
-                    )
-                    ",
+                        INSERT IGNORE INTO $wpdb->dt_geonames
+                        VALUES (%d,%s,%s,%s,%d,%d,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d,%s,%s,%s,%d,%d,%d,%d,%d,%s,%s,%d,%d,%d)",
                         $data[0],
                         $data[1],
                         $data[2],
@@ -1817,18 +1845,15 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         $data[26],
                         $data[27],
                         $data[28]
-                    )
-                    );
+                    ) );
                 }
             }
 
-            dt_write_log('end geonames install: ' . microtime() );
+            dt_write_log( 'end geonames install: ' . microtime() );
 
-            fclose($fp);
+            fclose( $fp );
         }
     }
+
     DT_Mapping_Module_Admin::instance();
-
-
-
 }
