@@ -1174,6 +1174,14 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
 
                     break;
 
+                case 'count_geonames':
+                    $results = $wpdb->get_var("
+                            SELECT count(*)
+                            FROM $wpdb->dt_geonames 
+                        ");
+
+                    break;
+
                 case 'get_geoname_totals':
                     $results = $wpdb->get_results("
                             SELECT

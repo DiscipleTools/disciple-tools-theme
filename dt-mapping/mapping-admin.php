@@ -558,6 +558,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                             
                             <?php $this->migration_status_metabox() ?>
+                            <br>
+                            <?php $this->migration_rebuild_geonames() ?>
 
                             <!-- End Main Column -->
                         </div><!-- end post-body-content -->
@@ -793,16 +795,16 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             Locked Status: <?php
                             if ( get_option( 'dt_mapping_module_migration_lock', true ) ) {
                                 ?>
-                                    Locked!
-                                    <a onclick="jQuery('#error-message-raw').toggle();" class="alert">Show error message</a>
-                                    <div style="display:none;" id="error-message-raw"><hr>
+                                Locked!
+                                <a onclick="jQuery('#error-message-raw').toggle();" class="alert">Show error message</a>
+                                <div style="display:none;" id="error-message-raw"><hr>
                                     <?php echo '<pre>';
                                     print_r( get_option( 'dt_mapping_module_migrate_last_error', true ) );
                                     echo '</pre>'; ?>
-                                    </div>
-                                    <hr>
-                                    <p><button type="submit" name="unlock" value="1">Unlock and Rerun Migrations</button></p>
-                                    <?php
+                                </div>
+                                <hr>
+                                <p><button type="submit" name="unlock" value="1">Unlock and Rerun Migrations</button></p>
+                                <?php
                             } else {
                                 echo 'Not Locked';
                             }
@@ -814,25 +816,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 </table>
             </form>
             <?php
-            $dir = wp_upload_dir();
-            $uploads_dir = trailingslashit( $dir['basedir'] );
-            $file = 'dt_geonames.tsv';
-            $file_location = $uploads_dir . "geonames/" . $file;
 
-
-            $fp = fopen( $file_location, 'r');
-            $i = 0;
-            while ( !feof($fp) && $i < 20 )
-            {
-                $line = fgets($fp, 2048);
-
-                $data = str_getcsv($line,"\t");
-
-                dt_write_log($data);
-                $i++;
-            }
-
-            fclose($fp);
         }
 
         public function global_population_division_metabox() {
@@ -1665,6 +1649,182 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <p><?php echo "Error Message: " . $errstr  ?></p>
             </div>
             <?php
+        }
+
+        public function migration_rebuild_geonames() {
+            if ( isset( $_POST['rebuild_geonames'] )
+                && ( isset( $_POST['_wpnonce'] )
+                    && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'rebuild_geonames' . get_current_user_id() ) ) ) {
+
+                $this->rebuild_geonames();
+            }
+
+            if ( isset( $_POST['reset_geonames'] )
+                && ( isset( $_POST['_wpnonce'] )
+                    && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'rebuild_geonames' . get_current_user_id() ) ) ) {
+
+                $this->rebuild_geonames( true );
+            }
+            ?>
+            <!-- Box -->
+            <form method="post">
+                <?php wp_nonce_field( 'rebuild_geonames' . get_current_user_id() ); ?>
+                <table class="widefat striped">
+                    <thead>
+                    <th>Alternative Install for Geonames</th>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            Current Geoname Records: <?php echo DT_Mapping_Module::instance()->query( 'count_geonames' ) ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p><button type="button" class="button" onclick="jQuery('#check_rebuild').show();jQuery(this).prop('disabled', 'disabled')">Add Geonames</button></p>
+                            <span id="check_rebuild" style="display:none;">
+                                <button type="submit" class="button" name="rebuild_geonames" value="1">Are you sure you want to add geonames?</button>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p><button type="button" class="button" onclick="jQuery('#reset_geonames').show();jQuery(this).prop('disabled', 'disabled')">Reset Geonames Table and Install Geonames</button></p>
+                            <span id="reset_geonames" style="display:none;">
+                                <button type="submit" class="button" name="reset_geonames" value="1">Are you sure you want to empty the table and to add geonames?</button>
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+            <?php
+        }
+
+        public function rebuild_geonames( $reset = false ) {
+            global $wpdb;
+
+            $dir = wp_upload_dir();
+            $uploads_dir = trailingslashit( $dir['basedir'] );
+            $file = 'dt_geonames.tsv';
+            $file_location = $uploads_dir . "geonames/" . $file;
+
+            $table = $wpdb->dt_geonames;
+
+            // TEST for presence of source files
+            if ( ! file_exists( $uploads_dir . "geonames/" . $file ) ) {
+                require_once( get_template_directory() . '/dt-mapping/migrations/0001-prepare-geonames-data.php');
+                $download = new DT_Mapping_Module_Migration_0001();
+                $download->up();
+
+                if ( ! file_exists( $uploads_dir . "geonames/" . $file ) ) {
+                    error_log( 'Failed to find ' . $file );
+                    return;
+                }
+            }
+
+            // TEST for expected tables and clear it
+            $wpdb->query( "SHOW TABLES LIKE '$table'" );
+            if ( $wpdb->num_rows < 1 ) {
+                require_once( get_template_directory() . '/dt-mapping/migrations/0000-initial.php');
+                $download = new DT_Mapping_Module_Migration_0000();
+                $download->up();
+
+                $wpdb->query( "SHOW TABLES LIKE '$table'" );
+                if ( $wpdb->num_rows < 1 ) {
+                    error_log( 'Failed to find ' . $table );
+                    dt_write_log( $wpdb->num_rows );
+                    dt_write_log( $wpdb );
+
+                    return;
+                }
+            }
+            if ( $reset ) {
+                $wpdb->query( "TRUNCATE $table" );
+            }
+
+            // LOAD geonames data
+            dt_write_log('begin geonames install: ' . microtime() );
+
+            $fp = fopen( $file_location, 'r');
+            while ( !feof($fp) )
+            {
+                $line = fgets($fp, 2048);
+
+                $data = str_getcsv($line,"\t");
+
+                if ( isset( $data[28] ) ) {
+                    $wpdb->query( $wpdb->prepare( "
+                    INSERT IGNORE INTO $wpdb->dt_geonames
+                    VALUES (
+                        %d,
+                        %s,
+                        %s,
+                        %s,
+                        %d,
+                        %d,
+                        %s,
+                        %s,
+                        %s,
+                        %s,
+                        %s,
+                        %s,
+                        %s,
+                        %s,
+                        %d,
+                        %d,
+                        %s,
+                        %s,
+                        %s,
+                        %d,
+                        %d,
+                        %d,
+                        %d,
+                        %d,
+                        %s,
+                        %s,
+                        %d,
+                        %d,
+                        %d
+                    )
+                    ",
+                        $data[0],
+                        $data[1],
+                        $data[2],
+                        $data[3],
+                        $data[4],
+                        $data[5],
+                        $data[6],
+                        $data[7],
+                        $data[8],
+                        $data[9],
+                        $data[10],
+                        $data[11],
+                        $data[12],
+                        $data[13],
+                        $data[14],
+                        $data[15],
+                        $data[16],
+                        $data[17],
+                        $data[18],
+                        $data[19],
+                        $data[20],
+                        $data[21],
+                        $data[22],
+                        $data[23],
+                        $data[24],
+                        $data[25],
+                        $data[26],
+                        $data[27],
+                        $data[28]
+                    )
+                    );
+                }
+            }
+
+            dt_write_log('end geonames install: ' . microtime() );
+
+            fclose($fp);
         }
     }
     DT_Mapping_Module_Admin::instance();

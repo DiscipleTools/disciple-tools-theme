@@ -48,36 +48,23 @@ class DT_Mapping_Module_Migration_0002 extends DT_Mapping_Module_Migration {
             $rows = (int) $wpdb->get_var( "SELECT count(*) FROM $table" );
             if ( $rows === $expected ) {
                 error_log( 'success install of geonames data' );
-                if ( is_multisite() ) {
-                    update_site_option( 'dt_mapping_module_multisite_migration_number', 2 );
-                }
             } elseif ( $rows > $expected ) {
                 error_log( 'success, but additional records found' );
-                if ( is_multisite() ) {
-                    update_site_option( 'dt_mapping_module_multisite_migration_number', 2 );
-                }
             } elseif ( $rows < $expected ) {
                  // fail over install
-                dt_write_log($wpdb->last_error );
 
+                require_once ( get_template_directory() . '/dt-mapping/mapping-admin.php' );
+                DT_Mapping_Module_Admin::instance()->rebuild_geonames();
+                $rows = (int) $wpdb->get_var( "SELECT count(*) FROM $table" );
 
-
-//                    $file_location = $uploads_dir . "geonames/" . $file;
-//                    $fp = fopen('mydata.csv', 'r');
-//
-//                    while ( !feof($fp) )
-//                    {
-//                        $line = fgets($fp, 2048);
-//
-//                        $data = str_getcsv($line, $delimiter);
-//
-//                        doSomethingWithData($data);
-//                    }
-//
-//                    fclose($fp);
-
-                error_log( 'fail. missing minimum records expected. ' . $expected . ' expected. ' . $rows . ' found.' );
-                throw new Exception( 'fail. missing minimum records expected. ' . $expected . ' expected. ' . $rows . ' found.' );
+                if ( $rows === $expected ) {
+                    error_log( 'success install of geonames data' );
+                } elseif ( $rows > $expected ) {
+                    error_log( 'success, but additional records found' );
+                } elseif ( $rows < $expected ) {
+                    error_log( 'fail. missing minimum records expected. ' . $expected . ' expected. ' . $rows . ' found.' );
+                    throw new Exception( 'fail. missing minimum records expected. ' . $expected . ' expected. ' . $rows . ' found.' );
+                }
             } // failed to find records.
         }
     }
