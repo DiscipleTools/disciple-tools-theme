@@ -222,6 +222,13 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'public_contact_transfer' ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/contacts/settings', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_settings' ],
+            ]
+        );
     }
 
 
@@ -886,5 +893,9 @@ class Disciple_Tools_Contacts_Endpoints
         }
 
         return $params;
+    }
+
+    public function get_settings(){
+        return Disciple_Tools_Contacts::get_settings();
     }
 }

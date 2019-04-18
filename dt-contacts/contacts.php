@@ -2916,4 +2916,22 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
     }
 
+
+    /**
+     * Get settings related to contacts
+     * @return array|WP_Error
+     */
+    public static function get_settings(){
+        if ( !self::can_access( "contacts" ) ) {
+            return new WP_Error( __FUNCTION__, "Permission denied.", [ 'status' => 403 ] );
+        }
+
+        return [
+            'sources' => self::list_sources(),
+            'fields' => self::get_contact_fields(),
+            'address_types' => self::$address_types,
+            'channels' => self::$channel_list,
+            'connection_types' => self::$contact_connection_types
+        ];
+    }
 }

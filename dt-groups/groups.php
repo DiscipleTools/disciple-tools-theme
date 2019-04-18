@@ -1166,4 +1166,22 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         return $personal_counts[0] ?? [];
 
     }
+
+
+    /**
+     * Get settings related to contacts
+     * @return array|WP_Error
+     */
+    public static function get_settings(){
+        if ( !self::can_access( "groups" ) ) {
+            return new WP_Error( __FUNCTION__, "Permission denied.", [ 'status' => 403 ] );
+        }
+
+        return [
+            'fields' => self::$group_fields,
+            'address_types' => self::$address_types,
+            'channels' => self::$channel_list,
+            'connection_types' => self::$group_connection_types
+        ];
+    }
 }

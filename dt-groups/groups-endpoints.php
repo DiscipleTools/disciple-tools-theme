@@ -136,6 +136,12 @@ class Disciple_Tools_Groups_Endpoints
                 "callback" => [ $this, 'get_group_default_filter_counts' ],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/groups/settings', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_settings' ],
+            ]
+        );
     }
 
     /**
@@ -438,6 +444,10 @@ class Disciple_Tools_Groups_Endpoints
         $tab = $params["tab"] ?? null;
         $show_closed = isset( $params["closed"] ) && $params["closed"] == "true";
         return Disciple_Tools_Groups::get_group_default_filter_counts( $tab, $show_closed );
+    }
+
+    public function get_settings(){
+        return Disciple_Tools_Groups::get_settings();
     }
 
 }
