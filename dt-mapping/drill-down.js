@@ -29,6 +29,7 @@ window.DRILLDOWN = {
                 if ( ! DRILLDOWN.isEmpty( DRILLDOWNDATA.data[i].children ) ) {
 
                     drill_down.append(`<li><select id="${i}" onchange="DRILLDOWN.geoname_drill_down( this.value, '${bindFunction}' );jQuery(this).parent().nextAll().remove();"><option value="${i}"></option></select></li>`)
+
                     let sorted_children = _.sortBy(DRILLDOWNDATA.data[i].children, [function (o) {
                         return o.name;
                     }]);

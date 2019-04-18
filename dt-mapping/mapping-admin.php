@@ -1020,11 +1020,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 <tbody>
                 <tr>
                     <td>
-                        <input class="js-typeahead-location"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
                         <?php DT_Mapping_Module::instance()->drill_down_input( 'sublocation' ) ?>
                     </td>
                 </tr>
@@ -1043,58 +1038,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             </table>
 
             <script>
-                function typeLocationSearch() {
-                    return {
-                        locations: {
-                            display: "name",
-                            ajax: {
-                                url: `<?php echo esc_url_raw( rest_url() )  ?>dt/v1/mapping_module/typeahead`,
-                                data: {
-                                    s: "{{query}}"
-                                },
-                                beforeSend: function (xhr) {
-                                    xhr.setRequestHeader('X-WP-Nonce', '<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ) ?>');
-                                },
-                                callback: {
-                                    done: function (data) {
-                                        return data
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                jQuery.typeahead({
-                    input: '.js-typeahead-location',
-                    minLength: 0,
-                    accent: true,
-                    searchOnFocus: true,
-                    maxItem: 20,
-                    template: function (query, item) {
-                        if (item.ID === "new-item") {
-                            return "Create new location"
-                        }
-                        return `<span>${_.escape(item.name)}</span>`
-                    },
-                    source: typeLocationSearch(),
-                    display: "name",
-                    templateValue: "{{name}}",
-                    dynamic: true,
-                    callback: {
-                        onClick: function (node, a, item, event) {
-                            console.log(item)
-                        },
-                        onResult: function (node, query, result, resultCount) {
-                            console.log(result)
-                        },
-                        onHideLayout: function () {
-                            console.log('onHideLayout')
-                        }
-                    }
-                });
-
-
                 window.DRILLDOWN.sublocation = function (geonameid) {
                     let list_results = jQuery('#list_results')
                     let current_subs = jQuery('#current_subs')
@@ -1196,9 +1139,19 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 }
 
                 // set children
-                if ( $option['type'] === 'world' || empty( $_POST['children'] ) || $option['parent'] !== $default_map_settings['parent'] ) {
+                if ( $option['type'] === 'world' ) {
                     $option['children'] = [];
-                } else {
+                }
+                else if ( $option['type'] === 'country' && empty( $_POST['children'] ) ) {
+                    $option['children'] = $mm->query( 'get_countries', [ 'ids_only' => true ] );
+                }
+                else if ( $option['type'] === 'state' && empty( $_POST['children'] && ! empty( $_POST['parent'] ) ) ) {
+                    $list = $mm->query( 'get_children_by_geonameid', [ 'geonameid' => $option['parent'] ] );
+                    foreach( $list as $item ) {
+                        $option['children'][] = $item['geonameid'];
+                    }
+                }
+                else {
                     // Code check does not recognize the array_filter sanitization, even though it runs sanitization.
                     // @codingStandardsIgnoreLine
                     $option['children'] = array_filter( wp_unslash( $_POST['children'] ), 'sanitize_key' );
@@ -1349,15 +1302,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                 // create select
                 $country_list = $mm->query( 'get_countries' );
-                $country_select = '<select name="parent"><option></option><option>-------------</option>';
-                foreach ( $country_list as $result ) {
-                    $country_select .= '<option value="' . $result['geonameid'] . '" ';
-                    if ( $default_map_settings['parent'] === (int) $result['geonameid'] ) {
-                        $country_select .= 'selected';
-                    }
-                    $country_select .= '>' . $result['name'] . '</option>';
-                }
-                $country_select .= '</select>';
+
                 ?>
                 <table class="widefat striped">
                     <thead>
@@ -1366,7 +1311,17 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     <tbody>
                     <tr>
                         <td>
-                            <?php echo esc_html( $country_select ) ?>
+                            <select name="parent"><option></option><option>-------------</option>
+                                <?php
+                                foreach ( $country_list as $result ) {
+                                    echo '<option value="' . esc_attr( $result['geonameid'] ) . '" ';
+                                    if ( $default_map_settings['parent'] === (int) $result['geonameid'] ) {
+                                        echo 'selected';
+                                    }
+                                    echo '>' . esc_html( $result['name'] ) . '</option>';
+                                }
+                                ?>
+                            </select>
                             <button type="submit" class="button">Select</button>
                         </td>
                     </tr>

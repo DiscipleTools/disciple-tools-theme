@@ -983,33 +983,43 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                      * PCLS: semi-independent political entity
                      * TERR: territory
                      */
-                    $results = $wpdb->get_results( "
-                     SELECT
-                            g.geonameid,
-                            g.alt_name as name,
-                            g.latitude,
-                            g.longitude,
-                            g.feature_class,
-                            g.feature_code,
-                            g.country_code,
-                            g.cc2,
-                            g.admin1_code,
-                            g.admin2_code,
-                            g.admin3_code,
-                            g.admin4_code,
-                            IFNULL(g.alt_population, g.population) as population,
-                            g.timezone,
-                            g.modification_date,
-                            g.parent_id,
-                            g.country_geonameid,
-                            g.admin1_geonameid,
-                            g.admin2_geonameid,
-                            g.admin3_geonameid,
-                            g.level
-                        FROM $wpdb->dt_geonames as g
-                     WHERE g.level = 'country'
-                     ORDER BY name ASC
+                    if ( isset( $args['ids_only'] ) ) {
+                        $results = $wpdb->get_col( "
+                         SELECT g.geonameid
+                         FROM $wpdb->dt_geonames as g
+                         WHERE g.level = 'country'
+                         ORDER BY name ASC
+                    " );
+                    } else {
+                        $results = $wpdb->get_results( "
+                         SELECT
+                                g.geonameid,
+                                g.alt_name as name,
+                                g.latitude,
+                                g.longitude,
+                                g.feature_class,
+                                g.feature_code,
+                                g.country_code,
+                                g.cc2,
+                                g.admin1_code,
+                                g.admin2_code,
+                                g.admin3_code,
+                                g.admin4_code,
+                                IFNULL(g.alt_population, g.population) as population,
+                                g.timezone,
+                                g.modification_date,
+                                g.parent_id,
+                                g.country_geonameid,
+                                g.admin1_geonameid,
+                                g.admin2_geonameid,
+                                g.admin3_geonameid,
+                                g.level
+                         FROM $wpdb->dt_geonames as g
+                         WHERE g.level = 'country'
+                         ORDER BY name ASC
                     ", ARRAY_A );
+                    }
+
 
                     if ( empty( $results ) ) {
                         $results = [];

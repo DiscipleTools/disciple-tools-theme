@@ -242,8 +242,7 @@ function top_level_map( div ) {
                 mapUrl = DRILLDOWNDATA.settings.mapping_source_url + 'maps/world.geojson'
                 jQuery.getJSON( mapUrl, function( data ) {
 
-                    // set title
-                    title.empty().html('Multiple Countries')
+
 
                     // create a new geojson, including only the top level maps
                     let new_geojson = jQuery.extend({}, data )
@@ -254,7 +253,6 @@ function top_level_map( div ) {
                             new_geojson.features.push(v)
                         }
                     })
-
 
                     // Set map definition
                     let mapData = new_geojson
@@ -282,10 +280,16 @@ function top_level_map( div ) {
                                 })
                             }
 
-                            title.append(DRILLDOWNDATA.data[v.properties.geonameid].self.name)
-                            if ( title.html().length !== '' ) {
-                                title.append(', ')
+                            if ( mapData.features.length > 3 ) {
+                                // set title
+                                title.empty().html('Multiple Countries')
+                            } else {
+                                title.append(DRILLDOWNDATA.data[v.properties.geonameid].self.name)
+                                if ( title.html().length !== '' ) {
+                                    title.append(', ')
+                                }
                             }
+
 
                             coordinates[i] = {
                                 "latitude": DRILLDOWNDATA.data[v.properties.geonameid].self.latitude,
