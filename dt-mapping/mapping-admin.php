@@ -1147,7 +1147,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 }
                 else if ( $option['type'] === 'state' && empty( $_POST['children'] && ! empty( $_POST['parent'] ) ) ) {
                     $list = $mm->query( 'get_children_by_geonameid', [ 'geonameid' => $option['parent'] ] );
-                    foreach( $list as $item ) {
+                    foreach ( $list as $item ) {
                         $option['children'][] = $item['geonameid'];
                     }
                 }
