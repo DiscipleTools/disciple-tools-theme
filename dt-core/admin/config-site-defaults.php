@@ -34,6 +34,7 @@ add_action( 'send_headers', 'dt_security_headers_insert' );
 add_action( 'admin_init', 'dt_security_headers_insert' );
 // wp-login.php doesn't have a send_headers action so we abuse init
 add_action( 'login_init', 'dt_security_headers_insert' );
+add_filter( 'wp_handle_upload_prefilter', 'dt_disable_file_upload' );
 
 /*********************************************************************************************
  * Functions
@@ -755,4 +756,9 @@ function dt_security_headers_insert() {
         header( "Strict-Transport-Security: max-age=2592000" );
     }
 //    header( "Content-Security-Policy: default-src 'self' https:; img-src 'self' https: data:; script-src https: 'self' 'unsafe-inline' 'unsafe-eval'; style-src  https: 'self' 'unsafe-inline'" );
+}
+
+function dt_disable_file_upload( $file ) {
+    $file['error'] = 'Uploading has been disabled';
+    return $file;
 }
