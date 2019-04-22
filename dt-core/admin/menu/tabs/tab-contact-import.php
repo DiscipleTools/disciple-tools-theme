@@ -84,10 +84,8 @@ class Disciple_Tools_Contact_Import_Tab extends Disciple_Tools_Abstract_Menu_Bas
         }
         //check for action of csv import
         if ( isset( $_POST['csv_import_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['csv_import_nonce'] ) ), 'csv_import' ) && $run ) {
-            //@codingStandardsIgnoreLine
-            if ( isset( $_FILES[ "csv_file" ] ) ) {
-                //@codingStandardsIgnoreLine
-                $file_parts = explode( ".", sanitize_text_field( wp_unslash( $_FILES[ "csv_file" ][ "name" ] ) ) )[ count( explode( ".", sanitize_text_field( wp_unslash( $_FILES[ "csv_file" ][ "name" ] ) ) ) ) - 1 ];
+            if ( isset( $_FILES["csv_file"] ) ) {
+                $file_parts = explode( ".", sanitize_text_field( wp_unslash( $_FILES["csv_file"]["name"] ) ) )[ count( explode( ".", sanitize_text_field( wp_unslash( $_FILES["csv_file"]["name"] ) ) ) ) - 1 ];
                 if ( $_FILES["csv_file"]["error"] > 0 ) {
                     esc_html_e( "ERROR UPLOADING FILE", 'disciple_tools' );
                     ?>
@@ -106,8 +104,7 @@ class Disciple_Tools_Contact_Import_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     <?php
                     exit;
                 }
-                //@codingStandardsIgnoreLine
-                if ( mb_detect_encoding( file_get_contents( $_FILES[ "csv_file" ][ 'tmp_name' ], false, null, 0, 100 ), 'UTF-8', true ) === false ) {
+                if ( mb_detect_encoding( file_get_contents( sanitize_text_field( wp_unslash( $_FILES["csv_file"]['tmp_name'] ) ), false, null, 0, 100 ), 'UTF-8', true ) === false ) {
                     esc_html_e( "FILE IS NOT UTF-8", 'disciple_tools' );
                     ?>
                     <form id="back" method="post" enctype="multipart/form-data">
@@ -117,16 +114,23 @@ class Disciple_Tools_Contact_Import_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     exit;
                 }
                 //@codingStandardsIgnoreLine
-                $this->import_csv( $_FILES[ 'csv_file' ], sanitize_text_field( wp_unslash( $_POST[ 'csv_del' ] ) ), sanitize_text_field( wp_unslash( $_POST[ 'csv_source' ] ) ), sanitize_text_field( wp_unslash( $_POST[ 'csv_assign' ] ) ), sanitize_text_field( wp_unslash( $_POST[ 'csv_header' ] ) ) );
+                $file = filter_var_array( $_FILES['csv_file'], FILTER_SANITIZE_STRING );
+                $this->import_csv(
+                    $file,
+                    isset( $_POST['csv_del'] ) ? sanitize_text_field( wp_unslash( $_POST['csv_del'] ) ) : ';',
+                    isset( $_POST['csv_source'] ) ? sanitize_text_field( wp_unslash( $_POST['csv_source'] ) ) : 'web',
+                    isset( $_POST['csv_assign'] ) ? sanitize_text_field( wp_unslash( $_POST['csv_assign'] ) ) : '',
+                    isset( $_POST['csv_header'] ) ? sanitize_text_field( wp_unslash( $_POST['csv_header'] ) ) : 'yes'
+                );
             }
             exit;
         }
         //check for verification of data
         if ( isset( $_POST['csv_correct_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['csv_correct_nonce'] ) ), 'csv_correct' ) && $run ) {
-            //@codingStandardsIgnoreLine
-            if ( isset( $_POST[ "csv_contacts" ] ) ) {
+            if ( isset( $_POST["csv_contacts"] ) ) {
                 //@codingStandardsIgnoreLine
-                $this->insert_contacts( unserialize( base64_decode( $_POST[ "csv_contacts" ] ) ) );
+                $contacts = filter_var_array( unserialize( base64_decode( $_POST["csv_contacts"] ) ), FILTER_SANITIZE_STRING );
+                $this->insert_contacts( $contacts );
             }
             exit;
         }
@@ -345,7 +349,7 @@ class Disciple_Tools_Contact_Import_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     dataType: "json",
                     url: "<?php echo esc_url_raw( rest_url() ); ?>" + `dt/v1/contact/create?silent=true`,
                     beforeSend: function(xhr) {
-                        xhr.setRequestHeader('X-WP-Nonce', "<?php /*@codingStandardsIgnoreLine*/ echo sanitize_text_field( wp_unslash( wp_create_nonce( 'wp_rest' ) ) ); ?>");
+                        xhr.setRequestHeader('X-WP-Nonce', "<?php echo esc_html( wp_create_nonce( 'wp_rest' ) ); ?>");
                     },
                     success: function(data) {
                         console.log('done');
