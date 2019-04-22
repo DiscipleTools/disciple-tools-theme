@@ -478,13 +478,28 @@ $dt_available_languages = get_available_languages( get_template_directory() .'/d
                                             <td><label for="description"><?php esc_html_e( 'Language', 'disciple_tools' )?></label></td>
                                             <td dir="auto">
                                                 <?php
+                                                require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
+                                                $translations = wp_get_available_translations();
+                                                $translations["ar_MA"] = [
+                                                    "language" => "ar_MA",
+                                                    "native_name" => "العربية (المغرب)",
+                                                    "english_name" => "Arabic (Morocco)",
+                                                    "iso" => [ "ar" ]
+                                                ];
+                                                $translations["sw"] = [
+                                                    "language" => "sw",
+                                                    "native_name" => "Kiswahili",
+                                                    "english_name" => "Swahili",
+                                                    "iso" => [ "sw" ]
+                                                ];
                                                 wp_dropdown_languages( array(
                                                     'name'                        => 'locale',
                                                     'id'                          => 'locale',
                                                     'selected'                    => esc_html( $dt_user->locale ),
                                                     'languages'                   => $dt_available_languages,
                                                     'show_available_translations' => false,
-                                                    'show_option_site_default'    => false
+                                                    'show_option_site_default'    => false,
+                                                    'translations'                => $translations
                                                 ) );
                                                 ?>
                                             </td>

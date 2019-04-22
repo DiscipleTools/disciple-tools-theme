@@ -141,7 +141,7 @@ else {
              * Prepare variables
              */
             $this->token = 'disciple_tools';
-            $this->version = '0.19.0';
+            $this->version = '0.19.2';
             $this->migration_number = 22;
 
 
@@ -404,14 +404,6 @@ else {
                 /* Note: The load order matters for the menus and submenus. Submenu must load after menu. */
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/abstract-tabs-base.php' ); // registers all the menu pages and tabs
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-settings.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-general.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-lists.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-tiles.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-custom-fields.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-site-links.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-keys.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-critical-path.php' );
-                require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-network.php' );
 
                 require_once( get_template_directory() . '/dt-core/admin/menu/menu-extensions.php' );
                 require_once( get_template_directory() . '/dt-core/admin/menu/tabs/tab-featured-extensions.php' );

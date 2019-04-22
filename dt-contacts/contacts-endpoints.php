@@ -222,6 +222,18 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [ $this, 'public_contact_transfer' ],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/contacts/settings', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_settings' ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/following', [
+                "methods"  => "GET",
+                "callback" => [ $this, 'get_following' ],
+            ]
+        );
     }
 
 
@@ -237,7 +249,7 @@ class Disciple_Tools_Contacts_Endpoints
     public function public_create_contact( WP_REST_Request $request ) {
         $params = $request->get_params();
         $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
-        $silent = isset( $params["silent"] ) && ( $params["silent"] === "true" || $params["silent"] === true );
+        $silent = isset( $params["silent"] ) && ( $params["silent"] === "true" || $params["silent"] == true );
         if ( !$site_key ){
             return new WP_Error(
                 "contact_creation_error",
@@ -551,7 +563,7 @@ class Disciple_Tools_Contacts_Endpoints
         $params = $request->get_params();
         $body = $request->get_json_params() ?? $request->get_params();
         $site_key = Site_Link_System::verify_transfer_token( $params['transfer_token'] );
-        $silent = isset( $params["silent"] ) && $params["silent"] === true;
+        $silent = isset( $params["silent"] ) && $params["silent"] == true;
         if ( !$site_key ){
             return new WP_Error(
                 "contact_creation_error",
@@ -890,5 +902,18 @@ class Disciple_Tools_Contacts_Endpoints
         }
 
         return $params;
+    }
+
+    public function get_settings(){
+        return Disciple_Tools_Contacts::get_settings();
+    }
+
+    public function get_following( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( isset( $params['id'] ) ) {
+            return Disciple_Tools_Posts::get_users_following_post( "contacts", $params['id'] );
+        } else {
+            return new WP_Error( __FUNCTION__, "Missing a valid group id", [ 'status' => 400 ] );
+        }
     }
 }

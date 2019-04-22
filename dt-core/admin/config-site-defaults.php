@@ -28,6 +28,12 @@ add_filter( 'wpmu_signup_blog_notification_email', 'dt_wpmu_signup_blog_notifica
 add_filter( 'login_errors', 'login_error_messages' );
 remove_action( 'plugins_loaded', 'wp_maybe_load_widgets', 0 );  //don't load widgets as we don't use them
 remove_action( "init", "wp_widgets_init", 1 );
+//set security headers
+add_action( 'send_headers', 'dt_security_headers_insert' );
+// admin section doesn't have a send_headers action so we abuse init
+add_action( 'admin_init', 'dt_security_headers_insert' );
+// wp-login.php doesn't have a send_headers action so we abuse init
+add_action( 'login_init', 'dt_security_headers_insert' );
 
 /*********************************************************************************************
  * Functions
@@ -725,4 +731,28 @@ function login_error_messages( $message ){
         );
     }
     return $message;
+}
+
+
+/*
+ * Add security headers
+ */
+function dt_security_headers_insert() {
+    $xss_disabled = get_option( "dt_disable_header_xss" );
+    $referer_disabled = get_option( "dt_disable_header_referer" );
+    $content_type_disabled = get_option( "dt_disable_header_content_type" );
+    $strict_transport_disabled = get_option( "dt_disable_header_strict_transport" );
+    if ( !$xss_disabled ){
+        header( "X-XSS-Protection: 1; mode=block" );
+    }
+    if ( !$referer_disabled ){
+        header( "Referrer-Policy: same-origin" );
+    }
+    if ( !$content_type_disabled ){
+        header( "X-Content-Type-Options: nosniff" );
+    }
+    if ( !$strict_transport_disabled && is_ssl() ){
+        header( "Strict-Transport-Security: max-age=2592000" );
+    }
+//    header( "Content-Security-Policy: default-src 'self' https:; img-src 'self' https: data:; script-src https: 'self' 'unsafe-inline' 'unsafe-eval'; style-src  https: 'self' 'unsafe-inline'" );
 }

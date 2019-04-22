@@ -472,7 +472,7 @@ class Disciple_Tools_Groups_Post_Type
             foreach ( $fields as $field_key => $field ){
                 if ( $field["type"] === "key_select" || $field["type"] === "multi_select" ){
                     foreach ( $field["default"] as $option_key => $option_value ){
-                        if ( isset( $option_value["deleted"] ) && $option_value["deleted"] === true ){
+                        if ( isset( $option_value["deleted"] ) && $option_value["deleted"] == true ){
                             unset( $fields[$field_key]["default"][$option_key] );
                         }
                     }

@@ -162,7 +162,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( $check_permissions && !current_user_can( 'create_contacts' ) ) {
             return new WP_Error( __FUNCTION__, "You may not publish a contact", [ 'status' => 403 ] );
         }
-        $fields = dt_sanitize_array_html( $fields );
 
         $initial_fields = $fields;
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
@@ -317,7 +316,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
             $error = new WP_Error();
             foreach ( $notes as $note ) {
-                $potential_error = self::add_comment( $post_id, $note, "comment", [], false );
+                $potential_error = self::add_comment( $post_id, $note, "comment", [], false, true );
                 if ( is_wp_error( $potential_error ) ) {
                     $error->add( 'comment_fail', $potential_error->get_error_message() );
                 }
@@ -377,7 +376,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 if ( !isset( $field["values"] )){
                     return new WP_Error( __FUNCTION__, "missing values field on: " . $field_key );
                 }
-                if ( isset( $field["force_values"] ) && $field["force_values"] === true ){
+                if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
                     delete_post_meta( $contact_id, $field_key );
                 }
                 foreach ( $field["values"] as $value ){
@@ -412,7 +411,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
             if ( $existing_contact && isset( $fields[$details_key] ) &&
                  isset( $fields[$details_key]["force_values"] ) &&
-                 $fields[$details_key]["force_values"] === true ){
+                 $fields[$details_key]["force_values"] == true ){
                 foreach ( $existing_contact[$details_key] as $contact_value ){
                     $potential_error = self::delete_contact_field( $contact_id, $contact_value["key"], false );
                     if ( is_wp_error( $potential_error ) ){
@@ -487,7 +486,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     }
 
                     if ( isset( $connection_value["value"] ) && is_numeric( $connection_value["value"] )){
-                        if ( isset( $connection_value["delete"] ) && $connection_value["delete"] === true ){
+                        if ( isset( $connection_value["delete"] ) && $connection_value["delete"] == true ){
                             if ( in_array( $connection_value["value"], $existing_connections )){
                                 $potential_error = self::remove_contact_connection( $contact_id, $connection_type, $connection_value["value"], false );
                                 if ( is_wp_error( $potential_error ) ) {
@@ -510,7 +509,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     }
                 }
                 //check for deleted connections
-                if ( isset( $connection_field["force_values"] ) && $connection_field["force_values"] === true ){
+                if ( isset( $connection_field["force_values"] ) && $connection_field["force_values"] == true ){
                     foreach ($existing_connections as $connection_value ){
                         if ( !in_array( $connection_value, $new_connections )){
                             $potential_error = self::remove_contact_connection( $contact_id, $connection_type, $connection_value, false );
@@ -565,7 +564,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, "You do not have permission for this", [ 'status' => 403 ] );
         }
-        $fields = dt_sanitize_array_html( $fields );
         $initial_fields = $fields;
         $initial_keys = array_keys( $fields );
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
@@ -2928,4 +2926,22 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
     }
 
+
+    /**
+     * Get settings related to contacts
+     * @return array|WP_Error
+     */
+    public static function get_settings(){
+        if ( !self::can_access( "contacts" ) ) {
+            return new WP_Error( __FUNCTION__, "Permission denied.", [ 'status' => 403 ] );
+        }
+
+        return [
+            'sources' => self::list_sources(),
+            'fields' => self::get_contact_fields(),
+            'address_types' => self::$address_types,
+            'channels' => self::$channel_list,
+            'connection_types' => self::$contact_connection_types
+        ];
+    }
 }
