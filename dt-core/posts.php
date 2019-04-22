@@ -1407,11 +1407,12 @@ class Disciple_Tools_Posts
     /**
      * @param $post_type
      * @param $post_id
+     * @param bool $check_permissions
      *
      * @return array|WP_Error
      */
-    public static function get_users_following_post( $post_type, $post_id ){
-        if ( !self::can_access( $post_type ) ){
+    public static function get_users_following_post( $post_type, $post_id, $check_permissions = true ){
+        if ( $check_permissions && !self::can_access( $post_type ) ){
             return new WP_Error( __FUNCTION__, "You do not have access to: " . $post_type, [ 'status' => 403 ] );
         }
         $users = [];

@@ -316,7 +316,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             }
             $error = new WP_Error();
             foreach ( $notes as $note ) {
-                $potential_error = self::add_comment( $post_id, $note, "comment", [], false );
+                $potential_error = self::add_comment( $post_id, $note, "comment", [], false, true );
                 if ( is_wp_error( $potential_error ) ) {
                     $error->add( 'comment_fail', $potential_error->get_error_message() );
                 }
