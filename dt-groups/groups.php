@@ -243,7 +243,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 if ( !isset( $field["values"] )){
                     return new WP_Error( __FUNCTION__, "missing values field on:" . $field_key );
                 }
-                if ( isset( $field["force_values"] ) && $field["force_values"] === true ){
+                if ( isset( $field["force_values"] ) && $field["force_values"] == true ){
                     delete_post_meta( $contact_id, $field_key );
                 }
                 foreach ( $field["values"] as $value ){
@@ -278,7 +278,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             }
             if ( $existing_group && isset( $fields[$details_key] ) &&
                  isset( $fields[$details_key]["force_values"] ) &&
-                 $fields[$details_key]["force_values"] === true ){
+                 $fields[$details_key]["force_values"] == true ){
                 foreach ( $existing_group[$details_key] as $contact_value ){
                     $potential_error = self::delete_group_field( $group_id, $contact_value["key"], false );
                     if ( is_wp_error( $potential_error ) ){
@@ -338,7 +338,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                         }
                     }
                     if ( isset( $connection_value["value"] ) && is_numeric( $connection_value["value"] )){
-                        if ( isset( $connection_value["delete"] ) && $connection_value["delete"] === true ){
+                        if ( isset( $connection_value["delete"] ) && $connection_value["delete"] == true ){
                             if ( in_array( $connection_value["value"], $existing_connections )){
                                 $potential_error = self::remove_group_connection( $group_id, $connection_type, $connection_value["value"], false );
                                 if ( is_wp_error( $potential_error ) ) {
@@ -360,7 +360,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     }
                 }
                 //check for deleted connections
-                if ( isset( $connection_field["force_values"] ) && $connection_field["force_values"] === true ){
+                if ( isset( $connection_field["force_values"] ) && $connection_field["force_values"] == true ){
                     foreach ($existing_connections as $connection_value ){
                         if ( !in_array( $connection_value, $new_connections )){
                             $potential_error = self::remove_group_connection( $group_id, $connection_type, $connection_value, false );
