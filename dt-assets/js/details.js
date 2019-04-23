@@ -1,6 +1,3 @@
-console.log(detailsSettings);
-
-
 jQuery(document).ready(function($) {
   let post_id = detailsSettings.post_id
   let post_type = detailsSettings.post_type.substring(0, detailsSettings.post_type.length - 1);
@@ -51,7 +48,8 @@ jQuery(document).ready(function($) {
       }).catch(handleAjaxError)
     },
     changeMonth: true,
-    changeYear: true
+    changeYear: true,
+    yearRange: "1900:2050",
   })
 
   $('select.select-field').change(e => {

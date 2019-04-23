@@ -376,7 +376,9 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                     <div class="baptism_date">
                                         <div class="section-subheader"><?php esc_html_e( 'Baptism Date', 'disciple_tools' )?></div>
                                         <div class="baptism_date">
-                                            <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" id="baptism-date-picker">
+                                            <input type="text" class="dt_date_picker"
+                                                   value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>"
+                                                   id="baptism_date">
                                         </div>
                                     </div>
 

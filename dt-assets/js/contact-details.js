@@ -619,25 +619,16 @@ jQuery(document).ready(function($) {
 
   $( document ).on( 'text-input-updated', function (e, newContact){})
 
-  $( document ).on( 'dt_date_picker-updated', function (e, newContact, id, date){})
+  $( document ).on( 'dt_date_picker-updated', function (e, newContact, id, date){
+    if ( id === 'baptism_date' ){
+      openBaptismModal(newContact)
+    }
+  })
 
   $( document ).on( 'dt_multi_select-updated', function (e, newContact, fieldKey, optionKey, action) {
     if ( optionKey === 'milestone_baptized' && action === 'add' ){
       openBaptismModal(newContact)
     }
-  })
-
-
-  // Baptism date
-  $('input#baptism-date-picker').datepicker({
-    dateFormat: 'yy-mm-dd',
-    onSelect: function (date) {
-      API.save_field_api('contact', contactId, { baptism_date: date }).then(res=>{
-        openBaptismModal(res)
-      }).catch(handleAjaxError)
-    },
-    changeMonth: true,
-    changeYear: true
   })
 
 
