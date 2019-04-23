@@ -440,12 +440,8 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             }
 
             $params = $request->get_params();
-            return DT_Mapping_Module_Admin::instance()->process_rest_edits( $params );
-        }
-        public function typeahead_endpoint( WP_REST_Request $request ) {
-            $params = $request->get_params();
 
-            return $this->query( 'typeahead', [ 's' => 'Tun' ] );
+            return DT_Mapping_Module_Admin::instance()->process_rest_edits( $params );
         }
 
         public function search_geonames_by_name( WP_REST_Request $request ){
@@ -889,7 +885,13 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                               g.latitude, 
                               g.longitude,
                               g.country_code,
-                              g.level
+                              g.parent_id,
+                              g.country_geonameid,
+                              g.admin1_geonameid,
+                              g.admin2_geonameid,
+                              g.admin3_geonameid,
+                              g.level,
+                              g.is_custom_location
                             FROM $wpdb->dt_geonames as g
                             WHERE g.geonameid = %s
                         ", $args['geonameid'] ), ARRAY_A );
@@ -907,6 +909,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                               p.latitude, 
                               p.longitude,
                               p.country_code,
+                              p.parent_id,
+                              p.country_geonameid,
+                              p.admin1_geonameid,
+                              p.admin2_geonameid,
+                              p.admin3_geonameid,
                               p.level
                             FROM $wpdb->dt_geonames as g
                             JOIN $wpdb->dt_geonames as p ON g.parent_id=p.geonameid
@@ -926,7 +933,13 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                               g.latitude, 
                               g.longitude,
                               g.country_code,
-                              g.level
+                              g.parent_id,
+                              g.country_geonameid,
+                              g.admin1_geonameid,
+                              g.admin2_geonameid,
+                              g.admin3_geonameid,
+                              g.level,
+                              g.is_custom_location
                             FROM $wpdb->dt_geonames as g
                             WHERE g.parent_id = %d
                             ORDER BY g.alt_name ASC
@@ -963,6 +976,11 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                               g.longitude,
                               g.country_code,
                               g.feature_code,
+                              g.parent_id,
+                              g.country_geonameid,
+                              g.admin1_geonameid,
+                              g.admin2_geonameid,
+                              g.admin3_geonameid,
                               g.level
                             FROM $wpdb->dt_geonames as g
                             WHERE g.geonameid IN ($prepared_list)

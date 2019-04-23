@@ -256,12 +256,148 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                     case 'sub_location':
 
-                        if ( isset( $value ) ) {
-                            dt_write_log( 'sub_location reached' );
-                            //@todo write the save action for the form data
+                        dt_write_log( $params['value'] );
+
+                        if ( isset( $params['value']['name'] ) ) {
+                            $name = sanitize_text_field( wp_unslash( $params['value']['name'] ) );
+                        } else {
+                            return new WP_Error('missing_param', 'Missing name parameter' );
                         }
 
-                        return true;
+                        if ( isset( $params['value']['population'] ) ) {
+                            $population = sanitize_text_field( wp_unslash( $params['value']['population'] ) );
+                        } else {
+                            $population = 0;
+                        }
+
+                        $parent_geoname = $wpdb->get_row( $wpdb->prepare( "
+                            SELECT * FROM $wpdb->dt_geonames WHERE geonameid = %d
+                        ", $geonameid ), ARRAY_A );
+                        if ( empty( $parent_geoname ) ) {
+                            return new WP_Error('missing_param', 'Missing geoname parent.');
+                        }
+
+                        // make unique geonameid
+                        // 999 + increment + 999 + geonameid
+                        // 999 (3) + 999 (3) + 999 (3) + 12031544 (8)
+                        $current_custom_locations = $wpdb->get_col( $wpdb->prepare( "
+                            SELECT * FROM $wpdb->dt_geonames WHERE geonameid LIKE %s AND geonameid LIKE %s
+                         ",
+                            '%' . $wpdb->esc_like( $geonameid ),
+                            $wpdb->esc_like( '999' ) . '%'
+                        ) );
+
+                        $i = 1;
+                        $custom_geonameid = '999' . $i . '999' . $geonameid;
+                        if ( array_search( $custom_geonameid, $current_custom_locations ) !== false ) {
+                            while( array_search( $custom_geonameid, $current_custom_locations ) !== false ) {
+                                $i++;
+                                $custom_geonameid = '999' . $i . '999' . $geonameid;
+                            }
+                        }
+                        dt_write_log($custom_geonameid);
+
+                        // get level
+                        if ( isset( $parent_geoname['level'] ) ) {
+                            switch ( $parent_geoname['level'] ) {
+                                case 'country':
+                                    $level = 'admin1';
+                                    $parent_geoname['admin1_geonameid'] = $custom_geonameid;
+                                    $parent_geoname['feature_code'] = 'ADM1';
+                                    break;
+                                case 'admin1':
+                                    $level = 'admin2';
+                                    $parent_geoname['admin2_geonameid'] = $custom_geonameid;
+                                    $parent_geoname['feature_code'] = 'ADM2';
+                                    break;
+                                case 'admin2':
+                                    $level = 'admin3';
+                                    $parent_geoname['admin3_geonameid'] = $custom_geonameid;
+                                    $parent_geoname['feature_code'] = 'ADM3';
+                                    break;
+                                case 'admin3':
+                                    $level = 'admin4';
+                                    $parent_geoname['admin4_geonameid'] = $custom_geonameid;
+                                    $parent_geoname['feature_code'] = 'ADM4';
+                                    break;
+                                case 'admin4':
+                                default:
+                                    $level = 'place';
+                                    $parent_geoname['feature_class'] = 'P';
+                                    $parent_geoname['feature_code'] = 'PPL';
+                                    break;
+                            }
+                        } else {
+                            $level = 'place';
+                            $parent_geoname['feature_class'] = 'P';
+                            $parent_geoname['feature_code'] = 'PPL';
+                        }
+
+                        // save new record
+                        $result = $wpdb->insert(
+                                $wpdb->dt_geonames,
+                                [
+                                      'geonameid' => $custom_geonameid,
+                                      'name' => $name,
+                                      'latitude' => $parent_geoname['latitude'],
+                                      'longitude' => $parent_geoname['longitude'],
+                                      'feature_class' => $parent_geoname['feature_class'],
+                                      'feature_code' => $parent_geoname['feature_code'],
+                                      'country_code' => $parent_geoname['country_code'],
+                                      'cc2' => $parent_geoname['cc2'],
+                                      'admin1_code' => $parent_geoname['admin1_code'],
+                                      'admin2_code' => $parent_geoname['admin2_code'],
+                                      'admin3_code' => $parent_geoname['admin3_code'],
+                                      'admin4_code' => $parent_geoname['admin4_code'],
+                                      'population' => $population,
+                                      'elevation' => $parent_geoname['elevation'],
+                                      'dem' => $parent_geoname['dem'],
+                                      'timezone' => $parent_geoname['timezone'],
+                                      'modification_date' => current_time( 'mysql' ),
+                                      'parent_id' => $geonameid,
+                                      'country_geonameid' => $parent_geoname['country_geonameid'],
+                                      'admin1_geonameid' => $parent_geoname['admin1_geonameid'],
+                                      'admin2_geonameid' => $parent_geoname['admin2_geonameid'],
+                                      'admin3_geonameid' => $parent_geoname['admin3_geonameid'],
+                                      'level' => $level,
+                                      'alt_name' => $name,
+                                      'is_custom_location' => 1,
+                                ],
+                                [
+                                    '%d', // geonameid
+                                    '%s',
+                                    '%d', // latitude
+                                    '%d', // longitude
+                                    '%s',
+                                    '%s',
+                                    '%s', // country code
+                                    '%s',
+                                    '%s', // admin1 code
+                                    '%s',
+                                    '%s',
+                                    '%s',
+                                    '%d', // population
+                                    '%d',
+                                    '%d',
+                                    '%s', // timezone
+                                    '%s', // modification date
+                                    '%d', // parent id
+                                    '%d',
+                                    '%d',
+                                    '%d',
+                                    '%d',
+                                    '%s', // level
+                                    '%s',
+                                    '%d' //is custom location
+                                ]
+                        );
+
+                        dt_write_log( $result );
+
+                        return [
+                                'name' => $name,
+                                'geonameid' => $custom_geonameid
+                        ];
                         break;
                     default:
                         return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
@@ -1028,6 +1164,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             <table class="widefat striped" style="display:none;" id="current_subs">
                 <thead>
                 <th>Current Sub-Locations (use these if possible):</th>
+                <th style="width:20px;"></th>
                 </thead>
                 <tbody id="other_list">
                 </tbody>
@@ -1053,7 +1190,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     else { // children available
                         if (!window.DRILLDOWN.isEmpty(window.DRILLDOWNDATA.data[geonameid].children)) { // empty children for geonameid
                             jQuery.each(window.DRILLDOWNDATA.data[geonameid].children, function (gnid, data) {
-                                other_list.append(`<tr><td><a onclick="DRILLDOWN.geoname_drill_down( ${gnid}, 'sublocation' );jQuery('#'+${gnid}).parent().nextAll().remove();jQuery('#${geonameid} option[value=${gnid}]').attr('selected', 'selected');">${data.name}</a></td></tr>`)
+                                other_list.append(`<tr><td><a onclick="DRILLDOWN.geoname_drill_down( ${gnid}, 'sublocation' );jQuery('#'+${gnid}).parent().nextAll().remove();jQuery('#${geonameid} option[value=${gnid}]').attr('selected', 'selected');">${data.name}</a></td><td></td></tr>`)
                             })
                             current_subs.show()
                         }
@@ -1062,8 +1199,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                 <tr><td colspan="2">Add New Location to ${window.DRILLDOWNDATA.data[geonameid].self.name}</td></tr>
                                 <tr><td style="width:150px;">Name</td><td><input id="new_name" value="" /></td></tr>
                                 <tr><td>Population</td><td><input id="new_population" value="" /></td></tr>
-                                <tr><td>Latitude</td><td><input id="new_latitude" value="" /></td></tr>
-                                <tr><td>Longitude</td><td><input id="new_longitude" value="" /></td></tr>
                                 <tr><td colspan="2"><button type="button" id="save-button" class="button" onclick="update_location( ${geonameid} )" >Save</a></td></tr>`)
                     }
                 }
@@ -1071,28 +1206,25 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 function update_location(geonameid) {
                     jQuery('#save-button').prop('disabled', true)
 
-                    let newFields = []
-                    newFields['name'] = jQuery('#new_name').val()
-                    newFields['population'] = jQuery('#new_population').val()
-                    newFields['latitude'] = jQuery('#new_latitude').val()
-                    newFields['longitude'] = jQuery('#new_longitude').val()
+                    let data = {}
+                    data.key = 'sub_location'
+                    data.geonameid = geonameid
+                    data.value = {}
+                    data.value.name = jQuery('#new_name').val()
+                    data.value.population = jQuery('#new_population').val()
 
-                    let data = {key: 'sub_location', value: newFields, geonameid: geonameid}
+                    console.log(data)
 
                     let update = send_update(data)
 
                     update.done(function (data) {
                         console.log(data)
                         if (data) {
-                            jQuery('#other_list').append(`<tr><td><a >New Location Added</a></td></tr>`)
+                            jQuery('#other_list').append(`<tr><td>${data.name}</td></tr>`)
 
                             jQuery('#new_name').val('')
                             jQuery('#new_population').val('')
-                            jQuery('#new_latitude').val('')
-                            jQuery('#new_longitude').val('')
-
                         }
-
                         jQuery('#save-button').removeProp('disabled')
                     })
 
