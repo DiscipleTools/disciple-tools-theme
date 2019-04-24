@@ -8,6 +8,9 @@ jQuery(document).ready(function() {
         console.log(DRILLDOWNDATA)
         page_mapping_list()
     }
+    if('#mapping_drill' === window.location.hash) {
+        page_mapping_drill()
+    }
 })
 
 _ = _ || window.lodash
@@ -1101,5 +1104,58 @@ function geoname_list( div, geonameid ) {
         });
 
        DRILLDOWN.hide_spinner()
+    }
+}
+
+
+function page_mapping_drill() {
+    "use strict";
+    let chartDiv = jQuery('#chart')
+    chartDiv.empty().html(`
+        
+        <div class="grid-x grid-margin-y">
+            <div class="cell medium-6" id="drill_down_container">
+                
+            </div>
+        </div>
+        
+        `);
+
+    get_drill_down( 'drill' )
+}
+
+
+
+function get_drill_down( bind_function, geonameid ) {
+    if ( ! geonameid ) {
+        geonameid = 'top_map_level'
+    }
+    console.log(geonameid)
+    let rest = mappingModule.mapping_module.settings.endpoints.get_drilldown_endpoint
+    jQuery.ajax({
+        type: rest.method,
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify( {  "bind_function": bind_function, "geonameid": geonameid } ),
+        dataType: "json",
+        url: mappingModule.mapping_module.settings.root + rest.namespace + rest.route,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
+        },
+    })
+        .done( function( response ) {
+            jQuery('#drill_down_container').empty().append(response)
+
+        }) // end success statement
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+        })
+}
+
+window.DRILLDOWN.drill = function( geonameid ) {
+    if ( geonameid !== 'top_map_list' && geonameid !== 'world' ) { // make sure this is not a top level continent or world request
+    }
+    else { // top_level maps
+
     }
 }

@@ -180,6 +180,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         public function menu( $content ) {
             $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_view" onclick="page_mapping_view()">' .  esc_html__( 'Map' ) . '</a></li>';
             $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_list" onclick="page_mapping_list()">' .  esc_html__( 'List' ) . '</a></li>';
+            $content .= '<li><a href="'. esc_url( site_url( '/mapping/' ) ) .'#mapping_drill" onclick="page_mapping_drill()">' .  esc_html__( 'Drill' ) . '</a></li>';
             return $content;
         }
         public function scripts() {
@@ -395,6 +396,12 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                'nonce' => wp_create_nonce( 'wp_rest' ),
                'method' => 'GET',
             ];
+            $endpoints['get_drilldown_endpoint'] = [
+                'namespace' => $this->namespace,
+                'route' => '/mapping_module/get_drilldown',
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'method' => 'POST',
+            ];
             // add another endpoint here
             return $endpoints;
         }
@@ -482,6 +489,18 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                 'posts' => $prepared,
                 'total' => $locations["total"]
             ];
+        }
+
+        public function get_drilldown_endpoint( WP_REST_Request $request ) {
+            $params = $request->get_params();
+
+            if ( isset( $params['geonameid'] ) && isset( $params['bind_function'] ) ) {
+                $bind_function = sanitize_key( wp_unslash( $params['bind_function'] ) );
+                $geonameid = sanitize_key( wp_unslash( $params['geonameid'] ) );
+                return $this->drill_down_input( $bind_function, false, $geonameid );
+            } else {
+                return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
+            }
         }
 
 
@@ -1603,7 +1622,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         if ( $post_id ) {
                             $reference = $this->query( 'get_counter', [ 'post_id' => $post_id ] );
                         } else {
-                            $reference = $this->query( 'get_counter', [ 'geonameid' => $geonameid ] );
+                            $reference = $this->query( 'get_hierarchy', [ 'geonameid' => $geonameid ] );
                         }
 
                         switch ( $reference['level'] ) {
@@ -1689,11 +1708,13 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     $default_list = $this->query( 'get_countries' );
 
                     if ( $geonameid ) {
-                        if ( empty( $post_id ) ) {
-                            $reference = $this->query( 'get_counter', [ 'geonameid' => $geonameid ] );
-                        } else {
+
+                        if ( $post_id ) {
                             $reference = $this->query( 'get_counter', [ 'post_id' => $post_id ] );
+                        } else {
+                            $reference = $this->query( 'get_hierarchy', [ 'geonameid' => $geonameid ] );
                         }
+
                         $preset_array = [
                             0 => [
                                 'parent' => 'drill_down_top_level',
