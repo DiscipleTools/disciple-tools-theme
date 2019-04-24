@@ -65,6 +65,7 @@ window.DRILLDOWN = {
         DRILLDOWN.show_spinner()
 
         if ( geonameid !== undefined  && geonameid !== ' ' ) {
+            DRILLDOWNDATA.settings.current_map = geonameid
 
             jQuery.ajax({
                 type: rest.method,

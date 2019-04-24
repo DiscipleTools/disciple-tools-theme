@@ -70,17 +70,21 @@ function page_mapping_view() {
         `);
 
     DRILLDOWN.load_drill_down( null, 'map_chart' )
-    data_type_list( 'data-type-list' )
+
 }
 
 window.DRILLDOWN.map_chart = function( geonameid ) {
     if ( geonameid !== 'top_map_list' && geonameid !== 'world' ) { // make sure this is not a top level continent or world request
         console.log('map_chart: geonameid available')
-        geoname_map( 'map_chart', geonameid )
+        DRILLDOWNDATA.settings.current_map = parseInt(geonameid)
+        geoname_map( 'map_chart', parseInt(geonameid) )
+        data_type_list( 'data-type-list' )
     }
     else { // top_level maps
         console.log('map_chart: top level')
+        DRILLDOWNDATA.settings.current_map = 'top_map_list'
         top_level_map( 'map_chart' )
+        data_type_list( 'data-type-list' )
     }
 }
 
@@ -118,11 +122,22 @@ function top_level_map( div ) {
                         mapData.features[i].properties.population = map_data.children[v.id].population
 
 
-                        // custom columns
+                        /* custom columns */
                         if ( DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
+                            /* Note: Amcharts calculates heatmap off last variable. So this section moves selected
+                            * heatmap variable to the end of the array */
+                            let focus = DRILLDOWNDATA.settings.heatmap_focus
                             jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                                mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
-                                mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
+                                if ( ii !== focus ) {
+                                    mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                                    mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
+                                }
+                            })
+                            jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
+                                if ( ii === focus ) {
+                                    mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                                    mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
+                                }
                             })
                         } else {
                             jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
@@ -130,6 +145,7 @@ function top_level_map( div ) {
                                 mapData.features[i].properties.value = 0
                             })
                         }
+                        /* end custom column */
                     }
                 })
 
@@ -150,6 +166,7 @@ function top_level_map( div ) {
                 jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vc) {
                     toolTipContent += vc.label + ': {' + vc.key + '}<br>'
                 })
+
                 template.tooltipHTML = toolTipContent
 
                 // Create hover state and set alternative fill color
@@ -267,11 +284,22 @@ function top_level_map( div ) {
                             mapData.features[i].properties.population = DRILLDOWNDATA.data[v.properties.geonameid].self.population
 
 
-                            // custom columns
+                            /* custom columns */
                             if ( DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
+                                /* Note: Amcharts calculates heatmap off last variable. So this section moves selected
+                                * heatmap variable to the end of the array */
+                                let focus = DRILLDOWNDATA.settings.heatmap_focus
                                 jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                                    mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
-                                    mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
+                                    if ( ii !== focus ) {
+                                        mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                                        mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
+                                    }
+                                })
+                                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
+                                    if ( ii === focus ) {
+                                        mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                                        mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
+                                    }
                                 })
                             } else {
                                 jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
@@ -279,6 +307,7 @@ function top_level_map( div ) {
                                     mapData.features[i].properties.value = 0
                                 })
                             }
+                            /* end custom column */
 
                             if ( mapData.features.length > 3 ) {
                                 // set title
@@ -413,11 +442,22 @@ function top_level_map( div ) {
                             mapData.features[i].properties.population = DRILLDOWNDATA.data[v.properties.geonameid].self.population
 
 
-                            // custom columns
+                            /* custom columns */
                             if ( DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
+                                /* Note: Amcharts calculates heatmap off last variable. So this section moves selected
+                                * heatmap variable to the end of the array */
+                                let focus = DRILLDOWNDATA.settings.heatmap_focus
                                 jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                                    mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
-                                    mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
+                                    if ( ii !== focus ) {
+                                        mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                                        mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
+                                    }
+                                })
+                                jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
+                                    if ( ii === focus ) {
+                                        mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                                        mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
+                                    }
                                 })
                             } else {
                                 jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
@@ -425,6 +465,7 @@ function top_level_map( div ) {
                                     mapData.features[i].properties.value = 0
                                 })
                             }
+                            /* end custom column */
 
                             coordinates[i] = {
                                 "latitude": DRILLDOWNDATA.data[v.properties.geonameid].self.latitude,
@@ -544,11 +585,22 @@ function geoname_map( div, geonameid ) {
 
                         mapData.features[i].properties.population = response.children[mapData.features[i].properties.geonameid].population
 
-                        // custom columns
+                        /* custom columns */
                         if ( DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid] ) {
+                            /* Note: Amcharts calculates heatmap off last variable. So this section moves selected
+                            * heatmap variable to the end of the array */
+                            let focus = DRILLDOWNDATA.settings.heatmap_focus
                             jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
-                                mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
-                                mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
+                                if ( ii !== focus ) {
+                                    mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                                    mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
+                                }
+                            })
+                            jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
+                                if ( ii === focus ) {
+                                    mapData.features[i].properties[vv.key] = DRILLDOWNDATA.data.custom_column_data[mapData.features[i].properties.geonameid][ii]
+                                    mapData.features[i].properties.value = mapData.features[i].properties[vv.key]
+                                }
                             })
                         } else {
                             jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii, vv) {
@@ -556,7 +608,7 @@ function geoname_map( div, geonameid ) {
                                 mapData.features[i].properties.value = 0
                             })
                         }
-
+                        /* end custom column */
                     }
                 })
 
@@ -629,9 +681,27 @@ function geoname_map( div, geonameid ) {
 
 function data_type_list( div ) {
     let list = jQuery('#'+div )
+    list.empty()
+    let focus = DRILLDOWNDATA.settings.heatmap_focus
+
     jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(i,v) {
-        list.append(`<a onclick="" class="button hollow" id="${v.key}">${v.label}</a>`)
+        let hollow = 'hollow'
+        if ( i === focus ) {
+            hollow = ''
+        }
+        list.append(`<a onclick="heatmap_focus_change( ${i}, '${DRILLDOWNDATA.settings.current_map}' )" class="button ${hollow}" id="${v.key}">${v.label}</a>`)
     })
+}
+
+function heatmap_focus_change( focus_id, current_map ) {
+    DRILLDOWNDATA.settings.heatmap_focus = focus_id
+
+    if ( current_map !== 'top_map_list' && current_map !== 'world' ) { // make sure this is not a top level continent or world request
+        DRILLDOWN.load_drill_down( current_map, 'map_chart' )
+    }
+    else { // top_level maps
+        DRILLDOWN.load_drill_down( null, 'map_chart' )
+    }
 }
 
 function load_breadcrumbs( div, id, parent_name ) {
