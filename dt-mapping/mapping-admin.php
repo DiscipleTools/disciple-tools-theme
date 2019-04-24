@@ -261,7 +261,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         if ( isset( $params['value']['name'] ) ) {
                             $name = sanitize_text_field( wp_unslash( $params['value']['name'] ) );
                         } else {
-                            return new WP_Error('missing_param', 'Missing name parameter' );
+                            return new WP_Error( 'missing_param', 'Missing name parameter' );
                         }
 
                         if ( isset( $params['value']['population'] ) ) {
@@ -274,7 +274,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             SELECT * FROM $wpdb->dt_geonames WHERE geonameid = %d
                         ", $geonameid ), ARRAY_A );
                         if ( empty( $parent_geoname ) ) {
-                            return new WP_Error('missing_param', 'Missing geoname parent.');
+                            return new WP_Error( 'missing_param', 'Missing geoname parent.' );
                         }
 
                         // make unique geonameid
@@ -290,12 +290,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         $i = 1;
                         $custom_geonameid = '999' . $i . '999' . $geonameid;
                         if ( array_search( $custom_geonameid, $current_custom_locations ) !== false ) {
-                            while( array_search( $custom_geonameid, $current_custom_locations ) !== false ) {
+                            while ( array_search( $custom_geonameid, $current_custom_locations ) !== false ) {
                                 $i++;
                                 $custom_geonameid = '999' . $i . '999' . $geonameid;
                             }
                         }
-                        dt_write_log($custom_geonameid);
+                        dt_write_log( $custom_geonameid );
 
                         // get level
                         if ( isset( $parent_geoname['level'] ) ) {
@@ -335,8 +335,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
 
                         // save new record
                         $result = $wpdb->insert(
-                                $wpdb->dt_geonames,
-                                [
+                            $wpdb->dt_geonames,
+                            [
                                       'geonameid' => $custom_geonameid,
                                       'name' => $name,
                                       'latitude' => $parent_geoname['latitude'],
@@ -363,7 +363,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                                       'alt_name' => $name,
                                       'is_custom_location' => 1,
                                 ],
-                                [
+                            [
                                     '%d', // geonameid
                                     '%s',
                                     '%d', // latitude
