@@ -68,7 +68,7 @@ function dt_print_details_bar(
                         <?php if ( $disable_following_toggle_function ) : ?>
                             <button class="button follow hollow" data-value="following" disabled><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
                         <?php else :
-    if ( $following ) : ?>
+                            if ( $following ) : ?>
                                 <button class="button follow hollow" data-value="following"><?php echo esc_html( __( "Following", "disciple_tools" ) ) ?></button>
                             <?php else : ?>
                                 <button class="button follow" data-value=""><?php echo esc_html( __( "Follow", "disciple_tools" ) ) ?></button>

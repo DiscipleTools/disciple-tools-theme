@@ -83,21 +83,7 @@ jQuery(document).ready(function($) {
       shareTypeahead = TYPEAHEADS.share("group", groupId)
     }
   })
-
-  /**
-   * Follow
-   */
-  $('button.follow').on("click", function () {
-    let following = !($(this).data('value') === "following")
-    $(this).data("value", following ? "following" : "" )
-    $(this).html( following ? "Following" : "Follow")
-    $(this).toggleClass( "hollow" )
-    let update = {
-      follow: {values:[{value:wpApiGroupsSettings.current_user_id, delete:!following}]},
-      unfollow: {values:[{value:wpApiGroupsSettings.current_user_id, delete:following}]}
-    }
-    API.save_field_api( "group", groupId, update)
-  })
+  
 
 
   /**
@@ -746,39 +732,21 @@ jQuery(document).ready(function($) {
    * Group Status
    */
 
-  let selectFiled = $('select.select-field')
-  selectFiled.on('change', function () {
-    let id = $(this).attr('id')
-    let val = $(this).val()
-    API.save_field_api(
-      'group',
-      groupId,
-      {[id]:val}
-    ).then(resp=>{
-      group = resp
-      resetDetailsFields(group);
-      if ( id === 'group_status' ){
-        statusChanged()
-      }
-    }).catch(err=>{
-      console.log(err)
-    })
+  $( document ).on( 'select-field-updated', function (e, newGroup, id, val) {
+    group = newGroup
+    resetDetailsFields(group);
+    if ( id === 'group_status' ){
+      statusChanged()
+    }
   })
-  $('input.text-input').change(function(){
-    const id = $(this).attr('id')
-    const val = $(this).val()
 
-    API.save_field_api('group', groupId, { [id]: val })
-      .catch(handleAjaxError)
-  })
-  $('input.number-input').on("blur", function(){
-    const id = $(this).attr('id')
-    const val = $(this).val()
+  $( document ).on( 'text-input-updated', function (e, newGroup, id, val){})
 
-    API.save_field_api('group', groupId, { [id]: val }).then((groupResp)=>{
-      group = groupResp
-    }).catch(handleAjaxError)
-  })
+  $( document ).on( 'number-input-updated', function (e, newGroup, id, val ){})
+
+  $( document ).on( 'dt_date_picker-updated', function (e, newGroup, id, date){})
+
+  $( document ).on( 'dt_multi_select-updated', function (e, newGroup, fieldKey, optionKey, action){})
 
   let statusChanged = ()=>{
     let statusSelect = $('#group_status')
@@ -843,44 +811,6 @@ jQuery(document).ready(function($) {
     })
   })
 
-  $('button.dt_multi_select').on('click',function () {
-    let fieldKey = $(this).data("field-key")
-    let optionKey = $(this).attr('id')
-    let fieldValue = {}
-    let data = {}
-    let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
-    field.addClass("submitting-select-button")
-    let action = "add"
-    if (field.hasClass("selected-select-button")){
-      fieldValue = {values:[{value:optionKey,delete:true}]}
-      action = "delete"
-    } else {
-      field.removeClass("empty-select-button")
-      field.addClass("selected-select-button")
-      fieldValue = {values:[{value:optionKey}]}
-    }
-    data[optionKey] = fieldValue
-    API.save_field_api('group', groupId, {[fieldKey]: fieldValue}).then((resp)=>{
-      field.removeClass("submitting-select-button selected-select-button")
-      field.blur();
-      field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
-    }).catch(err=>{
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").text(err.responseText)
-      field.removeClass("submitting-select-button selected-select-button")
-      field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
-    })
-  })
-  $('.dt_date_picker').datepicker({
-    dateFormat: 'yy-mm-dd',
-    onSelect: function (date) {
-      let id = $(this).attr('id')
-      API.save_field_api('group', groupId, { [id]: date }).catch(handleAjaxError)
-    },
-    changeMonth: true,
-    changeYear: true
-  })
 
   let memberList = $('.member-list')
   let memberCountInput = $('#member_count')
