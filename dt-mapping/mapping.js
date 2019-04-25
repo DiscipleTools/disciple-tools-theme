@@ -15,15 +15,6 @@ jQuery(document).ready(function() {
 
 _ = _ || window.lodash
 
-window.DRILLDOWN.location_list = function(  geonameid ) {
-    if ( geonameid !== 'top_map_level' ) {
-        location_list( 'location_list', geonameid )
-    } else {
-        jQuery('#location_list').empty().append(`Select list above.`)
-        location_list( 'location_list' )
-    }
-
-}
 
 window.DRILLDOWN.map_chart_drilldown = function( geonameid ) {
     if ( geonameid !== 'top_map_level' ) { // make sure this is not a top level continent or world request
@@ -31,12 +22,14 @@ window.DRILLDOWN.map_chart_drilldown = function( geonameid ) {
         DRILLDOWNDATA.settings.current_map = parseInt(geonameid)
         geoname_map( 'map_chart', parseInt(geonameid) )
         data_type_list( 'data-type-list' )
+
     }
     else { // top_level maps
         console.log('map_chart_drilldown: top level ' + geonameid )
         DRILLDOWNDATA.settings.current_map = 'top_map_level'
         top_level_map( 'map_chart' )
         data_type_list( 'data-type-list' )
+
     }
 }
 
@@ -85,10 +78,12 @@ function page_mapping_view() {
         <br>
         `);
 
+    // set the depth of the drill down
+    DRILLDOWNDATA.settings.hide_final_drill_down = true
+    // load drill down
     DRILLDOWN.get_drill_down('map_chart_drilldown')
 
 }
-
 
 
 function top_level_map( div ) {
@@ -785,44 +780,8 @@ function mini_map( div, marker_data ) {
         imageSeriesTemplate.propertyFields.longitude = "longitude";
     })
 
-
-
 }
 
-function child_list( mapDiv, children, deeper_levels ) { /* @todo consider removing or widgetizing */
-
-    if ( ! children ) {
-        return false;
-    }
-
-    let container = jQuery('#child-list')
-    container.empty()
-
-   let sorted_children =  _.sortBy(children, [function(o) { return o.name; }]);
-
-    jQuery.each( sorted_children, function( i, v ) {
-        let button = `<button class="button small" type="button" onclick="map_chart( '${mapDiv}', ${v.geonameid} )">Drill Down</button>`
-        if (! deeper_levels[v.geonameid]) {
-            button = ''
-        }
-
-        container.append(`<li class="accordion-item" data-accordion-item>
-                            <a href="#" class="accordion-title">${v.name}</a>
-                            <div class="accordion-content" data-tab-content>
-                              <p>population: ${v.population}</p>
-                              <p>workers: 0</p>
-                              <p>contacts: 0</p>
-                              <p>groups: 0</p>
-                              <p>${button}</p>
-                            </div>
-                          </li>`)
-    })
-
-    // var e = document.getElementById('child-list-container');
-    // e.scrollTop = 0;
-
-    var elem = new Foundation.Accordion(container);
-} // @todo remove?
 
 /**********************************************************************************************************************
  *
@@ -831,15 +790,16 @@ function child_list( mapDiv, children, deeper_levels ) { /* @todo consider remov
  * This page allows for drill-down into the locations and related reports.
  * 
  **********************************************************************************************************************/
+window.DRILLDOWN.location_list_drilldown = function( geonameid ) {
+    geoname_list( 'location_list', geonameid )
+}
+
 function page_mapping_list() {
     "use strict";
     let chartDiv = jQuery('#chart')
     chartDiv.empty().html(`
         <div class="grid-x grid-margin-x">
-            <div class="cell auto">
-                <!-- Drill Down -->
-                <ul id="drill_down"></ul>
-            </div>
+            <div class="cell auto" id="location_list_drilldown"></div>
             <div class="cell small-1">
                 <span id="spinner" style="display:none;" class="float-right">${DRILLDOWNDATA.settings.spinner_large}</span>
             </div>
@@ -871,135 +831,31 @@ function page_mapping_list() {
            
         </style>
         `);
-    window.DRILLDOWN.get_drill_down( 'location_list' )
+
+    // set the depth of the drill down
+    DRILLDOWNDATA.settings.hide_final_drill_down = false
+    // load drill down
+    window.DRILLDOWN.get_drill_down('location_list_drilldown')
 }
 
-function location_list( div, geonameid ) {
-    let default_map_settings = DRILLDOWNDATA.settings.default_map_settings
-
-    /*******************************************************************************************************************
-     *
-     * Load Requested Geonameid
-     *
-     *****************************************************************************************************************/
-    if ( geonameid ) { // make sure this is not a top level continent or world request
-        console.log('location_list: geonameid available')
-        geoname_list( div, geonameid )
-    }
-    /*******************************************************************************************************************
-     *
-     * Initialize Country Based Top Level Maps
-     *
-     *****************************************************************************************************************/
-    else if ( default_map_settings.type === 'country' ) {
-        console.log('location_list: country available')
-        if( Object.keys(default_map_settings.children).length === 1 ) {
-            geoname_list( div, default_map_settings.children[0] )
-        }
-    }
-    else if ( default_map_settings.type === 'state' ) {
-        console.log('location_list: country available')
-        if( Object.keys(default_map_settings.children).length === 1 ) {
-            geoname_list( div, default_map_settings.children[0] )
-        } else {
-            geoname_list( div, default_map_settings.parent )
-        }
-    }
-    /*******************************************************************************************************************
-     *
-     * Initialize Top Level Maps
-     *
-     *****************************************************************************************************************/
-    else { // top_level maps
-        top_level_location_list( div )
-    } // end if
-}
-
-function top_level_location_list( div ) {
-    let default_map_settings = DRILLDOWNDATA.settings.default_map_settings
-    DRILLDOWN.show_spinner()
-
-    // Initialize Location Data
-    let map_data = DRILLDOWNDATA.data[default_map_settings.parent]
-    if ( map_data === undefined ) {
-        console.log('error getting map_data')
-        return;
-    }
-
-    // Place Title
-    let title = jQuery('#section-title')
-    title.empty().html(map_data.self.name)
-
-    // Population Division and Check for Custom Division
-    let pd_settings = DRILLDOWNDATA.settings.population_division
-    let population_division = pd_settings.base
-    if ( ! DRILLDOWN.isEmpty( pd_settings.custom ) ) {
-        jQuery.each( pd_settings.custom, function(i,v) {
-            if ( map_data.self.geonameid === i ) {
-                population_division = v
-            }
-        })
-    }
-
-    // Self Data
-    let self_population = map_data.self.population_formatted
-    jQuery('#current_level').empty().html(`Population: ${self_population}`)
-
-
-    // Build List
-    let locations = jQuery('#location_list')
-    locations.empty()
-
-    // Header Section
-    let header = `<div class="grid-x grid-padding-x grid-padding-y" style="border-bottom:1px solid grey">
-                    <div class="cell small-3">Name</div>
-                    <div class="cell small-3">Population</div>`
-
-        /* Additional Columns */
-        if ( DRILLDOWNDATA.data.custom_column_labels ) {
-            jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(i,v) {
-                header += `<div class="cell small-3">${v}</div>`
-            })
-        }
-        /* End Additional Columns */
-
-    header += `</div>`
-    locations.empty().append( header )
-
-    // Children List Section
-
-    let sorted_children =  _.sortBy(map_data.children, [function(o) { return o.name; }]);
-
-    jQuery.each( sorted_children, function(i, v) {
-        let population =  v.population_formatted
-        let html = `<div class="grid-x grid-padding-x grid-padding-y">
-                        <div class="cell small-3"><strong>${v.name}</strong></div>
-                        <div class="cell small-3">${population}</div>`
-
-
-        /* Additional Columns */
-        if ( DRILLDOWNDATA.data.custom_column_data[i] ) {
-            jQuery.each( DRILLDOWNDATA.data.custom_column_data[i], function(ii,v) {
-                html += `<div class="cell small-3">${v}</div>`
-            })
-        } else {
-            jQuery.each( DRILLDOWNDATA.data.custom_column_labels, function(ii,v) {
-                html += `<div class="cell small-3"></div>`
-            })
-        }
-        /* End Additional Columns */
-
-        html += `</div>`
-        locations.append(html)
-    })
-
-    DRILLDOWN.hide_spinner()
-}
 
 function geoname_list( div, geonameid ) {
-    DRILLDOWNDATA.settings.hide_final_drill_down = true
     DRILLDOWN.show_spinner()
-    if ( DRILLDOWNDATA.data[geonameid] === undefined ) {
+
+    // Find data source before build
+    if ( geonameid === 'top_map_level' ) {
+        let default_map_settings = DRILLDOWNDATA.settings.default_map_settings
+
+        // Initialize Location Data
+        let map_data = DRILLDOWNDATA.data[default_map_settings.parent]
+        if ( map_data === undefined ) {
+            console.log('error getting map_data')
+            return;
+        }
+
+        build_geoname_list( div, map_data )
+    }
+    else if ( DRILLDOWNDATA.data[geonameid] === undefined ) {
         let rest = DRILLDOWNDATA.settings.endpoints.get_map_by_geonameid_endpoint
 
         jQuery.ajax({
@@ -1026,6 +882,7 @@ function geoname_list( div, geonameid ) {
         build_geoname_list( div, DRILLDOWNDATA.data[geonameid] )
     }
 
+    // build list
     function build_geoname_list( div, map_data ) {
 
         // Place Title
@@ -1071,10 +928,12 @@ function geoname_list( div, geonameid ) {
         let sorted_children =  _.sortBy(map_data.children, [function(o) { return o.name; }]);
 
         html += `<tbody>`
+
         jQuery.each( sorted_children, function(i, v) {
             let population = v.population_formatted
+
             html += `<tr>
-                        <td><strong>${v.name}</strong></td>
+                        <td><strong><a onclick="DRILLDOWN.get_drill_down('location_list_drilldown', ${v.geonameid} )">${v.name}</a></strong></td>
                         <td>${population}</td>`
 
             /* Additional Columns */
