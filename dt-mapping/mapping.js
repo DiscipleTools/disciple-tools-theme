@@ -227,7 +227,7 @@ function top_level_map( div ) {
                     if( map_data.deeper_levels[ev.target.dataItem.dataContext.geonameid] )
                     {
                         jQuery('select#world option[value='+ev.target.dataItem.dataContext.geonameid+']').attr('selected', true)
-                        return DRILLDOWN.geoname_drill_down( ev.target.dataItem.dataContext.geonameid, 'map_chart' )
+                        return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
                     }
 
                 }, this);
@@ -391,7 +391,7 @@ function top_level_map( div ) {
                         if( DRILLDOWNDATA.data[ev.target.dataItem.dataContext.geonameid] )
                         {
                             jQuery("select#drill_down_top_level option[value="+ev.target.dataItem.dataContext.geonameid+"]").attr('selected', true)
-                            return DRILLDOWN.geoname_drill_down( ev.target.dataItem.dataContext.geonameid, 'map_chart' )
+                            return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
                         }
                     }, this);
 
@@ -538,7 +538,7 @@ function top_level_map( div ) {
                         if( DRILLDOWNDATA.data[ev.target.dataItem.dataContext.geonameid] )
                         {
                             jQuery("select#drill_down_top_level option[value="+ev.target.dataItem.dataContext.geonameid+"]").attr('selected', true)
-                            return DRILLDOWN.geoname_drill_down( ev.target.dataItem.dataContext.geonameid, 'map_chart' )
+                            return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
                         }
                     }, this);
 
@@ -657,7 +657,7 @@ function geoname_map( div, geonameid ) {
                     if( response.deeper_levels[ev.target.dataItem.dataContext.geonameid] )
                     {
                         jQuery("select#"+response.self.geonameid+" option[value="+ev.target.dataItem.dataContext.geonameid+"]").attr('selected', true)
-                        return DRILLDOWN.map_chart( ev.target.dataItem.dataContext.geonameid, div )
+                        return DRILLDOWN.get_drill_down( 'map_chart_drilldown', ev.target.dataItem.dataContext.geonameid )
                     }
                 }, this);
 
