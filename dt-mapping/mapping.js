@@ -16,13 +16,28 @@ jQuery(document).ready(function() {
 _ = _ || window.lodash
 
 window.DRILLDOWN.location_list = function(  geonameid ) {
-    if ( geonameid !== 'top_map_list' ) {
+    if ( geonameid !== 'top_map_level' ) {
         location_list( 'location_list', geonameid )
     } else {
         jQuery('#location_list').empty().append(`Select list above.`)
         location_list( 'location_list' )
     }
 
+}
+
+window.DRILLDOWN.map_chart_drilldown = function( geonameid ) {
+    if ( geonameid !== 'top_map_level' ) { // make sure this is not a top level continent or world request
+        console.log('map_chart_drilldown: geonameid available ' + geonameid )
+        DRILLDOWNDATA.settings.current_map = parseInt(geonameid)
+        geoname_map( 'map_chart', parseInt(geonameid) )
+        data_type_list( 'data-type-list' )
+    }
+    else { // top_level maps
+        console.log('map_chart_drilldown: top level ' + geonameid )
+        DRILLDOWNDATA.settings.current_map = 'top_map_level'
+        top_level_map( 'map_chart' )
+        data_type_list( 'data-type-list' )
+    }
 }
 
 
@@ -39,9 +54,7 @@ function page_mapping_view() {
     chartDiv.empty().html(`
         
         <div class="grid-x grid-margin-y">
-            <div class="cell medium-6">
-                <ul id="drill_down"></ul>
-            </div>
+            <div class="cell medium-6" id="map_chart_drilldown"></div>
             <div class="cell medium-6" style="text-align:right;">
                <strong id="section-title" style="font-size:2em;"></strong><br>
                 <span id="current_level"></span>
@@ -68,28 +81,15 @@ function page_mapping_view() {
         
         <hr style="max-width:100%;">
         
-        <span style="float:right;font-size:.8em;"><a onclick="DRILLDOWN.load_drill_down( null, 'map_chart' )" >return to top level</a></span>
+        <span style="float:right;font-size:.8em;"><a onclick="DRILLDOWN.get_drill_down('map_chart_drilldown')" >return to top level</a></span>
         <br>
         `);
 
-    DRILLDOWN.load_drill_down( null, 'map_chart' )
+    DRILLDOWN.get_drill_down('map_chart_drilldown')
 
 }
 
-window.DRILLDOWN.map_chart = function( geonameid ) {
-    if ( geonameid !== 'top_map_list' && geonameid !== 'world' ) { // make sure this is not a top level continent or world request
-        console.log('map_chart: geonameid available')
-        DRILLDOWNDATA.settings.current_map = parseInt(geonameid)
-        geoname_map( 'map_chart', parseInt(geonameid) )
-        data_type_list( 'data-type-list' )
-    }
-    else { // top_level maps
-        console.log('map_chart: top level')
-        DRILLDOWNDATA.settings.current_map = 'top_map_list'
-        top_level_map( 'map_chart' )
-        data_type_list( 'data-type-list' )
-    }
-}
+
 
 function top_level_map( div ) {
     am4core.useTheme(am4themes_animated);
@@ -676,7 +676,6 @@ function geoname_map( div, geonameid ) {
             })
         }) // end success statement
         .fail(function (err) {
-
             console.log("error")
             console.log(err)
         })
@@ -699,11 +698,11 @@ function data_type_list( div ) {
 function heatmap_focus_change( focus_id, current_map ) {
     DRILLDOWNDATA.settings.heatmap_focus = focus_id
 
-    if ( current_map !== 'top_map_list' && current_map !== 'world' ) { // make sure this is not a top level continent or world request
-        DRILLDOWN.load_drill_down( current_map, 'map_chart' )
+    if ( current_map !== 'top_map_level' ) { // make sure this is not a top level continent or world request
+        DRILLDOWN.get_drill_down( 'map_chart_drilldown', current_map )
     }
     else { // top_level maps
-        DRILLDOWN.load_drill_down( null, 'map_chart' )
+        DRILLDOWN.get_drill_down('map_chart_drilldown')
     }
 }
 
@@ -872,7 +871,7 @@ function page_mapping_list() {
            
         </style>
         `);
-    window.DRILLDOWN.load_drill_down( null, 'location_list' )
+    window.DRILLDOWN.get_drill_down( 'location_list' )
 }
 
 function location_list( div, geonameid ) {
@@ -1107,6 +1106,13 @@ function geoname_list( div, geonameid ) {
     }
 }
 
+window.DRILLDOWN.drill = function( geonameid ) {
+    if ( geonameid !== 'top_map_level' && geonameid !== 'world' ) { // make sure this is not a top level continent or world request
+    }
+    else { // top_level maps
+
+    }
+}
 
 function page_mapping_drill() {
     "use strict";
@@ -1114,92 +1120,12 @@ function page_mapping_drill() {
     chartDiv.empty().html(`
         
         <div class="grid-x grid-margin-y">
-            <div class="cell" id="drill_down_container"></div>
+            <div class="cell" id="drill"></div>
         </div>
         
         `);
 
-    DRILLDOWN.get_drill_down( 'drill' )
+    DRILLDOWN.get_drill_down('drill')
 }
 
 
-
-function get_drill_down( bind_function, geonameid ) {
-    if ( ! geonameid ) {
-        geonameid = 'top_map_level'
-    }
-    console.log(geonameid)
-
-    let drill_down = jQuery('#drill_down_container')
-    let rest = mappingModule.mapping_module.settings.endpoints.get_drilldown_endpoint
-    jQuery.ajax({
-        type: rest.method,
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify( {  "bind_function": bind_function, "geonameid": geonameid } ),
-        dataType: "json",
-        url: mappingModule.mapping_module.settings.root + rest.namespace + rest.route,
-        beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
-        },
-    })
-        .done( function( response ) {
-            console.log(response)
-            drill_down.empty()
-            let html = ``
-
-            html += `<ul id="drill_down">`
-
-            jQuery.each( response, function(i,section) {
-                if ( section.link ) {
-                    html += `<li><a id="${section.parent}" style="margin-top:1em;"
-                        onclick="get_drill_down( 'drill', '${section.selected}' )"
-                        class="button hollow">${section.selected_name}</a></li>`
-                } else {
-                    if ( ! isEmpty( section.list ) ) {
-                        html += `<li><select id="${section.parent}" 
-                        onchange="get_drill_down( 'drill', this.value )"
-                        class="geocode-select">`
-
-                        html += `<option value="${section.parent}"></option>`
-
-                        jQuery.each( section.list, function( ii, item ) {
-                            html += `<option value="${item.geonameid}" `
-                            if ( item.geonameid === section.selected ) {
-                                html += ` selected`
-                            }
-                            html += `>${item.name}</option>`
-                        })
-
-                        html += `</select></li>`
-                    }
-                }
-
-            })
-
-
-            html += `</ul>`
-            drill_down.append(html)
-
-
-        }) // end success statement
-        .fail(function (err) {
-            console.log("error")
-            console.log(err)
-        })
-}
-
-function isEmpty(obj) {
-    for(let key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
-}
-
-window.DRILLDOWN.drill = function( geonameid ) {
-    if ( geonameid !== 'top_map_list' && geonameid !== 'world' ) { // make sure this is not a top level continent or world request
-    }
-    else { // top_level maps
-
-    }
-}

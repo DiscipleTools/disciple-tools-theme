@@ -494,13 +494,10 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
         public function get_drilldown_endpoint( WP_REST_Request $request ) {
             $params = $request->get_params();
 
-            if ( isset( $params['geonameid'] ) && isset( $params['bind_function'] ) ) {
-                 $bind_function = sanitize_key( wp_unslash( $params['bind_function'] ) );
-//                return $this->drill_down_widget( $bind_function, false, $geonameid );
-
+            if ( isset( $params['geonameid'] ) ) {
                 $geonameid = sanitize_key( wp_unslash( $params['geonameid'] ) );
-                return $this->drill_down_array( $geonameid );
 
+                return $this->drill_down_array( $geonameid );
             } else {
                 return new WP_Error( __METHOD__, 'Missing parameters.', [ 'status' => 400 ] );
             }
@@ -2033,12 +2030,13 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                         if ( $default_select_first_level ) {
 
                         } else {
-                            $preset_array = [
+                            $preset_array = [ // @todo not finished
                                 0 => [
                                     'parent' => 'top_map_level',
                                     'selected' => $list[0],
                                     'selected_name' => __( 'World', 'disciple_tools' ),
                                     'link' => true,
+                                    'active' => false,
                                 ],
                                 1 => [
                                     'parent' => 'top_map_level',
@@ -2060,12 +2058,14 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                 'selected' => 'top_map_level',
                                 'selected_name' => __( 'World', 'disciple_tools' ),
                                 'link' => true,
+                                'active' => true,
                             ],
                             1 => [
                                 'parent' => 'top_map_level',
                                 'selected' => 0,
                                 'list' => $this->format_geoname_types( $this->query( 'get_countries' ) ),
                                 'link' => false,
+                                'active' => false,
                             ],
                         ];
 
@@ -2100,24 +2100,28 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         'selected' => 'top_map_level',
                                         'selected_name' => __( 'World', 'disciple_tools' ),
                                         'link' => true,
+                                        'active' => false,
                                     ],
                                     1 => [
                                         'parent' => 'top_map_level',
                                         'selected' => (int) $reference['country_geonameid'],
                                         'selected_name' => $reference['country_name'],
                                         'link' => true,
+                                        'active' => false,
                                     ],
                                     2 => [
                                         'parent' => (int) $reference['country_geonameid'] ?? 0,
                                         'selected' => (int) $reference['admin1_geonameid'],
                                         'selected_name' => $reference['admin1_name'],
                                         'link' => true,
+                                        'active' => false,
                                     ],
                                     3 => [
                                         'parent' => (int) $reference['admin1_geonameid'] ?? 0,
                                         'selected' => (int) $reference['admin2_geonameid'],
                                         'selected_name' => $reference['admin2_name'],
                                         'link' => true,
+                                        'active' => true,
                                     ],
                                     4 => [
                                         'parent' => (int) $reference['admin2_geonameid'] ?? 0,
@@ -2125,6 +2129,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         'selected_name' => $reference['admin3_name'],
                                         'list' => $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin2_geonameid'] ] ) ),
                                         'link' => false,
+                                        'active' => false,
                                     ],
 
                                 ];
@@ -2137,18 +2142,21 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         'selected' => 'top_map_level',
                                         'selected_name' => __( 'World', 'disciple_tools' ),
                                         'link' => true,
+                                        'active' => false,
                                     ],
                                     1 => [
                                         'parent' => 'top_map_level',
                                         'selected' => (int) $reference['country_geonameid'],
                                         'selected_name' => $reference['country_name'],
                                         'link' => true,
+                                        'active' => false,
                                     ],
                                     2 => [
                                         'parent' => (int) $reference['country_geonameid'] ?? 0,
                                         'selected' => (int) $reference['admin1_geonameid'],
                                         'selected_name' => $reference['admin1_name'],
                                         'link' => true,
+                                        'active' => true,
                                     ],
                                     3 => [
                                         'parent' => (int) $reference['admin1_geonameid'] ?? 0,
@@ -2156,6 +2164,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         'selected_name' => $reference['admin2_name'],
                                         'list' => $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) ),
                                         'link' => false,
+                                        'active' => false,
                                     ],
 
                                 ];
@@ -2169,12 +2178,14 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         'selected' => 'top_map_level',
                                         'selected_name' => __( 'World', 'disciple_tools' ),
                                         'link' => true,
+                                        'active' => false,
                                     ],
                                     1 => [
                                         'parent' => 'top_map_level',
                                         'selected' => (int) $reference['country_geonameid'],
                                         'selected_name' => $reference['country_name'],
                                         'link' => true,
+                                        'active' => true,
                                     ],
                                     2 => [
                                         'parent' => (int) $reference['country_geonameid'] ?? 0,
@@ -2182,6 +2193,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         'selected_name' => $reference['admin1_name'],
                                         'list' => $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) ),
                                         'link' => false,
+                                        'active' => false,
                                     ],
 
                                 ];
@@ -2207,24 +2219,28 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         'selected' => 'top_map_level',
                                         'selected_name' => __( 'World', 'disciple_tools' ),
                                         'link' => true,
+                                        'active' => false,
                                     ],
                                     1 => [
                                         'parent' => 'top_map_level',
                                         'selected' => (int) $reference['country_geonameid'],
                                         'selected_name' => $reference['country_name'],
                                         'link' => true,
+                                        'active' => false,
                                     ],
                                     2 => [
                                         'parent' => (int) $reference['country_geonameid'] ?? 0,
                                         'selected' => (int) $reference['admin1_geonameid'],
                                         'selected_name' => $reference['admin1_name'],
                                         'link' => true,
+                                        'active' => false,
                                     ],
                                     3 => [
                                         'parent' => (int) $reference['admin1_geonameid'] ?? 0,
                                         'selected' => (int) $reference['admin2_geonameid'],
                                         'selected_name' => $reference['admin2_name'],
                                         'link' => true,
+                                        'active' => true,
                                     ],
                                     4 => [
                                         'parent' => (int) $reference['admin2_geonameid'] ?? 0,
@@ -2232,6 +2248,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         'selected_name' => $reference['admin3_name'],
                                         'list' => $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin2_geonameid'] ] ) ),
                                         'link' => false,
+                                        'active' => false,
                                     ],
 
                                 ];
@@ -2244,18 +2261,21 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         'selected' => 'top_map_level',
                                         'selected_name' => __( 'World', 'disciple_tools' ),
                                         'link' => true,
+                                        'active' => false,
                                     ],
                                     1 => [
                                         'parent' => 'top_map_level',
                                         'selected' => (int) $reference['country_geonameid'],
                                         'selected_name' => $reference['country_name'],
                                         'link' => true,
+                                        'active' => false,
                                     ],
                                     2 => [
                                         'parent' => (int) $reference['country_geonameid'] ?? 0,
                                         'selected' => (int) $reference['admin1_geonameid'],
                                         'selected_name' => $reference['admin1_name'],
                                         'link' => true,
+                                        'active' => true,
                                     ],
                                     3 => [
                                         'parent' => (int) $reference['admin1_geonameid'] ?? 0,
@@ -2263,6 +2283,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         'selected_name' => $reference['admin2_name'],
                                         'list' => $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['admin1_geonameid'] ] ) ),
                                         'link' => false,
+                                        'active' => false,
                                     ],
 
                                 ];
@@ -2276,12 +2297,14 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         'selected' => 'top_map_level',
                                         'selected_name' => __( 'World', 'disciple_tools' ),
                                         'link' => true,
+                                        'active' => false,
                                     ],
                                     1 => [
                                         'parent' => 'top_map_level',
                                         'selected' => (int) $reference['country_geonameid'],
                                         'selected_name' => $reference['country_name'],
                                         'link' => true,
+                                        'active' => true,
                                     ],
                                     2 => [
                                         'parent' => (int) $reference['country_geonameid'] ?? 0,
@@ -2289,6 +2312,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                                         'selected_name' => $reference['admin1_name'],
                                         'list' => $this->format_geoname_types( $this->query( 'get_children_by_geonameid', [ 'geonameid' => $reference['country_geonameid'] ] ) ),
                                         'link' => false,
+                                        'active' => false,
                                     ],
 
                                 ];
