@@ -1114,14 +1114,12 @@ function page_mapping_drill() {
     chartDiv.empty().html(`
         
         <div class="grid-x grid-margin-y">
-            <div class="cell medium-6" id="drill_down_container">
-                
-            </div>
+            <div class="cell" id="drill_down_container"></div>
         </div>
         
         `);
 
-    get_drill_down( 'drill' )
+    DRILLDOWN.get_drill_down( 'drill' )
 }
 
 
@@ -1152,23 +1150,30 @@ function get_drill_down( bind_function, geonameid ) {
             html += `<ul id="drill_down">`
 
             jQuery.each( response, function(i,section) {
-                if ( ! isEmpty( section.list ) ) {
-                    html += `<li><select id="${section.parent}" 
+                if ( section.link ) {
+                    html += `<li><a id="${section.parent}" style="margin-top:1em;"
+                        onclick="get_drill_down( 'drill', '${section.selected}' )"
+                        class="button hollow">${section.selected_name}</a></li>`
+                } else {
+                    if ( ! isEmpty( section.list ) ) {
+                        html += `<li><select id="${section.parent}" 
                         onchange="get_drill_down( 'drill', this.value )"
                         class="geocode-select">`
 
-                    html += `<option value="${section.parent}"></option>`
+                        html += `<option value="${section.parent}"></option>`
 
-                    jQuery.each( section.list, function( ii, item ) {
-                        html += `<option value="${item.geonameid}" `
-                        if ( item.geonameid === section.selected ) {
-                            html += ` selected`
-                        }
-                        html += `>${item.name}</option>`
-                    })
+                        jQuery.each( section.list, function( ii, item ) {
+                            html += `<option value="${item.geonameid}" `
+                            if ( item.geonameid === section.selected ) {
+                                html += ` selected`
+                            }
+                            html += `>${item.name}</option>`
+                        })
 
-                    html += `</select></li>`
+                        html += `</select></li>`
+                    }
                 }
+
             })
 
 

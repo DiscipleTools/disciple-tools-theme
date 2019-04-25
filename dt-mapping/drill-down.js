@@ -107,6 +107,70 @@ window.DRILLDOWN = {
         DRILLDOWN.hide_spinner()
     },
 
+    get_drill_down( bind_function, geonameid ) {
+    if ( ! geonameid ) {
+        geonameid = 'top_map_level'
+    }
+    console.log(geonameid)
+
+    let drill_down = jQuery('#drill_down_container')
+    let rest = DRILLDOWNDATA.settings.endpoints.get_drilldown_endpoint
+    jQuery.ajax({
+        type: rest.method,
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify( {  "bind_function": bind_function, "geonameid": geonameid } ),
+        dataType: "json",
+        url: DRILLDOWNDATA.settings.root + rest.namespace + rest.route,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', rest.nonce);
+        },
+    })
+        .done( function( response ) {
+            console.log(response)
+
+            drill_down.empty()
+            let html = ``
+
+            html += `<ul id="drill_down">`
+
+            jQuery.each( response, function(i,section) {
+                if ( section.link ) {
+                    html += `<li><button id="${section.parent}" style="margin-top:1em;"
+                        onclick="DRILLDOWN.get_drill_down( 'drill', '${section.selected}' )"
+                        class="button hollow">${section.selected_name}</button></li>`
+                } else {
+                    if ( ! isEmpty( section.list ) ) {
+                        html += `<li><select id="${section.parent}" 
+                        onchange="DRILLDOWN.get_drill_down( 'drill', this.value )"
+                        class="geocode-select">`
+
+                        html += `<option value="${section.parent}"></option>`
+
+                        jQuery.each( section.list, function( ii, item ) {
+                            html += `<option value="${item.geonameid}" `
+                            if ( item.geonameid === section.selected ) {
+                                html += ` selected`
+                            }
+                            html += `>${item.name}</option>`
+                        })
+
+                        html += `</select></li>`
+                    }
+                }
+
+            })
+
+            html += `</ul>`
+            drill_down.append(html)
+
+
+        }) // end success statement
+        .fail(function (err) {
+            console.log("error")
+            console.log(err)
+        })
+    },
+
     isEmpty(obj) {
         for(let key in obj) {
             if(obj.hasOwnProperty(key))
