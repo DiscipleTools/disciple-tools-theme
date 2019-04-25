@@ -1771,9 +1771,8 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                     </tr>
                 </table>
 
-            <?php else : ?>
-                <?php esc_html__( 'You must save post before geocoding.' ) ?>
-            <?php
+            <?php else :
+                echo esc_html__( 'You must save post before geocoding.' );
             endif;
         }
 

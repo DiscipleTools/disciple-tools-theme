@@ -100,7 +100,7 @@ function top_level_map( div ) {
 
     switch ( default_map_settings.type ) {
 
-        case 'world':
+        case 'world': {
             console.log('top_level_map: world')
             let map_data = DRILLDOWNDATA.data.world
 
@@ -245,8 +245,8 @@ function top_level_map( div ) {
                 })
 
             break;
-
-        case 'country':
+        }
+        case 'country': {
             console.log('top_level_map: country')
 
             if( Object.keys(top_map_list).length === 1 ) { // if only one country selected
@@ -401,8 +401,8 @@ function top_level_map( div ) {
             }
 
             break;
-
-        case 'state':
+        }
+        case 'state': {
             console.log('top_level_map: state')
 
             if( Object.keys(top_map_list).length === 1 ) { // if only one country selected
@@ -547,6 +547,7 @@ function top_level_map( div ) {
                 })
             }
             break;
+        }
     }
 }
 
