@@ -1131,6 +1131,8 @@ function get_drill_down( bind_function, geonameid ) {
         geonameid = 'top_map_level'
     }
     console.log(geonameid)
+
+    let drill_down = jQuery('#drill_down_container')
     let rest = mappingModule.mapping_module.settings.endpoints.get_drilldown_endpoint
     jQuery.ajax({
         type: rest.method,
@@ -1143,13 +1145,50 @@ function get_drill_down( bind_function, geonameid ) {
         },
     })
         .done( function( response ) {
-            jQuery('#drill_down_container').empty().append(response)
+            console.log(response)
+            drill_down.empty()
+            let html = ``
+
+            html += `<ul id="drill_down">`
+
+            jQuery.each( response, function(i,section) {
+                if ( ! isEmpty( section.list ) ) {
+                    html += `<li><select id="${section.parent}" 
+                        onchange="get_drill_down( 'drill', this.value )"
+                        class="geocode-select">`
+
+                    html += `<option value="${section.parent}"></option>`
+
+                    jQuery.each( section.list, function( ii, item ) {
+                        html += `<option value="${item.geonameid}" `
+                        if ( item.geonameid === section.selected ) {
+                            html += ` selected`
+                        }
+                        html += `>${item.name}</option>`
+                    })
+
+                    html += `</select></li>`
+                }
+            })
+
+
+            html += `</ul>`
+            drill_down.append(html)
+
 
         }) // end success statement
         .fail(function (err) {
             console.log("error")
             console.log(err)
         })
+}
+
+function isEmpty(obj) {
+    for(let key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
 }
 
 window.DRILLDOWN.drill = function( geonameid ) {
