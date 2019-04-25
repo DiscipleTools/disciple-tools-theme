@@ -376,7 +376,9 @@ if ( ! current_user_can( 'access_contacts' ) ) {
                                     <div class="baptism_date">
                                         <div class="section-subheader"><?php esc_html_e( 'Baptism Date', 'disciple_tools' )?></div>
                                         <div class="baptism_date">
-                                            <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>" id="baptism-date-picker">
+                                            <input type="text" class="dt_date_picker"
+                                                   value="<?php echo esc_html( $contact["baptism_date"]["formatted"] ?? '' )?>"
+                                                   id="baptism_date">
                                         </div>
                                     </div>
 
@@ -578,43 +580,6 @@ if ( ! current_user_can( 'access_contacts' ) ) {
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
-    </div>
-
-    <div class="reveal" id="edit-reason-modal" data-reveal>
-
-
-        <div class="medium-6 cell reason-field">
-            <?php
-            $status = $contact['overall_status']['key'] ?? '';
-            $has_status = isset( $contact_fields["reason_$status"]['name'] );
-            ?>
-            <div class="section-subheader">
-                <?php
-                if ( $has_status ) {
-                    echo esc_html( $contact_fields["reason_$status"]['name'] );
-                }
-                ?>
-            </div>
-            <?php
-            $status_style = !$has_status ? 'display:none;' : '';
-            $reason_field = $has_status ? "reason_$status" : '';
-            ?>
-            <select class="status-reason" style="<?php echo esc_html( $status_style ); ?>" data-field="<?php echo esc_html( $reason_field ) ?>">
-                <?php
-                if ( $has_status ) {
-                    foreach ( $contact_fields["reason_$status"]['default'] as $reason_key => $reason_label ) { ?>
-                        <option value="<?php echo esc_attr( $reason_key ) ?>"
-                            <?php
-                            $selected = $contact["reason_$status"]['key'] ?? '' === $reason_key ? 'selected' : '';
-                            echo esc_html( $selected ); ?>>
-                            <?php echo esc_html( $reason_label['label'] ?? "" ); ?>
-                        </option>
-                        <?php
-                    }
-                }
-                ?>
-            </select>
-        </div>
     </div>
 
     <div class="reveal" id="create-tag-modal" data-reveal data-reset-on-close>

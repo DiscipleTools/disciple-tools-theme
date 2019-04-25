@@ -547,20 +547,6 @@ jQuery(document).ready(function($) {
     }
   })
 
-  /**
-   * Follow
-   */
-  $('button.follow').on("click", function () {
-    let following = !($(this).data('value') === "following")
-    $(this).data("value", following ? "following" : "" )
-    $(this).html( following ? "Following" : "Follow")
-    $(this).toggleClass( "hollow" )
-    let update = {
-      follow: {values:[{value:contactsDetailsWpApiSettings.current_user_id, delete:!following}]},
-      unfollow: {values:[{value:contactsDetailsWpApiSettings.current_user_id, delete:following}]}
-    }
-    API.save_field_api( "contact", contactId, update)
-  })
 
   /**
    * connections to other contacts
@@ -717,95 +703,32 @@ jQuery(document).ready(function($) {
    * Contact details
    */
 
-
-  $(document).on('change', 'div.reason-field select', e => {
-    const $select = $(e.currentTarget)
-    const field = $select.data('field')
-    const value = $select.val()
-
-    API.save_field_api('contact', contactId, { [field]: value }).catch(handleAjaxError)
-  })
-
-
-  $('select.select-field').change(e => {
-    const id = $(e.currentTarget).attr('id')
-    const val = $(e.currentTarget).val()
-
-    API.save_field_api('contact', contactId, { [id]: val }).then(contactResponse => {
-      $(`.current-${id}`).text(_.get(contactResponse, `${id}.label`) || val)
-
-      if (id === 'seeker_path') {
-        updateCriticalPath(contactResponse.seeker_path.key)
-        refresh_quick_action_buttons(contactResponse)
-      } else if (id === 'reason_unassignable') {
-        setStatus(contactResponse)
-      } else if (id === 'overall_status') {
-        setStatus(contactResponse, true)
-      }
-    }).catch(handleAjaxError)
-  })
-  $('input.text-input').change(function(){
-    const id = $(this).attr('id')
-    const val = $(this).val()
-
-    API.save_field_api('contact', contactId, { [id]: val })
-      .catch(handleAjaxError)
-  })
-  $('button.dt_multi_select').on('click',function () {
-    let fieldKey = $(this).data("field-key")
-    let optionKey = $(this).attr('id')
-    let fieldValue = {}
-    let data = {}
-    let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`)
-    field.addClass("submitting-select-button")
-    let action = "add"
-    if (field.hasClass("selected-select-button")){
-      fieldValue = {values:[{value:optionKey,delete:true}]}
-      action = "delete"
-    } else {
-      field.removeClass("empty-select-button")
-      field.addClass("selected-select-button")
-      fieldValue = {values:[{value:optionKey}]}
+  $( document ).on( 'select-field-updated', function (e, newContact, id, val) {
+    if (id === 'seeker_path') {
+      updateCriticalPath(newContact.seeker_path.key)
+      refresh_quick_action_buttons(newContact)
+    } else if (id === 'reason_unassignable') {
+      setStatus(newContact)
+    } else if (id === 'overall_status') {
+      setStatus(newContact, true)
     }
-    data[optionKey] = fieldValue
-    API.save_field_api('contact', contactId, {[fieldKey]: fieldValue}).then((resp)=>{
-      field.removeClass("submitting-select-button selected-select-button")
-      field.blur();
-      field.addClass( action === "delete" ? "empty-select-button" : "selected-select-button");
-      if ( optionKey === 'milestone_baptized' && action === 'add' ){
-        openBaptismModal(resp)
-      }
-    }).catch(err=>{
-      console.log("error")
-      console.log(err)
-      jQuery("#errors").text(err.responseText)
-      field.removeClass("submitting-select-button selected-select-button")
-      field.addClass( action === "add" ? "empty-select-button" : "selected-select-button")
-    })
+  })
+
+  $( document ).on( 'text-input-updated', function (e, newContact){})
+
+  $( document ).on( 'dt_date_picker-updated', function (e, newContact, id, date){
+    if ( id === 'baptism_date' ){
+      openBaptismModal(newContact)
+    }
+  })
+
+  $( document ).on( 'dt_multi_select-updated', function (e, newContact, fieldKey, optionKey, action) {
+    if ( optionKey === 'milestone_baptized' && action === 'add' ){
+      openBaptismModal(newContact)
+    }
   })
 
 
-  // Baptism date
-  $('input#baptism-date-picker').datepicker({
-    dateFormat: 'yy-mm-dd',
-    onSelect: function (date) {
-      API.save_field_api('contact', contactId, { baptism_date: date }).then(res=>{
-        openBaptismModal(res)
-      }).catch(handleAjaxError)
-    },
-    changeMonth: true,
-    changeYear: true
-  })
-
-  $('.dt_date_picker').datepicker({
-    dateFormat: 'yy-mm-dd',
-    onSelect: function (date) {
-      let id = $(this).attr('id')
-      API.save_field_api('contact', contactId, { [id]: date }).catch(handleAjaxError)
-    },
-    changeMonth: true,
-    changeYear: true
-  })
 
   let idOfNextNewField = 1
   $('button#add-new-social-media').on('click', ()=>{
@@ -850,11 +773,6 @@ jQuery(document).ready(function($) {
     </li>`)
   })
 
-
-  $('button.show-button').on('click', e => {
-    $(e.currentTarget).toggleClass('showing-more')
-    $('.show-content').toggle()
-  })
 
   /**
    * Update Needed
@@ -1521,11 +1439,7 @@ jQuery(document).ready(function($) {
     })
   })
 
-  // expand and collapse tiles
-  $(".section-header").on("click", function () {
-    $(this).parent().toggleClass("collapsed")
-    $('.grid').masonry('layout')
-  })
+
 
   //leave at the end of this file
   masonGrid.masonry({

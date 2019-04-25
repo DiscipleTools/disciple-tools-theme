@@ -128,12 +128,11 @@ function dt_site_scripts() {
     dt_theme_enqueue_style( 'typeahead-jquery-css', 'dt-core/dependencies/typeahead/dist/jquery.typeahead.min.css', array() );
 
     if ( is_singular( "contacts" ) || is_singular( "groups" ) ) {
-        $post_type = "contacts";
+        $post_type = get_post_type();
         if ( is_singular( "contacts" )){
             $post = Disciple_Tools_Contacts::get_contact( get_the_ID(), true, true );
         } else {
             $post = Disciple_Tools_Groups::get_group( get_the_ID(), true, true );
-            $post_type = "groups";
         }
         if ( !is_wp_error( $post )){
             dt_theme_enqueue_script( 'jquery-mentions', 'dt-core/dependencies/jquery-mentions-input/jquery.mentionsInput.min.js', array( 'jquery' ), true );
@@ -165,7 +164,14 @@ function dt_site_scripts() {
                     'activity' => $post_type === 'contacts' ? Disciple_Tools_Contacts::get_activity( $post["ID"] ) : Disciple_Tools_Groups::get_activity( $post["ID"] )
                 ]
             );
-
+            dt_theme_enqueue_script( 'details', 'dt-assets/js/details.js', array(
+                'jquery',
+                'lodash'
+            ) );
+            wp_localize_script( 'details', 'detailsSettings', [
+                'post_type' => $post_type,
+                'post_id' => get_the_ID()
+            ]);
 
 
             $translations = [

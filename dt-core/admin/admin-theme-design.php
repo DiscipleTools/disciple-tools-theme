@@ -18,6 +18,7 @@ if ( is_admin() ) {
 
     add_filter( 'admin_footer_text', 'dt_empty_footer_string', 11 );
     add_filter( 'update_footer', 'dt_empty_footer_string', 11 );
+    add_action( 'wp_before_admin_bar_render', 'dt_remove_admin_bar_new' );
 }
 
 /*********************************************************************************************
@@ -63,6 +64,14 @@ function dt_modify_admin_bar( $wp_admin_bar ) {
 function dt_empty_footer_string() {
     // Update the text area with an empty string.
     return '';
+}
+
+
+function dt_remove_admin_bar_new() {
+    global $wp_admin_bar;
+    $wp_admin_bar->remove_node( 'new-post' );
+    $wp_admin_bar->remove_node( 'new-media' );
+    $wp_admin_bar->remove_node( 'new-page' );
 }
 
 
